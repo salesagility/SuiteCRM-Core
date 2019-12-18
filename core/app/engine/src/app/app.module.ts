@@ -10,6 +10,10 @@ import {FooterUiModule} from './app-files/ui/components/footer/footer.module';
 import {ClassicViewUiModule} from './app-files/ui/components/classic-view/classic-view.module';
 import {MessageUiModule} from './app-files/ui/components/message/message.module';
 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+
 import {
   AppManagerModule
 } from './app-manager/app-manager.module';
@@ -26,7 +30,10 @@ import {
     FooterUiModule,
     NavbarUiModule,
     MessageUiModule,
-    ClassicViewUiModule
+    ClassicViewUiModule,
+    NavbarUiModule,
+    BrowserAnimationsModule,
+    NgbModule
   ],
   bootstrap: [AppComponent],
   entryComponents: []

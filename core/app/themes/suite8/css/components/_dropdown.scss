@@ -225,9 +225,6 @@ ul.main li a,
 
 
 @media (max-width: $breakpoint-xlarge) {
-  .dropdown-menu {
-    width: 50%;
-  }
   .dropdown-menu .dropdown-submenu {
     width: auto;
   }
@@ -299,4 +296,24 @@ ul.main li a,
   background-color: $nepal-grey;
   color: $white;
   cursor: pointer;
+}
+
+.mobile-nav-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-dropdown li, .mobile-nav-dropdown li:hover {
+  color:$off-white;
+  padding: 0.5em 1.5em;
+  margin: 0;
+  border-top: 0.05em solid $off-white;
+}
+
+.mobile-nav-dropdown li a {
+  display: inline-block;
+}
+
+.mobile-nav-dropdown .mobile-nav-arrow {
+  float: right;
 }

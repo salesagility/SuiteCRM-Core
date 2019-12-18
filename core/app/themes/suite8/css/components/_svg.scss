@@ -276,11 +276,11 @@
   stroke: $salmon-pink;
 }
 
-.close-navmenu svg polygon {
-  fill: $light-grey;
+.mobile-nav-close svg polygon {
+  fill: $dusty-grey;
 }
 
-.close-navmenu svg {
+.mobile-nav-close svg {
   margin: 0 0.3em 0 0;
 }
 
@@ -399,5 +399,13 @@
 }
 
 .responsive-menu-toggler svg path {
-  fill: $white;
+  fill: $off-white;
+}
+
+.mobile-nav-arrow {
+  cursor:pointer;
+  svg polygon {
+    vertical-align: middle;
+    fill: $off-white;
+  }
 }

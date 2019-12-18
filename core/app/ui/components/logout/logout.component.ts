@@ -7,7 +7,7 @@ import {NavbarUiComponent} from '../navbar/navbar.component';
 import {ApiService} from '../../services/api/api.service';
 
 @Component({
-    selector: 'scrm-logo-ui-ui',
+    selector: 'scrm-logout-ui',
     templateUrl: './logout.component.html',
     styleUrls: []
 })

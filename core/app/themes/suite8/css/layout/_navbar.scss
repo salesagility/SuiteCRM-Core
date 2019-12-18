@@ -56,6 +56,10 @@ a.home-nav-link {
   color: $light-grey;
 }
 
+.mobilenavbar {
+  list-style: none;
+}
+
 .nav-link:hover {
   color: $salmon-pink;
 }
@@ -133,10 +137,6 @@ h4.recently-viewed-header {
     padding: 0 0.8em;
   }
 
-  .navbar-toggler {
-    padding: 0.8em 1.6em;
-  }
-
   .navbar-nav li {
     padding: 0 1.6em;
   }
@@ -203,4 +203,44 @@ a.nav-link.dropdown-toggle::after,
 a.nav-link-grouped.dropdown-toggle::after,
 a.nav-link-nongrouped.dropdown-toggle::after {
   vertical-align: middle;
+}
+
+.mobilenavbar {
+  background-color: $midnight-blue;
+
+  li:hover {
+    background-color: $dusky-blue;
+  }
+}
+
+.mobilenavbar {
+  .navbar-toggler.dropdown-toggle::after {
+    display: none;
+  }
+}
+
+.mobile-nav-block {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.mobile-nav-dropdown {
+  width: 100%;
+}
+
+.mobile-nav-link {
+  font-size: 0.85em;
+  color: $white;
+}
+
+.mobile-back-link {
+  font-size: 0.85em;
+  color: $white;
+  font-weight: bold;
+}
+
+.mobile-nav-close {
+  color: $nepal-grey;
+  font-weight: bold;
 }
