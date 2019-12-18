@@ -61,22 +61,19 @@ class AppRebuildCommand extends SuiteCommand
 
         $rebuildPath = BASE_PATH . 'cache/app';
 
-        $this->file->makeDir($rebuildPath, 0777);
+        $this->file->makeDir($rebuildPath, 0755);
 
         $rebuildEnginePath = $rebuildPath . '/engine';
 
-        $this->file->makeDir($rebuildEnginePath, 0777);
+        $this->file->makeDir($rebuildEnginePath, 0755);
 
         if ($hardRebuild === false) {
             $filesToLeave = [$rebuildEnginePath . '/node_modules'];
         }
 
         $appPath = BASE_PATH . 'core/app/';
-
         $enginePath = $appPath . 'engine';
-
         $themesPath = BASE_PATH . 'core/app/themes';
-
         $assetsPath = $rebuildPath . '/engine/src/assets/themes/';
 
         $appFilesPath = [
@@ -101,7 +98,7 @@ class AppRebuildCommand extends SuiteCommand
         $uiFilesPath = $rebuildEnginePath . '/src/app/app-files';
 
         // Delete ui stored files
-        chmod($rebuildPath, 0777);
+        chmod($rebuildPath, 0755);
 
         if (!$this->file->deleteDirectory($rebuildEnginePath, $filesToLeave)) {
             throw new \RuntimeException('System can\'t delete cached application engine files');
@@ -117,7 +114,8 @@ class AppRebuildCommand extends SuiteCommand
         foreach ($appFilesPath as $dir => $path) {
             if (!file_exists($uiFilesPath . '/' . $dir) && !mkdir(
                     $concurrentDirectory = $uiFilesPath . '/' . $dir,
-                    0777
+                    0755,
+                    true
                 ) && !is_dir($concurrentDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
@@ -166,7 +164,7 @@ class AppRebuildCommand extends SuiteCommand
 
                     $appManagerPath = '../../../../../app-manager/app-manager.module';
                     $componentFileName = str_replace('.ts', '', $componentFileName);
-                    $componentImportList .= 'import { ' . $fullComponentName . " } from '../app-files/fields/" . $componentName . '/templates/' . $viewName . '/' . $componentFileName . "'; \n";
+                    //$componentImportList .= 'import { ' . $fullComponentName . " } from '../app-files/fields/" . $componentName . '/templates/' . $viewName . '/' . $componentFileName . "'; \n";
 
                     $moduleImportList .= 'import { ' . $fullModuleName . " } from '../app-files/fields/" . $componentName . '/templates/' . $viewName . '/' . $componentName . ".module'; \n";
                 } elseif ($type === 'ui') {
@@ -212,10 +210,21 @@ imports: [
 export class {module_name} {}
 EOT;
 
-                    $moduleTemplate = str_replace('{component_name}', $fullComponentName, $moduleTemplate);
-                    $moduleTemplate = str_replace('{filepath}', $componentFileName, $moduleTemplate);
-                    $moduleTemplate = str_replace('{module_name}', $fullModuleName, $moduleTemplate);
-                    $moduleTemplate = str_replace('{app_manager_filepath}', $appManagerPath, $moduleTemplate);
+                    $moduleTemplate = str_replace(
+                        [
+                            '{component_name}',
+                            '{filepath}',
+                            '{module_name}',
+                            '{app_manager_filepath}'
+                        ],
+                        [
+                            $fullComponentName,
+                            $componentFileName,
+                            $fullModuleName,
+                            $appManagerPath
+                        ],
+                        $moduleTemplate
+                    );
 
                     ${$type}[] = [
                         'type' => $type,
@@ -248,9 +257,11 @@ EOT;
                 },
                 ";
 
-            $manifestTemplate = str_replace('{type}', $field['componentName'], $manifestTemplate);
-            $manifestTemplate = str_replace('{view}', $field['viewName'], $manifestTemplate);
-            $manifestTemplate = str_replace('{module_name}', $field['fullModuleName'], $manifestTemplate);
+            $manifestTemplate = str_replace(
+                ['{type}', '{view}', '{module_name}'],
+                [$field['componentName'], $field['viewName'], $field['fullModuleName']],
+                $manifestTemplate
+            );
             $fullManifest .= $manifestTemplate . "\n";
         }
 
@@ -273,9 +284,11 @@ EOT;
             },
             ";
 
-            $manifestTemplate = str_replace('{component_name}', $uiComponent['componentName'], $manifestTemplate);
-            $manifestTemplate = str_replace('{ui_type}', $uiComponent['viewName'], $manifestTemplate);
-            $manifestTemplate = str_replace('{module_name}', $uiComponent['fullModuleName'], $manifestTemplate);
+            $manifestTemplate = str_replace(
+                ['{component_name}', '{ui_type}', '{module_name}'],
+                [$uiComponent['componentName'], $uiComponent['viewName'], $uiComponent['fullModuleName']],
+                $manifestTemplate
+            );
 
             $fullManifest .= $manifestTemplate;
         }
@@ -300,7 +313,13 @@ EOT;
           export class ManifestModule {}
         ';
 
-        // Create manafest module
+        // Create manifest module
+        if (!mkdir($concurrentDirectory = $rebuildEnginePath . '/src/app/app-manifest', 0755, true) && !is_dir(
+                $concurrentDirectory
+            )) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+        }
+
         if (file_put_contents($rebuildEnginePath . '/src/app/app-manifest/manifest.module.ts', $manifestModule)) {
             $appDir = getcwd();
 
@@ -316,7 +335,7 @@ EOT;
                 shell_exec($npmCmd);
 
                 echo "Installing npm...\n\n";
-
+                $silentOptions = '';
                 if (!$verboseOutput) {
                     $silentOptions = ' --no-optional --ignore-scripts --silent';
                 }
@@ -340,12 +359,14 @@ EOT;
             chdir($appDir);
 
             if (file_exists($rebuildEnginePath . '/dist/')) {
-                $this->file->makeDir(BASE_PATH . 'public/', 0777);
+                $this->file->makeDir(BASE_PATH . 'public/', 0755);
                 $this->file->deleteDirectory(BASE_PATH . 'public/');
                 $this->file->recurseCopy($rebuildEnginePath . '/dist/', BASE_PATH . 'public/');
             }
 
             return true;
         }
+
+        return false;
     }
 }

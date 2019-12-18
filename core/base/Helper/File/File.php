@@ -15,7 +15,7 @@ class File
     /**
      * Get all directories in a path
      *
-     * @param $paths Array of paths
+     * @param $paths array of paths
      * @return array All directories in paths
      */
     public function findDirectories($paths): array
@@ -47,7 +47,7 @@ class File
      * @param int $permissions octal
      * @return bool
      */
-    public function makeDir($path, $permissions = 0777): bool
+    public function makeDir($path, $permissions = 0755): bool
     {
         return is_dir($path) || mkdir($path, $permissions, true) || is_dir($path);
     }
@@ -114,6 +114,10 @@ class File
         foreach ($directories as $directory) {
             $directory = realpath($directory);
 
+            if (!is_dir($directory)) {
+                continue;
+            }
+
             $objDirectory = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
 
             $iterator = new RecursiveIteratorIterator($objDirectory);
@@ -141,15 +145,15 @@ class File
 
         if (!is_dir($dst)) {
             try {
-                if (!mkdir($dst) && !is_dir($dst)) {
+                if (!mkdir($dst, 0755, true) && !is_dir($dst)) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created', $dst));
                 }
             } catch (\Exception $e) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dst));
+                throw new \RuntimeException($e->getMessage());
             }
         }
 
-        chmod($dst, 0777);
+        chmod($dst, 0755);
 
         while (false !== ($file = \readdir($dir))) {
             if (($file !== '.') && ($file !== '..')) {
