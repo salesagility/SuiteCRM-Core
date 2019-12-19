@@ -51,7 +51,6 @@ class AppRebuildCommand extends SuiteCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $filesToLeave = [];
 
         $optionValue = $input->getOption('hard');
         $hardRebuild = ($optionValue !== false);
@@ -66,10 +65,6 @@ class AppRebuildCommand extends SuiteCommand
         $rebuildEnginePath = $rebuildPath . '/engine';
 
         $this->file->makeDir($rebuildEnginePath, 0755);
-
-        if ($hardRebuild === false) {
-            $filesToLeave = [$rebuildEnginePath . '/node_modules'];
-        }
 
         $appPath = BASE_PATH . 'core/app/';
         $enginePath = $appPath . 'engine';
@@ -100,8 +95,12 @@ class AppRebuildCommand extends SuiteCommand
         // Delete ui stored files
         chmod($rebuildPath, 0755);
 
-        if (!$this->file->deleteDirectory($rebuildEnginePath, $filesToLeave)) {
+        if (!$this->file->deleteDirectory($rebuildEnginePath)) {
             throw new \RuntimeException('System can\'t delete cached application engine files');
+        }
+
+        if ($hardRebuild && !$this->file->deleteDirectory(BASE_PATH . '/node_modules')) {
+            throw new \RuntimeException('System can\'t delete node_modules');
         }
 
         // Copy all engine files to rebuild path
@@ -323,10 +322,8 @@ EOT;
         if (file_put_contents($rebuildEnginePath . '/src/app/app-manifest/manifest.module.ts', $manifestModule)) {
             $appDir = getcwd();
 
-            chdir($rebuildEnginePath);
-
             // If node_modules isn't present of --hard was option - run npm install
-            if (!file_exists($rebuildEnginePath . '/node_modules')) {
+            if (!file_exists( BASE_PATH . '/node_modules')) {
                 echo "Updating npm...\n\n";
                 $npmCmd = 'npm update';
                 shell_exec($npmCmd);

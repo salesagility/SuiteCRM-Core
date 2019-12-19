@@ -51,7 +51,7 @@ class AppThemeRebuildCommand extends SuiteCommand
         chdir(BASE_PATH . '/cache/app/engine/');
 
         shell_exec(
-            "./node_modules/.bin/node-sass $watchCompiler --output-style compressed src/assets/themes/suite8/css/style.scss > src/assets/themes/suite8/css/style.min.css"
+            "../../../node_modules/.bin/node-sass $watchCompiler --output-style compressed src/assets/themes/suite8/css/style.scss > src/assets/themes/suite8/css/style.min.css"
         );
 
         $compiledThemeDir = 'src/assets/themes/*/css/';
