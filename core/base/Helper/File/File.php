@@ -15,7 +15,7 @@ class File
     /**
      * Get all directories in a path
      *
-     * @param $paths array of paths
+     * @param $paths array|string of paths
      * @return array All directories in paths
      */
     public function findDirectories($paths): array
@@ -37,7 +37,9 @@ class File
             }
         }
 
-        return $directories;
+        asort($directories);
+
+        return array_values($directories);
     }
 
     /**
