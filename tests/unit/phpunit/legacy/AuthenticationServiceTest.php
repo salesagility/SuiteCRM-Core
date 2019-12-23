@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
-
-use SuiteCRM\Core\Base\Instance;
-
 use PHPUnit\Framework\TestCase;
-use SuiteCRM\Core\Legacy\AuthenticationService;
 use SuiteCRM\Core\Legacy\Authentication;
+use SuiteCRM\Core\Legacy\AuthenticationService;
 
 final class AuthenticationServiceTest extends TestCase
 {
+    protected $authenticationService;
+
     public function setUp()
     {
         $this->authenticationService = new AuthenticationService();

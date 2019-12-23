@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
 use SuiteCRM\Core\Base\Helper\Data\Collection;
 
 final class DataCollectionTest extends TestCase

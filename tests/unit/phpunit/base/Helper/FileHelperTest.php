@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
 use SuiteCRM\Core\Base\Helper\File\File as FileHelper;
 
 final class FileHelperTest extends TestCase

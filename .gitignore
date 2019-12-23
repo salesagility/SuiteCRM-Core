@@ -16,7 +16,7 @@ public/
 *.min.css
 
 # Tests
-core/tests/coverage
+tests/coverage
 
 # Composer
 vendor/

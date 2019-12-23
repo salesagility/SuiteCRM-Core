@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
-use SuiteCRM\Core\Base\Module\ModuleMapper;
-
 use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
-use SuiteCRM\Core\Base\Config\ParameterCollection;
+use SuiteCRM\Core\Base\Module\ModuleMapper;
+use SuiteCRM\Core\Modules\Users\Users;
 
 final class ModuleMapperTest extends TestCase
 {
@@ -19,12 +17,12 @@ final class ModuleMapperTest extends TestCase
 
         // Get the Base Path
         if (!defined('BASE_PATH')) {
-            define('BASE_PATH', __DIR__ . '/../../../../../');
+            define('BASE_PATH', dirname(__DIR__, 5) . '/');
         }
 
         // Get the Application Path
         if (!defined('APP_PATH')) {
-            define('APP_PATH', BASE_PATH . '/modules');
+            define('APP_PATH', BASE_PATH . '/core/modules');
         }
 
         $this->fileHelper = new SuiteCRM\Core\Base\Helper\File\File();
@@ -41,12 +39,12 @@ final class ModuleMapperTest extends TestCase
         );
 
         $filePaths = [
-            __DIR__ . '/../../../../../modules'
+            BASE_PATH . '/core/modules'
         ];
 
         $moduleMapper = new ModuleMapper($filePaths, $this->fileHelper, $configParameters);
 
-        $this->assertCount(1, count($moduleMapper->checkModulesExist(['Users'])));
+        $this->assertCount(1, $moduleMapper->checkModulesExist(['Users']));
     }
 
     public function testGetModuleClassesFromFileName(): void
@@ -59,18 +57,16 @@ final class ModuleMapperTest extends TestCase
             ]
         );
 
-        $filePaths = [
-            __DIR__ . '/../../../../../modules'
-        ];
+        $filePaths = [BASE_PATH . '/core/modules'];
 
         $moduleMapper = new ModuleMapper($filePaths, $this->fileHelper, $configParameters);
 
         $moduleClasses = $moduleMapper->getModuleClassesFromFileName(
             [
-                realpath(__DIR__ . '/../../../../../modules/Users/Users.php')
+                realpath(BASE_PATH . '/core/modules/Users/Users.php')
             ]
         );
 
-        $this->assertInstanceOf('SuiteCRM\Core\Modules\Users\Users', $moduleClasses[0]);
+        $this->assertInstanceOf(Users::class, $moduleClasses[0]);
     }
 }

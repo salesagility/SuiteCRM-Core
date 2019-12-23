@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
 use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
-use SuiteCRM\Core\Base\Config\ParameterCollection;
 
 final class ConfigTest extends TestCase
 {
@@ -69,7 +67,6 @@ final class ConfigTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf('SuiteCRM\Core\Base\Config\ParameterCollection', $configParameters);
         $this->assertTrue($configParameters->has('config.data_1'));
     }
 

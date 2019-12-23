@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Error\Error;
-
+use PHPUnit\Framework\TestCase;
 use SuiteCRM\Core\Base\Cli\CommandMapper;
 
 final class CommandMapperTest extends TestCase
@@ -38,7 +37,7 @@ final class CommandMapperTest extends TestCase
 
         $this->commandMapper = new CommandMapper($this->file, $this->configParameters, $configPath);
 
-        $this->assertInstanceOf('SuiteCRM\Core\Base\Cli\CommandMapper', $this->commandMapper);
+        $this->assertInstanceOf(CommandMapper::class, $this->commandMapper);
     }
 
     public function testCommandMapperWithoutConfig(): void
@@ -56,7 +55,7 @@ final class CommandMapperTest extends TestCase
 
         $this->commandMapper = new CommandMapper($this->file, $this->configParameters, $configPath);
 
-        $this->assertInstanceOf('SuiteCRM\Core\Base\Cli\CommandMapper', $this->commandMapper);
+        $this->assertInstanceOf(CommandMapper::class, $this->commandMapper);
 
         $modules = $this->commandMapper->getAllCommands();
 
@@ -69,7 +68,7 @@ final class CommandMapperTest extends TestCase
 
         $this->commandMapper = new CommandMapper($this->file, $this->configParameters, $configPath);
 
-        $this->assertInstanceOf('SuiteCRM\Core\Base\Cli\CommandMapper', $this->commandMapper);
+        $this->assertInstanceOf(CommandMapper::class, $this->commandMapper);
 
         $modules = $this->commandMapper->getAllCommands();
 

@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
-
-use SuiteCRM\Core\Base\Instance;
-
 use PHPUnit\Framework\TestCase;
+use SuiteCRM\Core\Base\Instance;
+use SuiteCRM\Core\Modules\Users\Controller\Oauth;
 
 final class LoadInstanceTest extends TestCase
 {
@@ -97,7 +95,7 @@ final class LoadInstanceTest extends TestCase
         $route = $this->instance->getRoute();
 
         $this->assertSame('Users', $route->module);
-        $this->assertSame('SuiteCRM\Core\Modules\Users\Controller\Oauth', $route->controller);
+        $this->assertSame(Oauth::class, $route->controller);
         $this->assertSame('actionLogin', $route->action);
     }
 

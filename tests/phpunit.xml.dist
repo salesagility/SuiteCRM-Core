@@ -4,7 +4,7 @@
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
         backupGlobals="true"
         backupStaticAttributes="false"
-        bootstrap="../../vendor/autoload.php"
+        bootstrap="../vendor/autoload.php"
         colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
@@ -21,8 +21,8 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">../base</directory>
-            <directory suffix=".php">../modules</directory>
+            <directory suffix=".php">../core/base</directory>
+            <directory suffix=".php">../core/modules</directory>
             <directory suffix=".php">../legacy</directory>
         </whitelist>
     </filter>
