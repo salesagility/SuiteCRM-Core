@@ -24,7 +24,7 @@ class Navbar extends LegacyHandler
                 'submenu' => [],
             ];
 
-            require 'include/globalControlLinks.php';
+            require LEGACY_PATH . 'include/globalControlLinks.php';
 
             foreach ($global_control_links as $key => $value) {
                 if ($key === 'users') {

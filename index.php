@@ -15,6 +15,7 @@ header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 // Get the Application Path
 define('BASE_PATH', __DIR__);
 define('APP_PATH', __DIR__ . '/core/modules/');
+define('LEGACY_PATH', __DIR__ . '/legacy/');
 
 // Get the autoloader class
 require BASE_PATH . '/vendor/autoload.php';

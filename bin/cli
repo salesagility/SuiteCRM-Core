@@ -1,0 +1,113 @@
+#!/usr/bin/env php
+<?php
+
+define('BASE_PATH', dirname(__DIR__) . '/');
+define('APP_PATH', dirname(__DIR__) . '/core/modules');
+define('LEGACY_PATH', __DIR__ . '/legacy/');
+
+require BASE_PATH . 'vendor/autoload.php';
+
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\EventManager;
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\Events;
+use Doctrine\ORM\ORMException;
+use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
+use SuiteCRM\Core\Base\Helper\File\File;
+use SuiteCRM\Core\Base\Cli\CommandMapper;
+use Symfony\Component\Console\Application;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+
+if (count($argv) === 1 && $argv[0] === 'bin/cli') {
+    echo
+    "
+\033[38;5;167m  OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\033[38;5;240m00000000000000000000000000000000000000000
+\033[38;5;167m OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\033[38;5;240m00000\033[1;37m000000\033[38;5;240m00\033[1;37m0000000\033[38;5;240m00000\033[1;37m000\033[38;5;240m000000000\033[1;37m000\033[38;5;240mG00
+\033[38;5;167m OOOG\033[1;37m000\033[38;5;167mGOOO\033[1;37m0\033[38;5;167mOOOO\033[1;37m0\033[38;5;167mOOC\033[1;37m0\033[38;5;167mOOC\033[1;37m00000\033[38;5;167mGOC\033[1;37m0000\033[38;5;167mOOO\033[38;5;240m\033[38;5;240m0000\033[1;37m00000\033[38;5;240mG0000\033[1;37m000\033[38;5;240m000C\033[1;37m00\033[38;5;240m00C\033[1;37m00\033[38;5;240m0\033[1;37m0\033[38;5;240m0000000\033[1;37m0\033[38;5;240m0\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m OOG\033[1;37m0\033[38;5;167mCOOOOOO\033[1;37m0\033[38;5;167mOOOO\033[1;37m0\033[38;5;167mOOC\033[1;37m0\033[38;5;167mOOOOC\033[1;37m0\033[38;5;167mGOOOC\033[1;37m0\033[38;5;167mGOOOO\033[38;5;240m0000\033[1;37m0000\033[38;5;240mC000000\033[1;37m000\033[38;5;240m0000G\033[1;37m0\033[38;5;240m00C\033[1;37m00\033[38;5;240m0\033[1;37m00\033[38;5;240m00000\033[1;37m00\033[38;5;240m0\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m OOOC\033[1;37m00\033[38;5;167mCOOOO\033[1;37m0\033[38;5;167mOOOO\033[1;37m0\033[38;5;167mOOC\033[1;37m0\033[38;5;167mOOOOC\033[1;37m0\033[38;5;167mGOOOC\033[1;37m000\033[38;5;167mOOO\033[38;5;240m000C\033[1;37m0000\033[38;5;240mG000000\033[1;37m000\033[38;5;240m000C\033[1;37m00\033[38;5;240m00C\033[1;37m00\033[38;5;240m00\033[1;37m00\033[38;5;240m000\033[1;37m00\033[38;5;240m00\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m OOOOOOC\033[1;37m0\033[38;5;167mOOO\033[1;37m0\033[38;5;167mOOO\033[1;37m00\033[38;5;167mOOC\033[1;37m0\033[38;5;167mOOOOC\033[1;37m0\033[38;5;167mGOOOC\033[1;37m0\033[38;5;167mGOOOO\033[38;5;240m0000\033[1;37m0000\033[38;5;240mC000000\033[1;37m00000000\033[38;5;240m000C\033[1;37m00\033[38;5;240m00C\033[1;37m00\033[38;5;240m0\033[1;37m00\033[38;5;240m000\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m OOOC\033[1;37m000\033[38;5;167mCOOOG\033[1;37m0000\033[38;5;167mGOOC\033[1;37m0\033[38;5;167mOOOOC\033[1;37m0\033[38;5;167mGOOOC\033[1;37m0000\033[38;5;167mOOO\033[38;5;240m0000\033[1;37m00000\033[38;5;240mG0000\033[1;37m000\033[38;5;240m000C\033[1;37m00\033[38;5;240m00C\033[1;37m00\033[38;5;240m000C\033[1;37m000\033[38;5;240m0000\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\033[38;5;240m0000G\033[1;37m000000\033[38;5;240m00\033[1;37m000\033[38;5;240m0000G\033[1;37m00\033[38;5;240m0C\033[1;37m00\033[38;5;240m00000000000\033[1;37m00\033[38;5;240mG00
+\033[38;5;167m  OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\033[38;5;240m00000000000000000000000000000000000000000\033[1;37m
+
+";
+}
+
+$application = new Application('Version 1.0');
+
+$configManager = new ConfigManager();
+
+try {
+    $appConfig = $configManager->loadFiles(BASE_PATH . 'config/config.yml');
+} catch (Exception $e) {
+    trigger_error('CLI failed to load files: ' . $e);
+}
+
+if ($appConfig->has('storage.mysql')) {
+    $connectionParams = $appConfig->get('storage.mysql');
+    $namespaces = $appConfig->get('entity.namespaces');
+
+    $driver = new SimplifiedYamlDriver($namespaces);
+
+    $isDevMode = false;
+
+    if ($appConfig->has('server.environment') && $appConfig->get('server.environment') === 'develop') {
+        $isDevMode = true;
+    }
+
+    $config = Setup::createYAMLMetadataConfiguration($namespaces, $isDevMode);
+
+    $cache = new ArrayCache();
+
+    $config->setMetadataCacheImpl($cache);
+    $config->setQueryCacheImpl($cache);
+    $config->setMetadataDriverImpl($driver);
+
+    // Table Prefix
+    $evm = new EventManager();
+    $tablePrefix = new SuiteCRM\Core\Base\Module\Storage\TablePrefix('suite8_');
+    $evm->addEventListener(Events::loadClassMetadata, $tablePrefix);
+
+    try {
+        $entityManager = EntityManager::create($connectionParams, $config, $evm);
+    } catch (ORMException $e) {
+        trigger_error('CLI failed to get create entity manager instance: ' . $e);
+    }
+
+    //-- This I had to add to support the Mysql enum type.
+    try {
+        $platform = $entityManager->getConnection()->getDatabasePlatform();
+    } catch (DBALException $e) {
+        trigger_error('CLI failed to get DB platform: ' . $e);
+    }
+
+    try {
+        $platform->registerDoctrineTypeMapping('enum', 'string');
+    } catch (DBALException $e) {
+        trigger_error('CLI failed to get register doctrine type mapping: ' . $e);
+    }
+
+    $helperSet = ConsoleRunner::createHelperSet($entityManager);
+}
+
+$configPath = [BASE_PATH . 'config/config.yml', BASE_PATH . 'core/base/Config/modules.config.yml'];
+
+$fileHelper = new File();
+
+$commandMapper = new CommandMapper($fileHelper, $configManager, $configPath);
+
+$application->setHelperSet($helperSet);
+$application->addCommands($commandMapper->getAllCommands());
+
+ConsoleRunner::addCommands($application);
+
+// Run Console Application
+try {
+    $application->run();
+} catch (Exception $e) {
+    trigger_error('Application run failure: ' . $e);
+}

@@ -15,8 +15,8 @@ class LegacyHandler
      */
     public function runLegacyEntryPoint(): bool
     {
-        if (!defined('BASE_PATH')) {
-            define('BASE_PATH', dirname(__DIR__, 2) . '/');
+        if (!defined('LEGACY_PATH')) {
+            define('LEGACY_PATH', dirname(__DIR__, 2) . '/legacy/');
         }
 
         // Set up sugarEntry
@@ -24,14 +24,12 @@ class LegacyHandler
             define('sugarEntry', true);
         }
 
-        $legacyPath = realpath(BASE_PATH . '/legacy');
-
         // Set working directory for legacy
-        chdir($legacyPath);
+        chdir(LEGACY_PATH);
 
         // Load in legacy
-        require_once 'include/MVC/preDispatch.php';
-        require_once 'include/entryPoint.php';
+        require_once LEGACY_PATH . 'include/MVC/preDispatch.php';
+        require_once LEGACY_PATH . 'include/entryPoint.php';
 
         return true;
     }
