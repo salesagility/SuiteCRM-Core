@@ -2,8 +2,7 @@
 
 namespace SuiteCRM\Core\Modules\Users\Service;
 
-use SuiteCRM\Core\Module\Service\ServiceFactoryInterface;
-
+use SuiteCRM\Core\Base\Module\Service\ServiceFactoryInterface;
 use SuiteCRM\Core\Modules\Users\Helper\Authentication;
 
 class AuthenticationService implements ServiceFactoryInterface

@@ -2,7 +2,7 @@
 
 namespace SuiteCRM\Core\Modules\Administration;
 
-use SuiteCRM\Core\Module\ModuleInterface;
+use SuiteCRM\Core\Base\Module\ModuleInterface;
 
 /**
  * Class Administration
