@@ -55,4 +55,52 @@ final class NavbarTest extends TestCase
             $this->navbar->getUserActionMenu()
         );
     }
+
+    public function testGetNonGroupedNavTabs(): void
+    {
+        $expected = [
+            'Home' => 'Home',
+            'Accounts' => 'Accounts',
+            'Contacts' => 'Contacts',
+            'Opportunities' => 'Opportunities',
+            'Leads' => 'Leads',
+            'AOS_Quotes' => 'AOS_Quotes',
+            'Calendar' => 'Calendar',
+            'Documents' => 'Documents',
+            'Emails' => 'Emails',
+            'Spots' => 'Spots',
+            'Campaigns' => 'Campaigns',
+            'Calls' => 'Calls',
+            'Meetings' => 'Meetings',
+            'Tasks' => 'Tasks',
+            'Notes' => 'Notes',
+            'AOS_Invoices' => 'AOS_Invoices',
+            'AOS_Contracts' => 'AOS_Contracts',
+            'Cases' => 'Cases',
+            'Prospects' => 'Prospects',
+            'ProspectLists' => 'ProspectLists',
+            'Project' => 'Project',
+            'AM_ProjectTemplates' => 'AM_ProjectTemplates',
+            'FP_events' => 'FP_events',
+            'FP_Event_Locations' => 'FP_Event_Locations',
+            'AOS_Products' => 'AOS_Products',
+            'AOS_Product_Categories' => 'AOS_Product_Categories',
+            'AOS_PDF_Templates' => 'AOS_PDF_Templates',
+            'jjwg_Maps' => 'jjwg_Maps',
+            'jjwg_Markers' => 'jjwg_Markers',
+            'jjwg_Areas' => 'jjwg_Areas',
+            'jjwg_Address_Cache' => 'jjwg_Address_Cache',
+            'AOR_Reports' => 'AOR_Reports',
+            'AOW_WorkFlow' => 'AOW_WorkFlow',
+            'AOK_KnowledgeBase' => 'AOK_KnowledgeBase',
+            'AOK_Knowledge_Base_Categories' => 'AOK_Knowledge_Base_Categories',
+            'EmailTemplates' => 'EmailTemplates',
+            'Surveys' => 'Surveys'
+        ];
+
+        $this->assertSame(
+            $expected,
+            $this->navbar->getNonGroupedNavTabs()
+        );
+    }
 }
