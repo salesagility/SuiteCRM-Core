@@ -1,0 +1,39 @@
+api_platform:
+    graphql:
+        graphiql:
+            enabled: false
+        graphql_playground:
+            enabled: false
+    mapping:
+        paths: ['%kernel.project_dir%/core']
+    patch_formats:
+        json: ['application/merge-patch+json']
+        graphql: ['application/graphql']
+    swagger:
+        versions: [3]
+    oauth:
+        # To enable or disable oauth.
+        enabled: true
+
+        # The oauth client id.
+        clientId: 'scrmfe'
+
+        # The oauth client secret.
+        clientSecret: 'scrmfe'
+
+        # The oauth type.
+        type: 'oauth2'
+
+        # The oauth flow grant type.
+        flow: 'password'
+
+        # The oauth token url.
+        tokenUrl: '/oauth/v2/token'
+
+        # The oauth authentication url.
+        authorizationUrl: '/oauth/v2/auth'
+
+        # The oauth scopes.
+        scopes: []
+
+    enable_swagger_ui: false

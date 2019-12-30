@@ -1,25 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-define('BASE_PATH', dirname(__DIR__) . '/');
-define('APP_PATH', dirname(__DIR__) . '/core/modules');
-define('LEGACY_PATH', __DIR__ . '/legacy/');
-
-require BASE_PATH . 'vendor/autoload.php';
-
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\EventManager;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\Events;
-use Doctrine\ORM\ORMException;
-use SuiteCRM\Core\Base\Config\Manager as ConfigManager;
-use SuiteCRM\Core\Base\Helper\File\File;
-use SuiteCRM\Core\Base\Cli\CommandMapper;
-use Symfony\Component\Console\Application;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+use SuiteCRM\Core\src\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\ErrorHandler\Debug;
 
 if (count($argv) === 1 && $argv[0] === 'bin/console') {
     echo
@@ -37,77 +22,42 @@ if (count($argv) === 1 && $argv[0] === 'bin/console') {
 ";
 }
 
-$application = new Application('Version 1.0');
-
-$configManager = new ConfigManager();
-
-try {
-    $appConfig = $configManager->loadFiles(BASE_PATH . 'config/config.yml');
-} catch (Exception $e) {
-    trigger_error('CLI failed to load files: ' . $e);
+if (false === in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    echo 'Warning: The console should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
 }
 
-if ($appConfig->has('storage.mysql')) {
-    $connectionParams = $appConfig->get('storage.mysql');
-    $namespaces = $appConfig->get('entity.namespaces');
+set_time_limit(0);
 
-    $driver = new SimplifiedYamlDriver($namespaces);
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-    $isDevMode = false;
-
-    if ($appConfig->has('server.environment') && $appConfig->get('server.environment') === 'develop') {
-        $isDevMode = true;
-    }
-
-    $config = Setup::createYAMLMetadataConfiguration($namespaces, $isDevMode);
-
-    $cache = new ArrayCache();
-
-    $config->setMetadataCacheImpl($cache);
-    $config->setQueryCacheImpl($cache);
-    $config->setMetadataDriverImpl($driver);
-
-    // Table Prefix
-    $evm = new EventManager();
-    $tablePrefix = new SuiteCRM\Core\Base\Module\Storage\TablePrefix('suite8_');
-    $evm->addEventListener(Events::loadClassMetadata, $tablePrefix);
-
-    try {
-        $entityManager = EntityManager::create($connectionParams, $config, $evm);
-    } catch (ORMException $e) {
-        trigger_error('CLI failed to get create entity manager instance: ' . $e);
-    }
-
-    //-- This I had to add to support the Mysql enum type.
-    try {
-        $platform = $entityManager->getConnection()->getDatabasePlatform();
-    } catch (DBALException $e) {
-        trigger_error('CLI failed to get DB platform: ' . $e);
-    }
-
-    try {
-        $platform->registerDoctrineTypeMapping('enum', 'string');
-    } catch (DBALException $e) {
-        trigger_error('CLI failed to get register doctrine type mapping: ' . $e);
-    }
-
-    $helperSet = ConsoleRunner::createHelperSet($entityManager);
+if (!class_exists(Application::class)) {
+    throw new RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
 
-$configPath = [BASE_PATH . 'config/config.yml', BASE_PATH . 'core/base/Config/modules.config.yml'];
+$input = new ArgvInput();
+if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
+    putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
+}
 
-$fileHelper = new File();
+if ($input->hasParameterOption('--no-debug', true)) {
+    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
+}
 
-$commandMapper = new CommandMapper($fileHelper, $configManager, $configPath);
+require dirname(__DIR__) . '/config/bootstrap.php';
 
-$application->setHelperSet($helperSet);
-$application->addCommands($commandMapper->getAllCommands());
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 
-ConsoleRunner::addCommands($application);
+    if (class_exists(Debug::class)) {
+        /** @noinspection UnusedFunctionResultInspection */
+        Debug::enable();
+    }
+}
 
-// Run Console Application
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
+$application = new Application($kernel);
 try {
-    $application->run();
-} catch (Exception $e) {
-    trigger_error('Application run failure: ' . $e);
+    $application->run($input);
+} catch (Exception $exception) {
+    echo 'An error occurred while attempting to run the application ' . $exception->getMessage();
 }

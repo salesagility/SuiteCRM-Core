@@ -2,13 +2,11 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use SuiteCRM\Core\Base\Module\Service\ServiceFactoryInterface;
-
 /**
  * Class NavbarService
  * @package SuiteCRM\Core\Legacy
  */
-class NavbarService implements ServiceFactoryInterface
+class NavbarService
 {
     /**
      * @return string

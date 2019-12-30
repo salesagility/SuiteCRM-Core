@@ -2,15 +2,13 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use SuiteCRM\Core\Base\Module\Service\ServiceFactoryInterface;
-
 use SuiteCRM\Core\Legacy\Authentication;
 
 /**
  * Class AuthenticationService
  * @package SuiteCRM\Core\Legacy
  */
-class AuthenticationService implements ServiceFactoryInterface
+class AuthenticationService
 {
     /**
      * @return string

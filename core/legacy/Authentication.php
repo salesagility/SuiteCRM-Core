@@ -2,9 +2,9 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use SuiteCRM\Core\Base\Config\ParameterCollection;
-
-use SuiteCRM\Core\Legacy\LegacyHandler;
+use AuthenticationController;
+use Exception;
+use RuntimeException;
 
 /**
  * Class Authentication
@@ -15,10 +15,10 @@ class Authentication extends LegacyHandler
     /**
      * Set the config
      *
-     * @param ParameterCollection $config
+     * @param $config
      * @return $this
      */
-    public function setConfig(ParameterCollection $config): self
+    public function setConfig($config): self
     {
         $this->config = $config;
 
@@ -33,18 +33,18 @@ class Authentication extends LegacyHandler
      * @param $grant_type
      *
      * @return boolean
-     * @throws \Exception
+     * @throws Exception
      */
     public function login($username, $password, $grant_type = 'password'): bool
     {
         if ($this->runLegacyEntryPoint()) {
-            $authController = new \AuthenticationController();
+            $authController = new AuthenticationController();
 
             $PARAMS = [];
 
             return $authController->login($username, $password, $PARAMS);
         }
 
-        throw new \RuntimeException('Running legacy entry point failed');
+        throw new RuntimeException('Running legacy entry point failed');
     }
 }

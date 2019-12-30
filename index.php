@@ -1,6 +1,27 @@
 <?php
 
-if (empty($_GET)) {
+use SuiteCRM\Core\src\Kernel;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\HttpFoundation\Request;
+
+require __DIR__ . '/config/bootstrap.php';
+
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    Debug::enable();
+}
+
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies),
+        Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+}
+
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
+
+if (empty($_GET) && strpos($_SERVER['REQUEST_URI'], 'api') === false) {
     if (!file_exists('public/index.html')) {
         throw new RuntimeException('Please run bin/cli frontend:rebuild from terminal');
     }
@@ -20,61 +41,8 @@ define('LEGACY_PATH', __DIR__ . '/legacy/');
 // Get the autoloader class
 require BASE_PATH . '/vendor/autoload.php';
 
-$config = new SuiteCRM\Core\Base\Config\Manager();
-
-try {
-    $configParameters = $config->loadFiles(
-        [
-            BASE_PATH . '/config/config.yml',
-            BASE_PATH . '/core/base/Config/modules.config.yml',
-            BASE_PATH . '/core/base/Config/services.config.yml',
-        ]
-    );
-} catch (Exception $e) {
-    trigger_error('Config failed to load files: ' . $e);
-}
-
-$request = new SuiteCRM\Core\Base\Http\Request(
-    $_GET,
-    $_POST,
-    [],
-    $_COOKIE,
-    $_FILES,
-    $_SERVER
-);
-
-$response = new SuiteCRM\Core\Base\Http\Response();
-$fileHelper = new SuiteCRM\Core\Base\Helper\File\File();
-
-$moduleManager = new SuiteCRM\Core\Base\Module\Manager($configParameters, $fileHelper);
-$router = new SuiteCRM\Core\Base\Route\DefaultRouter($request, $configParameters);
-try {
-    $route = $router->load();
-} catch (Exception $e) {
-    trigger_error('Router failed to load: ' . $e);
-}
-
-// Create an Instance of SuiteCRM
-$instance = new SuiteCRM\Core\Base\Instance($configParameters, $route, $moduleManager);
-
-// Run the Application
-$route = $instance->run()->getRoute();
-
-$view = new SuiteCRM\Core\Base\Module\View\Handler();
-
-$serviceMapper = new SuiteCRM\Core\Base\Module\Service\ServiceMapper($fileHelper, $moduleManager, $configParameters);
-
-$services = $serviceMapper->getAllServices();
-
-$controller = new $route->controller($configParameters, $request, $response, $view, $services);
-
-$customController = 'Custom\\' . $route->controller;
-
-// Check the custom
-if (class_exists($customController)) {
-    $controller = new $customController();
-}
-
-$params = [];
-
-call_user_func_array([$controller, $route->action], $params);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

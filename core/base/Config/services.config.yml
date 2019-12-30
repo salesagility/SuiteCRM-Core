@@ -1,2 +1,0 @@
-services:
-  users.authentication: 'SuiteCRM\Core\Legacy\AuthenticationService'

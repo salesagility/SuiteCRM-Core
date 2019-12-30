@@ -27,7 +27,9 @@ class Navbar extends LegacyHandler
         throw new RuntimeException('Running legacy entry point failed');
     }
 
-
+    /**
+     * @return array
+     */
     public function getGroupedNavTabs(): array
     {
         if ($this->runLegacyEntryPoint()) {
