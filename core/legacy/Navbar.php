@@ -4,6 +4,7 @@ namespace SuiteCRM\Core\Legacy;
 
 use RuntimeException;
 use TabController;
+use GroupedTabStructure;
 
 /**
  * Class Navbar
@@ -21,6 +22,19 @@ class Navbar extends LegacyHandler
             $tabArray = (new TabController())->get_tabs($GLOBALS['current_user']);
 
             return $tabArray[0];
+        }
+
+        throw new RuntimeException('Running legacy entry point failed');
+    }
+
+
+    public function getGroupedNavTabs(): array
+    {
+        if ($this->runLegacyEntryPoint()) {
+            global $moduleList;
+            require LEGACY_PATH . 'include/GroupedTabs/GroupedTabStructure.php';
+
+            return (new GroupedTabStructure())->get_tab_structure($moduleList);
         }
 
         throw new RuntimeException('Running legacy entry point failed');

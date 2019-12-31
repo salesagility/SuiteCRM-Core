@@ -103,4 +103,63 @@ final class NavbarTest extends TestCase
             $this->navbar->getNonGroupedNavTabs()
         );
     }
+
+    public function testGroupNavTabs(): void
+    {
+        $expected = [
+            'Sales' => [
+                'modules' => [
+                    'Home' => 'Home',
+                    'Accounts' => 'Accounts',
+                    'Contacts' => 'Contacts',
+                    'Opportunities' => 'Opportunities',
+                    'Leads' => 'Leads'
+                ]
+            ],
+            'Marketing' => [
+                'modules' => [
+                    'Home' => 'Home',
+                    'Accounts' => 'Accounts',
+                    'Contacts' => 'Contacts',
+                    'Leads' => 'Leads',
+                    'Campaigns' => 'Campaigns',
+                    'Prospects' => 'Targets',
+                    'ProspectLists' => 'Targets - Lists'
+                ]
+            ],
+            'Support' => [
+                'modules' => [
+                    'Home' => 'Home',
+                    'Accounts' => 'Accounts',
+                    'Contacts' => 'Contacts',
+                    'Cases' => 'Cases',
+                    'Bugs' => 'Bugs'
+                ]
+            ],
+            'Activities' => [
+                'modules' => [
+                    'Home' => 'Home',
+                    'Calendar' => 'Calendar',
+                    'Calls' => 'Calls',
+                    'Meetings' => 'Meetings',
+                    'Emails' => 'Emails',
+                    'Tasks' => 'Tasks',
+                    'Notes' => 'Notes'
+                ]
+            ],
+            'Collaboration' => [
+                'modules' => [
+                    'Home' => 'Home',
+                    'Emails' => 'Emails',
+                    'Documents' => 'Documents',
+                    'Project' => 'Projects'
+                ]
+            ]
+        ];
+
+        $this->assertSame(
+            $expected,
+            $this->navbar->getGroupedNavTabs()
+        );
+    }
 }
