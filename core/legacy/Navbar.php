@@ -2,12 +2,30 @@
 
 namespace SuiteCRM\Core\Legacy;
 
+use RuntimeException;
+use TabController;
+
 /**
  * Class Navbar
  * @package SuiteCRM\Core\Legacy
  */
 class Navbar extends LegacyHandler
 {
+    /**
+     * @return array
+     */
+    public function getNonGroupedNavTabs(): array
+    {
+        if ($this->runLegacyEntryPoint()) {
+            require LEGACY_PATH . 'modules/MySettings/TabController.php';
+            $tabArray = (new TabController())->get_tabs($GLOBALS['current_user']);
+
+            return $tabArray[0];
+        }
+
+        throw new RuntimeException('Running legacy entry point failed');
+    }
+
     /**
      * @return array
      */
@@ -75,6 +93,6 @@ class Navbar extends LegacyHandler
             return $userActionMenu[] = array_merge($userActionMenu, $last);
         }
 
-        throw new \RuntimeException('Running legacy entry point failed');
+        throw new RuntimeException('Running legacy entry point failed');
     }
 }
