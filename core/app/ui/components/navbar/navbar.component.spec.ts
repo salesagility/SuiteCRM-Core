@@ -3,16 +3,18 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import {NavbarUiComponent} from './navbar.component';
 
-describe('NavbarComponent', () => {
+describe('NavbarUiComponent', () => {
     let component: NavbarUiComponent;
     let fixture: ComponentFixture<NavbarUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, HttpClientTestingModule],
+            imports: [RouterTestingModule, HttpClientTestingModule, NgbModule],
             declarations: [NavbarUiComponent]
         })
             .compileComponents();
