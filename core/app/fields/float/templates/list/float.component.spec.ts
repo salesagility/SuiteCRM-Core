@@ -1,14 +1,14 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {FloatListViewComponent} from './float.component';
+import {FloatListFieldsComponent} from './float.component';
 
 describe('FloatListViewComponent', () => {
-    let component: FloatListViewComponent;
-    let fixture: ComponentFixture<FloatListViewComponent>;
+    let component: FloatListFieldsComponent;
+    let fixture: ComponentFixture<FloatListFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FloatListViewComponent]
+            declarations: [FloatListFieldsComponent]
         })
             .compileComponents();
     }));

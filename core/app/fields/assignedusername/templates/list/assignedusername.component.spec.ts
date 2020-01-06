@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AssignedusernameListViewComponent} from './assignedusername.component';
+import {AssignedusernameListFieldsComponent} from './assignedusername.component';
 
-describe('AssignedusernameListViewComponent', () => {
-    let component: AssignedusernameListViewComponent;
-    let fixture: ComponentFixture<AssignedusernameListViewComponent>;
+describe('AssignedusernameListFieldsComponent', () => {
+    let component: AssignedusernameListFieldsComponent;
+    let fixture: ComponentFixture<AssignedusernameListFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [AssignedusernameListViewComponent]
+            declarations: [AssignedusernameListFieldsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AssignedusernameListViewComponent);
+        fixture = TestBed.createComponent(AssignedusernameListFieldsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

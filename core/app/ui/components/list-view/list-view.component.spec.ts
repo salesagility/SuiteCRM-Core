@@ -6,16 +6,16 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {RouterTestingModule} from '@angular/router/testing';
 
-import {PluginManagerModule} from '../../../../plugin-manager/plugin-manager.module';
-
-import {SharedModule} from '../../../../themes/shared/shared.module';
+import {AppManagerModule} from '../../../../app-manager/app-manager.module';
 
 import {Router} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 
-import {ListViewComponent} from './list-view.component';
-import {SvgIconComponent} from '../svg-icon/svg-icon.component';
-import {ModalViewComponent} from '../modal-view/modal-view.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import {ListViewUiComponent} from './list-view.component';
+import {SvgIconUiComponent} from '../svg-icon/svg-icon.component';
+import {ModalViewUiComponent} from '../modal-view/modal-view.component';
 
 let mockRouter: any;
 
@@ -27,17 +27,17 @@ export const testImports = [
     CommonModule,
     RouterTestingModule,
     HttpClientModule,
-    SharedModule,
-    PluginManagerModule.forChild(ListViewComponent),
+    AppManagerModule.forChild(ListViewUiComponent),
+    BrowserAnimationsModule,
 ];
 
-describe('ListViewComponent', () => {
-    let component: ListViewComponent;
-    let fixture: ComponentFixture<ListViewComponent>;
+describe('ListViewUIComponent', () => {
+    let component: ListViewUiComponent;
+    let fixture: ComponentFixture<ListViewUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [],
+            declarations: [ListViewUiComponent],
             imports: testImports,
             providers: [{provide: Router, useValue: mockRouter}],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -46,7 +46,7 @@ describe('ListViewComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ListViewComponent);
+        fixture = TestBed.createComponent(ListViewUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

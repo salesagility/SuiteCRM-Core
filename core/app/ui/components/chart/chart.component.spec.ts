@@ -5,23 +5,23 @@ import {RouterTestingModule} from '@angular/router/testing';
 
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import {ChartComponent} from './chart.component';
+import {ChartUiComponent} from './chart.component';
 
 describe('ChartComponent', () => {
-    let component: ChartComponent;
-    let fixture: ComponentFixture<ChartComponent>;
+    let component: ChartUiComponent;
+    let fixture: ComponentFixture<ChartUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule],
-            declarations: [ChartComponent]
+            declarations: [ChartUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ChartComponent);
+        fixture = TestBed.createComponent(ChartUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

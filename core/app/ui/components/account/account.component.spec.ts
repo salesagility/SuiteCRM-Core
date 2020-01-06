@@ -6,12 +6,10 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {RouterTestingModule} from '@angular/router/testing';
 
-import {PluginManagerModule} from '../../../plugin-manager/plugin-manager.module';
+import {AppManagerModule} from '../../../../app-manager/app-manager.module';
 
-import {SharedModule} from '../../shared/shared.module';
-
-import {AccountComponent} from './account.component';
-import {AppModule} from '../../../app.module';
+import {AccountUiComponent} from './account.component';
+import {AppModule} from '../../../../app.module';
 import {Router} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -25,18 +23,17 @@ export const testImports = [
     CommonModule,
     RouterTestingModule,
     HttpClientModule,
-    SharedModule,
-    PluginManagerModule.forChild(AccountComponent),
+    AppManagerModule.forChild(AccountUiComponent),
 ];
 
 describe('AccountComponent', () => {
-    let component: AccountComponent;
-    let fixture: ComponentFixture<AccountComponent>;
+    let component: AccountUiComponent;
+    let fixture: ComponentFixture<AccountUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                AccountComponent,
+              AccountUiComponent,
             ],
             imports: testImports,
             providers: [{provide: Router, useValue: mockRouter}],
@@ -46,7 +43,7 @@ describe('AccountComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AccountComponent);
+        fixture = TestBed.createComponent(AccountUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

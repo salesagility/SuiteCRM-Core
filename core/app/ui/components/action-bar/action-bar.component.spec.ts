@@ -3,23 +3,23 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import {ActionBarComponent} from './action-bar.component';
+import {ActionBarUiComponent} from './action-bar.component';
 
-describe('ActionBarComponent', () => {
-    let component: ActionBarComponent;
-    let fixture: ComponentFixture<ActionBarComponent>;
+describe('ActionBarUiComponent', () => {
+    let component: ActionBarUiComponent;
+    let fixture: ComponentFixture<ActionBarUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule],
-            declarations: [ActionBarComponent]
+            declarations: [ActionBarUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ActionBarComponent);
+        fixture = TestBed.createComponent(ActionBarUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

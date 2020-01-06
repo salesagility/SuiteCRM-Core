@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {EnumListViewComponent} from './enum.component';
+import {EnumListFieldsComponent} from './enum.component';
 
 describe('EnumListViewComponent', () => {
-    let component: EnumListViewComponent;
-    let fixture: ComponentFixture<EnumListViewComponent>;
+    let component: EnumListFieldsComponent;
+    let fixture: ComponentFixture<EnumListFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [EnumListViewComponent]
+            declarations: [EnumListFieldsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(EnumListViewComponent);
+        fixture = TestBed.createComponent(EnumListFieldsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

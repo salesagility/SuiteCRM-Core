@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {FileListViewComponent} from './file.component';
+import {FileListFieldsComponent} from './file.component';
 
-describe('FileListViewComponent', () => {
-    let component: FileListViewComponent;
-    let fixture: ComponentFixture<FileListViewComponent>;
+describe('FileListFieldsComponent', () => {
+    let component: FileListFieldsComponent;
+    let fixture: ComponentFixture<FileListFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FileListViewComponent]
+            declarations: [FileListFieldsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FileListViewComponent);
+        fixture = TestBed.createComponent(FileListFieldsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

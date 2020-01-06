@@ -4,23 +4,23 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 
-import {LogoComponent} from './logo.component';
+import {LogoUiComponent} from './logo.component';
 
 describe('LogoComponent', () => {
-    let component: LogoComponent;
-    let fixture: ComponentFixture<LogoComponent>;
+    let component: LogoUiComponent;
+    let fixture: ComponentFixture<LogoUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule],
-            declarations: [LogoComponent]
+            declarations: [LogoUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LogoComponent);
+        fixture = TestBed.createComponent(LogoUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CollectionListViewComponent} from './collection.component';
+import {CollectionListFieldsComponent} from './collection.component';
 
 describe('CollectionListViewComponent', () => {
-    let component: CollectionListViewComponent;
-    let fixture: ComponentFixture<CollectionListViewComponent>;
+    let component: CollectionListFieldsComponent;
+    let fixture: ComponentFixture<CollectionListFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CollectionListViewComponent]
+            declarations: [CollectionListFieldsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(CollectionListViewComponent);
+        fixture = TestBed.createComponent(CollectionListFieldsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

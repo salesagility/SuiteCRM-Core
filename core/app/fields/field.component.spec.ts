@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PluginManager} from '../../../../plugin-manager/plugin-manager.service';
+import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {FieldComponent} from './field.component';
-import {PLUGIN_MANIFESTS} from '../../../../plugin-manager/plugin-manifest';
+// import {PLUGIN_MANIFESTS} from '../../../../plugin-manager/plugin-manifest';
 
 
 describe('FieldComponent', () => {
@@ -12,7 +12,7 @@ describe('FieldComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [FieldComponent],
-            providers: [PluginManager]
+            providers: [AppManagerModule]
         })
             .compileComponents();
     }));

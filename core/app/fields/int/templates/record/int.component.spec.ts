@@ -1,14 +1,14 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {IntComponent} from './int.component';
+import {IntRecordFieldsComponent} from './int.component';
 
 describe('IntComponent', () => {
-    let component: IntComponent;
-    let fixture: ComponentFixture<IntComponent>;
+    let component: IntRecordFieldsComponent;
+    let fixture: ComponentFixture<IntRecordFieldsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [IntComponent]
+            declarations: [IntRecordFieldsComponent]
         })
             .compileComponents();
     }));

@@ -73,7 +73,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "../../../node_modules/bootstrap-css-only/css/bootstrap.min.css",
-              "themes/suite8/css/style.min.css"
+              "src/assets/themes/suite8/css/style.min.css"
             ],
             "scripts": [],
             "assets": [

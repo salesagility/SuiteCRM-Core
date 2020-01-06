@@ -3,23 +3,23 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import {UserActionMenuComponent} from './user-action-menu.component';
+import {UserActionMenuUiComponent} from './user-action-menu.component';
 
 describe('UserActionMenuComponent', () => {
-    let component: UserActionMenuComponent;
-    let fixture: ComponentFixture<UserActionMenuComponent>;
+    let component: UserActionMenuUiComponent;
+    let fixture: ComponentFixture<UserActionMenuUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule],
-            declarations: [UserActionMenuComponent]
+            declarations: [UserActionMenuUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UserActionMenuComponent);
+        fixture = TestBed.createComponent(UserActionMenuUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

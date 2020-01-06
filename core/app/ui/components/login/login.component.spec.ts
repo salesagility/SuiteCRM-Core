@@ -4,24 +4,24 @@ import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import {LoginComponent} from './login.component';
+import {LoginUiComponent} from './login.component';
 import {ApiService} from '../../services/api/api.service';
 
 describe('LoginComponent', () => {
-    let component: LoginComponent;
-    let fixture: ComponentFixture<LoginComponent>;
+    let component: LoginUiComponent;
+    let fixture: ComponentFixture<LoginUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule, FormsModule],
-            declarations: [LoginComponent]
+            declarations: [LoginUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginComponent);
+        fixture = TestBed.createComponent(LoginUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
