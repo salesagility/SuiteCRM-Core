@@ -15,7 +15,7 @@ import {AppManager} from '../../app-manager/app-manager.service';
   `,
     styleUrls: []
 })
-export class FieldComponent implements OnInit {
+export class FieldUiComponent implements OnInit {
     @ViewChild('fieldOutlet', {read: ViewContainerRef})
     fieldOutlet: ViewContainerRef | undefined;
 

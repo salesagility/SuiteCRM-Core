@@ -6,11 +6,6 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: []
 })
 export class AccountUiComponent implements OnInit {
-
-    constructor() {
-    }
-
     ngOnInit() {
     }
-
 }

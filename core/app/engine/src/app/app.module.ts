@@ -13,7 +13,6 @@ import {MessageUiModule} from './app-files/ui/components/message/message.module'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-
 import {
   AppManagerModule
 } from './app-manager/app-manager.module';
@@ -31,7 +30,6 @@ import {
     NavbarUiModule,
     MessageUiModule,
     ClassicViewUiModule,
-    NavbarUiModule,
     BrowserAnimationsModule,
     NgbModule
   ],

@@ -7,13 +7,5 @@ export const HomeUiRoutes: Route[] = [
     {
         path: '',
         component: HomeUiComponent
-    },
-    {
-        path: '',
-        component: NavbarUiComponent
-    },
-    {
-        path: '',
-        component: FooterUiComponent
     }
 ];

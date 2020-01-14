@@ -61,7 +61,7 @@ export class NavbarAbstract implements NavbarModel {
           },
           {
             "link": {
-              "label": "View Account", "url": ""
+              "label": "View Account", "url": "/#/Accounts/index"
             },
             "icon": "plus",
             "submenu": []
