@@ -7,7 +7,6 @@ import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
 import {ModalViewUiModule} from '../modal-view/modal-view.module';
 import {FieldModule} from '../../../fields/field.module';
 import {RouterModule} from '@angular/router';
-import {ListViewUiRoutes} from '../list-view/list-view.routes';
 
 @NgModule({
     declarations: [ListViewUiComponent],
