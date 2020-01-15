@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AppManagerModule} from '../../app-manager/app-manager.module';
+import {AppManagerModule} from '../src/app-manager/app-manager.module';
 import {FieldComponent} from './field.component';
 // import {PLUGIN_MANIFESTS} from '../../../../plugin-manager/plugin-manifest';
 

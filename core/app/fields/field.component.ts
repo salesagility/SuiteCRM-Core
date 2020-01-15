@@ -6,16 +6,16 @@ import {
     ViewContainerRef
 } from '@angular/core';
 
-import {AppManager} from '../../app-manager/app-manager.service';
+import {AppManager} from '../src/app-manager/app-manager.service';
 
 @Component({
     selector: 'scrm-field',
     template: `
-    <ng-template #fieldOutlet></ng-template>
-  `,
+        <ng-template #fieldOutlet></ng-template>
+    `,
     styleUrls: []
 })
-export class FieldUiComponent implements OnInit {
+export class FieldComponent implements OnInit {
     @ViewChild('fieldOutlet', {read: ViewContainerRef})
     fieldOutlet: ViewContainerRef | undefined;
 

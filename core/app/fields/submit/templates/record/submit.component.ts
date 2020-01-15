@@ -6,6 +6,7 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: []
 })
 export class SubmitRecordFieldsComponent implements OnInit {
+    data: any = [];
 
     constructor() {
     }
