@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
 
-if (count($argv) === 1 && $argv[0] === 'bin/cli') {
+if (count($argv) === 1 && $argv[0] === 'bin/console') {
     echo
     "
 \033[38;5;167m  OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\033[38;5;240m00000000000000000000000000000000000000000

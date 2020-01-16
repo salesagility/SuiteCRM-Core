@@ -36,7 +36,7 @@ class AppThemeRebuildCommand extends SuiteCommand
     {
         if (!file_exists(BASE_PATH . '/cache/app/engine/')) {
             throw new \RuntimeException(
-                'Can\'t find application engine folder, Please run bin/cli app:rebuild'
+                "Can't find application engine folder, Please run bin/console app:rebuild"
             );
         }
 
