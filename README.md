@@ -54,7 +54,7 @@ entity:
 chown -R {user ID}:{web user group} .
 find . -type d -exec chmod 0755 {} \;
 find . -type f -exec chmod 0644 {} \;
-chmod +x bin/cli
+chmod +x bin/console
 ```
-6. Run `bin/cli orm:schema-tool:update --force`
-7. Run `bin/cli app:rebuild`
+6. Run `bin/console orm:schema-tool:update --force`
+7. Run `bin/console app:rebuild`
