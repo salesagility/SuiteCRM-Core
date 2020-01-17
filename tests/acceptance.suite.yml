@@ -10,3 +10,7 @@ modules:
         - PhpBrowser:
             url: http://localhost:8000
         - \App\Tests\Helper\Acceptance
+        - \App\Tests\Helper\ConfigHelper:
+            login_username: admin
+            login_password: admin
+

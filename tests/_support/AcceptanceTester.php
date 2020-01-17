@@ -23,4 +23,11 @@ class AcceptanceTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+
+    public function login(string $name, string $password)
+    {
+        /**
+         * To implement when auth is working
+         */
+    }
 }

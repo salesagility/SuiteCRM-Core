@@ -38,6 +38,7 @@ final class ClassicViewItemDataProvider implements ItemDataProviderInterface, Re
         $output->setId('123');
 
         $html = '<h1>HTML working</h1><script>alert(\'JS Working\');</script><button onClick="alert(\'JS Working\');">Click Me</button>';
+        $html .= '<a href="index.php?module=Contacts&action=ListView">Legacy Link to Contacts List View</a>';
         $output->setHtml($html);
 
         return $output;

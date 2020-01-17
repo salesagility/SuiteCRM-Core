@@ -1,0 +1,13 @@
+parameters:
+    legacy.action_name_map:
+        index: index
+        multieditview: multieditview
+        detailview: detail
+        editview: edit
+        listview: list
+        popup: popup
+        vcard: vcard
+        importvcard: importvcard
+        modulelistmenu: modulelistmenu
+        favorites: favorites
+        noaccess: noaccess

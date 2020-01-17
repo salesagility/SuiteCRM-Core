@@ -23,7 +23,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 
 if (empty($_GET) && strpos($_SERVER['REQUEST_URI'], 'api') === false) {
     if (!file_exists('public/index.html')) {
-        throw new RuntimeException('Please run bin/console frontend:rebuild from terminal');
+        throw new RuntimeException('Please run bin/cli frontend:rebuild from terminal');
     }
 
     include __DIR__ . '/public/index.html';
@@ -32,9 +32,6 @@ if (empty($_GET) && strpos($_SERVER['REQUEST_URI'], 'api') === false) {
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
-
-// Get the Application Path
-define('LEGACY_PATH', __DIR__ . '/legacy/');
 
 // Get the autoloader class
 require __DIR__ . '/vendor/autoload.php';
