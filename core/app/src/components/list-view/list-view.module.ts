@@ -5,6 +5,8 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ListViewUiComponent} from './list-view.component';
 import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
 import {ModalViewUiModule} from '../modal-view/modal-view.module';
+import {FilterUiModule} from '../filter/filter.module';
+import {ColumnchooserUiModule} from '../columnchooser/columnchooser.module';
 import {FieldModule} from '../../../fields/field.module';
 import {RouterModule} from '@angular/router';
 
@@ -15,6 +17,8 @@ import {RouterModule} from '@angular/router';
         SvgIconUiModule,
         FieldModule,
         ModalViewUiModule,
+        FilterUiModule,
+        ColumnchooserUiModule,
         CommonModule,
         AppManagerModule.forChild(ListViewUiComponent)
     ]

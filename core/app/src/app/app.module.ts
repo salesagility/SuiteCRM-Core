@@ -9,6 +9,8 @@ import {NavbarUiModule} from '../components/navbar/navbar.module';
 import {FooterUiModule} from '../components/footer/footer.module';
 import {ClassicViewUiModule} from '../components/classic-view/classic-view.module';
 import {MessageUiModule} from '../components/message/message.module';
+import {FilterUiModule} from '../components/filter/filter.module';
+import {ColumnchooserUiModule} from '../components/columnchooser/columnchooser.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +32,8 @@ import {
     NavbarUiModule,
     MessageUiModule,
     ClassicViewUiModule,
+    FilterUiModule,
+    ColumnchooserUiModule,
     BrowserAnimationsModule,
     NgbModule
   ],

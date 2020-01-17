@@ -130,3 +130,14 @@
 .modal-body::-webkit-scrollbar-thumb:hover {
   background: $dusty-grey;
 }
+
+/* modal animation */
+.modal-content{
+  animation-name: modal;
+  animation-duration: 0.5s;
+}
+
+@keyframes modal {
+  0%   {transform: scale(0.5)}
+  100% {transform: scale(1)}
+}

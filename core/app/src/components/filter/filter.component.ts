@@ -2,37 +2,41 @@ import {Component, OnInit} from '@angular/core';
 
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
-import {
-  trigger,
-  animate,
-  transition,
-} from '@angular/animations';
-
 @Component({
-  selector: 'scrm-modal-view-ui',
-  templateUrl: './modal-view.component.html',
-  animations: [
-    trigger('modalFade', [
-      transition('void <=> *', [
-        animate('800ms')
-      ]),
-    ]),
-  ]
+  selector: 'scrm-filter-ui',
+  templateUrl: './filter.component.html',
+
 })
 
-export class ModalViewUiComponent implements OnInit {
+export class FilterUiComponent implements OnInit {
+
+  filterModal: boolean = true;
+  modalTitle: string = 'Quick Filter';
   closeResult: string;
-  modalTitle: string = 'New Account';
-  createModal: boolean = true;
+  quickFilter: boolean = true;
+  advancedFilter: boolean = false;
 
   constructor(private modalService: NgbModal) {
+  }
+
+  toggleQuickFilter() {
+    this.modalTitle = 'Quick Filter';
+    this.advancedFilter = !this.advancedFilter;
+    this.quickFilter = !this.quickFilter;
+  }
+
+  toggleAdvancedFilter() {
+    this.modalTitle = 'Advanced Filter';
+    this.advancedFilter = !this.advancedFilter;
+    this.quickFilter = !this.quickFilter;
   }
 
   open(modal) {
     this.modalService.open(modal, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
-      size: 'lg'
+      size: 'lg',
+      windowClass: 'filter-modal'
     }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -51,6 +55,8 @@ export class ModalViewUiComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    console.log('this is woroking?');
   }
 
 }

@@ -1,0 +1,44 @@
+.filter-modal .modal-lg {
+  width: $breakpoint-medium;
+}
+
+.filter-modal .modal-label {
+  color: $midnight-blue;
+  font-weight: 600;
+}
+
+.quick-filter-options {
+  color: $midnight-blue;
+  font-size: 0.8em;
+  margin: 1.3em 0 0 2em;
+  padding: 0.5em 1em;
+}
+
+.filter-modal .modal-body {
+  padding: 0 2em;
+}
+
+.modal-input-large {
+  width: 100%;
+}
+
+.filter-modal .modal-label {
+  margin: 1.5em 0 0.5em 0;
+}
+
+.modal-input-small {
+  width: 100%;
+}
+
+.filter-modal .select {
+  width: 100%;
+  font-size: 0.9em;
+}
+
+.filter-modal input::placeholder {
+  color: $midnight-grey;
+}
+
+.modal-date-input {
+  width:60%;
+}

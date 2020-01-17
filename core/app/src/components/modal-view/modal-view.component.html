@@ -2,164 +2,164 @@
 
 <ng-template #modal let-modal>
 
-    <!-- Start of modal header section -->
+  <!-- Start of modal header section -->
 
-    <div class="modal-header">
-        <div class="modal-title">New Account</div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">
-            <scrm-svg-icon-ui class="sicon" file="icon_modal_close.svg"></scrm-svg-icon-ui>
-        </button>
+  <div class="modal-header">
+    <div class="modal-title">{{ modalTitle }}</div>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+      <scrm-svg-icon-ui class="sicon" file="icon_modal_close.svg"></scrm-svg-icon-ui>
+    </button>
+  </div>
+
+  <!-- End of modal header section -->
+
+  <!-- Start of modal body section -->
+
+  <div class="modal-body">
+    <h5 class="modal-field-header">Overview</h5>
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <input class="modal-input" type="text">
+      </div>
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <div class="select">
+          <select>
+            <option>Aw yeah.</option>
+            <option>You should pick me instead.</option>
+            <option>I think I'm the better option!</option>
+          </select>
+        </div>
+      </div>
     </div>
-
-    <!-- End of modal header section -->
-
-    <!-- Start of modal body section -->
-
-    <div class="modal-body">
-        <h5 class="modal-field-header">Overview</h5>
-        <div class="row">
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <input class="modal-input" type="text">
-            </div>
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <div class="select">
-                    <select>
-                        <option>Aw yeah.</option>
-                        <option>You should pick me instead.</option>
-                        <option>I think I'm the better option!</option>
-                    </select>
-                </div>
-            </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <label class="checkbox-container create-popup-checkbox">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="col-lg-6">
+        <div class="relate-input-group">
+          <label class="modal-label">Label</label>
+          <input class="modal-input" type="text">
+          <button type="button" class="create-popup-button create-popup-arrow">
+            <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
+          </button>
+          <button type="button" class="create-popup-button create-popup-cross">
+            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+          </button>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <label class="checkbox-container create-popup-checkbox">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <div class="col-lg-6">
-                <div class="relate-input-group">
-                    <label class="modal-label">Label</label>
-                    <input class="modal-input" type="text">
-                    <button type="button" class="create-popup-button create-popup-arrow">
-                        <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
-                    </button>
-                    <button type="button" class="create-popup-button create-popup-cross">
-                        <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="calendar-input-group">
-                    <label class="modal-label">Label</label>
-                    <input class="modal-input" type="text">
-                    <button type="button" class="create-popup-button create-popup-calendar">
-                        <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
-                    </button>
-                    <button type="button" class="create-popup-button create-popup-cross">
-                        <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
-                    </button>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <input class="modal-input" type="text">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <div class="select">
-                    <select>
-                        <option>Aw yeah.</option>
-                        <option>You should pick me instead.</option>
-                        <option>I think I'm the better option!</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <label class="modal-label">Label</label>
-                <label class="checkbox-container create-popup-checkbox">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="relate-input-group">
-                    <label class="modal-label">Label</label>
-                    <input class="modal-input" type="text">
-                    <button type="button" class="create-popup-button create-popup-arrow">
-                        <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
-                    </button>
-                    <button type="button" class="create-popup-button create-popup-cross">
-                        <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
-                    </button>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="calendar-input-group">
-                    <label class="modal-label">Label</label>
-                    <input class="modal-input" type="text">
-                    <button type="button" class="create-popup-button create-popup-calendar">
-                        <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
-                    </button>
-                    <button type="button" class="create-popup-button create-popup-cross">
-                        <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-
-    <!-- End of modal body section -->
-
-    <!-- Start of modal footer section -->
-
-    <div class="modal-footer">
-        <div class="row w-100">
-            <div class="col-lg-6">
-                <div class="modal-options">
-                    <label class="modal-checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <p class="modal-redirect-text">
-                        Redirect on SAVE
-                        <scrm-svg-icon-ui class="sicon info-icon" file="info.svg"></scrm-svg-icon-ui>
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="modal-buttons">
-                    <button type="button" class="btn modal-button-cancel" data-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="button" class="btn modal-button-save">
-                        Save and New
-                    </button>
-                    <button type="button" class="btn modal-button-save">
-                        Save
-                    </button>
-                </div>
-            </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="calendar-input-group">
+          <label class="modal-label">Label</label>
+          <input class="modal-input" type="text">
+          <button type="button" class="create-popup-button create-popup-calendar">
+            <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
+          </button>
+          <button type="button" class="create-popup-button create-popup-cross">
+            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+          </button>
         </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <input class="modal-input" type="text">
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <div class="select">
+          <select>
+            <option>Aw yeah.</option>
+            <option>You should pick me instead.</option>
+            <option>I think I'm the better option!</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="modal-label">Label</label>
+        <label class="checkbox-container create-popup-checkbox">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="relate-input-group">
+          <label class="modal-label">Label</label>
+          <input class="modal-input" type="text">
+          <button type="button" class="create-popup-button create-popup-arrow">
+            <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
+          </button>
+          <button type="button" class="create-popup-button create-popup-cross">
+            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="calendar-input-group">
+          <label class="modal-label">Label</label>
+          <input class="modal-input" type="text">
+          <button type="button" class="create-popup-button create-popup-calendar">
+            <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
+          </button>
+          <button type="button" class="create-popup-button create-popup-cross">
+            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- End of modal footer section -->
+  <!-- End of modal body section -->
+
+  <!-- Start of modal footer section -->
+
+  <div class="modal-footer">
+    <div class="row w-100">
+      <div class="col-lg-6">
+        <div class="modal-options">
+          <label class="modal-checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="modal-redirect-text">
+            Redirect on SAVE
+            <scrm-svg-icon-ui class="sicon info-icon" file="info.svg"></scrm-svg-icon-ui>
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="modal-buttons">
+          <button type="button" class="btn modal-button-cancel" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+            Cancel
+          </button>
+          <button type="button" class="btn modal-button-save">
+            Save and New
+          </button>
+          <button type="button" class="btn modal-button-save">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End of modal footer section -->
 
 </ng-template>
 
 <button type="button" class="action-button" (click)="open(modal)">
-    New
+  New
 </button>
 
 <!-- End of modal component section -->
