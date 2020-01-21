@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ClassicViewUiComponent} from '../components/classic-view/classic-view.component';
+import {ClassicViewUiComponent} from '@components/classic-view/classic-view.component';
+import {ClassicViewResolver} from '@services/api/resolvers/classic-view.resolver';
 
 import {AuthGuard} from '../services/auth/auth-guard.service';
 
@@ -20,17 +21,20 @@ const routes: Routes = [
   {
     path: ':module',
     component: ClassicViewUiComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: {view: ClassicViewResolver}
   },
   {
     path: ':module/:action',
     component: ClassicViewUiComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: {view: ClassicViewResolver}
   },
   {
     path: ':module/:action/:record',
     component: ClassicViewUiComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: {view: ClassicViewResolver}
   },
   {path: '**', redirectTo: 'Login'},
 ];

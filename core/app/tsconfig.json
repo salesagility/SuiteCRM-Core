@@ -12,8 +12,14 @@
     "importHelpers": true,
     "target": "es2015",
     "typeRoots": [
-      "../../node_modules/@types"
+      "../../../node_modules/@types"
     ],
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@base/*": ["./src/*"],
+      "@services/*": ["./src/services/*"],
+      "@components/*": ["./src/components/*"]
+    },
     "lib": [
       "es2018",
       "dom"

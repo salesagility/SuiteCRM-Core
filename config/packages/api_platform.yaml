@@ -37,3 +37,7 @@ api_platform:
     scopes: []
 
   enable_swagger_ui: false
+
+  # Specify a path name generator to use.
+  path_segment_name_generator: api_platform.path_segment_name_generator.dash
+

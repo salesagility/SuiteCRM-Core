@@ -1,10 +1,5 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-
-import {AuthService} from '../../services/auth/auth.service';
-import {LoginResponseModel} from '../../services/auth/login-response-model';
-import {MessageService} from '../../services/message/message.service';
-import {ApiService} from '../../services/api/api.service';
+import {Component, ViewChild, ElementRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'scrm-classic-view-ui',
@@ -12,5 +7,25 @@ import {ApiService} from '../../services/api/api.service';
     styleUrls: []
 })
 export class ClassicViewUiComponent {
+    data: any;
 
+    @ViewChild('dataContainer', {static:true}) dataContainer: ElementRef;
+    public element: any;
+
+    renderHtml(data) {
+        this.element = this.dataContainer.nativeElement;
+        const fragment = document.createRange().createContextualFragment(data.html);
+        this.element.appendChild(fragment);
+    }
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.data = this.route.snapshot.data;
+    }
+
+    ngAfterViewInit() {
+        this.renderHtml(this.data.view);
+    }
 }

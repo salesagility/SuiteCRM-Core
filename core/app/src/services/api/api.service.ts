@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {KeyValue} from '@angular/common';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {ParamMap, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import * as hash from 'object-hash';
 import {MessageService} from '../message/message.service';
@@ -12,6 +12,11 @@ import {ApiSubscriptionModel} from './api-subscription-model';
 import {LoginResponseModel} from '../auth/login-response-model';
 import {ApiAccessTokenResponseEmpty} from './api-access-token-response-empty';
 import {ListViewData, ListViewDataModel} from '../../components/list-view/list-view-data-model';
+
+import {environment} from '@base/environments/environment';
+
+// we can now access environment.apiUrl
+const API_URL = environment.apiUrl;
 
 @Injectable({
     providedIn: 'root'
@@ -330,6 +335,32 @@ export class ApiService {
         // return ret;
 
         return false;
+    }
+
+    getClassicView(routeParams: ParamMap): Observable<any> {
+
+        let url = API_URL
+        let module = routeParams.get('module') || '';
+        url += '/classic-views/' + module;
+
+        let params = new HttpParams();
+        routeParams.keys.forEach((name) => {
+            let value = routeParams.get(name);
+
+            if (name = 'module'){
+                return;
+            }
+
+            if (value == null || value == undefined) {
+                return;
+            }
+
+            params = params.set(name, value);
+        });
+
+        return this.http.get(url, {
+            params: params
+        });
     }
 
 }

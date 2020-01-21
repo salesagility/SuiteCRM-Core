@@ -7,7 +7,7 @@ import {ClassicViewUiRoutes} from './classic-view.routes';
 
 @NgModule({
     declarations: [
-        ClassicViewUiComponent
+        ClassicViewUiComponent,
     ],
     exports: [
         ClassicViewUiComponent
