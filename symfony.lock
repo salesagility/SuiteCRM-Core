@@ -13,14 +13,65 @@
         "files": [
             "config/packages/api_platform.yaml",
             "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
+            "core/base/src/Entity/.gitignore"
         ]
+    },
+    "api-platform/schema-generator": {
+        "version": "v2.2.2"
+    },
+    "behat/gherkin": {
+        "version": "v4.6.0"
     },
     "bshaffer/oauth2-server-httpfoundation-bridge": {
         "version": "v1.4"
     },
     "bshaffer/oauth2-server-php": {
         "version": "v1.11.1"
+    },
+    "codeception/codeception": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "d2a29c0abee586aff913fd45fae1f59b669f4cbe"
+        },
+        "files": [
+            "codeception.yml",
+            "tests/_data/.gitignore",
+            "tests/_output/.gitignore",
+            "tests/_support/AcceptanceTester.php",
+            "tests/_support/FunctionalTester.php",
+            "tests/_support/Helper/Acceptance.php",
+            "tests/_support/Helper/Functional.php",
+            "tests/_support/Helper/Unit.php",
+            "tests/_support/UnitTester.php",
+            "tests/_support/_generated/.gitignore",
+            "tests/acceptance/.gitignore",
+            "tests/functional/.gitignore",
+            "tests/unit/.gitignore",
+            "tests/acceptance.suite.yml",
+            "tests/functional.suite.yml",
+            "tests/unit.suite.yml"
+        ]
+    },
+    "codeception/lib-asserts": {
+        "version": "1.1.1"
+    },
+    "codeception/module-asserts": {
+        "version": "1.1.1"
+    },
+    "codeception/phpunit-wrapper": {
+        "version": "7.8.0"
+    },
+    "codeception/stub": {
+        "version": "3.0.0"
+    },
+    "composer/semver": {
+        "version": "1.5.0"
+    },
+    "composer/xdebug-handler": {
+        "version": "1.4.0"
     },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
@@ -109,56 +160,44 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
-    "ecodev/graphql-upload": {
-        "version": "4.0.0"
+    "easyrdf/easyrdf": {
+        "version": "0.9.1"
     },
     "fig/link-util": {
         "version": "1.1.0"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
-    "lcobucci/jwt": {
-        "version": "3.3.1"
-    },
-    "lexik/jwt-authentication-bundle": {
-        "version": "2.5",
+    "friendsofphp/php-cs-fixer": {
+        "version": "2.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "2.5",
-            "ref": "5b2157bcd5778166a5696e42f552ad36529a07a6"
+            "version": "2.2",
+            "ref": "cc05ab6abf6894bddb9bbd6a252459010ebe040b"
         },
         "files": [
-            "config/packages/lexik_jwt_authentication.yaml"
+            ".php_cs.dist"
         ]
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
+    "jdorn/sql-formatter": {
+        "version": "v1.2.17"
+    },
+    "league/html-to-markdown": {
+        "version": "4.9.1"
     },
     "monolog/monolog": {
         "version": "1.25.3"
     },
-    "mouf/classname-mapper": {
-        "version": "v1.0.2"
-    },
     "myclabs/deep-copy": {
         "version": "1.9.4"
     },
-    "namshi/jose": {
-        "version": "7.2.3"
-    },
-    "nelmio/cors-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "6388de23860284db9acce0a7a5d9d13153bcb571"
-        },
-        "files": [
-            "config/packages/nelmio_cors.yaml"
-        ]
-    },
     "nikic/php-parser": {
         "version": "v4.3.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
     },
     "phar-io/manifest": {
         "version": "1.0.3"
@@ -168,6 +207,9 @@
     },
     "php": {
         "version": "7.2.0"
+    },
+    "php-cs-fixer/diff": {
+        "version": "v1.3.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -229,20 +271,14 @@
     "psr/http-message": {
         "version": "1.0.1"
     },
-    "psr/http-server-handler": {
-        "version": "1.0.1"
-    },
-    "psr/http-server-middleware": {
-        "version": "1.0.1"
-    },
     "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.2"
     },
-    "psr/simple-cache": {
-        "version": "1.0.1"
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "roave/security-advisories": {
         "version": "dev-master"
@@ -280,6 +316,9 @@
     "sebastian/resource-operations": {
         "version": "2.0.1"
     },
+    "sebastian/type": {
+        "version": "1.1.3"
+    },
     "sebastian/version": {
         "version": "2.0.1"
     },
@@ -307,6 +346,9 @@
             "bin/console",
             "config/bootstrap.php"
         ]
+    },
+    "symfony/css-selector": {
+        "version": "v4.4.2"
     },
     "symfony/debug": {
         "version": "v4.4.2"
@@ -379,9 +421,6 @@
     "symfony/inflector": {
         "version": "v4.4.2"
     },
-    "symfony/lock": {
-        "version": "v4.4.2"
-    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -411,6 +450,9 @@
             "config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v4.4.2"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.13.1"
     },
@@ -420,7 +462,7 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.13.1"
     },
-    "symfony/polyfill-php56": {
+    "symfony/polyfill-php70": {
         "version": "v1.13.1"
     },
     "symfony/polyfill-php72": {
@@ -429,8 +471,8 @@
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
     },
-    "symfony/polyfill-util": {
-        "version": "v1.13.1"
+    "symfony/process": {
+        "version": "v4.4.2"
     },
     "symfony/property-access": {
         "version": "v4.4.2"
@@ -482,6 +524,9 @@
     "symfony/service-contracts": {
         "version": "v1.1.8"
     },
+    "symfony/stopwatch": {
+        "version": "v4.4.2"
+    },
     "symfony/translation-contracts": {
         "version": "v1.1.7"
     },
@@ -526,12 +571,6 @@
     },
     "symfony/yaml": {
         "version": "v4.4.2"
-    },
-    "thecodingmachine/class-explorer": {
-        "version": "v1.0.2"
-    },
-    "thecodingmachine/graphqlite": {
-        "version": "v3.1.1"
     },
     "theseer/fdomdocument": {
         "version": "1.6.6"

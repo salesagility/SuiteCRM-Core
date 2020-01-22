@@ -20,7 +20,6 @@
     "doctrine/cache": "^1.8",
     "doctrine/dbal": "^2.9",
     "doctrine/orm": "2.6.*",
-    "lexik/jwt-authentication-bundle": "^2.6",
     "monolog/monolog": "^1.23",
     "phpdocumentor/type-resolver": "^0.4.0",
     "pimple/pimple": "^3.2",
@@ -40,15 +39,16 @@
     "symfony/monolog-bundle": "^3.5",
     "symfony/routing": "4.4.x-dev",
     "symfony/yaml": "^4.2",
-    "thecodingmachine/graphqlite": "^3.1",
     "webonyx/graphql-php": "^0.13.8"
   },
   "require-dev": {
+    "api-platform/schema-generator": "^2.2",
+    "codeception/codeception": "^4.0",
+    "codeception/module-asserts": "^1.1",
     "dama/doctrine-test-bundle": "^5.0",
     "doctrine/doctrine-fixtures-bundle": "~3.2",
     "phploc/phploc": "^4.0.1",
     "phpmetrics/phpmetrics": "^2.4.1",
-    "phpunit/phpunit": "^7.3",
     "roave/security-advisories": "dev-master",
     "symfony/maker-bundle": "^1.14"
   },
@@ -63,16 +63,19 @@
   ],
   "autoload": {
     "psr-4": {
-      "SuiteCRM\\Core\\Base\\": "core/base/",
+      "SuiteCRM\\Core\\src\\": "core/src/",
       "SuiteCRM\\Core\\Modules\\": "core/modules/",
       "SuiteCRM\\Core\\Legacy\\": "core/legacy/",
-      "App\\Command\\": "core/base/src/Command/"
+      "App\\Command\\": "core/src/Command/",
+      "App\\DataFixtures\\": "core/src/DataFixtures/",
+      "App\\DataProvider\\": "core/src/DataProvider/",
+      "App\\Entity\\": "core/src/Entity/"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
-    "src-dir": "core/base/src"
+    "src-dir": "core/src"
   },
   "scripts": {
     "auto-scripts": {
