@@ -10,13 +10,11 @@ Our vision is to be the most adopted open source enterprise CRM in the world, gi
 
 Try out a free fully working [SuiteCRM demo available here](https://suitecrm.com/demo/)
 
-
 ### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./LICENSE.txt)
 
 SuiteCRM is published under the AGPLv3 license.
 
-
-## Quick Start Quide
+## Quick Start Guide
 
 ### System Requirements
 
@@ -32,29 +30,20 @@ SuiteCRM is published under the AGPLv3 license.
 1. Run `composer install` in the root directory
 2. Run `composer install` in legacy directory
 3. Compile legacy theme
+```
+./vendor/bin/pscss -f compressed themes/SuiteP/css/Dawn/style.scss > themes/SuiteP/css/Dawn/style.css
+./vendor/bin/pscss -f compressed themes/SuiteP/css/Day/style.scss > themes/SuiteP/css/Day/style.css
+./vendor/bin/pscss -f compressed themes/SuiteP/css/Dusk/style.scss > themes/SuiteP/css/Dusk/style.css
+./vendor/bin/pscss -f compressed themes/SuiteP/css/Night/style.scss > themes/SuiteP/css/Night/style.css
+```
 3. Run legacy install process
-4. Create config.yml with config directory with the following strucure
-```
-server:
-  environment: 'develop'
-storage:
-  mysql:
-    driver: 'pdo_mysql'
-    host: '{db_host}'
-    dbname: '{db_name}'
-    user: '{db_user}'
-    password: '{db_pass}'
-    io: 'both'
-entity:
-  namespaces:
-    core/modules/Users/Config/orm: 'SuiteCRM\Core\Modules\Users\Entity'
-```
-5. Set permissions
+4. Set permissions
 ```
 chown -R {user ID}:{web user group} .
 find . -type d -exec chmod 0755 {} \;
 find . -type f -exec chmod 0644 {} \;
 chmod +x bin/console
 ```
-6. Run `bin/console orm:schema-tool:update --force`
-7. Run `bin/console app:rebuild`
+5. Run `bin/console orm:schema-tool:update --force`
+6. Run `npm install`
+7. Run `ng build`
