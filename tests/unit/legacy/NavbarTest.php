@@ -12,7 +12,7 @@ final class NavbarTest extends Unit
      */
     private $navbar;
 
-    protected function setUp(): void
+    protected function _before()
     {
         $this->navbar = new Navbar();
     }

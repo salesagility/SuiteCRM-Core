@@ -1,17 +1,20 @@
 <?php
 
-if (!defined('LEGACY_PATH')) {
-    define('LEGACY_PATH', dirname(__DIR__, 2) . '/legacy/');
-}
+error_reporting(E_ALL);
 
-// Set up sugarEntry
+// Bootstrap composer
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+chdir(__DIR__ . '/../../legacy');
+
+// Bootstrap SuiteCRM
 if (!defined('sugarEntry')) {
     define('sugarEntry', true);
+    define('SUITE_PHPUNIT_RUNNER', true);
 }
 
-// Set working directory for legacy
-chdir(LEGACY_PATH);
-
 // Load in legacy
-require_once LEGACY_PATH . 'include/MVC/preDispatch.php';
-require_once LEGACY_PATH . 'include/entryPoint.php';
+require_once __DIR__ . '/../../legacy/include/utils.php';
+require_once __DIR__ . '/../../legacy/include/modules.php';
+require_once __DIR__ . '/../../legacy/include/MVC/preDispatch.php';
+require_once __DIR__ . '/../../legacy/include/entryPoint.php';

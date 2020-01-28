@@ -1,13 +1,22 @@
 namespace: App\Tests
-paths:
-    tests: tests
-    output: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
 actor_suffix: Tester
+paths:
+  tests: tests
+  output: tests/_output
+  data: tests/_data
+  support: tests/_support
+settings:
+  memory_limit: 16000M
+  # Disable for faster test execution
+  lint: true
+  colors: true
+  backup_globals: true
+  report_useless_tests: true
+  disallow_test_output: true
+  # Significantly slows down test execution when true
+  be_strict_about_changes_to_global_state: false
 extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
+  enabled:
+    - Codeception\Extension\RunFailed
 params:
-    - .env
+  - .env
