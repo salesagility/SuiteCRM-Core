@@ -7,15 +7,15 @@ import {AuthGuard} from '../services/auth/auth-guard.service';
 const routes: Routes = [
   {
     path: 'Accounts/index',
-    loadChildren: '../components/account/account.module#AccountUiModule'
+    loadChildren: () => import('../components/account/account.module').then(m => m.AccountUiModule)
   },
   {
     path: 'Login',
-    loadChildren: '../components/login/login.module#LoginUiModule'
+    loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule)
   },
   {
     path: 'Home',
-    loadChildren: '../components/home/home.module#HomeUiModule',
+    loadChildren: () => import('../components/home/home.module').then(m => m.HomeUiModule),
   },
   {
     path: ':module',

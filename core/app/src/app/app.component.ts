@@ -5,7 +5,7 @@ import {Component, ViewChild, ViewContainerRef, OnInit} from '@angular/core';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  @ViewChild('mainOutlet', {read: ViewContainerRef})
+  @ViewChild('mainOutlet', { read: ViewContainerRef, static: true })
   mainOutlet: ViewContainerRef | undefined;
 
   constructor() {
