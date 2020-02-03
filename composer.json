@@ -24,6 +24,7 @@
     "symfony/dotenv": "^4.4",
     "symfony/flex": "^1.6",
     "symfony/framework-bundle": "^4.4",
+    "symfony/http-client": "^4.4",
     "symfony/monolog-bundle": "^3.5",
     "symfony/orm-pack": "^1.0",
     "symfony/security-bundle": "^4.4",
@@ -39,21 +40,24 @@
     "doctrine/doctrine-fixtures-bundle": "~3.2",
     "doctrine/doctrine-migrations-bundle": "^2.1",
     "roave/security-advisories": "dev-master",
-    "symfony/maker-bundle": "^1.14"
+    "symfony/maker-bundle": "^1.14",
+    "symfony/profiler-pack": "^1.0"
   },
   "autoload": {
     "psr-4": {
-      "App\\": "core/src/",
       "SuiteCRM\\Core\\src\\": "core/src/",
-      "SuiteCRM\\Core\\Modules\\": "core/modules/",
       "SuiteCRM\\Core\\Legacy\\": "core/legacy/",
+      "App\\": "core/src/",
+      "App\\Entity\\": "core/src/Entity/",
+      "App\\EventSubscriber\\": "core/src/EventSubscriber/",
+      "App\\Repository\\": "core/src/Repository",
+      "App\\Security\\": "core/src/Security",
       "App\\Command\\": "core/src/Command/",
+      "App\\Controller\\": "core/src/Controller/",
       "App\\DataFixtures\\": "core/src/DataFixtures/",
       "App\\DataProvider\\": "core/src/DataProvider/",
-      "App\\Entity\\": "core/src/Entity/",
       "App\\Services\\": "core/src/Service/",
-      "App\\EventListener\\": "core/src/EventListener/",
-      "App\\Controller\\": "core/src/Controller/"
+      "App\\EventListener\\": "core/src/EventListener/"
     }
   },
   "scripts": {

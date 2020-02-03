@@ -1,10 +1,31 @@
 security:
+  encoders:
+    App\Entity\User:
+      algorithm: auto
+
   providers:
-    in_memory: { memory: null }
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: username
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
       anonymous: lazy
+      guard:
+        authenticators:
+          - App\Security\LoginFormAuthenticator
+      form_login:
+        login_path: app_login
+        check_path: app_login
+      logout:
+        path: app_logout
+
+  # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

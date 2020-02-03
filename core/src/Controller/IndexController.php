@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    const INDEX_HTML_PATH = '/public/index.html';
+    public const INDEX_HTML_PATH = '/public/index.html';
 
     /**
      * @var string
@@ -27,11 +28,11 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(): Response
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
 
-        if (!file_exists($indexHtmlPath)){
+        if (!file_exists($indexHtmlPath)) {
             throw new RuntimeException('Please run ng build from terminal');
         }
 

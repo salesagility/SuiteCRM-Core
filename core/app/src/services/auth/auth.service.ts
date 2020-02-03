@@ -34,7 +34,7 @@ export class AuthService {
         onSuccess: (caller: LoginUiComponent, loginResponse: LoginResponseModel) => void,
         onError: (caller: LoginUiComponent, error: HttpErrorResponse) => void
     ) {
-        const loginUrl = 'index.php?module=users&controller=oauth&action=login';
+        const loginUrl = 'login';
 
         const body = new HttpParams()
             .set('username', username)
@@ -78,7 +78,7 @@ export class AuthService {
             return;
         }
 
-        const logoutUrl = 'index.php?module=users&controller=oauth&action=logout';
+        const logoutUrl = 'logout';
 
         const body = new HttpParams()
             .set('access_token', loginResponse.access_token)

@@ -154,3 +154,8 @@ testem.log
 
 .c9/
 *.launch
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
