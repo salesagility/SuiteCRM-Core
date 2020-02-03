@@ -7,9 +7,8 @@ import {NavbarUiComponent} from './navbar.component';
 import {LogoUiModule} from '../logo/logo.module';
 import {LogoutUiModule} from '../logout/logout.module';
 import {ActionBarUiModule} from '../action-bar/action-bar.module';
-import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
-
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
     declarations: [NavbarUiComponent],
@@ -17,11 +16,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     imports: [
         CommonModule,
         AppManagerModule.forChild(NavbarUiComponent),
-        SvgIconUiModule,
         LogoUiModule,
         LogoutUiModule,
         ActionBarUiModule,
-        NgbModule
+        NgbModule,
+        AngularSvgIconModule
     ]
 })
 export class NavbarUiModule {

@@ -5,8 +5,8 @@ import {RouterModule} from '@angular/router';
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {LoginUiComponent} from './login.component';
 import {LogoUiModule} from '../logo/logo.module';
-import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
 import {LoginUiRoutes} from './login.routes';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
     declarations: [
@@ -18,10 +18,10 @@ import {LoginUiRoutes} from './login.routes';
     imports: [
         FormsModule,
         LogoUiModule,
-        SvgIconUiModule,
         AppManagerModule.forChild(LoginUiComponent),
         RouterModule.forChild(LoginUiRoutes),
         CommonModule,
+        AngularSvgIconModule
     ]
 })
 export class LoginUiModule {

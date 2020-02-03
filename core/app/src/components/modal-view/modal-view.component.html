@@ -8,7 +8,7 @@
     <div class="modal-title">{{ modalTitle }}</div>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
             (click)="modal.dismiss('Cross click')">
-      <scrm-svg-icon-ui class="sicon" file="icon_modal_close.svg"></scrm-svg-icon-ui>
+      <svg-icon class="sicon" src="public/themes/suite8/images/close_modal.svg"></svg-icon>
     </button>
   </div>
 
@@ -47,10 +47,10 @@
           <label class="modal-label">Label</label>
           <input class="modal-input" type="text">
           <button type="button" class="create-popup-button create-popup-arrow">
-            <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cursor.svg"></svg-icon>
           </button>
           <button type="button" class="create-popup-button create-popup-cross">
-            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
           </button>
         </div>
       </div>
@@ -61,10 +61,10 @@
           <label class="modal-label">Label</label>
           <input class="modal-input" type="text">
           <button type="button" class="create-popup-button create-popup-calendar">
-            <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/calendar.svg"></svg-icon>
           </button>
           <button type="button" class="create-popup-button create-popup-cross">
-            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
           </button>
         </div>
       </div>
@@ -98,10 +98,10 @@
           <label class="modal-label">Label</label>
           <input class="modal-input" type="text">
           <button type="button" class="create-popup-button create-popup-arrow">
-            <scrm-svg-icon-ui class="sicon" file="cursor_grey.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cursor.svg"></svg-icon>
           </button>
           <button type="button" class="create-popup-button create-popup-cross">
-            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
           </button>
         </div>
       </div>
@@ -110,10 +110,10 @@
           <label class="modal-label">Label</label>
           <input class="modal-input" type="text">
           <button type="button" class="create-popup-button create-popup-calendar">
-            <scrm-svg-icon-ui class="sicon" file="calendar_grey.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/calendar.svg"></svg-icon>
           </button>
           <button type="button" class="create-popup-button create-popup-cross">
-            <scrm-svg-icon-ui class="sicon" file="cross.svg"></scrm-svg-icon-ui>
+            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
           </button>
         </div>
       </div>
@@ -134,13 +134,14 @@
           </label>
           <p class="modal-redirect-text">
             Redirect on SAVE
-            <scrm-svg-icon-ui class="sicon info-icon" file="info.svg"></scrm-svg-icon-ui>
+            <scrm-svg-icon-ui class="sicon info-icon" src="public/themes/suite8/images/info.svg"></scrm-svg-icon-ui>
           </p>
         </div>
       </div>
       <div class="col-lg-6">
         <div class="modal-buttons">
-          <button type="button" class="btn modal-button-cancel" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+          <button type="button" class="btn modal-button-cancel" data-dismiss="modal"
+                  (click)="modal.dismiss('Cross click')">
             Cancel
           </button>
           <button type="button" class="btn modal-button-save">

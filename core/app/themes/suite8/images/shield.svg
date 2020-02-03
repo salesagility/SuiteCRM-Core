@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+     y="0px"
+     viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve">
+    <title>Shield Icon</title>
+    <g id="Page-1">
+	<g>
+		<g id="Page-1-Copy-46" transform="translate(1.425373, 1.320802)">
+			<g id="Clip-2">
+			</g>
+      <defs>
+				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-1.4" y="-1.3" width="18"
+                height="18">
+					<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+				</filter>
+			</defs>
+      <mask maskUnits="userSpaceOnUse" x="-1.4" y="-1.3" width="18" height="18" id="mask-2_1_">
+				<g class="st0">
+					<polygon id="path-1_1_" class="st1"
+                   points="16.6,-1.3 16.6,16.7 -1.4,16.7 -1.4,-1.3 					"/>
+				</g>
+			</mask>
+      <path id="Fill-1" class="st2"
+            d="M7.6-1.3c0,0-4.5,4.5-9,4.5c0,0,0,11.4,9,13.5c9-2.1,9-13.5,9-13.5C12.1,3.2,7.6-1.3,7.6-1.3"/>
+		</g>
+	</g>
+</g>
+</svg>

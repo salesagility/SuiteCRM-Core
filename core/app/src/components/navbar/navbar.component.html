@@ -1,5 +1,4 @@
 <!-- Start of main navbar section -->
-
 <div class="top-panel fixed-top">
 
   <!-- Start of empty navbar section until data is loaded -->
@@ -41,7 +40,7 @@
         <div class="position-static" ngbDropdown #myDrop="ngbDropdown" [autoClose]="false">
           <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" ngbDropdownToggle
                   class="navbar-toggler" type="button">
-            <scrm-svg-icon-ui class="responsive-menu-toggler" file="hamburger.svg"></scrm-svg-icon-ui>
+            <svg-icon class="responsive-menu-toggler" src="public/themes/suite8/images/hamburger.svg"></svg-icon>
           </button>
           <div class="mobile-nav-dropdown w-100" ngbDropdownMenu [@mobileNavFade]>
             <ng-template [ngIf]="backLink">
@@ -52,8 +51,8 @@
                 <a class="mobile-nav-link"
                 >{{ item.link.label }}
                 </a>
-                <scrm-svg-icon-ui class="sicon-xs mobile-nav-arrow" file="arrow_right_filled.svg"
-                                  file="arrow_right_filled.svg" (click)="changeSubNav($event, item)"></scrm-svg-icon-ui>
+                <svg-icon class="sicon-xs mobile-nav-arrow" src="public/themes/suite8/images/arrow_right_filled.svg"
+                          (click)="changeSubNav($event, item)"></svg-icon>
               </li>
             </ng-template>
             <ng-template [ngIf]="mobileSubNav">
@@ -64,8 +63,6 @@
                 <ul *ngIf="sub.submenu.length" class="">
                   <li *ngFor="let subitem of sub.submenu" class="nav-item">
                     <a class="mobile-nav-link action-link" href="{{ subitem.link.url }}">
-                      <scrm-svg-icon-ui file="{{ subitem.link.iconRef.resolved }}.svg">
-                      </scrm-svg-icon-ui>
                       {{ subitem.link.label }}
                     </a>
                   </li>
@@ -82,7 +79,7 @@
 
             <li>
               <a class="mobile-nav-link" (click)="myDrop.close()">
-                <scrm-svg-icon-ui class="sicon mobile-nav-close" file="cross_purple.svg" file="cross_purple.svg"></scrm-svg-icon-ui>
+                <svg-icon class="sicon mobile-nav-close" src="public/themes/suite8/images/cross_purple.svg"></svg-icon>
                 <span class="mobile-nav-close">Close menu</span>
               </a>
             </li>
@@ -91,8 +88,7 @@
         <div class="global-links" ngbDropdown>
           <li class="global-link-item">
             <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
-              <scrm-svg-icon-ui class="global-action-icon sicon-2x" file="user.svg"
-                                file="user.svg"></scrm-svg-icon-ui>
+              <svg-icon class="global-action-icon sicon-2x" src="public/themes/suite8/images/user.svg"></svg-icon>
               {{ navbar.currentUser.name }}
             </a>
             <div aria-labelledby="navbarDropdownMenuLink"
@@ -125,7 +121,7 @@
           <ul class="navbar-nav home-nav">
             <li class="nav-item home-nav-link">
               <a class="home-nav-link" href="#/Home">
-                <scrm-svg-icon-ui class="home-icon" file="home_icon.svg"></scrm-svg-icon-ui>
+                <svg-icon class="home-icon" src="public/themes/suite8/images/home.svg"></svg-icon>
               </a>
             </li>
           </ul>
@@ -148,8 +144,8 @@
                   <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
                     <li *ngFor="let subitem of sub.submenu" class="nav-item">
                       <a class="nav-link action-link" href="{{ subitem.link.url }}">
-                        <scrm-svg-icon-ui file="{{ subitem.link.iconRef.resolved }}.svg">
-                        </scrm-svg-icon-ui>
+                        <svg-icon src="{{ subitem.link.iconRef.resolved }}.svg">
+                        </svg-icon>
                         {{ subitem.link.label }}
                       </a>
                     </li>
@@ -188,7 +184,7 @@
           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu submenu">
       <li class="nav-item" *ngFor="let sub of item.submenu">
         <a class="nav-link action-link" href="{{ sub.link.url }}">
-          <scrm-svg-icon-ui file="{{ sub.link.iconRef.resolved }}.svg"></scrm-svg-icon-ui>
+          <svg-icon src="{{ sub.link.iconRef.resolved }}.svg"></svg-icon>
           {{ sub.link.label }}
         </a>
       </li>
@@ -220,8 +216,7 @@
   <ul class="navbar-nav">
     <li class="global-link-item">
       <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
-        <scrm-svg-icon-ui class="global-action-icon sicon-2x" file="user.svg"
-                          file="user.svg"></scrm-svg-icon-ui>
+        <svg-icon class="global-action-icon sicon-2x" src="public/themes/suite8/images/user.svg"></svg-icon>
         {{ navbar.currentUser.name }}
       </a>
       <div aria-labelledby="navbarDropdownMenuLink"

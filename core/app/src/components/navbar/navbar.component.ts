@@ -3,7 +3,6 @@ import {Router, NavigationEnd} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
-import {SvgFilenameMapModel} from '../svg-icon/svg-filename-map-model';
 
 @Component({
   selector: 'scrm-navbar-ui',
@@ -63,9 +62,6 @@ export class NavbarUiComponent implements OnInit {
 
   protected setNavbar(navbar: NavbarModel) {
     this.navbar = navbar;
-    this.api.getSvgFilenameMap((svgFilenameMaps: SvgFilenameMapModel[]) => {
-      this.navbar.svgFilenameMaps = svgFilenameMaps;
-    });
     this.loaded = true;
   }
 

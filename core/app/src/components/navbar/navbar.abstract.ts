@@ -1,9 +1,7 @@
 import { NavbarModel } from './navbar-model';
 import { LogoAbstract } from '../logo/logo-abstract';
-import { SvgFilenameMapModel } from '../svg-icon/svg-filename-map-model';
 
 export class NavbarAbstract implements NavbarModel {
-  svgFilenameMaps: SvgFilenameMapModel[] = [];
   authenticated = true;
   logo = new LogoAbstract();
   useGroupTabs = true;

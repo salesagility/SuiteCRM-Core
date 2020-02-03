@@ -3,14 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
      y="0px"
      viewBox="0 0 7 7" style="enable-background:new 0 0 7 7;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#534D64;}
-</style>
-    <title>05_arrow_down</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1">
+    <title>Arrow Down</title>
+  <g>
 	<g>
-		<polygon id="Triangle-21-Copy-5" class="st0" points="0,0 7,0 3.5,7 		"/>
+		<polygon points="0,0 7,0 3.5,7 		"/>
 	</g>
 </g>
 </svg>

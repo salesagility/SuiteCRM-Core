@@ -5,7 +5,6 @@ import {ParamMap, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import * as hash from 'object-hash';
 import {MessageService} from '../message/message.service';
-import {SvgFilenameMapModel} from '../../components/svg-icon/svg-filename-map-model';
 import {ApiAccessTokenResponseModel} from './api-access-token-response-model';
 import {ApiResponseModel} from './api-response-model';
 import {ApiSubscriptionModel} from './api-subscription-model';
@@ -279,15 +278,6 @@ export class ApiService {
         onError?: (error: HttpErrorResponse) => void
     ): boolean {
         return this.request({type: 'GET', url}, onSuccess, onError);
-    }
-
-    getSvgFilenameMap(callback: (response: SvgFilenameMapModel[]) => void): boolean {
-        return false;
-
-        // return this.get(this.config.apiBaseUrl + 'module=Template&controller=Index&action=GetSvgIcon', (response: ApiResponseModel) => {
-        //   if (response.error) { throw new Error('Api response error: ' + response.error.message); }
-        //   callback(response.list);
-        // });
     }
 
     getListViewData(

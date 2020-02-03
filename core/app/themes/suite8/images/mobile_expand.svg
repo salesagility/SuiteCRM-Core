@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Mobile Expand Icon</title>
+  <g id="02_mobile_expand_icon">
+    <rect id="Rectangle-2" stroke="#94A6B5" x="0.5" y="0.5" width="23" height="23" rx="2"></rect>
+    <polygon id="Path-2" fill="#94A6B5" fill-rule="nonzero"
+             points="7.48625458 8.80963948 6.01374542 10.1630488 12.2352934 16.9320921 18.4862546 10.1310473 17.0137454 8.77763793 12.2352934 13.9765931"></polygon>
+  </g>
+</svg>

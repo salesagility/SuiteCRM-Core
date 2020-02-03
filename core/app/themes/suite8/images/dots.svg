@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
      y="0px"
      viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#AA9DCC;}
-	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#AA9DCC;}
-</style>
-    <title>12_dots</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1">
-	<g>
+    <title>Dots Icon</title>
+  <g>
 		<path class="st0" d="M11,22C4.9,22,0,17.1,0,11C0,4.9,4.9,0,11,0c6.1,0,11,4.9,11,11C22,17.1,17.1,22,11,22z M11,1
 			C5.5,1,1,5.5,1,11s4.5,10,10,10s10-4.5,10-10S16.5,1,11,1z"/>
-        <path id="Page-1-Copy-34" class="st1" d="M5.8,13.2c-1,0-1.8-0.8-1.8-1.8s0.8-1.8,1.8-1.8c1,0,1.8,0.8,1.8,1.8S6.8,13.2,5.8,13.2z
+    <path id="Page-1-Copy-34" class="st1" d="M5.8,13.2c-1,0-1.8-0.8-1.8-1.8s0.8-1.8,1.8-1.8c1,0,1.8,0.8,1.8,1.8S6.8,13.2,5.8,13.2z
 			 M16.2,13.2c-1,0-1.8-0.8-1.8-1.8s0.8-1.8,1.8-1.8c1,0,1.8,0.8,1.8,1.8S17.2,13.2,16.2,13.2z M11,13.2c-1,0-1.8-0.8-1.8-1.8
 			S10,9.6,11,9.6s1.8,0.8,1.8,1.8S12,13.2,11,13.2z"/>
 	</g>
-</g>
 </svg>

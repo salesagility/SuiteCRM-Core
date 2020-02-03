@@ -3,8 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {FilterUiComponent} from './filter.component';
-
-import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
     declarations: [FilterUiComponent],
@@ -12,7 +11,7 @@ import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
     imports: [
         CommonModule,
         AppManagerModule.forChild(FilterUiComponent),
-        SvgIconUiModule
+        AngularSvgIconModule
     ]
 })
 export class FilterUiModule {

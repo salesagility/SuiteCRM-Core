@@ -4,8 +4,7 @@ import {CommonModule} from '@angular/common';
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ColumnChooserUiComponent} from './columnchooser.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
-import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
     declarations: [ColumnChooserUiComponent],
@@ -14,7 +13,7 @@ import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
         CommonModule,
         DragDropModule,
         AppManagerModule.forChild(ColumnChooserUiComponent),
-        SvgIconUiModule
+        AngularSvgIconModule
     ]
 })
 export class ColumnchooserUiModule {

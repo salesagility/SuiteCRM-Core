@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+     y="0px"
+     viewBox="0 0 10.7 17.5" style="enable-background:new 0 0 10.7 17.5;" xml:space="preserve">
+    <title>Bulb Icon</title>
+  <g id="Page-1">
+	<g>
+		<g id="Page-1-Copy-39" transform="translate(1.631579, 1.539474)">
+			<g id="Group-3" transform="translate(3.542464, 16.488939)">
+				<g id="Clip-2">
+				</g>
+        <defs>
+					<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-1.6" y="-1.6" width="3.6"
+                  height="1.1">
+						<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+					</filter>
+				</defs>
+        <mask maskUnits="userSpaceOnUse" x="-1.6" y="-1.6" width="3.6" height="1.1" id="mask-2_1_">
+					<g class="st0">
+						<polygon id="path-1_1_" class="st1"
+                     points="-1.6,-0.5 2,-0.5 2,-1.6 -1.6,-1.6 						"/>
+					</g>
+				</mask>
+        <path id="Fill-1" class="st2" d="M-1.6-1.6c0.3,0.6,1,1.1,1.8,1.1S1.6-0.9,2-1.6H-1.6z"/>
+			</g>
+      <g id="Group-6" transform="translate(0.000000, 0.008240)">
+				<g id="Clip-5">
+				</g>
+        <defs>
+					<filter id="Adobe_OpacityMaskFilter_1_" filterUnits="userSpaceOnUse" x="-1.6" y="-1.5" width="10.7"
+                  height="13.1">
+						<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+					</filter>
+				</defs>
+        <mask maskUnits="userSpaceOnUse" x="-1.6" y="-1.5" width="10.7" height="13.1" id="mask-4_1_">
+					<g class="st3">
+						<polygon id="path-3_1_" class="st1"
+                     points="9.1,11.6 9.1,-1.5 -1.6,-1.5 -1.6,11.6 						"/>
+					</g>
+				</mask>
+        <path id="Fill-4" class="st4" d="M5.7,11.6c0.4,0,0.7-0.4,0.7-0.7c0-3,2.7-3.4,2.7-7.2c0-2.9-2.4-5.3-5.4-5.3
+					c-3,0-5.4,2.4-5.4,5.3c0,3.8,2.7,4.2,2.7,7.2c0,0.4,0.4,0.7,0.7,0.7H5.7z"/>
+			</g>
+      <path id="Fill-7" class="st5" d="M6.1,12.6c0,0.2-0.2,0.4-0.4,0.4H1.9c-0.2,0-0.4-0.2-0.4-0.4c0-0.2,0.2-0.4,0.4-0.4h3.8
+				C5.9,12.1,6.1,12.3,6.1,12.6"/>
+      <path id="Fill-9" class="st5" d="M6.1,14c0,0.2-0.2,0.4-0.4,0.4H1.9c-0.2,0-0.4-0.2-0.4-0.4c0-0.2,0.2-0.4,0.4-0.4h3.8
+				C5.9,13.5,6.1,13.7,6.1,14"/>
+		</g>
+	</g>
+</g>
+</svg>

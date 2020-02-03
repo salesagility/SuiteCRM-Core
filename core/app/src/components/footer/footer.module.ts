@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {FooterUiComponent} from './footer.component';
-import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import {SvgIconUiModule} from '../svg-icon/svg-icon.module';
     imports: [
         CommonModule,
         AppManagerModule.forChild(FooterUiComponent),
-        SvgIconUiModule
+        AngularSvgIconModule
     ]
 })
 export class FooterUiModule {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Close Modal Icon</title>
+
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_modal_close">
+            <text id="+"
+                  transform="translate(12.909903, 10.909903) rotate(45.000000) translate(-12.909903, -10.909903) "
+                  font-family="Lato-Medium, Lato" font-size="22" font-weight="400" letter-spacing="-1.69230759"
+                  fill="#FFFFFF">
+                <tspan x="7.37605637" y="19.4099026">+</tspan>
+            </text>
+            <rect id="Rectangle-2" stroke="#F5F5F5" x="0.5" y="0.5" width="23" height="23" rx="2"></rect>
+        </g>
+    </g>
+</svg>

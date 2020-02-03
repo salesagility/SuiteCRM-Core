@@ -1,29 +1,29 @@
 <div class="container">
 
-    <!-- Start of login form section -->
+  <!-- Start of login form section -->
 
-    <form name="login" class="login-form">
-        <scrm-logo-ui></scrm-logo-ui>
+  <form name="login" class="login-form">
+    <scrm-logo-ui></scrm-logo-ui>
 
-        <div class="inner-addon left-addon">
-            <scrm-svg-icon-ui class="sicon" file="login_user.svg"></scrm-svg-icon-ui>
-            <input [(ngModel)]="uname" type="text" name="username" placeholder="Username" aria-label="Username">
-        </div>
+    <div class="inner-addon left-addon">
+      <svg-icon class="sicon" src="public/themes/suite8/images/login_user.svg"></svg-icon>
+      <input [(ngModel)]="uname" type="text" name="username" placeholder="Username" aria-label="Username">
+    </div>
 
-        <div class="inner-addon left-addon">
-            <scrm-svg-icon-ui class="sicon" file="login_password.svg"></scrm-svg-icon-ui>
-            <input [(ngModel)]="passw" type="password" name="password" placeholder="Password" aria-label="Password">
-        </div>
+    <div class="inner-addon left-addon">
+      <svg-icon class="sicon" src="public/themes/suite8/images/login_password.svg"></svg-icon>
+      <input [(ngModel)]="passw" type="password" name="password" placeholder="Password" aria-label="Password">
+    </div>
 
-        <button (click)="doLogin()">LOGIN</button>
-        <div class="forgotten-password">
-            <a href="#" class="forgotten-password-link">
-                Forgot Password?
-            </a>
-        </div>
-    </form>
+    <button (click)="doLogin()">LOGIN</button>
+    <div class="forgotten-password">
+      <a href="#" class="forgotten-password-link">
+        Forgot Password?
+      </a>
+    </div>
+  </form>
 
-    <!-- End of login form section -->
+  <!-- End of login form section -->
 
 </div>
 
