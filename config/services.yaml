@@ -1,28 +1,28 @@
 framework:
-    secret: "%secret%"
+  secret: "%secret%"
 
 parameters:
-    secret: ThisTokenIsNotSoSecretChangeIt
+  secret: ThisTokenIsNotSoSecretChangeIt
 
 services:
-    # default configuration for services in *this* file
-    _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        bind:
-            $projectDir: '%kernel.project_dir%'
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    bind:
+      $projectDir: '%kernel.project_dir%'
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
-    App\:
-        resource: '../core/src/*'
-        exclude: '../core/src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../core/src/*'
+    exclude: '../core/src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    SuiteCRM\Core\Modules\:
-        resource: '../core/modules/'
-        tags: ['controller.service_arguments']
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  SuiteCRM\Core\Modules\:
+    resource: '../core/modules/'
+    tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+  # add more service definitions when explicit configuration is needed
+  # please note that last definitions always *replace* previous ones

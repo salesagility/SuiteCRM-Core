@@ -1,6 +1,6 @@
 <?php
 
-use SuiteCRM\Core\src\Kernel;
+use App\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

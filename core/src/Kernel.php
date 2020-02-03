@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\src;
+namespace App;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -14,7 +14,7 @@ use function dirname;
 
 /**
  * Class Kernel
- * @package SuiteCRM\Core\src
+ * @package App
  */
 class Kernel extends BaseKernel
 {
