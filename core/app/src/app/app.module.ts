@@ -2,6 +2,10 @@ import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 
+import {Apollo, ApolloModule} from 'apollo-angular';
+import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
@@ -19,6 +23,11 @@ import {
   AppManagerModule
 } from '../app-manager/app-manager.module';
 
+import {environment} from '../environments/environment';
+import { FetchPolicy } from 'apollo-client/core/watchQueryOptions';
+
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -26,6 +35,9 @@ import {
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpClientModule,
+    ApolloModule,
+    HttpLinkModule,
     AppManagerModule,
     AppRoutingModule,
     FooterUiModule,
@@ -41,7 +53,25 @@ import {
   entryComponents: []
 })
 export class AppModule {
-  constructor() {
+  constructor(apollo: Apollo,
+              httpLink: HttpLink) {
 
+    const uri = environment.graphqlApiUrl;
+    const cache = new InMemoryCache();
+
+    const defaultOptions = {
+      watchQuery: {
+        fetchPolicy: 'no-cache' as FetchPolicy
+      },
+      query: {
+        fetchPolicy: 'no-cache' as FetchPolicy
+      },
+    };
+
+    apollo.create({
+      link: httpLink.create({uri}),
+      defaultOptions,
+      cache
+    });
   }
 }
