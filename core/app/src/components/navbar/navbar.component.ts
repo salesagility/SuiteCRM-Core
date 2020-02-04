@@ -3,6 +3,9 @@ import {Router, NavigationEnd} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
+import { Subscription } from 'rxjs';
+
+import { Metadata } from '../../services/metadata/metadata.service';
 
 @Component({
   selector: 'scrm-navbar-ui',
@@ -10,7 +13,10 @@ import {NavbarAbstract} from './navbar.abstract';
   styleUrls: []
 })
 export class NavbarUiComponent implements OnInit {
-  constructor(protected api: ApiService, protected router: Router) {
+  private navbarSubscription: Subscription;
+  public navigationMetadata: any;
+
+  constructor(protected metadata: Metadata, protected api: ApiService, protected router: Router) {
     NavbarUiComponent.instances.push(this);
   }
 
@@ -70,8 +76,23 @@ export class NavbarUiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let navbar = new NavbarAbstract();
+
+    const menuItemThreshold = 5;
+    /*
+     * TODO : this call should be moved elsewhere once
+     *  we have the final structure using cache
+     */
+    this.navbarSubscription = this.metadata
+        .getNavigation()
+        .subscribe((data) => {
+          this.navigationMetadata = data;
+          if (data && data.NonGroupedTabs) {
+            this.navbar.buildMenu(data.NonGroupedTabs, menuItemThreshold);
+          }
+        });
+
+    const navbar = new NavbarAbstract();
     this.setNavbar(navbar);
-    window.dispatchEvent(new Event("resize"));
+    window.dispatchEvent(new Event('resize'));
   }
 }

@@ -11,4 +11,5 @@ export interface NavbarModel {
   currentUser: CurrentUserModel;
   all: AllMenuModel;
   menu: any;
+  buildMenu(items: any, menuItemThreshold: number): void;
 }

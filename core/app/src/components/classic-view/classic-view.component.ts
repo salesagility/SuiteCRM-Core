@@ -9,7 +9,7 @@ import {ActivatedRoute} from '@angular/router';
 export class ClassicViewUiComponent {
     data: any;
 
-    @ViewChild('dataContainer', {static:true}) dataContainer: ElementRef;
+    @ViewChild('dataContainer', {static: true}) dataContainer: ElementRef;
     public element: any;
 
     renderHtml(data) {

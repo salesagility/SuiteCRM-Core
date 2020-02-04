@@ -14,8 +14,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {ListViewUiComponent} from './list-view.component';
-import {SvgIconUiComponent} from '../svg-icon/svg-icon.component';
-import {ModalViewUiComponent} from '../modal-view/modal-view.component';
 
 let mockRouter: any;
 

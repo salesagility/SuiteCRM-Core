@@ -137,7 +137,10 @@
                </span>
               <ul class="dropdown-menu main" aria-labelledby="navbarDropdownMenuLink" [ngbCollapse]="subNavCollapse">
                 <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
-                  <a class="nav-link action-link dropdown-item dropdown-toggle"
+                  <a class="nav-link action-link" *ngIf="!sub.submenu.length"  [href]="sub.link.url">
+                    {{ sub.link.label }}
+                  </a>
+                  <a class="nav-link action-link dropdown-item dropdown-toggle" *ngIf="sub.submenu.length"
                      (click)="subItemCollapse = !subItemCollapse">
                     {{ sub.link.label }}
                   </a>

@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {FilterViewUiComponent} from './filter-view.component';
+import {FilterUiComponent} from './filter.component';
 
-describe('FilterViewUiComponent', () => {
-    let component: FilterViewUiComponent;
-    let fixture: ComponentFixture<FilterViewUiComponent>;
+describe('FilterUiComponent', () => {
+    let component: FilterUiComponent;
+    let fixture: ComponentFixture<FilterUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FilterViewUiComponent]
+            declarations: [FilterUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FilterViewUiComponent);
+        fixture = TestBed.createComponent(FilterUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

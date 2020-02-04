@@ -7,27 +7,27 @@ export class NavbarAbstract implements NavbarModel {
   useGroupTabs = true;
   globalActions = [
     {
-      'link': {
-        'url': '',
-        'label': 'Employees'
+      link: {
+        url: '',
+        label: 'Employees'
       }
     },
     {
-      'link': {
-        'url': '',
-        'label': 'Admin'
+      link: {
+        url: '',
+        label: 'Admin'
       }
     },
     {
-      'link': {
-        'url': '',
-        'label': 'Support Forums'
+      link: {
+        url: '',
+        label: 'Support Forums'
       }
     },
     {
-      'link': {
-        'url': '',
-        'label': 'About'
+      link: {
+        url: '',
+        label: 'About'
       }
     }
   ];
@@ -39,263 +39,65 @@ export class NavbarAbstract implements NavbarModel {
     modules: [],
     extra: [],
   };
-  menu = [
-    {
-      "link": {
-        "label": "Accounts",
-        "url": ''
-      },
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Account",
-              "url": "",
-              "iconRef": {"resolved": "home_page"}
-            },
-            "icon": "plus",
-            "submenu": [],
+  menu = [];
 
-          },
-          {
-            "link": {
-              "label": "View Account", "url": "/#/Accounts/index"
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Accounts", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Contacts", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Contact",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Contact", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Contacts", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Opportunities", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Opportunity",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Opportunity", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Opportunities", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Leads", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Lead",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Lead", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Leads", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Quotes", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Quote",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Quote", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Quotes", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Calendar", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Calendar",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Calendar", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Calendars", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Documents", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Document",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Document", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Documents", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Emails", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Email",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Email", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Emails", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
-    },
-    {
-      "link": { "label": "Spots", "url": '' }, "icon": "home_page",
-      "submenu":
-        [
-          {
-            "link": {
-              "label": "Create Spot",
-              "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "View Spot", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-          {
-            "link": {
-              "label": "Import Spots", "url": ""
-            },
-            "icon": "plus",
-            "submenu": []
-          },
-        ]
+  public buildMenu(items: {}, threshold: number): void {
+    const navItems = [];
+    const moreItems = [];
+
+    if (!items || Object.keys(items).length === 0) {
+      this.menu = navItems;
+      this.all.extra = moreItems;
     }
-  ];
+
+    let count = 0;
+    Object.keys(items).forEach(module => {
+
+      if (count <= threshold) {
+        navItems.push(this.buildMenuItem(module, items[module]));
+      } else {
+        moreItems.push(this.buildMenuItem(module, items[module]));
+      }
+
+      count++;
+    });
+
+    this.menu = navItems;
+    this.all.modules = moreItems;
+  }
+
+  public buildMenuItem(module: string, label: string): any {
+
+    return {
+      link: { label, url: `/#/${module}/index` }, icon: 'home_page',
+      submenu:
+          [
+            {
+              link: {
+                label: `Create ${label}`,
+                url: `/#/${module}/edit`
+              },
+              icon: 'plus',
+              submenu: []
+            },
+            {
+              link: {
+                label: `View ${label}`,
+                url: `/#/${module}/list`
+              },
+              icon: 'view',
+              submenu: []
+            },
+            {
+              link: {
+                label: `Import ${label}`,
+                url: `/#/${module}/import`
+              },
+              icon: 'upload',
+              submenu: []
+            },
+          ]
+    };
+  }
+
 }
