@@ -60,7 +60,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "SuiteCRM:build:serve"
+            "browserTarget": "SuiteCRM:build:serve",
+            "proxyConfig": "./proxy.conf.local.json"
           },
           "configurations": {
             "production": {

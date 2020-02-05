@@ -11,6 +11,10 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+###> ng serve ###
+/proxy.conf.local.json
+###< ng serve ###
+
 build/
 config/
 !config/.gitkeep

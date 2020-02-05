@@ -44,6 +44,10 @@ find . -type d -exec chmod 0755 {} \;
 find . -type f -exec chmod 0644 {} \;
 chmod +x bin/console
 ```
-5. Run `bin/console orm:schema-tool:update --force`
-6. Run `npm install`
-7. Run `ng build`
+5. Go back to root folder
+6. Run `bin/console orm:schema-tool:update --force`
+7. Run `npm install`
+8. Setup proxy config for `ng serve` 
+    - Copy `proxy.conf.env.json` to `proxy.conf.local.json`
+    - Replace `"target": "http//<api_host>:<api_port>"` with your api url
+9. Run `ng build` or `ng serve`
