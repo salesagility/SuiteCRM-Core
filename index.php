@@ -23,7 +23,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 
 if (empty($_GET) && strpos($_SERVER['REQUEST_URI'], 'api') === false) {
     if (!file_exists('public/index.html')) {
-        throw new RuntimeException('Please run bin/cli frontend:rebuild from terminal');
+        throw new RuntimeException('Please run bin/console frontend:rebuild from terminal');
     }
 
     include __DIR__ . '/public/index.html';
@@ -34,12 +34,10 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
 // Get the Application Path
-define('BASE_PATH', __DIR__);
-define('APP_PATH', __DIR__ . '/core/modules/');
 define('LEGACY_PATH', __DIR__ . '/legacy/');
 
 // Get the autoloader class
-require BASE_PATH . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
