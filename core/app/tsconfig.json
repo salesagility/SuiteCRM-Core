@@ -17,6 +17,7 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@base/*": ["./src/*"],
+      "@views/*": ["./views/*"],
       "@services/*": ["./src/services/*"],
       "@components/*": ["./src/components/*"]
     },

@@ -15,6 +15,7 @@ import {ClassicViewUiModule} from '../components/classic-view/classic-view.modul
 import {MessageUiModule} from '../components/message/message.module';
 import {FilterUiModule} from '../components/filter/filter.module';
 import {ColumnchooserUiModule} from '../components/columnchooser/columnchooser.module';
+import {ListModule} from '../../views/list/list.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -45,6 +46,7 @@ import { FetchPolicy } from 'apollo-client/core/watchQueryOptions';
     MessageUiModule,
     ClassicViewUiModule,
     FilterUiModule,
+    ListModule,
     ColumnchooserUiModule,
     BrowserAnimationsModule,
     NgbModule
