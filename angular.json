@@ -93,15 +93,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "core/app/tsconfig.app.json",
-              "core/app/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "eslintConfig": "./.eslintrc.js",
+            "tsConfig": "core/app/tsconfig.app.json",
+            "fix": true
           }
         }
       }
@@ -121,15 +117,6 @@
             "production": {
               "devServerTarget": "SuiteCRM:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "core/app/e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
