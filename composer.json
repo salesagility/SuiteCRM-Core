@@ -52,7 +52,8 @@
       "App\\DataProvider\\": "core/src/DataProvider/",
       "App\\Entity\\": "core/src/Entity/",
       "App\\Services\\": "core/src/Service/",
-      "App\\EventListener\\": "core/src/EventListener/"
+      "App\\EventListener\\": "core/src/EventListener/",
+      "App\\Controller\\": "core/src/Controller/"
     }
   },
   "scripts": {

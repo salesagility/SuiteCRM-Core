@@ -21,15 +21,6 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-if (empty($_GET) && strpos($_SERVER['REQUEST_URI'], 'api') === false) {
-    if (!file_exists('public/index.html')) {
-        throw new RuntimeException('Please run bin/cli frontend:rebuild from terminal');
-    }
-
-    include __DIR__ . '/public/index.html';
-    die();
-}
-
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
