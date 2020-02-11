@@ -27,6 +27,14 @@
 
   .forgotten-password-link {
     clear: both;
-    color: $salmon-pink;
+    color: $coral-pink;
+  }
+
+  .forgotten-password-link:hover {
+    color: $light-orange;
+  }
+
+  .forgotten-password-link .disabled {
+    opacity: 40%;
   }
 }

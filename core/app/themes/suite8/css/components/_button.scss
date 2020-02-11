@@ -15,8 +15,17 @@ button {
   display: inline-block;
 }
 
-.login-form button {
+.login-button {
+  background-color: $coral-pink;
   letter-spacing: 0.1em;
+}
+
+.login-button .disabled {
+  opacity: 40%;
+}
+
+.login-button:hover {
+  background-color: $light-orange;
 }
 
 .alerts-button,
@@ -101,20 +110,14 @@ button {
 }
 
 @media all and (min-width: $breakpoint-medium) {
-  .login-form {
-    button {
-      background-color: $coral-pink;
-      width: 26.5em;
-    }
+  .login-button {
+    width: 26.5em;
   }
 }
 
 @media all and (max-width: $breakpoint-medium) {
-  .login-form {
-    button {
-      background-color: $coral-pink;
-      width: 20em;
-    }
+  .login-button {
+    width: 20em;
   }
 }
 
