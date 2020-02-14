@@ -2,18 +2,9 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ClassicViewUiComponent} from '@components/classic-view/classic-view.component';
 import {ClassicViewResolver} from '@services/api/resolvers/classic-view.resolver';
-import {ListComponent} from '../../views/list/list.component';
 import {AuthGuard} from '../services/auth/auth-guard.service';
 
 const routes: Routes = [
-  {
-    path: ':module/list',
-    component: ListComponent
-  },
-  {
-    path: 'Accounts/index',
-    loadChildren: () => import('../components/account/account.module').then(m => m.AccountUiModule)
-  },
   {
     path: 'Login',
     loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule)

@@ -2,17 +2,17 @@ import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ModalViewUiComponent} from './modal-view.component';
+import {ModalUiComponent} from './modal.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
-  declarations: [ModalViewUiComponent],
-  exports: [ModalViewUiComponent],
+  declarations: [ModalUiComponent],
+  exports: [ModalUiComponent],
   imports: [
     CommonModule,
-    AppManagerModule.forChild(ModalViewUiComponent),
+    AppManagerModule.forChild(ModalUiComponent),
     AngularSvgIconModule
   ]
 })
-export class ModalViewUiModule {
+export class ModalUiModule {
 }

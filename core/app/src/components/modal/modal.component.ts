@@ -9,8 +9,8 @@ import {
 } from '@angular/animations';
 
 @Component({
-  selector: 'scrm-modal-view-ui',
-  templateUrl: './modal-view.component.html',
+  selector: 'scrm-modal-ui',
+  templateUrl: './modal.component.html',
   animations: [
     trigger('modalFade', [
       transition('void <=> *', [
@@ -20,7 +20,7 @@ import {
   ]
 })
 
-export class ModalViewUiComponent implements OnInit {
+export class ModalUiComponent implements OnInit {
   closeResult: string;
   modalTitle: string = 'New Account';
   createModal: boolean = true;
