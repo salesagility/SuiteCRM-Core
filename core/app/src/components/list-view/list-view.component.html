@@ -36,13 +36,13 @@
                 </button>
                 <scrm-filter-ui></scrm-filter-ui>
                 <button type="button" class="settings-button">
-                  <scrm-svg-icon-ui class="sicon" file="reset_icon.svg"></scrm-svg-icon-ui>
+                  <svg-icon class="sicon" src="public/themes/suite8/images/reset.svg"></svg-icon>
                   Reset
                 </button>
                 <scrm-columnchooser-ui></scrm-columnchooser-ui>
                 <button type="button" class="settings-button" (click)="toggleWidgets()"
                         [ngClass]="{ 'charts-active': displayWidgets }">
-                  <scrm-svg-icon-ui class="sicon" file="pie_icon.svg"></scrm-svg-icon-ui>
+                  <svg-icon class="sicon" src="public/themes/suite8/images/pie.svg"></svg-icon>
                   Charts
                 </button>
               </div>
@@ -76,13 +76,13 @@
                 </button>
                 <scrm-filter-ui></scrm-filter-ui>
                 <button type="button" class="settings-button">
-                  <scrm-svg-icon-ui class="sicon" file="reset_icon.svg"></scrm-svg-icon-ui>
+                  <svg-icon class="sicon" src="public/themes/suite8/images/reset.svg"></svg-icon>
                   Reset
                 </button>
                 <scrm-columnchooser-ui></scrm-columnchooser-ui>
                 <button type="button" class="settings-button" (click)="toggleWidgets()"
                         [ngClass]="{ 'charts-active': displayWidgets }">
-                  <scrm-svg-icon-ui class="sicon" file="pie_icon.svg"></scrm-svg-icon-ui>
+                  <svg-icon class="sicon" src="public/themes/suite8/images/pie.svg"></svg-icon>
                   Charts
                 </button>
               </div>
@@ -148,12 +148,12 @@
             <div class="col mx-0 pl-0">
               <div class="bulk-action float-right">
                 <button class="pagination-button" aria-label="Navigate to first page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_prev.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_previous.svg">
+                  </svg-icon>
                 </button>
                 <button class="pagination-button" aria-label="Previous page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_first.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_first.svg">
+                  </svg-icon>
                 </button>
                 <span class="pagination-count" [ngClass]="{
                 'hide-pagination-count': displayResponsiveTable
@@ -161,12 +161,12 @@
                     (1- 20 of 200)
                   </span>
                 <button class="pagination-button" aria-label="Next page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_last.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_last.svg">
+                  </svg-icon>
                 </button>
                 <button class="pagination-button" aria-label="Navigate to last page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_next.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_next.svg">
+                  </svg-icon>
                 </button>
               </div>
             </div>
@@ -195,12 +195,12 @@
                     desc: desc == 'DESC'
                   }">
                         {{ title.label }}
-                        <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key != orderBy"
-                                          file="{{ listViewIconUnsorted }}">
-                        </scrm-svg-icon-ui>
-                        <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key == orderBy"
-                                          file="{{ listViewIconSorted }}">
-                        </scrm-svg-icon-ui>
+                        <svg-icon class="sicon sort-icon" *ngIf="title.key != orderBy"
+                                          src="{{ listViewIconUnsorted }}">
+                        </svg-icon>
+                        <svg-icon class="sicon sort-icon" *ngIf="title.key == orderBy"
+                                          src="{{ listViewIconSorted }}">
+                        </svg-icon>
                       </span>
                 </th>
               </ng-template>
@@ -230,14 +230,14 @@
                 <td [ngClass]="{
                   'responsive-table-toggler': displayResponsiveTable
                 }">
-                  <scrm-svg-icon-ui *ngIf="row.expanded" class="sicon-x2"
-                                    file="mobile_collapse_icon.svg"
+                  <svg-icon *ngIf="row.expanded" class="sicon-x2"
+                                    src="public/themes/suite8/images/mobile_collapse.svg"
                                     (click)="expandRow(row)">
-                  </scrm-svg-icon-ui>
-                  <scrm-svg-icon-ui *ngIf="!row.expanded" class="sicon-x2"
-                                    file="mobile_expand_icon.svg"
+                  </svg-icon>
+                  <svg-icon *ngIf="!row.expanded" class="sicon-x2"
+                                    src="public/themes/suite8/images/mobile_expand.svg"
                                     (click)="expandRow(row)">
-                  </scrm-svg-icon-ui>
+                  </svg-icon>
                 </td>
               </tr>
               <tr class="responsive-table-row" [ngClass]="{
@@ -257,29 +257,29 @@
                 <td class="list-group-icon">
                   <button class="list-icon-button responsive-list-data" aria-label="Phone"
                           aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="phone_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/phone.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button responsive-list-data" aria-label="Calendar"
                           aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="calendar_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/calendar.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button responsive-list-data" aria-label="List"
                           aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="list_icon_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/list_icon.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button responsive-list-data" aria-label="Email"
                           aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="email_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/email.svg">
+                    </svg-icon>
                   </button>
                 </td>
               </tr>
@@ -298,12 +298,12 @@
                   desc: desc == 'DESC'
                 }">
                       {{ title.label }}
-                      <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key != orderBy"
-                                        file="{{ listViewIconUnsorted }}">
-                      </scrm-svg-icon-ui>
-                      <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key == orderBy"
-                                        file="{{ listViewIconSorted }}">
-                      </scrm-svg-icon-ui>
+                      <svg-icon class="sicon sort-icon" *ngIf="title.key != orderBy"
+                                        src="{{ listViewIconUnsorted }}">
+                      </svg-icon>
+                      <svg-icon class="sicon sort-icon" *ngIf="title.key == orderBy"
+                                        src="{{ listViewIconSorted }}">
+                      </svg-icon>
                     </span>
               </th>
               <th class="primary-table-header"></th>
@@ -328,26 +328,26 @@
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button" aria-label="Phone" aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon list-data-icon" file="phone_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/phone.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button" aria-label="Calendar" aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon list-data-icon" file="calendar_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/calendar.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button" aria-label="List" aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon list-data-icon" file="list_icon_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/list_icon.svg">
+                    </svg-icon>
                   </button>
                 </td>
                 <td class="list-group-icon">
                   <button class="list-icon-button" aria-label="Email" aria-hidden="true">
-                    <scrm-svg-icon-ui class="sicon list-data-icon" file="email_purple.svg">
-                    </scrm-svg-icon-ui>
+                    <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/email.svg">
+                    </svg-icon>
                   </button>
                 </td>
               </tr>
@@ -405,12 +405,12 @@
             <div class="col mx-0 pl-0">
               <div class="bulk-action float-right">
                 <button class="pagination-button" aria-label="Navigate to first page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_prev.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_previous.svg">
+                  </svg-icon>
                 </button>
                 <button class="pagination-button" aria-label="Previous page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_first.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_first.svg">
+                  </svg-icon>
                 </button>
                 <span class="pagination-count" [ngClass]="{
                 'hide-pagination-count': displayResponsiveTable
@@ -418,12 +418,12 @@
                     (1- 20 of 200)
                   </span>
                 <button class="pagination-button" aria-label="Next page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_last.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_last.svg">
+                  </svg-icon>
                 </button>
                 <button class="pagination-button" aria-label="Navigate to last page">
-                  <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_next.svg">
-                  </scrm-svg-icon-ui>
+                  <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_next.svg">
+                  </svg-icon>
                 </button>
               </div>
             </div>
@@ -440,10 +440,10 @@
           <div class="widget-header">
             <h3>
               Quick Charts
-              <scrm-svg-icon-ui class="sicon float-right widget-close-icon"
+              <svg-icon class="sicon float-right widget-close-icon"
                                 (click)="toggleWidgetContent()"
-                                file="{{ widgetHeaderToggleIcon }}">
-              </scrm-svg-icon-ui>
+                                src="{{ widgetHeaderToggleIcon }}">
+              </svg-icon>
             </h3>
           </div>
 
@@ -452,8 +452,8 @@
                         <div class="card-body">
                             <div class="chart-create">
                                 <button class="quickcreate-button" type="button">
-                                    <scrm-svg-icon-ui class="sicon widget-button-icon"
-                                                      file="plus.svg"></scrm-svg-icon-ui>
+                                    <svg-icon class="sicon widget-button-icon"
+                                                      src="public/themes/suite8/images/plus.svg"></svg-icon>
                                     New Chart
                                 </button>
                             </div>
@@ -469,7 +469,7 @@
                                             <div class="collapse show pipeline-chart-content"
                                                  data-parent=".pipeline-chart">
                                                 <img alt="Pipeline Chart" class="w-100"
-                                                     src="themes/suite8/images/pipeline_chart.png">
+                                                     src="public/themes/suite8/images/pipeline_chart.png">
                                             </div>
                                         </div>
                                     </div>
@@ -482,7 +482,7 @@
                                             </button>
                                             <div class="collapse show donut-chart-content" data-parent=".donut-chart">
                                                 <img alt="Donut Chart" class="w-100"
-                                                     src="themes/suite8/images/donut_chart.png">
+                                                     src="public/themes/suite8/images/donut_chart.png">
                                             </div>
                                         </div>
                                     </div>
@@ -490,13 +490,13 @@
                             </div>
                             <div class="chart-create">
                                 <button class="quickcreate-button" type="button">
-                                    <scrm-svg-icon-ui class="sicon widget-button-icon"
-                                                      file="edit.svg"></scrm-svg-icon-ui>
+                                    <svg-icon class="sicon widget-button-icon"
+                                                      src="public/themes/suite8/images/edit.svg"></svg-icon>
                                     Edit
                                 </button>
                                 <button class="remove-button" type="button">
-                                    <scrm-svg-icon-ui class="sicon widget-button-icon" file="cross_white.svg">
-                                    </scrm-svg-icon-ui>
+                                    <svg-icon class="sicon widget-button-icon" src="public/themes/suite8/images/cross.svg">
+                                    </svg-icon>
                                     Remove
                                 </button>
                             </div>
