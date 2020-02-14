@@ -56,7 +56,6 @@ export class FilterUiComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('this is woroking?');
   }
 
 }

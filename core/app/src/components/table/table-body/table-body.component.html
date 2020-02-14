@@ -1,0 +1,186 @@
+table-body
+<!--&lt;!&ndash; Start List View Table Data Section &ndash;&gt;-->
+
+<!--<div [ngClass]="{ 'table-wrapper': !displayResponsiveTable }">-->
+<!--  <table class="list-view-table table" [ngClass]="{-->
+<!--          'table-striped': !showCollapsed,-->
+<!--          'responsive-table': showCollapsed-->
+<!--        }">-->
+
+<!--    &lt;!&ndash; Start of mobile inner table structure &ndash;&gt;-->
+
+<!--    <thead class="primary-table-header">-->
+<!--    <tr>-->
+<!--      <th *ngIf="displayResponsiveTable" class="show-table-rows"></th>-->
+<!--      <ng-template [ngIf]="displayResponsiveTable" *ngFor="let title of listViewData.columns">-->
+<!--        <th *ngIf="title.key == 'name'" (click)="order(title.key)">-->
+<!--                      <span [ngClass]="{-->
+<!--                    active: title.key == orderBy,-->
+<!--                    desc: desc == 'DESC'-->
+<!--                  }">-->
+<!--                        {{ title.label }}-->
+<!--                        <svg-icon class="sicon sort-icon" *ngIf="title.key != orderBy"-->
+<!--                                  src="{{ listViewIconUnsorted }}">-->
+<!--                        </svg-icon>-->
+<!--                        <svg-icon class="sicon sort-icon" *ngIf="title.key == orderBy"-->
+<!--                                  src="{{ listViewIconSorted }}">-->
+<!--                        </svg-icon>-->
+<!--                      </span>-->
+<!--        </th>-->
+<!--      </ng-template>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <ng-template [ngIf]="displayResponsiveTable" *ngFor="let row of listViewData.rows">-->
+<!--      <tr [ngClass]="{ 'responsive-top-row': row.expanded }">-->
+<!--        <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }" aria-hidden="true">-->
+<!--          <label class="checkbox-container">-->
+<!--            <input type="checkbox" [checked]="allSelected" aria-hidden="true">-->
+<!--            <span class="checkmark" (click)="selectAll()"></span>-->
+<!--          </label>-->
+<!--        </td>-->
+
+<!--        <ng-template [ngIf]="displayResponsiveTable" *ngFor="let col of listViewData.columns">-->
+<!--          <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }"-->
+<!--              class="primary-table-data"-->
+<!--              *ngIf="col.link == true && col.key == 'name'">-->
+<!--            <scrm-field view-type="list-view" field-type="{{-->
+<!--                      listViewData.rows[0].field_name_map[col.key].type-->
+<!--                    }}" field-name="{{ col.key }}" field-value="{{ row[col.key] }}" row="{{ row | json }}">-->
+<!--            </scrm-field>-->
+<!--          </td>-->
+<!--        </ng-template>-->
+
+<!--        <td [ngClass]="{-->
+<!--                  'responsive-table-toggler': displayResponsiveTable-->
+<!--                }">-->
+<!--          <svg-icon *ngIf="row.expanded" class="sicon-x2"-->
+<!--                    src="public/themes/suite8/images/mobile_collapse.svg"-->
+<!--                    (click)="expandRow(row)">-->
+<!--          </svg-icon>-->
+<!--          <svg-icon *ngIf="!row.expanded" class="sicon-x2"-->
+<!--                    src="public/themes/suite8/images/mobile_expand.svg"-->
+<!--                    (click)="expandRow(row)">-->
+<!--          </svg-icon>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--      <tr class="responsive-table-row" [ngClass]="{-->
+<!--                'show-collapsed-header': !row.expanded,-->
+<!--                'display-block-table': row.expanded-->
+<!--              }" *ngIf="row.expanded">-->
+<!--        <ng-template *ngFor="let title of listViewData.columns" [ngIf]="title.key != 'name'">-->
+<!--          <th [ngClass]="{-->
+<!--                    'show-table-header': !displayResponsiveTable,-->
+<!--                    active: title.key == orderBy,-->
+<!--                    desc: desc == 'DESC'-->
+<!--                  }" (click)="order(title.key)">-->
+<!--            {{ title.label }}-->
+<!--          </th>-->
+<!--          <td>{{ row[title.key] }}</td>-->
+<!--        </ng-template>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button responsive-list-data" aria-label="Phone"-->
+<!--                  aria-hidden="true">-->
+<!--            <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/phone.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button responsive-list-data" aria-label="Calendar"-->
+<!--                  aria-hidden="true">-->
+<!--            <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/calendar.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button responsive-list-data" aria-label="List"-->
+<!--                  aria-hidden="true">-->
+<!--            <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/list_icon.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button responsive-list-data" aria-label="Email"-->
+<!--                  aria-hidden="true">-->
+<!--            <svg-icon class="sicon-2x list-data-icon" src="public/themes/suite8/images/email.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
+
+<!--    &lt;!&ndash; End of mobile inner table structure &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Start of desktop inner table structure &ndash;&gt;-->
+
+<!--    <ng-template [ngIf]="!displayResponsiveTable">-->
+<!--      <th class="primary-table-header"></th>-->
+<!--      <th class="primary-table-header" *ngFor="let title of listViewData.columns"-->
+<!--          (click)="order(title.key)">-->
+<!--                    <span [ngClass]="{-->
+<!--                  active: title.key == orderBy,-->
+<!--                  desc: desc == 'DESC'-->
+<!--                }">-->
+<!--                      {{ title.label }}-->
+<!--                      <svg-icon class="sicon sort-icon" *ngIf="title.key != orderBy"-->
+<!--                                src="{{ listViewIconUnsorted }}">-->
+<!--                      </svg-icon>-->
+<!--                      <svg-icon class="sicon sort-icon" *ngIf="title.key == orderBy"-->
+<!--                                src="{{ listViewIconSorted }}">-->
+<!--                      </svg-icon>-->
+<!--                    </span>-->
+<!--      </th>-->
+<!--      <th class="primary-table-header"></th>-->
+<!--      <th class="primary-table-header"></th>-->
+<!--      <th class="primary-table-header"></th>-->
+<!--      <th class="primary-table-header"></th>-->
+<!--    </ng-template>-->
+<!--    <ng-template [ngIf]="!displayResponsiveTable" *ngFor="let row of listViewData.rows">-->
+<!--      <tr>-->
+<!--        <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }">-->
+<!--          <label class="checkbox-container" aria-label="Checkbox Container">-->
+<!--            <input type="checkbox" [checked]="allSelected" aria-hidden="true">-->
+<!--            <span class="checkmark"></span>-->
+<!--          </label>-->
+<!--        </td>-->
+<!--        <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }"-->
+<!--            *ngFor="let col of listViewData.columns">-->
+<!--          <scrm-field view-type="list-view" field-type="{{-->
+<!--                    listViewData.rows[0].field_name_map[col.key].type-->
+<!--                  }}" field-name="{{ col.key }}" field-value="{{ row[col.key] }}" row="{{ row | json }}">-->
+<!--          </scrm-field>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button" aria-label="Phone" aria-hidden="true">-->
+<!--            <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/phone.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button" aria-label="Calendar" aria-hidden="true">-->
+<!--            <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/calendar.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button" aria-label="List" aria-hidden="true">-->
+<!--            <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/list_icon.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--        <td class="list-group-icon">-->
+<!--          <button class="list-icon-button" aria-label="Email" aria-hidden="true">-->
+<!--            <svg-icon class="sicon list-data-icon" src="public/themes/suite8/images/email.svg">-->
+<!--            </svg-icon>-->
+<!--          </button>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
+
+<!--    &lt;!&ndash; End of desktop inner table structure &ndash;&gt;-->
+
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; End List View Table Data Section &ndash;&gt;-->

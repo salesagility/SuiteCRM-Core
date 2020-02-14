@@ -1,0 +1,37 @@
+<div class="bulk-action float-left">
+  <div class="dropdown select-action-group float-left">
+    <label class="checkbox-container">
+      <input type="checkbox" [checked]="allSelected" aria-hidden="true">
+      <span class="checkmark"></span>
+    </label>
+    <button class="bulk-action-button dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" aria-hidden="true"
+            aria-label="Select Action Menu"></button>
+    <div class="dropdown-menu" aria-hidden="true">
+      <a class="dropdown-item" (click)="selectAll()">
+        Select All
+      </a>
+      <a class="dropdown-item" (click)="selectAll()">
+        Select This Page
+      </a>
+      <a class="dropdown-item" (click)="deselectAll()">
+        Deselect All
+      </a>
+    </div>
+  </div>
+  <div class="dropdown bulk-action-group float-left">
+    <button class="bulk-action-button  dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-hidden="true" aria-expanded="false">
+      Bulk Action
+    </button>
+    <div class="dropdown-menu" aria-hidden="true">
+      <a class="dropdown-item">Email</a>
+      <a class="dropdown-item">Mass Update</a>
+      <a class="dropdown-item">Mail Merge</a>
+      <a class="dropdown-item">Merge</a>
+      <a class="dropdown-item">Print as PDF</a>
+      <a class="dropdown-item">Export</a>
+      <a class="dropdown-item">Delete</a>
+    </div>
+  </div>
+</div>

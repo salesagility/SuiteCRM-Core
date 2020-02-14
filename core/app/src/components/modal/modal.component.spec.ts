@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ModalViewUiComponent} from './modal-view.component';
+import {ModalUiComponent} from './modal.component';
 
-describe('ModalViewUiComponent', () => {
-    let component: ModalViewUiComponent;
-    let fixture: ComponentFixture<ModalViewUiComponent>;
+describe('ModalUiComponent', () => {
+    let component: ModalUiComponent;
+    let fixture: ComponentFixture<ModalUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ModalViewUiComponent]
+            declarations: [ModalUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ModalViewUiComponent);
+        fixture = TestBed.createComponent(ModalUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

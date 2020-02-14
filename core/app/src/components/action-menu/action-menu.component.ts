@@ -8,6 +8,16 @@ import {Component, OnInit} from '@angular/core';
 
 export class ActionmenuUiComponent implements OnInit {
 
+  newButtonConfig = {
+    text: 'NEW',
+    buttonClass: 'action-button'
+  };
+
+  importButtonConfig = {
+    text: 'IMPORT',
+    buttonClass: 'action-button'
+  };
+
   ngOnInit() {
 
   }

@@ -1,0 +1,44 @@
+<!-- Start List View Header Section -->
+<div class="list-view-header">
+  <ng-template [ngIf]="displayResponsiveTable">
+    <div class="d-flex flex-nowrap">
+      <div class="row">
+        <div class="col">
+          <div class="order-3">
+            <scrm-action-menu-ui></scrm-action-menu-ui>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col">
+          <div class="order-2">
+            <scrm-module-title-ui></scrm-module-title-ui>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col">
+          <div class="order-1">
+            <scrm-settings-menu-ui></scrm-settings-menu-ui>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="!displayResponsiveTable">
+    <div class="row mr-0">
+      <div class="col-md-4">
+        <scrm-module-title-ui></scrm-module-title-ui>
+      </div>
+      <div class="col-md-8">
+        <div class="row mr-1 ml-1">
+          <div class="w-100">
+            <scrm-action-menu-ui></scrm-action-menu-ui>
+          </div>
+          <div class="w-100">
+            <scrm-settings-menu-ui></scrm-settings-menu-ui>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!-- End List View Header Section -->

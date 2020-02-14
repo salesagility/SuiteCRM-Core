@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SettingsmenuUiComponent} from './settings-menu.component';
+import {ButtonUiComponent} from './button.component';
 
-describe('SettingsmenuUiComponent', () => {
-    let component: SettingsmenuUiComponent;
-    let fixture: ComponentFixture<SettingsmenuUiComponent>;
+describe('ButtonUiComponent', () => {
+    let component: ButtonUiComponent;
+    let fixture: ComponentFixture<ButtonUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SettingsmenuUiComponent]
+            declarations: [ButtonUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsmenuUiComponent);
+        fixture = TestBed.createComponent(ButtonUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

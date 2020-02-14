@@ -1,0 +1,23 @@
+<div class="bulk-action float-right">
+  <button class="pagination-button" aria-label="Navigate to first page">
+    <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_previous.svg">
+    </svg-icon>
+  </button>
+  <button class="pagination-button" aria-label="Previous page">
+    <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_first.svg">
+    </svg-icon>
+  </button>
+  <span class="pagination-count" [ngClass]="{
+                'hide-pagination-count': displayResponsiveTable
+              }">
+                    (1- 20 of 200)
+                  </span>
+  <button class="pagination-button" aria-label="Next page">
+    <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_last.svg">
+    </svg-icon>
+  </button>
+  <button class="pagination-button" aria-label="Navigate to last page">
+    <svg-icon class="sicon-2x pagination-icons" src="public/themes/suite8/images/paginate_next.svg">
+    </svg-icon>
+  </button>
+</div>

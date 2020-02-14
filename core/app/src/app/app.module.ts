@@ -17,8 +17,10 @@ import {FilterUiModule} from '../components/filter/filter.module';
 import {ColumnchooserUiModule} from '../components/columnchooser/columnchooser.module';
 import {WidgetUiModule} from '../components/widget/widget.module';
 import {TableUiModule} from '../components/table/table.module';
+import {ModuletitleUiModule} from '../components/module-title/module-title.module';
+import {ListheaderUiModule} from '../components/list-header/list-header.module';
+import {ListcontainerUiModule} from '../components/list-container/list-container.module';
 import {ListModule} from '../../views/list/list.module';
-
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -28,8 +30,6 @@ import {
 
 import {environment} from '../environments/environment';
 import { FetchPolicy } from 'apollo-client/core/watchQueryOptions';
-
-
 
 @NgModule({
   declarations: [
@@ -51,6 +51,9 @@ import { FetchPolicy } from 'apollo-client/core/watchQueryOptions';
     ListModule,
     WidgetUiModule,
     TableUiModule,
+    ModuletitleUiModule,
+    ListheaderUiModule,
+    ListcontainerUiModule,
     ColumnchooserUiModule,
     BrowserAnimationsModule,
     NgbModule

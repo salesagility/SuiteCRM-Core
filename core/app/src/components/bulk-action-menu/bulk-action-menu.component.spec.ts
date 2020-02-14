@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SettingsmenuUiComponent} from './settings-menu.component';
+import {BulkactionmenuUiComponent} from './bulk-action-menu.component';
 
-describe('SettingsmenuUiComponent', () => {
-    let component: SettingsmenuUiComponent;
-    let fixture: ComponentFixture<SettingsmenuUiComponent>;
+describe('BulkactionmenuUiComponent', () => {
+    let component: BulkactionmenuUiComponent;
+    let fixture: ComponentFixture<BulkactionmenuUiComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SettingsmenuUiComponent]
+            declarations: [BulkactionmenuUiComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsmenuUiComponent);
+        fixture = TestBed.createComponent(BulkactionmenuUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

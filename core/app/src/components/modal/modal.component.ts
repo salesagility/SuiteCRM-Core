@@ -50,6 +50,11 @@ export class ModalUiComponent implements OnInit {
     }
   }
 
+  newButtonConfig = {
+    text: 'NEW',
+    buttonClass: 'action-button'
+  };
+
   ngOnInit() {
   }
 

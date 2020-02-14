@@ -1,18 +1,17 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './list.component';
-import { TableUiModule } from '../../src/components/table/table.module';
-import { WidgetUiModule } from '../../src/components/widget/widget.module';
-import { ColumnchooserUiModule } from '../../src/components/columnchooser/columnchooser.module';
+import { ListheaderUiModule } from '../../src/components/list-header/list-header.module';
+import { ListcontainerUiModule } from '../../src/components/list-container/list-container.module';
+
 
 @NgModule({
 declarations: [ListComponent],
 exports: [ListComponent],
 imports: [
   CommonModule,
-  WidgetUiModule,
-  TableUiModule,
-  ColumnchooserUiModule
+  ListheaderUiModule,
+  ListcontainerUiModule
 ]
 })
 export class ListModule {}

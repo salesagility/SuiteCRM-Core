@@ -1,0 +1,92 @@
+<!-- Start List View Container Section -->
+
+<div class="list-view-container container-fluid">
+  <div class="row">
+
+    <!-- Start List View Table Section -->
+
+    <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !displayWidgets }">
+      <scrm-table-ui></scrm-table-ui>
+    </div>
+
+
+
+
+    <!-- Start List View Widget Section -->
+
+    <div class="col-lg-3" *ngIf="displayWidgets" [@widgetFade]>
+      <div class="accordion list-view-widget mr-0">
+        <div class="widget-header">
+          <h3>
+            Quick Charts
+            <svg-icon class="sicon float-right widget-close-icon"
+                      (click)="toggleWidgetContent()"
+                      src="{{ widgetHeaderToggleIcon }}">
+            </svg-icon>
+          </h3>
+        </div>
+
+        <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
+             [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
+          <div class="card-body">
+            <div class="chart-create">
+              <button class="quickcreate-button" type="button">
+                <svg-icon class="sicon widget-button-icon"
+                          src="public/themes/suite8/images/plus.svg"></svg-icon>
+                New Chart
+              </button>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="pipeline-chart col-xs">
+                  <div class="accordion">
+                    <button class="widget-transparent-button btn-block dropdown-toggle"
+                            type="button"
+                            data-toggle="collapse" data-target=".pipeline-chart-content">
+                      Pipeline By Sales Stage
+                    </button>
+                    <div class="collapse show pipeline-chart-content"
+                         data-parent=".pipeline-chart">
+                      <img alt="Pipeline Chart" class="w-100"
+                           src="public/themes/suite8/images/pipeline_chart.png">
+                    </div>
+                  </div>
+                </div>
+                <div class="donut-chart col-xs">
+                  <div class="accordion">
+                    <button class="widget-transparent-button btn-block dropdown-toggle"
+                            type="button"
+                            data-toggle="collapse" data-target=".donut-chart-content">
+                      Display as Donut Chart
+                    </button>
+                    <div class="collapse show donut-chart-content" data-parent=".donut-chart">
+                      <img alt="Donut Chart" class="w-100"
+                           src="public/themes/suite8/images/donut_chart.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-create">
+              <button class="quickcreate-button" type="button">
+                <svg-icon class="sicon widget-button-icon"
+                          src="public/themes/suite8/images/edit.svg"></svg-icon>
+                Edit
+              </button>
+              <button class="remove-button" type="button">
+                <svg-icon class="sicon widget-button-icon" src="public/themes/suite8/images/cross.svg">
+                </svg-icon>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End List View Widget Section -->
+
+  </div>
+</div>
+
+<!-- End List View Container Section -->
