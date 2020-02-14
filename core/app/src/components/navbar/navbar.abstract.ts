@@ -69,13 +69,13 @@ export class NavbarAbstract implements NavbarModel {
   public buildMenuItem(module: string, label: string): any {
 
     return {
-      link: { label, url: `/#/${module}/index` }, icon: 'home_page',
+      link: { label, url: `./#/${module}/index` }, icon: 'home_page',
       submenu:
           [
             {
               link: {
                 label: `Create ${label}`,
-                url: `/#/${module}/edit`
+                url: `./#/${module}/edit`
               },
               icon: 'plus',
               submenu: []
@@ -83,7 +83,7 @@ export class NavbarAbstract implements NavbarModel {
             {
               link: {
                 label: `View ${label}`,
-                url: `/#/${module}/list`
+                url: `./#/${module}/list`
               },
               icon: 'view',
               submenu: []
@@ -91,7 +91,7 @@ export class NavbarAbstract implements NavbarModel {
             {
               link: {
                 label: `Import ${label}`,
-                url: `/#/${module}/import`
+                url: `./#/${module}/import`
               },
               icon: 'upload',
               submenu: []
