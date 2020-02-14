@@ -20,7 +20,7 @@
           <svg-icon class="action-btn-icon" src="public/themes/suite8/images/alert.svg"></svg-icon>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <li>
+          <li class="alert-list-item">
             <h4>ASSIGNED TASK</h4>
             <a href="#">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/alert.svg">
@@ -28,7 +28,7 @@
               Create Wireframe
             </a>
           </li>
-          <li>
+          <li class="alert-list-item">
             <h4>DUE DATE EXPIRED</h4>
             <a href="#">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/alert.svg">
@@ -36,7 +36,7 @@
               Call John Doe to discuss...
             </a>
           </li>
-          <li>
+          <li class="alert-list-item">
             <h4>ASSIGNED LEAD</h4>
             <a href="#">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/alert.svg">
@@ -44,7 +44,7 @@
               John Doe
             </a>
           </li>
-          <li>
+          <li class="alert-list-item">
             <h4>NEW CASE</h4>
             <a href="#">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/alert.svg">
@@ -54,7 +54,7 @@
           </li>
           <li>
             <a class="action-view-all" href="#">
-              View All
+              View All >
             </a>
           </li>
         </div>
@@ -64,19 +64,33 @@
           <svg-icon class="action-btn-icon" src="public/themes/suite8/images/star.svg"></svg-icon>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <li *ngFor="let item of actionBar.favoriteRecords">
-            <h4>{{ item.itemSummaryShort }}</h4>
-            <a href="redirect-to-the-record-{{ item.id }}-of-module-{{
-                  item.moduleName
-                }}">
+          <li class="favourite-list-item">
+            <h4>JOHN DOE</h4>
+            <a href="redirect-to-the-record">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/star.svg">
               </svg-icon>
-              {{ item.itemSummary }}
+              This is a favourited record
+            </a>
+          </li>
+          <li class="favourite-list-item">
+            <h4>JOHNSTON & CO</h4>
+            <a href="redirect-to-the-record">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/star.svg">
+              </svg-icon>
+              This is a favourited record
+            </a>
+          </li>
+          <li class="favourite-list-item">
+            <h4>CREATE WIREFRAME</h4>
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/star.svg">
+              </svg-icon>
+              This is a favourited record
             </a>
           </li>
           <li>
             <a class="action-view-all" href="#">
-              View All
+              View All >
             </a>
           </li>
         </div>
@@ -86,10 +100,40 @@
           NEW
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <li *ngFor="let item of actionBar.createLinks">
-            <a href="{{ item.url }}">
+          <li class="new-list-item">
+            <a href="#">
               <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
-              {{ item.label }}
+              Accounts
+            </a>
+          </li>
+          <li class="new-list-item">
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
+              Contacts
+            </a>
+          </li>
+          <li class="new-list-item">
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
+              Leads
+            </a>
+          </li>
+          <li class="new-list-item">
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
+              Opportunities
+            </a>
+          </li>
+          <li class="new-list-item">
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
+              Quotes
+            </a>
+          </li>
+          <li class="new-list-item">
+            <a href="#">
+              <svg-icon class="action-btn-icon" src="public/themes/suite8/images/plus.svg"></svg-icon>
+              Contracts
             </a>
           </li>
         </div>

@@ -69,14 +69,12 @@ button {
   }
 }
 
-.alerts-button:hover,
-.quickcreate-button:hover,
-.favourites-button:hover {
-  opacity: 0.8;
-}
-
 .alerts-button {
   background-color: $burnt-red;
+}
+
+.alerts-button:active, .alerts-button:hover {
+  background-color: $burnt-orange;
 }
 
 .quickcreate-button {
@@ -84,8 +82,20 @@ button {
   color: $white;
 }
 
+.quickcreate-button:active, .quickcreate-button:hover {
+  background-color: $light-purple;
+}
+
 .favourites-button {
   background-color: $mellow-yellow;
+}
+
+.favourites-button:active, .favourites-button:hover {
+  background-color: $sandy-yellow;
+}
+
+.alerts-button.disabled, .quickcreate-button.disabled, .favourites-button.disabled {
+  opacity: 40%;
 }
 
 .alerts-button.dropdown-toggle::after,
@@ -129,7 +139,7 @@ button {
 }
 
 .action-button:hover {
-  background-color: $midnight-blue;
+  background-color: $astral-blue;
 }
 
 .settings-button {
@@ -140,7 +150,11 @@ button {
 }
 
 .settings-button:hover {
-  background-color: $midnight-blue;
+  background-color: $pale-blue;
+}
+
+.action-button.disabled, .settings-button.disabled {
+  opacity: 40%;
 }
 
 .widget-header .btn-link {
@@ -197,8 +211,8 @@ button {
 }
 
 .modal-button-save {
-  background-color: #50585e;
-  border: 0.05em solid $light-grey;
+  background-color: $midnight-blue;
+  border: none;
   color: $white;
   padding: 0.3rem 1rem;
   font-size: 0.8em;
@@ -209,8 +223,8 @@ button {
 }
 
 .modal-button-cancel {
-  background-color: $dusty-grey;
-  border: 0.05em solid $nepal-grey;
+  background-color: $pale-grey;
+  border: none;
   color: $white;
   padding: 0.3rem 1rem;
   font-size: 0.8em;
@@ -218,6 +232,11 @@ button {
   -webkit-border-radius: 0.2em;
   -moz-border-radius: 0.2em;
   border-radius: 0.2em;
+}
+
+.modal-button-save:hover, .modal-button-cancel:hover {
+  color: $white;
+  background-color: $bright-orange;
 }
 
 .charts-active {
@@ -229,6 +248,10 @@ button {
   border: none;
   margin: 0.3em 0 0 0;
   padding: 0;
+}
+
+.pagination-button .disabled {
+  opacity: 40%;
 }
 
 .create-popup-button {

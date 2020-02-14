@@ -18,11 +18,6 @@
   border-top-right-radius: 0;
 }
 
-.dropdown-menu a:hover {
-  background-color: $dusky-blue;
-  cursor: pointer;
-}
-
 .action-group .dropdown-menu {
   background-color: $white;
   margin-top: 0;
@@ -60,39 +55,42 @@
 }
 
 .action-alert .dropdown-menu svg path {
-  fill: $burnt-red;
+  fill: $burnt-orange;
 }
 
 .action-favourite .dropdown-menu svg path {
-  fill: $mellow-yellow;
+  fill: $sandy-yellow;
 }
 
 .action-new .dropdown-menu svg polygon {
-  fill: $sky-blue;
+  fill: $light-purple;
 }
 
-.action-group .action-alert .dropdown-menu li a:hover {
-  color: $burnt-red;
+.alert-list-item:hover {
+  background-color: $bright-grey;
+  cursor: pointer;
 }
 
-.action-group .action-favourite .dropdown-menu li a:hover {
-  color: $mellow-yellow;
+.favourite-list-item:hover {
+  background-color: $sky-grey;
+  cursor: pointer;
 }
 
-.action-group .action-new .dropdown-menu li a:hover {
-  color: $sky-blue;
+.new-list-item:hover {
+  background-color: $bright-blue;
+  cursor: pointer;
 }
 
 .action-alert .dropdown-menu {
-  border: 0.35em solid $burnt-red;
+  border: 0.35em solid $burnt-orange;
 }
 
 .action-favourite .dropdown-menu {
-  border: 0.35em solid $mellow-yellow;
+  border: 0.35em solid $sandy-yellow;
 }
 
 .action-new .dropdown-menu {
-  border: 0.35em solid $sky-blue;
+  border: 0.35em solid $light-purple;
 }
 
 .alerts-button.dropdown-toggle[_ngcontent-c1]::after,
@@ -140,13 +138,26 @@ a.close-navmenu:hover {
   left: 100%;
 }
 
-li.main-grouped:hover {
+.nav-link-grouped:hover, .nav-link-nongrouped:hover {
+  color: $light-grey;
+  text-decoration: none;
   background-color: $dusky-blue;
+  margin-top: 1em;
+  -webkit-border-top-left-radius: 0.285em;
+  -webkit-border-top-right-radius: 0.285em;
+  -moz-border-radius-topleft: 0.285em;
+  -moz-border-radius-topright: 0.285em;
+  border-top-left-radius: 0.285em;
+  border-top-right-radius: 0.285em;
 }
 
 ul.main li.nav-item,
 .main ul li {
   padding: 0em 1em;
+}
+
+.dropdown-menu .nav-item:hover {
+  background-color: $dull-orange;
 }
 
 ul.main li a,
@@ -304,7 +315,7 @@ ul.main li a,
 }
 
 .mobile-nav-dropdown li, .mobile-nav-dropdown li:hover {
-  color:$off-white;
+  color: $off-white;
   padding: 0.5em 1.5em;
   margin: 0;
   border-top: 0.05em solid $off-white;
@@ -316,4 +327,9 @@ ul.main li a,
 
 .mobile-nav-dropdown .mobile-nav-arrow {
   float: right;
+}
+
+.mobile-nav-dropdown .dropdown-item:hover {
+  background-color: $vacant-orange;
+  cursor: pointer;
 }
