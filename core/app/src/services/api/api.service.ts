@@ -10,7 +10,6 @@ import {ApiResponseModel} from './api-response-model';
 import {ApiSubscriptionModel} from './api-subscription-model';
 import {LoginResponseModel} from '../auth/login-response-model';
 import {ApiAccessTokenResponseEmpty} from './api-access-token-response-empty';
-import {ListViewData, ListViewDataModel} from '../../components/list-view/list-view-data-model';
 
 import {environment} from '@base/environments/environment';
 
@@ -278,53 +277,6 @@ export class ApiService {
         onError?: (error: HttpErrorResponse) => void
     ): boolean {
         return this.request({type: 'GET', url}, onSuccess, onError);
-    }
-
-    getListViewData(
-        listViewData: ListViewData,
-        callback: (listViewData: ListViewDataModel) => void,
-        orderBy: string,
-        desc: string
-    ) {
-        // this.useCache = false;
-        // const ret = this.get(this.config.apiBaseUrl + 'module=PluralNames&controller=Index&action=List', (apiResponse: ApiResponseModel) => {
-        //   let modulePlural = '';
-        //   for (const k in apiResponse) {
-        //     if (apiResponse[k].singular === listViewData.module) {
-        //       modulePlural = apiResponse[k].plural;
-        //       break;
-        //     }
-        //     if (apiResponse[k].plural === listViewData.module) {
-        //       modulePlural = apiResponse[k].plural;
-        //       break;
-        //     }
-        //   }
-        //   if (!modulePlural) {
-        //     throw new Error('No plural for ' + listViewData.module);
-        //   }
-
-        //   return this.get(
-        //     this.config.apiBaseUrl + 'moule=' + modulePlural + '&controller=Index&action=List&orderBy=' + orderBy + '&desc=' + desc,
-        //   (response: ApiResponseModel) => {
-
-        //     if (response.error) {
-        //       throw new Error('Api ressponse error: ' + response.error.message);
-        //     }
-
-        //     this.useCache = true;
-
-        //     callback({
-        //       module: response.data.module,
-        //       columns: response.data.columns,
-        //       rows: response.list,
-        //       page: response.data.page,
-        //       maxpage: response.data.maxpage,
-        //     });
-        //   });
-        // });
-        // return ret;
-
-        return false;
     }
 
     getClassicView(routeParams: ParamMap): Observable<any> {
