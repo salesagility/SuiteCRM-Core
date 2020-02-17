@@ -5,6 +5,7 @@ namespace SuiteCRM\Core\Legacy;
 use RuntimeException;
 use TabController;
 use GroupedTabStructure;
+use TabGroupHelper;
 
 /**
  * Class Navbar
@@ -21,7 +22,9 @@ class Navbar extends LegacyHandler
             require LEGACY_PATH . 'modules/MySettings/TabController.php';
             $tabArray = (new TabController())->get_tabs($GLOBALS['current_user']);
 
-            return $tabArray[0];
+            $tabArray = array_keys(array_change_key_case($tabArray[0], CASE_LOWER));
+            sort($tabArray);
+            return $tabArray;
         }
 
         throw new RuntimeException('Running legacy entry point failed');
@@ -33,10 +36,38 @@ class Navbar extends LegacyHandler
     public function getGroupedNavTabs(): array
     {
         if ($this->runLegacyEntryPoint()) {
-            global $moduleList;
-            require LEGACY_PATH . 'include/GroupedTabs/GroupedTabStructure.php';
+            global $current_language;
 
-            return (new GroupedTabStructure())->get_tab_structure($moduleList);
+            require_once LEGACY_PATH . 'include/GroupedTabs/GroupedTabStructure.php';
+            require_once LEGACY_PATH . 'modules/Studio/TabGroups/TabGroupHelper.php';
+
+            $tg = new TabGroupHelper();
+            $selectedAppLanguages = return_application_language($current_language);
+            $availableModules = $tg->getAvailableModules($current_language);
+            $modList = array_keys($availableModules);
+            $modList = array_combine($modList, $modList);
+            $groupedTabStructure = (new GroupedTabStructure())->get_tab_structure($modList, '', true, true);
+            foreach ($groupedTabStructure as $mainTab => $subModules) {
+                $groupedTabStructure[$mainTab]['label'] = $mainTab;
+                $groupedTabStructure[$mainTab]['labelValue'] = strtolower($selectedAppLanguages[$mainTab]);
+                $submoduleArray = [];
+
+                foreach ($subModules['modules'] as $submodule) {
+                    $submoduleArray[] = strtolower($submodule);
+                }
+
+                sort($submoduleArray);
+
+                $output[] = [
+
+                        'name' => $groupedTabStructure[$mainTab]['labelValue'],
+                        'labelKey' => $mainTab,
+                        'modules' => array_values($submoduleArray)
+
+                ];
+            }
+
+            return $output;
         }
 
         throw new RuntimeException('Running legacy entry point failed');

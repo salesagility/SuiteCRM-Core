@@ -58,44 +58,45 @@ final class NavbarTest extends Unit
 
     public function testGetNonGroupedNavTabs(): void
     {
+        // Ordered array
         $expected = [
-            'Home' => 'Home',
-            'Accounts' => 'Accounts',
-            'Contacts' => 'Contacts',
-            'Opportunities' => 'Opportunities',
-            'Leads' => 'Leads',
-            'AOS_Quotes' => 'AOS_Quotes',
-            'Calendar' => 'Calendar',
-            'Documents' => 'Documents',
-            'Emails' => 'Emails',
-            'Spots' => 'Spots',
-            'Campaigns' => 'Campaigns',
-            'Calls' => 'Calls',
-            'Meetings' => 'Meetings',
-            'Tasks' => 'Tasks',
-            'Notes' => 'Notes',
-            'AOS_Invoices' => 'AOS_Invoices',
-            'AOS_Contracts' => 'AOS_Contracts',
-            'Cases' => 'Cases',
-            'Prospects' => 'Prospects',
-            'ProspectLists' => 'ProspectLists',
-            'Project' => 'Project',
-            'AM_ProjectTemplates' => 'AM_ProjectTemplates',
-            'FP_events' => 'FP_events',
-            'FP_Event_Locations' => 'FP_Event_Locations',
-            'AOS_Products' => 'AOS_Products',
-            'AOS_Product_Categories' => 'AOS_Product_Categories',
-            'AOS_PDF_Templates' => 'AOS_PDF_Templates',
-            'jjwg_Maps' => 'jjwg_Maps',
-            'jjwg_Markers' => 'jjwg_Markers',
-            'jjwg_Areas' => 'jjwg_Areas',
-            'jjwg_Address_Cache' => 'jjwg_Address_Cache',
-            'AOR_Reports' => 'AOR_Reports',
-            'AOW_WorkFlow' => 'AOW_WorkFlow',
-            'AOK_KnowledgeBase' => 'AOK_KnowledgeBase',
-            'AOK_Knowledge_Base_Categories' => 'AOK_Knowledge_Base_Categories',
-            'EmailTemplates' => 'EmailTemplates',
-            'Surveys' => 'Surveys'
+            'accounts',
+            'am_projecttemplates',
+            'aok_knowledge_base_categories',
+            'aok_knowledgebase',
+            'aor_reports',
+            'aos_contracts',
+            'aos_invoices',
+            'aos_pdf_templates',
+            'aos_product_categories',
+            'aos_products',
+            'aos_quotes',
+            'aow_workflow',
+            'calendar',
+            'calls',
+            'campaigns',
+            'cases',
+            'contacts',
+            'documents',
+            'emails',
+            'emailtemplates',
+            'fp_event_locations',
+            'fp_events',
+            'home',
+            'jjwg_address_cache',
+            'jjwg_areas',
+            'jjwg_maps',
+            'jjwg_markers',
+            'leads',
+            'meetings',
+            'notes',
+            'opportunities',
+            'project',
+            'prospectlists',
+            'prospects',
+            'spots',
+            'surveys',
+            'tasks',
         ];
 
         $this->assertSame(
@@ -107,54 +108,69 @@ final class NavbarTest extends Unit
     public function testGroupNavTabs(): void
     {
         $expected = [
-            'Sales' => [
+            0 => [
+                'name' => 'sales',
+                'labelKey' => 'LBL_TABGROUP_SALES',
+                // Ordered array
                 'modules' => [
-                    'Home' => 'Home',
-                    'Accounts' => 'Accounts',
-                    'Contacts' => 'Contacts',
-                    'Opportunities' => 'Opportunities',
-                    'Leads' => 'Leads'
+                    'accounts',
+                    'contacts',
+                    'home',
+                    'leads',
+                    'opportunities',
                 ]
             ],
-            'Marketing' => [
+            1 => [
+                'name' => 'marketing',
+                'labelKey' => 'LBL_TABGROUP_MARKETING',
+                // Ordered array
                 'modules' => [
-                    'Home' => 'Home',
-                    'Accounts' => 'Accounts',
-                    'Contacts' => 'Contacts',
-                    'Leads' => 'Leads',
-                    'Campaigns' => 'Campaigns',
-                    'Prospects' => 'Targets',
-                    'ProspectLists' => 'Targets - Lists'
+                    'accounts',
+                    'campaigns',
+                    'contacts',
+                    'home',
+                    'leads',
+                    'targets',
+                    'targets - lists',
                 ]
             ],
-            'Support' => [
+            2 => [
+                'name' => 'support',
+                'labelKey' => 'LBL_TABGROUP_SUPPORT',
+                // Ordered array
                 'modules' => [
-                    'Home' => 'Home',
-                    'Accounts' => 'Accounts',
-                    'Contacts' => 'Contacts',
-                    'Cases' => 'Cases',
-                    'Bugs' => 'Bugs'
+                    'accounts',
+                    'bugs',
+                    'cases',
+                    'contacts',
+                    'home',
                 ]
             ],
-            'Activities' => [
+            3 => [
+                'name' => 'activities',
+                'labelKey' => 'LBL_TABGROUP_ACTIVITIES',
+                // Ordered array
                 'modules' => [
-                    'Home' => 'Home',
-                    'Calendar' => 'Calendar',
-                    'Calls' => 'Calls',
-                    'Meetings' => 'Meetings',
-                    'Emails' => 'Emails',
-                    'Tasks' => 'Tasks',
-                    'Notes' => 'Notes'
+                    'calendar',
+                    'calls',
+                    'emails',
+                    'home',
+                    'meetings',
+                    'notes',
+                    'tasks',
                 ]
             ],
-            'Collaboration' => [
+            4 => [
+                'name' => 'collaboration',
+                'labelKey' => 'LBL_TABGROUP_COLLABORATION',
+                // Ordered array
                 'modules' => [
-                    'Home' => 'Home',
-                    'Emails' => 'Emails',
-                    'Documents' => 'Documents',
-                    'Project' => 'Projects'
+                    'documents',
+                    'emails',
+                    'home',
+                    'projects',
                 ]
-            ]
+            ],
         ];
 
         $this->assertSame(
