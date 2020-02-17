@@ -10,7 +10,6 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     exports: [WidgetUiComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(WidgetUiComponent),
         AngularSvgIconModule
     ]
 })
