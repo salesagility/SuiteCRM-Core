@@ -39,6 +39,60 @@ class RouteConverterTest extends Unit
         $this->routeConverter = new RouteConverter($moduleMapper, $legacyActionNameMap);
     }
 
+    public function testAPIRequestCheck()
+    {
+        $queryParams = [
+        ];
+
+        $serverParams = [
+            'REDIRECT_BASE' => '/suiteinstance',
+            'BASE' => '/suiteinstance',
+            'HTTP_HOST' => 'localhost',
+            'HTTP_ORIGIN' => 'http://localhost',
+            'HTTP_REFERER' => 'http://localhost/suiteinstance/public/docs/graphql-playground/index.html',
+            'SERVER_NAME' => 'localhost',
+            'REDIRECT_URL' => '/suiteinstance/api/graphql',
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/suiteinstance/api/graphql',
+            'SCRIPT_FILENAME' => '/var/www/html/suiteinstance/index.php',
+            'SCRIPT_NAME' => '/suiteinstance/index.php',
+            'PHP_SELF' => '/suiteinstance/index.php',
+        ];
+
+        $request = new Request($queryParams,[],[],[],[], $serverParams);
+
+        $valid = $this->routeConverter->isLegacyRoute($request);
+
+        static::assertFalse($valid);
+    }
+
+    public function testLegacyValidSubPathRequestCheck()
+    {
+        $queryParams = [
+            'module' => 'Contacts',
+            'action' => 'ListView'
+        ];
+
+        $serverParams = [
+            'BASE' => '/suiteinstance',
+            'HTTP_HOST' => 'localhost',
+            'SERVER_NAME' => 'localhost',
+            'REDIRECT_URL' => '/suiteinstance/',
+            'REDIRECT_QUERY_STRING' => 'module=Contacts&action=ListView',
+            'REQUEST_METHOD' => 'GET',
+            'QUERY_STRING' => 'module=Contacts&action=ListView',
+            'SCRIPT_FILENAME' => '/var/www/html/suiteinstance/index.php',
+            'REQUEST_URI' => '/suiteinstance/?module=Contacts&action=ListView',
+            'SCRIPT_NAME' => '/suiteinstance/index.php',
+            'PHP_SELF' => '/suiteinstance/index.php'
+        ];
+
+        $request = new Request($queryParams,[],[],[],[], $serverParams);
+
+        $valid = $this->routeConverter->isLegacyRoute($request);
+
+        static::assertTrue($valid);
+    }
 
     public function testLegacyValidRequestCheck()
     {
@@ -57,7 +111,6 @@ class RouteConverterTest extends Unit
 
     public function testLegacyNoModuleRequestCheck()
     {
-        $resultingRoute = '/#/contacts/detail/123';
         $queryParams = [];
 
         $request = new Request($queryParams);
@@ -69,7 +122,6 @@ class RouteConverterTest extends Unit
 
     public function testLegacyInvalidModuleRequestCheck()
     {
-        $resultingRoute = '/#/contacts/detail/123';
         $queryParams = [
             'module' => 'FakeModule',
         ];
@@ -85,7 +137,6 @@ class RouteConverterTest extends Unit
 
     public function testLegacyInvalidActionRequestCheck()
     {
-        $resultingRoute = '/#/contacts/detail/123';
         $queryParams = [
             'module' => 'Contacts',
             'action' => 'FakeAction'
@@ -100,7 +151,7 @@ class RouteConverterTest extends Unit
 
     public function testLegacyValidModuleIndexRRequest()
     {
-        $resultingRoute = '/#/contacts';
+        $resultingRoute = './#/contacts';
         $queryParams = [
             'module' => 'Contacts',
         ];
@@ -113,7 +164,7 @@ class RouteConverterTest extends Unit
 
     public function testLegacyValidModuleViewRequest()
     {
-        $resultingRoute = '/#/contacts/list';
+        $resultingRoute = './#/contacts/list';
         $queryParams = [
             'module' => 'Contacts',
             'action' => 'ListView'
@@ -128,7 +179,7 @@ class RouteConverterTest extends Unit
 
     public function testLegacyValidModuleRecordRequest()
     {
-        $resultingRoute = '/#/contacts/detail/123';
+        $resultingRoute = './#/contacts/detail/123';
         $queryParams = [
             'module' => 'Contacts',
             'action' => 'DetailView',
@@ -177,4 +228,5 @@ class RouteConverterTest extends Unit
 
         $this->routeConverter->convert($request);
     }
+
 }

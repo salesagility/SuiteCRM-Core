@@ -45,7 +45,7 @@ class RouteConverter
      */
     public function isLegacyRoute(Request $request): bool
     {
-        if (!empty($request->getBasePath())){
+        if (!empty($request->getPathInfo()) && $request->getPathInfo() !== '/'){
             return false;
         }
 
@@ -120,7 +120,7 @@ class RouteConverter
     protected function buildRoute(?string $module, ?string $action, ?string $record): string
     {
         $moduleName = $this->mapModule($module);
-        $route = "/#/$moduleName";
+        $route = "./#/$moduleName";
 
         if (!empty($action)) {
             $actionName = $this->mapAction($action);
