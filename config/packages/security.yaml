@@ -29,3 +29,23 @@ security:
     - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+
+dunglas_angular_csrf:
+  token:
+    id: angular
+  header:
+    name: X-XSRF-TOKEN
+  cookie:
+    name: XSRF-TOKEN
+    expire: 0
+    path: /
+    secure: false
+    set_on:
+      - { path: ^/$ }
+  secure:
+    - { path: ^/ }
+  exclude:
+    - { path: ^/$ }
+    - { path: ^/logout$ }
+    - { path: ^/(_(profiler|wdt))/ }
+    - { path: ^/api }

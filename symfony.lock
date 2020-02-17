@@ -176,6 +176,9 @@
     "doctrine/reflection": {
         "version": "v1.1.0"
     },
+    "dunglas/angular-csrf-bundle": {
+        "version": "v1.2.0"
+    },
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },
@@ -247,6 +250,9 @@
     },
     "php": {
         "version": "7.2.0"
+    },
+    "php-cs-fixer/diff": {
+        "version": "v1.3.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -508,6 +514,9 @@
     },
     "symfony/process": {
         "version": "v4.4.4"
+    },
+    "symfony/profiler-pack": {
+        "version": "v1.0.4"
     },
     "symfony/property-access": {
         "version": "v4.4.4"

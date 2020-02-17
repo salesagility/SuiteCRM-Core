@@ -6,12 +6,10 @@ use App\Tests\FunctionalTester;
 
 class LoginCest
 {
-    public function tryLogin(FunctionalTester $I)
+    public function tryBypassCSRF(FunctionalTester $I): void
     {
-        $I->amOnPage('/#/Login');
-        $I->fillField('username', 'admin');
-        $I->fillField('password', 'admin');
-        $I->click('Login');
+        $I->amOnPage('login');
+        $I->seeResponseCodeIs(403);
     }
 }
 

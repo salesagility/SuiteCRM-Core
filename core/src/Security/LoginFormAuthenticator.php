@@ -3,12 +3,15 @@
 namespace App\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SuiteCRM\Core\Legacy\Authentication;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -60,7 +63,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $credentials = [
             'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
+            'csrf_token' => $request->headers->get('x-xsrf-token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
@@ -77,15 +80,22 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        $token = new CsrfToken('angular', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid Token');
         }
 
         $user = $userProvider->loadUserByUsername($credentials['username']);
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
+        }
+
+        $authentication = new Authentication();
+        try {
+            $authentication->login($credentials['username'], $credentials['password']);
+        } catch (\Exception $e) {
+            throw new CustomUserMessageAuthenticationException('Legacy username could not be found.');
         }
 
         return $user;
@@ -98,7 +108,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
+        // TODO: Password validation
         return true;
+
+        // TODO: Password hash upgrading
     }
 
     /**
@@ -123,6 +136,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         return new RedirectResponse($this->router->generate('index'));
+    }
+
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse|RedirectResponse
+     */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    {
+        $data = [
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 
     /**

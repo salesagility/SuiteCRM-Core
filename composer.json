@@ -21,6 +21,7 @@
   "require": {
     "ext-json": "*",
     "api-platform/api-pack": "^1.2",
+    "dunglas/angular-csrf-bundle": "^1.2",
     "symfony/dotenv": "^4.4",
     "symfony/flex": "^1.6",
     "symfony/framework-bundle": "^4.4",

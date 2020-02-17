@@ -38,10 +38,7 @@ export class AuthService {
 
         const body = new HttpParams()
             .set('username', username)
-            .set('password', password)
-            .set('grant_type', 'password')
-            .set('client_id', 'scrmfe')
-            .set('client_secret', 'scrmfe');
+            .set('password', password);
 
         return this.http.post(loginUrl,
             body.toString(),
