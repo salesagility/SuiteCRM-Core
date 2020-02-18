@@ -19,34 +19,37 @@ final class NavbarTest extends Unit
 
     public function testGetUserActionMenu(): void
     {
+        // Ordered array
         $expected = [
             0 => [
-                'label' => 'Profile',
+                'name' => 'profile',
+                'labelKey' => 'LBL_PROFILE',
                 'url' => 'index.php?module=Users&action=EditView&record=1',
-                'submenu' => []
+                'icon' => '',
             ],
             1 => [
-                'label' => 'Employees',
+                'name' => 'employees',
+                'labelKey' => 'LBL_EMPLOYEES',
                 'url' => 'index.php?module=Employees&action=index',
-                'submenu' => []
+                'icon' => '',
             ],
             2 => [
-                'label' => 'Support Forum',
-                'url' => 'javascript:void(0)',
-                'submenu' => [],
-                'event' => [
-                    'onClick' => "void(window.open('https://suitecrm.com/suitecrm/forum/suite-forum'))"
-                ]
+                'name' => 'support forum',
+                'labelKey' => 'LBL_TRAINING',
+                'url' => 'javascript:void(window.open(\'https://suitecrm.com/suitecrm/forum/suite-forum\'))',
+                'icon' => '',
             ],
             3 => [
-                'label' => 'About',
+                'name' => 'about',
+                'labelKey' => 'LNK_ABOUT',
                 'url' => 'index.php?module=Home&action=About',
-                'submenu' => []
+                'icon' => '',
             ],
             4 => [
-                'label' => 'Logout',
+                'name' => 'logout',
+                'labelKey' => 'LBL_LOGOUT',
                 'url' => 'index.php?module=Users&action=Logout',
-                'submenu' => []
+                'icon' => '',
             ]
         ];
 

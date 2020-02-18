@@ -24,6 +24,7 @@ class Navbar extends LegacyHandler
 
             $tabArray = array_keys(array_change_key_case($tabArray[0], CASE_LOWER));
             sort($tabArray);
+
             return $tabArray;
         }
 
@@ -60,9 +61,9 @@ class Navbar extends LegacyHandler
 
                 $output[] = [
 
-                        'name' => $groupedTabStructure[$mainTab]['labelValue'],
-                        'labelKey' => $mainTab,
-                        'modules' => array_values($submoduleArray)
+                    'name' => $groupedTabStructure[$mainTab]['labelValue'],
+                    'labelKey' => $mainTab,
+                    'modules' => array_values($submoduleArray)
 
                 ];
             }
@@ -81,63 +82,42 @@ class Navbar extends LegacyHandler
         if ($this->runLegacyEntryPoint()) {
             $userActionMenu = [];
             $global_control_links = [];
-            $last = [];
 
             $userActionMenu[] = [
-                'label' => 'Profile',
+                'name' => 'profile',
+                'labelKey' => 'LBL_PROFILE',
                 'url' => 'index.php?module=Users&action=EditView&record=1',
-                'submenu' => [],
+                'icon' => '',
             ];
 
             require LEGACY_PATH . 'include/globalControlLinks.php';
 
+            $labelKeys = [
+                'employees' => 'LBL_EMPLOYEES',
+                'training' => 'LBL_TRAINING',
+                'about' => 'LNK_ABOUT',
+                'users' => 'LBL_LOGOUT',
+            ];
+
             foreach ($global_control_links as $key => $value) {
-                if ($key === 'users') {
-                    $last[] = [
-                        'label' => key($value['linkinfo']),
-                        'url' => $value['linkinfo'][key($value['linkinfo'])],
-                        'submenu' => [],
-                    ];
-
-                    continue;
-                }
-
                 foreach ($value as $linkAttribute => $attributeValue) {
                     // get the main link info
                     if ($linkAttribute === 'linkinfo') {
                         $userActionMenu[] = [
-                            'label' => key($attributeValue),
+                            'name' => strtolower(key($attributeValue)),
+                            'labelKey' => $labelKeys[$key],
                             'url' => current($attributeValue),
-                            'submenu' => [],
+                            'icon' => '',
                         ];
-
-                        $userActionMenuCount = count($userActionMenu);
-                        $key = $userActionMenuCount - 1;
-
-                        if (strpos($userActionMenu[$key]['url'], 'javascript:') === 0) {
-                            $userActionMenu[$key]['event']['onClick'] = substr($userActionMenu[$key]['url'], 11);
-                            $userActionMenu[$key]['url'] = 'javascript:void(0)';
-                        }
-                    }
-                    // Get the sub links
-                    if ($linkAttribute === 'submenu' && is_array($attributeValue)) {
-                        $subMenuLinkKey = '';
-                        foreach ($attributeValue as $submenuLinkKey => $submenuLinkInfo) {
-                            $userActionMenu[$key]['submenu'][$submenuLinkKey] = [
-                                'label' => key($submenuLinkInfo),
-                                'url' => current($submenuLinkInfo),
-                            ];
-                        }
-                        if (strpos($userActionMenu[$key]['submenu'][$subMenuLinkKey]['url'], 'javascript:') === 0) {
-                            $userActionMenu[$key]['submenu'][$subMenuLinkKey]['event']['onClick'] =
-                                substr($userActionMenu[$key]['submenu'][$subMenuLinkKey]['url'], 11);
-                            $userActionMenu[$key]['submenu'][$subMenuLinkKey]['url'] = 'javascript:void(0)';
-                        }
                     }
                 }
             }
 
-            return $userActionMenu[] = array_merge($userActionMenu, $last);
+            $item = $userActionMenu[3];
+            unset($userActionMenu[3]);
+            $userActionMenu[] = $item;
+
+            return array_values($userActionMenu);
         }
 
         throw new RuntimeException('Running legacy entry point failed');
