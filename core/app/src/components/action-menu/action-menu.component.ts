@@ -5,7 +5,6 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: 'action-menu.component.html',
 
 })
-
 export class ActionmenuUiComponent implements OnInit {
 
   newButtonConfig = {

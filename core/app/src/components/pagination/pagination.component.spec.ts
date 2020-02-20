@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {AngularSvgIconModule} from 'angular-svg-icon';
 import {PaginationUiComponent} from './pagination.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('PaginationUiComponent', () => {
     let component: PaginationUiComponent;
@@ -8,7 +10,11 @@ describe('PaginationUiComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PaginationUiComponent]
+            imports: [
+                AngularSvgIconModule,
+                HttpClientTestingModule
+            ],
+            declarations: [PaginationUiComponent, ]
         })
             .compileComponents();
     }));

@@ -16,6 +16,12 @@ describe('ButtonUiComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ButtonUiComponent);
         component = fixture.componentInstance;
+
+        component.buttonConfig = {
+            text: 'NEW',
+            buttonClass: 'action-button'
+        };
+
         fixture.detectChanges();
     });
 

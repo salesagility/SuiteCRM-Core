@@ -1,5 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {ButtonUiModule} from '@components/button/button.module';
+import {ModalUiModule} from '@components/modal/modal.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ActionmenuUiComponent} from './action-menu.component';
 
 describe('ActionmenuUiComponent', () => {
@@ -8,7 +11,14 @@ describe('ActionmenuUiComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ActionmenuUiComponent]
+            imports: [
+                ModalUiModule,
+                ButtonUiModule,
+                AngularSvgIconModule
+            ],
+            declarations: [
+                ActionmenuUiComponent,
+            ]
         })
             .compileComponents();
     }));
@@ -20,6 +30,6 @@ describe('ActionmenuUiComponent', () => {
     });
 
     it('should create', () => {
-      expect(component).toBeTruthy();
+        expect(component).toBeTruthy();
     });
 });
