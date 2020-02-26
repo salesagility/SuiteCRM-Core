@@ -20,10 +20,9 @@ class Navbar extends LegacyHandler
     {
         if ($this->runLegacyEntryPoint()) {
             require LEGACY_PATH . 'modules/MySettings/TabController.php';
-            $tabArray = (new TabController())->get_tabs($GLOBALS['current_user']);
+            $tabArray = (new TabController())->get_user_tabs($GLOBALS['current_user']);
+            $tabArray = array_map('strtolower', $tabArray);
 
-            $tabArray = array_keys(array_change_key_case($tabArray[0], CASE_LOWER));
-            sort($tabArray);
 
             return $tabArray;
         }
