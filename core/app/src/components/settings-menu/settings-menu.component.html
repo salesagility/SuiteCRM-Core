@@ -12,7 +12,7 @@
   </button>
   <scrm-columnchooser-ui></scrm-columnchooser-ui>
   <button type="button" class="settings-button" (click)="toggleWidgets()"
-          [ngClass]="{ 'charts-active': displayWidgets }">
+          [ngClass]="{ 'charts-active': widgetService.displayWidgets }">
     <svg-icon class="sicon" src="public/themes/suite8/images/pie.svg"></svg-icon>
     Charts
   </button>

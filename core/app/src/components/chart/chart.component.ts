@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 
 @Component({
-    selector: 'scrm-chart',
+    selector: 'scrm-chart-ui',
     templateUrl: './chart.component.html',
     styleUrls: []
 })
