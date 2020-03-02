@@ -36,4 +36,10 @@ final class Navbar
      * @ApiProperty
      */
     public $userActionMenu;
+
+    /**
+     * @var array
+     * @ApiProperty
+     */
+    public $moduleSubmenus;
 }

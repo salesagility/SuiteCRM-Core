@@ -30,6 +30,16 @@ class Navbar extends LegacyHandler
         throw new RuntimeException('Running legacy entry point failed');
     }
 
+    public function getModuleSubMenus(): array {
+        if ($this->runLegacyEntryPoint()) {
+            ob_start();
+            require_once LEGACY_PATH . 'modules/Home/sitemap.php';
+            ob_end_clean();
+
+            return sm_build_array();
+        }
+    }
+
     /**
      * @return array
      */

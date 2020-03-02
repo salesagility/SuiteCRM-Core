@@ -25,6 +25,7 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
         $output->NonGroupedTabs = $navbarData->getNonGroupedNavTabs();
         $output->groupedTabs = $navbarData->getGroupedNavTabs();
         $output->userActionMenu = $navbarData->getUserActionMenu();
+        $output->moduleSubmenus = $navbarData->getModuleSubMenus();
         return $output;
     }
 }
