@@ -10,6 +10,8 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  *     itemOperations={
  *          "get"
  *     },
+ *     collectionOperations={
+ *     }
  * )
  */
 final class Navbar

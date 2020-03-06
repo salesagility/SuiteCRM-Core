@@ -4,28 +4,51 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
-use Symfony\Component\HttpFoundation\Request;
+use SuiteCRM\Core\Legacy\NavbarHandler;
 use App\Entity\Navbar;
-use SuiteCRM\Core\Legacy\Navbar as LegacyNavbar;
 
 final class NavbarItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
+    /**
+     * @var NavbarHandler
+     */
+    private $navbarHandler;
+
+    /**
+     * NavbarItemDataProvider constructor.
+     * @param NavbarHandler $navbarHandler
+     */
+    public function __construct(NavbarHandler $navbarHandler)
+    {
+        $this->navbarHandler = $navbarHandler;
+    }
+
+    /**
+     * Define supported resources
+     * @param string $resourceClass
+     * @param string|null $operationName
+     * @param array $context
+     * @return bool
+     */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
         return Navbar::class === $resourceClass;
     }
 
+    /**
+     * Get navbar
+     * @param string $resourceClass
+     * @param array|int|string $id
+     * @param string|null $operationName
+     * @param array $context
+     * @return Navbar|null
+     */
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Navbar
     {
-        $navbarData = new LegacyNavbar();
-        $output = new Navbar();
+        $navbar = $this->navbarHandler->getNavbar();
         // This should be updated once we have authentication.
-        $output->userID = 1;
-        $output->NonGroupedTabs = $navbarData->getNonGroupedNavTabs();
-        $output->groupedTabs = $navbarData->getGroupedNavTabs();
-        $output->userActionMenu = $navbarData->getUserActionMenu();
-        $output->moduleSubmenus = $navbarData->getModuleSubMenus();
-        return $output;
+        $navbar->userID = 1;
+
+        return $navbar;
     }
 }

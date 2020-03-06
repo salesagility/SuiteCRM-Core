@@ -46,7 +46,6 @@
   },
   "autoload": {
     "psr-4": {
-      "SuiteCRM\\Core\\src\\": "core/src/",
       "SuiteCRM\\Core\\Legacy\\": "core/legacy/",
       "App\\": "core/src/",
       "App\\Entity\\": "core/src/Entity/",

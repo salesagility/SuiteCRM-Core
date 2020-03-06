@@ -2,19 +2,30 @@
 
 declare(strict_types=1);
 
+use App\Entity\Navbar;
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\Navbar;
+use SuiteCRM\Core\Legacy\NavbarHandler;
 
 final class NavbarTest extends Unit
 {
     /**
+     * @var NavbarHandler
+     */
+    private $navbarHandler;
+
+    /**
      * @var Navbar
      */
-    private $navbar;
+    protected $navbar;
 
     protected function _before()
     {
-        $this->navbar = new Navbar();
+        $projectDir = codecept_root_dir();
+        $legacyDir = $projectDir . '/legacy';
+        $legacySessionName = 'LEGACYSESSID';
+        $defaultSessionName = 'PHPSESSID';
+        $this->navbarHandler = new NavbarHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        $this->navbar = $this->navbarHandler->getNavbar();
     }
 
     public function testGetUserActionMenu(): void
@@ -55,7 +66,7 @@ final class NavbarTest extends Unit
 
         $this->assertSame(
             $expected,
-            $this->navbar->getUserActionMenu()
+            $this->navbar->userActionMenu
         );
     }
 
@@ -103,7 +114,7 @@ final class NavbarTest extends Unit
 
         $this->assertSame(
             $expected,
-            $this->navbar->getNonGroupedNavTabs()
+            $this->navbar->NonGroupedTabs
         );
     }
 
@@ -177,7 +188,7 @@ final class NavbarTest extends Unit
 
         $this->assertSame(
             $expected,
-            $this->navbar->getGroupedNavTabs()
+            $this->navbar->groupedTabs
         );
     }
 
@@ -371,7 +382,7 @@ final class NavbarTest extends Unit
 
         $this->assertSame(
             $expected,
-            $this->navbar->getModuleSubMenus()
+            $this->navbar->moduleSubmenus
         );
     }
 }

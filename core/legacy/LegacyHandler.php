@@ -2,21 +2,77 @@
 
 namespace SuiteCRM\Core\Legacy;
 
+use RuntimeException;
+
 /**
  * Class LegacyHandler
- * @package SuiteCRM\Core\Legacy
  */
 class LegacyHandler
 {
-    protected $config;
+    protected const MSG_LEGACY_BOOTSTRAP_FAILED = 'Running legacy entry point failed';
 
     /**
+     * @var string
+     */
+    protected $projectDir;
+
+    /**
+     * @var string
+     */
+    private $legacyDir;
+
+    /**
+     * @var string
+     */
+    private $legacySessionName;
+
+    /**
+     * @var string
+     */
+    private $defaultSessionName;
+
+    /**
+     * LegacyHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName
+    ) {
+        $this->projectDir = $projectDir;
+        $this->legacyDir = $legacyDir;
+        $this->legacySessionName = $legacySessionName;
+        $this->defaultSessionName = $defaultSessionName;
+    }
+
+    /**
+     * Legacy handler initialization method
+     */
+    public function init(): void
+    {
+        // Set working directory for legacy
+        chdir($this->legacyDir);
+
+        if (!$this->runLegacyEntryPoint()) {
+            throw new RuntimeException(self::MSG_LEGACY_BOOTSTRAP_FAILED);
+        }
+
+        $this->switchSession($this->legacySessionName);
+    }
+
+    /**
+     * Bootstraps legacy suite
      * @return bool
      */
     public function runLegacyEntryPoint(): bool
     {
-        if (!defined('LEGACY_PATH')) {
-            define('LEGACY_PATH', dirname(__DIR__, 2) . '/legacy/');
+        if (defined('IS_LEGACY_BOOTSTRAPPED') && IS_LEGACY_BOOTSTRAPPED) {
+            return true;
         }
 
         // Set up sugarEntry
@@ -24,13 +80,55 @@ class LegacyHandler
             define('sugarEntry', true);
         }
 
-        // Set working directory for legacy
-        chdir(LEGACY_PATH);
-
         // Load in legacy
-        require_once LEGACY_PATH . 'include/MVC/preDispatch.php';
-        require_once LEGACY_PATH . 'include/entryPoint.php';
+        require_once 'include/MVC/preDispatch.php';
+        require_once 'include/entryPoint.php';
+
+        define('IS_LEGACY_BOOTSTRAPPED', true);
 
         return true;
+    }
+
+    /**
+     * Close the legacy handler
+     */
+    public function close(): void
+    {
+        if (!empty($this->projectDir)) {
+            chdir($this->projectDir);
+        }
+
+        $this->switchSession($this->defaultSessionName);
+    }
+
+
+    /**
+     * Swap symfony session with legacy suite session
+     * @param string $sessionName
+     * @param array $keysToSync
+     */
+    protected function switchSession(string $sessionName, array $keysToSync = [])
+    {
+        $carryOver = [];
+
+        foreach ($keysToSync as $key) {
+            if (!empty($_SESSION[$key])) {
+                $carryOver[$key] = $_SESSION[$key];
+            }
+        }
+
+        session_write_close();
+        session_name($sessionName);
+
+        if (!isset($_COOKIE[$sessionName])) {
+            $_COOKIE[$sessionName] = session_create_id();
+        }
+
+        session_id($_COOKIE[$sessionName]);
+        session_start();
+
+        foreach ($carryOver as $key => $value) {
+            $_SESSION[$key] = $value;
+        }
     }
 }

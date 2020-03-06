@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use SuiteCRM\Core\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,8 +32,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $router;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $authentication;
 
+    /**
+     * LoginFormAuthenticator constructor.
+     * @param Authentication $authentication
+     * @param EntityManagerInterface $entityManager
+     * @param RouterInterface $router
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(
+        Authentication $authentication,
         EntityManagerInterface $entityManager,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
@@ -42,6 +53,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->authentication = $authentication;
     }
 
     /**
@@ -91,10 +103,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }
 
-        $authentication = new Authentication();
         try {
-            $authentication->login($credentials['username'], $credentials['password']);
-        } catch (\Exception $e) {
+            $this->authentication->login($credentials['username'], $credentials['password']);
+        } catch (Exception $e) {
             throw new CustomUserMessageAuthenticationException('Legacy username could not be found.');
         }
 
@@ -110,7 +121,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     {
         // TODO: Password validation
         return true;
-
         // TODO: Password hash upgrading
     }
 
