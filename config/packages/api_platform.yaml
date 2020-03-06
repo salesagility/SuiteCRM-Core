@@ -1,7 +1,8 @@
 api_platform:
   graphql:
+    default_ide: graphql-playground
     graphiql:
-      enabled: false
+      enabled: true
     graphql_playground:
       enabled: false
   mapping:
