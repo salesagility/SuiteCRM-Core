@@ -1,0 +1,6 @@
+parameters:
+    legacy.exposed_system_configs:
+        default_language: true
+        passwordsetting:
+            forgotpasswordON: true
+        languages: true

@@ -8,14 +8,28 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\SystemConfig;
+use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
 /**
  * Class SystemConfigCollectionDataProvider
- * @package App\DataProvider
  */
 class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
     RestrictedDataProviderInterface
 {
+
+    /**
+     * @var SystemConfigHandler
+     */
+    private $systemConfigHandler;
+
+    /**
+     * SystemConfigCollectionDataProvider constructor.
+     * @param SystemConfigHandler $systemConfigHandler
+     */
+    public function __construct(SystemConfigHandler $systemConfigHandler)
+    {
+        $this->systemConfigHandler = $systemConfigHandler;
+    }
 
     /**
      * Define supported Resource Classes
@@ -38,22 +52,7 @@ class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataPr
         string $operationName = null,
         array $context = []
     ): PaginatorInterface {
-        $systemConfigs = [];
-
-        $defaultLanguage = new SystemConfig();
-        $defaultLanguage->setId('default_language');
-        $defaultLanguage->setValue('en_us');
-        $systemConfigs[] = $defaultLanguage;
-
-        $passwordSettings = new SystemConfig();
-        $passwordSettings->setId('password_settings');
-        $passwordSettings->setItems(
-            [
-                'password_recovery_enabled' => 'true'
-            ]
-        );
-
-        $systemConfigs[] = $passwordSettings;
+        $systemConfigs = $this->systemConfigHandler->getAllSystemConfigs();
 
         return new ArrayPaginator($systemConfigs, 0, count($systemConfigs));
     }

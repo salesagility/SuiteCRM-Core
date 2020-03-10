@@ -20,6 +20,7 @@ services:
       $legacyDir: '%legacy.dir%'
       $legacySessionName: '%legacy.session_name%'
       $defaultSessionName: '%default_session_name%'
+      $exposedSystemConfigs: '%legacy.exposed_system_configs%'
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

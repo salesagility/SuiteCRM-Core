@@ -5,12 +5,28 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\SystemConfig;
+use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
 /**
  * Class SystemConfigItemDataProvider
  */
 final class SystemConfigItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
+
+    /**
+     * @var SystemConfigHandler
+     */
+    private $systemConfigHandler;
+
+    /**
+     * SystemConfigItemDataProvider constructor.
+     * @param SystemConfigHandler $systemConfigHandler
+     */
+    public function __construct(SystemConfigHandler $systemConfigHandler)
+    {
+        $this->systemConfigHandler = $systemConfigHandler;
+    }
+
     /**
      * Defined supported resources
      * @param string $resourceClass
@@ -37,10 +53,7 @@ final class SystemConfigItemDataProvider implements ItemDataProviderInterface, R
         string $operationName = null,
         array $context = []
     ): ?SystemConfig {
-        $config = new SystemConfig();
-        $config->setId('default_language');
-        $config->setValue('en_us');
 
-        return $config;
+        return $this->systemConfigHandler->getSystemConfig($id);
     }
 }

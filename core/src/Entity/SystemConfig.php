@@ -36,9 +36,9 @@ class SystemConfig
 
     /**
      * @ApiProperty
-     * @var array|null
+     * @var array
      */
-    protected $items;
+    protected $items = [];
 
     /**
      * Get Id
@@ -84,19 +84,19 @@ class SystemConfig
 
     /**
      * Get items
-     * @return array|null
+     * @return array
      */
-    public function getItems(): ?array
+    public function getItems(): array
     {
         return $this->items;
     }
 
     /**
      * Set Items
-     * @param array|null $items
+     * @param array $items
      * @return SystemConfig
      */
-    public function setItems(?array $items): SystemConfig
+    public function setItems(array $items): SystemConfig
     {
         $this->items = $items;
 
