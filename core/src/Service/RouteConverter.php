@@ -29,7 +29,7 @@ class RouteConverter
     /**
      * RouteConverter constructor.
      * @param ModuleNameMapper $moduleNameMapper
-     * @param string[] $legacyActionNameMap
+     * @param array $legacyActionNameMap
      */
     public function __construct(ModuleNameMapper $moduleNameMapper, array $legacyActionNameMap)
     {
