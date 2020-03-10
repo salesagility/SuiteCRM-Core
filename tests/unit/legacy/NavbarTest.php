@@ -47,7 +47,7 @@ final class NavbarTest extends Unit
             2 => [
                 'name' => 'support forum',
                 'labelKey' => 'LBL_TRAINING',
-                'url' => 'javascript:void(window.open(\'https://suitecrm.com/suitecrm/forum/suite-forum\'))',
+                'url' => 'https://community.suitecrm.com',
                 'icon' => '',
             ],
             3 => [
