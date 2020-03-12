@@ -1,82 +1,97 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormControl } from '@angular/forms';
+import {Injectable} from '@angular/core';
 
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import {
-  map, distinctUntilChanged,
-  switchMap, startWith, tap, delay, debounceTime
-} from 'rxjs/operators';
+import {BehaviorSubject, Observable, combineLatest, of} from 'rxjs';
+import {map, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 
 export interface LanguageStringMap {
-  [key: string]: string;
+    [key: string]: string;
 }
+
 export interface LanguageState {
-  languageStrings: LanguageStringMap;
-  languageType: string;
-  loaded?: [];
+    languageStrings: LanguageStringMap;
+    languageType: string;
+    loaded?: [];
 }
 
 let _state: LanguageState = {
-  languageStrings: {},
-  languageType: 'en_us',
-  loaded: []
+    languageStrings: {},
+    languageType: 'en_us',
+    loaded: []
 };
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class LanguageFacade {
-  private store = new BehaviorSubject<LanguageState>(_state);
-  private state$ = this.store.asObservable();
+    protected store = new BehaviorSubject<LanguageState>(_state);
+    protected state$ = this.store.asObservable();
+    protected resourceName = 'appStrings';
+    protected fieldsMetadata = {
+        fields: [
+            'id',
+            '_id',
+            'items'
+        ]
+    };
 
-  languageStrings$ = this.state$.pipe(map(state => state.languageStrings), distinctUntilChanged());
-  languageType$ = this.state$.pipe(map(state => state.languageType), distinctUntilChanged());
-  loaded$ = this.state$.pipe(map(state => state.loaded));
+    languageStrings$ = this.state$.pipe(map(state => state.languageStrings), distinctUntilChanged());
+    languageType$ = this.state$.pipe(map(state => state.languageType), distinctUntilChanged());
+    loaded$ = this.state$.pipe(map(state => state.loaded));
 
-  vm$: Observable<LanguageState> = combineLatest(
-    this.languageStrings$,
-    this.languageType$,
-    this.loaded$
-  ).pipe(
-    map( ([languageStrings, languageType, loaded]) => {
-      return { languageStrings, languageType, loaded };
-    })
-  );
+    vm$: Observable<LanguageState> = combineLatest([
+        this.languageStrings$,
+        this.languageType$,
+        this.loaded$
+    ]).pipe(
+        map(([languageStrings, languageType, loaded]) => {
+            return {languageStrings, languageType, loaded};
+        })
+    );
 
-  constructor(private http: HttpClient) {
-    // combineLatest(this.criteria$).pipe(
-    //   switchMap(([criteria]) => {
-    //     return this.findAllUsers(criteria);
-    //   })
-    // ).subscribe(languageStrings => {
-    //   this.updateState({ ..._state, languageStrings,  loading: false });
-    // });
-  }
+    constructor(private recordGQL: RecordGQL) {
+    }
 
-  // ------- Public Methods ------------------------
+    // ------- Public Methods ------------------------
 
-  /** RandomUser REST call */
-  // public loadAppStrings(): Observable<LanguageString[]> {
-  //   // const url = buildLanguageUrl();
-  //   return this.http.get<LanguageString>(url).pipe(
-  //     map(response => response.results)
-  //   );
-  // }
+    public updateLanguage(languageType: string) {
+        this.updateState({..._state, languageType});
+    }
 
-  // ------- Private Methods ------------------------
+    public loadAppStrings(lang: string): Observable<{}> {
 
-  /** Update internal state cache and emit from store... */
-  private updateState(state: LanguageState) {
-    this.store.next(_state = state);
-  }
-}
+        this.updateState({..._state, languageType: lang});
 
-function buildLanguageUrl(criteria: string): string {
-  // const URL = 'https://randomuser.me/api/';
-  // const currentPage = `page=${pagination.currentPage}`;
-  // const pageSize = `results=${pagination.selectedSize}&`;
-  // const searchFor = `seed=${criteria}`;
+        const appStrings$ = combineLatest([this.languageType$]).pipe(
+            switchMap(([languageType]) => this.fetchAppStrings(languageType))
+        )
 
-  // return `${URL}?${searchFor}&${pageSize}&${currentPage}`;
+        appStrings$.subscribe(languageStrings => {
+            this.updateState({..._state, languageStrings});
+        });
 
-  return '';
+        return of(appStrings$);
+    }
+
+    // ------- Private Methods ------------------------
+
+    /** Update internal state cache and emit from store... */
+    protected updateState(state: LanguageState) {
+        this.store.next(_state = state);
+    }
+
+    protected fetchAppStrings(language: string): Observable<{}> {
+
+        return this.recordGQL
+            .fetch(this.resourceName, `/api/app-strings/${language}`, this.fieldsMetadata)
+            .pipe(map(({data}) => {
+                let items = {};
+
+                if (data.appStrings) {
+                    items = data.appStrings.items;
+                }
+
+                return items;
+            }));
+    }
 }
