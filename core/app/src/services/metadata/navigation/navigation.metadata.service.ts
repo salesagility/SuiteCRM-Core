@@ -21,10 +21,10 @@ export class NavigationMetadata {
     constructor(private recordGQL: RecordGQL) {}
 
     public fetch(): Observable<any> {
-        const id = '1';
+        const id = '/api/navbars/1';
 
         return this.recordGQL
             .fetch(this.resourceName, id, this.fieldsMetadata)
-            .valueChanges.pipe(map(({data}) => data.navbar));
+            .pipe(map(({data}) => data.navbar));
     }
 }
