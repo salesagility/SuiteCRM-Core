@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -25,62 +25,64 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  AppManagerModule
+    AppManagerModule
 } from '../app-manager/app-manager.module';
 
 import {environment} from '../environments/environment';
-import { FetchPolicy } from 'apollo-client/core/watchQueryOptions';
+import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
+import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-spinner.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    HttpClientModule,
-    ApolloModule,
-    HttpLinkModule,
-    AppManagerModule,
-    AppRoutingModule,
-    FooterUiModule,
-    NavbarUiModule,
-    MessageUiModule,
-    ClassicViewUiModule,
-    FilterUiModule,
-    ListModule,
-    WidgetUiModule,
-    TableUiModule,
-    ModuletitleUiModule,
-    ListheaderUiModule,
-    ListcontainerUiModule,
-    ColumnchooserUiModule,
-    BrowserAnimationsModule,
-    NgbModule
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: []
+    declarations: [
+        AppComponent,
+        FullPageSpinnerComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        HttpClientModule,
+        ApolloModule,
+        HttpLinkModule,
+        AppManagerModule,
+        AppRoutingModule,
+        FooterUiModule,
+        NavbarUiModule,
+        MessageUiModule,
+        ClassicViewUiModule,
+        FilterUiModule,
+        ListModule,
+        WidgetUiModule,
+        TableUiModule,
+        ModuletitleUiModule,
+        ListheaderUiModule,
+        ListcontainerUiModule,
+        ColumnchooserUiModule,
+        BrowserAnimationsModule,
+        NgbModule
+    ],
+    bootstrap: [AppComponent],
+    entryComponents: []
 })
 export class AppModule {
-  constructor(apollo: Apollo,
-              httpLink: HttpLink) {
+    constructor(apollo: Apollo,
+                httpLink: HttpLink) {
 
-    const uri = environment.graphqlApiUrl;
-    const cache = new InMemoryCache();
+        const uri = environment.graphqlApiUrl;
+        const cache = new InMemoryCache();
 
-    const defaultOptions = {
-      watchQuery: {
-        fetchPolicy: 'no-cache' as FetchPolicy
-      },
-      query: {
-        fetchPolicy: 'no-cache' as FetchPolicy
-      },
-    };
+        const defaultOptions = {
+            watchQuery: {
+                fetchPolicy: 'no-cache' as FetchPolicy
+            },
+            query: {
+                fetchPolicy: 'no-cache' as FetchPolicy
+            },
+        };
 
-    apollo.create({
-      link: httpLink.create({uri}),
-      defaultOptions,
-      cache
-    });
-  }
+        apollo.create({
+            link: httpLink.create({uri}),
+            defaultOptions,
+            cache
+        });
+    }
 }
