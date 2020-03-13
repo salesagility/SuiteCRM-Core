@@ -26,17 +26,20 @@ class AppStringsHandlerTest extends Unit
         $this->handler = new AppStringsHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
     }
 
-    protected function _after()
-    {
-    }
-
     // tests
+
+    /**
+     * Test Invalid language handling in AppStringsHandler
+     */
     public function testInvalidLanguageCheck()
     {
         $this->expectException(ItemNotFoundException::class);
         $this->handler->getAppStrings('invalid_lang');
     }
 
+    /**
+     * Test default language retrieval in AppStringsHandler
+     */
     public function testDefaultLanguageKey()
     {
         $appStrings = $this->handler->getAppStrings('en_us');

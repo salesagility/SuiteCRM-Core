@@ -41,23 +41,29 @@ class SystemConfigHandlerTest extends Unit
             $exposedSystemConfigs);
     }
 
-    protected function _after()
-    {
-    }
-
     // tests
+
+    /**
+     * Test empty config key handling in SystemConfigHandler
+     */
     public function testEmptySystemConfigKeyCheck()
     {
         $defaultLanguage = $this->handler->getSystemConfig('');
         static::assertNull($defaultLanguage);
     }
 
+    /**
+     * Test invalid config key handling in SystemConfigHandler
+     */
     public function testInvalidExposedSystemConfigCheck()
     {
         $this->expectException(ItemNotFoundException::class);
         $this->handler->getSystemConfig('dbconfig');
     }
 
+    /**
+     * Test retrieval of first level system config in SystemConfigHandler
+     */
     public function testGetValidOneLevelSystemConfig()
     {
         $defaultLanguage = $this->handler->getSystemConfig('default_language');
@@ -67,6 +73,9 @@ class SystemConfigHandlerTest extends Unit
         static::assertEmpty($defaultLanguage->getItems());
     }
 
+    /**
+     * Test retrieval of second level deep system config in SystemConfigHandler
+     */
     public function testGetValidTwoLevelSystemConfig()
     {
         $defaultLanguage = $this->handler->getSystemConfig('passwordsetting');
@@ -85,6 +94,9 @@ class SystemConfigHandlerTest extends Unit
         );
     }
 
+    /**
+     * Test retrieval of third level deep system config in SystemConfigHandler
+     */
     public function testGetValidThreeLevelSystemConfig()
     {
         $defaultLanguage = $this->handler->getSystemConfig('search');
