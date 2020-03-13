@@ -1,5 +1,7 @@
 import {Component, ViewChild, ViewContainerRef, OnInit} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {AppState, AppStateFacade} from "@base/facades/app-state.facade";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-root',
@@ -8,9 +10,9 @@ import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart
 export class AppComponent implements OnInit {
     @ViewChild('mainOutlet', {read: ViewContainerRef, static: true})
     mainOutlet: ViewContainerRef | undefined;
-    loading = false;
+    appState$: Observable<AppState> = this.appStateFacade.vm$;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private appStateFacade: AppStateFacade) {
         router.events.subscribe((routerEvent: Event) => this.checkRouterEvent(routerEvent));
     }
 
@@ -19,13 +21,13 @@ export class AppComponent implements OnInit {
 
     private checkRouterEvent(routerEvent: Event) {
         if (routerEvent instanceof NavigationStart) {
-            this.loading = true;
+            this.appStateFacade.updateLoading(true);
         }
 
         if (routerEvent instanceof NavigationEnd ||
             routerEvent instanceof NavigationCancel ||
             routerEvent instanceof NavigationError) {
-            this.loading = false;
+            this.appStateFacade.updateLoading(false);
         }
     }
 }

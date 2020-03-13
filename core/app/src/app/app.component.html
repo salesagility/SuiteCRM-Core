@@ -1,4 +1,6 @@
-<app-full-page-spinner *ngIf="loading"></app-full-page-spinner>
+<ng-container *ngIf="(appState$ | async) as appState">
+    <app-full-page-spinner *ngIf="appState.loading"></app-full-page-spinner>
+</ng-container>
 <scrm-navbar-ui></scrm-navbar-ui>
 <scrm-message-ui></scrm-message-ui>
 <div #mainOutlet></div>

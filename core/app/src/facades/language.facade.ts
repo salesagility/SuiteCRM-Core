@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, Observable, combineLatest, of} from 'rxjs';
-import {map, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {map, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {AppStateFacade} from "@base/facades/app-state.facade";
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -49,12 +50,12 @@ export class LanguageFacade {
         })
     );
 
-    constructor(private recordGQL: RecordGQL) {
+    constructor(private recordGQL: RecordGQL, private appStateFacade: AppStateFacade) {
     }
 
     // ------- Public Methods ------------------------
 
-    public updateLanguage(languageType: string) {
+    public updateLanguage(languageType: string): void {
         this.updateState({..._state, languageType});
     }
 
@@ -64,7 +65,7 @@ export class LanguageFacade {
 
         const appStrings$ = combineLatest([this.languageType$]).pipe(
             switchMap(([languageType]) => this.fetchAppStrings(languageType))
-        )
+        );
 
         appStrings$.subscribe(languageStrings => {
             this.updateState({..._state, languageStrings});
@@ -75,23 +76,27 @@ export class LanguageFacade {
 
     // ------- Private Methods ------------------------
 
-    /** Update internal state cache and emit from store... */
-    protected updateState(state: LanguageState) {
+    /**
+     * Update internal state cache and emit from store...
+     * @param state
+     */
+    protected updateState(state: LanguageState): void {
         this.store.next(_state = state);
     }
 
     protected fetchAppStrings(language: string): Observable<{}> {
-
+        this.appStateFacade.updateLoading(true);
         return this.recordGQL
             .fetch(this.resourceName, `/api/app-strings/${language}`, this.fieldsMetadata)
             .pipe(map(({data}) => {
-                let items = {};
+                    let items = {};
 
-                if (data.appStrings) {
-                    items = data.appStrings.items;
-                }
+                    if (data.appStrings) {
+                        items = data.appStrings.items;
+                    }
 
-                return items;
-            }));
+                    return items;
+                }),
+                tap(() => this.appStateFacade.updateLoading(false)));
     }
 }
