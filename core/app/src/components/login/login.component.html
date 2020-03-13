@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" *ngIf="(vm$ | async) as vm">
 
-  <!-- Start of login form section -->
+    <!-- Start of login form section -->
 
     <form name="login" class="login-form">
       <scrm-logo-ui></scrm-logo-ui>

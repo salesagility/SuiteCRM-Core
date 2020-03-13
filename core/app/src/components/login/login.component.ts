@@ -8,7 +8,9 @@ import {ApiService} from '../../services/api/api.service';
 
 import {SystemConfigs, SystemConfigFacade} from '@services/metadata/configs/system-config.facade';
 
-import { Observable } from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
+import {LanguageFacade, LanguageState} from "@base/facades/language.facade";
+import {map} from "rxjs/operators";
 
 @Component({
     selector: 'scrm-login-ui',
@@ -22,20 +24,28 @@ export class LoginUiComponent {
     passw = '';
 
     systemConfigs$: Observable<SystemConfigs> = this.systemConfigFacade.vm$;
+    appStrings$: Observable<LanguageState> = this.languageFacade.vm$;
+
+    vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
+        map(([systemConfigs, appStrings]) => ({systemConfigs, appStrings}))
+    );
 
     /**
      *
-     * @param legacyApi LegacyApiService
+     * @param api
      * @param router Router
      * @param auth AuthService
      * @param message MessageService
+     * @param systemConfigFacade
+     * @param languageFacade
      */
     constructor(
         protected api: ApiService,
         protected router: Router,
         protected auth: AuthService,
         protected message: MessageService,
-        protected systemConfigFacade: SystemConfigFacade
+        protected systemConfigFacade: SystemConfigFacade,
+        protected languageFacade: LanguageFacade
     ) {
         this.hidden = false;
     }

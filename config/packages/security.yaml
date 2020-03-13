@@ -29,6 +29,8 @@ security:
     - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/graphql, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/graphql/graphiql*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 dunglas_angular_csrf:
