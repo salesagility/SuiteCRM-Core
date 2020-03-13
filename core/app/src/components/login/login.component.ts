@@ -6,6 +6,10 @@ import {LoginResponseModel} from '../../services/auth/login-response-model';
 import {MessageService} from '../../services/message/message.service';
 import {ApiService} from '../../services/api/api.service';
 
+import {SystemConfigs, SystemConfigFacade} from '@services/metadata/configs/system-config.facade';
+
+import { Observable } from 'rxjs';
+
 @Component({
     selector: 'scrm-login-ui',
     templateUrl: './login.component.html',
@@ -16,6 +20,8 @@ export class LoginUiComponent {
     error = '';
     uname = '';
     passw = '';
+
+    systemConfigs$: Observable<SystemConfigs> = this.systemConfigFacade.vm$;
 
     /**
      *
@@ -28,7 +34,8 @@ export class LoginUiComponent {
         protected api: ApiService,
         protected router: Router,
         protected auth: AuthService,
-        protected message: MessageService
+        protected message: MessageService,
+        protected systemConfigFacade: SystemConfigFacade
     ) {
         this.hidden = false;
     }

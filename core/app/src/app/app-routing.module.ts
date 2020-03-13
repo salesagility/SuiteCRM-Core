@@ -14,7 +14,8 @@ const routes: Routes = [
     },
     {
         path: 'Login',
-        loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule)
+        loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule),
+        resolve: {view: BaseMetadataResolver}
     },
     {
         path: 'Home',
