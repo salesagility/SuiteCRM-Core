@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
@@ -23,6 +23,7 @@ import {ListcontainerUiModule} from '../components/list-container/list-container
 import {ListModule} from '../../views/list/list.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ErrorInterceptor } from '../services/auth/error.interceptor';
 
 import {
     AppManagerModule
@@ -63,6 +64,7 @@ import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
         NgbModule
     ],
     providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy}
     ],
     bootstrap: [AppComponent],

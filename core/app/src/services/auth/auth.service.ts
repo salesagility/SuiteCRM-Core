@@ -1,65 +1,51 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams, HttpHeaders} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {LoginUiComponent} from '../../components/login/login.component';
 import {LogoutUiComponent} from '../../components/logout/logout.component';
-import {LoginResponseModel} from './login-response-model';
-import {MessageService} from '../message/message.service';
-import {ApiService} from '../api/api.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from '../user/user';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    protected loginResponse: LoginResponseModel = null;
+    public currentUser$: Observable<User>;
+    private currentUserSubject: BehaviorSubject<User>;
 
-    protected user = null;
-
-    constructor(
-        protected api: ApiService,
-        protected router: Router,
-        protected message: MessageService,
-        protected http: HttpClient
-    ) {
+    constructor(private http: HttpClient) {
+        this.currentUserSubject = new BehaviorSubject<User>(null);
+        this.currentUser$ = this.currentUserSubject.asObservable();
     }
 
-    isLoggedIn(): boolean {
-        return this.user != null && !this.user.expired;
+    public get currentUserValue(): User {
+        return this.currentUserSubject.value;
     }
 
     doLogin(
         caller: LoginUiComponent,
         username: string,
         password: string,
-        onSuccess: (caller: LoginUiComponent, loginResponse: LoginResponseModel) => void,
+        onSuccess: (caller: LoginUiComponent, response: string) => void,
         onError: (caller: LoginUiComponent, error: HttpErrorResponse) => void
     ) {
         const loginUrl = 'login';
 
-        const body = new HttpParams()
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        const params = new HttpParams()
             .set('username', username)
             .set('password', password);
 
-        return this.http.post(loginUrl,
-            body.toString(),
-            {
-                headers: new HttpHeaders()
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-            }
-        ).subscribe((response: LoginResponseModel) => {
-            this.api.reset(response);
-            this.loginResponse = response;
-            onSuccess(caller, this.loginResponse);
+        return this.http.post(
+            loginUrl,
+            params.toString(),
+            {headers}
+        ).subscribe((response: string) => {
+            onSuccess(caller, response);
         }, (error: HttpErrorResponse) => {
             onError(caller, error);
         });
-    }
-
-    getLoginResponse(): LoginResponseModel | null {
-        if (!this.loginResponse) {
-            return null;
-        }
-        return this.loginResponse;
     }
 
     doLogout(
@@ -74,8 +60,8 @@ export class AuthService {
 
         return this.http.post(logoutUrl,
             body.toString(),
-            { headers, responseType: 'text'}
-        ).subscribe((resp ) => {
+            {headers, responseType: 'text'}
+        ).subscribe((resp) => {
             onSuccess(caller, resp);
         }, (error: HttpErrorResponse) => {
             onError(caller, error);

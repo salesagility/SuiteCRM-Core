@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-
 import {AuthService} from '../../services/auth/auth.service';
-import {LoginResponseModel} from '../../services/auth/login-response-model';
 import {MessageService} from '../../services/message/message.service';
 import {ApiService} from '../../services/api/api.service';
 
@@ -97,14 +95,15 @@ export class LoginUiComponent {
     recoverPassword() {
     }
 
-    onLoginSuccess(caller: LoginUiComponent, loginResponse: LoginResponseModel) {
-        caller.message.log('OAuth2 login success');
+    onLoginSuccess(caller: LoginUiComponent) {
+        caller.message.log('Login success');
+        caller.message.removeMessages();
         caller.router.navigate(['/Home']);
         return;
     }
 
-    onLoginError(caller: LoginUiComponent, errorResponse: any) {
-        caller.message.log('OAuth2 login failed');
+    onLoginError(caller: LoginUiComponent) {
+        caller.message.log('Login failed');
         caller.message.addDangerMessage('Login credentials incorrect, please try again.');
     }
 }

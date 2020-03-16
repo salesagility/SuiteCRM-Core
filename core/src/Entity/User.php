@@ -34,6 +34,20 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="integer")
+     */
+    private $isAdmin;
+
+    /**
+     * @return int
+     */
+    public function getAdminStatus(): int
+    {
+        return $this->isAdmin;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

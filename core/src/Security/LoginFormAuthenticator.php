@@ -137,15 +137,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param Request $request
      * @param TokenInterface $token
      * @param string $providerKey
-     * @return RedirectResponse|Response|null
+     * @return JsonResponse|RedirectResponse
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
-
-        return new RedirectResponse($this->router->generate('index'));
+        return new JsonResponse('Login Success', Response::HTTP_OK);
     }
 
     /**

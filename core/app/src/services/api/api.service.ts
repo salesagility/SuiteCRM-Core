@@ -8,7 +8,6 @@ import {MessageService} from '../message/message.service';
 import {ApiAccessTokenResponseModel} from './api-access-token-response-model';
 import {ApiResponseModel} from './api-response-model';
 import {ApiSubscriptionModel} from './api-subscription-model';
-import {LoginResponseModel} from '../auth/login-response-model';
 import {ApiAccessTokenResponseEmpty} from './api-access-token-response-empty';
 
 import {environment} from '@base/environments/environment';
@@ -36,18 +35,9 @@ export class ApiService {
 
     protected static accessTokenResponse: ApiAccessTokenResponseModel = new ApiAccessTokenResponseEmpty();
 
-    reset(response?: LoginResponseModel) {
+    reset() {
         ApiService.observables = [];
         ApiService.subscriptions = [];
-        ApiService.accessTokenResponse = new ApiAccessTokenResponseEmpty();
-
-        if (response) {
-            ApiService.accessTokenResponse.accessToken = response.access_token;
-            ApiService.accessTokenResponse.expiresIn = response.expires_in;
-            ApiService.accessTokenResponse.tokenType = response.token_type;
-            ApiService.accessTokenResponse.refreshToken = response.refresh_token;
-            ApiService.accessTokenResponse.scope = response.scope ? response.scope : [];
-        }
     }
 
     protected getObservablePending(hashKey: string): Observable<any> | null {

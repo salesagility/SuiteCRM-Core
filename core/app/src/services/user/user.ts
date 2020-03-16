@@ -1,7 +1,7 @@
-export interface UserModel {
-    name: string;
+export class User {
     id: string;
-    userName: string;
+    username: string;
+    password: string;
     salutation?: string;
     status: string;
     isAdmin: boolean;
