@@ -6,11 +6,11 @@ import {LoginResponseModel} from '../../services/auth/login-response-model';
 import {MessageService} from '../../services/message/message.service';
 import {ApiService} from '../../services/api/api.service';
 
-import {SystemConfigs, SystemConfigFacade} from '@services/metadata/configs/system-config.facade';
+import {SystemConfigFacade, SystemConfigMap} from '@services/metadata/configs/system-config.facade';
 
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageFacade, LanguageState} from "@base/facades/language.facade";
-import {map} from "rxjs/operators";
+import {LanguageFacade, LanguageStringMap} from '@base/facades/language.facade';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'scrm-login-ui',
@@ -23,8 +23,8 @@ export class LoginUiComponent {
     uname = '';
     passw = '';
 
-    systemConfigs$: Observable<SystemConfigs> = this.systemConfigFacade.vm$;
-    appStrings$: Observable<LanguageState> = this.languageFacade.vm$;
+    systemConfigs$: Observable<SystemConfigMap> = this.systemConfigFacade.configs$;
+    appStrings$: Observable<LanguageStringMap> = this.languageFacade.languageStrings$;
 
     vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
         map(([systemConfigs, appStrings]) => ({systemConfigs, appStrings}))

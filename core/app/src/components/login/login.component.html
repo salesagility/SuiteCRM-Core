@@ -6,11 +6,11 @@
       <scrm-logo-ui></scrm-logo-ui>
 
       <div class="form-group row">
-          <label class="col-sm-3 ml-2 col-form-label" for="languages">{{vm.appStrings.languageStrings['LBL_LANGUAGE']}}:</label>
+          <label class="col-sm-3 ml-2 col-form-label" for="languages">{{vm.appStrings['LBL_LANGUAGE']}}:</label>
           <div class="select col-sm-8 p-0 inner-addon left-addon">
               <select #languageSelect id="languages" (change)="languageFacade.updateLanguage(languageSelect.value)">
                   <option [value]="item.key"
-                          *ngFor="let item of vm.systemConfigs.configs['languages'].items | keyvalue">{{item.value}}</option>
+                          *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue">{{item.value}}</option>
               </select>
           </div>
       </div>
@@ -18,23 +18,23 @@
       <div class="inner-addon left-addon">
         <svg-icon class="sicon" src="public/themes/suite8/images/login_user.svg"></svg-icon>
           <input [(ngModel)]="uname" type="text" name="username"
-                placeholder="{{vm.appStrings.languageStrings['LBL_USER_NAME']}}" aria-label="Username">
+                 placeholder="{{vm.appStrings['LBL_USER_NAME']}}" aria-label="Username">
       </div>
 
-      <div class="inner-addon left-addon">
-        <svg-icon class="sicon" src="public/themes/suite8/images/login_password.svg"></svg-icon>
-          <input [(ngModel)]="passw" type="password" name="password"
-                placeholder="{{vm.appStrings.languageStrings['LBL_PASSWORD']}}" aria-label="Password">
-      </div>
+        <div class="inner-addon left-addon">
+            <svg-icon class="sicon" src="public/themes/suite8/images/login_password.svg"></svg-icon>
+            <input [(ngModel)]="passw" type="password" name="password"
+                   placeholder="{{vm.appStrings['LBL_PASSWORD']}}" aria-label="Password">
+        </div>
 
-      <button class="login-button"
-              (click)="doLogin()">{{vm.appStrings.languageStrings['LBL_LOGIN_BUTTON_LABEL']}}</button>
-      <div class="forgotten-password">
-          <a href="#" class="forgotten-password-link">
-              {{vm.appStrings.languageStrings['LBL_LOGIN_FORGOT_PASSWORD']}}
-          </a>
-      </div>
-  </form>
+        <button class="login-button"
+                (click)="doLogin()">{{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}</button>
+        <div class="forgotten-password">
+            <a href="#" class="forgotten-password-link">
+                {{vm.appStrings['LBL_LOGIN_FORGOT_PASSWORD']}}
+            </a>
+        </div>
+    </form>
 
   <!-- End of login form section -->
 

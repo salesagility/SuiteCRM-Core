@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
-import {map, distinctUntilChanged, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '../../api/graphql-api/api.collection.get';
 
@@ -26,6 +26,8 @@ let internalState: SystemConfigs = {
     loading: false
 };
 
+let cache$: Observable<any> = null;
+
 @Injectable({
     providedIn: 'root',
 })
@@ -43,34 +45,45 @@ export class SystemConfigFacade {
         ]
     };
 
+    /**
+     * Public long-lived observable streams
+     */
     configs$ = this.state$.pipe(map(state => state.configs), distinctUntilChanged());
     loading$ = this.state$.pipe(map(state => state.loading));
 
-    /**
-     * ViewModel that resolves once all the data is ready (or updated)...
-     */
-    vm$: Observable<SystemConfigs> = combineLatest([this.configs$, this.loading$]).pipe(
-        map(([configs, loading]) => ({configs, loading}))
-    );
-
     constructor(private collectionGQL: CollectionGQL) {
-
     }
 
+
     /**
-     * Initial systemConfigs. Returns observable to be used in resolver if needed
-     * @return Observable<any>
+     * Public Api
+     */
+
+
+    /**
+     * Initial SystemConfigs load if not cached and update state.
+     * Returns observable to be used in resolver if needed
+     *
+     * @returns Observable<any>
      */
     public load(): Observable<any> {
+
         this.updateState({...internalState, loading: true});
-        const configs$ = this.fetch();
-        return configs$.pipe(tap(configs => {
-            this.updateState({...internalState, configs, loading: false});
-        }));
+
+        return this.getSystemConfigs().pipe(
+            tap(configs => {
+                this.updateState({...internalState, configs, loading: false});
+            })
+        );
     }
+
+    /**
+     * Internal API
+     */
 
     /**
      * Update the state
+     *
      * @param state
      */
     protected updateState(state: SystemConfigs) {
@@ -78,8 +91,25 @@ export class SystemConfigFacade {
     }
 
     /**
-     * Fetch the system configs
+     * Get SystemConfigs cached Observable or call the backend
+     *
      * @return Observable<any>
+     */
+    protected getSystemConfigs(): Observable<any> {
+
+        if (cache$ == null) {
+            cache$ = this.fetch().pipe(
+                shareReplay(1)
+            );
+        }
+
+        return cache$;
+    }
+
+    /**
+     * Fetch the App strings from the backend
+     *
+     * @returns Observable<any>
      */
     protected fetch(): Observable<any> {
 
