@@ -27,7 +27,19 @@ export class LoginUiComponent {
     appStrings$: Observable<LanguageStringMap> = this.languageFacade.languageStrings$;
 
     vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
-        map(([systemConfigs, appStrings]) => ({systemConfigs, appStrings}))
+        map(([systemConfigs, appStrings]) => {
+            let showLanguages = false;
+
+            if (systemConfigs.languages && systemConfigs.languages.items) {
+                showLanguages = Object.keys(systemConfigs.languages.items).length > 1;
+            }
+
+            return {
+                systemConfigs,
+                appStrings,
+                showLanguages
+            };
+        })
     );
 
     /**
