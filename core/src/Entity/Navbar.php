@@ -12,6 +12,9 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  *          "get"
  *     },
  *     collectionOperations={
+ *     },
+ *     graphql={
+ *         "item_query"
  *     }
  * )
  */
@@ -26,7 +29,7 @@ final class Navbar
      * @var array
      * @ApiProperty
      */
-    public $NonGroupedTabs;
+    public $tabs;
 
     /**
      * @var array
@@ -44,5 +47,5 @@ final class Navbar
      * @var array
      * @ApiProperty
      */
-    public $moduleSubmenus;
+    public $modules;
 }

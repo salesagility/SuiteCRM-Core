@@ -1,98 +1,124 @@
 import {Component, OnInit, HostListener} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
-import { Subscription } from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 
-import { Metadata } from '../../services/metadata/metadata.service';
+import {NavbarModuleMap, NavigationFacade} from '@base/facades/navigation/navigation.facade';
+import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
+import {map} from 'rxjs/operators';
 
 @Component({
-  selector: 'scrm-navbar-ui',
-  templateUrl: './navbar.component.html',
-  styleUrls: []
+    selector: 'scrm-navbar-ui',
+    templateUrl: './navbar.component.html',
+    styleUrls: []
 })
 export class NavbarUiComponent implements OnInit {
-  private navbarSubscription: Subscription;
-  public navigationMetadata: any;
 
-  constructor(protected metadata: Metadata, protected api: ApiService, protected router: Router) {
-    NavbarUiComponent.instances.push(this);
-  }
+    protected static instances: NavbarUiComponent[] = [];
 
-  protected static instances: NavbarUiComponent[] = [];
+    loaded = true;
 
-  loaded = true;
+    mainNavCollapse = true;
+    subItemCollapse = true;
+    subNavCollapse = true;
+    mobileNavbar = false;
+    mobileSubNav = false;
+    backLink = false;
+    mainNavLink = true;
+    parentNavLink = '';
+    submenu: any = [];
 
-  mainNavCollapse = true;
-  subItemCollapse = true;
-  subNavCollapse = true;
-  mobileNavbar = false;
-  mobileSubNav = false;
-  backLink = false;
-  mainNavLink = true;
-  parentNavLink: string = '';
-  submenu: any = [];
+    navbar: NavbarModel = new NavbarAbstract();
 
-  navbar: NavbarModel = new NavbarAbstract();
+    tabs$: Observable<string[]> = this.navigationFacade.tabs$;
+    modules$: Observable<NavbarModuleMap> = this.navigationFacade.modules$;
+    appStrings$: Observable<LanguageStringMap> = this.languageFacade.appStrings$;
+    modStrings$: Observable<LanguageListStringMap> = this.languageFacade.modStrings$;
+    appListStrings$: Observable<LanguageListStringMap> = this.languageFacade.appListStrings$;
 
-  public changeSubNav(event: Event, parentNavItem) {
-    this.mobileSubNav = !this.mobileSubNav;
-    this.backLink = !this.backLink;
-    this.mainNavLink = !this.mainNavLink;
-    this.submenu = parentNavItem.submenu;
-  }
+    vm$ = combineLatest([this.tabs$, this.modules$, this.appStrings$, this.appListStrings$, this.modStrings$]).pipe(
+        map((
+            [
+                tabs,
+                modules,
+                appStrings,
+                appListStrings,
+                modStrings
+            ]) => {
 
-  public navBackLink(event: Event) {
-    this.mobileSubNav = !this.mobileSubNav;
-    this.backLink = !this.backLink;
-    this.mainNavLink = !this.mainNavLink;
-  }
+            if (tabs && tabs.length > 0 &&
+                modules && Object.keys(modules).length > 0 &&
+                appStrings && Object.keys(appStrings).length > 0 &&
+                modStrings && Object.keys(modStrings).length > 0 &&
+                appListStrings && Object.keys(appListStrings).length > 0) {
+                this.navbar.resetMenu();
+                this.navbar.buildMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold);
+            }
 
-  @HostListener("window:resize", ["$event"])
-  onResize(event: any) {
-    event.target.innerWidth;
-    if (innerWidth <= 768) {
-      this.mobileNavbar = true;
-    } else {
-      this.mobileNavbar = false;
+            return {
+                tabs,
+                modules,
+                appStrings,
+                appListStrings,
+                modStrings
+            };
+        })
+    );
+
+    protected menuItemThreshold = 5;
+
+    constructor(protected navigationFacade: NavigationFacade,
+                protected languageFacade: LanguageFacade,
+                protected api: ApiService) {
+        const navbar = new NavbarAbstract();
+        this.setNavbar(navbar);
+
+        NavbarUiComponent.instances.push(this);
     }
-  }
 
-  static reset() {
-    NavbarUiComponent.instances.forEach((navbarComponent: NavbarUiComponent) => {
-      navbarComponent.loaded = false;
-      navbarComponent.navbar = new NavbarAbstract();
-    });
-  }
-
-  protected setNavbar(navbar: NavbarModel) {
-    this.navbar = navbar;
-    this.loaded = true;
-  }
-
-  protected isLoaded() {
-    return this.loaded;
-  }
-
-  ngOnInit(): void {
-
-    const menuItemThreshold = 5;
-    /*
-     * TODO : this call should be moved elsewhere once
-     *  we have the final structure using cache
-     */
-    this.navbarSubscription = this.metadata
-        .getNavigation()
-        .subscribe((data) => {
-          this.navigationMetadata = data;
-          if (data && data.NonGroupedTabs) {
-            this.navbar.buildMenu(data.NonGroupedTabs, menuItemThreshold);
-          }
+    static reset() {
+        NavbarUiComponent.instances.forEach((navbarComponent: NavbarUiComponent) => {
+            navbarComponent.loaded = false;
+            navbarComponent.navbar = new NavbarAbstract();
         });
+    }
 
-    const navbar = new NavbarAbstract();
-    this.setNavbar(navbar);
-    window.dispatchEvent(new Event('resize'));
-  }
+    public changeSubNav(event: Event, parentNavItem) {
+        this.mobileSubNav = !this.mobileSubNav;
+        this.backLink = !this.backLink;
+        this.mainNavLink = !this.mainNavLink;
+        this.submenu = parentNavItem.submenu;
+    }
+
+    public navBackLink(event: Event) {
+        this.mobileSubNav = !this.mobileSubNav;
+        this.backLink = !this.backLink;
+        this.mainNavLink = !this.mainNavLink;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        const innerWidth = event.target.innerWidth;
+        if (innerWidth <= 768) {
+            this.mobileNavbar = true;
+        } else {
+            this.mobileNavbar = false;
+        }
+    }
+
+    ngOnInit(): void {
+        const navbar = new NavbarAbstract();
+        this.setNavbar(navbar);
+        window.dispatchEvent(new Event('resize'));
+    }
+
+    protected setNavbar(navbar: NavbarModel) {
+        this.navbar = navbar;
+        this.loaded = true;
+    }
+
+    protected isLoaded() {
+        return this.loaded;
+    }
 }

@@ -6,7 +6,11 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 
 import {LoginUiComponent} from './login.component';
 import {ApiService} from '../../services/api/api.service';
+import {LanguageFacade} from '@base/facades/language/language.facade';
+import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import {systemConfigFacadeMock} from '@base/facades/system-config/system-config.facade.spec.mock';
+import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('LoginComponent', () => {
@@ -20,10 +24,13 @@ describe('LoginComponent', () => {
                 RouterTestingModule,
                 HttpClientTestingModule,
                 FormsModule,
-                ApolloTestingModule,
                 BrowserAnimationsModule
             ],
-            declarations: [LoginUiComponent]
+            declarations: [LoginUiComponent],
+            providers: [
+                {provide: SystemConfigFacade, useValue: systemConfigFacadeMock},
+                {provide: LanguageFacade, useValue: languageFacadeMock},
+            ],
         })
             .compileComponents();
     }));
@@ -34,7 +41,7 @@ describe('LoginComponent', () => {
         fixture.detectChanges();
     });
 
-    it(`should create`, async(inject([HttpTestingController],
+    it('should create', async(inject([HttpTestingController],
         (router: RouterTestingModule, http: HttpTestingController, api: ApiService) => {
             expect(component).toBeTruthy();
         })));

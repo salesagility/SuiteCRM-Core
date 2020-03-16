@@ -135,7 +135,7 @@ class LegacyHandler
     /**
      * Disable legacy suite translations
      */
-    protected function disableTranslations()
+    protected function disableTranslations(): void
     {
         global $sugar_config, $app_strings;
 

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
-import {CollectionGQL} from '../../api/graphql-api/api.collection.get';
+import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 
 export interface SystemConfig {
     id: string;

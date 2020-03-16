@@ -34,11 +34,11 @@ class AppStringsHandler extends LegacyHandler
      */
     public function getAppStrings(string $language): ?AppStrings
     {
-        $this->init();
-
         if (empty($language)) {
             return null;
         }
+
+        $this->init();
 
         $enabledLanguages = get_languages();
 

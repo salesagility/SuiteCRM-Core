@@ -1,0 +1,143 @@
+parameters:
+    legacy.menu_item_map:
+        default:
+            List:
+                icon: view
+            View:
+                icon: view
+            Add:
+                icon: plus
+            Create:
+                icon: plus
+            Import:
+                icon: download
+            Security_Groups:
+                icon: view
+            Schedule_Call:
+                icon: plus
+            Schedule_Meetings:
+                icon: plus
+            Schedule_Meeting:
+                icon: plus
+        contacts:
+            Create_Contact_Vcard:
+                icon: plus
+        calls:
+            Calls:
+                icon: plus
+        calendar:
+            Calendar:
+                icon: plus
+            Today:
+                icon: calendar
+        workflow:
+            View_Process_Audit:
+                icon: view
+        workflow-processed:
+            View_Process_Audit:
+                icon: view
+        mail-merge:
+            Documents:
+                icon: view
+        email-templates:
+            View_Email_Templates:
+                icon: view
+            View_Create_Email_Templates:
+                icon: plus
+        campaigns:
+            View_Create_Email_Templates:
+                icon: plus
+            View_Email_Templates:
+                icon: view
+            Setup_Email:
+                icon: email
+            View_Diagnostics:
+                icon: view
+            Create_Person_Form:
+                icon: person
+        leads:
+            Create_Lead_Vcard:
+                icon: plus
+        inbound-email:
+            Setup_Email:
+                icon: email
+        schedulers:
+            Schedulers:
+                icon: view
+        address-cache:
+            Createjjwg_Address_Cache:
+                icon: plus
+            jjwg_Address_Cache:
+                icon: view
+        maps:
+            List_Maps:
+                icon: view
+            Quick_Radius_Map:
+                icon: view
+        security-groups:
+            Create_Security_Group:
+                icon: plus
+            Security_Groups:
+                icon: view
+            Security_Suite_Settings:
+                icon: padlock
+            Role_Management:
+                icon: view
+        acl-roles:
+            Role_Management:
+                icon: view
+        connectors:
+            icon_Connectors:
+                icon: view
+            icon_ConnectorConfig_16:
+                icon: view
+            icon_ConnectorEnable_16:
+                icon: view
+            icon_ConnectorMap_16:
+                icon: view
+        configurator:
+            Administration:
+                icon: view
+            Leads:
+                icon: view
+        help:
+            Administration:
+                icon: view
+            Accounts:
+                icon: view
+            Opportunities:
+                icon: view
+            Cases:
+                icon: view
+            Notes:
+                icon: view
+            Calls:
+                icon: view
+            Emails:
+                icon: view
+            Meetings:
+                icon: view
+            Tasks:
+                icon: view
+        project:
+            Resource_Chart:
+                icon: piechart
+            View_Project_Tasks:
+                icon: view
+        project-task:
+            View_Project_Tasks:
+                icon: view
+        roles:
+            Role_Management:
+                icon: view
+        users:
+            Create_Group_User:
+                icon: plus
+            Create_Security_Group:
+                icon: plus
+            Security_Groups:
+                icon: view
+            Role_Management:
+                icon: view
+            Security_Suite_Settings:
+                icon: view

@@ -1,15 +1,15 @@
 <!-- Start of main navbar section -->
-<div class="top-panel fixed-top">
+<div class="top-panel fixed-top" *ngIf="(vm$ | async) as vm">
 
-  <!-- Start of empty navbar section until data is loaded -->
+    <!-- Start of empty navbar section until data is loaded -->
 
-  <ng-template [ngIf]="!loaded">
-    <nav class="navbar navbar-expand-lg">
-      <div class="navbar-collapse collapse order-4 order-md-0 collapsenav">
-        <ul class="navbar-nav">
-          <li class="top-nav nav-item">&nbsp;
-          </li>
-        </ul>
+    <ng-template [ngIf]="!loaded">
+        <nav class="navbar navbar-expand-lg">
+            <div class="navbar-collapse collapse order-4 order-md-0 collapsenav">
+                <ul class="navbar-nav">
+                    <li class="top-nav nav-item">&nbsp;
+                    </li>
+                </ul>
       </div>
     </nav>
   </ng-template>
@@ -48,21 +48,21 @@
             </ng-template>
             <ng-template [ngIf]="mainNavLink">
               <li class="" *ngFor="let item of navbar.menu" ngbDropdownItem>
-                <a class="mobile-nav-link">{{ vm.appStringsList[item.link.label] }}</a>
+                  <a class="mobile-nav-link">{{ item.link.label }}</a>
                 <svg-icon class="sicon-xs mobile-nav-arrow" src="public/themes/suite8/images/arrow_right_filled.svg"
                           (click)="changeSubNav($event, item)"></svg-icon>
               </li>
             </ng-template>
             <ng-template [ngIf]="mobileSubNav">
               <li class="" *ngFor="let sub of submenu" ngbDropdownItem>
-                <a class="mobile-nav-link action-link">
-                  {{ vm.appStringsList[sub.link.label] }}
-                </a>
+                  <a class="mobile-nav-link action-link">
+                      {{ sub.link.label }}
+                  </a>
                 <ul *ngIf="sub.submenu.length" class="">
                   <li *ngFor="let subitem of sub.submenu" class="nav-item">
-                    <a class="mobile-nav-link action-link" href="{{ subitem.link.url }}">
-                      {{ vm.appStringsList[subitem.link.label] }}
-                    </a>
+                      <a class="mobile-nav-link action-link" href="{{ subitem.link.url }}">
+                          {{ subitem.link.label }}
+                      </a>
                   </li>
                   <ng-template [ngIf]="sub.recentRecords.length">
                     <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
@@ -130,88 +130,93 @@
             <li class="top-nav nav-item dropdown main-grouped" *ngFor="let item of navbar.menu">
               <span data-toggle="collapse" data-target=".navbar-collapse">
                  <a class="nav-link-grouped dropdown-toggle" data-toggle="dropdown" href="{{ item.link.url }}">
-                  {{ vm.appStringsList[item.link.label] }}
+                  {{ item.link.label }}
                  </a>
                </span>
               <ul class="dropdown-menu main" aria-labelledby="navbarDropdownMenuLink" [ngbCollapse]="subNavCollapse">
                 <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
-                  <a class="nav-link action-link" *ngIf="!sub.submenu.length"  [href]="sub.link.url">
-                    {{ vm.appStringsList[sub.link.label] }}
-                  </a>
-                  <a class="nav-link action-link dropdown-item dropdown-toggle" *ngIf="sub.submenu.length"
-                     (click)="subItemCollapse = !subItemCollapse">
-                     {{ vm.appStringsList[sub.link.label] }}
-                  </a>
+                    <a class="nav-link action-link" *ngIf="!sub.submenu.length" [href]="sub.link.url">
+                        {{ sub.link.label }}
+                    </a>
+                    <a class="nav-link action-link dropdown-item dropdown-toggle" *ngIf="sub.submenu.length"
+                       (click)="subItemCollapse = !subItemCollapse">
+                        {{ sub.link.label }}
+                    </a>
                   <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
                     <li *ngFor="let subitem of sub.submenu" class="nav-item">
-                      <a class="nav-link action-link" href="{{ subitem.link.url }}">
-                        <svg-icon src="{{ subitem.link.iconRef.resolved }}.svg">
-                        </svg-icon>
-                        {{ vm.appStringsList[subitem.link.label] }}
-                      </a>
+                        <a class="nav-link action-link" href="{{ subitem.link.url }}">
+                            <svg-icon *ngIf="subitem.icon" src="public/themes/suite8/images/{{ subitem.icon }}.svg">
+                            </svg-icon>
+                            {{ subitem.link.label }}
+                        </a>
                     </li>
-                    <ng-template [ngIf]="sub.recentRecords.length">
-                      <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
-                      <li class="nav-item" *ngFor="let rec of sub.recentRecords">
-                        <a class="nav-link action-link"
-                           href="#/{{ rec.moduleName }}/{{ rec.itemId }}">{{ rec.itemSummary }}</a>
-                      </li>
-                    </ng-template>
+                      <ng-template [ngIf]="sub.recentRecords.length">
+                          <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
+                          <li class="nav-item" *ngFor="let rec of sub.recentRecords">
+                              <a class="nav-link action-link"
+                                 href="{{ rec.url }}">{{ rec.summary }}</a>
+                          </li>
+                      </ng-template>
                   </ul>
                 </li>
               </ul>
-              <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
-                <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
-            <li *ngFor="let recentRecord of item.recentRecords" class="nav-item">
-              <a class="nav-link action-link" href="#">{{ recentRecord.itemSummary }}</a>
             </li>
-    </ng-template>
-    </li>
-    </ul>
+          </ul>
 
-    <!-- Navbar with non-grouped tabs -->
+            <!-- Navbar with non-grouped tabs -->
 
-    <ul *ngIf="!navbar.useGroupTabs" class="navbar-nav">
-      <li class="top-nav nav-item dropdown non-grouped" *ngFor="let item of navbar.all.modules">
+            <ul *ngIf="!navbar.useGroupTabs" class="navbar-nav">
+                <li class="top-nav nav-item dropdown non-grouped" *ngFor="let item of navbar.menu">
 
-        <!-- TODO: Implement a cleaner solution than hard coded ngIf -->
+                    <!-- TODO: Implement a cleaner solution than hard coded ngIf -->
 
-        <ng-template [ngIf]="item.link.label !== 'Home'">
-                             <span data-toggle="collapse" data-target=".navbar-collapse">
-                             <a class="nav-link-nongrouped dropdown-toggle"
-                                href="{{ item.link.url }}">{{ item.link.label }}
-                             </a>
-                             </span>
-          <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu submenu">
-      <li class="nav-item" *ngFor="let sub of item.submenu">
-        <a class="nav-link action-link" href="{{ sub.link.url }}">
-          <svg-icon src="{{ sub.link.iconRef.resolved }}.svg"></svg-icon>
-          {{ vm.appStringsList[sub.link.label] }}
-        </a>
-      </li>
-      <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
-        <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
-        <li *ngFor="let recentRecord of item.recentRecords" class="nav-item">
-          <a class="nav-link action-link" href="#">{{ recentRecord.itemSummary }}</a>
-        </li>
-      </ng-template>
-</div>
-</ng-template>
-</li>
-</ul>
-<ul *ngIf="!navbar.useGroupTabs" class="navbar-nav">
-  <li class="top-nav nav-item dropdown non-grouped">
-    <a class="nav-link-nongrouped dropdown-toggle">More</a>
-    <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu more-menu submenu">
-  <li class="nav-item" *ngFor="let item of navbar.all.modules">
-    <a class="nav-link action-link" href="{{ item.link.url }}">{{ vm.appStringsList[item.link.label] }}</a>
-  </li>
-  <li class="nav-item" *ngFor="let item of navbar.all.extra">
-    <a class="nav-link action-link" href="{{ item.link.url }}">{{ vm.appStringsList[item.link.label] }}</a>
-  </li>
-  </div>
-  </li>
-</ul>
+                    <ng-template [ngIf]="item.link.label !== 'Home'">
+                <span data-toggle="collapse" data-target=".navbar-collapse">
+                    <a class="nav-link-nongrouped dropdown-toggle"
+                       [href]="item.link.url"
+                       [routerLink]="item.link.route"
+                       [queryParams]="item.link.params"
+                       routerLinkActive="active">
+                        {{ item.link.label }}
+                    </a>
+                </span>
+                        <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu submenu">
+                            <div class="nav-item" *ngFor="let sub of item.submenu">
+                                <a class="nav-link action-link"
+                                   [href]="sub.link.url"
+                                   [routerLink]="sub.link.route"
+                                   [queryParams]="sub.link.params">
+                                    <svg-icon *ngIf="sub.icon"
+                                              src="public/themes/suite8/images/{{ sub.icon }}.svg"></svg-icon>
+                                    {{ sub.link.label }}
+                                </a>
+                            </div>
+                            <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
+                                <h4 class="recently-viewed-header">{{vm.appStrings['LBL_LAST_VIEWED']}}</h4>
+                                <div *ngFor="let recentRecord of item.recentRecords" class="nav-item">
+                                    <a class="nav-link action-link" href="#">{{ recentRecord.summary }}</a>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+                </li>
+            </ul>
+            <ul *ngIf="!navbar.useGroupTabs && navbar.all.modules && navbar.all.modules.length > 0"
+                class="navbar-nav">
+                <li class="top-nav nav-item dropdown non-grouped">
+                    <a class="nav-link-nongrouped dropdown-toggle">More</a>
+                    <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu more-menu submenu">
+                        <div class="nav-item" *ngFor="let item of navbar.all.modules">
+                            <a class="nav-link action-link" [href]="item.link.url"
+                               [routerLink]="item.link.route">{{ item.link.label }}</a>
+                        </div>
+                        <div class="nav-item" *ngFor="let item of navbar.all.extra">
+                            <a class="nav-link action-link" [href]="item.link.url"
+                               [routerLink]="item.link.route">{{ item.link.label }}</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
 </div>
 <div class="global-links" ngbDropdown>
   <ul class="navbar-nav">

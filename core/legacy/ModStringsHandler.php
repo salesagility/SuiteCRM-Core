@@ -43,11 +43,11 @@ class ModStringsHandler extends LegacyHandler
      */
     public function getModStrings(string $language): ?ModStrings
     {
-        $this->init();
-
         if (empty($language)) {
             return null;
         }
+
+        $this->init();
 
         $enabledLanguages = get_languages();
 

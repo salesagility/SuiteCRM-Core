@@ -45,7 +45,7 @@ class RouteConverter
      */
     public function isLegacyRoute(Request $request): bool
     {
-        if (!empty($request->getPathInfo()) && $request->getPathInfo() !== '/'){
+        if (!empty($request->getPathInfo()) && $request->getPathInfo() !== '/') {
             return false;
         }
 
@@ -55,7 +55,7 @@ class RouteConverter
             return false;
         }
 
-        if (!$this->moduleNameMapper->isValidModule($module)){
+        if (!$this->moduleNameMapper->isValidModule($module)) {
             return false;
         }
 
@@ -83,13 +83,50 @@ class RouteConverter
         $route = $this->buildRoute($module, $action, $record);
 
         if (null !== $queryString = $request->getQueryString()) {
-            $queryString = $this->removeParameter($queryString, 'module', $module);
-            $queryString = $this->removeParameter($queryString, 'action', $action);
-            $queryString = $this->removeParameter($queryString, 'record', $record);
-            $queryString = '?' . Request::normalizeQueryString($queryString);
+            $queryParams = $request->query->all();
+            $queryString = '?' . $this->buildQueryString($queryParams, ['module', 'action', 'record']);
         }
 
         return $route . $queryString;
+    }
+
+    /**
+     * Convert given $uri route
+     *
+     * @param string $uri
+     * @return string
+     */
+    public function convertUri(string $uri): string
+    {
+        $request = Request::create($uri);
+
+        return $this->convert($request);
+    }
+
+    /**
+     * Parse given $uri route
+     *
+     * @param string $uri
+     * @return array
+     */
+    public function parseUri(string $uri): array
+    {
+        $request = Request::create($uri);
+
+        $module = $request->query->get('module');
+        $action = $request->query->get('action');
+        $record = $request->query->get('record');
+
+        if (empty($module)) {
+            throw new InvalidArgumentException('No module defined');
+        }
+
+        $route = $this->buildRoute($module, $action, $record);
+
+        return [
+            'route' => $route,
+            'params' => $this->excludeParams($request->query->all(), ['module', 'action', 'record'])
+        ];
     }
 
     /**
@@ -114,7 +151,8 @@ class RouteConverter
      * Get map of valid action
      * @return array
      */
-    protected function getValidActions(): array {
+    protected function getValidActions(): array
+    {
         return $this->map;
     }
 
@@ -170,17 +208,35 @@ class RouteConverter
     }
 
     /**
-     * @param string|null $queryString
-     * @param string|null $param
-     * @param string|null $value
-     * @return string|string[]|null
+     * Build query string
+     * @param array $queryParams
+     * @param array $exclude
+     * @return string
      */
-    protected function removeParameter(?string $queryString, ?string $param, ?string $value)
+    protected function buildQueryString(array $queryParams, array $exclude): string
     {
-        if (empty($value) || empty($param) || empty($queryString)) {
-            return $queryString;
+        $validParams = $this->excludeParams($queryParams, $exclude);
+
+        return Request::normalizeQueryString(http_build_query($validParams));
+    }
+
+    /**
+     * Build new array where list of query params are excluded
+     * @param array $queryParams
+     * @param array $exclude
+     * @return array
+     */
+    protected function excludeParams(array $queryParams, array $exclude): array
+    {
+        $validParams = [];
+
+        foreach ($queryParams as $name => $value) {
+            if (in_array($name, $exclude)) {
+                continue;
+            }
+            $validParams[$name] = $value;
         }
 
-        return str_replace("$param=$value", '', $queryString);;
+        return $validParams;
     }
 }

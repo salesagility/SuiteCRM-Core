@@ -1,6 +1,6 @@
 import {Component, ViewChild, ViewContainerRef, OnInit} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {AppState, AppStateFacade} from "@base/facades/app-state.facade";
+import {AppState, AppStateFacade} from "@base/facades/app-state/app-state.facade";
 import {Observable} from "rxjs";
 
 @Component({
