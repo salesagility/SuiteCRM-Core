@@ -48,9 +48,7 @@
             </ng-template>
             <ng-template [ngIf]="mainNavLink">
               <li class="" *ngFor="let item of navbar.menu" ngbDropdownItem>
-                <a class="mobile-nav-link"
-                >{{ item.link.label }}
-                </a>
+                <a class="mobile-nav-link">{{ vm.appStringsList[item.link.label] }}</a>
                 <svg-icon class="sicon-xs mobile-nav-arrow" src="public/themes/suite8/images/arrow_right_filled.svg"
                           (click)="changeSubNav($event, item)"></svg-icon>
               </li>
@@ -58,12 +56,12 @@
             <ng-template [ngIf]="mobileSubNav">
               <li class="" *ngFor="let sub of submenu" ngbDropdownItem>
                 <a class="mobile-nav-link action-link">
-                  {{ sub.link.label }}
+                  {{ vm.appStringsList[sub.link.label] }}
                 </a>
                 <ul *ngIf="sub.submenu.length" class="">
                   <li *ngFor="let subitem of sub.submenu" class="nav-item">
                     <a class="mobile-nav-link action-link" href="{{ subitem.link.url }}">
-                      {{ subitem.link.label }}
+                      {{ vm.appStringsList[subitem.link.label] }}
                     </a>
                   </li>
                   <ng-template [ngIf]="sub.recentRecords.length">
@@ -132,24 +130,24 @@
             <li class="top-nav nav-item dropdown main-grouped" *ngFor="let item of navbar.menu">
               <span data-toggle="collapse" data-target=".navbar-collapse">
                  <a class="nav-link-grouped dropdown-toggle" data-toggle="dropdown" href="{{ item.link.url }}">
-                   {{ item.link.label }}
+                  {{ vm.appStringsList[item.link.label] }}
                  </a>
                </span>
               <ul class="dropdown-menu main" aria-labelledby="navbarDropdownMenuLink" [ngbCollapse]="subNavCollapse">
                 <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
                   <a class="nav-link action-link" *ngIf="!sub.submenu.length"  [href]="sub.link.url">
-                    {{ sub.link.label }}
+                    {{ vm.appStringsList[sub.link.label] }}
                   </a>
                   <a class="nav-link action-link dropdown-item dropdown-toggle" *ngIf="sub.submenu.length"
                      (click)="subItemCollapse = !subItemCollapse">
-                    {{ sub.link.label }}
+                     {{ vm.appStringsList[sub.link.label] }}
                   </a>
                   <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
                     <li *ngFor="let subitem of sub.submenu" class="nav-item">
                       <a class="nav-link action-link" href="{{ subitem.link.url }}">
                         <svg-icon src="{{ subitem.link.iconRef.resolved }}.svg">
                         </svg-icon>
-                        {{ subitem.link.label }}
+                        {{ vm.appStringsList[subitem.link.label] }}
                       </a>
                     </li>
                     <ng-template [ngIf]="sub.recentRecords.length">
@@ -188,7 +186,7 @@
       <li class="nav-item" *ngFor="let sub of item.submenu">
         <a class="nav-link action-link" href="{{ sub.link.url }}">
           <svg-icon src="{{ sub.link.iconRef.resolved }}.svg"></svg-icon>
-          {{ sub.link.label }}
+          {{ vm.appStringsList[sub.link.label] }}
         </a>
       </li>
       <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
@@ -206,10 +204,10 @@
     <a class="nav-link-nongrouped dropdown-toggle">More</a>
     <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu more-menu submenu">
   <li class="nav-item" *ngFor="let item of navbar.all.modules">
-    <a class="nav-link action-link" href="{{ item.link.url }}">{{ item.link.label }}</a>
+    <a class="nav-link action-link" href="{{ item.link.url }}">{{ vm.appStringsList[item.link.label] }}</a>
   </li>
   <li class="nav-item" *ngFor="let item of navbar.all.extra">
-    <a class="nav-link action-link" href="{{ item.link.url }}">{{ item.link.label }}</a>
+    <a class="nav-link action-link" href="{{ item.link.url }}">{{ vm.appStringsList[item.link.label] }}</a>
   </li>
   </div>
   </li>
