@@ -22,7 +22,8 @@ class AppStringsHandler extends LegacyHandler
             'ERR_INVALID_PASSWORD',
             'LBL_PASSWORD',
             'LBL_LANGUAGE',
-            'LBL_LOGIN_FORGOT_PASSWORD'
+            'LBL_LOGIN_FORGOT_PASSWORD',
+            'LBL_EMAIL'
         ]
     ];
 

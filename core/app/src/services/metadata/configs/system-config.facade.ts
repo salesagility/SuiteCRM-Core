@@ -8,7 +8,7 @@ export interface SystemConfig {
     id: string;
     _id: string;
     value: string;
-    items: {};
+    items: { [key: string]: any };
 }
 
 export interface SystemConfigMap {

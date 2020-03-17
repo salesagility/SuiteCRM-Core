@@ -42,6 +42,7 @@
     "core-js": "^3.6.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "ng-animate": "^0.3.4",
     "ng2-charts": "^2.2.3",
     "nyc": "~14.1.1",
     "object-hash": "^2.0.2",

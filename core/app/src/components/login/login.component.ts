@@ -11,17 +11,29 @@ import {SystemConfigFacade, SystemConfigMap} from '@services/metadata/configs/sy
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageFacade, LanguageStringMap} from '@base/facades/language.facade';
 import {map} from 'rxjs/operators';
+import {transition, trigger, useAnimation} from '@angular/animations';
+import {fadeIn} from 'ng-animate';
 
 @Component({
     selector: 'scrm-login-ui',
     templateUrl: './login.component.html',
-    styleUrls: []
+    styleUrls: [],
+    animations: [
+        trigger('fade', [
+            transition(':enter', useAnimation(fadeIn, {
+                params: {timing: 0.5, delay: 0}
+            })),
+        ])
+    ]
 })
 export class LoginUiComponent {
     hidden = true;
     error = '';
     uname = '';
     passw = '';
+    email = '';
+
+    cardState = 'front';
 
     systemConfigs$: Observable<SystemConfigMap> = this.systemConfigFacade.configs$;
     appStrings$: Observable<LanguageStringMap> = this.languageFacade.languageStrings$;
@@ -29,15 +41,23 @@ export class LoginUiComponent {
     vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
         map(([systemConfigs, appStrings]) => {
             let showLanguages = false;
+            let showForgotPassword = false;
 
             if (systemConfigs.languages && systemConfigs.languages.items) {
                 showLanguages = Object.keys(systemConfigs.languages.items).length > 1;
             }
 
+            if (systemConfigs.passwordsetting && systemConfigs.passwordsetting.items) {
+                const forgotPasswordProperty = systemConfigs.passwordsetting.items.forgotpasswordON;
+                showForgotPassword = [true, '1', 'true'].includes(forgotPasswordProperty);
+            }
+
+
             return {
                 systemConfigs,
                 appStrings,
-                showLanguages
+                showLanguages,
+                showForgotPassword
             };
         })
     );
@@ -62,8 +82,19 @@ export class LoginUiComponent {
         this.hidden = false;
     }
 
+    flipCard() {
+        if (this.cardState === 'front') {
+            this.cardState = 'back';
+        } else {
+            this.cardState = 'front';
+        }
+    }
+
     doLogin() {
         this.auth.doLogin(this, this.uname, this.passw, this.onLoginSuccess, this.onLoginError);
+    }
+
+    recoverPassword() {
     }
 
     onLoginSuccess(caller: LoginUiComponent, loginResponse: LoginResponseModel) {
