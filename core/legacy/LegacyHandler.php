@@ -131,4 +131,20 @@ class LegacyHandler
             $_SESSION[$key] = $value;
         }
     }
+
+    /**
+     * Disable legacy suite translations
+     */
+    protected function disableTranslations()
+    {
+        global $sugar_config, $app_strings;
+
+        if (!isset($sugar_config)) {
+            $sugar_config = [];
+        }
+
+        $sugar_config['disable_translations'] = true;
+
+        $app_strings = disable_translations($app_strings);
+    }
 }
