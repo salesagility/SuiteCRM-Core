@@ -38,7 +38,9 @@ final class ClassicViewItemDataProvider implements ItemDataProviderInterface, Re
         $output->setId('123');
 
         $html = '<h1>HTML working</h1><script>alert(\'JS Working\');</script><button onClick="alert(\'JS Working\');">Click Me</button>';
-        $html .= '<a href="index.php?module=Contacts&action=ListView">Legacy Link to Contacts List View</a>';
+        $html .= '<br/><a href="index.php?module=Contacts&action=ListView">Legacy Link to Contacts List View</a>';
+        $html .= '<br/><strong>Legacy folder Image:</strong>';
+        $html .= '<img src="themes/default/images/company_logo.png" alt="SuiteCRM" style="margin: 5px 0;">';
         $output->setHtml($html);
 
         return $output;

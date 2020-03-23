@@ -1,0 +1,5 @@
+parameters:
+  legacy.asset_paths:
+    - cache
+    - include
+    - themes
