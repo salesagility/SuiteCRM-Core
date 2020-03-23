@@ -67,27 +67,15 @@ export class AuthService {
         onSuccess: (caller: LogoutUiComponent, resp: any) => void,
         onError: (caller: LogoutUiComponent, error: HttpErrorResponse) => void
     ) {
-
-        const loginResponse = this.getLoginResponse();
-
-        if (!loginResponse) {
-            this.router.navigateByUrl('Login');
-            return;
-        }
-
         const logoutUrl = 'logout';
 
-        const body = new HttpParams()
-            .set('access_token', loginResponse.access_token)
-            .set('refresh_token', loginResponse.refresh_token);
+        const body = new HttpParams();
+        const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
         return this.http.post(logoutUrl,
             body.toString(),
-            {
-                headers: new HttpHeaders()
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-            }
-        ).subscribe((resp) => {
+            { headers, responseType: 'text'}
+        ).subscribe((resp ) => {
             onSuccess(caller, resp);
         }, (error: HttpErrorResponse) => {
             onError(caller, error);

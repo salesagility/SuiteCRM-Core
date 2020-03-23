@@ -26,15 +26,17 @@ export class LogoutUiComponent implements OnInit {
     }
 
     doLogout() {
-
+        this.auth.doLogout(this, this.onLogoutSuccess, this.onLogoutError);
     }
 
     onLogoutSuccess(caller: LogoutUiComponent) {
-        caller.message.log('New OAuth2 logout success');
+        caller.message.log('Logout success');
+        caller.router.navigate(['/Login']);
+        return;
     }
 
     onLogoutError(caller: LogoutUiComponent, errorResponse: HttpErrorResponse) {
-        caller.message.log('New OAuth2 logout failed');
+        caller.message.log('Logout failed');
     }
 
 }
