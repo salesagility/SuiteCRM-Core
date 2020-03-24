@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
  *     description="Classic view html",
  *     itemOperations={
  *         "get"={

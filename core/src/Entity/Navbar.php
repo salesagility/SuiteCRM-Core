@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
  *     itemOperations={
  *          "get"
  *     },
