@@ -38,7 +38,7 @@
 }
 
 .action-group .dropdown-menu li a:hover {
-  background: none;
+  background: green;
   text-decoration: none;
 }
 
@@ -156,7 +156,7 @@ ul.main li.nav-item,
   padding: 0em 1em;
 }
 
-.dropdown-menu .nav-item:hover {
+.dropdown-menu .nav-item:hover, .dropdown-menu .nav-item .action-link:hover  {
   background-color: $dull-orange;
 }
 

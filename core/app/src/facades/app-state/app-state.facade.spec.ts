@@ -1,6 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 import {appStateFacadeMock} from '@base/facades/app-state/app-state.facade.spec.mock';
+import {take} from "rxjs/operators";
 
 describe('AppState Facade', () => {
     let injector: TestBed;
@@ -15,7 +16,7 @@ describe('AppState Facade', () => {
     it('#updateLoading',
         (done: DoneFn) => {
             service.updateLoading(true);
-            service.loading$.subscribe(loading => {
+            service.loading$.pipe(take(1)).subscribe(loading => {
                 expect(loading).toEqual(true);
                 done();
             });

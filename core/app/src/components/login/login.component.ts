@@ -10,7 +10,7 @@ import {fadeIn} from 'ng-animate';
 import {AuthService} from '@services/auth/auth.service';
 import {MessageService} from '@services/message/message.service';
 import {ApiService} from '@services/api/api.service';
-import {RecoverPasswordService} from '@services/process/processes/recover-password';
+import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
 
 import {SystemConfigFacade, SystemConfigMap} from '@base/facades/system-config/system-config.facade';
 import {LanguageFacade, LanguageStringMap} from '@base/facades/language/language.facade';

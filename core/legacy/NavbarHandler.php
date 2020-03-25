@@ -73,8 +73,8 @@ class NavbarHandler extends LegacyHandler
         $nameMap = $this->createFrontendNameMap($legacyTabNames);
 
         $navbar->tabs = array_values($nameMap);
+        $navbar->groupedTabs = $this->fetchGroupedNavTabs($nameMap);
         $navbar->modules = $this->buildModuleInfo($sugarView, $nameMap);
-        $navbar->groupedTabs = $this->fetchGroupedNavTabs();
         $navbar->userActionMenu = $this->fetchUserActionMenu();
 
         $this->close();
@@ -95,9 +95,10 @@ class NavbarHandler extends LegacyHandler
 
     /**
      * Fetch Grouped Navigation tabs
+     * @param array $nameMap
      * @return array
      */
-    protected function fetchGroupedNavTabs(): array
+    protected function fetchGroupedNavTabs(array &$nameMap): array
     {
         $output = [];
         global $current_language;
@@ -119,6 +120,11 @@ class NavbarHandler extends LegacyHandler
 
             foreach ($subModules['modules'] as $submodule => $submoduleLabel) {
                 $submoduleArray[] = $moduleNameMap[$submodule];
+
+                //Add missing module to the module info list
+                if (empty($nameMap[$submodule])){
+                    $nameMap[$submodule] = $moduleNameMap[$submodule];
+                }
             }
 
             sort($submoduleArray);

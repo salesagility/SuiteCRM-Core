@@ -18,7 +18,7 @@ class ModStringsHandlerTest extends Unit
      */
     protected $handler;
 
-    protected function _before()
+    protected function _before(): void
     {
         $legacyModuleNameMap = [
             'Home' => [
@@ -366,7 +366,7 @@ class ModStringsHandlerTest extends Unit
     /**
      * Test Invalid language handling in ModStringsHandler
      */
-    public function testInvalidLanguageCheck()
+    public function testInvalidLanguageCheck(): void
     {
         $this->expectException(ItemNotFoundException::class);
         $this->handler->getModStrings('invalid_lang');
@@ -375,7 +375,7 @@ class ModStringsHandlerTest extends Unit
     /**
      * Test default language retrieval in ModStringsHandler
      */
-    public function testDefaultLanguageKey()
+    public function testDefaultLanguageKey(): void
     {
         $modStrings = $this->handler->getModStrings('en_us');
         static::assertNotNull($modStrings);
@@ -392,7 +392,7 @@ class ModStringsHandlerTest extends Unit
      * @param string $key
      * @param ModStrings $modStrings
      */
-    protected function assertLanguageKey($module, $key, ModStrings $modStrings)
+    protected function assertLanguageKey($module, $key, ModStrings $modStrings): void
     {
         static::assertArrayHasKey($module, $modStrings->getItems());
         static::assertNotEmpty($modStrings->getItems()[$module]);

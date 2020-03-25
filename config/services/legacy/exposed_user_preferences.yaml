@@ -1,0 +1,47 @@
+parameters:
+    legacy.exposed_user_preferences:
+        global:
+            sort_modules_by_name: true
+            navigation_paradigm: true
+            swap_shortcuts: true
+            subpanel_tabs: true
+            count_collapsed_subpanels: true
+            user_theme: true
+            module_favicon: true
+            no_opps: true
+            reminder_time: true
+            email_reminder_time: true
+            reminder_checked: true
+            email_reminder_checked: true
+            timezone: true
+            ut: true
+            currency: true
+            default_currency_significant_digits: true
+            num_grp_sep: true
+            dec_sep: true
+            fdow: true
+            datef: true
+            timef: true
+            mail_fromname: true
+            mail_fromaddress: true
+            mail_sendtype: true
+            mail_smtpserver: true
+            mail_smtpport: true
+            mail_smtpuser: true
+            mail_smtppass: true
+            default_locale_name_format: true
+            export_delimiter: true
+            default_export_charset: true
+            use_real_names: true
+            mail_smtpauth_req: true
+            mail_smtpssl: true
+            signature_default: true
+            signature_prepend: true
+            email_link_type: true
+            editor_type: true
+            email_show_counts: true
+            email_editor_option: true
+            default_email_charset: true
+            calendar_publish_key: true
+            subtheme: true
+            syncGCal: true

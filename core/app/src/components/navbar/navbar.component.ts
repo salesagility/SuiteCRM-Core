@@ -4,9 +4,13 @@ import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
 import {combineLatest, Observable} from 'rxjs';
 
-import {NavbarModuleMap, NavigationFacade} from '@base/facades/navigation/navigation.facade';
+import {NavbarModuleMap, NavigationFacade, GroupedTab} from '@base/facades/navigation/navigation.facade';
 import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
+
+import {UserPreferenceMap, UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+
 import {map} from 'rxjs/operators';
+import { exists } from 'fs';
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -36,24 +40,49 @@ export class NavbarUiComponent implements OnInit {
     appStrings$: Observable<LanguageStringMap> = this.languageFacade.appStrings$;
     modStrings$: Observable<LanguageListStringMap> = this.languageFacade.modStrings$;
     appListStrings$: Observable<LanguageListStringMap> = this.languageFacade.appListStrings$;
+    userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceFacade.userPreferences$;
+    groupedTabs$: Observable<any> = this.navigationFacade.groupedTabs$;
 
-    vm$ = combineLatest([this.tabs$, this.modules$, this.appStrings$, this.appListStrings$, this.modStrings$]).pipe(
+    vm$ = combineLatest([
+        this.tabs$, 
+        this.modules$, 
+        this.appStrings$, 
+        this.appListStrings$, 
+        this.modStrings$, 
+        this.userPreferences$,
+        this.groupedTabs$
+    ]).pipe(
         map((
             [
                 tabs,
                 modules,
                 appStrings,
                 appListStrings,
-                modStrings
+                modStrings,
+                userPreferences,
+                groupedTabs
             ]) => {
 
             if (tabs && tabs.length > 0 &&
                 modules && Object.keys(modules).length > 0 &&
                 appStrings && Object.keys(appStrings).length > 0 &&
                 modStrings && Object.keys(modStrings).length > 0 &&
-                appListStrings && Object.keys(appListStrings).length > 0) {
+                appListStrings && Object.keys(appListStrings).length > 0 && 
+                userPreferences['navigation_paradigm'] && userPreferences['navigation_paradigm'].toString() == "m"
+            ) {
                 this.navbar.resetMenu();
-                this.navbar.buildMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold);
+                this.navbar.buildTabMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold);
+            }
+
+            if (tabs && tabs.length > 0 &&
+                modules && Object.keys(modules).length > 0 &&
+                appStrings && Object.keys(appStrings).length > 0 &&
+                modStrings && Object.keys(modStrings).length > 0 &&
+                appListStrings && Object.keys(appListStrings).length > 0 && 
+                userPreferences['navigation_paradigm'] && userPreferences['navigation_paradigm'].toString() == "gm"
+            ) {
+                this.navbar.resetMenu();
+                this.navbar.buildGroupTabMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold, groupedTabs);
             }
 
             return {
@@ -61,7 +90,9 @@ export class NavbarUiComponent implements OnInit {
                 modules,
                 appStrings,
                 appListStrings,
-                modStrings
+                modStrings,
+                userPreferences,
+                groupedTabs
             };
         })
     );
@@ -70,7 +101,8 @@ export class NavbarUiComponent implements OnInit {
 
     constructor(protected navigationFacade: NavigationFacade,
                 protected languageFacade: LanguageFacade,
-                protected api: ApiService) {
+                protected api: ApiService,
+                protected userPreferenceFacade: UserPreferenceFacade) {
         const navbar = new NavbarAbstract();
         this.setNavbar(navbar);
 
@@ -110,6 +142,7 @@ export class NavbarUiComponent implements OnInit {
     ngOnInit(): void {
         const navbar = new NavbarAbstract();
         this.setNavbar(navbar);
+
         window.dispatchEvent(new Event('resize'));
     }
 

@@ -4,25 +4,25 @@ import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 
-export interface SystemConfig {
+export interface UserPreference {
     id: string;
     _id: string;
     value: string;
     items: { [key: string]: any };
 }
 
-export interface SystemConfigMap {
-    [key: string]: SystemConfig;
+export interface UserPreferenceMap {
+    [key: string]: UserPreference;
 }
 
-export interface SystemConfigs {
-    configs: SystemConfigMap;
+export interface UserPreferences {
+    userPreferences: UserPreferenceMap;
     loading: boolean;
 }
 
 
-let internalState: SystemConfigs = {
-    configs: {},
+let internalState: UserPreferences = {
+    userPreferences: {},
     loading: false
 };
 
@@ -31,10 +31,10 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class SystemConfigFacade {
-    protected store = new BehaviorSubject<SystemConfigs>(internalState);
+export class UserPreferenceFacade {
+    protected store = new BehaviorSubject<UserPreferences>(internalState);
     protected state$ = this.store.asObservable();
-    protected resourceName = 'systemConfigs';
+    protected resourceName = 'userPreferences';
     protected fieldsMetadata = {
         fields: [
             'id',
@@ -47,12 +47,11 @@ export class SystemConfigFacade {
     /**
      * Public long-lived observable streams
      */
-    configs$ = this.state$.pipe(map(state => state.configs), distinctUntilChanged());
+    userPreferences$ = this.state$.pipe(map(state => state.userPreferences), distinctUntilChanged());
     loading$ = this.state$.pipe(map(state => state.loading));
 
     constructor(private collectionGQL: CollectionGQL) {
     }
-
 
     /**
      * Public Api
@@ -60,21 +59,21 @@ export class SystemConfigFacade {
 
 
     /**
-     * Initial SystemConfigs load if not cached and update state.
+     * Initial UserPreferences load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
      * @returns Observable<any>
      */
     public load(): Observable<any> {
-
         this.updateState({...internalState, loading: true});
 
-        return this.getSystemConfigs().pipe(
-            tap(configs => {
-                this.updateState({...internalState, configs, loading: false});
+        return this.getUserPreferences().pipe(
+            tap(userPreferences => {
+                this.updateState({...internalState, userPreferences, loading: false});
             })
         );
     }
+
 
     /**
      * Internal API
@@ -85,16 +84,16 @@ export class SystemConfigFacade {
      *
      * @param state
      */
-    protected updateState(state: SystemConfigs) {
+    protected updateState(state: UserPreferences) {
         this.store.next(internalState = state);
     }
 
     /**
-     * Get SystemConfigs cached Observable or call the backend
+     * Get UserPreferences cached Observable or call the backend
      *
      * @return Observable<any>
      */
-    protected getSystemConfigs(): Observable<any> {
+    protected getUserPreferences(): Observable<any> {
 
         if (cache$ == null) {
             cache$ = this.fetch().pipe(
@@ -106,7 +105,7 @@ export class SystemConfigFacade {
     }
 
     /**
-     * Fetch the App strings from the backend
+     * Fetch the User Preferences from the backend
      *
      * @returns Observable<any>
      */
@@ -114,16 +113,17 @@ export class SystemConfigFacade {
 
         return this.collectionGQL
             .fetchAll(this.resourceName, this.fieldsMetadata).pipe(map(({data}) => {
-                const configs: SystemConfigMap = {};
+                const userPreferences: UserPreferenceMap = {};
 
-                if (data.systemConfigs && data.systemConfigs.edges) {
-                    data.systemConfigs.edges.forEach((edge) => {
-                        configs[edge.node._id] = edge.node;
+                if (data.userPreferences && data.userPreferences.edges) {
+                    data.userPreferences.edges.forEach((edge) => {
+                        for (const key in edge.node.items) {
+                            userPreferences[key] = edge.node.items[key];
+                        }
                     });
                 }
 
-                return configs;
+                return userPreferences;
             }));
     }
-
 }

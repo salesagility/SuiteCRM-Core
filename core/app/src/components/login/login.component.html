@@ -54,7 +54,7 @@
                 </div>
 
 
-                <button class="login-button"
+                <button id="login-button" class="login-button"
                         (click)="loginForm.control.markAllAsTouched(); loginForm.valid && doLogin()">
                     {{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}
                 </button>
@@ -105,7 +105,7 @@
                     {{vm.appStrings['LBL_GENERATE_PASSWORD_BUTTON_TITLE']}}
                 </button>
                 <div>
-                    <a href="#" class="forgotten-password-link" (click)="flipCard()">
+                    <a href="#" class="back-link forgotten-password-link" (click)="flipCard()">
                         {{vm.appStrings['LBL_BACK']}}
                     </a>
                 </div>

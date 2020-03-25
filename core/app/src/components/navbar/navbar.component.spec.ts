@@ -10,6 +10,8 @@ import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {navigationMock} from '@base/facades/navigation/navigation.facade.spec.mock';
 import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
+import {UserPreferenceFacade} from "@base/facades/user-preference/user-preference.facade";
+import {userPreferenceFacadeMock} from "@base/facades/user-preference/user-preference.facade.spec.mock";
 
 describe('NavbarUiComponent', () => {
 
@@ -29,6 +31,7 @@ describe('NavbarUiComponent', () => {
                 providers: [
                     {provide: NavigationFacade, useValue: navigationMock},
                     {provide: LanguageFacade, useValue: languageFacadeMock},
+                    {provide: UserPreferenceFacade, useValue: userPreferenceFacadeMock},
                 ],
                 declarations: [NavbarUiComponent]
             }).compileComponents();

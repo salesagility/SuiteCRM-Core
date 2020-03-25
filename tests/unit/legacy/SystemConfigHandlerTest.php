@@ -16,7 +16,7 @@ class SystemConfigHandlerTest extends Unit
      */
     protected $handler;
 
-    protected function _before()
+    protected function _before(): void
     {
         $exposedSystemConfigs = [
             'default_language' => true,
@@ -46,7 +46,7 @@ class SystemConfigHandlerTest extends Unit
     /**
      * Test empty config key handling in SystemConfigHandler
      */
-    public function testEmptySystemConfigKeyCheck()
+    public function testEmptySystemConfigKeyCheck(): void
     {
         $defaultLanguage = $this->handler->getSystemConfig('');
         static::assertNull($defaultLanguage);
@@ -55,7 +55,7 @@ class SystemConfigHandlerTest extends Unit
     /**
      * Test invalid config key handling in SystemConfigHandler
      */
-    public function testInvalidExposedSystemConfigCheck()
+    public function testInvalidExposedSystemConfigCheck(): void
     {
         $this->expectException(ItemNotFoundException::class);
         $this->handler->getSystemConfig('dbconfig');
@@ -64,7 +64,7 @@ class SystemConfigHandlerTest extends Unit
     /**
      * Test retrieval of first level system config in SystemConfigHandler
      */
-    public function testGetValidOneLevelSystemConfig()
+    public function testGetValidOneLevelSystemConfig(): void
     {
         $defaultLanguage = $this->handler->getSystemConfig('default_language');
         static::assertNotNull($defaultLanguage);
@@ -76,7 +76,7 @@ class SystemConfigHandlerTest extends Unit
     /**
      * Test retrieval of second level deep system config in SystemConfigHandler
      */
-    public function testGetValidTwoLevelSystemConfig()
+    public function testGetValidTwoLevelSystemConfig(): void
     {
         $defaultLanguage = $this->handler->getSystemConfig('passwordsetting');
         static::assertNotNull($defaultLanguage);
@@ -97,7 +97,7 @@ class SystemConfigHandlerTest extends Unit
     /**
      * Test retrieval of third level deep system config in SystemConfigHandler
      */
-    public function testGetValidThreeLevelSystemConfig()
+    public function testGetValidThreeLevelSystemConfig(): void
     {
         $defaultLanguage = $this->handler->getSystemConfig('search');
         static::assertNotNull($defaultLanguage);

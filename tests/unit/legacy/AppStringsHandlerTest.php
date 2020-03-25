@@ -17,7 +17,7 @@ class AppStringsHandlerTest extends Unit
      */
     protected $handler;
 
-    protected function _before()
+    protected function _before(): void
     {
         $projectDir = codecept_root_dir();
         $legacyDir = $projectDir . '/legacy';
@@ -31,7 +31,7 @@ class AppStringsHandlerTest extends Unit
     /**
      * Test Invalid language handling in AppStringsHandler
      */
-    public function testInvalidLanguageCheck()
+    public function testInvalidLanguageCheck(): void
     {
         $this->expectException(ItemNotFoundException::class);
         $this->handler->getAppStrings('invalid_lang');
@@ -40,7 +40,7 @@ class AppStringsHandlerTest extends Unit
     /**
      * Test default language retrieval in AppStringsHandler
      */
-    public function testDefaultLanguageKey()
+    public function testDefaultLanguageKey(): void
     {
         $appStrings = $this->handler->getAppStrings('en_us');
         static::assertNotNull($appStrings);
@@ -62,7 +62,7 @@ class AppStringsHandlerTest extends Unit
      * @param string $key
      * @param AppStrings $appStrings
      */
-    protected function assertLanguageKey($key, AppStrings $appStrings)
+    protected function assertLanguageKey($key, AppStrings $appStrings): void
     {
         static::assertArrayHasKey($key, $appStrings->getItems());
         static::assertNotEmpty($appStrings->getItems()[$key]);

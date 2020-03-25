@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {ClassicViewUiComponent} from '@components/classic-view/classic-view.component';
 import {ClassicViewResolver} from "@services/classic-view/classic-view.resolver";
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
+import {UserPreferenceResolver} from '@base/facades/user-preference/user-preference.resolver';
 import {AuthGuard} from '../services/auth/auth-guard.service';
 import {ListComponent} from '@views/list/list.component';
 
@@ -11,13 +12,16 @@ const routes: Routes = [
         path: 'Listview',
         component: ListComponent,
         resolve: {
-            metadata: BaseMetadataResolver
-        },
+            view: BaseMetadataResolver, 
+            userPreference: UserPreferenceResolver
+        }
     },
     {
         path: 'Login',
         loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule),
-        resolve: {metadata: BaseMetadataResolver},
+        resolve: {
+            metadata: BaseMetadataResolver
+        },
         data: {
             load: {
                 navigation: false,
@@ -30,6 +34,7 @@ const routes: Routes = [
         loadChildren: () => import('../components/home/home.module').then(m => m.HomeUiModule),
         resolve: {
             metadata: BaseMetadataResolver,
+            userPreference: UserPreferenceResolver
         }
     },
     {
@@ -39,7 +44,8 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
         resolve: {
             metadata: BaseMetadataResolver,
-            view: ClassicViewResolver
+            view: ClassicViewResolver,
+            userPreference: UserPreferenceResolver
         },
         data: {
             reuseRoute: false
@@ -52,7 +58,8 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
         resolve: {
             metadata: BaseMetadataResolver,
-            view: ClassicViewResolver
+            view: ClassicViewResolver,
+            userPreference: UserPreferenceResolver
         },
         data: {
             reuseRoute: false
@@ -65,7 +72,8 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
         resolve: {
             metadata: BaseMetadataResolver,
-            view: ClassicViewResolver
+            view: ClassicViewResolver,
+            userPreference: UserPreferenceResolver
         },
         data: {
             reuseRoute: false

@@ -27,6 +27,7 @@ services:
       $legacyActionNameMap: '%legacy.action_name_map%'
       $menuItemMap: '%legacy.menu_item_map%'
       $legacyAssetPaths: '%legacy.asset_paths%'
+      $exposedUserPreferences: '%legacy.exposed_user_preferences%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

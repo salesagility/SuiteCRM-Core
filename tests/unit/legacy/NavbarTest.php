@@ -2146,6 +2146,45 @@ final class NavbarTest extends Unit
                         "icon" => "view"
                     ]
                 ]
+            ],
+            'bugs' => [
+                'path' => 'bugs',
+                'defaultRoute' => './#/bugs/index',
+                'name' => 'bugs',
+                'labelKey' => 'Bugs',
+                'menu' => [
+                    0 => [
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_BUG',
+                        'url' => './#/bugs/edit',
+                        'params' => [
+                            'return_module' => 'Bugs',
+                            'return_action' => 'DetailView',
+                        ],
+                        'icon' => 'plus'
+                    ],
+                    1 => [
+                        'name' => 'List',
+                        'labelKey' => 'LNK_BUG_LIST',
+                        'url' => './#/bugs/index',
+                        'params' => [
+                            'return_module' => 'Bugs',
+                            'return_action' => 'DetailView'
+                        ],
+                        'icon' => 'view'
+                    ],
+                    2 => [
+                        'name' => 'Import',
+                        'labelKey' => 'LNK_IMPORT_BUGS',
+                        'url' => './#/import/step1',
+                        'params' => [
+                            'import_module' => 'Bugs',
+                            'return_module' => 'Bugs',
+                            'return_action' => 'index'
+                        ],
+                        'icon' => 'download'
+                    ]
+                ]
             ]
         ];
 
