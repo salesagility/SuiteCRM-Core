@@ -6,6 +6,8 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 
 import {LoginUiComponent} from './login.component';
 import {ApiService} from '../../services/api/api.service';
+import {ApolloTestingModule} from 'apollo-angular/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;
@@ -14,7 +16,13 @@ describe('LoginComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, HttpClientTestingModule, FormsModule],
+            imports: [
+                RouterTestingModule,
+                HttpClientTestingModule,
+                FormsModule,
+                ApolloTestingModule,
+                BrowserAnimationsModule
+            ],
             declarations: [LoginUiComponent]
         })
             .compileComponents();

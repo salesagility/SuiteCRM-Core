@@ -31,6 +31,8 @@ import {
 import {environment} from '../environments/environment';
 import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
 import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-spinner.component';
+import {RouteReuseStrategy} from '@angular/router';
+import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 
 @NgModule({
     declarations: [
@@ -59,6 +61,9 @@ import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-
         ColumnchooserUiModule,
         BrowserAnimationsModule,
         NgbModule
+    ],
+    providers: [
+        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy}
     ],
     bootstrap: [AppComponent],
     entryComponents: []

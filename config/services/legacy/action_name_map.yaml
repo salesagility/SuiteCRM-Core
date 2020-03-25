@@ -11,3 +11,11 @@ parameters:
         modulelistmenu: modulelistmenu
         favorites: favorites
         noaccess: noaccess
+        step1: step1
+        composeview: compose
+        wizardhome: wizard-home
+        campaigndiagnostic: diagnostic
+        webtoleadcreation: web-to-lead
+        resourcelist: resource-list
+        quick_radius: quick-radius
+

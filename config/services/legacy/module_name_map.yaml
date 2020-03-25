@@ -22,77 +22,101 @@ parameters:
             frontend: notes
             core: Notes
         Leads:
-            frontend: leads
-            core: Leads
+          frontend: leads
+          core: Leads
         Contacts:
-            frontend: contacts
-            core: Contacts
+          frontend: contacts
+          core: Contacts
         Accounts:
-            frontend: accounts
-            core: Accounts
+          frontend: accounts
+          core: Accounts
         Opportunities:
-            frontend: opportunities
-            core: Opportunities
+          frontend: opportunities
+          core: Opportunities
+        Import:
+          frontend: import
+          core: Import
         Emails:
-            frontend: emails
-            core: Emails
+          frontend: emails
+          core: Emails
         EmailTemplates:
-            frontend: email-templates
-            core: EmailTemplates
+          frontend: email-templates
+          core: EmailTemplates
+        InboundEmail:
+          frontend: inbound-email
+          core: InboundEmail
+        MailMerge:
+          frontend: mail-merge
+          core: MailMerge
+        Schedulers:
+          frontend: schedulers
+          core: Schedulers
         Campaigns:
-            frontend: campaigns
-            core: Campaigns
+          frontend: campaigns
+          core: Campaigns
+        Targets:
+          frontend: targets
+          core: Targets
         Prospects:
-            frontend: prospects
-            core: Prospects
+          frontend: prospects
+          core: Prospects
         ProspectLists:
-            frontend: prospect-lists
-            core: ProspectLists
+          frontend: prospect-lists
+          core: ProspectLists
         Documents:
-            frontend: documents
-            core: Documents
+          frontend: documents
+          core: Documents
         Cases:
-            frontend: cases
-            core: Cases
+          frontend: cases
+          core: Cases
         Project:
-            frontend: project
-            core: Project
+          frontend: project
+          core: Project
+        ProjectTask:
+          frontend: project-task
+          core: ProjectTask
         Bugs:
-            frontend: bugs
-            core: Bugs
+          frontend: bugs
+          core: Bugs
         ResourceCalendar:
-            frontend: resource-calendar
-            core: ResourceCalendar
+          frontend: resource-calendar
+          core: ResourceCalendar
         AOBH_BusinessHours:
-            frontend: business-hours
-            core: BusinessHours
+          frontend: business-hours
+          core: BusinessHours
         Spots:
-            frontend: spots
-            core: Spots
+          frontend: spots
+          core: Spots
         SecurityGroups:
-            frontend: security-groups
-            core: SecurityGroups
+          frontend: security-groups
+          core: SecurityGroups
         ACL:
-            frontend: acl
-            core: ACL
+          frontend: acl
+          core: ACL
         ACLRoles:
-            frontend: acl-roles
-            core: ACLRoles
+          frontend: acl-roles
+          core: ACLRoles
+        Roles:
+          frontend: roles
+          core: Roles
         Configurator:
-            frontend: configurator
-            core: Configurator
+          frontend: configurator
+          core: Configurator
         UserPreferences:
-            frontend: user-preferences
-            core: UserPreferences
+          frontend: user-preferences
+          core: UserPreferences
+        Users:
+          frontend: users
+          core: Users
         SavedSearch:
-            frontend: saved-search
-            core: SavedSearch
+          frontend: saved-search
+          core: SavedSearch
         Studio:
-            frontend: studio
-            core: Studio
+          frontend: studio
+          core: Studio
         Connectors:
-            frontend: connectors
-            core: Connectors
+          frontend: connectors
+          core: Connectors
         SugarFeed:
             frontend: sugar-feed
             core: SugarFeed
@@ -154,8 +178,8 @@ parameters:
             frontend: events
             core: Events
         FP_Event_Locations:
-            frontend: event-Locations
-            core: EventLocations
+          frontend: event-locations
+          core: EventLocations
         AOS_Contracts:
             frontend: contracts
             core: Contracts
@@ -220,14 +244,17 @@ parameters:
             frontend: report-conditions
             core: ReportConditions
         AOW_WorkFlow:
-            frontend: workFlow
-            core: WorkFlow
+          frontend: workflow
+          core: Workflow
         AOW_Actions:
-            frontend: workflow-actions
-            core: WorkflowActions
+          frontend: workflow-actions
+          core: WorkflowActions
         AOW_Processed:
-            frontend: workflow-processed
-            core: WorflowProcessed
+          frontend: workflow-processed
+          core: WorflowProcessed
         AOW_Conditions:
-            frontend: workflow-conditions
-            core: WorkflowConditions
+          frontend: workflow-conditions
+          core: WorkflowConditions
+        Help:
+          frontend: help
+          core: Help

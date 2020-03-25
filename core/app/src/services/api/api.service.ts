@@ -278,31 +278,4 @@ export class ApiService {
     ): boolean {
         return this.request({type: 'GET', url}, onSuccess, onError);
     }
-
-    getClassicView(routeParams: ParamMap): Observable<any> {
-
-        let url = API_URL
-        let module = routeParams.get('module') || '';
-        url += '/classic-views/' + module;
-
-        let params = new HttpParams();
-        routeParams.keys.forEach((name) => {
-            let value = routeParams.get(name);
-
-            if (name = 'module'){
-                return;
-            }
-
-            if (value == null || value == undefined) {
-                return;
-            }
-
-            params = params.set(name, value);
-        });
-
-        return this.http.get(url, {
-            params: params
-        });
-    }
-
 }

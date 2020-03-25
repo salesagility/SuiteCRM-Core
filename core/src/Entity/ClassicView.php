@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Resolver\ClassicViewResolver;
 
 /**
  * @ApiResource(
@@ -39,6 +40,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     },
  *     collectionOperations={
  *     },
+ *     graphql={
+ *          "get"={
+ *              "item_query"=ClassicViewResolver::class,
+ *                  "args"={
+ *                     "module"={"type"="String!"},
+ *                     "params"={"type"="Iterable" , "description"="legacy query params list"}
+ *              }
+ *          },
+ *     },
  * )
  */
 class ClassicView
@@ -66,7 +76,7 @@ class ClassicView
     /**
      * The action
      *
-     * @var string
+     * @var string|null
      *
      * @ApiProperty(
      *     attributes={
@@ -78,12 +88,12 @@ class ClassicView
      *     }
      * )
      */
-    protected $action;
+    protected $action = null;
 
     /**
      * The record.
      *
-     * @var string
+     * @var string|null
      *
      * @ApiProperty(
      *     attributes={
@@ -94,7 +104,7 @@ class ClassicView
      *     }
      * )
      */
-    protected $record;
+    protected $record = null;
 
     /**
      * The view html.
@@ -132,9 +142,9 @@ class ClassicView
 
     /**
      * Set Action
-     * @param string $action
+     * @param string|null $action
      */
-    public function setAction(string $action): void
+    public function setAction(?string $action): void
     {
         $this->action = $action;
     }
@@ -150,9 +160,9 @@ class ClassicView
 
     /**
      * Set Record
-     * @param string $record
+     * @param string|null $record
      */
-    public function setRecord(string $record): void
+    public function setRecord(?string $record): void
     {
         $this->record = $record;
     }

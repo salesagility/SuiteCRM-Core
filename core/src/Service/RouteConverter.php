@@ -76,11 +76,20 @@ class RouteConverter
         $action = $request->query->get('action');
         $record = $request->query->get('record');
 
-        if (empty($module)){
+        if (empty($module)) {
             throw new InvalidArgumentException('No module defined');
         }
 
-        return $this->buildRoute($module, $action, $record);
+        $route = $this->buildRoute($module, $action, $record);
+
+        if (null !== $queryString = $request->getQueryString()) {
+            $queryString = $this->removeParameter($queryString, 'module', $module);
+            $queryString = $this->removeParameter($queryString, 'action', $action);
+            $queryString = $this->removeParameter($queryString, 'record', $record);
+            $queryString = '?' . Request::normalizeQueryString($queryString);
+        }
+
+        return $route . $queryString;
     }
 
     /**
@@ -158,5 +167,20 @@ class RouteConverter
     protected function mapModule(string $module): string
     {
         return $this->moduleNameMapper->toFrontEnd($module);
+    }
+
+    /**
+     * @param string|null $queryString
+     * @param string|null $param
+     * @param string|null $value
+     * @return string|string[]|null
+     */
+    protected function removeParameter(?string $queryString, ?string $param, ?string $value)
+    {
+        if (empty($value) || empty($param) || empty($queryString)) {
+            return $queryString;
+        }
+
+        return str_replace("$param=$value", '', $queryString);;
     }
 }

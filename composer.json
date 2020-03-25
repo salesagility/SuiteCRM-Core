@@ -57,7 +57,8 @@
       "App\\DataFixtures\\": "core/src/DataFixtures/",
       "App\\DataProvider\\": "core/src/DataProvider/",
       "App\\Services\\": "core/src/Service/",
-      "App\\EventListener\\": "core/src/EventListener/"
+      "App\\EventListener\\": "core/src/EventListener/",
+      "App\\Resolver\\": "core/src/Resolver/"
     }
   },
   "scripts": {

@@ -5,6 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\ClassicView;
+use SuiteCRM\Core\Legacy\ClassicViewHandler;
 
 /**
  * Class ClassicViewItemDataProvider
@@ -12,6 +13,21 @@ use App\Entity\ClassicView;
  */
 final class ClassicViewItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
+
+    /**
+     * @var ClassicViewHandler
+     */
+    private $classicViewHandler;
+
+    /**
+     * ClassicViewItemDataProvider constructor.
+     * @param ClassicViewHandler $classicViewHandler
+     */
+    public function __construct(ClassicViewHandler $classicViewHandler)
+    {
+        $this->classicViewHandler = $classicViewHandler;
+    }
+
     /**
      * Defined supported resources
      * @param string $resourceClass
@@ -34,15 +50,11 @@ final class ClassicViewItemDataProvider implements ItemDataProviderInterface, Re
      */
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?ClassicView
     {
-        $output = new ClassicView();
-        $output->setId('123');
+        $params = [];
+        if (!empty($context['args']) && !empty($context['args']['params'])) {
+            $params = $context['args']['params'];
+        }
 
-        $html = '<h1>HTML working</h1><script>alert(\'JS Working\');</script><button onClick="alert(\'JS Working\');">Click Me</button>';
-        $html .= '<br/><a href="index.php?module=Contacts&action=ListView">Legacy Link to Contacts List View</a>';
-        $html .= '<br/><strong>Legacy folder Image:</strong>';
-        $html .= '<img src="themes/default/images/company_logo.png" alt="SuiteCRM" style="margin: 5px 0;">';
-        $output->setHtml($html);
-
-        return $output;
+        return $this->classicViewHandler->getClassicView($id, $params);
     }
 }
