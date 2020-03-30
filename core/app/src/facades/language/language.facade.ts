@@ -126,6 +126,47 @@ export class LanguageFacade {
     }
 
     /**
+     * Get AppStrings label by key
+     *
+     * @param labelKey
+     */
+    public getAppString(labelKey: string): string {
+
+        if (!internalState.appStrings || !internalState.appStrings[labelKey]) {
+            return null;
+        }
+        return internalState.appStrings[labelKey];
+    }
+
+    /**
+     * Get AppListStrings label by key
+     *
+     * @param labelKey
+     */
+    public getAppListString(labelKey: string): string | LanguageStringMap {
+
+        if (!internalState.appListStrings || !internalState.appListStrings[labelKey]) {
+            return null;
+        }
+
+        return internalState.appListStrings[labelKey];
+    }
+
+    /**
+     * Get ModStrings label by key
+     *
+     * @param labelKey
+     */
+    public getModString(labelKey: string): string | LanguageStringMap {
+
+        if (!internalState.modStrings || !internalState.modStrings[labelKey]) {
+            return null;
+        }
+
+        return internalState.modStrings[labelKey];
+    }
+
+    /**
      * Get all available string types
      *
      * @returns Observable

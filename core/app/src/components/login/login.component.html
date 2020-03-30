@@ -2,7 +2,7 @@
 
     <!-- Start of login form section -->
 
-    <form name="login" class="login-form">
+    <form name="login" class="login-form" #loginForm="ngForm">
         <scrm-logo-ui></scrm-logo-ui>
 
         <div class="form-group row" *ngIf="vm.showLanguages">
@@ -19,22 +19,45 @@
         <div class="fade-card">
 
             <!-- Card front -->
-            <div class="fade-card-front" *ngIf="cardState==='front'" [@fade]>
+            <div class="fade-card-front"
+                 *ngIf="cardState==='front'"
+                 [@fade]>
 
                 <div class="inner-addon left-addon">
                     <svg-icon class="sicon" src="public/themes/suite8/images/login_user.svg"></svg-icon>
-                    <input [(ngModel)]="uname" type="text" name="username"
-                           placeholder="{{vm.appStrings['LBL_USER_NAME']}}" aria-label="Username">
+                    <input [(ngModel)]="uname"
+                           type="text"
+                           name="username"
+                           [class.is-invalid]="username.invalid && username.touched"
+                           #username="ngModel"
+                           placeholder="{{vm.appStrings['LBL_USER_NAME']}}"
+                           aria-label="Username"
+                           required>
+                    <div *ngIf="username.invalid && username.touched" class="invalid-feedback">
+                        {{vm.appStrings['ERR_MISSING_REQUIRED_FIELDS']}}
+                    </div>
                 </div>
 
                 <div class="inner-addon left-addon">
                     <svg-icon class="sicon" src="public/themes/suite8/images/login_password.svg"></svg-icon>
-                    <input [(ngModel)]="passw" type="password" name="password"
-                           placeholder="{{vm.appStrings['LBL_PASSWORD']}}" aria-label="Password">
+                    <input [(ngModel)]="passw"
+                           type="password"
+                           name="password"
+                           [class.is-invalid]="password.invalid && password.touched"
+                           #password="ngModel"
+                           placeholder="{{vm.appStrings['LBL_PASSWORD']}}"
+                           aria-label="Password"
+                           required>
+                    <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
+                        {{vm.appStrings['ERR_MISSING_REQUIRED_FIELDS']}}
+                    </div>
                 </div>
 
+
                 <button class="login-button"
-                        (click)="doLogin()">{{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}</button>
+                        (click)="loginForm.control.markAllAsTouched(); loginForm.valid && doLogin()">
+                    {{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}
+                </button>
                 <div class="forgotten-password" *ngIf="vm.showForgotPassword">
                     <a href="#" class="forgotten-password-link" (click)="flipCard()">
                         {{vm.appStrings['LBL_LOGIN_FORGOT_PASSWORD']}}
@@ -44,20 +67,41 @@
             </div>
 
             <!-- Card back-->
-            <div class="fade-card-back" *ngIf="cardState==='back'" [@fade]>
+            <div class="fade-card-back"
+                 *ngIf="cardState==='back'"
+                 [@fade]>
                 <div class="inner-addon left-addon">
                     <svg-icon class="sicon" src="public/themes/suite8/images/login_user.svg"></svg-icon>
-                    <input [(ngModel)]="uname" type="text" name="username"
-                           placeholder="{{vm.appStrings['LBL_USER_NAME']}}" aria-label="Username">
+                    <input [(ngModel)]="uname"
+                           type="text"
+                           name="username"
+                           [class.is-invalid]="username.invalid && username.touched"
+                           #username="ngModel"
+                           placeholder="{{vm.appStrings['LBL_USER_NAME']}}"
+                           aria-label="Username"
+                           required>
+                    <div *ngIf="username.invalid && username.touched" class="invalid-feedback">
+                        {{vm.appStrings['ERR_MISSING_REQUIRED_FIELDS']}}
+                    </div>
                 </div>
 
                 <div class="inner-addon left-addon">
                     <svg-icon class="sicon" src="public/themes/suite8/images/email.svg"></svg-icon>
-                    <input [(ngModel)]="email" type="email" name="email"
-                           placeholder="{{vm.appStrings['LBL_EMAIL']}}" aria-label="Email">
+                    <input [(ngModel)]="email"
+                           type="email"
+                           name="email"
+                           [class.is-invalid]="mail.invalid && mail.touched"
+                           #mail="ngModel"
+                           placeholder="{{vm.appStrings['LBL_EMAIL']}}"
+                           aria-label="Email"
+                           required>
+                    <div *ngIf="mail.invalid && mail.touched" class="invalid-feedback">
+                        {{vm.appStrings['ERR_MISSING_REQUIRED_FIELDS']}}
+                    </div>
                 </div>
 
-                <button class="submit-button login-button" (click)="recoverPassword()">
+                <button class="submit-button login-button"
+                        (click)="loginForm.control.markAllAsTouched(); loginForm.valid && recoverPassword()">
                     {{vm.appStrings['LBL_GENERATE_PASSWORD_BUTTON_TITLE']}}
                 </button>
                 <div>
@@ -69,7 +113,7 @@
         </div>
     </form>
 
-  <!-- End of login form section -->
+    <!-- End of login form section -->
 
 </div>
 

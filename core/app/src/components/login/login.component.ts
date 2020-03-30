@@ -1,16 +1,21 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth/auth.service';
-import {MessageService} from '../../services/message/message.service';
-import {ApiService} from '../../services/api/api.service';
 
-import {SystemConfigFacade, SystemConfigMap} from '@base/facades/system-config/system-config.facade';
 
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageFacade, LanguageStringMap} from '@base/facades/language/language.facade';
 import {map} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
+
+import {AuthService} from '@services/auth/auth.service';
+import {MessageService} from '@services/message/message.service';
+import {ApiService} from '@services/api/api.service';
+import {RecoverPasswordService} from '@services/process/processes/recover-password';
+
+import {SystemConfigFacade, SystemConfigMap} from '@base/facades/system-config/system-config.facade';
+import {LanguageFacade, LanguageStringMap} from '@base/facades/language/language.facade';
+import {Process} from '@services/process/process.service';
+
 
 @Component({
     selector: 'scrm-login-ui',
@@ -75,7 +80,8 @@ export class LoginUiComponent {
         protected auth: AuthService,
         protected message: MessageService,
         protected systemConfigFacade: SystemConfigFacade,
-        protected languageFacade: LanguageFacade
+        protected languageFacade: LanguageFacade,
+        protected recoverPasswordService: RecoverPasswordService
     ) {
         this.hidden = false;
     }
@@ -93,6 +99,23 @@ export class LoginUiComponent {
     }
 
     recoverPassword() {
+        this.recoverPasswordService
+            .run(this.uname, this.email)
+            .subscribe(
+                (process: Process) => {
+                    this.message.log('Recover Password success');
+                    if (process.messages) {
+                        process.messages.forEach(message => {
+                            const label = this.languageFacade.getAppString(message);
+                            this.message.addSuccessMessage(label);
+                        });
+                    }
+                },
+                error => {
+                    this.message.log('Recover Password failed');
+                    this.message.addDangerMessage(this.languageFacade.getAppString('ERR_AJAX_LOAD'));
+                }
+            );
     }
 
     onLoginSuccess(caller: LoginUiComponent) {
