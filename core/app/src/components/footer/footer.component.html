@@ -1,26 +1,26 @@
 <!-- Start of footer section -->
-
 <div class="footer">
-    <div class="copyright-links">
-        <a (click)="openSuiteCopyright(suitecopyright)" class="footer-link" data-toggle="modal"
-           data-target=".copyright-suitecrm">
-            &copy; Supercharged by SuiteCRM
-        </a>
-        <a (click)="openSugarCopyright(sugarcopyright)" class="footer-link" data-toggle="modal"
-           data-target=".copyright-sugarcrm">
-            &copy; Powered By SugarCRM
-        </a>
-    </div>
+  <div class="copyright-links">
+    <a (click)="openSuiteCopyright(suitecopyright)" class="footer-link" data-toggle="modal"
+       data-target=".copyright-suitecrm">
+      &copy; Supercharged by SuiteCRM
+    </a>
+    <a (click)="openSugarCopyright(sugarcopyright)" class="footer-link" data-toggle="modal"
+       data-target=".copyright-sugarcrm">
+      &copy; Powered By SugarCRM
+    </a>
+  </div>
+  <ng-container *ngIf="this.isUserLoggedIn">
     <div class="back-to-top">
-        <a (click)="backToTop()" class="footer-link">
+      <a (click)="backToTop()" class="footer-link">
         <span>
           Back To Top
           <scrm-image class="sicon back-top-icon" image="arrow_up_filled"></scrm-image>
         </span>
-        </a>
+      </a>
     </div>
+  </ng-container>
 </div>
-
 <!-- End of footer section -->
 
 <!-- Start of copyright modal section -->

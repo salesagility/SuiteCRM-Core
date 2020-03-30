@@ -18,6 +18,7 @@ export class AuthService {
     public currentUser$: Observable<User>;
     private currentUserSubject: BehaviorSubject<User>;
     defaultTimeout: string = '3600';
+    public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(
         private http: HttpClient,
@@ -30,10 +31,6 @@ export class AuthService {
     ) {
         this.currentUserSubject = new BehaviorSubject<User>(null);
         this.currentUser$ = this.currentUserSubject.asObservable();
-    }
-
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
     }
 
     doLogin(
@@ -58,6 +55,8 @@ export class AuthService {
             {headers}
         ).subscribe((response: any) => {
             onSuccess(caller, response);
+            this.isUserLoggedIn.next(true);
+
             let duration = response.duration;
 
             if (duration === 0 || duration === '0') {
@@ -107,6 +106,7 @@ export class AuthService {
                 this.message.log('Logout success');
                 const label = this.languageFacade.getAppString(messageKey);
                 this.message.addSuccessMessage(label);
+                this.isUserLoggedIn.next(false);
             });
     }
 }

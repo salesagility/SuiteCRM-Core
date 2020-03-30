@@ -12,6 +12,7 @@ import {navigationMock} from '@base/facades/navigation/navigation.facade.spec.mo
 import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
 import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
 import {userPreferenceFacadeMock} from '@base/facades/user-preference/user-preference.facade.spec.mock';
+import {ApolloTestingModule} from "apollo-angular/testing";
 
 describe('NavbarUiComponent', () => {
 
@@ -26,7 +27,8 @@ describe('NavbarUiComponent', () => {
                 imports: [
                     RouterTestingModule,
                     HttpClientTestingModule,
-                    NgbModule
+                    NgbModule,
+                    ApolloTestingModule
                 ],
                 providers: [
                     {provide: NavigationFacade, useValue: navigationMock},

@@ -52,3 +52,4 @@ dunglas_angular_csrf:
     - { path: ^/logout$ }
     - { path: ^/(_(profiler|wdt))/ }
     - { path: ^/api }
+    - { path: ^/session-status$ }

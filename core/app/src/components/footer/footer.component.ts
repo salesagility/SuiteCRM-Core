@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AuthService} from "@services/auth/auth.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'scrm-footer-ui',
@@ -9,9 +11,15 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class FooterUiComponent implements OnInit {
 
-    closeResult: string;
+    private authSub: Subscription;
 
-    constructor(private modalService: NgbModal) {
+    closeResult: string;
+    isUserLoggedIn: boolean;
+
+    constructor(
+        private modalService: NgbModal,
+        private authService: AuthService
+    ) {
     }
 
     openSugarCopyright(sugarcopyright) {
@@ -54,6 +62,12 @@ export class FooterUiComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authSub = this.authService.isUserLoggedIn.subscribe(value => {
+            this.isUserLoggedIn = value;
+        });
     }
 
+    ngOnDestroy() {
+        this.authSub.unsubscribe();
+    }
 }

@@ -40,4 +40,13 @@ class SecurityController extends AbstractController
     {
         throw new RuntimeException('This will be intercepted by the logout key');
     }
+
+    /**
+     * @Route("/session-status", name="app_session_status", methods={"GET"})
+     * @throws Exception
+     */
+    public function sessionStatus(): JsonResponse
+    {
+        return new JsonResponse(['active' => true], Response::HTTP_OK);
+    }
 }

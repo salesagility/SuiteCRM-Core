@@ -10,6 +10,7 @@ import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/fa
 import {UserPreferenceFacade, UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 
 import {map} from 'rxjs/operators';
+import {AuthService} from "@services/auth/auth.service";
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -21,6 +22,7 @@ export class NavbarUiComponent implements OnInit {
     protected static instances: NavbarUiComponent[] = [];
 
     loaded = true;
+    isUserLoggedIn: boolean;
 
     mainNavCollapse = true;
     subItemCollapse = true;
@@ -75,7 +77,9 @@ export class NavbarUiComponent implements OnInit {
     constructor(protected navigationFacade: NavigationFacade,
                 protected languageFacade: LanguageFacade,
                 protected api: ApiService,
-                protected userPreferenceFacade: UserPreferenceFacade) {
+                protected userPreferenceFacade: UserPreferenceFacade,
+                private authService: AuthService
+    ) {
         const navbar = new NavbarAbstract();
         this.setNavbar(navbar);
 
@@ -115,6 +119,9 @@ export class NavbarUiComponent implements OnInit {
     ngOnInit(): void {
         const navbar = new NavbarAbstract();
         this.setNavbar(navbar);
+        this.authService.isUserLoggedIn.subscribe(value => {
+            this.isUserLoggedIn = value;
+        });
 
         window.dispatchEvent(new Event('resize'));
     }
@@ -126,5 +133,9 @@ export class NavbarUiComponent implements OnInit {
 
     protected isLoaded() {
         return this.loaded;
+    }
+
+    ngOnDestroy() {
+        this.authService.isUserLoggedIn.unsubscribe();
     }
 }

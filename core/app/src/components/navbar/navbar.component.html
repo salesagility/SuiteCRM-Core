@@ -19,8 +19,8 @@
 
     <!-- Start of empty navbar with logo -->
 
-    <ng-template [ngIf]="loaded">
-        <ng-template [ngIf]="!navbar.authenticated">
+    <ng-container *ngIf="loaded">
+        <ng-container *ngIf="!this.isUserLoggedIn">
             <nav class="navbar ml-0 pl-0">
                 <div class="navbar-collapse">
                     <ul class="navbar-nav">
@@ -30,13 +30,13 @@
                     </ul>
                 </div>
             </nav>
-        </ng-template>
+        </ng-container>
 
         <!-- End of empty navbar section with logo -->
 
         <!-- Start of mobile navigation section -->
 
-        <ng-template [ngIf]="mobileNavbar">
+        <ng-container *ngIf="this.isUserLoggedIn && mobileNavbar">
             <ul class="navbar mobile-nav-block mobilenavbar">
                 <div class="position-static" ngbDropdown #myDrop="ngbDropdown" [autoClose]="false">
                     <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
@@ -110,13 +110,13 @@
             </ul>
 
 
-        </ng-template>
+        </ng-container>
 
         <!-- End of mobile navigation section-->
 
         <!-- Start of navbar section with data once authenticated -->
 
-        <ng-template [ngIf]="navbar.authenticated && !mobileNavbar">
+        <ng-container *ngIf="this.isUserLoggedIn && !mobileNavbar">
             <nav class="navbar navbar-expand-md navbar-1">
                 <div class="navbar-collapse collapse collapsenav" [ngbCollapse]="mainNavCollapse">
                     <ul class="navbar-nav home-nav">
@@ -252,8 +252,8 @@
             <!-- End of navbar section with data once authenticated -->
 
             <scrm-action-bar-ui></scrm-action-bar-ui>
-        </ng-template>
-    </ng-template>
+        </ng-container>
+    </ng-container>
 </div>
 
 <!-- End of main navbar section -->
