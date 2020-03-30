@@ -27,6 +27,9 @@ services:
       $legacyActionNameMap: '%legacy.action_name_map%'
       $menuItemMap: '%legacy.menu_item_map%'
       $legacyAssetPaths: '%legacy.asset_paths%'
+  _instanceof:
+    App\Service\ProcessHandlerInterface:
+      tags: ['app.process.handler']
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -51,3 +54,9 @@ services:
   App\EventListener\LegacyRedirectListener:
     # set priority of 2050 to ensure the be the first running
     tags: [{ name: kernel.event_listener, event: kernel.request, priority: 2050 }]
+
+  App\Service\ProcessHandlerRegistry:
+    # inject all services tagged with app.process.handler as first argument
+    # and use the value of the 'getProcessType' method to index the services
+    arguments:
+      - !tagged { tag: 'app.process.handler', default_index_method: 'getProcessType' }

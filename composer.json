@@ -56,6 +56,7 @@
       "App\\Controller\\": "core/src/Controller/",
       "App\\DataFixtures\\": "core/src/DataFixtures/",
       "App\\DataProvider\\": "core/src/DataProvider/",
+      "App\\DataPersister\\": "core/src/DataPersister/",
       "App\\Services\\": "core/src/Service/",
       "App\\EventListener\\": "core/src/EventListener/",
       "App\\Resolver\\": "core/src/Resolver/"
