@@ -31,6 +31,7 @@ export class LogoutUiComponent implements OnInit {
 
     onLogoutSuccess(caller: LogoutUiComponent) {
         caller.message.log('Logout success');
+        caller.message.addSuccessMessage('Logout success');
         caller.router.navigate(['/Login']);
         return;
     }
