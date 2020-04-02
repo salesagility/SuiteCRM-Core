@@ -31,6 +31,7 @@ import {Process} from '@services/process/process.service';
 })
 export class LoginUiComponent {
     hidden = true;
+    defaultModule = 'Home';
     error = '';
     uname = '';
     passw = '';
@@ -73,6 +74,7 @@ export class LoginUiComponent {
      * @param message MessageService
      * @param systemConfigFacade
      * @param languageFacade
+     * @param recoverPasswordService
      */
     constructor(
         protected api: ApiService,
@@ -121,7 +123,11 @@ export class LoginUiComponent {
     onLoginSuccess(caller: LoginUiComponent) {
         caller.message.log('Login success');
         caller.message.removeMessages();
-        caller.router.navigate(['/Home']);
+        let defaultModule = caller.systemConfigFacade.getConfigValue('default_module');
+        if (defaultModule) {
+            caller.defaultModule = defaultModule;
+        }
+        caller.router.navigate(['/' + caller.defaultModule]);
         return;
     }
 

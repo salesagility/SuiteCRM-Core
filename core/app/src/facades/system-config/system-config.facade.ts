@@ -55,6 +55,19 @@ export class SystemConfigFacade {
 
 
     /**
+     * Get system config value by key
+     *
+     * @param configKey
+     */
+    public getConfigValue(configKey: string) {
+        if (!internalState.configs || !internalState.configs[configKey]) {
+            return null;
+        }
+        return internalState.configs[configKey].value;
+    }
+
+
+    /**
      * Public Api
      */
 

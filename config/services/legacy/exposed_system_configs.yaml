@@ -4,3 +4,4 @@ parameters:
         passwordsetting:
             forgotpasswordON: true
         languages: true
+        default_module: true
