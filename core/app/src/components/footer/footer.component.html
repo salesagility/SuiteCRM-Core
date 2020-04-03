@@ -1,24 +1,24 @@
 <!-- Start of footer section -->
 
 <div class="footer">
-  <div class="copyright-links">
-    <a (click)="openSuiteCopyright(suitecopyright)" class="footer-link" data-toggle="modal"
-       data-target=".copyright-suitecrm">
-      &copy; Supercharged by SuiteCRM
-    </a>
-    <a (click)="openSugarCopyright(sugarcopyright)" class="footer-link" data-toggle="modal"
-       data-target=".copyright-sugarcrm">
-      &copy; Powered By SugarCRM
-    </a>
-  </div>
-  <div class="back-to-top">
-    <a (click)="backToTop()" class="footer-link">
+    <div class="copyright-links">
+        <a (click)="openSuiteCopyright(suitecopyright)" class="footer-link" data-toggle="modal"
+           data-target=".copyright-suitecrm">
+            &copy; Supercharged by SuiteCRM
+        </a>
+        <a (click)="openSugarCopyright(sugarcopyright)" class="footer-link" data-toggle="modal"
+           data-target=".copyright-sugarcrm">
+            &copy; Powered By SugarCRM
+        </a>
+    </div>
+    <div class="back-to-top">
+        <a (click)="backToTop()" class="footer-link">
         <span>
           Back To Top
-          <svg-icon class="sicon back-top-icon" src="public/themes/suite8/images/arrow_up_filled.svg"></svg-icon>
+          <scrm-image class="sicon back-top-icon" image="arrow_up_filled"></scrm-image>
         </span>
-    </a>
-  </div>
+        </a>
+    </div>
 </div>
 
 <!-- End of footer section -->
@@ -27,75 +27,75 @@
 
 <div class="copyright">
 
-  <!-- Start of SugarCRM Copyright notice modal -->
+    <!-- Start of SugarCRM Copyright notice modal -->
 
-  <ng-template #sugarcopyright let-modal>
+    <ng-template #sugarcopyright let-modal>
 
-    <div class="copyright-sugarcrm" role="dialog" aria-hidden="true">
-      <div class="modal-header">
-        <h5 class="modal-title">&copy; Powered By SugarCRM</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">
-          <svg-icon class="sicon" src="public/themes/suite8/images/icon_modal_close.svg"></svg-icon>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>
-          &copy; 2004-2013 SugarCRM Inc. The Program is provided AS IS, without
-          warranty. Licensed under AGPLv3.
-        </p>
-        <p>
-          This program is free software; you can redistribute it and/or modify
-          it under the terms of the GNU Affero General Public License version
-          3 as published by the Free Software Foundation, including the
-          additional permission set forth in the source code header.
-        </p>
-        <p>
-          SugarCRM is a trademark of SugarCRM, Inc. All other company and
-          product names may be trademarks of the respective companies with
-          which they are associated.
-        </p>
-      </div>
-    </div>
+        <div class="copyright-sugarcrm" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <h5 class="modal-title">&copy; Powered By SugarCRM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')">
+                    <scrm-image class="sicon" image="icon_modal_close"></scrm-image>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    &copy; 2004-2013 SugarCRM Inc. The Program is provided AS IS, without
+                    warranty. Licensed under AGPLv3.
+                </p>
+                <p>
+                    This program is free software; you can redistribute it and/or modify
+                    it under the terms of the GNU Affero General Public License version
+                    3 as published by the Free Software Foundation, including the
+                    additional permission set forth in the source code header.
+                </p>
+                <p>
+                    SugarCRM is a trademark of SugarCRM, Inc. All other company and
+                    product names may be trademarks of the respective companies with
+                    which they are associated.
+                </p>
+            </div>
+        </div>
 
-  </ng-template>
+    </ng-template>
 
-  <!-- End of SugarCRM Copyright notice modal -->
+    <!-- End of SugarCRM Copyright notice modal -->
 
-  <!-- Start of SuiteCRM Copyright notice modal -->
+    <!-- Start of SuiteCRM Copyright notice modal -->
 
-  <ng-template #suitecopyright let-modal>
+    <ng-template #suitecopyright let-modal>
 
-    <div class="copyright-suitecrm" role="dialog" aria-hidden="true">
-      <div class="modal-header">
-        <h5 class="modal-title">&copy; Supercharged by SuiteCRM</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">
-          <svg-icon class="sicon" src="public/themes/suite8/images/icon_modal_close.svg"></svg-icon>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>
-          SuiteCRM has been written and assembled by SalesAgility. The Program
-          is provided AS IS, without warranty. Licensed under AGPLv3.
-        </p>
-        <p>
-          This program is free software; you can redistribute it and/or modify
-          it under the terms of the GNU Affero General Public License version
-          3 as published by the Free Software Foundation, including the
-          additional permission set forth in the source code header.
-        </p>
-        <p>
-          SuiteCRM is a trademark of SalesAgility Ltd. All other company and
-          product names may be trademarks of the respective companies with
-          which they are associated.
-        </p>
-      </div>
-    </div>
+        <div class="copyright-suitecrm" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <h5 class="modal-title">&copy; Supercharged by SuiteCRM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')">
+                    <scrm-image class="sicon" image="icon_modal_close"></scrm-image>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    SuiteCRM has been written and assembled by SalesAgility. The Program
+                    is provided AS IS, without warranty. Licensed under AGPLv3.
+                </p>
+                <p>
+                    This program is free software; you can redistribute it and/or modify
+                    it under the terms of the GNU Affero General Public License version
+                    3 as published by the Free Software Foundation, including the
+                    additional permission set forth in the source code header.
+                </p>
+                <p>
+                    SuiteCRM is a trademark of SalesAgility Ltd. All other company and
+                    product names may be trademarks of the respective companies with
+                    which they are associated.
+                </p>
+            </div>
+        </div>
 
-  </ng-template>
+    </ng-template>
 
-  <!-- End of SuiteCRM Copyright notice modal -->
+    <!-- End of SuiteCRM Copyright notice modal -->
 </div>
 
 <!-- End of copyright modal section -->

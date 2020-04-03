@@ -4,22 +4,14 @@ import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 
-export interface UserPreference {
-    id: string;
-    _id: string;
-    value: string;
-    items: { [key: string]: any };
-}
-
 export interface UserPreferenceMap {
-    [key: string]: UserPreference;
+    [key: string]: string;
 }
 
 export interface UserPreferences {
     userPreferences: UserPreferenceMap;
     loading: boolean;
 }
-
 
 let internalState: UserPreferences = {
     userPreferences: {},
@@ -56,6 +48,20 @@ export class UserPreferenceFacade {
     /**
      * Public Api
      */
+
+    /**
+     * Get user preferences value by key
+     *
+     * @param key
+     */
+    public getUserPreference(key: string): string {
+
+        if (!internalState.userPreferences || !internalState.userPreferences[key]) {
+            return null;
+        }
+
+        return internalState.userPreferences[key];
+    }
 
 
     /**
@@ -117,9 +123,14 @@ export class UserPreferenceFacade {
 
                 if (data.userPreferences && data.userPreferences.edges) {
                     data.userPreferences.edges.forEach((edge) => {
-                        for (const key in edge.node.items) {
-                            userPreferences[key] = edge.node.items[key];
+
+                        if (!edge.node.items) {
+                            return;
                         }
+
+                        Object.keys(edge.node.items).forEach(key => {
+                            userPreferences[key] = edge.node.items[key];
+                        });
                     });
                 }
 

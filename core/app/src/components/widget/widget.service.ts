@@ -1,18 +1,19 @@
-import {HostListener, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class WidgetService {
 
-  displayWidgets: boolean = true;
-  widgetHeaderToggleIcon: string = "public/themes/suite8/images/minimise_circled.svg";
-  listViewFullWidth: boolean = true;
+    displayWidgets = true;
+    widgetHeaderToggleIcon = 'public/themes/suite8/images/minimise_circled.svg';
+    listViewFullWidth = true;
 
-  emitData() {
-    this.displayWidgets = !this.displayWidgets;
-    this.listViewFullWidth = !this.listViewFullWidth;
-  }
-  constructor() { }
+    constructor() {
+    }
 
+    emitData() {
+        this.displayWidgets = !this.displayWidgets;
+        this.listViewFullWidth = !this.listViewFullWidth;
+    }
 }

@@ -1,55 +1,53 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {WidgetService} from '../widget/widget.service';
 
 @Component({
-  selector: 'scrm-list-container-ui',
-  templateUrl: 'list-container.component.html'
+    selector: 'scrm-list-container-ui',
+    templateUrl: 'list-container.component.html'
 
 })
 
 export class ListcontainerUiComponent implements OnInit {
 
-  displayResponsiveTable: boolean = false;
-  showCollapsed: boolean = false;
-  tableToggleIcon: string = "public/themes/suite8/images/mobile_expand_icon.svg";
-  listViewIconUnsorted: string = "public/themes/suite8/images/sort.svg";
-  listViewIconSorted: string = "public/themes/suite8/images/sort_descend.svg";
+    displayResponsiveTable = false;
+    showCollapsed = false;
+    tableToggleIcon = 'public/themes/suite8/images/mobile_expand_icon.svg';
+    listViewIconUnsorted = 'public/themes/suite8/images/sort.svg';
+    listViewIconSorted = 'public/themes/suite8/images/sort_descend.svg';
 
-  allSelected: boolean = false;
+    allSelected = false;
 
-  @HostListener("window:resize", ["$event"])
-  onResize(event: any) {
-    event.target.innerWidth;
-    if (innerWidth <= 768) {
-      this.displayResponsiveTable = true;
-    } else {
-      this.displayResponsiveTable = false;
+    constructor(private widgetService: WidgetService) {
     }
-  }
 
-  constructor(private widgetService: WidgetService) {
-  }
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any): void {
+        event.target.innerWidth;
+        if (innerWidth <= 768) {
+            this.displayResponsiveTable = true;
+        } else {
+            this.displayResponsiveTable = false;
+        }
+    }
 
-  toggleWidgets() {
-    this.widgetService.emitData();
-  }
+    toggleWidgets(): void {
+        this.widgetService.emitData();
+    }
 
-  expandRow(row) {
-    row.expanded = !row.expanded;
-  }
+    expandRow(row): void {
+        row.expanded = !row.expanded;
+    }
 
-  ngOnInit() {
-    window.dispatchEvent(new Event("resize"));
+    ngOnInit(): void {
+        window.dispatchEvent(new Event('resize'));
 
-  }
+    }
 
-  selectAll() {
-    this.allSelected = true;
-  }
+    selectAll(): void {
+        this.allSelected = true;
+    }
 
-  deselectAll() {
-    this.allSelected = false;
-  }
-
-
+    deselectAll(): void {
+        this.allSelected = false;
+    }
 }

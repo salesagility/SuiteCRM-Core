@@ -1,19 +1,19 @@
 <div class="list-view-settings float-right">
-  <button type="button" class="settings-button dropdown-toggle">
-    Display As
-  </button>
-  <button type="button" class="settings-button dropdown-toggle">
-    My Filters
-  </button>
-  <scrm-filter-ui></scrm-filter-ui>
-  <button type="button" class="settings-button">
-    <svg-icon class="sicon" src="public/themes/suite8/images/reset.svg"></svg-icon>
-    Reset
-  </button>
-  <scrm-columnchooser-ui></scrm-columnchooser-ui>
-  <button type="button" class="settings-button" (click)="toggleWidgets()"
-          [ngClass]="{ 'charts-active': widgetService.displayWidgets }">
-    <svg-icon class="sicon" src="public/themes/suite8/images/pie.svg"></svg-icon>
-    Charts
-  </button>
+    <button type="button" class="settings-button dropdown-toggle">
+        Display As
+    </button>
+    <button type="button" class="settings-button dropdown-toggle">
+        My Filters
+    </button>
+    <scrm-filter-ui></scrm-filter-ui>
+    <button type="button" class="settings-button">
+        <scrm-image class="sicon" image="reset"></scrm-image>
+        Reset
+    </button>
+    <scrm-columnchooser-ui></scrm-columnchooser-ui>
+    <button type="button" class="settings-button" (click)="toggleWidgets()"
+            [ngClass]="{ 'charts-active': widgetService.displayWidgets }">
+        <scrm-image class="sicon" image="pie"></scrm-image>
+        Charts
+    </button>
 </div>

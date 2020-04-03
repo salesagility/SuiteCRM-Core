@@ -1,0 +1,8 @@
+parameters:
+  themes.image_supported_types:
+    # Order matters, top most ones will have priority over the lower ones
+    - 'svg'
+    - 'png'
+    - 'jpg'
+    - 'jpeg'
+    - 'gif'

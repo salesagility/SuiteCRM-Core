@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
@@ -8,8 +8,8 @@ import {LogoUiModule} from '../logo/logo.module';
 import {LogoutUiModule} from '../logout/logout.module';
 import {ActionBarUiModule} from '../action-bar/action-bar.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RouterModule} from '@angular/router';
+import {ImageModule} from '@components/image/image.module';
 
 
 @NgModule({
@@ -22,8 +22,8 @@ import {RouterModule} from '@angular/router';
         LogoutUiModule,
         ActionBarUiModule,
         NgbModule,
-        AngularSvgIconModule,
-        RouterModule
+        RouterModule,
+        ImageModule
     ]
 })
 export class NavbarUiModule {

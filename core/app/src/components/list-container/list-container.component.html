@@ -1,15 +1,15 @@
 <!-- Start List View Container Section -->
 
 <div class="list-view-container container-fluid">
-  <div class="row">
-    <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !widgetService.displayWidgets }">
-      <scrm-table-ui></scrm-table-ui>
-    </div>
+    <div class="row">
+        <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !widgetService.displayWidgets }">
+            <scrm-table-ui></scrm-table-ui>
+        </div>
 
-    <div class="col-lg-3" *ngIf="widgetService.displayWidgets">
-      <scrm-widget-ui></scrm-widget-ui>
+        <div class="col-lg-3" *ngIf="widgetService.displayWidgets">
+            <scrm-widget-ui></scrm-widget-ui>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- End List View Container Section -->

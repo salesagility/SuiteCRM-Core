@@ -1,6 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {FilterUiComponent} from './filter.component';
+import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {of} from 'rxjs';
+import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {take} from 'rxjs/operators';
 
 describe('FilterUiComponent', () => {
     let component: FilterUiComponent;
@@ -8,7 +12,14 @@ describe('FilterUiComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FilterUiComponent]
+            declarations: [FilterUiComponent],
+            providers: [
+                {
+                    provide: ThemeImagesFacade, useValue: {
+                        images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
+            ],
         })
             .compileComponents();
     }));

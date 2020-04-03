@@ -5,3 +5,4 @@ parameters:
             forgotpasswordON: true
         languages: true
         default_module: true
+        default_theme: true

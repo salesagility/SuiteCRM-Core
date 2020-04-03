@@ -1,20 +1,20 @@
 <!-- Start List View Widget Section -->
 
 <div class="accordion list-view-widget mr-0">
-  <div class="widget-header">
-    <h3>
-      Quick Charts
-      <svg-icon class="sicon float-right widget-close-icon"
-                (click)="toggleWidgetContent()"
-                src="{{ widgetHeaderToggleIcon }}">
-      </svg-icon>
-    </h3>
-  </div>
+    <div class="widget-header">
+        <h3>
+            Quick Charts
+            <scrm-image class="sicon float-right widget-close-icon"
+                        (click)="toggleWidgetContent()"
+                        image="{{ widgetHeaderToggleIcon }}">
+            </scrm-image>
+        </h3>
+    </div>
 
-  <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
-       [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
-    <scrm-chart-ui></scrm-chart-ui>
-  </div>
+    <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
+         [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
+        <scrm-chart-ui></scrm-chart-ui>
+    </div>
 </div>
 
 <!-- End List View Widget Section -->

@@ -2,207 +2,207 @@
 
 <ng-template #filtermodal let-modal>
 
-  <!-- Start of modal header section -->
+    <!-- Start of modal header section -->
 
-  <div class="filter-modal">
-    <div class="modal-header">
-      <div class="modal-title">{{ modalTitle }}</div>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close Filter Modal"
-              (click)="modal.dismiss('Cross click')">
-        <svg-icon class="sicon" src="public/themes/suite8/images/close_modal.svg"></svg-icon>
-      </button>
-    </div>
-
-    <!-- End of modal header section -->
-
-    <!-- Start of modal body section -->
-
-    <div class="modal-body">
-      <ng-template [ngIf]="quickFilter">
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Opportunity Name</label>
-            <input class="modal-input" type="text" placeholder="Lorem Ipsum">
-            <label class="filter-checkbox-container">
-              <input type="filter-checkbox">
-              <span class="filter-checkmark"></span>
-            </label>
-            <p class="quick-filter-options">
-              My Items
-            </p>
-            <label class="filter-checkbox-container">
-              <input type="filter-checkbox">
-              <span class="filter-checkmark"></span>
-            </label>
-            <p class="quick-filter-options">
-              Open Items
-            </p>
-            <label class="filter-checkbox-container">
-              <input type="filter-checkbox">
-              <span class="filter-checkmark"></span>
-            </label>
-            <p class="quick-filter-options">
-              My Favourites
-            </p>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template [ngIf]="advancedFilter">
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Opportunity Name</label>
-            <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="relate-input-group">
-              <label class="modal-label">Account Name</label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-9">
-            <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
-          </div>
-          <div class="col-lg-3">
-            <div class="relate-input-group">
-              <button type="button" class="create-popup-button create-popup-arrow">
-                <svg-icon class="sicon" src="public/themes/suite8/images/cursor.svg"></svg-icon>
-              </button>
-              <button type="button" class="create-popup-button create-popup-cross">
-                <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Opportunity Amount</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-9">
-            <div class="select">
-              <select>
-                <option>Equals</option>
-                <option>Greater than</option>
-                <option>Less than</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <input class="modal-input modal-input-small" type="text" placeholder="0">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Expected Close Date</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="select">
-              <select>
-                <option>Equals</option>
-                <option>Greater than</option>
-                <option>Less than</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <input class="modal-input modal-date-input" type="text" placeholder="dd/mm/yy">
-            <button type="button" class="create-popup-button create-popup-calendar">
-              <svg-icon class="sicon" src="public/themes/suite8/images/calendar.svg"></svg-icon>
+    <div class="filter-modal">
+        <div class="modal-header">
+            <div class="modal-title">{{ modalTitle }}</div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close Filter Modal"
+                    (click)="modal.dismiss('Cross click')">
+                <scrm-image class="sicon" image="close_modal"></scrm-image>
             </button>
-          </div>
         </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Next Step</label>
-            <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-9">
-            <label class="modal-label">Save Filter as:</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-9">
-            <div class="select">
-              <select>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <button class="save-filter-button">Save</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="modal-label">Order by column</label>
-            <div class="select">
-              <select>
-                <option>Name</option>
-                <option>Date Created</option>
-                <option>Date Modified</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </div>
 
-    <!-- End of modal body section -->
+        <!-- End of modal header section -->
 
-    <!-- Start of modal footer section -->
+        <!-- Start of modal body section -->
 
-    <div class="modal-footer">
-      <div class="row w-100">
-        <div class="col-lg-3">
-
-        </div>
-        <div class="col-lg-9">
-          <div class="modal-buttons">
-            <button type="button" class="btn modal-button-cancel" data-dismiss="modal">
-              Clear
-            </button>
-            <ng-template [ngIf]="advancedFilter">
-              <button type="button" class="modal-button-save dropdown-toggle">
-                My Filters
-              </button>
-            </ng-template>
+        <div class="modal-body">
             <ng-template [ngIf]="quickFilter">
-              <button type="button" class="btn modal-button-save" (click)="toggleAdvancedFilter()">
-                Advanced
-              </button>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Opportunity Name</label>
+                        <input class="modal-input" type="text" placeholder="Lorem Ipsum">
+                        <label class="filter-checkbox-container">
+                            <input type="filter-checkbox">
+                            <span class="filter-checkmark"></span>
+                        </label>
+                        <p class="quick-filter-options">
+                            My Items
+                        </p>
+                        <label class="filter-checkbox-container">
+                            <input type="filter-checkbox">
+                            <span class="filter-checkmark"></span>
+                        </label>
+                        <p class="quick-filter-options">
+                            Open Items
+                        </p>
+                        <label class="filter-checkbox-container">
+                            <input type="filter-checkbox">
+                            <span class="filter-checkmark"></span>
+                        </label>
+                        <p class="quick-filter-options">
+                            My Favourites
+                        </p>
+                    </div>
+                </div>
             </ng-template>
             <ng-template [ngIf]="advancedFilter">
-              <button type="button" class="btn modal-button-save" (click)="toggleQuickFilter()">
-                Quick
-              </button>
-            </ng-template>
-            <button type="button" class="btn modal-button-save">
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Opportunity Name</label>
+                        <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="relate-input-group">
+                            <label class="modal-label">Account Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="relate-input-group">
+                            <button type="button" class="create-popup-button create-popup-arrow">
+                                <scrm-image class="sicon" image="cursor"></scrm-image>
+                            </button>
+                            <button type="button" class="create-popup-button create-popup-cross">
+                                <scrm-image class="sicon" image="cross"></scrm-image>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Opportunity Amount</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="select">
+                            <select>
+                                <option>Equals</option>
+                                <option>Greater than</option>
+                                <option>Less than</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <input class="modal-input modal-input-small" type="text" placeholder="0">
+                    </div>
+                </div>
 
-  <!-- End of modal footer section -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Expected Close Date</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="select">
+                            <select>
+                                <option>Equals</option>
+                                <option>Greater than</option>
+                                <option>Less than</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <input class="modal-input modal-date-input" type="text" placeholder="dd/mm/yy">
+                        <button type="button" class="create-popup-button create-popup-calendar">
+                            <scrm-image class="sicon" image="calendar"></scrm-image>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Next Step</label>
+                        <input class="modal-input modal-input-large" type="text" placeholder="Lorem Ipsum">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <label class="modal-label">Save Filter as:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="select">
+                            <select>
+                                <option>Lorem Ipsum</option>
+                                <option>Lorem Ipsum</option>
+                                <option>Lorem Ipsum</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <button class="save-filter-button">Save</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="modal-label">Order by column</label>
+                        <div class="select">
+                            <select>
+                                <option>Name</option>
+                                <option>Date Created</option>
+                                <option>Date Modified</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- End of modal body section -->
+
+        <!-- Start of modal footer section -->
+
+        <div class="modal-footer">
+            <div class="row w-100">
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-9">
+                    <div class="modal-buttons">
+                        <button type="button" class="btn modal-button-cancel" data-dismiss="modal">
+                            Clear
+                        </button>
+                        <ng-template [ngIf]="advancedFilter">
+                            <button type="button" class="modal-button-save dropdown-toggle">
+                                My Filters
+                            </button>
+                        </ng-template>
+                        <ng-template [ngIf]="quickFilter">
+                            <button type="button" class="btn modal-button-save" (click)="toggleAdvancedFilter()">
+                                Advanced
+                            </button>
+                        </ng-template>
+                        <ng-template [ngIf]="advancedFilter">
+                            <button type="button" class="btn modal-button-save" (click)="toggleQuickFilter()">
+                                Quick
+                            </button>
+                        </ng-template>
+                        <button type="button" class="btn modal-button-save">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of modal footer section -->
 
 </ng-template>
 
 <button type="button" (click)="open(filtermodal)" class="settings-button">
-  <svg-icon class="sicon" src="public/themes/suite8/images/filter.svg"></svg-icon>
-  Filter
+    <scrm-image class="sicon" image="filter"></scrm-image>
+    Filter
 </button>
 
 <!-- End of modal component section -->

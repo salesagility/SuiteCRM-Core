@@ -1,9 +1,9 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {FooterUiComponent} from './footer.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ImageModule} from '@components/image/image.module';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     imports: [
         CommonModule,
         AppManagerModule.forChild(FooterUiComponent),
-        AngularSvgIconModule
+        ImageModule
     ]
 })
 export class FooterUiModule {

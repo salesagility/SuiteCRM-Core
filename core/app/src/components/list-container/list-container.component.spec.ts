@@ -1,11 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {ApolloTestingModule} from 'apollo-angular/testing';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ListcontainerUiComponent} from './list-container.component';
 import {TableUiModule} from '@components/table/table.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
-import {AngularSvgIconModule} from 'angular-svg-icon';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {of} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 
 describe('ListcontainerUiComponent', () => {
@@ -19,7 +24,15 @@ describe('ListcontainerUiComponent', () => {
                 WidgetUiModule,
                 AngularSvgIconModule,
                 HttpClientTestingModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                ApolloTestingModule
+            ],
+            providers: [
+                {
+                    provide: ThemeImagesFacade, useValue: {
+                        images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
             ],
             declarations: [ListcontainerUiComponent]
         })
@@ -33,6 +46,6 @@ describe('ListcontainerUiComponent', () => {
     });
 
     it('should create', () => {
-      expect(component).toBeTruthy();
+        expect(component).toBeTruthy();
     });
 });

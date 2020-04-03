@@ -34,6 +34,7 @@ import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
 import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-spinner.component';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
+import {ImageModule} from '@components/image/image.module';
 
 @NgModule({
     declarations: [
@@ -60,6 +61,7 @@ import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
         ListheaderUiModule,
         ListcontainerUiModule,
         ColumnchooserUiModule,
+        ImageModule,
         BrowserAnimationsModule,
         NgbModule
     ],

@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
-import {
-    Resolve,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot
-} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {concatAll, map, toArray} from 'rxjs/operators';
+import {forkJoin, Observable} from 'rxjs';
 
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 import {LanguageFacade} from '@base/facades/language/language.facade';
-import {concatAll, first, flatMap, map, mergeMap, tap, toArray} from 'rxjs/operators';
-import {forkJoin, Observable} from 'rxjs';
 import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
+import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
 
 
 @Injectable({providedIn: 'root'})
@@ -17,7 +15,9 @@ export class BaseMetadataResolver implements Resolve<any> {
 
     constructor(private systemConfigFacade: SystemConfigFacade,
                 private languageFacade: LanguageFacade,
-                private navigationFacade: NavigationFacade) {
+                private navigationFacade: NavigationFacade,
+                private userPreferenceFacade: UserPreferenceFacade,
+                private themeImagesFacade: ThemeImagesFacade) {
     }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -55,8 +55,40 @@ export class BaseMetadataResolver implements Resolve<any> {
             streams$.configs = configs$;
         }
 
+        if (this.isToLoadUserPreferences(route)) {
 
-        return forkJoin(streams$);
+            streams$.preferences = this.userPreferenceFacade.load();
+        }
+
+
+        const parallelStream$ = forkJoin(streams$);
+
+        return parallelStream$.pipe(
+            map((data: any) => {
+
+                let theme = null;
+
+                if (this.systemConfigFacade.getConfigValue('default_theme')) {
+                    theme = this.systemConfigFacade.getConfigValue('default_theme');
+                }
+
+                if (this.userPreferenceFacade.getUserPreference('user_theme')) {
+                    theme = this.userPreferenceFacade.getUserPreference('user_theme');
+                }
+
+                if (this.themeImagesFacade.getTheme()) {
+                    theme = this.themeImagesFacade.getTheme();
+                }
+
+                if (theme !== null) {
+                    return this.themeImagesFacade.load(theme);
+                }
+
+                return data;
+            }),
+            concatAll(),
+            toArray()
+        );
     }
 
     /**
@@ -127,5 +159,19 @@ export class BaseMetadataResolver implements Resolve<any> {
         }
 
         return route.data.load.navigation !== false;
+    }
+
+    /**
+     * Should load user preferences. If not set defaults to true
+     *
+     * @param route
+     * @returns boolean
+     */
+    protected isToLoadUserPreferences(route: ActivatedRouteSnapshot): boolean {
+        if (!route.data || !route.data.load) {
+            return true;
+        }
+
+        return route.data.load.preferences !== false;
     }
 }

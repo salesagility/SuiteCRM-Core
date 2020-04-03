@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -6,6 +6,10 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 import {ChartUiComponent} from './chart.component';
+import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {of} from 'rxjs';
+import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {take} from 'rxjs/operators';
 
 describe('ChartComponent', () => {
     let component: ChartUiComponent;
@@ -15,6 +19,13 @@ describe('ChartComponent', () => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule],
+            providers: [
+                {
+                    provide: ThemeImagesFacade, useValue: {
+                        images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
+            ],
             declarations: [ChartUiComponent]
         })
             .compileComponents();
@@ -26,7 +37,7 @@ describe('ChartComponent', () => {
         fixture.detectChanges();
     });
 
-    it(`should create`, async(inject([HttpTestingController],
+    it('should create', async(inject([HttpTestingController],
         (httpClient: HttpTestingController) => {
             expect(component).toBeTruthy();
         })));

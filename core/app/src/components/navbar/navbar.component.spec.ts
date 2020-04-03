@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed, inject, fakeAsync, tick} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,8 +10,8 @@ import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {navigationMock} from '@base/facades/navigation/navigation.facade.spec.mock';
 import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
-import {UserPreferenceFacade} from "@base/facades/user-preference/user-preference.facade";
-import {userPreferenceFacadeMock} from "@base/facades/user-preference/user-preference.facade.spec.mock";
+import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+import {userPreferenceFacadeMock} from '@base/facades/user-preference/user-preference.facade.spec.mock';
 
 describe('NavbarUiComponent', () => {
 

@@ -2,160 +2,160 @@
 
 <ng-template #modal let-modal>
 
-  <!-- Start of modal header section -->
+    <!-- Start of modal header section -->
 
-  <div class="modal-header">
-    <div class="modal-title">{{ modalTitle }}</div>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-            (click)="modal.dismiss('Cross click')">
-      <svg-icon class="sicon" src="public/themes/suite8/images/close_modal.svg"></svg-icon>
-    </button>
-  </div>
-
-  <!-- End of modal header section -->
-
-  <!-- Start of modal body section -->
-
-  <div class="modal-body">
-    <h5 class="modal-field-header">Overview</h5>
-    <div class="row">
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <input class="modal-input" type="text">
-      </div>
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <div class="select">
-          <select>
-            <option>Aw yeah.</option>
-            <option>You should pick me instead.</option>
-            <option>I think I'm the better option!</option>
-          </select>
-        </div>
-      </div>
+    <div class="modal-header">
+        <div class="modal-title">{{ modalTitle }}</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+            <scrm-image class="sicon" image="close_modal"></scrm-image>
+        </button>
     </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <label class="checkbox-container create-popup-checkbox">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="col-lg-6">
-        <div class="relate-input-group">
-          <label class="modal-label">Label</label>
-          <input class="modal-input" type="text">
-          <button type="button" class="create-popup-button create-popup-arrow">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cursor.svg"></svg-icon>
-          </button>
-          <button type="button" class="create-popup-button create-popup-cross">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="calendar-input-group">
-          <label class="modal-label">Label</label>
-          <input class="modal-input" type="text">
-          <button type="button" class="create-popup-button create-popup-calendar">
-            <svg-icon class="sicon" src="public/themes/suite8/images/calendar.svg"></svg-icon>
-          </button>
-          <button type="button" class="create-popup-button create-popup-cross">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
-          </button>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <input class="modal-input" type="text">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <div class="select">
-          <select>
-            <option>Aw yeah.</option>
-            <option>You should pick me instead.</option>
-            <option>I think I'm the better option!</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <label class="modal-label">Label</label>
-        <label class="checkbox-container create-popup-checkbox">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="relate-input-group">
-          <label class="modal-label">Label</label>
-          <input class="modal-input" type="text">
-          <button type="button" class="create-popup-button create-popup-arrow">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cursor.svg"></svg-icon>
-          </button>
-          <button type="button" class="create-popup-button create-popup-cross">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
-          </button>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="calendar-input-group">
-          <label class="modal-label">Label</label>
-          <input class="modal-input" type="text">
-          <button type="button" class="create-popup-button create-popup-calendar">
-            <svg-icon class="sicon" src="public/themes/suite8/images/calendar.svg"></svg-icon>
-          </button>
-          <button type="button" class="create-popup-button create-popup-cross">
-            <svg-icon class="sicon" src="public/themes/suite8/images/cross.svg"></svg-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- End of modal body section -->
+    <!-- End of modal header section -->
 
-  <!-- Start of modal footer section -->
+    <!-- Start of modal body section -->
 
-  <div class="modal-footer">
-    <div class="row w-100">
-      <div class="col-lg-6 pr-0 mr-0">
-        <div class="modal-options">
-          <label class="modal-checkbox-container">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <p class="modal-redirect-text">
-            Redirect on SAVE
-            <svg-icon class="sicon info-icon" src="public/themes/suite8/images/info.svg"></svg-icon>
-          </p>
+    <div class="modal-body">
+        <h5 class="modal-field-header">Overview</h5>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <input class="modal-input" type="text">
+            </div>
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <div class="select">
+                    <select>
+                        <option>Aw yeah.</option>
+                        <option>You should pick me instead.</option>
+                        <option>I think I'm the better option!</option>
+                    </select>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="modal-buttons">
-          <button type="button" class="btn modal-button-cancel" data-dismiss="modal"
-                  (click)="modal.dismiss('Cross click')">
-            Cancel
-          </button>
-          <button type="button" class="btn modal-button-save">
-            Save and New
-          </button>
-          <button type="button" class="btn modal-button-save">
-            Save
-          </button>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <label class="checkbox-container create-popup-checkbox">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-lg-6">
+                <div class="relate-input-group">
+                    <label class="modal-label">Label</label>
+                    <input class="modal-input" type="text">
+                    <button type="button" class="create-popup-button create-popup-arrow">
+                        <scrm-image class="sicon" image="cursor"></scrm-image>
+                    </button>
+                    <button type="button" class="create-popup-button create-popup-cross">
+                        <scrm-image class="sicon" image="cross"></scrm-image>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="calendar-input-group">
+                    <label class="modal-label">Label</label>
+                    <input class="modal-input" type="text">
+                    <button type="button" class="create-popup-button create-popup-calendar">
+                        <scrm-image class="sicon" image="calendar"></scrm-image>
+                    </button>
+                    <button type="button" class="create-popup-button create-popup-cross">
+                        <scrm-image class="sicon" image="cross"></scrm-image>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <input class="modal-input" type="text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <div class="select">
+                    <select>
+                        <option>Aw yeah.</option>
+                        <option>You should pick me instead.</option>
+                        <option>I think I'm the better option!</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label class="modal-label">Label</label>
+                <label class="checkbox-container create-popup-checkbox">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="relate-input-group">
+                    <label class="modal-label">Label</label>
+                    <input class="modal-input" type="text">
+                    <button type="button" class="create-popup-button create-popup-arrow">
+                        <scrm-image class="sicon" image="cursor"></scrm-image>
+                    </button>
+                    <button type="button" class="create-popup-button create-popup-cross">
+                        <scrm-image class="sicon" image="cross"></scrm-image>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="calendar-input-group">
+                    <label class="modal-label">Label</label>
+                    <input class="modal-input" type="text">
+                    <button type="button" class="create-popup-button create-popup-calendar">
+                        <scrm-image class="sicon" image="calendar"></scrm-image>
+                    </button>
+                    <button type="button" class="create-popup-button create-popup-cross">
+                        <scrm-image class="sicon" image="cross"></scrm-image>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- End of modal footer section -->
+    <!-- End of modal body section -->
+
+    <!-- Start of modal footer section -->
+
+    <div class="modal-footer">
+        <div class="row w-100">
+            <div class="col-lg-6 pr-0 mr-0">
+                <div class="modal-options">
+                    <label class="modal-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+                    <p class="modal-redirect-text">
+                        Redirect on SAVE
+                        <scrm-image class="sicon info-icon" image="info"></scrm-image>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="modal-buttons">
+                    <button type="button" class="btn modal-button-cancel" data-dismiss="modal"
+                            (click)="modal.dismiss('Cross click')">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn modal-button-save">
+                        Save and New
+                    </button>
+                    <button type="button" class="btn modal-button-save">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of modal footer section -->
 
 </ng-template>
 

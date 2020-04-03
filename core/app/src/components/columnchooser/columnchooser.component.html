@@ -2,84 +2,85 @@
 
 <ng-template #columnchoosermodal let-modal>
 
-  <!-- Start of modal header section -->
+    <!-- Start of modal header section -->
 
-  <div class="column-chooser-modal">
-    <div class="modal-header">
-      <div class="modal-title">{{ modalTitle }}</div>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close Column Chooser Modal"
-              (click)="modal.dismiss('Cross click')">
-        <svg-icon class="sicon" src="public/themes/suite8/images/close_modal.svg"></svg-icon>
-      </button>
-    </div>
-
-    <!-- End of modal header section -->
-
-    <!-- Start of modal body section -->
-
-    <div class="modal-body">
-
-      <div class="column-chooser-container">
-        <h2 class="column-chooser-title">Displayed</h2>
-
-        <div
-                cdkDropList
-                #displayedList="cdkDropList"
-                [cdkDropListData]="displayed"
-                [cdkDropListConnectedTo]="[hiddenList]"
-                class="column-chooser-list"
-                (cdkDropListDropped)="drop($event)">
-          <div class="column-chooser-item column-displayed" *ngFor="let item of displayed" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-
-      <div class="column-chooser-container">
-        <h2 class="column-chooser-title">Hidden</h2>
-
-        <div
-                cdkDropList
-                #hiddenList="cdkDropList"
-                [cdkDropListData]="hidden"
-                [cdkDropListConnectedTo]="[displayedList]"
-                class="column-chooser-list"
-                (cdkDropListDropped)="drop($event)">
-          <div class="column-chooser-item column-hidden" *ngFor="let item of hidden" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- End of modal body section -->
-
-    <!-- Start of modal footer section -->
-
-    <div class="modal-footer">
-      <div class="row w-100">
-        <div class="col-lg-6">
-
-        </div>
-        <div class="col-lg-6">
-          <div class="modal-buttons">
-            <button type="button" class="btn modal-button-cancel" data-dismiss="modal"
+    <div class="column-chooser-modal">
+        <div class="modal-header">
+            <div class="modal-title">{{ modalTitle }}</div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close Column Chooser Modal"
                     (click)="modal.dismiss('Cross click')">
-              Close
+                <scrm-image class="sicon" image="close_modal"></scrm-image>
             </button>
-            <button type="button" class="btn modal-button-save">
-              Save Changes
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- End of modal footer section -->
+        <!-- End of modal header section -->
+
+        <!-- Start of modal body section -->
+
+        <div class="modal-body">
+
+            <div class="column-chooser-container">
+                <h2 class="column-chooser-title">Displayed</h2>
+
+                <div
+                        cdkDropList
+                        #displayedList="cdkDropList"
+                        [cdkDropListData]="displayed"
+                        [cdkDropListConnectedTo]="[hiddenList]"
+                        class="column-chooser-list"
+                        (cdkDropListDropped)="drop($event)">
+                    <div class="column-chooser-item column-displayed" *ngFor="let item of displayed"
+                         cdkDrag>{{item}}</div>
+                </div>
+            </div>
+
+            <div class="column-chooser-container">
+                <h2 class="column-chooser-title">Hidden</h2>
+
+                <div
+                        cdkDropList
+                        #hiddenList="cdkDropList"
+                        [cdkDropListData]="hidden"
+                        [cdkDropListConnectedTo]="[displayedList]"
+                        class="column-chooser-list"
+                        (cdkDropListDropped)="drop($event)">
+                    <div class="column-chooser-item column-hidden" *ngFor="let item of hidden" cdkDrag>{{item}}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- End of modal body section -->
+
+        <!-- Start of modal footer section -->
+
+        <div class="modal-footer">
+            <div class="row w-100">
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="modal-buttons">
+                        <button type="button" class="btn modal-button-cancel" data-dismiss="modal"
+                                (click)="modal.dismiss('Cross click')">
+                            Close
+                        </button>
+                        <button type="button" class="btn modal-button-save">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of modal footer section -->
 
 </ng-template>
 
 <button type="button" (click)="open(columnchoosermodal)" class="settings-button">
-  <svg-icon class="sicon" src="public/themes/suite8/images/column_chooser.svg"></svg-icon>
-  Columns
+    <scrm-image class="sicon" image="column_chooser"></scrm-image>
+    Columns
 </button>
 
 <!-- End of modal component section -->
