@@ -78,4 +78,13 @@ describe('LoginComponent', () => {
             });
         })));
 
+    it('should output login fail status', async(inject([HttpTestingController],
+        (router: RouterTestingModule, http: HttpTestingController, api: ApiService, caller: LoginUiComponent) => {
+            fixture.whenStable().then(() => {
+                expect(component).toBeTruthy();
+                console.log = jasmine.createSpy("log");
+                component.onLoginError(component);
+                expect(console.log).toHaveBeenCalledWith('Login failed');
+            });
+        })));
 });
