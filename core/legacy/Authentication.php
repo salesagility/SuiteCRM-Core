@@ -39,7 +39,7 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
-        $authController = new AuthenticationController();
+        $authController = $this->getAuthenticationController();
 
         $PARAMS = [];
 
@@ -48,5 +48,28 @@ class Authentication extends LegacyHandler
         $this->close();
 
         return $result;
+    }
+
+    /**
+     * Legacy logout
+     */
+    public function logout(): void
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        $authController->logout(false, false, false);
+
+        $this->close();
+    }
+
+    /**
+     * Get auth controller
+     * @return AuthenticationController
+     */
+    protected function getAuthenticationController(): AuthenticationController
+    {
+        return new AuthenticationController();
     }
 }

@@ -21,6 +21,9 @@
     "behat/gherkin": {
         "version": "v4.6.0"
     },
+    "codeception/aspect-mock": {
+        "version": "3.1.0"
+    },
     "codeception/codeception": {
         "version": "2.3",
         "recipe": {
@@ -197,6 +200,12 @@
             ".php_cs.dist"
         ]
     },
+    "goaop/framework": {
+        "version": "2.3.4"
+    },
+    "goaop/parser-reflection": {
+        "version": "2.1.1"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.5.2"
     },
@@ -205,6 +214,9 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
+    },
+    "jakubledl/dissect": {
+        "version": "v1.0.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"

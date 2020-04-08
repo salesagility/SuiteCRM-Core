@@ -63,3 +63,6 @@ services:
     # and use the value of the 'getProcessType' method to index the services
     arguments:
       - !tagged { tag: 'app.process.handler', default_index_method: 'getProcessType' }
+
+  App\Security\LegacySessionLogoutHandler:
+    decorates: 'security.logout.handler.session'

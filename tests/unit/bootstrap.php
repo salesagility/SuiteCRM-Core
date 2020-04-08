@@ -1,6 +1,24 @@
 <?php
 
+use AspectMock\Kernel;
+
 error_reporting(E_ALL);
+
+$kernel = Kernel::getInstance();
+$kernel->init([
+    'appDir' => __DIR__ . '/../..',
+    'cacheDir' => __DIR__ . '/../../cache/test/aop',
+    'debug' => true,
+    'includePaths' => [
+        __DIR__ . '/../../core/src',
+        __DIR__ . '/../../core/legacy',
+    ],
+    'excludePaths' => [
+        __DIR__,
+        __DIR__ . '/..',
+    ],
+]);
+
 
 // Bootstrap composer
 require_once __DIR__ . '/../../vendor/autoload.php';
