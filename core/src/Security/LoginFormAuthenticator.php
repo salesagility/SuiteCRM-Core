@@ -104,13 +104,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $user = $userProvider->loadUserByUsername($credentials['username']);
 
         if (!$user) {
-            throw new CustomUserMessageAuthenticationException('Username could not be found.');
+            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
+        }
+        try {
+            $result = $this->authentication->login($credentials['username'], $credentials['password']);
+        } catch (Exception $e) {
+            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
         }
 
-        try {
-            $this->authentication->login($credentials['username'], $credentials['password']);
-        } catch (Exception $e) {
-            throw new CustomUserMessageAuthenticationException('Legacy username could not be found.');
+        if ($result === false) {
+            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
         }
 
         return $user;
@@ -123,9 +126,37 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        // TODO: Password validation
-        return true;
-        // TODO: Password hash upgrading
+        $userHash = $user->getPassword();
+        $password = (md5($credentials['password']));
+
+        $valid = self::checkPasswordMD5($password, $userHash);
+
+        if ($valid) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check that md5-encoded password matches existing hash
+     * @param string $passwordMd5 MD5-encoded password
+     * @param string $userHash DB hash
+     * @return bool Match or not?
+     */
+    public static function checkPasswordMD5($passwordMd5, $userHash): bool
+    {
+        if (empty($userHash)) {
+            return false;
+        }
+
+        if ($userHash[0] !== '$' && strlen($userHash) === 32) {
+            $valid = strtolower($passwordMd5) === $userHash;
+        } else {
+            $valid = password_verify(strtolower($passwordMd5), $userHash);
+        }
+
+        return $valid;
     }
 
     /**
@@ -175,4 +206,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $this->router->generate('app_login');
     }
 
+    /**
+     * @return bool
+     */
+    public function supportsRememberMe(): bool
+    {
+        return false;
+    }
 }

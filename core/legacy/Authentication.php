@@ -30,12 +30,11 @@ class Authentication extends LegacyHandler
      *
      * @param $username
      * @param $password
-     * @param $grant_type
      *
      * @return bool
      * @throws Exception
      */
-    public function login($username, $password, $grant_type = 'password'): bool
+    public function login($username, $password): bool
     {
         $this->init();
 
