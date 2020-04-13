@@ -25,7 +25,9 @@ class AppStringsHandler extends LegacyHandler
             'LBL_LOGIN_FORGOT_PASSWORD',
             'LBL_EMAIL',
             'ERR_MISSING_REQUIRED_FIELDS',
-            'LBL_RECOVER_PASSWORD_SUCCESS'
+            'LBL_RECOVER_PASSWORD_SUCCESS',
+            'LBL_SESSION_EXPIRED',
+            'LBL_LOGOUT_SUCCESS'
         ]
     ];
 

@@ -3,6 +3,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {StateFacade} from '@base/facades/state';
+import {deepClone} from '@base/utils/object-utils';
 
 export interface Navigation {
     tabs: string[];
@@ -45,19 +47,21 @@ export interface ModuleSubMenu {
     icon: string;
 }
 
-let internalState: Navigation = {
+const initialState: Navigation = {
     tabs: [],
     groupedTabs: [],
     modules: {},
     userActionMenu: []
 };
 
+let internalState: Navigation = deepClone(initialState);
+
 let cache$: Observable<any> = null;
 
 @Injectable({
     providedIn: 'root',
 })
-export class NavigationFacade {
+export class NavigationFacade implements StateFacade {
 
     protected store = new BehaviorSubject<Navigation>(internalState);
     protected state$ = this.store.asObservable();
@@ -86,6 +90,14 @@ export class NavigationFacade {
     /**
      * Public Api
      */
+
+    /**
+     * Clear state
+     */
+    public clear(): void {
+        cache$ = null;
+        this.updateState(deepClone(initialState));
+    }
 
 
     /**
@@ -125,7 +137,7 @@ export class NavigationFacade {
     /**
      * Get Navigation cached Observable or call the backend
      *
-     * @return Observable<any>
+     * @returns Observable<any>
      */
     protected getNavigation(): Observable<any> {
 
@@ -143,6 +155,7 @@ export class NavigationFacade {
     /**
      * Fetch the Navigation from the backend
      *
+     * @param userId
      * @returns Observable<any>
      */
     protected fetch(userId: string): Observable<any> {

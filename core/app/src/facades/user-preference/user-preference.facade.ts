@@ -3,6 +3,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
+import {deepClone} from '@base/utils/object-utils';
+import {StateFacade} from '@base/facades/state';
 
 export interface UserPreferenceMap {
     [key: string]: string;
@@ -13,17 +15,19 @@ export interface UserPreferences {
     loading: boolean;
 }
 
-let internalState: UserPreferences = {
+const initialState: UserPreferences = {
     userPreferences: {},
     loading: false
 };
+
+let internalState: UserPreferences = deepClone(initialState);
 
 let cache$: Observable<any> = null;
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserPreferenceFacade {
+export class UserPreferenceFacade implements StateFacade {
     protected store = new BehaviorSubject<UserPreferences>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'userPreferences';
@@ -48,6 +52,14 @@ export class UserPreferenceFacade {
     /**
      * Public Api
      */
+
+    /**
+     * Clear state
+     */
+    public clear(): void {
+        cache$ = null;
+        this.updateState(deepClone(initialState));
+    }
 
     /**
      * Get user preferences value by key
@@ -97,7 +109,7 @@ export class UserPreferenceFacade {
     /**
      * Get UserPreferences cached Observable or call the backend
      *
-     * @return Observable<any>
+     * @returns Observable<any>
      */
     protected getUserPreferences(): Observable<any> {
 

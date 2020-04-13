@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {Apollo, ApolloModule} from 'apollo-angular';
-import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
+import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
+import {onError} from 'apollo-link-error';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -23,11 +24,9 @@ import {ListcontainerUiModule} from '../components/list-container/list-container
 import {ListModule} from '../../views/list/list.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ErrorInterceptor } from '../services/auth/error.interceptor';
+import {ErrorInterceptor} from '../services/auth/error.interceptor';
 
-import {
-    AppManagerModule
-} from '../app-manager/app-manager.module';
+import {AppManagerModule} from '../app-manager/app-manager.module';
 
 import {environment} from '../environments/environment';
 import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
@@ -35,6 +34,8 @@ import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 import {ImageModule} from '@components/image/image.module';
+import {AuthService} from '@services/auth/auth.service';
+import {GraphQLError} from 'graphql';
 
 @NgModule({
     declarations: [
@@ -73,8 +74,7 @@ import {ImageModule} from '@components/image/image.module';
     entryComponents: []
 })
 export class AppModule {
-    constructor(apollo: Apollo,
-                httpLink: HttpLink) {
+    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {
 
         const uri = environment.graphqlApiUrl;
         const cache = new InMemoryCache();
@@ -88,8 +88,25 @@ export class AppModule {
             },
         };
 
+        const http = httpLink.create({
+            uri,
+            withCredentials: true
+        });
+
+        const logoutLink = onError((err) => {
+
+            if (err.graphQLErrors && err.graphQLErrors.length > 0) {
+                err.graphQLErrors.forEach((value: GraphQLError) => {
+                    if (value.message.includes('Access Denied')) {
+                        auth.logout('LBL_SESSION_EXPIRED');
+                    }
+                });
+            }
+        });
+
+
         apollo.create({
-            link: httpLink.create({uri}),
+            link: logoutLink.concat(http),
             defaultOptions,
             cache
         });

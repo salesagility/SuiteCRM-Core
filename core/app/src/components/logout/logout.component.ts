@@ -1,43 +1,20 @@
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth/auth.service';
-import {MessageService} from '../../services/message/message.service';
-import {NavbarUiComponent} from '../navbar/navbar.component';
-import {ApiService} from '../../services/api/api.service';
+import {Component} from '@angular/core';
+import {AuthService} from '@services/auth/auth.service';
 
 @Component({
     selector: 'scrm-logout-ui',
     templateUrl: './logout.component.html',
     styleUrls: []
 })
-export class LogoutUiComponent implements OnInit {
+export class LogoutUiComponent {
 
-    constructor(
-        public api: ApiService,
-        public router: Router,
-        public auth: AuthService,
-        public message: MessageService
-    ) {
+    constructor(protected auth: AuthService) {
     }
 
-    ngOnInit() {
-
+    /**
+     * call logout
+     */
+    doLogout(): void {
+        this.auth.logout();
     }
-
-    doLogout() {
-        this.auth.doLogout(this, this.onLogoutSuccess, this.onLogoutError);
-    }
-
-    onLogoutSuccess(caller: LogoutUiComponent) {
-        caller.message.log('Logout success');
-        caller.message.addSuccessMessage('Logout success');
-        caller.router.navigate(['/Login']);
-        return;
-    }
-
-    onLogoutError(caller: LogoutUiComponent, errorResponse: HttpErrorResponse) {
-        caller.message.log('Logout failed');
-    }
-
 }

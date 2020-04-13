@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {StateFacade} from '@base/facades/state';
+import {deepClone} from '@base/utils/object-utils';
 
 export interface ThemeImage {
     path: string;
@@ -20,10 +22,12 @@ export interface ThemeImageMap {
     [key: string]: ThemeImage;
 }
 
-let internalState: ThemeImages = {
+const initialState: ThemeImages = {
     theme: null,
     images: {}
 };
+
+let internalState: ThemeImages = deepClone(initialState);
 
 let cachedTheme = null;
 let cache$: Observable<any> = null;
@@ -31,7 +35,7 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class ThemeImagesFacade {
+export class ThemeImagesFacade implements StateFacade {
 
     protected store = new BehaviorSubject<ThemeImages>(internalState);
     protected state$ = this.store.asObservable();
@@ -57,6 +61,15 @@ export class ThemeImagesFacade {
     /**
      * Public Api
      */
+
+    /**
+     * Clear state
+     */
+    public clear(): void {
+        cachedTheme = null;
+        cache$ = null;
+        this.updateState(deepClone(initialState));
+    }
 
     /**
      * Change the current theme
@@ -86,6 +99,7 @@ export class ThemeImagesFacade {
      * Initial ThemeImages load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
+     * @param theme to load
      * @returns Observable<any>
      */
     public load(theme: string): Observable<any> {
@@ -114,7 +128,8 @@ export class ThemeImagesFacade {
     /**
      * Get theme images cached Observable or call the backend
      *
-     * @return Observable<any>
+     * @returns Observable<any>
+     * @param theme
      */
     protected getThemeImages(theme: string): Observable<any> {
 
@@ -131,6 +146,7 @@ export class ThemeImagesFacade {
     /**
      * Fetch the theme images from the backend
      *
+     * @param theme to load
      * @returns Observable<any>
      */
     protected fetch(theme: string): Observable<any> {

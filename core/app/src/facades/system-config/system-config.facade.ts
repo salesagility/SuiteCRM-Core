@@ -3,6 +3,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
+import {deepClone} from '@base/utils/object-utils';
+import {StateFacade} from '@base/facades/state';
 
 export interface SystemConfig {
     id: string;
@@ -20,18 +22,19 @@ export interface SystemConfigs {
     loading: boolean;
 }
 
-
-let internalState: SystemConfigs = {
+const initialState: SystemConfigs = {
     configs: {},
     loading: false
 };
+
+let internalState: SystemConfigs = deepClone(initialState);
 
 let cache$: Observable<any> = null;
 
 @Injectable({
     providedIn: 'root',
 })
-export class SystemConfigFacade {
+export class SystemConfigFacade implements StateFacade {
     protected store = new BehaviorSubject<SystemConfigs>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'systemConfigs';
@@ -71,6 +74,13 @@ export class SystemConfigFacade {
      * Public Api
      */
 
+    /**
+     * Clear state
+     */
+    public clear(): void {
+        cache$ = null;
+        this.updateState(deepClone(initialState));
+    }
 
     /**
      * Initial SystemConfigs load if not cached and update state.
@@ -105,7 +115,7 @@ export class SystemConfigFacade {
     /**
      * Get SystemConfigs cached Observable or call the backend
      *
-     * @return Observable<any>
+     * @returns Observable<any>
      */
     protected getSystemConfigs(): Observable<any> {
 

@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
-import {map, distinctUntilChanged, tap, shareReplay, first} from 'rxjs/operators';
+import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {deepClone} from '@base/utils/object-utils';
+import {StateFacade} from '@base/facades/state';
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -32,7 +34,7 @@ export interface LanguageCache {
     };
 }
 
-let internalState: LanguageState = {
+const initialState: LanguageState = {
     appStrings: {},
     appListStrings: {},
     modStrings: {},
@@ -41,17 +43,21 @@ let internalState: LanguageState = {
     hasChanged: false
 };
 
-const loadedLanguages = {};
-const cache: LanguageCache = {
+let internalState: LanguageState = deepClone(initialState);
+
+const initialCache: LanguageCache = {
     appStrings: {},
     appListStrings: {},
     modStrings: {},
 };
 
+let loadedLanguages = {};
+let cache: LanguageCache = deepClone(initialCache);
+
 @Injectable({
     providedIn: 'root',
 })
-export class LanguageFacade {
+export class LanguageFacade implements StateFacade {
     protected store = new BehaviorSubject<LanguageState>(internalState);
     protected state$ = this.store.asObservable();
 
@@ -105,6 +111,15 @@ export class LanguageFacade {
     /**
      * Public Api
      */
+
+    /**
+     * Clear state
+     */
+    public clear(): void {
+        loadedLanguages = {};
+        cache = deepClone(initialCache);
+        this.updateState(deepClone(initialState));
+    }
 
     /**
      * Update the language strings toe the given language

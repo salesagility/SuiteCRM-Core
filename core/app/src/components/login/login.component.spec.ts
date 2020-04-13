@@ -13,6 +13,7 @@ import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mo
 import {systemConfigFacadeMock} from '@base/facades/system-config/system-config.facade.spec.mock';
 import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-passoword.spec.mock';
 import {By} from '@angular/platform-browser';
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;
@@ -26,7 +27,8 @@ describe('LoginComponent', () => {
                 RouterTestingModule,
                 HttpClientTestingModule,
                 FormsModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                ApolloTestingModule
             ],
             declarations: [LoginUiComponent],
             providers: [
@@ -49,34 +51,33 @@ describe('LoginComponent', () => {
     });
 
     it('should flip on forgot password click', () => {
-        fixture.whenStable().then(() => {
-            expect(component).toBeTruthy();
-            fixture.detectChanges();
-            expect(fixture.debugElement.query(By.css('[name="email"]'))).toBeNull();
-            expect(fixture.debugElement.query(By.css('.submit-button'))).toBeNull();
-            expect(fixture.debugElement.query(By.css('.back-link'))).toBeNull();
+        expect(component).toBeTruthy();
+        fixture.detectChanges();
 
-            expect(fixture.debugElement.query(By.css('[name="password"]'))).toBeTruthy();
-            expect(fixture.debugElement.query(By.css('#login-button'))).toBeTruthy();
-            component.flipCard();
-            // same test codmockRecoverPasswordServicee here
-            fixture.detectChanges();
-            expect(fixture.debugElement.query(By.css('[name="password"]'))).toBeNull();
-            expect(fixture.debugElement.query(By.css('#login-button'))).toBeNull();
-            expect(fixture.debugElement.query(By.css('.forgotten-password'))).toBeNull();
+        expect(fixture.debugElement.query(By.css('[name="email"]'))).toBeNull();
+        expect(fixture.debugElement.query(By.css('.submit-button'))).toBeNull();
+        expect(fixture.debugElement.query(By.css('.back-link'))).toBeNull();
 
-            expect(fixture.debugElement.query(By.css('[name="email"]'))).toBeTruthy();
-            expect(fixture.debugElement.query(By.css('.submit-button'))).toBeTruthy();
-            expect(fixture.debugElement.query(By.css('.back-link'))).toBeTruthy();
-        });
+        expect(fixture.debugElement.query(By.css('[name="password"]'))).toBeTruthy();
+        expect(fixture.debugElement.query(By.css('#login-button'))).toBeTruthy();
+        component.flipCard();
+
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css('[name="password"]'))).toBeNull();
+        expect(fixture.debugElement.query(By.css('#login-button'))).toBeNull();
+        expect(fixture.debugElement.query(By.css('.forgotten-password'))).toBeNull();
+
+        expect(fixture.debugElement.query(By.css('[name="email"]'))).toBeTruthy();
+        expect(fixture.debugElement.query(By.css('.submit-button'))).toBeTruthy();
+        expect(fixture.debugElement.query(By.css('.back-link'))).toBeTruthy();
     });
 
     it('should output login fail status', () => {
-        fixture.whenStable().then(() => {
-            expect(component).toBeTruthy();
-            console.log = jasmine.createSpy('log');
-            component.onLoginError(component);
-            expect(console.log).toHaveBeenCalledWith('Login failed');
-        });
+        expect(component).toBeTruthy();
+        console.log = jasmine.createSpy('log');
+        component.onLoginError(component);
+
+        expect(console.log).toHaveBeenCalledWith('Login failed');
     });
 });
