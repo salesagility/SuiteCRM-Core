@@ -1,16 +1,15 @@
-import {Component, OnInit, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
 import {combineLatest, Observable} from 'rxjs';
 
-import {NavbarModuleMap, NavigationFacade, GroupedTab} from '@base/facades/navigation/navigation.facade';
+import {NavbarModuleMap, NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
 
-import {UserPreferenceMap, UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+import {UserPreferenceFacade, UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 
 import {map} from 'rxjs/operators';
-import { exists } from 'fs';
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -44,55 +43,29 @@ export class NavbarUiComponent implements OnInit {
     groupedTabs$: Observable<any> = this.navigationFacade.groupedTabs$;
 
     vm$ = combineLatest([
-        this.tabs$, 
-        this.modules$, 
-        this.appStrings$, 
-        this.appListStrings$, 
-        this.modStrings$, 
+        this.tabs$,
+        this.modules$,
+        this.appStrings$,
+        this.appListStrings$,
+        this.modStrings$,
         this.userPreferences$,
         this.groupedTabs$
     ]).pipe(
-        map((
-            [
+        map(([tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs]) => {
+
+            this.navbar.build(
                 tabs,
                 modules,
                 appStrings,
-                appListStrings,
                 modStrings,
-                userPreferences,
-                groupedTabs
-            ]) => {
-
-            if (tabs && tabs.length > 0 &&
-                modules && Object.keys(modules).length > 0 &&
-                appStrings && Object.keys(appStrings).length > 0 &&
-                modStrings && Object.keys(modStrings).length > 0 &&
-                appListStrings && Object.keys(appListStrings).length > 0 && 
-                userPreferences['navigation_paradigm'] && userPreferences['navigation_paradigm'].toString() == "m"
-            ) {
-                this.navbar.resetMenu();
-                this.navbar.buildTabMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold);
-            }
-
-            if (tabs && tabs.length > 0 &&
-                modules && Object.keys(modules).length > 0 &&
-                appStrings && Object.keys(appStrings).length > 0 &&
-                modStrings && Object.keys(modStrings).length > 0 &&
-                appListStrings && Object.keys(appListStrings).length > 0 && 
-                userPreferences['navigation_paradigm'] && userPreferences['navigation_paradigm'].toString() == "gm"
-            ) {
-                this.navbar.resetMenu();
-                this.navbar.buildGroupTabMenu(tabs, modules, appStrings, modStrings, appListStrings, this.menuItemThreshold, groupedTabs);
-            }
+                appListStrings,
+                this.menuItemThreshold,
+                groupedTabs,
+                userPreferences
+            )
 
             return {
-                tabs,
-                modules,
-                appStrings,
-                appListStrings,
-                modStrings,
-                userPreferences,
-                groupedTabs
+                tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs
             };
         })
     );

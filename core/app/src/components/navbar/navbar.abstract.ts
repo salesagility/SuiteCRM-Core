@@ -1,10 +1,12 @@
 import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
-import {NavbarModule, NavbarModuleMap, GroupedTab} from "@base/facades/navigation/navigation.facade";
+import {GroupedTab, NavbarModuleMap} from '@base/facades/navigation/navigation.facade';
 import {LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
 
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
+import {ready} from '@base/utils/object-utils';
+import {UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 
 export interface RecentRecordsMenuItem {
     summary: string;
@@ -16,7 +18,7 @@ export interface MenuItem {
         label: string;
         url: string;
         route?: string;
-        params?: { [key: string]: string; }
+        params?: { [key: string]: string };
     };
     icon: string;
     submenu: MenuItem[];
@@ -65,28 +67,96 @@ export class NavbarAbstract implements NavbarModel {
     };
     menu: MenuItem[] = [];
 
-    public resetMenu() {
+    /**
+     * Reset menus
+     */
+    public resetMenu(): void {
         this.menu = [];
         this.all.modules = [];
+        this.all.extra = [];
     }
 
-    public buildGroupTabMenu(items: string[], modules: NavbarModuleMap, appStrings: LanguageStringMap,
-        modStrings: LanguageListStringMap, appListStrings: LanguageListStringMap, threshold: number, groupedTabs: GroupedTab[]): void
-    {
+    /**
+     * Build navbar
+     * @param tabs
+     * @param modules
+     * @param appStrings
+     * @param modStrings
+     * @param appListStrings
+     * @param menuItemThreshold
+     * @param groupedTabs
+     * @param userPreferences
+     */
+    public build(
+        tabs: string[],
+        modules: NavbarModuleMap,
+        appStrings: LanguageStringMap,
+        modStrings: LanguageListStringMap,
+        appListStrings: LanguageListStringMap,
+        menuItemThreshold: number,
+        groupedTabs: GroupedTab[],
+        userPreferences: UserPreferenceMap
+    ): void {
+
+        this.resetMenu();
+
+        if (!ready([tabs, modules, appStrings, modStrings, appListStrings, userPreferences])) {
+            return;
+        }
+
+        const navigationParadigm = userPreferences.navigation_paradigm;
+
+        if (navigationParadigm.toString() === 'm') {
+            this.buildTabMenu(tabs, modules, appStrings, modStrings, appListStrings, menuItemThreshold);
+            return;
+        }
+
+        if (navigationParadigm.toString() === 'gm') {
+            this.buildGroupTabMenu(tabs, modules, appStrings, modStrings, appListStrings, menuItemThreshold, groupedTabs);
+            return;
+        }
+    }
+
+    /**
+     * Build Group tab menu
+     * @param items
+     * @param modules
+     * @param appStrings
+     * @param modStrings
+     * @param appListStrings
+     * @param threshold
+     * @param groupedTabs
+     */
+    public buildGroupTabMenu(
+        items: string[],
+        modules: NavbarModuleMap,
+        appStrings: LanguageStringMap,
+        modStrings: LanguageListStringMap,
+        appListStrings: LanguageListStringMap,
+        threshold: number,
+        groupedTabs: GroupedTab[]): void {
+
         const navItems = [];
         const moreItems = [];
 
         if (!items || items.length === 0) {
             this.menu = navItems;
-            this.all.extra = moreItems;
+            this.all.modules = moreItems;
             return;
         }
 
         let count = 0;
         groupedTabs.forEach((groupedTab: any) => {
-            
+
             if (count <= threshold) {
-                navItems.push(this.buildTabGroupedMenuItem(groupedTab.labelKey, groupedTab.modules, modules, appStrings, modStrings, appListStrings));
+                navItems.push(this.buildTabGroupedMenuItem(
+                    groupedTab.labelKey,
+                    groupedTab.modules,
+                    modules,
+                    appStrings,
+                    modStrings,
+                    appListStrings
+                ));
             }
 
             count++;
@@ -94,23 +164,31 @@ export class NavbarAbstract implements NavbarModel {
 
         this.menu = navItems;
         this.all.modules = moreItems;
-        this.all.extra = moreItems;
     }
 
+    /**
+     * Build tab / module menu
+     * @param items
+     * @param modules
+     * @param appStrings
+     * @param modStrings
+     * @param appListStrings
+     * @param threshold
+     */
     public buildTabMenu(items: string[],
-                     modules: NavbarModuleMap,
-                     appStrings: LanguageStringMap,
-                     modStrings: LanguageListStringMap,
-                     appListStrings: LanguageListStringMap,
-                     threshold: number
-                     ): void {
+                        modules: NavbarModuleMap,
+                        appStrings: LanguageStringMap,
+                        modStrings: LanguageListStringMap,
+                        appListStrings: LanguageListStringMap,
+                        threshold: number
+    ): void {
 
         const navItems = [];
         const moreItems = [];
 
         if (!items || items.length === 0) {
             this.menu = navItems;
-            this.all.extra = moreItems;
+            this.all.modules = moreItems;
             return;
         }
 
@@ -132,9 +210,17 @@ export class NavbarAbstract implements NavbarModel {
 
         this.menu = navItems;
         this.all.modules = moreItems;
-        this.all.extra = moreItems;
     }
 
+    /**
+     * Build Grouped Tab menu item
+     * @param moduleLabel to display
+     * @param groupedModules list
+     * @param modules list
+     * @param appStrings list
+     * @param modStrings list
+     * @param appListStrings list
+     */
     public buildTabGroupedMenuItem(
         moduleLabel: string,
         groupedModules: any[],
@@ -166,6 +252,14 @@ export class NavbarAbstract implements NavbarModel {
         return menuItem;
     }
 
+    /**
+     * Build Grouped menu
+     * @param groupedModules
+     * @param modules
+     * @param appStrings
+     * @param modStrings
+     * @param appListStrings
+     */
     public buildGroupedMenu(
         groupedModules: any[],
         modules: NavbarModuleMap,
@@ -178,25 +272,33 @@ export class NavbarAbstract implements NavbarModel {
 
         groupedModules.forEach((groupedModule) => {
 
-            let module = modules[groupedModule];
+            const module = modules[groupedModule];
 
-            if (module === undefined) {
+            if (!module) {
                 return;
             }
 
             groupedItems.push(this.buildTabMenuItem(groupedModule, module, appStrings, modStrings, appListStrings));
         });
-        
+
         return groupedItems;
     }
 
+    /**
+     * Build module menu items
+     * @param module
+     * @param moduleInfo
+     * @param appStrings
+     * @param modStrings
+     * @param appListStrings
+     */
     public buildTabMenuItem(
         module: string,
         moduleInfo: any,
         appStrings: LanguageStringMap,
         modStrings: LanguageListStringMap,
         appListStrings: LanguageListStringMap
-        ): MenuItem {
+    ): MenuItem {
 
         let moduleUrl = (moduleInfo && moduleInfo.defaultRoute) || moduleInfo.defaultRoute;
         let moduleRoute = null;
