@@ -37,6 +37,8 @@ import {ImageModule} from '@components/image/image.module';
 import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
 
+import {BnNgIdleService} from 'bn-ng-idle';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -64,11 +66,12 @@ import {GraphQLError} from 'graphql';
         ColumnchooserUiModule,
         ImageModule,
         BrowserAnimationsModule,
-        NgbModule
+        NgbModule,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy}
+        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
+        BnNgIdleService
     ],
     bootstrap: [AppComponent],
     entryComponents: []

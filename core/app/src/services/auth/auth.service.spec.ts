@@ -10,6 +10,8 @@ describe('Auth Service', () => {
     let stateManagerMock = null;
     let languageMock = null;
     let service = null;
+    let IdleMock = null;
+    let systemConfigMock = null;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
@@ -39,7 +41,10 @@ describe('Auth Service', () => {
         languageMock = jasmine.createSpyObj('LanguageFacade', ['getAppString']);
         languageMock.getAppString.and.callFake((key: string) => key);
 
-        service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock);
+        IdleMock = jasmine.createSpyObj('bnIdle', ['doLogin']);
+        systemConfigMock = jasmine.createSpyObj('systemConfigFacade', ['doLogin']);
+
+        service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock, IdleMock, systemConfigMock);
 
     });
 

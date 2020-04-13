@@ -36,6 +36,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.13",
+    "bn-ng-idle": "^1.0.1",
     "apollo-link-error": "^1.1.12",
     "bootstrap-css-only": "^4.4.1",
     "chart.js": "^2.8.0",

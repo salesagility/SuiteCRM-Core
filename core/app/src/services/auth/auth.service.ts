@@ -8,6 +8,8 @@ import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
 import {StateManager} from '@base/facades/state-manager';
 import {LanguageFacade} from '@base/facades/language/language.facade';
+import {BnNgIdleService} from 'bn-ng-idle';
+import {SystemConfigFacade} from "@base/facades/system-config/system-config.facade";
 
 @Injectable({
     providedIn: 'root'
@@ -15,13 +17,16 @@ import {LanguageFacade} from '@base/facades/language/language.facade';
 export class AuthService {
     public currentUser$: Observable<User>;
     private currentUserSubject: BehaviorSubject<User>;
+    defaultTimeout: string = '3600';
 
     constructor(
         private http: HttpClient,
         protected router: Router,
         protected message: MessageService,
         protected stateManager: StateManager,
-        protected languageFacade: LanguageFacade
+        protected languageFacade: LanguageFacade,
+        private bnIdle: BnNgIdleService,
+        protected systemConfigFacade: SystemConfigFacade
     ) {
         this.currentUserSubject = new BehaviorSubject<User>(null);
         this.currentUser$ = this.currentUserSubject.asObservable();
@@ -51,8 +56,25 @@ export class AuthService {
             loginUrl,
             params.toString(),
             {headers}
-        ).subscribe((response: string) => {
+        ).subscribe((response: any) => {
             onSuccess(caller, response);
+            let duration = response.duration;
+
+            if (duration === 0 || duration === '0') {
+                return;
+            }
+
+            if (duration) {
+                this.defaultTimeout = duration;
+            }
+
+            this.bnIdle.startWatching(this.defaultTimeout).subscribe((res) => {
+                if (res) {
+                    this.logout('LBL_SESSION_EXPIRED');
+                    this.message.removeMessages();
+                    this.message.addDangerMessage('Session Expired');
+                }
+            })
         }, (error: HttpErrorResponse) => {
             onError(caller, error);
         });
