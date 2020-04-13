@@ -12,6 +12,7 @@ $kernel->init([
     'includePaths' => [
         __DIR__ . '/../../core/src',
         __DIR__ . '/../../core/legacy',
+        __DIR__ . '/../../vendor/api-platform',
     ],
     'excludePaths' => [
         __DIR__,

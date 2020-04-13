@@ -64,6 +64,25 @@ class Authentication extends LegacyHandler
         $this->close();
     }
 
+
+    /**
+     * Check if legacy suite session is active
+     * @return bool
+     */
+    public function checkSession(): bool
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        /** @var bool $result */
+        $result = $authController->sessionAuthenticate();
+
+        $this->close();
+
+        return $result;
+    }
+
     /**
      * Get auth controller
      * @return AuthenticationController

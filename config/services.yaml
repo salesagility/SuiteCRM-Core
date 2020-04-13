@@ -64,5 +64,11 @@ services:
     arguments:
       - !tagged { tag: 'app.process.handler', default_index_method: 'getProcessType' }
 
+  App\Security\LegacySessionDenyAccessListener:
+    decorates: 'api_platform.security.listener.request.deny_access'
+
+  App\Security\LegacySessionSecurityStage:
+    decorates: 'api_platform.graphql.resolver.stage.security'
+
   App\Security\LegacySessionLogoutHandler:
     decorates: 'security.logout.handler.session'
