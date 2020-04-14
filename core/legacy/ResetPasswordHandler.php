@@ -8,12 +8,20 @@ use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Entity\Process;
 use App\Service\ProcessHandlerInterface;
 use BadFunctionCallException;
+use Exception;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use ResetPassword;
 
-class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterface
+class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
     protected const MSG_OPTIONS_NOT_FOUND = 'Process options is not defined';
     protected const PROCESS_TYPE = 'recover-password';
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @inheritDoc
@@ -74,18 +82,31 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
 
         ['username' => $username, 'useremail' => $useremail] = $process->getOptions();
 
-        try {
-            $service->sendResetLink($username, $useremail);
-        } catch (BadFunctionCallException $e) {
-            //logged by suite 7
-        }
-
+        $process->setStatus('success');
         $process->setMessages([
             'LBL_RECOVER_PASSWORD_SUCCESS'
         ]);
 
-        $process->setStatus('success');
+        try {
+            $service->sendResetLink($username, $useremail);
+        } catch (BadFunctionCallException | \InvalidArgumentException $e) {
+            //logged by suite 7
+        } catch (Exception $unknownException) {
+            $this->logger->error($unknownException->getMessage(), ['exception' => $unknownException]);
+            $process->setStatus('error');
+            $process->setMessages([
+                'ERR_AJAX_LOAD_FAILURE'
+            ]);
+        }
 
         $this->close();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 }

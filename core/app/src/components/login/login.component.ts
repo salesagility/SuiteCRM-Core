@@ -88,7 +88,7 @@ export class LoginUiComponent {
         this.hidden = false;
     }
 
-    flipCard() {
+    flipCard(): void {
         if (this.cardState === 'front') {
             this.cardState = 'back';
         } else {
@@ -96,31 +96,37 @@ export class LoginUiComponent {
         }
     }
 
-    doLogin() {
+    doLogin(): void {
         this.auth.doLogin(this, this.uname, this.passw, this.onLoginSuccess, this.onLoginError);
     }
 
-    recoverPassword() {
+    recoverPassword(): void {
         this.recoverPasswordService
             .run(this.uname, this.email)
             .subscribe(
                 (process: Process) => {
-                    this.message.log('Recover Password success');
+                    this.message.log('Recover Password Status: ' + process.status);
+
+                    let handler = 'addSuccessMessage';
+                    if (process.status === 'error') {
+                        handler = 'addDangerMessage';
+                    }
+
                     if (process.messages) {
                         process.messages.forEach(message => {
                             const label = this.languageFacade.getAppString(message);
-                            this.message.addSuccessMessage(label);
+                            this.message[handler](label);
                         });
                     }
                 },
-                error => {
+                () => {
                     this.message.log('Recover Password failed');
-                    this.message.addDangerMessage(this.languageFacade.getAppString('ERR_AJAX_LOAD'));
+                    this.message.addDangerMessage(this.languageFacade.getAppString('ERR_AJAX_LOAD_FAILURE'));
                 }
             );
     }
 
-    onLoginSuccess(caller: LoginUiComponent) {
+    onLoginSuccess(caller: LoginUiComponent): void {
         caller.message.log('Login success');
         caller.message.removeMessages();
         let defaultModule = caller.systemConfigFacade.getConfigValue('default_module');
@@ -131,7 +137,7 @@ export class LoginUiComponent {
         return;
     }
 
-    onLoginError(caller: LoginUiComponent) {
+    onLoginError(caller: LoginUiComponent): void {
         caller.message.log('Login failed');
         caller.message.addDangerMessage('Login credentials incorrect, please try again.');
     }
