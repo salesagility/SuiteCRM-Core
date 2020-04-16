@@ -1,8 +1,11 @@
 <?php namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
+use AspectMock\Test;
 use Codeception\Test\Unit;
+use Exception;
 use SuiteCRM\Core\Legacy\UserPreferenceHandler;
+use User;
 
 class UserPreferencesHandlerTest extends Unit
 {
@@ -16,6 +19,9 @@ class UserPreferencesHandlerTest extends Unit
      */
     protected $handler;
 
+    /**
+     * @throws Exception
+     */
     protected function _before(): void
     {
         $exposedUserPreferences = [
@@ -23,6 +29,35 @@ class UserPreferencesHandlerTest extends Unit
                 'timezone' => true
             ]
         ];
+
+        $mockPreferences = [
+            'global' => [
+                'timezone' => 'UTC'
+            ]
+        ];
+
+        $self = $this;
+
+        test::double(UserPreferenceHandler::class, [
+            'getCurrentUser' => function () use ($self, $mockPreferences) {
+
+                return $self->make(
+                    User::class,
+                    [
+                        'id' => '123',
+                        'getPreference' => function ($name, $category = 'global') use ($self, $mockPreferences) {
+                            return $mockPreferences[$category][$name];
+                        },
+                    ]
+                );
+            },
+            'init' => function () {
+            },
+            'startLegacyApp' => function () {
+            },
+            'close' => function () {
+            }
+        ]);
 
         $projectDir = codecept_root_dir();
         $legacyDir = $projectDir . '/legacy';

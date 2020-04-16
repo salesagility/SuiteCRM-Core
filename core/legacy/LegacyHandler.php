@@ -2,7 +2,11 @@
 
 namespace SuiteCRM\Core\Legacy;
 
+use ControllerFactory;
 use RuntimeException;
+use SugarApplication;
+use SugarController;
+use SugarThemeRegistry;
 
 /**
  * Class LegacyHandler
@@ -87,6 +91,58 @@ class LegacyHandler
         define('IS_LEGACY_BOOTSTRAPPED', true);
 
         return true;
+    }
+
+    /**
+     * Start Legacy Suite app
+     * @return void
+     * Based on @see SugarApplication::execute
+     * Not calling:
+     * - insert_charset_header
+     * - setupPrint
+     * - checkHTTPReferer
+     * - controller->execute();
+     * - sugar_cleanup
+     */
+    protected function startLegacyApp(): void
+    {
+        if (defined('LEGACY_APP_STARTED') && LEGACY_APP_STARTED) {
+            return;
+        }
+
+        require_once 'include/MVC/SugarApplication.php';
+
+        global $sugar_config;
+
+        $app = new SugarApplication();
+
+        if (!empty($sugar_config['default_module'])) {
+            $app->default_module = $sugar_config['default_module'];
+        }
+
+        $module = $app->default_module;
+        if (!empty($_REQUEST['module'])) {
+            $module = $_REQUEST['module'];
+        }
+
+        /** @var SugarController $controller */
+        $controller = ControllerFactory::getController($module);
+        $app->controller = $controller;
+        // If the entry point is defined to not need auth, then don't authenticate.
+        if (empty($_REQUEST['entryPoint']) || $controller->checkEntryPointRequiresAuth($_REQUEST['entryPoint'])) {
+            $app->loadUser();
+            $app->ACLFilter();
+            $app->preProcess();
+            $controller->preProcess();
+        }
+
+        SugarThemeRegistry::buildRegistry();
+        $app->loadLanguages();
+        $app->loadDisplaySettings();
+        $app->loadGlobals();
+        $app->setupResourceManagement($module);
+
+        define('LEGACY_APP_STARTED', true);
     }
 
     /**

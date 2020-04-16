@@ -7,7 +7,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\UserPreference;
-use SuiteCRM\Core\Legacy\UserPreferenceHandler;
+use App\Service\UserPreferencesProviderInterface;
 
 /**
  * Class UserPreferenceCollectionDataProvider
@@ -17,17 +17,17 @@ class UserPreferenceCollectionDataProvider implements ContextAwareCollectionData
 {
 
     /**
-     * @var UserPreferenceHandler
+     * @var UserPreferencesProviderInterface
      */
-    private $userPreferenceHandler;
+    private $userPreferencesService;
 
     /**
      * UserPreferenceCollectionDataProvider constructor.
-     * @param UserPreferenceHandler $userPreferenceHandler
+     * @param UserPreferencesProviderInterface $userPreferenceService
      */
-    public function __construct(UserPreferenceHandler $userPreferenceHandler)
+    public function __construct(UserPreferencesProviderInterface $userPreferenceService)
     {
-        $this->userPreferenceHandler = $userPreferenceHandler;
+        $this->userPreferencesService = $userPreferenceService;
     }
 
     /**
@@ -51,7 +51,7 @@ class UserPreferenceCollectionDataProvider implements ContextAwareCollectionData
         string $operationName = null,
         array $context = []
     ): PaginatorInterface {
-        $userPreferences = $this->userPreferenceHandler->getAllUserPreferences();
+        $userPreferences = $this->userPreferencesService->getAllUserPreferences();
 
         return new ArrayPaginator($userPreferences, 0, count($userPreferences));
     }

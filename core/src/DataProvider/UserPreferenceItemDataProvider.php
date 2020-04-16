@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\UserPreference;
-use SuiteCRM\Core\Legacy\UserPreferenceHandler;
+use App\Service\UserPreferencesProviderInterface;
 
 /**
  * Class UserPreferenceItemDataProvider
@@ -14,17 +14,17 @@ final class UserPreferenceItemDataProvider implements ItemDataProviderInterface,
 {
 
     /**
-     * @var UserPreferenceHandler
+     * @var UserPreferencesProviderInterface
      */
-    private $userPreferenceHandler;
+    private $userPreferenceService;
 
     /**
      * UserPreferenceItemDataProvider constructor.
-     * @param UserPreferenceHandler $userPreferenceHandler
+     * @param UserPreferencesProviderInterface $userPreferenceService
      */
-    public function __construct(UserPreferenceHandler $userPreferenceHandler)
+    public function __construct(UserPreferencesProviderInterface $userPreferenceService)
     {
-        $this->userPreferenceHandler = $userPreferenceHandler;
+        $this->userPreferenceService = $userPreferenceService;
     }
 
     /**
@@ -53,6 +53,6 @@ final class UserPreferenceItemDataProvider implements ItemDataProviderInterface,
         string $operationName = null,
         array $context = []
     ): ?UserPreference {
-        return $this->userPreferenceHandler->getUserPreference($id);
+        return $this->userPreferenceService->getUserPreference($id);
     }
 }

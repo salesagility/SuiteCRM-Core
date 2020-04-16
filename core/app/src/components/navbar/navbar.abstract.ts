@@ -139,10 +139,10 @@ export class NavbarAbstract implements NavbarModel {
         const navItems = [];
         const moreItems = [];
 
-        if (!items || items.length === 0) {
-            this.menu = navItems;
-            this.all.modules = moreItems;
-            return;
+        if (items && items.length > 0) {
+            items.forEach((module) => {
+                moreItems.push(this.buildTabMenuItem(module, modules[module], appStrings, modStrings, appListStrings));
+            });
         }
 
         let count = 0;

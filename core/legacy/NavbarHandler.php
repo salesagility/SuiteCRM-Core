@@ -4,16 +4,16 @@ namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\Navbar;
 use App\Service\ModuleNameMapper;
+use App\Service\NavigationProviderInterface;
 use App\Service\RouteConverter;
+use GroupedTabStructure;
 use SugarView;
 use TabController;
-use GroupedTabStructure;
-use TabGroupHelper;
 
 /**
  * Class NavbarHandler
  */
-class NavbarHandler extends LegacyHandler
+class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 {
     /**
      * @var ModuleNameMapper
@@ -65,16 +65,21 @@ class NavbarHandler extends LegacyHandler
 
         $this->disableTranslations();
 
-        $navbar = new Navbar();
+        $this->startLegacyApp();
 
+        $navbar = new Navbar();
         $sugarView = new SugarView();
 
-        $legacyTabNames = $this->fetchNavTabs();
-        $nameMap = $this->createFrontendNameMap($legacyTabNames);
+        $accessibleModules = $this->getAccessibleModulesList();
+        $accessibleModulesNameMap = $this->createFrontendNameMap($accessibleModules);
+        $displayModules = $this->getDisplayEnabledModules();
+        $displayModulesMameMap = array_intersect_key($accessibleModulesNameMap, array_flip($displayModules));
 
-        $navbar->tabs = array_values($nameMap);
-        $navbar->groupedTabs = $this->fetchGroupedNavTabs($nameMap);
-        $navbar->modules = $this->buildModuleInfo($sugarView, $nameMap);
+        $navbar->tabs = array_values($displayModulesMameMap);
+        $navbar->groupedTabs = $this->fetchGroupedNavTabs($displayModules, $displayModulesMameMap);
+
+        $navbar->modules = $this->buildModuleInfo($sugarView, $accessibleModulesNameMap);
+
         $navbar->userActionMenu = $this->fetchUserActionMenu();
 
         $this->close();
@@ -83,10 +88,22 @@ class NavbarHandler extends LegacyHandler
     }
 
     /**
-     * Fetch module navigation tabs
+     * Fetch modules that are configured to display
+     * @return array
+     * Based on @see SugarView::displayHeader
+     */
+    protected function getDisplayEnabledModules(): array
+    {
+        global $current_user;
+
+        return query_module_access_list($current_user);
+    }
+
+    /**
+     * Get list of modules the user has access to
      * @return array
      */
-    protected function fetchNavTabs(): array
+    protected function getAccessibleModulesList(): array
     {
         require_once 'modules/MySettings/TabController.php';
 
@@ -95,35 +112,26 @@ class NavbarHandler extends LegacyHandler
 
     /**
      * Fetch Grouped Navigation tabs
-     * @param array $nameMap
+     * @param array $displayModules
+     * @param array $moduleNameMap
      * @return array
+     * Based on @see SugarView::displayHeader
      */
-    protected function fetchGroupedNavTabs(array &$nameMap): array
+    protected function fetchGroupedNavTabs(array $displayModules, array $moduleNameMap): array
     {
         $output = [];
-        global $current_language;
 
         require_once 'include/GroupedTabs/GroupedTabStructure.php';
-        require_once 'modules/Studio/TabGroups/TabGroupHelper.php';
 
-        $tg = new TabGroupHelper();
-
-        $availableModules = $tg->getAvailableModules($current_language);
-        $modList = array_keys($availableModules);
-        $modList = array_combine($modList, $modList);
-        $groupedTabStructure = (new GroupedTabStructure())->get_tab_structure($modList, '', true, true);
-
-        $moduleNameMap = $this->createFrontendNameMap($modList);
+        $modules = get_val_array($displayModules);
+        $groupedTabStructure = $this->getTabStructure($modules);
 
         foreach ($groupedTabStructure as $mainTab => $subModules) {
             $submoduleArray = [];
 
             foreach ($subModules['modules'] as $submodule => $submoduleLabel) {
-                $submoduleArray[] = $moduleNameMap[$submodule];
-
-                //Add missing module to the module info list
-                if (empty($nameMap[$submodule])){
-                    $nameMap[$submodule] = $moduleNameMap[$submodule];
+                if (!empty($moduleNameMap[$submodule])) {
+                    $submoduleArray[] = $moduleNameMap[$submodule];
                 }
             }
 
@@ -142,37 +150,55 @@ class NavbarHandler extends LegacyHandler
     }
 
     /**
+     * Get Tab Structure
+     * @param array $modules
+     * @return array
+     */
+    protected function getTabStructure(array $modules): array
+    {
+        return (new GroupedTabStructure())->get_tab_structure($modules, '', false, true);
+    }
+
+    /**
      * Fetch the user action menu
      */
     protected function fetchUserActionMenu(): array
     {
-        $userActionMenu = [];
-        $global_control_links = [];
-
-        $userActionMenu[] = [
+        $actions['LBL_PROFILE'] = [
             'name' => 'profile',
             'labelKey' => 'LBL_PROFILE',
             'url' => 'index.php?module=Users&action=EditView&record=1',
             'icon' => '',
         ];
 
-        require 'include/globalControlLinks.php';
-
+        //order matters
         $actionLabelMap = [
+            'LBL_PROFILE' => 'profile',
             'LBL_EMPLOYEES' => 'employees',
             'LBL_TRAINING' => 'training',
+            'LBL_ADMIN' => 'admin',
             'LNK_ABOUT' => 'about',
-            'LBL_LOGOUT' => 'logout'
+            'LBL_LOGOUT' => 'logout',
         ];
 
+        $actionKeys = array_keys($actionLabelMap);
 
-        foreach ($global_control_links as $key => $value) {
+        foreach ($this->getGlobalControlLinks() as $key => $value) {
             foreach ($value as $linkAttribute => $attributeValue) {
                 // get the main link info
                 if ($linkAttribute === 'linkinfo') {
-                    $userActionMenu[] = [
-                        'name' => $actionLabelMap[key($attributeValue)],
-                        'labelKey' => key($attributeValue),
+
+                    $labelKey = key($attributeValue);
+                    $name = $labelKey;
+                    if (!empty($actionLabelMap[$labelKey])) {
+                        $name = $actionLabelMap[$labelKey];
+                    } else {
+                        $actionKeys[] = $labelKey;
+                    }
+
+                    $actions[$labelKey] = [
+                        'name' => $name,
+                        'labelKey' => $labelKey,
                         'url' => current($attributeValue),
                         'icon' => '',
                     ];
@@ -180,11 +206,24 @@ class NavbarHandler extends LegacyHandler
             }
         }
 
-        $item = $userActionMenu[3];
-        unset($userActionMenu[3]);
-        $userActionMenu[] = $item;
+        $userActionMenu = [];
+
+        foreach ($actionKeys as $key) {
+            $userActionMenu[] = $actions[$key];
+        }
 
         return array_values($userActionMenu);
+    }
+
+    /**
+     * Get global control links from legacy
+     * @return array
+     */
+    protected function getGlobalControlLinks(): array
+    {
+        $global_control_links = [];
+        require 'include/globalControlLinks.php';
+        return $global_control_links;
     }
 
     /**

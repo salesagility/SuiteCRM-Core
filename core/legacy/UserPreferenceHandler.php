@@ -4,11 +4,11 @@ namespace SuiteCRM\Core\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\UserPreference;
-use DBManagerFactory;
+use App\Service\UserPreferencesProviderInterface;
+use RuntimeException;
+use User;
 
-use Exception;
-
-class UserPreferenceHandler extends LegacyHandler
+class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProviderInterface
 {
     protected const MSG_USER_PREFERENCE_NOT_FOUND = 'Not able to find user preference key: ';
 
@@ -17,17 +17,6 @@ class UserPreferenceHandler extends LegacyHandler
      */
     protected $exposedUserPreferences = [];
 
-    /**
-     * @var User
-     */
-    protected $current_user = null;
-
-    /**
-     *
-     * @var array
-     */
-    protected $userPreference = [];
-    
     /**
      * UserPreferenceHandler constructor.
      * @param string $projectDir
@@ -45,27 +34,7 @@ class UserPreferenceHandler extends LegacyHandler
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
 
-        $this->init();
-
         $this->exposedUserPreferences = $exposedUserPreferences;
-
-        global $current_user;
-        get_sugar_config_defaults();
-
-        $user = new \User();
-        $current_user = $user->retrieve(1);
-
-        $db = DBManagerFactory::getInstance();
-
-        $quotedUserId = $db->quoted($current_user->id);
-        $result = $db->query("SELECT contents, category FROM user_preferences WHERE assigned_user_id=" . $quotedUserId . " AND deleted = 0", false, 'Failed to load user preferences');
-
-        while ($row = $db->fetchByAssoc($result)) {
-            $category = $row['category'];
-            $this->preferences[$category] = unserialize(base64_decode($row['contents']));
-        }
-
-        $this->close();
     }
 
     /**
@@ -76,10 +45,12 @@ class UserPreferenceHandler extends LegacyHandler
     {
         $this->init();
 
+        $this->startLegacyApp();
+
         $userPreferences = [];
 
-        foreach ($this->exposedUserPreferences as $key => $value) {
-            $userPreference = $this->loadUserPreference($key);
+        foreach ($this->exposedUserPreferences as $category => $categoryPreferences) {
+            $userPreference = $this->loadUserPreferenceCategory($category);
             if (!empty($userPreference)) {
                 $userPreferences[] = $userPreference;
             }
@@ -99,7 +70,9 @@ class UserPreferenceHandler extends LegacyHandler
     {
         $this->init();
 
-        $userPreference = $this->loadUserPreference($key);
+        $this->startLegacyApp();
+
+        $userPreference = $this->loadUserPreferenceCategory($key);
 
         $this->close();
 
@@ -108,48 +81,79 @@ class UserPreferenceHandler extends LegacyHandler
 
     /**
      * Load user preference with given $key
-     * @param $key
+     * @param string $category
      * @return UserPreference|null
      */
-    protected function loadUserPreference(string $key): ?UserPreference
+    protected function loadUserPreferenceCategory(string $category = 'global'): ?UserPreference
     {
-        global $current_user;
+        $currentUser = $this->getCurrentUser();
 
+        if (empty($category)) {
+            return null;
+        }
+
+        if (!isset($currentUser->id)) {
+            throw new RuntimeException('No user logged in.');
+        }
+
+        if (!isset($this->exposedUserPreferences[$category])) {
+
+            throw new ItemNotFoundException(self::MSG_USER_PREFERENCE_NOT_FOUND . "'$category'");
+        }
+
+        $userPreference = new UserPreference();
+        $userPreference->setId($category);
+
+        if (!is_array($this->exposedUserPreferences[$category]) || empty($this->exposedUserPreferences[$category])) {
+            return $userPreference;
+        }
+
+        $items = [];
+        foreach ($this->exposedUserPreferences[$category] as $key => $value) {
+            $items[$key] = $this->loadUserPreference($key, $category);
+        }
+
+        $userPreference->setItems($items);
+
+        return $userPreference;
+    }
+
+    /**
+     * Load user preference with given $key
+     * @param string $key
+     * @param string $category
+     * @return mixed|null
+     */
+    protected function loadUserPreference(string $key, string $category = 'global')
+    {
         if (empty($key)) {
             return null;
         }
 
-        if (!isset($current_user->id)) {
-            throw new Exception('No user logged in.');
-        }
+        if (!isset($this->exposedUserPreferences[$category]) &&
+            !isset($this->exposedUserPreferences[$category][$key])) {
 
-
-        if (!isset($this->preferences[$key])) {
             throw new ItemNotFoundException(self::MSG_USER_PREFERENCE_NOT_FOUND . "'$key'");
         }
 
-        $userPreference = new UserPreference();
-        $userPreference->setId($key);
+        $currentUser = $this->getCurrentUser();
+        $preference = $currentUser->getPreference($key, $category);
 
-        if (!isset($this->preferences[$key])) {
-            return $userPreference;
+        if (empty($preference)) {
+            return $preference;
         }
 
-        if (is_array($this->preferences[$key])) {
-            $items = $this->preferences[$key];
+        if (is_array($preference)) {
+            $items = $preference;
 
-            if (is_array($this->exposedUserPreferences[$key])) {
-                $items = $this->filterItems($this->preferences[$key], $this->exposedUserPreferences[$key]);
+            if (is_array($this->exposedUserPreferences[$category][$key])) {
+                $items = $this->filterItems($preference, $this->exposedUserPreferences[$category][$key]);
             }
 
-            $userPreference->setItems($items);
-
-            return $userPreference;
+            return $items;
         }
 
-        $userPreference->setValue($this->preferences[$key]);
-
-        return $userPreference;
+        return $preference;
     }
 
     /**
@@ -160,10 +164,10 @@ class UserPreferenceHandler extends LegacyHandler
      */
     protected function filterItems(array $allItems, array $exposed): array
     {
-        $items = [];
+        $filteredItems = [];
 
         if (empty($exposed)) {
-            return $items;
+            return $filteredItems;
         }
 
         foreach ($allItems as $key => $value) {
@@ -181,14 +185,25 @@ class UserPreferenceHandler extends LegacyHandler
                     $subItems = $this->filterItems($allItems[$key], $exposed[$key]);
                 }
 
-                $items[$key] = $subItems;
+                $filteredItems[$key] = $subItems;
 
                 continue;
             }
 
-            $items[$key] = $value;
+            $filteredItems[$key] = $value;
         }
 
-        return $items;
+        return $filteredItems;
+    }
+
+    /**
+     * Get currently logged in user
+     * @return User|null
+     */
+    protected function getCurrentUser(): ?User
+    {
+        global $current_user;
+
+        return $current_user;
     }
 }

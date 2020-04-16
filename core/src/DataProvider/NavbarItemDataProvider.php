@@ -4,23 +4,23 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use SuiteCRM\Core\Legacy\NavbarHandler;
+use App\Service\NavigationProviderInterface;
 use App\Entity\Navbar;
 
 final class NavbarItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
-     * @var NavbarHandler
+     * @var NavigationProviderInterface
      */
-    private $navbarHandler;
+    private $navigationService;
 
     /**
      * NavbarItemDataProvider constructor.
-     * @param NavbarHandler $navbarHandler
+     * @param NavigationProviderInterface $navigationService
      */
-    public function __construct(NavbarHandler $navbarHandler)
+    public function __construct(NavigationProviderInterface $navigationService)
     {
-        $this->navbarHandler = $navbarHandler;
+        $this->navigationService = $navigationService;
     }
 
     /**
@@ -45,7 +45,7 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
      */
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Navbar
     {
-        $navbar = $this->navbarHandler->getNavbar();
+        $navbar = $this->navigationService->getNavbar();
         // This should be updated once we have authentication.
         $navbar->userID = 1;
 
