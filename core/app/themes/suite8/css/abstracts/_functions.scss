@@ -1,1 +1,12 @@
 /* --------- FUNCTIONS SECTION ---------- */
+
+/**
+ * Get substring of $original starting on $start index
+ * @param {String} $original - Initial string
+ * @param {String} $start - The point where the substring starts
+ * @return {String} - resulting string
+ */
+@function substring($original, $start) {
+
+  @return str-slice($original, $start, str-length($original));
+}

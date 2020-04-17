@@ -200,9 +200,12 @@ h4.recently-viewed-header {
   stroke: $salmon-pink;
 }
 
-scrm-logo-ui img {
-  margin: 0.3em;
-  padding-left: 0.5em;
+.navbar {
+  scrm-logo-ui img {
+    margin: 0.3em;
+    padding-left: 0.5em;
+    height: 2.4em;
+  }
 }
 
 a.nav-link.dropdown-toggle::after,

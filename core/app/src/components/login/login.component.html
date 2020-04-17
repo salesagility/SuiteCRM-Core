@@ -1,25 +1,34 @@
-<div class="container" *ngIf="(vm$ | async) as vm">
+<div *ngIf="(vm$ | async) as vm">
 
     <!-- Start of login form section -->
 
     <form name="login" class="login-form" #loginForm="ngForm">
-        <scrm-logo-ui></scrm-logo-ui>
-
-        <div class="form-group row" *ngIf="vm.showLanguages">
-            <label class="col-sm-3 ml-2 col-form-label" for="languages">{{vm.appStrings['LBL_LANGUAGE']}}:</label>
-            <div class="select col-sm-8 p-0 inner-addon left-addon">
-                <select #languageSelect id="languages" (change)="languageFacade.changeLanguage(languageSelect.value)">
-                    <option [value]="item.key"
-                            *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue">{{item.value}}</option>
-                </select>
+        <div class="form-row form-group">
+            <div class="col">
+                <scrm-logo-ui></scrm-logo-ui>
+            </div>
+        </div>
+        <div class="form-row" *ngIf="vm.showLanguages">
+            <div class="col">
+                <label class="" for="languages">{{vm.appStrings['LBL_LANGUAGE']}}</label>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                <div class="inner-addon left-addon">
+                    <select #languageSelect id="languages"
+                            (change)="languageFacade.changeLanguage(languageSelect.value)">
+                        <option [value]="item.key"
+                                *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue">{{item.value}}</option>
+                    </select>
+                </div>
             </div>
         </div>
 
 
-        <div class="fade-card">
+        <div class="form-row fade-card">
 
             <!-- Card front -->
-            <div class="fade-card-front"
+            <div class="fade-card-front col"
                  *ngIf="cardState==='front'"
                  [@fade]>
 
@@ -67,7 +76,7 @@
             </div>
 
             <!-- Card back-->
-            <div class="fade-card-back"
+            <div class="fade-card-back col"
                  *ngIf="cardState==='back'"
                  [@fade]>
                 <div class="inner-addon left-addon">

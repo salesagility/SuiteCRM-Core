@@ -20,9 +20,23 @@ input {
   color: $powdered-blue;
 }
 
+.login-form {
+  select {
+    height: 2.8em;
+    border-radius: 0.2em;
+
+    /* Add down arrow - based on bootstrap custom-select */
+    background: #FFF url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 16 16'%3e%3cpath fill='#{ '%23' + substring(''+$midnight-grey, 2) }' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/14px 14px;
+    /* Remove default down arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}
+
 @media all and (min-width: $breakpoint-medium) {
   .login-form {
-    input {
+    input, select {
       background-color: $white;
       padding: 0.6em 0 0.6em 2.5em;
       margin: 0.3em;
@@ -30,18 +44,26 @@ input {
       width: $breakpoint-xsmall;
       color: $shell-grey;
     }
+
+    select {
+      padding: 0.6em 0 0.6em 0.6em;
+    }
   }
 }
 
 @media all and (max-width: $breakpoint-medium) {
   .login-form {
-    input {
+    input, select {
       background-color: $white;
       padding: 0.6em 0 0.6em 2.5em;
       margin: 0.3em;
       border: 0.05em solid $powdered-blue;
       width: 18em;
       color: $shell-grey;
+    }
+
+    select {
+      padding: 0.6em 0 0.6em 0.6em;
     }
   }
 }

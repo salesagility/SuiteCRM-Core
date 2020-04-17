@@ -6,6 +6,16 @@
     text-align: center;
     width: 25em;
     margin: 20% auto;
+
+    .logo img {
+      max-width: 95%;
+    }
+  }
+
+  @media all and (max-width: $breakpoint-medium) {
+    .logo img {
+      max-width: 75%;
+    }
   }
 
   @media all and (max-width: $breakpoint-xsmall) {
@@ -14,10 +24,10 @@
     position: absolute;
     width: 95%;
     top: 25%;
-  }
 
-  img {
-    margin-bottom: 1.3em;
+    .logo img {
+      max-width: 80%;
+    }
   }
 
   .forgotten-password {
