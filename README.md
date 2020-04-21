@@ -1,6 +1,4 @@
-<a href="https://suitecrm.com">
-  <img width="180px" height="41px" src="https://suitecrm.com/wp-content/uploads/2017/12/logo.png" align="right" />
-</a>
+[![SuiteCRM Logo](https://suitecrm.com/wp-content/uploads/2017/12/logo.png)](https://suitecrm.com)
 
 # SuiteCRM 8.0-alpha
 
@@ -10,7 +8,7 @@ Our vision is to be the most adopted open source enterprise CRM in the world, gi
 
 Try out a free fully working [SuiteCRM demo available here](https://suitecrm.com/demo/)
 
-### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./LICENSE.txt)
+### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./legacy/LICENSE.txt)
 
 SuiteCRM is published under the AGPLv3 license.
 
@@ -20,34 +18,40 @@ SuiteCRM is published under the AGPLv3 license.
 
 |  Requirement |  Version | |  Database |  Version |
 |---|---|---|---|---|
-|  PHP | 7.2+ || MariaDB |10.2+ |
-|  Angular | 7+ || MySQL | 5.6-5.7|
-|  Node.js | 10 || SQL Server | 2012+ |
+|  PHP | 7.2+ | | MariaDB |10.2+ |
+|  Angular | 7+ | | MySQL | 5.6-5.7|
+|  Node.js | 10 | | SQL Server | 2012+ |
 |  Apache | 2.4 |
 
 ### Installation
 
-1. Run `composer install` in the root directory
-2. Run `composer install` in legacy directory
-3. Compile legacy theme
+1: Run `composer install` in the root directory <br/>
+2: Run `composer install` in legacy directory <br/>
+3: Set permissions <br/>
 ```
-./vendor/bin/pscss -f compressed themes/SuiteP/css/Dawn/style.scss > themes/SuiteP/css/Dawn/style.css
-./vendor/bin/pscss -f compressed themes/SuiteP/css/Day/style.scss > themes/SuiteP/css/Day/style.css
-./vendor/bin/pscss -f compressed themes/SuiteP/css/Dusk/style.scss > themes/SuiteP/css/Dusk/style.css
-./vendor/bin/pscss -f compressed themes/SuiteP/css/Night/style.scss > themes/SuiteP/css/Night/style.css
+chown -R {user ID}:{web user group} .
+find . -type d -exec chmod 0755 {} \;
+find . -type f -exec chmod 0644 {} \;
+chmod +x bin/console
+``` 
+4: Run legacy install process <br/>
+5: Go back to root folder <br/>
+5: Run `composer dump-env dev` <br/>
+6: Set the place-holders in `.env.local.php` to valid credentials <br/>
 ```
-3. Run legacy install process
-4. Set permissions
+'DATABASE_URL' => 'mysql://user:pass@db_host:db_port/db_name?serverVersion=db_version',
+```
+
+7: Run `bin/console doctrine:fixtures:load --append` <br/>
+8: Setup proxy config for `ng serve` <br/>
+* Copy `proxy.conf.env.json` to `proxy.conf.local.json` <br/>
+* Replace `"target": "http//<api_host>:<api_port>"` with your api url <br/>
+
+9: Run `ng build` or `ng serve` <br/>
+10: Re-set permissions <br/>
 ```
 chown -R {user ID}:{web user group} .
 find . -type d -exec chmod 0755 {} \;
 find . -type f -exec chmod 0644 {} \;
 chmod +x bin/console
 ```
-5. Go back to root folder
-6. Run `bin/console orm:schema-tool:update --force`
-7. Run `npm install`
-8. Setup proxy config for `ng serve` 
-    - Copy `proxy.conf.env.json` to `proxy.conf.local.json`
-    - Replace `"target": "http//<api_host>:<api_port>"` with your api url
-9. Run `ng build` or `ng serve`
