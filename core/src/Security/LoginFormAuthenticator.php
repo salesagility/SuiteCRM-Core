@@ -176,9 +176,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        $user = $token->getUser();
+        $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+
         $data = [
             'status' => 'success',
-            'duration' => $this->session->getMetadataBag()->getLifetime()
+            'duration' => $this->session->getMetadataBag()->getLifetime(),
+            'id' => $id,
+            'firstName' => $firstName,
+            'lastName' => $lastName
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);

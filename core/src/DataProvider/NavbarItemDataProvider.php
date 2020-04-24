@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Service\NavigationProviderInterface;
 use App\Entity\Navbar;
+use Symfony\Component\Security\Core\Security;
 
 final class NavbarItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -15,12 +16,19 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
     private $navigationService;
 
     /**
+     * @var Security
+     */
+    private $security;
+
+    /**
      * NavbarItemDataProvider constructor.
      * @param NavigationProviderInterface $navigationService
+     * @param Security $security
      */
-    public function __construct(NavigationProviderInterface $navigationService)
+    public function __construct(NavigationProviderInterface $navigationService, Security $security)
     {
         $this->navigationService = $navigationService;
+        $this->security = $security;
     }
 
     /**
@@ -46,8 +54,8 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Navbar
     {
         $navbar = $this->navigationService->getNavbar();
-        // This should be updated once we have authentication.
-        $navbar->userID = 1;
+        $user = $this->security->getUser();
+        $navbar->userID = $user->getId();
 
         return $navbar;
     }

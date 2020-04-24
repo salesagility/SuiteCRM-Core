@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
-import {catchError, finalize, take} from 'rxjs/operators';
+import {BehaviorSubject, throwError} from 'rxjs';
+import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
 import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
@@ -15,10 +15,10 @@ import {SystemConfigFacade} from "@base/facades/system-config/system-config.faca
     providedIn: 'root'
 })
 export class AuthService {
-    public currentUser$: Observable<User>;
-    private currentUserSubject: BehaviorSubject<User>;
-    defaultTimeout: string = '3600';
+    private currentUserSubject = new BehaviorSubject<User>({} as User);
+    public currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    defaultTimeout: string = '3600';
 
     constructor(
         private http: HttpClient,
@@ -29,8 +29,14 @@ export class AuthService {
         private bnIdle: BnNgIdleService,
         protected systemConfigFacade: SystemConfigFacade
     ) {
-        this.currentUserSubject = new BehaviorSubject<User>(null);
-        this.currentUser$ = this.currentUserSubject.asObservable();
+    }
+
+    getCurrentUser(): User {
+        return this.currentUserSubject.value;
+    }
+
+    setCurrentUser(data) {
+        this.currentUserSubject.next(data);
     }
 
     doLogin(
@@ -56,6 +62,7 @@ export class AuthService {
         ).subscribe((response: any) => {
             onSuccess(caller, response);
             this.isUserLoggedIn.next(true);
+            this.setCurrentUser(response);
 
             let duration = response.duration;
 
@@ -76,7 +83,7 @@ export class AuthService {
             })
         }, (error: HttpErrorResponse) => {
             onError(caller, error);
-        });
+        })
     }
 
     /**

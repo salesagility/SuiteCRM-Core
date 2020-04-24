@@ -2,16 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     itemOperations={
+ *          "get"
+ *     },
+ *     collectionOperations={
+ *     },
+ *     graphql={
+ *         "item_query",
+ *     },
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
 class User implements UserInterface
 {
     /**
+     * @ApiProperty(identifier=true)
      * @ORM\Id()
      * @ORM\Column(type="string")
      */
@@ -52,12 +66,14 @@ class User implements UserInterface
     private $sugar_login;
 
     /**
+     * @ApiProperty
      * @var string
      * @ORM\Column(type="string")
      */
     private $first_name;
 
     /**
+     * @ApiProperty
      * @var string
      * @ORM\Column(type="string")
      */
@@ -261,7 +277,10 @@ class User implements UserInterface
         return $this->is_admin;
     }
 
-    public function getId(): ?int
+    /**
+     * @return string|int
+     */
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -306,6 +325,22 @@ class User implements UserInterface
         $this->user_hash = $password;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
     }
 
     /**

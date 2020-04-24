@@ -2,7 +2,7 @@ import {ActionLinkModel} from './action-link-model';
 import {CurrentUserModel} from './current-user-model';
 import {AllMenuModel} from './all-menu-model';
 import {LogoModel} from '../logo/logo-model';
-import {GroupedTab, NavbarModuleMap} from '@base/facades/navigation/navigation.facade';
+import {GroupedTab, NavbarModuleMap, UserActionMenu} from '@base/facades/navigation/navigation.facade';
 import {LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
 import {MenuItem} from '@components/navbar/navbar.abstract';
 import {UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
@@ -26,7 +26,9 @@ export interface NavbarModel {
         appListStrings: LanguageListStringMap,
         menuItemThreshold: number,
         groupedTabs: GroupedTab[],
-        userPreferences: UserPreferenceMap
+        userPreferences: UserPreferenceMap,
+        userActionMenu: UserActionMenu[],
+        currentUser: CurrentUserModel
     ): void;
 
     buildGroupTabMenu(
@@ -46,4 +48,10 @@ export interface NavbarModel {
         modStrings: LanguageListStringMap,
         appListStrings: LanguageListStringMap,
         menuItemThreshold: number): void;
+
+    buildUserActionMenu(
+        appStrings: LanguageStringMap,
+        userActionMenu: UserActionMenu[],
+        currentUser: CurrentUserModel
+    ): void;
 }

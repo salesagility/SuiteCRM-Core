@@ -35,6 +35,7 @@ export class AuthGuard implements CanActivate {
                 take(1),
                 map((user: any) => {
                     if (user && user.active === true) {
+                        this.authService.setCurrentUser(user);
                         return true;
                     }
                     // Re-direct to login

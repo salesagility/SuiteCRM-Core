@@ -90,12 +90,10 @@
                     <li class="global-link-item">
                         <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                             <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                            {{ navbar.currentUser.name }}
+                            {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
                         </a>
                         <div aria-labelledby="navbarDropdownMenuLink"
                              class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
-                            <a class="dropdown-item global-links-sublink" ngbDropdownItem
-                               href="#/Users/EditView/{{ navbar.currentUser.id }}">Profile</a>
                             <ng-template [ngIf]="navbar.globalActions">
                                 <a class="dropdown-item global-links-sublink" ngbDropdownItem
                                    *ngFor="let globalAction of navbar.globalActions"
@@ -258,12 +256,10 @@
                         <li class="global-link-item">
                             <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                {{ navbar.currentUser.name }}
+                                {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
                             </a>
                             <div aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
-                                <a class="dropdown-item global-links-sublink" ngbDropdownItem
-                                   href="#/Users/EditView/{{ navbar.currentUser.id }}">Profile</a>
                                 <ng-template [ngIf]="navbar.globalActions">
                                     <a class="dropdown-item global-links-sublink" ngbDropdownItem
                                        *ngFor="let globalAction of navbar.globalActions"

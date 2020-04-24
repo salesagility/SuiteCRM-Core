@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -43,10 +44,24 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/session-status", name="app_session_status", methods={"GET"})
-     * @throws Exception
+     * @param Security $security
+     * @return JsonResponse
      */
-    public function sessionStatus(): JsonResponse
+    public function sessionStatus(Security $security): JsonResponse
     {
-        return new JsonResponse(['active' => true], Response::HTTP_OK);
+        $user = $security->getUser();
+        $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+
+        $data =
+            [
+                'active' => true,
+                'id' => $id,
+                'firstName' => $firstName,
+                'lastName' => $lastName
+            ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 }

@@ -53,3 +53,4 @@ dunglas_angular_csrf:
     - { path: ^/(_(profiler|wdt))/ }
     - { path: ^/api }
     - { path: ^/session-status$ }
+    - { path: ^/current-user$ }

@@ -213,7 +213,7 @@ final class NavbarTest extends Unit
             [
                 'name' => 'profile',
                 'labelKey' => 'LBL_PROFILE',
-                'url' => 'index.php?module=Users&action=EditView&record=1',
+                'url' => 'index.php?module=Users&action=EditView&record=',
                 'icon' => '',
             ],
             [

@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {ApiService} from '../../services/api/api.service';
+import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
 import {combineLatest, Observable} from 'rxjs';
@@ -43,6 +43,8 @@ export class NavbarUiComponent implements OnInit {
     appListStrings$: Observable<LanguageListStringMap> = this.languageFacade.appListStrings$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceFacade.userPreferences$;
     groupedTabs$: Observable<any> = this.navigationFacade.groupedTabs$;
+    userActionMenu$: Observable<any> = this.navigationFacade.userActionMenu$;
+    currentUser$: Observable<any> = this.authService.currentUser$;
 
     vm$ = combineLatest([
         this.tabs$,
@@ -51,9 +53,11 @@ export class NavbarUiComponent implements OnInit {
         this.appListStrings$,
         this.modStrings$,
         this.userPreferences$,
-        this.groupedTabs$
+        this.groupedTabs$,
+        this.userActionMenu$,
+        this.currentUser$
     ]).pipe(
-        map(([tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs]) => {
+        map(([tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs, userActionMenu, currentUser]) => {
 
             this.navbar.build(
                 tabs,
@@ -63,7 +67,9 @@ export class NavbarUiComponent implements OnInit {
                 appListStrings,
                 this.menuItemThreshold,
                 groupedTabs,
-                userPreferences
+                userPreferences,
+                userActionMenu,
+                currentUser
             )
 
             return {
@@ -109,11 +115,7 @@ export class NavbarUiComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
         const innerWidth = event.target.innerWidth;
-        if (innerWidth <= 768) {
-            this.mobileNavbar = true;
-        } else {
-            this.mobileNavbar = false;
-        }
+        this.mobileNavbar = innerWidth <= 768;
     }
 
     ngOnInit(): void {

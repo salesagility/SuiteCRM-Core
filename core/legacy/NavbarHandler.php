@@ -164,14 +164,16 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function fetchUserActionMenu(): array
     {
+        global $current_user;
+
         $actions['LBL_PROFILE'] = [
             'name' => 'profile',
             'labelKey' => 'LBL_PROFILE',
-            'url' => 'index.php?module=Users&action=EditView&record=1',
+            'url' => 'index.php?module=Users&action=EditView&record=' . $current_user->id,
             'icon' => '',
         ];
 
-        //order matters
+        // Order matters
         $actionLabelMap = [
             'LBL_PROFILE' => 'profile',
             'LBL_EMPLOYEES' => 'employees',
@@ -209,7 +211,9 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $userActionMenu = [];
 
         foreach ($actionKeys as $key) {
-            $userActionMenu[] = $actions[$key];
+            if (isset($actions[$key])) {
+                $userActionMenu[] = $actions[$key];
+            }
         }
 
         return array_values($userActionMenu);

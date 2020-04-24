@@ -1,4 +1,5 @@
 export interface CurrentUserModel {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
 }

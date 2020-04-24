@@ -1,6 +1,6 @@
 import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
-import {GroupedTab, NavbarModuleMap} from '@base/facades/navigation/navigation.facade';
+import {GroupedTab, NavbarModuleMap, UserActionMenu} from '@base/facades/navigation/navigation.facade';
 import {LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
 
 import {CurrentUserModel} from './current-user-model';
@@ -31,35 +31,11 @@ export class NavbarAbstract implements NavbarModel {
     authenticated = true;
     logo = new LogoAbstract();
     useGroupTabs = false;
-    globalActions: ActionLinkModel[] = [
-        {
-            link: {
-                url: '',
-                label: 'Employees'
-            }
-        },
-        {
-            link: {
-                url: '',
-                label: 'Admin'
-            }
-        },
-        {
-            link: {
-                url: '',
-                label: 'Support Forums'
-            }
-        },
-        {
-            link: {
-                url: '',
-                label: 'About'
-            }
-        }
-    ];
+    globalActions: ActionLinkModel[] = [];
     currentUser: CurrentUserModel = {
-        id: '1',
-        name: 'Will Rennie',
+        id: '',
+        firstName: '',
+        lastName: '',
     };
     all = {
         modules: [],
@@ -72,8 +48,46 @@ export class NavbarAbstract implements NavbarModel {
      */
     public resetMenu(): void {
         this.menu = [];
+        this.globalActions = [];
         this.all.modules = [];
         this.all.extra = [];
+    }
+
+    public buildUserActionMenu(
+        appStrings: LanguageStringMap,
+        userActionMenu: UserActionMenu[],
+        currentUser: CurrentUserModel
+    ): void {
+        this.currentUser.id = currentUser.id;
+        this.currentUser.firstName = currentUser.firstName;
+        this.currentUser.lastName = currentUser.lastName;
+
+        if (userActionMenu) {
+            userActionMenu.forEach((subMenu) => {
+                let name = subMenu.name;
+                let url = subMenu.url;
+                let urlParams;
+
+                if (name == 'logout') {
+                    return;
+                }
+
+                if (name !== 'training') {
+                    urlParams = this.getModuleFromUrlParams(url);
+                    url = ROUTE_PREFIX + '/' + (urlParams.module).toLowerCase() + '/' + (urlParams.action).toLowerCase();
+                }
+
+                let label = appStrings[subMenu.labelKey];
+
+                this.globalActions.push({
+                    link: {
+                        url: url,
+                        label: label,
+                    },
+                });
+            });
+        }
+        return;
     }
 
     /**
@@ -86,6 +100,8 @@ export class NavbarAbstract implements NavbarModel {
      * @param menuItemThreshold
      * @param groupedTabs
      * @param userPreferences
+     * @param userActionMenu
+     * @param currentUser
      */
     public build(
         tabs: string[],
@@ -95,7 +111,9 @@ export class NavbarAbstract implements NavbarModel {
         appListStrings: LanguageListStringMap,
         menuItemThreshold: number,
         groupedTabs: GroupedTab[],
-        userPreferences: UserPreferenceMap
+        userPreferences: UserPreferenceMap,
+        userActionMenu: UserActionMenu[],
+        currentUser: CurrentUserModel,
     ): void {
 
         this.resetMenu();
@@ -103,6 +121,8 @@ export class NavbarAbstract implements NavbarModel {
         if (!ready([tabs, modules, appStrings, modStrings, appListStrings, userPreferences])) {
             return;
         }
+
+        this.buildUserActionMenu(appStrings, userActionMenu, currentUser);
 
         const navigationParadigm = userPreferences.navigation_paradigm;
 
@@ -238,7 +258,7 @@ export class NavbarAbstract implements NavbarModel {
             moduleUrl = null;
         }
 
-        const menuItem = {
+        return {
             link: {
                 label: (appStrings && appStrings[moduleLabel]) || moduleLabel,
                 url: moduleUrl,
@@ -248,8 +268,6 @@ export class NavbarAbstract implements NavbarModel {
             icon: '',
             submenu: this.buildGroupedMenu(groupedModules, modules, appStrings, modStrings, appListStrings)
         };
-
-        return menuItem;
     }
 
     /**
@@ -354,5 +372,18 @@ export class NavbarAbstract implements NavbarModel {
         }
 
         return menuItem;
+    }
+
+    /**
+     * @param search
+     */
+    private getModuleFromUrlParams(search) {
+        const hashes = search.slice(search.indexOf('?') + 1).split('&')
+        const params = {}
+        hashes.map(hash => {
+            const [key, val] = hash.split('=')
+            params[key] = decodeURIComponent(val)
+        })
+        return params
     }
 }
