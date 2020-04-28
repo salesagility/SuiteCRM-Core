@@ -1,17 +1,20 @@
 parameters:
     legacy.module_name_map:
         Home:
-            frontend: home
-            core: Home
+          frontend: home
+          core: Home
+        Administration:
+          frontend: administration
+          core: Administration
         Calendar:
-            frontend: calendar
-            core: Calendar
+          frontend: calendar
+          core: Calendar
         Calls:
-            frontend: calls
-            core: Calls
+          frontend: calls
+          core: Calls
         Calls_Reschedule:
-            frontend: calls-reschedule
-            core: CallsReschedule
+          frontend: calls-reschedule
+          core: CallsReschedule
         Meetings:
             frontend: meetings
             core: Meetings
@@ -36,6 +39,9 @@ parameters:
         Import:
           frontend: import
           core: Import
+        MergeRecords:
+          frontend: merge-records
+          core: MergeRecords
         Emails:
           frontend: emails
           core: Emails
@@ -108,6 +114,9 @@ parameters:
         Users:
           frontend: users
           core: Users
+        Employees:
+          frontend: employees
+          core: Employees
         SavedSearch:
           frontend: saved-search
           core: SavedSearch

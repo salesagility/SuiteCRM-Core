@@ -54,6 +54,17 @@ pre {
   cursor: pointer;
 }
 
-iframe {
-  padding-top: 7em;
+.classic-view-container iframe {
+  padding-top: 3em;
+  height: 10em;
+  width: 100%;
+  border: none;
+  overflow: hidden;
 }
+
+@media only screen and (min-width: $breakpoint-large) {
+  .classic-view-container iframe {
+    padding-top: 6.8em
+  }
+}
+

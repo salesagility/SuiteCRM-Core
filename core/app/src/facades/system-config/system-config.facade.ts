@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {deepClone} from '@base/utils/object-utils';
@@ -56,23 +56,39 @@ export class SystemConfigFacade implements StateFacade {
     constructor(private collectionGQL: CollectionGQL) {
     }
 
+    /**
+     * Public Api
+     */
 
     /**
      * Get system config value by key
      *
-     * @param configKey
+     * @param {string} configKey of the config
+     * @returns {{}|string} config value
      */
-    public getConfigValue(configKey: string) {
+    public getConfigValue(configKey: string): any {
         if (!internalState.configs || !internalState.configs[configKey]) {
             return null;
         }
-        return internalState.configs[configKey].value;
+
+        if (internalState.configs[configKey].value !== null) {
+            return internalState.configs[configKey].value;
+        }
+
+        return internalState.configs[configKey].items;
     }
 
+    public getHomePage(): string {
 
-    /**
-     * Public Api
-     */
+        let defaultModule = 'home';
+        const defaultModuleConfig = this.getConfigValue('default_module');
+
+        if (defaultModuleConfig) {
+            defaultModule = defaultModuleConfig;
+        }
+
+        return defaultModule;
+    }
 
     /**
      * Clear state
@@ -86,7 +102,7 @@ export class SystemConfigFacade implements StateFacade {
      * Initial SystemConfigs load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
-     * @returns Observable<any>
+     * @returns {Observable<{}>} observable
      */
     public load(): Observable<any> {
 
@@ -106,16 +122,16 @@ export class SystemConfigFacade implements StateFacade {
     /**
      * Update the state
      *
-     * @param state
+     * @param {{}} state new state
      */
-    protected updateState(state: SystemConfigs) {
+    protected updateState(state: SystemConfigs): void {
         this.store.next(internalState = state);
     }
 
     /**
      * Get SystemConfigs cached Observable or call the backend
      *
-     * @returns Observable<any>
+     * @returns {Observable<{}>} observable
      */
     protected getSystemConfigs(): Observable<any> {
 
@@ -131,7 +147,7 @@ export class SystemConfigFacade implements StateFacade {
     /**
      * Fetch the App strings from the backend
      *
-     * @returns Observable<any>
+     * @returns {Observable<{}>} observable
      */
     protected fetch(): Observable<any> {
 

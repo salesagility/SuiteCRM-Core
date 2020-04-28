@@ -18,7 +18,8 @@
                     <select #languageSelect id="languages"
                             (change)="languageFacade.changeLanguage(languageSelect.value)">
                         <option [value]="item.key"
-                                *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue">{{item.value}}</option>
+                                *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue"
+                                [selected]="languageFacade.getCurrentLanguage() === item.key">{{item.value}}</option>
                     </select>
                 </div>
             </div>

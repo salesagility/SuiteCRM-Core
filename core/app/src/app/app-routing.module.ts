@@ -29,22 +29,12 @@ const routes: Routes = [
         }
     },
     {
-        path: 'Home',
-        loadChildren: () => import('../components/home/home.module').then(m => m.HomeUiModule),
-        canActivate: [AuthGuard],
-        runGuardsAndResolvers: 'always',
-        resolve: {
-            metadata: BaseMetadataResolver,
-        }
-    },
-    {
         path: ':module',
         component: ClassicViewUiComponent,
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            metadata: BaseMetadataResolver,
-            view: ClassicViewResolver,
+            legacyUrl: ClassicViewResolver,
         },
         data: {
             reuseRoute: false
@@ -56,8 +46,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            metadata: BaseMetadataResolver,
-            view: ClassicViewResolver,
+            legacyUrl: ClassicViewResolver,
         },
         data: {
             reuseRoute: false
@@ -69,8 +58,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            metadata: BaseMetadataResolver,
-            view: ClassicViewResolver,
+            legacyUrl: ClassicViewResolver,
         },
         data: {
             reuseRoute: false

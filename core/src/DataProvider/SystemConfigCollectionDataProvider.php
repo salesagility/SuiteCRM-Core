@@ -8,7 +8,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\SystemConfig;
-use SuiteCRM\Core\Legacy\SystemConfigHandler;
+use App\Service\SystemConfigProviderInterface;
 
 /**
  * Class SystemConfigCollectionDataProvider
@@ -18,17 +18,17 @@ class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataPr
 {
 
     /**
-     * @var SystemConfigHandler
+     * @var SystemConfigProviderInterface
      */
-    private $systemConfigHandler;
+    private $systemConfigProvider;
 
     /**
      * SystemConfigCollectionDataProvider constructor.
-     * @param SystemConfigHandler $systemConfigHandler
+     * @param SystemConfigProviderInterface $systemConfigProvider
      */
-    public function __construct(SystemConfigHandler $systemConfigHandler)
+    public function __construct(SystemConfigProviderInterface $systemConfigProvider)
     {
-        $this->systemConfigHandler = $systemConfigHandler;
+        $this->systemConfigProvider = $systemConfigProvider;
     }
 
     /**
@@ -52,7 +52,7 @@ class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataPr
         string $operationName = null,
         array $context = []
     ): PaginatorInterface {
-        $systemConfigs = $this->systemConfigHandler->getAllSystemConfigs();
+        $systemConfigs = $this->systemConfigProvider->getAllSystemConfigs();
 
         return new ArrayPaginator($systemConfigs, 0, count($systemConfigs));
     }

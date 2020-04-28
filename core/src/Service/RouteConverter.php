@@ -12,29 +12,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RouteConverter
 {
-    protected const DEFAULT_ACTION = 'index';
-    protected const LEGACY_ACTION_NAME_MAP_CONFIG_KEY = 'legacy.action_name_map';
-
     /**
      * @var ModuleNameMapper
      */
     protected $moduleNameMapper;
 
     /**
-     * @var string[]
+     * @var ActionNameMapper
      */
-    protected $map;
-
+    private $actionNameMapper;
 
     /**
      * RouteConverter constructor.
      * @param ModuleNameMapper $moduleNameMapper
-     * @param array $legacyActionNameMap
+     * @param ActionNameMapper $actionNameMapper
      */
-    public function __construct(ModuleNameMapper $moduleNameMapper, array $legacyActionNameMap)
-    {
+    public function __construct(
+        ModuleNameMapper $moduleNameMapper,
+        ActionNameMapper $actionNameMapper
+    ) {
         $this->moduleNameMapper = $moduleNameMapper;
-        $this->map = $legacyActionNameMap;
+        $this->actionNameMapper = $actionNameMapper;
     }
 
     /**
@@ -61,7 +59,7 @@ class RouteConverter
 
         $action = $request->query->get('action');
 
-        return $this->isValidAction($action);
+        return $this->actionNameMapper->isValidAction($action);
     }
 
     /**
@@ -130,33 +128,6 @@ class RouteConverter
     }
 
     /**
-     * Check if given $action is valid
-     * @param string|null $action
-     * @return bool
-     */
-    protected function isValidAction(?string $action): bool
-    {
-        if (empty($action)) {
-            return true;
-        }
-
-        if (!empty($this->getValidActions()[strtolower($action)])) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get map of valid action
-     * @return array
-     */
-    protected function getValidActions(): array
-    {
-        return $this->map;
-    }
-
-    /**
      * Build Suite 8 route
      *
      * @param string $module
@@ -188,13 +159,7 @@ class RouteConverter
      */
     protected function mapAction(string $action): string
     {
-        $map = $this->getValidActions();
-
-        if (empty($map[strtolower($action)])) {
-            throw new InvalidArgumentException("No mapping for $action");
-        }
-
-        return $map[strtolower($action)];
+        return $this->actionNameMapper->toFrontend($action);
     }
 
     /**

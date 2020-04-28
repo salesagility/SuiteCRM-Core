@@ -1,33 +1,32 @@
 import {Injectable} from '@angular/core';
-import {
-    Resolve,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot
-} from '@angular/router';
-
-
-import {ClassicViewFacade} from '@services/classic-view/classic-view.facade';
+import {ActivatedRouteSnapshot} from '@angular/router';
+import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
+import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
+import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
+import {LanguageFacade} from '@base/facades/language/language.facade';
+import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
+import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class ClassicViewResolver implements Resolve<any> {
+export class ClassicViewResolver extends BaseMetadataResolver {
 
-    constructor(private classicViewFacade: ClassicViewFacade) {
+    constructor(
+        protected systemConfigFacade: SystemConfigFacade,
+        protected languageFacade: LanguageFacade,
+        protected navigationFacade: NavigationFacade,
+        protected userPreferenceFacade: UserPreferenceFacade,
+        protected themeImagesFacade: ThemeImagesFacade,
+        protected routeConverter: RouteConverter
+    ) {
+        super(systemConfigFacade, languageFacade, navigationFacade, userPreferenceFacade, themeImagesFacade);
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot): any {
 
-        const params = {
-            ...route.queryParams
-        }
-
-        if (route.params.action) {
-            params.action = route.params.action;
-        }
-
-        if (route.params.record) {
-            params.record = route.params.record;
-        }
-
-        return this.classicViewFacade.load(route.params.module, params);
+        return super.resolve(route).pipe(
+            map(() => this.routeConverter.toLegacy(route.params, route.queryParams))
+        );
     }
 }

@@ -1,5 +1,6 @@
 <?php namespace App\Tests;
 
+use App\Service\ActionNameMapper;
 use App\Service\ModuleNameMapper;
 use App\Service\RouteConverter;
 use \Codeception\Test\Unit;
@@ -30,13 +31,14 @@ class RouteConverterTest extends Unit
 
         $legacyActionNameMap = [
             'index ' => 'index',
-            'detailview' => 'detail',
-            'editview' => 'edit',
-            'listview' => 'list',
+            'DetailView' => 'detail',
+            'EditView' => 'edit',
+            'ListView' => 'list',
         ];
 
         $moduleMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $this->routeConverter = new RouteConverter($moduleMapper, $legacyActionNameMap);
+        $actionMapper = new ActionNameMapper($legacyActionNameMap);
+        $this->routeConverter = new RouteConverter($moduleMapper, $actionMapper);
     }
 
     public function testAPIRequestCheck()
@@ -132,7 +134,6 @@ class RouteConverterTest extends Unit
 
         static::assertFalse($valid);
     }
-
 
 
     public function testLegacyInvalidActionRequestCheck()

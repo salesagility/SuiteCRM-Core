@@ -243,7 +243,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             $menu = $this->buildSubModule($sugarView, $legacyName, $frontendName);
             $modules[$frontendName] = [
                 'path' => $frontendName,
-                'defaultRoute' => "./#/$frontendName/index",
+                'defaultRoute' => "./#/$frontendName",
                 'name' => $frontendName,
                 'labelKey' => $legacyName,
                 'menu' => $menu

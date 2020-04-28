@@ -11,7 +11,6 @@ use InvalidArgumentException;
  */
 class ModuleNameMapper
 {
-    protected const LEGACY_MODULE_NAME_MAP_CONFIG_KEY = 'legacy.module_name_map';
     protected const FRONTEND = 'frontend';
     protected const CORE = 'core';
 
@@ -21,12 +20,21 @@ class ModuleNameMapper
     protected $map;
 
     /**
+     * @var array
+     */
+    protected $frontEndToLegacyMap;
+
+    /**
      * ModuleNameMapper constructor.
      * @param array $legacyModuleNameMap
      */
     public function __construct(array $legacyModuleNameMap)
     {
         $this->map = $legacyModuleNameMap;
+
+        foreach ($this->map as $legacyName => $names) {
+            $this->frontEndToLegacyMap[$names[self::FRONTEND]] = $legacyName;
+        }
     }
 
     /**
@@ -36,7 +44,7 @@ class ModuleNameMapper
      */
     public function isValidModule(string $module): bool
     {
-        if (empty($this->map[$module])){
+        if (empty($this->map[$module])) {
             return false;
         }
 
@@ -61,6 +69,35 @@ class ModuleNameMapper
     public function toCore(string $module): string
     {
         return $this->mapName($module, self::CORE);
+    }
+
+    /**
+     * Map FrontEnd legacy module name to legacy name
+     * @param string $module
+     * @return string
+     */
+    public function toLegacy(string $module): string
+    {
+        if (empty($this->frontEndToLegacyMap[$module])) {
+            throw new InvalidArgumentException("No legacy mapping for $module");
+        }
+
+        return $this->frontEndToLegacyMap[$module];
+    }
+
+    /**
+     * Get legacy to fronted module name map
+     * @return array
+     */
+    public function getLegacyToFrontendMap(): array
+    {
+        $legacyToFrontendMap = [];
+
+        foreach ($this->map as $legacyName => $names) {
+            $legacyToFrontendMap[$legacyName] = $names[self::FRONTEND];
+        }
+
+        return $legacyToFrontendMap;
     }
 
     /**

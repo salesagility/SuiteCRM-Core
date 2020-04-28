@@ -1,19 +1,31 @@
 <?php
 
-
 namespace SuiteCRM\Core\Legacy;
-
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\SystemConfig;
+use App\Service\ActionNameMapper;
+use App\Service\ModuleNameMapper;
+use App\Service\SystemConfigProviderInterface;
 
-class SystemConfigHandler extends LegacyHandler
+class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
     protected const MSG_CONFIG_NOT_FOUND = 'Not able to find config key: ';
+
     /**
      * @var array
      */
     protected $exposedSystemConfigs = [];
+
+    /**
+     * @var array
+     */
+    protected $injectedSystemConfigs = [];
+
+    /**
+     * @var ModuleNameMapper
+     */
+    private $moduleNameMapper;
 
     /**
      * SystemConfigHandler constructor.
@@ -22,16 +34,26 @@ class SystemConfigHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param array $exposedSystemConfigs
+     * @param ActionNameMapper $actionNameMapper
+     * @param ModuleNameMapper $moduleNameMapper
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
-        array $exposedSystemConfigs
+        array $exposedSystemConfigs,
+        ActionNameMapper $actionNameMapper,
+        ModuleNameMapper $moduleNameMapper
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
+        $this->moduleNameMapper = $moduleNameMapper;
+
+        $this->injectedSystemConfigs['module_name_map'] = $moduleNameMapper->getLegacyToFrontendMap();
+        $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
+
+
     }
 
     /**
@@ -46,7 +68,8 @@ class SystemConfigHandler extends LegacyHandler
 
         foreach ($this->exposedSystemConfigs as $configKey => $value) {
             $config = $this->loadSystemConfig($configKey);
-            if (!empty($config)) {
+            $this->mapConfigValues($config);
+            if ($config !== null) {
                 $configs[] = $config;
             }
         }
@@ -66,6 +89,8 @@ class SystemConfigHandler extends LegacyHandler
         $this->init();
 
         $config = $this->loadSystemConfig($configKey);
+
+        $this->mapConfigValues($config);
 
         $this->close();
 
@@ -91,6 +116,13 @@ class SystemConfigHandler extends LegacyHandler
 
         $config = new SystemConfig();
         $config->setId($configKey);
+
+
+        if (!empty($this->injectedSystemConfigs[$configKey])) {
+            $config->setItems($this->injectedSystemConfigs[$configKey]);
+
+            return $config;
+        }
 
         if (!isset($sugar_config[$configKey])) {
             return $config;
@@ -154,5 +186,34 @@ class SystemConfigHandler extends LegacyHandler
         }
 
         return $items;
+    }
+
+    /**
+     * Map config values using mappers registered in the mapper registry
+     * @param SystemConfig $config |null
+     */
+    protected function mapConfigValues(?SystemConfig $config): void
+    {
+        if ($config === null || empty($config->getId())) {
+            return;
+        }
+
+        if ($config->getId() === 'default_module') {
+            $this->mapDefaultModule($config);
+        }
+    }
+
+    /**
+     * Map default module config
+     * @param SystemConfig $config
+     */
+    protected function mapDefaultModule(SystemConfig $config): void
+    {
+        if (empty($config->getValue())) {
+            return;
+        }
+
+        $frontendName = $this->moduleNameMapper->toFrontEnd($config->getValue());
+        $config->setValue($frontendName);
     }
 }

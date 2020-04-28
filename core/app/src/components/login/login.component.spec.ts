@@ -11,7 +11,7 @@ import {SystemConfigFacade} from '@base/facades/system-config/system-config.faca
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
 import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
 import {systemConfigFacadeMock} from '@base/facades/system-config/system-config.facade.spec.mock';
-import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-passoword.spec.mock';
+import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-password.spec.mock';
 import {By} from '@angular/platform-browser';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 

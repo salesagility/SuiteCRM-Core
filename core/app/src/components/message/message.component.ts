@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MessageService} from '../../services/message/message.service';
+import {MessageService} from '@services/message/message.service';
 import {MessageType} from './message-type';
 
 
@@ -16,16 +16,15 @@ export class MessageUiComponent implements OnInit {
         messageService.subscribe(this);
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.update(this.messageService.messages);
     }
 
-    update(messages: Array<MessageType>) {
+    update(messages: Array<MessageType>): void {
         this.messages = messages;
     }
 
-    close(message: MessageType) {
+    close(message: MessageType): void {
         this.messageService.contains(message, true);
     }
-
 }

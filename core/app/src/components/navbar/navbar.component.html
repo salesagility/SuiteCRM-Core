@@ -119,7 +119,7 @@
                 <div class="navbar-collapse collapse collapsenav" [ngbCollapse]="mainNavCollapse">
                     <ul class="navbar-nav home-nav">
                         <li class="nav-item home-nav-link">
-                            <a class="home-nav-link" href="#/Home">
+                            <a class="home-nav-link" [routerLink]="systemConfigFacade.getHomePage()">
                                 <scrm-image class="home-icon" image="home"></scrm-image>
                             </a>
                         </li>
@@ -141,7 +141,9 @@
                                     [ngbCollapse]="subNavCollapse">
                                     <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
                                         <a class="nav-link action-link" *ngIf="!sub.submenu.length"
-                                           href="{{sub.link.route}}">
+                                           [href]="sub.link.url"
+                                           [routerLink]="sub.link.route"
+                                           [queryParams]="sub.link.params">
                                             {{ sub.link.label }}
                                         </a>
                                         <a class="nav-link action-link dropdown-item dropdown-toggle"
@@ -151,7 +153,10 @@
                                         </a>
                                         <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
                                             <li *ngFor="let subitem of sub.submenu" class="nav-item">
-                                                <a class="nav-link action-link" href="#{{ subitem.link.route }}">
+                                                <a class="nav-link action-link"
+                                                   [href]="subitem.link.url"
+                                                   [routerLink]="subitem.link.route"
+                                                   [queryParams]="subitem.link.params">
                                                     <scrm-image *ngIf="subitem.icon" image="{{ subitem.icon }}">
                                                     </scrm-image>
                                                     {{ subitem.link.label }}

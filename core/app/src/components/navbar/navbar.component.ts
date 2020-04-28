@@ -1,23 +1,22 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {combineLatest, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+
 import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
-import {combineLatest, Observable} from 'rxjs';
-
 import {NavbarModuleMap, NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
-
 import {UserPreferenceFacade, UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
-
-import {map} from 'rxjs/operators';
-import {AuthService} from "@services/auth/auth.service";
+import {AuthService} from '@services/auth/auth.service';
+import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 
 @Component({
     selector: 'scrm-navbar-ui',
     templateUrl: './navbar.component.html',
     styleUrls: []
 })
-export class NavbarUiComponent implements OnInit {
+export class NavbarUiComponent implements OnInit, OnDestroy {
 
     protected static instances: NavbarUiComponent[] = [];
 
@@ -31,7 +30,6 @@ export class NavbarUiComponent implements OnInit {
     mobileSubNav = false;
     backLink = false;
     mainNavLink = true;
-    parentNavLink = '';
     submenu: any = [];
 
     navbar: NavbarModel = new NavbarAbstract();
@@ -70,7 +68,7 @@ export class NavbarUiComponent implements OnInit {
                 userPreferences,
                 userActionMenu,
                 currentUser
-            )
+            );
 
             return {
                 tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs
@@ -84,6 +82,7 @@ export class NavbarUiComponent implements OnInit {
                 protected languageFacade: LanguageFacade,
                 protected api: ApiService,
                 protected userPreferenceFacade: UserPreferenceFacade,
+                protected systemConfigFacade: SystemConfigFacade,
                 private authService: AuthService
     ) {
         const navbar = new NavbarAbstract();
@@ -92,28 +91,28 @@ export class NavbarUiComponent implements OnInit {
         NavbarUiComponent.instances.push(this);
     }
 
-    static reset() {
+    static reset(): void {
         NavbarUiComponent.instances.forEach((navbarComponent: NavbarUiComponent) => {
             navbarComponent.loaded = false;
             navbarComponent.navbar = new NavbarAbstract();
         });
     }
 
-    public changeSubNav(event: Event, parentNavItem) {
+    public changeSubNav(event: Event, parentNavItem): void {
         this.mobileSubNav = !this.mobileSubNav;
         this.backLink = !this.backLink;
         this.mainNavLink = !this.mainNavLink;
         this.submenu = parentNavItem.submenu;
     }
 
-    public navBackLink(event: Event) {
+    public navBackLink(): void {
         this.mobileSubNav = !this.mobileSubNav;
         this.backLink = !this.backLink;
         this.mainNavLink = !this.mainNavLink;
     }
 
     @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
+    onResize(event: any): void {
         const innerWidth = event.target.innerWidth;
         this.mobileNavbar = innerWidth <= 768;
     }
@@ -128,16 +127,16 @@ export class NavbarUiComponent implements OnInit {
         window.dispatchEvent(new Event('resize'));
     }
 
-    protected setNavbar(navbar: NavbarModel) {
+    ngOnDestroy(): void {
+        this.authService.isUserLoggedIn.unsubscribe();
+    }
+
+    protected setNavbar(navbar: NavbarModel): void {
         this.navbar = navbar;
         this.loaded = true;
     }
 
-    protected isLoaded() {
+    protected isLoaded(): boolean {
         return this.loaded;
-    }
-
-    ngOnDestroy() {
-        this.authService.isUserLoggedIn.unsubscribe();
     }
 }

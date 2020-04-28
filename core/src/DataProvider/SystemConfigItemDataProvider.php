@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\SystemConfig;
-use SuiteCRM\Core\Legacy\SystemConfigHandler;
+use App\Service\SystemConfigProviderInterface;
 
 /**
  * Class SystemConfigItemDataProvider
@@ -14,17 +14,17 @@ final class SystemConfigItemDataProvider implements ItemDataProviderInterface, R
 {
 
     /**
-     * @var SystemConfigHandler
+     * @var SystemConfigProviderInterface
      */
-    private $systemConfigHandler;
+    private $systemConfigProvider;
 
     /**
      * SystemConfigItemDataProvider constructor.
-     * @param SystemConfigHandler $systemConfigHandler
+     * @param SystemConfigProviderInterface $systemConfigProvider
      */
-    public function __construct(SystemConfigHandler $systemConfigHandler)
+    public function __construct(SystemConfigProviderInterface $systemConfigProvider)
     {
-        $this->systemConfigHandler = $systemConfigHandler;
+        $this->systemConfigProvider = $systemConfigProvider;
     }
 
     /**
@@ -54,6 +54,6 @@ final class SystemConfigItemDataProvider implements ItemDataProviderInterface, R
         array $context = []
     ): ?SystemConfig {
 
-        return $this->systemConfigHandler->getSystemConfig($id);
+        return $this->systemConfigProvider->getSystemConfig($id);
     }
 }

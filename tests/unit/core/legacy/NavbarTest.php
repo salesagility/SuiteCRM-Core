@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Entity\Navbar;
+use App\Service\ActionNameMapper;
 use App\Service\ModuleNameMapper;
 use App\Service\RouteConverter;
 use AspectMock\Test;
@@ -61,21 +62,21 @@ final class NavbarTest extends Unit
         $legacyActionNameMap = [
             'index' => 'index',
             'multieditview' => 'multieditview',
-            'detailview' => 'detail',
-            'editview' => 'edit',
-            'listview' => 'list',
-            'popup' => 'popup',
+            'DetailView' => 'record',
+            'EditView' => 'edit',
+            'ListView' => 'list',
+            'Popup' => 'popup',
             'vcard' => 'vcard',
-            'importvcard' => 'importvcard',
+            'ImportVCard' => 'importvcard',
             'modulelistmenu' => 'modulelistmenu',
             'favorites' => 'favorites',
             'noaccess' => 'noaccess',
-            'step1' => 'step1',
-            'composeview' => 'compose',
-            'wizardhome' => 'wizard-home',
-            'campaigndiagnostic' => 'diagnostic',
-            'webtoleadcreation' => 'web-to-lead',
-            'resourcelist' => 'resource-list',
+            'Step1' => 'step1',
+            'ComposeView' => 'compose',
+            'WizardHome' => 'wizard-home',
+            'CampaignDiagnostic' => 'diagnostic',
+            'WebToLeadCreation' => 'web-to-lead',
+            'ResourceList' => 'resource-list',
             'quick_radius' => 'quick-radius',
         ];
 
@@ -122,7 +123,8 @@ final class NavbarTest extends Unit
         ];
 
         $moduleNameMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $routeConverter = new RouteConverter($moduleNameMapper, $legacyActionNameMap);
+        $actionMapper = new ActionNameMapper($legacyActionNameMap);
+        $routeConverter = new RouteConverter($moduleNameMapper, $actionMapper);
 
         $mockAccessibleModulesList = [
             'Home' => 'Home',
@@ -248,7 +250,7 @@ final class NavbarTest extends Unit
             ]
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->navbar->userActionMenu
         );
@@ -263,7 +265,7 @@ final class NavbarTest extends Unit
             'leads',
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->navbar->tabs
         );
@@ -322,7 +324,7 @@ final class NavbarTest extends Unit
             ],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->navbar->groupedTabs
         );
@@ -333,14 +335,14 @@ final class NavbarTest extends Unit
         $expected = [
             "home" => [
                 "path" => "home",
-                "defaultRoute" => "./#/home/index",
+                "defaultRoute" => "./#/home",
                 "name" => "home",
                 "labelKey" => "Home",
                 "menu" => []
             ],
             "accounts" => [
                 "path" => "accounts",
-                "defaultRoute" => "./#/accounts/index",
+                "defaultRoute" => "./#/accounts",
                 "name" => "accounts",
                 "labelKey" => "Accounts",
                 "menu" => [
@@ -379,7 +381,7 @@ final class NavbarTest extends Unit
             ],
             "contacts" => [
                 "path" => "contacts",
-                "defaultRoute" => "./#/contacts/index",
+                "defaultRoute" => "./#/contacts",
                 "name" => "contacts",
                 "labelKey" => "Contacts",
                 "menu" => [
@@ -425,7 +427,7 @@ final class NavbarTest extends Unit
             ],
             "opportunities" => [
                 "path" => "opportunities",
-                "defaultRoute" => "./#/opportunities/index",
+                "defaultRoute" => "./#/opportunities",
                 "name" => "opportunities",
                 "labelKey" => "Opportunities",
                 "menu" => [
@@ -464,7 +466,7 @@ final class NavbarTest extends Unit
             ],
             "leads" => [
                 "path" => "leads",
-                "defaultRoute" => "./#/leads/index",
+                "defaultRoute" => "./#/leads",
                 "name" => "leads",
                 "labelKey" => "Leads",
                 "menu" => [
@@ -510,7 +512,7 @@ final class NavbarTest extends Unit
             ],
             "documents" => [
                 "path" => "documents",
-                "defaultRoute" => "./#/documents/index",
+                "defaultRoute" => "./#/documents",
                 "name" => "documents",
                 "labelKey" => "Documents",
                 "menu" => [
@@ -536,7 +538,7 @@ final class NavbarTest extends Unit
         ];
 
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->navbar->modules
         );

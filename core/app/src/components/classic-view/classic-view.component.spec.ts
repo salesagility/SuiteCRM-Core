@@ -1,51 +1,79 @@
-import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 import {ClassicViewUiComponent} from './classic-view.component';
-import {ApiService} from '@services/api/api.service';
 import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
+import {ApolloTestingModule} from 'apollo-angular/testing';
+import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
+import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
+
+class ClassicViewUiComponentMock extends ClassicViewUiComponent {
+    protected buildIframePageChangeObserver(): IframePageChangeObserver {
+        return null;
+    }
+
+    protected buildIframeResizeHandlerHandler(): IframeResizeHandlerHandler {
+        return null;
+    }
+}
 
 describe('ClassicViewUiComponent', () => {
-    let component: ClassicViewUiComponent;
-    let fixture: ComponentFixture<ClassicViewUiComponent>;
+
+    let component: ClassicViewUiComponentMock;
+    let fixture: ComponentFixture<ClassicViewUiComponentMock>;
+
+    const legacyLink = 'about:blank';
     const route = ({
-        data: { view: { html: '<h1>haha</h1>' }},
+        data: {legacyUrl: legacyLink},
         snapshot: {
-            data: { view: { html: '<h1>haha</h1>' }}
+            data: {legacyUrl: legacyLink}
         }
     } as any) as ActivatedRoute;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, HttpClientTestingModule, FormsModule],
-            providers: [{ provide: ActivatedRoute, useValue: route }],
-            declarations: [ClassicViewUiComponent]
+            imports: [
+                RouterTestingModule,
+                ApolloTestingModule
+            ],
+            providers: [{provide: ActivatedRoute, useValue: route}],
+            declarations: [ClassicViewUiComponentMock]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ClassicViewUiComponent);
+        fixture = TestBed.createComponent(ClassicViewUiComponentMock);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
 
-    it(`should create`, async(inject([HttpTestingController],
-        (router: RouterTestingModule, http: HttpTestingController, api: ApiService) => {
+    it('should render', () => {
+        expect(component).toBeTruthy();
+    });
 
-            expect(component).toBeTruthy();
-            expect(component.data.view.html).toEqual('<h1>haha</h1>');
-        })));
+    it('should have correct legacy url', () => {
+        expect(component).toBeTruthy();
+        expect(component.url).toEqual(legacyLink);
+    });
 
-    it(`should display provided html`, async(inject([HttpTestingController],
-        (router: RouterTestingModule, http: HttpTestingController, api: ApiService) => {
+    it('should contain iframe wrapper', () => {
+        const classicElement: HTMLElement = fixture.nativeElement;
 
-            const classicElement: HTMLElement = fixture.nativeElement;
-            expect(classicElement.innerHTML).toContain('<h1>haha</h1>');
-        })));
+        const wrapper = (classicElement.getElementsByClassName('classic-view-container')[0]);
+
+        expect(wrapper).toBeTruthy();
+    });
+
+    it('should contain iframe', () => {
+        const classicElement: HTMLElement = fixture.nativeElement;
+        const wrapper = (classicElement.getElementsByClassName('classic-view-container')[0]);
+
+        const iframe = (wrapper.getElementsByTagName('iframe')[0]);
+
+        expect(iframe).toBeTruthy();
+        expect(iframe.src).toEqual(component.url);
+    });
 });

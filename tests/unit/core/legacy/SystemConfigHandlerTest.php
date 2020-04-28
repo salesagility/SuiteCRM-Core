@@ -1,6 +1,8 @@
 <?php namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
+use App\Service\ActionNameMapper;
+use App\Service\ModuleNameMapper;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
@@ -30,6 +32,8 @@ class SystemConfigHandlerTest extends Unit
                 ]
             ],
             'languages' => true,
+            'module_name_map' => true,
+            'action_name_map' => true
         ];
 
         $projectDir = codecept_root_dir();
@@ -37,8 +41,25 @@ class SystemConfigHandlerTest extends Unit
         $legacySessionName = 'LEGACYSESSID';
         $defaultSessionName = 'PHPSESSID';
 
+        $legacyModuleNameMap = [
+            'Contacts' => [
+                'frontend' => 'contacts',
+                'core' => 'Contacts'
+            ],
+        ];
+
+        $legacyActionNameMap = [
+            'index ' => 'index',
+            'DetailView' => 'record',
+            'EditView' => 'edit',
+            'ListView' => 'list',
+        ];
+
+        $moduleMapper = new ModuleNameMapper($legacyModuleNameMap);
+        $actionMapper = new ActionNameMapper($legacyActionNameMap);
+
         $this->handler = new SystemConfigHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName,
-            $exposedSystemConfigs);
+            $exposedSystemConfigs, $actionMapper, $moduleMapper);
     }
 
     // tests
@@ -48,8 +69,8 @@ class SystemConfigHandlerTest extends Unit
      */
     public function testEmptySystemConfigKeyCheck(): void
     {
-        $defaultLanguage = $this->handler->getSystemConfig('');
-        static::assertNull($defaultLanguage);
+        $emptyConfig = $this->handler->getSystemConfig('');
+        static::assertNull($emptyConfig);
     }
 
     /**
@@ -78,20 +99,14 @@ class SystemConfigHandlerTest extends Unit
      */
     public function testGetValidTwoLevelSystemConfig(): void
     {
-        $defaultLanguage = $this->handler->getSystemConfig('passwordsetting');
-        static::assertNotNull($defaultLanguage);
-        static::assertEquals('passwordsetting', $defaultLanguage->getId());
-        static::assertNull($defaultLanguage->getValue());
-        static::assertIsArray($defaultLanguage->getItems());
+        $passwordSetting = $this->handler->getSystemConfig('passwordsetting');
+        static::assertNotNull($passwordSetting);
+        static::assertEquals('passwordsetting', $passwordSetting->getId());
+        static::assertNull($passwordSetting->getValue());
+        static::assertIsArray($passwordSetting->getItems());
 
-        $expected = [
-            'forgotpasswordON' => false
-        ];
-
-        $this->assertSame(
-            $expected,
-            $defaultLanguage->getItems()
-        );
+        static::assertArrayHasKey('forgotpasswordON', $passwordSetting->getItems());
+        static::assertIsNotArray($passwordSetting->getItems()['forgotpasswordON']);
     }
 
     /**
@@ -99,23 +114,44 @@ class SystemConfigHandlerTest extends Unit
      */
     public function testGetValidThreeLevelSystemConfig(): void
     {
-        $defaultLanguage = $this->handler->getSystemConfig('search');
-        static::assertNotNull($defaultLanguage);
-        static::assertEquals('search', $defaultLanguage->getId());
-        static::assertNull($defaultLanguage->getValue());
-        static::assertIsArray($defaultLanguage->getItems());
+        $searchConfig = $this->handler->getSystemConfig('search');
+        static::assertNotNull($searchConfig);
+        static::assertEquals('search', $searchConfig->getId());
+        static::assertNull($searchConfig->getValue());
+        static::assertIsArray($searchConfig->getItems());
 
-        $expected = [
-            'controller' => 'UnifiedSearch',
-            'pagination' => [
-                'min' => 10,
-            ]
-        ];
-
-        static::assertSame(
-            $expected,
-            $defaultLanguage->getItems()
-        );
-
+        static::assertArrayHasKey('controller', $searchConfig->getItems());
+        static::assertArrayHasKey('pagination', $searchConfig->getItems());
+        static::assertIsArray($searchConfig->getItems()['pagination']);
+        static::assertArrayHasKey('min', $searchConfig->getItems()['pagination']);
     }
+
+    /**
+     * Test injected module name map config
+     */
+    public function testInjectedModuleNameMapConfig(): void
+    {
+        $moduleNameMap = $this->handler->getSystemConfig('module_name_map');
+        static::assertNotNull($moduleNameMap);
+        static::assertEquals('module_name_map', $moduleNameMap->getId());
+        static::assertNull($moduleNameMap->getValue());
+        static::assertIsArray($moduleNameMap->getItems());
+
+        static::assertArrayHasKey('Contacts', $moduleNameMap->getItems());
+    }
+
+    /**
+     * Test injected action name map config
+     */
+    public function testInjectedActionNameMapConfig(): void
+    {
+        $actionNameMap = $this->handler->getSystemConfig('action_name_map');
+        static::assertNotNull($actionNameMap);
+        static::assertEquals('action_name_map', $actionNameMap->getId());
+        static::assertNull($actionNameMap->getValue());
+        static::assertIsArray($actionNameMap->getItems());
+
+        static::assertArrayHasKey('DetailView', $actionNameMap->getItems());
+    }
+
 }

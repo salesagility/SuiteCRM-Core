@@ -6,3 +6,5 @@ parameters:
         languages: true
         default_module: true
         default_theme: true
+        module_name_map: true
+        action_name_map: true

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {concatAll, map, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
@@ -13,14 +13,14 @@ import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade'
 @Injectable({providedIn: 'root'})
 export class BaseMetadataResolver implements Resolve<any> {
 
-    constructor(private systemConfigFacade: SystemConfigFacade,
-                private languageFacade: LanguageFacade,
-                private navigationFacade: NavigationFacade,
-                private userPreferenceFacade: UserPreferenceFacade,
-                private themeImagesFacade: ThemeImagesFacade) {
+    constructor(protected systemConfigFacade: SystemConfigFacade,
+                protected languageFacade: LanguageFacade,
+                protected navigationFacade: NavigationFacade,
+                protected userPreferenceFacade: UserPreferenceFacade,
+                protected themeImagesFacade: ThemeImagesFacade) {
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
         const streams$: { [key: string]: Observable<any> } = {};
 
         if (this.isToLoadNavigation(route)) {
@@ -94,7 +94,8 @@ export class BaseMetadataResolver implements Resolve<any> {
     /**
      * Get Languages to Load
      *
-     * @param route
+     * @param {{}} route activated
+     * @returns {string[]} languages
      */
     protected getLanguagesToLoad(route: ActivatedRouteSnapshot): string[] {
         let langStrings: string[] = this.languageFacade.getAvailableStringsTypes();
@@ -117,8 +118,8 @@ export class BaseMetadataResolver implements Resolve<any> {
     /**
      * Should load language strings. True if navigation is to load
      *
-     * @param route
-     * @returns boolean
+     * @param {{}} route activated
+     * @returns {boolean} is to load
      */
     protected isToLoadLanguageStrings(route: ActivatedRouteSnapshot): boolean {
 
@@ -136,8 +137,8 @@ export class BaseMetadataResolver implements Resolve<any> {
     /**
      * Should load navigation. If not set defaults to true
      *
-     * @param route
-     * @returns boolean
+     * @param {{}} route activated
+     * @returns {boolean} is to load
      */
     protected isToLoadConfigs(route: ActivatedRouteSnapshot): boolean {
         if (!route.data || !route.data.load) {
@@ -150,8 +151,8 @@ export class BaseMetadataResolver implements Resolve<any> {
     /**
      * Should load navigation, If not set defaults to true
      *
-     * @param route
-     * @returns boolean
+     * @param {{}} route activated
+     * @returns {boolean} is to load
      */
     protected isToLoadNavigation(route: ActivatedRouteSnapshot): boolean {
         if (!route.data || !route.data.load) {
@@ -164,8 +165,8 @@ export class BaseMetadataResolver implements Resolve<any> {
     /**
      * Should load user preferences. If not set defaults to true
      *
-     * @param route
-     * @returns boolean
+     * @param {{}} route activated
+     * @returns {boolean} is to load
      */
     protected isToLoadUserPreferences(route: ActivatedRouteSnapshot): boolean {
         if (!route.data || !route.data.load) {

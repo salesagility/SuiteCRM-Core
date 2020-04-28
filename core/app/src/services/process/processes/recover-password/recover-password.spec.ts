@@ -2,7 +2,7 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {
     recoverPasswordMock,
     recoverPasswordMockData
-} from '@services/process/processes/recover-password/recover-passoword.spec.mock';
+} from '@services/process/processes/recover-password/recover-password.spec.mock';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
 
 describe('Reset Password service', () => {
