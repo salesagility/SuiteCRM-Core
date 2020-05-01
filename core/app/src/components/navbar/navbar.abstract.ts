@@ -2,7 +2,7 @@ import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
 import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '@base/facades/navigation/navigation.facade';
 import {LanguageStrings, LanguageStringMap} from '@base/facades/language/language.facade';
-
+import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
 import {ready} from '@base/utils/object-utils';
@@ -51,6 +51,10 @@ export class NavbarAbstract implements NavbarModel {
      * Public API
      */
 
+    constructor(
+        private routeConverter: RouteConverter) {
+    }
+
     /**
      * Reset menus
      */
@@ -82,15 +86,13 @@ export class NavbarAbstract implements NavbarModel {
             userActionMenu.forEach((subMenu) => {
                 const name = subMenu.name;
                 let url = subMenu.url;
-                let urlParams;
 
                 if (name === 'logout') {
                     return;
                 }
 
                 if (name !== 'training') {
-                    urlParams = this.getModuleFromUrlParams(url);
-                    url = ROUTE_PREFIX + '/' + (urlParams.module).toLowerCase() + '/' + (urlParams.action).toLowerCase();
+                    url = ROUTE_PREFIX + this.routeConverter.toFrontEnd(url);
                 }
 
                 const label = appStrings[subMenu.labelKey];
@@ -444,21 +446,5 @@ export class NavbarAbstract implements NavbarModel {
         }
 
         return menuItem;
-    }
-
-    /**
-     * Get module from url params
-     *
-     * @param {string} search query
-     * @returns {{}} params map
-     */
-    private getModuleFromUrlParams(search: string): any {
-        const hashes = search.slice(search.indexOf('?') + 1).split('&');
-        const params = {};
-        hashes.map(hash => {
-            const [key, val] = hash.split('=');
-            params[key] = decodeURIComponent(val);
-        });
-        return params;
     }
 }
