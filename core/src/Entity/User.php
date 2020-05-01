@@ -67,14 +67,14 @@ class User implements UserInterface
 
     /**
      * @ApiProperty
-     * @var string
+     * @var string | null
      * @ORM\Column(type="string")
      */
     private $first_name;
 
     /**
      * @ApiProperty
-     * @var string
+     * @var string | null
      * @ORM\Column(type="string")
      */
     private $last_name;
@@ -328,17 +328,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
