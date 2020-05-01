@@ -40,3 +40,4 @@ parameters:
         RepairActivities: repair-activities
         RepairSeedUsers: repair-seed-users
         RepairUploadFolder: repair-upload-folder
+        About: about
