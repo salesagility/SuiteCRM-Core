@@ -93,12 +93,13 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         this.iframe.contentWindow.document.body.style.overflow = 'hidden';
 
         // Init resize handler
-        this.iframeResizeHandler.init();
+        this.iframeResizeHandler.init(this.iframe);
     }
 
     protected onIFrameUnload(): void {
         // hide iframe, while being re-directed
         this.iframe.style.display = 'none';
+        this.iframeResizeHandler.destroy();
     }
 
     protected buildIframePageChangeObserver(): IframePageChangeObserver {
@@ -111,6 +112,6 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     protected buildIframeResizeHandlerHandler(): IframeResizeHandlerHandler {
-        return new IframeResizeHandlerHandler(this.iframe);
+        return new IframeResizeHandlerHandler();
     }
 }

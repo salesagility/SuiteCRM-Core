@@ -1,25 +1,32 @@
 import {MutationObserverFactory} from '@angular/cdk/observers';
 
+interface ResizeFeedack {
+    resized: boolean;
+    height?: number;
+}
+
 export class IframeResizeHandlerHandler {
     private iframe: any;
     private observer: MutationObserver;
 
-    constructor(iframe) {
-        this.iframe = iframe;
+    constructor() {
     }
 
     /**
      * Public Api
      */
 
-    public init(): void {
+    public init(iframe): void {
+        this.iframe = iframe;
         this.initialSizeAdjustment();
         this.addBodyResizeListener();
     }
 
     public destroy(): void {
 
-        this.observer.disconnect();
+        if (this.observer){
+            this.observer.disconnect();
+        }
 
         this.iframe = null;
         this.observer = null;
@@ -73,24 +80,13 @@ export class IframeResizeHandlerHandler {
             });
 
             heights.sort((a, b) => a - b);
-
             // consider the Height of the biggest
             const elementHeight = heights.pop();
 
-            if (watchedData.height === elementHeight) {
-                return;
-            }
+            const feedback = this.calculateResizing(watchedData.height, elementHeight);
 
-            if (watchedData.height < (elementHeight - 20)) {
-                watchedData.height = elementHeight;
-                this.resizeIFrame(elementHeight);
-                return;
-            }
-
-            if (this.iframe.scrollHeight > elementHeight) {
-                watchedData.height = elementHeight;
-                this.resizeIFrame(elementHeight);
-                return;
+            if (feedback.resized){
+                watchedData.height = feedback.height;
             }
         });
 
@@ -102,10 +98,45 @@ export class IframeResizeHandlerHandler {
         });
     }
 
-    protected onResize(): void {
-        if ((this.iframe.offsetHeight + 50) < this.iframe.contentWindow.document.body.scrollHeight) {
-            this.resizeIFrame(this.iframe.contentWindow.document.body.scrollHeight + 50);
+    protected calculateResizing(currentHeight: number, elementHeight: number): ResizeFeedack {
+        const availableWindowHeight = window.innerHeight - 50;
+
+        // if window size is bigger, take that size
+        if (elementHeight < availableWindowHeight){
+            elementHeight = availableWindowHeight;
         }
+
+        if (currentHeight === elementHeight) {
+            return {
+                resized: false
+            };
+        }
+
+        if (currentHeight < (elementHeight - 20)) {
+            this.resizeIFrame(elementHeight);
+            return {
+                resized: true,
+                height: elementHeight
+            };
+        }
+
+        if (this.iframe.scrollHeight > elementHeight) {
+            this.resizeIFrame(elementHeight);
+            return {
+                resized: true,
+                height: elementHeight
+            };
+        }
+
+        return {
+            resized: false
+        };
+    }
+
+    protected onResize(): void {
+        const elementHeight = this.iframe.contentWindow.document.body.scrollHeight + 120;
+        const currentHeight = this.iframe.offsetHeight;
+        this.calculateResizing(currentHeight, elementHeight);
     }
 
     protected resizeIFrame(size: number): void {
