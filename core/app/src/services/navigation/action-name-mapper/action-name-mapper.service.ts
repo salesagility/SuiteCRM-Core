@@ -24,6 +24,11 @@ export class ActionNameMapper {
      */
     public toFrontend(action: string): string {
         const map = this.getLegacyToFrontendMap();
+
+        if (!map[action]){
+            return action;
+        }
+
         return map[action];
     }
 
@@ -35,6 +40,11 @@ export class ActionNameMapper {
      */
     public toLegacy(action: string): string {
         const map = this.getFrontendToLegacyMap();
+
+        if (!map[action]){
+            return action;
+        }
+
         return map[action];
     }
 

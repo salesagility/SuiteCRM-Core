@@ -41,3 +41,4 @@ parameters:
         RepairSeedUsers: repair-seed-users
         RepairUploadFolder: repair-upload-folder
         About: about
+        ShowDuplicates: show-duplicates
