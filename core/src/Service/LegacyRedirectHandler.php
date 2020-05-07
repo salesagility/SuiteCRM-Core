@@ -1,56 +1,57 @@
 <?php
 
-
 namespace App\Service;
-
 
 use Symfony\Component\HttpFoundation\Request;
 
-class LegacyAssetHandler
+class LegacyRedirectHandler
 {
-    /**
-     * @var string[]
-     */
-    private $legacyAssetPaths;
     /**
      * @var String
      */
-    private $legacyPath;
+    protected $legacyPath;
 
     /**
-     * LegacyAssetHandler constructor.
-     * @param array $legacyAssetPaths
+     * LegacyRedirectHandler constructor.
      * @param String $legacyPath
      */
-    public function __construct(array $legacyAssetPaths, String $legacyPath)
+    public function __construct(String $legacyPath)
     {
-        $this->legacyAssetPaths = $legacyAssetPaths;
         $this->legacyPath = $legacyPath;
     }
 
     /**
-     * Check if the given $request is a legacy asset request
+     * Check if given request falls into one of the given $paths
      *
      * @param Request $request
+     * @param array $paths
      * @return bool
      */
-    public function isLegacyAssetRequest(Request $request): bool
+    protected function inPathList(Request $request, array $paths): bool
     {
         if (empty($request->getPathInfo()) || $request->getPathInfo() === '/') {
             return false;
         }
 
-        $pathParts = explode('/', $request->getPathInfo());
-
-        if (empty($pathParts) || empty($pathParts[1])) {
-            return false;
-        }
-
-        if (in_array($pathParts[1], $this->legacyAssetPaths)) {
-            return true;
+        foreach ($paths as $path) {
+            if ($this->inPath($request, $path)) {
+                return true;
+            }
         }
 
         return false;
+    }
+
+    /**
+     * Check if request falls into given path
+     *
+     * @param Request $request
+     * @param $path
+     * @return bool
+     */
+    protected function inPath(Request $request, $path): bool
+    {
+        return strpos($request->getPathInfo(), '/' . $path) === 0;
     }
 
     /**

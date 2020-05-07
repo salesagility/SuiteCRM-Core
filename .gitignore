@@ -32,6 +32,8 @@ public/
 
 # Tests
 tests/coverage
+tests/api.suite.yml
+tests/acceptance.suite.yml
 
 # Composer
 vendor/
@@ -159,3 +161,4 @@ testem.log
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+

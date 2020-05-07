@@ -2,7 +2,8 @@
 
 namespace App\EventListener;
 
-use App\Service\LegacyAssetHandler;
+use App\Service\LegacyApiRedirectHandler;
+use App\Service\LegacyAssetRedirectHandler;
 use App\Service\RouteConverter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -19,19 +20,29 @@ class LegacyRedirectListener
     private $routeConverter;
 
     /**
-     * @var LegacyAssetHandler
+     * @var LegacyAssetRedirectHandler
      */
     private $legacyAssetHandler;
 
     /**
+     * @var LegacyApiRedirectHandler
+     */
+    private $legacyApiRedirectHandler;
+
+    /**
      * LegacyRedirectListener constructor.
      * @param RouteConverter $routeConverter
-     * @param LegacyAssetHandler $legacyAssetHandler
+     * @param LegacyAssetRedirectHandler $legacyAssetHandler
+     * @param LegacyApiRedirectHandler $legacyApiRedirectHandler
      */
-    public function __construct(RouteConverter $routeConverter, LegacyAssetHandler $legacyAssetHandler)
-    {
+    public function __construct(
+        RouteConverter $routeConverter,
+        LegacyAssetRedirectHandler $legacyAssetHandler,
+        LegacyApiRedirectHandler $legacyApiRedirectHandler
+    ) {
         $this->routeConverter = $routeConverter;
         $this->legacyAssetHandler = $legacyAssetHandler;
+        $this->legacyApiRedirectHandler = $legacyApiRedirectHandler;
     }
 
     /**
@@ -43,6 +54,14 @@ class LegacyRedirectListener
         if ($this->isLegacyAsset($event)) {
             $url = $this->legacyAssetHandler->convert($event->getRequest());
             $response = new RedirectResponse($url);
+            $event->setResponse($response);
+
+            return;
+        }
+
+        if ($this->isLegacyApi($event)) {
+            $url = $this->legacyApiRedirectHandler->convert($event->getRequest());
+            $response = new RedirectResponse($url, 307);
             $event->setResponse($response);
 
             return;
@@ -72,6 +91,16 @@ class LegacyRedirectListener
      */
     protected function isLegacyAsset(RequestEvent $event): bool
     {
-        return $this->legacyAssetHandler->isLegacyAssetRequest($event->getRequest());
+        return $this->legacyAssetHandler->isAssetRequest($event->getRequest());
+    }
+
+    /**
+     * Check if it is legacy api requests
+     * @param RequestEvent $event
+     * @return bool
+     */
+    protected function isLegacyApi(RequestEvent $event): bool
+    {
+        return $this->legacyApiRedirectHandler->isApiRequest($event->getRequest());
     }
 }

@@ -1,10 +1,10 @@
 <?php namespace App\Tests;
 
-use App\Service\LegacyAssetHandler;
+use App\Service\LegacyAssetRedirectHandler;
 use \Codeception\Test\Unit;
 use Symfony\Component\HttpFoundation\Request;
 
-class LegacyAssetHandlerTest extends Unit
+class LegacyAssetRedirectHandlerTest extends Unit
 {
     /**
      * @var UnitTester
@@ -13,11 +13,11 @@ class LegacyAssetHandlerTest extends Unit
 
 
     /**
-     * @var LegacyAssetHandler
+     * @var LegacyAssetRedirectHandler
      */
     private $legacyAssetHandler;
 
-    protected function _before()
+    protected function _before(): void
     {
         $legacyAssetPaths = [
             'cache',
@@ -25,10 +25,10 @@ class LegacyAssetHandlerTest extends Unit
             'themes'
         ];
 
-        $this->legacyAssetHandler = new LegacyAssetHandler($legacyAssetPaths, '/legacy');
+        $this->legacyAssetHandler = new LegacyAssetRedirectHandler($legacyAssetPaths, '/legacy');
     }
 
-    public function testAPIRequestCheck()
+    public function testAPIRequestCheck(): void
     {
         $queryParams = [
         ];
@@ -50,12 +50,12 @@ class LegacyAssetHandlerTest extends Unit
 
         $request = new Request($queryParams, [], [], [], [], $serverParams);
 
-        $valid = $this->legacyAssetHandler->isLegacyAssetRequest($request);
+        $valid = $this->legacyAssetHandler->isAssetRequest($request);
 
         static::assertFalse($valid);
     }
 
-    public function testLegacyValidAssetPathRequestCheck()
+    public function testLegacyValidAssetPathRequestCheck(): void
     {
         $queryParams = [
             'v' => 'Y0_lwfeIA-XvM4ey09-htw',
@@ -77,12 +77,12 @@ class LegacyAssetHandlerTest extends Unit
 
         $request = new Request($queryParams, [], [], [], [], $serverParams);
 
-        $valid = $this->legacyAssetHandler->isLegacyAssetRequest($request);
+        $valid = $this->legacyAssetHandler->isAssetRequest($request);
 
         static::assertTrue($valid);
     }
 
-    public function testValidLegacyAssetPathConvertion()
+    public function testValidLegacyAssetPathConversion(): void
     {
         $resultingRoute = '/suiteinstance/legacy/themes/default/images/company_logo.png?v=Y0_lwfeIA-XvM4ey09-htw';
         $queryParams = [

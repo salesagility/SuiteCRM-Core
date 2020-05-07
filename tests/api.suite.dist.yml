@@ -1,0 +1,12 @@
+actor: ApiTester
+modules:
+  enabled:
+    - \App\Tests\Helper\Api
+    - REST:
+        url: http://<suite-endpoint>
+        depends: PhpBrowser
+    - \App\Tests\Helper\ConfigHelper:
+        client_id: <legacy-suite-client-id>
+        client_secret: <legacy-suite-client-secret>
+        user_name: <user-name>
+        password: <password>

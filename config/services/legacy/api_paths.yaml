@@ -1,0 +1,6 @@
+parameters:
+  legacy.api_paths:
+    Api/access_token: Api/index.php/access_token
+    Api/V8: Api/index.php/V8
+    Api: Api/index.php
+    service/v4_1: service/v4_1

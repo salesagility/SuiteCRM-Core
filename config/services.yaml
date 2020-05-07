@@ -27,6 +27,7 @@ services:
       $legacyActionNameMap: '%legacy.action_name_map%'
       $menuItemMap: '%legacy.menu_item_map%'
       $legacyAssetPaths: '%legacy.asset_paths%'
+      $legacyApiPaths: '%legacy.api_paths%'
       $exposedUserPreferences: '%legacy.exposed_user_preferences%'
       $themeImagePaths: '%themes.image_paths%'
       $themeImageSupportedTypes: '%themes.image_supported_types%'

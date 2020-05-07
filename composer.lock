@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "00f1adf41ad3121e7cfed51b3cc9cb8e",
-    "packages": [
-        {
-            "name": "api-platform/api-pack",
-            "version": "v1.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/api-platform/api-pack.git",
-                "reference": "ca7ca22f30bcfcdb2493ec9e8b7b5dba1271608a"
-            },
-            "dist": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "756a56bc803aed095e3d1bc05b893eaa",
+  "packages": [
+    {
+      "name": "api-platform/api-pack",
+      "version": "v1.2.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/api-platform/api-pack.git",
+        "reference": "ca7ca22f30bcfcdb2493ec9e8b7b5dba1271608a"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/api-platform/api-pack/zipball/ca7ca22f30bcfcdb2493ec9e8b7b5dba1271608a",
                 "reference": "ca7ca22f30bcfcdb2493ec9e8b7b5dba1271608a",
@@ -6141,26 +6141,77 @@
                     "name": "Gintautas Miselis"
                 }
             ],
-            "description": "Codeception module for testing web application over HTTP",
-            "homepage": "http://codeception.com/",
-            "keywords": [
-                "codeception",
-                "functional-testing",
-                "http"
-            ],
-            "time": "2019-10-10T14:25:59+00:00"
+          "description": "Codeception module for testing web application over HTTP",
+          "homepage": "http://codeception.com/",
+          "keywords": [
+            "codeception",
+            "functional-testing",
+            "http"
+          ],
+          "time": "2019-10-10T14:25:59+00:00"
         },
-        {
-            "name": "codeception/module-symfony",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Codeception/module-symfony.git",
-                "reference": "db1a281f183afbc63ba70fb16dee8730cc8875ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-symfony/zipball/db1a281f183afbc63ba70fb16dee8730cc8875ba",
+      {
+        "name": "codeception/module-rest",
+        "version": "1.2.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/Codeception/module-rest.git",
+          "reference": "c86417af517bb1fb5b88550455d823a7c9fc167e"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/Codeception/module-rest/zipball/c86417af517bb1fb5b88550455d823a7c9fc167e",
+          "reference": "c86417af517bb1fb5b88550455d823a7c9fc167e",
+          "shasum": ""
+        },
+        "require": {
+          "codeception/codeception": "^4.0",
+          "flow/jsonpath": "^0.5",
+          "justinrainbow/json-schema": "^5.2.9",
+          "php": ">=5.6.0 <8.0"
+        },
+        "require-dev": {
+          "codeception/lib-innerbrowser": "^1.0",
+          "codeception/util-robohelpers": "dev-master",
+          "codeception/util-universalframework": "^1.0"
+        },
+        "suggest": {
+          "aws/aws-sdk-php": "For using AWS Auth"
+        },
+        "type": "library",
+        "autoload": {
+          "classmap": [
+            "src/"
+          ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+          "MIT"
+        ],
+        "authors": [
+          {
+            "name": "Gintautas Miselis"
+          }
+        ],
+        "description": "REST module for Codeception",
+        "homepage": "http://codeception.com/",
+        "keywords": [
+          "codeception",
+          "rest"
+        ],
+        "time": "2020-02-01T19:23:56+00:00"
+      },
+      {
+        "name": "codeception/module-symfony",
+        "version": "1.1.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/Codeception/module-symfony.git",
+          "reference": "db1a281f183afbc63ba70fb16dee8730cc8875ba"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/Codeception/module-symfony/zipball/db1a281f183afbc63ba70fb16dee8730cc8875ba",
                 "reference": "db1a281f183afbc63ba70fb16dee8730cc8875ba",
                 "shasum": ""
             },
@@ -6624,26 +6675,67 @@
             "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
             "homepage": "http://www.easyrdf.org/",
             "keywords": [
-                "Linked Data",
-                "RDF",
-                "Semantic Web",
-                "Turtle",
-                "rdfa",
-                "sparql"
+              "Linked Data",
+              "RDF",
+              "Semantic Web",
+              "Turtle",
+              "rdfa",
+              "sparql"
             ],
-            "time": "2015-02-27T09:45:49+00:00"
+          "time": "2015-02-27T09:45:49+00:00"
         },
-        {
-            "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.16.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "c460a3cbaa58f983fe026cd52c45950bf61e9239"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/c460a3cbaa58f983fe026cd52c45950bf61e9239",
+      {
+        "name": "flow/jsonpath",
+        "version": "0.5.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/FlowCommunications/JSONPath.git",
+          "reference": "b9738858c75d008c1211612b973e9510f8b7f8ea"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/b9738858c75d008c1211612b973e9510f8b7f8ea",
+          "reference": "b9738858c75d008c1211612b973e9510f8b7f8ea",
+          "shasum": ""
+        },
+        "require": {
+          "php": ">=5.4.0"
+        },
+        "require-dev": {
+          "peekmo/jsonpath": "dev-master",
+          "phpunit/phpunit": "^7.0"
+        },
+        "type": "library",
+        "autoload": {
+          "psr-0": {
+            "Flow\\JSONPath": "src/",
+            "Flow\\JSONPath\\Test": "tests/"
+          }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+          "MIT"
+        ],
+        "authors": [
+          {
+            "name": "Stephen Frank",
+            "email": "stephen@flowsa.com"
+          }
+        ],
+        "description": "JSONPath implementation for parsing, searching and flattening arrays",
+        "time": "2019-07-15T17:23:22+00:00"
+      },
+      {
+        "name": "friendsofphp/php-cs-fixer",
+        "version": "v2.16.2",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
+          "reference": "c460a3cbaa58f983fe026cd52c45950bf61e9239"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/c460a3cbaa58f983fe026cd52c45950bf61e9239",
                 "reference": "c460a3cbaa58f983fe026cd52c45950bf61e9239",
                 "shasum": ""
             },
@@ -7078,26 +7170,92 @@
                 }
             ],
             "description": "Lexing and parsing in pure PHP",
-            "homepage": "https://github.com/jakubledl/dissect",
-            "keywords": [
-                "ast",
-                "lexing",
-                "parser",
-                "parsing"
-            ],
-            "time": "2013-01-29T21:29:14+00:00"
+          "homepage": "https://github.com/jakubledl/dissect",
+          "keywords": [
+            "ast",
+            "lexing",
+            "parser",
+            "parsing"
+          ],
+          "time": "2013-01-29T21:29:14+00:00"
         },
-        {
-            "name": "league/html-to-markdown",
-            "version": "4.9.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "1dcd0f85de786f46a7f224a27cc3d709ddd2a68c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/1dcd0f85de786f46a7f224a27cc3d709ddd2a68c",
+      {
+        "name": "justinrainbow/json-schema",
+        "version": "5.2.9",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/justinrainbow/json-schema.git",
+          "reference": "44c6787311242a979fa15c704327c20e7221a0e4"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44c6787311242a979fa15c704327c20e7221a0e4",
+          "reference": "44c6787311242a979fa15c704327c20e7221a0e4",
+          "shasum": ""
+        },
+        "require": {
+          "php": ">=5.3.3"
+        },
+        "require-dev": {
+          "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
+          "json-schema/json-schema-test-suite": "1.2.0",
+          "phpunit/phpunit": "^4.8.35"
+        },
+        "bin": [
+          "bin/validate-json"
+        ],
+        "type": "library",
+        "extra": {
+          "branch-alias": {
+            "dev-master": "5.0.x-dev"
+          }
+        },
+        "autoload": {
+          "psr-4": {
+            "JsonSchema\\": "src/JsonSchema/"
+          }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+          "MIT"
+        ],
+        "authors": [
+          {
+            "name": "Bruno Prieto Reis",
+            "email": "bruno.p.reis@gmail.com"
+          },
+          {
+            "name": "Justin Rainbow",
+            "email": "justin.rainbow@gmail.com"
+          },
+          {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+          },
+          {
+            "name": "Robert Schönthal",
+            "email": "seroscho@googlemail.com"
+          }
+        ],
+        "description": "A library to validate a json schema.",
+        "homepage": "https://github.com/justinrainbow/json-schema",
+        "keywords": [
+          "json",
+          "schema"
+        ],
+        "time": "2019-09-25T14:49:45+00:00"
+      },
+      {
+        "name": "league/html-to-markdown",
+        "version": "4.9.1",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/thephpleague/html-to-markdown.git",
+          "reference": "1dcd0f85de786f46a7f224a27cc3d709ddd2a68c"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/1dcd0f85de786f46a7f224a27cc3d709ddd2a68c",
                 "reference": "1dcd0f85de786f46a7f224a27cc3d709ddd2a68c",
                 "shasum": ""
             },
