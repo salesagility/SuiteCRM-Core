@@ -16,7 +16,7 @@ describe('Action Name Mapper Service', () => {
     it('#toFrontend with invalid action name', () => {
         const action = service.toFrontend('fake');
 
-        expect(action).toEqual(undefined);
+        expect(action).toEqual('fake');
     });
 
     it('#toLegacy with valid action name', () => {
@@ -28,7 +28,7 @@ describe('Action Name Mapper Service', () => {
     it('#toLegacy with invalid action name', () => {
         const action = service.toLegacy('fake');
 
-        expect(action).toEqual(undefined);
+        expect(action).toEqual('fake');
     });
 
     it('#isValid with valid action name', () => {

@@ -63,7 +63,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams,[],[],[],[], $serverParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertFalse($valid);
     }
@@ -91,7 +91,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams,[],[],[],[], $serverParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertTrue($valid);
     }
@@ -106,7 +106,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertTrue($valid);
     }
@@ -117,7 +117,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertFalse($valid);
     }
@@ -130,7 +130,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertFalse($valid);
     }
@@ -145,7 +145,7 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams);
 
-        $valid = $this->routeConverter->isLegacyRoute($request);
+        $valid = $this->routeConverter->isLegacyViewRoute($request);
 
         static::assertFalse($valid);
     }

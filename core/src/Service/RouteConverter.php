@@ -41,7 +41,7 @@ class RouteConverter
      * @param Request $request
      * @return bool
      */
-    public function isLegacyRoute(Request $request): bool
+    public function isLegacyViewRoute(Request $request): bool
     {
         if (!empty($request->getPathInfo()) && $request->getPathInfo() !== '/') {
             return false;
@@ -60,6 +60,30 @@ class RouteConverter
         $action = $request->query->get('action');
 
         return $this->actionNameMapper->isValidAction($action);
+    }
+
+    /**
+     * Check if the given $request route is a Legacy route
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function isLegacyRoute(Request $request): bool
+    {
+        if ($this->isLegacyViewRoute($request)) {
+            return true;
+        }
+
+        if ($request->getPathInfo() !== '/') {
+            return false;
+        }
+
+        $valid = false;
+        $valid |= !empty($request->get('module'));
+        $valid |= !empty($request->get('action'));
+        $valid |= !empty($request->get('entryPoint'));
+
+        return $valid;
     }
 
     /**
@@ -196,7 +220,7 @@ class RouteConverter
         $validParams = [];
 
         foreach ($queryParams as $name => $value) {
-            if (in_array($name, $exclude)) {
+            if (in_array($name, $exclude, true)) {
                 continue;
             }
             $validParams[$name] = $value;

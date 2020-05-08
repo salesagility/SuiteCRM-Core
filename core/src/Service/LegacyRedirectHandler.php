@@ -67,6 +67,19 @@ class LegacyRedirectHandler
             $queryString = '?' . $queryString;
         }
 
-        return $request->getBaseUrl() . $this->legacyPath . $request->getPathInfo() . $queryString;
+        $baseUrl = $request->getBaseUrl();
+
+        if (strpos($baseUrl, '.php') !== false) {
+
+            $baseUrl = str_replace($request->getBasePath(), $request->getBasePath() . $this->legacyPath, $baseUrl);
+        } else {
+            $baseUrl .= $this->legacyPath;
+        }
+
+        if ($request->getPathInfo() !== '/') {
+            $baseUrl .= $request->getPathInfo();
+        }
+
+        return $baseUrl . $queryString;
     }
 }
