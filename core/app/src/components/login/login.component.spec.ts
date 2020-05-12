@@ -14,6 +14,7 @@ import {systemConfigFacadeMock} from '@base/facades/system-config/system-config.
 import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-password.spec.mock';
 import {By} from '@angular/platform-browser';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;
@@ -28,7 +29,8 @@ describe('LoginComponent', () => {
                 HttpClientTestingModule,
                 FormsModule,
                 BrowserAnimationsModule,
-                ApolloTestingModule
+                ApolloTestingModule,
+                ButtonLoadingUiModule
             ],
             declarations: [LoginUiComponent],
             providers: [

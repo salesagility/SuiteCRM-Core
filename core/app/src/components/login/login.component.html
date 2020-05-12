@@ -65,6 +65,7 @@
 
 
                 <button id="login-button" class="login-button"
+                        [scrm-button-loading]="loading"
                         (click)="loginForm.control.markAllAsTouched(); loginForm.valid && doLogin()">
                     {{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}
                 </button>
@@ -111,6 +112,7 @@
                 </div>
 
                 <button class="submit-button login-button"
+                        scrm-button-loading
                         (click)="loginForm.control.markAllAsTouched(); loginForm.valid && recoverPassword()">
                     {{vm.appStrings['LBL_GENERATE_PASSWORD_BUTTON_TITLE']}}
                 </button>

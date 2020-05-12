@@ -31,6 +31,7 @@ import {Process} from '@services/process/process.service';
 })
 export class LoginUiComponent {
     hidden = true;
+    loading = false;
     error = '';
     uname = '';
     passw = '';
@@ -74,6 +75,7 @@ export class LoginUiComponent {
         protected languageFacade: LanguageFacade,
         protected recoverPasswordService: RecoverPasswordService
     ) {
+        this.loading = false;
         this.hidden = false;
     }
 
@@ -86,6 +88,7 @@ export class LoginUiComponent {
     }
 
     doLogin(): void {
+        this.loading = true;
         this.auth.doLogin(this, this.uname, this.passw, this.onLoginSuccess.bind(this), this.onLoginError.bind(this));
     }
 
@@ -116,6 +119,7 @@ export class LoginUiComponent {
     }
 
     onLoginSuccess(caller: LoginUiComponent): void {
+        this.loading = false;
         caller.message.log('Login success');
         caller.message.removeMessages();
 
@@ -126,6 +130,7 @@ export class LoginUiComponent {
     }
 
     onLoginError(caller: LoginUiComponent): void {
+        this.loading = false;
         caller.message.log('Login failed');
         caller.message.addDangerMessage('Login credentials incorrect, please try again.');
     }

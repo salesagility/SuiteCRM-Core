@@ -8,6 +8,7 @@ import {LogoUiModule} from '../logo/logo.module';
 import {LoginUiRoutes} from './login.routes';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ImageModule} from '@components/image/image.module';
+import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import {ImageModule} from '@components/image/image.module';
         RouterModule.forChild(LoginUiRoutes),
         CommonModule,
         AngularSvgIconModule,
-        ImageModule
+        ImageModule,
+        ButtonLoadingUiModule
     ]
 })
 export class LoginUiModule {
