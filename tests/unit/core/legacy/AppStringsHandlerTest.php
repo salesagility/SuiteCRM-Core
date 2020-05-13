@@ -4,6 +4,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\AppStrings;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\AppStringsHandler;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
 
 class AppStringsHandlerTest extends Unit
 {
@@ -23,7 +24,15 @@ class AppStringsHandlerTest extends Unit
         $legacyDir = $projectDir . '/legacy';
         $legacySessionName = 'LEGACYSESSID';
         $defaultSessionName = 'PHPSESSID';
-        $this->handler = new AppStringsHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        $legacyScope = new LegacyScopeState();
+
+        $this->handler = new AppStringsHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
     }
 
     // tests

@@ -10,6 +10,15 @@ use App\Entity\AppListStrings;
 class AppListStringsHandler extends LegacyHandler
 {
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
+    public const HANDLER_KEY = 'app-list-strings';
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
 
     /**
      * Get app list strings for given $language

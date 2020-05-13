@@ -1,10 +1,12 @@
 <?php namespace App\Tests;
 
-use App\Service\ActionNameMapper;
-use App\Service\ModuleNameMapper;
-use App\Service\RouteConverter;
+use App\Service\RouteConverterInterface;
 use \Codeception\Test\Unit;
 use InvalidArgumentException;
+use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
+use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteConverterTest extends Unit
@@ -16,32 +18,50 @@ class RouteConverterTest extends Unit
 
 
     /**
-     * @var RouteConverter
+     * @var RouteConverterInterface
      */
     private $routeConverter;
 
     protected function _before()
     {
-        $legacyModuleNameMap = [
-            'Contacts' => [
-                'frontend' => 'contacts',
-                'core' => 'Contacts'
-            ],
-        ];
+        $projectDir = codecept_root_dir();
+        $legacyDir = $projectDir . '/legacy';
+        $legacySessionName = 'LEGACYSESSID';
+        $defaultSessionName = 'PHPSESSID';
 
-        $legacyActionNameMap = [
-            'index ' => 'index',
-            'DetailView' => 'detail',
-            'EditView' => 'edit',
-            'ListView' => 'list',
-        ];
+        $legacyScope = new LegacyScopeState();
 
-        $moduleMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $actionMapper = new ActionNameMapper($legacyActionNameMap);
-        $this->routeConverter = new RouteConverter($moduleMapper, $actionMapper);
+        $moduleMapper = new ModuleNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $actionMapper = new ActionNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $this->routeConverter = new RouteConverterHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $moduleMapper,
+            $actionMapper
+        );
     }
 
-    public function testAPIRequestCheck()
+    /**
+     * Test check for to determine if is an API Request
+     */
+    public function testAPIRequestCheck(): void
     {
         $queryParams = [
         ];
@@ -68,7 +88,10 @@ class RouteConverterTest extends Unit
         static::assertFalse($valid);
     }
 
-    public function testLegacyValidSubPathRequestCheck()
+    /**
+     * Test legacy call request on instance installed in a subpath
+     */
+    public function testLegacyValidSubPathRequestCheck(): void
     {
         $queryParams = [
             'module' => 'Contacts',
@@ -96,7 +119,10 @@ class RouteConverterTest extends Unit
         static::assertTrue($valid);
     }
 
-    public function testLegacyValidRequestCheck()
+    /**
+     * Test legacy call request check with valid request
+     */
+    public function testLegacyValidRequestCheck(): void
     {
         $queryParams = [
             'module' => 'Contacts',
@@ -111,7 +137,10 @@ class RouteConverterTest extends Unit
         static::assertTrue($valid);
     }
 
-    public function testLegacyNoModuleRequestCheck()
+    /**
+     * Test legacy call request check with no module
+     */
+    public function testLegacyNoModuleRequestCheck(): void
     {
         $queryParams = [];
 
@@ -122,7 +151,10 @@ class RouteConverterTest extends Unit
         static::assertFalse($valid);
     }
 
-    public function testLegacyInvalidModuleRequestCheck()
+    /**
+     * Test legacy call request check with invalid module
+     */
+    public function testLegacyInvalidModuleRequestCheck(): void
     {
         $queryParams = [
             'module' => 'FakeModule',
@@ -135,8 +167,10 @@ class RouteConverterTest extends Unit
         static::assertFalse($valid);
     }
 
-
-    public function testLegacyInvalidActionRequestCheck()
+    /**
+     * Test legacy call request check with invalid action
+     */
+    public function testLegacyInvalidActionRequestCheck(): void
     {
         $queryParams = [
             'module' => 'Contacts',
@@ -150,7 +184,10 @@ class RouteConverterTest extends Unit
         static::assertFalse($valid);
     }
 
-    public function testLegacyValidModuleIndexRRequest()
+    /**
+     * Test legacy call to valid module
+     */
+    public function testLegacyValidModuleIndexRRequest(): void
     {
         $resultingRoute = './#/contacts';
         $queryParams = [
@@ -163,7 +200,10 @@ class RouteConverterTest extends Unit
         static::assertEquals($resultingRoute, $route);
     }
 
-    public function testLegacyValidModuleViewRequest()
+    /**
+     * Test legacy call to valid view
+     */
+    public function testLegacyValidModuleViewRequest(): void
     {
         $resultingRoute = './#/contacts/list';
         $queryParams = [
@@ -178,9 +218,12 @@ class RouteConverterTest extends Unit
         static::assertEquals($resultingRoute, $route);
     }
 
-    public function testLegacyValidModuleRecordRequest()
+    /**
+     * Test legacy call to module record
+     */
+    public function testLegacyValidModuleRecordRequest(): void
     {
-        $resultingRoute = './#/contacts/detail/123';
+        $resultingRoute = './#/contacts/record/123';
         $queryParams = [
             'module' => 'Contacts',
             'action' => 'DetailView',
@@ -194,11 +237,14 @@ class RouteConverterTest extends Unit
         static::assertEquals($resultingRoute, $route);
     }
 
-    public function testLegacyInvalidModuleIndexRequest()
+    /**
+     * test legacy call to invalid module
+     */
+    public function testLegacyInvalidModuleIndexRequest(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $queryParams = [
-            'module' => 'FakeAction',
+            'module' => 'FakeModule',
         ];
 
         $request = new Request($queryParams);
@@ -207,9 +253,12 @@ class RouteConverterTest extends Unit
 
     }
 
-    public function testLegacyModuleInvalidActionRequest()
+    /**
+     * Test legacy call with invalid action
+     */
+    public function testLegacyModuleInvalidActionRequest(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $resultingRoute = './#/contacts/FakeAction';
         $queryParams = [
             'module' => 'Contacts',
             'action' => 'FakeAction'
@@ -217,10 +266,15 @@ class RouteConverterTest extends Unit
 
         $request = new Request($queryParams);
 
-        $this->routeConverter->convert($request);
+        $route = $this->routeConverter->convert($request);
+
+        static::assertEquals($resultingRoute, $route);
     }
 
-    public function testLegacyNoModuleRequest()
+    /**
+     * Test legacy call without module
+     */
+    public function testLegacyNoModuleRequest(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $queryParams = [];

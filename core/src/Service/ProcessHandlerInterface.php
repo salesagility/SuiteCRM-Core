@@ -23,7 +23,7 @@ interface ProcessHandlerInterface
      * Configure process for given type
      * @param Process $process
      */
-    public function configure(Process &$process): void;
+    public function configure(Process $process): void;
 
     /**
      * Validate received options
@@ -37,5 +37,5 @@ interface ProcessHandlerInterface
      * @param Process $process
      * @return mixed
      */
-    public function run(Process &$process);
+    public function run(Process $process);
 }

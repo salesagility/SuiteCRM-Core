@@ -4,13 +4,14 @@ namespace SuiteCRM\Core\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\SystemConfig;
-use App\Service\ActionNameMapper;
-use App\Service\ModuleNameMapper;
+use App\Service\ActionNameMapperInterface;
+use App\Service\ModuleNameMapperInterface;
 use App\Service\SystemConfigProviderInterface;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
     protected const MSG_CONFIG_NOT_FOUND = 'Not able to find config key: ';
+    public const HANDLER_KEY = 'system-config';
 
     /**
      * @var array
@@ -23,7 +24,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     protected $injectedSystemConfigs = [];
 
     /**
-     * @var ModuleNameMapper
+     * @var ModuleNameMapperInterface
      */
     private $moduleNameMapper;
 
@@ -33,20 +34,22 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
      * @param array $exposedSystemConfigs
-     * @param ActionNameMapper $actionNameMapper
-     * @param ModuleNameMapper $moduleNameMapper
+     * @param ActionNameMapperInterface $actionNameMapper
+     * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
         array $exposedSystemConfigs,
-        ActionNameMapper $actionNameMapper,
-        ModuleNameMapper $moduleNameMapper
+        ActionNameMapperInterface $actionNameMapper,
+        ModuleNameMapperInterface $moduleNameMapper
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
         $this->moduleNameMapper = $moduleNameMapper;
 
@@ -54,6 +57,14 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
 
 
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**

@@ -10,7 +10,16 @@ use Exception;
  */
 class Authentication extends LegacyHandler
 {
+    public const HANDLER_KEY = 'authentication';
     protected $config;
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
 
     /**
      * Set the config

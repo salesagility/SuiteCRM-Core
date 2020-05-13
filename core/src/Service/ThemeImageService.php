@@ -12,11 +12,6 @@ class ThemeImageService
     private $themeImagePaths;
 
     /**
-     * @var string[]
-     */
-    private $themeImageSupportedTypes;
-
-    /**
      * @var array
      */
     private $themeImageTypePriority;
@@ -44,7 +39,6 @@ class ThemeImageService
         ThemeImageFinder $themeImageFinder
     ) {
         $this->themeImagePaths = $themeImagePaths;
-        $this->themeImageSupportedTypes = $themeImageSupportedTypes;
         $this->projectDir = $projectDir;
         $this->themeImageFinder = $themeImageFinder;
 
@@ -65,7 +59,9 @@ class ThemeImageService
 
         foreach ($this->themeImagePaths as $themeImagePath) {
             $themeImages = $this->getImages($themeImagePath, $theme);
-            $items = array_merge($items, $themeImages);
+            foreach ($themeImages as $imageKey => $image){
+                $items[$imageKey] = $image;
+            }
         }
 
         $images->setItems($items);
@@ -93,7 +89,9 @@ class ThemeImageService
         }
 
         foreach ($it as $file) {
-            $name = $file->getFilenameWithoutExtension();
+            $filename = $file->getFilename();
+            $name =  pathinfo($filename, PATHINFO_FILENAME);
+
             $filePath = "$path/{$file->getFilename()}";
             $extension = $file->getExtension();
 

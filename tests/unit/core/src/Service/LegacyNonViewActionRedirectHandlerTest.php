@@ -1,11 +1,12 @@
 <?php namespace App\Tests;
 
-use App\Service\ActionNameMapper;
 use App\Service\LegacyNonViewActionRedirectHandler;
-use App\Service\ModuleNameMapper;
-use App\Service\RouteConverter;
 use Codeception\Test\Unit;
 use Exception;
+use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
+use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Router;
@@ -27,23 +28,38 @@ class LegacyNonViewActionRedirectHandlerTest extends Unit
      */
     protected function _before(): void
     {
-        $legacyModuleNameMap = [
-            'Contacts' => [
-                'frontend' => 'contacts',
-                'core' => 'Contacts'
-            ],
-        ];
+        $projectDir = codecept_root_dir();
+        $legacyDir = $projectDir . '/legacy';
+        $legacySessionName = 'LEGACYSESSID';
+        $defaultSessionName = 'PHPSESSID';
 
-        $legacyActionNameMap = [
-            'index ' => 'index',
-            'DetailView' => 'detail',
-            'EditView' => 'edit',
-            'ListView' => 'list',
-        ];
+        $legacyScope = new LegacyScopeState();
 
-        $moduleMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $actionMapper = new ActionNameMapper($legacyActionNameMap);
-        $converter = new RouteConverter($moduleMapper, $actionMapper);
+        $moduleMapper = new ModuleNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $actionMapper = new ActionNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $converter = new RouteConverterHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $moduleMapper,
+            $actionMapper
+        );
 
         $routes = [
             '/login',

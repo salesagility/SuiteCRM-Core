@@ -7,6 +7,15 @@ use App\Entity\ClassicView;
 
 class ClassicViewHandler extends LegacyHandler
 {
+    public const HANDLER_KEY = 'classic-view';
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
 
     /**
      * Get app strings for given $language

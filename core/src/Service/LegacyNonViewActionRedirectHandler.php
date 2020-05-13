@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
 {
     /**
-     * @var RouteConverter
+     * @var RouteConverterInterface
      */
     private $routeConverter;
     /**
@@ -21,11 +21,11 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
 
     /**
      * LegacyNonViewActionRedirectHandler constructor.
-     * @param RouteConverter $routeConverter
+     * @param RouteConverterInterface $routeConverter
      * @param RouterInterface $router
      * @param String $legacyPath
      */
-    public function __construct(RouteConverter $routeConverter, RouterInterface $router, String $legacyPath)
+    public function __construct(RouteConverterInterface $routeConverter, RouterInterface $router, String $legacyPath)
     {
         parent::__construct($legacyPath);
         $this->routeConverter = $routeConverter;

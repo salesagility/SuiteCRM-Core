@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Service;
+namespace SuiteCRM\Core\Legacy;
 
+use App\Service\ActionNameMapperInterface;
+use App\Service\ModuleNameMapperInterface;
+use App\Service\RouteConverterInterface;
 use InvalidArgumentException;
+use RouteConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -10,29 +14,56 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package SuiteCRM\Core\Legacy
  */
-class RouteConverter
+class RouteConverterHandler extends LegacyHandler implements RouteConverterInterface
 {
+    public const HANDLER_KEY = 'route-converter';
     /**
-     * @var ModuleNameMapper
+     * @var ModuleNameMapperInterface
      */
     protected $moduleNameMapper;
 
     /**
-     * @var ActionNameMapper
+     * @var ActionNameMapperInterface
      */
     private $actionNameMapper;
 
+
     /**
-     * RouteConverter constructor.
-     * @param ModuleNameMapper $moduleNameMapper
-     * @param ActionNameMapper $actionNameMapper
+     * Lazy initialized mapper
+     * @var RouteConverter
+     */
+    protected $converter;
+
+    /**
+     * SystemConfigHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param ActionNameMapperInterface $actionNameMapper
      */
     public function __construct(
-        ModuleNameMapper $moduleNameMapper,
-        ActionNameMapper $actionNameMapper
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        ModuleNameMapperInterface $moduleNameMapper,
+        ActionNameMapperInterface $actionNameMapper
     ) {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->actionNameMapper = $actionNameMapper;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**
@@ -94,6 +125,8 @@ class RouteConverter
      */
     public function convert(Request $request): string
     {
+        $this->init();
+
         $module = $request->query->get('module');
         $action = $request->query->get('action');
         $record = $request->query->get('record');
@@ -102,14 +135,18 @@ class RouteConverter
             throw new InvalidArgumentException('No module defined');
         }
 
-        $route = $this->buildRoute($module, $action, $record);
-
-        if (null !== $queryString = $request->getQueryString()) {
+        $queryParams = [];
+        if (null !== $request->getQueryString()) {
             $queryParams = $request->query->all();
-            $queryString = '?' . $this->buildQueryString($queryParams, ['module', 'action', 'record']);
         }
 
-        return $route . $queryString;
+        $converter = $this->getConverter();
+
+        $result = $converter->convert($module, $action, $record, $queryParams);
+
+        $this->close();
+
+        return $result;
     }
 
     /**
@@ -133,6 +170,19 @@ class RouteConverter
      */
     public function parseUri(string $uri): array
     {
+        if (strpos($uri, '/#/') !== false) {
+            $anchor = parse_url($uri, PHP_URL_FRAGMENT);
+            $query = parse_url($uri, PHP_URL_QUERY);
+            parse_str($query, $params);
+
+            return [
+                'route' => './#' . $anchor,
+                'params' => $params
+            ];
+        }
+
+        $this->init();
+
         $request = Request::create($uri);
 
         $module = $request->query->get('module');
@@ -143,89 +193,37 @@ class RouteConverter
             throw new InvalidArgumentException('No module defined');
         }
 
-        $route = $this->buildRoute($module, $action, $record);
+        $queryParams = [];
 
-        return [
+        $converter = $this->getConverter();
+
+        $route = $converter->convert($module, $action, $record, $queryParams);
+
+        $result = [
             'route' => $route,
-            'params' => $this->excludeParams($request->query->all(), ['module', 'action', 'record'])
+            'params' => $converter->excludeParams($request->query->all(), ['module', 'action', 'record'])
         ];
+
+        $this->close();
+
+        return $result;
     }
 
     /**
-     * Build Suite 8 route
-     *
-     * @param string $module
-     * @param string|null $action
-     * @param string|null $record
-     * @return string
+     * Get mapper. Initialize it if needed
+     * @return RouteConverter
      */
-    protected function buildRoute(?string $module, ?string $action, ?string $record): string
+    protected function getConverter(): RouteConverter
     {
-        $moduleName = $this->mapModule($module);
-        $route = "./#/$moduleName";
-
-        if (!empty($action)) {
-            $actionName = $this->mapAction($action);
-            $route .= "/$actionName";
+        if ($this->converter !== null) {
+            return $this->converter;
         }
 
-        if (!empty($record)) {
-            $route .= "/$record";
-        }
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/RouteConverter.php';
 
-        return $route;
-    }
+        $this->converter = new RouteConverter();
 
-    /**
-     * Map action name
-     * @param string $action
-     * @return string
-     */
-    protected function mapAction(string $action): string
-    {
-        return $this->actionNameMapper->toFrontend($action);
-    }
-
-    /**
-     * Map module name
-     * @param string $module
-     * @return string
-     */
-    protected function mapModule(string $module): string
-    {
-        return $this->moduleNameMapper->toFrontEnd($module);
-    }
-
-    /**
-     * Build query string
-     * @param array $queryParams
-     * @param array $exclude
-     * @return string
-     */
-    protected function buildQueryString(array $queryParams, array $exclude): string
-    {
-        $validParams = $this->excludeParams($queryParams, $exclude);
-
-        return Request::normalizeQueryString(http_build_query($validParams));
-    }
-
-    /**
-     * Build new array where list of query params are excluded
-     * @param array $queryParams
-     * @param array $exclude
-     * @return array
-     */
-    protected function excludeParams(array $queryParams, array $exclude): array
-    {
-        $validParams = [];
-
-        foreach ($queryParams as $name => $value) {
-            if (in_array($name, $exclude, true)) {
-                continue;
-            }
-            $validParams[$name] = $value;
-        }
-
-        return $validParams;
+        return $this->converter;
     }
 }

@@ -6,6 +6,7 @@ use AuthenticationController;
 use Codeception\Test\Unit;
 use Exception;
 use SuiteCRM\Core\Legacy\Authentication;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -89,7 +90,15 @@ class LegacySessionLogoutHandlerTest extends Unit
             ]
         );
 
-        $originalHandler = new Authentication($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        $legacyScope = new LegacyScopeState();
+
+        $originalHandler = new Authentication(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
 
         $this->handler = new LegacySessionLogoutHandler($sessionLogoutHandler, $originalHandler);
     }

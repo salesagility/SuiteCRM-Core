@@ -141,7 +141,7 @@ class LegacySessionSecurityStageTest extends Unit
         $this->resourceAccessChecker = $this->makeEmpty(
             ResourceAccessCheckerInterface::class,
             [
-                'isGranted' => function (
+                'isGranted' => static function (
                     string $resourceClass,
                     string $expression,
                     array $extraVariables = []
@@ -166,7 +166,7 @@ class LegacySessionSecurityStageTest extends Unit
         $this->activeSessionAuthentication = $this->make(
             Authentication::class,
             [
-                'checkSession' => function () use ($self) {
+                'checkSession' => static function () use ($self) {
                     $self->checkSessionCalled = true;
 
                     return true;
@@ -177,7 +177,7 @@ class LegacySessionSecurityStageTest extends Unit
         $this->expiredSessionAuthentication = $this->make(
             Authentication::class,
             [
-                'checkSession' => function () use ($self) {
+                'checkSession' => static function () use ($self) {
                     $self->checkSessionCalled = true;
 
                     return false;
@@ -191,8 +191,6 @@ class LegacySessionSecurityStageTest extends Unit
             [
                 'invalidate' => function () use ($self) {
                     $self->invalidateCalled = true;
-
-                    return;
                 },
             ]
         );

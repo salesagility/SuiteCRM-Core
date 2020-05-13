@@ -69,15 +69,15 @@ class LegacyRedirectHandler
 
         $baseUrl = $request->getBaseUrl();
 
-        if (strpos($baseUrl, '.php') !== false) {
-
-            $baseUrl = str_replace($request->getBasePath(), $request->getBasePath() . $this->legacyPath, $baseUrl);
-        } else {
-            $baseUrl .= $this->legacyPath;
+        if ($request->getPathInfo() !== '/') {
+            $baseUrl .= $this->legacyPath . $request->getPathInfo() . $queryString;
+            return $baseUrl;
         }
 
-        if ($request->getPathInfo() !== '/') {
-            $baseUrl .= $request->getPathInfo();
+        if (strpos($baseUrl, '.php') !== false) {
+            $baseUrl = str_replace($request->getBasePath(), $request->getBasePath() . $this->legacyPath, $baseUrl);
+        } else {
+            $baseUrl .= $this->legacyPath . '/index.php';
         }
 
         return $baseUrl . $queryString;

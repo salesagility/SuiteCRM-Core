@@ -6,11 +6,13 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\UserPreference;
 use App\Service\UserPreferencesProviderInterface;
 use RuntimeException;
+use UnexpectedValueException;
 use User;
 
 class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProviderInterface
 {
     protected const MSG_USER_PREFERENCE_NOT_FOUND = 'Not able to find user preference key: ';
+    public const HANDLER_KEY = 'user-preferences';
 
     /**
      * @var array
@@ -23,6 +25,7 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
      * @param array $exposedUserPreferences
      */
     public function __construct(
@@ -30,11 +33,20 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
         array $exposedUserPreferences
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
 
         $this->exposedUserPreferences = $exposedUserPreferences;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**
@@ -51,7 +63,7 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
 
         foreach ($this->exposedUserPreferences as $category => $categoryPreferences) {
             $userPreference = $this->loadUserPreferenceCategory($category);
-            if (!empty($userPreference)) {
+            if ($userPreference !== null) {
                 $userPreferences[] = $userPreference;
             }
         }
@@ -198,11 +210,15 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
 
     /**
      * Get currently logged in user
-     * @return User|null
+     * @return User
      */
-    protected function getCurrentUser(): ?User
+    protected function getCurrentUser(): User
     {
         global $current_user;
+
+        if ($current_user === null){
+            throw new UnexpectedValueException('Current user is not loaded');
+        }
 
         return $current_user;
     }

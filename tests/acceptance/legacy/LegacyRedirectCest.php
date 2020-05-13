@@ -2,47 +2,69 @@
 
 namespace App\Tests;
 
-use App\Tests\AcceptanceTester;
-
 class LegacyRedirectCest
 {
-    public function _before(AcceptanceTester $I)
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function _before(AcceptanceTester $I): void
     {
     }
 
-    public function testLegacyModuleIndexRoute(AcceptanceTester $I)
+    /**
+     * Test that legacy non-view action requests are redirected
+     *
+     * @param AcceptanceTester $I
+     */
+    public function testLegacyNonViewActionRequestRedirection(AcceptanceTester $I): void
     {
-        $I->login($I->getConfig('login_username'), $I->getConfig('login_password'));
-
-        $module = 'Contacts';
-        $resultingRoute = '/#/contacts';
-
-        $I->amOnPage("index.php?module=$module");
-        $I->canSeeInCurrentUrl($resultingRoute);
+        $I->loginInLegacy($I->getConfig('login_username'), $I->getConfig('login_password'));
+        $I->amOnPage('/index.php?entryPoint=generatePdf');
+        $I->canSeeInCurrentUrl('/legacy/index.php?entryPoint=generatePdf');
     }
 
-    public function testLegacyModuleViewRoute(AcceptanceTester $I)
+    /**
+     * Test that legacy custom root php file requests are re-directed
+     *
+     * @param AcceptanceTester $I
+     */
+    public function testLegacyCustomRootPhpFileRequestRedirection(AcceptanceTester $I): void
     {
-        $I->login($I->getConfig('login_username'), $I->getConfig('login_password'));
-
-        $module = 'Contacts';
-        $action = 'ListView';
-        $resultingRoute = '/#/contacts/list';
-
-        $I->amOnPage("index.php?module=$module&action=$action");
-        $I->canSeeInCurrentUrl($resultingRoute);
+        $I->amOnPage('/some.php?hahah=123');
+        $I->canSeeInCurrentUrl('/legacy/some.php?hahah=123');
     }
 
-    public function testLegacyModuleRecordRoute(AcceptanceTester $I)
+    /**
+     * Test that legacy custom non-root php file request are redirected
+     *
+     * @param AcceptanceTester $I
+     */
+    public function testLegacyCustomNonRootPhpFileRequestRedirection(AcceptanceTester $I): void
     {
-        $I->login($I->getConfig('login_username'), $I->getConfig('login_password'));
+        $I->amOnPage('/something/some.php');
+        $I->canSeeInCurrentUrl('/legacy/something/some.php');
+    }
 
-        $module = 'Contacts';
-        $action = 'DetailView';
-        $record = '123';
-        $resultingRoute = '/#/contacts/detail/123';
+    /**
+     * Test that legacy custom legacy path requests are re-directed
+     *
+     * @param AcceptanceTester $I
+     */
+    public function testLegacyCustomPathRequestRedirection(AcceptanceTester $I): void
+    {
+        $I->amOnPage('/something');
+        $I->canSeeInCurrentUrl('/legacy/something');
+    }
 
-        $I->amOnPage("index.php?module=$module&action=$action&record=$record");
-        $I->canSeeInCurrentUrl($resultingRoute);
+    /**
+     * Test that New API Request are not re-directed
+     *
+     * @param AcceptanceTester $I
+     */
+    public function testNewApiRequestNotRedirected(AcceptanceTester $I): void
+    {
+        $I->amOnPage('/login');
+        $I->canSeeInCurrentUrl('/login');
+        $I->dontSeeInCurrentUrl('/legacy');
     }
 }

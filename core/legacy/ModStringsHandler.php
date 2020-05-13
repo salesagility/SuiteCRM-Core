@@ -6,14 +6,15 @@ namespace SuiteCRM\Core\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\ModStrings;
-use App\Service\ModuleNameMapper;
+use App\Service\ModuleNameMapperInterface;
 
 class ModStringsHandler extends LegacyHandler
 {
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
+    public const HANDLER_KEY = 'mod-strings';
 
     /**
-     * @var ModuleNameMapper
+     * @var ModuleNameMapperInterface
      */
     private $moduleNameMapper;
 
@@ -23,17 +24,27 @@ class ModStringsHandler extends LegacyHandler
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
-     * @param ModuleNameMapper $moduleNameMapper
+     * @param LegacyScopeState $legacyScopeState
+     * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
-        ModuleNameMapper $moduleNameMapper
+        LegacyScopeState $legacyScopeState,
+        ModuleNameMapperInterface $moduleNameMapper
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**

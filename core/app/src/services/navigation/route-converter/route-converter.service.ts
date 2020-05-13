@@ -24,6 +24,17 @@ export class RouteConverter {
      * @returns {string} frontend path
      */
     public toFrontEnd(legacyLink: string): string {
+
+        if (legacyLink && legacyLink.includes('/#/')){
+            const anchorParts = legacyLink.split('/#/');
+
+            if (anchorParts.length < 2) {
+                return '/';
+            }
+
+            return anchorParts[1];
+        }
+
         const parser = new DefaultUrlSerializer();
 
         const replacedString = legacyLink.replace('/legacy', '');

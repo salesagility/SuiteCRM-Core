@@ -10,6 +10,7 @@ use App\Entity\AppStrings;
 class AppStringsHandler extends LegacyHandler
 {
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
+    public const HANDLER_KEY = 'app-strings';
 
     protected $injectedModuleLanguages = [
         'Users' => [
@@ -30,6 +31,14 @@ class AppStringsHandler extends LegacyHandler
             'LBL_LOGOUT_SUCCESS'
         ]
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
 
     /**
      * Get app strings for given $language

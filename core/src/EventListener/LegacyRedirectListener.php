@@ -5,7 +5,7 @@ namespace App\EventListener;
 use App\Service\LegacyApiRedirectHandler;
 use App\Service\LegacyAssetRedirectHandler;
 use App\Service\LegacyNonViewActionRedirectHandler;
-use App\Service\RouteConverter;
+use App\Service\RouteConverterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 class LegacyRedirectListener
 {
     /**
-     * @var RouteConverter
+     * @var RouteConverterInterface
      */
     private $routeConverter;
 
@@ -36,13 +36,13 @@ class LegacyRedirectListener
 
     /**
      * LegacyRedirectListener constructor.
-     * @param RouteConverter $routeConverter
+     * @param RouteConverterInterface $routeConverter
      * @param LegacyAssetRedirectHandler $legacyAssetHandler
      * @param LegacyApiRedirectHandler $legacyApiRedirectHandler
      * @param LegacyNonViewActionRedirectHandler $legacyNonViewActionRedirectHandler
      */
     public function __construct(
-        RouteConverter $routeConverter,
+        RouteConverterInterface $routeConverter,
         LegacyAssetRedirectHandler $legacyAssetHandler,
         LegacyApiRedirectHandler $legacyApiRedirectHandler,
         LegacyNonViewActionRedirectHandler $legacyNonViewActionRedirectHandler

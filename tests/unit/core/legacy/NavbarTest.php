@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use App\Entity\Navbar;
-use App\Service\ActionNameMapper;
-use App\Service\ModuleNameMapper;
-use App\Service\RouteConverter;
 use AspectMock\Test;
 use Codeception\Test\Unit;
+use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
+use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\NavbarHandler;
+use SuiteCRM\Core\Legacy\RouteConverterHandler;
 
 final class NavbarTest extends Unit
 {
@@ -27,58 +28,10 @@ final class NavbarTest extends Unit
      */
     protected function _before()
     {
-
-        $legacyModuleNameMap = [
-            'Home' => [
-                'frontend' => 'home',
-                'core' => 'Home',
-            ],
-            'Leads' => [
-                'frontend' => 'leads',
-                'core' => 'Leads',
-            ],
-            'Contacts' => [
-                'frontend' => 'contacts',
-                'core' => 'Contacts',
-            ],
-            'Accounts' => [
-                'frontend' => 'accounts',
-                'core' => 'Accounts',
-            ],
-            'Opportunities' => [
-                'frontend' => 'opportunities',
-                'core' => 'Opportunities',
-            ],
-            'Import' => [
-                'frontend' => 'import',
-                'core' => 'Import',
-            ],
-            'Documents' => [
-                'frontend' => 'documents',
-                'core' => 'Documents',
-            ]
-        ];
-
-        $legacyActionNameMap = [
-            'index' => 'index',
-            'multieditview' => 'multieditview',
-            'DetailView' => 'record',
-            'EditView' => 'edit',
-            'ListView' => 'list',
-            'Popup' => 'popup',
-            'vcard' => 'vcard',
-            'ImportVCard' => 'importvcard',
-            'modulelistmenu' => 'modulelistmenu',
-            'favorites' => 'favorites',
-            'noaccess' => 'noaccess',
-            'Step1' => 'step1',
-            'ComposeView' => 'compose',
-            'WizardHome' => 'wizard-home',
-            'CampaignDiagnostic' => 'diagnostic',
-            'WebToLeadCreation' => 'web-to-lead',
-            'ResourceList' => 'resource-list',
-            'quick_radius' => 'quick-radius',
-        ];
+        $projectDir = codecept_root_dir();
+        $legacyDir = $projectDir . '/legacy';
+        $legacySessionName = 'LEGACYSESSID';
+        $defaultSessionName = 'PHPSESSID';
 
         $menuItemMap = [
             'default' => [
@@ -122,9 +75,33 @@ final class NavbarTest extends Unit
             ],
         ];
 
-        $moduleNameMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $actionMapper = new ActionNameMapper($legacyActionNameMap);
-        $routeConverter = new RouteConverter($moduleNameMapper, $actionMapper);
+        $legacyScope = new LegacyScopeState();
+
+        $moduleNameMapper = new ModuleNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $actionMapper = new ActionNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+        $routeConverter = new RouteConverterHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $moduleNameMapper,
+            $actionMapper
+        );
 
         $mockAccessibleModulesList = [
             'Home' => 'Home',
@@ -192,15 +169,11 @@ final class NavbarTest extends Unit
             },
         ]);
 
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-
         $this->navbarHandler = new NavbarHandler($projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
+            $legacyScope,
             $menuItemMap,
             $moduleNameMapper,
             $routeConverter
@@ -333,205 +306,205 @@ final class NavbarTest extends Unit
     public function testGetModule(): void
     {
         $expected = [
-            "home" => [
-                "path" => "home",
-                "defaultRoute" => "./#/home",
-                "name" => "home",
-                "labelKey" => "Home",
-                "menu" => []
+            'home' => [
+                'path' => 'home',
+                'defaultRoute' => './#/home',
+                'name' => 'home',
+                'labelKey' => 'Home',
+                'menu' => []
             ],
-            "accounts" => [
-                "path" => "accounts",
-                "defaultRoute" => "./#/accounts",
-                "name" => "accounts",
-                "labelKey" => "Accounts",
-                "menu" => [
+            'accounts' => [
+                'path' => 'accounts',
+                'defaultRoute' => './#/accounts',
+                'name' => 'accounts',
+                'labelKey' => 'Accounts',
+                'menu' => [
                     [
-                        "name" => "Create",
-                        "labelKey" => "LNK_NEW_ACCOUNT",
-                        "url" => "./#/accounts/edit",
-                        "params" => [
-                            "return_module" => "Accounts",
-                            "return_action" => "index"
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_ACCOUNT',
+                        'url' => './#/accounts/edit',
+                        'params' => [
+                            'return_module' => 'Accounts',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "plus"
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "List",
-                        "labelKey" => "LNK_ACCOUNT_LIST",
-                        "url" => "./#/accounts/index",
-                        "params" => [
-                            "return_module" => "Accounts",
-                            "return_action" => "DetailView"
+                        'name' => 'List',
+                        'labelKey' => 'LNK_ACCOUNT_LIST',
+                        'url' => './#/accounts/index',
+                        'params' => [
+                            'return_module' => 'Accounts',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "view"
+                        'icon' => 'view'
                     ],
                     [
-                        "name" => "Import",
-                        "labelKey" => "LNK_IMPORT_ACCOUNTS",
-                        "url" => "./#/import/step1",
-                        "params" => [
-                            "import_module" => "Accounts",
-                            "return_module" => "Accounts",
-                            "return_action" => "index"
+                        'name' => 'Import',
+                        'labelKey' => 'LNK_IMPORT_ACCOUNTS',
+                        'url' => './#/import/step1',
+                        'params' => [
+                            'import_module' => 'Accounts',
+                            'return_module' => 'Accounts',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "download"
+                        'icon' => 'download'
                     ]
                 ]
             ],
-            "contacts" => [
-                "path" => "contacts",
-                "defaultRoute" => "./#/contacts",
-                "name" => "contacts",
-                "labelKey" => "Contacts",
-                "menu" => [
+            'contacts' => [
+                'path' => 'contacts',
+                'defaultRoute' => './#/contacts',
+                'name' => 'contacts',
+                'labelKey' => 'Contacts',
+                'menu' => [
                     [
-                        "name" => "Create",
-                        "labelKey" => "LNK_NEW_CONTACT",
-                        "url" => "./#/contacts/edit",
-                        "params" => [
-                            "return_module" => "Contacts",
-                            "return_action" => "index"
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_CONTACT',
+                        'url' => './#/contacts/edit',
+                        'params' => [
+                            'return_module' => 'Contacts',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "plus"
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "Create_Contact_Vcard",
-                        "labelKey" => "LNK_IMPORT_VCARD",
-                        "url" => "./#/contacts/importvcard",
-                        "params" => [],
-                        "icon" => "plus"
+                        'name' => 'Create_Contact_Vcard',
+                        'labelKey' => 'LNK_IMPORT_VCARD',
+                        'url' => './#/contacts/importvcard',
+                        'params' => [],
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "List",
-                        "labelKey" => "LNK_CONTACT_LIST",
-                        "url" => "./#/contacts/index",
-                        "params" => [
-                            "return_module" => "Contacts",
-                            "return_action" => "DetailView"
+                        'name' => 'List',
+                        'labelKey' => 'LNK_CONTACT_LIST',
+                        'url' => './#/contacts/index',
+                        'params' => [
+                            'return_module' => 'Contacts',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "view"
+                        'icon' => 'view'
                     ],
                     [
-                        "name" => "Import",
-                        "labelKey" => "LNK_IMPORT_CONTACTS",
-                        "url" => "./#/import/step1",
-                        "params" => [
-                            "import_module" => "Contacts",
-                            "return_module" => "Contacts",
-                            "return_action" => "index"
+                        'name' => 'Import',
+                        'labelKey' => 'LNK_IMPORT_CONTACTS',
+                        'url' => './#/import/step1',
+                        'params' => [
+                            'import_module' => 'Contacts',
+                            'return_module' => 'Contacts',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "download"
+                        'icon' => 'download'
                     ]
                 ]
             ],
-            "opportunities" => [
-                "path" => "opportunities",
-                "defaultRoute" => "./#/opportunities",
-                "name" => "opportunities",
-                "labelKey" => "Opportunities",
-                "menu" => [
+            'opportunities' => [
+                'path' => 'opportunities',
+                'defaultRoute' => './#/opportunities',
+                'name' => 'opportunities',
+                'labelKey' => 'Opportunities',
+                'menu' => [
                     [
-                        "name" => "Create",
-                        "labelKey" => "LNK_NEW_OPPORTUNITY",
-                        "url" => "./#/opportunities/edit",
-                        "params" => [
-                            "return_module" => "Opportunities",
-                            "return_action" => "DetailView"
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_OPPORTUNITY',
+                        'url' => './#/opportunities/edit',
+                        'params' => [
+                            'return_module' => 'Opportunities',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "plus"
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "List",
-                        "labelKey" => "LNK_OPPORTUNITY_LIST",
-                        "url" => "./#/opportunities/index",
-                        "params" => [
-                            "return_module" => "Opportunities",
-                            "return_action" => "DetailView"
+                        'name' => 'List',
+                        'labelKey' => 'LNK_OPPORTUNITY_LIST',
+                        'url' => './#/opportunities/index',
+                        'params' => [
+                            'return_module' => 'Opportunities',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "view"
+                        'icon' => 'view'
                     ],
                     [
-                        "name" => "Import",
-                        "labelKey" => "LNK_IMPORT_OPPORTUNITIES",
-                        "url" => "./#/import/step1",
-                        "params" => [
-                            "import_module" => "Opportunities",
-                            "return_module" => "Opportunities",
-                            "return_action" => "index"
+                        'name' => 'Import',
+                        'labelKey' => 'LNK_IMPORT_OPPORTUNITIES',
+                        'url' => './#/import/step1',
+                        'params' => [
+                            'import_module' => 'Opportunities',
+                            'return_module' => 'Opportunities',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "download"
+                        'icon' => 'download'
                     ]
                 ]
             ],
-            "leads" => [
-                "path" => "leads",
-                "defaultRoute" => "./#/leads",
-                "name" => "leads",
-                "labelKey" => "Leads",
-                "menu" => [
+            'leads' => [
+                'path' => 'leads',
+                'defaultRoute' => './#/leads',
+                'name' => 'leads',
+                'labelKey' => 'Leads',
+                'menu' => [
                     [
-                        "name" => "Create",
-                        "labelKey" => "LNK_NEW_LEAD",
-                        "url" => "./#/leads/edit",
-                        "params" => [
-                            "return_module" => "Leads",
-                            "return_action" => "DetailView"
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_LEAD',
+                        'url' => './#/leads/edit',
+                        'params' => [
+                            'return_module' => 'Leads',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "plus"
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "Create_Lead_Vcard",
-                        "labelKey" => "LNK_IMPORT_VCARD",
-                        "url" => "./#/leads/importvcard",
-                        "params" => [],
-                        "icon" => "plus"
+                        'name' => 'Create_Lead_Vcard',
+                        'labelKey' => 'LNK_IMPORT_VCARD',
+                        'url' => './#/leads/importvcard',
+                        'params' => [],
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "List",
-                        "labelKey" => "LNK_LEAD_LIST",
-                        "url" => "./#/leads/index",
-                        "params" => [
-                            "return_module" => "Leads",
-                            "return_action" => "DetailView"
+                        'name' => 'List',
+                        'labelKey' => 'LNK_LEAD_LIST',
+                        'url' => './#/leads/index',
+                        'params' => [
+                            'return_module' => 'Leads',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "view"
+                        'icon' => 'view'
                     ],
                     [
-                        "name" => "Import",
-                        "labelKey" => "LNK_IMPORT_LEADS",
-                        "url" => "./#/import/step1",
-                        "params" => [
-                            "import_module" => "Leads",
-                            "return_module" => "Leads",
-                            "return_action" => "index"
+                        'name' => 'Import',
+                        'labelKey' => 'LNK_IMPORT_LEADS',
+                        'url' => './#/import/step1',
+                        'params' => [
+                            'import_module' => 'Leads',
+                            'return_module' => 'Leads',
+                            'return_action' => 'index'
                         ],
-                        "icon" => "download"
+                        'icon' => 'download'
                     ]
                 ]
             ],
-            "documents" => [
-                "path" => "documents",
-                "defaultRoute" => "./#/documents",
-                "name" => "documents",
-                "labelKey" => "Documents",
-                "menu" => [
+            'documents' => [
+                'path' => 'documents',
+                'defaultRoute' => './#/documents',
+                'name' => 'documents',
+                'labelKey' => 'Documents',
+                'menu' => [
                     [
-                        "name" => "Create",
-                        "labelKey" => "LNK_NEW_DOCUMENT",
-                        "url" => "./#/documents/edit",
-                        "params" => [
-                            "return_module" => "Documents",
-                            "return_action" => "DetailView"
+                        'name' => 'Create',
+                        'labelKey' => 'LNK_NEW_DOCUMENT',
+                        'url' => './#/documents/edit',
+                        'params' => [
+                            'return_module' => 'Documents',
+                            'return_action' => 'DetailView'
                         ],
-                        "icon" => "plus"
+                        'icon' => 'plus'
                     ],
                     [
-                        "name" => "List",
-                        "labelKey" => "LNK_DOCUMENT_LIST",
-                        "url" => "./#/documents/index",
-                        "params" => [],
-                        "icon" => "view"
+                        'name' => 'List',
+                        'labelKey' => 'LNK_DOCUMENT_LIST',
+                        'url' => './#/documents/index',
+                        'params' => [],
+                        'icon' => 'view'
                     ]
                 ]
             ],

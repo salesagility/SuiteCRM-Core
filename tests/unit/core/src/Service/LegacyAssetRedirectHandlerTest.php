@@ -28,6 +28,9 @@ class LegacyAssetRedirectHandlerTest extends Unit
         $this->legacyAssetHandler = new LegacyAssetRedirectHandler($legacyAssetPaths, '/legacy');
     }
 
+    /**
+     * Test asset path check with an api path
+     */
     public function testAPIRequestCheck(): void
     {
         $queryParams = [
@@ -55,6 +58,9 @@ class LegacyAssetRedirectHandlerTest extends Unit
         static::assertFalse($valid);
     }
 
+    /**
+     * Test asset path check for valid path
+     */
     public function testLegacyValidAssetPathRequestCheck(): void
     {
         $queryParams = [
@@ -82,6 +88,9 @@ class LegacyAssetRedirectHandlerTest extends Unit
         static::assertTrue($valid);
     }
 
+    /**
+     * Test asset path conversion for valid path
+     */
     public function testValidLegacyAssetPathConversion(): void
     {
         $resultingRoute = '/suiteinstance/legacy/themes/default/images/company_logo.png?v=Y0_lwfeIA-XvM4ey09-htw';

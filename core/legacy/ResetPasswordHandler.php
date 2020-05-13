@@ -26,6 +26,14 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
     /**
      * @inheritDoc
      */
+    public function getHandlerKey(): string
+    {
+        return self::PROCESS_TYPE;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getProcessType(): string
     {
         return self::PROCESS_TYPE;
@@ -42,15 +50,13 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
     /**
      * @inheritDoc
      */
-    public function configure(Process &$process): void
+    public function configure(Process $process): void
     {
         //This process is synchronous
         //We aren't going to store a record on db
         //thus we will use process type as the id
         $process->setId(self::PROCESS_TYPE);
         $process->setAsync(false);
-
-        return;
     }
 
     /**
@@ -72,10 +78,11 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
     /**
      * @inheritDoc
      */
-    public function run(Process &$process)
+    public function run(Process $process)
     {
         $this->init();
 
+        /* @noinspection PhpIncludeInspection */
         require_once 'modules/Users/services/ResetPassword.php';
 
         $service = new ResetPassword();

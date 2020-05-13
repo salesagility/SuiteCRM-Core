@@ -11,7 +11,7 @@ use SugarThemeRegistry;
 /**
  * Class LegacyHandler
  */
-class LegacyHandler
+abstract class LegacyHandler
 {
     protected const MSG_LEGACY_BOOTSTRAP_FAILED = 'Running legacy entry point failed';
 
@@ -36,29 +36,47 @@ class LegacyHandler
     private $defaultSessionName;
 
     /**
+     * @var LegacyScopeState
+     */
+    private $state;
+
+    /**
      * LegacyHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
-        string $defaultSessionName
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState
     ) {
         $this->projectDir = $projectDir;
         $this->legacyDir = $legacyDir;
         $this->legacySessionName = $legacySessionName;
         $this->defaultSessionName = $defaultSessionName;
+        $this->state = $legacyScopeState;
     }
+
+    /**
+     * Get handler key
+     * @return string
+     */
+    abstract public function getHandlerKey(): string;
 
     /**
      * Legacy handler initialization method
      */
     public function init(): void
     {
+        if (!empty($this->state->getActiveScope())) {
+            return;
+        }
+
         // Set working directory for legacy
         chdir($this->legacyDir);
 
@@ -67,6 +85,8 @@ class LegacyHandler
         }
 
         $this->switchSession($this->legacySessionName);
+
+        $this->state->setActiveScope($this->getHandlerKey());
     }
 
     /**
@@ -75,7 +95,7 @@ class LegacyHandler
      */
     public function runLegacyEntryPoint(): bool
     {
-        if (defined('IS_LEGACY_BOOTSTRAPPED') && IS_LEGACY_BOOTSTRAPPED) {
+        if ($this->state->isLegacyBootstrapped()) {
             return true;
         }
 
@@ -85,10 +105,12 @@ class LegacyHandler
         }
 
         // Load in legacy
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/MVC/preDispatch.php';
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/entryPoint.php';
 
-        define('IS_LEGACY_BOOTSTRAPPED', true);
+        $this->state->setLegacyBootstrapped(true);
 
         return true;
     }
@@ -106,10 +128,11 @@ class LegacyHandler
      */
     protected function startLegacyApp(): void
     {
-        if (defined('LEGACY_APP_STARTED') && LEGACY_APP_STARTED) {
+        if ($this->state->isLegacyStarted()) {
             return;
         }
 
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/MVC/SugarApplication.php';
 
         global $sugar_config;
@@ -142,7 +165,7 @@ class LegacyHandler
         $app->loadGlobals();
         $app->setupResourceManagement($module);
 
-        define('LEGACY_APP_STARTED', true);
+        $this->state->setLegacyStarted(true);
     }
 
     /**
@@ -150,11 +173,17 @@ class LegacyHandler
      */
     public function close(): void
     {
+        if ($this->state->getActiveScope() !== $this->getHandlerKey()) {
+            return;
+        }
+
         if (!empty($this->projectDir)) {
             chdir($this->projectDir);
         }
 
         $this->switchSession($this->defaultSessionName);
+
+        $this->state->setActiveScope(null);
     }
 
 
@@ -163,7 +192,7 @@ class LegacyHandler
      * @param string $sessionName
      * @param array $keysToSync
      */
-    protected function switchSession(string $sessionName, array $keysToSync = [])
+    protected function switchSession(string $sessionName, array $keysToSync = []): void
     {
         $carryOver = [];
 

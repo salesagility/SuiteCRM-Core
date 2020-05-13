@@ -23,8 +23,6 @@ services:
       $legacySessionName: '%legacy.session_name%'
       $defaultSessionName: '%default_session_name%'
       $exposedSystemConfigs: '%legacy.exposed_system_configs%'
-      $legacyModuleNameMap: '%legacy.module_name_map%'
-      $legacyActionNameMap: '%legacy.action_name_map%'
       $menuItemMap: '%legacy.menu_item_map%'
       $legacyAssetPaths: '%legacy.asset_paths%'
       $legacyApiPaths: '%legacy.api_paths%'

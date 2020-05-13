@@ -3,9 +3,9 @@
 namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\Navbar;
-use App\Service\ModuleNameMapper;
+use App\Service\ModuleNameMapperInterface;
 use App\Service\NavigationProviderInterface;
-use App\Service\RouteConverter;
+use App\Service\RouteConverterInterface;
 use GroupedTabStructure;
 use SugarView;
 use TabController;
@@ -15,13 +15,14 @@ use TabController;
  */
 class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 {
+    public const HANDLER_KEY = 'navbar-handler';
     /**
-     * @var ModuleNameMapper
+     * @var ModuleNameMapperInterface
      */
     private $moduleNameMapper;
 
     /**
-     * @var RouteConverter
+     * @var RouteConverterInterface
      */
     private $routeConverter;
 
@@ -36,23 +37,33 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
      * @param array $menuItemMap
-     * @param ModuleNameMapper $moduleNameMapper
-     * @param RouteConverter $routeConverter
+     * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param RouteConverterInterface $routeConverter
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
         array $menuItemMap,
-        ModuleNameMapper $moduleNameMapper,
-        RouteConverter $routeConverter
+        ModuleNameMapperInterface $moduleNameMapper,
+        RouteConverterInterface $routeConverter
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->routeConverter = $routeConverter;
         $this->menuItemMap = $menuItemMap;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**
@@ -105,6 +116,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function getAccessibleModulesList(): array
     {
+        /* @noinspection PhpIncludeInspection */
         require_once 'modules/MySettings/TabController.php';
 
         return (new TabController())->get_user_tabs($GLOBALS['current_user']);
@@ -121,6 +133,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     {
         $output = [];
 
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/GroupedTabs/GroupedTabStructure.php';
 
         $modules = get_val_array($displayModules);
@@ -226,7 +239,10 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected function getGlobalControlLinks(): array
     {
         $global_control_links = [];
+
+        /* @noinspection PhpIncludeInspection */
         require 'include/globalControlLinks.php';
+
         return $global_control_links;
     }
 

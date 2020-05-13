@@ -4,6 +4,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\UserPreferenceHandler;
 use User;
 
@@ -45,7 +46,7 @@ class UserPreferencesHandlerTest extends Unit
                     User::class,
                     [
                         'id' => '123',
-                        'getPreference' => function ($name, $category = 'global') use ($self, $mockPreferences) {
+                        'getPreference' => static function ($name, $category = 'global') use ($self, $mockPreferences) {
                             return $mockPreferences[$category][$name];
                         },
                     ]
@@ -64,8 +65,16 @@ class UserPreferencesHandlerTest extends Unit
         $legacySessionName = 'LEGACYSESSID';
         $defaultSessionName = 'PHPSESSID';
 
-        $this->handler = new UserPreferenceHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName,
-            $exposedUserPreferences);
+        $legacyScope = new LegacyScopeState();
+
+        $this->handler = new UserPreferenceHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $exposedUserPreferences
+        );
     }
 
     // tests

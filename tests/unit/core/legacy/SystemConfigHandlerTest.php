@@ -1,9 +1,10 @@
 <?php namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Service\ActionNameMapper;
-use App\Service\ModuleNameMapper;
 use Codeception\Test\Unit;
+use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
+use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
 class SystemConfigHandlerTest extends Unit
@@ -41,25 +42,34 @@ class SystemConfigHandlerTest extends Unit
         $legacySessionName = 'LEGACYSESSID';
         $defaultSessionName = 'PHPSESSID';
 
-        $legacyModuleNameMap = [
-            'Contacts' => [
-                'frontend' => 'contacts',
-                'core' => 'Contacts'
-            ],
-        ];
+        $legacyScope = new LegacyScopeState();
 
-        $legacyActionNameMap = [
-            'index ' => 'index',
-            'DetailView' => 'record',
-            'EditView' => 'edit',
-            'ListView' => 'list',
-        ];
+        $moduleMapper = new ModuleNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
 
-        $moduleMapper = new ModuleNameMapper($legacyModuleNameMap);
-        $actionMapper = new ActionNameMapper($legacyActionNameMap);
+        $actionMapper = new ActionNameMapperHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
 
-        $this->handler = new SystemConfigHandler($projectDir, $legacyDir, $legacySessionName, $defaultSessionName,
-            $exposedSystemConfigs, $actionMapper, $moduleMapper);
+        $this->handler = new SystemConfigHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $exposedSystemConfigs,
+            $actionMapper,
+            $moduleMapper
+        );
     }
 
     // tests
