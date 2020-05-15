@@ -8,6 +8,7 @@ use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
 use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
 use SuiteCRM\Core\Legacy\NavbarHandler;
 use SuiteCRM\Core\Legacy\RouteConverterHandler;
 
@@ -169,6 +170,22 @@ final class NavbarTest extends Unit
             },
         ]);
 
+        $excludedModules = [
+            'EmailText',
+            'TeamMemberships',
+            'TeamSets',
+            'TeamSetModule'
+        ];
+
+        $moduleRegistry = new ModuleRegistryHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $excludedModules
+        );
+
         $this->navbarHandler = new NavbarHandler($projectDir,
             $legacyDir,
             $legacySessionName,
@@ -176,7 +193,8 @@ final class NavbarTest extends Unit
             $legacyScope,
             $menuItemMap,
             $moduleNameMapper,
-            $routeConverter
+            $routeConverter,
+            $moduleRegistry
         );
         $this->navbar = $this->navbarHandler->getNavbar();
     }
@@ -252,9 +270,9 @@ final class NavbarTest extends Unit
                 'labelKey' => 'LBL_TABGROUP_SALES',
                 // Ordered array
                 'modules' => [
+                    'home',
                     'accounts',
                     'contacts',
-                    'home',
                     'leads',
                 ]
             ],
@@ -263,9 +281,9 @@ final class NavbarTest extends Unit
                 'labelKey' => 'LBL_TABGROUP_MARKETING',
                 // Ordered array
                 'modules' => [
+                    'home',
                     'accounts',
                     'contacts',
-                    'home',
                     'leads',
                 ]
             ],
@@ -274,9 +292,9 @@ final class NavbarTest extends Unit
                 'labelKey' => 'LBL_TABGROUP_SUPPORT',
                 // Ordered array
                 'modules' => [
+                    'home',
                     'accounts',
                     'contacts',
-                    'home'
                 ]
             ],
             3 => [

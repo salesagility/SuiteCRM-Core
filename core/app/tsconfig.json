@@ -19,7 +19,8 @@
       "@base/*": ["./src/*"],
       "@views/*": ["./views/*"],
       "@services/*": ["./src/services/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@store/*": ["./src/facades/*"]
     },
     "lib": [
       "es2018",

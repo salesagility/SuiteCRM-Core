@@ -14,6 +14,7 @@ export const languageMockData = {
         LBL_SEND: 'Send',
         LBL_LOGOUT: 'Logout',
         LBL_TOUR_NEXT: 'Next',
+        LBL_LAST_VIEWED: 'Recently Viewed'
     },
     appListStrings: {
         language_pack_name: 'US English',

@@ -1,16 +1,20 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {distinctUntilChanged, map} from 'rxjs/operators';
+import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
+import {map, distinctUntilChanged} from 'rxjs/operators';
 import {deepClone} from '@base/utils/object-utils';
 import {StateFacade} from '@base/facades/state';
 
 export interface AppState {
     loading: boolean;
+    module: string;
+    view: string;
     loaded: boolean;
 }
 
 const initialState: AppState = {
     loading: false,
+    module: null,
+    view: null,
     loaded: false
 };
 
@@ -25,18 +29,28 @@ export class AppStateFacade implements StateFacade {
     protected state$ = this.store.asObservable();
     protected loadingQueue = {};
 
+    /**
+     * Public long-lived observable streams
+     */
+
     loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
+    module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
+    view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
      */
-    vm$: Observable<AppState> = combineLatest([this.loading$]).pipe(
-        map(([loading]) => ({loading, loaded: internalState.loaded}))
+    vm$: Observable<AppState> = combineLatest([this.loading$, this.module$, this.view$]).pipe(
+        map(([loading, module, view]) => ({loading, module, view, loaded: internalState.loaded}))
     );
 
     constructor() {
         this.updateState({...internalState, loading: false});
     }
+
+    /**
+     * Public Api
+     */
 
     /**
      * Clear state
@@ -86,6 +100,24 @@ export class AppStateFacade implements StateFacade {
     }
 
     /**
+     * Set current module
+     *
+     * @param {string} module to set as current module
+     */
+    public setModule(module: string): void {
+        this.updateState({...internalState, module});
+    }
+
+    /**
+     * Set current View
+     *
+     * @param {string} view to set as current view
+     */
+    public setView(view: string): void {
+        this.updateState({...internalState, view});
+    }
+
+    /**
      * Internal API
      */
 
@@ -121,9 +153,9 @@ export class AppStateFacade implements StateFacade {
     /**
      * Update the state
      *
-     * @param state
+     * @param {{}} state app state
      */
-    protected updateState(state: AppState) {
+    protected updateState(state: AppState): void {
         this.store.next(internalState = state);
     }
 }

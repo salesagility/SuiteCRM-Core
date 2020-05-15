@@ -1,20 +1,18 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot} from '@angular/router';
-import {map} from 'rxjs/operators';
-import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
+import {tap} from 'rxjs/operators';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
+import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
-import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
-import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 
 @Injectable({providedIn: 'root'})
-export class ClassicViewResolver extends BaseModuleResolver {
+export class BaseModuleResolver extends BaseMetadataResolver {
 
     constructor(
         protected systemConfigFacade: SystemConfigFacade,
@@ -25,7 +23,6 @@ export class ClassicViewResolver extends BaseModuleResolver {
         protected moduleNameMapper: ModuleNameMapper,
         protected actionNameMapper: ActionNameMapper,
         protected appStateFacade: AppStateFacade,
-        protected routeConverter: RouteConverter,
     ) {
         super(
             systemConfigFacade,
@@ -33,8 +30,6 @@ export class ClassicViewResolver extends BaseModuleResolver {
             navigationFacade,
             userPreferenceFacade,
             themeImagesFacade,
-            moduleNameMapper,
-            actionNameMapper,
             appStateFacade
         );
     }
@@ -42,7 +37,46 @@ export class ClassicViewResolver extends BaseModuleResolver {
     resolve(route: ActivatedRouteSnapshot): any {
 
         return super.resolve(route).pipe(
-            map(() => this.routeConverter.toLegacy(route.params, route.queryParams))
+            tap(() => {
+                if (route.params.module) {
+                    const module = this.calculateActiveModule(route);
+
+                    this.appStateFacade.setModule(module);
+                }
+                if (route.params.action) {
+                    this.appStateFacade.setView(route.params.action);
+                }
+            })
         );
+    }
+
+    /**
+     * Calculate the active module
+     *
+     * @param {{}} route active
+     * @returns {string} active module
+     */
+    protected calculateActiveModule(route: ActivatedRouteSnapshot): string {
+
+        let module = route.params.module;
+        const parentModuleParam = this.getParentModuleMap()[module] || '';
+        const parentModule = route.queryParams[parentModuleParam] || '';
+
+        if (parentModule) {
+            module = this.moduleNameMapper.toFrontend(parentModule);
+        }
+        return module;
+    }
+
+    /**
+     * Get Parent Module Map
+     *
+     * @returns {{}} parent module map
+     */
+    protected getParentModuleMap(): { [key: string]: string } {
+        return {
+            'merge-records': 'return_module',
+            import: 'import_module'
+        };
     }
 }

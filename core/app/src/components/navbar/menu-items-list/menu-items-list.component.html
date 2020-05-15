@@ -1,0 +1,16 @@
+<ul *ngIf="items && items.length > 0" class="navbar-nav">
+
+    <li class="top-nav nav-item dropdown non-grouped">
+
+        <a class="nav-link-nongrouped dropdown-toggle">{{label}}</a>
+
+        <div aria-labelledby="navbarDropdownMenuLink"
+             class="dropdown-menu more-menu submenu"
+        >
+            <div class="nav-item" *ngFor="let item of items">
+                <scrm-menu-item-link [class]="'nav-link action-link'" [link]="item.link">
+                </scrm-menu-item-link>
+            </div>
+        </div>
+    </li>
+</ul>

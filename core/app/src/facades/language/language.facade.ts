@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
@@ -26,6 +26,13 @@ export interface LanguageState {
     languageKey: string;
     loaded?: LoadedLanguageStringMap;
     hasChanged: boolean;
+}
+
+export interface LanguageStrings {
+    appStrings: LanguageStringMap;
+    appListStrings: LanguageListStringMap;
+    modStrings: LanguageListStringMap;
+    languageKey: string;
 }
 
 export interface LanguageCache {
@@ -105,6 +112,27 @@ export class LanguageFacade implements StateFacade {
     modStrings$ = this.state$.pipe(map(state => state.modStrings), distinctUntilChanged());
     languageKey$ = this.state$.pipe(map(state => state.languageKey), distinctUntilChanged());
 
+    /**
+     * ViewModel that resolves once all the data is ready (or updated)...
+     */
+    vm$: Observable<LanguageStrings> = combineLatest(
+        [
+            this.appStrings$,
+            this.appListStrings$,
+            this.modStrings$,
+            this.languageKey$
+        ])
+        .pipe(
+            map((
+                [
+                    appStrings,
+                    appListStrings,
+                    modStrings,
+                    languageKey
+                ]) => ({appStrings, appListStrings, modStrings, languageKey})
+            )
+        );
+
     constructor(private recordGQL: RecordGQL, private appStateFacade: AppStateFacade) {
     }
 
@@ -124,7 +152,7 @@ export class LanguageFacade implements StateFacade {
     /**
      * Update the language strings toe the given language
      *
-     * @param languageKey
+     * @param {string} languageKey language key
      */
     public changeLanguage(languageKey: string): void {
         const types = [];
@@ -143,7 +171,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Get AppStrings label by key
      *
-     * @param labelKey
+     * @param {string} labelKey to fetch
+     * @returns {string} label
      */
     public getAppString(labelKey: string): string {
 
@@ -156,7 +185,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Get AppListStrings label by key
      *
-     * @param labelKey
+     * @param {string} labelKey to fetch
+     * @returns {string|{}} app strings
      */
     public getAppListString(labelKey: string): string | LanguageStringMap {
 
@@ -170,7 +200,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Get ModStrings label by key
      *
-     * @param labelKey
+     * @param {string} labelKey to fetch
+     * @returns {string|{}} mod strings
      */
     public getModString(labelKey: string): string | LanguageStringMap {
 
@@ -184,7 +215,7 @@ export class LanguageFacade implements StateFacade {
     /**
      * Get all available string types
      *
-     * @returns Observable
+     * @returns {string[]} string types
      */
     public getAvailableStringsTypes(): string[] {
         return Object.keys(this.config);
@@ -193,7 +224,7 @@ export class LanguageFacade implements StateFacade {
     /**
      * Returns whether the language has changed manually
      *
-     * @returns bool
+     * @returns {boolean} has changed
      */
     public hasLanguageChanged(): boolean {
         return internalState.hasChanged;
@@ -202,7 +233,7 @@ export class LanguageFacade implements StateFacade {
     /**
      * Returns the currently active language
      *
-     * @returns string
+     * @returns {string} current language key
      */
     public getCurrentLanguage(): string {
         return internalState.languageKey;
@@ -213,9 +244,9 @@ export class LanguageFacade implements StateFacade {
      * Initial Language Strings Load for given language and types if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
-     * @param languageKey
-     * @param types
-     * @returns Observable
+     * @param {string} languageKey to load
+     * @param {string[]} types to load
+     * @returns {{}} Observable
      */
     public load(languageKey: string, types: string[]): Observable<{}> {
 
@@ -247,7 +278,7 @@ export class LanguageFacade implements StateFacade {
     /**
      * Update internal state cache and emit from store...
      *
-     * @param state
+     * @param {{}} state to set
      */
     protected updateState(state: LanguageState): void {
         this.store.next(internalState = state);
@@ -256,9 +287,9 @@ export class LanguageFacade implements StateFacade {
     /**
      * Get given $type of strings Observable from cache  or call the backend
      *
-     * @param language
-     * @param type
-     * @returns Observable<any>
+     * @param {string} language to load
+     * @param {string} type load
+     * @returns {{}} Observable<any>
      */
     protected getStrings(language: string, type: string): Observable<{}> {
 
@@ -279,8 +310,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Fetch the App strings from the backend
      *
-     * @param language
-     * @returns Observable<{}>
+     * @param {string} language to fetch
+     * @returns {{}} Observable<{}>
      */
     protected fetchAppStrings(language: string): Observable<{}> {
         const resourceName = this.config.appStrings.resourceName;
@@ -302,8 +333,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Fetch the App list strings from the backend
      *
-     * @param language
-     * @returns Observable<{}>
+     * @param {string} language to fetch
+     * @returns {{}} Observable<{}>
      */
     protected fetchAppListStrings(language: string): Observable<{}> {
         const resourceName = this.config.appListStrings.resourceName;
@@ -326,8 +357,8 @@ export class LanguageFacade implements StateFacade {
     /**
      * Fetch the Mod strings from the backend
      *
-     * @param language
-     * @returns Observable<{}>
+     * @param {string} language to fetch
+     * @returns {{}} Observable<{}>
      */
     protected fetchModStrings(language: string): Observable<{}> {
         const resourceName = this.config.modStrings.resourceName;

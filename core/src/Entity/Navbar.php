@@ -48,4 +48,10 @@ final class Navbar
      * @ApiProperty
      */
     public $modules;
+
+    /**
+     * @var int
+     * @ApiProperty
+     */
+    public $maxTabs;
 }

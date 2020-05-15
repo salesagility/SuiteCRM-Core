@@ -40,7 +40,7 @@ export class BaseMetadataResolver implements Resolve<any> {
 
                 configs$ = configs$.pipe(
                     map(
-                        configs => {
+                        (configs: any) => {
 
                             let language = configs.default_language.value;
 

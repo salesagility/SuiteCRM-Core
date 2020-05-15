@@ -4,6 +4,7 @@ namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\Navbar;
 use App\Service\ModuleNameMapperInterface;
+use App\Service\ModuleRegistryInterface;
 use App\Service\NavigationProviderInterface;
 use App\Service\RouteConverterInterface;
 use GroupedTabStructure;
@@ -32,6 +33,11 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     private $menuItemMap;
 
     /**
+     * @var ModuleRegistryInterface
+     */
+    private $moduleRegistry;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -41,6 +47,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      * @param array $menuItemMap
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RouteConverterInterface $routeConverter
+     * @param ModuleRegistryInterface $moduleRegistry
      */
     public function __construct(
         string $projectDir,
@@ -50,12 +57,14 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         LegacyScopeState $legacyScopeState,
         array $menuItemMap,
         ModuleNameMapperInterface $moduleNameMapper,
-        RouteConverterInterface $routeConverter
+        RouteConverterInterface $routeConverter,
+        ModuleRegistryInterface $moduleRegistry
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->routeConverter = $routeConverter;
         $this->menuItemMap = $menuItemMap;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     /**
@@ -92,6 +101,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $navbar->modules = $this->buildModuleInfo($sugarView, $accessibleModulesNameMap);
 
         $navbar->userActionMenu = $this->fetchUserActionMenu();
+        $navbar->maxTabs = $this->getMaxTabs();
 
         $this->close();
 
@@ -116,10 +126,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function getAccessibleModulesList(): array
     {
-        /* @noinspection PhpIncludeInspection */
-        require_once 'modules/MySettings/TabController.php';
-
-        return (new TabController())->get_user_tabs($GLOBALS['current_user']);
+        return $this->moduleRegistry->getUserAccessibleModules();
     }
 
     /**
@@ -147,8 +154,6 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                     $submoduleArray[] = $moduleNameMap[$submodule];
                 }
             }
-
-            sort($submoduleArray);
 
             $output[] = [
 
@@ -230,6 +235,30 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         }
 
         return array_values($userActionMenu);
+    }
+
+    /**
+     * Get max number of tabs
+     * @return int
+     * Based on @link SugarView
+     */
+    protected function getMaxTabs(): int
+    {
+        global $current_user;
+
+        $maxTabs = $current_user->getPreference('max_tabs');
+
+        // If the max_tabs isn't set incorrectly, set it within the range, to the default max sub tabs size
+        if (!isset($maxTabs) || $maxTabs <= 0 || $maxTabs > 10) {
+            // We have a default value. Use it
+            if (isset($GLOBALS['sugar_config']['default_max_tabs'])) {
+                $maxTabs = $GLOBALS['sugar_config']['default_max_tabs'];
+            } else {
+                $maxTabs = 8;
+            }
+        }
+
+        return $maxTabs;
     }
 
     /**

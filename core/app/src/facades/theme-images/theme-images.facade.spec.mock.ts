@@ -95,6 +95,16 @@ export const themeImagesMockData = {
         path: 'core/app/themes/suite8/images/paginate_last.svg',
         name: 'paginate_last',
         type: 'svg'
+    },
+    home: {
+        path: 'core/app/themes/suite8/images/home.svg',
+        name: 'home',
+        type: 'svg'
+    },
+    view: {
+        path: 'core/app/themes/suite8/images/view.svg',
+        name: 'view',
+        type: 'svg'
     }
 };
 

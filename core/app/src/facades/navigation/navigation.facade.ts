@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
@@ -11,6 +11,7 @@ export interface Navigation {
     groupedTabs: GroupedTab[];
     modules: NavbarModuleMap;
     userActionMenu: UserActionMenu[];
+    maxTabs: number;
 }
 
 export interface NavbarModuleMap {
@@ -51,7 +52,8 @@ const initialState: Navigation = {
     tabs: [],
     groupedTabs: [],
     modules: {},
-    userActionMenu: []
+    userActionMenu: [],
+    maxTabs: 0
 };
 
 let internalState: Navigation = deepClone(initialState);
@@ -71,7 +73,8 @@ export class NavigationFacade implements StateFacade {
             'tabs',
             'groupedTabs',
             'modules',
-            'userActionMenu'
+            'userActionMenu',
+            'maxTabs'
         ]
     };
 
@@ -82,6 +85,31 @@ export class NavigationFacade implements StateFacade {
     groupedTabs$ = this.state$.pipe(map(state => state.groupedTabs), distinctUntilChanged());
     modules$ = this.state$.pipe(map(state => state.modules), distinctUntilChanged());
     userActionMenu$ = this.state$.pipe(map(state => state.userActionMenu), distinctUntilChanged());
+    maxTabs$ = this.state$.pipe(map(state => state.maxTabs), distinctUntilChanged());
+
+
+    /**
+     * ViewModel that resolves once all the data is ready (or updated)...
+     */
+    vm$: Observable<Navigation> = combineLatest(
+        [
+            this.tabs$,
+            this.groupedTabs$,
+            this.modules$,
+            this.userActionMenu$,
+            this.maxTabs$
+        ])
+        .pipe(
+            map((
+                [
+                    tabs,
+                    groupedTabs,
+                    modules,
+                    userActionMenu,
+                    maxTabs
+                ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs})
+            )
+        );
 
     constructor(private recordGQL: RecordGQL) {
     }
@@ -104,7 +132,7 @@ export class NavigationFacade implements StateFacade {
      * Initial Navigation load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
-     * @returns Observable<any>
+     * @returns {{}} Observable<any>
      */
     public load(): Observable<any> {
 
@@ -115,7 +143,8 @@ export class NavigationFacade implements StateFacade {
                     tabs: navigation.tabs,
                     groupedTabs: navigation.groupedTabs,
                     userActionMenu: navigation.userActionMenu,
-                    modules: navigation.modules
+                    modules: navigation.modules,
+                    maxTabs: navigation.maxTabs
                 });
             })
         );
@@ -128,16 +157,16 @@ export class NavigationFacade implements StateFacade {
     /**
      * Update the state
      *
-     * @param state
+     * @param {{}} state to set
      */
-    protected updateState(state: Navigation) {
+    protected updateState(state: Navigation): void {
         this.store.next(internalState = state);
     }
 
     /**
      * Get Navigation cached Observable or call the backend
      *
-     * @returns Observable<any>
+     * @returns {{}} Observable<any>
      */
     protected getNavigation(): Observable<any> {
 
@@ -155,8 +184,8 @@ export class NavigationFacade implements StateFacade {
     /**
      * Fetch the Navigation from the backend
      *
-     * @param userId
-     * @returns Observable<any>
+     * @param {string} userId to use
+     * @returns {{}} Observable<any>
      */
     protected fetch(userId: string): Observable<any> {
 
@@ -171,7 +200,8 @@ export class NavigationFacade implements StateFacade {
                             tabs: data.navbar.tabs,
                             groupedTabs: data.navbar.groupedTabs,
                             userActionMenu: data.navbar.userActionMenu,
-                            modules: data.navbar.modules
+                            modules: data.navbar.modules,
+                            maxTabs:  data.navbar.maxTabs
                         };
 
                     }

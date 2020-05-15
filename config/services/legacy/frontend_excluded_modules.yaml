@@ -1,0 +1,6 @@
+parameters:
+    legacy.frontend_excluded_modules:
+        - EmailText
+        - TeamMemberships
+        - TeamSets
+        - TeamSetModule

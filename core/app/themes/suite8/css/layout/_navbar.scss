@@ -48,6 +48,10 @@ a.home-nav-link {
   padding: 1em 0.5em 1em 0.5em;
 }
 
+.nav-item.active .home-nav-link svg {
+  fill: $salmon-pink;
+}
+
 .recent-link scrm-svg-icon-ui > svg {
   margin: 0.3em 0.8em 0.8em 0;
 }
@@ -68,6 +72,14 @@ a.home-nav-link {
 
 .nav-link:hover {
   color: $off-white;
+}
+
+.nav-item.active .nav-link-nongrouped,
+.nav-item.active .home-nav-link {
+  color: $salmon-pink;
+  border-top: 0.2em solid $salmon-pink;
+  padding: 0.8em 0.5em 1em 0.5em;
+  text-decoration: none;
 }
 
 .global-link-item:hover {

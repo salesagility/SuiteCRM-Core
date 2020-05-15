@@ -2,10 +2,11 @@ import {ActionLinkModel} from './action-link-model';
 import {CurrentUserModel} from './current-user-model';
 import {AllMenuModel} from './all-menu-model';
 import {LogoModel} from '../logo/logo-model';
-import {GroupedTab, NavbarModuleMap, UserActionMenu} from '@base/facades/navigation/navigation.facade';
-import {LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
+import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '@base/facades/navigation/navigation.facade';
+import {LanguageStrings, LanguageStringMap} from '@base/facades/language/language.facade';
 import {MenuItem} from '@components/navbar/navbar.abstract';
 import {UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
+import {AppState} from '@base/facades/app-state/app-state.facade';
 
 export interface NavbarModel {
     authenticated: boolean;
@@ -15,39 +16,25 @@ export interface NavbarModel {
     currentUser: CurrentUserModel;
     all: AllMenuModel;
     menu: MenuItem[];
+    current?: MenuItem;
 
     resetMenu(): void;
 
     build(
-        tabs: string[],
-        modules: NavbarModuleMap,
-        appStrings: LanguageStringMap,
-        modStrings: LanguageListStringMap,
-        appListStrings: LanguageListStringMap,
-        menuItemThreshold: number,
-        groupedTabs: GroupedTab[],
+        navigation: Navigation,
+        languages: LanguageStrings,
         userPreferences: UserPreferenceMap,
-        userActionMenu: UserActionMenu[],
-        currentUser: CurrentUserModel
+        currentUser: CurrentUserModel,
+        appState: AppState
     ): void;
 
     buildGroupTabMenu(
         items: string[],
         modules: NavbarModuleMap,
-        appStrings: LanguageStringMap,
-        modStrings: LanguageListStringMap,
-        appListStrings: LanguageListStringMap,
-        menuItemThreshold: number,
+        languages: LanguageStrings,
+        threshold: number,
         groupedTabs: GroupedTab[]
     ): void;
-
-    buildTabMenu(
-        items: string[],
-        modules: NavbarModuleMap,
-        appStrings: LanguageStringMap,
-        modStrings: LanguageListStringMap,
-        appListStrings: LanguageListStringMap,
-        menuItemThreshold: number): void;
 
     buildUserActionMenu(
         appStrings: LanguageStringMap,

@@ -47,18 +47,6 @@ describe('NavbarUiComponent', () => {
             expect(component).toBeTruthy();
         });
 
-        /*
-        it('should get metadata', async (() => {
-            fixture.detectChanges(); // onInit()
-
-            fixture.whenStable().then(() => {
-                expect(component.navbar).toEqual(jasmine.objectContaining(navigationMockData.navbar));
-            });
-
-            component.ngOnInit();
-        }));
-
-         */
     });
 
 });

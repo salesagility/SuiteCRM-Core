@@ -5,11 +5,12 @@ import {map} from 'rxjs/operators';
 import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
-import {NavbarModuleMap, NavigationFacade} from '@base/facades/navigation/navigation.facade';
-import {LanguageFacade, LanguageListStringMap, LanguageStringMap} from '@base/facades/language/language.facade';
+import {Navigation, NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {UserPreferenceFacade, UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 import {AuthService} from '@services/auth/auth.service';
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
+import {AppState, AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {LanguageFacade, LanguageStrings,} from '@base/facades/language/language.facade';
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -24,7 +25,6 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     isUserLoggedIn: boolean;
 
     mainNavCollapse = true;
-    subItemCollapse = true;
     subNavCollapse = true;
     mobileNavbar = false;
     mobileSubNav = false;
@@ -34,55 +34,41 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
 
     navbar: NavbarModel = new NavbarAbstract();
 
-    tabs$: Observable<string[]> = this.navigationFacade.tabs$;
-    modules$: Observable<NavbarModuleMap> = this.navigationFacade.modules$;
-    appStrings$: Observable<LanguageStringMap> = this.languageFacade.appStrings$;
-    modStrings$: Observable<LanguageListStringMap> = this.languageFacade.modStrings$;
-    appListStrings$: Observable<LanguageListStringMap> = this.languageFacade.appListStrings$;
+    languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceFacade.userPreferences$;
-    groupedTabs$: Observable<any> = this.navigationFacade.groupedTabs$;
-    userActionMenu$: Observable<any> = this.navigationFacade.userActionMenu$;
     currentUser$: Observable<any> = this.authService.currentUser$;
+    appState$: Observable<AppState> = this.appState.vm$;
+    navigation$: Observable<Navigation> = this.navigationFacade.vm$;
 
     vm$ = combineLatest([
-        this.tabs$,
-        this.modules$,
-        this.appStrings$,
-        this.appListStrings$,
-        this.modStrings$,
+        this.navigation$,
+        this.languages$,
         this.userPreferences$,
-        this.groupedTabs$,
-        this.userActionMenu$,
-        this.currentUser$
+        this.currentUser$,
+        this.appState$
     ]).pipe(
-        map(([tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs, userActionMenu, currentUser]) => {
+        map(([navigation, languages, userPreferences, currentUser, appState]) => {
 
             this.navbar.build(
-                tabs,
-                modules,
-                appStrings,
-                modStrings,
-                appListStrings,
-                this.menuItemThreshold,
-                groupedTabs,
+                navigation,
+                languages,
                 userPreferences,
-                userActionMenu,
-                currentUser
+                currentUser,
+                appState
             );
 
             return {
-                tabs, modules, appStrings, appListStrings, modStrings, userPreferences, groupedTabs
+                navigation, languages, userPreferences, appState
             };
         })
     );
-
-    protected menuItemThreshold = 5;
 
     constructor(protected navigationFacade: NavigationFacade,
                 protected languageFacade: LanguageFacade,
                 protected api: ApiService,
                 protected userPreferenceFacade: UserPreferenceFacade,
                 protected systemConfigFacade: SystemConfigFacade,
+                protected appState: AppStateFacade,
                 private authService: AuthService
     ) {
         const navbar = new NavbarAbstract();
@@ -91,24 +77,18 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
         NavbarUiComponent.instances.push(this);
     }
 
+    /**
+     * Public API
+     */
+
+    /**
+     * Reset component instance
+     */
     static reset(): void {
         NavbarUiComponent.instances.forEach((navbarComponent: NavbarUiComponent) => {
             navbarComponent.loaded = false;
             navbarComponent.navbar = new NavbarAbstract();
         });
-    }
-
-    public changeSubNav(event: Event, parentNavItem): void {
-        this.mobileSubNav = !this.mobileSubNav;
-        this.backLink = !this.backLink;
-        this.mainNavLink = !this.mainNavLink;
-        this.submenu = parentNavItem.submenu;
-    }
-
-    public navBackLink(): void {
-        this.mobileSubNav = !this.mobileSubNav;
-        this.backLink = !this.backLink;
-        this.mainNavLink = !this.mainNavLink;
     }
 
     @HostListener('window:resize', ['$event'])
@@ -131,11 +111,56 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
         this.authService.isUserLoggedIn.unsubscribe();
     }
 
+    /**
+     * Change subnavigation
+     *
+     * @param {{}} event triggered
+     * @param {{}} parentNavItem parent
+     */
+    public changeSubNav(event: Event, parentNavItem): void {
+        this.mobileSubNav = !this.mobileSubNav;
+        this.backLink = !this.backLink;
+        this.mainNavLink = !this.mainNavLink;
+        this.submenu = parentNavItem.submenu;
+    }
+
+    /**
+     * Set link flags
+     */
+    public navBackLink(): void {
+        this.mobileSubNav = !this.mobileSubNav;
+        this.backLink = !this.backLink;
+        this.mainNavLink = !this.mainNavLink;
+    }
+
+    /**
+     * Get home page
+     *
+     * @returns {string} homepage
+     */
+    public getHomePage(): string {
+        return this.systemConfigFacade.getHomePage();
+    }
+
+    /**
+     * Internal API
+     */
+
+    /**
+     * Set navbar model
+     *
+     * @param {{}} navbar model
+     */
     protected setNavbar(navbar: NavbarModel): void {
         this.navbar = navbar;
         this.loaded = true;
     }
 
+    /**
+     * Check if is loaded
+     *
+     * @returns {{boolean}} is loaded
+     */
     protected isLoaded(): boolean {
         return this.loaded;
     }

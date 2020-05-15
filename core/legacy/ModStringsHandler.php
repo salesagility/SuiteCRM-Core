@@ -7,6 +7,7 @@ namespace SuiteCRM\Core\Legacy;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\ModStrings;
 use App\Service\ModuleNameMapperInterface;
+use App\Service\ModuleRegistryInterface;
 
 class ModStringsHandler extends LegacyHandler
 {
@@ -19,6 +20,11 @@ class ModStringsHandler extends LegacyHandler
     private $moduleNameMapper;
 
     /**
+     * @var ModuleRegistryInterface
+     */
+    private $moduleRegistry;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -26,6 +32,7 @@ class ModStringsHandler extends LegacyHandler
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param ModuleRegistryInterface $moduleRegistry
      */
     public function __construct(
         string $projectDir,
@@ -33,10 +40,12 @@ class ModStringsHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        ModuleRegistryInterface $moduleRegistry
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     /**
@@ -66,10 +75,11 @@ class ModStringsHandler extends LegacyHandler
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
         }
 
-        global $moduleList;
+        $modules = $this->moduleRegistry->getUserAccessibleModules();
+
 
         $allModStringsArray = [];
-        foreach ($moduleList as $module) {
+        foreach ($modules as $module) {
             $frontendName = $this->moduleNameMapper->toFrontEnd($module);
             $allModStringsArray[$frontendName] = return_module_language($language, $module);
         }

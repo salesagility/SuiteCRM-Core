@@ -111,7 +111,6 @@ module.exports = {
     "id-match": "error",
     "import/no-deprecated": "warn",
     "import/order": "off",
-    "jsdoc/no-types": "error",
     "max-classes-per-file": "off",
     "max-len": [
       "error",

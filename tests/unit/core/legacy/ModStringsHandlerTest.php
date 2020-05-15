@@ -6,6 +6,7 @@ use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModStringsHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
 
 class ModStringsHandlerTest extends Unit
 {
@@ -36,13 +37,31 @@ class ModStringsHandlerTest extends Unit
             $legacyScope
         );
 
+        $excludedModules = [
+            'EmailText',
+            'TeamMemberships',
+            'TeamSets',
+            'TeamSetModule'
+        ];
+
+        $moduleRegistry = new ModuleRegistryHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $excludedModules
+        );
+
+
         $this->handler = new ModStringsHandler(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $moduleRegistry
         );
     }
 

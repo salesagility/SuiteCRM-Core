@@ -29,6 +29,7 @@ services:
       $exposedUserPreferences: '%legacy.exposed_user_preferences%'
       $themeImagePaths: '%themes.image_paths%'
       $themeImageSupportedTypes: '%themes.image_supported_types%'
+      $frontendExcludedModules: '%legacy.frontend_excluded_modules%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

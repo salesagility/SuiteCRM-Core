@@ -1,0 +1,41 @@
+<ng-container>
+    <span data-toggle="collapse" data-target=".navbar-collapse">
+        <a class="top-nav-link nav-link-grouped dropdown-toggle" data-toggle="dropdown">
+            {{ item.link.label }}
+        </a>
+    </span>
+
+    <ul class="dropdown-menu main"
+        aria-labelledby="navbarDropdownMenuLink"
+        [ngbCollapse]="subNavCollapse"
+    >
+        <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
+
+            <scrm-menu-item-link [link]="sub.link"
+                                 [class]="{
+                                    'sub-nav-link': true,
+                                    'nav-link': true,
+                                    'action-link': true,
+                                    'dropdown-item': sub.submenu.length,
+                                    'dropdown-toggle': sub.submenu.length
+                                  }"
+                                 >
+            </scrm-menu-item-link>
+
+            <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
+
+                <li *ngFor="let subitem of sub.submenu" class="nav-item">
+
+                    <scrm-menu-item-link [class]="'submenu-nav-link nav-link action-link'"
+                                         [link]="subitem.link"
+                                         [icon]="subitem.icon">
+                    </scrm-menu-item-link>
+                </li>
+                <li>
+                    <scrm-menu-recently-viewed [languages]="languages"
+                                               [records]="sub.recentRecords"></scrm-menu-recently-viewed>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</ng-container>

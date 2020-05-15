@@ -1,6 +1,6 @@
-import {ActionLinkModel} from './action-link-model';
+import {MenuItem} from '@components/navbar/navbar.abstract';
 
 export interface AllMenuModel {
-    modules: Array<ActionLinkModel>;
-    extra: Array<ActionLinkModel>;
+    modules: MenuItem[];
+    extra: MenuItem[];
 }

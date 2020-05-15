@@ -13,13 +13,25 @@ describe('AppState Facade', () => {
         injector = getTestBed();
     });
 
-    it('#updateLoading',
-        (done: DoneFn) => {
-            service.updateLoading('test', true);
-            service.loading$.pipe(take(1)).subscribe(loading => {
-                expect(loading).toEqual(true);
-                done();
-            });
+    it('#updateLoading', () => {
+        service.updateLoading('test', true);
+        service.loading$.pipe(take(1)).subscribe(loading => {
+            expect(loading).toEqual(true);
         });
+    });
+
+    it('#setModule', () => {
+        service.setModule('accounts');
+        service.module$.pipe(take(1)).subscribe(module => {
+            expect(module).toEqual('accounts');
+        }).unsubscribe();
+    });
+
+    it('#setView', () => {
+        service.setView('record');
+        service.view$.pipe(take(1)).subscribe(view => {
+            expect(view).toEqual('record');
+        }).unsubscribe();
+    });
 });
 
