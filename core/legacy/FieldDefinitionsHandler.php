@@ -30,7 +30,6 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
     public function getVardef(string $moduleName): FieldDefinition
     {
         $this->init();
-        $this->startLegacyApp();
 
         $sugarView = new SugarView();
         $vardefs = new FieldDefinition();
