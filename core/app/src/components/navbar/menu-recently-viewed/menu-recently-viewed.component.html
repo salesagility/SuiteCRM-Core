@@ -1,5 +1,5 @@
 <ng-container *ngIf="records && records.length">
-    <h4 class="recently-viewed-header">{{languages.appStrings['LBL_LAST_VIEWED']}}</h4>
+    <h4 class="recently-viewed-header">{{languages.appStrings['LBL_LAST_VIEWED'] || ''}}</h4>
     <div *ngFor="let recentRecord of records" class="nav-item">
         <a class="nav-link action-link" [href]="recentRecord.url">{{ recentRecord.summary }}</a>
     </div>

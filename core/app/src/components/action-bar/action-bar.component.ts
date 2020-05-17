@@ -1,4 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {combineLatest, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {LanguageFacade, LanguageStrings} from '@store/language/language.facade';
 import {ActionBarModel} from './action-bar-model';
 
 @Component({
@@ -6,18 +9,51 @@ import {ActionBarModel} from './action-bar-model';
     templateUrl: './action-bar.component.html',
     styleUrls: []
 })
-export class ActionBarUiComponent implements OnInit {
+export class ActionBarUiComponent {
 
     actionBar: ActionBarModel = {
-        createLinks: [],
+        createLinks: [
+            {
+                label: 'Accounts',
+                route: '/accounts/edit'
+            },
+            {
+                label: 'Contacts',
+                route: '/contacts/edit'
+            },
+            {
+                label: 'Leads',
+                route: '/leads/edit'
+            },
+            {
+                label: 'Opportunities',
+                route: '/opportunities/edit'
+            },
+            {
+                label: 'AOS_Quotes',
+                route: '/quotes/edit'
+            },
+            {
+                label: 'AOS_Contracts',
+                route: '/contracts/edit'
+            },
+        ],
         favoriteRecords: [],
     };
 
-    constructor() {
+    languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
+
+    vm$ = combineLatest([
+        this.languages$,
+    ]).pipe(
+        map(([languages]) => (
+            {
+                appStrings: languages.appStrings || {},
+                appListStrings: languages.appListStrings || {}
+            })
+        )
+    );
+
+    constructor(protected languageFacade: LanguageFacade) {
     }
-
-    ngOnInit(): void {
-
-    }
-
 }

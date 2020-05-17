@@ -13,7 +13,7 @@ describe('Route Converter Service', () => {
         const baseUrl = 'index.php';
         const params = '?module=Accounts&return_module=Accounts&action=DetailView&record=9551c669-c8d4-01b8-ec01-5ea2ef347a6b';
         const legacyLink = baseUrl + params;
-        const route = service.toFrontEnd(legacyLink);
+        const route = service.toFrontEndRoute(legacyLink);
 
         const expected = 'accounts/record/9551c669-c8d4-01b8-ec01-5ea2ef347a6b?return_module=Accounts';
 

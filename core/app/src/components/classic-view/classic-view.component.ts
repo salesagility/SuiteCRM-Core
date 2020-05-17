@@ -86,7 +86,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     protected onPageChange(newLocation): void {
-        const location = this.routeConverter.toFrontEnd(newLocation);
+        const location = this.routeConverter.toFrontEndRoute(newLocation);
 
         if (location === '/users/login'){
             this.auth.logout('LBL_SESSION_EXPIRED');

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {map} from 'rxjs/operators';
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
-import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {NavigationFacade} from '@base/facades/navigation/navigation.facade';

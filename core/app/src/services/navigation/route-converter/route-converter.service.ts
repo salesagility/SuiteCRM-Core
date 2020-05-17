@@ -4,6 +4,8 @@ import {HttpParams} from '@angular/common/http';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 
+const ROUTE_PREFIX = './#';
+
 @Injectable({providedIn: 'root'})
 export class RouteConverter {
 
@@ -18,12 +20,22 @@ export class RouteConverter {
      */
 
     /**
-     * Converts legacyLink to front end
+     * Converts legacyLink to front end link. Includes the /#/.
      *
      * @param {string} legacyLink legacy url
      * @returns {string} frontend path
      */
-    public toFrontEnd(legacyLink: string): string {
+    public toFrontEndLink(legacyLink: string): string {
+        return ROUTE_PREFIX + this.toFrontEndRoute(legacyLink);
+    }
+
+    /**
+     * Converts legacyLink to front end route
+     *
+     * @param {string} legacyLink legacy url
+     * @returns {string} frontend path
+     */
+    public toFrontEndRoute(legacyLink: string): string {
 
         if (legacyLink && legacyLink.includes('/#/')){
             const anchorParts = legacyLink.split('/#/');

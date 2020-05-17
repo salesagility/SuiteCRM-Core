@@ -1,7 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 import {appStateFacadeMock} from '@base/facades/app-state/app-state.facade.spec.mock';
-import {take} from "rxjs/operators";
+import {take} from 'rxjs/operators';
 
 describe('AppState Facade', () => {
     let injector: TestBed;

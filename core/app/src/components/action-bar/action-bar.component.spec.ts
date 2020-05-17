@@ -8,6 +8,8 @@ import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade'
 import {of} from 'rxjs';
 import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
+import {LanguageFacade} from '@store/language/language.facade';
+import {languageFacadeMock} from '@store/language/language.facade.spec.mock';
 
 describe('ActionBarUiComponent', () => {
     let component: ActionBarUiComponent;
@@ -21,6 +23,11 @@ describe('ActionBarUiComponent', () => {
                 {
                     provide: ThemeImagesFacade, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
+                {
+                    provide: LanguageFacade, useValue: {
+                        vm$: of(languageFacadeMock).pipe(take(1))
                     }
                 },
             ],

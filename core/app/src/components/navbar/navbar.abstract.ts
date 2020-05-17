@@ -1,13 +1,14 @@
 import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
 import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '@base/facades/navigation/navigation.facade';
-import {LanguageStrings, LanguageStringMap} from '@base/facades/language/language.facade';
+import {LanguageStringMap, LanguageStrings} from '@base/facades/language/language.facade';
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
 import {ready} from '@base/utils/object-utils';
 import {UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 import {AppState} from '@base/facades/app-state/app-state.facade';
+import {LinkTarget} from '@components/navbar/link-target';
 
 export interface RecentRecordsMenuItem {
     summary: string;
@@ -91,8 +92,12 @@ export class NavbarAbstract implements NavbarModel {
                     return;
                 }
 
-                if (name !== 'training') {
-                    url = ROUTE_PREFIX + this.routeConverter.toFrontEnd(url);
+                let target = LinkTarget.none;
+
+                if (name === 'training') {
+                    target = LinkTarget.blank;
+                } else {
+                    url = this.routeConverter.toFrontEndLink(url);
                 }
 
                 const label = appStrings[subMenu.labelKey];
@@ -101,6 +106,7 @@ export class NavbarAbstract implements NavbarModel {
                     link: {
                         url,
                         label,
+                        target
                     },
                 });
             });
@@ -253,7 +259,7 @@ export class NavbarAbstract implements NavbarModel {
 
         const module = appState.module;
 
-        if (!navigation.modules[module]){
+        if (!navigation.modules[module]) {
             return;
         }
 
@@ -295,7 +301,7 @@ export class NavbarAbstract implements NavbarModel {
 
             const item = this.buildTabMenuItem(module, modules[module], languages);
 
-            if (appState.module === module || count >= threshold){
+            if (appState.module === module || count >= threshold) {
                 moreItems.push(item);
             } else {
                 navItems.push(item);

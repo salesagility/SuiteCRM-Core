@@ -1,6 +1,6 @@
 <!-- Start of action bar section -->
 
-<div class="global-action-bar row pb-2 pt-2 mr-0">
+<div class="global-action-bar row pb-2 pt-2 mr-0" *ngIf="(vm$ | async) as vm">
     <div class="col-6">
         <form novalidate class="global-search ng-untouched ng-pristine ng-valid">
             <div class="input-group">
@@ -97,46 +97,16 @@
             </div>
             <div class="action-new dropdown">
                 <button class="quickcreate-button dropdown-toggle" type="button" aria-label="Quick Create">
-                    NEW
+                    {{vm.appStrings['LBL_NEW'] || ''}}
                 </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <li class="new-list-item">
-                        <a href="#">
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="new-list-item" *ngFor="let createLink of actionBar.createLinks">
+                        <a [routerLink]="createLink.route">
                             <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Accounts
+                            {{vm.appListStrings.moduleList && vm.appListStrings.moduleList[createLink.label]}}
                         </a>
                     </li>
-                    <li class="new-list-item">
-                        <a href="#">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Contacts
-                        </a>
-                    </li>
-                    <li class="new-list-item">
-                        <a href="#">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Leads
-                        </a>
-                    </li>
-                    <li class="new-list-item">
-                        <a href="#">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Opportunities
-                        </a>
-                    </li>
-                    <li class="new-list-item">
-                        <a href="#">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Quotes
-                        </a>
-                    </li>
-                    <li class="new-list-item">
-                        <a href="#">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            Contracts
-                        </a>
-                    </li>
-                </div>
+                </ul>
             </div>
         </div>
     </div>

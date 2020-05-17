@@ -144,7 +144,7 @@
                         </ul>
 
                         <scrm-menu-items-list [items]="navbar.all.modules"
-                                              [label]="vm.languages.appStrings['LBL_TABGROUP_ALL']">
+                                              [label]="vm.languages.appStrings['LBL_TABGROUP_ALL'] || ''">
                         </scrm-menu-items-list>
 
                     </ng-container>
@@ -166,7 +166,7 @@
                         </ul>
 
                         <scrm-menu-items-list [items]="navbar.all.modules"
-                                              [label]="vm.languages.appStrings['LBL_MORE']">
+                                              [label]="vm.languages.appStrings['LBL_MORE'] || ''">
                         </scrm-menu-items-list>
 
                     </ng-container>
@@ -187,13 +187,13 @@
                             </a>
                             <div aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
-                                <ng-template [ngIf]="navbar.globalActions">
+                                <ng-container *ngIf="navbar.globalActions">
                                     <a class="dropdown-item global-links-sublink" ngbDropdownItem
                                        *ngFor="let globalAction of navbar.globalActions"
                                        target="{{ globalAction.link.target }}"
                                        href="{{ globalAction.link.url }}">{{ globalAction.link.label }}
                                     </a>
-                                </ng-template>
+                                </ng-container>
                                 <scrm-logout-ui></scrm-logout-ui>
                             </div>
                         </li>
