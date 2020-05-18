@@ -15,7 +15,7 @@ describe('AppState Facade', () => {
 
     it('#updateLoading',
         (done: DoneFn) => {
-            service.updateLoading(true);
+            service.updateLoading('test', true);
             service.loading$.pipe(take(1)).subscribe(loading => {
                 expect(loading).toEqual(true);
                 done();

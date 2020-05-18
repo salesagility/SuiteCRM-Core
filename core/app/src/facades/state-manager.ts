@@ -5,7 +5,7 @@ import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
 import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
-import {StateFacadeMap} from '@base/facades/state';
+import {StateFacade, StateFacadeMap, StateFacadeMapEntry} from '@base/facades/state';
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +21,12 @@ export class StateManager {
         protected themeImagesFacade: ThemeImagesFacade,
         protected userPreferenceFacade: UserPreferenceFacade
     ) {
-        this.stateFacades.appFacade = appFacade;
-        this.stateFacades.languageFacade = languageFacade;
-        this.stateFacades.navigationFacade = navigationFacade;
-        this.stateFacades.systemConfigFacade = systemConfigFacade;
-        this.stateFacades.themeImagesFacade = themeImagesFacade;
-        this.stateFacades.userPreferenceFacade = userPreferenceFacade;
+        this.stateFacades.appFacade = this.buildMapEntry(appFacade, false);
+        this.stateFacades.languageFacade = this.buildMapEntry(languageFacade, false)
+        this.stateFacades.navigationFacade = this.buildMapEntry(navigationFacade, true);
+        this.stateFacades.systemConfigFacade = this.buildMapEntry(systemConfigFacade, false);
+        this.stateFacades.themeImagesFacade = this.buildMapEntry(themeImagesFacade, false);
+        this.stateFacades.userPreferenceFacade =  this.buildMapEntry(userPreferenceFacade, true);
     }
 
     /**
@@ -38,7 +38,36 @@ export class StateManager {
      */
     public clear(): void {
         Object.keys(this.stateFacades).forEach((key) => {
-            this.stateFacades[key].clear();
+            this.stateFacades[key].facade.clear();
         });
+    }
+
+    /**
+     * Clear all state
+     */
+    public clearAuthBased(): void {
+        Object.keys(this.stateFacades).forEach((key) => {
+            if (this.stateFacades[key].authBased){
+                this.stateFacades[key].facade.clear();
+            }
+        });
+    }
+
+    /**
+     * Internal api
+     */
+
+    /**
+     * Build Map entry
+     *
+     * @param {{}} facade to use
+     * @param {boolean} authBased flag
+     * @returns {{}} StateFacadeMapEntry
+     */
+    protected buildMapEntry(facade: StateFacade, authBased: boolean): StateFacadeMapEntry {
+        return {
+            facade,
+            authBased
+        };
     }
 }

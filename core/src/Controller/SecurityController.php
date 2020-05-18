@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use Exception;
 use RuntimeException;
+use SuiteCRM\Core\Legacy\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -17,6 +19,27 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class SecurityController extends AbstractController
 {
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * SecurityController constructor.
+     * @param Authentication $authentication
+     * @param SessionInterface $session
+     */
+    public function __construct(Authentication $authentication, SessionInterface $session)
+    {
+        $this->authentication = $authentication;
+        $this->session = $session;
+    }
+
     /**
      * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
@@ -49,18 +72,30 @@ class SecurityController extends AbstractController
      */
     public function sessionStatus(Security $security): JsonResponse
     {
+
+        $isActive = $this->authentication->checkSession();
+
+        if ($isActive !== true) {
+            $this->session->invalidate();
+            return new JsonResponse(['active' => false], Response::HTTP_OK);
+        }
+
         $user = $security->getUser();
+        if ($user === null) {
+            $this->session->invalidate();
+            return new JsonResponse(['active' => false], Response::HTTP_OK);
+        }
+
         $id = $user->getId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
 
-        $data =
-            [
-                'active' => true,
-                'id' => $id,
-                'firstName' => $firstName,
-                'lastName' => $lastName
-            ];
+        $data = [
+            'active' => true,
+            'id' => $id,
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ];
 
         return new JsonResponse($data, Response::HTTP_OK);
     }

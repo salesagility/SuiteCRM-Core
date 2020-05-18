@@ -17,8 +17,9 @@ export class RecoverPasswordService {
     /**
      * Send recover password request
      *
-     * @param userName
-     * @param email
+     * @param {string} userName to check
+     * @param {string} email to check
+     * @returns {{}} Observable<Process>
      */
     public run(userName: string, email: string): Observable<Process> {
         const options = {
@@ -26,14 +27,14 @@ export class RecoverPasswordService {
             useremail: email
         };
 
-        this.appStateFacade.updateLoading(true);
+        this.appStateFacade.updateLoading('recover-password', true);
 
         return this.processService
             .submit(this.processType, options)
             .pipe(
-                tap(() => this.appStateFacade.updateLoading(false)),
+                tap(() => this.appStateFacade.updateLoading('recover-password',false)),
                 catchError(err => {
-                    this.appStateFacade.updateLoading(false);
+                    this.appStateFacade.updateLoading('recover-password',false);
                     throw err;
                 }),
             );

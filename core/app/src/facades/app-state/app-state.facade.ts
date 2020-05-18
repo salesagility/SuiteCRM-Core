@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
-import {map, distinctUntilChanged} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone} from '@base/utils/object-utils';
 import {StateFacade} from '@base/facades/state';
 
@@ -21,6 +21,7 @@ export class AppStateFacade implements StateFacade {
 
     protected store = new BehaviorSubject<AppState>(internalState);
     protected state$ = this.store.asObservable();
+    protected loadingQueue = {};
 
     loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
 
@@ -39,11 +40,62 @@ export class AppStateFacade implements StateFacade {
      * Clear state
      */
     public clear(): void {
+        this.loadingQueue = {};
         this.updateState(deepClone(initialState));
     }
 
-    public updateLoading(loading: boolean) {
-        this.updateState({...internalState, loading});
+    /**
+     * Update loading status for given key
+     *
+     * @param {string} key to update
+     * @param {string} loading status to set
+     */
+    public updateLoading(key: string, loading: boolean): void {
+
+        if (loading === true) {
+            this.addToLoadingQueue(key);
+            this.updateState({...internalState, loading});
+            return;
+        }
+
+        this.removeFromLoadingQueue(key);
+
+        if (this.hasActiveLoading()) {
+            this.updateState({...internalState, loading});
+        }
+    }
+
+    /**
+     * Internal API
+     */
+
+    /**
+     *  Check if there are still active loadings
+     *
+     *  @returns {boolean} active loading
+     */
+    protected hasActiveLoading(): boolean {
+        return Object.keys(this.loadingQueue).length < 1;
+    }
+
+    /**
+     * Remove key from loading queue
+     *
+     * @param {string} key to remove
+     */
+    protected removeFromLoadingQueue(key: string): void {
+        if (this.loadingQueue[key]) {
+            delete this.loadingQueue[key];
+        }
+    }
+
+    /**
+     * Add key to loading queue
+     *
+     * @param {string} key to add
+     */
+    protected addToLoadingQueue(key: string): void {
+        this.loadingQueue[key] = true;
     }
 
     /**

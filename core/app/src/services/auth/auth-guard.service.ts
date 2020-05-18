@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {MessageService} from '../message/message.service';
-import {AuthService} from '../auth/auth.service';
-import {Observable, of} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError, map, take, tap} from "rxjs/operators";
-import {StateManager} from "@base/facades/state-manager";
+import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
+import {catchError, map, take, tap} from 'rxjs/operators';
+import {MessageService} from '@services/message/message.service';
+import {AuthService} from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,14 +15,17 @@ export class AuthGuard implements CanActivate {
         protected router: Router,
         protected http: HttpClient,
         private authService: AuthService,
-        protected stateManager: StateManager,
     ) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (this.authService.isUserLoggedIn.value) {
+    canActivate(
+        route: ActivatedRouteSnapshot
+    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+        if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
             return true;
         }
+
         const loginUrl = 'Login';
         const tree: UrlTree = this.router.parseUrl(loginUrl);
 
@@ -38,10 +40,14 @@ export class AuthGuard implements CanActivate {
                         this.authService.setCurrentUser(user);
                         return true;
                     }
+                    this.authService.logout('LBL_SESSION_EXPIRED', false);
                     // Re-direct to login
                     return tree;
                 }),
-                catchError(() => of(tree)),
+                catchError(() => {
+                    this.authService.logout('LBL_SESSION_EXPIRED', false);
+                    return of(tree);
+                }),
                 tap((result: boolean | UrlTree) => {
                     if (result === true) {
                         this.authService.isUserLoggedIn.next(true);

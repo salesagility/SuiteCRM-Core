@@ -17,6 +17,7 @@ const routes: Routes = [
     {
         path: 'Login',
         loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule),
+        runGuardsAndResolvers: 'always',
         resolve: {
             metadata: BaseMetadataResolver
         },
@@ -37,7 +38,8 @@ const routes: Routes = [
             legacyUrl: ClassicViewResolver,
         },
         data: {
-            reuseRoute: false
+            reuseRoute: false,
+            checkSession: true
         }
     },
     {
@@ -49,7 +51,8 @@ const routes: Routes = [
             legacyUrl: ClassicViewResolver,
         },
         data: {
-            reuseRoute: false
+            reuseRoute: false,
+            checkSession: true
         }
     },
     {
@@ -61,7 +64,8 @@ const routes: Routes = [
             legacyUrl: ClassicViewResolver,
         },
         data: {
-            reuseRoute: false
+            reuseRoute: false,
+            checkSession: true
         }
     },
     {path: '**', redirectTo: 'Login'},

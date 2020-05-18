@@ -78,10 +78,10 @@ export class ThemeImagesFacade implements StateFacade {
      */
     public changeTheme(theme: string): void {
 
-        this.appStateFacade.updateLoading(true);
+        this.appStateFacade.updateLoading('change-theme', true);
 
         this.load(theme).pipe(
-            tap(() => this.appStateFacade.updateLoading(false))
+            tap(() => this.appStateFacade.updateLoading('change-theme', false))
         ).subscribe();
     }
 

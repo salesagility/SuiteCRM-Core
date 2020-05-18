@@ -7,6 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
 import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
+import {AuthService} from '@services/auth/auth.service';
 
 class ClassicViewUiComponentMock extends ClassicViewUiComponent {
     protected buildIframePageChangeObserver(): IframePageChangeObserver {
@@ -38,7 +39,16 @@ describe('ClassicViewUiComponent', () => {
                 RouterTestingModule,
                 ApolloTestingModule
             ],
-            providers: [{provide: ActivatedRoute, useValue: route}],
+            providers: [
+                {
+                    provide: ActivatedRoute,
+                    useValue: route
+                },
+                {
+                    provide: AuthService,
+                    useValue: jasmine.createSpyObj('AuthService', ['logout'])
+                }
+            ],
             declarations: [ClassicViewUiComponentMock]
         })
             .compileComponents();

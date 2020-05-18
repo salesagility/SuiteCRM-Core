@@ -4,6 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
 import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
+import {AuthService} from '@services/auth/auth.service';
 
 @Component({
     selector: 'scrm-classic-view-ui',
@@ -24,7 +25,9 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         private router: Router,
         private sanitizer: DomSanitizer,
         private routeConverter: RouteConverter,
-        private ngZone: NgZone) {
+        private auth: AuthService,
+        private ngZone: NgZone
+    ) {
     }
 
     ngOnInit(): void {
@@ -84,6 +87,11 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
 
     protected onPageChange(newLocation): void {
         const location = this.routeConverter.toFrontEnd(newLocation);
+
+        if (location === '/users/login'){
+            this.auth.logout('LBL_SESSION_EXPIRED');
+            return;
+        }
 
         this.ngZone.run(() => this.router.navigateByUrl(location).then()).then();
     }

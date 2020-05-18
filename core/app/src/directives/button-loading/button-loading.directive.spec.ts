@@ -46,14 +46,14 @@ describe('ButtonLoadingDirective', () => {
     it('button should get disabled when app loading is active', () => {
 
         expect(testHostComponent).toBeTruthy();
-        appState.updateLoading(true);
+        appState.updateLoading('button-loading',true);
         testHostFixture.detectChanges();
         let button = testHostFixture.nativeElement.querySelector('button');
 
         expect(button).toBeTruthy();
         expect(button.disabled).toEqual(true);
 
-        appState.updateLoading(false);
+        appState.updateLoading('button-loading',false);
 
         testHostFixture.detectChanges();
         button = testHostFixture.nativeElement.querySelector('button');
@@ -65,7 +65,7 @@ describe('ButtonLoadingDirective', () => {
     it('button should get disabled when loading input is active', () => {
 
         expect(testHostComponent).toBeTruthy();
-        appState.updateLoading(false);
+        appState.updateLoading('button-loading',false);
         testHostComponent.setLoading(true);
         testHostFixture.detectChanges();
         let button = testHostFixture.nativeElement.querySelector('button');

@@ -21,13 +21,13 @@ export class AppComponent implements OnInit {
 
     private checkRouterEvent(routerEvent: Event) {
         if (routerEvent instanceof NavigationStart) {
-            this.appStateFacade.updateLoading(true);
+            this.appStateFacade.updateLoading('router-navigation',true);
         }
 
         if (routerEvent instanceof NavigationEnd ||
             routerEvent instanceof NavigationCancel ||
             routerEvent instanceof NavigationError) {
-            this.appStateFacade.updateLoading(false);
+            this.appStateFacade.updateLoading('router-navigation', false);
         }
     }
 }

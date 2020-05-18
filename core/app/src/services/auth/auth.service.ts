@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, throwError} from 'rxjs';
+import {BehaviorSubject, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
 import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
@@ -9,7 +9,7 @@ import {MessageService} from '@services/message/message.service';
 import {StateManager} from '@base/facades/state-manager';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {BnNgIdleService} from 'bn-ng-idle';
-import {SystemConfigFacade} from "@base/facades/system-config/system-config.facade";
+import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ export class AuthService {
     private currentUserSubject = new BehaviorSubject<User>({} as User);
     public currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    defaultTimeout: string = '3600';
+    defaultTimeout = '3600';
 
     constructor(
         private http: HttpClient,
@@ -27,7 +27,7 @@ export class AuthService {
         protected stateManager: StateManager,
         protected languageFacade: LanguageFacade,
         private bnIdle: BnNgIdleService,
-        protected systemConfigFacade: SystemConfigFacade
+        protected appStateFacade: AppStateFacade
     ) {
     }
 
@@ -35,7 +35,7 @@ export class AuthService {
         return this.currentUserSubject.value;
     }
 
-    setCurrentUser(data) {
+    setCurrentUser(data): void {
         this.currentUserSubject.next(data);
     }
 
@@ -45,7 +45,7 @@ export class AuthService {
         password: string,
         onSuccess: (caller: LoginUiComponent, response: string) => void,
         onError: (caller: LoginUiComponent, error: HttpErrorResponse) => void
-    ) {
+    ): Subscription {
         const loginUrl = 'login';
 
         const headers = new HttpHeaders({
@@ -64,7 +64,7 @@ export class AuthService {
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
 
-            let duration = response.duration;
+            const duration = response.duration;
 
             if (duration === 0 || duration === '0') {
                 return;
@@ -80,22 +80,27 @@ export class AuthService {
                     this.message.removeMessages();
                     this.message.addDangerMessage('Session Expired');
                 }
-            })
+            });
         }, (error: HttpErrorResponse) => {
             onError(caller, error);
-        })
+        });
     }
 
     /**
      * Logout user
      *
-     * @param messageKey of message to display
+     * @param {string} messageKey of message to display
+     * @param {boolean} redirect to home
      */
-    logout(messageKey = 'LBL_LOGOUT_SUCCESS'): void {
-        const logoutUrl = 'logout';
+    public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
+        this.appStateFacade.updateLoading('logout', true);
 
+        const logoutUrl = 'logout';
         const body = new HttpParams();
+
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+
+        this.resetState();
 
         this.http.post(logoutUrl, body.toString(), {headers, responseType: 'text'})
             .pipe(
@@ -105,15 +110,24 @@ export class AuthService {
                     return throwError(err);
                 }),
                 finalize(() => {
-                    this.stateManager.clear();
-                    this.router.navigate(['/Login']).finally();
+                    this.appStateFacade.updateLoading('logout', false);
+                    if (redirect === true) {
+                        this.router.navigate(['/Login']).finally();
+                    }
                 })
             )
             .subscribe(() => {
                 this.message.log('Logout success');
                 const label = this.languageFacade.getAppString(messageKey);
                 this.message.addSuccessMessage(label);
-                this.isUserLoggedIn.next(false);
             });
+    }
+
+    /**
+     * On logout state reset
+     */
+    public resetState(): void {
+        this.stateManager.clearAuthBased();
+        this.isUserLoggedIn.next(false);
     }
 }

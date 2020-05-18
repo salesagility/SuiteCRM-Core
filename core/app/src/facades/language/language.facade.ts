@@ -133,10 +133,10 @@ export class LanguageFacade implements StateFacade {
 
         internalState.hasChanged = true;
 
-        this.appStateFacade.updateLoading(true);
+        this.appStateFacade.updateLoading('change-language', true);
 
         this.load(languageKey, types).pipe(
-            tap(() => this.appStateFacade.updateLoading(false))
+            tap(() => this.appStateFacade.updateLoading('change-language',false))
         ).subscribe();
     }
 

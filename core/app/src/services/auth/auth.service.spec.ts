@@ -11,7 +11,7 @@ describe('Auth Service', () => {
     let languageMock = null;
     let service = null;
     let IdleMock = null;
-    let systemConfigMock = null;
+    let appStateMock = null;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
@@ -34,7 +34,13 @@ describe('Auth Service', () => {
         });
 
 
-        stateManagerMock = jasmine.createSpyObj('StateManager', ['clear']);
+        stateManagerMock = jasmine.createSpyObj(
+            'StateManager',
+            [
+                'clear',
+                'clearAuthBased'
+            ]
+        );
         stateManagerMock.clear.and.callFake(() => {
         });
 
@@ -42,9 +48,9 @@ describe('Auth Service', () => {
         languageMock.getAppString.and.callFake((key: string) => key);
 
         IdleMock = jasmine.createSpyObj('bnIdle', ['doLogin']);
-        systemConfigMock = jasmine.createSpyObj('systemConfigFacade', ['doLogin']);
+        appStateMock = jasmine.createSpyObj('AppStateFacade', ['updateLoading']);
 
-        service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock, IdleMock, systemConfigMock);
+        service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock, IdleMock, appStateMock);
 
     });
 
@@ -56,7 +62,7 @@ describe('Auth Service', () => {
 
         expect(httpMock.post).toHaveBeenCalledWith('logout', body.toString(), {headers, responseType: 'text'});
 
-        expect(stateManagerMock.clear).toHaveBeenCalledWith();
+        expect(stateManagerMock.clearAuthBased).toHaveBeenCalledWith();
         expect(languageMock.getAppString).toHaveBeenCalledWith('LBL_LOGOUT_SUCCESS');
         expect(messageMock.addSuccessMessage).toHaveBeenCalledWith('LBL_LOGOUT_SUCCESS');
         expect(messageMock.log).toHaveBeenCalledWith('Logout success');
