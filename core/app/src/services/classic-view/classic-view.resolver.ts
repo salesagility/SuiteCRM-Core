@@ -8,6 +8,7 @@ import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
 import {map} from 'rxjs/operators';
+import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 
 @Injectable({providedIn: 'root'})
 export class ClassicViewResolver extends BaseMetadataResolver {
@@ -18,9 +19,17 @@ export class ClassicViewResolver extends BaseMetadataResolver {
         protected navigationFacade: NavigationFacade,
         protected userPreferenceFacade: UserPreferenceFacade,
         protected themeImagesFacade: ThemeImagesFacade,
-        protected routeConverter: RouteConverter
+        protected routeConverter: RouteConverter,
+        protected appState: AppStateFacade
     ) {
-        super(systemConfigFacade, languageFacade, navigationFacade, userPreferenceFacade, themeImagesFacade);
+        super(
+            systemConfigFacade,
+            languageFacade,
+            navigationFacade,
+            userPreferenceFacade,
+            themeImagesFacade,
+            appState
+        );
     }
 
     resolve(route: ActivatedRouteSnapshot): any {

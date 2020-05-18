@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {concatAll, map, toArray} from 'rxjs/operators';
+import {concatAll, map, tap, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
 import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
@@ -8,16 +8,20 @@ import {LanguageFacade} from '@base/facades/language/language.facade';
 import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
 import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
 
 
 @Injectable({providedIn: 'root'})
 export class BaseMetadataResolver implements Resolve<any> {
 
-    constructor(protected systemConfigFacade: SystemConfigFacade,
-                protected languageFacade: LanguageFacade,
-                protected navigationFacade: NavigationFacade,
-                protected userPreferenceFacade: UserPreferenceFacade,
-                protected themeImagesFacade: ThemeImagesFacade) {
+    constructor(
+        protected systemConfigFacade: SystemConfigFacade,
+        protected languageFacade: LanguageFacade,
+        protected navigationFacade: NavigationFacade,
+        protected userPreferenceFacade: UserPreferenceFacade,
+        protected themeImagesFacade: ThemeImagesFacade,
+        protected appState: AppStateFacade
+    ) {
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
@@ -87,7 +91,8 @@ export class BaseMetadataResolver implements Resolve<any> {
                 return data;
             }),
             concatAll(),
-            toArray()
+            toArray(),
+            tap(() => this.appState.setLoaded(true))
         );
     }
 

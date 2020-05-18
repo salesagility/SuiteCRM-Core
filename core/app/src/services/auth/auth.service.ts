@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, UrlTree} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, Subscription, throwError} from 'rxjs';
-import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
+import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
 import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
@@ -10,6 +10,13 @@ import {StateManager} from '@base/facades/state-manager';
 import {LanguageFacade} from '@base/facades/language/language.facade';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+
+export interface SessionStatus {
+    active?: boolean;
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +44,7 @@ export class AuthService {
 
     setCurrentUser(data): void {
         this.currentUserSubject.next(data);
+        this.isUserLoggedIn.next(true);
     }
 
     doLogin(
@@ -129,5 +137,18 @@ export class AuthService {
     public resetState(): void {
         this.stateManager.clearAuthBased();
         this.isUserLoggedIn.next(false);
+    }
+
+    /**
+     * Fetch session status from backend
+     *
+     * @returns {{}} Observable<SessionStatus>
+     */
+    public fetchSessionStatus(): Observable<SessionStatus>{
+
+        const Url = 'session-status';
+        const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+
+        return this.http.get(Url, {headers});
     }
 }

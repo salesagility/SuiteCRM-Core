@@ -6,10 +6,12 @@ import {StateFacade} from '@base/facades/state';
 
 export interface AppState {
     loading: boolean;
+    loaded: boolean;
 }
 
 const initialState: AppState = {
-    loading: false
+    loading: false,
+    loaded: false
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -29,7 +31,7 @@ export class AppStateFacade implements StateFacade {
      * ViewModel that resolves once all the data is ready (or updated)...
      */
     vm$: Observable<AppState> = combineLatest([this.loading$]).pipe(
-        map(([loading]) => ({loading}))
+        map(([loading]) => ({loading, loaded: internalState.loaded}))
     );
 
     constructor() {
@@ -63,6 +65,24 @@ export class AppStateFacade implements StateFacade {
         if (this.hasActiveLoading()) {
             this.updateState({...internalState, loading});
         }
+    }
+
+    /**
+     * Has app been initially loaded
+     *
+     * @returns {boolean} is loaded
+     */
+    public isLoaded(): boolean{
+        return internalState.loaded;
+    }
+
+    /**
+     * Set initial app load status
+     *
+     * @param {string} loaded flag
+     */
+    public setLoaded(loaded: boolean): void{
+        this.updateState({...internalState, loaded});
     }
 
     /**

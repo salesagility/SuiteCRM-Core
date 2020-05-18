@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '@services/message/message.service';
@@ -13,7 +12,6 @@ export class AuthGuard implements CanActivate {
     constructor(
         protected message: MessageService,
         protected router: Router,
-        protected http: HttpClient,
         private authService: AuthService,
     ) {
     }
@@ -29,10 +27,7 @@ export class AuthGuard implements CanActivate {
         const loginUrl = 'Login';
         const tree: UrlTree = this.router.parseUrl(loginUrl);
 
-        const Url = 'session-status';
-        const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-
-        return this.http.get(Url, {headers})
+        return this.authService.fetchSessionStatus()
             .pipe(
                 take(1),
                 map((user: any) => {

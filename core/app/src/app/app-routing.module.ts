@@ -5,6 +5,7 @@ import {ClassicViewResolver} from '@services/classic-view/classic-view.resolver'
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {ListComponent} from '@views/list/list.component';
+import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 
 const routes: Routes = [
     {
@@ -17,11 +18,13 @@ const routes: Routes = [
     {
         path: 'Login',
         loadChildren: () => import('../components/login/login.module').then(m => m.LoginUiModule),
+        canActivate: [LoginAuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
             metadata: BaseMetadataResolver
         },
         data: {
+            reuseRoute: false,
             load: {
                 navigation: false,
                 preferences: false,
@@ -73,7 +76,8 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, {
-        useHash: true
+        useHash: true,
+        onSameUrlNavigation: 'reload'
     })],
     exports: [RouterModule]
 })
