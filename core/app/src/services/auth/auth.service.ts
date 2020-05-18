@@ -84,9 +84,8 @@ export class AuthService {
 
             this.bnIdle.startWatching(this.defaultTimeout).subscribe((res) => {
                 if (res) {
-                    this.logout('LBL_SESSION_EXPIRED');
                     this.message.removeMessages();
-                    this.message.addDangerMessage('Session Expired');
+                    this.logout('LBL_SESSION_EXPIRED');
                 }
             });
         }, (error: HttpErrorResponse) => {

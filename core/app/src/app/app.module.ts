@@ -10,21 +10,21 @@ import {onError} from 'apollo-link-error';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
-import {NavbarUiModule} from '../components/navbar/navbar.module';
-import {FooterUiModule} from '../components/footer/footer.module';
-import {ClassicViewUiModule} from '../components/classic-view/classic-view.module';
-import {MessageUiModule} from '../components/message/message.module';
-import {FilterUiModule} from '../components/filter/filter.module';
-import {ColumnchooserUiModule} from '../components/columnchooser/columnchooser.module';
-import {WidgetUiModule} from '../components/widget/widget.module';
-import {TableUiModule} from '../components/table/table.module';
-import {ModuletitleUiModule} from '../components/module-title/module-title.module';
-import {ListheaderUiModule} from '../components/list-header/list-header.module';
-import {ListcontainerUiModule} from '../components/list-container/list-container.module';
-import {ListModule} from '../../views/list/list.module';
+import {NavbarUiModule} from '@components/navbar/navbar.module';
+import {FooterUiModule} from '@components/footer/footer.module';
+import {ClassicViewUiModule} from '@components/classic-view/classic-view.module';
+import {MessageUiModule} from '@components/message/message.module';
+import {FilterUiModule} from '@components/filter/filter.module';
+import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
+import {WidgetUiModule} from '@components/widget/widget.module';
+import {TableUiModule} from '@components/table/table.module';
+import {ModuletitleUiModule} from '@components/module-title/module-title.module';
+import {ListheaderUiModule} from '@components/list-header/list-header.module';
+import {ListcontainerUiModule} from '@components/list-container/list-container.module';
+import {ListModule} from '@views/list/list.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ErrorInterceptor} from '../services/auth/error.interceptor';
+import {ErrorInterceptor} from '@services/auth/error.interceptor';
 
 import {AppManagerModule} from '../app-manager/app-manager.module';
 
@@ -97,10 +97,9 @@ export class AppModule {
         });
 
         const logoutLink = onError((err) => {
-
             if (err.graphQLErrors && err.graphQLErrors.length > 0) {
                 err.graphQLErrors.forEach((value: GraphQLError) => {
-                    if (value.message.includes('Access Denied')) {
+                    if (this.auth.isUserLoggedIn.value === true && value.message.includes('Access Denied')) {
                         auth.logout('LBL_SESSION_EXPIRED');
                     }
                 });
