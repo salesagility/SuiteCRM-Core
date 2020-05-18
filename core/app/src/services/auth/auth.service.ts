@@ -83,7 +83,7 @@ export class AuthService {
             }
 
             this.bnIdle.startWatching(this.defaultTimeout).subscribe((res) => {
-                if (res) {
+                if (res && this.isUserLoggedIn.value === true) {
                     this.message.removeMessages();
                     this.logout('LBL_SESSION_EXPIRED');
                 }

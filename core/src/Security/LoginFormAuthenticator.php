@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Security\Exception\UserNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use SuiteCRM\Core\Legacy\Authentication;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -29,12 +31,40 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 {
     use TargetPathTrait;
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
+
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
+    /**
+     * @var CsrfTokenManagerInterface
+     */
     private $csrfTokenManager;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+
+    /**
+     * @var Authentication
+     */
     private $authentication;
+
+    /**
+     * @var SessionInterface
+     */
     private $session;
+
+    /**
+     * @var Security
+     */
+    private $security;
 
     /**
      * LoginFormAuthenticator constructor.
@@ -43,6 +73,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param RouterInterface $router
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param SessionInterface $session
+     * @param Security $security
      */
     public function __construct(
         Authentication $authentication,
@@ -50,7 +82,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder,
-        SessionInterface $session
+        SessionInterface $session,
+        Security $security
     ) {
         $this->entityManager = $entityManager;
         $this->router = $router;
@@ -58,6 +91,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->passwordEncoder = $passwordEncoder;
         $this->authentication = $authentication;
         $this->session = $session;
+        $this->security = $security;
     }
 
     /**
@@ -104,16 +138,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $user = $userProvider->loadUserByUsername($credentials['username']);
 
         if (!$user) {
-            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
+            throw new UserNotFoundException('Authentication: Unknown user');
         }
         try {
             $result = $this->authentication->login($credentials['username'], $credentials['password']);
         } catch (Exception $e) {
-            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
+            throw new BadCredentialsException('Authentication: ', $e->getMessage());
         }
 
         if ($result === false) {
-            throw new CustomUserMessageAuthenticationException('Invalid login credentials');
+            throw new CustomUserMessageAuthenticationException('Authentication: Invalid login credentials');
         }
 
         return $user;
@@ -176,20 +210,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $user = $token->getUser();
-        $id = $user->getId();
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
-
-        $data = [
+        $userData = $this->getAuthedUserInfo();
+        $metadata = [
             'status' => 'success',
             'duration' => $this->session->getMetadataBag()->getLifetime(),
-            'id' => $id,
-            'firstName' => $firstName,
-            'lastName' => $lastName
         ];
 
-        return new JsonResponse($data, Response::HTTP_OK);
+        return new JsonResponse(array_merge($metadata, $userData), Response::HTTP_OK);
     }
 
     /**
@@ -220,5 +247,33 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function supportsRememberMe(): bool
     {
         return false;
+    }
+
+    /**
+     * Securely fetch an already authenticated user
+     * @return UserInterface|null
+     */
+    private function getAuthedUser(): ?UserInterface
+    {
+        return $this->security->getUser();
+    }
+
+    /**
+     * @return array
+     * @noinspection PhpPossiblePolymorphicInvocationInspection
+     */
+    private function getAuthedUserInfo(): array
+    {
+        $user = $this->getAuthedUser();
+
+        if ($user === null) {
+            throw new UserNotFoundException('Authentication: Unknown user');
+        }
+
+        $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+
+        return ['id' => $id, 'firstName' => $firstName, 'lastName' => $lastName];
     }
 }

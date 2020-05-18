@@ -12,8 +12,10 @@ security:
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
+      user_checker: App\Security\UserChecker
       security: false
     main:
+      user_checker: App\Security\UserChecker
       anonymous: lazy
       guard:
         authenticators:

@@ -377,4 +377,12 @@ class User implements UserInterface
 
         return true;
     }
+
+    /**
+     * @return int
+     */
+    public function getDeleted(): int
+    {
+        return $this->deleted;
+    }
 }
