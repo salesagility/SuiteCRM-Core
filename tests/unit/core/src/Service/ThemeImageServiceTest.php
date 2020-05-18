@@ -1,9 +1,10 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Service\ThemeImageFinder;
 use App\Service\ThemeImageService;
 use Codeception\Test\Unit;
-use Exception;
 use Symfony\Component\Finder\SplFileInfo;
 
 class ThemeImageServiceTest extends Unit
@@ -18,10 +19,7 @@ class ThemeImageServiceTest extends Unit
      */
     protected $themeImageService;
 
-    /**
-     * @throws Exception
-     */
-    protected function _before()
+    protected function _before(): void
     {
         $themeImagePaths = [
             'legacy/themes/default/images',
@@ -78,10 +76,6 @@ class ThemeImageServiceTest extends Unit
             '',
             $themeImageFinder
         );
-    }
-
-    protected function _after()
-    {
     }
 
     /**

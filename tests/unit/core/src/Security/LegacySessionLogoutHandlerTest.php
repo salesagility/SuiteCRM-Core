@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Security\LegacySessionLogoutHandler;
 use AspectMock\Test;
@@ -6,7 +8,6 @@ use AuthenticationController;
 use Codeception\Test\Unit;
 use Exception;
 use SuiteCRM\Core\Legacy\Authentication;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 class LegacySessionLogoutHandlerTest extends Unit
 {
     /**
-     * @var \App\Tests\UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -44,16 +45,10 @@ class LegacySessionLogoutHandlerTest extends Unit
      */
     public $closeCalled = false;
 
-    /**
-     * @throws Exception
-     */
-    protected function _before()
-    {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
 
+    /** @noinspection StaticClosureCanBeUsedInspection */
+    protected function _before(): void
+    {
         $self = $this;
 
         test::double(Authentication::class, [
@@ -62,7 +57,7 @@ class LegacySessionLogoutHandlerTest extends Unit
                 return $self->make(
                     AuthenticationController::class,
                     [
-                        'logout' => static function (bool $redirect = true) use ($self) {
+                        'logout' => function () use ($self) {
                             $self->logoutCalled = true;
 
                             return true;
@@ -84,26 +79,22 @@ class LegacySessionLogoutHandlerTest extends Unit
             [
                 'logout' => static function (Request $request, Response $response, TokenInterface $token) use ($self) {
                     $self->decoratedCalled = true;
-
-                    return;
                 }
             ]
         );
 
-        $legacyScope = new LegacyScopeState();
-
         $originalHandler = new Authentication(
-            $projectDir,
-            $legacyDir,
-            $legacySessionName,
-            $defaultSessionName,
-            $legacyScope
+            $this->tester->getProjectDir(),
+            $this->tester->getLegacyDir(),
+            $this->tester->getlegacySessionName(),
+            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacyScope()
         );
 
         $this->handler = new LegacySessionLogoutHandler($sessionLogoutHandler, $originalHandler);
     }
 
-    protected function _after()
+    protected function _after(): void
     {
         $this->logoutCalled = false;
         $this->initCalled = false;
@@ -122,6 +113,7 @@ class LegacySessionLogoutHandlerTest extends Unit
         $request = new Request();
         $response = new Response();
         $token = $this->makeEmpty(TokenInterface::class, []);
+        /** @var TokenInterface $token */
         $this->handler->logout($request, $response, $token);
 
         static::assertTrue($this->logoutCalled);

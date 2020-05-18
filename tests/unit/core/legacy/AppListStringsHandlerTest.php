@@ -1,10 +1,11 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\AppListStrings;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\AppListStringsHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 
 class AppListStringsHandlerTest extends Unit
 {
@@ -20,18 +21,12 @@ class AppListStringsHandlerTest extends Unit
 
     protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-        $legacyScope = new LegacyScopeState();
-
         $this->handler = new AppListStringsHandler(
-            $projectDir,
-            $legacyDir,
-            $legacySessionName,
-            $defaultSessionName,
-            $legacyScope
+            $this->tester->getProjectDir(),
+            $this->tester->getLegacyDir(),
+            $this->tester->getlegacySessionName(),
+            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacyScope()
         );
     }
 
@@ -72,5 +67,4 @@ class AppListStringsHandlerTest extends Unit
         static::assertIsArray($appStrings->getItems()[$listKey]);
         static::assertNotEmpty($appStrings->getItems()[$listKey][$labelKey]);
     }
-
 }

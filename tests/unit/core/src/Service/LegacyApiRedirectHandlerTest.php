@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Service\LegacyApiRedirectHandler;
 use Codeception\Test\Unit;
@@ -10,7 +12,6 @@ class LegacyApiRedirectHandlerTest extends Unit
      * @var UnitTester
      */
     protected $tester;
-
 
     /**
      * @var LegacyApiRedirectHandler

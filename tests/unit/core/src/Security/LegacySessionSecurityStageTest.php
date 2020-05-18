@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\GraphQl\Resolver\Stage\SecurityStage;
@@ -8,7 +10,6 @@ use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use App\Security\LegacySessionSecurityStage;
 use AspectMock\Test;
 use Codeception\Test\Unit;
-use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
 use GraphQL\Error\Error;
@@ -98,8 +99,8 @@ class LegacySessionSecurityStageTest extends Unit
 
     /**
      * Before test hook
-     * @throws AnnotationException
      * @throws Exception
+     * @noinspection StaticClosureCanBeUsedInspection
      */
     protected function _before(): void
     {

@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Tests;
 
 use App\Entity\Navbar;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
 use SuiteCRM\Core\Legacy\NavbarHandler;
@@ -15,9 +14,9 @@ use SuiteCRM\Core\Legacy\RouteConverterHandler;
 final class NavbarTest extends Unit
 {
     /**
-     * @var NavbarHandler
+     * @var UnitTester
      */
-    private $navbarHandler;
+    protected $tester;
 
     /**
      * @var Navbar
@@ -25,14 +24,17 @@ final class NavbarTest extends Unit
     protected $navbar;
 
     /**
-     * @throws Exception
+     * @var NavbarHandler
      */
-    protected function _before()
+    private $navbarHandler;
+
+    /** @noinspection StaticClosureCanBeUsedInspection */
+    protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
+        $projectDir = $this->tester->getProjectDir();
+        $legacyDir = $this->tester->getLegacyDir();
+        $legacySessionName = $this->tester->getlegacySessionName();
+        $defaultSessionName = $this->tester->getdefaultSessionName();
 
         $menuItemMap = [
             'default' => [
@@ -76,7 +78,7 @@ final class NavbarTest extends Unit
             ],
         ];
 
-        $legacyScope = new LegacyScopeState();
+        $legacyScope = $this->tester->getLegacyScope();
 
         $moduleNameMapper = new ModuleNameMapperHandler(
             $projectDir,
@@ -186,7 +188,8 @@ final class NavbarTest extends Unit
             $excludedModules
         );
 
-        $this->navbarHandler = new NavbarHandler($projectDir,
+        $this->navbarHandler = new NavbarHandler(
+            $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,

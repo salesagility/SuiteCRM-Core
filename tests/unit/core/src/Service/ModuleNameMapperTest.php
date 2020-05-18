@@ -1,9 +1,10 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Service\ModuleNameMapperInterface;
-use \Codeception\Test\Unit;
+use Codeception\Test\Unit;
 use InvalidArgumentException;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 
 class ModuleNameMapperTest extends Unit
@@ -13,27 +14,19 @@ class ModuleNameMapperTest extends Unit
      */
     protected $tester;
 
-
     /**
      * @var ModuleNameMapperInterface
      */
     private $moduleMapper;
 
-    protected function _before()
+    protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-
-        $legacyScope = new LegacyScopeState();
-
         $this->moduleMapper = new ModuleNameMapperHandler(
-            $projectDir,
-            $legacyDir,
-            $legacySessionName,
-            $defaultSessionName,
-            $legacyScope
+            $this->tester->getProjectDir(),
+            $this->tester->getLegacyDir(),
+            $this->tester->getlegacySessionName(),
+            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacyScope()
         );
     }
 

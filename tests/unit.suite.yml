@@ -4,8 +4,8 @@
 
 actor: UnitTester
 modules:
-    enabled:
-        - Asserts
-        - \App\Tests\Helper\Unit
+  enabled:
+    - Asserts
+    - \App\Tests\Helper\Unit
 
 bootstrap: bootstrap.php

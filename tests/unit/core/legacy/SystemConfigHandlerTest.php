@@ -1,10 +1,11 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
 use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
@@ -22,6 +23,12 @@ class SystemConfigHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $projectDir = $this->tester->getProjectDir();
+        $legacyDir = $this->tester->getLegacyDir();
+        $legacySessionName = $this->tester->getlegacySessionName();
+        $defaultSessionName = $this->tester->getdefaultSessionName();
+        $legacyScope = $this->tester->getLegacyScope();
+
         $exposedSystemConfigs = [
             'default_language' => true,
             'passwordsetting' => [
@@ -37,13 +44,6 @@ class SystemConfigHandlerTest extends Unit
             'module_name_map' => true,
             'action_name_map' => true
         ];
-
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-
-        $legacyScope = new LegacyScopeState();
 
         $moduleMapper = new ModuleNameMapperHandler(
             $projectDir,

@@ -1,5 +1,11 @@
 <?php
+
 namespace App\Tests;
+
+use App\Tests\Helper\Unit as Tester;
+use Codeception\Actor;
+use Codeception\Lib\Friend;
+use SuiteCRM\Core\Legacy\LegacyScopeState;
 
 /**
  * Inherited Methods
@@ -12,15 +18,49 @@ namespace App\Tests;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
-class UnitTester extends \Codeception\Actor
+ */
+class UnitTester extends Actor
 {
-    use _generated\UnitTesterActions;
+    /**
+     * @return LegacyScopeState
+     */
+    public function getLegacyScope(): LegacyScopeState
+    {
+        return Tester::$legacyScope;
+    }
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * @return string
+     */
+    public function getProjectDir(): string
+    {
+        return Tester::$projectDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLegacyDir(): string
+    {
+        return Tester::$legacyDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLegacySessionName(): string
+    {
+        return Tester::$legacySessionName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultSessionName(): string
+    {
+        return Tester::$defaultSessionName;
+    }
 }

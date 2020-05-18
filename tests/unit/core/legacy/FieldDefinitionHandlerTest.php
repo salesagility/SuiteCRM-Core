@@ -1,14 +1,17 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Tests;
 
 use App\Entity\FieldDefinition;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 
 final class FieldDefinitionHandlerTest extends Unit
 {
+    /**
+     * @var UnitTester
+     */
+    protected $tester;
 
     /**
      * @var FieldDefinitionsHandler
@@ -20,20 +23,15 @@ final class FieldDefinitionHandlerTest extends Unit
      */
     protected $fieldDefinition;
 
-
-    /**
-     * @throws Exception
-     */
     protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-        $legacyScope = new LegacyScopeState();
-
-        $this->fieldDefinitionsHandler = new FieldDefinitionsHandler($projectDir, $legacyDir, $legacySessionName,
-            $defaultSessionName, $legacyScope);
+        $this->fieldDefinitionsHandler = new FieldDefinitionsHandler(
+            $this->tester->getProjectDir(),
+            $this->tester->getLegacyDir(),
+            $this->tester->getlegacySessionName(),
+            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacyScope()
+        );
     }
 
     public function testGetUserVardef(): void

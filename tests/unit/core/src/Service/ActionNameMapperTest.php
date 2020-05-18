@@ -1,9 +1,10 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Service\ActionNameMapperInterface;
-use \Codeception\Test\Unit;
+use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 
 class ActionNameMapperTest extends Unit
 {
@@ -12,27 +13,19 @@ class ActionNameMapperTest extends Unit
      */
     protected $tester;
 
-
     /**
      * @var ActionNameMapperInterface
      */
     private $actionMapper;
 
-    protected function _before()
+    protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-
-        $legacyScope = new LegacyScopeState();
-
         $this->actionMapper = new ActionNameMapperHandler(
-            $projectDir,
-            $legacyDir,
-            $legacySessionName,
-            $defaultSessionName,
-            $legacyScope
+            $this->tester->getProjectDir(),
+            $this->tester->getLegacyDir(),
+            $this->tester->getlegacySessionName(),
+            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacyScope()
         );
     }
 

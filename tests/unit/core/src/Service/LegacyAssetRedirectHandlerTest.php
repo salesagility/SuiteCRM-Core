@@ -1,7 +1,9 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Service\LegacyAssetRedirectHandler;
-use \Codeception\Test\Unit;
+use Codeception\Test\Unit;
 use Symfony\Component\HttpFoundation\Request;
 
 class LegacyAssetRedirectHandlerTest extends Unit
@@ -10,7 +12,6 @@ class LegacyAssetRedirectHandlerTest extends Unit
      * @var UnitTester
      */
     protected $tester;
-
 
     /**
      * @var LegacyAssetRedirectHandler

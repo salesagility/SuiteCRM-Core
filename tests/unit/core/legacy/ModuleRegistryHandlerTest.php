@@ -1,7 +1,6 @@
 <?php namespace App\Tests;
 
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
 
 class ModuleRegistryHandlerTest extends Unit
@@ -18,12 +17,11 @@ class ModuleRegistryHandlerTest extends Unit
 
     protected function _before(): void
     {
-        $projectDir = codecept_root_dir();
-        $legacyDir = $projectDir . '/legacy';
-        $legacySessionName = 'LEGACYSESSID';
-        $defaultSessionName = 'PHPSESSID';
-
-        $legacyScope = new LegacyScopeState();
+        $projectDir = $this->tester->getProjectDir();
+        $legacyDir = $this->tester->getLegacyDir();
+        $legacySessionName = $this->tester->getlegacySessionName();
+        $defaultSessionName = $this->tester->getdefaultSessionName();
+        $legacyScope = $this->tester->getLegacyScope();
 
         $excludedModules = [
             'EmailText',

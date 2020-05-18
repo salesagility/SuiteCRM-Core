@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Resource\Factory\AnnotationResourceFilterMetadataFactory;
@@ -107,11 +109,11 @@ class LegacySessionDenyAccessListenerTest extends Unit
 
     /**
      * @throws Exception
+     * @noinspection StaticClosureCanBeUsedInspection
      */
     protected function _before(): void
     {
         $self = $this;
-
 
         test::double(ResourceMetadata::class,
             [
@@ -215,8 +217,6 @@ class LegacySessionDenyAccessListenerTest extends Unit
             [
                 'invalidate' => function () use ($self) {
                     $self->invalidateCalled = true;
-
-                    return;
                 },
             ]
         );
