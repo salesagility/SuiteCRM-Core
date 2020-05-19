@@ -1,8 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {AppManagerModule} from '../src/app-manager/app-manager.module';
 import {FieldComponent} from './field.component';
-// import {PLUGIN_MANIFESTS} from '../../../../plugin-manager/plugin-manifest';
 
 
 describe('FieldComponent', () => {
@@ -11,8 +8,7 @@ describe('FieldComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FieldComponent],
-            providers: [AppManagerModule]
+            declarations: [FieldComponent]
         })
             .compileComponents();
     }));
@@ -23,9 +19,7 @@ describe('FieldComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should create', () => {
-    //   console.log(component);
-
-    //   expect(component).toBeTruthy();
-    // });
+    it('should create the dynamic component', () => {
+        expect(component).toBeTruthy();
+    });
 });

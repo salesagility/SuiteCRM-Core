@@ -1,18 +1,23 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'scrm-button-ui',
-  templateUrl: 'button.component.html',
+    selector: 'scrm-button-ui',
+    templateUrl: 'button.component.html',
 
 })
 
 export class ButtonUiComponent implements OnInit {
 
-  @Input() buttonConfig: any;
-  constructor() {}
+    @Input() buttonConfig: any;
 
-  ngOnInit() {
+    constructor() {
+    }
 
-  }
+    ngOnInit() {
 
+    }
+
+    onTextBtnClick() {
+
+    }
 }

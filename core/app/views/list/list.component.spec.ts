@@ -12,6 +12,9 @@ import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade'
 import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {DynamicModule} from "ng-dynamic-component";
+import {FieldModule} from "../../fields/field.module";
+import { By } from '@angular/platform-browser';
 
 describe('ListComponent', () => {
     let component: ListComponent;
@@ -26,7 +29,9 @@ describe('ListComponent', () => {
                 RouterTestingModule,
                 BrowserAnimationsModule,
                 ImageModule,
-                ApolloTestingModule
+                ApolloTestingModule,
+                DynamicModule,
+                FieldModule
             ],
             declarations: [ListComponent],
             providers: [
@@ -48,5 +53,12 @@ describe('ListComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
+    });
+
+    it('should have title', () => {
+        const element = fixture.debugElement.query(By.css('.ng-star-inserted')).nativeElement;
+        expect(fixture).toBeTruthy();
+        expect(element).toBeTruthy();
+        expect(element.textContent).toContain('MY FIELD VALUE');
     });
 });

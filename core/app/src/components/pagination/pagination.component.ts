@@ -6,9 +6,8 @@ import {Component, OnInit} from '@angular/core';
 })
 
 export class PaginationUiComponent implements OnInit {
+    displayResponsiveTable: any;
 
     ngOnInit() {
-
     }
-
 }

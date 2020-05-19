@@ -1,15 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'scrm-bulk-action-menu-ui',
-  templateUrl: 'bulk-action-menu.component.html',
+    selector: 'scrm-bulk-action-menu-ui',
+    templateUrl: 'bulk-action-menu.component.html',
 
 })
 
 export class BulkactionmenuUiComponent implements OnInit {
+    allSelected: any;
 
-  ngOnInit() {
+    ngOnInit() {
 
-  }
+    }
 
+    selectAll() {
+
+    }
+
+    deselectAll() {
+
+    }
 }

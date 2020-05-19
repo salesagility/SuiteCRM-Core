@@ -1,66 +1,38 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    ViewChild,
-    ViewContainerRef
-} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
-import {AppManager} from '../src/app-manager/app-manager.service';
+import {FieldMetadata} from './field.model';
+import {viewFieldsMap} from './field.manifest';
+
+export interface FieldComponentInterface {
+    type: string;
+    value: string;
+    metadata?: FieldMetadata;
+}
 
 @Component({
     selector: 'scrm-field',
     template: `
-        <ng-template #fieldOutlet></ng-template>
+        <ndc-dynamic
+                [ndcDynamicComponent]="map[type + '.' + view]"
+                [ndcDynamicInputs]="{
+                    'type': type,
+                    'value': value,
+                    'metadata': metadata
+                }"
+        ></ndc-dynamic>
     `,
     styleUrls: []
 })
-export class FieldComponent implements OnInit {
-    @ViewChild('fieldOutlet', { read: ViewContainerRef, static: true })
-    fieldOutlet: ViewContainerRef | undefined;
-
+export class FieldComponent {
+    map = viewFieldsMap;
     id: string;
 
-    @Input('view-type') viewType: string;
-    @Input('field-type') fieldType: string;
-    @Input('field-name') fieldName: string;
-    @Input('field-value') fieldValue: string;
-    @Input('row') row: any;
+    @Input('view') view: string;
+    @Input('type') type: string;
+    @Input('value') value: string;
+    @Input('metadata') metadata?: FieldMetadata;
+    @Input('row') row?: any;
 
-    constructor(protected appManager: AppManager) {
+    constructor() {
     }
-
-    ngOnInit() {
-        this.id = this.makeId(8);
-
-        if (this.fieldType == 'phone') {
-            this.fieldType = 'varchar';
-        }
-
-        if (this.fieldType == 'name') {
-            this.fieldType = 'varchar';
-        }
-
-        let data = {
-            'viewType': this.viewType,
-            'fieldType': this.fieldType,
-            'fieldName': this.fieldName,
-            'fieldValue': this.fieldValue,
-            'row': JSON.parse(this.row),
-        };
-
-        const componentId = 'scrm-' + this.fieldType + '-' + this.viewType;
-        this.appManager.loadAppComponent(this.fieldOutlet, componentId, data);
-    }
-
-    makeId(length) {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
 }

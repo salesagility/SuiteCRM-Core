@@ -9,7 +9,7 @@ import {WidgetService} from '../widget/widget.service';
 
 export class SettingsmenuUiComponent implements OnInit {
 
-    constructor(private widgetService: WidgetService) {
+    constructor(public widgetService: WidgetService) {
     }
 
     toggleWidgets(): void {

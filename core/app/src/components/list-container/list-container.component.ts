@@ -17,17 +17,13 @@ export class ListcontainerUiComponent implements OnInit {
 
     allSelected = false;
 
-    constructor(private widgetService: WidgetService) {
+    constructor(public widgetService: WidgetService) {
     }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
-        event.target.innerWidth;
-        if (innerWidth <= 768) {
-            this.displayResponsiveTable = true;
-        } else {
-            this.displayResponsiveTable = false;
-        }
+        const innerWidth = event.target.innerWidth;
+        this.displayResponsiveTable = innerWidth <= 768;
     }
 
     toggleWidgets(): void {
@@ -40,7 +36,6 @@ export class ListcontainerUiComponent implements OnInit {
 
     ngOnInit(): void {
         window.dispatchEvent(new Event('resize'));
-
     }
 
     selectAll(): void {
