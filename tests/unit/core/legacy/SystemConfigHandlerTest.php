@@ -3,6 +3,7 @@
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use Codeception\Test\Unit;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
 use SuiteCRM\Core\Legacy\LegacyScopeState;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
@@ -60,6 +61,14 @@ class SystemConfigHandlerTest extends Unit
             $legacyScope
         );
 
+        $classicViewExclusionHandler = new ClassicViewRoutingExclusionsHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -68,7 +77,8 @@ class SystemConfigHandlerTest extends Unit
             $legacyScope,
             $exposedSystemConfigs,
             $actionMapper,
-            $moduleMapper
+            $moduleMapper,
+            $classicViewExclusionHandler
         );
     }
 

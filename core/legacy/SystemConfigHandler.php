@@ -38,6 +38,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $exposedSystemConfigs
      * @param ActionNameMapperInterface $actionNameMapper
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param ClassicViewRoutingExclusionsHandler $exclusionsManager
      */
     public function __construct(
         string $projectDir,
@@ -47,7 +48,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         LegacyScopeState $legacyScopeState,
         array $exposedSystemConfigs,
         ActionNameMapperInterface $actionNameMapper,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        ClassicViewRoutingExclusionsHandler $exclusionsManager
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
@@ -55,8 +57,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
 
         $this->injectedSystemConfigs['module_name_map'] = $moduleNameMapper->getLegacyToFrontendMap();
         $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
-
-
+        $this->injectedSystemConfigs['classicview_routing_exclusions'] = $exclusionsManager->get();
     }
 
     /**

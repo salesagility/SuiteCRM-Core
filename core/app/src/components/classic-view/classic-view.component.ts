@@ -1,10 +1,15 @@
 import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
-import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
+import {RouteConverter, RouteInfo} from '@services/navigation/route-converter/route-converter.service';
 import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
 import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
 import {AuthService} from '@services/auth/auth.service';
+import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+
+interface RoutingExclusions {
+    [key: string]: string[];
+}
 
 @Component({
     selector: 'scrm-classic-view-ui',
@@ -26,7 +31,8 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         private sanitizer: DomSanitizer,
         private routeConverter: RouteConverter,
         private auth: AuthService,
-        private ngZone: NgZone
+        private ngZone: NgZone,
+        private systemConfigs: SystemConfigFacade,
     ) {
     }
 
@@ -39,6 +45,18 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     ngOnDestroy(): void {
+        this.cleanObservers();
+
+        this.iframe = null;
+        const placeholder = this.wrapper;
+        if (this.wrapper.firstChild) {
+            placeholder.removeChild(placeholder.firstChild);
+        }
+        placeholder.innerHTML = '<iframe></iframe>';
+        this.wrapper = null;
+    }
+
+    cleanObservers(): void {
         if (this.iframeResizeHandler) {
             this.iframeResizeHandler.destroy();
             this.iframeResizeHandler = null;
@@ -48,14 +66,6 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             this.iframePageChangeHandler.destroy();
             this.iframePageChangeHandler = null;
         }
-
-        this.iframe = null;
-        const placeholder = this.wrapper;
-        if (this.wrapper.firstChild) {
-            placeholder.removeChild(placeholder.firstChild);
-        }
-        placeholder.innerHTML = '<iframe></iframe>';
-        this.wrapper = null;
     }
 
     initIframe(): void {
@@ -86,9 +96,17 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     protected onPageChange(newLocation): void {
+
+        if (this.shouldRedirect(newLocation) === false) {
+            this.iframe.style.display = 'block';
+            this.cleanObservers();
+            this.initObservers();
+            return;
+        }
+
         const location = this.routeConverter.toFrontEndRoute(newLocation);
 
-        if (location === '/users/login'){
+        if (location === '/users/login') {
             this.auth.logout('LBL_SESSION_EXPIRED');
             return;
         }
@@ -121,5 +139,64 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
 
     protected buildIframeResizeHandlerHandler(): IframeResizeHandlerHandler {
         return new IframeResizeHandlerHandler();
+    }
+
+    /**
+     * Check if should re-direct to link or if it was excluded
+     *
+     * @param {string} legacyLink to check
+     * @returns {boolean} should redirect
+     */
+    protected shouldRedirect(legacyLink: string): boolean {
+
+        if (legacyLink && legacyLink.includes('/#/')) {
+            return true;
+        }
+
+        const routeInfo = this.routeConverter.parse(legacyLink);
+
+        // if no route or no module, don't re-direct
+        if (!routeInfo || !routeInfo.module) {
+            return false;
+        }
+
+        const reuse = this.routeConverter.matchesActiveRoute(this.route, routeInfo);
+
+        if (reuse === true) {
+            return false;
+        }
+
+        if (!routeInfo.action) {
+            return true;
+        }
+
+        return this.toExclude(routeInfo);
+    }
+
+    /**
+     * Check if given route is to exclude from redirection
+     *
+     * @param {object} routeInfo to check
+     * @returns {boolean} is to exclude
+     */
+    protected toExclude(routeInfo: RouteInfo): boolean {
+        const exclusions: RoutingExclusions = this.systemConfigs.getConfigValue('classicview_routing_exclusions');
+
+        if (!exclusions || Object.keys(exclusions).length === 0) {
+            return true;
+        }
+
+        // if action is excluded for any module, don't re-direct
+        if (exclusions.any && exclusions.any.includes(routeInfo.action)) {
+            return false;
+        }
+
+        if (!exclusions[routeInfo.module]) {
+            return true;
+        }
+
+        // if module action is excluded, don't re-direct
+        const moduleExclusions = exclusions[routeInfo.module];
+        return !(moduleExclusions && moduleExclusions.includes(routeInfo.action));
     }
 }

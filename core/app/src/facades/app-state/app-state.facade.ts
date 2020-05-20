@@ -109,12 +109,30 @@ export class AppStateFacade implements StateFacade {
     }
 
     /**
+     * Get the current module
+     *
+     * @returns {string} current view
+     */
+    public getModule(): string {
+        return internalState.module;
+    }
+
+    /**
      * Set current View
      *
      * @param {string} view to set as current view
      */
     public setView(view: string): void {
         this.updateState({...internalState, view});
+    }
+
+    /**
+     * Get the current view
+     *
+     * @returns {string} current view
+     */
+    public getView(): string {
+        return internalState.view;
     }
 
     /**

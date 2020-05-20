@@ -1,10 +1,17 @@
 import {Injectable} from '@angular/core';
-import {DefaultUrlSerializer, Params, UrlTree} from '@angular/router';
+import {ActivatedRoute, DefaultUrlSerializer, Params, UrlTree} from '@angular/router';
 import {HttpParams} from '@angular/common/http';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 
 const ROUTE_PREFIX = './#';
+
+export interface RouteInfo {
+    module?: string;
+    action?: string;
+    record?: string;
+    params?: Params;
+}
 
 @Injectable({providedIn: 'root'})
 export class RouteConverter {
@@ -37,7 +44,7 @@ export class RouteConverter {
      */
     public toFrontEndRoute(legacyLink: string): string {
 
-        if (legacyLink && legacyLink.includes('/#/')){
+        if (legacyLink && legacyLink.includes('/#/')) {
             const anchorParts = legacyLink.split('/#/');
 
             if (anchorParts.length < 2) {
@@ -47,26 +54,14 @@ export class RouteConverter {
             return anchorParts[1];
         }
 
-        const parser = new DefaultUrlSerializer();
-
-        const replacedString = legacyLink.replace('/legacy', '');
-        const parts = replacedString.split('?');
-
-        if (parts.length < 2) {
+        const info = this.parse(legacyLink);
+        if (!info) {
             return '/';
         }
 
-        const tree: UrlTree = parser.parse('/?' + parts[1]);
+        let route = this.buildRoute(info.module, info.action, info.record);
 
-        const params = tree.queryParamMap;
-
-        const module = params.get('module') || '';
-        const action = params.get('action') || '';
-        const record = params.get('record') || '';
-
-        let route = this.buildRoute(module, action, record);
-
-        route += this.buildQueryString(tree.queryParams, ['module', 'action', 'record']);
+        route += this.buildQueryString(info.params, ['module', 'action', 'record']);
 
         return route;
     }
@@ -74,8 +69,8 @@ export class RouteConverter {
     /**
      * Build legacy link from router information
      *
-     * @param {{}} params route params
-     * @param {{}} queryParams route query params
+     * @param {object} params route params
+     * @param {object} queryParams route query params
      * @returns {string} legacy url
      */
     public toLegacy(params: Params, queryParams: Params): string {
@@ -99,6 +94,89 @@ export class RouteConverter {
         path += this.buildQueryString(queryObject);
 
         return path;
+    }
+
+    /**
+     * Parse legacy link
+     *
+     * @param {string} legacyLink to parse
+     * @returns {object} route info
+     */
+    public parse(legacyLink: string): RouteInfo {
+
+        const parser = new DefaultUrlSerializer();
+
+        const replacedString = legacyLink.replace('/legacy', '');
+        const parts = replacedString.split('?');
+
+        if (parts.length < 2) {
+            return null;
+        }
+
+        const tree: UrlTree = parser.parse('/?' + parts[1]);
+
+        const params = tree.queryParamMap;
+
+        const module = params.get('module') || '';
+        const action = params.get('action') || '';
+        const record = params.get('record') || '';
+
+        return {
+            module,
+            action,
+            record,
+            params: tree.queryParams
+        };
+    }
+
+    /**
+     * Check if given routeInfo matches the provided activated route
+     *
+     * @param {object} route to check
+     * @param {object} routeInfo to check
+     * @returns {boolean} is match
+     */
+    public matchesActiveRoute(route: ActivatedRoute, routeInfo: RouteInfo): boolean {
+        const toCheck = [
+            {
+                name: 'module',
+                map: (value): any => {
+
+                    if (!value) {
+                        return value;
+                    }
+
+                    return this.mapModuleToFrontend(value);
+                }
+            },
+            {
+                name: 'action',
+                map: (value): any => {
+
+                    if (!value) {
+                        return value;
+                    }
+
+                    return this.mapActionToFrontEnd(value);
+                }
+            },
+            {
+                name: 'record',
+                map: (value): any => value
+            }
+        ];
+
+        let match = true;
+
+        toCheck.forEach((param) => {
+            if (!route.snapshot.params[param.name] && !routeInfo[param.name]) {
+                return;
+            }
+
+            match = match && (route.snapshot.params[param.name] === param.map(routeInfo[param.name]));
+        });
+
+        return match;
     }
 
     /**
@@ -132,7 +210,7 @@ export class RouteConverter {
     /**
      * Build query string
      *
-     * @param {{}} queryParams query parameters
+     * @param {object} queryParams query parameters
      * @param {string[]} exclude paramenters to exclude
      * @returns {string} query string
      */

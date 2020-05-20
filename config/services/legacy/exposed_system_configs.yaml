@@ -8,3 +8,4 @@ parameters:
         default_theme: true
         module_name_map: true
         action_name_map: true
+        classicview_routing_exclusions: true
