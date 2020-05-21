@@ -140,6 +140,7 @@ export class IframeResizeHandlerHandler {
     }
 
     protected resizeIFrame(size: number): void {
-        this.iframe.style.height = size + 'px';
+        const adjustedValue = size + 1;
+        this.iframe.style.height = adjustedValue + 'px';
     }
 }
