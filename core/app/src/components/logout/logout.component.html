@@ -1,2 +1,5 @@
-<a class="dropdown-item global-links-sublink" (click)="doLogout()">Logout</a>
+<ng-container *ngIf="(vm$ | async) as vm">
+    <a class="dropdown-item global-links-sublink"
+       (click)="doLogout()">{{vm.appStrings[logout.logoutAction.label] || ''}}</a>
+</ng-container>
 <!-- this component should be used in navigation bar / bottom of user action menu -->
