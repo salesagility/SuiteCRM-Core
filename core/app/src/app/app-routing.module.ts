@@ -6,13 +6,19 @@ import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {ListComponent} from '@views/list/list.component';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
+import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
 
 const routes: Routes = [
     {
-        path: 'Listview',
+        path: ':module/list-new',
         component: ListComponent,
+        canActivate: [AuthGuard],
+        runGuardsAndResolvers: 'always',
         resolve: {
-            view: BaseMetadataResolver
+            view: BaseModuleResolver
+        },
+        data: {
+            reuseRoute: false,
         }
     },
     {
