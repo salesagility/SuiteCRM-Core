@@ -2,7 +2,9 @@
 
 namespace App\Command;
 
+use Exception;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -79,7 +81,7 @@ class AppRebuildCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return bool|int|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -99,7 +101,7 @@ class AppRebuildCommand extends Command
             echo 'An error occurred while creating your directory at ' . $exception->getPath();
         }
 
-        $rebuildEnginePath = $rebuildPath . '/engine';
+        $rebuildEnginePath = $rebuildPath;
 
         try {
             $filesystem->mkdir($rebuildEnginePath);
@@ -108,14 +110,14 @@ class AppRebuildCommand extends Command
         }
 
         $appPath = $this->projectDir . '/core/app/';
-        $enginePath = $appPath . '/engine';
+        $enginePath = $appPath;
 
         $themesPath = $this->projectDir . '/core/app/themes';
-        $assetsPath = $rebuildPath . '/engine/src/assets/themes/';
+        $assetsPath = $rebuildPath . '/src/assets/themes/';
 
         $appFilesPath = [
             'fields' => $appPath . '/fields',
-            'ui' => $appPath . '/ui',
+            'ui' => $appPath . '/src',
             'views' => $appPath . '/views'
         ];
 
@@ -242,7 +244,7 @@ class AppRebuildCommand extends Command
                     $appManagerPath = '../../../../app-manager/app-manager.module';
 
                     $componentFileName = str_replace('.ts', '', $componentFileName);
-                    $moduleImportList .= 'import { ' . $fullModuleName . " } from '../app-files/ui/components/" . $componentName . '/' . $componentName . ".module'; \n";
+                    $moduleImportList .= 'import { ' . $fullModuleName . " } from '../app-files/src/components/" . $componentName . '/' . $componentName . ".module'; \n";
                 } elseif ($type === 'views') {
                     // Placeholder for view components
                 } else {
@@ -339,7 +341,7 @@ EOT;
             {
                 componentId: 'scrm-{component_name}-ui',
                 path: 'scrm-{component_name}-ui',
-                loadChildren: '../app-files/ui/components/{component_name}/{component_name}.module#{module_name}'
+                loadChildren: '../app-files/src/components/{component_name}/{component_name}.module#{module_name}'
             },
             ";
 
@@ -376,7 +378,7 @@ EOT;
         if (!mkdir($concurrentDirectory = $rebuildEnginePath . '/src/app/app-manifest', 0755, true) && !is_dir(
                 $concurrentDirectory
             )) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
         if (file_put_contents($rebuildEnginePath . '/src/app/app-manifest/manifest.module.ts', $manifestModule)) {

@@ -52,9 +52,9 @@ class AppThemeRebuildCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!file_exists($this->projectDir . '/cache/app/engine/')) {
+        if (!file_exists($this->projectDir . '/cache/app/')) {
             throw new RuntimeException(
-                "Can't find application engine folder, Please run bin/console app:rebuild"
+                "Can't find application folder, Please run bin/console app:rebuild"
             );
         }
 
@@ -66,22 +66,11 @@ class AppThemeRebuildCommand extends Command
             $watchCompiler = '--watch';
         }
 
-        chdir($this->projectDir . '/cache/app/engine/');
+        chdir($this->projectDir . '/cache/app/');
 
         shell_exec(
             $this->projectDir . "/node_modules/.bin/node-sass $watchCompiler --output-style compressed src/assets/themes/suite8/css/style.scss > src/assets/themes/suite8/css/style.min.css"
         );
-
-        $compiledThemeDir = 'src/assets/themes/*/css/';
-        $compiledThemeFile = 'style.min.css';
-
-        $compiledFilesCheck = shell_exec("find $compiledThemeDir -name '$compiledThemeFile' -print");
-
-        if ($compiledFilesCheck === null) {
-            throw new RuntimeException(
-                'Compiled theme files have failed to create. Check that the SuiteCRM 8 source theme files exist.'
-            );
-        }
     }
 
     protected function configure(): void
