@@ -18,8 +18,8 @@ import {FilterUiModule} from '@components/filter/filter.module';
 import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
 import {TableUiModule} from '@components/table/table.module';
-import {ModuletitleUiModule} from '@components/module-title/module-title.module';
-import {ListheaderUiModule} from '@components/list-header/list-header.module';
+import {ModuleTitleModule} from '@components/module-title/module-title.module';
+import {ListHeaderModule} from '@components/list-header/list-header.module';
 import {ListcontainerUiModule} from '@components/list-container/list-container.module';
 import {ListModule} from '@views/list/list.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -60,8 +60,8 @@ import {BnNgIdleService} from 'bn-ng-idle';
         ListModule,
         WidgetUiModule,
         TableUiModule,
-        ModuletitleUiModule,
-        ListheaderUiModule,
+        ModuleTitleModule,
+        ListHeaderModule,
         ListcontainerUiModule,
         ColumnchooserUiModule,
         ImageModule,

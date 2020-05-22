@@ -1,15 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'scrm-module-title-ui',
-  templateUrl: 'module-title.component.html',
-
+    selector: 'scrm-module-title',
+    templateUrl: 'module-title.component.html'
 })
-
-export class ModuletitleUiComponent implements OnInit {
-
-  ngOnInit() {
-
-  }
-
+export class ModuleTitleComponent {
+    @Input() title = '';
 }

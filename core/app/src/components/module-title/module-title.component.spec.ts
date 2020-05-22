@@ -1,25 +1,48 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ModuletitleUiComponent} from './module-title.component';
+import {ModuleTitleComponent} from './module-title.component';
+import {Component} from '@angular/core';
 
-describe('ModuletitleUiComponent', () => {
-    let component: ModuletitleUiComponent;
-    let fixture: ComponentFixture<ModuletitleUiComponent>;
+@Component({
+    selector: 'module-title-test-host-component',
+    template: '<scrm-module-title [title]="title"></scrm-module-title>'
+})
+class ModuleTitleTestHostComponent {
+    title = 'Accounts';
+}
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [ModuletitleUiComponent]
-        })
-            .compileComponents();
-    }));
+describe('ModuleTitleComponent', () => {
+    let testHostComponent: ModuleTitleTestHostComponent;
+    let testHostFixture: ComponentFixture<ModuleTitleTestHostComponent>;
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ModuletitleUiComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        TestBed.configureTestingModule({
+            declarations: [
+                ModuleTitleComponent,
+                ModuleTitleTestHostComponent,
+            ],
+            imports: [],
+            providers: [],
+        }).compileComponents();
+    });
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(ModuleTitleTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
     });
 
     it('should create', () => {
-      expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should have title', () => {
+
+        const h4Element = testHostFixture.nativeElement.querySelector('h2');
+
+        expect(testHostComponent).toBeTruthy();
+        expect(h4Element).toBeTruthy();
+        expect(h4Element.className).toContain('list-view-title');
+        expect(h4Element.textContent).toContain('ACCOUNTS');
     });
 });

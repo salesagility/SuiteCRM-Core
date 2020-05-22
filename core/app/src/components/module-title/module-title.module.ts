@@ -1,18 +1,13 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ModuletitleUiComponent} from './module-title.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ModuleTitleComponent} from './module-title.component';
 
 @NgModule({
-    declarations: [ModuletitleUiComponent],
-    exports: [ModuletitleUiComponent],
+    declarations: [ModuleTitleComponent],
+    exports: [ModuleTitleComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ModuletitleUiComponent),
-        AngularSvgIconModule
     ]
 })
-export class ModuletitleUiModule {
+export class ModuleTitleModule {
 }
