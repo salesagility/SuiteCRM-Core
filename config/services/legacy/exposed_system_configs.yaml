@@ -9,3 +9,6 @@ parameters:
         module_name_map: true
         action_name_map: true
         classicview_routing_exclusions: true
+        default_decimal_seperator: true
+        default_number_grouping_seperator: true
+        default_currency_significant_digits: true

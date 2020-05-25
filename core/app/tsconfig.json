@@ -18,6 +18,7 @@
       "@app/*": ["./src/app/*"],
       "@base/*": ["./src/*"],
       "@views/*": ["./views/*"],
+      "@fields/*": ["./fields/*"],
       "@services/*": ["./src/services/*"],
       "@components/*": ["./src/components/*"],
       "@store/*": ["./src/facades/*"]

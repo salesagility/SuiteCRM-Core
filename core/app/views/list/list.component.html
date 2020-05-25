@@ -1,7 +1,23 @@
 <!-- Start List View Section -->
 <div class="list-view" *ngIf="(vm$ | async) as vm">
-    <scrm-field [view]="'list'" [type]="'varchar'" [value]="'MY FIELD VALUE'"></scrm-field>
+    <div>
+        TEST VARCHAR FIELD:
+        <scrm-field [mode]="'list'" [type]="'varchar'" [value]="'MY FIELD VALUE'"></scrm-field>
+    </div>
+    <div>
+        TEST INT FIELD:
+        <scrm-field [mode]="'list'" [type]="'int'" [value]="'10'"></scrm-field>
+    </div>
+    <div>
+        TEST FLOAT FIELD NO DECIMAL PLACES:
+        <scrm-field [mode]="'list'" [type]="'float'" [value]="'1000'"></scrm-field>
+    </div>
+    <div>
+        TEST FLOAT FIELD WITH DECIMAL PLACES:
+        <scrm-field [mode]="'list'" [type]="'float'" [value]="'1000.501'"></scrm-field>
+    </div>
     <scrm-list-header [module]="vm.appState.module"></scrm-list-header>
     <scrm-list-container-ui></scrm-list-container-ui>
 </div>
+
 <!-- End List View Section -->

@@ -11,6 +11,18 @@ export const systemConfigMockData = {
             value: 'en_us',
             items: []
         },
+        default_number_grouping_seperator: {
+            id: '/docroot/api/system-configs/default_number_grouping_seperator',
+            _id: 'default_number_grouping_seperator',
+            value: ';',
+            items: []
+        },
+        default_decimal_seperator: {
+            id: '/docroot/api/system-configs/default_decimal_seperator',
+            _id: 'default_decimal_seperator',
+            value: ',',
+            items: []
+        },
         passwordsetting: {
             id: '/docroot/api/system-configs/passwordsetting',
             _id: 'passwordsetting',
@@ -37,6 +49,7 @@ class SystemConfigRecordGQLSpy extends CollectionGQL {
         super(null);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public fetchAll(module: string, metadata: { fields: string[] }): Observable<any> {
         const data = {
             data: {
@@ -50,7 +63,7 @@ class SystemConfigRecordGQLSpy extends CollectionGQL {
             data.data.systemConfigs.edges.push({
                 node: systemConfigMockData.systemConfigs[key]
             });
-        })
+        });
 
         return of(data).pipe(shareReplay());
     }

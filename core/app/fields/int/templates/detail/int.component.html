@@ -1,0 +1,4 @@
+<ng-container *ngIf="!format">{{ value }}</ng-container>
+<ng-container *ngIf="format && (vm$ | async) as vm">
+    {{value | formatNumber:getDecimalsSymbol(vm.preferences, vm.configs):getGroupSymbol(vm.preferences, vm.configs)}}
+</ng-container>

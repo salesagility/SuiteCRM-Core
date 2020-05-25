@@ -17,9 +17,10 @@ import {LanguageFacade} from '@store/language/language.facade';
 import {languageMockData} from '@store/language/language.facade.spec.mock';
 import {NavigationFacade} from '@store/navigation/navigation.facade';
 import {navigationMockData} from '@store/navigation/navigation.facade.spec.mock';
-import {DynamicModule} from "ng-dynamic-component";
-import {FieldModule} from "../../fields/field.module";
-import { By } from '@angular/platform-browser';
+import {DynamicModule} from 'ng-dynamic-component';
+import {FieldModule} from '@fields/field.module';
+import {By} from '@angular/platform-browser';
+import {SystemConfigFacade} from '@store/system-config/system-config.facade';
 
 @Component({
     selector: 'list-test-host-component',
@@ -74,6 +75,24 @@ describe('ListComponent', () => {
                         vm$: of(navigationMockData.navbar).pipe(take(1))
                     }
                 },
+                {
+                    provide: SystemConfigFacade, useValue: {
+                        configs$: of({
+                            default_number_grouping_seperator: {
+                                id: '/docroot/api/system-configs/default_number_grouping_seperator',
+                                _id: 'default_number_grouping_seperator',
+                                value: ';',
+                                items: []
+                            },
+                            default_decimal_seperator: {
+                                id: '/docroot/api/system-configs/default_decimal_seperator',
+                                _id: 'default_decimal_seperator',
+                                value: ',',
+                                items: []
+                            }
+                        })
+                    }
+                }
             ],
         })
             .compileComponents();
@@ -112,4 +131,3 @@ describe('ListComponent', () => {
         expect(element.textContent).toContain('MY FIELD VALUE');
     });
 });
-

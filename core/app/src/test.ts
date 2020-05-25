@@ -36,5 +36,10 @@ const context_views = require.context('../views', true, /\.spec\.ts$/);
 // And load the modules.
 context_views.keys().map(context_views);
 
+// Then we find all the tests.
+const context_fields = require.context('../fields', true, /\.spec\.ts$/);
+// And load the modules.
+context_fields.keys().map(context_fields);
+
 // Finally, start Karma to run the tests.
 __karma__.start();
