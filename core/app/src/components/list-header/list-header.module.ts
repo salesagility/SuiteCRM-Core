@@ -5,7 +5,7 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ListHeaderComponent} from './list-header.component';
 
 import {ModuleTitleModule} from '../module-title/module-title.module';
-import {ActionmenuUiModule} from '../action-menu/action-menu.module';
+import {ActionMenuModule} from '../action-menu/action-menu.module';
 import {SettingsmenuUiModule} from '../settings-menu/settings-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
@@ -16,7 +16,7 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
         CommonModule,
         AppManagerModule.forChild(ListHeaderComponent),
         ModuleTitleModule,
-        ActionmenuUiModule,
+        ActionMenuModule,
         SettingsmenuUiModule,
         AngularSvgIconModule
     ]

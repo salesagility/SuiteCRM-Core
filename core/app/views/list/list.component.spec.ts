@@ -13,6 +13,10 @@ import {ImageModule} from '@components/image/image.module';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
 import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
 import {AppStateFacade} from '@store/app-state/app-state.facade';
+import {LanguageFacade} from '@store/language/language.facade';
+import {languageMockData} from '@store/language/language.facade.spec.mock';
+import {NavigationFacade} from '@store/navigation/navigation.facade';
+import {navigationMockData} from '@store/navigation/navigation.facade.spec.mock';
 import {DynamicModule} from "ng-dynamic-component";
 import {FieldModule} from "../../fields/field.module";
 import { By } from '@angular/platform-browser';
@@ -39,7 +43,8 @@ describe('ListComponent', () => {
                 ImageModule,
                 ApolloTestingModule,
                 DynamicModule,
-                FieldModule
+                FieldModule,
+                RouterTestingModule
             ],
             declarations: [ListComponent, ListTestHostComponent],
             providers: [
@@ -56,6 +61,17 @@ describe('ListComponent', () => {
                             view: 'list',
                             loaded: true
                         }).pipe(take(1))
+                    }
+                },
+                {
+                    provide: LanguageFacade, useValue: {
+                        vm$: of(languageMockData).pipe(take(1)),
+                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1))
+                    }
+                },
+                {
+                    provide: NavigationFacade, useValue: {
+                        vm$: of(navigationMockData.navbar).pipe(take(1))
                     }
                 },
             ],

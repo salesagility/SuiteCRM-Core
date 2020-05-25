@@ -1,23 +1,24 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ActionmenuUiComponent} from './action-menu.component';
-
-import {ButtonUiModule} from '../button/button.module';
-import {ModalUiModule} from '../modal/modal.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
+import {ActionMenuComponent} from './action-menu.component';
+
+import {ButtonModule} from '@components/button/button.module';
+import {ModalUiModule} from '@components/modal/modal.module';
+
+
 @NgModule({
-  declarations: [ActionmenuUiComponent],
-  exports: [ActionmenuUiComponent],
-  imports: [
-    CommonModule,
-    AppManagerModule.forChild(ActionmenuUiComponent),
-    ModalUiModule,
-    ButtonUiModule,
-    AngularSvgIconModule
-  ]
+    declarations: [ActionMenuComponent],
+    exports: [ActionMenuComponent],
+    imports: [
+        CommonModule,
+        AppManagerModule.forChild(ActionMenuComponent),
+        ModalUiModule,
+        ButtonModule,
+        AngularSvgIconModule
+    ]
 })
-export class ActionmenuUiModule {
+export class ActionMenuModule {
 }

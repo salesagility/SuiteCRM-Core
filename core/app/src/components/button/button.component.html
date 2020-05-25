@@ -1,5 +1,5 @@
 <button type="button"
-        [ngClass]="[buttonConfig.buttonClass]"
-        (click)="onTextBtnClick()">
-  {{ buttonConfig.text }}
+        [ngClass]="config.class"
+        (click)="config.onClick && config.onClick()">
+    {{ config.label }}
 </button>

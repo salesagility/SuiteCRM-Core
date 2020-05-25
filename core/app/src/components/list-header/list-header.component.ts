@@ -3,6 +3,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {LanguageFacade, LanguageListStringMap} from '@store/language/language.facade';
 import {NavbarModule, Navigation, NavigationFacade} from '@store/navigation/navigation.facade';
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
 @Component({
     selector: 'scrm-list-header',
@@ -26,7 +27,7 @@ export class ListHeaderComponent {
             ]
         ) => {
 
-            const moduleInfo = this.getModuleInfo(navigation, this.module);
+            const moduleInfo = this.moduleNavigation.getModuleInfo(this.module, navigation);
             return {
                 appListStrings,
                 navigation,
@@ -35,20 +36,15 @@ export class ListHeaderComponent {
         })
     );
 
-    constructor(protected language: LanguageFacade, protected navigation: NavigationFacade) {
-    }
-
-    getModuleInfo(navigation: Navigation, module: string): NavbarModule {
-        if (!navigation || !navigation.modules) {
-            return null;
-        }
-        return navigation.modules[module];
+    constructor(
+        protected language: LanguageFacade,
+        protected navigation: NavigationFacade,
+        protected moduleNavigation: ModuleNavigation
+    ) {
     }
 
     getModuleTitle(appListStrings: LanguageListStringMap, module: NavbarModule): string {
-        if (!appListStrings || !appListStrings.moduleList || !module || !module.labelKey) {
-            return '';
-        }
-        return appListStrings.moduleList[module.labelKey] || '';
+        return this.moduleNavigation.getModuleLabel(module, appListStrings);
     }
+
 }

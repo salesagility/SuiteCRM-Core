@@ -7,7 +7,7 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 
 import {ListHeaderComponent} from './list-header.component';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
-import {ActionmenuUiModule} from '@components/action-menu/action-menu.module';
+import {ActionMenuModule} from '@components/action-menu/action-menu.module';
 import {SettingsmenuUiModule} from '@components/settings-menu/settings-menu.module';
 import {ImageModule} from '@components/image/image.module';
 import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
@@ -17,6 +17,8 @@ import {LanguageFacade} from '@store/language/language.facade';
 import {languageMockData} from '@store/language/language.facade.spec.mock';
 import {NavigationFacade} from '@store/navigation/navigation.facade';
 import {navigationMockData} from '@store/navigation/navigation.facade.spec.mock';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ButtonModule} from '@components/button/button.module';
 
 @Component({
     selector: 'list-header-test-host-component',
@@ -34,11 +36,13 @@ describe('ListHeaderComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 ModuleTitleModule,
-                ActionmenuUiModule,
+                ActionMenuModule,
+                ButtonModule,
                 SettingsmenuUiModule,
                 ApolloTestingModule,
                 HttpClientTestingModule,
-                ImageModule
+                ImageModule,
+                RouterTestingModule
             ],
             declarations: [ListHeaderComponent, ListHeaderTestHostComponent],
             providers: [
@@ -49,6 +53,7 @@ describe('ListHeaderComponent', () => {
                 },
                 {
                     provide: LanguageFacade, useValue: {
+                        vm$: of(languageMockData).pipe(take(1)),
                         appListStrings$: of(languageMockData.appListStrings).pipe(take(1))
                     }
                 },
@@ -74,7 +79,7 @@ describe('ListHeaderComponent', () => {
 
     it('should have action menu', () => {
 
-        const actionMenuElement = testHostFixture.nativeElement.querySelector('scrm-action-menu-ui');
+        const actionMenuElement = testHostFixture.nativeElement.querySelector('scrm-action-menu');
         const actionButtons = actionMenuElement.getElementsByClassName('action-button');
 
         expect(testHostComponent).toBeTruthy();

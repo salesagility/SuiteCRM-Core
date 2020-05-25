@@ -1,4 +1,5 @@
-<div class="list-view-actions float-right">
-  <scrm-modal-ui></scrm-modal-ui>
-  <scrm-button-ui [buttonConfig]="importButtonConfig"></scrm-button-ui>
+<div class="list-view-actions float-right" *ngIf="(vm$ | async) as vm">
+    <scrm-button *ngFor="let action of vm.moduleInfo.menu;"
+                 [config]="getButtonConfig(action, vm.language)"
+    ></scrm-button>
 </div>

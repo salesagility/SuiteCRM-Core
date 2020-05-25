@@ -1,18 +1,16 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ButtonUiComponent} from './button.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
+import {ButtonComponent} from './button.component';
 
 @NgModule({
-    declarations: [ButtonUiComponent],
-    exports: [ButtonUiComponent],
+    declarations: [ButtonComponent],
+    exports: [ButtonComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ButtonUiComponent),
-        AngularSvgIconModule
+        AppManagerModule.forChild(ButtonComponent),
     ]
 })
-export class ButtonUiModule {
+export class ButtonModule {
 }

@@ -14,6 +14,7 @@ import {LanguageFacade, LanguageStrings,} from '@base/facades/language/language.
 import {RouteConverter} from "@services/navigation/route-converter/route-converter.service";
 import {ModuleNameMapper} from "@services/navigation/module-name-mapper/module-name-mapper.service";
 import {ActionNameMapper} from "@services/navigation/action-name-mapper/action-name-mapper.service";
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -37,7 +38,7 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     moduleNameMapper = new ModuleNameMapper(this.systemConfigFacade)
     actionNameMapper = new ActionNameMapper(this.systemConfigFacade)
     routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper)
-    navbar: NavbarModel = new NavbarAbstract(this.routeConverter);
+    navbar: NavbarModel = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
 
     languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceFacade.userPreferences$;
@@ -74,9 +75,10 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
                 protected userPreferenceFacade: UserPreferenceFacade,
                 protected systemConfigFacade: SystemConfigFacade,
                 protected appState: AppStateFacade,
-                private authService: AuthService
+                private authService: AuthService,
+                protected moduleNavigation: ModuleNavigation
     ) {
-        const navbar = new NavbarAbstract(this.routeConverter);
+        const navbar = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
         this.setNavbar(navbar);
 
         NavbarUiComponent.instances.push(this);
@@ -92,7 +94,7 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     static reset(): void {
         NavbarUiComponent.instances.forEach((navbarComponent: NavbarUiComponent) => {
             navbarComponent.loaded = false;
-            navbarComponent.navbar = new NavbarAbstract(navbarComponent.routeConverter);
+            navbarComponent.navbar = new NavbarAbstract(navbarComponent.routeConverter, navbarComponent.moduleNavigation);
         });
     }
 
@@ -103,7 +105,7 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const navbar = new NavbarAbstract(this.routeConverter);
+        const navbar = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
         this.setNavbar(navbar);
         this.authService.isUserLoggedIn.subscribe(value => {
             this.isUserLoggedIn = value;

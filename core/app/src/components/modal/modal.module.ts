@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '../../app-manager/app-manager.module';
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ModalUiComponent} from './modal.component';
 
-import {ButtonUiModule} from '../button/button.module';
+import {ButtonModule} from '@components/button/button.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ImageModule} from '@components/image/image.module';
 
@@ -14,7 +14,7 @@ import {ImageModule} from '@components/image/image.module';
     imports: [
         CommonModule,
         AppManagerModule.forChild(ModalUiComponent),
-        ButtonUiModule,
+        ButtonModule,
         AngularSvgIconModule,
         ImageModule
     ]

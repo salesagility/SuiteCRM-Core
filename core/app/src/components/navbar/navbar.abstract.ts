@@ -1,6 +1,12 @@
 import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
-import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '@base/facades/navigation/navigation.facade';
+import {
+    GroupedTab,
+    NavbarModule,
+    NavbarModuleMap,
+    Navigation,
+    UserActionMenu
+} from '@base/facades/navigation/navigation.facade';
 import {LanguageStringMap, LanguageStrings} from '@base/facades/language/language.facade';
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
@@ -9,6 +15,7 @@ import {ready} from '@base/utils/object-utils';
 import {UserPreferenceMap} from '@base/facades/user-preference/user-preference.facade';
 import {AppState} from '@base/facades/app-state/app-state.facade';
 import {LinkTarget} from '@components/navbar/link-target';
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
 export interface RecentRecordsMenuItem {
     summary: string;
@@ -28,8 +35,6 @@ export interface MenuItem {
     submenu: MenuItem[];
     recentRecords?: RecentRecordsMenuItem[];
 }
-
-const ROUTE_PREFIX = './#';
 
 export class NavbarAbstract implements NavbarModel {
     authenticated = true;
@@ -53,7 +58,9 @@ export class NavbarAbstract implements NavbarModel {
      */
 
     constructor(
-        private routeConverter: RouteConverter) {
+        private routeConverter: RouteConverter,
+        protected moduleNavigation: ModuleNavigation
+    ) {
     }
 
     /**
@@ -331,20 +338,12 @@ export class NavbarAbstract implements NavbarModel {
         modules: NavbarModuleMap,
         languages: LanguageStrings
     ): any {
-        let moduleUrl = '';
-
-        let moduleRoute = null;
-
-        if (moduleUrl.startsWith(ROUTE_PREFIX)) {
-            moduleRoute = moduleUrl.replace(ROUTE_PREFIX, '');
-            moduleUrl = null;
-        }
 
         return {
             link: {
                 label: (languages.appStrings && languages.appStrings[moduleLabel]) || moduleLabel,
-                url: moduleUrl,
-                route: moduleRoute,
+                url: '',
+                route: null,
                 params: null
             },
             icon: '',
@@ -394,23 +393,17 @@ export class NavbarAbstract implements NavbarModel {
      */
     protected buildTabMenuItem(
         module: string,
-        moduleInfo: any,
+        moduleInfo: NavbarModule,
         languages: LanguageStrings,
     ): MenuItem {
 
-        let moduleUrl = (moduleInfo && moduleInfo.defaultRoute) || '';
-        let moduleRoute = null;
-        if (moduleUrl.startsWith(ROUTE_PREFIX)) {
-            moduleRoute = moduleUrl.replace(ROUTE_PREFIX, '');
-            moduleUrl = null;
-        }
+        const moduleRoute = this.moduleNavigation.getModuleRoute(moduleInfo);
 
-        const moduleLabel = (moduleInfo && moduleInfo.labelKey) || '';
         const menuItem = {
             link: {
-                label: (languages.appListStrings && languages.appListStrings.moduleList[moduleInfo.labelKey]) || moduleLabel,
-                url: moduleUrl,
-                route: moduleRoute,
+                label: this.moduleNavigation.getModuleLabel(moduleInfo, languages.appListStrings),
+                url: moduleRoute.url,
+                route: moduleRoute.route,
                 params: null
             },
             icon: '',
@@ -419,31 +412,15 @@ export class NavbarAbstract implements NavbarModel {
 
         if (moduleInfo) {
             moduleInfo.menu.forEach((subMenu) => {
-                let label = languages.modStrings[module][subMenu.labelKey];
 
-                if (!label) {
-                    label = languages.appStrings[subMenu.labelKey];
-                }
-
-                let actionUrl = subMenu.url;
-                let actionRoute = null;
-                let actionParams = null;
-                if (actionUrl.startsWith(ROUTE_PREFIX)) {
-                    actionRoute = actionUrl.replace(ROUTE_PREFIX, '');
-                    actionUrl = null;
-
-                    if (subMenu.params) {
-                        actionParams = subMenu.params;
-                    }
-                }
-
+                const moduleActionRoute = this.moduleNavigation.getActionRoute(subMenu);
 
                 menuItem.submenu.push({
                     link: {
-                        label,
-                        url: actionUrl,
-                        route: actionRoute,
-                        params: actionParams
+                        label: this.moduleNavigation.getActionLabel(module, subMenu, languages),
+                        url: moduleActionRoute.url,
+                        route: moduleActionRoute.route,
+                        params: moduleActionRoute.params
                     },
                     icon: subMenu.icon,
                     submenu: []

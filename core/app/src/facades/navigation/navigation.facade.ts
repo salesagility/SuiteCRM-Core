@@ -23,7 +23,7 @@ export interface NavbarModule {
     path: string;
     defaultRoute: string;
     labelKey: string;
-    menu: ModuleSubMenu[];
+    menu: ModuleAction[];
 }
 
 export interface GroupedTab {
@@ -39,7 +39,7 @@ export interface UserActionMenu {
     icon: string;
 }
 
-export interface ModuleSubMenu {
+export interface ModuleAction {
     name: string;
     labelKey: string;
     label?: string;

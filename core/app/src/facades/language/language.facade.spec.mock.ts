@@ -59,6 +59,7 @@ export const languageMockData = {
             LBL_MODULE_TITLE: 'Accounts: Home',
             LBL_MODULE_ID: 'Accounts',
             LBL_NEW_FORM_TITLE: 'New Account',
+            LNK_IMPORT_ACCOUNTS: 'Import Accounts'
         },
     }
 };
