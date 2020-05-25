@@ -28,5 +28,8 @@
       "dom",
       "esnext.asynciterable"
     ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
   }
 }
