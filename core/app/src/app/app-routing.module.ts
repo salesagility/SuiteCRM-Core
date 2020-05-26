@@ -1,12 +1,13 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {ClassicViewUiComponent} from '@components/classic-view/classic-view.component';
 import {ClassicViewResolver} from '@services/classic-view/classic-view.resolver';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {ListComponent} from '@views/list/list.component';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
-import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
+import {BaseListResolver} from '@services/metadata/base-list.resolver';
+import { BaseModuleResolver } from '@base/services/metadata/base-module.resolver';
 
 const routes: Routes = [
     {
@@ -15,7 +16,8 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            view: BaseModuleResolver
+            view: BaseModuleResolver,
+            metadata: BaseListResolver
         },
         data: {
             reuseRoute: false,

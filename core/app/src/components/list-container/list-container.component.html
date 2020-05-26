@@ -3,7 +3,7 @@
 <div class="list-view-container container-fluid">
     <div class="row">
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !widgetService.displayWidgets }">
-            <scrm-table-ui></scrm-table-ui>
+            <scrm-table-ui [module]="module"></scrm-table-ui>
         </div>
 
         <div class="col-lg-3" *ngIf="widgetService.displayWidgets">

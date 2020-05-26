@@ -1,9 +1,10 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '../../../app-manager/app-manager.module';
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {TablebodyUiComponent} from './table-body.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
     declarations: [TablebodyUiComponent],
@@ -11,7 +12,8 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     imports: [
         CommonModule,
         AppManagerModule.forChild(TablebodyUiComponent),
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        CdkTableModule
     ]
 })
 export class TablebodyUiModule {

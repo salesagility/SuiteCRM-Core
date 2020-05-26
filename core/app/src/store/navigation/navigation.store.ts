@@ -188,7 +188,6 @@ export class NavigationStore implements StateStore {
      * @returns {{}} Observable<any>
      */
     protected fetch(userId: string): Observable<any> {
-
         return this.recordGQL
             .fetch(this.resourceName, `/api/navbars/${userId}`, this.fieldsMetadata)
             .pipe(

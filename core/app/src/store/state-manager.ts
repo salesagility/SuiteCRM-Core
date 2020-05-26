@@ -6,6 +6,7 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {StateStore, StateStoreMap, StateStoreMapEntry} from '@base/store/state';
+import {ListViewMetaStore} from '@store/metadata/list-view-meta.store';
 
 @Injectable({
     providedIn: 'root',
@@ -16,6 +17,7 @@ export class StateManager {
     constructor(
         protected appStore: AppStateStore,
         protected languageStore: LanguageStore,
+        protected listViewMetaStore: ListViewMetaStore,
         protected navigationStore: NavigationStore,
         protected systemConfigStore: SystemConfigStore,
         protected themeImagesStore: ThemeImagesStore,
@@ -23,6 +25,7 @@ export class StateManager {
     ) {
         this.stateStores.appStore = this.buildMapEntry(appStore, false);
         this.stateStores.languageStore = this.buildMapEntry(languageStore, false)
+        this.stateStores.listViewMetaStore = this.buildMapEntry(listViewMetaStore, false)
         this.stateStores.navigationStore = this.buildMapEntry(navigationStore, true);
         this.stateStores.systemConfigStore = this.buildMapEntry(systemConfigStore, false);
         this.stateStores.themeImagesStore = this.buildMapEntry(themeImagesStore, false);

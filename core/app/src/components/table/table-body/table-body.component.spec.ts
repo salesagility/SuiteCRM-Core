@@ -1,25 +1,48 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TablebodyUiComponent} from './table-body.component';
+import {CdkTableModule} from '@angular/cdk/table';
+import {ApolloTestingModule} from 'apollo-angular/testing';
+import {Component} from '@angular/core';
+
+@Component({
+    selector: 'tabke-body-ui-test-host-component',
+    template: '<scrm-table-body-ui [module]="module"></scrm-table-body-ui>'
+})
+class TableBodyUITestHostComponent {
+    module = 'accounts';
+}
 
 describe('TablebodyUiComponent', () => {
-    let component: TablebodyUiComponent;
-    let fixture: ComponentFixture<TablebodyUiComponent>;
-
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [TablebodyUiComponent]
-        })
-            .compileComponents();
-    }));
+    let testHostComponent: TableBodyUITestHostComponent;
+    let testHostFixture: ComponentFixture<TableBodyUITestHostComponent>;
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(TablebodyUiComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        TestBed.configureTestingModule({
+            imports: [
+                CdkTableModule,
+                ApolloTestingModule,
+            ],
+            declarations: [TablebodyUiComponent, TableBodyUITestHostComponent],
+            providers: [],
+        })
+            .compileComponents();
+    });
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TableBodyUITestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
     });
 
     it('should create', () => {
-      expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should have table body', () => {
+        const tableBodyElement = testHostFixture.nativeElement.querySelector('table');
+
+        expect(testHostComponent).toBeTruthy();
+        expect(tableBodyElement).toBeTruthy();
+        expect(tableBodyElement.outerHTML).toContain('aria-describedby="table-body"');
     });
 });
