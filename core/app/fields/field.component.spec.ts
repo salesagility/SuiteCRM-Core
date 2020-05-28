@@ -27,7 +27,9 @@ class FieldTestHostComponent {
         {type: 'int', mode: 'detail', value: '10', expected: '10'},
         {type: 'int', mode: 'list', value: '10', expected: '10'},
         {type: 'float', mode: 'detail', value: '1000.5', expected: '1,000.5'},
-        {type: 'float', mode: 'list', value: '1000.5', expected: '1,000.5'}
+        {type: 'float', mode: 'list', value: '1000.5', expected: '1,000.5'},
+        {type: 'phone', mode: 'detail', value: '+44 1111 123456', expected: '+44 1111 123456'},
+        {type: 'phone', mode: 'list', value: '+44 1111 123456', expected: '+44 1111 123456'}
     ];
 }
 

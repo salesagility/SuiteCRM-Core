@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ListComponent} from './list.component';
 import {ListHeaderModule} from '@components/list-header/list-header.module';
 import {ListcontainerUiModule} from '@components/list-container/list-container.module';
-import {FieldModule} from '../../fields/field.module';
+import {FieldModule} from '@fields/field.module';
 
 @NgModule({
     declarations: [ListComponent],

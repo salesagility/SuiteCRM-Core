@@ -1,19 +1,23 @@
 import {VarcharDetailFieldModule} from '@fields/varchar/templates/detail/varchar.module';
 import {VarcharDetailFieldComponent} from '@fields/varchar/templates/detail/varchar.component';
-import {IntDetailFieldModule} from './int/templates/detail/int.module';
-import {IntDetailFieldComponent} from './int/templates/detail/int.component';
-import {FloatDetailFieldModule} from './float/templates/detail/float.module';
-import {FloatDetailFieldComponent} from './float/templates/detail/float.component';
+import {IntDetailFieldModule} from '@fields/int/templates/detail/int.module';
+import {IntDetailFieldComponent} from '@fields/int/templates/detail/int.component';
+import {FloatDetailFieldModule} from '@fields/float/templates/detail/float.module';
+import {FloatDetailFieldComponent} from '@fields/float/templates/detail/float.component';
+import {PhoneDetailFieldModule} from '@fields/phone/templates/detail/phone.module';
+import {PhoneDetailFieldComponent} from '@fields/phone/templates/detail/phone.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
     IntDetailFieldModule,
-    FloatDetailFieldModule
+    FloatDetailFieldModule,
+    PhoneDetailFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
     IntDetailFieldComponent,
-    FloatDetailFieldComponent
+    FloatDetailFieldComponent,
+    PhoneDetailFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -24,5 +28,7 @@ export const viewFieldsMap = {
     'int.list': IntDetailFieldComponent,
     'int.detail': IntDetailFieldComponent,
     'float.list': FloatDetailFieldComponent,
-    'float.detail': FloatDetailFieldComponent
+    'float.detail': FloatDetailFieldComponent,
+    'phone.list': PhoneDetailFieldComponent,
+    'phone.detail': PhoneDetailFieldComponent
 };
