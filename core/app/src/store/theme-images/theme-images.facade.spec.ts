@@ -1,6 +1,6 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {themeImagesFacadeMock, themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {themeImagesFacadeMock, themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 
 describe('ThemeImages Facade', () => {
     const service: ThemeImagesFacade = themeImagesFacadeMock;

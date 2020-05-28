@@ -4,9 +4,9 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 import {ActionBarUiComponent} from './action-bar.component';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 import {LanguageFacade} from '@store/language/language.facade';
 import {languageFacadeMock} from '@store/language/language.facade.spec.mock';

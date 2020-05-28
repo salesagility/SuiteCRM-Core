@@ -21,7 +21,7 @@
       "@fields/*": ["./fields/*"],
       "@services/*": ["./src/services/*"],
       "@components/*": ["./src/components/*"],
-      "@store/*": ["./src/facades/*"]
+      "@store/*": ["./src/store/*"]
     },
     "lib": [
       "es2018",

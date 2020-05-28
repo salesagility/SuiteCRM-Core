@@ -1,5 +1,5 @@
 import {ButtonLoadingDirective} from './button-loading.directive';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {AppStateFacade} from '@store/app-state/app-state.facade';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 

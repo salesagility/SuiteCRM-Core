@@ -1,7 +1,7 @@
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
-import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
+import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
 
 export const userPreferenceMockData = {
     userPreferences: {

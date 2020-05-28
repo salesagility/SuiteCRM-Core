@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImageComponent} from './image.component';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {of} from 'rxjs';

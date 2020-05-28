@@ -6,10 +6,10 @@ import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/o
 import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
-import {StateManager} from '@base/facades/state-manager';
-import {LanguageFacade} from '@base/facades/language/language.facade';
+import {StateManager} from '@base/store/state-manager';
+import {LanguageFacade} from '@base/store/language/language.facade';
 import {BnNgIdleService} from 'bn-ng-idle';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 export interface SessionStatus {
     active?: boolean;

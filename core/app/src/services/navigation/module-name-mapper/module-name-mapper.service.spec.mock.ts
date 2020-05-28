@@ -1,4 +1,4 @@
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 
 export const moduleNameMapperMockData = {

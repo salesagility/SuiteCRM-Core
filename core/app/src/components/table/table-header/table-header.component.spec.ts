@@ -7,9 +7,9 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 
 describe('TableheaderUiComponent', () => {

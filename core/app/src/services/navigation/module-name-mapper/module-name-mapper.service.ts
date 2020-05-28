@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
 
 export interface NameMap {
     [key: string]: string;

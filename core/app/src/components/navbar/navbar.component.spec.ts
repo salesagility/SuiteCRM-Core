@@ -6,12 +6,12 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {NavbarUiComponent} from './navbar.component';
-import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
-import {LanguageFacade} from '@base/facades/language/language.facade';
-import {navigationMock} from '@base/facades/navigation/navigation.facade.spec.mock';
-import {languageFacadeMock} from '@base/facades/language/language.facade.spec.mock';
-import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
-import {userPreferenceFacadeMock} from '@base/facades/user-preference/user-preference.facade.spec.mock';
+import {NavigationFacade} from '@store/navigation/navigation.facade';
+import {LanguageFacade} from '@store/language/language.facade';
+import {navigationMock} from '@store/navigation/navigation.facade.spec.mock';
+import {languageFacadeMock} from '@store/language/language.facade.spec.mock';
+import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
+import {userPreferenceFacadeMock} from '@store/user-preference/user-preference.facade.spec.mock';
 import {ApolloTestingModule} from "apollo-angular/testing";
 
 describe('NavbarUiComponent', () => {

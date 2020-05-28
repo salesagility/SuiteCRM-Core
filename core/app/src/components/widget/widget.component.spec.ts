@@ -6,9 +6,9 @@ import {ChartUiModule} from '@components/chart/chart.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
 

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
-import {LanguageFacade} from '@base/facades/language/language.facade';
-import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
-import {StateFacade, StateFacadeMap, StateFacadeMapEntry} from '@base/facades/state';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {LanguageFacade} from '@base/store/language/language.facade';
+import {NavigationFacade} from '@base/store/navigation/navigation.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
+import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
+import {StateFacade, StateFacadeMap, StateFacadeMapEntry} from '@base/store/state';
 
 @Injectable({
     providedIn: 'root',

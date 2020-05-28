@@ -3,8 +3,8 @@ import {CanActivate, Router, UrlTree} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {AuthService, SessionStatus} from './auth.service';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 
 @Injectable({

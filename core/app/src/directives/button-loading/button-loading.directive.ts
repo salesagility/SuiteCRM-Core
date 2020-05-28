@@ -1,5 +1,5 @@
 import {Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 import {tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 

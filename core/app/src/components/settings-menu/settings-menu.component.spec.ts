@@ -5,9 +5,9 @@ import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.mod
 import {FilterUiModule} from '@components/filter/filter.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
 

@@ -4,7 +4,7 @@ import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/facades/state';
+import {StateFacade} from '@base/store/state';
 
 export interface UserPreferenceMap {
     [key: string]: string;

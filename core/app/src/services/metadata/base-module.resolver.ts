@@ -4,12 +4,12 @@ import {tap} from 'rxjs/operators';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
-import {LanguageFacade} from '@base/facades/language/language.facade';
-import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
-import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {LanguageFacade} from '@base/store/language/language.facade';
+import {NavigationFacade} from '@base/store/navigation/navigation.facade';
+import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
+import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 @Injectable({providedIn: 'root'})
 export class BaseModuleResolver extends BaseMetadataResolver {

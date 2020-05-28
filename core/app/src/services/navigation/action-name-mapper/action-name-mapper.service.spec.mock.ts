@@ -1,5 +1,5 @@
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
 
 export const actionNameMapperMockData = {
     Authenticate: 'authenticate',

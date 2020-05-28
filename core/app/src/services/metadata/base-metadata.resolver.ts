@@ -3,12 +3,12 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {concatAll, map, tap, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
-import {LanguageFacade} from '@base/facades/language/language.facade';
-import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
-import {UserPreferenceFacade} from '@base/facades/user-preference/user-preference.facade';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {LanguageFacade} from '@base/store/language/language.facade';
+import {NavigationFacade} from '@base/store/navigation/navigation.facade';
+import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
+import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 
 @Injectable({providedIn: 'root'})

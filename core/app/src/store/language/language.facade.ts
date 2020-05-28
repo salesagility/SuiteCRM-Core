@@ -3,9 +3,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/facades/state';
+import {StateFacade} from '@base/store/state';
 
 export interface LanguageStringMap {
     [key: string]: string;

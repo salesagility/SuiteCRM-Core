@@ -1,4 +1,4 @@
-import {NavigationFacade} from '@base/facades/navigation/navigation.facade';
+import {NavigationFacade} from '@base/store/navigation/navigation.facade';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';

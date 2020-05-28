@@ -3,7 +3,7 @@ import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {StateFacade} from '@base/facades/state';
+import {StateFacade} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
 
 export interface Navigation {

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
 import {map, distinctUntilChanged} from 'rxjs/operators';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/facades/state';
+import {StateFacade} from '@base/store/state';
 
 export interface AppState {
     loading: boolean;

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ThemeImage, ThemeImageMap, ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImage, ThemeImageMap, ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
 
 @Component({
     selector: 'scrm-image',

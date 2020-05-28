@@ -8,14 +8,14 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {MenuItem} from '@components/navbar/navbar.abstract';
-import {LanguageStrings} from '@base/facades/language/language.facade';
-import {languageMockData} from '@base/facades/language/language.facade.spec.mock';
+import {LanguageStrings} from '@store/language/language.facade';
+import {languageMockData} from '@store/language/language.facade.spec.mock';
 
 const groupedMockMenuItem = {
     link: {

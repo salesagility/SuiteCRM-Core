@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {Process, ProcessService} from '@services/process/process.service';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 @Injectable({
     providedIn: 'root',

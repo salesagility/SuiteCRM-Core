@@ -1,6 +1,6 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {SystemConfigFacade} from '@base/facades/system-config/system-config.facade';
-import {systemConfigFacadeMock, systemConfigMockData} from '@base/facades/system-config/system-config.facade.spec.mock';
+import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {systemConfigFacadeMock, systemConfigMockData} from '@store/system-config/system-config.facade.spec.mock';
 
 describe('SystemConfig Facade', () => {
     let injector: TestBed;

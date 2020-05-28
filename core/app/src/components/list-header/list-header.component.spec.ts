@@ -10,9 +10,9 @@ import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ActionMenuModule} from '@components/action-menu/action-menu.module';
 import {SettingsmenuUiModule} from '@components/settings-menu/settings-menu.module';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
 
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {LanguageFacade} from '@store/language/language.facade';
 import {languageMockData} from '@store/language/language.facade.spec.mock';
 import {NavigationFacade} from '@store/navigation/navigation.facade';

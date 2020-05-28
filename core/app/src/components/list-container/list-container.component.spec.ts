@@ -7,8 +7,8 @@ import {TableUiModule} from '@components/table/table.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@base/facades/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 

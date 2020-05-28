@@ -1,9 +1,9 @@
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {ThemeImages, ThemeImagesFacade} from '@base/facades/theme-images/theme-images.facade';
+import {ThemeImages, ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {appStateFacadeMock} from '@base/facades/app-state/app-state.facade.spec.mock';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
+import {appStateFacadeMock} from '@base/store/app-state/app-state.facade.spec.mock';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
 
 export const themeImagesMockData = {
     bgOcher: {

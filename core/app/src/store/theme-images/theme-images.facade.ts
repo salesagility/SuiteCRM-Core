@@ -3,8 +3,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {AppStateFacade} from '@base/facades/app-state/app-state.facade';
-import {StateFacade} from '@base/facades/state';
+import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {StateFacade} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
 
 export interface ThemeImage {
