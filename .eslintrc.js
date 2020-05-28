@@ -5,6 +5,25 @@ module.exports = {
     "node": true,
     "jasmine": true
   },
+  settings: {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@app", "./core/app/src/app"],
+          ["@base", "./core/app/src"],
+          ["@views", "./core/app/views"],
+          ["@fields", "./core/app/fields"],
+          ["@services", "./core/app/src/services"],
+          ["@components", "./core/app/src/components"],
+          ["@store", "./core/app/src/store"]
+        ],
+        "extensions": [".ts", ".js"]
+      },
+      "typescript": {
+        "directory": './core/app'
+      },
+    },
+  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
