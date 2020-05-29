@@ -23,8 +23,8 @@ class ActionNameMapperTest extends Unit
         $this->actionMapper = new ActionNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
-            $this->tester->getlegacySessionName(),
-            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacySessionName(),
+            $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope()
         );
     }

@@ -27,8 +27,8 @@ class RouteConverterTest extends Unit
     {
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
-        $legacySessionName = $this->tester->getlegacySessionName();
-        $defaultSessionName = $this->tester->getdefaultSessionName();
+        $legacySessionName = $this->tester->getLegacySessionName();
+        $defaultSessionName = $this->tester->getDefaultSessionName();
         $legacyScope = $this->tester->getLegacyScope();
 
         $moduleMapper = new ModuleNameMapperHandler(

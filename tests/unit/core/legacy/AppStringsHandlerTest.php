@@ -24,8 +24,8 @@ class AppStringsHandlerTest extends Unit
         $this->handler = new AppStringsHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
-            $this->tester->getlegacySessionName(),
-            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacySessionName(),
+            $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope()
         );
     }

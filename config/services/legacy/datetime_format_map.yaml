@@ -1,0 +1,20 @@
+parameters:
+  legacy.datetime_format_map:
+    'A' : 'a'
+    'a' : 'aaaaaa' # extra format to map to lower case am pm
+    'D' : 'E'
+    'd' : 'dd'
+    'F' : 'MMMM'
+    'G' : 'H'
+    'g' : 'h'
+    'H' : 'HH'
+    'h' : 'hh'
+    'i' : 'mm'
+    'M' : 'MMM'
+    'm' : 'MM'
+    'n' : 'M'
+    'P' : 'ZZZZZ'
+    's' : 'ss'
+    'w' : 'e'
+    'Y' : 'yyyy'
+    'y' : 'yy'

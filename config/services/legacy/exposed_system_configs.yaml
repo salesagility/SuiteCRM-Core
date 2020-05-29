@@ -12,3 +12,5 @@ parameters:
         default_decimal_seperator: true
         default_number_grouping_seperator: true
         default_currency_significant_digits: true
+        datef: true
+        timef: true

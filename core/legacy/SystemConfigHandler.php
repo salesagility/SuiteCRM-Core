@@ -7,6 +7,7 @@ use App\Entity\SystemConfig;
 use App\Service\ActionNameMapperInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SystemConfigProviderInterface;
+use SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
@@ -24,9 +25,14 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     protected $injectedSystemConfigs = [];
 
     /**
-     * @var ModuleNameMapperInterface
+     * @var SystemConfigMappers
      */
-    private $moduleNameMapper;
+    private $mappers;
+
+    /**
+     * @var array
+     */
+    private $systemConfigKeyMap;
 
     /**
      * SystemConfigHandler constructor.
@@ -39,6 +45,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param ActionNameMapperInterface $actionNameMapper
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ClassicViewRoutingExclusionsHandler $exclusionsManager
+     * @param SystemConfigMappers $mappers
+     * @param array $systemConfigKeyMap
      */
     public function __construct(
         string $projectDir,
@@ -49,15 +57,18 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $exposedSystemConfigs,
         ActionNameMapperInterface $actionNameMapper,
         ModuleNameMapperInterface $moduleNameMapper,
-        ClassicViewRoutingExclusionsHandler $exclusionsManager
+        ClassicViewRoutingExclusionsHandler $exclusionsManager,
+        SystemConfigMappers $mappers,
+        array $systemConfigKeyMap
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
-        $this->moduleNameMapper = $moduleNameMapper;
 
         $this->injectedSystemConfigs['module_name_map'] = $moduleNameMapper->getLegacyToFrontendMap();
         $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
         $this->injectedSystemConfigs['classicview_routing_exclusions'] = $exclusionsManager->get();
+        $this->mappers = $mappers;
+        $this->systemConfigKeyMap = $systemConfigKeyMap;
     }
 
     /**
@@ -81,6 +92,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         foreach ($this->exposedSystemConfigs as $configKey => $value) {
             $config = $this->loadSystemConfig($configKey);
             $this->mapConfigValues($config);
+            $this->mapKey($config);
             if ($config !== null) {
                 $configs[] = $config;
             }
@@ -103,6 +115,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $config = $this->loadSystemConfig($configKey);
 
         $this->mapConfigValues($config);
+        $this->mapKey($config);
 
         $this->close();
 
@@ -210,22 +223,24 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
             return;
         }
 
-        if ($config->getId() === 'default_module') {
-            $this->mapDefaultModule($config);
+        if ($this->mappers->hasMapper($config->getId())) {
+            $mapper = $this->mappers->get($config->getId());
+            $mapper->map($config);
         }
     }
 
     /**
-     * Map default module config
-     * @param SystemConfig $config
+     * Map config key
+     * @param SystemConfig|null $config
      */
-    protected function mapDefaultModule(SystemConfig $config): void
+    protected function mapKey(?SystemConfig $config): void
     {
-        if (empty($config->getValue())) {
+        if ($config === null || empty($config->getId())) {
             return;
         }
 
-        $frontendName = $this->moduleNameMapper->toFrontEnd($config->getValue());
-        $config->setValue($frontendName);
+        if (isset($this->systemConfigKeyMap[$config->getId()])) {
+            $config->setId($this->systemConfigKeyMap[$config->getId()]);
+        }
     }
 }

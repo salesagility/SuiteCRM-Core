@@ -6,6 +6,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\UserPreference;
 use App\Service\UserPreferencesProviderInterface;
 use RuntimeException;
+use SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers;
 use UnexpectedValueException;
 use User;
 
@@ -20,6 +21,16 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
     protected $exposedUserPreferences = [];
 
     /**
+     * @var UserPreferencesMappers
+     */
+    private $mappers;
+
+    /**
+     * @var array
+     */
+    private $userPreferencesKeyMap;
+
+    /**
      * UserPreferenceHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -27,6 +38,8 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param array $exposedUserPreferences
+     * @param UserPreferencesMappers $mappers
+     * @param array $userPreferencesKeyMap
      */
     public function __construct(
         string $projectDir,
@@ -34,11 +47,15 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        array $exposedUserPreferences
+        array $exposedUserPreferences,
+        UserPreferencesMappers $mappers,
+        array $userPreferencesKeyMap
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
 
         $this->exposedUserPreferences = $exposedUserPreferences;
+        $this->mappers = $mappers;
+        $this->userPreferencesKeyMap = $userPreferencesKeyMap;
     }
 
     /**
@@ -122,7 +139,11 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
 
         $items = [];
         foreach ($this->exposedUserPreferences[$category] as $key => $value) {
-            $items[$key] = $this->loadUserPreference($key, $category);
+
+            $value = $this->loadUserPreference($key, $category);
+            $value = $this->mapValue($key, $value);
+            $key = $this->mapKey($key);
+            $items[$key] = $value;
         }
 
         $userPreference->setItems($items);
@@ -216,10 +237,40 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
     {
         global $current_user;
 
-        if ($current_user === null){
+        if ($current_user === null) {
             throw new UnexpectedValueException('Current user is not loaded');
         }
 
         return $current_user;
+    }
+
+    /**
+     * Map user preference value if mapper defined
+     * @param string $key
+     * @param $preference
+     * @return mixed
+     */
+    protected function mapValue(string $key, $preference)
+    {
+        if ($this->mappers->hasMapper($key)) {
+            $mapper = $this->mappers->get($key);
+            $preference = $mapper->map($preference);
+        }
+
+        return $preference;
+    }
+
+    /**
+     * Map user preference key if mapper defined
+     * @param string $key
+     * @return mixed
+     */
+    protected function mapKey(string $key)
+    {
+        if ($key === null) {
+            return $key;
+        }
+
+        return $this->userPreferencesKeyMap[$key] ?? $key;
     }
 }

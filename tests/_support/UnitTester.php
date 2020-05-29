@@ -63,4 +63,12 @@ class UnitTester extends Actor
     {
         return Tester::$defaultSessionName;
     }
+
+    /**
+     * @return array
+     */
+    public function getDatetimeFormatMap(): array
+    {
+        return Tester::$datetimeFormatMap;
+    }
 }

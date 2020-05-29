@@ -4,9 +4,14 @@ namespace App\Tests;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use Codeception\Test\Unit;
+use Exception;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
 use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
+use SuiteCRM\Core\Legacy\DateTimeHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\SystemConfig\DateFormatConfigMapper;
+use SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers;
+use SuiteCRM\Core\Legacy\SystemConfig\TimeFormatConfigMapper;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
 
 class SystemConfigHandlerTest extends Unit
@@ -21,12 +26,15 @@ class SystemConfigHandlerTest extends Unit
      */
     protected $handler;
 
+    /**
+     * @throws Exception
+     */
     protected function _before(): void
     {
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
-        $legacySessionName = $this->tester->getlegacySessionName();
-        $defaultSessionName = $this->tester->getdefaultSessionName();
+        $legacySessionName = $this->tester->getLegacySessionName();
+        $defaultSessionName = $this->tester->getDefaultSessionName();
         $legacyScope = $this->tester->getLegacyScope();
 
         $exposedSystemConfigs = [
@@ -42,7 +50,9 @@ class SystemConfigHandlerTest extends Unit
             ],
             'languages' => true,
             'module_name_map' => true,
-            'action_name_map' => true
+            'action_name_map' => true,
+            'datef' => true,
+            'timef' => true
         ];
 
         $moduleMapper = new ModuleNameMapperHandler(
@@ -69,6 +79,45 @@ class SystemConfigHandlerTest extends Unit
             $legacyScope
         );
 
+        $dateTimeHandler = new DateTimeHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $this->tester->getDatetimeFormatMap()
+        );
+
+        $mappersArray = [
+            'datef' => new DateFormatConfigMapper($dateTimeHandler),
+            'timef' => new TimeFormatConfigMapper($dateTimeHandler)
+        ];
+
+        /** @var SystemConfigMappers $mappers */
+        $mappers = $this->make(
+            SystemConfigMappers::class,
+            [
+                'get' => static function (string $key) use ($mappersArray) {
+                    return $mappersArray[$key] ?? null;
+                },
+                'hasMapper' => static function (string $key) use ($mappersArray) {
+                    if (isset($mappersArray[$key])) {
+                        return true;
+                    }
+
+                    return false;
+                },
+            ]
+        );
+        $systemConfigKeyMap = [
+            'datef' => 'date_format',
+            'timef' => 'time_format'
+        ];
+
+        global $sugar_config;
+        $sugar_config['datef'] = 'm/d/Y';
+        $sugar_config['timef'] = 'H:i';
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -78,7 +127,9 @@ class SystemConfigHandlerTest extends Unit
             $exposedSystemConfigs,
             $actionMapper,
             $moduleMapper,
-            $classicViewExclusionHandler
+            $classicViewExclusionHandler,
+            $mappers,
+            $systemConfigKeyMap
         );
     }
 
@@ -172,6 +223,36 @@ class SystemConfigHandlerTest extends Unit
         static::assertIsArray($actionNameMap->getItems());
 
         static::assertArrayHasKey('DetailView', $actionNameMap->getItems());
+    }
+
+    /**
+     * Test date format config transformation
+     */
+    public function testDateFormatMapping(): void
+    {
+        $format = $this->handler->getSystemConfig('datef');
+        static::assertNotNull($format);
+        static::assertEquals('date_format', $format->getId());
+        static::assertNotNull($format->getValue());
+        static::assertIsArray($format->getItems());
+        static::assertEmpty($format->getItems());
+
+        static::assertEquals('MM/dd/yyyy', $format->getValue());
+    }
+
+    /**
+     * Test time format config transformation
+     */
+    public function testTimeFormatMapping(): void
+    {
+        $format = $this->handler->getSystemConfig('timef');
+        static::assertNotNull($format);
+        static::assertEquals('time_format', $format->getId());
+        static::assertNotNull($format->getValue());
+        static::assertIsArray($format->getItems());
+        static::assertEmpty($format->getItems());
+
+        static::assertEquals('HH:mm', $format->getValue());
     }
 
 }

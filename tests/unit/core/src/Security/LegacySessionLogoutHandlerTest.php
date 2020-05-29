@@ -46,7 +46,10 @@ class LegacySessionLogoutHandlerTest extends Unit
     public $closeCalled = false;
 
 
-    /** @noinspection StaticClosureCanBeUsedInspection */
+    /**
+     * @throws Exception
+     * @noinspection StaticClosureCanBeUsedInspection
+     */
     protected function _before(): void
     {
         $self = $this;
@@ -86,8 +89,8 @@ class LegacySessionLogoutHandlerTest extends Unit
         $originalHandler = new Authentication(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
-            $this->tester->getlegacySessionName(),
-            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacySessionName(),
+            $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope()
         );
 

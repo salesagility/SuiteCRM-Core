@@ -5,6 +5,7 @@ namespace App\Tests;
 use App\Entity\Navbar;
 use AspectMock\Test;
 use Codeception\Test\Unit;
+use Exception;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
@@ -28,13 +29,16 @@ final class NavbarTest extends Unit
      */
     private $navbarHandler;
 
-    /** @noinspection StaticClosureCanBeUsedInspection */
+    /**
+     * @throws Exception
+     * @noinspection StaticClosureCanBeUsedInspection
+     */
     protected function _before(): void
     {
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
-        $legacySessionName = $this->tester->getlegacySessionName();
-        $defaultSessionName = $this->tester->getdefaultSessionName();
+        $legacySessionName = $this->tester->getLegacySessionName();
+        $defaultSessionName = $this->tester->getDefaultSessionName();
 
         $menuItemMap = [
             'default' => [

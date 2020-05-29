@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Entity\FieldDefinition;
 use Codeception\Test\Unit;
+use Exception;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
 
 final class FieldDefinitionHandlerTest extends Unit
@@ -28,12 +29,15 @@ final class FieldDefinitionHandlerTest extends Unit
         $this->fieldDefinitionsHandler = new FieldDefinitionsHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
-            $this->tester->getlegacySessionName(),
-            $this->tester->getdefaultSessionName(),
+            $this->tester->getLegacySessionName(),
+            $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope()
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetUserVardef(): void
     {
         $this->fieldDefinition = $this->fieldDefinitionsHandler->getVardef('Accounts');
