@@ -16,10 +16,10 @@
             <div class="col">
                 <div class="inner-addon left-addon">
                     <select #languageSelect id="languages"
-                            (change)="languageFacade.changeLanguage(languageSelect.value)">
+                            (change)="languageStore.changeLanguage(languageSelect.value)">
                         <option [value]="item.key"
                                 *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue"
-                                [selected]="languageFacade.getCurrentLanguage() === item.key">{{item.value}}</option>
+                                [selected]="languageStore.getCurrentLanguage() === item.key">{{item.value}}</option>
                     </select>
                 </div>
             </div>

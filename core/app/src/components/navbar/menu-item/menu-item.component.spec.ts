@@ -8,13 +8,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {MenuItem} from '@components/navbar/navbar.abstract';
-import {LanguageStrings} from '@store/language/language.facade';
-import {languageMockData} from '@store/language/language.facade.spec.mock';
+import {LanguageStrings} from '@store/language/language.store';
+import {languageMockData} from '@store/language/language.store.spec.mock';
 import {MenuRecentlyViewedComponent} from '@components/navbar/menu-recently-viewed/menu-recently-viewed.component';
 
 const mockMenuItem = {
@@ -88,7 +88,7 @@ describe('ModuleMenuItemComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

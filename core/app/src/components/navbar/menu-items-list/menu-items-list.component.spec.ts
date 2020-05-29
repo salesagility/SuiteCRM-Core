@@ -9,8 +9,8 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuItemsListComponent} from './menu-items-list.component';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {MenuItemComponent} from '@components/navbar/menu-item/menu-item.component';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
 import {MenuRecentlyViewedComponent} from '@components/navbar/menu-recently-viewed/menu-recently-viewed.component';
@@ -70,7 +70,7 @@ describe('MenuItemsListComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

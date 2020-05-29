@@ -5,12 +5,12 @@ import {map} from 'rxjs/operators';
 import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
-import {Navigation, NavigationFacade} from '@base/store/navigation/navigation.facade';
-import {UserPreferenceFacade, UserPreferenceMap} from '@base/store/user-preference/user-preference.facade';
+import {Navigation, NavigationStore} from '@store/navigation/navigation.store';
+import {UserPreferenceStore, UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {AuthService} from '@services/auth/auth.service';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
-import {AppState, AppStateFacade} from '@base/store/app-state/app-state.facade';
-import {LanguageFacade, LanguageStrings,} from '@base/store/language/language.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {AppState, AppStateStore} from '@store/app-state/app-state.store';
+import {LanguageStore, LanguageStrings,} from '@store/language/language.store';
 import {RouteConverter} from "@services/navigation/route-converter/route-converter.service";
 import {ModuleNameMapper} from "@services/navigation/module-name-mapper/module-name-mapper.service";
 import {ActionNameMapper} from "@services/navigation/action-name-mapper/action-name-mapper.service";
@@ -35,16 +35,16 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     backLink = false;
     mainNavLink = true;
     submenu: any = [];
-    moduleNameMapper = new ModuleNameMapper(this.systemConfigFacade)
-    actionNameMapper = new ActionNameMapper(this.systemConfigFacade)
+    moduleNameMapper = new ModuleNameMapper(this.systemConfigStore)
+    actionNameMapper = new ActionNameMapper(this.systemConfigStore)
     routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper)
     navbar: NavbarModel = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
 
-    languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
-    userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceFacade.userPreferences$;
+    languages$: Observable<LanguageStrings> = this.languageStore.vm$;
+    userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
-    navigation$: Observable<Navigation> = this.navigationFacade.vm$;
+    navigation$: Observable<Navigation> = this.navigationStore.vm$;
 
     vm$ = combineLatest([
         this.navigation$,
@@ -69,12 +69,12 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
         })
     );
 
-    constructor(protected navigationFacade: NavigationFacade,
-                protected languageFacade: LanguageFacade,
+    constructor(protected navigationStore: NavigationStore,
+                protected languageStore: LanguageStore,
                 protected api: ApiService,
-                protected userPreferenceFacade: UserPreferenceFacade,
-                protected systemConfigFacade: SystemConfigFacade,
-                protected appState: AppStateFacade,
+                protected userPreferenceStore: UserPreferenceStore,
+                protected systemConfigStore: SystemConfigStore,
+                protected appState: AppStateStore,
                 private authService: AuthService,
                 protected moduleNavigation: ModuleNavigation
     ) {
@@ -146,7 +146,7 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
      * @returns {string} homepage
      */
     public getHomePage(): string {
-        return this.systemConfigFacade.getHomePage();
+        return this.systemConfigStore.getHomePage();
     }
 
     /**

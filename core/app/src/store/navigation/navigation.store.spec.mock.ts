@@ -1,4 +1,4 @@
-import {NavigationFacade} from '@base/store/navigation/navigation.facade';
+import {NavigationStore} from '@store/navigation/navigation.store';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
@@ -211,4 +211,4 @@ class NavigationRecordGQLSpy extends RecordGQL {
     }
 }
 
-export const navigationMock = new NavigationFacade(new NavigationRecordGQLSpy());
+export const navigationMock = new NavigationStore(new NavigationRecordGQLSpy());

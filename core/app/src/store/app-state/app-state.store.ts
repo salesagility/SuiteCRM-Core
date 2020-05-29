@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
 import {map, distinctUntilChanged} from 'rxjs/operators';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/store/state';
+import {StateStore} from '@base/store/state';
 
 export interface AppState {
     loading: boolean;
@@ -23,7 +23,7 @@ let internalState: AppState = deepClone(initialState);
 @Injectable({
     providedIn: 'root',
 })
-export class AppStateFacade implements StateFacade {
+export class AppStateStore implements StateStore {
 
     protected store = new BehaviorSubject<AppState>(internalState);
     protected state$ = this.store.asObservable();
@@ -86,7 +86,7 @@ export class AppStateFacade implements StateFacade {
      *
      * @returns {boolean} is loaded
      */
-    public isLoaded(): boolean{
+    public isLoaded(): boolean {
         return internalState.loaded;
     }
 
@@ -95,7 +95,7 @@ export class AppStateFacade implements StateFacade {
      *
      * @param {string} loaded flag
      */
-    public setLoaded(loaded: boolean): void{
+    public setLoaded(loaded: boolean): void {
         this.updateState({...internalState, loaded});
     }
 

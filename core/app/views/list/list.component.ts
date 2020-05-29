@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AppState, AppStateFacade} from '@store/app-state/app-state.facade';
+import {AppState, AppStateStore} from '@store/app-state/app-state.store';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -17,6 +17,6 @@ export class ListComponent {
         }))
     );
 
-    constructor(protected appState: AppStateFacade) {
+    constructor(protected appState: AppStateStore) {
     }
 }

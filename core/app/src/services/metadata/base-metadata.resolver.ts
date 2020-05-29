@@ -3,24 +3,24 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {concatAll, map, tap, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
-import {LanguageFacade} from '@base/store/language/language.facade';
-import {NavigationFacade} from '@base/store/navigation/navigation.facade';
-import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
-import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {LanguageStore} from '@store/language/language.store';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {AppStateStore} from '@store/app-state/app-state.store';
 
 
 @Injectable({providedIn: 'root'})
 export class BaseMetadataResolver implements Resolve<any> {
 
     constructor(
-        protected systemConfigFacade: SystemConfigFacade,
-        protected languageFacade: LanguageFacade,
-        protected navigationFacade: NavigationFacade,
-        protected userPreferenceFacade: UserPreferenceFacade,
-        protected themeImagesFacade: ThemeImagesFacade,
-        protected appState: AppStateFacade
+        protected systemConfigStore: SystemConfigStore,
+        protected languageStore: LanguageStore,
+        protected navigationStore: NavigationStore,
+        protected userPreferenceStore: UserPreferenceStore,
+        protected themeImagesStore: ThemeImagesStore,
+        protected appState: AppStateStore
     ) {
     }
 
@@ -28,12 +28,12 @@ export class BaseMetadataResolver implements Resolve<any> {
         const streams$: { [key: string]: Observable<any> } = {};
 
         if (this.isToLoadNavigation(route)) {
-            streams$.navigation = this.navigationFacade.load();
+            streams$.navigation = this.navigationStore.load();
         }
 
         if (this.isToLoadConfigs(route)) {
 
-            let configs$ = this.systemConfigFacade.load();
+            let configs$ = this.systemConfigStore.load();
 
             if (this.isToLoadLanguageStrings(route)) {
                 const langStrings = this.getLanguagesToLoad(route);
@@ -44,11 +44,11 @@ export class BaseMetadataResolver implements Resolve<any> {
 
                             let language = configs.default_language.value;
 
-                            if (this.languageFacade.hasLanguageChanged()) {
-                                language = this.languageFacade.getCurrentLanguage();
+                            if (this.languageStore.hasLanguageChanged()) {
+                                language = this.languageStore.getCurrentLanguage();
                             }
 
-                            return this.languageFacade.load(language, langStrings);
+                            return this.languageStore.load(language, langStrings);
                         },
                     ),
                     concatAll(),
@@ -61,7 +61,7 @@ export class BaseMetadataResolver implements Resolve<any> {
 
         if (this.isToLoadUserPreferences(route)) {
 
-            streams$.preferences = this.userPreferenceFacade.load();
+            streams$.preferences = this.userPreferenceStore.load();
         }
 
 
@@ -72,20 +72,20 @@ export class BaseMetadataResolver implements Resolve<any> {
 
                 let theme = null;
 
-                if (this.systemConfigFacade.getConfigValue('default_theme')) {
-                    theme = this.systemConfigFacade.getConfigValue('default_theme');
+                if (this.systemConfigStore.getConfigValue('default_theme')) {
+                    theme = this.systemConfigStore.getConfigValue('default_theme');
                 }
 
-                if (this.userPreferenceFacade.getUserPreference('user_theme')) {
-                    theme = this.userPreferenceFacade.getUserPreference('user_theme');
+                if (this.userPreferenceStore.getUserPreference('user_theme')) {
+                    theme = this.userPreferenceStore.getUserPreference('user_theme');
                 }
 
-                if (this.themeImagesFacade.getTheme()) {
-                    theme = this.themeImagesFacade.getTheme();
+                if (this.themeImagesStore.getTheme()) {
+                    theme = this.themeImagesStore.getTheme();
                 }
 
                 if (theme !== null) {
-                    return this.themeImagesFacade.load(theme);
+                    return this.themeImagesStore.load(theme);
                 }
 
                 return data;
@@ -103,7 +103,7 @@ export class BaseMetadataResolver implements Resolve<any> {
      * @returns {string[]} languages
      */
     protected getLanguagesToLoad(route: ActivatedRouteSnapshot): string[] {
-        let langStrings: string[] = this.languageFacade.getAvailableStringsTypes();
+        let langStrings: string[] = this.languageStore.getAvailableStringsTypes();
 
         if (this.isToLoadNavigation(route)) {
             return langStrings;

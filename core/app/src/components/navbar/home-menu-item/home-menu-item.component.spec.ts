@@ -7,9 +7,9 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 
@@ -47,7 +47,7 @@ describe('HomeMenuItemComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

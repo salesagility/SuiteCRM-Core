@@ -7,8 +7,8 @@ import {TableUiModule} from '@components/table/table.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 
@@ -29,7 +29,7 @@ describe('ListcontainerUiComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

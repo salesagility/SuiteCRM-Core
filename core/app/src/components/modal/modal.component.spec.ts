@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ModalUiComponent} from './modal.component';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 
 describe('ModalUiComponent', () => {
@@ -15,7 +15,7 @@ describe('ModalUiComponent', () => {
             declarations: [ModalUiComponent],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

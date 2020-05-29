@@ -44,11 +44,11 @@ describe('Auth Service', () => {
         stateManagerMock.clear.and.callFake(() => {
         });
 
-        languageMock = jasmine.createSpyObj('LanguageFacade', ['getAppString']);
+        languageMock = jasmine.createSpyObj('LanguageStore', ['getAppString']);
         languageMock.getAppString.and.callFake((key: string) => key);
 
         IdleMock = jasmine.createSpyObj('bnIdle', ['doLogin']);
-        appStateMock = jasmine.createSpyObj('AppStateFacade', ['updateLoading']);
+        appStateMock = jasmine.createSpyObj('AppStateStore', ['updateLoading']);
 
         service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock, IdleMock, appStateMock);
 

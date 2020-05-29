@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ThemeImage, ThemeImageMap, ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
+import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '@store/theme-images/theme-images.store';
 
 @Component({
     selector: 'scrm-image',
@@ -10,7 +10,7 @@ import {ThemeImage, ThemeImageMap, ThemeImagesFacade} from '@base/store/theme-im
 })
 export class ImageComponent {
 
-    images$: Observable<ThemeImageMap> = this.themeImagesFacade.images$;
+    images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
     vm$ = combineLatest([this.images$]).pipe(
         map(([images]) => ({
@@ -19,7 +19,7 @@ export class ImageComponent {
 
     @Input() image: string;
 
-    constructor(protected themeImagesFacade: ThemeImagesFacade) {
+    constructor(protected themeImagesStore: ThemeImagesStore) {
     }
 
     /**

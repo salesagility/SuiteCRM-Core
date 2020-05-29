@@ -1,9 +1,9 @@
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {ThemeImages, ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
+import {ThemeImages, ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {appStateFacadeMock} from '@base/store/app-state/app-state.facade.spec.mock';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {AppStateStore} from '@store/app-state/app-state.store';
 
 export const themeImagesMockData = {
     bgOcher: {
@@ -128,15 +128,15 @@ class ThemeImagesRecordGQLSpy extends RecordGQL {
     }
 }
 
-class MockThemeImagesFacade extends ThemeImagesFacade {
+class MockThemeImagesStore extends ThemeImagesStore {
     protected store = new BehaviorSubject<ThemeImages>({
         theme: 'suite8',
         images: themeImagesMockData
     });
 
-    constructor(protected recordGQL: RecordGQL, protected appStateFacade: AppStateFacade) {
-        super(recordGQL, appStateFacade);
+    constructor(protected recordGQL: RecordGQL, protected appStateStore: AppStateStore) {
+        super(recordGQL, appStateStore);
     }
 }
 
-export const themeImagesFacadeMock = new MockThemeImagesFacade(new ThemeImagesRecordGQLSpy(), appStateFacadeMock);
+export const themeImagesStoreMock = new MockThemeImagesStore(new ThemeImagesRecordGQLSpy(), appStateStoreMock);

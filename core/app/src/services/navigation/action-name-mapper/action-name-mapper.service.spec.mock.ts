@@ -1,5 +1,5 @@
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 export const actionNameMapperMockData = {
     Authenticate: 'authenticate',
@@ -29,4 +29,4 @@ export const actionNameMapperMockData = {
 export const actionNameMapperMock = new ActionNameMapper({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getConfigValue: (configKey) => actionNameMapperMockData
-} as SystemConfigFacade);
+} as SystemConfigStore);

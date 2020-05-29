@@ -1,6 +1,6 @@
-import {UserPreferenceFacade, UserPreferenceMap} from '@store/user-preference/user-preference.facade';
+import {UserPreferenceStore, UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {BaseFieldComponent} from './base-field.component';
-import {SystemConfigFacade, SystemConfigMap} from '@store/system-config/system-config.facade';
+import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -16,8 +16,8 @@ export class BaseNumberComponent extends BaseFieldComponent {
     );
 
     constructor(
-        protected userPreferences: UserPreferenceFacade,
-        protected systemConfig: SystemConfigFacade
+        protected userPreferences: UserPreferenceStore,
+        protected systemConfig: SystemConfigStore
     ) {
         super();
     }

@@ -3,7 +3,7 @@ import {shareReplay} from 'rxjs/operators';
 import {RecordMutationGQL} from '@services/api/graphql-api/api.record.create';
 import {FetchResult} from 'apollo-link';
 import {ProcessService} from '@services/process/process.service';
-import {appStateFacadeMock} from '@base/store/app-state/app-state.facade.spec.mock';
+import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
 
 export const recoverPasswordMockData = {
@@ -39,4 +39,4 @@ class RecoverPasswordRecordMutationGQLSpy extends RecordMutationGQL {
 
 const processServiceMock = new ProcessService(new RecoverPasswordRecordMutationGQLSpy());
 
-export const recoverPasswordMock = new RecoverPasswordService(processServiceMock, appStateFacadeMock);
+export const recoverPasswordMock = new RecoverPasswordService(processServiceMock, appStateStoreMock);

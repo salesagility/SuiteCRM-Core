@@ -6,11 +6,11 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginUiComponent} from './login.component';
-import {LanguageFacade} from '@store/language/language.facade';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {LanguageStore} from '@store/language/language.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
-import {languageFacadeMock} from '@store/language/language.facade.spec.mock';
-import {systemConfigFacadeMock} from '@store/system-config/system-config.facade.spec.mock';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-password.spec.mock';
 import {By} from '@angular/platform-browser';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -34,8 +34,8 @@ describe('LoginComponent', () => {
             ],
             declarations: [LoginUiComponent],
             providers: [
-                {provide: SystemConfigFacade, useValue: systemConfigFacadeMock},
-                {provide: LanguageFacade, useValue: languageFacadeMock},
+                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
+                {provide: LanguageStore, useValue: languageStoreMock},
                 {provide: RecoverPasswordService, useValue: recoverPasswordMock},
             ],
         })

@@ -15,7 +15,7 @@ export interface ClassicView {
 @Injectable({
     providedIn: 'root',
 })
-export class ClassicViewFacade {
+export class ClassicViewStore {
 
     protected fieldsMetadata = {
         fields: [

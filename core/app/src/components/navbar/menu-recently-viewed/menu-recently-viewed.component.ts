@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {LanguageStrings} from '@base/store/language/language.facade';
+import {LanguageStrings} from '@store/language/language.store';
 import {RecentRecordsMenuItem} from '@components/navbar/navbar.abstract';
 
 @Component({

@@ -1,4 +1,4 @@
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 
 export const moduleNameMapperMockData = {
@@ -17,4 +17,4 @@ export const moduleNameMapperMockData = {
 export const moduleNameMapperMock = new ModuleNameMapper({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getConfigValue: (configKey) => moduleNameMapperMockData
-} as SystemConfigFacade);
+} as SystemConfigStore);

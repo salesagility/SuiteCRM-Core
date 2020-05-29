@@ -1,32 +1,32 @@
 import {Injectable} from '@angular/core';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
-import {LanguageFacade} from '@base/store/language/language.facade';
-import {NavigationFacade} from '@base/store/navigation/navigation.facade';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
-import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
-import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
-import {StateFacade, StateFacadeMap, StateFacadeMapEntry} from '@base/store/state';
+import {AppStateStore} from '@store/app-state/app-state.store';
+import {LanguageStore} from '@store/language/language.store';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {StateStore, StateStoreMap, StateStoreMapEntry} from '@base/store/state';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StateManager {
-    protected stateFacades: StateFacadeMap = {};
+    protected stateStores: StateStoreMap = {};
 
     constructor(
-        protected appFacade: AppStateFacade,
-        protected languageFacade: LanguageFacade,
-        protected navigationFacade: NavigationFacade,
-        protected systemConfigFacade: SystemConfigFacade,
-        protected themeImagesFacade: ThemeImagesFacade,
-        protected userPreferenceFacade: UserPreferenceFacade
+        protected appStore: AppStateStore,
+        protected languageStore: LanguageStore,
+        protected navigationStore: NavigationStore,
+        protected systemConfigStore: SystemConfigStore,
+        protected themeImagesStore: ThemeImagesStore,
+        protected userPreferenceStore: UserPreferenceStore
     ) {
-        this.stateFacades.appFacade = this.buildMapEntry(appFacade, false);
-        this.stateFacades.languageFacade = this.buildMapEntry(languageFacade, false)
-        this.stateFacades.navigationFacade = this.buildMapEntry(navigationFacade, true);
-        this.stateFacades.systemConfigFacade = this.buildMapEntry(systemConfigFacade, false);
-        this.stateFacades.themeImagesFacade = this.buildMapEntry(themeImagesFacade, false);
-        this.stateFacades.userPreferenceFacade =  this.buildMapEntry(userPreferenceFacade, true);
+        this.stateStores.appStore = this.buildMapEntry(appStore, false);
+        this.stateStores.languageStore = this.buildMapEntry(languageStore, false)
+        this.stateStores.navigationStore = this.buildMapEntry(navigationStore, true);
+        this.stateStores.systemConfigStore = this.buildMapEntry(systemConfigStore, false);
+        this.stateStores.themeImagesStore = this.buildMapEntry(themeImagesStore, false);
+        this.stateStores.userPreferenceStore = this.buildMapEntry(userPreferenceStore, true);
     }
 
     /**
@@ -37,8 +37,8 @@ export class StateManager {
      * Clear all state
      */
     public clear(): void {
-        Object.keys(this.stateFacades).forEach((key) => {
-            this.stateFacades[key].facade.clear();
+        Object.keys(this.stateStores).forEach((key) => {
+            this.stateStores[key].store.clear();
         });
     }
 
@@ -46,9 +46,9 @@ export class StateManager {
      * Clear all state
      */
     public clearAuthBased(): void {
-        Object.keys(this.stateFacades).forEach((key) => {
-            if (this.stateFacades[key].authBased){
-                this.stateFacades[key].facade.clear();
+        Object.keys(this.stateStores).forEach((key) => {
+            if (this.stateStores[key].authBased) {
+                this.stateStores[key].store.clear();
             }
         });
     }
@@ -60,13 +60,13 @@ export class StateManager {
     /**
      * Build Map entry
      *
-     * @param {{}} facade to use
+     * @param {{}} store to use
      * @param {boolean} authBased flag
-     * @returns {{}} StateFacadeMapEntry
+     * @returns {{}} StateStoreMapEntry
      */
-    protected buildMapEntry(facade: StateFacade, authBased: boolean): StateFacadeMapEntry {
+    protected buildMapEntry(store: StateStore, authBased: boolean): StateStoreMapEntry {
         return {
-            facade,
+            store,
             authBased
         };
     }

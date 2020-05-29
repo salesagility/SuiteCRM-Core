@@ -4,7 +4,7 @@ import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/store/state';
+import {StateStore} from '@base/store/state';
 
 export interface UserPreferenceMap {
     [key: string]: string;
@@ -27,7 +27,7 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class UserPreferenceFacade implements StateFacade {
+export class UserPreferenceStore implements StateStore {
     protected store = new BehaviorSubject<UserPreferences>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'userPreferences';

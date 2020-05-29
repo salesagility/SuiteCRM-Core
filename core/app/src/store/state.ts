@@ -1,12 +1,12 @@
-export interface StateFacadeMap {
-    [key: string]: StateFacadeMapEntry;
+export interface StateStoreMap {
+    [key: string]: StateStoreMapEntry;
 }
 
-export interface StateFacadeMapEntry {
-    facade: StateFacade;
+export interface StateStoreMapEntry {
+    store: StateStore;
     authBased: boolean;
 }
 
-export interface StateFacade {
+export interface StateStore {
     clear(): void;
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {ModuleAction, NavbarModule, Navigation} from '@store/navigation/navigation.facade';
-import {LanguageListStringMap, LanguageStrings} from '@store/language/language.facade';
+import {ModuleAction, NavbarModule, Navigation} from '@store/navigation/navigation.store';
+import {LanguageListStringMap, LanguageStrings} from '@store/language/language.store';
 
 export interface NavigationRoute {
     route: string;

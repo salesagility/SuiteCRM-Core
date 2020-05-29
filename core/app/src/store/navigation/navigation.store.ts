@@ -3,7 +3,7 @@ import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {StateFacade} from '@base/store/state';
+import {StateStore} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
 
 export interface Navigation {
@@ -63,7 +63,7 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class NavigationFacade implements StateFacade {
+export class NavigationStore implements StateStore {
 
     protected store = new BehaviorSubject<Navigation>(internalState);
     protected state$ = this.store.asObservable();
@@ -201,7 +201,7 @@ export class NavigationFacade implements StateFacade {
                             groupedTabs: data.navbar.groupedTabs,
                             userActionMenu: data.navbar.userActionMenu,
                             modules: data.navbar.modules,
-                            maxTabs:  data.navbar.maxTabs
+                            maxTabs: data.navbar.maxTabs
                         };
 
                     }

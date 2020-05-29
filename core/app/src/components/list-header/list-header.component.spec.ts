@@ -10,13 +10,13 @@ import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ActionMenuModule} from '@components/action-menu/action-menu.module';
 import {SettingsmenuUiModule} from '@components/settings-menu/settings-menu.module';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
-import {LanguageFacade} from '@store/language/language.facade';
-import {languageMockData} from '@store/language/language.facade.spec.mock';
-import {NavigationFacade} from '@store/navigation/navigation.facade';
-import {navigationMockData} from '@store/navigation/navigation.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageMockData} from '@store/language/language.store.spec.mock';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {navigationMockData} from '@store/navigation/navigation.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
 
@@ -47,18 +47,18 @@ describe('ListHeaderComponent', () => {
             declarations: [ListHeaderComponent, ListHeaderTestHostComponent],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },
                 {
-                    provide: LanguageFacade, useValue: {
+                    provide: LanguageStore, useValue: {
                         vm$: of(languageMockData).pipe(take(1)),
                         appListStrings$: of(languageMockData.appListStrings).pipe(take(1))
                     }
                 },
                 {
-                    provide: NavigationFacade, useValue: {
+                    provide: NavigationStore, useValue: {
                         vm$: of(navigationMockData.navbar).pipe(take(1))
                     }
                 },

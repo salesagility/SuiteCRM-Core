@@ -5,8 +5,8 @@ import {fieldComponents, fieldModules} from '@fields/field.manifest';
 import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
-import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {By} from '@angular/platform-browser';
 
 
@@ -52,12 +52,12 @@ describe('FieldComponent', () => {
             ],
             providers: [
                 {
-                    provide: UserPreferenceFacade, useValue: {
+                    provide: UserPreferenceStore, useValue: {
                         userPreferences$: preferences.asObservable()
                     }
                 },
                 {
-                    provide: SystemConfigFacade, useValue: {
+                    provide: SystemConfigStore, useValue: {
                         configs$: of({
                             default_number_grouping_seperator: {
                                 id: '/docroot/api/system-configs/default_number_grouping_seperator',

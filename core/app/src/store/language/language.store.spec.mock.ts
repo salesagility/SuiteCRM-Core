@@ -1,8 +1,8 @@
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {LanguageFacade} from '@base/store/language/language.facade';
-import {appStateFacadeMock} from '@base/store/app-state/app-state.facade.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 
 export const languageMockData = {
     appStrings: {
@@ -108,4 +108,4 @@ class LanguageRecordGQLSpy extends RecordGQL {
     }
 }
 
-export const languageFacadeMock = new LanguageFacade(new LanguageRecordGQLSpy(), appStateFacadeMock);
+export const languageStoreMock = new LanguageStore(new LanguageRecordGQLSpy(), appStateStoreMock);

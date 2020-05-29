@@ -3,8 +3,8 @@ import {CanActivate, Router, UrlTree} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {AuthService, SessionStatus} from './auth.service';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {AppStateStore} from '@store/app-state/app-state.store';
 
 
 @Injectable({
@@ -14,14 +14,14 @@ export class LoginAuthGuard implements CanActivate {
     constructor(
         protected router: Router,
         private authService: AuthService,
-        protected systemConfigFacade: SystemConfigFacade,
-        protected appStateFacade: AppStateFacade
+        protected systemConfigStore: SystemConfigStore,
+        protected appStateStore: AppStateStore
     ) {
     }
 
     canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        const homePage = this.systemConfigFacade.getHomePage();
+        const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
         if (this.authService.isUserLoggedIn.value) {
@@ -29,7 +29,7 @@ export class LoginAuthGuard implements CanActivate {
         }
 
         // if has has been loaded and user is not active go to login
-        if (this.appStateFacade.isLoaded()){
+        if (this.appStateStore.isLoaded()){
             return true;
         }
 

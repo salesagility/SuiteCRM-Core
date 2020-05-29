@@ -2,8 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
 import {FloatDetailFieldComponent} from './float.component';
-import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
 import {distinctUntilChanged} from 'rxjs/operators';
 
@@ -34,12 +34,12 @@ describe('FloatDetailFieldComponent', () => {
             imports: [],
             providers: [
                 {
-                    provide: UserPreferenceFacade, useValue: {
+                    provide: UserPreferenceStore, useValue: {
                         userPreferences$: preferences.asObservable().pipe(distinctUntilChanged())
                     }
                 },
                 {
-                    provide: SystemConfigFacade, useValue: {
+                    provide: SystemConfigStore, useValue: {
                         configs$: of({
                             default_number_grouping_seperator: {
                                 id: '/docroot/api/system-configs/default_number_grouping_seperator',

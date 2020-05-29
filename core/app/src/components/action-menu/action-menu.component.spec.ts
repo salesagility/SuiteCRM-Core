@@ -3,10 +3,10 @@ import {Component} from '@angular/core';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {ActionMenuComponent} from './action-menu.component';
-import {LanguageFacade} from '@store/language/language.facade';
-import {languageMockData} from '@store/language/language.facade.spec.mock';
-import {NavigationFacade} from '@store/navigation/navigation.facade';
-import {navigationMockData} from '@store/navigation/navigation.facade.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageMockData} from '@store/language/language.store.spec.mock';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {navigationMockData} from '@store/navigation/navigation.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
 
@@ -34,12 +34,12 @@ describe('ActionMenuComponent', () => {
             ],
             providers: [
                 {
-                    provide: LanguageFacade, useValue: {
+                    provide: LanguageStore, useValue: {
                         vm$: of(languageMockData).pipe(take(1))
                     }
                 },
                 {
-                    provide: NavigationFacade, useValue: {
+                    provide: NavigationStore, useValue: {
                         vm$: of(navigationMockData.navbar).pipe(take(1))
                     }
                 },

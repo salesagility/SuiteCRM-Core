@@ -4,7 +4,7 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/store/state';
+import {StateStore} from '@base/store/state';
 
 export interface SystemConfig {
     id: string;
@@ -34,7 +34,7 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class SystemConfigFacade implements StateFacade {
+export class SystemConfigStore implements StateStore {
     protected store = new BehaviorSubject<SystemConfigs>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'systemConfigs';

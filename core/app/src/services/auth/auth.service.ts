@@ -7,9 +7,9 @@ import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
 import {StateManager} from '@base/store/state-manager';
-import {LanguageFacade} from '@base/store/language/language.facade';
+import {LanguageStore} from '@store/language/language.store';
 import {BnNgIdleService} from 'bn-ng-idle';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {AppStateStore} from '@store/app-state/app-state.store';
 
 export interface SessionStatus {
     active?: boolean;
@@ -32,9 +32,9 @@ export class AuthService {
         protected router: Router,
         protected message: MessageService,
         protected stateManager: StateManager,
-        protected languageFacade: LanguageFacade,
+        protected languageStore: LanguageStore,
         private bnIdle: BnNgIdleService,
-        protected appStateFacade: AppStateFacade
+        protected appStateStore: AppStateStore
     ) {
     }
 
@@ -100,7 +100,7 @@ export class AuthService {
      * @param {boolean} redirect to home
      */
     public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
-        this.appStateFacade.updateLoading('logout', true);
+        this.appStateStore.updateLoading('logout', true);
 
         const logoutUrl = 'logout';
         const body = new HttpParams();
@@ -117,7 +117,7 @@ export class AuthService {
                     return throwError(err);
                 }),
                 finalize(() => {
-                    this.appStateFacade.updateLoading('logout', false);
+                    this.appStateStore.updateLoading('logout', false);
                     if (redirect === true) {
                         this.router.navigate(['/Login']).finally();
                     }
@@ -125,7 +125,7 @@ export class AuthService {
             )
             .subscribe(() => {
                 this.message.log('Logout success');
-                const label = this.languageFacade.getAppString(messageKey);
+                const label = this.languageStore.getAppString(messageKey);
                 this.message.addSuccessMessage(label);
             });
     }

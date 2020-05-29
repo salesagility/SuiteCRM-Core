@@ -4,12 +4,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
 import {ActionBarUiComponent} from './action-bar.component';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
-import {LanguageFacade} from '@store/language/language.facade';
-import {languageFacadeMock} from '@store/language/language.facade.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 describe('ActionBarUiComponent', () => {
     let component: ActionBarUiComponent;
@@ -21,13 +21,13 @@ describe('ActionBarUiComponent', () => {
             imports: [RouterTestingModule, HttpClientTestingModule],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },
                 {
-                    provide: LanguageFacade, useValue: {
-                        vm$: of(languageFacadeMock).pipe(take(1))
+                    provide: LanguageStore, useValue: {
+                        vm$: of(languageStoreMock).pipe(take(1))
                     }
                 },
             ],

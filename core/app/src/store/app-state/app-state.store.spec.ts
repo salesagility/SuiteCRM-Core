@@ -1,11 +1,11 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {AppStateFacade} from '@store/app-state/app-state.facade';
-import {appStateFacadeMock} from '@store/app-state/app-state.facade.spec.mock';
+import {AppStateStore} from '@store/app-state/app-state.store';
+import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {take} from 'rxjs/operators';
 
-describe('AppState Facade', () => {
+describe('AppState Store', () => {
     let injector: TestBed;
-    const service: AppStateFacade = appStateFacadeMock;
+    const service: AppStateStore = appStateStoreMock;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});

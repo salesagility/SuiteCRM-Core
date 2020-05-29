@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImageComponent} from './image.component';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {of} from 'rxjs';
@@ -35,7 +35,7 @@ describe('ImageComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

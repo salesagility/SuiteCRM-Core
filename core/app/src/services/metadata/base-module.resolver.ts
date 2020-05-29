@@ -4,33 +4,33 @@ import {tap} from 'rxjs/operators';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
-import {LanguageFacade} from '@base/store/language/language.facade';
-import {NavigationFacade} from '@base/store/navigation/navigation.facade';
-import {UserPreferenceFacade} from '@base/store/user-preference/user-preference.facade';
-import {ThemeImagesFacade} from '@base/store/theme-images/theme-images.facade';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {LanguageStore} from '@store/language/language.store';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {AppStateStore} from '@store/app-state/app-state.store';
 
 @Injectable({providedIn: 'root'})
 export class BaseModuleResolver extends BaseMetadataResolver {
 
     constructor(
-        protected systemConfigFacade: SystemConfigFacade,
-        protected languageFacade: LanguageFacade,
-        protected navigationFacade: NavigationFacade,
-        protected userPreferenceFacade: UserPreferenceFacade,
-        protected themeImagesFacade: ThemeImagesFacade,
+        protected systemConfigStore: SystemConfigStore,
+        protected languageStore: LanguageStore,
+        protected navigationStore: NavigationStore,
+        protected userPreferenceStore: UserPreferenceStore,
+        protected themeImagesStore: ThemeImagesStore,
         protected moduleNameMapper: ModuleNameMapper,
         protected actionNameMapper: ActionNameMapper,
-        protected appStateFacade: AppStateFacade,
+        protected appStateStore: AppStateStore,
     ) {
         super(
-            systemConfigFacade,
-            languageFacade,
-            navigationFacade,
-            userPreferenceFacade,
-            themeImagesFacade,
-            appStateFacade
+            systemConfigStore,
+            languageStore,
+            navigationStore,
+            userPreferenceStore,
+            themeImagesStore,
+            appStateStore
         );
     }
 
@@ -41,10 +41,10 @@ export class BaseModuleResolver extends BaseMetadataResolver {
                 if (route.params.module) {
                     const module = this.calculateActiveModule(route);
 
-                    this.appStateFacade.setModule(module);
+                    this.appStateStore.setModule(module);
                 }
                 if (route.params.action) {
-                    this.appStateFacade.setView(route.params.action);
+                    this.appStateStore.setView(route.params.action);
                 }
             })
         );

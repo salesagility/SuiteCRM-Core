@@ -6,14 +6,14 @@ import {
     NavbarModuleMap,
     Navigation,
     UserActionMenu
-} from '@base/store/navigation/navigation.facade';
-import {LanguageStringMap, LanguageStrings} from '@base/store/language/language.facade';
+} from '@store/navigation/navigation.store';
+import {LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
 import {ready} from '@base/utils/object-utils';
-import {UserPreferenceMap} from '@base/store/user-preference/user-preference.facade';
-import {AppState} from '@base/store/app-state/app-state.facade';
+import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
+import {AppState} from '@store/app-state/app-state.store';
 import {LinkTarget} from '@components/navbar/link-target';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 

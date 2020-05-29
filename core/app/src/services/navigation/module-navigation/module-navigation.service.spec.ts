@@ -1,6 +1,6 @@
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
-import {Navigation} from '@store/navigation/navigation.facade';
+import {Navigation} from '@store/navigation/navigation.store';
 
 describe('Module Navigation Service', () => {
     const service: ModuleNavigation = mockModuleNavigation;

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {LanguageFacade, LanguageStrings} from '@store/language/language.facade';
+import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {ActionBarModel} from './action-bar-model';
 
 @Component({
@@ -41,7 +41,7 @@ export class ActionBarUiComponent {
         favoriteRecords: [],
     };
 
-    languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
+    languages$: Observable<LanguageStrings> = this.languageStore.vm$;
 
     vm$ = combineLatest([
         this.languages$,
@@ -54,6 +54,6 @@ export class ActionBarUiComponent {
         )
     );
 
-    constructor(protected languageFacade: LanguageFacade) {
+    constructor(protected languageStore: LanguageStore) {
     }
 }

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {BaseNumberComponent} from '@fields/base/base-number.component';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 @Component({
     selector: 'scrm-int-detail',
@@ -11,8 +11,8 @@ import {SystemConfigFacade} from '@store/system-config/system-config.facade';
 export class IntDetailFieldComponent extends BaseNumberComponent {
 
     constructor(
-        protected userPreferences: UserPreferenceFacade,
-        protected systemConfig: SystemConfigFacade
+        protected userPreferences: UserPreferenceStore,
+        protected systemConfig: SystemConfigStore
     ) {
         super(userPreferences, systemConfig);
     }

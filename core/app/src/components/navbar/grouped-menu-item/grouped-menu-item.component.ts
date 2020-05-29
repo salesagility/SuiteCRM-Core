@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MenuItem} from '@components/navbar/navbar.abstract';
-import {LanguageStrings} from '@base/store/language/language.facade';
+import {LanguageStrings} from '@store/language/language.store';
 
 @Component({
     selector: 'scrm-grouped-menu-item',

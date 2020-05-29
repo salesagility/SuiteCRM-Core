@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {BaseNumberComponent} from '@fields/base/base-number.component';
-import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 @Component({
     selector: 'scrm-float-detail',
@@ -10,8 +10,8 @@ import {SystemConfigFacade} from '@store/system-config/system-config.facade';
 })
 export class FloatDetailFieldComponent extends BaseNumberComponent {
     constructor(
-        protected userPreferences: UserPreferenceFacade,
-        protected systemConfig: SystemConfigFacade
+        protected userPreferences: UserPreferenceStore,
+        protected systemConfig: SystemConfigStore
     ) {
         super(userPreferences, systemConfig);
     }

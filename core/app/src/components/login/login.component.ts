@@ -12,8 +12,8 @@ import {MessageService} from '@services/message/message.service';
 import {ApiService} from '@services/api/api.service';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
 
-import {SystemConfigFacade, SystemConfigMap} from '@base/store/system-config/system-config.facade';
-import {LanguageFacade, LanguageStringMap} from '@base/store/language/language.facade';
+import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
+import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {Process} from '@services/process/process.service';
 
 
@@ -39,8 +39,8 @@ export class LoginUiComponent {
 
     cardState = 'front';
 
-    systemConfigs$: Observable<SystemConfigMap> = this.systemConfigFacade.configs$;
-    appStrings$: Observable<LanguageStringMap> = this.languageFacade.appStrings$;
+    systemConfigs$: Observable<SystemConfigMap> = this.systemConfigStore.configs$;
+    appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
 
     vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
         map(([systemConfigs, appStrings]) => {
@@ -71,8 +71,8 @@ export class LoginUiComponent {
         protected router: Router,
         protected auth: AuthService,
         protected message: MessageService,
-        protected systemConfigFacade: SystemConfigFacade,
-        protected languageFacade: LanguageFacade,
+        protected systemConfigStore: SystemConfigStore,
+        protected languageStore: LanguageStore,
         protected recoverPasswordService: RecoverPasswordService
     ) {
         this.loading = false;
@@ -106,14 +106,14 @@ export class LoginUiComponent {
 
                     if (process.messages) {
                         process.messages.forEach(message => {
-                            const label = this.languageFacade.getAppString(message);
+                            const label = this.languageStore.getAppString(message);
                             this.message[handler](label);
                         });
                     }
                 },
                 () => {
                     this.message.log('Recover Password failed');
-                    this.message.addDangerMessage(this.languageFacade.getAppString('ERR_AJAX_LOAD_FAILURE'));
+                    this.message.addDangerMessage(this.languageStore.getAppString('ERR_AJAX_LOAD_FAILURE'));
                 }
             );
     }
@@ -123,7 +123,7 @@ export class LoginUiComponent {
         caller.message.log('Login success');
         caller.message.removeMessages();
 
-        const defaultModule = caller.systemConfigFacade.getHomePage();
+        const defaultModule = caller.systemConfigStore.getHomePage();
         caller.router.navigate(['/' + defaultModule]).then();
 
         return;

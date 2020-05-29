@@ -6,12 +6,12 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {NavbarUiComponent} from './navbar.component';
-import {NavigationFacade} from '@store/navigation/navigation.facade';
-import {LanguageFacade} from '@store/language/language.facade';
-import {navigationMock} from '@store/navigation/navigation.facade.spec.mock';
-import {languageFacadeMock} from '@store/language/language.facade.spec.mock';
-import {UserPreferenceFacade} from '@store/user-preference/user-preference.facade';
-import {userPreferenceFacadeMock} from '@store/user-preference/user-preference.facade.spec.mock';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {LanguageStore} from '@store/language/language.store';
+import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {ApolloTestingModule} from "apollo-angular/testing";
 
 describe('NavbarUiComponent', () => {
@@ -31,9 +31,9 @@ describe('NavbarUiComponent', () => {
                     ApolloTestingModule
                 ],
                 providers: [
-                    {provide: NavigationFacade, useValue: navigationMock},
-                    {provide: LanguageFacade, useValue: languageFacadeMock},
-                    {provide: UserPreferenceFacade, useValue: userPreferenceFacadeMock},
+                    {provide: NavigationStore, useValue: navigationMock},
+                    {provide: LanguageStore, useValue: languageStoreMock},
+                    {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
                 ],
                 declarations: [NavbarUiComponent]
             }).compileComponents();

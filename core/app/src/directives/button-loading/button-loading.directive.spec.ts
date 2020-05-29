@@ -1,5 +1,5 @@
 import {ButtonLoadingDirective} from './button-loading.directive';
-import {AppStateFacade} from '@store/app-state/app-state.facade';
+import {AppStateStore} from '@store/app-state/app-state.store';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
@@ -18,7 +18,7 @@ class TestHostComponent {
 describe('ButtonLoadingDirective', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
-    const appState = new AppStateFacade();
+    const appState = new AppStateStore();
 
     beforeEach(() => {
 
@@ -27,7 +27,7 @@ describe('ButtonLoadingDirective', () => {
             imports: [],
             providers: [
                 {
-                    provide: AppStateFacade, useValue: appState
+                    provide: AppStateStore, useValue: appState
                 },
             ],
         }).compileComponents();

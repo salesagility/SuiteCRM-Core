@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {LanguageFacade, LanguageStrings} from '@store/language/language.facade';
-import {ModuleAction, Navigation, NavigationFacade} from '@store/navigation/navigation.facade';
+import {LanguageStore, LanguageStrings} from '@store/language/language.store';
+import {ModuleAction, Navigation, NavigationStore} from '@store/navigation/navigation.store';
 import {Button} from '@components/button/button.model';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
@@ -29,8 +29,8 @@ export class ActionMenuComponent {
     );
 
     constructor(
-        protected language: LanguageFacade,
-        protected navigation: NavigationFacade,
+        protected language: LanguageStore,
+        protected navigation: NavigationStore,
         protected actionHandler: ModuleNavigation
     ) {
     }

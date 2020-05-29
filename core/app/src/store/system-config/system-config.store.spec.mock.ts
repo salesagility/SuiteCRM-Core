@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 
 export const systemConfigMockData = {
@@ -69,4 +69,4 @@ class SystemConfigRecordGQLSpy extends CollectionGQL {
     }
 }
 
-export const systemConfigFacadeMock = new SystemConfigFacade(new SystemConfigRecordGQLSpy());
+export const systemConfigStoreMock = new SystemConfigStore(new SystemConfigRecordGQLSpy());

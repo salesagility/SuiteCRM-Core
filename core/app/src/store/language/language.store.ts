@@ -3,9 +3,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {AppStateStore} from '@store/app-state/app-state.store';
 import {deepClone} from '@base/utils/object-utils';
-import {StateFacade} from '@base/store/state';
+import {StateStore} from '@base/store/state';
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -64,7 +64,7 @@ let cache: LanguageCache = deepClone(initialCache);
 @Injectable({
     providedIn: 'root',
 })
-export class LanguageFacade implements StateFacade {
+export class LanguageStore implements StateStore {
     protected store = new BehaviorSubject<LanguageState>(internalState);
     protected state$ = this.store.asObservable();
 
@@ -133,7 +133,7 @@ export class LanguageFacade implements StateFacade {
             )
         );
 
-    constructor(private recordGQL: RecordGQL, private appStateFacade: AppStateFacade) {
+    constructor(private recordGQL: RecordGQL, private appStateStore: AppStateStore) {
     }
 
     /**
@@ -161,10 +161,10 @@ export class LanguageFacade implements StateFacade {
 
         internalState.hasChanged = true;
 
-        this.appStateFacade.updateLoading('change-language', true);
+        this.appStateStore.updateLoading('change-language', true);
 
         this.load(languageKey, types).pipe(
-            tap(() => this.appStateFacade.updateLoading('change-language',false))
+            tap(() => this.appStateStore.updateLoading('change-language', false))
         ).subscribe();
     }
 

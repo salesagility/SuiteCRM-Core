@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from '@services/auth/auth.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {LanguageFacade, LanguageStrings} from '@store/language/language.facade';
+import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {LogoutModel} from "@components/logout/logout-model";
 
 @Component({
@@ -18,7 +18,7 @@ export class LogoutUiComponent {
         }
     }
 
-    languages$: Observable<LanguageStrings> = this.languageFacade.vm$;
+    languages$: Observable<LanguageStrings> = this.languageStore.vm$;
 
     vm$ = combineLatest([
         this.languages$,
@@ -33,7 +33,7 @@ export class LogoutUiComponent {
 
     constructor(
         protected auth: AuthService,
-        protected languageFacade: LanguageFacade
+        protected languageStore: LanguageStore
     ) {
     }
 

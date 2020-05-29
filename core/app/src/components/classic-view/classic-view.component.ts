@@ -5,7 +5,7 @@ import {RouteConverter, RouteInfo} from '@services/navigation/route-converter/ro
 import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
 import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
 import {AuthService} from '@services/auth/auth.service';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 interface RoutingExclusions {
     [key: string]: string[];
@@ -32,7 +32,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         private routeConverter: RouteConverter,
         private auth: AuthService,
         private ngZone: NgZone,
-        private systemConfigs: SystemConfigFacade,
+        private systemConfigs: SystemConfigStore,
     ) {
     }
 

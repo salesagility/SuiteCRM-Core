@@ -1,5 +1,5 @@
 import {Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
+import {AppStateStore} from '@store/app-state/app-state.store';
 import {tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 
@@ -12,11 +12,11 @@ export class ButtonLoadingDirective implements OnInit, OnDestroy, OnChanges {
     private subscription: Subscription;
     private appLoading = false;
 
-    constructor(private el: ElementRef, private appStateFacade: AppStateFacade) {
+    constructor(private el: ElementRef, private appStateStore: AppStateStore) {
     }
 
     ngOnInit(): void {
-        this.subscription = this.appStateFacade.loading$.pipe(tap((loading: boolean) => {
+        this.subscription = this.appStateStore.loading$.pipe(tap((loading: boolean) => {
             this.appLoading = loading;
             this.updateComponent();
         })).subscribe();

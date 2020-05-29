@@ -1,8 +1,8 @@
-import {NavigationFacade} from './navigation.facade';
-import {navigationMock, navigationMockData} from './navigation.facade.spec.mock';
+import {NavigationStore} from './navigation.store';
+import {navigationMock, navigationMockData} from './navigation.store.spec.mock';
 
-describe('Navigation Facade', () => {
-    const service: NavigationFacade = navigationMock;
+describe('Navigation Store', () => {
+    const service: NavigationStore = navigationMock;
 
     beforeEach(() => {
     });

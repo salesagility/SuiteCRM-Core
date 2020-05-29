@@ -8,12 +8,12 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {MenuRecentlyViewedComponent} from './menu-recently-viewed.component';
-import {LanguageStrings} from '@store/language/language.facade';
-import {languageMockData} from '@store/language/language.facade.spec.mock';
+import {LanguageStrings} from '@store/language/language.store';
+import {languageMockData} from '@store/language/language.store.spec.mock';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 
 const recentRecords = [
     {
@@ -58,7 +58,7 @@ describe('MenuRecentlyViewedComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

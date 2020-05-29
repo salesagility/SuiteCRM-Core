@@ -8,11 +8,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 
-import {themeImagesMockData} from '@store/theme-images/theme-images.facade.spec.mock';
+import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 
 import {MenuItemLinkComponent} from './menu-item-link.component';
 import {MenuItemLink} from '@components/navbar/navbar.abstract';
-import {ThemeImagesFacade} from '@store/theme-images/theme-images.facade';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {ImageModule} from '@components/image/image.module';
 
 const mockLink = {
@@ -64,7 +64,7 @@ describe('MenuItemActionLinkComponent', () => {
             ],
             providers: [
                 {
-                    provide: ThemeImagesFacade, useValue: {
+                    provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },

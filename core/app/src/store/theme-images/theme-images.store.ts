@@ -3,8 +3,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
-import {AppStateFacade} from '@base/store/app-state/app-state.facade';
-import {StateFacade} from '@base/store/state';
+import {AppStateStore} from '@store/app-state/app-state.store';
+import {StateStore} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
 
 export interface ThemeImage {
@@ -35,7 +35,7 @@ let cache$: Observable<any> = null;
 @Injectable({
     providedIn: 'root',
 })
-export class ThemeImagesFacade implements StateFacade {
+export class ThemeImagesStore implements StateStore {
 
     protected store = new BehaviorSubject<ThemeImages>(internalState);
     protected state$ = this.store.asObservable();
@@ -54,7 +54,7 @@ export class ThemeImagesFacade implements StateFacade {
      */
     images$ = this.state$.pipe(map(state => state.images), distinctUntilChanged());
 
-    constructor(protected recordGQL: RecordGQL, protected appStateFacade: AppStateFacade) {
+    constructor(protected recordGQL: RecordGQL, protected appStateStore: AppStateStore) {
     }
 
 
@@ -78,10 +78,10 @@ export class ThemeImagesFacade implements StateFacade {
      */
     public changeTheme(theme: string): void {
 
-        this.appStateFacade.updateLoading('change-theme', true);
+        this.appStateStore.updateLoading('change-theme', true);
 
         this.load(theme).pipe(
-            tap(() => this.appStateFacade.updateLoading('change-theme', false))
+            tap(() => this.appStateStore.updateLoading('change-theme', false))
         ).subscribe();
     }
 

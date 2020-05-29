@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SystemConfigFacade} from '@base/store/system-config/system-config.facade';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 export interface NameMap {
     [key: string]: string;
@@ -9,7 +9,7 @@ export interface NameMap {
 @Injectable({providedIn: 'root'})
 export class ActionNameMapper {
 
-    constructor(private systemConfig: SystemConfigFacade) {
+    constructor(private systemConfig: SystemConfigStore) {
     }
 
     /**

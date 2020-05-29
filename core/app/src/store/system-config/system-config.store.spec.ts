@@ -1,10 +1,10 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {SystemConfigFacade} from '@store/system-config/system-config.facade';
-import {systemConfigFacadeMock, systemConfigMockData} from '@store/system-config/system-config.facade.spec.mock';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {systemConfigStoreMock, systemConfigMockData} from '@store/system-config/system-config.store.spec.mock';
 
-describe('SystemConfig Facade', () => {
+describe('SystemConfig Store', () => {
     let injector: TestBed;
-    const service: SystemConfigFacade = systemConfigFacadeMock;
+    const service: SystemConfigStore = systemConfigStoreMock;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
