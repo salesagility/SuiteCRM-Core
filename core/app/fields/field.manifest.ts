@@ -6,18 +6,26 @@ import {FloatDetailFieldModule} from '@fields/float/templates/detail/float.modul
 import {FloatDetailFieldComponent} from '@fields/float/templates/detail/float.component';
 import {PhoneDetailFieldModule} from '@fields/phone/templates/detail/phone.module';
 import {PhoneDetailFieldComponent} from '@fields/phone/templates/detail/phone.component';
+import {DateDetailFieldModule} from '@fields/date/templates/detail/date.module';
+import {DateTimeDetailFieldModule} from '@fields/datetime/templates/detail/datetime.module';
+import {DateDetailFieldComponent} from '@fields/date/templates/detail/date.component';
+import {DateTimeDetailFieldComponent} from '@fields/datetime/templates/detail/datetime.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
     IntDetailFieldModule,
     FloatDetailFieldModule,
-    PhoneDetailFieldModule
+    PhoneDetailFieldModule,
+    DateDetailFieldModule,
+    DateTimeDetailFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
     IntDetailFieldComponent,
     FloatDetailFieldComponent,
-    PhoneDetailFieldComponent
+    PhoneDetailFieldComponent,
+    DateDetailFieldComponent,
+    DateTimeDetailFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -30,5 +38,9 @@ export const viewFieldsMap = {
     'float.list': FloatDetailFieldComponent,
     'float.detail': FloatDetailFieldComponent,
     'phone.list': PhoneDetailFieldComponent,
-    'phone.detail': PhoneDetailFieldComponent
+    'phone.detail': PhoneDetailFieldComponent,
+    'date.list': DateDetailFieldComponent,
+    'date.detail': DateDetailFieldComponent,
+    'datetime.list': DateTimeDetailFieldComponent,
+    'datetime.detail': DateTimeDetailFieldComponent
 };

@@ -29,7 +29,11 @@ class FieldTestHostComponent {
         {type: 'float', mode: 'detail', value: '1000.5', expected: '1,000.5'},
         {type: 'float', mode: 'list', value: '1000.5', expected: '1,000.5'},
         {type: 'phone', mode: 'detail', value: '+44 1111 123456', expected: '+44 1111 123456'},
-        {type: 'phone', mode: 'list', value: '+44 1111 123456', expected: '+44 1111 123456'}
+        {type: 'phone', mode: 'list', value: '+44 1111 123456', expected: '+44 1111 123456'},
+        {type: 'date', mode: 'detail', value: '2020-05-15 23:11:01', expected: '2020-05-15'},
+        {type: 'date', mode: 'list', value: '2020-05-16 23:11:01', expected: '2020-05-16'},
+        {type: 'datetime', mode: 'detail', value: '2020-05-14 23:11:01', expected: '2020-05-14 23:11:01'},
+        {type: 'datetime', mode: 'list', value: '2020-05-13 23:12:02', expected: '2020-05-13 23:12:02'}
     ];
 }
 
@@ -37,10 +41,14 @@ describe('FieldComponent', () => {
     let testHostComponent: FieldTestHostComponent;
     let testHostFixture: ComponentFixture<FieldTestHostComponent>;
 
+    /* eslint-disable camelcase, @typescript-eslint/camelcase */
     const preferences = new BehaviorSubject({
         num_grp_sep: ',',
         dec_sep: '.',
+        date_format: 'yyyy-MM-dd',
+        time_format: 'HH:mm:ss',
     });
+    /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -69,6 +77,18 @@ describe('FieldComponent', () => {
                                 id: '/docroot/api/system-configs/default_decimal_seperator',
                                 _id: 'default_decimal_seperator',
                                 value: ',',
+                                items: []
+                            },
+                            date_format: {
+                                id: '/docroot/api/system-configs/date_format',
+                                _id: 'date_format',
+                                value: 'dd.MM.yyyy',
+                                items: []
+                            },
+                            time_format: {
+                                id: '/docroot/api/system-configs/time_format',
+                                _id: 'time_format',
+                                value: 'HH.mm.ss',
                                 items: []
                             }
                         })
