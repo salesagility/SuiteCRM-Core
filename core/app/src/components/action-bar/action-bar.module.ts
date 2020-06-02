@@ -5,6 +5,8 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ActionBarUiComponent} from './action-bar.component';
 import {ImageModule} from '@components/image/image.module';
 import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
 
 @NgModule({
     declarations: [ActionBarUiComponent],
@@ -13,7 +15,9 @@ import {RouterModule} from '@angular/router';
         CommonModule,
         AppManagerModule.forChild(ActionBarUiComponent),
         ImageModule,
-        RouterModule
+        RouterModule,
+        FormsModule,
+        ButtonLoadingUiModule
     ]
 })
 export class ActionBarUiModule {

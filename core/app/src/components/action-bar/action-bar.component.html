@@ -2,11 +2,20 @@
 
 <div class="global-action-bar row pb-2 pt-2 mr-0" *ngIf="(vm$ | async) as vm">
     <div class="col-6">
-        <form novalidate class="global-search ng-untouched ng-pristine ng-valid">
+        <form name="global-search" class="global-search">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                <input [(ngModel)]="searchTerm"
+                       type="text"
+                       name="global-search-term"
+                       class="form-control global-search-term"
+                       placeholder="{{vm.appStrings['LBL_SEARCH'] || 'LBL_SEARCH'}}..."
+                       aria-label="Search"
+                       required>
                 <div class="input-group-append">
-                    <button class="btn btn-default search-button" type="submit" aria-label="Search">
+                    <button class="btn btn-default search-button"
+                            aria-label="Search"
+                            scrm-button-loading
+                            (click)="search()">
                         <scrm-image class="search-icon sicon" image="search"></scrm-image>
                     </button>
                 </div>

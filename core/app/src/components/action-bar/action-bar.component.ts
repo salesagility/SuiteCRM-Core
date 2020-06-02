@@ -3,6 +3,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {ActionBarModel} from './action-bar-model';
+import {GlobalSearch} from '@services/navigation/global-search/global-search.service';
 
 @Component({
     selector: 'scrm-action-bar-ui',
@@ -11,6 +12,7 @@ import {ActionBarModel} from './action-bar-model';
 })
 export class ActionBarUiComponent {
 
+    searchTerm = '';
     actionBar: ActionBarModel = {
         createLinks: [
             {
@@ -54,6 +56,16 @@ export class ActionBarUiComponent {
         )
     );
 
-    constructor(protected languageStore: LanguageStore) {
+    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch) {
+    }
+
+    search(): void {
+        this.globalSearch.navigateToSearch(this.searchTerm).finally(() => {
+            this.clearSearchTerm();
+        });
+    }
+
+    clearSearchTerm(): void {
+        this.searchTerm = '';
     }
 }
