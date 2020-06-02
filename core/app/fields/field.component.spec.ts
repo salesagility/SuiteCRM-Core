@@ -33,7 +33,9 @@ class FieldTestHostComponent {
         {type: 'date', mode: 'detail', value: '2020-05-15 23:11:01', expected: '2020-05-15'},
         {type: 'date', mode: 'list', value: '2020-05-16 23:11:01', expected: '2020-05-16'},
         {type: 'datetime', mode: 'detail', value: '2020-05-14 23:11:01', expected: '2020-05-14 23:11:01'},
-        {type: 'datetime', mode: 'list', value: '2020-05-13 23:12:02', expected: '2020-05-13 23:12:02'}
+        {type: 'datetime', mode: 'list', value: '2020-05-13 23:12:02', expected: '2020-05-13 23:12:02'},
+        {type: 'url', mode: 'detail', value: 'https://suitecrm.com/', expected: 'https://suitecrm.com/'},
+        {type: 'url', mode: 'list', value: 'https://suitecrm.com/', expected: 'https://suitecrm.com/'}
     ];
 }
 
@@ -50,6 +52,7 @@ describe('FieldComponent', () => {
     });
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
+    /* eslint-disable camelcase, @typescript-eslint/camelcase */
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [FieldComponent, FieldTestHostComponent],
@@ -97,6 +100,7 @@ describe('FieldComponent', () => {
             ],
         })
             .compileComponents();
+        /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
         testHostFixture = TestBed.createComponent(FieldTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;

@@ -1,6 +1,7 @@
 export interface FieldMetadata {
-    type: string;
-    name: string;
-    value: string;
+    type?: string;
+    name?: string;
+    value?: string;
     format?: boolean;
+    target?: string;
 }

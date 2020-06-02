@@ -34,6 +34,7 @@ describe('ListComponent', () => {
     let testHostFixture: ComponentFixture<ListTestHostComponent>;
 
     beforeEach(async(() => {
+        /* eslint-disable camelcase, @typescript-eslint/camelcase */
         TestBed.configureTestingModule({
             imports: [
                 ListHeaderModule,
@@ -96,6 +97,7 @@ describe('ListComponent', () => {
             ],
         })
             .compileComponents();
+        /* eslint-enable camelcase, @typescript-eslint/camelcase */
     }));
 
     beforeEach(() => {
