@@ -12,7 +12,7 @@ import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {ApolloTestingModule} from "apollo-angular/testing";
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('NavbarUiComponent', () => {
 

@@ -1,5 +1,5 @@
 import {LinkModel} from './link-model';
-import {RecentRecordModel} from "./recent-record-model";
+import {RecentRecordModel} from './recent-record-model';
 
 export interface ActionLinkModel {
     link: LinkModel;

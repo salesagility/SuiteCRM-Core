@@ -1,5 +1,5 @@
-import {ModuleNameMapper} from "@services/navigation/module-name-mapper/module-name-mapper.service";
-import {moduleNameMapperMock} from "@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock";
+import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 
 describe('Module Name Mapper Service', () => {
     const service: ModuleNameMapper = moduleNameMapperMock;

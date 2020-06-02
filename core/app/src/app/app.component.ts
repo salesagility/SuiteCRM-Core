@@ -1,7 +1,7 @@
 import {Component, ViewChild, ViewContainerRef, OnInit} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {AppState, AppStateStore} from "@store/app-state/app-state.store";
-import {Observable} from "rxjs";
+import {AppState, AppStateStore} from '@store/app-state/app-state.store';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
     private checkRouterEvent(routerEvent: Event) {
         if (routerEvent instanceof NavigationStart) {
-            this.appStateStore.updateLoading('router-navigation',true);
+            this.appStateStore.updateLoading('router-navigation', true);
         }
 
         if (routerEvent instanceof NavigationEnd ||

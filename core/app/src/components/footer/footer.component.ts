@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AuthService} from "@services/auth/auth.service";
-import {Subscription} from "rxjs";
+import {AuthService} from '@services/auth/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'scrm-footer-ui',

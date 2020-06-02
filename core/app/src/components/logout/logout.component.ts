@@ -3,7 +3,7 @@ import {AuthService} from '@services/auth/auth.service';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {LogoutModel} from "@components/logout/logout-model";
+import {LogoutModel} from '@components/logout/logout-model';
 
 @Component({
     selector: 'scrm-logout-ui',

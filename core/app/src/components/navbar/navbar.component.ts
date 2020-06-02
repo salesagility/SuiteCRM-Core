@@ -11,9 +11,9 @@ import {AuthService} from '@services/auth/auth.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {AppState, AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore, LanguageStrings,} from '@store/language/language.store';
-import {RouteConverter} from "@services/navigation/route-converter/route-converter.service";
-import {ModuleNameMapper} from "@services/navigation/module-name-mapper/module-name-mapper.service";
-import {ActionNameMapper} from "@services/navigation/action-name-mapper/action-name-mapper.service";
+import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
+import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
 @Component({

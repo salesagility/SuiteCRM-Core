@@ -5,7 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {FooterUiComponent} from './footer.component';
-import {ApolloTestingModule} from "apollo-angular/testing";
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('FooterUiComponent', () => {
     let component: FooterUiComponent;
