@@ -1,7 +1,6 @@
 ## SuiteCRM 8 ##
 
 ###> symfony/framework-bundle ###
-/.env
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -11,161 +10,47 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-###> ng serve ###
-/proxy.conf.local.json
-###< ng serve ###
-
-build/
-config/
-!config/.gitkeep
-cache/
-extentions/
-!extentions/.gitkeep
-logs/
-!logs/.gitkeep
-public/
-
-# Theme
-.sass-cache
-*.css.map
-*.min.css
-
-# Tests
-tests/coverage
-tests/api.suite.yml
-tests/acceptance.suite.yml
-
-# Composer
-vendor/
-composer.phar
-
-
-# Profiling files
-chrome-profiler-events.json
-speed-measure-plugin.json
-
-# Compiled output
-dist
-tmp
-out-tsc
-
-# Only exists if Bazel was run
-bazel-out
-
-# e2e test files
-e2e/*.js
-e2e/*.map
-
-## Generic ##
-
-# Logs
-*.log
-
-# composer
-/vendor/*
-
-#Ignore bower_components
-bower_components/
-node_modules/
-
-# htacess
-/.htaccess
-
-## IDE specific items
-# Eclipse
-*.pydevproject
-.project
-.buildpath
-.metadata
-bin/**
-tmp/**
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-# Emacs
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-.elc
-auto-save-list
-tramp
-# IntelliJ Idea
-*.iml
-*.ipr
-*.iws
-.idea/
-.phpstorm.meta.php
-.sass-cache/
-.php_cs.cache
-# NetBeans
-nbproject/
-#Visual Studio Code
-.vscode/
-# Vim
-.*.sw[a-z]
-*.un~
-*.sln
-*.suo
-*.phpproj
-Session.vim
-# Windows
-Thumbs.db
-Desktop.ini
-.DS_Store
-.DS_Store?
-.save
-#browserstack
-BrowserStackLocal
-browserstack.err
-
-
-# zips and executables
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-*.exe
-
-# sql
-*.sql
-*.sql.gz
-*.sqlite
-
-# Ignore testing environment
-build/tmp/
-
-# Misc
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-.c9/
-*.launch
-
-###> friendsofphp/php-cs-fixer ###
-/.php_cs
-/.php_cs.cache
-###< friendsofphp/php-cs-fixer ###
-
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
+###> ng serve ###
+/proxy.conf.local.json
+###< ng serve ###
 
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+# Symfony Logs
+/logs/
+!logs/.gitkeep
+
+# Symfony Cache
+/cache/
+
+# Dependencies
+/node_modules/
+
+# Compiled Output
+/public/
+
+# Custom
+/extentions/
+!extentions/.gitkeep
+
+# Tests
+tests/_output/
+tests/_support/_generated/
+!tests/_output/.gitkeep
+!tests/_support/_generated/.gitkeep
+
+# Composer
+/vendor/
+composer.phar
+
+# htacess
+/.htaccess
