@@ -226,7 +226,6 @@ class AppRebuildCommand extends Command
 
                     $appManagerPath = '../../../../../app-manager/app-manager.module';
                     $componentFileName = str_replace('.ts', '', $componentFileName);
-                    //$componentImportList .= 'import { ' . $fullComponentName . " } from '../app-files/fields/" . $componentName . '/templates/' . $viewName . '/' . $componentFileName . "'; \n";
 
                     $moduleImportList .= 'import { ' . $fullModuleName . " } from '../app-files/fields/" . $componentName . '/templates/' . $viewName . '/' . $componentName . ".module'; \n";
                 } elseif ($type === 'ui') {
