@@ -32,11 +32,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     use TargetPathTrait;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -45,11 +40,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @var CsrfTokenManagerInterface
      */
     private $csrfTokenManager;
-
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
 
     /**
      * @var Authentication
@@ -78,17 +68,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function __construct(
         Authentication $authentication,
-        EntityManagerInterface $entityManager,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
         SessionInterface $session,
         Security $security
     ) {
-        $this->entityManager = $entityManager;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder = $passwordEncoder;
         $this->authentication = $authentication;
         $this->session = $session;
         $this->security = $security;

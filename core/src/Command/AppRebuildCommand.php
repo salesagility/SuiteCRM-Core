@@ -127,9 +127,6 @@ class AppRebuildCommand extends Command
         // UI components
         $ui = [];
 
-        // View components
-        $views = [];
-
         // Get the ui app-files path
         $uiFilesPath = $rebuildEnginePath . '/src/app/app-files';
 
@@ -183,12 +180,10 @@ class AppRebuildCommand extends Command
         $ngComponents = [];
 
         foreach ($finder as $file) {
-            $ngComponents[] = $absoluteFilePath = $file->getRealPath();
+            $ngComponents[] = $file->getRealPath();
         }
 
-        $componentList = '';
         $moduleList = '';
-        $componentImportList = '';
         $moduleImportList = '';
 
         foreach ($ngComponents as $filepath) {
@@ -409,7 +404,7 @@ EOT;
             ];
 
             $compileThemeInput = new ArrayInput($arguments);
-            $returnCode = $compileThemeCommand->run($compileThemeInput, $output);
+            $compileThemeCommand->run($compileThemeInput, $output);
 
             $cmd = 'ng build --deploy-url public/';
 
