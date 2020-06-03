@@ -7,7 +7,7 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
 export interface UserPreferenceMap {
-    [key: string]: string;
+    [key: string]: any;
 }
 
 export interface UserPreferences {
@@ -64,9 +64,10 @@ export class UserPreferenceStore implements StateStore {
     /**
      * Get user preferences value by key
      *
-     * @param key
+     * @param {string} key to retrieve
+     * @returns {any} users preference
      */
-    public getUserPreference(key: string): string {
+    public getUserPreference(key: string): any {
 
         if (!internalState.userPreferences || !internalState.userPreferences[key]) {
             return null;
@@ -80,7 +81,7 @@ export class UserPreferenceStore implements StateStore {
      * Initial UserPreferences load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
-     * @returns Observable<any>
+     * @returns {object} Observable<any>
      */
     public load(): Observable<any> {
         this.updateState({...internalState, loading: true});
@@ -100,16 +101,16 @@ export class UserPreferenceStore implements StateStore {
     /**
      * Update the state
      *
-     * @param state
+     * @param {object} state to set
      */
-    protected updateState(state: UserPreferences) {
+    protected updateState(state: UserPreferences): void {
         this.store.next(internalState = state);
     }
 
     /**
      * Get UserPreferences cached Observable or call the backend
      *
-     * @returns Observable<any>
+     * @returns {object} Observable<any>
      */
     protected getUserPreferences(): Observable<any> {
 
@@ -125,7 +126,7 @@ export class UserPreferenceStore implements StateStore {
     /**
      * Fetch the User Preferences from the backend
      *
-     * @returns Observable<any>
+     * @returns {object} Observable<any>
      */
     protected fetch(): Observable<any> {
 

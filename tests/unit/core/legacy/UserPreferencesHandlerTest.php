@@ -6,8 +6,10 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
+use SuiteCRM\Core\Legacy\CurrencyHandler;
 use SuiteCRM\Core\Legacy\DateTimeHandler;
 use SuiteCRM\Core\Legacy\UserPreferenceHandler;
+use SuiteCRM\Core\Legacy\UserPreferences\CurrencyPreferenceMapper;
 use SuiteCRM\Core\Legacy\UserPreferences\DateFormatPreferenceMapper;
 use SuiteCRM\Core\Legacy\UserPreferences\TimeFormatPreferenceMapper;
 use SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers;
@@ -41,7 +43,8 @@ class UserPreferencesHandlerTest extends Unit
             'global' => [
                 'timezone' => true,
                 'datef' => true,
-                'timef' => true
+                'timef' => true,
+                'currency' => true
             ]
         ];
 
@@ -49,7 +52,8 @@ class UserPreferencesHandlerTest extends Unit
             'global' => [
                 'timezone' => 'UTC',
                 'datef' => 'm/d/Y',
-                'timef' => 'H:i'
+                'timef' => 'H:i',
+                'currency' => -99
             ]
         ];
 
@@ -85,9 +89,18 @@ class UserPreferencesHandlerTest extends Unit
             $this->tester->getDatetimeFormatMap()
         );
 
+        $currencyHandler = new CurrencyHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
         $mappersArray = [
             'datef' => new DateFormatPreferenceMapper($dateTimeHandler),
-            'timef' => new TimeFormatPreferenceMapper($dateTimeHandler)
+            'timef' => new TimeFormatPreferenceMapper($dateTimeHandler),
+            'currency' => new CurrencyPreferenceMapper($currencyHandler)
         ];
 
         /** @var UserPreferencesMappers $mappers */
@@ -194,5 +207,34 @@ class UserPreferencesHandlerTest extends Unit
 
         static::assertNotNull($format);
         static::assertEquals('HH:mm', $format);
+    }
+
+    /**
+     * Test currency preference mapping
+     */
+    public function testCurrencyMapping(): void
+    {
+        $userPref = $this->handler->getUserPreference('global');
+
+        static::assertNotNull($userPref);
+        static::assertEquals('global', $userPref->getId());
+
+        $userPreferences = $userPref->getItems();
+
+        static::assertArrayHasKey('currency', $userPreferences);
+        $currencyPref = $userPreferences['currency'];
+
+        static::assertNotNull($currencyPref);
+        static::assertNotEmpty($currencyPref);
+
+        static::assertArrayHasKey('id', $currencyPref);
+        static::assertNotEmpty($currencyPref['id']);
+        static::assertEquals($currencyPref['id'], -99);
+        static::assertArrayHasKey('name', $currencyPref);
+        static::assertNotEmpty($currencyPref['name']);
+        static::assertArrayHasKey('symbol', $currencyPref);
+        static::assertNotEmpty($currencyPref['symbol']);
+        static::assertArrayHasKey('iso4217', $currencyPref);
+        static::assertNotEmpty($currencyPref['iso4217']);
     }
 }

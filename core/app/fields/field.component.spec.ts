@@ -35,7 +35,9 @@ class FieldTestHostComponent {
         {type: 'datetime', mode: 'detail', value: '2020-05-14 23:11:01', expected: '2020-05-14 23:11:01'},
         {type: 'datetime', mode: 'list', value: '2020-05-13 23:12:02', expected: '2020-05-13 23:12:02'},
         {type: 'url', mode: 'detail', value: 'https://suitecrm.com/', expected: 'https://suitecrm.com/'},
-        {type: 'url', mode: 'list', value: 'https://suitecrm.com/', expected: 'https://suitecrm.com/'}
+        {type: 'url', mode: 'list', value: 'https://suitecrm.com/', expected: 'https://suitecrm.com/'},
+        {type: 'currency', mode: 'detail', value: '1000.5', expected: '£1,000.5'},
+        {type: 'currency', mode: 'list', value: '1000.5', expected: '£1,000.5'}
     ];
 }
 
@@ -49,6 +51,8 @@ describe('FieldComponent', () => {
         dec_sep: '.',
         date_format: 'yyyy-MM-dd',
         time_format: 'HH:mm:ss',
+        currency: {id: '1', name: 'Stirling Pound', symbol: '£', iso4217: 'GBP'},
+        default_currency_significant_digits: 2
     });
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
@@ -92,6 +96,23 @@ describe('FieldComponent', () => {
                                 id: '/docroot/api/system-configs/time_format',
                                 _id: 'time_format',
                                 value: 'HH.mm.ss',
+                                items: []
+                            },
+                            currency: {
+                                id: '/docroot/api/system-configs/currency',
+                                _id: 'currency',
+                                value: null,
+                                items: {
+                                    id: '-99',
+                                    name: 'US Dollars',
+                                    symbol: '$',
+                                    iso4217: 'USD'
+                                }
+                            },
+                            default_currency_significant_digits: {
+                                id: '/docroot/api/system-configs/default_currency_significant_digits',
+                                _id: 'default_currency_significant_digits',
+                                value: 3,
                                 items: []
                             }
                         })

@@ -14,3 +14,4 @@ parameters:
         default_currency_significant_digits: true
         datef: true
         timef: true
+        currency: true

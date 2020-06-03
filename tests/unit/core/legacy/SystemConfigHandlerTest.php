@@ -7,9 +7,11 @@ use Codeception\Test\Unit;
 use Exception;
 use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
 use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
+use SuiteCRM\Core\Legacy\CurrencyHandler;
 use SuiteCRM\Core\Legacy\DateTimeHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\SystemConfig\DateFormatConfigMapper;
+use SuiteCRM\Core\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
 use SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers;
 use SuiteCRM\Core\Legacy\SystemConfig\TimeFormatConfigMapper;
 use SuiteCRM\Core\Legacy\SystemConfigHandler;
@@ -52,7 +54,8 @@ class SystemConfigHandlerTest extends Unit
             'module_name_map' => true,
             'action_name_map' => true,
             'datef' => true,
-            'timef' => true
+            'timef' => true,
+            'currency' => true,
         ];
 
         $moduleMapper = new ModuleNameMapperHandler(
@@ -88,9 +91,18 @@ class SystemConfigHandlerTest extends Unit
             $this->tester->getDatetimeFormatMap()
         );
 
+        $currencyHandler = new CurrencyHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
         $mappersArray = [
             'datef' => new DateFormatConfigMapper($dateTimeHandler),
-            'timef' => new TimeFormatConfigMapper($dateTimeHandler)
+            'timef' => new TimeFormatConfigMapper($dateTimeHandler),
+            'currency' => new DefaultCurrencyConfigMapper($currencyHandler)
         ];
 
         /** @var SystemConfigMappers $mappers */
@@ -255,4 +267,30 @@ class SystemConfigHandlerTest extends Unit
         static::assertEquals('HH:mm', $format->getValue());
     }
 
+    /**
+     * Test default currency mapping
+     */
+    public function testDefaultCurrencyMapping(): void
+    {
+        $currencyConfig = $this->handler->getSystemConfig('currency');
+        static::assertNotNull($currencyConfig);
+        static::assertEquals('currency', $currencyConfig->getId());
+        static::assertNull($currencyConfig->getValue());
+        static::assertIsArray($currencyConfig->getItems());
+        static::assertNotEmpty($currencyConfig->getItems());
+
+        $currency = $currencyConfig->getItems();
+        static::assertNotNull($currency);
+        static::assertNotEmpty($currency);
+
+        static::assertArrayHasKey('id', $currency);
+        static::assertNotEmpty($currency['id']);
+        static::assertEquals($currency['id'], -99);
+        static::assertArrayHasKey('name', $currency);
+        static::assertNotEmpty($currency['name']);
+        static::assertArrayHasKey('symbol', $currency);
+        static::assertNotEmpty($currency['symbol']);
+        static::assertArrayHasKey('iso4217', $currency);
+        static::assertNotEmpty($currency['iso4217']);
+    }
 }

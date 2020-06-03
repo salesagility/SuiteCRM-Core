@@ -12,6 +12,8 @@ import {DateDetailFieldComponent} from '@fields/date/templates/detail/date.compo
 import {DateTimeDetailFieldComponent} from '@fields/datetime/templates/detail/datetime.component';
 import {UrlDetailFieldModule} from '@fields/url/templates/detail/url.module';
 import {UrlDetailFieldComponent} from '@fields/url/templates/detail/url.component';
+import {CurrencyDetailFieldModule} from '@fields/currency/templates/detail/currency.module';
+import {CurrencyDetailFieldComponent} from '@fields/currency/templates/detail/currency.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -20,7 +22,8 @@ export const fieldModules = [
     PhoneDetailFieldModule,
     DateDetailFieldModule,
     DateTimeDetailFieldModule,
-    UrlDetailFieldModule
+    UrlDetailFieldModule,
+    CurrencyDetailFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -29,7 +32,8 @@ export const fieldComponents = [
     PhoneDetailFieldComponent,
     DateDetailFieldComponent,
     DateTimeDetailFieldComponent,
-    UrlDetailFieldComponent
+    UrlDetailFieldComponent,
+    CurrencyDetailFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -48,5 +52,7 @@ export const viewFieldsMap = {
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
     'url.list': UrlDetailFieldComponent,
-    'url.detail': UrlDetailFieldComponent
+    'url.detail': UrlDetailFieldComponent,
+    'currency.list': CurrencyDetailFieldComponent,
+    'currency.detail': CurrencyDetailFieldComponent
 };
