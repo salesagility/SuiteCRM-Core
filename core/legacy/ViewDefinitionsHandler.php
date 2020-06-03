@@ -5,7 +5,6 @@ namespace SuiteCRM\Core\Legacy;
 use App\Entity\ViewDefinition;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ViewDefinitionsProviderInterface;
-use BeanFactory;
 use Exception;
 use InvalidArgumentException;
 use ListViewFacade;
@@ -21,7 +20,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @var array
      */
     protected static $listViewColumnInterface = [
-        'fieldname' => '',
+        'fieldName' => '',
         'width' => '',
         'label' => '',
         'link' => false,
@@ -81,7 +80,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $data = [];
         foreach ($displayColumns as $key => $column) {
             $column = array_merge(self::$listViewColumnInterface, $column);
-            $column['fieldname'] = $key;
+            $column['fieldName'] = strtolower($key);
             $data[] = $column;
         }
         $viewDef = new ViewDefinition();

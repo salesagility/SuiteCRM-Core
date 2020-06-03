@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Service;
 
 
 use App\Entity\FieldDefinition;

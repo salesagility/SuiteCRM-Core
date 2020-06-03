@@ -3,6 +3,7 @@
 namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\FieldDefinition;
+use App\Service\FieldDefinitionsProviderInterface;
 use Exception;
 use SugarView;
 
