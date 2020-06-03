@@ -21,9 +21,6 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
-
 // Get the autoloader class
 require __DIR__ . '/vendor/autoload.php';
 
