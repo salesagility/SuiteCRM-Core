@@ -8,11 +8,10 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {of} from 'rxjs';
-import {take} from 'rxjs/operators';
 import {FieldModule} from '@fields/field.module';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
     selector: 'table-body-ui-test-host-component',
@@ -32,7 +31,8 @@ describe('TablebodyUiComponent', () => {
                 CdkTableModule,
                 ApolloTestingModule,
                 FieldModule,
-                SortButtonModule
+                SortButtonModule,
+                RouterTestingModule
             ],
             declarations: [TableBodyComponent, TableBodyUITestHostComponent],
             providers: [

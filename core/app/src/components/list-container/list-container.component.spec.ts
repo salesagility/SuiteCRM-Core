@@ -17,7 +17,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
-
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('ListcontainerUiComponent', () => {
     let component: ListcontainerUiComponent;
@@ -31,7 +31,8 @@ describe('ListcontainerUiComponent', () => {
                 AngularSvgIconModule,
                 HttpClientTestingModule,
                 BrowserAnimationsModule,
-                ApolloTestingModule
+                ApolloTestingModule,
+                RouterTestingModule
             ],
             providers: [
                 {

@@ -20,7 +20,7 @@ import {
 
 @NgModule()
 export class AppManagerModule {
-  static forRoot(manifests: AppManifest[]): ModuleWithProviders {
+  static forRoot(manifests: AppManifest[]): ModuleWithProviders<AppManagerModule> {
     return {
       ngModule: AppManagerModule,
       providers: [
@@ -34,7 +34,7 @@ export class AppManagerModule {
     };
   }
 
-  static forModule(manifest: AppManifest): ModuleWithProviders {
+  static forModule(manifest: AppManifest): ModuleWithProviders<AppManagerModule> {
     return {
       ngModule: AppManagerModule,
       providers: [
@@ -51,7 +51,7 @@ export class AppManagerModule {
     };
   }
 
-  static forChild(component: Type<any>): ModuleWithProviders {
+  static forChild(component: Type<any>): ModuleWithProviders<AppManagerModule> {
     return {
       ngModule: AppManagerModule,
       providers: [

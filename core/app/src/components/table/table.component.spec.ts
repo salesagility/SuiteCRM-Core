@@ -19,6 +19,7 @@ import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TableUiComponent', () => {
     let component: TableUiComponent;
@@ -34,7 +35,8 @@ describe('TableUiComponent', () => {
                 HttpClientTestingModule,
                 ApolloTestingModule,
                 ImageModule,
-                SortButtonModule
+                SortButtonModule,
+                RouterTestingModule
             ],
             declarations: [TableUiComponent],
             providers: [

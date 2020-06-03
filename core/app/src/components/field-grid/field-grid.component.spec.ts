@@ -10,6 +10,7 @@ import {FieldModule} from '@fields/field.module';
 import {Field} from '@fields/field.model';
 import {By} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
     selector: 'field-grid-host-component',
@@ -91,7 +92,8 @@ describe('FieldGridComponent', () => {
                 BrowserDynamicTestingModule,
                 LayoutModule,
                 FieldModule,
-                CommonModule
+                CommonModule,
+                RouterTestingModule
             ],
             providers: [],
         }).compileComponents();

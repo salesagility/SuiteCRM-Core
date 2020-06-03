@@ -62,16 +62,14 @@ describe('ActionMenuComponent', () => {
         const actionButtons = divElement.getElementsByClassName('action-button');
 
         const createButton = actionButtons.item(0);
-        const listButton = actionButtons.item(1);
-        const importButton = actionButtons.item(2);
+        const importButton = actionButtons.item(1);
 
         expect(testHostComponent).toBeTruthy();
         expect(divElement).toBeTruthy();
         expect(actionButtons).toBeTruthy();
-        expect(actionButtons.length).toEqual(3);
+        expect(actionButtons.length).toEqual(2);
 
         expect(createButton.textContent).toContain('Create Account');
-        expect(listButton.textContent).toContain('View Accounts');
         expect(importButton.textContent).toContain('Import Accounts');
     });
 });

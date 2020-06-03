@@ -8,7 +8,7 @@ import {BehaviorSubject, of} from 'rxjs';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {By} from '@angular/platform-browser';
-
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
     selector: 'field-test-host-component',
@@ -65,7 +65,8 @@ describe('FieldComponent', () => {
             imports: [
                 ...fieldModules,
                 CommonModule,
-                DynamicModule.withComponents(fieldComponents)
+                DynamicModule.withComponents(fieldComponents),
+                RouterTestingModule
             ],
             providers: [
                 {
