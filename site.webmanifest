@@ -1,0 +1,11 @@
+{
+    "lang": "en-US",
+    "name": "SuiteCRM",
+    "short_name": "SCRM",
+    "description": "SuiteCRM - Open source CRM for the world",
+    "start_url": ".",
+    "orientation": "portrait",
+    "display": "fullscreen",
+    "background_color": "#778591",
+    "icons": [{"src": "legacy/themes/default/images/company_logo.png", "sizes": "184x40", "type": "image/png"}]
+}
