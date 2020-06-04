@@ -7,11 +7,11 @@ import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 
 export interface ListViewMeta {
-    fields: Field[]
+    fields: Field[];
 }
 
 export interface Field {
-    fieldname: string;
+    fieldName: string;
     width: string;
     label: string;
     link: boolean;

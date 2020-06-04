@@ -8,7 +8,7 @@ import {NavigationStore} from '@base/store/navigation/navigation.store';
 import {UserPreferenceStore} from '@base/store/user-preference/user-preference.store';
 import {ThemeImagesStore} from '@base/store/theme-images/theme-images.store';
 import {AppStateStore} from '@base/store/app-state/app-state.store';
-import {ListViewMetaStore} from '@store/metadata/list-view-meta.store';
+import {ListViewMetaStore} from '@store/list-view-meta/list-view-meta.store';
 import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
 import {forkJoin, Observable} from 'rxjs';
 
@@ -41,7 +41,7 @@ export class BaseListResolver extends BaseModuleResolver {
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         return forkJoin({
             base: super.resolve(route),
-            metadata: this.listViewMetaStore.load(route.params.module)
+            metadata: this.listViewMetaStore.load(route.params.module),
         });
     }
 }

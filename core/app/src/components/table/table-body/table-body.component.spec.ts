@@ -3,6 +3,8 @@ import {TablebodyUiComponent} from './table-body.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {Component} from '@angular/core';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 @Component({
     selector: 'tabke-body-ui-test-host-component',
@@ -23,7 +25,11 @@ describe('TablebodyUiComponent', () => {
                 ApolloTestingModule,
             ],
             declarations: [TablebodyUiComponent, TableBodyUITestHostComponent],
-            providers: [],
+            providers: [
+                {
+                    provide: ListViewStore, useValue: listviewStoreMock
+                },
+            ],
         })
             .compileComponents();
     });

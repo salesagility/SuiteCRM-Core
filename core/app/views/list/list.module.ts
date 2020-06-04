@@ -13,7 +13,7 @@ import {FieldModule} from '@fields/field.module';
         ListHeaderModule,
         ListcontainerUiModule,
         FieldModule
-    ]
+    ],
 })
 export class ListModule {
 }

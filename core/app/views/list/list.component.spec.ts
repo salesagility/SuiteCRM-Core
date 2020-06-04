@@ -21,6 +21,8 @@ import {DynamicModule} from 'ng-dynamic-component';
 import {FieldModule} from '@fields/field.module';
 import {By} from '@angular/platform-browser';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 @Component({
     selector: 'list-test-host-component',
@@ -51,6 +53,9 @@ describe('ListComponent', () => {
             declarations: [ListComponent, ListTestHostComponent],
             providers: [
                 {
+                    provide: ListViewStore, useValue: listviewStoreMock
+                },
+                {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     },
@@ -62,7 +67,11 @@ describe('ListComponent', () => {
                             module: 'accounts',
                             view: 'list',
                             loaded: true
-                        }).pipe(take(1))
+                        }).pipe(take(1)),
+                        getModule: (): string => 'accounts',
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        updateLoading: (key: string, loading: boolean): void => {
+                        }
                     }
                 },
                 {

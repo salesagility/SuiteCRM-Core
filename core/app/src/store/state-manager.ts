@@ -6,7 +6,7 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {StateStore, StateStoreMap, StateStoreMapEntry} from '@base/store/state';
-import {ListViewMetaStore} from '@store/metadata/list-view-meta.store';
+import {ListViewMetaStore} from '@store/list-view-meta/list-view-meta.store';
 
 @Injectable({
     providedIn: 'root',

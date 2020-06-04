@@ -1,14 +1,26 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    <table cdk-table [dataSource]="dataSource" aria-describedby="table-body" class="list-view-table table">
-        <div id="table-body">ListView table body</div>
+    <table cdk-table [dataSource]="dataSource$" aria-describedby="table-body" class="list-view-table table">
 
-        <ng-container *ngFor="let column of vm.metadata.fields" [cdkColumnDef]="column.fieldname">
+        <ng-container cdkColumnDef="checkbox">
+            <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+            <td cdk-cell *cdkCellDef="let record">
+                <label class="checkbox-container">
+                    <input type="checkbox"
+                           aria-hidden="true">
+                    <span class="checkmark"></span>
+                </label>
+            </td>
+        </ng-container>
+
+        <ng-container *ngFor="let column of vm.metadata.fields" [cdkColumnDef]="column.fieldName">
             <th cdk-header-cell scope="col" class="primary-table-header"
                 *cdkHeaderCellDef>{{
               vm.language.appStrings[column.label] || column.label}}
             </th>
+            <td cdk-cell *cdkCellDef="let record">{{record.attributes[column.fieldName]}}</td>
         </ng-container>
 
         <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
+        <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
     </table>
 </ng-container>

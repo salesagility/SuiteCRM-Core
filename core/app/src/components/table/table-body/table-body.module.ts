@@ -13,7 +13,7 @@ import {CdkTableModule} from '@angular/cdk/table';
         CommonModule,
         AppManagerModule.forChild(TablebodyUiComponent),
         AngularSvgIconModule,
-        CdkTableModule
+        CdkTableModule,
     ]
 })
 export class TablebodyUiModule {

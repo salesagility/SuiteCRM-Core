@@ -11,6 +11,8 @@ import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 
 describe('ListcontainerUiComponent', () => {
@@ -28,6 +30,9 @@ describe('ListcontainerUiComponent', () => {
                 ApolloTestingModule
             ],
             providers: [
+                {
+                    provide: ListViewStore, useValue: listviewStoreMock
+                },
                 {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))

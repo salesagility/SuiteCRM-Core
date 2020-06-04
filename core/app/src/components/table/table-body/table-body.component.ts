@@ -1,9 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {ListViewMetaStore} from '@store/metadata/list-view-meta.store';
+import {ListViewMeta, ListViewMetaStore} from '@store/list-view-meta/list-view-meta.store';
 import {map} from 'rxjs/operators';
-import {MockDataSource} from './table-body-data.component';
+import {ListEntry, ListViewStore} from '@store/list-view/list-view.store';
+import {DataSource} from '@angular/cdk/table';
 
 @Component({
     selector: 'scrm-table-body-ui',
@@ -12,12 +13,12 @@ import {MockDataSource} from './table-body-data.component';
 export class TablebodyUiComponent {
     @Input() module;
     language$: Observable<LanguageStrings> = this.language.vm$;
-    metadata$: Observable<any> = this.metadata.vm$;
-    dataSource = new MockDataSource();
+    metadata$: Observable<ListViewMeta> = this.metadata.vm$;
+    dataSource$: DataSource<ListEntry> = this.data;
 
     vm$ = combineLatest([
         this.language$,
-        this.metadata$
+        this.metadata$,
     ]).pipe(
         map((
             [
@@ -25,10 +26,10 @@ export class TablebodyUiComponent {
                 metadata
             ]
         ) => {
-            const displayedColumns: string[] = [];
+            const displayedColumns: string[] = ['checkbox'];
 
             metadata.fields.forEach((field) => {
-                displayedColumns.push(field.fieldname);
+                displayedColumns.push(field.fieldName);
             });
 
             return {
@@ -41,7 +42,8 @@ export class TablebodyUiComponent {
 
     constructor(
         protected language: LanguageStore,
-        protected metadata: ListViewMetaStore
+        protected metadata: ListViewMetaStore,
+        protected data: ListViewStore
     ) {
     }
 }
