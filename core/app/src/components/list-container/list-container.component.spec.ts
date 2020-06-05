@@ -13,6 +13,8 @@ import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageMockData} from '@store/language/language.store.spec.mock';
 
 
 describe('ListcontainerUiComponent', () => {
@@ -36,6 +38,13 @@ describe('ListcontainerUiComponent', () => {
                 {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
+                {
+                    provide: LanguageStore, useValue: {
+                        vm$: of(languageMockData).pipe(take(1)),
+                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1)),
+                        appStrings$: of(languageMockData.appStrings).pipe(take(1))
                     }
                 },
             ],

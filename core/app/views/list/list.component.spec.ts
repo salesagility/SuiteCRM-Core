@@ -77,7 +77,8 @@ describe('ListComponent', () => {
                 {
                     provide: LanguageStore, useValue: {
                         vm$: of(languageMockData).pipe(take(1)),
-                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1))
+                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1)),
+                        appStrings$: of(languageMockData.appStrings).pipe(take(1))
                     }
                 },
                 {

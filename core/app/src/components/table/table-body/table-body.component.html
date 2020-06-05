@@ -6,6 +6,9 @@
             <td cdk-cell *cdkCellDef="let record">
                 <label class="checkbox-container">
                     <input type="checkbox"
+                           [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
+                           (change)="toggleSelection(record['id'])"
+                           [disabled]="allSelected(vm.selectionStatus)"
                            aria-hidden="true">
                     <span class="checkmark"></span>
                 </label>

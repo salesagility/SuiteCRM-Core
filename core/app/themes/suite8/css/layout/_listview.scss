@@ -342,6 +342,12 @@ td {
   color: $white;
 }
 
+@media all and (max-width: $breakpoint-medium) {
+  .select-action-group {
+    margin: 0 0 0 1em;
+  }
+}
+
 .select-action-group .dropdown-toggle::after,
 .bulk-action-group,
 .bulk-action-group .dropdown-toggle::after {

@@ -1,37 +1,53 @@
-<div class="bulk-action float-left">
-  <div class="dropdown select-action-group float-left">
-    <label class="checkbox-container">
-      <input type="checkbox" [checked]="allSelected" aria-hidden="true">
-      <span class="checkmark"></span>
-    </label>
-    <button class="bulk-action-button dropdown-toggle" type="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false" aria-hidden="true"
-            aria-label="Select Action Menu"></button>
-    <div class="dropdown-menu" aria-hidden="true">
-      <a class="dropdown-item" (click)="selectAll()">
-        Select All
-      </a>
-      <a class="dropdown-item" (click)="selectAll()">
-        Select This Page
-      </a>
-      <a class="dropdown-item" (click)="deselectAll()">
-        Deselect All
-      </a>
+<div class="bulk-action float-left" *ngIf="(vm$ | async) as vm">
+    <div ngbDropdown class="dropdown select-action-group float-left">
+        <button class="bulk-action-button dropdown-toggle"
+                type="button"
+                ngbDropdownToggle
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-hidden="true"
+                aria-label="Select Action Menu">
+            <label class="checkbox-container">
+                <input type="checkbox"
+                       [checked]="checked(vm.status)"
+                       [indeterminate]="intermediate(vm.status)"
+                       (change)="toggleSelection(vm.status)"
+                       aria-hidden="true">
+                <span class="checkmark"></span>
+            </label>
+            <span class="bulk-action-selected-number">{{vm.count > 0 ? (vm.appStrings['LBL_LISTVIEW_SELECTED_OBJECTS'] || '') : ''}} {{vm.count > 0 ? vm.count : ''}}</span>
+        </button>
+        <div class="dropdown-menu"
+             ngbDropdownMenu
+             aria-hidden="true">
+            <a class="dropdown-item select-all" (click)="selectAll()">
+                {{vm.appStrings['LBL_LISTVIEW_OPTION_ENTIRE'] || ''}}
+            </a>
+            <a class="dropdown-item select-page" (click)="selectPage()">
+                {{vm.appStrings['LBL_LISTVIEW_OPTION_CURRENT'] || ''}}
+            </a>
+            <a class="dropdown-item deselect-all" (click)="deselectAll()">
+                {{vm.appStrings['LBL_LISTVIEW_NONE'] || ''}}
+            </a>
+        </div>
     </div>
-  </div>
-  <div class="dropdown bulk-action-group float-left">
-    <button class="bulk-action-button  dropdown-toggle" type="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-hidden="true" aria-expanded="false">
-      Bulk Action
-    </button>
-    <div class="dropdown-menu" aria-hidden="true">
-      <a class="dropdown-item">Email</a>
-      <a class="dropdown-item">Mass Update</a>
-      <a class="dropdown-item">Mail Merge</a>
-      <a class="dropdown-item">Merge</a>
-      <a class="dropdown-item">Print as PDF</a>
-      <a class="dropdown-item">Export</a>
-      <a class="dropdown-item">Delete</a>
+    <div class="dropdown bulk-action-group float-left">
+        <button class="bulk-action-button dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-hidden="true"
+                aria-expanded="false">
+            {{vm.appStrings['LBL_BULK_ACTION_BUTTON_LABEL'] || ''}}
+        </button>
+        <div class="dropdown-menu" aria-hidden="true">
+            <a class="dropdown-item">Email</a>
+            <a class="dropdown-item">Mass Update</a>
+            <a class="dropdown-item">Mail Merge</a>
+            <a class="dropdown-item">Merge</a>
+            <a class="dropdown-item">Print as PDF</a>
+            <a class="dropdown-item">Export</a>
+            <a class="dropdown-item">Delete</a>
+        </div>
     </div>
-  </div>
 </div>

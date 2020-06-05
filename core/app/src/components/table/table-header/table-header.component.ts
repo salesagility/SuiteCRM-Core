@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {ListViewStore} from '@store/list-view/list-view.store';
 
 @Component({
-  selector: 'scrm-table-header-ui',
-  templateUrl: 'table-header.component.html',
-
+    selector: 'scrm-table-header',
+    templateUrl: 'table-header.component.html',
 })
+export class TableHeaderComponent {
+    selectionState: SelectionDataSource = this.data;
 
-export class TableheaderUiComponent implements OnInit {
-
-  ngOnInit() {
-
-  }
-
+    constructor(
+        protected data: ListViewStore
+    ) {
+    }
 }

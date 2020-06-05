@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
@@ -10,16 +10,16 @@ import {TablefooterUiModule} from './table-footer/table-footer.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
-  declarations: [TableUiComponent],
-  exports: [TableUiComponent],
-  imports: [
-    CommonModule,
-    AppManagerModule.forChild(TableUiComponent),
-    TableheaderUiModule,
-    TablebodyUiModule,
-    TablefooterUiModule,
-    AngularSvgIconModule
-  ]
+    declarations: [TableUiComponent],
+    exports: [TableUiComponent],
+    imports: [
+        CommonModule,
+        AppManagerModule.forChild(TableUiComponent),
+        TableheaderUiModule,
+        TablebodyUiModule,
+        TablefooterUiModule,
+        AngularSvgIconModule
+    ]
 })
 export class TableUiModule {
 }

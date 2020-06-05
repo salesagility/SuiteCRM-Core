@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TablebodyUiComponent} from './table-body.component';
+import {TableBodyComponent} from './table-body.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {Component} from '@angular/core';
@@ -8,7 +8,7 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 @Component({
     selector: 'tabke-body-ui-test-host-component',
-    template: '<scrm-table-body-ui [module]="module"></scrm-table-body-ui>'
+    template: '<scrm-table-body [module]="module"></scrm-table-body>'
 })
 class TableBodyUITestHostComponent {
     module = 'accounts';
@@ -24,7 +24,7 @@ describe('TablebodyUiComponent', () => {
                 CdkTableModule,
                 ApolloTestingModule,
             ],
-            declarations: [TablebodyUiComponent, TableBodyUITestHostComponent],
+            declarations: [TableBodyComponent, TableBodyUITestHostComponent],
             providers: [
                 {
                     provide: ListViewStore, useValue: listviewStoreMock

@@ -14,9 +14,13 @@ export const languageMockData = {
         LBL_SEND: 'Send',
         LBL_LOGOUT: 'Logout',
         LBL_TOUR_NEXT: 'Next',
-        LBL_LAST_VIEWED: 'Recently Viewed'
+        LBL_LAST_VIEWED: 'Recently Viewed',
+        LBL_LISTVIEW_OPTION_ENTIRE: 'Select All',
+        LBL_LISTVIEW_OPTION_CURRENT: 'Select This page',
+        LBL_LISTVIEW_NONE: 'Deselect All',
     },
     appListStrings: {
+        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
         language_pack_name: 'US English',
         moduleList: {
             Home: 'Home',
@@ -34,6 +38,7 @@ export const languageMockData = {
             LBL_EMAIL_ADDRESS: 'Email Address:',
             LBL_MY_PIPELINE_FORM_TITLE: 'My Pipeline',
             LBL_PIPELINE_FORM_TITLE: 'Pipeline By Sales Stage',
+            // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
             LBL_RGraph_PIPELINE_FORM_TITLE: 'Pipeline By Sales Stage',
             LNK_NEW_CONTACT: 'Create Contact',
             LNK_NEW_ACCOUNT: 'Create Account',

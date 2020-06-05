@@ -1,18 +1,18 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {BulkactionmenuUiComponent} from './bulk-action-menu.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
+import {BulkActionMenuComponent} from './bulk-action-menu.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    declarations: [BulkactionmenuUiComponent],
-    exports: [BulkactionmenuUiComponent],
+    declarations: [BulkActionMenuComponent],
+    exports: [BulkActionMenuComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(BulkactionmenuUiComponent),
-        AngularSvgIconModule
+        AppManagerModule.forChild(BulkActionMenuComponent),
+        NgbModule,
     ]
 })
-export class BulkactionmenuUiModule {
+export class BulkActionMenuModule {
 }

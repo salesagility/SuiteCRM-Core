@@ -6,14 +6,16 @@ import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
+import {SelectionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 
 export interface FieldMap {
     [key: string]: any;
 }
 
 export interface ListEntry {
-    module: string;
-    records: FieldMap;
+    type: string;
+    attributes: FieldMap;
+    id?: string;
 }
 
 export interface SearchCriteriaFilter {
@@ -31,7 +33,23 @@ export interface Pagination {
     selectedSize: number;
     currentPage: number;
     pageSizes: number[];
+    total: number;
 }
+
+export interface RecordSelection {
+    all: boolean;
+    status: SelectionStatus;
+    selected: { [key: string]: string };
+    count: number;
+}
+
+const initialSelection: RecordSelection = {
+    all: false,
+    status: SelectionStatus.NONE,
+    selected: {},
+    count: 0
+};
+
 
 export interface ListViewModel {
     records: ListEntry[];
@@ -53,8 +71,10 @@ const initialState: ListViewState = {
     pagination: {
         currentPage: 0,
         selectedSize: 5,
-        pageSizes: [5, 10, 20, 50]
+        pageSizes: [5, 10, 20, 50],
+        total: 300
     },
+    selection: deepClone(initialSelection),
     loading: false,
 };
 
@@ -63,11 +83,30 @@ export interface ListViewState {
     records: ListEntry[];
     criteria: SearchCriteria;
     pagination: Pagination;
+    selection: RecordSelection;
     loading: boolean;
 }
 
 @Injectable()
-export class ListViewStore implements StateStore, DataSource<ListEntry> {
+export class ListViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource {
+
+    /**
+     * Public long-lived observable streams
+     */
+    records$: Observable<ListEntry[]>;
+    criteria$: Observable<SearchCriteria>;
+    pagination$: Observable<Pagination>;
+    selection$: Observable<RecordSelection>;
+    selectedCount$: Observable<number>;
+    selectedStatus$: Observable<SelectionStatus>;
+    loading$: Observable<boolean>;
+
+    /**
+     * View-model that resolves once all the data is ready (or updated).
+     */
+    vm$: Observable<ListViewModel>;
+
+    /** Internal Properties */
     protected cache$: Observable<any> = null;
     protected internalState: ListViewState = deepClone(initialState);
     protected store = new BehaviorSubject<ListViewState>(this.internalState);
@@ -82,34 +121,33 @@ export class ListViewStore implements StateStore, DataSource<ListEntry> {
         ]
     };
 
-    /**
-     * Public long-lived observable streams
-     */
-    records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
-    criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
-    pagination$ = this.state$.pipe(map(state => state.pagination), distinctUntilChanged());
-    loading$ = this.state$.pipe(map(state => state.loading));
-
-    /**
-     * View-model that resolves once all the data is ready (or updated).
-     */
-    vm$: Observable<ListViewModel> = combineLatest(
-        [
-            this.records$,
-            this.criteria$,
-            this.pagination$,
-            this.loading$
-        ]).pipe(
-        map((
-            [
-                records,
-                criteria,
-                pagination,
-                loading
-            ]) => ({records, criteria, pagination, loading}))
-    );
-
     constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
+
+        this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
+        this.criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
+        this.pagination$ = this.state$.pipe(map(state => state.pagination), distinctUntilChanged());
+        this.selection$ = this.state$.pipe(map(state => state.selection), distinctUntilChanged());
+        this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
+        this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
+        this.loading$ = this.state$.pipe(map(state => state.loading));
+
+        this.vm$ = combineLatest(
+            [
+                this.records$,
+                this.criteria$,
+                this.pagination$,
+                this.selection$,
+                this.loading$
+            ]).pipe(
+            map((
+                [
+                    records,
+                    criteria,
+                    pagination,
+                    selection,
+                    loading
+                ]) => ({records, criteria, pagination, selection, loading}))
+        );
     }
 
     connect(): Observable<any> {
@@ -176,6 +214,104 @@ export class ListViewStore implements StateStore, DataSource<ListEntry> {
         this.cache$ = null;
         this.updateState(deepClone(initialState));
     }
+
+    /**
+     * Selection public api
+     */
+
+    getSelectionStatus(): Observable<SelectionStatus> {
+        return this.selectedStatus$;
+    }
+
+    getSelectedCount(): Observable<number> {
+        return this.selectedCount$;
+    }
+
+    updateSelection(state: SelectionStatus): void {
+        if (state === SelectionStatus.NONE) {
+            this.clearSelection();
+            return;
+        }
+
+        if (state === SelectionStatus.ALL) {
+            this.selectAll();
+            return;
+        }
+
+        if (state === SelectionStatus.PAGE) {
+            this.selectPage();
+            return;
+        }
+    }
+
+    clearSelection(): void {
+        this.updateState({
+            ...this.internalState,
+            selection: deepClone(initialSelection)
+        });
+    }
+
+    selectAll(): void {
+        const total = this.internalState.pagination.total;
+        this.updateState({
+            ...this.internalState,
+            selection: {
+                all: true,
+                status: SelectionStatus.ALL,
+                selected: {},
+                count: total
+            }
+        });
+    }
+
+    selectPage(): void {
+        const selected = {...this.internalState.selection.selected};
+
+        if (this.internalState.records && this.internalState.records.length) {
+            this.internalState.records.forEach(value => {
+                if (value && value.id) {
+                    selected[value.id] = value.id;
+                }
+            });
+        }
+
+        this.updateState({
+            ...this.internalState,
+            selection: {
+                all: false,
+                status: SelectionStatus.SOME,
+                selected,
+                count: Object.keys(selected).length
+            }
+        });
+    }
+
+    toggleSelection(id: string): void {
+        const selection = deepClone(this.internalState.selection);
+
+        if (selection.selected[id]) {
+            delete selection.selected[id];
+        } else {
+            selection.selected[id] = id;
+        }
+
+        selection.count = Object.keys(selection.selected).length;
+
+        if (selection.count === 0) {
+            selection.status = SelectionStatus.NONE;
+        } else {
+            selection.status = SelectionStatus.SOME;
+        }
+
+        this.updateState({
+            ...this.internalState,
+            selection
+        });
+    }
+
+    /**
+     * Internal API
+     */
 
     /**
      * Update the state

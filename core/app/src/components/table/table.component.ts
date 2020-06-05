@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
     selector: 'scrm-table-ui',
@@ -6,10 +6,6 @@ import {Component, Input, OnInit} from '@angular/core';
 
 })
 
-export class TableUiComponent implements OnInit {
+export class TableUiComponent {
     @Input() module;
-
-    ngOnInit() {
-    }
-
 }
