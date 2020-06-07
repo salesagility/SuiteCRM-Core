@@ -7,7 +7,7 @@ security:
     app_user_provider:
       entity:
         class: App\Entity\User
-        property: user_name
+        property: userName
 
   firewalls:
     dev:

@@ -4,7 +4,10 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -19,287 +22,349 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *         "item_query",
  *     },
  * )
+ * @ORM\Table(name="users", indexes={@ORM\Index(name="idx_user_name", columns={"user_name", "is_group", "status", "last_name", "first_name", "id"}, options={"lengths": {null, null, null, 30, 30}})}))
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="users")
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     /**
+     * @var string
+     *
+     *
      * @ApiProperty(identifier=true)
-     * @ORM\Id()
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"fixed"=true, "default"="None"})
+     * @ORM\Id
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $user_name;
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $user_hash;
-
-    /**
-     * @var integer
-     * @ORM\Column(type="integer")
-     */
-    private $system_generated_password;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $pwd_last_changed;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $authenticate_id;
-
-    /**
-     * @var integer
-     * @ORM\Column(type="integer")
-     */
-    private $sugar_login;
-
-    /**
+     * @var string|null
+     *
      * @ApiProperty
-     * @var string | null
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="user_name", type="string", length=60, nullable=true)
      */
-    private $first_name;
+    private $userName;
 
     /**
+     * @var string|null
+     *
      * @ApiProperty
-     * @var string | null
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="user_hash", type="string", length=255, nullable=true)
      */
-    private $last_name;
+    private $userHash;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="system_generated_password", type="boolean", nullable=true)
      */
-    private $external_auth_only;
+    private $systemGeneratedPassword;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var DateTime|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="pwd_last_changed", type="datetime", nullable=true)
      */
-    private $receive_notifications;
+    private $pwdLastChanged;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="authenticate_id", type="string", length=100, nullable=true)
+     */
+    private $authenticateId;
+
+    /**
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="sugar_login", type="boolean", nullable=true, options={"default"="1"})
+     */
+    private $sugarLogin = true;
+
+    /**
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="is_admin", type="boolean", nullable=true, options={"default"="0"})
+     */
+    private $isAdmin = '0';
+
+    /**
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="external_auth_only", type="boolean", nullable=true, options={"default"="0"})
+     */
+    private $externalAuthOnly = '0';
+
+    /**
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="receive_notifications", type="boolean", nullable=true, options={"default"="1"})
+     */
+    private $receiveNotifications = true;
+
+    /**
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string")
+     * @var DateTime|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="date_entered", type="datetime", nullable=true)
      */
-    private $date_entered;
+    private $dateEntered;
 
     /**
-     * @ORM\Column(type="string")
+     * @var DateTime|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="date_modified", type="datetime", nullable=true)
      */
-    private $date_modified;
+    private $dateModified;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="modified_user_id", type="string", length=36, nullable=true, options={"fixed"=true})
      */
-    private $modified_user_id;
+    private $modifiedUserId;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="created_by", type="string", length=36, nullable=true, options={"fixed"=true})
      */
-    private $created_by;
+    private $createdBy;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="title", type="string", length=50, nullable=true)
      */
     private $title;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="department", type="string", length=50, nullable=true)
      */
     private $department;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="phone_home", type="string", length=50, nullable=true)
      */
-    private $phone_home;
+    private $phoneHome;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="phone_mobile", type="string", length=50, nullable=true)
      */
-    private $phone_mobile;
+    private $phoneMobile;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="phone_work", type="string", length=50, nullable=true)
      */
-    private $phone_work;
+    private $phoneWork;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="phone_other", type="string", length=50, nullable=true)
      */
-    private $phone_other;
+    private $phoneOther;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="phone_fax", type="string", length=50, nullable=true)
      */
-    private $phone_fax;
+    private $phoneFax;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="status", type="string", length=100, nullable=true)
      */
     private $status;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="address_street", type="string", length=150, nullable=true)
      */
-    private $address_street;
+    private $addressStreet;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="address_city", type="string", length=100, nullable=true)
      */
-    private $address_city;
+    private $addressCity;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="address_state", type="string", length=100, nullable=true)
      */
-    private $address_state;
+    private $addressState;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="address_country", type="string", length=100, nullable=true)
      */
-    private $address_country;
+    private $addressCountry;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="address_postalcode", type="string", length=20, nullable=true)
      */
-    private $address_postalcode;
+    private $addressPostalcode;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="deleted", type="boolean", nullable=true)
      */
     private $deleted;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="portal_only", type="boolean", nullable=true, options={"default"="0"})
      */
-    private $portal_only;
+    private $portalOnly = '0';
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="show_on_employees", type="boolean", nullable=true, options={"default"="1"})
      */
-    private $show_on_employees;
+    private $showOnEmployees = true;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="employee_status", type="string", length=100, nullable=true)
      */
-    private $employee_status;
+    private $employeeStatus;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="messenger_id", type="string", length=100, nullable=true)
      */
-    private $messenger_id;
+    private $messengerId;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="messenger_type", type="string", length=100, nullable=true)
      */
-    private $messenger_type;
+    private $messengerType;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="reports_to_id", type="string", length=36, nullable=true, options={"fixed"=true})
      */
-    private $reports_to_id;
+    private $reportsToId;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="is_group", type="boolean", nullable=true)
      */
-    private $is_group;
+    private $isGroup;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var bool|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="factor_auth", type="boolean", nullable=true)
      */
-    private $factor_auth;
+    private $factorAuth;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var string|null
+     *
+     * @ApiProperty
+     * @ORM\Column(name="factor_auth_interface", type="string", length=255, nullable=true)
      */
-    private $factor_auth_interface;
-
-    /**
-     * @var string admin status
-     * @ORM\Column(type="integer")
-     */
-    private $is_admin;
-
-    /**
-     * @return int
-     */
-    public function getAdminStatus(): int
-    {
-        return $this->is_admin;
-    }
-
-    /**
-     * @return string|int
-     */
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
+    private $factorAuthInterface;
 
     /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUserName(): ?string
     {
-        return (string)$this->user_name;
-    }
-
-    public function setUsername(string $user_name): self
-    {
-        $this->user_name = $user_name;
-
-        return $this;
+        return (string)$this->userName;
     }
 
     /**
@@ -312,46 +377,508 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+
     /**
-     * @see UserInterface
+     * @return string|int
      */
-    public function getPassword(): string
+    public function getId(): ?string
     {
-        return $this->user_hash;
+        return $this->id;
     }
 
-    public function setPassword(string $password): self
+    public function setUserName(?string $userName): self
     {
-        $this->user_hash = $password;
+        $this->userName = $userName;
+
+        return $this;
+    }
+
+    public function getUserHash(): ?string
+    {
+        return $this->userHash;
+    }
+
+    public function setUserHash(?string $userHash): self
+    {
+        $this->userHash = $userHash;
+
+        return $this;
+    }
+
+    public function getSystemGeneratedPassword(): ?bool
+    {
+        return $this->systemGeneratedPassword;
+    }
+
+    public function setSystemGeneratedPassword(?bool $systemGeneratedPassword): self
+    {
+        $this->systemGeneratedPassword = $systemGeneratedPassword;
+
+        return $this;
+    }
+
+    public function getPwdLastChanged(): ?DateTimeInterface
+    {
+        return $this->pwdLastChanged;
+    }
+
+    public function setPwdLastChanged(?DateTimeInterface $pwdLastChanged): self
+    {
+        $this->pwdLastChanged = $pwdLastChanged;
+
+        return $this;
+    }
+
+    public function getAuthenticateId(): ?string
+    {
+        return $this->authenticateId;
+    }
+
+    public function setAuthenticateId(?string $authenticateId): self
+    {
+        $this->authenticateId = $authenticateId;
+
+        return $this;
+    }
+
+    public function getSugarLogin(): ?bool
+    {
+        return $this->sugarLogin;
+    }
+
+    public function setSugarLogin(?bool $sugarLogin): self
+    {
+        $this->sugarLogin = $sugarLogin;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getIsAdmin(): ?bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(?bool $isAdmin): self
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
+    public function getExternalAuthOnly(): ?bool
+    {
+        return $this->externalAuthOnly;
+    }
+
+    public function setExternalAuthOnly(?bool $externalAuthOnly): self
+    {
+        $this->externalAuthOnly = $externalAuthOnly;
+
+        return $this;
+    }
+
+    public function getReceiveNotifications(): ?bool
+    {
+        return $this->receiveNotifications;
+    }
+
+    public function setReceiveNotifications(?bool $receiveNotifications): self
+    {
+        $this->receiveNotifications = $receiveNotifications;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateEntered(): ?DateTimeInterface
+    {
+        return $this->dateEntered;
+    }
+
+    public function setDateEntered(?DateTimeInterface $dateEntered): self
+    {
+        $this->dateEntered = $dateEntered;
+
+        return $this;
+    }
+
+    public function getDateModified(): ?DateTimeInterface
+    {
+        return $this->dateModified;
+    }
+
+    public function setDateModified(?DateTimeInterface $dateModified): self
+    {
+        $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    public function getModifiedUserId(): ?string
+    {
+        return $this->modifiedUserId;
+    }
+
+    public function setModifiedUserId(?string $modifiedUserId): self
+    {
+        $this->modifiedUserId = $modifiedUserId;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?string $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getDepartment(): ?string
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?string $department): self
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    public function getPhoneHome(): ?string
+    {
+        return $this->phoneHome;
+    }
+
+    public function setPhoneHome(?string $phoneHome): self
+    {
+        $this->phoneHome = $phoneHome;
+
+        return $this;
+    }
+
+    public function getPhoneMobile(): ?string
+    {
+        return $this->phoneMobile;
+    }
+
+    public function setPhoneMobile(?string $phoneMobile): self
+    {
+        $this->phoneMobile = $phoneMobile;
+
+        return $this;
+    }
+
+    public function getPhoneWork(): ?string
+    {
+        return $this->phoneWork;
+    }
+
+    public function setPhoneWork(?string $phoneWork): self
+    {
+        $this->phoneWork = $phoneWork;
+
+        return $this;
+    }
+
+    public function getPhoneOther(): ?string
+    {
+        return $this->phoneOther;
+    }
+
+    public function setPhoneOther(?string $phoneOther): self
+    {
+        $this->phoneOther = $phoneOther;
+
+        return $this;
+    }
+
+    public function getPhoneFax(): ?string
+    {
+        return $this->phoneFax;
+    }
+
+    public function setPhoneFax(?string $phoneFax): self
+    {
+        $this->phoneFax = $phoneFax;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAddressStreet(): ?string
+    {
+        return $this->addressStreet;
+    }
+
+    public function setAddressStreet(?string $addressStreet): self
+    {
+        $this->addressStreet = $addressStreet;
+
+        return $this;
+    }
+
+    public function getAddressCity(): ?string
+    {
+        return $this->addressCity;
+    }
+
+    public function setAddressCity(?string $addressCity): self
+    {
+        $this->addressCity = $addressCity;
+
+        return $this;
+    }
+
+    public function getAddressState(): ?string
+    {
+        return $this->addressState;
+    }
+
+    public function setAddressState(?string $addressState): self
+    {
+        $this->addressState = $addressState;
+
+        return $this;
+    }
+
+    public function getAddressCountry(): ?string
+    {
+        return $this->addressCountry;
+    }
+
+    public function setAddressCountry(?string $addressCountry): self
+    {
+        $this->addressCountry = $addressCountry;
+
+        return $this;
+    }
+
+    public function getAddressPostalcode(): ?string
+    {
+        return $this->addressPostalcode;
+    }
+
+    public function setAddressPostalcode(?string $addressPostalcode): self
+    {
+        $this->addressPostalcode = $addressPostalcode;
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(?bool $deleted): self
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getPortalOnly(): ?bool
+    {
+        return $this->portalOnly;
+    }
+
+    public function setPortalOnly(?bool $portalOnly): self
+    {
+        $this->portalOnly = $portalOnly;
+
+        return $this;
+    }
+
+    public function getShowOnEmployees(): ?bool
+    {
+        return $this->showOnEmployees;
+    }
+
+    public function setShowOnEmployees(?bool $showOnEmployees): self
+    {
+        $this->showOnEmployees = $showOnEmployees;
+
+        return $this;
+    }
+
+    public function getEmployeeStatus(): ?string
+    {
+        return $this->employeeStatus;
+    }
+
+    public function setEmployeeStatus(?string $employeeStatus): self
+    {
+        $this->employeeStatus = $employeeStatus;
+
+        return $this;
+    }
+
+    public function getMessengerId(): ?string
+    {
+        return $this->messengerId;
+    }
+
+    public function setMessengerId(?string $messengerId): self
+    {
+        $this->messengerId = $messengerId;
+
+        return $this;
+    }
+
+    public function getMessengerType(): ?string
+    {
+        return $this->messengerType;
+    }
+
+    public function setMessengerType(?string $messengerType): self
+    {
+        $this->messengerType = $messengerType;
+
+        return $this;
+    }
+
+    public function getReportsToId(): ?string
+    {
+        return $this->reportsToId;
+    }
+
+    public function setReportsToId(?string $reportsToId): self
+    {
+        $this->reportsToId = $reportsToId;
+
+        return $this;
+    }
+
+    public function getIsGroup(): ?bool
+    {
+        return $this->isGroup;
+    }
+
+    public function setIsGroup(?bool $isGroup): self
+    {
+        $this->isGroup = $isGroup;
+
+        return $this;
+    }
+
+    public function getFactorAuth(): ?bool
+    {
+        return $this->factorAuth;
+    }
+
+    public function setFactorAuth(?bool $factorAuth): self
+    {
+        $this->factorAuth = $factorAuth;
+
+        return $this;
+    }
+
+    public function getFactorAuthInterface(): ?string
+    {
+        return $this->factorAuthInterface;
+    }
+
+    public function setFactorAuthInterface(?string $factorAuthInterface): self
+    {
+        $this->factorAuthInterface = $factorAuthInterface;
 
         return $this;
     }
 
     /**
-     * @return string | null
+     * @inheritDoc
      */
-    public function getFirstName(): ?string
+    public function getPassword(): string
     {
-        return $this->first_name;
+        return $this->getUserHash();
     }
 
     /**
-     * @return string | null
+     * @inheritDoc
      */
-    public function getLastName(): ?string
+    public function getSalt(): ?string
     {
-        return $this->last_name;
+        return null;
     }
 
     /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-    }
-
-    /**
-     * @see UserInterface
+     * @inheritDoc
      */
     public function eraseCredentials(): void
     {
@@ -367,22 +894,14 @@ class User implements UserInterface
             return false;
         }
 
-        if ($this->user_hash !== $user->getPassword()) {
+        if ($this->userHash !== $user->getPassword()) {
             return false;
         }
 
-        if ($this->user_name !== $user->getUsername()) {
+        if ($this->userName !== $user->getUsername()) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDeleted(): int
-    {
-        return $this->deleted;
     }
 }
