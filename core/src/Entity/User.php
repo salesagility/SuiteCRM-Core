@@ -43,7 +43,7 @@ class User implements UserInterface, EquatableInterface
      * @ApiProperty
      * @ORM\Column(name="user_name", type="string", length=60, nullable=true)
      */
-    private $userName;
+    private $user_name;
 
     /**
      * @var string|null
@@ -364,7 +364,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function getUserName(): ?string
     {
-        return (string)$this->userName;
+        return (string)$this->user_name;
     }
 
     /**
@@ -388,7 +388,7 @@ class User implements UserInterface, EquatableInterface
 
     public function setUserName(?string $userName): self
     {
-        $this->userName = $userName;
+        $this->user_name = $userName;
 
         return $this;
     }
@@ -898,7 +898,7 @@ class User implements UserInterface, EquatableInterface
             return false;
         }
 
-        if ($this->userName !== $user->getUsername()) {
+        if ($this->user_name !== $user->getUsername()) {
             return false;
         }
 

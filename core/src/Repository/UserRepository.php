@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,10 +14,24 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends EntityRepository implements UserLoaderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * Loads the user for the given username.
+     *
+     * This method must return null if the user is not found.
+     *
+     * @param string $username The username
+     *
+     * @return UserInterface|null
+     * @throws NonUniqueResultException
+     */
+    public function loadUserByUsername($username): ?UserInterface
     {
-        parent::__construct($registry, User::class);
+        return $this->createQueryBuilder('u')
+            ->where('u.user_name = :user_name')
+            ->setParameter('user_name', $username)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
