@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {TableHeaderComponent} from './table-header.component';
 
-import {PaginationUiModule} from '../../pagination/pagination.module';
+import {PaginationModule} from '../../pagination/pagination.module';
 import {BulkActionMenuModule} from '../../bulk-action-menu/bulk-action-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
@@ -14,7 +14,7 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     imports: [
         CommonModule,
         AppManagerModule.forChild(TableHeaderComponent),
-        PaginationUiModule,
+        PaginationModule,
         BulkActionMenuModule,
         AngularSvgIconModule
     ]

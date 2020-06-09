@@ -3,8 +3,15 @@ import {shareReplay} from 'rxjs/operators';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const systemConfigMockData = {
     systemConfigs: {
+        list_max_entries_per_page: {
+            id: '/docroot/api/system-configs/list_max_entries_per_page',
+            _id: 'list_max_entries_per_page',
+            value: '20',
+            items: []
+        },
         default_language: {
             id: '/docroot/api/system-configs/default_language',
             _id: 'default_language',
@@ -42,6 +49,8 @@ export const systemConfigMockData = {
         }
     }
 };
+
+/* eslint-enable camelcase, @typescript-eslint/camelcase */
 
 class SystemConfigRecordGQLSpy extends CollectionGQL {
 

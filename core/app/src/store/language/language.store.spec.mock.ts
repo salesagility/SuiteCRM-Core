@@ -18,6 +18,7 @@ export const languageMockData = {
         LBL_LISTVIEW_OPTION_ENTIRE: 'Select All',
         LBL_LISTVIEW_OPTION_CURRENT: 'Select This page',
         LBL_LISTVIEW_NONE: 'Deselect All',
+        LBL_LIST_OF: 'of'
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
@@ -76,6 +77,7 @@ class LanguageRecordGQLSpy extends RecordGQL {
         super(null);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public fetch(module: string, id: string, metadata: { fields: string[] }): Observable<any> {
         if (module === 'appStrings') {
 

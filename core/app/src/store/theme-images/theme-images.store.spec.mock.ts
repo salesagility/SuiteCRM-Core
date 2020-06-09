@@ -5,6 +5,7 @@ import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const themeImagesMockData = {
     bgOcher: {
         path: 'legacy/themes/default/images/bgOcher.gif',
@@ -107,6 +108,8 @@ export const themeImagesMockData = {
         type: 'svg'
     }
 };
+
+/* eslint-enable camelcase, @typescript-eslint/camelcase */
 
 class ThemeImagesRecordGQLSpy extends RecordGQL {
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Resolver\ListViewResolver;
 
 /**
  * @ApiResource(
@@ -12,8 +13,16 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  *     },
  *     collectionOperations={},
  *     graphql={
- *         "item_query",
- *      }
+ *          "get"={
+ *              "item_query"=ListViewResolver::class,
+ *              "args"={
+ *                 "module"={"type"="String!"},
+ *                 "limit"={"type"="Int"},
+ *                 "offset"={"type"="Int"},
+ *                 "criteria"={"type"="Iterable" , "description"="search criteria"}
+ *              }
+ *          },
+ *      },
  * )
  */
 class ListView

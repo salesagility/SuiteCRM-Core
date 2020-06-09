@@ -32,5 +32,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (this.listSub) {
             this.listSub.unsubscribe();
         }
+
+        this.listStore.destroy();
     }
 }

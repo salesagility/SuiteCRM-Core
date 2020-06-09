@@ -3,6 +3,7 @@ import {shareReplay} from 'rxjs/operators';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const userPreferenceMockData = {
     userPreferences: {
         global: {
@@ -45,11 +46,14 @@ export const userPreferenceMockData = {
                 export_delimiter: ',',
                 default_export_charset: 'UTF-8',
                 email_link_type: 'sugar',
-                subtheme: 'Dawn'
+                subtheme: 'Dawn',
+                list_max_entries_per_page: 20
             }
         }
     }
 };
+
+/* eslint-enable camelcase, @typescript-eslint/camelcase */
 
 class UserPreferenceRecordGQLSpy extends CollectionGQL {
 
@@ -57,6 +61,7 @@ class UserPreferenceRecordGQLSpy extends CollectionGQL {
         super(null);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public fetchAll(module: string, metadata: { fields: string[] }): Observable<any> {
         const data = {
             data: {

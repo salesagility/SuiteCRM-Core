@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TableHeaderComponent} from './table-header.component';
-import {PaginationUiModule} from '@components/pagination/pagination.module';
+import {PaginationModule} from '@components/pagination/pagination.module';
 import {BulkActionMenuModule} from '@components/bulk-action-menu/bulk-action-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -23,7 +23,7 @@ describe('TableheaderUiComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                PaginationUiModule,
+                PaginationModule,
                 BulkActionMenuModule,
                 AngularSvgIconModule,
                 HttpClientTestingModule,

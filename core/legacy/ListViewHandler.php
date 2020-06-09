@@ -6,7 +6,6 @@ use App\Entity\ListView;
 use App\Service\ListViewProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
-use Exception;
 use InvalidArgumentException;
 use ListViewData;
 use SugarBean;
@@ -55,52 +54,52 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
 
     /**
      * @param string $moduleName
+     * @param array $criteria
+     * @param int $offset
+     * @param int $limit
      * @return ListView
-     * @throws Exception
      */
-    public function getListView(string $moduleName): ListView
+    public function getListView(string $moduleName, array $criteria = [], int $offset = -1, int $limit = -1): ListView
     {
         $this->init();
 
-        $listview = new ListView();
+        $listView = new ListView();
         $moduleName = $this->validateModuleName($moduleName);
-        $listview->setId($moduleName);
-        $listview->setMeta($this->getMeta());
-        $listview->setRecords($this->getRecords($moduleName));
+        $bean = $this->newBeanSafe($moduleName);
+        $listViewData = $this->getData($bean, $criteria, $offset, $limit);
+        $listView->setId($moduleName);
+        $listView->setMeta($this->getMeta($listViewData['pageData']));
+        $listView->setRecords($this->getRecords($bean, $listViewData));
 
         $this->close();
 
-        return $listview;
+        return $listView;
     }
 
     /**
+     * @param array $pageData
      * @return array
-     * @throws Exception
      */
-    protected function getMeta(): array
+    protected function getMeta(array $pageData): array
     {
-        global $sugar_config;
         $limit = [
-            'pages-limit' => $sugar_config['list_max_entries_per_page']
+            'offsets' => $pageData['offsets'],
+            'ordering' => $pageData['ordering'],
         ];
 
         return $limit;
     }
 
     /**
-     * @param string $moduleName
+     * @param SugarBean $bean
+     * @param array $fullViewData
      * @return array
-     * @throws Exception
      */
-    protected function getRecords(string $moduleName): array
+    protected function getRecords(SugarBean $bean, array $fullViewData): array
     {
-        $bean = $this->newBeanSafe($moduleName);
-        require_once 'include/ListView/ListViewData.php';
-        $listViewData = new ListViewData();
-        $fullViewData = $listViewData->getListViewData($bean, '');
-        $records = $fullViewData['data'];
+
         $processedData = [];
-        foreach ($records as $key => $record) {
+        foreach ($fullViewData['data'] as $key => $record) {
             $array = array_change_key_case($record);
             $id = $array['id'];
             unset($array['id']);
@@ -148,5 +147,22 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         }
 
         return $moduleName;
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $criteria
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    protected function getData(SugarBean $bean, array $criteria = [], int $offset = -1, int $limit = -1): array
+    {
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/ListView/ListViewData.php';
+        $listViewData = new ListViewData();
+
+        return $listViewData->getListViewData($bean, '', $offset, $limit, $criteria);
     }
 }

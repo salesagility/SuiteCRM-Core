@@ -1,9 +1,13 @@
-<div class="bulk-action float-right">
-    <button class="pagination-button" aria-label="Navigate to first page">
+<div class="bulk-action float-right" *ngIf="(vm$ | async) as vm">
+    <button class="pagination-button pagination-previous"
+            aria-label="Previous page"
+            (click)="previous()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_previous">
         </scrm-image>
     </button>
-    <button class="pagination-button" aria-label="Previous page">
+    <button class="pagination-button pagination-first"
+            aria-label="Navigate to first page"
+            (click)="first()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_first">
         </scrm-image>
     </button>
@@ -12,13 +16,18 @@
             'hide-pagination-count': displayResponsiveTable
           }"
     >
-      (1- 20 of 200)
+      ({{vm.pageCount.pageFirst}}
+        - {{vm.pageCount.pageLast}} {{vm.appStrings['LBL_LIST_OF'] || ''}} {{vm.pageCount.total}})
     </span>
-    <button class="pagination-button" aria-label="Next page">
+    <button class="pagination-button pagination-last"
+            aria-label="Next page"
+            (click)="last()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_last">
         </scrm-image>
     </button>
-    <button class="pagination-button" aria-label="Navigate to last page">
+    <button class="pagination-button pagination-next"
+            aria-label="Navigate to last page"
+            (click)="next()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_next">
         </scrm-image>
     </button>

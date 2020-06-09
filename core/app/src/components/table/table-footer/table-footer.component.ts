@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {ListViewStore} from '@store/list-view/list-view.store';
+import {PaginationDataSource} from '@components/pagination/pagination.model';
 
 @Component({
     selector: 'scrm-table-footer',
@@ -8,6 +9,7 @@ import {ListViewStore} from '@store/list-view/list-view.store';
 })
 export class TableFooterComponent {
     selectionState: SelectionDataSource = this.data;
+    paginationState: PaginationDataSource = this.data;
 
     constructor(
         protected data: ListViewStore

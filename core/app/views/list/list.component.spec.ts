@@ -23,6 +23,9 @@ import {By} from '@angular/platform-browser';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({
     selector: 'list-test-host-component',
@@ -87,22 +90,10 @@ describe('ListComponent', () => {
                     }
                 },
                 {
-                    provide: SystemConfigStore, useValue: {
-                        configs$: of({
-                            default_number_grouping_seperator: {
-                                id: '/docroot/api/system-configs/default_number_grouping_seperator',
-                                _id: 'default_number_grouping_seperator',
-                                value: ';',
-                                items: []
-                            },
-                            default_decimal_seperator: {
-                                id: '/docroot/api/system-configs/default_decimal_seperator',
-                                _id: 'default_decimal_seperator',
-                                value: ',',
-                                items: []
-                            }
-                        })
-                    }
+                    provide: SystemConfigStore, useValue: systemConfigStoreMock
+                },
+                {
+                    provide: UserPreferenceStore, useValue: userPreferenceStoreMock
                 }
             ],
         })

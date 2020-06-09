@@ -15,3 +15,4 @@ parameters:
         datef: true
         timef: true
         currency: true
+        list_max_entries_per_page: true

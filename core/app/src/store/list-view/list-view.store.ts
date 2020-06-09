@@ -1,12 +1,15 @@
 import {deepClone} from '@base/utils/object-utils';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '@store/state';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
 import {SelectionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {ListGQL} from '@store/list-view/api.list.get';
+import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 
 export interface FieldMap {
     [key: string]: any;
@@ -30,9 +33,13 @@ export interface SearchCriteria {
 }
 
 export interface Pagination {
-    selectedSize: number;
-    currentPage: number;
-    pageSizes: number[];
+    pageSize: number;
+    current: number;
+    previous: number;
+    next: number;
+    last: number;
+    pageFirst: number;
+    pageLast: number;
     total: number;
 }
 
@@ -49,7 +56,6 @@ const initialSelection: RecordSelection = {
     selected: {},
     count: 0
 };
-
 
 export interface ListViewModel {
     records: ListEntry[];
@@ -69,10 +75,14 @@ const initialState: ListViewState = {
     records: [],
     criteria: null,
     pagination: {
-        currentPage: 0,
-        selectedSize: 5,
-        pageSizes: [5, 10, 20, 50],
-        total: 300
+        pageSize: 5,
+        current: 0,
+        previous: 0,
+        next: 5,
+        last: 0,
+        total: 0,
+        pageFirst: 0,
+        pageLast: 0
     },
     selection: deepClone(initialSelection),
     loading: false,
@@ -88,7 +98,7 @@ export interface ListViewState {
 }
 
 @Injectable()
-export class ListViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource {
+export class ListViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource {
 
     /**
      * Public long-lived observable streams
@@ -120,8 +130,14 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
             'records'
         ]
     };
+    protected preferencesSub: Subscription;
 
-    constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
+    constructor(
+        protected listGQL: ListGQL,
+        protected appState: AppStateStore,
+        protected configStore: SystemConfigStore,
+        protected preferencesStore: UserPreferenceStore
+    ) {
 
         this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
         this.criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
@@ -130,6 +146,8 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
+
+        this.watchPageSize(configStore, preferencesStore);
 
         this.vm$ = combineLatest(
             [
@@ -172,20 +190,10 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
      * @param {string} module to use
      * @returns {object} Observable<any>
      */
-    public init(module: string): Observable<any> {
+    public init(module: string): Observable<ListViewState> {
         this.internalState.module = module;
 
-        this.appState.updateLoading(`${module}-list-fetch`, true);
-
-        return this.getRecords(this.internalState.module, this.internalState.criteria, this.internalState.pagination).pipe(
-            tap((data: ListViewState) => {
-                this.appState.updateLoading(`${module}-list-fetch`, false);
-                this.updateState({
-                    ...this.internalState,
-                    records: data.records,
-                });
-            })
-        );
+        return this.load();
     }
 
     /**
@@ -200,11 +208,13 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
     /**
      * Update the pagination
      *
-     * @param {number} currentPage to set
+     * @param {number} current to set
      */
-    public updatePagination(currentPage: number): void {
-        const pagination = {...this.internalState.pagination, currentPage};
-        this.updateState({...this.internalState, pagination, loading: true});
+    public updatePagination(current: number): void {
+        const pagination = {...this.internalState.pagination, current};
+        this.updateState({...this.internalState, pagination});
+
+        this.load(false).pipe(take(1)).subscribe();
     }
 
     /**
@@ -213,6 +223,7 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
     public clear(): void {
         this.cache$ = null;
         this.updateState(deepClone(initialState));
+        this.preferencesSub.unsubscribe();
     }
 
     /**
@@ -310,8 +321,88 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
     }
 
     /**
+     * Pagination Public API
+     */
+
+    getPaginationCount(): Observable<PaginationCount> {
+        return this.pagination$.pipe(map(pagination => ({
+            pageFirst: pagination.pageFirst,
+            pageLast: pagination.pageLast,
+            total: pagination.total
+        } as PaginationCount)), distinctUntilChanged());
+    }
+
+    changePage(page: PageSelection): void {
+        let pageToLoad = 0;
+
+        const pageMap = {};
+        pageMap[PageSelection.FIRST] = 0;
+        pageMap[PageSelection.PREVIOUS] = this.internalState.pagination.previous;
+        pageMap[PageSelection.NEXT] = this.internalState.pagination.next;
+        pageMap[PageSelection.LAST] = this.internalState.pagination.last;
+
+        if (page in pageMap && pageMap[page] >= 0) {
+            pageToLoad = pageMap[page];
+            this.updatePagination(pageToLoad);
+        }
+    }
+
+    /**
      * Internal API
      */
+
+    /**
+     * Subscribe to page size changes
+     *
+     * @param {object} configStore to watch
+     * @param {object} preferencesStore to watch
+     */
+    protected watchPageSize(configStore: SystemConfigStore, preferencesStore: UserPreferenceStore): void {
+
+        const pageSizePreference = preferencesStore.getUserPreference('list_max_entries_per_page');
+        const pageSizeConfig = configStore.getConfigValue('list_max_entries_per_page');
+        this.determinePageSize(pageSizePreference, pageSizeConfig);
+
+        this.preferencesSub = combineLatest([configStore.configs$, preferencesStore.userPreferences$])
+            .pipe(
+                tap(([configs, preferences]) => {
+                    const key = 'list_max_entries_per_page';
+                    const sizePreference = (preferences && preferences[key]) || null;
+                    const sizeConfig = (configs && configs[key] && configs[key].value) || null;
+
+                    this.determinePageSize(sizePreference, sizeConfig);
+
+                })
+            ).subscribe();
+    }
+
+    /**
+     * Determine page size to use
+     *
+     * @param {any} pageSizePreference to use
+     * @param {string} pageSizeConfig to use
+     */
+    protected determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
+        let size = 0;
+
+        if (pageSizePreference) {
+            size = pageSizePreference;
+        } else if (pageSizeConfig) {
+            size = parseInt(pageSizeConfig, 10);
+        }
+
+        this.setPageSize(size);
+    }
+
+    /**
+     * Set Pagination page size
+     *
+     * @param {number} pageSize to set
+     */
+    protected setPageSize(pageSize: number): void {
+        const pagination = {...this.internalState.pagination, pageSize};
+        this.updateState({...this.internalState, pagination});
+    }
 
     /**
      * Update the state
@@ -323,15 +414,62 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
     }
 
     /**
+     * Calculate page count
+     *
+     * @param {object} records list
+     * @param {object} pagination info
+     */
+    protected calculatePageCount(records: ListEntry[], pagination: Pagination): void {
+        const recordCount = (records && records.length) || 0;
+        let pageFirst = 0;
+        let pageLast = 0;
+
+        if (recordCount > 0) {
+            pageFirst = pagination.current + 1;
+            pageLast = pagination.current + recordCount;
+        }
+        pagination.pageFirst = pageFirst;
+        pagination.pageLast = pageLast;
+    }
+
+    /**
+     * Load / reload records using current pagination and criteria
+     *
+     * @param {boolean} useCache if to use cache
+     * @returns {object} Observable<ListViewState>
+     */
+    protected load(useCache = true): Observable<ListViewState> {
+        this.appState.updateLoading(`${module}-list-fetch`, true);
+
+        return this.getRecords(
+            this.internalState.module,
+            this.internalState.criteria,
+            this.internalState.pagination,
+            useCache
+        ).pipe(
+            tap((data: ListViewState) => {
+                this.appState.updateLoading(`${module}-list-fetch`, false);
+                this.calculatePageCount(data.records, data.pagination);
+                this.updateState({
+                    ...this.internalState,
+                    records: data.records,
+                    pagination: data.pagination
+                });
+            })
+        );
+    }
+
+    /**
      * Get records cached Observable or call the backend
      *
      * @param {string} module to use
      * @param {object} criteria to use
      * @param {object} pagination to use
+     * @param {boolean} useCache if to use cache
      * @returns {object} Observable<any>
      */
-    protected getRecords(module: string, criteria: SearchCriteria, pagination: Pagination): Observable<ListViewState> {
-        if (this.cache$ == null) {
+    protected getRecords(module: string, criteria: SearchCriteria, pagination: Pagination, useCache = true): Observable<ListViewState> {
+        if (this.cache$ == null || useCache === false) {
             this.cache$ = this.fetch(module, criteria, pagination).pipe(
                 shareReplay(1)
             );
@@ -348,23 +486,52 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
      * @returns {object} Observable<any>
      */
     protected fetch(module: string, criteria: SearchCriteria, pagination: Pagination): Observable<ListData> {
-        return this.recordGQL.fetch(this.resourceName, `/api/records/${module}`, this.fieldsMetadata)
-            .pipe(
-                map(({data}) => {
-                    const listData: ListData = {
-                        records: []
+
+        return this.listGQL.fetch(module, pagination.pageSize, pagination.current, {}, this.fieldsMetadata)
+            .pipe(map(({data}) => {
+
+                const recordsList: ListData = {
+                    records: [],
+                    pagination: {} as Pagination
+                };
+
+                if (!data || !data.getListView) {
+                    return recordsList;
+                }
+
+                const listData = data.getListView;
+
+                if (listData.records) {
+                    listData.records.forEach((record: any) => {
+                        recordsList.records.push(
+                            record
+                        );
+                    });
+                }
+
+                if (!listData.meta) {
+                    return recordsList;
+                }
+
+                if (listData.meta.offsets) {
+
+                    const paginationFieldMap = {
+                        current: 'current',
+                        next: 'next',
+                        prev: 'previous',
+                        total: 'total',
+                        end: 'last',
                     };
 
-                    if (data && data.listView.records) {
-                        data.listView.records.forEach((record: any) => {
-                            listData.records.push(
-                                record
-                            );
-                        });
-                    }
+                    Object.keys(paginationFieldMap).forEach((key) => {
+                        if (key in listData.meta.offsets) {
+                            const paginationField = paginationFieldMap[key];
+                            recordsList.pagination[paginationField] = listData.meta.offsets[key];
+                        }
+                    });
+                }
 
-                    return listData;
-                })
-            );
+                return recordsList;
+            }));
     }
 }

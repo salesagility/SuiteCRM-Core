@@ -45,3 +45,4 @@ parameters:
             calendar_publish_key: true
             subtheme: true
             syncGCal: true
+            list_max_entries_per_page: true

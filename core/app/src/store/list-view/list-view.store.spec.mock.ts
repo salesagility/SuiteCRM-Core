@@ -1,14 +1,29 @@
 import {ListViewStore} from '@store/list-view/list-view.store';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {ListGQL} from '@store/list-view/api.list.get';
+import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
     listView: {
         id: '/docroot/api/records/Accounts',
-        meta: {'pages-limit': 20},
+        meta: {
+            offsets: {
+                current: 10,
+                next: 20,
+                prev: 0,
+                end: 80,
+                total: '83',
+                totalCounted: true
+            },
+            ordering: {
+                orderBy: 'date_entered',
+                sortOrder: 'ASC'
+            }
+        },
         records: [{
             id: '29319818-dc26-f57d-03e1-5ed77dedd691',
             relationships: [],
@@ -101,21 +116,27 @@ export const listviewMockData = {
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-class ListRecordGQLSpy extends RecordGQL {
+class ListRecordGQLSpy extends ListGQL {
 
     constructor() {
         super(null);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public fetch(module: string, id: string, metadata: { fields: string[] }): Observable<any> {
+    public fetch(module: string, limit: number, offset: number, criteria: { [key: string]: string }, metadata: { fields: string[] }
+    ): Observable<any> {
 
         return of({
             data: {
-                listView: listviewMockData.listView
+                getListView: listviewMockData.listView
             }
         }).pipe(shareReplay());
     }
 }
 
-export const listviewStoreMock = new ListViewStore(new ListRecordGQLSpy(), appStateStoreMock);
+export const listviewStoreMock = new ListViewStore(
+    new ListRecordGQLSpy(),
+    appStateStoreMock,
+    systemConfigStoreMock,
+    userPreferenceStoreMock
+);
