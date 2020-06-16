@@ -26,6 +26,8 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
 
 @Component({
     selector: 'list-test-host-component',
@@ -75,7 +77,7 @@ describe('ListComponent', () => {
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         updateLoading: (key: string, loading: boolean): void => {
                         }
-                    }
+                    } as AppStateStore
                 },
                 {
                     provide: LanguageStore, useValue: {
@@ -94,7 +96,14 @@ describe('ListComponent', () => {
                 },
                 {
                     provide: UserPreferenceStore, useValue: userPreferenceStoreMock
-                }
+                },
+                {
+                    provide: MetadataStore, useValue: {
+                        listMetadata$: of({
+                            fields: metadataMockData.listView
+                        }).pipe(take(1)),
+                    }
+                },
             ],
         })
             .compileComponents();

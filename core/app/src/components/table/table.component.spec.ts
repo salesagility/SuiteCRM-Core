@@ -14,6 +14,8 @@ import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.m
 import {take} from 'rxjs/operators';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
 
 describe('TableUiComponent', () => {
     let component: TableUiComponent;
@@ -38,6 +40,13 @@ describe('TableUiComponent', () => {
                 {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
+                    }
+                },
+                {
+                    provide: MetadataStore, useValue: {
+                        listMetadata$: of({
+                            fields: metadataMockData.listView
+                        }).pipe(take(1)),
                     }
                 },
             ],
