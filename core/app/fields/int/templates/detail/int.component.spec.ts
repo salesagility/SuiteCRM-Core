@@ -5,26 +5,33 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {BehaviorSubject, of} from 'rxjs';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
+import {Field} from '@fields/field.model';
 
 
 @Component({
     selector: 'int-detail-field-test-host-component',
-    template: '<scrm-int-detail [value]="value"></scrm-int-detail>'
+    template: '<scrm-int-detail [field]="field"></scrm-int-detail>'
 })
 class IntDetailFieldTestHostComponent {
-    value = '10';
+    field: Field = {
+        type: 'int',
+        value: '10'
+    };
 }
 
 describe('IntDetailFieldComponent', () => {
     let testHostComponent: IntDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<IntDetailFieldTestHostComponent>;
 
+    /* eslint-disable camelcase,@typescript-eslint/camelcase */
     const preferences = new BehaviorSubject({
         num_grp_sep: ',',
         dec_sep: '.',
     });
+    /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     beforeEach(async(() => {
+        /* eslint-disable camelcase,@typescript-eslint/camelcase */
         TestBed.configureTestingModule({
             declarations: [
                 IntDetailFieldTestHostComponent,
@@ -58,6 +65,7 @@ describe('IntDetailFieldComponent', () => {
                 }
             ],
         }).compileComponents();
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
         testHostFixture = TestBed.createComponent(IntDetailFieldTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;

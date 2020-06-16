@@ -6,13 +6,17 @@ import {BehaviorSubject, of} from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'date-detail-field-test-host-component',
-    template: '<scrm-date-detail [value]="value"></scrm-date-detail>'
+    template: '<scrm-date-detail [field]="field"></scrm-date-detail>'
 })
 class DateDetailFieldTestHostComponent {
-    value = '2020-05-01';
+    field: Field = {
+        type: 'data',
+        value: '2020-05-01'
+    };
 }
 
 describe('DateDetailFieldComponent', () => {
@@ -74,7 +78,7 @@ describe('DateDetailFieldComponent', () => {
             date_format: 'yyyy-MM-dd',
         });
 
-        testHostComponent.value = '2020-04-14';
+        testHostComponent.field.value = '2020-04-14';
         testHostFixture.detectChanges();
 
 
@@ -90,7 +94,7 @@ describe('DateDetailFieldComponent', () => {
             date_format: 'yyyy/MM/dd',
         });
 
-        testHostComponent.value = '2020-03-15';
+        testHostComponent.field.value = '2020-03-15';
         testHostFixture.detectChanges();
 
 
@@ -106,7 +110,7 @@ describe('DateDetailFieldComponent', () => {
             date_format: null,
         });
 
-        testHostComponent.value = '2020-02-16';
+        testHostComponent.field.value = '2020-02-16';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 

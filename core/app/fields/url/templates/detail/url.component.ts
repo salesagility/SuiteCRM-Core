@@ -9,8 +9,8 @@ import {BaseFieldComponent} from '@fields/base/base-field.component';
 export class UrlDetailFieldComponent extends BaseFieldComponent {
 
     get target(): string {
-        if (this.metadata && this.metadata.target) {
-            return this.metadata.target;
+        if (this.field.metadata && this.field.metadata.target) {
+            return this.field.metadata.target;
         }
 
         return '_blank';

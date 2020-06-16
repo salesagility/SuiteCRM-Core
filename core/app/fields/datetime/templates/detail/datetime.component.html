@@ -1,3 +1,3 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    {{value | date:getDateTimeFormat(vm.preferences, vm.configs)}}
+    {{field.value | date:getDateTimeFormat(vm.preferences, vm.configs)}}
 </ng-container>

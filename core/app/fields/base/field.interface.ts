@@ -1,7 +1,5 @@
-import {FieldMetadata} from '../field.model';
+import {Field} from '../field.model';
 
 export interface FieldComponentInterface {
-    type: string;
-    value: string;
-    metadata?: FieldMetadata;
+    field?: Field;
 }

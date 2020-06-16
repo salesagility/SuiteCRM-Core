@@ -1,13 +1,17 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {PhoneDetailFieldComponent} from './phone.component';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'phone-detail-field-test-host-component',
-    template: '<scrm-phone-detail [value]="value"></scrm-phone-detail>'
+    template: '<scrm-phone-detail [field]="field"></scrm-phone-detail>'
 })
 class PhoneDetailFieldTestHostComponent {
-    value = '+44 1111 123456';
+    field: Field = {
+        type: 'phone',
+        value: '+44 1111 123456'
+    };
 }
 
 describe('PhoneDetailFieldComponent', () => {

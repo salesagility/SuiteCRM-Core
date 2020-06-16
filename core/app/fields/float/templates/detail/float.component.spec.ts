@@ -6,24 +6,31 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
 import {distinctUntilChanged} from 'rxjs/operators';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'float-detail-field-test-host-component',
-    template: '<scrm-float-detail [value]="value"></scrm-float-detail>'
+    template: '<scrm-float-detail [field]="field"></scrm-float-detail>'
 })
 class FloatDetailFieldTestHostComponent {
-    value = '10';
+    field: Field = {
+        type: 'float',
+        value: '10'
+    };
 }
 
 describe('FloatDetailFieldComponent', () => {
     let testHostComponent: FloatDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<FloatDetailFieldTestHostComponent>;
 
+    /* eslint-disable camelcase,@typescript-eslint/camelcase */
     const preferences = new BehaviorSubject({
         num_grp_sep: ',',
         dec_sep: '.',
     });
+    /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
+    /* eslint-disable camelcase,@typescript-eslint/camelcase */
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -58,6 +65,7 @@ describe('FloatDetailFieldComponent', () => {
                 }
             ],
         }).compileComponents();
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
         testHostFixture = TestBed.createComponent(FloatDetailFieldTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
@@ -78,12 +86,14 @@ describe('FloatDetailFieldComponent', () => {
 
         expect(testHostComponent).toBeTruthy();
 
+        /* eslint-disable camelcase,@typescript-eslint/camelcase */
         preferences.next({
             num_grp_sep: ',',
             dec_sep: '.',
         });
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-        testHostComponent.value = '10.500';
+        testHostComponent.field.value = '10.500';
         testHostFixture.detectChanges();
 
 
@@ -94,12 +104,14 @@ describe('FloatDetailFieldComponent', () => {
 
         expect(testHostComponent).toBeTruthy();
 
+        /* eslint-disable camelcase,@typescript-eslint/camelcase */
         preferences.next({
             num_grp_sep: '.',
             dec_sep: ',',
         });
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-        testHostComponent.value = '1000.500';
+        testHostComponent.field.value = '1000.500';
         testHostFixture.detectChanges();
 
 
@@ -110,12 +122,14 @@ describe('FloatDetailFieldComponent', () => {
 
         expect(testHostComponent).toBeTruthy();
 
+        /* eslint-disable camelcase,@typescript-eslint/camelcase */
         preferences.next({
             num_grp_sep: null,
             dec_sep: null,
         });
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-        testHostComponent.value = '2000.500';
+        testHostComponent.field.value = '2000.500';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 

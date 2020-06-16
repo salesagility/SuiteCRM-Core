@@ -1,16 +1,18 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {UrlDetailFieldComponent} from './url.component';
-import {FieldMetadata} from '@fields/field.model';
-
+import {Field, FieldMetadata} from '@fields/field.model';
 
 @Component({
     selector: 'url-detail-field-test-host-component',
-    template: '<scrm-url-detail [value]="value" [metadata]="metadata"></scrm-url-detail>'
+    template: '<scrm-url-detail [field]="field"></scrm-url-detail>'
 })
 class UrlDetailFieldTestHostComponent {
-    value = 'https://community.suitecrm.com/';
-    metadata: FieldMetadata = null;
+    field: Field = {
+        type: 'url',
+        value: 'https://community.suitecrm.com/',
+        metadata: null
+    };
 }
 
 describe('UrlDetailFieldComponent', () => {
@@ -65,7 +67,7 @@ describe('UrlDetailFieldComponent', () => {
 
     it('should use configured target', async(() => {
 
-        testHostFixture.componentInstance.metadata = {
+        testHostFixture.componentInstance.field.metadata = {
             target: '_self'
         } as FieldMetadata;
         testHostFixture.detectChanges();

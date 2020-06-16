@@ -6,13 +6,18 @@ import {distinctUntilChanged} from 'rxjs/operators';
 import {BehaviorSubject, of} from 'rxjs';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'datetime-detail-field-test-host-component',
-    template: '<scrm-datetime-detail [value]="value"></scrm-datetime-detail>'
+    template: '<scrm-datetime-detail [field]="field"></scrm-datetime-detail>'
 })
 class DateTimeDetailFieldTestHostComponent {
-    value = '2020-05-01 23:23:23';
+    field: Field = {
+        type: 'datetime',
+        value: '2020-05-01 23:23:23'
+    };
+
 }
 
 describe('DatetimeDetailFieldComponent', () => {
@@ -84,7 +89,7 @@ describe('DatetimeDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2020-04-14 21:11:01';
+        testHostComponent.field.value = '2020-04-14 21:11:01';
         testHostFixture.detectChanges();
 
 
@@ -102,7 +107,7 @@ describe('DatetimeDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2020-03-15 23:13:03';
+        testHostComponent.field.value = '2020-03-15 23:13:03';
         testHostFixture.detectChanges();
 
 
@@ -120,7 +125,7 @@ describe('DatetimeDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2020-02-16 22:12:02';
+        testHostComponent.field.value = '2020-02-16 22:12:02';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 
@@ -139,7 +144,7 @@ describe('DatetimeDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2020-02-16 22:12:02';
+        testHostComponent.field.value = '2020-02-16 22:12:02';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 
@@ -158,7 +163,7 @@ describe('DatetimeDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2020-02-16 22:12:02';
+        testHostComponent.field.value = '2020-02-16 22:12:02';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 

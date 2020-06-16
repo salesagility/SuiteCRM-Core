@@ -1,13 +1,17 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharDetailFieldComponent} from './varchar.component';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'varchar-detail-field-test-host-component',
-    template: '<scrm-varchar-detail [value]="value"></scrm-varchar-detail>'
+    template: '<scrm-varchar-detail [field]="field"></scrm-varchar-detail>'
 })
 class VarcharDetailFieldTestHostComponent {
-    value = 'My Varchar';
+    field: Field = {
+        value: 'My Varchar',
+        type: 'varchar'
+    };
 }
 
 describe('VarcharDetailFieldComponent', () => {

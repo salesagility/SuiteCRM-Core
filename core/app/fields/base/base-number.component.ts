@@ -23,11 +23,11 @@ export class BaseNumberComponent extends BaseFieldComponent {
     }
 
     get format(): boolean {
-        if (!this.metadata) {
+        if (!this.field.metadata) {
             return true;
         }
 
-        return this.metadata.format !== false;
+        return this.field.metadata.format !== false;
     }
 
     getGroupSymbol(preferences: UserPreferenceMap, configs: SystemConfigMap): string {

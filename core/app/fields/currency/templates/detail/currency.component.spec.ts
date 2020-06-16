@@ -6,13 +6,17 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {distinctUntilChanged} from 'rxjs/operators';
 import {FormatCurrencyPipe} from '@base/pipes/format-currency/format-currency.pipe';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'currency-detail-field-test-host-component',
-    template: '<scrm-currency-detail [value]="value"></scrm-currency-detail>'
+    template: '<scrm-currency-detail [field]="field"></scrm-currency-detail>'
 })
 class CurrencyDetailFieldTestHostComponent {
-    value = '10';
+    field: Field = {
+        type: 'currency',
+        value: '10'
+    };
 }
 
 describe('CurrencyDetailFieldComponent', () => {
@@ -110,7 +114,7 @@ describe('CurrencyDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '10.500';
+        testHostComponent.field.value = '10.500';
         testHostFixture.detectChanges();
 
 
@@ -130,7 +134,7 @@ describe('CurrencyDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '1000.500';
+        testHostComponent.field.value = '1000.500';
         testHostFixture.detectChanges();
 
 
@@ -150,7 +154,7 @@ describe('CurrencyDetailFieldComponent', () => {
         });
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-        testHostComponent.value = '2000.500';
+        testHostComponent.field.value = '2000.500';
         testHostFixture.detectChanges();
         testHostFixture.detectChanges();
 
