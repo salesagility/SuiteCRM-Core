@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\ViewDefinition;
 use App\Service\ViewDefinitionsProviderInterface;
+use Exception;
 
 /**
  * Class ViewDefinitionItemDataProvider
@@ -45,6 +46,7 @@ class ViewDefinitionItemDataProvider implements ItemDataProviderInterface, Restr
      * @param string|null $operationName
      * @param array $context
      * @return ViewDefinition|null
+     * @throws Exception
      */
     public function getItem(
         string $resourceClass,
@@ -52,6 +54,12 @@ class ViewDefinitionItemDataProvider implements ItemDataProviderInterface, Restr
         string $operationName = null,
         array $context = []
     ): ?ViewDefinition {
-        return $this->viewDefHandler->getListViewDef($id);
+
+        $attributes = [];
+        if (!empty($context['attributes'])) {
+            $attributes = array_keys($context['attributes']);
+        }
+
+        return $this->viewDefHandler->getViewDefs($id, $attributes);
     }
 }
