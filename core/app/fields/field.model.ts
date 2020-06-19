@@ -7,5 +7,7 @@ export interface Field {
     type: string;
     value: string;
     name?: string;
+    label?: string;
+    labelKey?: string;
     metadata?: FieldMetadata;
 }

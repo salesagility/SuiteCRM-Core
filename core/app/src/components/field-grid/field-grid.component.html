@@ -1,0 +1,24 @@
+<form>
+    <div [ngClass]="rowClass" *ngFor="let row of fieldGrid">
+
+        <div [ngClass]="colClass" *ngFor="let col of row.cols">
+
+            <ng-container *ngIf="col.field">
+                <label [ngClass]="labelClass">{{col.field.label}}</label>
+                <scrm-field [type]="col.field.type"
+                            [mode]="fieldMode"
+                            [klass]="inputClass"
+                            [field]="col.field">
+                </scrm-field>
+            </ng-container>
+
+            <ng-container *ngIf="col.actionSlot">
+                <ng-content select="[field-grid-actions]"></ng-content>
+            </ng-container>
+
+            <ng-container *ngIf="col.specialSlot">
+                <ng-content select="[field-grid-special]"></ng-content>
+            </ng-container>
+        </div>
+    </div>
+</form>

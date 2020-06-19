@@ -1,5 +1,3 @@
-<div class="list-view-actions float-right" *ngIf="(vm$ | async) as vm">
-    <scrm-button *ngFor="let action of vm.moduleInfo.menu;"
-                 [config]="getButtonConfig(action, vm.language)"
-    ></scrm-button>
+<div class="list-view-actions float-right">
+    <scrm-button *ngFor="let action of actions" [config]="getButtonConfig(action)"></scrm-button>
 </div>

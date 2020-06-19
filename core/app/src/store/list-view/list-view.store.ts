@@ -10,6 +10,11 @@ import {ListGQL} from '@store/list-view/api.list.get';
 import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {AppData, ViewStore} from '@store/view/view.store';
+import {LanguageStore} from '@store/language/language.store';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 
 export interface FieldMap {
     [key: string]: any;
@@ -57,11 +62,18 @@ const initialSelection: RecordSelection = {
     count: 0
 };
 
-export interface ListViewModel {
+export interface ListViewData {
     records: ListEntry[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
+    selection?: RecordSelection;
     loading: boolean;
+}
+
+export interface ListViewModel {
+    data: ListViewData;
+    appData: AppData;
+    metadata: Metadata;
 }
 
 export interface ListData {
@@ -98,7 +110,7 @@ export interface ListViewState {
 }
 
 @Injectable()
-export class ListViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource {
+export class ListViewStore extends ViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource {
 
     /**
      * Public long-lived observable streams
@@ -115,6 +127,10 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
      * View-model that resolves once all the data is ready (or updated).
      */
     vm$: Observable<ListViewModel>;
+    vm: ListViewModel;
+    data: ListViewData;
+
+    protected displayFilters = false;
 
     /** Internal Properties */
     protected cache$: Observable<any> = null;
@@ -134,10 +150,16 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
 
     constructor(
         protected listGQL: ListGQL,
-        protected appState: AppStateStore,
         protected configStore: SystemConfigStore,
-        protected preferencesStore: UserPreferenceStore
+        protected preferencesStore: UserPreferenceStore,
+        protected appStateStore: AppStateStore,
+        protected languageStore: LanguageStore,
+        protected navigationStore: NavigationStore,
+        protected moduleNavigation: ModuleNavigation,
+        protected metadataStore: MetadataStore
     ) {
+
+        super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
         this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
         this.criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
@@ -149,23 +171,20 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
 
         this.watchPageSize(configStore, preferencesStore);
 
-        this.vm$ = combineLatest(
-            [
-                this.records$,
-                this.criteria$,
-                this.pagination$,
-                this.selection$,
-                this.loading$
-            ]).pipe(
-            map((
-                [
-                    records,
-                    criteria,
-                    pagination,
-                    selection,
-                    loading
-                ]) => ({records, criteria, pagination, selection, loading}))
+        const data$ = combineLatest(
+            [this.records$, this.criteria$, this.pagination$, this.selection$, this.loading$]
+        ).pipe(
+            map(([records, criteria, pagination, selection, loading]) => {
+                this.data = {records, criteria, pagination, selection, loading} as ListViewData;
+                return this.data;
+            })
         );
+
+        this.vm$ = combineLatest([data$, this.appData$, this.metadata$]).pipe(
+            map(([data, appData, metadata]) => {
+                this.vm = {data, appData, metadata} as ListViewModel;
+                return this.vm;
+            }));
     }
 
     connect(): Observable<any> {
@@ -174,6 +193,14 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
 
     disconnect(): void {
         this.destroy();
+    }
+
+    get showFilters(): boolean {
+        return this.displayFilters;
+    }
+
+    set showFilters(show: boolean) {
+        this.displayFilters = show;
     }
 
     /**
@@ -439,7 +466,7 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
      * @returns {object} Observable<ListViewState>
      */
     protected load(useCache = true): Observable<ListViewState> {
-        this.appState.updateLoading(`${module}-list-fetch`, true);
+        this.appStateStore.updateLoading(`${module}-list-fetch`, true);
 
         return this.getRecords(
             this.internalState.module,
@@ -448,7 +475,7 @@ export class ListViewStore implements StateStore, DataSource<ListEntry>, Selecti
             useCache
         ).pipe(
             tap((data: ListViewState) => {
-                this.appState.updateLoading(`${module}-list-fetch`, false);
+                this.appStateStore.updateLoading(`${module}-list-fetch`, false);
                 this.calculatePageCount(data.records, data.pagination);
                 this.updateState({
                     ...this.internalState,

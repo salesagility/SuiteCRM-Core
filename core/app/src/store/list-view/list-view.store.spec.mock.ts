@@ -1,15 +1,19 @@
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {ListGQL} from '@store/list-view/api.list.get';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
+import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
+import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
     listView: {
-        id: '/docroot/api/records/Accounts',
+        id: '/docroot/api/records/accounts',
         meta: {
             offsets: {
                 current: 10,
@@ -136,7 +140,14 @@ class ListRecordGQLSpy extends ListGQL {
 
 export const listviewStoreMock = new ListViewStore(
     new ListRecordGQLSpy(),
-    appStateStoreMock,
     systemConfigStoreMock,
-    userPreferenceStoreMock
+    userPreferenceStoreMock,
+    appStateStoreMock,
+    languageStoreMock,
+    navigationMock,
+    mockModuleNavigation,
+    metadataStoreMock
 );
+
+listviewStoreMock.init('accounts').pipe(take(1)).subscribe();
+listviewStoreMock.vm$.pipe(take(1)).subscribe();

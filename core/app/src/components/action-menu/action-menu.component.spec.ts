@@ -1,21 +1,18 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {of} from 'rxjs';
-import {take} from 'rxjs/operators';
 import {ActionMenuComponent} from './action-menu.component';
-import {LanguageStore} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
-import {NavigationStore} from '@store/navigation/navigation.store';
-import {navigationMockData} from '@store/navigation/navigation.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 
 @Component({
     selector: 'action-menu-test-host-component',
-    template: '<scrm-action-menu [module]="module"></scrm-action-menu>'
+    template: '<scrm-action-menu></scrm-action-menu>'
 })
 class ActionMenuTestHostComponent {
-    module = 'accounts';
 }
 
 describe('ActionMenuComponent', () => {
@@ -33,15 +30,9 @@ describe('ActionMenuComponent', () => {
                 ButtonModule
             ],
             providers: [
+                {provide: ListViewStore, useValue: listviewStoreMock},
                 {
-                    provide: LanguageStore, useValue: {
-                        vm$: of(languageMockData).pipe(take(1))
-                    }
-                },
-                {
-                    provide: NavigationStore, useValue: {
-                        vm$: of(navigationMockData.navbar).pipe(take(1))
-                    }
+                    provide: ModuleNavigation, useValue: mockModuleNavigation
                 },
             ],
         }).compileComponents();
@@ -70,9 +61,9 @@ describe('ActionMenuComponent', () => {
         const divElement = testHostFixture.nativeElement.querySelector('div');
         const actionButtons = divElement.getElementsByClassName('action-button');
 
-        const createButton = actionButtons.item(0)
-        const listButton = actionButtons.item(1)
-        const importButton = actionButtons.item(2)
+        const createButton = actionButtons.item(0);
+        const listButton = actionButtons.item(1);
+        const importButton = actionButtons.item(2);
 
         expect(testHostComponent).toBeTruthy();
         expect(divElement).toBeTruthy();

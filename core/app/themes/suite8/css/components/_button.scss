@@ -153,6 +153,10 @@ button {
   background-color: $pale-blue;
 }
 
+.settings-button.active {
+  background-color: $midnight-blue;
+}
+
 .action-button.disabled, .settings-button.disabled {
   opacity: 40%;
 }
@@ -239,10 +243,6 @@ button {
   background-color: $bright-orange;
 }
 
-.charts-active {
-  background-color: $midnight-blue;
-}
-
 .pagination-button {
   background: transparent;
   border: none;
@@ -286,4 +286,10 @@ button.settings-button.dropdown-toggle::after {
   font-weight: bold;
   color: $white;
   background-color: $burnt-red;
+}
+
+.close-button {
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: 1;
 }

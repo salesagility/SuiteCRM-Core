@@ -5,10 +5,10 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
 export interface AppState {
-    loading: boolean;
-    module: string;
-    view: string;
-    loaded: boolean;
+    loading?: boolean;
+    module?: string;
+    view?: string;
+    loaded?: boolean;
 }
 
 const initialState: AppState = {

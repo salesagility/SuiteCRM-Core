@@ -71,6 +71,8 @@ export class MetadataStore implements StateStore {
      */
     fields$: Observable<Field[]>;
     listMetadata$: Observable<ListViewMeta>;
+    searchMetadata$: Observable<SearchMeta>;
+    metadata$: Observable<Metadata>;
 
     protected store = new BehaviorSubject<Metadata>(internalState);
     protected state$ = this.store.asObservable();
@@ -89,6 +91,8 @@ export class MetadataStore implements StateStore {
     constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
         this.fields$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
+        this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());
+        this.metadata$ = this.state$;
     }
 
     /**
@@ -130,6 +134,10 @@ export class MetadataStore implements StateStore {
             })
         );
     }
+
+    /**
+     * Internal API
+     */
 
     /**
      * Update the state

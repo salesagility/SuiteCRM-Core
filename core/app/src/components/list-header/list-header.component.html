@@ -1,24 +1,24 @@
-<ng-container *ngIf="(vm$ | async) as vm">
+<ng-container>
     <div class="list-view-header">
         <ng-container *ngIf="displayResponsiveTable">
             <div class="d-flex flex-nowrap">
                 <div class="row">
                     <div class="col">
                         <div class="order-3">
-                            <scrm-action-menu [module]="module"></scrm-action-menu>
+                            <scrm-action-menu></scrm-action-menu>
                         </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col">
                         <div class="order-2">
-                            <scrm-module-title [title]="getModuleTitle(vm.appListStrings, vm.moduleInfo)">
+                            <scrm-module-title [title]="moduleTitle">
                             </scrm-module-title>
                         </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col">
                         <div class="order-1">
-                            <scrm-settings-menu-ui></scrm-settings-menu-ui>
+                            <scrm-settings-menu></scrm-settings-menu>
                         </div>
                     </div>
                 </div>
@@ -27,19 +27,27 @@
         <ng-template [ngIf]="!displayResponsiveTable">
             <div class="row mr-0">
                 <div class="col-md-4">
-                    <scrm-module-title [title]="getModuleTitle(vm.appListStrings, vm.moduleInfo)"></scrm-module-title>
+                    <scrm-module-title [title]="moduleTitle"></scrm-module-title>
                 </div>
                 <div class="col-md-8">
                     <div class="row mr-1 ml-1">
                         <div class="w-100">
-                            <scrm-action-menu [module]="module"></scrm-action-menu>
+                            <scrm-action-menu></scrm-action-menu>
                         </div>
                         <div class="w-100">
-                            <scrm-settings-menu-ui></scrm-settings-menu-ui>
+                            <scrm-settings-menu></scrm-settings-menu>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <scrm-list-filter *ngIf="showFilters"></scrm-list-filter>
+                    </div>
+                </div>
+            </div>
+
         </ng-template>
     </div>
 </ng-container>

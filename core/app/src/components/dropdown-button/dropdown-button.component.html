@@ -1,0 +1,10 @@
+<div ngbDropdown class="d-inline-block">
+    <button [ngClass]="config.klass" ngbDropdownToggle>{{ config.label }}
+        <ng-content></ng-content>
+    </button>
+    <div ngbDropdownMenu>
+        <button ngbDropdownItem
+                *ngFor="let item of config.items"
+                (click)="item.onClick && item.onClick()">{{item.label}}</button>
+    </div>
+</div>

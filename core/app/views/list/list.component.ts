@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AppState, AppStateStore} from '@store/app-state/app-state.store';
-import {combineLatest, Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ListViewStore} from '@store/list-view/list-view.store';
+import {AppStateStore} from '@store/app-state/app-state.store';
+import {Observable, Subscription} from 'rxjs';
+import {ListViewModel, ListViewStore} from '@store/list-view/list-view.store';
 
 @Component({
     selector: 'scrm-list',
@@ -11,14 +10,9 @@ import {ListViewStore} from '@store/list-view/list-view.store';
     providers: [ListViewStore]
 })
 export class ListComponent implements OnInit, OnDestroy {
-    appState$: Observable<AppState> = this.appState.vm$;
     listSub: Subscription;
 
-    vm$ = combineLatest([this.appState$]).pipe(
-        map(([appState]) => ({
-            appState,
-        }))
-    );
+    vm$: Observable<ListViewModel> = null;
 
     constructor(protected appState: AppStateStore, protected listStore: ListViewStore) {
 
@@ -26,6 +20,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.listSub = this.listStore.init(this.appState.getModule()).subscribe();
+        this.vm$ = this.listStore.vm$;
     }
 
     ngOnDestroy(): void {

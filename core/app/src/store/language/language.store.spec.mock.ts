@@ -1,6 +1,6 @@
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 
@@ -18,7 +18,12 @@ export const languageMockData = {
         LBL_LISTVIEW_OPTION_ENTIRE: 'Select All',
         LBL_LISTVIEW_OPTION_CURRENT: 'Select This page',
         LBL_LISTVIEW_NONE: 'Deselect All',
-        LBL_LIST_OF: 'of'
+        LBL_LIST_OF: 'of',
+        LNK_ADVANCED_FILTER: 'Advanced Filter',
+        LBL_CLEAR_BUTTON_LABEL: 'Clear',
+        LBL_SEARCH_BUTTON_LABEL: 'Search',
+        LBL_SAVED_FILTER_SHORTCUT: 'My Filters',
+        LBL_QUICK: 'Quick',
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
@@ -65,7 +70,18 @@ export const languageMockData = {
             LBL_MODULE_TITLE: 'Accounts: Home',
             LBL_MODULE_ID: 'Accounts',
             LBL_NEW_FORM_TITLE: 'New Account',
-            LNK_IMPORT_ACCOUNTS: 'Import Accounts'
+            LNK_IMPORT_ACCOUNTS: 'Import Accounts',
+            LBL_WEBSITE: 'WebSite',
+            LBL_ANY_PHONE: 'Phone',
+            LBL_ANY_EMAIL: 'Email',
+            LBL_ANY_ADDRESS: 'Address',
+            LBL_CITY: 'City',
+            LBL_STATE: 'State',
+            LBL_POSTAL_CODE: 'Postal Code',
+            LBL_COUNTRY: 'Country',
+            LBL_TYPE: 'Type',
+            LBL_INDUSTRY: 'Industry',
+            LBL_ASSIGNED_TO: 'Assigned To',
         },
     }
 };
@@ -116,3 +132,5 @@ class LanguageRecordGQLSpy extends RecordGQL {
 }
 
 export const languageStoreMock = new LanguageStore(new LanguageRecordGQLSpy(), appStateStoreMock);
+languageStoreMock.load('en_us', languageStoreMock.getAvailableStringsTypes()).pipe(take(1)).subscribe();
+

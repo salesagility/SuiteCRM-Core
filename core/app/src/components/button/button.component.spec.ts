@@ -2,7 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ButtonComponent} from './button.component';
 import {Component} from '@angular/core';
-import {Button} from '@components/button/button.model';
+import {ButtonInterface} from '@components/button/button.model';
+import {ImageModule} from '@components/image/image.module';
 
 
 @Component({
@@ -11,8 +12,8 @@ import {Button} from '@components/button/button.model';
 })
 class ButtonTestHostComponent {
     clicked = 0;
-    config: Button = {
-        class: 'button-test',
+    config: ButtonInterface = {
+        klass: 'button-test',
         onClick: () => {
             this.clicked++;
         },
@@ -30,7 +31,9 @@ describe('ButtonComponent', () => {
                 ButtonComponent,
                 ButtonTestHostComponent,
             ],
-            imports: [],
+            imports: [
+                ImageModule
+            ],
             providers: [],
         }).compileComponents();
     }));
@@ -89,7 +92,7 @@ describe('ButtonComponent', () => {
     it('should support no class', () => {
 
         const buttonElement = testHostFixture.nativeElement.querySelector('button');
-        testHostComponent.config.class = null;
+        testHostComponent.config.klass = null;
 
         testHostFixture.detectChanges();
 
@@ -98,7 +101,7 @@ describe('ButtonComponent', () => {
         expect(buttonElement.className).not.toContain('button-class');
     });
 
-    it('should support click', () => {
+    it('should support no click callback', () => {
 
         const buttonElement = testHostFixture.nativeElement.querySelector('button');
 

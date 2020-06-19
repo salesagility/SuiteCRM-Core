@@ -6,8 +6,9 @@ import {ListHeaderComponent} from './list-header.component';
 
 import {ModuleTitleModule} from '../module-title/module-title.module';
 import {ActionMenuModule} from '../action-menu/action-menu.module';
-import {SettingsmenuUiModule} from '../settings-menu/settings-menu.module';
+import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ListFilterModule} from '@components/list-filter/list-filter.module';
 
 @NgModule({
     declarations: [ListHeaderComponent],
@@ -17,8 +18,9 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
         AppManagerModule.forChild(ListHeaderComponent),
         ModuleTitleModule,
         ActionMenuModule,
-        SettingsmenuUiModule,
-        AngularSvgIconModule
+        SettingsMenuModule,
+        AngularSvgIconModule,
+        ListFilterModule
     ]
 })
 export class ListHeaderModule {

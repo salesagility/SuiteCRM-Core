@@ -1,5 +1,7 @@
 <button type="button"
-        [ngClass]="config.class"
+        [ngClass]="config.klass"
         (click)="config.onClick && config.onClick()">
     {{ config.label }}
+    <scrm-image *ngIf="config.icon" [image]="config.icon"></scrm-image>
+    <ng-content></ng-content>
 </button>

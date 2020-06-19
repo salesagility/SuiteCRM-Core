@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ButtonComponent} from './button.component';
+import {ImageModule} from '@components/image/image.module';
 
 @NgModule({
     declarations: [ButtonComponent],
@@ -10,6 +11,7 @@ import {ButtonComponent} from './button.component';
     imports: [
         CommonModule,
         AppManagerModule.forChild(ButtonComponent),
+        ImageModule,
     ]
 })
 export class ButtonModule {

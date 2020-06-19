@@ -2,22 +2,22 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {SettingsmenuUiComponent} from './settings-menu.component';
+import {SettingsMenuComponent} from './settings-menu.component';
 
 import {ColumnchooserUiModule} from '../columnchooser/columnchooser.module';
-import {FilterUiModule} from '../filter/filter.module';
 import {ImageModule} from '@components/image/image.module';
+import {ButtonModule} from '@components/button/button.module';
 
 @NgModule({
-    declarations: [SettingsmenuUiComponent],
-    exports: [SettingsmenuUiComponent],
+    declarations: [SettingsMenuComponent],
+    exports: [SettingsMenuComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(SettingsmenuUiComponent),
+        AppManagerModule.forChild(SettingsMenuComponent),
         ColumnchooserUiModule,
-        FilterUiModule,
-        ImageModule
+        ImageModule,
+        ButtonModule
     ]
 })
-export class SettingsmenuUiModule {
+export class SettingsMenuModule {
 }

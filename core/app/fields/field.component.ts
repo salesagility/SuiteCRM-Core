@@ -9,7 +9,8 @@ import {viewFieldsMap} from './field.manifest';
         <ndc-dynamic
                 [ndcDynamicComponent]="map[type + '.' + mode]"
                 [ndcDynamicInputs]="{
-                    'field': field
+                    'field': field,
+                    'klass': klass
                 }"
         ></ndc-dynamic>
     `,
@@ -19,6 +20,7 @@ export class FieldComponent {
     @Input('mode') mode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
+    @Input('klass') klass: { [key: string]: any } = null;
 
     map = viewFieldsMap;
 

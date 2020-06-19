@@ -5,14 +5,14 @@
     <button type="button" class="settings-button dropdown-toggle">
         My Filters
     </button>
-    <scrm-filter-ui></scrm-filter-ui>
+    <scrm-button *ngIf="filterButton" [config]="filterButton"></scrm-button>
     <button type="button" class="settings-button">
         <scrm-image class="sicon" image="reset"></scrm-image>
         Reset
     </button>
     <scrm-columnchooser-ui></scrm-columnchooser-ui>
     <button type="button" class="settings-button" (click)="toggleWidgets()"
-            [ngClass]="{ 'charts-active': widgetService.displayWidgets }">
+            [ngClass]="{ 'active': widgetService.displayWidgets }">
         <scrm-image class="sicon" image="pie"></scrm-image>
         Charts
     </button>

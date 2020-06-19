@@ -1,7 +1,7 @@
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 
 export const navigationMockData = {
     navbar: {
@@ -212,3 +212,4 @@ class NavigationRecordGQLSpy extends RecordGQL {
 }
 
 export const navigationMock = new NavigationStore(new NavigationRecordGQLSpy());
+navigationMock.load().pipe(take(1)).subscribe();

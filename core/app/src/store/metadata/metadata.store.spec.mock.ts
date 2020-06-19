@@ -1,6 +1,6 @@
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 
@@ -11,6 +11,8 @@ export const metadataMockData = {
             basic: {
                 name: {
                     name: 'name',
+                    label: 'LBL_NAME',
+                    fieldType: 'name',
                     default: true,
                     width: '10%'
                 },
@@ -30,11 +32,15 @@ export const metadataMockData = {
             advanced: {
                 name: {
                     name: 'name',
+                    label: 'LBL_NAME',
+                    fieldType: 'name',
                     default: true,
                     width: '10%'
                 },
                 website: {
                     name: 'website',
+                    label: 'LBL_WEBSITE',
+                    fieldType: 'url',
                     default: true,
                     width: '10%'
                 },
@@ -48,6 +54,7 @@ export const metadataMockData = {
                 email: {
                     name: 'email',
                     label: 'LBL_ANY_EMAIL',
+                    fieldType: 'email',
                     type: 'name',
                     default: true,
                     width: '10%'
@@ -83,6 +90,7 @@ export const metadataMockData = {
                 billing_address_country: {
                     name: 'billing_address_country',
                     label: 'LBL_COUNTRY',
+                    fieldType: 'varchar',
                     type: 'name',
                     options: 'countries_dom',
                     default: true,
@@ -90,18 +98,25 @@ export const metadataMockData = {
                 },
                 account_type: {
                     name: 'account_type',
+                    options: 'account_type_dom',
+                    label: 'LBL_TYPE',
+                    fieldType: 'enum',
                     default: true,
                     width: '10%'
                 },
                 industry: {
                     name: 'industry',
+                    options: 'industry_dom',
+                    label: 'LBL_INDUSTRY',
+                    fieldType: 'enum',
                     default: true,
                     width: '10%'
                 },
                 assigned_user_id: {
                     name: 'assigned_user_id',
-                    type: 'enum',
                     label: 'LBL_ASSIGNED_TO',
+                    fieldType: 'relate',
+                    type: 'enum',
                     function: {
                         name: 'get_user_array',
                         params: [
@@ -210,3 +225,4 @@ class MetadataRecordGQLSpy extends RecordGQL {
 }
 
 export const metadataStoreMock = new MetadataStore(new MetadataRecordGQLSpy(), appStateStoreMock);
+metadataStoreMock.load('accounts', metadataStoreMock.getMetadataTypes()).pipe(take(1)).subscribe();

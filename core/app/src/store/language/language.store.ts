@@ -213,6 +213,28 @@ export class LanguageStore implements StateStore {
     }
 
     /**
+     * Get field label
+     *
+     * @param {string} labelKey to fetch
+     * @param {string} module to use
+     * @param {object} languages to use
+     * @returns {string} label
+     */
+    public getFieldLabel(labelKey: string, module: string, languages: LanguageStrings): string {
+        if (!languages || !languages.modStrings || !labelKey || !module) {
+            return '';
+        }
+
+        let label = languages.modStrings[module] && languages.modStrings[module][labelKey];
+
+        if (!label) {
+            label = languages.appStrings && languages.appStrings[labelKey];
+        }
+
+        return label || '';
+    }
+
+    /**
      * Get all available string types
      *
      * @returns {string[]} string types

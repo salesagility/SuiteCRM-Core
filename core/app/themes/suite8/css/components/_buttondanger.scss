@@ -1,0 +1,72 @@
+/**
+ * Override danger button color and outline danger button
+ */
+
+.btn-outline-danger {
+  color: $salmon-pink;
+  border-color: $salmon-pink;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: $salmon-pink;
+  border-color: $salmon-pink;
+}
+
+.btn-outline-danger:focus, .btn-outline-danger.focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.btn-outline-danger.disabled, .btn-outline-danger:disabled {
+  color: $salmon-pink;
+  background-color: transparent;
+}
+
+.btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
+.show > .btn-outline-danger.dropdown-toggle {
+  color: #fff;
+  background-color: $salmon-pink;
+  border-color: $salmon-pink;
+}
+
+.btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-danger.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: $salmon-pink;
+  border-color: $salmon-pink;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: $coral-pink;
+  border-color: $coral-pink;
+}
+
+.btn-danger:focus, .btn-danger.focus {
+  color: #fff;
+  background-color: $coral-pink;
+  border-color: $coral-pink;
+  box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
+}
+
+.btn-danger.disabled, .btn-danger:disabled {
+  color: #fff;
+  background-color: $salmon-pink;
+  border-color: $salmon-pink;
+}
+
+.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
+.show > .btn-danger.dropdown-toggle {
+  color: #fff;
+  background-color: $coral-pink;
+  border-color: $coral-pink;
+}
+
+.btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus,
+.show > .btn-danger.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
+}

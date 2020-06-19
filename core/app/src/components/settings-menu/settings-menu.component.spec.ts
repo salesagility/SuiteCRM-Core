@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SettingsmenuUiComponent} from './settings-menu.component';
+import {SettingsMenuComponent} from './settings-menu.component';
 import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
 import {FilterUiModule} from '@components/filter/filter.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -10,10 +10,13 @@ import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
+import {ButtonModule} from '@components/button/button.module';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 describe('SettingsmenuUiComponent', () => {
-    let component: SettingsmenuUiComponent;
-    let fixture: ComponentFixture<SettingsmenuUiComponent>;
+    let component: SettingsMenuComponent;
+    let fixture: ComponentFixture<SettingsMenuComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -22,10 +25,12 @@ describe('SettingsmenuUiComponent', () => {
                 FilterUiModule,
                 HttpClientTestingModule,
                 ApolloTestingModule,
-                ImageModule
+                ImageModule,
+                ButtonModule,
             ],
-            declarations: [SettingsmenuUiComponent],
+            declarations: [SettingsMenuComponent],
             providers: [
+                {provide: ListViewStore, useValue: listviewStoreMock},
                 {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
@@ -37,7 +42,7 @@ describe('SettingsmenuUiComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsmenuUiComponent);
+        fixture = TestBed.createComponent(SettingsMenuComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

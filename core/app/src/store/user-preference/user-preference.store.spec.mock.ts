@@ -1,5 +1,5 @@
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 
@@ -82,3 +82,4 @@ class UserPreferenceRecordGQLSpy extends CollectionGQL {
 }
 
 export const userPreferenceStoreMock = new UserPreferenceStore(new UserPreferenceRecordGQLSpy());
+userPreferenceStoreMock.load().pipe(take(1)).subscribe();
