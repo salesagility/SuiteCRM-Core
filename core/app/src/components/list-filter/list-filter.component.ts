@@ -136,14 +136,14 @@ export class ListFilterComponent implements OnInit {
     protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string): SearchCriteriaFieldFilter {
         let fieldCriteria: SearchCriteriaFieldFilter;
 
-        if (!searchCriteria.filters[fieldName]) {
+        if (searchCriteria.filters[fieldName]) {
+            fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
+        } else {
             fieldCriteria = {
                 field: fieldName,
                 operator: '',
                 values: [],
             };
-        } else {
-            fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
         }
 
         return fieldCriteria;

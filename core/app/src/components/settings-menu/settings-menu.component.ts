@@ -36,6 +36,26 @@ export class SettingsMenuComponent implements OnInit {
         };
     }
 
+    get clearButton(): ButtonInterface {
+        const searchCriteria = this.listStore.searchCriteria;
+        const result = Object.values(searchCriteria.filters).every(item => item.operator === '');
+
+        if (result) {
+            return null;
+        }
+
+        return {
+            label: this.listStore.appStrings.LBL_CLEAR_BUTTON_LABEL || '',
+            klass: {
+                'settings-button': true,
+            },
+            icon: 'filter',
+            onClick: (): void => {
+                this.listStore.updateSearchCriteria({filters: {}}, true);
+            }
+        };
+    }
+
     ngOnInit(): void {
 
     }

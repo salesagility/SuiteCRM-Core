@@ -6,10 +6,7 @@
         My Filters
     </button>
     <scrm-button *ngIf="filterButton" [config]="filterButton"></scrm-button>
-    <button type="button" class="settings-button">
-        <scrm-image class="sicon" image="reset"></scrm-image>
-        Reset
-    </button>
+    <scrm-button *ngIf="clearButton" [config]="clearButton"></scrm-button>
     <scrm-columnchooser-ui></scrm-columnchooser-ui>
     <button type="button" class="settings-button" (click)="toggleWidgets()"
             [ngClass]="{ 'active': widgetService.displayWidgets }">
