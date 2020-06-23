@@ -110,7 +110,19 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $viewDef->setId($moduleName);
 
         if (in_array('listView', $views, true)) {
-            $viewDef->setListView($this->fetchListViewDef($legacyModuleName));
+            $listViewDef = $this->fetchListViewDef($legacyModuleName);
+
+            foreach ($listViewDef as $i => $def) {
+                if (!isset($listViewDef[$i]['type'])) {
+                    $listViewDef[$i]['type'] = $fieldDefinition->vardef[$def['fieldName']]['type'];
+                }
+
+                if (!isset($listViewDef[$i]['label'])) {
+                    $listViewDef[$i]['label'] = $fieldDefinition->vardef[$def['fieldName']]['label'];
+                }
+            }
+
+            $viewDef->setListView($listViewDef);
         }
 
         if (in_array('search', $views, true)) {

@@ -19,6 +19,7 @@ export interface Field {
     module: string;
     id: string;
     sortable: boolean;
+    type: string;
 }
 
 export interface SearchMetaField {

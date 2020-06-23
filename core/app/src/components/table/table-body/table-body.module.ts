@@ -5,6 +5,7 @@ import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {TableBodyComponent} from './table-body.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {CdkTableModule} from '@angular/cdk/table';
+import {FieldModule} from "@fields/field.module";
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -14,6 +15,7 @@ import {CdkTableModule} from '@angular/cdk/table';
         AppManagerModule.forChild(TableBodyComponent),
         AngularSvgIconModule,
         CdkTableModule,
+        FieldModule,
     ]
 })
 export class TablebodyUiModule {

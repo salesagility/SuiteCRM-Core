@@ -11,6 +11,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {FieldModule} from "@fields/field.module";
 
 @Component({
     selector: 'table-body-ui-test-host-component',
@@ -29,6 +30,7 @@ describe('TablebodyUiComponent', () => {
             imports: [
                 CdkTableModule,
                 ApolloTestingModule,
+                FieldModule
             ],
             declarations: [TableBodyComponent, TableBodyUITestHostComponent],
             providers: [

@@ -20,7 +20,10 @@
                 *cdkHeaderCellDef>{{
               vm.language.appStrings[column.label] || column.label}}
             </th>
-            <td cdk-cell *cdkCellDef="let record">{{record.attributes[column.fieldName]}}</td>
+            <td cdk-cell *cdkCellDef="let record">
+                <scrm-field [mode]="'list'" [type]="column.type"
+                            [field]="{type: column.type, value: record.attributes[column.fieldName]}"></scrm-field>
+            </td>
         </ng-container>
 
         <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
