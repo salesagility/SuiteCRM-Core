@@ -1,6 +1,6 @@
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {Observable, of} from 'rxjs';
-import {shareReplay, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {ListGQL} from '@store/list-view/api.list.get';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
@@ -9,6 +9,8 @@ import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
+import {deepClone} from '@base/utils/object-utils';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
@@ -130,11 +132,21 @@ class ListRecordGQLSpy extends ListGQL {
     public fetch(module: string, limit: number, offset: number, criteria: { [key: string]: string }, metadata: { fields: string[] }
     ): Observable<any> {
 
-        return of({
+        const data = {
             data: {
-                getListView: listviewMockData.listView
+                getListView: deepClone(listviewMockData.listView)
             }
-        }).pipe(shareReplay());
+        };
+
+        data.data.getListView.meta.offsets = {
+            current: offset,
+            next: (offset + limit) || 0,
+            prev: (offset - limit) || 0,
+            total: 200,
+            end: 180
+        };
+
+        return of(data);
     }
 }
 
@@ -146,7 +158,8 @@ export const listviewStoreMock = new ListViewStore(
     languageStoreMock,
     navigationMock,
     mockModuleNavigation,
-    metadataStoreMock
+    metadataStoreMock,
+    localStorageServiceMock
 );
 
 listviewStoreMock.init('accounts').pipe(take(1)).subscribe();

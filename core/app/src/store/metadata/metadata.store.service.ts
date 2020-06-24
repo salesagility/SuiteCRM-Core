@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {deepClone} from '@base/utils/object-utils';
@@ -186,7 +186,7 @@ export class MetadataStore implements StateStore {
             });
 
             if (Object.keys(missing).length === 0) {
-                return metadataCache.asObservable();
+                return of(metadataCache.value).pipe(shareReplay(1));
             }
         } else {
             cache[module] = new BehaviorSubject({} as Metadata);

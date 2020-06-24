@@ -15,6 +15,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {LocalStorageService} from '@services/local-storage/local-storage.service';
 
 export interface FieldMap {
     [key: string]: any;
@@ -26,16 +27,28 @@ export interface ListEntry {
     id?: string;
 }
 
-export interface SearchCriteriaFilter {
-    field: string;
+export interface SearchCriteriaFieldFilter {
+    field?: string;
     operator: string;
-    value: string;
+    values?: string[];
+    start?: string;
+    end?: string;
+}
+
+export interface SearchCriteriaFilter {
+    [key: string]: SearchCriteriaFieldFilter;
 }
 
 export interface SearchCriteria {
-    name: string;
-    filters: SearchCriteriaFilter[];
+    name?: string;
+    filters: SearchCriteriaFilter;
+    orderBy?: string;
+    sortOrder?: string;
 }
+
+const initialSearchCriteria = {
+    filters: {}
+};
 
 export interface Pagination {
     pageSize: number;
@@ -85,7 +98,7 @@ export interface ListData {
 const initialState: ListViewState = {
     module: '',
     records: [],
-    criteria: null,
+    criteria: deepClone(initialSearchCriteria),
     pagination: {
         pageSize: 5,
         current: 0,
@@ -156,7 +169,8 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
         protected languageStore: LanguageStore,
         protected navigationStore: NavigationStore,
         protected moduleNavigation: ModuleNavigation,
-        protected metadataStore: MetadataStore
+        protected metadataStore: MetadataStore,
+        protected localStorage: LocalStorageService
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -203,6 +217,14 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
         this.displayFilters = show;
     }
 
+    get searchCriteria(): SearchCriteria {
+        if (!this.internalState.criteria) {
+            return deepClone(initialSearchCriteria);
+        }
+
+        return this.internalState.criteria;
+    }
+
     /**
      * Clean destroy
      */
@@ -220,6 +242,8 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
     public init(module: string): Observable<ListViewState> {
         this.internalState.module = module;
 
+        this.loadStoredCriteria(module);
+
         return this.load();
     }
 
@@ -227,9 +251,15 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      * Update the search criteria
      *
      * @param {object} criteria to set
+     * @param {boolean} reload flag
      */
-    public updateSearchCriteria(criteria: SearchCriteria): void {
-        this.updateState({...this.internalState, criteria, loading: true});
+    public updateSearchCriteria(criteria: SearchCriteria, reload = true): void {
+        this.updateState({...this.internalState, criteria});
+
+        if (reload) {
+            this.updateSelection(SelectionStatus.NONE);
+            this.load(false).pipe(take(1)).subscribe();
+        }
     }
 
     /**
@@ -363,6 +393,10 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
         } as PaginationCount)), distinctUntilChanged());
     }
 
+    getPagination(): Pagination {
+        return this.store.value.pagination;
+    }
+
     changePage(page: PageSelection): void {
         let pageToLoad = 0;
 
@@ -470,7 +504,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      * @returns {object} Observable<ListViewState>
      */
     protected load(useCache = true): Observable<ListViewState> {
-        this.appStateStore.updateLoading(`${module}-list-fetch`, true);
+        this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, true);
 
         return this.getRecords(
             this.internalState.module,
@@ -479,7 +513,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
             useCache
         ).pipe(
             tap((data: ListViewState) => {
-                this.appStateStore.updateLoading(`${module}-list-fetch`, false);
+                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, false);
                 this.calculatePageCount(data.records, data.pagination);
                 this.updateState({
                     ...this.internalState,
@@ -500,6 +534,8 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      * @returns {object} Observable<any>
      */
     protected getRecords(module: string, criteria: SearchCriteria, pagination: Pagination, useCache = true): Observable<ListViewState> {
+        this.storeCriteria(module, criteria);
+
         if (this.cache$ == null || useCache === false) {
             this.cache$ = this.fetch(module, criteria, pagination).pipe(
                 shareReplay(1)
@@ -518,7 +554,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      */
     protected fetch(module: string, criteria: SearchCriteria, pagination: Pagination): Observable<ListData> {
 
-        return this.listGQL.fetch(module, pagination.pageSize, pagination.current, {}, this.fieldsMetadata)
+        return this.listGQL.fetch(module, pagination.pageSize, pagination.current, criteria, this.fieldsMetadata)
             .pipe(map(({data}) => {
 
                 const recordsList: ListData = {
@@ -564,5 +600,38 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
 
                 return recordsList;
             }));
+    }
+
+    /**
+     * Store the criteria in local storage
+     *
+     * @param {string} module to store in
+     * @param {object} criteria to store
+     */
+    protected storeCriteria(module: string, criteria: SearchCriteria): void {
+        let storeCriteria = this.localStorage.get('search-criteria');
+
+        if (!storeCriteria) {
+            storeCriteria = {};
+        }
+
+        storeCriteria[module] = criteria;
+
+        this.localStorage.set('search-criteria', storeCriteria);
+    }
+
+    /**
+     * Store the criteria in local storage
+     *
+     * @param {string} module to store in
+     */
+    protected loadStoredCriteria(module: string): void {
+        const storedCriteria = this.localStorage.get('search-criteria');
+
+        if (!storedCriteria || !storedCriteria[module]) {
+            return;
+        }
+
+        this.updateState({...this.internalState, criteria: storedCriteria[module]});
     }
 }

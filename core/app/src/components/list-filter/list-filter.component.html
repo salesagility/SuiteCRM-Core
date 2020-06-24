@@ -1,5 +1,6 @@
 <scrm-panel [title]="appStrings['LNK_ADVANCED_FILTER'] || ''"
-            [close]="closeButton">
+            [close]="closeButton"
+            *ngIf="(vm$ | async) as vm">
 
     <span panel-header-button>
         <scrm-dropdown-button *ngIf="myFilterButton" [config]="myFilterButton"></scrm-dropdown-button>

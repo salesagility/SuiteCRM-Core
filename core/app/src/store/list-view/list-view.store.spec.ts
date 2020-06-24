@@ -1,7 +1,9 @@
-import {ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore, SearchCriteria} from '@store/list-view/list-view.store';
 import {listviewMockData, listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {take} from 'rxjs/operators';
+import {PageSelection} from '@components/pagination/pagination.model';
+import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
 
 describe('Listview Store', () => {
     const service: ListViewStore = listviewStoreMock;
@@ -72,6 +74,70 @@ describe('Listview Store', () => {
         }).unsubscribe();
 
 
+    });
+
+    it('#changePage next', () => {
+        service.init('accounts').pipe(take(1)).subscribe(() => {
+            service.changePage(PageSelection.FIRST);
+            const before = {...service.getPagination()};
+            service.changePage(PageSelection.NEXT);
+            const after = service.getPagination();
+
+            expect(before.next).toEqual(after.current);
+        });
+    });
+
+    it('#changePage previous', () => {
+        service.init('accounts').pipe(take(1)).subscribe(() => {
+            service.changePage(PageSelection.LAST);
+            const before = {...service.getPagination()};
+            service.changePage(PageSelection.PREVIOUS);
+            const after = service.getPagination();
+
+            expect(before.previous).toEqual(after.current);
+        });
+    });
+
+    it('#updateCriteria with reload', () => {
+        service.init('accounts').pipe(take(1)).subscribe(() => {
+
+            const criteria = {
+                filters: {
+                    name: {
+                        operator: '=',
+                        values: ['test']
+                    }
+                }
+            } as SearchCriteria;
+
+            service.updateSearchCriteria(criteria);
+            const savedCriteria = service.searchCriteria;
+            const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
+
+            expect(criteria).toEqual(savedCriteria);
+            expect(criteria).toEqual(localStorageCriteria);
+        });
+    });
+
+    it('#updateCriteria without reload', () => {
+        service.init('accounts').pipe(take(1)).subscribe(() => {
+
+            const criteria = {
+                filters: {
+                    name: {
+                        operator: '=',
+                        values: ['test 2']
+                    }
+                }
+            } as SearchCriteria;
+
+            service.updateSearchCriteria(criteria, false);
+            const savedCriteria = service.searchCriteria;
+            const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
+
+            expect(criteria).toEqual(savedCriteria);
+            expect(criteria).not.toEqual(localStorageCriteria);
+        });
     });
 });
 

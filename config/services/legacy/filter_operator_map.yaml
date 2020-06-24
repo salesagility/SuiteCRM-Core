@@ -1,0 +1,15 @@
+parameters:
+  legacy.filter_operator_map:
+    '=':
+      '{field}_{type}': 'values'
+    'between':
+      '{field}_{type}_range_choice': '{operator}'
+      'range_{field}_{type}': ''
+      'start_range_{field}_{type}': '{start}'
+      'end_range_{field}_{type}': '{end}'
+    'next_30_days':
+      '{field}_{type}_range_choice': '{operator}'
+      'range_{field}_{type}': '[{operator}]'
+      'start_range_{field}_{type}': ''
+      'end_range_{field}_{type}': ''
+

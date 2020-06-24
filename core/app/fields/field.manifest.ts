@@ -2,6 +2,8 @@ import {VarcharDetailFieldModule} from '@fields/varchar/templates/detail/varchar
 import {VarcharDetailFieldComponent} from '@fields/varchar/templates/detail/varchar.component';
 import {VarcharEditFieldModule} from '@fields/varchar/templates/edit/varchar.module';
 import {VarcharEditFieldComponent} from '@fields/varchar/templates/edit/varchar.component';
+import {VarcharFilterFieldModule} from '@fields/varchar/templates/filter/filter.module';
+import {VarcharFilterFieldComponent} from '@fields/varchar/templates/filter/filter.component';
 import {IntDetailFieldModule} from '@fields/int/templates/detail/int.module';
 import {IntDetailFieldComponent} from '@fields/int/templates/detail/int.component';
 import {FloatDetailFieldModule} from '@fields/float/templates/detail/float.module';
@@ -20,6 +22,7 @@ import {CurrencyDetailFieldComponent} from '@fields/currency/templates/detail/cu
 export const fieldModules = [
     VarcharDetailFieldModule,
     VarcharEditFieldModule,
+    VarcharFilterFieldModule,
     IntDetailFieldModule,
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
@@ -31,6 +34,7 @@ export const fieldModules = [
 export const fieldComponents = [
     VarcharDetailFieldComponent,
     VarcharEditFieldComponent,
+    VarcharFilterFieldComponent,
     IntDetailFieldComponent,
     FloatDetailFieldComponent,
     PhoneDetailFieldComponent,
@@ -44,7 +48,7 @@ export const viewFieldsMap = {
     'varchar.list': VarcharDetailFieldComponent,
     'varchar.detail': VarcharDetailFieldComponent,
     'varchar.edit': VarcharEditFieldComponent,
-    'varchar.filter': VarcharEditFieldComponent,
+    'varchar.filter': VarcharFilterFieldComponent,
     'char.list': VarcharDetailFieldComponent,
     'char.detail': VarcharDetailFieldComponent,
     'int.list': IntDetailFieldComponent,

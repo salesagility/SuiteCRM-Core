@@ -21,6 +21,7 @@ const routes: Routes = [
         },
         data: {
             reuseRoute: false,
+            checkSession: true
         }
     },
     {

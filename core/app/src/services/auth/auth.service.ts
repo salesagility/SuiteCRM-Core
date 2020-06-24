@@ -10,6 +10,7 @@ import {StateManager} from '@base/store/state-manager';
 import {LanguageStore} from '@store/language/language.store';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '@store/app-state/app-state.store';
+import {LocalStorageService} from '@services/local-storage/local-storage.service';
 
 export interface SessionStatus {
     active?: boolean;
@@ -24,8 +25,8 @@ export interface SessionStatus {
 export class AuthService {
     protected timerSet = false;
     private currentUserSubject = new BehaviorSubject<User>({} as User);
-    public currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
-    public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
+    isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     defaultTimeout = '3600';
 
     constructor(
@@ -35,7 +36,8 @@ export class AuthService {
         protected stateManager: StateManager,
         protected languageStore: LanguageStore,
         private bnIdle: BnNgIdleService,
-        protected appStateStore: AppStateStore
+        protected appStateStore: AppStateStore,
+        protected localStorage: LocalStorageService
     ) {
     }
 
@@ -149,6 +151,7 @@ export class AuthService {
      */
     public resetState(): void {
         this.stateManager.clearAuthBased();
+        this.localStorage.clear();
         this.isUserLoggedIn.next(false);
     }
 

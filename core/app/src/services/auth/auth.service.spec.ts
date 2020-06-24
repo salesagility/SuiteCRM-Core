@@ -2,6 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {AuthService} from '@services/auth/auth.service';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {of} from 'rxjs';
+import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
 
 describe('Auth Service', () => {
     let httpMock = null;
@@ -48,7 +49,16 @@ describe('Auth Service', () => {
         IdleMock = jasmine.createSpyObj('bnIdle', ['doLogin']);
         appStateMock = jasmine.createSpyObj('AppStateStore', ['updateLoading']);
 
-        service = new AuthService(httpMock, routerMock, messageMock, stateManagerMock, languageMock, IdleMock, appStateMock);
+        service = new AuthService(
+            httpMock,
+            routerMock,
+            messageMock,
+            stateManagerMock,
+            languageMock,
+            IdleMock,
+            appStateMock,
+            localStorageServiceMock
+        );
 
     });
 

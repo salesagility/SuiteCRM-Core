@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Field} from '@fields/field.model';
 import {FieldGridColumn, FieldGridRow} from '@components/field-grid/field-grid.model';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
@@ -9,7 +9,8 @@ import {Subscription} from 'rxjs';
     templateUrl: './field-grid.component.html',
     styles: []
 })
-export class FieldGridComponent implements OnInit, OnDestroy {
+export class FieldGridComponent implements OnInit, OnDestroy, OnChanges {
+
     @Input() fields: Field[];
     @Input() fieldMode = 'detail';
     @Input() special = false;
@@ -82,6 +83,10 @@ export class FieldGridComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+
+    ngOnChanges(): void {
+        this.buildGrid();
     }
 
     get colNumber(): number {

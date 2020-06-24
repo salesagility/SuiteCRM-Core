@@ -1,5 +1,4 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component} from '@angular/core';
 import {CloseButtonModule} from '@components/close-button/close-button.module';
 import {ButtonModule} from '@components/button/button.module';
 import {By} from '@angular/platform-browser';
@@ -14,21 +13,13 @@ import {FieldGridModule} from '@components/field-grid/field-grid.module';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
-@Component({
-    selector: 'list-filter-host-component',
-    template: '<scrm-list-filter></scrm-list-filter>'
-})
-class ListFilterTestHostComponent {
-}
-
 describe('ListFilterComponent', () => {
-    let testHostComponent: ListFilterTestHostComponent;
-    let testHostFixture: ComponentFixture<ListFilterTestHostComponent>;
+    let testHostComponent: ListFilterComponent;
+    let testHostFixture: ComponentFixture<ListFilterComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                ListFilterTestHostComponent,
                 ListFilterComponent,
             ],
             imports: [
@@ -45,7 +36,7 @@ describe('ListFilterComponent', () => {
             ],
         }).compileComponents();
 
-        testHostFixture = TestBed.createComponent(ListFilterTestHostComponent);
+        testHostFixture = TestBed.createComponent(ListFilterComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));
@@ -97,4 +88,84 @@ describe('ListFilterComponent', () => {
         expect(testHostFixture.debugElement.query(By.css('.clear-filters-button')).nativeElement).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement).toBeTruthy();
     });
+
+    it('should allow to insert filter value', async(() => {
+
+        expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
+
+        const input = testHostFixture.debugElement.query(By.css('input')).nativeElement;
+        input.value = 'test';
+        input.dispatchEvent(new Event('input'));
+
+        expect(input).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(testHostComponent.searchCriteria.filters.name).toBeTruthy();
+            expect(testHostComponent.searchCriteria.filters.name.operator).toEqual('=');
+            expect(testHostComponent.searchCriteria.filters.name.values).toEqual(['test']);
+        });
+    }));
+
+    it('should allow to applyFilter', async(() => {
+
+        expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
+
+        const input = testHostFixture.debugElement.query(By.css('input')).nativeElement;
+        const filterButton = testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement;
+
+        input.value = 'test';
+        input.dispatchEvent(new Event('input'));
+
+        expect(input).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            filterButton.click();
+
+            testHostFixture.detectChanges();
+            testHostFixture.whenStable().then(() => {
+                expect(testHostComponent.searchCriteria.filters.name).toBeTruthy();
+                expect(testHostComponent.searchCriteria.filters.name.operator).toEqual('=');
+                expect(testHostComponent.searchCriteria.filters.name.values).toEqual(['test']);
+
+                expect(listviewStoreMock.showFilters).toEqual(false);
+                expect(listviewStoreMock.searchCriteria.filters.name.operator).toEqual('=');
+                expect(listviewStoreMock.searchCriteria.filters.name.values).toEqual(['test']);
+            });
+        });
+    }));
+
+    it('should allow to clear filter', async(() => {
+
+        expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
+
+        const input = testHostFixture.debugElement.query(By.css('input')).nativeElement;
+        const filterButton = testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement;
+        const clearButton = testHostFixture.debugElement.query(By.css('.clear-filters-button')).nativeElement;
+
+        input.value = 'test';
+        input.dispatchEvent(new Event('input'));
+
+        expect(input).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            filterButton.click();
+            clearButton.click();
+
+            testHostFixture.detectChanges();
+            testHostFixture.whenStable().then(() => {
+
+                expect(testHostComponent.searchCriteria).toBeTruthy();
+                expect(testHostComponent.searchCriteria.filters.name.operator).toEqual('');
+                expect(testHostComponent.searchCriteria.filters.name.values).toEqual([]);
+
+                expect(listviewStoreMock.searchCriteria).toEqual({filters: {}});
+            });
+        });
+    }));
 });

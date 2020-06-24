@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
-import {map, distinctUntilChanged} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
@@ -25,26 +25,32 @@ let internalState: AppState = deepClone(initialState);
 })
 export class AppStateStore implements StateStore {
 
-    protected store = new BehaviorSubject<AppState>(internalState);
-    protected state$ = this.store.asObservable();
-    protected loadingQueue = {};
-
     /**
      * Public long-lived observable streams
      */
-
-    loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
-    module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
-    view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
+    loading$: Observable<boolean>;
+    module$: Observable<string>;
+    view$: Observable<string>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
      */
-    vm$: Observable<AppState> = combineLatest([this.loading$, this.module$, this.view$]).pipe(
-        map(([loading, module, view]) => ({loading, module, view, loaded: internalState.loaded}))
-    );
+    vm$: Observable<AppState>;
+
+    protected store = new BehaviorSubject<AppState>(internalState);
+    protected state$ = this.store.asObservable();
+    protected loadingQueue = {};
 
     constructor() {
+
+        this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
+        this.module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
+        this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
+
+        this.vm$ = combineLatest([this.loading$, this.module$, this.view$]).pipe(
+            map(([loading, module, view]) => ({loading, module, view, loaded: internalState.loaded}))
+        );
+
         this.updateState({...internalState, loading: false});
     }
 

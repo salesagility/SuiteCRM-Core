@@ -24,6 +24,8 @@ class FieldTestHostComponent {
     fields = [
         {field: {type: 'varchar', value: 'My Varchar'}, mode: 'detail', expected: 'My Varchar'},
         {field: {type: 'varchar', value: 'My Varchar'}, mode: 'list', expected: 'My Varchar'},
+        {field: {type: 'varchar', value: 'My Varchar'}, mode: 'edit', expected: 'My Varchar'},
+        {field: {type: 'varchar', criteria: {values: ['test'], operator: '='}}, mode: 'filter', expected: 'test'},
         {field: {type: 'int', value: '10'}, mode: 'detail', expected: '10'},
         {field: {type: 'int', value: '10'}, mode: 'list', expected: '10'},
         {field: {type: 'float', value: '1000.5'}, mode: 'detail', expected: '1,000.5'},
@@ -136,11 +138,21 @@ describe('FieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostComponent.fields.forEach((fieldWrapper) => {
-            const selector = '#' + fieldWrapper.field.type + '-' + fieldWrapper.mode;
-            const el = testHostFixture.debugElement.query(By.css(selector)).nativeElement;
+            let selector = '#' + fieldWrapper.field.type + '-' + fieldWrapper.mode;
 
-            expect(el).toBeTruthy();
-            expect(el.textContent).toContain(fieldWrapper.expected);
+            if (fieldWrapper.mode === 'edit' || fieldWrapper.mode === 'filter') {
+
+                selector += ' input';
+                const el = testHostFixture.debugElement.query(By.css(selector)).nativeElement;
+
+                expect(el).toBeTruthy();
+                expect(el.value).toContain(fieldWrapper.expected);
+            } else {
+                const el = testHostFixture.debugElement.query(By.css(selector)).nativeElement;
+
+                expect(el).toBeTruthy();
+                expect(el.textContent).toContain(fieldWrapper.expected);
+            }
         });
     });
 });

@@ -26,7 +26,7 @@ export class ListGQL {
         module: string,
         limit: number,
         offset: number,
-        criteria: { [key: string]: string },
+        criteria: { [key: string]: any },
         metadata: { fields: string[] }
     ): Observable<ApolloQueryResult<any>> {
 

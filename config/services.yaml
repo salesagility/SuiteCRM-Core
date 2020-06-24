@@ -33,6 +33,7 @@ services:
       $themeImageSupportedTypes: '%themes.image_supported_types%'
       $frontendExcludedModules: '%legacy.frontend_excluded_modules%'
       $datetimeFormatMap: '%legacy.datetime_format_map%'
+      $filterOperatorMap: '%legacy.filter_operator_map%'
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
   _instanceof:
