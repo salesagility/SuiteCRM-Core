@@ -18,6 +18,8 @@ import {UrlDetailFieldModule} from '@fields/url/templates/detail/url.module';
 import {UrlDetailFieldComponent} from '@fields/url/templates/detail/url.component';
 import {CurrencyDetailFieldModule} from '@fields/currency/templates/detail/currency.module';
 import {CurrencyDetailFieldComponent} from '@fields/currency/templates/detail/currency.component';
+import {EmailListFieldsModule} from '@fields/email/templates/list/email.module';
+import {EmailListFieldsComponent} from '@fields/email/templates/list/email.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -29,7 +31,8 @@ export const fieldModules = [
     DateDetailFieldModule,
     DateTimeDetailFieldModule,
     UrlDetailFieldModule,
-    CurrencyDetailFieldModule
+    CurrencyDetailFieldModule,
+    EmailListFieldsModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -41,7 +44,8 @@ export const fieldComponents = [
     DateDetailFieldComponent,
     DateTimeDetailFieldComponent,
     UrlDetailFieldComponent,
-    CurrencyDetailFieldComponent
+    CurrencyDetailFieldComponent,
+    EmailListFieldsComponent
 ];
 
 export const viewFieldsMap = {
@@ -64,5 +68,7 @@ export const viewFieldsMap = {
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
     'currency.list': CurrencyDetailFieldComponent,
-    'currency.detail': CurrencyDetailFieldComponent
+    'currency.detail': CurrencyDetailFieldComponent,
+    'email.list': EmailListFieldsComponent,
+    'email.detail': EmailListFieldsComponent,
 };

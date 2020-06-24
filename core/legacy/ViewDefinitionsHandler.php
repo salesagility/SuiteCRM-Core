@@ -120,6 +120,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
                 if (!isset($listViewDef[$i]['label'])) {
                     $listViewDef[$i]['label'] = $fieldDefinition->vardef[$def['fieldName']]['label'];
                 }
+
+                if ($listViewDef[$i]['fieldName'] === 'email1') {
+                    $listViewDef[$i]['type'] = 'email';
+                }
             }
 
             $viewDef->setListView($listViewDef);
