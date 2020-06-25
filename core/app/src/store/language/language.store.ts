@@ -149,6 +149,19 @@ export class LanguageStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+        const keysToClear = ['modStrings', 'appListStrings'];
+
+        keysToClear.forEach(type => {
+            if (loadedLanguages && loadedLanguages[type]) {
+                delete loadedLanguages[type];
+            }
+        })
+
+        cache.modStrings = {};
+        cache.appListStrings = {};
+    }
+
     /**
      * Update the language strings toe the given language
      *

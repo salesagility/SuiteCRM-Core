@@ -253,6 +253,10 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
         this.preferencesSub.unsubscribe();
     }
 
+    public clearAuthBased(): void {
+        this.clear();
+    }
+
     /**
      * Selection public api
      */

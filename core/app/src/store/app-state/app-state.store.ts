@@ -60,6 +60,9 @@ export class AppStateStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+    }
+
     /**
      * Update loading status for given key
      *

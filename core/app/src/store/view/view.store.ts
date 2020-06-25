@@ -59,6 +59,10 @@ export class ViewStore implements StateStore {
     clear(): void {
     }
 
+    public clearAuthBased(): void {
+        this.clear();
+    }
+
     get appState(): AppState {
         if (!this.appData.appState) {
             return {};

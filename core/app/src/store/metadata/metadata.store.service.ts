@@ -107,6 +107,9 @@ export class MetadataStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+    }
+
     /**
      * Get all metadata types
      *

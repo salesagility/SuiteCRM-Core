@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {deepClone} from '@base/utils/object-utils';
@@ -59,6 +59,10 @@ export class UserPreferenceStore implements StateStore {
     public clear(): void {
         cache$ = null;
         this.updateState(deepClone(initialState));
+    }
+
+    public clearAuthBased(): void {
+        this.clear();
     }
 
     /**

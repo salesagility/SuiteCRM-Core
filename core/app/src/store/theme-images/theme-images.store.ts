@@ -37,6 +37,11 @@ let cache$: Observable<any> = null;
 })
 export class ThemeImagesStore implements StateStore {
 
+    /**
+     * Public long-lived observable streams
+     */
+    images$: Observable<ThemeImageMap>;
+
     protected store = new BehaviorSubject<ThemeImages>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'themeImages';
@@ -49,12 +54,8 @@ export class ThemeImagesStore implements StateStore {
         ]
     };
 
-    /**
-     * Public long-lived observable streams
-     */
-    images$ = this.state$.pipe(map(state => state.images), distinctUntilChanged());
-
     constructor(protected recordGQL: RecordGQL, protected appStateStore: AppStateStore) {
+        this.images$ = this.state$.pipe(map(state => state.images), distinctUntilChanged());
     }
 
 
@@ -71,10 +72,13 @@ export class ThemeImagesStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+    }
+
     /**
      * Change the current theme
      *
-     * @param theme
+     * @param {string} theme to set
      */
     public changeTheme(theme: string): void {
 
@@ -88,7 +92,7 @@ export class ThemeImagesStore implements StateStore {
     /**
      * Returns the currently active image theme
      *
-     * @returns string
+     * @returns {string} the theme
      */
     public getTheme(): string {
         return internalState.theme;
@@ -99,8 +103,8 @@ export class ThemeImagesStore implements StateStore {
      * Initial ThemeImages load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
-     * @param theme to load
-     * @returns Observable<any>
+     * @param {string} theme to load
+     * @returns {object} Observable<any>
      */
     public load(theme: string): Observable<any> {
 
@@ -119,17 +123,17 @@ export class ThemeImagesStore implements StateStore {
     /**
      * Update the state
      *
-     * @param state
+     * @param {object} state to set
      */
-    protected updateState(state: ThemeImages) {
+    protected updateState(state: ThemeImages): void {
         this.store.next(internalState = state);
     }
 
     /**
      * Get theme images cached Observable or call the backend
      *
-     * @returns Observable<any>
-     * @param theme
+     * @param {string} theme to retrieve
+     * @returns {object} Observable<any>
      */
     protected getThemeImages(theme: string): Observable<any> {
 
@@ -146,8 +150,8 @@ export class ThemeImagesStore implements StateStore {
     /**
      * Fetch the theme images from the backend
      *
-     * @param theme to load
-     * @returns Observable<any>
+     * @param {string} theme to load
+     * @returns {object} Observable<any>
      */
     protected fetch(theme: string): Observable<any> {
 

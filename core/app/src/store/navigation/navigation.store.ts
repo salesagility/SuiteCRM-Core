@@ -127,6 +127,9 @@ export class NavigationStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+        this.clear();
+    }
 
     /**
      * Initial Navigation load if not cached and update state.

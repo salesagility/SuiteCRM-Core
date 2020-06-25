@@ -98,6 +98,9 @@ export class SystemConfigStore implements StateStore {
         this.updateState(deepClone(initialState));
     }
 
+    public clearAuthBased(): void {
+    }
+
     /**
      * Initial SystemConfigs load if not cached and update state.
      * Returns observable to be used in resolver if needed

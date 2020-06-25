@@ -25,7 +25,7 @@ export class StateManager {
     ) {
         this.stateStores.appStore = this.buildMapEntry(appStore, false);
         this.stateStores.navigationStore = this.buildMapEntry(navigationStore, true);
-        this.stateStores.languageStore = this.buildMapEntry(languageStore, false);
+        this.stateStores.languageStore = this.buildMapEntry(languageStore, true);
         this.stateStores.listViewMetaStore = this.buildMapEntry(metadataStore, false);
         this.stateStores.systemConfigStore = this.buildMapEntry(systemConfigStore, false);
         this.stateStores.themeImagesStore = this.buildMapEntry(themeImagesStore, false);
@@ -51,7 +51,7 @@ export class StateManager {
     public clearAuthBased(): void {
         Object.keys(this.stateStores).forEach((key) => {
             if (this.stateStores[key].authBased) {
-                this.stateStores[key].store.clear();
+                this.stateStores[key].store.clearAuthBased();
             }
         });
     }

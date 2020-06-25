@@ -9,4 +9,6 @@ export interface StateStoreMapEntry {
 
 export interface StateStore {
     clear(): void;
+
+    clearAuthBased(): void;
 }
