@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MessageService} from '@services/message/message.service';
 import {MessageType} from './message-type';
+import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
+import {Observable} from 'rxjs';
 
 
 @Component({
@@ -12,7 +14,13 @@ export class MessageUiComponent implements OnInit {
 
     messages: Array<MessageType> = [];
 
-    constructor(public messageService: MessageService) {
+    appStrings$: Observable<LanguageStringMap>;
+
+    constructor(
+        public messageService: MessageService,
+        public languages: LanguageStore
+    ) {
+        this.appStrings$ = languages.appStrings$;
         messageService.subscribe(this);
     }
 

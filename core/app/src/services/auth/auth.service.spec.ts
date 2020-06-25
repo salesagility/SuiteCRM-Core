@@ -19,15 +19,13 @@ describe('Auth Service', () => {
         httpMock.post.and.callFake(() => of([]));
 
         routerMock = jasmine.createSpyObj('Router', ['navigate']);
-        routerMock.navigate.and.callFake(() => {
-            return {
-                finally: (): void => {
-                }
-            };
-        });
+        routerMock.navigate.and.callFake(() => ({
+            finally: (): void => {
+            }
+        }));
 
-        messageMock = jasmine.createSpyObj('MessageService', ['addSuccessMessage', 'log']);
-        messageMock.addSuccessMessage.and.callFake(() => {
+        messageMock = jasmine.createSpyObj('MessageService', ['addSuccessMessageByKey', 'log']);
+        messageMock.addSuccessMessageByKey.and.callFake(() => {
         });
 
         messageMock.log.and.callFake(() => {
@@ -63,8 +61,7 @@ describe('Auth Service', () => {
         expect(httpMock.post).toHaveBeenCalledWith('logout', body.toString(), {headers, responseType: 'text'});
 
         expect(stateManagerMock.clearAuthBased).toHaveBeenCalledWith();
-        expect(languageMock.getAppString).toHaveBeenCalledWith('LBL_LOGOUT_SUCCESS');
-        expect(messageMock.addSuccessMessage).toHaveBeenCalledWith('LBL_LOGOUT_SUCCESS');
+        expect(messageMock.addSuccessMessageByKey).toHaveBeenCalledWith('LBL_LOGOUT_SUCCESS');
         expect(messageMock.log).toHaveBeenCalledWith('Logout success');
         expect(routerMock.navigate).toHaveBeenCalledWith(['/Login']);
     });

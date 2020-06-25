@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Router, UrlTree} from '@angular/router';
+import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
-import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
+import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
 import {LoginUiComponent} from '@components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
@@ -125,8 +125,7 @@ export class AuthService {
             )
             .subscribe(() => {
                 this.message.log('Logout success');
-                const label = this.languageStore.getAppString(messageKey);
-                this.message.addSuccessMessage(label);
+                this.message.addSuccessMessageByKey(messageKey);
             });
     }
 

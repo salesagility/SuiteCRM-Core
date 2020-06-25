@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {MessageType} from '../../components/message/message-type';
-import {MessageTypes} from '../../components/message/message-types.enum';
-import {MessageUiComponent} from '../../components/message/message.component';
+import {MessageType} from '@components/message/message-type';
+import {MessageTypes} from '@components/message/message-types.enum';
+import {MessageUiComponent} from '@components/message/message.component';
 
 @Injectable({
     providedIn: 'root'
@@ -13,19 +13,19 @@ export class MessageService {
     constructor() {
     }
 
-    subscribe(messageComponent: MessageUiComponent) {
+    subscribe(messageComponent: MessageUiComponent): void {
         this.messageComponent = messageComponent;
         this.messageComponent.update(this.messages);
     }
 
-    removeMessages() {
+    removeMessages(): void {
         this.messages = [];
         if (this.messageComponent) {
             this.messageComponent.update(this.messages);
         }
     }
 
-    contains(message: MessageType, remove: boolean = false): boolean {
+    contains(message: MessageType, remove = false): boolean {
         let found = false;
         for (let i = 0; i < this.messages.length; i++) {
             if (message.text === this.messages[i].text) {
@@ -72,10 +72,24 @@ export class MessageService {
         });
     }
 
+    addSuccessMessageByKey(labelKey: string): number {
+        return this.addMessage({
+            type: MessageTypes.success,
+            labelKey
+        });
+    }
+
     addDangerMessage(text: string): number {
         return this.addMessage({
             type: MessageTypes.danger,
             text
+        });
+    }
+
+    addDangerMessageByKey(labelKey: string): number {
+        return this.addMessage({
+            type: MessageTypes.danger,
+            labelKey
         });
     }
 
@@ -102,11 +116,11 @@ export class MessageService {
 
     // --- LOG ---
 
-    log(...args: any[]) {
-        console.log.apply(console, arguments);
+    log(...args: any[]): void {
+        console.log.apply(console, args);
     }
 
-    error(...args: any[]) {
-        console.error.apply(console, arguments);
+    error(...args: any[]): void {
+        console.error.apply(console, args);
     }
 }

@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MessageUiComponent} from './message.component';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 describe('MessageComponent', () => {
     let component: MessageUiComponent;
@@ -8,7 +10,10 @@ describe('MessageComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [MessageUiComponent]
+            declarations: [MessageUiComponent],
+            providers: [
+                {provide: LanguageStore, useValue: languageStoreMock},
+            ]
         })
             .compileComponents();
     }));

@@ -107,21 +107,20 @@ export class LoginUiComponent {
                 (process: Process) => {
                     this.message.log('Recover Password Status: ' + process.status);
 
-                    let handler = 'addSuccessMessage';
+                    let handler = 'addSuccessMessageByKey';
                     if (process.status === 'error') {
-                        handler = 'addDangerMessage';
+                        handler = 'addDangerMessageByKey';
                     }
 
                     if (process.messages) {
                         process.messages.forEach(message => {
-                            const label = this.languageStore.getAppString(message);
-                            this.message[handler](label);
+                            this.message[handler](message);
                         });
                     }
                 },
                 () => {
                     this.message.log('Recover Password failed');
-                    this.message.addDangerMessage(this.languageStore.getAppString('ERR_AJAX_LOAD_FAILURE'));
+                    this.message.addDangerMessageByKey('ERR_AJAX_LOAD_FAILURE');
                 }
             );
     }
