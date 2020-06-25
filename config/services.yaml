@@ -33,6 +33,7 @@ services:
       $themeImageSupportedTypes: '%themes.image_supported_types%'
       $frontendExcludedModules: '%legacy.frontend_excluded_modules%'
       $datetimeFormatMap: '%legacy.datetime_format_map%'
+      $cacheResetActions: '%legacy.cache_reset_actions%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

@@ -56,6 +56,7 @@ class SystemConfigHandlerTest extends Unit
             'datef' => true,
             'timef' => true,
             'currency' => true,
+            'cache_reset_actions' => true
         ];
 
         $moduleMapper = new ModuleNameMapperHandler(
@@ -130,6 +131,12 @@ class SystemConfigHandlerTest extends Unit
         $sugar_config['datef'] = 'm/d/Y';
         $sugar_config['timef'] = 'H:i';
 
+        $cacheResetActions = [
+            'users' => [
+                'edit'
+            ]
+        ];
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -141,7 +148,8 @@ class SystemConfigHandlerTest extends Unit
             $moduleMapper,
             $classicViewExclusionHandler,
             $mappers,
-            $systemConfigKeyMap
+            $systemConfigKeyMap,
+            $cacheResetActions
         );
     }
 
@@ -292,5 +300,26 @@ class SystemConfigHandlerTest extends Unit
         static::assertNotEmpty($currency['symbol']);
         static::assertArrayHasKey('iso4217', $currency);
         static::assertNotEmpty($currency['iso4217']);
+    }
+
+    /**
+     * Test cache reset actions
+     */
+    public function testCacheResetActionsConfig(): void
+    {
+        $cacheClearActionsConfig = $this->handler->getSystemConfig('cache_reset_actions');
+        static::assertNotNull($cacheClearActionsConfig);
+        static::assertEquals('cache_reset_actions', $cacheClearActionsConfig->getId());
+        static::assertNull($cacheClearActionsConfig->getValue());
+        static::assertIsArray($cacheClearActionsConfig->getItems());
+        static::assertNotEmpty($cacheClearActionsConfig->getItems());
+
+        $cacheClearActions = $cacheClearActionsConfig->getItems();
+        static::assertNotNull($cacheClearActions);
+        static::assertNotEmpty($cacheClearActions);
+
+        static::assertArrayHasKey('users', $cacheClearActions);
+        static::assertNotEmpty($cacheClearActions['users']);
+        static::assertContains('edit', $cacheClearActions['users']);
     }
 }
