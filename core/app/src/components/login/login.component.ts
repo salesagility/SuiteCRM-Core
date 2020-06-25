@@ -79,6 +79,14 @@ export class LoginUiComponent {
         this.hidden = false;
     }
 
+    doLanguageChange(language: string): void {
+        this.languageStore.changeLanguage(language)
+    }
+
+    doGetCurrentLanguage(): string {
+        return this.languageStore.getCurrentLanguage()
+    }
+
     flipCard(): void {
         if (this.cardState === 'front') {
             this.cardState = 'back';

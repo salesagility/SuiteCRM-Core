@@ -33,7 +33,7 @@ export class ButtonLoadingDirective implements OnInit, OnDestroy, OnChanges {
         this.subscription.unsubscribe();
     }
 
-    @HostListener('click', ['$event'])
+    @HostListener('click')
     clickEvent(): void {
         this.updateComponent();
     }

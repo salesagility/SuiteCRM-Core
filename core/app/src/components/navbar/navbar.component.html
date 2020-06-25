@@ -46,7 +46,7 @@
                     </button>
                     <div class="mobile-nav-dropdown w-100" ngbDropdownMenu [@mobileNavFade]>
                         <ng-template [ngIf]="backLink">
-                            <li ngbDropdownItem><a class="mobile-back-link" (click)="navBackLink($event)">< BACK</a>
+                            <li ngbDropdownItem><a class="mobile-back-link" (click)="navBackLink()">< BACK</a>
                             </li>
                         </ng-template>
                         <ng-template [ngIf]="mainNavLink">
