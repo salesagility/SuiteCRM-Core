@@ -77,9 +77,9 @@ export class NavbarAbstract implements NavbarModel {
     /**
      * Build user action menu
      *
-     * @param {{}} appStrings map
+     * @param {object} appStrings map
      * @param {[]} userActionMenu info
-     * @param {{}} currentUser info
+     * @param {object} currentUser info
      */
     public buildUserActionMenu(
         appStrings: LanguageStringMap,
@@ -124,11 +124,11 @@ export class NavbarAbstract implements NavbarModel {
     /**
      * Build navbar
      *
-     * @param {{}} navigation info
-     * @param {{}} language map
-     * @param {{}} userPreferences info
-     * @param {{}} currentUser info
-     * @param {{}} appState info
+     * @param {object} navigation info
+     * @param {object} language map
+     * @param {object} userPreferences info
+     * @param {object} currentUser info
+     * @param {object} appState info
      */
     public build(
         navigation: Navigation,
@@ -147,14 +147,15 @@ export class NavbarAbstract implements NavbarModel {
         this.buildUserActionMenu(language.appStrings, navigation.userActionMenu, currentUser);
 
         const navigationParadigm = userPreferences.navigation_paradigm.toString();
+        const sort = userPreferences.sort_modules_by_name.toString() === 'on';
 
         if (navigationParadigm === 'm') {
-            this.buildModuleNavigation(navigation, language, appState);
+            this.buildModuleNavigation(navigation, language, appState, sort);
             return;
         }
 
         if (navigationParadigm === 'gm') {
-            this.buildGroupedNavigation(navigation, language, appState);
+            this.buildGroupedNavigation(navigation, language, appState, sort);
             return;
         }
     }
@@ -163,17 +164,19 @@ export class NavbarAbstract implements NavbarModel {
      * Build Group tab menu
      *
      * @param {[]} items list
-     * @param {{}} modules info
-     * @param {{}} languages map
+     * @param {object} modules info
+     * @param {object} languages map
      * @param {number} threshold limit
-     * @param {{}} groupedTabs info
+     * @param {object} groupedTabs info
+     * @param {boolean} sort flag
      */
     public buildGroupTabMenu(
         items: string[],
         modules: NavbarModuleMap,
         languages: LanguageStrings,
         threshold: number,
-        groupedTabs: GroupedTab[]
+        groupedTabs: GroupedTab[],
+        sort: boolean
     ): void {
 
         const navItems = [];
@@ -183,6 +186,10 @@ export class NavbarAbstract implements NavbarModel {
             items.forEach((module) => {
                 moreItems.push(this.buildTabMenuItem(module, modules[module], languages));
             });
+
+            if (sort) {
+                this.sortMenuItems(moreItems);
+            }
         }
 
         let count = 0;
@@ -193,7 +200,8 @@ export class NavbarAbstract implements NavbarModel {
                     groupedTab.labelKey,
                     groupedTab.modules,
                     modules,
-                    languages
+                    languages,
+                    sort
                 ));
             }
 
@@ -213,51 +221,55 @@ export class NavbarAbstract implements NavbarModel {
     /**
      * Build module navigation
      *
-     * @param {{}} navigation info
-     * @param {{}} languages map
-     * @param {{}} appState info
+     * @param {object} navigation info
+     * @param {object} languages map
+     * @param {object} appState info
+     * @param {boolean} sort flag
      */
     protected buildModuleNavigation(
         navigation: Navigation,
         languages: LanguageStrings,
-        appState: AppState
+        appState: AppState,
+        sort: boolean
     ): void {
 
         if (!ready([navigation.tabs, navigation.modules])) {
             return;
         }
 
-        this.buildTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, appState);
+        this.buildTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, appState, sort);
         this.buildSelectedModule(navigation, languages, appState);
     }
 
     /**
      * Build grouped navigation
      *
-     * @param {{}} navigation info
-     * @param {{}} languages map
-     * @param {{}} appState info
+     * @param {object} navigation info
+     * @param {object} languages map
+     * @param {object} appState info
+     * @param {boolean} sort flag
      */
     protected buildGroupedNavigation(
         navigation: Navigation,
         languages: LanguageStrings,
-        appState: AppState
+        appState: AppState,
+        sort: boolean
     ): void {
 
         if (!ready([navigation.tabs, navigation.modules, navigation.groupedTabs])) {
             return;
         }
 
-        this.buildGroupTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, navigation.groupedTabs);
+        this.buildGroupTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, navigation.groupedTabs, sort);
         this.buildSelectedModule(navigation, languages, appState);
     }
 
     /**
      * Build selected module
      *
-     * @param {{}} navigation info
-     * @param {{}} languages map
-     * @param {{}} appState info
+     * @param {object} navigation info
+     * @param {object} languages map
+     * @param {object} appState info
      */
     protected buildSelectedModule(navigation: Navigation, languages: LanguageStrings, appState: AppState): void {
         if (!appState || !appState.module || appState.module === 'home') {
@@ -277,17 +289,19 @@ export class NavbarAbstract implements NavbarModel {
      * Build tab / module menu
      *
      * @param {[]} items list
-     * @param {{}} modules info
-     * @param {{}} languages map
+     * @param {object} modules info
+     * @param {object} languages map
      * @param {number} threshold limit
-     * @param {{}} appState info
+     * @param {object} appState info
+     * @param {boolean} sort flag
      */
     protected buildTabMenu(
         items: string[],
         modules: NavbarModuleMap,
         languages: LanguageStrings,
         threshold: number,
-        appState: AppState
+        appState: AppState,
+        sort: boolean
     ): void {
 
         const navItems = [];
@@ -317,26 +331,33 @@ export class NavbarAbstract implements NavbarModel {
             count++;
         });
 
+        if (sort) {
+            this.sortMenuItems(navItems);
+            this.sortMenuItems(moreItems);
+        }
+
+
         this.menu = navItems;
         this.all.modules = moreItems;
     }
-
 
     /**
      * Build Grouped Tab menu item
      *
      * @param {string} moduleLabel to display
-     * @param {{}} groupedModules list
-     * @param {{}} modules list
-     * @param {{}} languages map
+     * @param {object} groupedModules list
+     * @param {object} modules list
+     * @param {object} languages map
+     * @param {boolean} sort flag
      *
-     * @returns {{}} group tab menu item
+     * @returns {object} group tab menu item
      */
     protected buildTabGroupedMenuItem(
         moduleLabel: string,
         groupedModules: any[],
         modules: NavbarModuleMap,
-        languages: LanguageStrings
+        languages: LanguageStrings,
+        sort: boolean
     ): any {
 
         return {
@@ -347,16 +368,17 @@ export class NavbarAbstract implements NavbarModel {
                 params: null
             },
             icon: '',
-            submenu: this.buildGroupedMenu(groupedModules, modules, languages)
+            submenu: this.buildGroupedMenu(groupedModules, modules, languages, sort)
         };
     }
 
     /**
      * Build Grouped menu
      *
-     * @param {{}} groupedModules info
-     * @param {{}} modules map
-     * @param {{}} languages maps
+     * @param {object} groupedModules info
+     * @param {object} modules map
+     * @param {object} languages maps
+     * @param {boolean} sort flag
      *
      * @returns {[]} menu item array
      */
@@ -364,9 +386,11 @@ export class NavbarAbstract implements NavbarModel {
         groupedModules: any[],
         modules: NavbarModuleMap,
         languages: LanguageStrings,
+        sort: boolean
     ): MenuItem[] {
 
         const groupedItems = [];
+        let homeMenuItem = null;
 
         groupedModules.forEach((groupedModule) => {
 
@@ -376,8 +400,23 @@ export class NavbarAbstract implements NavbarModel {
                 return;
             }
 
-            groupedItems.push(this.buildTabMenuItem(groupedModule, module, languages));
+            const moduleMenuItem = this.buildTabMenuItem(groupedModule, module, languages);
+
+            if (groupedModule === 'home') {
+                homeMenuItem = moduleMenuItem;
+                return;
+            }
+
+            groupedItems.push(moduleMenuItem);
         });
+
+        if (sort) {
+            this.sortMenuItems(groupedItems);
+        }
+
+        if (homeMenuItem) {
+            groupedItems.unshift(homeMenuItem);
+        }
 
         return groupedItems;
     }
@@ -386,10 +425,10 @@ export class NavbarAbstract implements NavbarModel {
      * Build module menu items
      *
      * @param {string} module name
-     * @param {{}} moduleInfo info
-     * @param {{}} languages object
+     * @param {object} moduleInfo info
+     * @param {object} languages object
      *
-     * @returns {{}} menuItem
+     * @returns {object} menuItem
      */
     protected buildTabMenuItem(
         module: string,
@@ -429,5 +468,28 @@ export class NavbarAbstract implements NavbarModel {
         }
 
         return menuItem;
+    }
+
+    /**
+     * Sort menu items by label
+     *
+     * @param {object} navItems to sort
+     */
+    protected sortMenuItems(navItems: any[]): void {
+        navItems.sort((a: MenuItem, b: MenuItem) => {
+
+            const nameA = a.link.label.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.link.label.toUpperCase(); // ignore upper and lowercase
+
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        });
     }
 }

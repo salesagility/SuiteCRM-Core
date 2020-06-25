@@ -33,7 +33,8 @@ export interface NavbarModel {
         modules: NavbarModuleMap,
         languages: LanguageStrings,
         threshold: number,
-        groupedTabs: GroupedTab[]
+        groupedTabs: GroupedTab[],
+        sort: boolean
     ): void;
 
     buildUserActionMenu(
