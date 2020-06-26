@@ -352,7 +352,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Accounts',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'accounts'
                     ],
                     [
                         'name' => 'List',
@@ -362,7 +363,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Accounts',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'view'
+                        'icon' => 'view',
+                        'module' => 'accounts'
                     ],
                     [
                         'name' => 'Import',
@@ -373,7 +375,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Accounts',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'download'
+                        'icon' => 'download',
+                        'module' => 'import'
                     ]
                 ]
             ],
@@ -391,14 +394,16 @@ final class NavbarTest extends Unit
                             'return_module' => 'Contacts',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'contacts'
                     ],
                     [
                         'name' => 'Create_Contact_Vcard',
                         'labelKey' => 'LNK_IMPORT_VCARD',
                         'url' => './#/contacts/importvcard',
                         'params' => [],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'contacts'
                     ],
                     [
                         'name' => 'List',
@@ -408,7 +413,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Contacts',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'view'
+                        'icon' => 'view',
+                        'module' => 'contacts'
                     ],
                     [
                         'name' => 'Import',
@@ -419,7 +425,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Contacts',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'download'
+                        'icon' => 'download',
+                        'module' => 'import'
                     ]
                 ]
             ],
@@ -437,7 +444,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Opportunities',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'opportunities'
                     ],
                     [
                         'name' => 'List',
@@ -447,7 +455,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Opportunities',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'view'
+                        'icon' => 'view',
+                        'module' => 'opportunities'
                     ],
                     [
                         'name' => 'Import',
@@ -458,7 +467,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Opportunities',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'download'
+                        'icon' => 'download',
+                        'module' => 'import'
                     ]
                 ]
             ],
@@ -476,14 +486,16 @@ final class NavbarTest extends Unit
                             'return_module' => 'Leads',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'leads'
                     ],
                     [
                         'name' => 'Create_Lead_Vcard',
                         'labelKey' => 'LNK_IMPORT_VCARD',
                         'url' => './#/leads/importvcard',
                         'params' => [],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'leads'
                     ],
                     [
                         'name' => 'List',
@@ -493,7 +505,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Leads',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'view'
+                        'icon' => 'view',
+                        'module' => 'leads'
                     ],
                     [
                         'name' => 'Import',
@@ -504,7 +517,8 @@ final class NavbarTest extends Unit
                             'return_module' => 'Leads',
                             'return_action' => 'index'
                         ],
-                        'icon' => 'download'
+                        'icon' => 'download',
+                        'module' => 'import'
                     ]
                 ]
             ],
@@ -522,14 +536,16 @@ final class NavbarTest extends Unit
                             'return_module' => 'Documents',
                             'return_action' => 'DetailView'
                         ],
-                        'icon' => 'plus'
+                        'icon' => 'plus',
+                        'module' => 'documents'
                     ],
                     [
                         'name' => 'List',
                         'labelKey' => 'LNK_DOCUMENT_LIST',
                         'url' => './#/documents/index',
                         'params' => [],
-                        'icon' => 'view'
+                        'icon' => 'view',
+                        'module' => 'documents'
                     ]
                 ]
             ],

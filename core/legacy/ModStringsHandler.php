@@ -14,6 +14,10 @@ class ModStringsHandler extends LegacyHandler
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
     public const HANDLER_KEY = 'mod-strings';
 
+    protected static $extraModules = [
+        'SecurityGroups'
+    ];
+
     /**
      * @var ModuleNameMapperInterface
      */
@@ -77,6 +81,7 @@ class ModStringsHandler extends LegacyHandler
 
         $modules = $this->moduleRegistry->getUserAccessibleModules();
 
+        $modules = array_merge($modules, self::$extraModules);
 
         $allModStringsArray = [];
         foreach ($modules as $module) {

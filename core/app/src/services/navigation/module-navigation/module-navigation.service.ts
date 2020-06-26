@@ -127,6 +127,14 @@ export class ModuleNavigation {
             label = languages.appStrings && languages.appStrings[item.labelKey];
         }
 
+        if (!label && item.module) {
+            label = languages.modStrings[item.module] && languages.modStrings[item.module][item.labelKey];
+        }
+
+        if (!label) {
+            label = languages.modStrings.administration && languages.modStrings.administration[item.labelKey];
+        }
+
         return label || '';
     }
 }

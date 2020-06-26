@@ -9,7 +9,6 @@ use App\Service\NavigationProviderInterface;
 use App\Service\RouteConverterInterface;
 use GroupedTabStructure;
 use SugarView;
-use TabController;
 
 /**
  * Class NavbarHandler
@@ -316,13 +315,19 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
             $routeInfo = $this->routeConverter->parseUri($url);
 
-            $subMenu[] = [
+            $subMenuItem = [
                 'name' => $action,
                 'labelKey' => $this->mapEntry($frontendModule, $action, 'labelKey', $label),
                 'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route']),
                 'params' => $routeInfo['params'],
                 'icon' => $this->mapEntry($frontendModule, $action, 'icon', '')
             ];
+
+            if (!empty($routeInfo['module'])) {
+                $subMenuItem['module'] = $this->moduleNameMapper->toFrontEnd($routeInfo['module']);
+            }
+
+            $subMenu[] = $subMenuItem;
         }
 
         return $subMenu;

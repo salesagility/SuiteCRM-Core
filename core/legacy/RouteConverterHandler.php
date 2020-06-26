@@ -201,7 +201,8 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
 
         $result = [
             'route' => $route,
-            'params' => $converter->excludeParams($request->query->all(), ['module', 'action', 'record'])
+            'params' => $converter->excludeParams($request->query->all(), ['module', 'action', 'record']),
+            'module' => $module
         ];
 
         $this->close();
