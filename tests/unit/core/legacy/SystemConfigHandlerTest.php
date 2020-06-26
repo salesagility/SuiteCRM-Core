@@ -137,6 +137,15 @@ class SystemConfigHandlerTest extends Unit
             ]
         ];
 
+        $navigationTabLimits = [
+            'XSmall' => 4,
+            'Small' => 4,
+            'Medium' => 6,
+            'Large' => 10,
+            'XLarge' => 12
+        ];
+
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -149,7 +158,8 @@ class SystemConfigHandlerTest extends Unit
             $classicViewExclusionHandler,
             $mappers,
             $systemConfigKeyMap,
-            $cacheResetActions
+            $cacheResetActions,
+            $navigationTabLimits
         );
     }
 

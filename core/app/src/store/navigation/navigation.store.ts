@@ -46,6 +46,7 @@ export interface ModuleAction {
     url: string;
     params?: string;
     icon: string;
+    module?: string;
 }
 
 const initialState: Navigation = {

@@ -17,3 +17,4 @@ parameters:
         currency: true
         list_max_entries_per_page: true
         cache_reset_actions: true
+        navigation_tab_limits: true

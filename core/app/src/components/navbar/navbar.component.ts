@@ -6,7 +6,7 @@ import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
 import {Navigation, NavigationStore} from '@store/navigation/navigation.store';
-import {UserPreferenceStore, UserPreferenceMap} from '@store/user-preference/user-preference.store';
+import {UserPreferenceMap, UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {AuthService} from '@services/auth/auth.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {AppState, AppStateStore} from '@store/app-state/app-state.store';
@@ -15,6 +15,7 @@ import {RouteConverter} from '@services/navigation/route-converter/route-convert
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 
 @Component({
     selector: 'scrm-navbar-ui',
@@ -35,10 +36,12 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
     backLink = false;
     mainNavLink = true;
     submenu: any = [];
-    moduleNameMapper = new ModuleNameMapper(this.systemConfigStore)
-    actionNameMapper = new ActionNameMapper(this.systemConfigStore)
-    routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper)
+    moduleNameMapper = new ModuleNameMapper(this.systemConfigStore);
+    actionNameMapper = new ActionNameMapper(this.systemConfigStore);
+    routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper);
     navbar: NavbarModel = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
+    maxTabs = 8;
+    screen: ScreenSize = ScreenSize.Medium;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -51,16 +54,24 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
         this.languages$,
         this.userPreferences$,
         this.currentUser$,
-        this.appState$
+        this.appState$,
+        this.screenSize.screenSize$
     ]).pipe(
-        map(([navigation, languages, userPreferences, currentUser, appState]) => {
+        map(([navigation, languages, userPreferences, currentUser, appState, screenSize]) => {
+
+            if (screenSize) {
+                this.screen = screenSize;
+            }
+
+            this.calculateMaxTabs(navigation);
 
             this.navbar.build(
                 navigation,
                 languages,
                 userPreferences,
                 currentUser,
-                appState
+                appState,
+                this.maxTabs
             );
 
             return {
@@ -76,7 +87,8 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
                 protected systemConfigStore: SystemConfigStore,
                 protected appState: AppStateStore,
                 private authService: AuthService,
-                protected moduleNavigation: ModuleNavigation
+                protected moduleNavigation: ModuleNavigation,
+                protected screenSize: ScreenSizeObserverService
     ) {
         const navbar = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
         this.setNavbar(navbar);
@@ -170,5 +182,18 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
      */
     protected isLoaded(): boolean {
         return this.loaded;
+    }
+
+    protected calculateMaxTabs(navigation: Navigation): void {
+        const sizeMap = this.systemConfigStore.getConfigValue('navigation_tab_limits');
+        if (this.screen && sizeMap) {
+
+            let maxTabs = sizeMap[this.screen];
+            if (!maxTabs || navigation.maxTabs && navigation.maxTabs < maxTabs) {
+                maxTabs = navigation.maxTabs;
+            }
+
+            this.maxTabs = maxTabs;
+        }
     }
 }

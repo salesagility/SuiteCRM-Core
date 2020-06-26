@@ -25,7 +25,8 @@ export interface NavbarModel {
         languages: LanguageStrings,
         userPreferences: UserPreferenceMap,
         currentUser: CurrentUserModel,
-        appState: AppState
+        appState: AppState,
+        itemThreshold: number
     ): void;
 
     buildGroupTabMenu(

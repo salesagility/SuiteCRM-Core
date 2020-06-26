@@ -129,13 +129,15 @@ export class NavbarAbstract implements NavbarModel {
      * @param {object} userPreferences info
      * @param {object} currentUser info
      * @param {object} appState info
+     * @param {number} maxTabs to display
      */
     public build(
         navigation: Navigation,
         language: LanguageStrings,
         userPreferences: UserPreferenceMap,
         currentUser: CurrentUserModel,
-        appState: AppState
+        appState: AppState,
+        maxTabs: number
     ): void {
 
         this.resetMenu();
@@ -150,12 +152,12 @@ export class NavbarAbstract implements NavbarModel {
         const sort = userPreferences.sort_modules_by_name.toString() === 'on';
 
         if (navigationParadigm === 'm') {
-            this.buildModuleNavigation(navigation, language, appState, sort);
+            this.buildModuleNavigation(navigation, language, appState, maxTabs, sort);
             return;
         }
 
         if (navigationParadigm === 'gm') {
-            this.buildGroupedNavigation(navigation, language, appState, sort);
+            this.buildGroupedNavigation(navigation, language, appState, maxTabs, sort);
             return;
         }
     }
@@ -224,12 +226,14 @@ export class NavbarAbstract implements NavbarModel {
      * @param {object} navigation info
      * @param {object} languages map
      * @param {object} appState info
+     * @param {number} maxTabs to use
      * @param {boolean} sort flag
      */
     protected buildModuleNavigation(
         navigation: Navigation,
         languages: LanguageStrings,
         appState: AppState,
+        maxTabs: number,
         sort: boolean
     ): void {
 
@@ -237,7 +241,7 @@ export class NavbarAbstract implements NavbarModel {
             return;
         }
 
-        this.buildTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, appState, sort);
+        this.buildTabMenu(navigation.tabs, navigation.modules, languages, maxTabs, appState, sort);
         this.buildSelectedModule(navigation, languages, appState);
     }
 
@@ -247,12 +251,14 @@ export class NavbarAbstract implements NavbarModel {
      * @param {object} navigation info
      * @param {object} languages map
      * @param {object} appState info
+     * @param {number} maxTabs to use
      * @param {boolean} sort flag
      */
     protected buildGroupedNavigation(
         navigation: Navigation,
         languages: LanguageStrings,
         appState: AppState,
+        maxTabs: number,
         sort: boolean
     ): void {
 
@@ -260,7 +266,7 @@ export class NavbarAbstract implements NavbarModel {
             return;
         }
 
-        this.buildGroupTabMenu(navigation.tabs, navigation.modules, languages, navigation.maxTabs, navigation.groupedTabs, sort);
+        this.buildGroupTabMenu(navigation.tabs, navigation.modules, languages, maxTabs, navigation.groupedTabs, sort);
         this.buildSelectedModule(navigation, languages, appState);
     }
 
