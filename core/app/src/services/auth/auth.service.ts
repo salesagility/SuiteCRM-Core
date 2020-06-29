@@ -124,6 +124,8 @@ export class AuthService {
                 })
             )
             .subscribe(() => {
+                this.bnIdle.resetTimer();
+                this.bnIdle.stopTimer();
                 this.message.log('Logout success');
                 this.message.addSuccessMessageByKey(messageKey);
             });
