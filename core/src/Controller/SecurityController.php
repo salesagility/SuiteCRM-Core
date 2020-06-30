@@ -76,14 +76,22 @@ class SecurityController extends AbstractController
         $isActive = $this->authentication->checkSession();
 
         if ($isActive !== true) {
+            $response = new JsonResponse(['active' => false], Response::HTTP_OK);
+            $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
-            return new JsonResponse(['active' => false], Response::HTTP_OK);
+            $this->session->start();
+
+            return $response;
         }
 
         $user = $security->getUser();
         if ($user === null) {
+            $response = new JsonResponse(['active' => false], Response::HTTP_OK);
+            $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
-            return new JsonResponse(['active' => false], Response::HTTP_OK);
+            $this->session->start();
+
+            return $response;
         }
 
         $id = $user->getId();

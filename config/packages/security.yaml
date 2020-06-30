@@ -47,6 +47,7 @@ dunglas_angular_csrf:
     secure: false
     set_on:
       - { path: ^/$ }
+      - { path: ^/session-status$ }
   secure:
     - { path: ^/ }
   exclude:
@@ -55,4 +56,3 @@ dunglas_angular_csrf:
     - { path: ^/(_(profiler|wdt))/ }
     - { path: ^/api }
     - { path: ^/session-status$ }
-    - { path: ^/current-user$ }

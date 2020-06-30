@@ -6,6 +6,7 @@ use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class IndexController extends AbstractController
 {
@@ -27,8 +28,10 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @param Security $security
+     * @return Response
      */
-    public function index(): Response
+    public function index(Security $security): Response
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
 
@@ -36,6 +39,13 @@ class IndexController extends AbstractController
             throw new RuntimeException('Please run ng build from terminal');
         }
 
-        return new Response(file_get_contents($indexHtmlPath));
+        $response = new Response(file_get_contents($indexHtmlPath));
+
+        $user = $security->getUser();
+        if ($user === null) {
+            $response->headers->clearCookie('XSRF-TOKEN');
+        }
+
+        return $response;
     }
 }
