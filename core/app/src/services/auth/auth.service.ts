@@ -22,6 +22,7 @@ export interface SessionStatus {
     providedIn: 'root'
 })
 export class AuthService {
+    protected timerSet = false;
     private currentUserSubject = new BehaviorSubject<User>({} as User);
     public currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -88,6 +89,8 @@ export class AuthService {
                     this.logout('LBL_SESSION_EXPIRED');
                 }
             });
+
+            this.timerSet = true;
         }, (error: HttpErrorResponse) => {
             onError(caller, error);
         });
@@ -123,12 +126,22 @@ export class AuthService {
                     }
                 })
             )
-            .subscribe(() => {
-                this.bnIdle.resetTimer();
-                this.bnIdle.stopTimer();
-                this.message.log('Logout success');
-                this.message.addSuccessMessageByKey(messageKey);
-            });
+            .subscribe(
+                () => {
+                    if (this.timerSet) {
+                        this.bnIdle.resetTimer();
+                        this.bnIdle.stopTimer();
+                        this.timerSet = false;
+                    }
+
+                    this.message.log('Logout success');
+                    this.message.addSuccessMessageByKey(messageKey);
+                },
+                () => {
+                    this.message.log('Error on logout');
+                    this.message.addSuccessMessageByKey(messageKey);
+                }
+            );
     }
 
     /**
@@ -144,7 +157,7 @@ export class AuthService {
      *
      * @returns {{}} Observable<SessionStatus>
      */
-    public fetchSessionStatus(): Observable<SessionStatus>{
+    public fetchSessionStatus(): Observable<SessionStatus> {
 
         const Url = 'session-status';
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
