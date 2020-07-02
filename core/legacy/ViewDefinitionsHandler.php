@@ -30,7 +30,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         'default' => false,
         'module' => '',
         'id' => '',
-        'sortable' => false
+        'sortable' => true
     ];
 
     /**

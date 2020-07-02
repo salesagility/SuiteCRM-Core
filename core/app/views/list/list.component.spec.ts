@@ -32,6 +32,7 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {SortButtonModule} from '@components/sort-button/sort-button.module';
 
 @Component({
     selector: 'list-test-host-component',
@@ -59,7 +60,8 @@ describe('ListComponent', () => {
                 FieldModule,
                 DropdownButtonModule,
                 DropdownButtonModule,
-                RouterTestingModule
+                RouterTestingModule,
+                SortButtonModule
             ],
             declarations: [ListComponent, ListTestHostComponent],
             providers: [
@@ -71,41 +73,6 @@ describe('ListComponent', () => {
                         images$: of(themeImagesMockData).pipe(take(1))
                     },
                 },
-                /*
-                {
-                    provide: AppStateStore, useValue: {
-                        vm$: of({
-                            loading: false,
-                            module: 'accounts',
-                            view: 'list',
-                            loaded: true
-                        }).pipe(take(1)),
-                        getModule: (): string => 'accounts',
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        updateLoading: (key: string, loading: boolean): void => {
-                        }
-                    } as AppStateStore
-                },
-                {
-                    provide: LanguageStore, useValue: {
-                        vm$: of(languageMockData).pipe(take(1)),
-                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1)),
-                        appStrings$: of(languageMockData.appStrings).pipe(take(1))
-                    }
-                },
-                {
-                    provide: NavigationStore, useValue: {
-                        vm$: of(navigationMockData.navbar).pipe(take(1))
-                    }
-                },
-                {
-                    provide: MetadataStore, useValue: {
-                        listMetadata$: of({
-                            fields: metadataMockData.listView
-                        }).pipe(take(1)),
-                    }
-                },
-                */
                 {
                     provide: SystemConfigStore, useValue: systemConfigStoreMock
                 },
@@ -163,6 +130,6 @@ describe('ListComponent', () => {
 
         expect(testHostFixture).toBeTruthy();
         expect(element).toBeTruthy();
-        expect(element.textContent).toContain('MY FIELD VALUE');
+        expect(element.textContent).toContain('ACCOUNTS');
     });
 });

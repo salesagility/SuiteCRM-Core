@@ -7,7 +7,7 @@ use App\Service\ListViewProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
-use ListViewData;
+use ListViewDataPort;
 use SearchForm;
 use SugarBean;
 use ViewList;
@@ -66,16 +66,22 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @param array $criteria
      * @param int $offset
      * @param int $limit
+     * @param array $sort
      * @return ListView
      */
-    public function getListView(string $moduleName, array $criteria = [], int $offset = -1, int $limit = -1): ListView
-    {
+    public function getListView(
+        string $moduleName,
+        array $criteria = [],
+        int $offset = -1,
+        int $limit = -1,
+        array $sort = []
+    ): ListView {
         $this->init();
 
         $listView = new ListView();
         $moduleName = $this->validateModuleName($moduleName);
         $bean = $this->newBeanSafe($moduleName);
-        $listViewData = $this->getData($bean, $criteria, $offset, $limit);
+        $listViewData = $this->getData($bean, $criteria, $offset, $limit, $sort);
         $listView->setId($moduleName);
         $listView->setMeta($this->getMeta($listViewData['pageData']));
         $listView->setRecords($this->getRecords($bean, $listViewData));
@@ -161,10 +167,16 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @param array $criteria
      * @param int $offset
      * @param int $limit
+     * @param array $sort
      * @return array
      */
-    protected function getData(SugarBean $bean, array $criteria = [], int $offset = -1, int $limit = -1): array
-    {
+    protected function getData(
+        SugarBean $bean,
+        array $criteria = [],
+        int $offset = -1,
+        int $limit = -1,
+        array $sort = []
+    ): array {
         $type = $criteria['type'] ?? 'advanced';
 
         $mapped = $this->mapFilters($criteria, $type);
@@ -172,8 +184,8 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         $baseCriteria = [
             'searchFormTab' => "${type}_search",
             'query' => 'true',
-            'orderBy' => $criteria['orderBy'] ?? '',
-            'sortOrder' => $criteria['sortOrder'] ?? ''
+            'orderBy' => $sort['orderBy'] ?? 'date_entered',
+            'sortOrder' => $sort['sortOrder'] ?? 'DESC'
         ];
 
         $legacyCriteria = array_merge($baseCriteria, $mapped);
@@ -195,7 +207,10 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         int $limit,
         array $criteria = [],
         array $filterFields = []
-    ): array {
+    ): array
+    {
+
+        $params = $this->getSortingParams($criteria);
         $legacyListView = $this->getLegacyListView($bean);
         $listViewDefs = $this->getListViewDefs($legacyListView);
         $searchForm = $this->getSearchForm($bean, $listViewDefs, $criteria);
@@ -204,12 +219,9 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
 
         $filter_fields = $legacyListView->lv->setupFilterFields($filterFields);
 
-
-        $params = $this->getSortingParams($criteria);
-
         /* @noinspection PhpIncludeInspection */
-        require_once 'include/ListView/ListViewData.php';
-        $listViewData = new ListViewData();
+        require_once 'include/portability/ListView/ListViewDataPort.php';
+        $listViewData = new ListViewDataPort();
 
         return $listViewData->getListViewData($bean, $where, $offset, $limit, $filter_fields, $params);
     }
@@ -368,7 +380,9 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
             $params = [
                 'orderBy' => strtoupper($criteria['orderBy']),
                 'sortOrder' => $criteria['sortOrder'] ?? '',
-                'overrideOrder' => true
+                'skipOrderSave' => true,
+                'overrideOrder' => true,
+                'custom_order' => true
             ];
         }
 

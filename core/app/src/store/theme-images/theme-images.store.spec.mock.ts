@@ -106,6 +106,21 @@ export const themeImagesMockData = {
         path: 'core/app/themes/suite8/images/view.svg',
         name: 'view',
         type: 'svg'
+    },
+    sort: {
+        path: 'core/app/themes/suite8/images/sort.svg',
+        name: 'sort',
+        type: 'svg'
+    },
+    sort_ascend: {
+        path: 'core/app/themes/suite8/images/sort_ascend.svg',
+        name: 'sort_ascend',
+        type: 'svg'
+    },
+    sort_descend: {
+        path: 'core/app/themes/suite8/images/sort_descend.svg',
+        name: 'sort_descend',
+        type: 'svg'
     }
 };
 

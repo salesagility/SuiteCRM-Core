@@ -16,6 +16,7 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
+import {SortDirection} from '@components/sort-button/sort-button.model';
 
 export interface FieldMap {
     [key: string]: any;
@@ -42,12 +43,20 @@ export interface SearchCriteriaFilter {
 export interface SearchCriteria {
     name?: string;
     filters: SearchCriteriaFilter;
-    orderBy?: string;
-    sortOrder?: string;
 }
 
 const initialSearchCriteria = {
     filters: {}
+};
+
+export interface SortingSelection {
+    orderBy?: string;
+    sortOrder?: SortDirection;
+}
+
+const initialListSort = {
+    orderBy: 'date_entered',
+    sortOrder: SortDirection.DESC
 };
 
 export interface Pagination {
@@ -79,6 +88,7 @@ export interface ListViewData {
     records: ListEntry[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
+    sort?: SortingSelection;
     selection?: RecordSelection;
     loading: boolean;
 }
@@ -93,12 +103,14 @@ export interface ListData {
     records: ListEntry[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
+    sort?: SortingSelection;
 }
 
 const initialState: ListViewState = {
     module: '',
     records: [],
     criteria: deepClone(initialSearchCriteria),
+    sort: deepClone(initialListSort),
     pagination: {
         pageSize: 5,
         current: 0,
@@ -117,6 +129,7 @@ export interface ListViewState {
     module: string;
     records: ListEntry[];
     criteria: SearchCriteria;
+    sort: SortingSelection;
     pagination: Pagination;
     selection: RecordSelection;
     loading: boolean;
@@ -130,6 +143,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      */
     records$: Observable<ListEntry[]>;
     criteria$: Observable<SearchCriteria>;
+    sort$: Observable<SortingSelection>;
     pagination$: Observable<Pagination>;
     selection$: Observable<RecordSelection>;
     selectedCount$: Observable<number>;
@@ -150,7 +164,6 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
     protected internalState: ListViewState = deepClone(initialState);
     protected store = new BehaviorSubject<ListViewState>(this.internalState);
     protected state$ = this.store.asObservable();
-    protected resourceName = 'listView';
     protected fieldsMetadata = {
         fields: [
             'id',
@@ -177,6 +190,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
 
         this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
         this.criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
+        this.sort$ = this.state$.pipe(map(state => state.sort), distinctUntilChanged());
         this.pagination$ = this.state$.pipe(map(state => state.pagination), distinctUntilChanged());
         this.selection$ = this.state$.pipe(map(state => state.selection), distinctUntilChanged());
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
@@ -242,7 +256,8 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
     public init(module: string): Observable<ListViewState> {
         this.internalState.module = module;
 
-        this.loadStoredCriteria(module);
+        this.storageLoad(module, 'search-criteria', 'criteria');
+        this.storageLoad(module, 'sort-selection', 'sort');
 
         return this.load();
     }
@@ -258,6 +273,29 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
 
         if (reload) {
             this.updateSelection(SelectionStatus.NONE);
+            this.load(false).pipe(take(1)).subscribe();
+        }
+    }
+
+    /**
+     * Update current list view sorting
+     *
+     * @param {string} orderBy to set
+     * @param {string} sortOrder to set
+     * @param {boolean} reload flag
+     */
+    updateSorting(orderBy: string, sortOrder: SortDirection, reload = true): void {
+
+        if (sortOrder === SortDirection.NONE) {
+            orderBy = 'date_entered';
+            sortOrder = SortDirection.DESC;
+        }
+
+        const sort = {orderBy, sortOrder} as SortingSelection;
+
+        this.updateState({...this.internalState, sort});
+
+        if (reload) {
             this.load(false).pipe(take(1)).subscribe();
         }
     }
@@ -509,6 +547,7 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
         return this.getRecords(
             this.internalState.module,
             this.internalState.criteria,
+            this.internalState.sort,
             this.internalState.pagination,
             useCache
         ).pipe(
@@ -529,15 +568,23 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      *
      * @param {string} module to use
      * @param {object} criteria to use
+     * @param {object} sort to use
      * @param {object} pagination to use
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<any>
      */
-    protected getRecords(module: string, criteria: SearchCriteria, pagination: Pagination, useCache = true): Observable<ListViewState> {
-        this.storeCriteria(module, criteria);
+    protected getRecords(
+        module: string,
+        criteria: SearchCriteria,
+        sort: SortingSelection,
+        pagination: Pagination,
+        useCache = true
+    ): Observable<ListViewState> {
+        this.storageSave(module, 'search-criteria', criteria);
+        this.storageSave(module, 'sort-selection', sort);
 
         if (this.cache$ == null || useCache === false) {
-            this.cache$ = this.fetch(module, criteria, pagination).pipe(
+            this.cache$ = this.fetch(module, criteria, sort, pagination).pipe(
                 shareReplay(1)
             );
         }
@@ -549,12 +596,14 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
      *
      * @param {string} module to use
      * @param {object} criteria to use
+     * @param {object} sort to use
      * @param {object} pagination to use
      * @returns {object} Observable<any>
      */
-    protected fetch(module: string, criteria: SearchCriteria, pagination: Pagination): Observable<ListData> {
+    protected fetch(module: string, criteria: SearchCriteria, sort: SortingSelection, pagination: Pagination): Observable<ListData> {
+        const mappedSort = this.mapSort(sort);
 
-        return this.listGQL.fetch(module, pagination.pageSize, pagination.current, criteria, this.fieldsMetadata)
+        return this.listGQL.fetch(module, pagination.pageSize, pagination.current, criteria, mappedSort, this.fieldsMetadata)
             .pipe(map(({data}) => {
 
                 const recordsList: ListData = {
@@ -602,36 +651,56 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
             }));
     }
 
-    /**
-     * Store the criteria in local storage
-     *
-     * @param {string} module to store in
-     * @param {object} criteria to store
-     */
-    protected storeCriteria(module: string, criteria: SearchCriteria): void {
-        let storeCriteria = this.localStorage.get('search-criteria');
+    protected mapSort(sort: SortingSelection): { [key: string]: string } {
+        const sortOrderMap = {
+            NONE: '',
+            ASC: 'ASC',
+            DESC: 'DESC'
 
-        if (!storeCriteria) {
-            storeCriteria = {};
-        }
+        };
 
-        storeCriteria[module] = criteria;
-
-        this.localStorage.set('search-criteria', storeCriteria);
+        return {
+            sortOrder: sortOrderMap[sort.sortOrder],
+            orderBy: sort.orderBy
+        };
     }
 
     /**
-     * Store the criteria in local storage
+     * Store the data in local storage
      *
      * @param {string} module to store in
+     * @param {string} storageKey to store in
+     * @param {any} data to store
      */
-    protected loadStoredCriteria(module: string): void {
-        const storedCriteria = this.localStorage.get('search-criteria');
+    protected storageSave(module: string, storageKey: string, data: any): void {
+        let storage = this.localStorage.get(storageKey);
 
-        if (!storedCriteria || !storedCriteria[module]) {
+        if (!storage) {
+            storage = {};
+        }
+
+        storage[module] = data;
+
+        this.localStorage.set(storageKey, storage);
+    }
+
+    /**
+     * Store the key in local storage
+     *
+     * @param {string} module to load from
+     * @param {string} storageKey from load from
+     * @param {string} stateKey to store in
+     */
+    protected storageLoad(module: string, storageKey: string, stateKey: string): void {
+        const storage = this.localStorage.get(storageKey);
+
+        if (!storage || !storage[module]) {
             return;
         }
 
-        this.updateState({...this.internalState, criteria: storedCriteria[module]});
+        const newState = {...this.internalState};
+        newState[stateKey] = storage[module];
+
+        this.updateState(newState);
     }
 }

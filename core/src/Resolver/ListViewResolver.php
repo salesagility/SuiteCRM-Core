@@ -30,27 +30,13 @@ class ListViewResolver implements QueryItemResolverInterface
      */
     public function __invoke($item, array $context): ListView
     {
-        $limit = -1;
-        $offset = -1;
-        $criteria = [];
-        $module = '';
 
-        if (isset($context['args']['module'])) {
-            $module = $context['args']['module'];
-        }
+        $module = $context['args']['module'] ?? '';
+        $limit = $context['args']['limit'] ?? -1;
+        $offset = $context['args']['offset'] ?? -1;
+        $criteria = $context['args']['criteria'] ?? [];
+        $sort = $context['args']['sort'] ?? [];
 
-        if (isset($context['args']['limit'])) {
-            $limit = $context['args']['limit'];
-        }
-
-        if (isset($context['args']['offset'])) {
-            $offset = $context['args']['offset'];
-        }
-
-        if (isset($context['args']['criteria'])) {
-            $criteria = $context['args']['criteria'];
-        }
-
-        return $this->listViewHandler->getListView($module, $criteria, $offset, $limit);
+        return $this->listViewHandler->getListView($module, $criteria, $offset, $limit, $sort);
     }
 }

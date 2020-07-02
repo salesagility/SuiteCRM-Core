@@ -1,10 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
+import {Field, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
-import {ListViewStore, RecordSelection} from '@store/list-view/list-view.store';
+import {ListViewStore, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 
 @Component({
     selector: 'scrm-table-body',
@@ -15,6 +16,7 @@ export class TableBodyComponent {
     language$: Observable<LanguageStrings> = this.language.vm$;
     listMetadata$: Observable<ListViewMeta> = this.metadata.listMetadata$;
     selection$: Observable<RecordSelection> = this.data.selection$;
+    sort$: Observable<SortingSelection> = this.data.sort$;
     dataSource$: ListViewStore = this.data;
 
     vm$ = combineLatest([
@@ -26,7 +28,7 @@ export class TableBodyComponent {
             [
                 language,
                 listMetadata,
-                selection
+                selection,
             ]
         ) => {
             const displayedColumns: string[] = ['checkbox'];
@@ -40,7 +42,7 @@ export class TableBodyComponent {
                 listMetadata,
                 selected: selection.selected,
                 selectionStatus: selection.status,
-                displayedColumns
+                displayedColumns,
             };
         })
     );
@@ -58,6 +60,35 @@ export class TableBodyComponent {
 
     allSelected(status: SelectionStatus): boolean {
         return status === SelectionStatus.ALL;
+    }
+
+    getFieldLabel(label: string): string {
+        const module = this.data.appState.module;
+        const languages = this.data.appData.language;
+        return this.language.getFieldLabel(label, module, languages);
+    }
+
+    getFieldSort(field: Field): SortDirectionDataSource {
+        return {
+            getSortDirection: (): Observable<SortDirection> => this.sort$.pipe(
+                map((sort: SortingSelection) => {
+                    let direction = SortDirection.NONE;
+
+                    if (sort.orderBy === field.fieldName) {
+                        direction = sort.sortOrder;
+                    }
+
+                    return direction;
+                })
+            ),
+            changeSortDirection: (direction: SortDirection): void => {
+                this.changeSort(field.fieldName, direction);
+            }
+        } as SortDirectionDataSource;
+    }
+
+    protected changeSort(orderBy: string, sortOrder: SortDirection): void {
+        this.data.updateSorting(orderBy, sortOrder);
     }
 }
 

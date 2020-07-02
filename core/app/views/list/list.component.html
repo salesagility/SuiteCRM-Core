@@ -1,49 +1,6 @@
 <!-- Start List View Section -->
 <div class="list-view" *ngIf="(vm$ | async) as vm">
     <div>
-        TEST VARCHAR FIELD:
-        <scrm-field [mode]="'list'" [type]="'varchar'"
-                    [field]="{type: 'varchar', value: 'MY FIELD VALUE'}"></scrm-field>
-    </div>
-    <div *ngIf="({type: 'varchar', value: 'MY FIELD VALUE'}) as varcharField">
-        TEST VARCHAR EDIT FIELD:
-        <scrm-field [mode]="'edit'" [type]="'varchar'" [field]="varcharField"></scrm-field>
-        varchar value: {{varcharField.value}}
-    </div>
-    <div>
-        TEST INT FIELD:
-        <scrm-field [mode]="'list'" [type]="'int'" [field]="{type: 'int', value: '10'}"></scrm-field>
-    </div>
-    <div>
-        TEST FLOAT FIELD NO DECIMAL PLACES:
-        <scrm-field [mode]="'list'" [type]="'float'" [field]="{type: 'float', value: '1000'}"></scrm-field>
-    </div>
-    <div>
-        TEST FLOAT FIELD WITH DECIMAL PLACES:
-        <scrm-field [mode]="'list'" [type]="'float'" [field]="{type: 'float', value: '1000.501'}"></scrm-field>
-    </div>
-    <div>
-        TEST PHONE FIELD :
-        <scrm-field [mode]="'list'" [type]="'phone'" [field]="{type: 'phone', value: '+44 1111 123456'}"></scrm-field>
-    </div>
-    <div>
-        TEST DATE FIELD:
-        <scrm-field [mode]="'list'" [type]="'date'" [field]="{type: 'date', value: '2020-05-15 23:11:01'}"></scrm-field>
-    </div>
-    <div>
-        TEST DATE TIME FIELD :
-        <scrm-field [mode]="'list'" [type]="'datetime'"
-                    [field]="{type: 'datetime', value: '2020-05-15 23:11:01'}"></scrm-field>
-    </div>
-    <div>
-        TEST URL FIELD :
-        <scrm-field [mode]="'list'" [type]="'url'" [field]="{type: 'url', value: 'https://suitecrm.com/'}"></scrm-field>
-    </div>
-    <div>
-        TEST CURRENCY FIELD :
-        <scrm-field [mode]="'list'" [type]="'currency'" [field]="{type: 'currency', value: '1000.501'}"></scrm-field>
-    </div>
-    <div>
         TEST EMAIL FIELD :
         <scrm-field [mode]="'list'" [type]="'email'" [field]="{type: 'email', value: 'kid.beans.dev@example.tv'}"></scrm-field>
     </div>

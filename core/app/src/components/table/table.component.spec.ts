@@ -16,6 +16,9 @@ import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
+import {SortButtonModule} from '@components/sort-button/sort-button.module';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 describe('TableUiComponent', () => {
     let component: TableUiComponent;
@@ -30,12 +33,16 @@ describe('TableUiComponent', () => {
                 AngularSvgIconModule,
                 HttpClientTestingModule,
                 ApolloTestingModule,
-                ImageModule
+                ImageModule,
+                SortButtonModule
             ],
             declarations: [TableUiComponent],
             providers: [
                 {
                     provide: ListViewStore, useValue: listviewStoreMock
+                },
+                {
+                    provide: LanguageStore, useValue: languageStoreMock
                 },
                 {
                     provide: ThemeImagesStore, useValue: {

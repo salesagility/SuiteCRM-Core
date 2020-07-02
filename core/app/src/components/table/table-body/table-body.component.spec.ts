@@ -8,10 +8,11 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
 import {LanguageStore} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {FieldModule} from "@fields/field.module";
+import {FieldModule} from '@fields/field.module';
+import {SortButtonModule} from '@components/sort-button/sort-button.module';
 
 @Component({
     selector: 'table-body-ui-test-host-component',
@@ -30,7 +31,8 @@ describe('TablebodyUiComponent', () => {
             imports: [
                 CdkTableModule,
                 ApolloTestingModule,
-                FieldModule
+                FieldModule,
+                SortButtonModule
             ],
             declarations: [TableBodyComponent, TableBodyUITestHostComponent],
             providers: [
@@ -43,11 +45,7 @@ describe('TablebodyUiComponent', () => {
                     }
                 },
                 {
-                    provide: LanguageStore, useValue: {
-                        vm$: of(languageMockData).pipe(take(1)),
-                        appListStrings$: of(languageMockData.appListStrings).pipe(take(1)),
-                        appStrings$: of(languageMockData.appStrings).pipe(take(1))
-                    }
+                    provide: LanguageStore, useValue: languageStoreMock
                 },
             ],
         })

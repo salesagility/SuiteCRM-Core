@@ -19,7 +19,8 @@ use App\Resolver\ListViewResolver;
  *                 "module"={"type"="String!"},
  *                 "limit"={"type"="Int"},
  *                 "offset"={"type"="Int"},
- *                 "criteria"={"type"="Iterable" , "description"="search criteria"}
+ *                 "criteria"={"type"="Iterable" , "description"="search criteria"},
+ *                 "sort"={"type"="Iterable" , "description"="sort"}
  *              }
  *          },
  *      },

@@ -1,0 +1,6 @@
+<ng-container *ngIf="(direction$ | async) as direction">
+    <a class="btn btn-sm p-0 sort-button" (click)="changeSorting(direction)">
+        <scrm-image class="sort-icon sicon" [image]="getStatusIcon(direction)"></scrm-image>
+    </a>
+</ng-container>
+

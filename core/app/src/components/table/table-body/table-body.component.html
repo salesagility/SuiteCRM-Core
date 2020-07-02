@@ -16,9 +16,12 @@
         </ng-container>
 
         <ng-container *ngFor="let column of vm.listMetadata.fields" [cdkColumnDef]="column.fieldName">
-            <th cdk-header-cell scope="col" class="primary-table-header"
-                *cdkHeaderCellDef>{{
-              vm.language.appStrings[column.label] || column.label}}
+            <th cdk-header-cell
+                *cdkHeaderCellDef
+                scope="col"
+                class="primary-table-header">
+                {{getFieldLabel(column.label)}}
+                <scrm-sort-button *ngIf="column.sortable" [state]="getFieldSort(column)"></scrm-sort-button>
             </th>
             <td cdk-cell *cdkCellDef="let record">
                 <scrm-field [mode]="'list'" [type]="column.type"

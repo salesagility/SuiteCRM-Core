@@ -7,7 +7,7 @@ import {viewFieldsMap} from './field.manifest';
     selector: 'scrm-field',
     template: `
         <ndc-dynamic
-                [ndcDynamicComponent]="map[type + '.' + mode]"
+                [ndcDynamicComponent]="componentType"
                 [ndcDynamicInputs]="{
                     'field': field,
                     'klass': klass
@@ -25,5 +25,15 @@ export class FieldComponent {
     map = viewFieldsMap;
 
     constructor() {
+    }
+
+    get componentType(): any {
+        const key = this.type + '.' + this.mode;
+        if (this.map[key]) {
+            return this.map[key];
+        }
+
+        const defaultKey = 'varchar' + '.' + this.mode;
+        return this.map[defaultKey];
     }
 }
