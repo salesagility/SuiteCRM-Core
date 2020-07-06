@@ -8,6 +8,7 @@ use App\Resolver\ListViewResolver;
 
 /**
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
  *     itemOperations={
  *          "get"={"path"="/records/{id}"}
  *     },
