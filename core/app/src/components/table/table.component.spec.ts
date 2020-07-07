@@ -15,7 +15,7 @@ import {take} from 'rxjs/operators';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
+import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
@@ -50,11 +50,7 @@ describe('TableUiComponent', () => {
                     }
                 },
                 {
-                    provide: MetadataStore, useValue: {
-                        listMetadata$: of({
-                            fields: metadataMockData.listView
-                        }).pipe(take(1)),
-                    }
+                    provide: MetadataStore, useValue: metadataStoreMock
                 },
             ],
         })

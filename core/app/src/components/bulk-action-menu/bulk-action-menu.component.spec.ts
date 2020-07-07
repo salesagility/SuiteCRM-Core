@@ -1,11 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {BulkActionMenuComponent, SelectionDataSource, SelectionStatus} from './bulk-action-menu.component';
+import {
+    BulkActionDataSource,
+    BulkActionMenuComponent,
+    SelectionDataSource,
+    SelectionStatus
+} from './bulk-action-menu.component';
 import {By} from '@angular/platform-browser';
 import {LanguageStore} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
-import {take} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
+import {ButtonModule} from '@components/button/button.module';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
+import {BulkActionsMap} from '@store/metadata/metadata.store.service';
 
 
 const selectionSubject = new BehaviorSubject<SelectionStatus>(SelectionStatus.NONE);
@@ -20,12 +29,67 @@ const selectionState: SelectionDataSource = {
     }
 } as SelectionDataSource;
 
+let lastAction = '';
+const actionSource: BulkActionDataSource = {
+    getBulkActions: (): Observable<BulkActionsMap> => of({
+        delete: {
+            key: 'delete',
+            labelKey: 'LBL_DELETE',
+            params: {
+                min: 1,
+                max: 5
+            },
+            acl: [
+                'delete'
+            ]
+        },
+        export: {
+            key: 'export',
+            labelKey: 'LBL_EXPORT',
+            params: {
+                min: 1,
+                max: 5
+            },
+            acl: [
+                'export'
+            ]
+        },
+        merge: {
+            key: 'merge',
+            labelKey: 'LBL_MERGE_DUPLICATES',
+            params: {
+                min: 1,
+                max: 5
+            },
+            acl: [
+                'edit',
+                'delete'
+            ]
+        },
+        massupdate: {
+            key: 'massupdate',
+            labelKey: 'LBL_MASS_UPDATE',
+            params: {
+                min: 1,
+                max: 5
+            },
+            acl: [
+                'massupdate'
+            ]
+        }
+    } as BulkActionsMap).pipe(shareReplay(1)),
+    executeBulkAction: (action: string): void => {
+        lastAction = action;
+    }
+};
+
 @Component({
     selector: 'bulk-action-menu-test-host-component',
-    template: '<scrm-bulk-action-menu [state]="state"></scrm-bulk-action-menu>'
+    template: '<scrm-bulk-action-menu [selectionSource]="state" [actionSource]="actionSource"></scrm-bulk-action-menu>'
 })
 class BulkActionMenuTestHostComponent {
     state = selectionState;
+    actionSource = actionSource;
 }
 
 describe('BulkActionMenuComponent', () => {
@@ -38,7 +102,11 @@ describe('BulkActionMenuComponent', () => {
                 BulkActionMenuTestHostComponent,
                 BulkActionMenuComponent,
             ],
-            imports: [],
+            imports: [
+                DropdownButtonModule,
+                ButtonModule,
+                NgbDropdownModule
+            ],
             providers: [
                 {
                     provide: LanguageStore, useValue: {
@@ -175,6 +243,74 @@ describe('BulkActionMenuComponent', () => {
                 expect(updatedCheckbox.nativeElement.checked).toEqual(false);
                 expect(updatedCheckbox.nativeElement.indeterminate).toEqual(false);
             });
+        });
+    }));
+
+
+    it('should have delete action', async(() => {
+        const el = testHostFixture.debugElement;
+
+        const deleteAction = el.query(By.css('.delete-bulk-action'));
+
+        expect(deleteAction.nativeElement).toBeTruthy();
+        expect(deleteAction.nativeElement.textContent).toContain('Delete');
+
+        deleteAction.nativeElement.click();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(lastAction).toEqual('delete');
+        });
+    }));
+
+    it('should have export action', async(() => {
+        const el = testHostFixture.debugElement;
+
+        const exportAction = el.query(By.css('.export-bulk-action'));
+
+        expect(exportAction.nativeElement).toBeTruthy();
+        expect(exportAction.nativeElement.textContent).toContain('Export');
+
+        exportAction.nativeElement.click();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(lastAction).toEqual('export');
+        });
+    }));
+
+    it('should have merge action', async(() => {
+        const el = testHostFixture.debugElement;
+
+        const mergeAction = el.query(By.css('.merge-bulk-action'));
+
+        expect(mergeAction.nativeElement).toBeTruthy();
+        expect(mergeAction.nativeElement.textContent).toContain('Merge');
+
+        mergeAction.nativeElement.click();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(lastAction).toEqual('merge');
+        });
+    }));
+
+    it('should have mass update action', async(() => {
+        const el = testHostFixture.debugElement;
+
+        const massUpdateAction = el.query(By.css('.massupdate-bulk-action'));
+
+        expect(massUpdateAction.nativeElement).toBeTruthy();
+        expect(massUpdateAction.nativeElement.textContent).toContain('Mass Update');
+        massUpdateAction.nativeElement.click();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(lastAction).toEqual('massupdate');
         });
     }));
 

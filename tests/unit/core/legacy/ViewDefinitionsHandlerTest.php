@@ -2,8 +2,11 @@
 
 namespace App\Tests;
 
+use App\Service\AclManagerInterface;
+use App\Service\BulkActionDefinitionProvider;
 use Codeception\Test\Unit;
 use Exception;
+use SuiteCRM\Core\Legacy\AclHandler;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\ViewDefinitionsHandler;
@@ -49,6 +52,55 @@ final class ViewDefinitionsHandlerTest extends Unit
             $moduleNameMapper
         );
 
+        $listViewBulkActions = [
+            'default' => [
+                'actions' => [
+                    'delete' => [
+                        'key' => 'delete',
+                        'labelKey' => 'LBL_DELETE',
+                        'params' => [
+                            'min' => 1,
+                            'max' => 5
+                        ],
+                        'acl' => ['delete']
+                    ],
+                    'export' => [
+                        'key' => 'export',
+                        'labelKey' => 'LBL_EXPORT',
+                        'params' => [
+                            'min' => 1,
+                            'max' => 5
+                        ],
+                        'acl' => ['export']
+                    ],
+                ]
+            ],
+            'modules' => [
+            ]
+        ];
+
+
+        /** @var AclManagerInterface $aclManager */
+        $aclManager = $this->make(
+            AclHandler::class,
+            [
+                'checkAccess' => static function (
+                    /** @noinspection PhpUnusedParameterInspection */
+                    string $module,
+                    string $action,
+                    bool $isOwner = false
+                ): bool {
+                    return true;
+                }
+            ]
+        );
+
+
+        $bulkActionProvider = new BulkActionDefinitionProvider(
+            $listViewBulkActions,
+            $aclManager
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -56,7 +108,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $fieldDefinitionsHandler
+            $fieldDefinitionsHandler,
+            $bulkActionProvider
         );
 
         // Needed for aspect mock
@@ -77,18 +130,44 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertIsArray($listViewDefs->getListView());
         static::assertNotEmpty($listViewDefs->getListView());
 
-        $first = $listViewDefs->getListView()[0];
-        static::assertIsArray($first);
-        static::assertNotEmpty($first);
+        $firstColumn = $listViewDefs->getListView()['columns'][0];
+        static::assertIsArray($firstColumn);
+        static::assertNotEmpty($firstColumn);
 
-        static::assertArrayHasKey('fieldName', $first);
-        static::assertArrayHasKey('label', $first);
-        static::assertArrayHasKey('link', $first);
-        static::assertIsBool($first['link']);
-        static::assertArrayHasKey('default', $first);
-        static::assertIsBool($first['default']);
-        static::assertArrayHasKey('sortable', $first);
-        static::assertIsBool($first['sortable']);
+        static::assertArrayHasKey('fieldName', $firstColumn);
+        static::assertArrayHasKey('label', $firstColumn);
+        static::assertArrayHasKey('link', $firstColumn);
+        static::assertIsBool($firstColumn['link']);
+        static::assertArrayHasKey('default', $firstColumn);
+        static::assertIsBool($firstColumn['default']);
+        static::assertArrayHasKey('sortable', $firstColumn);
+        static::assertIsBool($firstColumn['sortable']);
+
+        $actions = $listViewDefs->getListView()['bulkActions'];
+        static::assertIsArray($actions);
+        static::assertNotEmpty($actions);
+
+        static::assertArrayHasKey('delete', $actions);
+        static::assertSame([
+            'key' => 'delete',
+            'labelKey' => 'LBL_DELETE',
+            'params' => [
+                'min' => 1,
+                'max' => 5
+            ],
+            'acl' => ['delete']
+        ], $actions['delete']);
+
+        static::assertArrayHasKey('export', $actions);
+        static::assertSame([
+            'key' => 'export',
+            'labelKey' => 'LBL_EXPORT',
+            'params' => [
+                'min' => 1,
+                'max' => 5
+            ],
+            'acl' => ['export']
+        ], $actions['export']);
     }
 
     /**

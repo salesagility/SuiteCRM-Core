@@ -9,7 +9,7 @@ parameters:
   default_session_name: 'PHPSESSID'
 
 imports:
-  - { resource: services/*/*.yaml }
+  - { resource: services/**/*.yaml }
 
 services:
   # default configuration for services in *this* file
@@ -36,6 +36,7 @@ services:
       $filterOperatorMap: '%legacy.filter_operator_map%'
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
+      $listViewBulkActions: '%module.listview.bulk_action%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

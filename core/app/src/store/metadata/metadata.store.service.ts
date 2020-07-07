@@ -6,8 +6,20 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 
+export interface BulkAction {
+    key: string;
+    labelKey: string;
+    params: { [key: string]: any };
+    acl: string[];
+}
+
+export interface BulkActionsMap {
+    [key: string]: BulkAction;
+}
+
 export interface ListViewMeta {
     fields: Field[];
+    bulkActions: BulkActionsMap;
 }
 
 export interface Field {
@@ -232,14 +244,21 @@ export class MetadataStore implements StateStore {
 
                     if (data && data.viewDefinition.listView) {
                         const listViewMeta: ListViewMeta = {
-                            fields: []
+                            fields: [],
+                            bulkActions: {}
                         };
 
-                        data.viewDefinition.listView.forEach((field: Field) => {
-                            listViewMeta.fields.push(
-                                field
-                            );
-                        });
+                        if (data.viewDefinition.listView.columns) {
+                            data.viewDefinition.listView.columns.forEach((field: Field) => {
+                                listViewMeta.fields.push(
+                                    field
+                                );
+                            });
+                        }
+
+                        if (data.viewDefinition.listView.bulkActions) {
+                            listViewMeta.bulkActions = data.viewDefinition.listView.bulkActions;
+                        }
 
                         metadata.listView = listViewMeta;
                     }

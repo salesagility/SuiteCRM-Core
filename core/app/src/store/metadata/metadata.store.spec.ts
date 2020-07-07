@@ -11,7 +11,8 @@ describe('Metadata Store', () => {
     it('#load', (done: DoneFn) => {
         service.load('accounts', metadataStoreMock.getMetadataTypes()).pipe(take(1)).subscribe(data => {
 
-            expect(data.listView.fields).toEqual(metadataMockData.listView);
+            expect(data.listView.fields).toEqual(metadataMockData.listView.columns);
+            expect(data.listView.bulkActions).toEqual(metadataMockData.listView.bulkActions);
             expect(data.search).toEqual(metadataMockData.search);
             done();
         });

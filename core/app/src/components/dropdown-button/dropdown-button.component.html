@@ -1,10 +1,11 @@
-<div ngbDropdown class="d-inline-block">
-    <button [ngClass]="config.klass" ngbDropdownToggle>{{ config.label }}
+<div ngbDropdown class="d-inline-block" [ngClass]="config.wrapperKlass">
+    <button [ngClass]="config.klass" [disabled]="disabled" ngbDropdownToggle>{{ config.label }}
         <ng-content></ng-content>
     </button>
     <div ngbDropdownMenu>
-        <button ngbDropdownItem
-                *ngFor="let item of config.items"
-                (click)="item.onClick && item.onClick()">{{item.label}}</button>
+        <a ngbDropdownItem
+           *ngFor="let item of config.items"
+           [ngClass]="item.klass"
+           (click)="item.onClick && item.onClick()">{{item.label}}</a>
     </div>
 </div>

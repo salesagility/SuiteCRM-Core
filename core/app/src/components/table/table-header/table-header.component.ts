@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {BulkActionDataSource, SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {PaginationDataSource} from '@components/pagination/pagination.model';
 
@@ -9,6 +9,7 @@ import {PaginationDataSource} from '@components/pagination/pagination.model';
 })
 export class TableHeaderComponent {
     selectionState: SelectionDataSource = this.data;
+    actionState: BulkActionDataSource = this.data;
     paginationState: PaginationDataSource = this.data;
 
     constructor(

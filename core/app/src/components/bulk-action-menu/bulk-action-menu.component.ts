@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
+import {BulkActionsMap} from '@store/metadata/metadata.store.service';
+import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 
 export enum SelectionStatus {
     ALL = 'ALL',
@@ -18,10 +20,17 @@ export interface SelectionDataSource {
     updateSelection(state: SelectionStatus): void;
 }
 
+export interface BulkActionDataSource {
+    getBulkActions(): Observable<BulkActionsMap>;
+
+    executeBulkAction(action: string): void;
+}
+
 export interface BulkActionViewModel {
     appStrings: LanguageStringMap;
     status: SelectionStatus;
     count: number;
+    actions: BulkActionsMap;
 }
 
 @Component({
@@ -30,7 +39,8 @@ export interface BulkActionViewModel {
 })
 export class BulkActionMenuComponent implements OnInit {
 
-    @Input() state: SelectionDataSource;
+    @Input() selectionSource: SelectionDataSource;
+    @Input() actionSource: BulkActionDataSource;
 
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
 
@@ -40,10 +50,11 @@ export class BulkActionMenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const status$ = this.state.getSelectionStatus();
-        const count$ = this.state.getSelectedCount();
-        this.vm$ = combineLatest([this.appStrings$, status$, count$]).pipe(
-            map(([appStrings, status, count]) => ({appStrings, status, count}))
+        const status$ = this.selectionSource.getSelectionStatus();
+        const count$ = this.selectionSource.getSelectedCount();
+        const actions$ = this.actionSource.getBulkActions();
+        this.vm$ = combineLatest([this.appStrings$, status$, count$, actions$]).pipe(
+            map(([appStrings, status, count, actions]) => ({appStrings, status, count, actions}))
         );
     }
 
@@ -56,23 +67,46 @@ export class BulkActionMenuComponent implements OnInit {
     }
 
     selectPage(): void {
-        this.state.updateSelection(SelectionStatus.PAGE);
+        this.selectionSource.updateSelection(SelectionStatus.PAGE);
     }
 
     selectAll(): void {
-        this.state.updateSelection(SelectionStatus.ALL);
+        this.selectionSource.updateSelection(SelectionStatus.ALL);
     }
 
     deselectAll(): void {
-        this.state.updateSelection(SelectionStatus.NONE);
+        this.selectionSource.updateSelection(SelectionStatus.NONE);
     }
 
     toggleSelection(status: SelectionStatus): void {
         if (status === SelectionStatus.ALL) {
-            this.state.updateSelection(SelectionStatus.NONE);
+            this.selectionSource.updateSelection(SelectionStatus.NONE);
             return;
         }
 
-        this.state.updateSelection(SelectionStatus.ALL);
+        this.selectionSource.updateSelection(SelectionStatus.ALL);
+    }
+
+    getDropdownConfig(actions: BulkActionsMap, appStrings: LanguageStringMap): DropdownButtonInterface {
+        const label = appStrings && appStrings.LBL_BULK_ACTION_BUTTON_LABEL || '';
+        const dropdownConfig = {
+            label,
+            klass: ['bulk-action-button', 'btn', 'btn-sm'],
+            wrapperKlass: ['bulk-action-group', 'float-left'],
+            items: []
+        } as DropdownButtonInterface;
+
+        Object.keys(actions).forEach(actionKey => {
+            const action = actions[actionKey];
+            dropdownConfig.items.push({
+                label: appStrings && appStrings[action.labelKey] || '',
+                klass: [`${actionKey}-bulk-action`],
+                onClick: (): void => {
+                    this.actionSource.executeBulkAction(action.key);
+                }
+            });
+        });
+
+        return dropdownConfig;
     }
 }

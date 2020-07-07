@@ -16,7 +16,7 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
+import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 
 
 describe('ListcontainerUiComponent', () => {
@@ -45,13 +45,7 @@ describe('ListcontainerUiComponent', () => {
                 {
                     provide: LanguageStore, useValue: languageStoreMock
                 },
-                {
-                    provide: MetadataStore, useValue: {
-                        listMetadata$: of({
-                            fields: metadataMockData.listView
-                        }).pipe(take(1)),
-                    }
-                },
+                {provide: MetadataStore, useValue: metadataStoreMock},
             ],
             declarations: [ListcontainerUiComponent]
         })

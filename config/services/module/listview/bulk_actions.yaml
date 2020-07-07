@@ -1,0 +1,38 @@
+parameters:
+  module.listview.bulk_action:
+    default:
+      actions:
+        delete:
+          key: delete
+          labelKey: LBL_DELETE
+          params:
+            min: 1
+            max: 5
+          acl:
+            - delete
+        export:
+          key: export
+          labelKey: LBL_EXPORT
+          params:
+            min: 1
+            max: 5
+          acl:
+            - export
+        merge:
+          key: merge
+          labelKey: LBL_MERGE_DUPLICATES
+          params:
+            min: 1
+            max: 5
+          acl:
+            - edit
+            - delete
+        massupdate:
+          key: massupdate
+          labelKey: LBL_MASS_UPDATE
+          params:
+            min: 1
+            max: 5
+          acl:
+            - massupdate
+    modules:

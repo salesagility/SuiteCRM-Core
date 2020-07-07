@@ -129,79 +129,129 @@ export const metadataMockData = {
             }
         }
     },
-    listView: [
-        {
-            fieldName: 'name',
-            width: '20%',
-            label: 'LBL_LIST_ACCOUNT_NAME',
-            link: true,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false
+    listView: {
+        bulkActions: {
+            delete: {
+                key: 'delete',
+                labelKey: 'LBL_DELETE',
+                params: {
+                    min: 1,
+                    max: 5
+                },
+                acl: [
+                    'delete'
+                ]
+            },
+            export: {
+                key: 'export',
+                labelKey: 'LBL_EXPORT',
+                params: {
+                    min: 1,
+                    max: 5
+                },
+                acl: [
+                    'export'
+                ]
+            },
+            merge: {
+                key: 'merge',
+                labelKey: 'LBL_MERGE_DUPLICATES',
+                params: {
+                    min: 1,
+                    max: 5
+                },
+                acl: [
+                    'edit',
+                    'delete'
+                ]
+            },
+            massupdate: {
+                key: 'massupdate',
+                labelKey: 'LBL_MASS_UPDATE',
+                params: {
+                    min: 1,
+                    max: 5
+                },
+                acl: [
+                    'massupdate'
+                ]
+            }
         },
-        {
-            fieldName: 'billing_address_city',
-            width: '10%',
-            label: 'LBL_LIST_CITY',
-            link: false,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false
-        },
-        {
-            fieldName: 'billing_address_country',
-            width: '10%',
-            label: 'LBL_BILLING_ADDRESS_COUNTRY',
-            link: false,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false
-        },
-        {
-            fieldName: 'phone_office',
-            width: '10%',
-            label: 'LBL_LIST_PHONE',
-            link: false,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false
-        },
-        {
-            fieldName: 'assigned_user_name',
-            width: '10%',
-            label: 'LBL_LIST_ASSIGNED_USER',
-            link: false,
-            default: true,
-            module: 'Employees',
-            id: 'ASSIGNED_USER_ID',
-            sortable: false
-        },
-        {
-            fieldName: 'email1',
-            width: '15%',
-            label: 'LBL_EMAIL_ADDRESS',
-            link: true,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false,
-            customCode: '{$EMAIL1_LINK}'
-        },
-        {
-            fieldName: 'date_entered',
-            width: '5%',
-            label: 'LBL_DATE_ENTERED',
-            link: false,
-            default: true,
-            module: '',
-            id: '',
-            sortable: false
-        }
-    ]
+        columns: [
+            {
+                fieldName: 'name',
+                width: '20%',
+                label: 'LBL_LIST_ACCOUNT_NAME',
+                link: true,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false
+            },
+            {
+                fieldName: 'billing_address_city',
+                width: '10%',
+                label: 'LBL_LIST_CITY',
+                link: false,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false
+            },
+            {
+                fieldName: 'billing_address_country',
+                width: '10%',
+                label: 'LBL_BILLING_ADDRESS_COUNTRY',
+                link: false,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false
+            },
+            {
+                fieldName: 'phone_office',
+                width: '10%',
+                label: 'LBL_LIST_PHONE',
+                link: false,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false
+            },
+            {
+                fieldName: 'assigned_user_name',
+                width: '10%',
+                label: 'LBL_LIST_ASSIGNED_USER',
+                link: false,
+                default: true,
+                module: 'Employees',
+                id: 'ASSIGNED_USER_ID',
+                sortable: false
+            },
+            {
+                fieldName: 'email1',
+                width: '15%',
+                label: 'LBL_EMAIL_ADDRESS',
+                link: true,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false,
+                customCode: '{$EMAIL1_LINK}'
+            },
+            {
+                fieldName: 'date_entered',
+                width: '5%',
+                label: 'LBL_DATE_ENTERED',
+                link: false,
+                default: true,
+                module: '',
+                id: '',
+                sortable: false
+            }
+        ]
+    }
+
 };
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */

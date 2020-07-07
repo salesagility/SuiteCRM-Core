@@ -6,12 +6,12 @@ import {Component} from '@angular/core';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {metadataMockData} from '@store/metadata/metadata.store.spec.mock';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {FieldModule} from '@fields/field.module';
+import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 
 @Component({
@@ -37,13 +37,7 @@ describe('TablebodyUiComponent', () => {
             declarations: [TableBodyComponent, TableBodyUITestHostComponent],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},
-                {
-                    provide: MetadataStore, useValue: {
-                        listMetadata$: of({
-                            fields: metadataMockData.listView
-                        }).pipe(take(1)),
-                    }
-                },
+                {provide: MetadataStore, useValue: metadataStoreMock},
                 {
                     provide: LanguageStore, useValue: languageStoreMock
                 },

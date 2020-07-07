@@ -178,6 +178,12 @@ button {
   padding: 0.2em 0.5em;
   font-weight: bold;
   font-size: 0.9em;
+  color: $white;
+}
+
+.bulk-action-button:hover {
+  background-color: $nepal-grey;
+  color: $white;
 }
 
 .search-button {

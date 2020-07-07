@@ -24,6 +24,10 @@ export const languageMockData = {
         LBL_SEARCH_BUTTON_LABEL: 'Search',
         LBL_SAVED_FILTER_SHORTCUT: 'My Filters',
         LBL_QUICK: 'Quick',
+        LBL_DELETE: 'Delete',
+        LBL_EXPORT: 'Export',
+        LBL_MERGE_DUPLICATES: 'Merge',
+        LBL_MASS_UPDATE: 'Mass Update',
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

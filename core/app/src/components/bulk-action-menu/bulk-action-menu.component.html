@@ -1,6 +1,6 @@
 <div class="bulk-action float-left" *ngIf="(vm$ | async) as vm">
     <div ngbDropdown class="dropdown select-action-group float-left">
-        <button class="bulk-action-button dropdown-toggle"
+        <button class="bulk-action-button dropdown-toggle btn btn-sm"
                 type="button"
                 ngbDropdownToggle
                 aria-haspopup="true"
@@ -31,23 +31,6 @@
             </a>
         </div>
     </div>
-    <div class="dropdown bulk-action-group float-left">
-        <button class="bulk-action-button dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-hidden="true"
-                aria-expanded="false">
-            {{vm.appStrings['LBL_BULK_ACTION_BUTTON_LABEL'] || ''}}
-        </button>
-        <div class="dropdown-menu" aria-hidden="true">
-            <a class="dropdown-item">Email</a>
-            <a class="dropdown-item">Mass Update</a>
-            <a class="dropdown-item">Mail Merge</a>
-            <a class="dropdown-item">Merge</a>
-            <a class="dropdown-item">Print as PDF</a>
-            <a class="dropdown-item">Export</a>
-            <a class="dropdown-item">Delete</a>
-        </div>
-    </div>
+    <scrm-dropdown-button [disabled]="vm.count < 1"
+                          [config]="getDropdownConfig(vm.actions, vm.appStrings)"></scrm-dropdown-button>
 </div>

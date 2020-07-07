@@ -8,6 +8,7 @@ import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-butt
 })
 export class DropdownButtonComponent {
     @Input() config: DropdownButtonInterface;
+    @Input() disabled = false;
 
     constructor() {
     }

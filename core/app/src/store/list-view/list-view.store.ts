@@ -5,7 +5,11 @@ import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
-import {SelectionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {
+    BulkActionDataSource,
+    SelectionDataSource,
+    SelectionStatus
+} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {ListGQL} from '@store/list-view/api.list.get';
 import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
@@ -14,7 +18,7 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 
@@ -136,7 +140,8 @@ export interface ListViewState {
 }
 
 @Injectable()
-export class ListViewStore extends ViewStore implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource {
+export class ListViewStore extends ViewStore
+    implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource, BulkActionDataSource {
 
     /**
      * Public long-lived observable streams
@@ -417,6 +422,21 @@ export class ListViewStore extends ViewStore implements StateStore, DataSource<L
             ...this.internalState,
             selection
         });
+    }
+
+    /**
+     * Bulk action public API
+     */
+
+    getBulkActions(): Observable<BulkActionsMap> {
+        return this.metadata$.pipe(
+            map((metadata: Metadata) => metadata.listView.bulkActions)
+        );
+    }
+
+    executeBulkAction(action: string): void {
+        // To implement
+        console.log(action);
     }
 
     /**

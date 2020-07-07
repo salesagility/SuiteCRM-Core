@@ -4,6 +4,7 @@ namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
+use App\Service\BulkActionDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ViewDefinitionsProviderInterface;
@@ -49,6 +50,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $fieldDefinitionProvider;
 
     /**
+     * @var BulkActionDefinitionProviderInterface
+     */
+    private $bulkActionDefinitionProvider;
+
+    /**
      * @inheritDoc
      */
     public function getHandlerKey(): string
@@ -71,6 +77,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
+     * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
      */
     public function __construct(
         string $projectDir,
@@ -79,11 +86,13 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        FieldDefinitionsProviderInterface $fieldDefinitionProvider
+        FieldDefinitionsProviderInterface $fieldDefinitionProvider,
+        BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
+        $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
     }
 
     /**
@@ -110,22 +119,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $viewDef->setId($moduleName);
 
         if (in_array('listView', $views, true)) {
-            $listViewDef = $this->fetchListViewDef($legacyModuleName);
-
-            foreach ($listViewDef as $i => $def) {
-                if (!isset($listViewDef[$i]['type'])) {
-                    $listViewDef[$i]['type'] = $fieldDefinition->vardef[$def['fieldName']]['type'];
-                }
-
-                if (!isset($listViewDef[$i]['label'])) {
-                    $listViewDef[$i]['label'] = $fieldDefinition->vardef[$def['fieldName']]['label'];
-                }
-
-                if ($listViewDef[$i]['fieldName'] === 'email1') {
-                    $listViewDef[$i]['type'] = 'email';
-                }
-            }
-
+            $listViewDef = $this->fetchListViewDef($moduleName, $legacyModuleName, $fieldDefinition);
             $viewDef->setListView($listViewDef);
         }
 
@@ -145,11 +139,12 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     {
         $this->init();
 
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
         $legacyModuleName = $this->validateModuleName($moduleName);
 
         $viewDef = new ViewDefinition();
         $viewDef->setId($moduleName);
-        $viewDef->setListView($this->fetchListViewDef($legacyModuleName));
+        $viewDef->setListView($this->fetchListViewDef($moduleName, $legacyModuleName, $fieldDefinition));
 
         $this->close();
 
@@ -183,23 +178,57 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     /**
      * Get list view defs array
      * @param string $module
+     * @param string $legacyModuleName
+     * @param FieldDefinition $fieldDefinition
      * @return array
      * @throws Exception
      */
-    protected function fetchListViewDef(string $module): array
-    {
+    protected function fetchListViewDef(
+        string $module,
+        string $legacyModuleName,
+        FieldDefinition $fieldDefinition
+    ): array {
+        $metadata = [
+            'columns' => [],
+            'bulkActions' => []
+        ];
+
         /* @noinspection PhpIncludeInspection */
         include_once 'include/ListView/ListViewFacade.php';
 
-        $displayColumns = ListViewFacade::getDisplayColumns($module);
+        $vardefs = $fieldDefinition->getVardef();
+
+        $displayColumns = ListViewFacade::getDisplayColumns($legacyModuleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
-            $column = array_merge(self::$listViewColumnInterface, $column);
-            $column['fieldName'] = strtolower($key);
-            $data[] = $column;
+            $data[] = $this->buildListViewColumn($column, $key, $vardefs);
         }
 
-        return $data;
+        $metadata['columns'] = $data;
+        $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions($module);
+
+        return $metadata;
+    }
+
+    /**
+     * Build list view column
+     * @param $column
+     * @param $key
+     * @param array|null $vardefs
+     * @return array
+     */
+    protected function buildListViewColumn($column, $key, ?array $vardefs): array
+    {
+        $column = array_merge(self::$listViewColumnInterface, $column);
+        $column['fieldName'] = strtolower($key);
+
+        $this->addFieldDefinition($vardefs, strtolower($key), $column);
+
+        if ($key === 'email1') {
+            $column['type'] = 'email';
+        }
+
+        return $column;
     }
 
     /**
@@ -253,14 +282,27 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             foreach ($definition['layout'][$type] as $key => $field) {
 
                 if (!empty($vardefs[$key])) {
-                    $plucked = array_intersect_key($vardefs[$key], self::$vardefAttributes);
-                    $this->renameKey($plucked, 'vname', 'label');
-                    $this->renameKey($plucked, 'type', 'fieldType');
-                    $merged = array_merge($plucked, $field);
+                    $merged = $this->addFieldDefinition($vardefs, $key, $field);
                     $definition['layout'][$type][$key] = $merged;
                 }
             }
         }
+    }
+
+    /**
+     * Add field definition to current field metadata
+     * @param array|null $vardefs
+     * @param $key
+     * @param $field
+     * @return array
+     */
+    protected function addFieldDefinition(array $vardefs, $key, $field): array
+    {
+        $plucked = array_intersect_key($vardefs[$key], self::$vardefAttributes);
+        $this->renameKey($plucked, 'vname', 'label');
+        $this->renameKey($plucked, 'type', 'fieldType');
+
+        return array_merge($plucked, $field);
     }
 
     /**
