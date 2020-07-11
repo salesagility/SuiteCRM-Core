@@ -22,8 +22,8 @@ export interface SelectionDataSource {
 
 export interface BulkActionDataSource {
     getBulkActions(): Observable<BulkActionsMap>;
-
     executeBulkAction(action: string): void;
+
 }
 
 export interface BulkActionViewModel {

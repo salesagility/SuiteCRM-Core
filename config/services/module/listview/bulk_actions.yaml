@@ -22,7 +22,7 @@ parameters:
           key: merge
           labelKey: LBL_MERGE_DUPLICATES
           params:
-            min: 1
+            min: 2
             max: 5
           acl:
             - edit

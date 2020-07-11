@@ -24,6 +24,8 @@ import {ModuleNavigation} from '@services/navigation/module-navigation/module-na
 import {ChartTypesMap, BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
+import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
+import {MessageService} from '@services/message/message.service';
 
 export interface FieldMap {
     [key: string]: any;
@@ -191,7 +193,9 @@ export class ListViewStore extends ViewStore
         protected navigationStore: NavigationStore,
         protected moduleNavigation: ModuleNavigation,
         protected metadataStore: MetadataStore,
-        protected localStorage: LocalStorageService
+        protected localStorage: LocalStorageService,
+        protected bulkAction: BulkActionProcess,
+        protected message: MessageService,
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -442,8 +446,50 @@ export class ListViewStore extends ViewStore
     }
 
     executeBulkAction(action: string): void {
-        // To implement
-        console.log(action);
+        const selection = this.internalState.selection;
+        const definition = this.metadata.listView.bulkActions[action];
+        const actionName = `bulk-${action}`;
+
+        this.message.removeMessages();
+
+        if (definition.params.min && selection.count < definition.params.min) {
+            let message = this.appStrings.LBL_TOO_FEW_SELECTED;
+            message = message.replace('{min}', definition.params.min);
+            this.message.addDangerMessage(message);
+            return;
+        }
+
+        if (definition.params.max && selection.count > definition.params.max) {
+            let message = this.appStrings.LBL_TOO_MANY_SELECTED;
+            message = message.replace('{max}', definition.params.max);
+            this.message.addDangerMessage(message);
+            return;
+        }
+
+        const data = {
+            action: actionName,
+            module: this.internalState.module,
+            criteria: null,
+            ids: null
+        } as BulkActionProcessInput;
+
+
+        if (selection.all && selection.count > this.internalState.records.length) {
+            data.criteria = this.internalState.criteria;
+        }
+
+        if (selection.all && selection.count <= this.internalState.records.length) {
+            data.ids = [];
+            this.internalState.records.forEach(record => {
+                data.ids.push(record.id);
+            });
+        }
+
+        if (!selection.all) {
+            data.ids = Object.keys(selection.selected);
+        }
+
+        this.bulkAction.run(actionName, data).subscribe();
     }
 
     /**

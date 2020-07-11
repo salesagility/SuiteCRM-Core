@@ -11,6 +11,8 @@ import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
 import {deepClone} from '@base/utils/object-utils';
+import {bulkActionProcessMock} from '@services/process/processes/bulk-action/bulk-action.spec.mock';
+import {messageServiceMock} from '@services/message/message.service.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
@@ -159,7 +161,9 @@ export const listviewStoreMock = new ListViewStore(
     navigationMock,
     mockModuleNavigation,
     metadataStoreMock,
-    localStorageServiceMock
+    localStorageServiceMock,
+    bulkActionProcessMock,
+    messageServiceMock
 );
 
 listviewStoreMock.init('accounts').pipe(take(1)).subscribe();

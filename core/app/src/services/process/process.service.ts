@@ -14,6 +14,7 @@ export interface Process {
     async: boolean;
     type: string;
     options: ProcessOptions;
+    data?: ProcessOptions;
     messages: string[];
 }
 
@@ -36,17 +37,6 @@ export class ProcessService {
     protected graphqlName = 'process';
     protected coreName = 'Process';
 
-    protected fieldsMetadata = {
-        fields: [
-            'id',
-            '_id',
-            'status',
-            'async',
-            'type',
-            'options'
-        ]
-    };
-
     protected createFieldsMetadata = {
         fields: [
             '_id',
@@ -54,6 +44,7 @@ export class ProcessService {
             'async',
             'type',
             'messages',
+            'data'
         ]
     };
 
@@ -68,9 +59,9 @@ export class ProcessService {
      * Submit and action/process request
      * Returns observable
      *
-     * @returns Observable<any>
-     * @param type
-     * @param options
+     * @param {string} type to create
+     * @param {object} options to send
+     * @returns {object} Observable<any>
      */
     public submit(type: string, options: ProcessOptions): Observable<Process> {
         return this.create(type, options);
@@ -84,9 +75,9 @@ export class ProcessService {
     /**
      * Create a process on the backend
      *
-     * @returns Observable<any>
-     * @param type
-     * @param options
+     * @param {string} type to create
+     * @param {object} options to send
+     * @returns {object} Observable<any>
      */
     protected create(type: string, options: ProcessOptions): Observable<Process> {
 

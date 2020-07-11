@@ -61,6 +61,12 @@ class Process
     protected $options;
 
     /**
+     * @ApiProperty
+     * @var array|null
+     */
+    protected $data;
+
+    /**
      * Get Id
      * @return string|null
      */
@@ -182,6 +188,27 @@ class Process
     public function setOptions(?array $options): Process
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     * @return array|null
+     */
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    /**
+     * Set data
+     * @param array|null $data
+     * @return Process
+     */
+    public function setData(?array $data): Process
+    {
+        $this->data = $data;
 
         return $this;
     }
