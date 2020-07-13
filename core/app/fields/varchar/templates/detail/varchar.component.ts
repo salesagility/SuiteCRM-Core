@@ -1,5 +1,5 @@
-import {Component,} from '@angular/core';
-import {BaseFieldComponent} from '../../../base/base-field.component';
+import {Component} from '@angular/core';
+import {BaseFieldComponent} from '@fields/base/base-field.component';
 
 @Component({
     selector: 'scrm-varchar-detail',
@@ -7,4 +7,10 @@ import {BaseFieldComponent} from '../../../base/base-field.component';
     styleUrls: []
 })
 export class VarcharDetailFieldComponent extends BaseFieldComponent {
+    link(): boolean {
+        if (this.field.metadata && this.field.metadata.link) {
+            return this.field.metadata.link;
+        }
+        return false;
+    }
 }

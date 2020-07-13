@@ -3,6 +3,7 @@ import {SearchCriteriaFieldFilter} from '@store/list-view/list-view.store';
 export interface FieldMetadata {
     format?: boolean;
     target?: string;
+    link?: boolean;
 }
 
 export interface Field {
