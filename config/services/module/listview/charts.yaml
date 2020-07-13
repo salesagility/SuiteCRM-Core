@@ -1,0 +1,15 @@
+parameters:
+  module.listview.available_charts:
+    modules:
+      accounts:
+        key: annual_revenue
+        labelKey: ANNUAL_REVENUE_BY_ACCOUNTS
+        type: line
+      opportunities:
+        key: pipeline_by_sales_state
+        labelKey: PIPELINE_BY_SALES_STAGE
+        params: bar
+      leads:
+        key: leads_by_source
+        labelKey: LEADS_BY_SOURCE
+        params: line

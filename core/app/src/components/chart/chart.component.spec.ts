@@ -10,6 +10,9 @@ import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
+import {ApolloTestingModule} from 'apollo-angular/testing';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {ListViewStore} from '@store/list-view/list-view.store';
 
 describe('ChartComponent', () => {
     let component: ChartUiComponent;
@@ -18,13 +21,10 @@ describe('ChartComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, HttpClientTestingModule],
+            imports: [RouterTestingModule, HttpClientTestingModule, ApolloTestingModule],
             providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
+                {provide: ListViewStore, useValue: listviewStoreMock},
+                {provide: ThemeImagesStore, useValue: {images$: of(themeImagesMockData).pipe(take(1))}},
             ],
             declarations: [ChartUiComponent]
         })

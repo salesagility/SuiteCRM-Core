@@ -6,6 +6,16 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 
+export interface ChartType {
+    key: string;
+    labelKey: string;
+    type: string;
+}
+
+export interface ChartTypesMap {
+    [key: string]: ChartType;
+}
+
 export interface BulkAction {
     key: string;
     labelKey: string;
@@ -20,6 +30,7 @@ export interface BulkActionsMap {
 export interface ListViewMeta {
     fields: Field[];
     bulkActions: BulkActionsMap;
+    chartTypes: ChartTypesMap;
 }
 
 export interface Field {
@@ -245,7 +256,8 @@ export class MetadataStore implements StateStore {
                     if (data && data.viewDefinition.listView) {
                         const listViewMeta: ListViewMeta = {
                             fields: [],
-                            bulkActions: {}
+                            bulkActions: {},
+                            chartTypes: {}
                         };
 
                         if (data.viewDefinition.listView.columns) {
@@ -258,6 +270,10 @@ export class MetadataStore implements StateStore {
 
                         if (data.viewDefinition.listView.bulkActions) {
                             listViewMeta.bulkActions = data.viewDefinition.listView.bulkActions;
+                        }
+
+                        if (data.viewDefinition.listView.availableCharts) {
+                            listViewMeta.chartTypes = data.viewDefinition.listView.availableCharts;
                         }
 
                         metadata.listView = listViewMeta;

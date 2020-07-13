@@ -110,9 +110,6 @@ describe('FieldGridComponent', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('form')).nativeElement).toBeTruthy();
-        expect(testHostFixture.debugElement.queryAll(By.css('.form-row')).length).toEqual(2);
-        expect(testHostFixture.debugElement.queryAll(By.css('.form-group')).length).toEqual(6);
-        expect(testHostFixture.debugElement.queryAll(By.css('label')).length).toEqual(5);
         expect(testHostFixture.debugElement.query(By.css('.clear-filters-button')).nativeElement).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement).toBeTruthy();
     }));

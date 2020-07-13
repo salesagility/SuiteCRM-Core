@@ -280,6 +280,10 @@ ul.main li a,
   }
 }
 
+.chart-item, .dropdown-item.active, .dropdown-item:active {
+  background-color: transparent;
+}
+
 .bulk-action-group .dropdown-menu,
 .select-action-group .dropdown-menu {
   background-color: $dusty-grey;

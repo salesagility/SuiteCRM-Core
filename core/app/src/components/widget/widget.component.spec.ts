@@ -11,6 +11,8 @@ import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
+import {ListViewStore} from '@store/list-view/list-view.store';
+import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 
 describe('WidgetUiComponent', () => {
     let component: WidgetUiComponent;
@@ -28,11 +30,8 @@ describe('WidgetUiComponent', () => {
             ],
             declarations: [WidgetUiComponent],
             providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
+                {provide: ListViewStore, useValue: listviewStoreMock},
+                {provide: ThemeImagesStore, useValue: {images$: of(themeImagesMockData).pipe(take(1))}},
             ],
         })
             .compileComponents();

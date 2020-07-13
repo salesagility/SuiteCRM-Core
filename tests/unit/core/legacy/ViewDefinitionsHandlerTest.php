@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
+use App\Service\ChartDefinitionProvider;
 use Codeception\Test\Unit;
 use Exception;
 use SuiteCRM\Core\Legacy\AclHandler;
@@ -79,6 +80,26 @@ final class ViewDefinitionsHandlerTest extends Unit
             ]
         ];
 
+        $chartDefinitions = [
+            'modules' => [
+                'Accounts' => [
+                    'key' => 'annual_revenue',
+                    'labelKey' => 'ANNUAL_REVENUE_BY_ACCOUNTS',
+                    'type' => 'line',
+                ],
+                'Opportunities' => [
+                    'key' => 'pipeline_by_sales_state',
+                    'labelKey' => 'PIPELINE_BY_SALES_STAGE',
+                    'params' => 'bar',
+                ],
+                'Leads' => [
+                    'key' => 'leads_by_source',
+                    'labelKey' => 'LEADS_BY_SOURCE',
+                    'params' => 'line',
+                ],
+            ],
+        ];
+
 
         /** @var AclManagerInterface $aclManager */
         $aclManager = $this->make(
@@ -101,6 +122,10 @@ final class ViewDefinitionsHandlerTest extends Unit
             $aclManager
         );
 
+        $chartDefinitionProvider = new ChartDefinitionProvider(
+            $chartDefinitions
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -109,7 +134,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $legacyScope,
             $moduleNameMapper,
             $fieldDefinitionsHandler,
-            $bulkActionProvider
+            $bulkActionProvider,
+            $chartDefinitionProvider
         );
 
         // Needed for aspect mock

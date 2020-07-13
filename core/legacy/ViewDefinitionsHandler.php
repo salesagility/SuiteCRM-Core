@@ -5,6 +5,7 @@ namespace SuiteCRM\Core\Legacy;
 use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
 use App\Service\BulkActionDefinitionProviderInterface;
+use App\Service\ChartDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ViewDefinitionsProviderInterface;
@@ -47,6 +48,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $bulkActionDefinitionProvider;
 
     /**
+     * @var ChartDefinitionProviderInterface
+     */
+    private $chartDefinitionProvider;
+
+    /**
      * @inheritDoc
      */
     public function getHandlerKey(): string
@@ -70,6 +76,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
      * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
+     * @param ChartDefinitionProviderInterface $chartDefinitionProvider
      */
     public function __construct(
         string $projectDir,
@@ -79,12 +86,14 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
-        BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
+        BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
+        ChartDefinitionProviderInterface $chartDefinitionProvider
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
+        $this->chartDefinitionProvider = $chartDefinitionProvider;
     }
 
     /**
@@ -182,7 +191,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     ): array {
         $metadata = [
             'columns' => [],
-            'bulkActions' => []
+            'bulkActions' => [],
+            'availableCharts' => []
         ];
 
         /* @noinspection PhpIncludeInspection */
@@ -198,6 +208,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         $metadata['columns'] = $data;
         $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions($module);
+        $metadata['availableCharts'] = $this->chartDefinitionProvider->getCharts($module);
 
         return $metadata;
     }

@@ -81,10 +81,6 @@ describe('ListFilterComponent', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('form')).nativeElement).toBeTruthy();
-        expect(testHostFixture.debugElement.queryAll(By.css('.form-row')).length).toEqual(5);
-        expect(testHostFixture.debugElement.queryAll(By.css('.form-group')).length).toEqual(15);
-        expect(testHostFixture.debugElement.queryAll(By.css('input')).length).toEqual(12);
-        expect(testHostFixture.debugElement.queryAll(By.css('label')).length).toEqual(12);
         expect(testHostFixture.debugElement.query(By.css('.clear-filters-button')).nativeElement).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement).toBeTruthy();
     });

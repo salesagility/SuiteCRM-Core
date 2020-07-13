@@ -10,6 +10,9 @@ import {
     SelectionDataSource,
     SelectionStatus
 } from '@components/bulk-action-menu/bulk-action-menu.component';
+import {
+    ChartTypesDataSource
+} from '@components/chart/chart.component';
 import {ListGQL} from '@store/list-view/api.list.get';
 import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
@@ -18,7 +21,7 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {ChartTypesMap, BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 
@@ -141,7 +144,7 @@ export interface ListViewState {
 
 @Injectable()
 export class ListViewStore extends ViewStore
-    implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource, BulkActionDataSource {
+    implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource {
 
     /**
      * Public long-lived observable streams
@@ -432,6 +435,10 @@ export class ListViewStore extends ViewStore
         return this.metadata$.pipe(
             map((metadata: Metadata) => metadata.listView.bulkActions)
         );
+    }
+
+    getChartTypes(): any {
+        return this.metadata.listView.chartTypes;
     }
 
     executeBulkAction(action: string): void {

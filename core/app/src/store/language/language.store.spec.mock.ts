@@ -28,6 +28,10 @@ export const languageMockData = {
         LBL_EXPORT: 'Export',
         LBL_MERGE_DUPLICATES: 'Merge',
         LBL_MASS_UPDATE: 'Mass Update',
+        ANNUAL_REVENUE_BY_ACCOUNTS: 'Annual Revenue By Accounts',
+        PIPELINE_BY_SALES_STAGE: 'Pipeline By Sales Stage',
+        LEADS_BY_SOURCE: 'Leads By Source',
+        LBL_QUICK_CHARTS_EMPTY: '',
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

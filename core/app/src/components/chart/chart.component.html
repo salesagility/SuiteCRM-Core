@@ -8,17 +8,11 @@
     <div class="container">
         <div class="row">
             <div class="pipeline-chart col-xs">
-                <div class="accordion">
-                    <button class="widget-transparent-button btn-block dropdown-toggle"
-                            type="button"
-                            data-toggle="collapse" data-target=".pipeline-chart-content">
-                        Pipeline By Sales Stage
-                    </button>
-                    <div class="collapse show pipeline-chart-content"
-                         data-parent=".pipeline-chart">
-                        <img alt="Pipeline Chart" class="w-100"
-                             src="public/themes/suite8/images/pipeline_chart.png">
-                    </div>
+                <scrm-dropdown-button [config]="getDropdownConfig()"></scrm-dropdown-button>
+                <div class="collapse show pipeline-chart-content"
+                     data-parent=".pipeline-chart">
+                    <img alt="Pipeline Chart" class="w-100"
+                         src="public/themes/suite8/images/pipeline_chart.png">
                 </div>
             </div>
             <div class="donut-chart col-xs">
@@ -28,10 +22,10 @@
                             data-toggle="collapse" data-target=".donut-chart-content">
                         Display as Donut Chart
                     </button>
-                    <div class="collapse show donut-chart-content" data-parent=".donut-chart">
-                        <img alt="Donut Chart" class="w-100"
-                             src="public/themes/suite8/images/donut_chart.png">
-                    </div>
+                </div>
+                <div class="collapse show donut-chart-content" data-parent=".donut-chart">
+                    <img alt="Donut Chart" class="w-100"
+                         src="public/themes/suite8/images/donut_chart.png">
                 </div>
             </div>
         </div>

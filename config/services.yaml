@@ -37,6 +37,7 @@ services:
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
       $listViewBulkActions: '%module.listview.bulk_action%'
+      $listViewAvailableCharts: '%module.listview.available_charts%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

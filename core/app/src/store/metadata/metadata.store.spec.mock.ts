@@ -177,6 +177,11 @@ export const metadataMockData = {
                 ]
             }
         },
+        chartTypes: {
+            key: 'annual_revenue',
+            labelKey: 'ANNUAL_REVENUE_BY_ACCOUNTS',
+            type: 'line'
+        },
         columns: [
             {
                 fieldName: 'name',
