@@ -12,6 +12,7 @@ use Exception;
 use InvalidArgumentException;
 use ListViewFacade;
 use SearchForm;
+use function in_array;
 
 /**
  * Class ViewDefinitions
@@ -31,17 +32,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         'default' => false,
         'module' => '',
         'id' => '',
-        'sortable' => true
-    ];
-
-    /**
-     * @var array
-     */
-    protected static $vardefAttributes = [
-        'name' => '',
-        'vname' => '',
-        'type' => '',
-        'options' => '',
+        'sortable' => true,
+        'type' => ''
     ];
 
     /**
@@ -222,9 +214,9 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $column = array_merge(self::$listViewColumnInterface, $column);
         $column['fieldName'] = strtolower($key);
 
-        $this->addFieldDefinition($vardefs, strtolower($key), $column);
+        $column = $this->addFieldDefinition($vardefs, strtolower($key), $column);
 
-        if ($key === 'email1') {
+        if ($column['fieldName'] === 'email1') {
             $column['type'] = 'email';
         }
 
@@ -298,11 +290,17 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     protected function addFieldDefinition(array $vardefs, $key, $field): array
     {
-        $plucked = array_intersect_key($vardefs[$key], self::$vardefAttributes);
-        $this->renameKey($plucked, 'vname', 'label');
-        $this->renameKey($plucked, 'type', 'fieldType');
+        $field = array_merge(self::$listViewColumnInterface, $field);
 
-        return array_merge($plucked, $field);
+        if (!isset($field['type']) || empty($field['type'])) {
+            $field['type'] = $vardefs[$key]['type'];
+        }
+
+        if (!isset($field['label']) || empty($field['label'])) {
+            $field['label'] = $vardefs[$key]['vname'];
+        }
+
+        return $field;
     }
 
     /**
@@ -370,20 +368,5 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             $definition['layout'][$newName] = $definition['layout'][$type];
             unset($definition['layout'][$type]);
         }
-    }
-
-    /**
-     * Rename array key
-     * @param array $plucked
-     * @param string $oldKey
-     * @param string $newKey
-     */
-    protected function renameKey(array &$plucked, string $oldKey, string $newKey): void
-    {
-        if (!isset($plucked[$oldKey])) {
-            return;
-        }
-        $plucked[$newKey] = $plucked[$oldKey] ?? null;
-        unset($plucked[$oldKey]);
     }
 }
