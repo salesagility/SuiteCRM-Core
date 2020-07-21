@@ -48,4 +48,27 @@ export class ChartUiComponent implements OnInit {
 
         return dropdownConfig;
     }
+
+    getTypeDropdownConfig(): DropdownButtonInterface {
+        if (!this.listStore) {
+            return null;
+        }
+        const chartTypes = this.listStore.getChartTypes();
+        const dropdownConfig = {
+            klass: ['widget-transparent-button', 'btn-block', 'dropdown-toggle'],
+            wrapperKlass: ['action-group', 'float-left'],
+            items: []
+        } as DropdownButtonInterface;
+
+
+        dropdownConfig.items.push({
+            label: 'Display as ' + chartTypes.type,
+            klass: ['chart-item'],
+            onClick: (): void => {
+            }
+        });
+
+
+        return dropdownConfig;
+    }
 }
