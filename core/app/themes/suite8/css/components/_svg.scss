@@ -9,6 +9,11 @@
   margin-top: -0.2em;
 }
 
+.home-nav-link .sicon svg {
+  width: 1.2em;
+  height: 1.5em;
+}
+
 .action-link svg,
 .action-link svg path,
 .action-link svg polygon {
@@ -311,7 +316,6 @@
 .list-view-settings svg {
   fill: $white;
   margin: 0 0.5em 0 0;
-  vertical-align: middle;
 }
 
 .sort-icon {

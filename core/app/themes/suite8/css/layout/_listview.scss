@@ -19,15 +19,27 @@
 
 .list-view-actions {
   margin: 1em 0 0 0;
+  text-align: end;
+}
+
+.list-view-settings {
+  text-align: end;
 }
 
 .list-view-container {
-  margin: 1em 0 4em 0;
   font-size: 0.85em;
+  padding-top: 1em;
+  padding-left: 1.6em;
+  padding-right: 1.6em;
+  margin-bottom: 4em;
 }
 
 .list-view-widget {
   margin-right: 1.5em;
+}
+
+.list-widget-container {
+  padding-left: 0.6em;
 }
 
 .widget {
@@ -80,6 +92,10 @@
   border-bottom-left-radius: 0.3em;
 }
 
+.table td {
+  vertical-align: middle;
+}
+
 .list-view-tableactions {
   background-color: $cool-blue;
   padding: 0.2em;
@@ -91,7 +107,7 @@
 }
 
 .list-view-table td {
-  color: $median-grey;
+  color: $midnight-blue;
 }
 
 .bulk-action {
@@ -270,6 +286,14 @@
   white-space: nowrap;
 }
 
+.table th {
+  border-top: 0;
+}
+
+.table thead th {
+  border-bottom: 0;
+}
+
 .primary-table-header span {
   font-weight: bold;
 }
@@ -338,7 +362,7 @@ td {
 }
 
 .select-action-group {
-  margin: 0 0 0 0.5em;
+  margin: 0 0 0 0.8em;
   color: $white;
 }
 

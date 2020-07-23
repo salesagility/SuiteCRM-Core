@@ -155,6 +155,10 @@ ul.main li.nav-item,
   padding: 0em 1em;
 }
 
+.nav-item .dropdown-menu {
+  border: 0;
+}
+
 .dropdown-menu .nav-item:hover, .dropdown-menu .nav-item .action-link:hover  {
   background-color: $dull-orange;
 }
@@ -173,6 +177,7 @@ ul.main li a,
 
 .global-links-dropdown {
   margin: 0;
+  right: 0;
   position: absolute;
   -webkit-border-radius: 0.25em;
   -webkit-border-top-left-radius: 0;
@@ -183,6 +188,7 @@ ul.main li a,
   border-radius: 0.25em;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-top-width: 0px;
 }
 
 .primary-global-link {

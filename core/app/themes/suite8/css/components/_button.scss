@@ -2,7 +2,7 @@
 
 button {
   padding: 0.6em 0.95em;
-  margin: 0.3em;
+  margin: 0.2em;
   background-color: $salmon-pink;
   border: none;
   -webkit-border-radius: 0.25em;
@@ -136,6 +136,8 @@ button {
   text-transform: uppercase;
   padding: 0.3em 1em;
   font-weight: 400;
+  height: 2.1em;
+  line-height: 1.6em;
 }
 
 .action-button:hover {
@@ -147,6 +149,9 @@ button {
   margin: 0.2em;
   padding: 0.3em 1em;
   font-size: 0.8em;
+  font-weight: bold;
+  height: 2.2em;
+  line-height: 1.1em;
 }
 
 .settings-button:hover {
@@ -179,6 +184,7 @@ button {
   cursor: pointer;
   overflow: hidden;
   outline: none;
+  padding: 0.3em 0.5em;
   font-weight: bold;
   font-size: 0.9em;
   color: $white;

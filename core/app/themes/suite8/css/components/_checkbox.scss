@@ -22,7 +22,7 @@
 /* Create a custom checkbox */
 .checkbox-container .checkmark {
   position: absolute;
-  top: 0;
+  top: -0.3em;
   left: 0;
   height: 1em;
   width: 1em;
@@ -53,10 +53,6 @@
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
-}
-
-.bulk-action-selected-number {
-  margin-left: 1em;
 }
 
 .list-view-table .checkbox-container .checkmark {
@@ -170,7 +166,7 @@
 }
 
 .bulk-action-selected-number {
-  margin-left: 1.5em;
+  margin-left: 1.8em;
 }
 
 /* Show the checkmark when checked */

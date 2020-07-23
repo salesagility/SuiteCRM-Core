@@ -3,8 +3,8 @@
 .navbar {
   height: 3.1em;
   background-color: $midnight-blue;
-  padding: 0 1.6em;
   margin: 0;
+  padding: 0 1em;
 }
 
 @media only screen and (min-width: $breakpoint-large) {
@@ -13,6 +13,7 @@
     .global-link-item:hover .dropdown-menu,
     .non-grouped:hover .dropdown-menu {
       display: block;
+      right: 0;
     }
   }
 
@@ -20,7 +21,7 @@
   .nav-link-nongrouped {
     color: $off-white;
     line-height: 3.1em;
-    padding: 0.5em 0.5em 1em 0.5em;
+    padding: 0.5em 0.5em 1.1em 0.5em;
   }
 
   .nav-link-grouped:active,
@@ -45,7 +46,7 @@
 a.home-nav-link {
   color: $white;
   line-height: 3.1em;
-  padding: 1em 0.5em 1em 0.5em;
+  padding: 0.8em 1em 1em 1em;
 }
 
 .nav-item.active .home-nav-link svg {
@@ -78,7 +79,7 @@ a.home-nav-link {
 .nav-item.active .home-nav-link {
   color: $salmon-pink;
   border-top: 0.2em solid $salmon-pink;
-  padding: 0.8em 0.5em 1em 0.5em;
+  padding: 0.8em 1em 1.1em 1em;
   text-decoration: none;
 }
 
@@ -137,6 +138,18 @@ h4.recently-viewed-header {
   padding: 0;
 }
 
+.global-action-icon {
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0 0.6em 0 0;
+}
+
+@media only screen and (max-width: $breakpoint-medium) {
+  .global-action-icon {
+    margin: 0;
+  }
+}
+
 @media only screen and (max-width: $breakpoint-large) {
   .navbar-1,
   .navbar-2 {
@@ -168,7 +181,7 @@ h4.recently-viewed-header {
   .nav-link-nongrouped {
     color: $off-white;
     line-height: 3.1em;
-    padding: 0.8em 0.5em 1em 0.5em;
+    padding: 0.8em 0.5em 1.1em 0.5em;
     font-size: 0.85em;
   }
 
