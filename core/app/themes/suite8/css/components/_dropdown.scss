@@ -197,6 +197,12 @@ ul.main li a,
   padding: 0;
 }
 
+.select-action-group {
+  .bulk-action-button {
+    min-width: auto;
+  }
+}
+
 @media only screen and (min-width: $breakpoint-large) {
   .global-links-sublink {
     background-color: $dusky-blue;
@@ -286,7 +292,6 @@ ul.main li a,
 
 .bulk-action-group .dropdown-menu,
 .select-action-group .dropdown-menu {
-  background-color: $dusty-grey;
   font-size: 1em;
   -webkit-border-radius: 0.25em;
   -webkit-border-top-left-radius: 0;
@@ -297,8 +302,16 @@ ul.main li a,
   border-radius: 0.25em;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border: none;
+  background-color: $cool-blue;
+  width: max-content;
+  min-width: 10em;
+  border: 0;
+  margin: 0;
+  .dropdown-item {
+    padding: .25em .8em;
+  }
 }
+
 
 .bulk-action-group .dropdown-menu a,
 .select-action-group .dropdown-menu a {
@@ -307,7 +320,7 @@ ul.main li a,
 
 .bulk-action-group .dropdown-menu a:hover,
 .select-action-group .dropdown-menu a:hover {
-  background-color: $nepal-grey;
+  background-color: $astral-blue;
   color: $white;
   cursor: pointer;
 }
