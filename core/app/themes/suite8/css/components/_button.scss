@@ -157,6 +157,10 @@ button {
   background-color: $midnight-blue;
 }
 
+.saved-filters-button, .quick-filter-button {
+  display: none;
+}
+
 .action-button.disabled, .settings-button.disabled {
   opacity: 40%;
 }
@@ -298,4 +302,7 @@ button.settings-button.dropdown-toggle::after {
   font-size: 1.25em;
   font-weight: 700;
   line-height: 1;
+  margin-right: 1em;
+  width: 1.5em;
+  height: 1.5em;
 }
