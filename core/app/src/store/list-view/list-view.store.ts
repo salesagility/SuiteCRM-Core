@@ -10,9 +10,7 @@ import {
     SelectionDataSource,
     SelectionStatus
 } from '@components/bulk-action-menu/bulk-action-menu.component';
-import {
-    ChartTypesDataSource
-} from '@components/chart/chart.component';
+import {ChartTypesDataSource} from '@components/chart/chart.component';
 import {ListGQL} from '@store/list-view/api.list.get';
 import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
@@ -21,7 +19,7 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {ChartTypesMap, BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
@@ -466,16 +464,25 @@ export class ListViewStore extends ViewStore
             return;
         }
 
+        const displayedFields = [];
+
+        this.metadata.listView.fields.forEach(value => {
+            displayedFields.push(value.fieldName);
+        });
+
         const data = {
             action: actionName,
             module: this.internalState.module,
             criteria: null,
-            ids: null
+            sort: null,
+            ids: null,
+            fields: displayedFields
         } as BulkActionProcessInput;
 
 
         if (selection.all && selection.count > this.internalState.records.length) {
             data.criteria = this.internalState.criteria;
+            data.sort = this.internalState.sort;
         }
 
         if (selection.all && selection.count <= this.internalState.records.length) {

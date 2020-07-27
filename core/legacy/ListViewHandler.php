@@ -3,6 +3,7 @@
 namespace SuiteCRM\Core\Legacy;
 
 use App\Entity\ListView;
+use App\Service\LegacyFilterMapper;
 use App\Service\ListViewProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
@@ -24,10 +25,11 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @var ModuleNameMapperInterface
      */
     private $moduleNameMapper;
+
     /**
-     * @var array
+     * @var LegacyFilterMapper
      */
-    private $filterOperatorMap;
+    private $legacyFilterMapper;
 
     /**
      * SystemConfigHandler constructor.
@@ -37,7 +39,6 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param array $filterOperatorMap
      */
     public function __construct(
         string $projectDir,
@@ -46,11 +47,11 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        array $filterOperatorMap
+        LegacyFilterMapper $legacyFilterMapper
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
-        $this->filterOperatorMap = $filterOperatorMap;
+        $this->legacyFilterMapper = $legacyFilterMapper;
     }
 
     /**
@@ -179,13 +180,13 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
     ): array {
         $type = $criteria['type'] ?? 'advanced';
 
-        $mapped = $this->mapFilters($criteria, $type);
+        $mapped = $this->legacyFilterMapper->mapFilters($criteria, $type);
 
         $baseCriteria = [
             'searchFormTab' => "${type}_search",
             'query' => 'true',
-            'orderBy' => $sort['orderBy'] ?? 'date_entered',
-            'sortOrder' => $sort['sortOrder'] ?? 'DESC'
+            'orderBy' => $this->legacyFilterMapper->getOrderBy($sort),
+            'sortOrder' => $this->legacyFilterMapper->getSortOrder($sort)
         ];
 
         $legacyCriteria = array_merge($baseCriteria, $mapped);
@@ -207,8 +208,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         int $limit,
         array $criteria = [],
         array $filterFields = []
-    ): array
-    {
+    ): array {
 
         $params = $this->getSortingParams($criteria);
         $legacyListView = $this->getLegacyListView($bean);
@@ -224,82 +224,6 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         $listViewData = new ListViewDataPort();
 
         return $listViewData->getListViewData($bean, $where, $offset, $limit, $filter_fields, $params);
-    }
-
-    /**
-     * Map Filters to legacy
-     * @param array $criteria
-     * @param string $type
-     * @return array
-     */
-    protected function mapFilters(array $criteria, string $type): array
-    {
-        $mapped = [];
-
-        if (empty($criteria['filters'])) {
-            return $mapped;
-        }
-
-        foreach ($criteria['filters'] as $key => $item) {
-            if (empty($item['operator'])) {
-                continue;
-            }
-
-            if (empty($this->filterOperatorMap[$item['operator']])) {
-                continue;
-            }
-
-            $mapConfig = $this->filterOperatorMap[$item['operator']];
-
-            foreach ($mapConfig as $mappedKey => $mappedValue) {
-                $legacyKey = $this->mapFilterKey($type, $key, $mappedKey);
-                $legacyValue = $this->mapFilterValue($mappedValue, $item);
-
-                $mapped[$legacyKey] = $legacyValue;
-            }
-
-
-        }
-
-        return $mapped;
-    }
-
-    /**
-     * Map Filter key to legacy
-     * @param string $type
-     * @param string $key
-     * @param string $mappedKey
-     * @return string|string[]
-     */
-    protected function mapFilterKey(string $type, string $key, string $mappedKey): string
-    {
-        return str_replace(array('{field}', '{type}'), array($key, $type), $mappedKey);
-    }
-
-    /**
-     * Map Filter value to legacy
-     * @param string $mappedValue
-     * @param array $item
-     * @return mixed|string|string[]
-     */
-    protected function mapFilterValue(string $mappedValue, array $item)
-    {
-        if ($mappedValue === 'values') {
-
-            if (count($item['values']) === 1) {
-                $legacyValue = $item['values'][0];
-            } else {
-                $legacyValue = $item['values'];
-            }
-
-            return $legacyValue;
-        }
-
-        $operator = $item['operator'] ?? '';
-        $start = $item['start'] ?? '';
-        $end = $item['end'] ?? '';
-
-        return str_replace(['{operator}', '{start}', '{end}'], [$operator, $start, $end], $mappedValue);
     }
 
     /**

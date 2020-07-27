@@ -7,6 +7,7 @@ import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {BulkActionProcess} from '@services/process/processes/bulk-action/bulk-action';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
 import {redirectBulkActionMock} from '@services/process/processes/bulk-action/actions/redirect/redirect.bulk-action.spec.mock';
+import {exportBulkActionMock} from '@services/process/processes/bulk-action/actions/export/export.bulk-action.spec.mock';
 
 export const bulkActionMockData = {
     'bulk-merge': {
@@ -52,5 +53,6 @@ export const bulkActionProcessMock = new BulkActionProcess(
     processServiceMock,
     appStateStoreMock,
     messageServiceMock,
-    redirectBulkActionMock
+    redirectBulkActionMock,
+    exportBulkActionMock
 );

@@ -3,15 +3,17 @@ import {Observable} from 'rxjs';
 import {catchError, take, tap} from 'rxjs/operators';
 import {Process, ProcessService} from '@services/process/process.service';
 import {AppStateStore} from '@store/app-state/app-state.store';
-import {SearchCriteria} from '@store/list-view/list-view.store';
+import {SearchCriteria, SortingSelection} from '@store/list-view/list-view.store';
 import {MessageService} from '@services/message/message.service';
 import {BulkActionHandler} from '@services/process/processes/bulk-action/bulk-action.model';
 import {RedirectBulkAction} from '@services/process/processes/bulk-action/actions/redirect/redirect.bulk-action';
+import {ExportBulkAction} from '@services/process/processes/bulk-action/actions/export/export.bulk-action';
 
 export interface BulkActionProcessInput {
     action: string;
     module: string;
     criteria?: SearchCriteria;
+    sort?: SortingSelection;
     ids?: string[];
 }
 
@@ -26,9 +28,11 @@ export class BulkActionProcess {
         private processService: ProcessService,
         private appStateStore: AppStateStore,
         protected message: MessageService,
-        protected redirectActionHandler: RedirectBulkAction
+        protected redirectActionHandler: RedirectBulkAction,
+        protected exportBulkAction: ExportBulkAction
     ) {
         this.actions[redirectActionHandler.key] = redirectActionHandler;
+        this.actions[exportBulkAction.key] = exportBulkAction;
     }
 
     /**
