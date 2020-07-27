@@ -8,8 +8,8 @@ parameters:
       opportunities:
         key: pipeline_by_sales_state
         labelKey: PIPELINE_BY_SALES_STAGE
-        params: bar
+        type: bar
       leads:
         key: leads_by_source
         labelKey: LEADS_BY_SOURCE
-        params: line
+        type: line

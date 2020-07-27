@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgModule} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ChartTypesMap} from '@store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
-import {ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore, RecordSelection} from '@store/list-view/list-view.store';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 export interface ChartTypesDataSource {
     getChartTypes(): Observable<ChartTypesMap>;
@@ -20,10 +22,35 @@ export interface ChartsViewModel {
     styleUrls: []
 })
 export class ChartUiComponent implements OnInit {
+    selection$: Observable<RecordSelection> = this.listStore.selection$;
+    data: any[];
+    view: any[] = [500, 300];
+
+    // options
+    legend = false;
+    showLabels = true;
+    animations = true;
+    xAxis = true;
+    yAxis = true;
+    showYAxisLabel = true;
+    showXAxisLabel = true;
+    xAxisLabel: string;
+    yAxisLabel: string;
+    timeline = true;
+    type: string;
+
+    colorScheme = {
+        picnic: ['#a8385d', '#66BD6D', '#FAA026', '#29BB9C', '#E96B56', '#55ACD2']
+    };
+
     constructor(protected languageStore: LanguageStore, protected listStore: ListViewStore) {
+        Object.assign(this, this.selection$);
     }
 
     ngOnInit(): void {
+        const chartTypes = this.listStore.getChartTypes();
+
+        this.type = chartTypes.type;
     }
 
     getDropdownConfig(): DropdownButtonInterface {
@@ -70,5 +97,17 @@ export class ChartUiComponent implements OnInit {
 
 
         return dropdownConfig;
+    }
+
+    onSelect(data): void {
+        console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    }
+
+    onActivate(data): void {
+        console.log('Activate', JSON.parse(JSON.stringify(data)));
+    }
+
+    onDeactivate(data): void {
+        console.log('Deactivate', JSON.parse(JSON.stringify(data)));
     }
 }

@@ -3,6 +3,43 @@
         <div class="row">
             <div class="pipeline-chart col-xs">
                 <scrm-dropdown-button [config]="getDropdownConfig()"></scrm-dropdown-button>
+                <ng-container *ngIf="type == 'line'">
+                    <ngx-charts-line-chart
+                            [view]="view"
+                            [scheme]="colorScheme"
+                            [legend]="legend"
+                            [showXAxisLabel]="showXAxisLabel"
+                            [showYAxisLabel]="showYAxisLabel"
+                            [xAxis]="xAxis"
+                            [yAxis]="yAxis"
+                            [xAxisLabel]="xAxisLabel"
+                            [yAxisLabel]="yAxisLabel"
+                            [timeline]="timeline"
+                            [results]="data"
+                            (select)="onSelect($event)"
+                            (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)"
+                    >
+                    </ngx-charts-line-chart>
+                </ng-container>
+                <ng-container *ngIf="type == 'bar'">
+                    <ngx-charts-bar-vertical
+                            [view]="view"
+                            [scheme]="colorScheme"
+                            [legend]="legend"
+                            [showXAxisLabel]="showXAxisLabel"
+                            [showYAxisLabel]="showYAxisLabel"
+                            [xAxis]="xAxis"
+                            [yAxis]="yAxis"
+                            [xAxisLabel]="xAxisLabel"
+                            [yAxisLabel]="yAxisLabel"
+                            [results]="data"
+                            (select)="onSelect($event)"
+                            (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)"
+                    >
+                    </ngx-charts-bar-vertical>
+                </ng-container>
             </div>
             <div class="donut-chart col-xs">
                 <div class="accordion">
