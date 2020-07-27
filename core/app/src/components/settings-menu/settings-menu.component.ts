@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {WidgetService} from '../widget/widget.service';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {ButtonInterface} from '@components/button/button.model';
 
@@ -10,11 +9,7 @@ import {ButtonInterface} from '@components/button/button.model';
 })
 export class SettingsMenuComponent implements OnInit {
 
-    constructor(public widgetService: WidgetService, protected listStore: ListViewStore) {
-    }
-
-    toggleWidgets(): void {
-        this.widgetService.emitData();
+    constructor(protected listStore: ListViewStore) {
     }
 
     get filterButton(): ButtonInterface {
@@ -32,6 +27,24 @@ export class SettingsMenuComponent implements OnInit {
             icon: 'filter',
             onClick: (): void => {
                 this.listStore.showFilters = !this.listStore.showFilters;
+            }
+        };
+    }
+
+    get widgetButton(): ButtonInterface {
+        if (!this.listStore) {
+            return null;
+        }
+
+        return {
+            label: this.listStore.appStrings.LBL_CHARTS || '',
+            klass: {
+                'settings-button': true,
+                active: this.listStore.showWidgets
+            },
+            icon: 'pie',
+            onClick: (): void => {
+                this.listStore.showWidgets = !this.listStore.showWidgets;
             }
         };
     }

@@ -8,9 +8,5 @@
     <scrm-button *ngIf="filterButton" [config]="filterButton"></scrm-button>
     <scrm-button *ngIf="clearButton" [config]="clearButton"></scrm-button>
     <scrm-columnchooser-ui></scrm-columnchooser-ui>
-    <button type="button" class="settings-button" (click)="toggleWidgets()"
-            [ngClass]="{ 'active': widgetService.displayWidgets }">
-        <scrm-image class="sicon" image="pie"></scrm-image>
-        Charts
-    </button>
+    <scrm-button *ngIf="widgetButton" [config]="widgetButton"></scrm-button>
 </div>

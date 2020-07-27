@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {WidgetService} from '../widget/widget.service';
+import {ListViewStore} from '@store/list-view/list-view.store';
 
 @Component({
     selector: 'scrm-list-container-ui',
@@ -10,11 +10,11 @@ import {WidgetService} from '../widget/widget.service';
 export class ListcontainerUiComponent implements OnInit {
     @Input() module;
 
-    constructor(public widgetService: WidgetService) {
+    constructor(public listViewStore: ListViewStore) {
     }
 
-    toggleWidgets(): void {
-        this.widgetService.emitData();
+    getDisplayWidgets(): boolean {
+        return this.listViewStore.showWidgets;
     }
 
     ngOnInit(): void {

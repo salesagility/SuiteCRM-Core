@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {merge, Observable} from 'rxjs';
+import {BehaviorSubject, merge} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export enum ScreenSize {
@@ -16,14 +16,15 @@ export enum ScreenSize {
 })
 export class ScreenSizeObserverService {
 
-    screenSize$: Observable<ScreenSize>;
+    screenSize = new BehaviorSubject<ScreenSize>(ScreenSize.Medium);
+    screenSize$ = this.screenSize.asObservable();
 
     constructor(protected breakpointObserver: BreakpointObserver) {
         this.initScreenSizeObservable();
     }
 
     protected initScreenSizeObservable(): void {
-        this.screenSize$ = merge(
+        merge(
             this.breakpointObserver.observe([
                 Breakpoints.XSmall,
             ]).pipe(map((result: BreakpointState) => {
@@ -59,6 +60,10 @@ export class ScreenSizeObserverService {
                     return ScreenSize.XLarge;
                 }
             }))
-        );
+        ).subscribe((value) => {
+            if (value) {
+                this.screenSize.next(value);
+            }
+        });
     }
 }

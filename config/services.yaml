@@ -38,6 +38,7 @@ services:
       $navigationTabLimits: '%themes.navigation_tab_limits%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewAvailableCharts: '%module.listview.available_charts%'
+      $listViewColumnLimits: '%module.listview.column_limits%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

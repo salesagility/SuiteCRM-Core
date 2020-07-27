@@ -130,6 +130,7 @@ const initialState: ListViewState = {
     },
     selection: deepClone(initialSelection),
     loading: false,
+    widgets: true
 };
 
 export interface ListViewState {
@@ -140,6 +141,7 @@ export interface ListViewState {
     pagination: Pagination;
     selection: RecordSelection;
     loading: boolean;
+    widgets: boolean;
 }
 
 @Injectable()
@@ -157,6 +159,7 @@ export class ListViewStore extends ViewStore
     selectedCount$: Observable<number>;
     selectedStatus$: Observable<SelectionStatus>;
     loading$: Observable<boolean>;
+    widgets$: Observable<boolean>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -206,6 +209,7 @@ export class ListViewStore extends ViewStore
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
+        this.widgets$ = this.state$.pipe(map(state => state.widgets));
 
         this.watchPageSize(configStore, preferencesStore);
 
@@ -239,6 +243,17 @@ export class ListViewStore extends ViewStore
 
     set showFilters(show: boolean) {
         this.displayFilters = show;
+    }
+
+    get showWidgets(): boolean {
+        return this.internalState.widgets;
+    }
+
+    set showWidgets(show: boolean) {
+        this.updateState({
+            ...this.internalState,
+            widgets: show
+        });
     }
 
     get searchCriteria(): SearchCriteria {

@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import {ListViewStore, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
+import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 @Component({
     selector: 'scrm-table-body',
@@ -18,24 +20,36 @@ export class TableBodyComponent {
     selection$: Observable<RecordSelection> = this.data.selection$;
     sort$: Observable<SortingSelection> = this.data.sort$;
     dataSource$: ListViewStore = this.data;
+    screen: ScreenSize = ScreenSize.Medium;
+    maxColumns = 5;
 
     vm$ = combineLatest([
         this.language$,
         this.listMetadata$,
-        this.selection$
+        this.selection$,
+        this.screenSize.screenSize$,
+        this.data.widgets$
     ]).pipe(
         map((
             [
                 language,
                 listMetadata,
                 selection,
+                screenSize,
+                widgets
             ]
         ) => {
             const displayedColumns: string[] = ['checkbox'];
+            const sideBarOpen = widgets;
 
-            listMetadata.fields.forEach((field) => {
-                displayedColumns.push(field.fieldName);
-            });
+            if (screenSize) {
+                this.screen = screenSize;
+            }
+
+            this.calculateMaxColumns(sideBarOpen);
+
+            const columns = this.buildDisplayColumns(listMetadata);
+            displayedColumns.push(...columns);
 
             return {
                 language,
@@ -50,7 +64,9 @@ export class TableBodyComponent {
     constructor(
         protected language: LanguageStore,
         protected metadata: MetadataStore,
-        protected data: ListViewStore
+        protected data: ListViewStore,
+        protected screenSize: ScreenSizeObserverService,
+        protected systemConfigStore: SystemConfigStore
     ) {
     }
 
@@ -60,6 +76,45 @@ export class TableBodyComponent {
 
     allSelected(status: SelectionStatus): boolean {
         return status === SelectionStatus.ALL;
+    }
+
+    buildDisplayColumns(listMetadata): string[] {
+        let i = 0;
+        let hasLinkField = false;
+        const returnArray = [];
+        while (i < this.maxColumns && i < listMetadata.fields.length) {
+            returnArray.push(listMetadata.fields[i].fieldName);
+            hasLinkField = hasLinkField || listMetadata.fields[i].link;
+            i++;
+        }
+        if (!hasLinkField && (this.maxColumns < listMetadata.fields.length)) {
+            for (i = this.maxColumns; i < listMetadata.fields.length; i++) {
+                if (listMetadata.fields[i].link) {
+                    returnArray.splice(-1,1);
+                    returnArray.push(listMetadata.fields[i].fieldName);
+                    break;
+                }
+            }
+        }
+        return returnArray;
+    }
+
+    calculateMaxColumns(sideBar = true): void {
+        let sizeMap;
+        sizeMap = this.systemConfigStore.getConfigValue('listview_column_limits');
+
+        if (sideBar) {
+            sizeMap = sizeMap.with_sidebar;
+        } else {
+            sizeMap = sizeMap.without_sidebar;
+        }
+
+        if (this.screen && sizeMap) {
+            const maxCols = sizeMap[this.screen];
+            if (maxCols) {
+                this.maxColumns = maxCols;
+            }
+        }
     }
 
     getFieldLabel(label: string): string {

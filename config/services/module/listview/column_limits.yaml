@@ -1,0 +1,14 @@
+parameters:
+  module.listview.column_limits:
+    without_sidebar:
+      XSmall: 2
+      Small: 3
+      Medium: 5
+      Large: 7
+      XLarge: 8
+    with_sidebar:
+      XSmall: 2
+      Small: 3
+      Medium: 4
+      Large: 6
+      XLarge: 7
