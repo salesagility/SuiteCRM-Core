@@ -83,6 +83,12 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         $moduleName = $this->validateModuleName($moduleName);
         $bean = $this->newBeanSafe($moduleName);
         $listViewData = $this->getData($bean, $criteria, $offset, $limit, $sort);
+
+        if ($this->currentPageHasNoRecords($listViewData)) {
+            $listViewData['pageData']['offsets']['current'] = 0;
+            $listViewData = $this->getData($bean, $criteria, 0, $limit, $sort);
+        }
+
         $listView->setId($moduleName);
         $listView->setMeta($this->getMeta($listViewData['pageData']));
         $listView->setRecords($this->getRecords($bean, $listViewData));
@@ -90,6 +96,17 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         $this->close();
 
         return $listView;
+    }
+
+    /**
+     * @param array $listViewData
+     * @return bool
+     */
+    protected function currentPageHasNoRecords(array $listViewData): bool
+    {
+        $totalRecords = (int)($listViewData['pageData']['offsets']['total'] ?? 0);
+        $current = (int)($listViewData['pageData']['offsets']['current'] ?? 0);
+        return $totalRecords && $current && $current >= $totalRecords;
     }
 
     /**

@@ -7,7 +7,6 @@ parameters:
           labelKey: LBL_DELETE
           params:
             min: 1
-            max: 5
           acl:
             - delete
         export:

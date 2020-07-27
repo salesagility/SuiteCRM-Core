@@ -24,6 +24,7 @@ import {LocalStorageService} from '@services/local-storage/local-storage.service
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
 import {MessageService} from '@services/message/message.service';
+import {Process} from '@services/process/process.service';
 
 export interface FieldMap {
     [key: string]: any;
@@ -511,7 +512,12 @@ export class ListViewStore extends ViewStore
             data.ids = Object.keys(selection.selected);
         }
 
-        this.bulkAction.run(actionName, data).subscribe();
+        this.bulkAction.run(actionName, data).subscribe( (process: Process) => {
+            if (process.data && process.data.reload) {
+                this.clearSelection();
+                this.load(false).pipe(take(1)).subscribe();
+            }
+        });
     }
 
     /**
