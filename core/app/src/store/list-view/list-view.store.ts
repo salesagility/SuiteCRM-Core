@@ -454,7 +454,7 @@ export class ListViewStore extends ViewStore
         );
     }
 
-    getChartTypes(): any {
+    public getChartTypes(): any {
         return this.metadata.listView.chartTypes;
     }
 

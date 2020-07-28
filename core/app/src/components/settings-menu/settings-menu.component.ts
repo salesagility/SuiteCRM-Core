@@ -31,24 +31,6 @@ export class SettingsMenuComponent implements OnInit {
         };
     }
 
-    get widgetButton(): ButtonInterface {
-        if (!this.listStore) {
-            return null;
-        }
-
-        return {
-            label: this.listStore.appStrings.LBL_CHARTS || '',
-            klass: {
-                'settings-button': true,
-                active: this.listStore.showWidgets
-            },
-            icon: 'pie',
-            onClick: (): void => {
-                this.listStore.showWidgets = !this.listStore.showWidgets;
-            }
-        };
-    }
-
     get clearButton(): ButtonInterface {
         const searchCriteria = this.listStore.searchCriteria;
         const result = Object.values(searchCriteria.filters).every(item => item.operator === '');
@@ -65,6 +47,31 @@ export class SettingsMenuComponent implements OnInit {
             icon: 'filter',
             onClick: (): void => {
                 this.listStore.updateSearchCriteria({filters: {}}, true);
+            }
+        };
+    }
+
+    get chartsButton(): ButtonInterface {
+        if (!this.listStore) {
+            return null;
+        }
+
+        const result = this.listStore.getChartTypes();
+
+        if (result.length < 1) {
+            this.listStore.showWidgets = false;
+            return null;
+        }
+
+        return {
+            label: this.listStore.appStrings.LBL_CHARTS || '',
+            klass: {
+                'settings-button': true,
+                active: this.listStore.showWidgets
+            },
+            icon: 'pie',
+            onClick: (): void => {
+                this.listStore.showWidgets = !this.listStore.showWidgets;
             }
         };
     }
