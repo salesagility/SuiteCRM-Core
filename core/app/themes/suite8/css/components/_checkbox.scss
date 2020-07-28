@@ -200,11 +200,16 @@
   display: inline-block;
   position: relative;
   cursor: pointer;
-  font-size: 1.3em;
+  font-size: 1.5em;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.select-action-group .bulk-action-button {
+  min-width: auto;
+  padding-left: 0.3em;
 }
 
 /* Hide the browser's default checkbox */
