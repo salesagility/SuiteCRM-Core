@@ -63,7 +63,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         SystemConfigMappers $mappers,
         array $systemConfigKeyMap,
         array $cacheResetActions,
-        array $navigationTabLimits
+        array $navigationTabLimits,
+        array $listViewColumnLimits
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
@@ -73,6 +74,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['classicview_routing_exclusions'] = $exclusionsManager->get();
         $this->injectedSystemConfigs['cache_reset_actions'] = $cacheResetActions;
         $this->injectedSystemConfigs['navigation_tab_limits'] = $navigationTabLimits;
+        $this->injectedSystemConfigs['listview_column_limits'] = $listViewColumnLimits;
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
     }
