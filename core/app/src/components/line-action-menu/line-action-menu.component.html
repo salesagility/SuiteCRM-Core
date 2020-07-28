@@ -1,0 +1,10 @@
+<div id="line-action-div" class="line-action float-right">
+    <a *ngFor="let item of getLineActions()"
+       [ngClass]="item.key"
+       [routerLink]="item.link.route"
+       [queryParams]="item.link.params"
+    >
+        <scrm-image image="{{ item.icon }}"></scrm-image>
+        {{ item.label }}
+    </a>
+</div>

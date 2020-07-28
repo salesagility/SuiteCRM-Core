@@ -1,0 +1,27 @@
+parameters:
+  module.listview.line_action:
+    default:
+      actions:
+        create:
+          key: create
+          labelKey: LBL_CREATE
+          related_modules:
+            calls:
+              name : create-calls
+              module : calls
+              icon: phone
+            meetings:
+              name : create-meetings
+              module: meetings
+              icon: calendar
+            tasks:
+              name : create-tasks
+              module: tasks
+              icon: list
+            emails:
+              name : create-emails
+              module: emails
+              icon: email
+              action: compose
+          acl:
+            - edit

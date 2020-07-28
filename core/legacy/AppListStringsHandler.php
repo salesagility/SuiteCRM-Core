@@ -7,7 +7,7 @@ namespace SuiteCRM\Core\Legacy;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\AppListStrings;
 
-class AppListStringsHandler extends LegacyHandler
+class AppListStringsHandler extends LegacyHandler implements AppListStringsProviderInterface
 {
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
     public const HANDLER_KEY = 'app-list-strings';

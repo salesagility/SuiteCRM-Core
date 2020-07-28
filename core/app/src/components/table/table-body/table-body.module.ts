@@ -7,6 +7,7 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {CdkTableModule} from '@angular/cdk/table';
 import {FieldModule} from '@fields/field.module';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
+import {LineActionModule} from '@components/line-action-menu/line-action-menu.module';
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -18,6 +19,7 @@ import {SortButtonModule} from '@components/sort-button/sort-button.module';
         CdkTableModule,
         FieldModule,
         SortButtonModule,
+        LineActionModule
     ]
 })
 export class TablebodyUiModule {

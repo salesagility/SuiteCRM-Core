@@ -32,6 +32,13 @@
             </td>
         </ng-container>
 
+        <ng-container cdkColumnDef="line-actions">
+            <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+            <td cdk-cell *cdkCellDef="let record">
+                <scrm-line-action-menu [listMetaData]="vm.listMetadata" [record]="record"></scrm-line-action-menu>
+            </td>
+        </ng-container>
+
         <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
         <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
     </table>

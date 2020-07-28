@@ -7,6 +7,7 @@ use App\Entity\ViewDefinition;
 use App\Service\BulkActionDefinitionProviderInterface;
 use App\Service\ChartDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
+use App\Service\LineActionDefinitionProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ViewDefinitionsProviderInterface;
 use Exception;
@@ -48,6 +49,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $bulkActionDefinitionProvider;
 
     /**
+     * @var LineActionDefinitionProviderInterface
+     */
+    private $lineActionDefinitionProvider;
+
+    /**
      * @var ChartDefinitionProviderInterface
      */
     private $chartDefinitionProvider;
@@ -67,7 +73,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
 
     /**
-     * SystemConfigHandler constructor.
+     * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
@@ -77,6 +83,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
      * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
      * @param ChartDefinitionProviderInterface $chartDefinitionProvider
+     * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      */
     public function __construct(
         string $projectDir,
@@ -87,13 +94,16 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
-        ChartDefinitionProviderInterface $chartDefinitionProvider
-    ) {
+        ChartDefinitionProviderInterface $chartDefinitionProvider,
+        LineActionDefinitionProviderInterface $lineActionDefinitionProvider
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
         $this->chartDefinitionProvider = $chartDefinitionProvider;
+        $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
     }
 
     /**
@@ -188,11 +198,13 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
         $metadata = [
             'columns' => [],
             'bulkActions' => [],
-            'availableCharts' => []
+            'lineActions' => [],
+            'availableCharts' => [],
         ];
 
         /* @noinspection PhpIncludeInspection */
@@ -208,6 +220,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         $metadata['columns'] = $data;
         $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions($module);
+        $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module);
         $metadata['availableCharts'] = $this->chartDefinitionProvider->getCharts($module);
 
         return $metadata;

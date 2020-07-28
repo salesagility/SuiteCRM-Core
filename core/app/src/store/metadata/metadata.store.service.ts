@@ -5,6 +5,7 @@ import {RecordGQL} from '@services/api/graphql-api/api.record.get';
 import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
+import {MenuItemLink} from '@components/navbar/navbar.abstract';
 
 export interface ChartType {
     key: string;
@@ -27,9 +28,23 @@ export interface BulkActionsMap {
     [key: string]: BulkAction;
 }
 
+export interface LineAction {
+    key: string;
+    labelKey: string;
+    module: string;
+    legacyModuleName: string;
+    icon: string;
+    action: string;
+    params: { [key: string]: any };
+    mapping: { [key: string]: any };
+    link: MenuItemLink
+    acl: string[];
+}
+
 export interface ListViewMeta {
     fields: ListField[];
     bulkActions: BulkActionsMap;
+    lineActions: LineAction[];
     chartTypes: ChartTypesMap;
 }
 
@@ -257,6 +272,7 @@ export class MetadataStore implements StateStore {
                         const listViewMeta: ListViewMeta = {
                             fields: [],
                             bulkActions: {},
+                            lineActions: [],
                             chartTypes: {}
                         };
 
@@ -270,6 +286,10 @@ export class MetadataStore implements StateStore {
 
                         if (data.viewDefinition.listView.bulkActions) {
                             listViewMeta.bulkActions = data.viewDefinition.listView.bulkActions;
+                        }
+
+                        if (data.viewDefinition.listView.lineActions) {
+                            listViewMeta.lineActions = data.viewDefinition.listView.lineActions;
                         }
 
                         if (data.viewDefinition.listView.availableCharts) {

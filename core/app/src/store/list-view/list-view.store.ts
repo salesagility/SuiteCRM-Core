@@ -19,7 +19,7 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {BulkActionsMap, LineAction, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';

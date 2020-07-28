@@ -52,6 +52,10 @@ export class TableBodyComponent {
             const columns = this.buildDisplayColumns(listMetadata);
             displayedColumns.push(...columns);
 
+            if (listMetadata.lineActions.length) {
+                displayedColumns.push('line-actions');
+            }
+
             return {
                 language,
                 listMetadata,
