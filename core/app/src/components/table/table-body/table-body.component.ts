@@ -29,7 +29,8 @@ export class TableBodyComponent {
         this.listMetadata$,
         this.selection$,
         this.screenSize.screenSize$,
-        this.data.widgets$
+        this.data.widgets$,
+        this.data.records$
     ]).pipe(
         map((
             [
@@ -37,7 +38,8 @@ export class TableBodyComponent {
                 listMetadata,
                 selection,
                 screenSize,
-                widgets
+                widgets,
+                records
             ]
         ) => {
             const displayedColumns: string[] = ['checkbox'];
@@ -62,6 +64,7 @@ export class TableBodyComponent {
                 selected: selection.selected,
                 selectionStatus: selection.status,
                 displayedColumns,
+                records
             };
         })
     );

@@ -42,4 +42,5 @@
         <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
         <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
     </table>
+    <div *ngIf="vm.records.length === 0"><p class="lead text-center pt-3">{{vm.language.appStrings.MSG_LIST_VIEW_NO_RESULTS_BASIC}}</p></div>
 </ng-container>
