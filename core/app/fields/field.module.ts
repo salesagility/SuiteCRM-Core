@@ -1,12 +1,9 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManifest} from '@base/app-manager/app-manifest';
 import {FieldComponent} from './field.component';
 import {DynamicModule} from 'ng-dynamic-component';
 import {fieldComponents, fieldModules} from './field.manifest';
-
-const manifest: AppManifest[] = [];
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -18,7 +15,8 @@ const manifest: AppManifest[] = [];
     imports: [
         ...fieldModules,
         CommonModule,
-        DynamicModule.withComponents(fieldComponents)
+        DynamicModule.withComponents(fieldComponents),
+        RouterModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

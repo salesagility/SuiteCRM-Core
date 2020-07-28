@@ -28,12 +28,12 @@ export interface BulkActionsMap {
 }
 
 export interface ListViewMeta {
-    fields: Field[];
+    fields: ListField[];
     bulkActions: BulkActionsMap;
     chartTypes: ChartTypesMap;
 }
 
-export interface Field {
+export interface ListField {
     fieldName: string;
     width: string;
     label: string;
@@ -93,7 +93,7 @@ export class MetadataStore implements StateStore {
     /**
      * Public long-lived observable streams
      */
-    fields$: Observable<Field[]>;
+    fields$: Observable<ListField[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
     metadata$: Observable<Metadata>;
@@ -261,7 +261,7 @@ export class MetadataStore implements StateStore {
                         };
 
                         if (data.viewDefinition.listView.columns) {
-                            data.viewDefinition.listView.columns.forEach((field: Field) => {
+                            data.viewDefinition.listView.columns.forEach((field: ListField) => {
                                 listViewMeta.fields.push(
                                     field
                                 );

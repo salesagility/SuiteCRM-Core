@@ -1,0 +1,20 @@
+<ng-container *ngIf="isLink()">
+    <a [routerLink]="getLink()">
+        <ndc-dynamic
+                [ndcDynamicComponent]="componentType"
+                [ndcDynamicInputs]="{
+                'field': field,
+                'klass': klass
+            }"
+        ></ndc-dynamic>
+    </a>
+</ng-container>
+<ng-container *ngIf="!isLink()">
+    <ndc-dynamic
+            [ndcDynamicComponent]="componentType"
+            [ndcDynamicInputs]="{
+            'field': field,
+            'klass': klass
+        }"
+    ></ndc-dynamic>
+</ng-container>

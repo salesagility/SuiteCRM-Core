@@ -229,6 +229,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         if ($column['fieldName'] === 'email1') {
             $column['type'] = 'email';
+            $column['link'] = false;
         }
 
         return $column;

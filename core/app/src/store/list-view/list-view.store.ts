@@ -30,8 +30,9 @@ export interface FieldMap {
     [key: string]: any;
 }
 
-export interface ListEntry {
+export interface Record {
     type: string;
+    module: string;
     attributes: FieldMap;
     id?: string;
 }
@@ -93,7 +94,7 @@ const initialSelection: RecordSelection = {
 };
 
 export interface ListViewData {
-    records: ListEntry[];
+    records: Record[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
     sort?: SortingSelection;
@@ -108,7 +109,7 @@ export interface ListViewModel {
 }
 
 export interface ListData {
-    records: ListEntry[];
+    records: Record[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
     sort?: SortingSelection;
@@ -136,7 +137,7 @@ const initialState: ListViewState = {
 
 export interface ListViewState {
     module: string;
-    records: ListEntry[];
+    records: Record[];
     criteria: SearchCriteria;
     sort: SortingSelection;
     pagination: Pagination;
@@ -147,12 +148,12 @@ export interface ListViewState {
 
 @Injectable()
 export class ListViewStore extends ViewStore
-    implements StateStore, DataSource<ListEntry>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource {
+    implements StateStore, DataSource<Record>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource {
 
     /**
      * Public long-lived observable streams
      */
-    records$: Observable<ListEntry[]>;
+    records$: Observable<Record[]>;
     criteria$: Observable<SearchCriteria>;
     sort$: Observable<SortingSelection>;
     pagination$: Observable<Pagination>;
@@ -623,7 +624,7 @@ export class ListViewStore extends ViewStore
      * @param {object} records list
      * @param {object} pagination info
      */
-    protected calculatePageCount(records: ListEntry[], pagination: Pagination): void {
+    protected calculatePageCount(records: Record[], pagination: Pagination): void {
         const recordCount = (records && records.length) || 0;
         let pageFirst = 0;
         let pageLast = 0;

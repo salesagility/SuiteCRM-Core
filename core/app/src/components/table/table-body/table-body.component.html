@@ -24,8 +24,11 @@
                 <scrm-sort-button *ngIf="column.sortable" [state]="getFieldSort(column)"></scrm-sort-button>
             </th>
             <td cdk-cell *cdkCellDef="let record">
-                <scrm-field [mode]="'list'" [type]="column.type"
-                            [field]="{type: column.type, value: record.attributes[column.fieldName]}"></scrm-field>
+                <scrm-field [mode]="'list'"
+                            [type]="column.type"
+                            [field]="getField(column, record)"
+                            [record]="record">
+                </scrm-field>
             </td>
         </ng-container>
 

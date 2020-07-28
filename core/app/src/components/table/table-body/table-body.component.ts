@@ -1,13 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {Field, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
+import {ListField, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
-import {ListViewStore, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
+import {ListViewStore, Record, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {Field} from '@fields/field.model';
 
 @Component({
     selector: 'scrm-table-body',
@@ -123,7 +124,7 @@ export class TableBodyComponent {
         return this.language.getFieldLabel(label, module, languages);
     }
 
-    getFieldSort(field: Field): SortDirectionDataSource {
+    getFieldSort(field: ListField): SortDirectionDataSource {
         return {
             getSortDirection: (): Observable<SortDirection> => this.sort$.pipe(
                 map((sort: SortingSelection) => {
@@ -140,6 +141,17 @@ export class TableBodyComponent {
                 this.changeSort(field.fieldName, direction);
             }
         } as SortDirectionDataSource;
+    }
+
+    getField(column: ListField, record: Record): Field {
+        return {
+            type: column.type,
+            value: record.attributes[column.fieldName],
+            metadata: {
+                link: column.link,
+            },
+            labelKey: column.label
+        } as Field;
     }
 
     protected changeSort(orderBy: string, sortOrder: SortDirection): void {

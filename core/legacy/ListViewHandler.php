@@ -137,6 +137,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
 
             $array = [
                 'type' => $bean->object_name,
+                'module' => $this->moduleNameMapper->toFrontEnd($bean->module_name),
                 'id' => $id,
                 'attributes' => $array,
                 'relationships' => []

@@ -143,4 +143,16 @@ export class ModuleNavigation {
 
         return label || '';
     }
+
+    /**
+     * Get record router link route info
+     *
+     * @param {string} module name
+     * @param {string} id fo the record
+     * @returns {string} router link
+     */
+    public getRecordRouterLink(module: string, id: string): string {
+
+        return `/${module}/record/${id}`;
+    }
 }

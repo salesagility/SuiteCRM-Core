@@ -7,10 +7,4 @@ import {BaseFieldComponent} from '@fields/base/base-field.component';
     styleUrls: []
 })
 export class VarcharDetailFieldComponent extends BaseFieldComponent {
-    link(): boolean {
-        if (this.field.metadata && this.field.metadata.link) {
-            return this.field.metadata.link;
-        }
-        return false;
-    }
 }
