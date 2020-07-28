@@ -317,6 +317,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     {
         $field = array_merge(self::$listViewColumnInterface, $field);
 
+        if (!isset($vardefs[$key])) {
+            return $field;
+        }
+
         if (!isset($field['type']) || empty($field['type'])) {
             $field['type'] = $vardefs[$key]['type'];
         }
@@ -340,7 +344,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (isset($definition['layout'][$type])) {
 
             foreach ($definition['layout'][$type] as $key => $field) {
-                $name = $field['name'];
+                $name = $field['name'] ?? '';
+
+                if (empty($name)) {
+                    $name = $field['fieldName'] ?? '';
+                }
 
                 if ($this->useRangeSearch($module, $searchDefs, $name)) {
                     $definition['layout'][$type][$key]['enable_range_search'] = true;
