@@ -6,7 +6,6 @@ import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {ListComponent} from '@views/list/list.component';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
-import {BaseListResolver} from '@services/metadata/base-list.resolver';
 import {BaseModuleResolver} from '@base/services/metadata/base-module.resolver';
 import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
 import {RecordComponent} from '@views/record/record.component';
@@ -20,39 +19,22 @@ import {RecordViewGuard} from '@services/record-view/record-view-guard.service';
 export function moduleMatcher(segments: UrlSegment[]): UrlMatchResult | null {
 
     const modules = [
-        'aclroles',
-        'aclactions',
         'prospectlists',
         'projecttask',
-        'emailmarketing',
-        'schedulersjobs',
         'emailtemplates',
         'documentrevisions',
-        'inboundemail',
         'savedsearch',
         'userpreferences',
-        'emailaddresses',
         'am_projecttemplates',
         'am_tasktemplates',
-        'favorites',
-        'reminders_invitees',
-        'calls_reschedule',
-        'securitygroups',
-        'outboundemailaccounts',
         'templatesectionline',
-        'calls',
         'calls-reschedule',
-        'meetings',
-        'tasks',
         'notes',
         'leads',
         'contacts',
         'accounts',
         'opportunities',
-        'emails',
         'email-templates',
-        'inbound-email',
-        'mail-merge',
         'campaigns',
         'targets',
         'prospects',
@@ -65,16 +47,9 @@ export function moduleMatcher(segments: UrlSegment[]): UrlMatchResult | null {
         'resource-calendar',
         'business-hours',
         'spots',
-        'acl',
-        'acl-roles',
-        'acl-actions',
         'roles',
-        'configurator',
-        'user-preferences',
         'users',
         'employees',
-        'eapm',
-        'outbound-email-accounts',
         'template-section-line',
         'surveys',
         'survey-responses',
@@ -96,11 +71,6 @@ export function moduleMatcher(segments: UrlSegment[]): UrlMatchResult | null {
         'products',
         'quotes',
         'products-quotes',
-        'line-item-groups',
-        'maps',
-        'markers',
-        'areas',
-        'address-cache',
         'case-events',
         'case-updates',
         'reports',
@@ -112,20 +82,9 @@ export function moduleMatcher(segments: UrlSegment[]): UrlMatchResult | null {
         'workflow-actions',
         'workflow-processed',
         'workflow-conditions',
-        'currencies',
-        'trackers',
         'email-marketing',
         'email-addresses',
-        'schedulers',
-        'schedulers-jobs',
-        'campaign-trackers',
-        'campaign-log',
-        'emailman',
-        'groups',
         'document-revisions',
-        'alerts',
-        'my-settings',
-        'alert',
     ];
 
     const action = [
@@ -179,7 +138,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            metadata: BaseListResolver
+            metadata: BaseModuleResolver
         },
         data: {
             reuseRoute: false,
@@ -192,8 +151,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            view: BaseModuleResolver,
-            metadata: BaseListResolver
+            metadata: BaseModuleResolver
         },
         data: {
             reuseRoute: false,

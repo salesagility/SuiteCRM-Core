@@ -9,6 +9,8 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {AppStateStore} from '@store/app-state/app-state.store';
+import {MessageService} from '@services/message/message.service';
+import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -20,7 +22,9 @@ export class BaseMetadataResolver implements Resolve<any> {
         protected navigationStore: NavigationStore,
         protected userPreferenceStore: UserPreferenceStore,
         protected themeImagesStore: ThemeImagesStore,
-        protected appState: AppStateStore
+        protected appState: AppStateStore,
+        protected moduleNameMapper: ModuleNameMapper,
+        protected messageService: MessageService,
     ) {
     }
 
@@ -179,5 +183,45 @@ export class BaseMetadataResolver implements Resolve<any> {
         }
 
         return route.data.load.preferences !== false;
+    }
+
+    protected addMetadataLoadErrorMessage(): void {
+        let message = this.languageStore.getAppString('LBL_ERROR_FETCHING_METADATA');
+
+        if (!message) {
+            message = 'Error occurred while fetching metadata';
+        }
+
+        this.messageService.addDangerMessage(message);
+    }
+
+    /**
+     * Calculate the active module
+     *
+     * @param {{}} route active
+     * @returns {string} active module
+     */
+    protected calculateActiveModule(route: ActivatedRouteSnapshot): string {
+
+        let module = route.params.module;
+        const parentModuleParam = this.getParentModuleMap()[module] || '';
+        const parentModule = route.queryParams[parentModuleParam] || '';
+
+        if (parentModule) {
+            module = this.moduleNameMapper.toFrontend(parentModule);
+        }
+        return module;
+    }
+
+    /**
+     * Get Parent Module Map
+     *
+     * @returns {{}} parent module map
+     */
+    protected getParentModuleMap(): { [key: string]: string } {
+        return {
+            'merge-records': 'return_module',
+            import: 'import_module'
+        };
     }
 }
