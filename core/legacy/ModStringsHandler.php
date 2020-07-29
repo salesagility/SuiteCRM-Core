@@ -86,14 +86,17 @@ class ModStringsHandler extends LegacyHandler
         $allModStringsArray = [];
         foreach ($modules as $module) {
             $frontendName = $this->moduleNameMapper->toFrontEnd($module);
-            $allModStringsArray[$frontendName] = return_module_language($language, $module);
+            $moduleStrings =  return_module_language($language, $module);
+            if (!empty($moduleStrings)){
+                $moduleStrings = $this->removeEndingColon($moduleStrings);
+            }
+            $allModStringsArray[$frontendName] = $moduleStrings;
         }
 
 
         if (empty($allModStringsArray)) {
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
         }
-
 
         $modStrings = new ModStrings();
         $modStrings->setId($language);
@@ -102,5 +105,22 @@ class ModStringsHandler extends LegacyHandler
         $this->close();
 
         return $modStrings;
+    }
+
+    /**
+     * @param array $stringArray
+     * @return array
+     */
+    protected function removeEndingColon(array $stringArray): array
+    {
+        $stringArray = array_map(static function ($label) {
+            if (is_string($label)) {
+                return preg_replace('/:$/', '', $label);
+            }
+
+            return $label;
+        }, $stringArray);
+
+        return $stringArray;
     }
 }

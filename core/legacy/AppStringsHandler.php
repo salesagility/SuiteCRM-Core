@@ -69,6 +69,8 @@ class AppStringsHandler extends LegacyHandler
             $this->injectModuleLanguage($language, $module, $languageKeys, $appStringsArray);
         }
 
+        $appStringsArray = $this->removeEndingColon($appStringsArray);
+
         $appStrings = new AppStrings();
         $appStrings->setId($language);
         $appStrings->setItems($appStringsArray);
@@ -105,5 +107,22 @@ class AppStringsHandler extends LegacyHandler
         }
 
         return;
+    }
+
+    /**
+     * @param array $appStringsArray
+     * @return array
+     */
+    protected function removeEndingColon(array $appStringsArray): array
+    {
+        $appStringsArray = array_map(static function ($label) {
+            if (is_string($label)) {
+                return preg_replace('/:$/', '', $label);
+            }
+
+            return $label;
+        }, $appStringsArray);
+
+        return $appStringsArray;
     }
 }
