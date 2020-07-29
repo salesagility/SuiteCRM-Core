@@ -49,6 +49,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
      * @param array $navigationTabLimits
+     * @param array $listViewColumnLimits
      */
     public function __construct(
         string $projectDir,

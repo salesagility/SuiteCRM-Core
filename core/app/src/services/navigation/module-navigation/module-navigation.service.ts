@@ -114,25 +114,31 @@ export class ModuleNavigation {
      * @param {string} module name
      * @param {object} item action
      * @param {object} languages map
+     * @param {string} labelKey to use
      * @returns {string} label
      */
-    public getActionLabel(module: string, item: ModuleAction, languages: LanguageStrings): string {
+    public getActionLabel(module: string, item: ModuleAction, languages: LanguageStrings, labelKey = ''): string {
         if (!languages || !languages.modStrings || !item || !module) {
             return '';
         }
 
-        let label = languages.modStrings[module] && languages.modStrings[module][item.labelKey];
+        let key = labelKey;
+        if (!key) {
+            key = item.labelKey;
+        }
+
+        let label = languages.modStrings[module] && languages.modStrings[module][key];
 
         if (!label) {
-            label = languages.appStrings && languages.appStrings[item.labelKey];
+            label = languages.appStrings && languages.appStrings[key];
         }
 
         if (!label && item.module) {
-            label = languages.modStrings[item.module] && languages.modStrings[item.module][item.labelKey];
+            label = languages.modStrings[item.module] && languages.modStrings[item.module][key];
         }
 
         if (!label) {
-            label = languages.modStrings.administration && languages.modStrings.administration[item.labelKey];
+            label = languages.modStrings.administration && languages.modStrings.administration[key];
         }
 
         return label || '';

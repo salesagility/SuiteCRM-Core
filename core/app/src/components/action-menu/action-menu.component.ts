@@ -18,7 +18,7 @@ export class ActionMenuComponent {
             return [];
         }
 
-        return this.listStore.vm.appData.module.menu;
+        return this.listStore.vm.appData.module.menu.filter(action => !(action.name === 'List' || action.name === 'View'));
     }
 
     public getButtonConfig(action: ModuleAction): ButtonInterface {
@@ -33,10 +33,14 @@ export class ActionMenuComponent {
 
         const module = this.listStore.vm.appData.appState.module;
         const language = this.listStore.vm.appData.language;
+        let labelKey = '';
+        if (action.actionLabelKey) {
+            labelKey = action.actionLabelKey;
+        }
 
         return {
             klass: 'action-button',
-            label: this.actionHandler.getActionLabel(module, action, language),
+            label: this.actionHandler.getActionLabel(module, action, language, labelKey),
             onClick: (): void => {
                 this.actionHandler.navigate(action).then();
             }

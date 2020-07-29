@@ -145,6 +145,22 @@ class SystemConfigHandlerTest extends Unit
             'XLarge' => 12
         ];
 
+        $listViewColumnLimits = [
+            'without_sidebar' => [
+                'XSmall' => 4,
+                'Small' => 4,
+                'Medium' => 6,
+                'Large' => 10,
+                'XLarge' => 12
+            ],
+            'with_sidebar' => [
+                'XSmall' => 4,
+                'Small' => 4,
+                'Medium' => 6,
+                'Large' => 10,
+                'XLarge' => 12
+            ]
+        ];
 
         $this->handler = new SystemConfigHandler(
             $projectDir,
@@ -159,7 +175,8 @@ class SystemConfigHandlerTest extends Unit
             $mappers,
             $systemConfigKeyMap,
             $cacheResetActions,
-            $navigationTabLimits
+            $navigationTabLimits,
+            $listViewColumnLimits
         );
     }
 

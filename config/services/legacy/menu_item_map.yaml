@@ -7,10 +7,13 @@ parameters:
                 icon: view
             Add:
                 icon: plus
+                actionLabelKey: LBL_NEW
             Create:
                 icon: plus
+                actionLabelKey: LBL_NEW
             Import:
                 icon: download
+                actionLabelKey: LBL_IMPORT
             Security_Groups:
                 icon: view
             Schedule_Call:

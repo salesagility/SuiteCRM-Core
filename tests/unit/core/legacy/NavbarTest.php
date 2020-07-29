@@ -353,6 +353,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'accounts'
                     ],
                     [
@@ -364,6 +365,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'view',
+                        'actionLabelKey' => '',
                         'module' => 'accounts'
                     ],
                     [
@@ -376,6 +378,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'download',
+                        'actionLabelKey' => '',
                         'module' => 'import'
                     ]
                 ]
@@ -395,6 +398,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'contacts'
                     ],
                     [
@@ -403,6 +407,7 @@ final class NavbarTest extends Unit
                         'url' => './#/contacts/importvcard',
                         'params' => [],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'contacts'
                     ],
                     [
@@ -414,6 +419,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'view',
+                        'actionLabelKey' => '',
                         'module' => 'contacts'
                     ],
                     [
@@ -426,6 +432,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'download',
+                        'actionLabelKey' => '',
                         'module' => 'import'
                     ]
                 ]
@@ -445,6 +452,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'opportunities'
                     ],
                     [
@@ -456,6 +464,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'view',
+                        'actionLabelKey' => '',
                         'module' => 'opportunities'
                     ],
                     [
@@ -468,6 +477,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'download',
+                        'actionLabelKey' => '',
                         'module' => 'import'
                     ]
                 ]
@@ -487,6 +497,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'leads'
                     ],
                     [
@@ -495,6 +506,7 @@ final class NavbarTest extends Unit
                         'url' => './#/leads/importvcard',
                         'params' => [],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'leads'
                     ],
                     [
@@ -506,6 +518,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'view',
+                        'actionLabelKey' => '',
                         'module' => 'leads'
                     ],
                     [
@@ -518,6 +531,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'index'
                         ],
                         'icon' => 'download',
+                        'actionLabelKey' => '',
                         'module' => 'import'
                     ]
                 ]
@@ -537,6 +551,7 @@ final class NavbarTest extends Unit
                             'return_action' => 'DetailView'
                         ],
                         'icon' => 'plus',
+                        'actionLabelKey' => '',
                         'module' => 'documents'
                     ],
                     [
@@ -545,6 +560,7 @@ final class NavbarTest extends Unit
                         'url' => './#/documents/index',
                         'params' => [],
                         'icon' => 'view',
+                        'actionLabelKey' => '',
                         'module' => 'documents'
                     ]
                 ]

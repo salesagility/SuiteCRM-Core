@@ -42,6 +42,7 @@ export interface UserActionMenu {
 export interface ModuleAction {
     name: string;
     labelKey: string;
+    actionLabelKey?: string;
     label?: string;
     url: string;
     params?: string;
