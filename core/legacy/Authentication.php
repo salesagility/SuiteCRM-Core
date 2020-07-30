@@ -49,7 +49,9 @@ class Authentication extends LegacyHandler
 
         $authController = $this->getAuthenticationController();
 
-        $PARAMS = [];
+        $PARAMS = [
+            'ignoreTimeZoneRedirect' => true,
+        ];
 
         $result = $authController->login($username, $password, $PARAMS);
 
