@@ -1,10 +1,18 @@
 <div class="mt-2 mb-2 ml-1 mr-1">
     <div class="container">
         <div class="row">
+            <form class="login-form mr-3 ml-1 mb-3 mt-0 w-100">
+                <select class="form-control w-100">
+                    <option [value]="chartKey"
+                            [selected]="true">{{chartLabel}}</option>
+                </select>
+            </form>
             <div class="pipeline-chart col-xs">
                 <scrm-dropdown-button *ngIf="false" [config]="getDropdownConfig()"></scrm-dropdown-button>
                 <scrm-vertical-bar-chart *ngIf="type === 'bar' && dataSource"
                                          [dataSource]="dataSource"></scrm-vertical-bar-chart>
+                <scrm-pie-grid-chart *ngIf="type === 'pie-grid' && dataSource"
+                                     [dataSource]="dataSource"></scrm-pie-grid-chart>
                 <p *ngIf="!dataSource" class="lead text-center pt-3">Chart not found</p>
             </div>
             <div class="donut-chart col-xs" *ngIf="false">

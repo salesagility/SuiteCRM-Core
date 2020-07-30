@@ -1,5 +1,6 @@
 <ngx-charts-bar-vertical *ngIf="results"
                          (window:resize)="onResize()"
+                         [animations]="false"
                          [results]="results"
                          [view]="view"
                          [scheme]="dataSource.scheme"

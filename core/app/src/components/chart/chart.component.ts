@@ -5,6 +5,7 @@ import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {PipelineBySalesStage} from '@components/chart/types/pipeline-by-sales-stage/pipeline-by-sales-stage.service';
+import {LeadsByStatus} from '@components/chart/types/leads-by-status/leads-by-status.service';
 
 export interface ChartTypesDataSource {
     getChartTypes(): Observable<ChartTypesMap>;
@@ -19,11 +20,12 @@ export interface ChartsViewModel {
     selector: 'scrm-chart-ui',
     templateUrl: './chart.component.html',
     styleUrls: [],
-    providers: [PipelineBySalesStage]
+    providers: [PipelineBySalesStage, LeadsByStatus]
 })
 export class ChartUiComponent {
-    type: string;
-    chartKey: any;
+    type = '';
+    chartKey = '';
+    chartLabel = '';
     dataSource;
     private dataSourceMap: { [key: string]: any } = {};
 
@@ -31,17 +33,21 @@ export class ChartUiComponent {
     constructor(
         protected languageStore: LanguageStore,
         protected listStore: ListViewStore,
-        protected pipelineBySalesStageListDataSource: PipelineBySalesStage
+        protected pipelineBySalesStageListDataSource: PipelineBySalesStage,
+        protected leadsByStatus: LeadsByStatus
     ) {
         this.dataSourceMap[this.pipelineBySalesStageListDataSource.key] = this.pipelineBySalesStageListDataSource;
+        this.dataSourceMap[this.leadsByStatus.key] = this.leadsByStatus;
     }
 
     ngOnInit(): void {
         const chartTypes = this.listStore.getChartTypes();
-
-        this.chartKey = chartTypes.key;
-        this.dataSource = this.dataSourceMap[this.chartKey];
-        this.type = chartTypes.type;
+        if (chartTypes) {
+            this.chartKey = chartTypes.key;
+            this.dataSource = this.dataSourceMap[this.chartKey];
+            this.type = chartTypes.type;
+            this.chartLabel = this.languageStore.getAppString(chartTypes.labelKey);
+        }
     }
 
     getDropdownConfig(): DropdownButtonInterface {

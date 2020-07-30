@@ -4,17 +4,18 @@ import {
     VerticalBarChartResult
 } from '@components/chart/charts/vertical-bar-chart/vertical-bar-chart.model';
 import {Observable} from 'rxjs';
-import {ListEntry, ListViewStore} from '@store/list-view/list-view.store';
+import {Record, ListViewStore} from '@store/list-view/list-view.store';
 import {map} from 'rxjs/operators';
+import {LanguageStore} from '@store/language/language.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 
 @Injectable()
 export class PipelineBySalesStage implements VerticalBarChartDataSource {
 
     key = 'pipeline_by_sales_state';
     chartType = 'vertical-bar-chart';
-    scheme = {
-        domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
-    };
+    scheme = 'picnic';
     xAxis = true;
     yAxis = true;
     gradient = false;
@@ -25,14 +26,20 @@ export class PipelineBySalesStage implements VerticalBarChartDataSource {
     yAxisLabel = 'Amount';
     tickFormatting = this.yAxisTickFormatting.bind(this);
 
-    constructor(protected listStore: ListViewStore) {
+    constructor(
+        protected listStore: ListViewStore,
+        protected languageStore: LanguageStore,
+        protected preferences: UserPreferenceStore,
+        protected configs: SystemConfigStore
+    ) {
     }
 
     getResults(): Observable<VerticalBarChartResult[]> {
-        return this.listStore.records$.pipe(map((records: ListEntry[]) => {
+        return this.listStore.records$.pipe(map((records: Record[]) => {
             const results: VerticalBarChartResult[] = [];
 
             const group: { [key: string]: VerticalBarChartResult } = {};
+            const salesStageLabels = this.languageStore.getAppListString('sales_stage_dom');
 
             if (records) {
                 records.forEach(record => {
@@ -47,9 +54,8 @@ export class PipelineBySalesStage implements VerticalBarChartDataSource {
                     }
 
                     if (!group[name]) {
-
+                        // const label = salesStageLabels[name] || name;
                         group[name] = {name, value};
-
                         return;
                     }
 
@@ -66,10 +72,10 @@ export class PipelineBySalesStage implements VerticalBarChartDataSource {
     }
 
     yAxisTickFormatting(value: any): string {
-        return value + ' $';
+        return '$' + value;
     }
 
     tooltipFormatting(value: any): any {
-        return value + ' $';
+        return '$' + value;
     }
 }

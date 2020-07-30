@@ -3,39 +3,31 @@ import {
     VerticalBarChartDataSource,
     VerticalBarChartResult
 } from '@components/chart/charts/vertical-bar-chart/vertical-bar-chart.model';
+import {BaseChartComponent} from '@components/chart/charts/base-chart/base-chart.component';
 
 @Component({
     selector: 'scrm-vertical-bar-chart',
     templateUrl: './vertical-bar-chart.component.html',
     styleUrls: []
 })
-export class VerticalBarChartComponent implements OnInit {
+export class VerticalBarChartComponent extends BaseChartComponent implements OnInit {
     @Input() dataSource: VerticalBarChartDataSource;
 
     results: VerticalBarChartResult[];
-    width = 300;
-    view = [300, this.width];
 
     constructor() {
-        this.calculateView();
+        super();
     }
 
     ngOnInit(): void {
-        if (this.dataSource.width) {
-            this.width = this.dataSource.width;
+        if (this.dataSource.height) {
+            this.height = this.dataSource.height;
         }
+
+        this.calculateView();
 
         this.dataSource.getResults().subscribe(value => {
             this.results = value;
         });
-    }
-
-
-    onResize(): void {
-        this.calculateView();
-    }
-
-    protected calculateView(): void {
-        this.view = [window.innerWidth * 0.22, this.width];
     }
 }

@@ -10,6 +10,6 @@ parameters:
         labelKey: PIPELINE_BY_SALES_STAGE
         type: bar
       leads:
-        key: leads_by_source
-        labelKey: LEADS_BY_SOURCE
-        type: line
+        key: leads_by_status
+        labelKey: LEADS_BY_STATUS
+        type: pie-grid

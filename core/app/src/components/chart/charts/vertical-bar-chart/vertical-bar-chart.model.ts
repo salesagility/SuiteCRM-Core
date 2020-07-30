@@ -6,7 +6,7 @@ export interface VerticalBarChartResult {
 }
 
 export interface VerticalBarChartDataSource {
-    width?: number;
+    height?: number;
     scheme: any;
     gradient: any;
     xAxis: any;
