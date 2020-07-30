@@ -1,7 +1,6 @@
 import {BulkActionHandler, BulkActionHandlerData} from '@services/process/processes/bulk-action/bulk-action.model';
 import {Injectable} from '@angular/core';
 import {MessageService} from '@services/message/message.service';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -9,10 +8,7 @@ import {HttpClient} from '@angular/common/http';
 export class ExportBulkAction extends BulkActionHandler {
     key = 'export';
 
-    constructor(
-        protected message: MessageService,
-        protected http: HttpClient
-    ) {
+    constructor(protected message: MessageService) {
         super();
     }
 

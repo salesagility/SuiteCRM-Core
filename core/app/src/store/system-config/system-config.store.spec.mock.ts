@@ -46,6 +46,27 @@ export const systemConfigMockData = {
                 en_us: 'English (US)',
                 pt_PT: 'Português (Portugal) - pt-PT'
             }
+        },
+        listview_column_limits: {
+            id: '/docroot/api/system-configs/listview_column_limits',
+            _id: 'listview_column_limits',
+            value: null,
+            items: {
+                with_sidebar: {
+                    XSmall: 2,
+                    Small: 3,
+                    Medium: 4,
+                    Large: 6,
+                    XLarge: 7
+                },
+                without_sidebar: {
+                    XSmall: 2,
+                    Small: 3,
+                    Medium: 5,
+                    Large: 7,
+                    XLarge: 8
+                }
+            }
         }
     }
 };
