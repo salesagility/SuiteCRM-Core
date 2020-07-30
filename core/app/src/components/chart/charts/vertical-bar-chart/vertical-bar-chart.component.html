@@ -1,0 +1,16 @@
+<ngx-charts-bar-vertical *ngIf="results"
+                         (window:resize)="onResize()"
+                         [results]="results"
+                         [view]="view"
+                         [scheme]="dataSource.scheme"
+                         [gradient]="dataSource.gradient"
+                         [xAxis]="dataSource.xAxis"
+                         [yAxis]="dataSource.yAxis"
+                         [legend]="dataSource.legend"
+                         [showXAxisLabel]="dataSource.showXAxisLabel"
+                         [showYAxisLabel]="dataSource.showYAxisLabel"
+                         [xAxisLabel]="dataSource.xAxisLabel"
+                         [yAxisLabel]="dataSource.yAxisLabel"
+                         [yAxisTickFormatting]="dataSource.tickFormatting">
+    <ng-template #tooltipTemplate let-model="model">{{ dataSource.tooltipFormatting(model.value) }}</ng-template>
+</ngx-charts-bar-vertical>

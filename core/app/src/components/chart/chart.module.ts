@@ -10,9 +10,10 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {VerticalBarChartComponent} from './charts/vertical-bar-chart/vertical-bar-chart.component';
 
 @NgModule({
-    declarations: [ChartUiComponent],
+    declarations: [ChartUiComponent, VerticalBarChartComponent],
     exports: [ChartUiComponent],
     imports: [
         CommonModule,

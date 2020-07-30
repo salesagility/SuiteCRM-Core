@@ -1,11 +1,10 @@
-import {Component, OnInit, NgModule} from '@angular/core';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ChartTypesMap} from '@store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
-import {ListViewStore, RecordSelection} from '@store/list-view/list-view.store';
-import {BrowserModule} from '@angular/platform-browser';
-import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {PipelineBySalesStage} from '@components/chart/types/pipeline-by-sales-stage/pipeline-by-sales-stage.service';
 
 export interface ChartTypesDataSource {
     getChartTypes(): Observable<ChartTypesMap>;
@@ -19,37 +18,29 @@ export interface ChartsViewModel {
 @Component({
     selector: 'scrm-chart-ui',
     templateUrl: './chart.component.html',
-    styleUrls: []
+    styleUrls: [],
+    providers: [PipelineBySalesStage]
 })
-export class ChartUiComponent implements OnInit {
-    selection$: Observable<RecordSelection> = this.listStore.selection$;
-    data: any[];
-    view: any[] = [500, 300];
-
-    // options
-    legend = false;
-    showLabels = true;
-    animations = true;
-    xAxis = true;
-    yAxis = true;
-    showYAxisLabel = true;
-    showXAxisLabel = true;
-    xAxisLabel: string;
-    yAxisLabel: string;
-    timeline = true;
+export class ChartUiComponent {
     type: string;
+    chartKey: any;
+    dataSource;
+    private dataSourceMap: { [key: string]: any } = {};
 
-    colorScheme = {
-        picnic: ['#a8385d', '#66BD6D', '#FAA026', '#29BB9C', '#E96B56', '#55ACD2']
-    };
 
-    constructor(protected languageStore: LanguageStore, protected listStore: ListViewStore) {
-        Object.assign(this, this.selection$);
+    constructor(
+        protected languageStore: LanguageStore,
+        protected listStore: ListViewStore,
+        protected pipelineBySalesStageListDataSource: PipelineBySalesStage
+    ) {
+        this.dataSourceMap[this.pipelineBySalesStageListDataSource.key] = this.pipelineBySalesStageListDataSource;
     }
 
     ngOnInit(): void {
         const chartTypes = this.listStore.getChartTypes();
 
+        this.chartKey = chartTypes.key;
+        this.dataSource = this.dataSourceMap[this.chartKey];
         this.type = chartTypes.type;
     }
 
@@ -97,17 +88,5 @@ export class ChartUiComponent implements OnInit {
 
 
         return dropdownConfig;
-    }
-
-    onSelect(data): void {
-        console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    }
-
-    onActivate(data): void {
-        console.log('Activate', JSON.parse(JSON.stringify(data)));
-    }
-
-    onDeactivate(data): void {
-        console.log('Deactivate', JSON.parse(JSON.stringify(data)));
     }
 }
