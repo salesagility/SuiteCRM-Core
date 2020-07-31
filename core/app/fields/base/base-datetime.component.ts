@@ -32,7 +32,7 @@ export class BaseDateTimeComponent extends BaseFieldComponent {
             return configs.date_format.value;
         }
 
-        return 'yyyy-mm-dd';
+        return 'yyyy-MM-dd';
     }
 
     getTimeFormat(preferences: UserPreferenceMap, configs: SystemConfigMap): string {

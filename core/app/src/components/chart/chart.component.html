@@ -7,12 +7,14 @@
                             [selected]="true">{{chartLabel}}</option>
                 </select>
             </form>
-            <div class="pipeline-chart col-xs">
+            <div class="col-xs">
                 <scrm-dropdown-button *ngIf="false" [config]="getDropdownConfig()"></scrm-dropdown-button>
                 <scrm-vertical-bar-chart *ngIf="type === 'bar' && dataSource"
                                          [dataSource]="dataSource"></scrm-vertical-bar-chart>
                 <scrm-pie-grid-chart *ngIf="type === 'pie-grid' && dataSource"
                                      [dataSource]="dataSource"></scrm-pie-grid-chart>
+                <scrm-line-chart *ngIf="type === 'line' && dataSource"
+                                     [dataSource]="dataSource"></scrm-line-chart>
                 <p *ngIf="!dataSource" class="lead text-center pt-3">Chart not found</p>
             </div>
             <div class="donut-chart col-xs" *ngIf="false">

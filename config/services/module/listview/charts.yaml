@@ -2,8 +2,8 @@ parameters:
   module.listview.available_charts:
     modules:
       accounts:
-        key: annual_revenue
-        labelKey: ANNUAL_REVENUE_BY_ACCOUNTS
+        key: account_types_per_month
+        labelKey: ACCOUNT_TYPES_PER_MONTH
         type: line
       opportunities:
         key: pipeline_by_sales_state

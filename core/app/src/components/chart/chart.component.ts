@@ -5,7 +5,7 @@ import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {PipelineBySalesStage} from '@components/chart/types/pipeline-by-sales-stage/pipeline-by-sales-stage.service';
-import {AnnualRevenueLineChart} from '@components/chart/types/annual-revenue-line-chart/annual-revenue-line-chart.service';
+import {AccountTypesPerMonthLineChart} from '@components/chart/types/account-types-per-month/account-types-per-month.service';
 import {LeadsByStatus} from '@components/chart/types/leads-by-status/leads-by-status.service';
 
 export interface ChartTypesDataSource {
@@ -21,7 +21,7 @@ export interface ChartsViewModel {
     selector: 'scrm-chart-ui',
     templateUrl: './chart.component.html',
     styleUrls: [],
-    providers: [PipelineBySalesStage, AnnualRevenueLineChart, LeadsByStatus]
+    providers: [PipelineBySalesStage, AccountTypesPerMonthLineChart, LeadsByStatus]
 })
 export class ChartUiComponent {
     type = '';
@@ -34,12 +34,12 @@ export class ChartUiComponent {
     constructor(
         protected languageStore: LanguageStore,
         protected listStore: ListViewStore,
-        protected pipelineBySalesStageListDataSource: PipelineBySalesStage,
-        protected annualRevenueLineChartListDataSource: AnnualRevenueLineChart,
+        protected pipelineBySalesStage: PipelineBySalesStage,
+        protected accountTypesPerMonth: AccountTypesPerMonthLineChart,
         protected leadsByStatus: LeadsByStatus
     ) {
-        this.dataSourceMap[this.pipelineBySalesStageListDataSource.key] = this.pipelineBySalesStageListDataSource;
-        this.dataSourceMap[this.annualRevenueLineChartListDataSource.key] = this.annualRevenueLineChartListDataSource;
+        this.dataSourceMap[this.pipelineBySalesStage.key] = this.pipelineBySalesStage;
+        this.dataSourceMap[this.accountTypesPerMonth.key] = this.accountTypesPerMonth;
         this.dataSourceMap[this.leadsByStatus.key] = this.leadsByStatus;
 
     }
