@@ -1,4 +1,5 @@
 <ngx-charts-bar-vertical *ngIf="results"
+                         class="vertical-bar-chart"
                          (window:resize)="onResize()"
                          [animations]="false"
                          [results]="results"
@@ -8,10 +9,14 @@
                          [xAxis]="dataSource.xAxis"
                          [yAxis]="dataSource.yAxis"
                          [legend]="dataSource.legend"
+                         [legendPosition]="'below'"
                          [showXAxisLabel]="dataSource.showXAxisLabel"
                          [showYAxisLabel]="dataSource.showYAxisLabel"
                          [xAxisLabel]="dataSource.xAxisLabel"
                          [yAxisLabel]="dataSource.yAxisLabel"
                          [yAxisTickFormatting]="dataSource.tickFormatting">
-    <ng-template #tooltipTemplate let-model="model">{{ dataSource.tooltipFormatting(model.value) }}</ng-template>
+    <ng-template #tooltipTemplate let-model="model">
+        <div>{{model.name}}</div>
+        <div>{{ dataSource.tooltipFormatting(model.value) }}</div>
+    </ng-template>
 </ngx-charts-bar-vertical>

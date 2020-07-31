@@ -1,5 +1,9 @@
 /* --------- CHARTS SECTION ---------- */
 
+.vertical-bar-chart .chart-legend .legend-labels li.legend-label {
+    display: list-item;
+}
+
 .line-chart .chart-legend .legend-labels li.legend-label {
   display: list-item;
 }

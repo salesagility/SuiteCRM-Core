@@ -16,10 +16,10 @@ export class PipelineBySalesStage implements VerticalBarChartDataSource {
     key = 'pipeline_by_sales_state';
     chartType = 'vertical-bar-chart';
     scheme = 'picnic';
-    xAxis = true;
+    xAxis = false;
     yAxis = true;
     gradient = false;
-    legend = false;
+    legend = true;
     showXAxisLabel = false;
     xAxisLabel = '';
     showYAxisLabel = false;
