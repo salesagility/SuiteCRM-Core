@@ -11,10 +11,11 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {VerticalBarChartComponent} from './charts/vertical-bar-chart/vertical-bar-chart.component';
+import {LineChartComponent} from '@components/chart/charts/line-chart/line-chart.component';
 import {PieGridChartComponent} from './charts/pie-grid-chart/pie-grid-chart.component';
 
 @NgModule({
-    declarations: [ChartUiComponent, VerticalBarChartComponent, PieGridChartComponent],
+    declarations: [ChartUiComponent, VerticalBarChartComponent, LineChartComponent, PieGridChartComponent],
     exports: [ChartUiComponent],
     imports: [
         CommonModule,

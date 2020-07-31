@@ -1,0 +1,15 @@
+<ngx-charts-line-chart *ngIf="results"
+                       (window:resize)="onResize()"
+                       [animations]="false"
+                       [results]="results"
+                       [view]="view"
+                       [scheme]="dataSource.scheme"
+                       [gradient]="dataSource.gradient"
+                       [xAxis]="dataSource.xAxis"
+                       [yAxis]="dataSource.yAxis"
+                       [legend]="dataSource.legend"
+                       [showXAxisLabel]="dataSource.showXAxisLabel"
+                       [showYAxisLabel]="dataSource.showYAxisLabel"
+                       [xAxisLabel]="dataSource.xAxisLabel"
+                       [yAxisLabel]="dataSource.yAxisLabel">
+</ngx-charts-line-chart>
