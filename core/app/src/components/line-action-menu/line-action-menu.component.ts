@@ -13,29 +13,34 @@ export class LineActionMenuComponent implements OnInit {
     @Input() listMetaData: ListViewMeta;
     @Input() record: Record;
 
+    items: LineAction[];
+
     constructor(protected languageStore: LanguageStore) {
     }
 
     ngOnInit(): void {
+        this.setLineActions();
     }
 
-    getLineActions(): LineAction[] {
+    setLineActions(): void {
         const actions = [];
-
         this.listMetaData.lineActions.forEach(action => {
             const recordAction = {...action};
 
             const params: { [key: string]: any } = {};
             /* eslint-disable camelcase,@typescript-eslint/camelcase*/
             params.return_module = action.legacyModuleName;
-            params.return_action = 'index';
+            params.return_action = action.returnAction;
+            params.return_id = this.record.id;
             /* eslint-enable camelcase,@typescript-eslint/camelcase */
             params[action.mapping.moduleName] = action.legacyModuleName;
 
             params[action.mapping.name] = this.record.attributes.name;
             params[action.mapping.id] = this.record.id;
+
+            recordAction.label = this.languageStore.getAppString(recordAction.labelKey);
             recordAction.link = {
-                label: action.labelKey,
+                label: recordAction.label,
                 url: null,
                 route: '/' + action.module + '/' + action.action,
                 params
@@ -43,6 +48,6 @@ export class LineActionMenuComponent implements OnInit {
 
             actions.push(recordAction);
         });
-        return actions;
+        this.items = actions;
     }
 }

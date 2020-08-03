@@ -1,10 +1,16 @@
-<div id="line-action-div" class="line-action float-right">
-    <a *ngFor="let item of getLineActions()"
-       [ngClass]="item.key"
-       [routerLink]="item.link.route"
-       [queryParams]="item.link.params"
+<div id="line-action-div" class="line-action float-right"
+>
+    <div
+            *ngFor="let item of items"
+            class="line-action-item line-action float-right"
+            placement="left" ngbTooltip="{{ item.label }}"
     >
-        <scrm-image image="{{ item.icon }}"></scrm-image>
-        {{ item.label }}
-    </a>
+        <a
+                [ngClass]="item.key"
+                [routerLink]="item.link.route"
+                [queryParams]="item.link.params"
+        >
+            <scrm-image image="{{ item.icon }}"></scrm-image>
+        </a>
+    </div>
 </div>
