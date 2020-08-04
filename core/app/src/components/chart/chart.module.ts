@@ -13,6 +13,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {VerticalBarChartComponent} from './charts/vertical-bar-chart/vertical-bar-chart.component';
 import {LineChartComponent} from '@components/chart/charts/line-chart/line-chart.component';
 import {PieGridChartComponent} from './charts/pie-grid-chart/pie-grid-chart.component';
+import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 
 @NgModule({
     declarations: [ChartUiComponent, VerticalBarChartComponent, LineChartComponent, PieGridChartComponent],
@@ -26,7 +27,8 @@ import {PieGridChartComponent} from './charts/pie-grid-chart/pie-grid-chart.comp
         BrowserModule,
         FormsModule,
         NgxChartsModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        FullPageSpinnerModule
     ]
 })
 export class ChartUiModule {

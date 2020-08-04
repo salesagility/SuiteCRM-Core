@@ -7,6 +7,7 @@ import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-butt
 import {PipelineBySalesStage} from '@components/chart/types/pipeline-by-sales-stage/pipeline-by-sales-stage.service';
 import {AccountTypesPerMonthLineChart} from '@components/chart/types/account-types-per-month/account-types-per-month.service';
 import {LeadsByStatus} from '@components/chart/types/leads-by-status/leads-by-status.service';
+import {AppState, AppStateStore} from '@store/app-state/app-state.store';
 
 export interface ChartTypesDataSource {
     getChartTypes(): Observable<ChartTypesMap>;
@@ -24,19 +25,20 @@ export interface ChartsViewModel {
     providers: [PipelineBySalesStage, AccountTypesPerMonthLineChart, LeadsByStatus]
 })
 export class ChartUiComponent {
+    appState$: Observable<AppState> = this.appStateStore.vm$;
     type = '';
     chartKey = '';
     chartLabel = '';
     dataSource;
     private dataSourceMap: { [key: string]: any } = {};
 
-
     constructor(
         protected languageStore: LanguageStore,
         protected listStore: ListViewStore,
         protected pipelineBySalesStage: PipelineBySalesStage,
         protected accountTypesPerMonth: AccountTypesPerMonthLineChart,
-        protected leadsByStatus: LeadsByStatus
+        protected leadsByStatus: LeadsByStatus,
+        private appStateStore: AppStateStore
     ) {
         this.dataSourceMap[this.pipelineBySalesStage.key] = this.pipelineBySalesStage;
         this.dataSourceMap[this.accountTypesPerMonth.key] = this.accountTypesPerMonth;

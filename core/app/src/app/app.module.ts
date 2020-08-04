@@ -30,19 +30,17 @@ import {AppManagerModule} from '../app-manager/app-manager.module';
 
 import {environment} from '../environments/environment';
 import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
-import {FullPageSpinnerComponent} from '@components/full-page-spinner/full-page-spinner.component';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 import {ImageModule} from '@components/image/image.module';
 import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
-
+import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        FullPageSpinnerComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,
@@ -67,6 +65,7 @@ import {BnNgIdleService} from 'bn-ng-idle';
         ImageModule,
         BrowserAnimationsModule,
         NgbModule,
+        FullPageSpinnerModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
