@@ -8,6 +8,9 @@ import {ListComponent} from '@views/list/list.component';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 import {BaseListResolver} from '@services/metadata/base-list.resolver';
 import {BaseModuleResolver} from '@base/services/metadata/base-module.resolver';
+import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
+import {RecordComponent} from '@views/record/record.component';
+import {RecordViewGuard} from '@services/record-view/record-view-guard.service';
 
 /**
  * @param {[]} segments of url
@@ -140,11 +143,12 @@ const routes: Routes = [
     },
     {
         path: ':module/:action/:record',
-        component: ClassicViewUiComponent,
-        canActivate: [AuthGuard],
+        component: RecordComponent,
+        canActivate: [AuthGuard, RecordViewGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-            legacyUrl: ClassicViewResolver,
+            view: BaseModuleResolver,
+            metadata: BaseRecordResolver
         },
         data: {
             reuseRoute: false,
