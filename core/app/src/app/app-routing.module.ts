@@ -9,7 +9,6 @@ import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 import {BaseModuleResolver} from '@base/services/metadata/base-module.resolver';
 import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
 import {RecordComponent} from '@views/record/record.component';
-import {RecordViewGuard} from '@services/record-view/record-view-guard.service';
 
 /**
  * @param {[]} segments of url
@@ -204,7 +203,7 @@ const routes: Routes = [
     {
         path: ':module/:action/:record',
         component: RecordComponent,
-        canActivate: [AuthGuard, RecordViewGuard],
+        canActivate: [AuthGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
             view: BaseModuleResolver,

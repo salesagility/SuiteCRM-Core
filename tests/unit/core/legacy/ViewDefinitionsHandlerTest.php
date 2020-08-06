@@ -5,9 +5,11 @@ namespace App\Tests;
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
 use App\Service\ChartDefinitionProvider;
+use App\Service\LineActionDefinitionProvider;
 use Codeception\Test\Unit;
 use Exception;
 use SuiteCRM\Core\Legacy\AclHandler;
+use SuiteCRM\Core\Legacy\AppListStringsHandler;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\ViewDefinitionsHandler;
@@ -126,6 +128,23 @@ final class ViewDefinitionsHandlerTest extends Unit
             $chartDefinitions
         );
 
+        $appListStrings = new AppListStringsHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope
+        );
+
+
+        $lineActionDefinitionProvider = new LineActionDefinitionProvider(
+            [],
+            $aclManager,
+            $fieldDefinitionsHandler,
+            $moduleNameMapper,
+            $appListStrings
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -135,7 +154,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $moduleNameMapper,
             $fieldDefinitionsHandler,
             $bulkActionProvider,
-            $chartDefinitionProvider
+            $chartDefinitionProvider,
+            $lineActionDefinitionProvider
         );
 
         // Needed for aspect mock
@@ -149,7 +169,6 @@ final class ViewDefinitionsHandlerTest extends Unit
      */
     public function testListViewDefs(): void
     {
-
         $listViewDefs = $this->viewDefinitionHandler->getListViewDef('accounts');
         static::assertNotNull($listViewDefs);
         static::assertNotNull($listViewDefs->getListView());
@@ -202,7 +221,6 @@ final class ViewDefinitionsHandlerTest extends Unit
      */
     public function testSearchDefs(): void
     {
-
         $searchDefs = $this->viewDefinitionHandler->getSearchDefs('accounts');
         static::assertNotNull($searchDefs);
         static::assertNotNull($searchDefs->getSearch());
@@ -236,5 +254,4 @@ final class ViewDefinitionsHandlerTest extends Unit
 
         static::assertArrayHasKey('name', $first);
     }
-
 }

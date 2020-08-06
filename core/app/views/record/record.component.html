@@ -1,5 +1,5 @@
 <!-- Start Record View Section -->
-<div class="record-view">
+<div class="record-view" *ngIf="(vm$ | async) as vm">
     <scrm-record-header></scrm-record-header>
     <scrm-status-bar></scrm-status-bar>
     <scrm-record-container></scrm-record-container>

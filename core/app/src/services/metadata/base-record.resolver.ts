@@ -11,6 +11,7 @@ import {AppStateStore} from '@base/store/app-state/app-state.store';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
 import {forkJoin, Observable} from 'rxjs';
+import {MessageService} from '@services/message/message.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseRecordResolver extends BaseModuleResolver {
@@ -25,6 +26,7 @@ export class BaseRecordResolver extends BaseModuleResolver {
         protected moduleNameMapper: ModuleNameMapper,
         protected actionNameMapper: ActionNameMapper,
         protected appStateStore: AppStateStore,
+        protected messageService: MessageService
     ) {
         super(
             systemConfigStore,
@@ -33,8 +35,9 @@ export class BaseRecordResolver extends BaseModuleResolver {
             userPreferenceStore,
             themeImagesStore,
             moduleNameMapper,
-            actionNameMapper,
-            appStateStore
+            appStateStore,
+            metadataStore,
+            messageService
         );
     }
 
