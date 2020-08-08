@@ -13,6 +13,10 @@ export class RecordViewStore extends ViewStore {
     vm$: Observable<RecordViewModel>;
     vm: RecordViewModel;
 
+    get showWidgets(): boolean {
+        return true;
+    }
+
     clear(): void {
     }
 

@@ -1,15 +1,17 @@
-<!-- Start List View Container Section -->
+<!-- Start Record View Container Section -->
 
 <div class="list-view-container container-fluid">
     <div class="row">
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }">
-            <scrm-table-ui [module]="module"></scrm-table-ui>
+            Record Container Component
+            <scrm-subpanel></scrm-subpanel>
         </div>
 
         <div class="col-lg-3 list-widget-container pl-0" *ngIf="getDisplayWidgets()">
-            <scrm-widget-ui [type]="type"></scrm-widget-ui>
+            <scrm-widget-ui></scrm-widget-ui>
         </div>
+
     </div>
 </div>
 
-<!-- End List View Container Section -->
+<!-- End Record View Container Section -->

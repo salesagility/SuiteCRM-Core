@@ -13,7 +13,7 @@
 
     <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
          [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
-        <scrm-chart-ui></scrm-chart-ui>
+        <scrm-chart-ui *ngIf="type === 'chart'"></scrm-chart-ui>
     </div>
 </div>
 

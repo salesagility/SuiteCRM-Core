@@ -1,0 +1,23 @@
+<ng-container>
+    <div class="record-view-header">
+        <ng-container *ngIf="displayResponsiveTable">
+            <div class="d-flex flex-nowrap">
+                <div class="row">
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-2">
+                            <div>Record Status Bar Component</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template [ngIf]="!displayResponsiveTable">
+            <div class="row mr-0">
+                <div class="col-md-4">
+                    <div>Record Status Bar Component</div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>

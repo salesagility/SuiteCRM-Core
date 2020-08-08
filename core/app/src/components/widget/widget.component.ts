@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
@@ -29,7 +29,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 })
 
 export class WidgetUiComponent implements OnInit {
-
+    @Input() type;
 
     displayWidgetContent = true;
     widgetHeaderToggleIcon = 'minimise_circled';

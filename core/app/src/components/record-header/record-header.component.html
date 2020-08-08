@@ -1,0 +1,42 @@
+<ng-container>
+    <div class="record-view-header">
+        <ng-container *ngIf="displayResponsiveTable">
+            <div class="d-flex flex-nowrap">
+                <div class="row">
+                    <div class="col">
+                        <div class="order-3">
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-2">
+                            <scrm-module-title [title]="moduleTitle">
+                            </scrm-module-title>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template [ngIf]="!displayResponsiveTable">
+            <div class="row mr-0">
+                <div class="col-md-4">
+                    <scrm-module-title [title]="moduleTitle"></scrm-module-title>
+                </div>
+                <div class="col-md-8">
+                    <div class="row mr-1 ml-1">
+                        <div class="w-100">
+                            Record Header Component
+                        </div>
+                        <div class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>

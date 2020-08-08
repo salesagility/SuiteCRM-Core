@@ -11,6 +11,9 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {RecordViewStore} from '@store/record-view/record-view.store';
 import {RecordComponent} from '@views/record/record.component';
+import {RecordContainerModule} from '@components/record-container/record-container.module';
+import {RecordHeaderModule} from '@components/record-header/record-header.module';
+import {StatusBarModule} from '@components/status-bar/status-bar.module';
 
 @Component({
     selector: 'record-test-host-component',
@@ -36,7 +39,10 @@ describe('RecordComponent', () => {
                 FieldModule,
                 DropdownButtonModule,
                 DropdownButtonModule,
-                SortButtonModule
+                SortButtonModule,
+                RecordContainerModule,
+                RecordHeaderModule,
+                StatusBarModule
             ],
             declarations: [RecordComponent, RecordTestHostComponent],
             providers: [

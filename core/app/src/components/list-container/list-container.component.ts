@@ -9,12 +9,17 @@ import {ListViewStore} from '@store/list-view/list-view.store';
 
 export class ListcontainerUiComponent implements OnInit {
     @Input() module;
+    type = '';
 
     constructor(public listViewStore: ListViewStore) {
     }
 
     getDisplayWidgets(): boolean {
-        return this.listViewStore.showWidgets;
+        const display = this.listViewStore.showWidgets;
+        if (display) {
+            this.type = 'chart';
+        }
+        return display;
     }
 
     ngOnInit(): void {
