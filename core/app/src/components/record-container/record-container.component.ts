@@ -9,12 +9,19 @@ import {RecordViewStore} from '@store/record-view/record-view.store';
 
 export class RecordContainerComponent implements OnInit {
     @Input() module;
+    type = '';
+    widgetTitle = '';
 
     constructor(public recordViewStore: RecordViewStore) {
     }
 
     getDisplayWidgets(): boolean {
-        return this.recordViewStore.showWidgets;
+        const display = this.recordViewStore.showWidgets;
+        if (display) {
+            this.type = 'history';
+            this.widgetTitle = 'LBL_QUICK_HISTORY';
+        }
+        return display;
     }
 
     ngOnInit(): void {

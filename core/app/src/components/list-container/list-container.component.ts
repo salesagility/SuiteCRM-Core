@@ -10,6 +10,7 @@ import {ListViewStore} from '@store/list-view/list-view.store';
 export class ListcontainerUiComponent implements OnInit {
     @Input() module;
     type = '';
+    widgetTitle = '';
 
     constructor(public listViewStore: ListViewStore) {
     }
@@ -18,6 +19,7 @@ export class ListcontainerUiComponent implements OnInit {
         const display = this.listViewStore.showWidgets;
         if (display) {
             this.type = 'chart';
+            this.widgetTitle = 'LBL_QUICK_CHARTS';
         }
         return display;
     }

@@ -8,7 +8,7 @@
         </div>
 
         <div class="col-lg-3 list-widget-container pl-0" *ngIf="getDisplayWidgets()">
-            <scrm-widget-ui></scrm-widget-ui>
+            <scrm-widget-ui [type]="type" [title]="widgetTitle"></scrm-widget-ui>
         </div>
 
     </div>

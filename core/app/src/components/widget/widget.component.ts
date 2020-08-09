@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {LanguageStore} from '@store/language/language.store';
 
 @Component({
     selector: 'scrm-widget-ui',
@@ -30,10 +31,15 @@ import {animate, style, transition, trigger} from '@angular/animations';
 
 export class WidgetUiComponent implements OnInit {
     @Input() type;
+    @Input() title;
 
     displayWidgetContent = true;
     widgetHeaderToggleIcon = 'minimise_circled';
 
+    constructor(public languageStore: LanguageStore) {
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     toggleWidgetContent() {
         if (this.widgetHeaderToggleIcon === 'minimise_circled') {
             this.widgetHeaderToggleIcon = 'plus_thin';
@@ -44,7 +50,8 @@ export class WidgetUiComponent implements OnInit {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     ngOnInit() {
-
+        this.title = this.languageStore.getAppString(this.title);
     }
 }

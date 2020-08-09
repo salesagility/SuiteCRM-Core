@@ -156,7 +156,7 @@ export class LanguageStore implements StateStore {
             if (loadedLanguages && loadedLanguages[type]) {
                 delete loadedLanguages[type];
             }
-        })
+        });
 
         cache.modStrings = {};
         cache.appListStrings = {};
@@ -188,7 +188,6 @@ export class LanguageStore implements StateStore {
      * @returns {string} label
      */
     public getAppString(labelKey: string): string {
-
         if (!internalState.appStrings || !internalState.appStrings[labelKey]) {
             return null;
         }
