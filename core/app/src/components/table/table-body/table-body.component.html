@@ -1,5 +1,5 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    <table cdk-table [dataSource]="dataSource$" aria-describedby="table-body" class="list-view-table table-striped table">
+    <table cdk-table [dataSource]="dataSource$" aria-describedby="table-body" class="list-view-table striped-table table">
 
         <ng-container cdkColumnDef="checkbox">
             <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>

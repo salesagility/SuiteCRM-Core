@@ -69,6 +69,12 @@
   table-layout: fixed;
 }
 
+.striped-table {
+  tbody tr:nth-of-type(odd) {
+    background-color: white;
+  }
+}
+
 .table-wrapper {
   overflow-x: auto;
   overflow-y: hidden;
@@ -108,6 +114,7 @@
 
 .list-view-table td {
   color: $midnight-blue;
+  border: none;
 }
 
 .bulk-action {
