@@ -18,6 +18,7 @@ import {Record} from '@store/list-view/list-view.store';
 import {RecordViewGQL} from '@store/record-view/api.record.get';
 
 export interface RecordViewModel {
+    data: RecordViewData;
     appData: AppData;
     metadata: Metadata;
 }
@@ -229,11 +230,18 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
             .pipe(
                 map(({data}) => {
                     const id = data.getRecordView.record.id;
-                    if (id) {
-                        return true;
+                    if (!id) {
+                        this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
+                        return false;
                     }
-                    this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
-                    return false;
+
+                    const record: RecordData = {
+                        records: []
+                    };
+
+                    record.records = data.getRecordView.record;
+
+                    return record;
                 }),
                 catchError(err => throwError(err)),
             );

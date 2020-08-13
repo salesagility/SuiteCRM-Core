@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {RecordViewStore} from '@store/record-view/record-view.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'scrm-record-header',
@@ -10,10 +12,24 @@ export class RecordHeaderComponent {
 
     displayResponsiveTable = false;
 
+    vm$ = combineLatest([
+        this.recordViewStore.records$
+    ]).pipe(
+        map((
+            [
+                records
+            ]
+        ) => ({
+            records
+        }))
+    );
+
     constructor(protected recordViewStore: RecordViewStore, protected moduleNavigation: ModuleNavigation) {
     }
 
     get moduleTitle(): string {
-        return '';
+        const module = this.recordViewStore.vm.appData.module;
+        const appListStrings = this.recordViewStore.vm.appData.language.appListStrings;
+        return this.moduleNavigation.getModuleLabel(module, appListStrings);
     }
 }

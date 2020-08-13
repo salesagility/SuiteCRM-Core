@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="(vm$ | async) as vm">
     <div class="record-view-header">
         <ng-container *ngIf="displayResponsiveTable">
             <div class="d-flex flex-nowrap">
@@ -10,31 +10,19 @@
                     <div class="w-100"></div>
                     <div class="col">
                         <div class="order-2">
-                            <scrm-module-title [title]="moduleTitle">
-                            </scrm-module-title>
+                            <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
+                            <div class="record-view-name">{{vm.records['name']}}</div>
                         </div>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col">
-                        <div class="order-1">
-                        </div>
-                    </div>
                 </div>
             </div>
         </ng-container>
         <ng-template [ngIf]="!displayResponsiveTable">
             <div class="row mr-0">
-                <div class="col-md-4">
-                    <scrm-module-title [title]="moduleTitle"></scrm-module-title>
-                </div>
-                <div class="col-md-8">
-                    <div class="row mr-1 ml-1">
-                        <div class="w-100">
-                            Record Header Component
-                        </div>
-                        <div class="w-100">
-                        </div>
-                    </div>
+                <div class="col-md-4 record-view-header-column">
+                    <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
+                    <div class="record-view-name">{{vm.records['name']}}</div>
                 </div>
             </div>
         </ng-template>
