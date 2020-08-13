@@ -1,6 +1,9 @@
 <!-- Start List View Section -->
 <div class="list-view" *ngIf="(vm$ | async) as vm">
     <scrm-list-header></scrm-list-header>
+    <div class="list-view-hr-container">
+        <hr class="list-view-hr">
+    </div>
     <scrm-list-container-ui></scrm-list-container-ui>
 </div>
 <!-- End List View Section -->

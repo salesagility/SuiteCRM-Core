@@ -34,6 +34,11 @@
   margin-bottom: 4em;
 }
 
+.list-view-hr {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .list-view-widget {
   margin-right: 1.5em;
 }
@@ -337,6 +342,21 @@ td.list-group-icon {
   }
   th.show-table-rows {
     padding: 0 1rem;
+  }
+
+  .list-view-hr-container {
+    font-size: 0.85em;
+    padding-top: 0.6em;
+    padding-left: 1.6em;
+    padding-right: 1.6em;
+  }
+}
+
+@media all and (min-width: $breakpoint-large) {
+  .list-view-hr-container {
+    font-size: 0.85em;
+    padding-left: 1.6em;
+    padding-right: 1.6em;
   }
 }
 
