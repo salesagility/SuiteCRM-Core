@@ -27,7 +27,6 @@ a.footer-link:not([href]):not([tabindex]) {
 
 @media all and (min-width: $breakpoint-medium) {
   .footer {
-    position: fixed;
     left: 0;
     bottom: 0;
     padding: 0 1.85em;
@@ -72,7 +71,6 @@ a.footer-link:not([href]):not([tabindex]) {
   }
 
   .footer {
-    position: fixed;
     left: 0;
     bottom: 0;
     padding: 0;
