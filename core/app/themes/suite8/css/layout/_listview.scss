@@ -343,6 +343,7 @@ td.list-group-icon {
   th.show-table-rows {
     padding: 0 1rem;
   }
+}
 
   .list-view-hr-container {
     font-size: 0.85em;
@@ -350,15 +351,6 @@ td.list-group-icon {
     padding-left: 1.6em;
     padding-right: 1.6em;
   }
-}
-
-@media all and (min-width: $breakpoint-large) {
-  .list-view-hr-container {
-    font-size: 0.85em;
-    padding-left: 1.6em;
-    padding-right: 1.6em;
-  }
-}
 
 .responsive-top-row .responsive-header-link {
   background-image: linear-gradient(to right, $white 30%, rgba(255, 255, 255, 0) 0%);
