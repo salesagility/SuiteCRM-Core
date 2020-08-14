@@ -4,5 +4,6 @@
                 *ngIf="vm.records['editable']"
                 [config]="getButtonConfig(action)">
         </scrm-button>
+        <scrm-button *ngIf="editButton" [config]="editButton"></scrm-button>
     </div>
 </ng-container>

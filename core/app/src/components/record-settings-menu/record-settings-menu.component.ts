@@ -5,6 +5,8 @@ import {ModuleNavigation} from '@services/navigation/module-navigation/module-na
 import {RecordViewStore} from '@store/record-view/record-view.store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 
 @Component({
     selector: 'scrm-record-settings-menu',
@@ -24,7 +26,39 @@ export class RecordSettingsMenuComponent {
         }))
     );
 
-    constructor(protected recordStore: RecordViewStore, protected actionHandler: ModuleNavigation) {
+    constructor(
+        protected recordStore: RecordViewStore,
+        protected actionHandler: ModuleNavigation,
+        protected router: Router,
+        private route: ActivatedRoute,
+        private moduleNameMapper: ModuleNameMapper
+    ) {
+    }
+
+    get editButton(): ButtonInterface {
+        if (!this.recordStore) {
+            return null;
+        }
+
+        const route = '/' + this.recordStore.vm.appData.module.name + '/edit';
+        const module = this.moduleNameMapper.toLegacy(this.recordStore.vm.appData.module.name);
+
+        return {
+            label: this.recordStore.appStrings.LBL_EDIT || '',
+            klass: 'settings-button',
+            onClick: (): void => {
+                this.router.navigate([route], {
+                    queryParams: {
+                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+                        return_module: module,
+                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+                        return_action: 'index',
+                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+                        record: this.route.snapshot.params.record
+                    }
+                }).then();
+            }
+        };
     }
 
     get actions(): ModuleAction[] {
