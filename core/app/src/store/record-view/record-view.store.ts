@@ -124,7 +124,7 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
     }
 
     get showWidgets(): boolean {
-        return true;
+        return this.internalState.widgets;
     }
 
     set showWidgets(show: boolean) {

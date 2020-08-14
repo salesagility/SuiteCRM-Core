@@ -35,6 +35,44 @@ export class RecordSettingsMenuComponent {
     ) {
     }
 
+    get historyButton(): ButtonInterface {
+        if (!this.recordStore) {
+            return null;
+        }
+
+        return {
+            label: this.recordStore.appStrings.LBL_HISTORY || '',
+            klass: 'settings-button',
+            icon: 'clock',
+            onClick: (): void => {
+                this.recordStore.showWidgets = !this.recordStore.showWidgets;
+            }
+        };
+    }
+
+    get createButton(): ButtonInterface {
+        if (!this.recordStore) {
+            return null;
+        }
+        const route = '/' + this.recordStore.vm.appData.module.name + '/edit';
+        const module = this.moduleNameMapper.toLegacy(this.recordStore.vm.appData.module.name);
+
+        return {
+            label: this.recordStore.appStrings.LBL_NEW || '',
+            klass: 'settings-button',
+            onClick: (): void => {
+                this.router.navigate([route], {
+                    queryParams: {
+                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+                        return_module: module,
+                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+                        return_action: 'index',
+                    }
+                }).then();
+            }
+        };
+    }
+
     get editButton(): ButtonInterface {
         if (!this.recordStore) {
             return null;
@@ -59,16 +97,6 @@ export class RecordSettingsMenuComponent {
                 }).then();
             }
         };
-    }
-
-    get actions(): ModuleAction[] {
-        if (!this.recordStore.vm.appData.module.menu) {
-            return [];
-        }
-
-        return this.recordStore.vm.appData.module.menu.filter(action => (
-            action.name === 'Create'
-        ));
     }
 
     public getButtonConfig(action: ModuleAction): ButtonInterface {

@@ -60,6 +60,7 @@ class RecordViewHandler extends LegacyHandler implements RecordViewProviderInter
     public function getRecord(string $module, string $id): RecordView
     {
         $this->init();
+        $this->startLegacyApp();
 
         $recordView = new RecordView();
         $moduleName = $this->validateModuleName($module);
@@ -69,9 +70,13 @@ class RecordViewHandler extends LegacyHandler implements RecordViewProviderInter
             $bean = $this->newBeanSafe($moduleName);
         }
 
-        $editable = ACLController::checkAccess($moduleName, 'edit', true);
-        $bean = ((array)$bean);
-        $bean['editable'] = $editable;
+        if ($bean->ACLAccess('edit')) {
+            $bean = ((array)$bean);
+            $bean['editable'] = true;
+        } else {
+            $bean = ((array)$bean);
+            $bean['editable'] = false;
+        }
 
         $recordView->setId($id);
         $recordView->setRecord($bean);
