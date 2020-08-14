@@ -2,6 +2,7 @@
 
 namespace SuiteCRM\Core\Legacy;
 
+use ACLController;
 use App\Entity\RecordView;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordViewProviderInterface;
@@ -68,8 +69,12 @@ class RecordViewHandler extends LegacyHandler implements RecordViewProviderInter
             $bean = $this->newBeanSafe($moduleName);
         }
 
+        $editable = ACLController::checkAccess($moduleName, 'edit', true);
+        $bean = ((array)$bean);
+        $bean['editable'] = $editable;
+
         $recordView->setId($id);
-        $recordView->setRecord((array)$bean);
+        $recordView->setRecord($bean);
 
         $this->close();
 

@@ -14,16 +14,17 @@
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  margin: 1em;
 }
 
 .record-view-name {
   color: $median-grey;
   font-size: 1.5em;
+  margin-left: 1rem;
   word-wrap: break-word;
 }
 
-.record-view-header-column {
-  font-size: 1em;
-  font-weight: 300;
-  margin: 1em;
+.record-view-actions {
+  margin: 1em 0 0 0;
+  text-align: end;
 }

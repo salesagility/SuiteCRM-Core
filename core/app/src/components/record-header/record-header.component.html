@@ -15,14 +15,28 @@
                         </div>
                     </div>
                     <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-1">
+                            <scrm-record-settings-menu></scrm-record-settings-menu>
+                        </div>
+                    </div>
                 </div>
             </div>
         </ng-container>
         <ng-template [ngIf]="!displayResponsiveTable">
             <div class="row mr-0">
-                <div class="col-md-4 record-view-header-column">
+                <div class="col-md-4">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
                     <div class="record-view-name">{{vm.records['name']}}</div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row mr-1 ml-1">
+                        <div class="w-100">
+                        </div>
+                        <div class="w-100">
+                            <scrm-record-settings-menu></scrm-record-settings-menu>
+                        </div>
+                    </div>
                 </div>
             </div>
         </ng-template>

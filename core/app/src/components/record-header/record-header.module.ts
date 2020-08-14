@@ -6,6 +6,7 @@ import {ModuleTitleModule} from '../module-title/module-title.module';
 import {ActionMenuModule} from '../action-menu/action-menu.module';
 import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-settings-menu.module';
 
 @NgModule({
     declarations: [RecordHeaderComponent],
@@ -17,6 +18,7 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
         ActionMenuModule,
         SettingsMenuModule,
         AngularSvgIconModule,
+        RecordSettingsMenuModule
     ]
 })
 export class RecordHeaderModule {

@@ -1,0 +1,8 @@
+<ng-container *ngIf="(vm$ | async) as vm">
+    <div class="record-view-actions float-right" *ngFor="let action of actions">
+        <scrm-button
+                *ngIf="vm.records['editable']"
+                [config]="getButtonConfig(action)">
+        </scrm-button>
+    </div>
+</ng-container>

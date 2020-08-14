@@ -5,6 +5,7 @@ import {FieldModule} from '@fields/field.module';
 import {RecordContainerModule} from '@components/record-container/record-container.module';
 import {RecordHeaderModule} from '@components/record-header/record-header.module';
 import {StatusBarModule} from '@components/status-bar/status-bar.module';
+import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-settings-menu.module';
 
 @NgModule({
     declarations: [RecordComponent],
@@ -14,7 +15,8 @@ import {StatusBarModule} from '@components/status-bar/status-bar.module';
         FieldModule,
         RecordContainerModule,
         RecordHeaderModule,
-        StatusBarModule
+        StatusBarModule,
+        RecordSettingsMenuModule
     ],
 })
 export class RecordModule {
