@@ -95,8 +95,8 @@ export class AccountTypesPerMonthLineChart implements LineChartDataSource {
 
         const dateFormat = this.configs.getConfigValue('date_format');
 
-        if (dateFormat && dateFormat.value) {
-            return dateFormat.value;
+        if (dateFormat) {
+            return dateFormat;
         }
 
         return 'yyyy-MM-dd';
