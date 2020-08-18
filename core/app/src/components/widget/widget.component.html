@@ -1,7 +1,7 @@
 <!-- Start List View Widget Section -->
 
 <div class="accordion list-view-widget mr-0">
-    <div class="widget-header">
+    <div [ngClass]="{'widget-header-closed': !displayWidgetContent}" class="widget-header">
         <h3>
             {{title}}
             <scrm-image class="sicon float-right widget-close-icon"

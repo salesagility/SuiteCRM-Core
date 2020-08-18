@@ -7,3 +7,21 @@
 .line-chart .chart-legend .legend-labels li.legend-label {
   display: list-item;
 }
+
+.line-chart .chart-legend {
+  padding-bottom: 0.3em;
+}
+
+.vertical-bar-chart .chart-legend {
+  padding-bottom: 0.3em;
+}
+
+.widget-background {
+  background-color: white;
+}
+
+.widget-header-closed {
+  -webkit-border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+  border-radius: 0.3em;
+}
