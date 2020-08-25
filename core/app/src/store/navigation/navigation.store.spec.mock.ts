@@ -201,6 +201,7 @@ class NavigationRecordGQLSpy extends RecordGQL {
         super(null);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public fetch(module: string, id: string, metadata: { fields: string[] }): Observable<any> {
 
         return of({
@@ -213,3 +214,4 @@ class NavigationRecordGQLSpy extends RecordGQL {
 
 export const navigationMock = new NavigationStore(new NavigationRecordGQLSpy());
 navigationMock.load().pipe(take(1)).subscribe();
+navigationMock.vm$.pipe(take(1)).subscribe();

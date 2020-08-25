@@ -38,11 +38,6 @@ describe('ModuleTitleComponent', () => {
 
     it('should have title', () => {
 
-        const h4Element = testHostFixture.nativeElement.querySelector('h2');
-
-        expect(testHostComponent).toBeTruthy();
-        expect(h4Element).toBeTruthy();
-        expect(h4Element.className).toContain('list-view-title');
-        expect(h4Element.textContent).toContain('ACCOUNTS');
+        expect(testHostFixture.nativeElement.textContent).toContain('ACCOUNTS');
     });
 });

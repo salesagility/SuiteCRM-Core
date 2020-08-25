@@ -1,7 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RecordSettingsMenuComponent} from './record-settings-menu.component';
-import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
-import {FilterUiModule} from '@components/filter/filter.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
@@ -10,43 +8,77 @@ import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.m
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
 import {ButtonModule} from '@components/button/button.module';
-import {ListViewStore} from '@store/list-view/list-view.store';
-import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {RecordViewStore} from '@store/record-view/record-view.store';
+import {recordviewStoreMock} from '@store/record-view/record-view.store.spec.mock';
+import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {mockModuleNavigation,} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {NavigationStore} from '@store/navigation/navigation.store';
+import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
+import {AppStateStore} from '@store/app-state/app-state.store';
+import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {Component} from '@angular/core';
+import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-settings-menu.module';
+import {RouterTestingModule} from '@angular/router/testing';
+
+@Component({
+    selector: 'record-setting-test-host-component',
+    template: '<scrm-record-settings-menu></scrm-record-settings-menu>'
+})
+class RecordSettingsTestHostComponent {
+}
 
 describe('RecordSettingsMenuComponent', () => {
-    let component: RecordSettingsMenuComponent;
-    let fixture: ComponentFixture<RecordSettingsMenuComponent>;
+
+    let testHostComponent: RecordSettingsTestHostComponent;
+    let testHostFixture: ComponentFixture<RecordSettingsTestHostComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                ColumnchooserUiModule,
-                FilterUiModule,
                 HttpClientTestingModule,
                 ApolloTestingModule,
                 ImageModule,
                 ButtonModule,
+                RecordSettingsMenuModule,
+                RouterTestingModule
             ],
-            declarations: [RecordSettingsMenuComponent],
+            declarations: [RecordSettingsMenuComponent, RecordSettingsTestHostComponent],
             providers: [
-                {provide: ListViewStore, useValue: listviewStoreMock},
+                {provide: RecordViewStore, useValue: recordviewStoreMock},
                 {
                     provide: ThemeImagesStore, useValue: {
                         images$: of(themeImagesMockData).pipe(take(1))
                     }
                 },
+                {provide: ModuleNavigation, useValue: mockModuleNavigation},
+                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
+                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
+                {provide: NavigationStore, useValue: navigationMock},
+                {provide: ModuleNavigation, useValue: mockModuleNavigation},
+                {provide: LanguageStore, useValue: languageStoreMock},
+                {provide: MetadataStore, useValue: metadataStoreMock},
+                {provide: AppStateStore, useValue: appStateStoreMock},
             ],
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(RecordSettingsMenuComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        testHostFixture = TestBed.createComponent(RecordSettingsTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
     });
 
+
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
     });
 });

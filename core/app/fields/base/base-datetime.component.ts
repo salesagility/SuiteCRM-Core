@@ -3,9 +3,7 @@ import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {UserPreferenceMap, UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigMap, SystemConfigStore} from '@store/system-config/system-config.store';
-import { Directive } from "@angular/core";
 
-@Directive()
 export class BaseDateTimeComponent extends BaseFieldComponent {
 
     preferences$ = this.userPreferences.userPreferences$;

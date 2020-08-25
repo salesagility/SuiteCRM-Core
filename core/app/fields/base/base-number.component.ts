@@ -3,9 +3,7 @@ import {BaseFieldComponent} from './base-field.component';
 import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { Directive } from "@angular/core";
 
-@Directive()
 export class BaseNumberComponent extends BaseFieldComponent {
 
     preferences$ = this.userPreferences.userPreferences$;

@@ -10,7 +10,6 @@ import {ImageModule} from '@components/image/image.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
 import {ListFilterModule} from '@components/list-filter/list-filter.module';
-import {RecordViewStore} from '@store/record-view/record-view.store';
 
 @Component({
     selector: 'subpanel-test-host-component',
@@ -38,7 +37,6 @@ describe('SubpanelComponent', () => {
             ],
             declarations: [SubpanelComponent, SubpanelComponentTestHostComponent],
             providers: [
-                {provide: RecordViewStore},
             ],
         })
             .compileComponents();

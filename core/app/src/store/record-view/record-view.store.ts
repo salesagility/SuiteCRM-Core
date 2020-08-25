@@ -5,8 +5,6 @@ import {BehaviorSubject, combineLatest, Observable, throwError} from 'rxjs';
 import {StateStore} from '@store/state';
 import {DataSource} from '@angular/cdk/table';
 import {deepClone} from '@base/utils/object-utils';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
@@ -65,8 +63,6 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
     vm: RecordViewModel;
     data: RecordViewData;
 
-    protected displayFilters = false;
-
     /** Internal Properties */
     protected cache$: Observable<any> = null;
     protected internalState: RecordViewState = deepClone(initialState);
@@ -82,8 +78,6 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
 
     constructor(
         protected recordViewGQL: RecordViewGQL,
-        protected configStore: SystemConfigStore,
-        protected preferencesStore: UserPreferenceStore,
         protected appStateStore: AppStateStore,
         protected languageStore: LanguageStore,
         protected navigationStore: NavigationStore,
@@ -229,15 +223,20 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
         return this.recordViewGQL.fetch(module, recordID, this.fieldsMetadata)
             .pipe(
                 map(({data}) => {
+
+                    const record: RecordData = {
+                        records: []
+                    };
+
+                    if (!data) {
+                        return record;
+                    }
+
                     const id = data.getRecordView.record.id;
                     if (!id) {
                         this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
                         return false;
                     }
-
-                    const record: RecordData = {
-                        records: []
-                    };
 
                     record.records = data.getRecordView.record;
 
@@ -245,44 +244,5 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
                 }),
                 catchError(err => throwError(err)),
             );
-    }
-
-    /**
-     * Store the data in local storage
-     *
-     * @param {string} module to store in
-     * @param {string} storageKey to store in
-     * @param {any} data to store
-     */
-    protected storageSave(module: string, storageKey: string, data: any): void {
-        let storage = this.localStorage.get(storageKey);
-
-        if (!storage) {
-            storage = {};
-        }
-
-        storage[module] = data;
-
-        this.localStorage.set(storageKey, storage);
-    }
-
-    /**
-     * Store the key in local storage
-     *
-     * @param {string} module to load from
-     * @param {string} storageKey from load from
-     * @param {string} stateKey to store in
-     */
-    protected storageLoad(module: string, storageKey: string, stateKey: string): void {
-        const storage = this.localStorage.get(storageKey);
-
-        if (!storage || !storage[module]) {
-            return;
-        }
-
-        const newState = {...this.internalState};
-        newState[stateKey] = storage[module];
-
-        this.updateState(newState);
     }
 }
