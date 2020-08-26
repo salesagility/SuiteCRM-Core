@@ -183,8 +183,6 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertArrayHasKey('label', $firstColumn);
         static::assertArrayHasKey('link', $firstColumn);
         static::assertIsBool($firstColumn['link']);
-        static::assertArrayHasKey('default', $firstColumn);
-        static::assertIsBool($firstColumn['default']);
         static::assertArrayHasKey('sortable', $firstColumn);
         static::assertIsBool($firstColumn['sortable']);
 

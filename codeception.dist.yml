@@ -20,3 +20,4 @@ extensions:
     - Codeception\Extension\RunFailed
 params:
   - .env
+bootstrap: bootstrap.php

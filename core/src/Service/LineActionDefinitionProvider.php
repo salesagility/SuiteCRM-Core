@@ -69,7 +69,7 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
             $this->appListStrings = $appListStringsObject->getItems();
         }
 
-        $defaults = $this->listViewLineActions['default'];
+        $defaults = $this->listViewLineActions['default'] ?? [];
         $defaultActions = $defaults['actions'] ?? [];
 
         $createActions = $defaultActions['create'] ?? [];
