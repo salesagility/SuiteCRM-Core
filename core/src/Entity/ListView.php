@@ -81,6 +81,22 @@ class ListView
     public $meta;
 
     /**
+     * ListView filters
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The list-view fukters",
+     *         },
+     *     }
+     * )
+     */
+    public $filters;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -130,5 +146,23 @@ class ListView
     public function setMeta(array $meta): void
     {
         $this->meta = $meta;
+    }
+
+    /**
+     * get ListView filters
+     * @return array
+     */
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    /**
+     * Set ListView filters
+     * @param array $filters
+     */
+    public function setFilters(array $filters): void
+    {
+        $this->filters = $filters;
     }
 }

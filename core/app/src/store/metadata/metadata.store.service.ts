@@ -39,7 +39,7 @@ export interface LineAction {
     returnAction: string;
     params: { [key: string]: any };
     mapping: { [key: string]: any };
-    link: MenuItemLink
+    link: MenuItemLink;
     acl: string[];
 }
 
@@ -48,6 +48,13 @@ export interface ListViewMeta {
     bulkActions: BulkActionsMap;
     lineActions: LineAction[];
     chartTypes: ChartTypesMap;
+    filters: Filter[];
+}
+
+export interface Filter {
+    id: string;
+    name: string;
+    contents: { [key: string]: any };
 }
 
 export interface ListField {
@@ -275,7 +282,8 @@ export class MetadataStore implements StateStore {
                             fields: [],
                             bulkActions: {},
                             lineActions: [],
-                            chartTypes: {}
+                            chartTypes: {},
+                            filters: []
                         };
 
                         if (data.viewDefinition.listView.columns) {
@@ -296,6 +304,10 @@ export class MetadataStore implements StateStore {
 
                         if (data.viewDefinition.listView.availableCharts) {
                             listViewMeta.chartTypes = data.viewDefinition.listView.availableCharts;
+                        }
+
+                        if (data.viewDefinition.listView.availableFilters) {
+                            listViewMeta.filters = data.viewDefinition.listView.availableFilters;
                         }
 
                         metadata.listView = listViewMeta;

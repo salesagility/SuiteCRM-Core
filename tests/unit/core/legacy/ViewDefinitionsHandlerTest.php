@@ -145,6 +145,29 @@ final class ViewDefinitionsHandlerTest extends Unit
             $appListStrings
         );
 
+        /** @var FilterDefinitionProviderInterface $filterDefinitionHandler */
+        $filterDefinitionHandler = $this->make(
+            FilterDefinitionProvider::class,
+            [
+                'getFilters' => static function (
+
+                    /** @noinspection PhpUnusedParameterInspection */
+                    string $module
+                )
+                :
+                array
+                {
+                    $result = [];
+                    $result[] = [
+                        'id' => '1',
+                        'name' => 'Saved Filter 1',
+                        'contents' => 'dummy contents'
+                    ];
+                    return $result;
+                }
+            ]
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -155,7 +178,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $fieldDefinitionsHandler,
             $bulkActionProvider,
             $chartDefinitionProvider,
-            $lineActionDefinitionProvider
+            $lineActionDefinitionProvider,
+            $filterDefinitionHandler
         );
 
         // Needed for aspect mock

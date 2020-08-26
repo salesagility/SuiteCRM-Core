@@ -6,6 +6,7 @@ use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
 use App\Service\BulkActionDefinitionProviderInterface;
 use App\Service\ChartDefinitionProviderInterface;
+use App\Service\FilterDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\LineActionDefinitionProviderInterface;
 use App\Service\ModuleNameMapperInterface;
@@ -93,6 +94,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
      * @param ChartDefinitionProviderInterface $chartDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
+     * @param FilterDefinitionProviderInterface $filterDefinitionProvider
      */
     public function __construct(
         string $projectDir,
@@ -104,15 +106,16 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
         ChartDefinitionProviderInterface $chartDefinitionProvider,
-        LineActionDefinitionProviderInterface $lineActionDefinitionProvider
-    )
-    {
+        LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
+        FilterDefinitionProviderInterface $filterDefinitionProvider
+    ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
         $this->chartDefinitionProvider = $chartDefinitionProvider;
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
+        $this->filterDefinitionProvider = $filterDefinitionProvider;
     }
 
     /**
@@ -207,13 +210,13 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array
-    {
+    ): array {
         $metadata = [
             'columns' => [],
             'bulkActions' => [],
             'lineActions' => [],
             'availableCharts' => [],
+            'availableFilters' => [],
         ];
 
         /* @noinspection PhpIncludeInspection */
@@ -231,6 +234,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions($module);
         $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module);
         $metadata['availableCharts'] = $this->chartDefinitionProvider->getCharts($module);
+        $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module);
 
         return $metadata;
     }
@@ -360,7 +364,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     protected function mergeSearchInfo(string $module, array &$definition, array $searchDefs, string $type): void
     {
         if (isset($definition['layout'][$type])) {
-
             foreach ($definition['layout'][$type] as $key => $field) {
                 $name = $field['name'] ?? '';
 

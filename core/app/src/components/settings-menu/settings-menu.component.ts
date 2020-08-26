@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore, SearchCriteria} from '@store/list-view/list-view.store';
 import {ButtonInterface} from '@components/button/button.model';
+import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 
 @Component({
     selector: 'scrm-settings-menu',
@@ -8,6 +9,8 @@ import {ButtonInterface} from '@components/button/button.model';
 
 })
 export class SettingsMenuComponent implements OnInit {
+
+    searchCriteria: SearchCriteria;
 
     constructor(protected listStore: ListViewStore) {
     }
@@ -29,6 +32,56 @@ export class SettingsMenuComponent implements OnInit {
                 this.listStore.showFilters = !this.listStore.showFilters;
             }
         };
+    }
+
+    ngOnInit(): void {
+    }
+
+    get myFiltersButton(): DropdownButtonInterface {
+        if (!this.listStore) {
+            return null;
+        }
+
+        const filters = this.listStore.getFilter();
+
+        if (filters.length < 1) {
+            return null;
+        }
+
+        const dropdownConfig = {
+            label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
+            klass: ['settings-button', 'dropdown-toggle'],
+            wrapperKlass: ['filter-action-group', 'float-left'],
+            items: []
+        } as DropdownButtonInterface;
+
+
+        filters.forEach((filter: any) => {
+            dropdownConfig.items.push({
+                label: filter.name,
+                onClick: (): void => {
+                    const parsedFilter: any = [];
+                    Object.keys(filter.filters).forEach(key => {
+                        parsedFilter.push({
+                            field: key,
+                            operator: '=',
+                            values: [filter.filters[key]],
+                        });
+                    });
+
+                    const newItem = {
+                        filter
+                    };
+                    parsedFilter.map(item => {
+                        newItem.filter.filters[item.field] = parsedFilter[0];
+                    });
+
+                    this.listStore.updateSearchCriteria({filters: newItem.filter.filters});
+                }
+            });
+        });
+
+        return dropdownConfig;
     }
 
     get clearButton(): ButtonInterface {
@@ -74,9 +127,5 @@ export class SettingsMenuComponent implements OnInit {
                 this.listStore.showWidgets = !this.listStore.showWidgets;
             }
         };
-    }
-
-    ngOnInit(): void {
-
     }
 }

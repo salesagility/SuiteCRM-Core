@@ -2,9 +2,7 @@
     <button type="button" class="settings-button dropdown-toggle">
         Display As
     </button>
-    <button type="button" class="settings-button dropdown-toggle">
-        My Filters
-    </button>
+    <scrm-dropdown-button *ngIf="myFiltersButton" [config]="myFiltersButton"></scrm-dropdown-button>
     <scrm-button *ngIf="filterButton" [config]="filterButton"></scrm-button>
     <scrm-button *ngIf="clearButton" [config]="clearButton"></scrm-button>
     <scrm-columnchooser-ui></scrm-columnchooser-ui>

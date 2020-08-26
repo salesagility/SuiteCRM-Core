@@ -7,11 +7,13 @@ use App\Service\LegacyFilterMapper;
 use App\Service\ListViewProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
+use DBManagerFactory;
 use InvalidArgumentException;
 use ListViewDataPort;
 use SearchForm;
 use SugarBean;
 use ViewList;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class ListViewHandler
@@ -32,6 +34,11 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
     private $legacyFilterMapper;
 
     /**
+     * @var Security
+     */
+    private $security;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -39,6 +46,8 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param LegacyFilterMapper $legacyFilterMapper
+     * @param Security $security
      */
     public function __construct(
         string $projectDir,
@@ -47,11 +56,13 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        LegacyFilterMapper $legacyFilterMapper
+        LegacyFilterMapper $legacyFilterMapper,
+        Security $security
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->legacyFilterMapper = $legacyFilterMapper;
+        $this->security = $security;
     }
 
     /**
@@ -82,6 +93,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         $listView = new ListView();
         $moduleName = $this->validateModuleName($moduleName);
         $bean = $this->newBeanSafe($moduleName);
+
         $listViewData = $this->getData($bean, $criteria, $offset, $limit, $sort);
 
         if ($this->currentPageHasNoRecords($listViewData)) {
@@ -106,6 +118,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
     {
         $totalRecords = (int)($listViewData['pageData']['offsets']['total'] ?? 0);
         $current = (int)($listViewData['pageData']['offsets']['current'] ?? 0);
+
         return $totalRecords && $current && $current >= $totalRecords;
     }
 
@@ -128,7 +141,6 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      */
     protected function getRecords(SugarBean $bean, array $fullViewData): array
     {
-
         $processedData = [];
         foreach ($fullViewData['data'] as $key => $record) {
             $array = array_change_key_case($record);
@@ -227,7 +239,6 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         array $criteria = [],
         array $filterFields = []
     ): array {
-
         $params = $this->getSortingParams($criteria);
         $legacyListView = $this->getLegacyListView($bean);
         $listViewDefs = $this->getListViewDefs($legacyListView);
@@ -271,8 +282,13 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         require_once 'include/SearchForm/SearchForm2.php';
         $searchMetaData = SearchForm::retrieveSearchDefs($bean->module_name);
         $searchForm = new SearchForm($bean, $bean->module_name, 'index');
-        $searchForm->setup($searchMetaData['searchdefs'], $searchMetaData['searchFields'], 'SearchFormGeneric.tpl',
-            'advanced_search', $listViewDefs);
+        $searchForm->setup(
+            $searchMetaData['searchdefs'],
+            $searchMetaData['searchFields'],
+            'SearchFormGeneric.tpl',
+            'advanced_search',
+            $listViewDefs
+        );
 
         $searchForm->populateFromArray($criteria);
 

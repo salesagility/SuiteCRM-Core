@@ -318,6 +318,38 @@ ul.main li a,
   }
 }
 
+.filter-action-group .dropdown-menu, .select-action-group .dropdown-menu {
+  font-size: 1em;
+  -webkit-border-radius: 0.25em;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius: 0.25em;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  border-radius: 0.25em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: $nepal-grey;
+  width: max-content;
+  min-width: 10em;
+  border: 0;
+  margin: 0;
+  .dropdown-item {
+    padding: .25em .8em;
+  }
+}
+
+.filter-action-group .dropdown-menu a,
+.select-action-group .dropdown-menu a {
+  color: $white;
+}
+
+.filter-action-group .dropdown-menu a:hover,
+.select-action-group .dropdown-menu a:hover {
+  background-color: $astral-blue;
+  color: $white;
+  cursor: pointer;
+}
 
 .bulk-action-group .dropdown-menu a,
 .select-action-group .dropdown-menu a {

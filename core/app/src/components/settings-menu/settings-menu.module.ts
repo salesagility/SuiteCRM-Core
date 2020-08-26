@@ -7,6 +7,7 @@ import {SettingsMenuComponent} from './settings-menu.component';
 import {ColumnchooserUiModule} from '../columnchooser/columnchooser.module';
 import {ImageModule} from '@components/image/image.module';
 import {ButtonModule} from '@components/button/button.module';
+import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 
 @NgModule({
     declarations: [SettingsMenuComponent],
@@ -16,7 +17,8 @@ import {ButtonModule} from '@components/button/button.module';
         AppManagerModule.forChild(SettingsMenuComponent),
         ColumnchooserUiModule,
         ImageModule,
-        ButtonModule
+        ButtonModule,
+        DropdownButtonModule
     ]
 })
 export class SettingsMenuModule {

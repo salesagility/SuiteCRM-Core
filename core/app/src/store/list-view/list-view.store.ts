@@ -6,6 +6,9 @@ import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
 import {
+    FilterDataSource
+} from '@components/list-filter/list-filter.component';
+import {
     BulkActionDataSource,
     SelectionDataSource,
     SelectionStatus
@@ -19,7 +22,7 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {BulkActionsMap, LineAction, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {BulkActionsMap, Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
@@ -148,7 +151,7 @@ export interface ListViewState {
 
 @Injectable()
 export class ListViewStore extends ViewStore
-    implements StateStore, DataSource<Record>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource {
+    implements StateStore, DataSource<Record>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource, FilterDataSource {
 
     /**
      * Public long-lived observable streams
@@ -460,6 +463,10 @@ export class ListViewStore extends ViewStore
         return this.metadata.listView.chartTypes;
     }
 
+    public getFilter(): any {
+        return this.metadata.listView.filters;
+    }
+
     executeBulkAction(action: string): void {
         const selection = this.internalState.selection;
         const definition = this.metadata.listView.bulkActions[action];
@@ -513,7 +520,7 @@ export class ListViewStore extends ViewStore
             data.ids = Object.keys(selection.selected);
         }
 
-        this.bulkAction.run(actionName, data).subscribe( (process: Process) => {
+        this.bulkAction.run(actionName, data).subscribe((process: Process) => {
             if (process.data && process.data.reload) {
                 this.clearSelection();
                 this.load(false).pipe(take(1)).subscribe();
@@ -707,7 +714,6 @@ export class ListViewStore extends ViewStore
 
         return this.listGQL.fetch(module, pagination.pageSize, pagination.current, criteria, mappedSort, this.fieldsMetadata)
             .pipe(map(({data}) => {
-
                 const recordsList: ListData = {
                     records: [],
                     pagination: {} as Pagination
