@@ -252,4 +252,33 @@ final class ViewDefinitionsHandlerTest extends Unit
 
         static::assertArrayHasKey('name', $first);
     }
+
+    /**
+     * Test search defs formats for simplified configuration
+     * @throws Exception
+     */
+    public function testSearchDefsFormatForSimpleConfiguration(): void
+    {
+        $searchDefs = $this->viewDefinitionHandler->getSearchDefs('workflow');
+        static::assertNotNull($searchDefs);
+        static::assertNotNull($searchDefs->getSearch());
+        static::assertIsArray($searchDefs->getSearch());
+        static::assertNotEmpty($searchDefs->getSearch());
+        static::assertArrayHasKey('layout', $searchDefs->getSearch());
+
+        static::assertNotNull($searchDefs->getSearch()['layout']);
+        static::assertIsArray($searchDefs->getSearch()['layout']);
+        static::assertNotEmpty($searchDefs->getSearch()['layout']);
+
+        static::assertArrayHasKey('advanced', $searchDefs->getSearch()['layout']);
+        static::assertNotNull($searchDefs->getSearch()['layout']['advanced']);
+        static::assertIsArray($searchDefs->getSearch()['layout']['advanced']);
+        static::assertNotEmpty($searchDefs->getSearch()['layout']['advanced']);
+
+        $first = array_pop($searchDefs->getSearch()['layout']['advanced']);
+        static::assertIsArray($first);
+        static::assertNotEmpty($first);
+
+        static::assertArrayHasKey('name', $first);
+    }
 }

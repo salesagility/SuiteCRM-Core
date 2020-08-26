@@ -58,6 +58,15 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     private $chartDefinitionProvider;
 
+    private $defaultFields = [
+        'type' => 'fieldType',
+        'label' => 'vname',
+    ];
+
+    private $vardefsToRename = [
+        'type' => 'fieldType',
+    ];
+
     /**
      * @inheritDoc
      */
@@ -297,9 +306,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (isset($definition['layout'][$type])) {
 
             foreach ($definition['layout'][$type] as $key => $field) {
+                $fieldName = $this->getFieldName($key, $field);
 
-                if (!empty($vardefs[$key])) {
-                    $merged = $this->addFieldDefinition($vardefs, $key, $field);
+                if (!empty($vardefs[$fieldName])) {
+                    $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
                     $definition['layout'][$type][$key] = $merged;
                 }
             }
@@ -315,19 +325,27 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     protected function addFieldDefinition(array $vardefs, $key, $field): array
     {
-        $field = array_merge(self::$listViewColumnInterface, $field);
+        $baseField = $this->getField($field);
+
+        $field = array_merge(self::$listViewColumnInterface, $baseField);
 
         if (!isset($vardefs[$key])) {
             return $field;
         }
 
-        if (!isset($field['type']) || empty($field['type'])) {
-            $field['type'] = $vardefs[$key]['type'];
+        foreach( $vardefs[$key] as $attributeName => $attributeValue){
+            $attribute = $attributeName;
+
+            if (!empty($this->vardefsToRename[$attributeName])){
+                $attribute = $this->vardefsToRename[$attributeName];
+            }
+
+            if (!isset($field[$attribute]) || empty($field[$attribute])) {
+                $field[$attribute] = $attributeValue;
+            }
         }
 
-        if (!isset($field['label']) || empty($field['label'])) {
-            $field['label'] = $vardefs[$key]['vname'];
-        }
+        $field = $this->applyDefaults($field);
 
         return $field;
     }
@@ -401,5 +419,60 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             $definition['layout'][$newName] = $definition['layout'][$type];
             unset($definition['layout'][$type]);
         }
+    }
+
+    /**
+     * Extract field name
+     * @param $key
+     * @param $field
+     * @return string
+     */
+    protected function getFieldName($key, $field): string
+    {
+        if (is_numeric($key) && is_string($field)) {
+            return $field;
+        }
+
+        if (is_numeric($key)) {
+            return  $field['name'];
+        }
+
+        return $key;
+    }
+
+    /**
+     * Get base field structure
+     * @param $field
+     * @return array
+     */
+    protected function getField($field): array
+    {
+        $baseField = $field;
+
+        if (is_string($field)) {
+            $baseField = [
+                'name' => $field,
+                'fieldName' => $field
+            ];
+        }
+
+        return $baseField;
+    }
+
+    /**
+     * Apply defaults
+     * @param $field
+     * @return mixed
+     */
+    protected function applyDefaults($field)
+    {
+        foreach ($this->defaultFields as $attribute => $default) {
+            if (empty($field[$attribute])) {
+                $defaultValue = $field[$default] ?? '';
+                $field[$attribute] = $defaultValue;
+            }
+        }
+
+        return $field;
     }
 }
