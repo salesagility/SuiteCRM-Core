@@ -14,15 +14,18 @@ use App\Service\ViewDefinitionsProviderInterface;
 use Exception;
 use InvalidArgumentException;
 use ListViewFacade;
+use Psr\Log\LoggerInterface;
 use SearchForm;
 use function in_array;
 
 /**
- * Class ViewDefinitions
+ * Class ViewDefinitionsHandler
  */
 class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsProviderInterface
 {
     public const HANDLER_KEY = 'view-definitions';
+
+
 
     /**
      * @var array
@@ -38,6 +41,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         'sortable' => true,
         'type' => ''
     ];
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var FieldDefinitionsProviderInterface
@@ -59,6 +67,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     private $chartDefinitionProvider;
 
+    /**
+     * @var FilterDefinitionProviderInterface
+     */
+    private $filterDefinitionProvider;
+
     private $defaultFields = [
         'type' => 'fieldType',
         'label' => 'vname',
@@ -67,14 +80,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $vardefsToRename = [
         'type' => 'fieldType',
     ];
-
-    /**
-     * @inheritDoc
-     */
-    public function getHandlerKey(): string
-    {
-        return self::HANDLER_KEY;
-    }
 
     /**
      * @var ModuleNameMapperInterface
@@ -95,6 +100,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param ChartDefinitionProviderInterface $chartDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
+     * @param LoggerInterface $logger
      */
     public function __construct(
         string $projectDir,
@@ -107,8 +113,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
         ChartDefinitionProviderInterface $chartDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
-        FilterDefinitionProviderInterface $filterDefinitionProvider
-    ) {
+        FilterDefinitionProviderInterface $filterDefinitionProvider,
+        LoggerInterface $logger
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -116,6 +124,15 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $this->chartDefinitionProvider = $chartDefinitionProvider;
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
+        $this->logger = $logger;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**
@@ -227,6 +244,12 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $displayColumns = ListViewFacade::getDisplayColumns($legacyModuleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
+
+            if (!isset($vardefs[strtolower($key)])) {
+                $this->logger->warning("ListViewDefinitions: '$key' not set on vardefs. Ignoring.");
+                continue;
+            }
+
             $data[] = $this->buildListViewColumn($column, $key, $vardefs);
         }
 

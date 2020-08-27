@@ -5,9 +5,13 @@ namespace App\Tests;
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
 use App\Service\ChartDefinitionProvider;
+use App\Service\FilterDefinitionProvider;
+use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProvider;
 use Codeception\Test\Unit;
 use Exception;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use SuiteCRM\Core\Legacy\AclHandler;
 use SuiteCRM\Core\Legacy\AppListStringsHandler;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
@@ -168,6 +172,17 @@ final class ViewDefinitionsHandlerTest extends Unit
             ]
         );
 
+        /** @var LoggerInterface $logger */
+        $logger = $this->make(
+            Logger::class,
+            [
+                'warning' => static function (
+                    string $module
+                ): void {
+                }
+            ]
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -179,7 +194,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $bulkActionProvider,
             $chartDefinitionProvider,
             $lineActionDefinitionProvider,
-            $filterDefinitionHandler
+            $filterDefinitionHandler,
+            $logger
         );
 
         // Needed for aspect mock
