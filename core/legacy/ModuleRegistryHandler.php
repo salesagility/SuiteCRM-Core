@@ -66,6 +66,8 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
             $modules[$invis] = '';
         }
 
+        $modules['SecurityGroups'] = '';
+
         $modules = $this->applyUserActionFilter($modules);
 
         foreach ($this->frontendExcludedModules as $excluded){
@@ -96,7 +98,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
             return [];
         }
 
-        ACLController:: filterModuleList($modules, false);
+        ACLController::filterModuleList($modules, false);
 
         return $modules;
     }
