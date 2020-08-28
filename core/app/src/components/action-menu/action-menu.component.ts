@@ -14,7 +14,7 @@ export class ActionMenuComponent {
     }
 
     get actions(): ModuleAction[] {
-        if (!this.listStore.vm.appData.module.menu) {
+        if (!this.listStore.vm.appData.module || !this.listStore.vm.appData.module.menu) {
             return [];
         }
 

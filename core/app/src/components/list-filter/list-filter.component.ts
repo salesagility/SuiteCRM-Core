@@ -48,9 +48,7 @@ export class ListFilterComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.searchCriteria = {
-            filters: {}
-        };
+        this.reset();
 
         this.initFields();
         this.initGridButtons();
@@ -66,7 +64,7 @@ export class ListFilterComponent implements OnInit {
         const languages = this.listStore.language;
         const searchCriteria = this.listStore.searchCriteria;
         const searchMeta = this.listStore.searchMeta;
-        const searchFields = searchMeta.layout.advanced;
+        const searchFields = searchMeta.layout[this.searchCriteria.type];
 
         Object.keys(searchFields).forEach(key => {
             const name = searchFields[key].name;
@@ -80,8 +78,13 @@ export class ListFilterComponent implements OnInit {
 
     protected reset(): void {
         this.searchCriteria = {
-            filters: {}
+            filters: {},
+            type: 'advanced'
         };
+
+        if (this.listStore.searchCriteria.type) {
+            this.searchCriteria.type = this.listStore.searchCriteria.type;
+        }
 
         this.fields = [];
         this.special = [];

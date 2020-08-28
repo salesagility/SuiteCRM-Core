@@ -166,6 +166,10 @@ export class MetadataStore implements StateStore {
         return this.types;
     }
 
+    public get(): Metadata {
+        return internalState;
+    }
+
     /**
      * Initial ListViewMeta load if not cached and update state.
      *

@@ -7,13 +7,12 @@ use App\Service\LegacyFilterMapper;
 use App\Service\ListViewProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
-use DBManagerFactory;
 use InvalidArgumentException;
 use ListViewDataPort;
 use SearchForm;
 use SugarBean;
-use ViewList;
 use Symfony\Component\Security\Core\Security;
+use ViewList;
 
 /**
  * Class ListViewHandler
@@ -221,32 +220,28 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
 
         $legacyCriteria = array_merge($baseCriteria, $mapped);
 
-        return $this->find($bean, $offset, $limit, $legacyCriteria);
+        return $this->find($type, $bean, $offset, $limit, $legacyCriteria);
     }
 
     /**
+     * @param string $type
      * @param SugarBean $bean
      * @param int $offset
      * @param int $limit
      * @param array $criteria
-     * @param array $filterFields
      * @return array
      */
-    protected function find(
-        SugarBean $bean,
-        int $offset,
-        int $limit,
-        array $criteria = [],
-        array $filterFields = []
-    ): array {
-        $params = $this->getSortingParams($criteria);
+    protected function find(string $type, SugarBean $bean, int $offset, int $limit, array $criteria = []): array
+    {
+
         $legacyListView = $this->getLegacyListView($bean);
         $listViewDefs = $this->getListViewDefs($legacyListView);
-        $searchForm = $this->getSearchForm($bean, $listViewDefs, $criteria);
+        $searchForm = $this->getSearchForm($type, $bean, $listViewDefs, $criteria);
+        $params = $this->getSortingParams($criteria);
 
         $where = $this->buildFilterClause($bean, $searchForm);
 
-        $filter_fields = $legacyListView->lv->setupFilterFields($filterFields);
+        $filter_fields = $legacyListView->lv->setupFilterFields([]);
 
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/ListView/ListViewDataPort.php';
@@ -271,13 +266,19 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
     }
 
     /**
+     * @param string $type
      * @param SugarBean $bean
      * @param array $listViewDefs
      * @param array $criteria
      * @return SearchForm
      */
-    protected function getSearchForm(SugarBean $bean, array $listViewDefs, array $criteria = []): SearchForm
-    {
+    protected function getSearchForm(
+        string $type,
+        SugarBean $bean,
+        array $listViewDefs,
+        array $criteria = []
+    ): SearchForm {
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/SearchForm/SearchForm2.php';
         $searchMetaData = SearchForm::retrieveSearchDefs($bean->module_name);
@@ -286,7 +287,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
             $searchMetaData['searchdefs'],
             $searchMetaData['searchFields'],
             'SearchFormGeneric.tpl',
-            'advanced_search',
+            $type . '_search',
             $listViewDefs
         );
 

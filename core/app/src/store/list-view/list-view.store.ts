@@ -54,6 +54,7 @@ export interface SearchCriteriaFilter {
 
 export interface SearchCriteria {
     name?: string;
+    type?: string;
     filters: SearchCriteriaFilter;
 }
 
@@ -288,8 +289,35 @@ export class ListViewStore extends ViewStore
 
         this.storageLoad(module, 'search-criteria', 'criteria');
         this.storageLoad(module, 'sort-selection', 'sort');
+        this.initSearchCriteria();
 
         return this.load();
+    }
+
+    /**
+     * Init search criteria
+     */
+    public initSearchCriteria(): void {
+        let criteria = this.internalState.criteria;
+
+        if (!this.internalState.criteria) {
+            criteria = deepClone(initialSearchCriteria);
+        }
+
+        const metadata = this.metadataStore.get();
+
+        if (metadata.search && metadata.search.layout){
+            const searchMeta = metadata.search;
+
+            if (!searchMeta.layout.advanced) {
+                criteria.type = 'basic';
+            }
+        }
+
+        this.updateState({
+            ...this.internalState,
+            criteria
+        });
     }
 
     /**
