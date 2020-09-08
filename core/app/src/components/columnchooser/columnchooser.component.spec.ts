@@ -1,25 +1,21 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ColumnChooserUiComponent} from './columnchooser.component';
+import {ColumnChooserComponent} from './columnchooser.component';
 
 describe('ColumnChooserUiComponent', () => {
-    let component: ColumnChooserUiComponent;
-    let fixture: ComponentFixture<ColumnChooserUiComponent>;
+    let component: ColumnChooserComponent;
+    let fixture: ComponentFixture<ColumnChooserComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ColumnChooserUiComponent]
+            declarations: [ColumnChooserComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ColumnChooserUiComponent);
+        fixture = TestBed.createComponent(ColumnChooserComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
-
-    // it('should create', () => {
-    //   expect(component).toBeTruthy();
-    // });
 });

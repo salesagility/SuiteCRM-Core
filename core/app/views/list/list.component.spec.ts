@@ -126,7 +126,7 @@ describe('ListComponent', () => {
     });
 
     it('should have title', () => {
-        const element = testHostFixture.debugElement.query(By.css('.ng-star-inserted')).nativeElement;
+        const element = testHostFixture.debugElement.query(By.css('.list-view-title')).nativeElement;
 
         expect(testHostFixture).toBeTruthy();
         expect(element).toBeTruthy();

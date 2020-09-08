@@ -4,6 +4,7 @@ import {AppState, AppStateStore} from '@store/app-state/app-state.store';
 import {Observable} from 'rxjs';
 import {StateManager} from '@store/state-manager';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,7 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 export class AppComponent {
     @ViewChild('mainOutlet', {read: ViewContainerRef, static: true})
     mainOutlet: ViewContainerRef | undefined;
-    appState$: Observable<AppState> = this.appStateStore.vm$;
+    appState$: Observable<AppState> = this.appStateStore.vm$.pipe(debounceTime(0));
 
     constructor(
         private router: Router,

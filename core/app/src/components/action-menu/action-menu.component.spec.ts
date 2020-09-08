@@ -7,6 +7,9 @@ import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {ButtonGroupModule} from '@components/button-group/button-group.module';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 
 @Component({
     selector: 'action-menu-test-host-component',
@@ -27,10 +30,12 @@ describe('ActionMenuComponent', () => {
             ],
             imports: [
                 RouterTestingModule,
-                ButtonModule
+                ButtonModule,
+                ButtonGroupModule
             ],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},
+                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
                 {
                     provide: ModuleNavigation, useValue: mockModuleNavigation
                 },

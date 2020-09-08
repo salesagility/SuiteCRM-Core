@@ -67,6 +67,30 @@ export const systemConfigMockData = {
                     XLarge: 8
                 }
             }
+        },
+        listview_settings_limits: {
+            id: '/docroot/api/system-configs/listview_settings_limits',
+            _id: 'listview_settings_limits',
+            value: null,
+            items: {
+                XSmall: 2,
+                Small: 3,
+                Medium: 4,
+                Large: 6,
+                XLarge: 7
+            }
+        },
+        listview_actions_limits: {
+            id: '/docroot/api/system-configs/listview_actions_limits',
+            _id: 'listview_actions_limits',
+            value: null,
+            items: {
+                XSmall: 2,
+                Small: 3,
+                Medium: 4,
+                Large: 6,
+                XLarge: 7
+            }
         }
     }
 };

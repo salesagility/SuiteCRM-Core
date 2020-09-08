@@ -50,6 +50,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $cacheResetActions
      * @param array $navigationTabLimits
      * @param array $listViewColumnLimits
+     * @param array $listViewSettingsLimits
+     * @param array $listViewActionsLimits
      */
     public function __construct(
         string $projectDir,
@@ -65,7 +67,9 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $systemConfigKeyMap,
         array $cacheResetActions,
         array $navigationTabLimits,
-        array $listViewColumnLimits
+        array $listViewColumnLimits,
+        array $listViewSettingsLimits,
+        array $listViewActionsLimits
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
@@ -76,6 +80,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['cache_reset_actions'] = $cacheResetActions;
         $this->injectedSystemConfigs['navigation_tab_limits'] = $navigationTabLimits;
         $this->injectedSystemConfigs['listview_column_limits'] = $listViewColumnLimits;
+        $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
+        $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
     }

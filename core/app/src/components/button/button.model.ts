@@ -24,6 +24,37 @@ export class Button implements ButtonInterface {
         );
     }
 
+    public static appendClasses(button: ButtonInterface, newClasses: string[]): void {
+
+        if (!button.klass) {
+            button.klass = newClasses;
+            return;
+        }
+
+        if (typeof button.klass === 'string') {
+            button.klass = newClasses.join(' ') + ' ' + button.klass;
+            return;
+        }
+
+        if (button.klass instanceof Array || button.klass instanceof Set) {
+            button.klass = [
+                ...button.klass,
+                ...newClasses
+            ];
+
+            return;
+        }
+
+        if (button.klass instanceof Object) {
+            const classes = {
+                ...button.klass,
+            };
+
+            classes[newClasses.join(' ')] = true;
+            button.klass = classes;
+        }
+    }
+
     public addClasses(newClasses: string[]): void {
 
         if (!this.klass) {

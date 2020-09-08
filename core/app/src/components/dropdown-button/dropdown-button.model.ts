@@ -1,12 +1,10 @@
 import {ButtonInterface} from '@components/button/button.model';
+import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
-export interface DropdownButtonItemInterface {
-    label: string;
-    onClick?: Function;
-    klass?: string | string[] | Set<string> | { [key: string]: any };
-}
+export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface;
 
 export interface DropdownButtonInterface extends ButtonInterface {
     wrapperKlass?: string | string[] | Set<string> | { [key: string]: any };
-    items?: DropdownButtonItemInterface[];
+    items?: AnyButtonInterface[];
+    placement?: PlacementArray;
 }

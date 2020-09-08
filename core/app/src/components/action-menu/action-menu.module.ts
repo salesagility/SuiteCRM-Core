@@ -7,6 +7,7 @@ import {ActionMenuComponent} from './action-menu.component';
 
 import {ButtonModule} from '@components/button/button.module';
 import {ModalUiModule} from '@components/modal/modal.module';
+import {ButtonGroupModule} from '@components/button-group/button-group.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {ModalUiModule} from '@components/modal/modal.module';
         AppManagerModule.forChild(ActionMenuComponent),
         ModalUiModule,
         ButtonModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        ButtonGroupModule
     ]
 })
 export class ActionMenuModule {

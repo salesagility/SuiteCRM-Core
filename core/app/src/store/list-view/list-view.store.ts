@@ -5,9 +5,7 @@ import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
-import {
-    FilterDataSource
-} from '@components/list-filter/list-filter.component';
+import {FilterDataSource} from '@components/list-filter/list-filter.component';
 import {
     BulkActionDataSource,
     SelectionDataSource,
@@ -136,7 +134,8 @@ const initialState: ListViewState = {
     },
     selection: deepClone(initialSelection),
     loading: false,
-    widgets: true
+    widgets: true,
+    displayFilters: false
 };
 
 export interface ListViewState {
@@ -148,11 +147,17 @@ export interface ListViewState {
     selection: RecordSelection;
     loading: boolean;
     widgets: boolean;
+    displayFilters: boolean;
 }
 
 @Injectable()
-export class ListViewStore extends ViewStore
-    implements StateStore, DataSource<Record>, SelectionDataSource, PaginationDataSource, BulkActionDataSource, ChartTypesDataSource, FilterDataSource {
+export class ListViewStore extends ViewStore implements StateStore,
+    DataSource<Record>,
+    SelectionDataSource,
+    PaginationDataSource,
+    BulkActionDataSource,
+    ChartTypesDataSource,
+    FilterDataSource {
 
     /**
      * Public long-lived observable streams
@@ -166,6 +171,7 @@ export class ListViewStore extends ViewStore
     selectedStatus$: Observable<SelectionStatus>;
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
+    displayFilters$: Observable<boolean>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -173,8 +179,6 @@ export class ListViewStore extends ViewStore
     vm$: Observable<ListViewModel>;
     vm: ListViewModel;
     data: ListViewData;
-
-    protected displayFilters = false;
 
     /** Internal Properties */
     protected cache$: Observable<any> = null;
@@ -215,7 +219,8 @@ export class ListViewStore extends ViewStore
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
-        this.widgets$ = this.state$.pipe(map(state => state.widgets));
+        this.widgets$ = this.state$.pipe(map(state => state.widgets), distinctUntilChanged());
+        this.displayFilters$ = this.state$.pipe(map(state => state.displayFilters), distinctUntilChanged());
 
         this.watchPageSize(configStore, preferencesStore);
 
@@ -244,14 +249,22 @@ export class ListViewStore extends ViewStore
     }
 
     get showFilters(): boolean {
-        return this.displayFilters;
+        return this.internalState.displayFilters;
     }
 
     set showFilters(show: boolean) {
-        this.displayFilters = show;
+        this.updateState({
+            ...this.internalState,
+            displayFilters: show
+        });
     }
 
     get showWidgets(): boolean {
+
+        if (!this.getChartTypes() || !Object.keys(this.getChartTypes()).length) {
+            return false;
+        }
+
         return this.internalState.widgets;
     }
 
@@ -306,7 +319,7 @@ export class ListViewStore extends ViewStore
 
         const metadata = this.metadataStore.get();
 
-        if (metadata.search && metadata.search.layout){
+        if (metadata.search && metadata.search.layout) {
             const searchMeta = metadata.search;
 
             if (!searchMeta.layout.advanced) {
@@ -488,6 +501,10 @@ export class ListViewStore extends ViewStore
     }
 
     public getChartTypes(): any {
+        if (!this.metadata || !this.metadata.listView) {
+            return null;
+        }
+
         return this.metadata.listView.chartTypes;
     }
 

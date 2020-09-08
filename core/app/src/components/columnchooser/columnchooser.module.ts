@@ -2,19 +2,22 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
-import {ColumnChooserUiComponent} from './columnchooser.component';
+import {ColumnChooserComponent} from './columnchooser.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ImageModule} from '@components/image/image.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    declarations: [ColumnChooserUiComponent],
-    exports: [ColumnChooserUiComponent],
+    declarations: [ColumnChooserComponent],
+    exports: [ColumnChooserComponent],
     imports: [
         CommonModule,
         DragDropModule,
-        AppManagerModule.forChild(ColumnChooserUiComponent),
-        ImageModule
-    ]
+        AppManagerModule.forChild(ColumnChooserComponent),
+        ImageModule,
+        NgbModule
+    ],
+    entryComponents: [ColumnChooserComponent]
 })
-export class ColumnchooserUiModule {
+export class ColumnChooserModule {
 }

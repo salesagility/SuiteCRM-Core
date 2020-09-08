@@ -4,10 +4,12 @@ import {CommonModule} from '@angular/common';
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {SettingsMenuComponent} from './settings-menu.component';
 
-import {ColumnchooserUiModule} from '../columnchooser/columnchooser.module';
+import {ColumnChooserModule} from '../columnchooser/columnchooser.module';
 import {ImageModule} from '@components/image/image.module';
 import {ButtonModule} from '@components/button/button.module';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ButtonGroupModule} from '@components/button-group/button-group.module';
 
 @NgModule({
     declarations: [SettingsMenuComponent],
@@ -15,10 +17,12 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
     imports: [
         CommonModule,
         AppManagerModule.forChild(SettingsMenuComponent),
-        ColumnchooserUiModule,
+        ColumnChooserModule,
         ImageModule,
         ButtonModule,
-        DropdownButtonModule
+        DropdownButtonModule,
+        NgbModule,
+        ButtonGroupModule
     ]
 })
 export class SettingsMenuModule {

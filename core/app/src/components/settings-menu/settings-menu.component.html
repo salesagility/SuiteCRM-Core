@@ -1,10 +1,3 @@
-<div class="list-view-settings float-right">
-    <button type="button" class="settings-button dropdown-toggle">
-        Display As
-    </button>
-    <scrm-dropdown-button *ngIf="myFiltersButton" [config]="myFiltersButton"></scrm-dropdown-button>
-    <scrm-button *ngIf="filterButton" [config]="filterButton"></scrm-button>
-    <scrm-button *ngIf="clearButton" [config]="clearButton"></scrm-button>
-    <scrm-columnchooser-ui></scrm-columnchooser-ui>
-    <scrm-button *ngIf="chartsButton" [config]="chartsButton"></scrm-button>
+<div class="list-view-settings float-right" *ngIf="(vm$ | async) as vm">
+    <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
 </div>

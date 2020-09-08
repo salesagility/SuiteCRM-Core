@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SettingsMenuComponent} from './settings-menu.component';
-import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
+import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
 import {FilterUiModule} from '@components/filter/filter.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -21,7 +21,7 @@ describe('SettingsmenuUiComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                ColumnchooserUiModule,
+                ColumnChooserModule,
                 FilterUiModule,
                 HttpClientTestingModule,
                 ApolloTestingModule,

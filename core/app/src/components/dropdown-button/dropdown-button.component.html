@@ -1,11 +1,29 @@
-<div ngbDropdown class="d-inline-block" [ngClass]="config.wrapperKlass">
+<div ngbDropdown
+     [autoClose]="autoClose"
+     [placement]="config.placement"
+     #dropDown="ngbDropdown"
+     class="d-inline-block dropdown-button"
+     [ngClass]="config.wrapperKlass">
     <button [ngClass]="config.klass" [disabled]="disabled" ngbDropdownToggle>{{ config.label }}
         <ng-content></ng-content>
     </button>
     <div ngbDropdownMenu>
-        <a ngbDropdownItem
-           *ngFor="let item of config.items"
-           [ngClass]="item.klass"
-           (click)="item.onClick && item.onClick()">{{item.label}}</a>
+
+        <ng-container *ngFor="let item of config.items">
+
+            <ng-container *ngIf="item && !isDropdown(item)">
+                <a ngbDropdownItem
+                   [ngClass]="item && item.klass"
+                   (click)="item && click(item.onClick, dropDown)">
+                    <scrm-image *ngIf="item.icon" [image]="item.icon"></scrm-image>
+                    {{item && item.label}}
+                </a>
+            </ng-container>
+
+            <ng-container *ngIf="item && isDropdown(item)">
+                <scrm-dropdown-submenu (item-clicked)="close(dropDown)" [item]="item"></scrm-dropdown-submenu>
+            </ng-container>
+
+        </ng-container>
     </div>
 </div>

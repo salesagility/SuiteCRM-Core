@@ -162,6 +162,22 @@ class SystemConfigHandlerTest extends Unit
             ]
         ];
 
+        $listViewSettingsLimits = [
+            'XSmall' => 1,
+            'Small' => 2,
+            'Medium' => 3,
+            'Large' => 3,
+            'XLarge' => 4
+        ];
+
+        $listViewActionsLimits = [
+            'XSmall' => 1,
+            'Small' => 2,
+            'Medium' => 5,
+            'Large' => 5,
+            'XLarge' => 14
+        ];
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -176,7 +192,9 @@ class SystemConfigHandlerTest extends Unit
             $systemConfigKeyMap,
             $cacheResetActions,
             $navigationTabLimits,
-            $listViewColumnLimits
+            $listViewColumnLimits,
+            $listViewSettingsLimits,
+            $listViewActionsLimits
         );
     }
 

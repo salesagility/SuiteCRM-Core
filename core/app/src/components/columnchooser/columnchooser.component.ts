@@ -1,42 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'scrm-columnchooser-ui',
+    selector: 'scrm-columnchooser',
     templateUrl: './columnchooser.component.html',
 })
 
-export class ColumnChooserUiComponent implements OnInit {
+export class ColumnChooserComponent implements OnInit {
 
-    modalTitle: string = 'Choose Columns';
-    closeResult: string;
-
-    constructor(private modalService: NgbModal) {
-    }
-
-    open(modal) {
-        this.modalService.open(modal, {
-            ariaLabelledBy: 'modal-basic-title',
-            centered: true,
-            size: 'lg',
-            windowClass: 'column-chooser-modal'
-        }).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
-    }
-
-    private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return `with: ${reason}`;
-        }
-    }
+    modalTitle = 'Choose Columns';
 
     displayed = [
         'Name',
@@ -61,7 +34,11 @@ export class ColumnChooserUiComponent implements OnInit {
         'Employees'
     ];
 
-    drop(event: CdkDragDrop<string[]>) {
+    constructor(public modal: NgbActiveModal) {
+    }
+
+
+    drop(event: CdkDragDrop<string[]>): void {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -72,7 +49,7 @@ export class ColumnChooserUiComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
     }
 

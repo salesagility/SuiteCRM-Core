@@ -1,0 +1,27 @@
+<div>
+    <div class="dropdown-submenu-items-container">
+        <a (click)="isCollapsed = !isCollapsed"
+           class="dropdown-submenu-parent-button dropdown-item dropdown-toggle"
+        >
+            <scrm-image *ngIf="item && item.icon" [image]="item.icon"></scrm-image>
+            {{item && item.label}}
+        </a>
+        <div *ngIf="item && item.items.length" [ngbCollapse]="isCollapsed">
+            <ul class="dropdown-submenu pl-2 mb-1">
+
+                <li *ngFor="let subItem of item.items" class="dropdown-submenu-item dropdown-item">
+
+                    <a class="action-link dropdown-submenu-item-link"
+                       [ngClass]="subItem && subItem.klass"
+                       (click)="click(subItem)">
+                        <scrm-image *ngIf="subItem.icon" [image]="subItem.icon"></scrm-image>
+                        {{subItem && subItem.label}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="dropdown-submenu-extra">
+        <ng-content></ng-content>
+    </div>
+</div>

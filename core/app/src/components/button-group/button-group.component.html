@@ -1,0 +1,14 @@
+<div *ngIf="config$">
+    <ng-container *ngFor="let item of buttons.expanded">
+        <scrm-button *ngIf="item && !isDropdown(item)"
+                     [config]="item">
+        </scrm-button>
+        <scrm-dropdown-button *ngIf="item && isDropdown(item)"
+                              [config]="item">
+        </scrm-dropdown-button>
+    </ng-container>
+
+    <scrm-dropdown-button autoClose="outside"
+                          *ngIf="buttons.collapsed.length"
+                          [config]="dropdownConfig"></scrm-dropdown-button>
+</div>

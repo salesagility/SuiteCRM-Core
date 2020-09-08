@@ -15,7 +15,7 @@ import {FooterUiModule} from '@components/footer/footer.module';
 import {ClassicViewUiModule} from '@components/classic-view/classic-view.module';
 import {MessageUiModule} from '@components/message/message.module';
 import {FilterUiModule} from '@components/filter/filter.module';
-import {ColumnchooserUiModule} from '@components/columnchooser/columnchooser.module';
+import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
 import {TableUiModule} from '@components/table/table.module';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
@@ -38,10 +38,11 @@ import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
+import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         BrowserModule,
@@ -63,7 +64,7 @@ import {BnNgIdleService} from 'bn-ng-idle';
         ModuleTitleModule,
         ListHeaderModule,
         ListcontainerUiModule,
-        ColumnchooserUiModule,
+        ColumnChooserModule,
         ImageModule,
         BrowserAnimationsModule,
         NgbModule,
@@ -72,10 +73,10 @@ import {BnNgIdleService} from 'bn-ng-idle';
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
-        BnNgIdleService
+        BnNgIdleService,
     ],
     bootstrap: [AppComponent],
-    entryComponents: []
+    entryComponents: [ColumnChooserComponent]
 })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {
