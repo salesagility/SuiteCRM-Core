@@ -219,12 +219,18 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertIsArray($firstColumn);
         static::assertNotEmpty($firstColumn);
 
-        static::assertArrayHasKey('fieldName', $firstColumn);
+        static::assertArrayHasKey('name', $firstColumn);
         static::assertArrayHasKey('label', $firstColumn);
         static::assertArrayHasKey('link', $firstColumn);
         static::assertIsBool($firstColumn['link']);
         static::assertArrayHasKey('sortable', $firstColumn);
         static::assertIsBool($firstColumn['sortable']);
+        static::assertArrayHasKey('fieldDefinition', $firstColumn);
+        static::assertIsArray($firstColumn['fieldDefinition']);
+
+        static::assertArrayHasKey('name', $firstColumn['fieldDefinition']);
+        static::assertArrayHasKey('type', $firstColumn['fieldDefinition']);
+        static::assertArrayHasKey('vname', $firstColumn['fieldDefinition']);
 
         $actions = $listViewDefs->getListView()['bulkActions'];
         static::assertIsArray($actions);

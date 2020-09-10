@@ -4,11 +4,12 @@ import {
     VerticalBarChartResult
 } from '@components/chart/charts/vertical-bar-chart/vertical-bar-chart.model';
 import {Observable} from 'rxjs';
-import {Record, ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {map} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {Record} from '@app-common/record/record.model';
 
 @Injectable()
 export class PipelineBySalesStage implements VerticalBarChartDataSource {

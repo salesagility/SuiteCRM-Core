@@ -1,5 +1,5 @@
-import {Field} from '@fields/field.model';
 import {ButtonInterface} from '@components/button/button.model';
+import {Field} from '@app-common/record/field.model';
 
 export interface FieldGridColumn {
     field?: Field;

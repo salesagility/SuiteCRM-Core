@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EmailDetailFieldsComponent} from './email.component';
-import {Field} from '@fields/field.model';
 import {Component} from '@angular/core';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'email-detail-field-test-host-component',

@@ -25,13 +25,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 {
     public const HANDLER_KEY = 'view-definitions';
 
-
-
     /**
      * @var array
      */
     protected static $listViewColumnInterface = [
-        'fieldName' => '',
+        'name' => '',
         'width' => '',
         'label' => '',
         'link' => false,
@@ -72,20 +70,18 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     private $filterDefinitionProvider;
 
+    /**
+     * @var array
+     */
     private $defaultFields = [
-        'type' => 'fieldType',
+        'type' => 'type',
         'label' => 'vname',
-    ];
-
-    private $vardefsToRename = [
-        'type' => 'fieldType',
     ];
 
     /**
      * @var ModuleNameMapperInterface
      */
     protected $moduleNameMapper;
-
 
     /**
      * ViewDefinitionsHandler constructor.
@@ -272,11 +268,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     protected function buildListViewColumn($column, $key, ?array $vardefs): array
     {
         $column = array_merge(self::$listViewColumnInterface, $column);
-        $column['fieldName'] = strtolower($key);
+        $column['name'] = strtolower($key);
 
         $column = $this->addFieldDefinition($vardefs, strtolower($key), $column);
 
-        if ($column['fieldName'] === 'email1') {
+        if ($column['name'] === 'email1') {
             $column['type'] = 'email';
             $column['link'] = false;
         }
@@ -360,17 +356,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             return $field;
         }
 
-        foreach( $vardefs[$key] as $attributeName => $attributeValue){
-            $attribute = $attributeName;
-
-            if (!empty($this->vardefsToRename[$attributeName])){
-                $attribute = $this->vardefsToRename[$attributeName];
-            }
-
-            if (!isset($field[$attribute]) || empty($field[$attribute])) {
-                $field[$attribute] = $attributeValue;
-            }
-        }
+        $field['fieldDefinition'] = $vardefs[$key];
 
         $field = $this->applyDefaults($field);
 
@@ -389,10 +375,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (isset($definition['layout'][$type])) {
             foreach ($definition['layout'][$type] as $key => $field) {
                 $name = $field['name'] ?? '';
-
-                if (empty($name)) {
-                    $name = $field['fieldName'] ?? '';
-                }
 
                 if ($this->useRangeSearch($module, $searchDefs, $name)) {
                     $definition['layout'][$type][$key]['enable_range_search'] = true;
@@ -478,7 +460,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (is_string($field)) {
             $baseField = [
                 'name' => $field,
-                'fieldName' => $field
             ];
         }
 
@@ -487,14 +468,14 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
     /**
      * Apply defaults
-     * @param $field
-     * @return mixed
+     * @param array $field
+     * @return array
      */
-    protected function applyDefaults($field)
+    protected function applyDefaults(array $field): array
     {
         foreach ($this->defaultFields as $attribute => $default) {
             if (empty($field[$attribute])) {
-                $defaultValue = $field[$default] ?? '';
+                $defaultValue = $field['fieldDefinition'][$default] ?? '';
                 $field[$attribute] = $defaultValue;
             }
         }

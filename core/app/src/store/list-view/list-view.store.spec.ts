@@ -1,9 +1,10 @@
-import {ListViewStore, SearchCriteria} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewMockData, listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {take} from 'rxjs/operators';
 import {PageSelection} from '@components/pagination/pagination.model';
 import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
+import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
 
 describe('Listview Store', () => {
     const service: ListViewStore = listviewStoreMock;

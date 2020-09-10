@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {UrlDetailFieldComponent} from './url.component';
-import {Field, FieldMetadata} from '@fields/field.model';
+import {Field, FieldMetadata} from '@app-common/record/field.model';
 
 @Component({
     selector: 'url-detail-field-test-host-component',

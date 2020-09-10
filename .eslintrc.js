@@ -11,6 +11,7 @@ module.exports = {
         "map": [
           ["@app", "./core/app/src/app"],
           ["@base", "./core/app/src"],
+          ["@app-common", "./core/app/src/app-common"],
           ["@views", "./core/app/views"],
           ["@fields", "./core/app/fields"],
           ["@services", "./core/app/src/services"],

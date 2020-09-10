@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 
-import {Field} from './field.model';
 import {viewFieldsMap} from './field.manifest';
-import {Record} from '@store/list-view/list-view.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {Record} from '@app-common/record/record.model';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'scrm-field',

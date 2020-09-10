@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ListViewStore, Record} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {map} from 'rxjs/operators';
 import {LineChartDataSource, LineChartResult} from '@components/chart/charts/line-chart/line-chart.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {DateTime} from 'luxon';
 import {LanguageStore} from '@store/language/language.store';
+import {Record} from '@app-common/record/record.model';
 
 @Injectable()
 export class AccountTypesPerMonthLineChart implements LineChartDataSource {

@@ -184,7 +184,7 @@ export const metadataMockData = {
         },
         columns: [
             {
-                fieldName: 'name',
+                name: 'name',
                 width: '20%',
                 label: 'LBL_LIST_ACCOUNT_NAME',
                 link: true,
@@ -194,7 +194,7 @@ export const metadataMockData = {
                 sortable: false
             },
             {
-                fieldName: 'billing_address_city',
+                name: 'billing_address_city',
                 width: '10%',
                 label: 'LBL_LIST_CITY',
                 link: false,
@@ -204,7 +204,7 @@ export const metadataMockData = {
                 sortable: false
             },
             {
-                fieldName: 'billing_address_country',
+                name: 'billing_address_country',
                 width: '10%',
                 label: 'LBL_BILLING_ADDRESS_COUNTRY',
                 link: false,
@@ -214,7 +214,7 @@ export const metadataMockData = {
                 sortable: false
             },
             {
-                fieldName: 'phone_office',
+                name: 'phone_office',
                 width: '10%',
                 label: 'LBL_LIST_PHONE',
                 link: false,
@@ -224,7 +224,7 @@ export const metadataMockData = {
                 sortable: false
             },
             {
-                fieldName: 'assigned_user_name',
+                name: 'assigned_user_name',
                 width: '10%',
                 label: 'LBL_LIST_ASSIGNED_USER',
                 link: false,
@@ -234,7 +234,7 @@ export const metadataMockData = {
                 sortable: false
             },
             {
-                fieldName: 'email1',
+                name: 'email1',
                 width: '15%',
                 label: 'LBL_EMAIL_ADDRESS',
                 link: true,
@@ -245,7 +245,7 @@ export const metadataMockData = {
                 customCode: '{$EMAIL1_LINK}'
             },
             {
-                fieldName: 'date_entered',
+                name: 'date_entered',
                 width: '5%',
                 label: 'LBL_DATE_ENTERED',
                 link: false,

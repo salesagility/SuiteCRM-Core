@@ -15,7 +15,7 @@
             </td>
         </ng-container>
 
-        <ng-container *ngFor="let column of vm.listMetadata.fields" [cdkColumnDef]="column.fieldName">
+        <ng-container *ngFor="let column of vm.listMetadata.fields" [cdkColumnDef]="column.name">
             <th cdk-header-cell
                 *cdkHeaderCellDef
                 scope="col"

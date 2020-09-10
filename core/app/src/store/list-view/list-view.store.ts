@@ -26,35 +26,8 @@ import {SortDirection} from '@components/sort-button/sort-button.model';
 import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
 import {MessageService} from '@services/message/message.service';
 import {Process} from '@services/process/process.service';
-
-export interface FieldMap {
-    [key: string]: any;
-}
-
-export interface Record {
-    type: string;
-    module: string;
-    attributes: FieldMap;
-    id?: string;
-}
-
-export interface SearchCriteriaFieldFilter {
-    field?: string;
-    operator: string;
-    values?: string[];
-    start?: string;
-    end?: string;
-}
-
-export interface SearchCriteriaFilter {
-    [key: string]: SearchCriteriaFieldFilter;
-}
-
-export interface SearchCriteria {
-    name?: string;
-    type?: string;
-    filters: SearchCriteriaFilter;
-}
+import {Record} from '@app-common/record/record.model';
+import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
 
 const initialSearchCriteria = {
     filters: {}
@@ -536,7 +509,7 @@ export class ListViewStore extends ViewStore implements StateStore,
         const displayedFields = [];
 
         this.metadata.listView.fields.forEach(value => {
-            displayedFields.push(value.fieldName);
+            displayedFields.push(value.name);
         });
 
         const data = {
@@ -761,7 +734,7 @@ export class ListViewStore extends ViewStore implements StateStore,
             .pipe(map(({data}) => {
                 const recordsList: ListData = {
                     records: [],
-                    pagination: {} as Pagination
+                    pagination: {...pagination} as Pagination
                 };
 
                 if (!data || !data.getListView) {

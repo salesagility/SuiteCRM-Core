@@ -6,6 +6,7 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MenuItemLink} from '@components/navbar/navbar.abstract';
+import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 
 export interface ChartType {
     key: string;
@@ -44,7 +45,7 @@ export interface LineAction {
 }
 
 export interface ListViewMeta {
-    fields: ListField[];
+    fields: ColumnDefinition[];
     bulkActions: BulkActionsMap;
     lineActions: LineAction[];
     chartTypes: ChartTypesMap;
@@ -57,16 +58,12 @@ export interface Filter {
     contents: { [key: string]: any };
 }
 
-export interface ListField {
-    fieldName: string;
+export interface ColumnDefinition extends ViewFieldDefinition {
     width: string;
-    label: string;
-    link: boolean;
     default: boolean;
     module: string;
     id: string;
     sortable: boolean;
-    type: string;
 }
 
 export interface SearchMetaField {
@@ -117,7 +114,7 @@ export class MetadataStore implements StateStore {
     /**
      * Public long-lived observable streams
      */
-    fields$: Observable<ListField[]>;
+    fields$: Observable<ColumnDefinition[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
     metadata$: Observable<Metadata>;
@@ -291,7 +288,7 @@ export class MetadataStore implements StateStore {
                         };
 
                         if (data.viewDefinition.listView.columns) {
-                            data.viewDefinition.listView.columns.forEach((field: ListField) => {
+                            data.viewDefinition.listView.columns.forEach((field: ColumnDefinition) => {
                                 listViewMeta.fields.push(
                                     field
                                 );

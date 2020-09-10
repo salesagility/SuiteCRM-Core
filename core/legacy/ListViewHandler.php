@@ -247,7 +247,7 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
         require_once 'include/portability/ListView/ListViewDataPort.php';
         $listViewData = new ListViewDataPort();
 
-        return $listViewData->getListViewData($bean, $where, $offset, $limit, $filter_fields, $params);
+        return $listViewData->get($bean, $where, $offset, $limit, $filter_fields, $params);
     }
 
     /**

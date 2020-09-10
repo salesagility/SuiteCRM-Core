@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LanguageStore} from '@store/language/language.store';
 import {LineAction, ListViewMeta} from '@store/metadata/metadata.store.service';
-import {Record} from '@store/list-view/list-view.store';
+import {Record} from '@app-common/record/record.model';
 
 @Component({
     selector: 'scrm-line-action-menu',

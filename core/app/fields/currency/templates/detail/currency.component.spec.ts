@@ -6,7 +6,7 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {distinctUntilChanged} from 'rxjs/operators';
 import {FormatCurrencyPipe} from '@base/pipes/format-currency/format-currency.pipe';
-import {Field} from '@fields/field.model';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'currency-detail-field-test-host-component',

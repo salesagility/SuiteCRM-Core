@@ -7,10 +7,10 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {LayoutModule} from '@angular/cdk/layout';
 import {FieldModule} from '@fields/field.module';
-import {Field} from '@fields/field.model';
 import {By} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'field-grid-host-component',

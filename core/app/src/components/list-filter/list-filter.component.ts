@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {BulkActionsMap, Filter, SearchMetaField} from '@store/metadata/metadata.store.service';
+import {Filter, SearchMetaField} from '@store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
-import {Field} from '@fields/field.model';
-import {ListViewStore, SearchCriteria, SearchCriteriaFieldFilter} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {ButtonInterface} from '@components/button/button.model';
 import {deepClone} from '@base/utils/object-utils';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {Field} from '@app-common/record/field.model';
+import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;

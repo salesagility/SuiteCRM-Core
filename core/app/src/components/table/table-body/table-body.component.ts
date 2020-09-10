@@ -1,14 +1,15 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {ListField, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
+import {ColumnDefinition, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
-import {ListViewStore, Record, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
+import {ListViewStore, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
 import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {Field} from '@fields/field.model';
+import {Record} from '@app-common/record/record.model';
+import {Field, FieldManager} from '@app-common/record/field.model';
 
 @Component({
     selector: 'scrm-table-body',
@@ -91,15 +92,15 @@ export class TableBodyComponent {
         let hasLinkField = false;
         const returnArray = [];
         while (i < this.maxColumns && i < listMetadata.fields.length) {
-            returnArray.push(listMetadata.fields[i].fieldName);
+            returnArray.push(listMetadata.fields[i].name);
             hasLinkField = hasLinkField || listMetadata.fields[i].link;
             i++;
         }
         if (!hasLinkField && (this.maxColumns < listMetadata.fields.length)) {
             for (i = this.maxColumns; i < listMetadata.fields.length; i++) {
                 if (listMetadata.fields[i].link) {
-                    returnArray.splice(-1,1);
-                    returnArray.push(listMetadata.fields[i].fieldName);
+                    returnArray.splice(-1, 1);
+                    returnArray.push(listMetadata.fields[i].name);
                     break;
                 }
             }
@@ -131,13 +132,13 @@ export class TableBodyComponent {
         return this.language.getFieldLabel(label, module, languages);
     }
 
-    getFieldSort(field: ListField): SortDirectionDataSource {
+    getFieldSort(field: ColumnDefinition): SortDirectionDataSource {
         return {
             getSortDirection: (): Observable<SortDirection> => this.sort$.pipe(
                 map((sort: SortingSelection) => {
                     let direction = SortDirection.NONE;
 
-                    if (sort.orderBy === field.fieldName) {
+                    if (sort.orderBy === field.name) {
                         direction = sort.sortOrder;
                     }
 
@@ -145,20 +146,14 @@ export class TableBodyComponent {
                 })
             ),
             changeSortDirection: (direction: SortDirection): void => {
-                this.changeSort(field.fieldName, direction);
+                this.changeSort(field.name, direction);
             }
         } as SortDirectionDataSource;
     }
 
-    getField(column: ListField, record: Record): Field {
-        return {
-            type: column.type,
-            value: record.attributes[column.fieldName],
-            metadata: {
-                link: column.link,
-            },
-            labelKey: column.label
-        } as Field;
+    getField(column: ColumnDefinition, record: Record): Field {
+
+        return FieldManager.buildField(record, column);
     }
 
     protected changeSort(orderBy: string, sortOrder: SortDirection): void {

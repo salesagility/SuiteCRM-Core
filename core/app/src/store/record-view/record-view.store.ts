@@ -12,8 +12,8 @@ import {ModuleNavigation} from '@services/navigation/module-navigation/module-na
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {MessageService} from '@services/message/message.service';
 import {distinctUntilChanged, map, shareReplay, tap, catchError} from 'rxjs/operators';
-import {Record} from '@store/list-view/list-view.store';
 import {RecordViewGQL} from '@store/record-view/api.record.get';
+import {Record} from '@app-common/record/record.model';
 
 export interface RecordViewModel {
     data: RecordViewData;

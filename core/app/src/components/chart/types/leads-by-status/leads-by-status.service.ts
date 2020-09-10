@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Record, ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {map} from 'rxjs/operators';
 import {
     PieGridChartChartDataSource,
     PieGridChartResult
 } from '@components/chart/charts/pie-grid-chart/pie-grid-chart.model';
 import {LanguageStore} from '@store/language/language.store';
+import {Record} from '@app-common/record/record.model';
 
 @Injectable()
 export class LeadsByStatus implements PieGridChartChartDataSource {

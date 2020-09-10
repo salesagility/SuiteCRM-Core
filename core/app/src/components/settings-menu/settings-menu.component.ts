@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ListViewStore, SearchCriteriaFilter} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@store/list-view/list-view.store';
 import {ButtonInterface} from '@components/button/button.model';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {ButtonGroupInterface} from '@components/button-group/button-group.model';
@@ -9,6 +9,7 @@ import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {SearchCriteriaFilter} from '@app-common/views/list/search-criteria.model';
 
 @Component({
     selector: 'scrm-settings-menu',

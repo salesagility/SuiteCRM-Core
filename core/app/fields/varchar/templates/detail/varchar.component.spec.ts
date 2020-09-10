@@ -1,7 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharDetailFieldComponent} from './varchar.component';
-import {Field} from '@fields/field.model';
+import {Field} from '@app-common/record/field.model';
+import {HtmlSanitizeModule} from '@base/pipes/html-sanitize/html-sanitize.module';
 
 @Component({
     selector: 'varchar-detail-field-test-host-component',
@@ -24,7 +25,9 @@ describe('VarcharDetailFieldComponent', () => {
                 VarcharDetailFieldTestHostComponent,
                 VarcharDetailFieldComponent,
             ],
-            imports: [],
+            imports: [
+                HtmlSanitizeModule
+            ],
             providers: [],
         }).compileComponents();
 

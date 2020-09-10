@@ -1,6 +1,6 @@
 import {Input} from '@angular/core';
-import {Field} from '../field.model';
 import {FieldComponentInterface} from './field.interface';
+import {Field} from '@app-common/record/field.model';
 
 export class BaseFieldComponent implements FieldComponentInterface {
     @Input() field: Field;

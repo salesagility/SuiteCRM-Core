@@ -6,7 +6,7 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
 import {distinctUntilChanged} from 'rxjs/operators';
-import {Field} from '@fields/field.model';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'float-detail-field-test-host-component',

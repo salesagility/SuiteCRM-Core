@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {Field} from '@fields/field.model';
 import {FieldGridColumn, FieldGridRow} from '@components/field-grid/field-grid.model';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {Subscription} from 'rxjs';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'scrm-field-grid',

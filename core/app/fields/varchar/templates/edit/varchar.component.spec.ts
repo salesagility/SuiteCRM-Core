@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharEditFieldComponent} from './varchar.component';
-import {Field} from '@fields/field.model';
 import {FormsModule} from '@angular/forms';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'varchar-edit-field-test-host-component',

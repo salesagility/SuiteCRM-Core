@@ -15,13 +15,30 @@
       "../../node_modules/@types"
     ],
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@base/*": ["./src/*"],
-      "@views/*": ["./views/*"],
-      "@fields/*": ["./fields/*"],
-      "@services/*": ["./src/services/*"],
-      "@components/*": ["./src/components/*"],
-      "@store/*": ["./src/store/*"]
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@base/*": [
+        "./src/*"
+      ],
+      "@app-common/*": [
+        "./src/app-common/*"
+      ],
+      "@views/*": [
+        "./views/*"
+      ],
+      "@fields/*": [
+        "./fields/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@store/*": [
+        "./src/store/*"
+      ]
     },
     "lib": [
       "es2018",

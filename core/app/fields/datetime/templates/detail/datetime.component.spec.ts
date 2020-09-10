@@ -6,7 +6,7 @@ import {distinctUntilChanged} from 'rxjs/operators';
 import {BehaviorSubject, of} from 'rxjs';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {Field} from '@fields/field.model';
+import {Field} from '@app-common/record/field.model';
 
 @Component({
     selector: 'datetime-detail-field-test-host-component',

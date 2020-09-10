@@ -5,7 +5,7 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {BehaviorSubject, of} from 'rxjs';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
-import {Field} from '@fields/field.model';
+import {Field} from '@app-common/record/field.model';
 
 
 @Component({
