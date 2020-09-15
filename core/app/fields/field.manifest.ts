@@ -20,6 +20,8 @@ import {CurrencyDetailFieldModule} from '@fields/currency/templates/detail/curre
 import {CurrencyDetailFieldComponent} from '@fields/currency/templates/detail/currency.component';
 import {EmailListFieldsModule} from '@fields/email/templates/list/email.module';
 import {EmailListFieldsComponent} from '@fields/email/templates/list/email.component';
+import {TextDetailFieldComponent} from '@fields/text/templates/detail/text.component';
+import {TextDetailFieldModule} from '@fields/text/templates/detail/text.module';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -32,7 +34,8 @@ export const fieldModules = [
     DateTimeDetailFieldModule,
     UrlDetailFieldModule,
     CurrencyDetailFieldModule,
-    EmailListFieldsModule
+    EmailListFieldsModule,
+    TextDetailFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -45,7 +48,8 @@ export const fieldComponents = [
     DateTimeDetailFieldComponent,
     UrlDetailFieldComponent,
     CurrencyDetailFieldComponent,
-    EmailListFieldsComponent
+    EmailListFieldsComponent,
+    TextDetailFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -71,4 +75,5 @@ export const viewFieldsMap = {
     'currency.detail': CurrencyDetailFieldComponent,
     'email.list': EmailListFieldsComponent,
     'email.detail': EmailListFieldsComponent,
+    'text.detail': TextDetailFieldComponent
 };

@@ -4,6 +4,8 @@ export interface FieldMetadata {
     format?: boolean;
     target?: string;
     link?: boolean;
+    rows?: number;
+    cols?: number;
 }
 
 export interface Field {
