@@ -16,6 +16,7 @@ use SuiteCRM\Core\Legacy\AclHandler;
 use SuiteCRM\Core\Legacy\AppListStringsHandler;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use SuiteCRM\Core\Legacy\ViewDefinitionsHandler;
 
 final class ViewDefinitionsHandlerTest extends Unit
@@ -157,16 +158,15 @@ final class ViewDefinitionsHandlerTest extends Unit
 
                     /** @noinspection PhpUnusedParameterInspection */
                     string $module
-                )
-                :
-                array
-                {
+                ):
+                array {
                     $result = [];
                     $result[] = [
                         'id' => '1',
                         'name' => 'Saved Filter 1',
                         'contents' => 'dummy contents'
                     ];
+
                     return $result;
                 }
             ]
@@ -183,6 +183,15 @@ final class ViewDefinitionsHandlerTest extends Unit
             ]
         );
 
+        $recordViewDefinitionHandler = new RecordViewDefinitionHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $logger
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -195,6 +204,7 @@ final class ViewDefinitionsHandlerTest extends Unit
             $chartDefinitionProvider,
             $lineActionDefinitionProvider,
             $filterDefinitionHandler,
+            $recordViewDefinitionHandler,
             $logger
         );
 
@@ -326,5 +336,57 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertNotEmpty($first);
 
         static::assertArrayHasKey('name', $first);
+    }
+
+    /**
+     * Test record view defs retrieval
+     * @throws Exception
+     */
+    public function testRecordViewDefs(): void
+    {
+        $recordViewDefs = $this->viewDefinitionHandler->getRecordViewDefs('accounts');
+        static::assertNotNull($recordViewDefs);
+        static::assertNotNull($recordViewDefs->getRecordView());
+        static::assertIsArray($recordViewDefs->getRecordView());
+        static::assertNotEmpty($recordViewDefs->getRecordView());
+        static::assertArrayHasKey('templateMeta', $recordViewDefs->getRecordView());
+        static::assertArrayHasKey('actions', $recordViewDefs->getRecordView());
+        static::assertArrayHasKey('panels', $recordViewDefs->getRecordView());
+
+        static::assertNotNull($recordViewDefs->getRecordView()['templateMeta']);
+        static::assertIsArray($recordViewDefs->getRecordView()['templateMeta']);
+        static::assertNotEmpty($recordViewDefs->getRecordView()['templateMeta']);
+
+        static::assertArrayHasKey('maxColumns', $recordViewDefs->getRecordView()['templateMeta']);
+        static::assertArrayHasKey('useTabs', $recordViewDefs->getRecordView()['templateMeta']);
+        static::assertArrayHasKey('tabDefs', $recordViewDefs->getRecordView()['templateMeta']);
+
+
+        static::assertNotNull($recordViewDefs->getRecordView()['panels']);
+        static::assertIsArray($recordViewDefs->getRecordView()['panels']);
+        static::assertNotEmpty($recordViewDefs->getRecordView()['panels']);
+
+        $panels = $recordViewDefs->getRecordView()['panels'];
+        $firstPanel = $panels[0];
+
+        static::assertIsArray($firstPanel);
+        static::assertNotEmpty($firstPanel);
+        static::assertArrayHasKey('key', $firstPanel);
+        static::assertArrayHasKey('key', $firstPanel);
+        static::assertNotEmpty($firstPanel['rows']);
+
+        $firstRow = $firstPanel['rows'][0];
+        static::assertIsArray($firstRow);
+        static::assertNotEmpty($firstRow);
+        static::assertArrayHasKey('cols', $firstRow);
+        static::assertNotEmpty($firstRow['cols']);
+
+        $firstCol = $firstRow['cols'][0];
+        static::assertIsArray($firstCol);
+        static::assertNotEmpty($firstCol);
+        static::assertArrayHasKey('fieldDefinition', $firstCol);
+        static::assertArrayHasKey('name', $firstCol);
+        static::assertArrayHasKey('label', $firstCol);
+        static::assertNotEmpty($firstCol['fieldDefinition']);
     }
 }

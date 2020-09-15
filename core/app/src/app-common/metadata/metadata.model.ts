@@ -7,3 +7,17 @@ export interface ViewFieldDefinition {
     type?: string;
     fieldDefinition?: FieldDefinition;
 }
+
+export interface Panel {
+    label?: string;
+    key: string;
+    rows: PanelRow[];
+}
+
+export interface PanelRow {
+    cols: PanelCell[];
+}
+
+export interface PanelCell extends ViewFieldDefinition {
+    name?: string;
+}

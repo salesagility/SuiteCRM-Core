@@ -11,7 +11,7 @@
                     <div class="col">
                         <div class="order-2">
                             <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                            <div class="record-view-name">{{vm.records['name']}}</div>
+                            <div class="record-view-name">{{vm.record && vm.record.attributes['name']}}</div>
                         </div>
                     </div>
                     <div class="w-100"></div>
@@ -27,7 +27,7 @@
             <div class="row mr-0">
                 <div class="col-md-4">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                    <div class="record-view-name">{{vm.records['name']}}</div>
+                    <div class="record-view-name">{{vm.record && vm.record.attributes['name']}}</div>
                 </div>
                 <div class="col-md-8">
                     <div class="row mr-1 ml-1">

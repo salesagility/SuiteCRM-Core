@@ -1,0 +1,19 @@
+<ng-container *ngIf="dataSource">
+    <div *ngIf="config && config.layout === 'panels'" class="record-content panel-layout container-fluid pl-0 pr-0">
+        <div class="row no-gutters mt-3" *ngFor="let panel of panels">
+            <div class="col">
+                <scrm-panel [title]="panel.label" mode="collapsible">
+
+                    <div panel-body>
+                        Panel body
+                    </div>
+                </scrm-panel>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="config && config.layout === 'tabs'" class="record-content tabs-layout container-fluid pl-0 pr-0">
+    </div>
+
+</ng-container>

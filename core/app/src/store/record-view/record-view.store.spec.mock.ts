@@ -35,9 +35,9 @@ export const recordViewMockData = {
             email_opt_out: null,
             invalid_email: null,
             employees: null,
-            id: null,
+            id: 'c4da5f04-2d4a-7a14-35ff-5f242b8f8a52',
             industry: null,
-            name: null,
+            name: 'Some name',
             ownership: null,
             parent_id: null,
             phone_alternate: null,
@@ -1102,7 +1102,8 @@ export const recordViewMockData = {
             jjwg_maps_lat_c: '0.00000000',
             jjwg_maps_lng_c: '0.00000000',
             editable: true
-        }
+        },
+        _id: 'c4da5f04-2d4a-7a14-35ff-5f242b8f8a52'
     }
 };
 

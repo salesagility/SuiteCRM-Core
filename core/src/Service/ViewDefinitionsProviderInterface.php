@@ -32,4 +32,12 @@ interface ViewDefinitionsProviderInterface
      * @throws Exception
      */
     public function getSearchDefs(string $moduleName): ViewDefinition;
+
+    /**
+     * Get record view defs
+     * @param string $moduleName
+     * @return ViewDefinition
+     * @throws Exception
+     */
+    public function getRecordViewDefs(string $moduleName): ViewDefinition;
 }

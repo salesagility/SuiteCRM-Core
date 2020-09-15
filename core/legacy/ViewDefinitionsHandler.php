@@ -6,8 +6,8 @@ use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
 use App\Service\BulkActionDefinitionProviderInterface;
 use App\Service\ChartDefinitionProviderInterface;
-use App\Service\FilterDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
+use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ViewDefinitionsProviderInterface;
@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
 use SearchForm;
+use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use function in_array;
 
 /**
@@ -24,6 +25,7 @@ use function in_array;
 class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsProviderInterface
 {
     public const HANDLER_KEY = 'view-definitions';
+
 
     /**
      * @var array
@@ -84,6 +86,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     protected $moduleNameMapper;
 
     /**
+     * @var RecordViewDefinitionHandler
+     */
+    private $recordViewDefinitionHandler;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -96,6 +103,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param ChartDefinitionProviderInterface $chartDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
+     * @param RecordViewDefinitionHandler $recordViewDefinitionHandler
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -110,9 +118,9 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         ChartDefinitionProviderInterface $chartDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
         FilterDefinitionProviderInterface $filterDefinitionProvider,
+        RecordViewDefinitionHandler $recordViewDefinitionHandler,
         LoggerInterface $logger
-    )
-    {
+    ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -121,6 +129,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
         $this->logger = $logger;
+        $this->recordViewDefinitionHandler = $recordViewDefinitionHandler;
     }
 
     /**
@@ -163,6 +172,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             $viewDef->setSearch($this->fetchSearchDefs($legacyModuleName, $fieldDefinition));
         }
 
+        if (in_array('recordView', $views, true)) {
+            $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
+            $viewDef->setRecordView($recordViewDefs);
+        }
+
         $this->close();
 
         return $viewDef;
@@ -201,6 +215,27 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $viewDef = new ViewDefinition();
         $viewDef->setId($moduleName);
         $viewDef->setSearch($this->fetchSearchDefs($legacyModuleName, $fieldDefinition));
+
+        $this->close();
+
+        return $viewDef;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRecordViewDefs(string $moduleName): ViewDefinition
+    {
+        $this->init();
+
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
+
+        $legacyModuleName = $this->validateModuleName($moduleName);
+
+        $viewDef = new ViewDefinition();
+        $viewDef->setId($moduleName);
+        $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
+        $viewDef->setRecordView($recordViewDefs);
 
         $this->close();
 
@@ -442,7 +477,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         }
 
         if (is_numeric($key)) {
-            return  $field['name'];
+            return $field['name'];
         }
 
         return $key;

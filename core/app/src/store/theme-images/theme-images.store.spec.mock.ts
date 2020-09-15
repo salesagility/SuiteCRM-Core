@@ -121,6 +121,11 @@ export const themeImagesMockData = {
         path: 'core/app/themes/suite8/images/sort_descend.svg',
         name: 'sort_descend',
         type: 'svg'
+    },
+    minimise: {
+        path: 'core/app/themes/suite8/images/minimise.svg',
+        name: 'minimise',
+        type: 'svg'
     }
 };
 

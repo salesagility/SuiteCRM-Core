@@ -1,7 +1,7 @@
 <ng-container *ngIf="(vm$ | async) as vm">
     <div class="record-view-actions float-right">
-        <scrm-button *ngIf="createButton && vm.records['editable']" [config]="createButton"></scrm-button>
-        <scrm-button *ngIf="editButton && vm.records['editable']" [config]="editButton"></scrm-button>
+        <scrm-button *ngIf="createButton && vm.record && vm.record['editable']" [config]="createButton"></scrm-button>
+        <scrm-button *ngIf="editButton && vm.record &&  vm.record['editable']" [config]="editButton"></scrm-button>
         <scrm-button *ngIf="historyButton" [config]="historyButton"></scrm-button>
     </div>
 </ng-container>

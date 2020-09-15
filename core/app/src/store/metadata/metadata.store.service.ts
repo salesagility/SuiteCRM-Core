@@ -6,7 +6,7 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MenuItemLink} from '@components/navbar/navbar.abstract';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {ViewFieldDefinition, Panel} from '@app-common/metadata/metadata.model';
 
 export interface ChartType {
     key: string;
@@ -81,18 +81,45 @@ export interface SearchMeta {
     };
 }
 
+export interface RecordViewMetadata {
+    actions: RecordAction[];
+    templateMeta: RecordTemplateMetadata;
+    panels: Panel[];
+}
+
+export interface RecordAction {
+    name: string;
+}
+
+export interface RecordTemplateMetadata {
+    maxColumns: number;
+    useTabs: boolean;
+    tabDefs: TabDefinitions;
+}
+
+export interface TabDefinitions {
+    [key: string]: TabDefinition;
+}
+
+export interface TabDefinition {
+    newTab: boolean;
+    panelDefault: 'expanded' | 'collapsed';
+}
+
 export interface Metadata {
     detailView?: any;
     editView?: any;
     listView?: ListViewMeta;
     search?: SearchMeta;
+    recordView?: RecordViewMetadata;
 }
 
 const initialState: Metadata = {
     detailView: {},
     editView: {},
     listView: {} as ListViewMeta,
-    search: {} as SearchMeta
+    search: {} as SearchMeta,
+    recordView: {} as RecordViewMetadata
 };
 
 let internalState: Metadata = deepClone(initialState);
@@ -117,6 +144,7 @@ export class MetadataStore implements StateStore {
     fields$: Observable<ColumnDefinition[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
+    recordViewMetadata$: Observable<RecordViewMetadata>;
     metadata$: Observable<Metadata>;
 
     protected store = new BehaviorSubject<Metadata>(internalState);
@@ -130,13 +158,15 @@ export class MetadataStore implements StateStore {
     };
     protected types = [
         'listView',
-        'search'
+        'search',
+        'recordView'
     ];
 
     constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
         this.fields$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
         this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());
+        this.recordViewMetadata$ = this.state$.pipe(map(state => state.recordView), distinctUntilChanged());
         this.metadata$ = this.state$;
     }
 
@@ -277,49 +307,74 @@ export class MetadataStore implements StateStore {
                 map(({data}) => {
 
                     const metadata: Metadata = {} as Metadata;
-
-                    if (data && data.viewDefinition.listView) {
-                        const listViewMeta: ListViewMeta = {
-                            fields: [],
-                            bulkActions: {},
-                            lineActions: [],
-                            chartTypes: {},
-                            filters: []
-                        };
-
-                        if (data.viewDefinition.listView.columns) {
-                            data.viewDefinition.listView.columns.forEach((field: ColumnDefinition) => {
-                                listViewMeta.fields.push(
-                                    field
-                                );
-                            });
-                        }
-
-                        if (data.viewDefinition.listView.bulkActions) {
-                            listViewMeta.bulkActions = data.viewDefinition.listView.bulkActions;
-                        }
-
-                        if (data.viewDefinition.listView.lineActions) {
-                            listViewMeta.lineActions = data.viewDefinition.listView.lineActions;
-                        }
-
-                        if (data.viewDefinition.listView.availableCharts) {
-                            listViewMeta.chartTypes = data.viewDefinition.listView.availableCharts;
-                        }
-
-                        if (data.viewDefinition.listView.availableFilters) {
-                            listViewMeta.filters = data.viewDefinition.listView.availableFilters;
-                        }
-
-                        metadata.listView = listViewMeta;
-                    }
-
-                    if (data && data.viewDefinition.search) {
-                        metadata.search = data.viewDefinition.search;
-                    }
+                    this.parseListViewMetadata(data, metadata);
+                    this.parseSearchMetadata(data, metadata);
+                    this.parseRecordViewMetadata(data, metadata);
 
                     return metadata;
                 })
             );
+    }
+
+    protected parseListViewMetadata(data, metadata: Metadata): void {
+
+        if (!data || !data.viewDefinition.listView) {
+            return;
+        }
+
+        const listViewMeta: ListViewMeta = {
+            fields: [],
+            bulkActions: {},
+            lineActions: [],
+            chartTypes: {},
+            filters: []
+        };
+
+        if (data.viewDefinition.listView.columns) {
+            data.viewDefinition.listView.columns.forEach((field: ColumnDefinition) => {
+                listViewMeta.fields.push(
+                    field
+                );
+            });
+        }
+
+        const entries = ['bulkActions', 'lineActions', 'availableCharts', 'availableFilters'];
+
+        this.addDefinedMeta(listViewMeta, data.viewDefinition.listView, entries);
+
+        metadata.listView = listViewMeta;
+    }
+
+    protected parseSearchMetadata(data, metadata: Metadata): void {
+        if (data && data.viewDefinition.search) {
+            metadata.search = data.viewDefinition.search;
+        }
+    }
+
+    protected parseRecordViewMetadata(data, metadata: Metadata): void {
+        if (!data || !data.viewDefinition.recordView) {
+            return;
+        }
+
+        const recordViewMeta: RecordViewMetadata = {
+            actions: [],
+            templateMeta: {} as RecordTemplateMetadata,
+            panels: []
+        };
+
+        const receivedMeta = data.viewDefinition.recordView;
+        const entries = ['templateMeta', 'actions', 'panels'];
+
+        this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
+
+        metadata.recordView = recordViewMeta;
+    }
+
+    protected addDefinedMeta(metadata: { [key: string]: any }, received: { [key: string]: any }, keys: string[]): void {
+        keys.forEach(entryKey => {
+            if (received[entryKey]) {
+                metadata[entryKey] = received[entryKey];
+            }
+        });
     }
 }

@@ -1,13 +1,26 @@
 <!-- Start Record View Container Section -->
 
-<div class="list-view-container container-fluid">
+<div class="record-view-container container-fluid">
     <div class="row">
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }">
-            Record Container Component
-            <scrm-subpanel></scrm-subpanel>
+
+            <div class="container-fluid pl-0 pr-0">
+
+                <div class="row no-gutters">
+                    <div class="col">
+                        <scrm-record-content [dataSource]="getContentAdapter()"></scrm-record-content>
+                    </div>
+                </div>
+
+                <div class="row no-gutters">
+                    <div class="col">
+                        <scrm-subpanel></scrm-subpanel>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-3 list-widget-container pl-0" *ngIf="getDisplayWidgets()">
+        <div class="col-lg-3 record-widget-container pl-0" *ngIf="getDisplayWidgets()">
             <scrm-widget-ui [type]="type" [title]="widgetTitle"></scrm-widget-ui>
         </div>
 

@@ -8,6 +8,7 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.module';
 
 @Component({
     selector: 'panel-test-host-component',
@@ -67,7 +68,8 @@ describe('PanelComponent', () => {
             imports: [
                 CloseButtonModule,
                 ButtonModule,
-                DropdownButtonModule
+                DropdownButtonModule,
+                MinimiseButtonModule
             ],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},

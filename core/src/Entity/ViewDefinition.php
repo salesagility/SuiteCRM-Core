@@ -42,7 +42,7 @@ class ViewDefinition
     protected $id;
 
     /**
-     * Detail View metadata
+     * Record View metadata
      *
      * @var array
      *
@@ -50,12 +50,12 @@ class ViewDefinition
      *     attributes={
      *         "openapi_context"={
      *             "type"="array",
-     *             "description"="The detail-view metadata",
+     *             "description"="The record-view metadata",
      *         },
      *     }
      * )
      */
-    public $detailView;
+    public $recordView;
 
     /**
      * Edit View metadata
@@ -123,21 +123,21 @@ class ViewDefinition
     }
 
     /**
-     * Get Detail View metadata
+     * Get Record View metadata
      * @return array
      */
-    public function getDetailView(): ?array
+    public function getRecordView(): ?array
     {
-        return $this->detailView;
+        return $this->recordView;
     }
 
     /**
-     * Set Detail view metadata
-     * @param array $detailView
+     * Set Record view metadata
+     * @param array $recordView
      */
-    public function setDetailView(array $detailView): void
+    public function setRecordView(array $recordView): void
     {
-        $this->detailView = $detailView;
+        $this->recordView = $recordView;
     }
 
     /**

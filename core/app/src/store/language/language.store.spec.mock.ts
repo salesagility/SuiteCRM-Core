@@ -32,6 +32,10 @@ export const languageMockData = {
         PIPELINE_BY_SALES_STAGE: 'Pipeline By Sales Stage',
         LEADS_BY_SOURCE: 'Leads By Source',
         LBL_QUICK_CHARTS_EMPTY: '',
+        LBL_PANEL_ASSIGNMENT: 'OTHER',
+        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+        lbl_account_information: 'OVERVIEW',
+        LBL_PANEL_ADVANCED: 'MORE INFORMATION'
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

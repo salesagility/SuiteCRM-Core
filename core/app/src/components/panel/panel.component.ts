@@ -8,12 +8,17 @@ import {Button, ButtonInterface} from '@components/button/button.model';
 })
 export class PanelComponent implements OnInit {
 
+    @Input() klass: string;
     @Input() title: string;
+    @Input() mode: 'collapsible' | 'closable' = 'closable';
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
     } as ButtonInterface;
 
+    isCollapsed = false;
+
     protected buttonClasses = ['btn', 'btn-outline-light', 'btn-sm'];
+
 
     constructor() {
     }
@@ -31,5 +36,22 @@ export class PanelComponent implements OnInit {
         btn.addClasses(this.buttonClasses);
 
         this.close = btn;
+    }
+
+    isClosable(): boolean {
+        return this.mode === 'closable';
+    }
+
+    isCollapsible(): boolean {
+        return this.mode === 'collapsible';
+    }
+
+    minimiseConfig(): ButtonInterface {
+        return {
+            klass: ['btn', 'btn-outline-light', 'btn-sm'],
+            onClick: () => {
+                this.isCollapsed = !this.isCollapsed;
+            },
+        } as ButtonInterface;
     }
 }

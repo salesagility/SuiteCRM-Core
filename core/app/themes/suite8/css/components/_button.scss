@@ -324,3 +324,15 @@ button.settings-button.dropdown-toggle::after {
   width: 1.5em;
   height: 1.5em;
 }
+
+.minimise-button {
+  font-size: 0.5em;
+  fill: $white;
+  padding: .25rem .35rem;
+  margin: 0.25rem 1em 0.25rem .3rem;
+}
+
+.minimise-button:hover {
+  fill: $midnight-grey;
+}
+

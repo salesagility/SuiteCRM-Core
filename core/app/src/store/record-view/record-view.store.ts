@@ -3,7 +3,6 @@ import {AppData, ViewStore} from '@store/view/view.store';
 import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {BehaviorSubject, combineLatest, Observable, throwError} from 'rxjs';
 import {StateStore} from '@store/state';
-import {DataSource} from '@angular/cdk/table';
 import {deepClone} from '@base/utils/object-utils';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore} from '@store/language/language.store';
@@ -11,9 +10,10 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {MessageService} from '@services/message/message.service';
-import {distinctUntilChanged, map, shareReplay, tap, catchError} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {RecordViewGQL} from '@store/record-view/api.record.get';
 import {Record} from '@app-common/record/record.model';
+import {ViewMode} from '@base/app-common/views/view.model';
 
 export interface RecordViewModel {
     data: RecordViewData;
@@ -22,39 +22,48 @@ export interface RecordViewModel {
 }
 
 export interface RecordViewData {
-    records: Record[];
+    record: Record;
     loading: boolean;
 }
 
 export interface RecordViewState {
     module: string;
     recordID: string;
-    records: Record[];
+    record: Record;
     loading: boolean;
     widgets: boolean;
+    mode: ViewMode;
 }
 
 const initialState: RecordViewState = {
     module: '',
     recordID: '',
-    records: [],
+    record: {
+        type: '',
+        module: '',
+        attributes: {}
+    } as Record,
     loading: false,
-    widgets: true
+    widgets: true,
+    mode: 'detail'
 };
 
 export interface RecordData {
-    records: Record[];
+    record: Record;
+    module: string;
+    recordID: string;
 }
 
 @Injectable()
-export class RecordViewStore extends ViewStore implements StateStore, DataSource<Record> {
+export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Public long-lived observable streams
      */
-    records$: Observable<Record[]>;
+    record$: Observable<Record>;
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
+    mode$: Observable<ViewMode>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -89,15 +98,16 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
-        this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
+        this.record$ = this.state$.pipe(map(state => state.record), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
+        this.mode$ = this.state$.pipe(map(state => state.mode));
 
         const data$ = combineLatest(
-            [this.records$, this.loading$]
+            [this.record$, this.loading$]
         ).pipe(
-            map(([records, loading]) => {
-                this.data = {records, loading} as RecordViewData;
+            map(([record, loading]) => {
+                this.data = {record, loading} as RecordViewData;
                 return this.data;
             })
         );
@@ -107,14 +117,6 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
                 this.vm = {data, appData, metadata} as RecordViewModel;
                 return this.vm;
             }));
-    }
-
-    connect(): Observable<any> {
-        return this.records$;
-    }
-
-    disconnect(): void {
-        this.destroy();
     }
 
     get showWidgets(): boolean {
@@ -168,7 +170,7 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
     }
 
     /**
-     * Load / reload records using current pagination and criteria
+     * Load / reload record using current pagination and criteria
      *
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<RecordViewState>
@@ -176,7 +178,7 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
     protected load(useCache = true): Observable<RecordViewState> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
 
-        return this.getRecords(
+        return this.getRecord(
             this.internalState.module,
             this.internalState.recordID,
             useCache
@@ -185,21 +187,23 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
                 this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
                 this.updateState({
                     ...this.internalState,
-                    records: data.records,
+                    record: data.record,
+                    recordID: data.recordID,
+                    module: data.module,
                 });
             })
         );
     }
 
     /**
-     * Get records cached Observable or call the backend
+     * Get record cached Observable or call the backend
      *
      * @param {string} module to use
      * @param {string} recordID to use
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<any>
      */
-    protected getRecords(
+    protected getRecord(
         module: string,
         recordID: string,
         useCache = true
@@ -224,12 +228,24 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
             .pipe(
                 map(({data}) => {
 
-                    const record: RecordData = {
-                        records: []
-                    };
+                    const recordData = {
+                        record: {
+                            type: '',
+                            module: '',
+                            attributes: {}
+                        } as Record,
+                        recordID,
+                        module,
+                    } as RecordData;
+
+                    const record: Record = {
+                        type: '',
+                        module: '',
+                        attributes: {}
+                    } as Record;
 
                     if (!data) {
-                        return record;
+                        return recordData;
                     }
 
                     const id = data.getRecordView.record.id;
@@ -238,9 +254,14 @@ export class RecordViewStore extends ViewStore implements StateStore, DataSource
                         return false;
                     }
 
-                    record.records = data.getRecordView.record;
+                    record.id = id;
+                    record.module = module;
+                    record.type = data.getRecordView.record && data.getRecordView.record.object_name;
+                    record.attributes = data.getRecordView.record;
 
-                    return record;
+                    recordData.record = record;
+
+                    return recordData;
                 }),
                 catchError(err => throwError(err)),
             );

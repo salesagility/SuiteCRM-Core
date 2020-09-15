@@ -13,14 +13,14 @@ import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-n
 export class RecordSettingsMenuComponent {
 
     vm$ = combineLatest([
-        this.recordStore.records$
+        this.recordStore.record$
     ]).pipe(
         map((
             [
-                records
+                record
             ]
         ) => ({
-            records
+            record
         }))
     );
 

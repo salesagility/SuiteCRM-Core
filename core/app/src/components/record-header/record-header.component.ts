@@ -13,14 +13,14 @@ export class RecordHeaderComponent {
     displayResponsiveTable = false;
 
     vm$ = combineLatest([
-        this.recordViewStore.records$
+        this.recordViewStore.record$
     ]).pipe(
         map((
             [
-                records
+                record
             ]
         ) => ({
-            records
+            record
         }))
     );
 

@@ -10,9 +10,7 @@ import {ButtonModule} from '@components/button/button.module';
 import {recordviewStoreMock} from '@store/record-view/record-view.store.spec.mock';
 import {RecordViewStore} from '@store/record-view/record-view.store';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
-import {take} from 'rxjs/operators';
+import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
@@ -54,11 +52,7 @@ describe('RecordHeaderComponent', () => {
             declarations: [RecordHeaderComponent, RecordHeaderTestHostComponent],
             providers: [
                 {provide: RecordViewStore, useValue: recordviewStoreMock},
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
+                {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
                 {provide: ModuleNavigation, useValue: mockModuleNavigation},
                 {provide: SystemConfigStore, useValue: systemConfigStoreMock},
                 {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
