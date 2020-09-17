@@ -1,3 +1,0 @@
-<?php
-
-// stub for int
