@@ -1,11 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RecordContentComponent, RecordContentConfig, RecordContentDataSource} from './record-content.component';
-import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Component} from '@angular/core';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {ButtonModule} from '@components/button/button.module';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbModule, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {MetadataStore, TabDefinitions} from '@store/metadata/metadata.store.service';
@@ -15,327 +14,335 @@ import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
+import {Panel} from '@app-common/metadata/metadata.model';
 
-const dataSource: RecordContentDataSource = {
-    getDisplayConfig: (): Observable<RecordContentConfig> => of({
-        layout: 'panels',
-        mode: 'detail',
-        maxColumns: 2,
-        tabDefs: {
-            LBL_ACCOUNT_INFORMATION: {newTab: true, panelDefault: 'expanded'},
-            LBL_PANEL_ADVANCED: {newTab: true, panelDefault: 'expanded'},
-            LBL_PANEL_ASSIGNMENT: {newTab: true, panelDefault: 'expanded'}
-        } as TabDefinitions
-    } as RecordContentConfig).pipe(shareReplay(1)),
-    /* eslint-disable camelcase, @typescript-eslint/camelcase */
-    getPanels: () => of([
-        {
-            label: 'OVERVIEW',
-            key: 'lbl_account_information',
-            rows: [{
-                cols: [{
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
+const mockDisplayConfigData: RecordContentConfig = {
+    layout: 'panels',
+    mode: 'detail',
+    maxColumns: 2,
+    tabDefs: {
+        LBL_ACCOUNT_INFORMATION: {newTab: true, panelDefault: 'expanded'},
+        LBL_PANEL_ADVANCED: {newTab: true, panelDefault: 'expanded'},
+        LBL_PANEL_ASSIGNMENT: {newTab: true, panelDefault: 'expanded'}
+    } as TabDefinitions
+} as RecordContentConfig;
+const mockPanelsData: Panel[] = [
+    {
+        label: 'OVERVIEW',
+        key: 'lbl_account_information',
+        rows: [{
+            cols: [{
+                name: 'name',
+                label: 'LBL_NAME',
+                comment: 'Name of the Company',
+                fieldDefinition: {
                     name: 'name',
-                    label: 'LBL_NAME',
+                    type: 'name',
+                    dbType: 'varchar',
+                    vname: 'LBL_NAME',
+                    len: 150,
                     comment: 'Name of the Company',
-                    fieldDefinition: {
-                        name: 'name',
-                        type: 'name',
-                        dbType: 'varchar',
-                        vname: 'LBL_NAME',
-                        len: 150,
-                        comment: 'Name of the Company',
-                        unified_search: true,
-                        full_text_search: {boost: 3},
-                        audited: true,
-                        required: true,
-                        importable: 'required',
-                        merge_filter: 'selected'
-                    },
-                    type: 'name'
-                }, {
+                    unified_search: true,
+                    full_text_search: {boost: 3},
+                    audited: true,
+                    required: true,
+                    importable: 'required',
+                    merge_filter: 'selected'
+                },
+                type: 'name'
+            }, {
+                name: 'phone_office',
+                label: 'LBL_PHONE_OFFICE',
+                comment: 'The office phone number',
+                fieldDefinition: {
                     name: 'phone_office',
-                    label: 'LBL_PHONE_OFFICE',
+                    vname: 'LBL_PHONE_OFFICE',
+                    type: 'phone',
+                    dbType: 'varchar',
+                    len: 100,
+                    audited: true,
+                    unified_search: true,
+                    full_text_search: {boost: 1},
                     comment: 'The office phone number',
-                    fieldDefinition: {
-                        name: 'phone_office',
-                        vname: 'LBL_PHONE_OFFICE',
-                        type: 'phone',
-                        dbType: 'varchar',
-                        len: 100,
-                        audited: true,
-                        unified_search: true,
-                        full_text_search: {boost: 1},
-                        comment: 'The office phone number',
-                        merge_filter: 'enabled',
-                        required: false
-                    },
-                    type: 'phone'
-                }]
-            }, {
-                cols: [{
+                    merge_filter: 'enabled',
+                    required: false
+                },
+                type: 'phone'
+            }]
+        }, {
+            cols: [{
+                name: 'website',
+                label: 'LBL_WEBSITE',
+                type: 'link',
+                displayParams: {link_target: '_blank'},
+                fieldDefinition: {
                     name: 'website',
-                    label: 'LBL_WEBSITE',
-                    type: 'link',
-                    displayParams: {link_target: '_blank'},
-                    fieldDefinition: {
-                        name: 'website',
-                        vname: 'LBL_WEBSITE',
-                        type: 'url',
-                        dbType: 'varchar',
-                        len: 255,
-                        comment: 'URL of website for the company',
-                        required: false
-                    }
-                }, {
+                    vname: 'LBL_WEBSITE',
+                    type: 'url',
+                    dbType: 'varchar',
+                    len: 255,
+                    comment: 'URL of website for the company',
+                    required: false
+                }
+            }, {
+                name: 'phone_fax',
+                label: 'LBL_FAX',
+                comment: 'The fax phone number of this company',
+                fieldDefinition: {
                     name: 'phone_fax',
-                    label: 'LBL_FAX',
+                    vname: 'LBL_FAX',
+                    type: 'phone',
+                    dbType: 'varchar',
+                    len: 100,
+                    unified_search: true,
+                    full_text_search: {boost: 1},
                     comment: 'The fax phone number of this company',
-                    fieldDefinition: {
-                        name: 'phone_fax',
-                        vname: 'LBL_FAX',
-                        type: 'phone',
-                        dbType: 'varchar',
-                        len: 100,
-                        unified_search: true,
-                        full_text_search: {boost: 1},
-                        comment: 'The fax phone number of this company',
-                        required: false
-                    },
-                    type: 'phone'
-                }]
-            }, {
-                cols: [{
+                    required: false
+                },
+                type: 'phone'
+            }]
+        }, {
+            cols: [{
+                name: 'email1',
+                label: 'LBL_EMAIL',
+                studio: 'false',
+                fieldDefinition: {
                     name: 'email1',
-                    label: 'LBL_EMAIL',
-                    studio: 'false',
-                    fieldDefinition: {
-                        name: 'email1',
-                        vname: 'LBL_EMAIL',
-                        group: 'email1',
-                        type: 'varchar',
-                        function: {name: 'getEmailAddressWidget', returns: 'html'},
-                        source: 'non-db',
-                        studio: {editField: true, searchview: false},
-                        full_text_search: {boost: 3, analyzer: 'whitespace'},
-                        required: false
-                    },
-                    type: 'varchar'
-                }]
-            }, {
-                cols: [{
+                    vname: 'LBL_EMAIL',
+                    group: 'email1',
+                    type: 'varchar',
+                    function: {name: 'getEmailAddressWidget', returns: 'html'},
+                    source: 'non-db',
+                    studio: {editField: true, searchview: false},
+                    full_text_search: {boost: 3, analyzer: 'whitespace'},
+                    required: false
+                },
+                type: 'varchar'
+            }]
+        }, {
+            cols: [{
+                name: 'billing_address_street',
+                label: 'LBL_BILLING_ADDRESS',
+                type: 'address',
+                displayParams: {key: 'billing'},
+                fieldDefinition: {
                     name: 'billing_address_street',
-                    label: 'LBL_BILLING_ADDRESS',
-                    type: 'address',
-                    displayParams: {key: 'billing'},
-                    fieldDefinition: {
-                        name: 'billing_address_street',
-                        vname: 'LBL_BILLING_ADDRESS_STREET',
-                        type: 'varchar',
-                        len: '150',
-                        comment: 'The street address used for billing address',
-                        group: 'billing_address',
-                        merge_filter: 'enabled',
-                        required: false
-                    }
-                }, {
+                    vname: 'LBL_BILLING_ADDRESS_STREET',
+                    type: 'varchar',
+                    len: '150',
+                    comment: 'The street address used for billing address',
+                    group: 'billing_address',
+                    merge_filter: 'enabled',
+                    required: false
+                }
+            }, {
+                name: 'shipping_address_street',
+                label: 'LBL_SHIPPING_ADDRESS',
+                type: 'address',
+                displayParams: {key: 'shipping'},
+                fieldDefinition: {
                     name: 'shipping_address_street',
-                    label: 'LBL_SHIPPING_ADDRESS',
-                    type: 'address',
-                    displayParams: {key: 'shipping'},
-                    fieldDefinition: {
-                        name: 'shipping_address_street',
-                        vname: 'LBL_SHIPPING_ADDRESS_STREET',
-                        type: 'varchar',
-                        len: 150,
-                        group: 'shipping_address',
-                        comment: 'The street address used for for shipping purposes',
-                        merge_filter: 'enabled',
-                        required: false
-                    }
-                }]
-            }, {
-                cols: [{
+                    vname: 'LBL_SHIPPING_ADDRESS_STREET',
+                    type: 'varchar',
+                    len: 150,
+                    group: 'shipping_address',
+                    comment: 'The street address used for for shipping purposes',
+                    merge_filter: 'enabled',
+                    required: false
+                }
+            }]
+        }, {
+            cols: [{
+                name: 'description',
+                label: 'LBL_DESCRIPTION',
+                comment: 'Full text of the note',
+                fieldDefinition: {
                     name: 'description',
-                    label: 'LBL_DESCRIPTION',
+                    vname: 'LBL_DESCRIPTION',
+                    type: 'text',
                     comment: 'Full text of the note',
-                    fieldDefinition: {
-                        name: 'description',
-                        vname: 'LBL_DESCRIPTION',
-                        type: 'text',
-                        comment: 'Full text of the note',
-                        rows: 6,
-                        cols: 80,
-                        required: false
-                    },
-                    type: 'text'
-                }]
-            }, {
-                cols: [{
+                    rows: 6,
+                    cols: 80,
+                    required: false
+                },
+                type: 'text'
+            }]
+        }, {
+            cols: [{
+                name: 'assigned_user_name',
+                label: 'LBL_ASSIGNED_TO',
+                fieldDefinition: {
                     name: 'assigned_user_name',
-                    label: 'LBL_ASSIGNED_TO',
-                    fieldDefinition: {
-                        name: 'assigned_user_name',
-                        link: 'assigned_user_link',
-                        vname: 'LBL_ASSIGNED_TO_NAME',
-                        rname: 'user_name',
-                        type: 'relate',
-                        reportable: false,
-                        source: 'non-db',
-                        table: 'users',
-                        id_name: 'assigned_user_id',
-                        module: 'Users',
-                        duplicate_merge: 'disabled',
-                        required: false
-                    },
-                    type: 'relate'
-                }]
+                    link: 'assigned_user_link',
+                    vname: 'LBL_ASSIGNED_TO_NAME',
+                    rname: 'user_name',
+                    type: 'relate',
+                    reportable: false,
+                    source: 'non-db',
+                    table: 'users',
+                    id_name: 'assigned_user_id',
+                    module: 'Users',
+                    duplicate_merge: 'disabled',
+                    required: false
+                },
+                type: 'relate'
             }]
-        },
-        {
-            label: 'MORE INFORMATION',
-            key: 'LBL_PANEL_ADVANCED',
-            rows: [{
-                cols: [{
+        }]
+    },
+    {
+        label: 'MORE INFORMATION',
+        key: 'LBL_PANEL_ADVANCED',
+        rows: [{
+            cols: [{
+                name: 'account_type',
+                label: 'LBL_TYPE',
+                comment: 'The Company is of this type',
+                fieldDefinition: {
                     name: 'account_type',
-                    label: 'LBL_TYPE',
+                    vname: 'LBL_TYPE',
+                    type: 'enum',
+                    options: 'account_type_dom',
+                    len: 50,
                     comment: 'The Company is of this type',
-                    fieldDefinition: {
-                        name: 'account_type',
-                        vname: 'LBL_TYPE',
-                        type: 'enum',
-                        options: 'account_type_dom',
-                        len: 50,
-                        comment: 'The Company is of this type',
-                        required: false
-                    },
-                    type: 'enum'
-                }, {
+                    required: false
+                },
+                type: 'enum'
+            }, {
+                name: 'industry',
+                label: 'LBL_INDUSTRY',
+                comment: 'The company belongs in this industry',
+                fieldDefinition: {
                     name: 'industry',
-                    label: 'LBL_INDUSTRY',
+                    vname: 'LBL_INDUSTRY',
+                    type: 'enum',
+                    options: 'industry_dom',
+                    len: 50,
                     comment: 'The company belongs in this industry',
-                    fieldDefinition: {
-                        name: 'industry',
-                        vname: 'LBL_INDUSTRY',
-                        type: 'enum',
-                        options: 'industry_dom',
-                        len: 50,
-                        comment: 'The company belongs in this industry',
-                        merge_filter: 'enabled',
-                        required: false
-                    },
-                    type: 'enum'
-                }]
-            }, {
-                cols: [{
+                    merge_filter: 'enabled',
+                    required: false
+                },
+                type: 'enum'
+            }]
+        }, {
+            cols: [{
+                name: 'annual_revenue',
+                label: 'LBL_ANNUAL_REVENUE',
+                comment: 'Annual revenue for this company',
+                fieldDefinition: {
                     name: 'annual_revenue',
-                    label: 'LBL_ANNUAL_REVENUE',
+                    vname: 'LBL_ANNUAL_REVENUE',
+                    type: 'varchar',
+                    len: 100,
                     comment: 'Annual revenue for this company',
-                    fieldDefinition: {
-                        name: 'annual_revenue',
-                        vname: 'LBL_ANNUAL_REVENUE',
-                        type: 'varchar',
-                        len: 100,
-                        comment: 'Annual revenue for this company',
-                        merge_filter: 'enabled',
-                        required: false
-                    },
-                    type: 'varchar'
-                }, {
+                    merge_filter: 'enabled',
+                    required: false
+                },
+                type: 'varchar'
+            }, {
+                name: 'employees',
+                label: 'LBL_EMPLOYEES',
+                comment: 'Number of employees, varchar to accomodate for both number (100) or range (50-100)',
+                fieldDefinition: {
                     name: 'employees',
-                    label: 'LBL_EMPLOYEES',
+                    vname: 'LBL_EMPLOYEES',
+                    type: 'varchar',
+                    len: 10,
                     comment: 'Number of employees, varchar to accomodate for both number (100) or range (50-100)',
-                    fieldDefinition: {
-                        name: 'employees',
-                        vname: 'LBL_EMPLOYEES',
-                        type: 'varchar',
-                        len: 10,
-                        comment: 'Number of employees, varchar to accomodate for both number (100) or range (50-100)',
-                        required: false
-                    },
-                    type: 'varchar'
-                }]
-            }, {
-                cols: [{
+                    required: false
+                },
+                type: 'varchar'
+            }]
+        }, {
+            cols: [{
+                name: 'parent_name',
+                label: 'LBL_MEMBER_OF',
+                fieldDefinition: {
                     name: 'parent_name',
-                    label: 'LBL_MEMBER_OF',
-                    fieldDefinition: {
-                        name: 'parent_name',
-                        rname: 'name',
-                        id_name: 'parent_id',
-                        vname: 'LBL_MEMBER_OF',
-                        type: 'relate',
-                        isnull: 'true',
-                        module: 'Accounts',
-                        table: 'accounts',
-                        massupdate: false,
-                        source: 'non-db',
-                        len: 36,
-                        link: 'member_of',
-                        unified_search: true,
-                        importable: 'true',
-                        required: false
-                    },
-                    type: 'relate'
-                }]
-            }, {
-                cols: [{
+                    rname: 'name',
+                    id_name: 'parent_id',
+                    vname: 'LBL_MEMBER_OF',
+                    type: 'relate',
+                    isnull: 'true',
+                    module: 'Accounts',
+                    table: 'accounts',
+                    massupdate: false,
+                    source: 'non-db',
+                    len: 36,
+                    link: 'member_of',
+                    unified_search: true,
+                    importable: 'true',
+                    required: false
+                },
+                type: 'relate'
+            }]
+        }, {
+            cols: [{
+                name: 'campaign_name',
+                label: 'LBL_CAMPAIGN',
+                fieldDefinition: {
                     name: 'campaign_name',
-                    label: 'LBL_CAMPAIGN',
-                    fieldDefinition: {
-                        name: 'campaign_name',
-                        rname: 'name',
-                        vname: 'LBL_CAMPAIGN',
-                        type: 'relate',
-                        reportable: false,
-                        source: 'non-db',
-                        table: 'campaigns',
-                        id_name: 'campaign_id',
-                        link: 'campaign_accounts',
-                        module: 'Campaigns',
-                        duplicate_merge: 'disabled',
-                        comment: 'The first campaign name for Account (Meta-data only)',
-                        required: false
-                    },
-                    type: 'relate'
-                }]
+                    rname: 'name',
+                    vname: 'LBL_CAMPAIGN',
+                    type: 'relate',
+                    reportable: false,
+                    source: 'non-db',
+                    table: 'campaigns',
+                    id_name: 'campaign_id',
+                    link: 'campaign_accounts',
+                    module: 'Campaigns',
+                    duplicate_merge: 'disabled',
+                    comment: 'The first campaign name for Account (Meta-data only)',
+                    required: false
+                },
+                type: 'relate'
             }]
-        },
-        {
-            label: 'OTHER',
-            key: 'LBL_PANEL_ASSIGNMENT', rows: [{
-                cols: [{
+        }]
+    },
+    {
+        label: 'OTHER',
+        key: 'LBL_PANEL_ASSIGNMENT', rows: [{
+            cols: [{
+                name: 'date_entered',
+                label: 'LBL_DATE_ENTERED',
+                customCode: '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                fieldDefinition: {
                     name: 'date_entered',
-                    label: 'LBL_DATE_ENTERED',
-                    customCode: '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                    fieldDefinition: {
-                        name: 'date_entered',
-                        vname: 'LBL_DATE_ENTERED',
-                        type: 'datetime',
-                        group: 'created_by_name',
-                        comment: 'Date record created',
-                        enable_range_search: true,
-                        options: 'date_range_search_dom',
-                        inline_edit: false,
-                        required: false
-                    },
-                    type: 'datetime'
-                }, {
+                    vname: 'LBL_DATE_ENTERED',
+                    type: 'datetime',
+                    group: 'created_by_name',
+                    comment: 'Date record created',
+                    enable_range_search: true,
+                    options: 'date_range_search_dom',
+                    inline_edit: false,
+                    required: false
+                },
+                type: 'datetime'
+            }, {
+                name: 'date_modified',
+                label: 'LBL_DATE_MODIFIED',
+                customCode: '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                fieldDefinition: {
                     name: 'date_modified',
-                    label: 'LBL_DATE_MODIFIED',
-                    customCode: '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                    fieldDefinition: {
-                        name: 'date_modified',
-                        vname: 'LBL_DATE_MODIFIED',
-                        type: 'datetime',
-                        group: 'modified_by_name',
-                        comment: 'Date record last modified',
-                        enable_range_search: true,
-                        options: 'date_range_search_dom', inline_edit: false, required: false
-                    },
-                    type: 'datetime'
-                }]
+                    vname: 'LBL_DATE_MODIFIED',
+                    type: 'datetime',
+                    group: 'modified_by_name',
+                    comment: 'Date record last modified',
+                    enable_range_search: true,
+                    options: 'date_range_search_dom', inline_edit: false, required: false
+                },
+                type: 'datetime'
             }]
-        }]).pipe(shareReplay(1)),
+        }]
+    }
+] as Panel[];
+
+const displayConfigSubject = new BehaviorSubject<RecordContentConfig>(mockDisplayConfigData);
+const panelsSubject = new BehaviorSubject<Panel[]>(mockPanelsData);
+const dataSource: RecordContentDataSource = {
+    getDisplayConfig: (): Observable<RecordContentConfig> => displayConfigSubject.asObservable(),
+
+    getPanels: () => panelsSubject.asObservable(),
 } as RecordContentDataSource;
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
@@ -364,7 +371,9 @@ describe('RecordContentComponent', () => {
                 NgbDropdownModule,
                 PanelModule,
                 CloseButtonModule,
-                MinimiseButtonModule
+                MinimiseButtonModule,
+                NgbModule,
+                NgbNavModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
@@ -382,74 +391,218 @@ describe('RecordContentComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have panels', () => {
-
+    it('should have panels', async(() => {
         expect(testHostComponent).toBeTruthy();
-        const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
 
-        expect(panels).toBeTruthy();
-        expect(panels.length).toEqual(3);
-    });
+        displayConfigSubject.next({...mockDisplayConfigData});
 
-    it('should have correct panel titles', () => {
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            expect(testHostComponent).toBeTruthy();
+            const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
 
+            expect(panels).toBeTruthy();
+            expect(panels.length).toEqual(3);
+        });
+
+    }));
+
+    it('should have correct panel titles', async(() => {
         expect(testHostComponent).toBeTruthy();
-        const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
 
-        expect(panels).toBeTruthy();
-        expect(panels.length).toEqual(3);
+        displayConfigSubject.next({...mockDisplayConfigData});
 
-        const accountInfoPanel = panels.item(0);
-        const accountInfoPanelHeader = accountInfoPanel.getElementsByClassName('card-header').item(0);
-        const advancedPanel = panels.item(1);
-        const advancedPanelHeader = advancedPanel.getElementsByClassName('card-header').item(0);
-        const assignmentPanel = panels.item(2);
-        const assignmentPanelHeader = assignmentPanel.getElementsByClassName('card-header').item(0);
-
-        expect(accountInfoPanelHeader).toBeTruthy();
-        expect(accountInfoPanelHeader.textContent).toContain('OVERVIEW');
-        expect(advancedPanelHeader).toBeTruthy();
-        expect(advancedPanelHeader.textContent).toContain('MORE INFORMATION');
-        expect(assignmentPanelHeader).toBeTruthy();
-        expect(assignmentPanelHeader.textContent).toContain('OTHER');
-    });
-
-    it('panels should be collapsible', () => {
-
-        expect(testHostComponent).toBeTruthy();
-        const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
-
-        expect(panels).toBeTruthy();
-        expect(panels.length).toEqual(3);
-
-        const accountInfoPanel = panels.item(0);
-        const accountInfoPanelButton = accountInfoPanel.getElementsByClassName('minimise-button').item(0);
-        const advancedPanel = panels.item(1);
-        const advancedPanelButton = advancedPanel.getElementsByClassName('minimise-button').item(0);
-        const assignmentPanel = panels.item(2);
-        const assignmentPanelButton = assignmentPanel.getElementsByClassName('minimise-button').item(0);
-
-        expect(accountInfoPanelButton).toBeTruthy();
-        expect(advancedPanelButton).toBeTruthy();
-        expect(assignmentPanelButton).toBeTruthy();
-
-        accountInfoPanelButton.click();
-        advancedPanelButton.click();
-        assignmentPanelButton.click();
 
         testHostFixture.detectChanges();
         testHostFixture.whenStable().then(() => {
 
-            const accountInfoPanelBody = accountInfoPanel.getElementsByClassName('card-body').item(0);
-            const advancedPanelBody = advancedPanel.getElementsByClassName('card-body').item(0);
-            const assignmentPanelBody = assignmentPanel.getElementsByClassName('card-body').item(0);
 
-            expect(accountInfoPanelBody).toBeTruthy();
-            expect(accountInfoPanelBody.className).not.toContain('show');
-            expect(advancedPanelBody).toBeTruthy();
-            expect(advancedPanelBody.className).not.toContain('show');
-            expect(assignmentPanelBody).toBeTruthy();
-            expect(assignmentPanelBody.className).not.toContain('show');
+            const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
+
+            expect(panels).toBeTruthy();
+            expect(panels.length).toEqual(3);
+
+            const accountInfoPanel = panels.item(0);
+            const accountInfoPanelHeader = accountInfoPanel.getElementsByClassName('card-header').item(0);
+            const advancedPanel = panels.item(1);
+            const advancedPanelHeader = advancedPanel.getElementsByClassName('card-header').item(0);
+            const assignmentPanel = panels.item(2);
+            const assignmentPanelHeader = assignmentPanel.getElementsByClassName('card-header').item(0);
+
+            expect(accountInfoPanelHeader).toBeTruthy();
+            expect(accountInfoPanelHeader.textContent).toContain('OVERVIEW');
+            expect(advancedPanelHeader).toBeTruthy();
+            expect(advancedPanelHeader.textContent).toContain('MORE INFORMATION');
+            expect(assignmentPanelHeader).toBeTruthy();
+            expect(assignmentPanelHeader.textContent).toContain('OTHER');
+
         });
-    });
+
+
+    }));
+
+    it('panels should be collapsible', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        displayConfigSubject.next({...mockDisplayConfigData});
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(testHostComponent).toBeTruthy();
+            const panels = testHostFixture.nativeElement.getElementsByClassName('panel-card');
+
+            expect(panels).toBeTruthy();
+            expect(panels.length).toEqual(3);
+
+            const accountInfoPanel = panels.item(0);
+            const accountInfoPanelButton = accountInfoPanel.getElementsByClassName('minimise-button').item(0);
+            const advancedPanel = panels.item(1);
+            const advancedPanelButton = advancedPanel.getElementsByClassName('minimise-button').item(0);
+            const assignmentPanel = panels.item(2);
+            const assignmentPanelButton = assignmentPanel.getElementsByClassName('minimise-button').item(0);
+
+            expect(accountInfoPanelButton).toBeTruthy();
+            expect(advancedPanelButton).toBeTruthy();
+            expect(assignmentPanelButton).toBeTruthy();
+
+            accountInfoPanelButton.click();
+            advancedPanelButton.click();
+            assignmentPanelButton.click();
+
+            testHostFixture.detectChanges();
+            testHostFixture.whenStable().then(() => {
+
+                const accountInfoPanelBody = accountInfoPanel.getElementsByClassName('card-body').item(0);
+                const advancedPanelBody = advancedPanel.getElementsByClassName('card-body').item(0);
+                const assignmentPanelBody = assignmentPanel.getElementsByClassName('card-body').item(0);
+
+                expect(accountInfoPanelBody).toBeTruthy();
+                expect(accountInfoPanelBody.className).not.toContain('show');
+                expect(advancedPanelBody).toBeTruthy();
+                expect(advancedPanelBody.className).not.toContain('show');
+                expect(assignmentPanelBody).toBeTruthy();
+                expect(assignmentPanelBody.className).not.toContain('show');
+            });
+        });
+    }));
+
+    it('should have tabs', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        const tabsDisplayConfig = {...mockDisplayConfigData};
+        tabsDisplayConfig.layout = 'tabs';
+        displayConfigSubject.next(tabsDisplayConfig);
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(testHostComponent).toBeTruthy();
+            const tabsContainer = testHostFixture.nativeElement.getElementsByClassName('nav-tabs');
+            const tabs = testHostFixture.nativeElement.getElementsByClassName('tab');
+
+            expect(tabsContainer).toBeTruthy();
+            expect(tabs).toBeTruthy();
+            expect(tabs.length).toEqual(3);
+            expect(tabsContainer.length).toEqual(1);
+        });
+    }));
+
+    it('should have correct tabs titles', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        const tabsDisplayConfig = {...mockDisplayConfigData};
+        tabsDisplayConfig.layout = 'tabs';
+        displayConfigSubject.next(tabsDisplayConfig);
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(testHostComponent).toBeTruthy();
+            const tabs = testHostFixture.nativeElement.getElementsByClassName('tab');
+
+            expect(tabs).toBeTruthy();
+            expect(tabs.length).toEqual(3);
+
+            const accountInfoTab = tabs.item(0);
+            const accountInfoLink = accountInfoTab.getElementsByClassName('tab-link').item(0);
+            const advancedTab = tabs.item(1);
+            const advancedLink = advancedTab.getElementsByClassName('tab-link').item(0);
+            const assignmentTab = tabs.item(2);
+            const assignmentLink = assignmentTab.getElementsByClassName('tab-link').item(0);
+
+            expect(accountInfoLink).toBeTruthy();
+            expect(accountInfoLink.textContent).toContain('OVERVIEW');
+            expect(advancedLink).toBeTruthy();
+            expect(advancedLink.textContent).toContain('MORE INFORMATION');
+            expect(assignmentLink).toBeTruthy();
+            expect(assignmentLink.textContent).toContain('OTHER');
+
+        });
+
+
+    }));
+
+    it('tabs should be toggleable', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        const tabsDisplayConfig = {...mockDisplayConfigData};
+        tabsDisplayConfig.layout = 'tabs';
+        displayConfigSubject.next(tabsDisplayConfig);
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+
+            expect(testHostComponent).toBeTruthy();
+            const tabs = testHostFixture.nativeElement.getElementsByClassName('tab');
+            const tabContent = testHostFixture.nativeElement.getElementsByClassName('tab-content').item(0);
+
+            expect(tabs).toBeTruthy();
+            expect(tabContent).toBeTruthy();
+            expect(tabs.length).toEqual(3);
+
+            const accountInfoTab = tabs.item(0);
+            const accountInfoLink = accountInfoTab.getElementsByClassName('tab-link').item(0);
+            const advancedTab = tabs.item(1);
+            const advancedLink = advancedTab.getElementsByClassName('tab-link').item(0);
+            const assignmentTab = tabs.item(2);
+            const assignmentLink = assignmentTab.getElementsByClassName('tab-link').item(0);
+
+            expect(accountInfoLink).toBeTruthy();
+            expect(accountInfoLink.textContent).toContain('OVERVIEW');
+            accountInfoLink.click();
+
+            testHostFixture.detectChanges();
+            testHostFixture.whenStable().then(() => {
+                let displayedTab = tabContent.getElementsByClassName('tab-lbl_account_information');
+
+                expect(displayedTab).toBeTruthy();
+                expect(displayedTab.length).toEqual(1);
+
+                expect(advancedLink).toBeTruthy();
+                expect(advancedLink.textContent).toContain('MORE INFORMATION');
+                advancedLink.click();
+
+                testHostFixture.detectChanges();
+                testHostFixture.whenStable().then(() => {
+                    displayedTab = tabContent.getElementsByClassName('tab-LBL_PANEL_ADVANCED');
+
+                    expect(displayedTab).toBeTruthy();
+                    expect(displayedTab.length).toEqual(1);
+
+                    expect(assignmentLink).toBeTruthy();
+                    expect(assignmentLink.textContent).toContain('OTHER');
+
+                    assignmentLink.click();
+                    testHostFixture.detectChanges();
+                    testHostFixture.whenStable().then(() => {
+                        displayedTab = tabContent.getElementsByClassName('tab-LBL_PANEL_ASSIGNMENT');
+
+                        expect(displayedTab).toBeTruthy();
+                        expect(displayedTab.length).toEqual(1);
+                    });
+                });
+            });
+        });
+    }));
 });

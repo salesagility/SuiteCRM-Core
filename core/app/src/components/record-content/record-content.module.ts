@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RecordContentComponent} from '@components/record-content/record-content.component';
 import {PanelModule} from '@components/panel/panel.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {PanelModule} from '@components/panel/panel.module';
     ],
     imports: [
         CommonModule,
-        PanelModule
+        PanelModule,
+        NgbModule
     ]
 })
 export class RecordContentModule {

@@ -14,6 +14,19 @@
     </div>
 
     <div *ngIf="config && config.layout === 'tabs'" class="record-content tabs-layout container-fluid pl-0 pr-0">
+
+        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="active">
+            <li class="tab" *ngFor="let panel of panels; index as i;" [ngbNavItem]="i+1">
+                <a class="tab-link" ngbNavLink>{{panel.label}}</a>
+                <ng-template ngbNavContent>
+                    <div class="tab-{{panel.key}}">
+                        Panel body {{panel.label}}
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="m-3"></div>
+
     </div>
 
 </ng-container>

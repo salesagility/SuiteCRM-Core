@@ -28,6 +28,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
     config: RecordContentConfig = {} as RecordContentConfig;
     panels: Panel[];
+    active = 1;
     private configSub: Subscription;
     private panelsSub: Subscription;
 
