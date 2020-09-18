@@ -7,18 +7,20 @@
         <scrm-button *ngIf="quickSearchButton" [config]="quickSearchButton"></scrm-button>
     </span>
 
-    <scrm-field-grid panel-body [fieldMode]="mode" [fields]="fields" [actions]="true" [special]="special.length > 0">
+    <div panel-body class="p-3">
+        <scrm-field-grid [fieldMode]="mode" [fields]="fields" [actions]="true" [special]="special.length > 0">
 
-        <div class="float-right mt-4" *ngIf="special.length > 0" field-grid-special>
-            <div class="d-inline-block form-check mb-2 mr-sm-2" *ngFor="let item of special ">
-                <input class="form-check-input" type="checkbox" [value]="item.value">
-                <label class="form-check-label">{{item.label}}</label>
+            <div class="float-right mt-4" *ngIf="special.length > 0" field-grid-special>
+                <div class="d-inline-block form-check mb-2 mr-sm-2" *ngFor="let item of special ">
+                    <input class="form-check-input" type="checkbox" [value]="item.value">
+                    <label class="form-check-label">{{item.label}}</label>
+                </div>
             </div>
-        </div>
 
-        <span class="float-right mt-4" field-grid-actions>
+            <span class="float-right mt-4" field-grid-actions>
             <scrm-button *ngFor="let button of gridButtons" [config]="button"></scrm-button>
         </span>
-    </scrm-field-grid>
+        </scrm-field-grid>
+    </div>
 
 </scrm-panel>

@@ -182,6 +182,24 @@ export class LanguageStore implements StateStore {
     }
 
     /**
+     * Get All languageStrings label by key
+     *
+     * @returns {object} LanguageStrings
+     */
+    public getLanguageStrings(): LanguageStrings {
+        if (!internalState) {
+            return null;
+        }
+
+        return {
+            appStrings: internalState.appStrings,
+            appListStrings: internalState.appListStrings,
+            modStrings: internalState.modStrings,
+            languageKey: internalState.languageKey
+        };
+    }
+
+    /**
      * Get AppStrings label by key
      *
      * @param {string} labelKey to fetch

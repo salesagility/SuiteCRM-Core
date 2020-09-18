@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {SubPanelMeta, MetadataStore} from '@store/metadata/metadata.store.service';
-import { RecordViewData, RecordViewModel, RecordViewStore } from '@base/store/record-view/record-view.store';
+import {MetadataStore, SubPanelMeta} from '@store/metadata/metadata.store.service';
+import {RecordViewStore} from '@store/record-view/record-view.store';
+import {RecordViewModel} from '@store/record-view/record-view.store.model';
 
 @Component({
     selector: 'scrm-subpanel',
@@ -69,9 +70,7 @@ export class SubpanelComponent implements OnInit {
     }
 
     getModuleLabel(labelKey: string): string {
-        const label: string = this.languageStore.getFieldLabel(labelKey, this.module, this.languages);
-
-        return label;
+        return this.languageStore.getFieldLabel(labelKey, this.module, this.languages);
     }
 
     getStatsValue(): string {

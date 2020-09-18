@@ -5,7 +5,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
 import {RecordContentAdapter} from '@store/record-view/adapters/record-content.adapter';
-import {RecordContentDataSource} from '@components/record-content/record-content.component';
+import {RecordContentDataSource} from '@components/record-content/record-content.model';
 
 @Component({
     selector: 'scrm-record-container',

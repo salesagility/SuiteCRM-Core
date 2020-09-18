@@ -51,11 +51,11 @@ describe('TextDetailFieldComponent', () => {
         expect(el.rows).toEqual(6);
     });
 
-    it('should have default cols 50', () => {
+    it('should have default cols 20', () => {
         const el = testHostFixture.nativeElement.querySelector('textarea');
 
         expect(testHostComponent).toBeTruthy();
         expect(el).toBeTruthy();
-        expect(el.cols).toEqual(50);
+        expect(el.cols).toEqual(20);
     });
 });

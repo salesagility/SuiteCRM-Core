@@ -33,6 +33,10 @@ trait FieldDefinitionsInjectorTrait
 
         $field = $this->applyDefaults($field);
 
+        if ($field['name'] === 'email1') {
+            $field['type'] = 'email';
+        }
+
         return $field;
     }
 

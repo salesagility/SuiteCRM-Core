@@ -1,13 +1,22 @@
-.nav-tabs .tab {
+
+.tabs-layout .tab-content {
+  background-color: $white;
+}
+
+.tabs-layout .nav-tabs {
+  border-bottom: 1px solid $off-white;
+}
+
+.tabs-layout .nav-tabs .tab {
   padding-right: 0.1em;
 }
 
-.nav-tabs .tab-link {
+.tabs-layout .nav-tabs .tab-link {
   background-color: $geyser-blue;
   color: $median-grey;
 }
 
-.nav-tabs .tab-link.active {
+.tabs-layout .nav-tabs .tab-link.active {
   background-color: $midnight-blue;
   color: $white;
   border-color: $midnight-blue;
@@ -16,3 +25,4 @@
 .nav-tabs .tab-link.active:hover {
   color: $geyser-blue;
 }
+

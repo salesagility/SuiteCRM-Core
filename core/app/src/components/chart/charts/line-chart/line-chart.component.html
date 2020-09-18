@@ -1,4 +1,4 @@
-<ngx-charts-line-chart *ngIf="results"
+<ngx-charts-line-chart *ngIf="results && results.length > 0"
                        class="line-chart"
                        (window:resize)="onResize()"
                        [animations]="false"

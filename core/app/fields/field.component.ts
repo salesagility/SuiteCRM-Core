@@ -37,7 +37,15 @@ export class FieldComponent {
             return false;
         }
 
-        return !!(this.field && this.field.metadata && this.field.metadata.link && this.record);
+        if (!this.field || !this.record) {
+            return false;
+        }
+
+        if (this.type === 'relate') {
+            return true;
+        }
+
+        return !!(this.field.metadata && this.field.metadata.link);
     }
 
     getLink(): string {

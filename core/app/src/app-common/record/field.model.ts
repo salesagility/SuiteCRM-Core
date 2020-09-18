@@ -1,6 +1,7 @@
 import {Record} from './record.model';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
+import {LanguageStore} from '@store/language/language.store';
 
 export interface FieldDefinition {
     name?: string;
@@ -28,6 +29,10 @@ export interface FieldMetadata {
     cols?: number;
 }
 
+export interface FieldMap {
+    [key: string]: Field;
+}
+
 export interface Field {
     type: string;
     value?: string;
@@ -41,7 +46,7 @@ export interface Field {
 
 export class FieldManager {
 
-    public static buildField(record: Record, viewField: ViewFieldDefinition): Field {
+    public static buildField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
         const type = (viewField && viewField.type) || '';
@@ -55,14 +60,26 @@ export class FieldManager {
             value = record.attributes[viewField.name];
         }
 
-        return {
+
+        const field = {
             type: viewField.type,
             value,
             metadata: {
                 link: viewField.link,
             },
             definition,
-            labelKey: viewField.label
+            labelKey: viewField.label,
         } as Field;
+
+        if (language) {
+            field.label = this.getFieldLabel(viewField.label, record.module, language);
+        }
+
+        return field;
+    }
+
+    public static getFieldLabel(label: string, module: string, language: LanguageStore): string {
+        const languages = language.getLanguageStrings();
+        return language.getFieldLabel(label, module, languages);
     }
 }

@@ -20,6 +20,6 @@ export class TextDetailFieldComponent extends BaseFieldComponent {
             return this.field.metadata.cols;
         }
 
-        return 50;
+        return 20;
     }
 }

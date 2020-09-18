@@ -6,7 +6,7 @@ import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MenuItemLink} from '@components/navbar/navbar.abstract';
-import {ViewFieldDefinition, Panel} from '@app-common/metadata/metadata.model';
+import {Panel, ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 
 export interface ChartType {
     key: string;
@@ -377,7 +377,12 @@ export class MetadataStore implements StateStore {
             });
         }
 
-        const entries = ['bulkActions', 'lineActions', 'availableCharts', 'availableFilters'];
+        const entries = {
+            bulkActions: 'bulkActions',
+            lineActions: 'lineActions',
+            availableCharts: 'chartTypes',
+            availableFilters: 'filters'
+        };
 
         this.addDefinedMeta(listViewMeta, data.viewDefinition.listView, entries);
 
@@ -408,17 +413,22 @@ export class MetadataStore implements StateStore {
         };
 
         const receivedMeta = data.viewDefinition.recordView;
-        const entries = ['templateMeta', 'actions', 'panels'];
+        const entries = {templateMeta: 'templateMeta', actions: 'actions', panels: 'panels'};
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
 
         metadata.recordView = recordViewMeta;
     }
 
-    protected addDefinedMeta(metadata: { [key: string]: any }, received: { [key: string]: any }, keys: string[]): void {
-        keys.forEach(entryKey => {
-            if (received[entryKey]) {
-                metadata[entryKey] = received[entryKey];
+    protected addDefinedMeta(
+        metadata: { [key: string]: any },
+        received: { [key: string]: any },
+        keyMap: { [key: string]: string }
+    ): void {
+        Object.keys(keyMap).forEach(dataKey => {
+            const metadataKey = keyMap[dataKey];
+            if (received[dataKey]) {
+                metadata[metadataKey] = received[dataKey];
             }
         });
     }

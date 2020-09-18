@@ -1,0 +1,33 @@
+<form class="field-layout">
+    <div [ngClass]="rowClass" *ngFor="let row of fieldGrid; index as i">
+
+        <div *ngFor="let col of row.cols; index as colNumber"
+             [class.field-column-bordered]="row.cols.length > 1 && colNumber < row.cols.length - 1"
+             [ngClass]="colClass">
+
+            <ng-container *ngIf="col.field">
+                <div class="label-container">
+                    <strong><label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>:</strong>
+                </div>
+                <div>
+                    <scrm-field [type]="col.field.type"
+                                [mode]="config.mode"
+                                [klass]="inputClass"
+                                [field]="col.field"
+                                [record]="record">
+                    </scrm-field>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="col.actionSlot">
+                <ng-content select="[field-grid-actions]"></ng-content>
+            </ng-container>
+
+            <ng-container *ngIf="col.specialSlot">
+                <ng-content select="[field-grid-special]"></ng-content>
+            </ng-container>
+
+            <div class="field-separation mt-2" *ngIf="col.field && i < fieldGrid.length - 1"></div>
+        </div>
+    </div>
+</form>

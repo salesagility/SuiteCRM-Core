@@ -2,7 +2,7 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use ACLController;
+use ApiBeanMapper;
 use App\Entity\RecordView;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordViewProviderInterface;
@@ -64,22 +64,27 @@ class RecordViewHandler extends LegacyHandler implements RecordViewProviderInter
 
         $recordView = new RecordView();
         $moduleName = $this->validateModuleName($module);
+        /** @var SugarBean $bean */
         $bean = BeanFactory::getBean($moduleName, $id);
 
         if (!$bean) {
             $bean = $this->newBeanSafe($moduleName);
         }
 
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
+        $mapper = new ApiBeanMapper();
+        $mappedBean = $mapper->toArray($bean);
+
+
         if ($bean->ACLAccess('edit')) {
-            $bean = ((array)$bean);
-            $bean['editable'] = true;
+            $mappedBean['editable'] = true;
         } else {
-            $bean = ((array)$bean);
-            $bean['editable'] = false;
+            $mappedBean['editable'] = false;
         }
 
         $recordView->setId($id);
-        $recordView->setRecord($bean);
+        $recordView->setRecord($mappedBean);
 
         $this->close();
 

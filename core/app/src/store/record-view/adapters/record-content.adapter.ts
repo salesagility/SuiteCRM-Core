@@ -1,14 +1,12 @@
 import {RecordViewStore} from '@store/record-view/record-view.store';
-import {
-    RecordContentConfig,
-    RecordContentDataSource
-} from '@components/record-content/record-content.component';
 import {combineLatest, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {Panel, PanelRow} from '@app-common/metadata/metadata.model';
+import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
+import {Record} from '@app-common/record/record.model';
 
 @Injectable()
 export class RecordContentAdapter implements RecordContentDataSource {
@@ -42,7 +40,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
 
     getPanels(): Observable<Panel[]> {
         return combineLatest(
-            [this.metadata.recordViewMetadata$, this.store.record$, this.language.vm$]
+            [this.metadata.recordViewMetadata$, this.store.stagingRecord$, this.language.vm$]
         ).pipe(
             map(([meta, record, languages]) => {
 
@@ -69,6 +67,10 @@ export class RecordContentAdapter implements RecordContentDataSource {
         );
     }
 
+    getRecord(): Observable<Record> {
+        return this.store.stagingRecord$;
+    }
+
     protected getLayout(recordMeta: RecordViewMetadata): string {
         let layout = 'panels';
         if (recordMeta.templateMeta.useTabs) {
@@ -77,5 +79,4 @@ export class RecordContentAdapter implements RecordContentDataSource {
 
         return layout;
     }
-
 }

@@ -1,0 +1,22 @@
+.field-layout .label-container,
+.field-layout .label-container label {
+  color: $midnight-blue;
+}
+
+.field-layout .field-column-bordered {
+  border-right: $nepal-grey solid 0.0625rem;
+}
+
+.field-separation {
+  height: 0.0625rem;
+  color: darkgrey;
+  background-image: linear-gradient(to right, grey 10%, rgba(255, 255, 255, 0) 0%);
+  background-position: top;
+  background-size: 0.375rem 0.1875px;
+  background-repeat: repeat-x;
+}
+
+.field-layout textarea {
+  margin-bottom: 1rem;
+  background-color: $white;
+}

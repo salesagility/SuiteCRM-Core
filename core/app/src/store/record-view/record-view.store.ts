@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AppData, ViewStore} from '@store/view/view.store';
-import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {ViewStore} from '@store/view/view.store';
+import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
 import {BehaviorSubject, combineLatest, Observable, throwError} from 'rxjs';
 import {StateStore} from '@store/state';
 import {deepClone} from '@base/utils/object-utils';
@@ -14,45 +14,17 @@ import {catchError, distinctUntilChanged, map, shareReplay, tap} from 'rxjs/oper
 import {RecordViewGQL} from '@store/record-view/api.record.get';
 import {Record} from '@app-common/record/record.model';
 import {ViewMode} from '@base/app-common/views/view.model';
-
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
-}
-
-export interface RecordViewData {
-    record: Record;
-    loading: boolean;
-}
-
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    record: Record;
-    loading: boolean;
-    widgets: boolean;
-    mode: ViewMode;
-}
+import {RecordData, RecordViewData, RecordViewModel, RecordViewState} from '@store/record-view/record-view.store.model';
+import {RecordManager} from '@store/record-view/record.manager';
+import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 
 const initialState: RecordViewState = {
     module: '',
     recordID: '',
-    record: {
-        type: '',
-        module: '',
-        attributes: {}
-    } as Record,
     loading: false,
     widgets: true,
     mode: 'detail'
 };
-
-export interface RecordData {
-    record: Record;
-    module: string;
-    recordID: string;
-}
 
 @Injectable()
 export class RecordViewStore extends ViewStore implements StateStore {
@@ -61,6 +33,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * Public long-lived observable streams
      */
     record$: Observable<Record>;
+    stagingRecord$: Observable<Record>;
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
     mode$: Observable<ViewMode>;
@@ -71,6 +44,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     vm$: Observable<RecordViewModel>;
     vm: RecordViewModel;
     data: RecordViewData;
+    recordManager: RecordManager;
 
     /** Internal Properties */
     protected cache$: Observable<any> = null;
@@ -98,7 +72,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
-        this.record$ = this.state$.pipe(map(state => state.record), distinctUntilChanged());
+        this.recordManager = new RecordManager(languageStore, this.getViewFieldsObservable());
+
+        this.record$ = this.recordManager.state$.pipe(distinctUntilChanged());
+        this.stagingRecord$ = this.recordManager.staging$.pipe(distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.mode$ = this.state$.pipe(map(state => state.mode));
@@ -145,7 +122,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {string} recordID to use
      * @returns {object} Observable<any>
      */
-    public init(module: string, recordID: string): Observable<RecordViewState> {
+    public init(module: string, recordID: string): Observable<RecordData> {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
 
@@ -170,12 +147,32 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Get view fields observable
+     *
+     * @returns {object} Observable<ViewFieldDefinition[]>
+     */
+    protected getViewFieldsObservable(): Observable<ViewFieldDefinition[]> {
+        return this.metadataStore.recordViewMetadata$.pipe(map((recordMetadata: RecordViewMetadata) => {
+            const fields: ViewFieldDefinition[] = [];
+            recordMetadata.panels.forEach(panel => {
+                panel.rows.forEach(row => {
+                    row.cols.forEach(col => {
+                        fields.push(col);
+                    });
+                });
+            });
+
+            return fields;
+        }));
+    }
+
+    /**
      * Load / reload record using current pagination and criteria
      *
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<RecordViewState>
      */
-    protected load(useCache = true): Observable<RecordViewState> {
+    protected load(useCache = true): Observable<RecordData> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
 
         return this.getRecord(
@@ -183,11 +180,13 @@ export class RecordViewStore extends ViewStore implements StateStore {
             this.internalState.recordID,
             useCache
         ).pipe(
-            tap((data: RecordViewState) => {
+            tap((data: RecordData) => {
                 this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
+
+                this.recordManager.init(data.record);
+
                 this.updateState({
                     ...this.internalState,
-                    record: data.record,
                     recordID: data.recordID,
                     module: data.module,
                 });
@@ -207,7 +206,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         module: string,
         recordID: string,
         useCache = true
-    ): Observable<RecordViewState> {
+    ): Observable<RecordData> {
         if (this.cache$ == null || useCache === false) {
             this.cache$ = this.fetch(module, recordID).pipe(
                 shareReplay(1)
@@ -223,7 +222,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {string} recordID to use
      * @returns {object} Observable<any>
      */
-    protected fetch(module: string, recordID: string): Observable<any> {
+    protected fetch(module: string, recordID: string): Observable<RecordData> {
         return this.recordViewGQL.fetch(module, recordID, this.fieldsMetadata)
             .pipe(
                 map(({data}) => {
@@ -251,7 +250,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                     const id = data.getRecordView.record.id;
                     if (!id) {
                         this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
-                        return false;
+                        return recordData;
                     }
 
                     record.id = id;

@@ -75,6 +75,8 @@ export const viewFieldsMap = {
     'datetime.detail': DateTimeDetailFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
+    'link.list': UrlDetailFieldComponent,
+    'link.detail': UrlDetailFieldComponent,
     'currency.list': CurrencyDetailFieldComponent,
     'currency.detail': CurrencyDetailFieldComponent,
     'email.list': EmailListFieldsComponent,

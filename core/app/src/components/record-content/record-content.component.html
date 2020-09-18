@@ -1,11 +1,10 @@
 <ng-container *ngIf="dataSource">
     <div *ngIf="config && config.layout === 'panels'" class="record-content panel-layout container-fluid pl-0 pr-0">
-        <div class="row no-gutters mt-3" *ngFor="let panel of panels">
+        <div class="row no-gutters mb-3" *ngFor="let panel of panels">
             <div class="col">
                 <scrm-panel [title]="panel.label" mode="collapsible">
-
-                    <div panel-body>
-                        Panel body
+                    <div panel-body class="panel-{{panel.key}}">
+                        <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
                     </div>
                 </scrm-panel>
             </div>
@@ -20,12 +19,12 @@
                 <a class="tab-link" ngbNavLink>{{panel.label}}</a>
                 <ng-template ngbNavContent>
                     <div class="tab-{{panel.key}}">
-                        Panel body {{panel.label}}
+                        <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
                     </div>
                 </ng-template>
             </li>
         </ul>
-        <div [ngbNavOutlet]="nav" class="m-3"></div>
+        <div [ngbNavOutlet]="nav" class="p-2 pt-3"></div>
 
     </div>
 
