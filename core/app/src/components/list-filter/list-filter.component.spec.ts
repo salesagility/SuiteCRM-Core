@@ -13,6 +13,7 @@ import {FieldGridModule} from '@components/field-grid/field-grid.module';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('ListFilterComponent', () => {
     let testHostComponent: ListFilterComponent;
@@ -29,7 +30,8 @@ describe('ListFilterComponent', () => {
                 PanelModule,
                 DropdownButtonModule,
                 FieldGridModule,
-                RouterTestingModule
+                RouterTestingModule,
+                ApolloTestingModule
             ],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},

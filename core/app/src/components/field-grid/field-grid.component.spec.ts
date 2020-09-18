@@ -1,5 +1,4 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {FieldGridComponent} from './field-grid.component';
 import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
@@ -11,6 +10,7 @@ import {By} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Field} from '@app-common/record/field.model';
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 @Component({
     selector: 'field-grid-host-component',
@@ -93,7 +93,8 @@ describe('FieldGridComponent', () => {
                 LayoutModule,
                 FieldModule,
                 CommonModule,
-                RouterTestingModule
+                RouterTestingModule,
+                ApolloTestingModule
             ],
             providers: [],
         }).compileComponents();

@@ -40,7 +40,16 @@ class FieldTestHostComponent {
         {field: {type: 'url', value: 'https://suitecrm.com/'}, mode: 'list', expected: 'https://suitecrm.com/'},
         {field: {type: 'currency', value: '1000.5'}, mode: 'detail', expected: '£1,000.5'},
         {field: {type: 'currency', value: '1000.5'}, mode: 'list', expected: '£1,000.5'},
-        {field: {type: 'text', value: 'My Text'}, mode: 'detail', expected: 'My Text'}
+        {field: {type: 'text', value: 'My Text'}, mode: 'detail', expected: 'My Text'},
+        {
+            field: {
+                type: 'relate', definition: {
+                    module: 'Contacts',
+                    // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
+                    id_name: 'contact_id'
+                }, value: 'Related Contact'
+            }, mode: 'detail', expected: 'Related Contact'
+        }
     ];
 }
 
