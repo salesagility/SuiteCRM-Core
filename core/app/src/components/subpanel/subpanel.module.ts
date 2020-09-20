@@ -7,6 +7,8 @@ import {ImageModule} from '@components/image/image.module';
 import {RouterModule} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import { ButtonGroupModule } from '../button-group/button-group.module';
+
 @NgModule({
     declarations: [SubpanelComponent],
     exports: [SubpanelComponent],
@@ -16,7 +18,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         ImageModule,
         AppManagerModule.forChild(SubpanelComponent),
         PanelModule,
-        RouterModule
+        RouterModule,
+        ButtonGroupModule,
     ]
 })
 export class SubpanelModule {

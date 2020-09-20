@@ -29,7 +29,13 @@
 
     <div id="sub-panels">
         <ng-container *ngFor="let item of vm.subPanelMeta | keyvalue">
-            <scrm-subpanel class="sub-panel" *ngIf="item.value['showPanel'] == true" [title]="getModuleLabel(item.value['title_key'])"></scrm-subpanel>
+            <scrm-subpanel 
+                class="sub-panel"
+                [title]="getModuleLabel(item.value['title_key'])"
+                [metadata]="item.value" 
+                *ngIf="item.value['showPanel'] == true" 
+            >
+            </scrm-subpanel>
         </ng-container>
     </div>
 </ng-container>

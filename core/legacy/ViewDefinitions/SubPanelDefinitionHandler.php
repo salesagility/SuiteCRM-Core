@@ -97,6 +97,27 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $allTabs = $this->arrayMergeRecursiveDistinct($tabs, $this->subpanelKeyMap);
 
+        foreach($allTabs as $key => $tab) {
+            
+            $topButtons = [];
+
+            if (isset($tab['top_buttons']) == false) {
+                $allTabs[$key]['top_buttons'] = [];
+                continue;
+            }
+
+            foreach($tab['top_buttons'] as $top_button) {
+                if (strpos($top_button['widget_class'], 'Create') !== false) {
+                    $topButtons[] = [
+                        'key' => 'create', 
+                        'labelKey' => 'LBL_QUICK_CREATE'
+                    ];
+                }
+            }
+
+            $allTabs[$key]['top_buttons'] = $topButtons;
+        }
+
         return $allTabs;
     }
 

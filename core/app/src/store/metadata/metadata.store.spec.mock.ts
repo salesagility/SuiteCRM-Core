@@ -648,6 +648,158 @@ export const metadataMockData = {
                 ]
             }
         ]
+    },
+    subPanel: {
+        activities: {
+            order: 10,
+            sort_order: 'desc',
+            sort_by: 'date_due',
+            title_key: 'LBL_ACTIVITIES_SUBPANEL_TITLE',
+            type: 'collection',
+            subpanel_name: 'activities',
+            header_definition_from_subpanel: 'meetings',
+            module: 'Activities',
+            top_buttons: [
+                {
+                    key: 'create',
+                    labelKey: 'LBL_QUICK_CREATE'
+                }
+            ],
+            collection_list: {
+                tasks: {
+                    module: 'Tasks',
+                    subpanel_name: 'ForActivities',
+                    get_subpanel_data: 'tasks'
+                },
+                meetings: {
+                    module: 'Meetings',
+                    subpanel_name: 'ForActivities',
+                    get_subpanel_data: 'meetings'
+                },
+                calls: {
+                    module: 'Calls',
+                    subpanel_name: 'ForActivities',
+                    get_subpanel_data: 'calls'
+                }
+            },
+            icon: 'graph'
+        },
+        history: {
+            order: 20,
+            sort_order: 'desc',
+            sort_by: 'date_entered',
+            title_key: 'LBL_HISTORY_SUBPANEL_TITLE',
+            type: 'collection',
+            subpanel_name: 'history',
+            header_definition_from_subpanel: 'meetings',
+            module: 'History',
+            top_buttons: [
+                {
+                    key: 'create',
+                    labelKey: 'LBL_QUICK_CREATE'
+                }
+            ],
+            collection_list: {
+                tasks: {
+                    module: 'Tasks',
+                    subpanel_name: 'ForHistory',
+                    get_subpanel_data: 'tasks'
+                },
+                meetings: {
+                    module: 'Meetings',
+                    subpanel_name: 'ForHistory',
+                    get_subpanel_data: 'meetings'
+                },
+                calls: {
+                    module: 'Calls',
+                    subpanel_name: 'ForHistory',
+                    get_subpanel_data: 'calls'
+                },
+                notes: {
+                    module: 'Notes',
+                    subpanel_name: 'ForHistory',
+                    get_subpanel_data: 'notes'
+                },
+                emails: {
+                    module: 'Emails',
+                    subpanel_name: 'ForUnlinkedEmailHistory',
+                    get_subpanel_data: 'function:get_emails_by_assign_or_link',
+                    function_parameters: {
+                        import_function_file: 'include/utils.php',
+                        link: 'contacts'
+                    },
+                    generate_select: true,
+                    get_distinct_data: true
+                }
+            },
+            searchdefs: {
+                collection: {
+                    name: 'collection',
+                    label: 'LBL_COLLECTION_TYPE',
+                    type: 'enum',
+                    options: {
+                        Tasks: 'Tasks',
+                        Meetings: 'Meetings',
+                        Calls: 'Calls',
+                        Notes: 'Notes',
+                        Emails: 'Emails'
+                    },
+                    default: true,
+                    width: '10%'
+                },
+                name: {
+                    name: 'name',
+                    default: true,
+                    width: '10%'
+                },
+                current_user_only: {
+                    name: 'current_user_only',
+                    label: 'LBL_CURRENT_USER_FILTER',
+                    type: 'bool',
+                    default: true,
+                    width: '10%'
+                },
+                date_modified: {
+                    name: 'date_modified',
+                    default: true,
+                    width: '10%'
+                }
+            },
+            icon: 'clock'
+        },
+        documents: {
+            order: 25,
+            module: 'Documents',
+            subpanel_name: 'default',
+            sort_order: 'asc',
+            sort_by: 'id',
+            title_key: 'LBL_DOCUMENTS_SUBPANEL_TITLE',
+            get_subpanel_data: 'documents',
+            top_buttons: [
+                {
+                    key: 'create',
+                    labelKey: 'LBL_QUICK_CREATE'
+                }
+            ],
+            icon: 'download'
+        },
+        contacts: {
+            order: 30,
+            module: 'Contacts',
+            sort_order: 'asc',
+            sort_by: 'last_name, first_name',
+            subpanel_name: 'ForAccounts',
+            get_subpanel_data: 'contacts',
+            add_subpanel_data: 'contact_id',
+            title_key: 'LBL_CONTACTS_SUBPANEL_TITLE',
+            top_buttons: [
+                {
+                    key: 'create',
+                    labelKey: 'LBL_QUICK_CREATE'
+                }
+            ],
+            icon: 'person'
+        }
     }
 };
 

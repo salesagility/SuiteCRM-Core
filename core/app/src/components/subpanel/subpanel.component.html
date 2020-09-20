@@ -1,5 +1,7 @@
 <ng-container>
- 	<scrm-panel [title]="title" mode="collapsible">
-
+ 	<scrm-panel [title]="title">
+        <span panel-header-button>
+            <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+        </span>
     </scrm-panel>
 </ng-container>

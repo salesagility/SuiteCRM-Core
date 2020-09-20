@@ -1,8 +1,6 @@
 import {
     Component,
-    OnInit,
-    ViewChild,
-    ViewContainerRef
+    OnInit
 } from '@angular/core';
 
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';

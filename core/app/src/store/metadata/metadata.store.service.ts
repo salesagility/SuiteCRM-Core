@@ -105,7 +105,8 @@ export interface TabDefinition {
 
 /* eslint-disable camelcase*/
 export interface SubPanelTopButton {
-    widget_class: string;
+    key: string;
+    labelKey: string;
 }
 
 /* eslint-enable camelcase*/

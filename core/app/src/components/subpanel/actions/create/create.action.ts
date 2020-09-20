@@ -1,30 +1,33 @@
 import {Injectable} from '@angular/core';
-import {RecordActionData, RecordActionHandler} from '@views/record/actions/record.action';
+import {ActionData, ActionHandler} from '@app-common/actions/action.model';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {Router} from '@angular/router';
-import {ViewMode} from '@app-common/views/view.model';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class RecordCreateAction extends RecordActionHandler {
+export class SubPanelCreateAction extends ActionHandler {
     key = 'create';
-    modes = ['detail' as ViewMode];
 
-    constructor(protected moduleNameMapper: ModuleNameMapper, protected router: Router) {
+    constructor(
+        protected moduleNameMapper: ModuleNameMapper,
+        protected router: Router
+    ) {
         super();
     }
 
-    run(data: RecordActionData): void {
+    run(data: ActionData): void {
         const store = data.store;
 
-        const route = '/' + store.vm.appData.module.name + '/edit';
-        const module = this.moduleNameMapper.toLegacy(store.vm.appData.module.name);
+        const moduleName = this.moduleNameMapper.toFrontend(data.subpanelMeta.module);
+
+        const route = `/${moduleName}/edit`;
 
         this.router.navigate([route], {
             queryParams: {
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                return_module: module,
+                return_module: data.subpanelMeta.module,
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
                 return_action: 'DetailView',
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

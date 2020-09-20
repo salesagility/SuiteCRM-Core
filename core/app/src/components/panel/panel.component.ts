@@ -19,7 +19,6 @@ export class PanelComponent implements OnInit {
 
     protected buttonClasses = ['btn', 'btn-outline-light', 'btn-sm'];
 
-
     constructor() {
     }
 
