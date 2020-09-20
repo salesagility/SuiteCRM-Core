@@ -6,6 +6,7 @@ import {RecordContainerModule} from '@components/record-container/record-contain
 import {RecordHeaderModule} from '@components/record-header/record-header.module';
 import {StatusBarModule} from '@components/status-bar/status-bar.module';
 import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-settings-menu.module';
+import {SubpanelModule} from '@base/components/subpanel/subpanel.module';
 
 @NgModule({
     declarations: [RecordComponent],
@@ -16,7 +17,8 @@ import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-
         RecordContainerModule,
         RecordHeaderModule,
         StatusBarModule,
-        RecordSettingsMenuModule
+        RecordSettingsMenuModule,
+        SubpanelModule
     ],
 })
 export class RecordModule {

@@ -106,12 +106,44 @@ export interface TabDefinition {
     panelDefault: 'expanded' | 'collapsed';
 }
 
+export interface SubPanelTopButton {
+    widget_class: string
+}
+
+export interface SubPanelCollectionList {
+    [key: string]: SubPanelCollectionItem;
+}
+
+export interface SubPanelCollectionItem {
+    module: string,
+    subpanel_name: string,
+    get_subpanel_data: string
+}
+
+export interface SubPanelMeta {
+    [key: string]: SubPanel;
+};
+
+export interface SubPanel {
+    order?: 10,
+    sort_order?: string,
+    sort_by?: string,
+    title_key?: string,
+    type?: string,
+    subpanel_name?: string,
+    header_definition_from_subpanel?: string,
+    module?: string,
+    top_buttons?: SubPanelTopButton[],
+    collection_list: SubPanelCollectionList
+}
+
 export interface Metadata {
     detailView?: any;
     editView?: any;
     listView?: ListViewMeta;
     search?: SearchMeta;
     recordView?: RecordViewMetadata;
+    subPanel?: SubPanelMeta;
 }
 
 const initialState: Metadata = {
@@ -119,8 +151,11 @@ const initialState: Metadata = {
     editView: {},
     listView: {} as ListViewMeta,
     search: {} as SearchMeta,
-    recordView: {} as RecordViewMetadata
+    recordView: {} as RecordViewMetadata,
+    subPanel: {} as SubPanelMeta
 };
+
+
 
 let internalState: Metadata = deepClone(initialState);
 
@@ -146,7 +181,8 @@ export class MetadataStore implements StateStore {
     searchMetadata$: Observable<SearchMeta>;
     recordViewMetadata$: Observable<RecordViewMetadata>;
     metadata$: Observable<Metadata>;
-
+    subPanelMetadata$: Observable<SubPanelMeta>;
+    
     protected store = new BehaviorSubject<Metadata>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'viewDefinition';
@@ -159,7 +195,8 @@ export class MetadataStore implements StateStore {
     protected types = [
         'listView',
         'search',
-        'recordView'
+        'recordView',
+        'subPanel'
     ];
 
     constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
@@ -167,6 +204,7 @@ export class MetadataStore implements StateStore {
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
         this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());
         this.recordViewMetadata$ = this.state$.pipe(map(state => state.recordView), distinctUntilChanged());
+        this.subPanelMetadata$ = this.state$.pipe(map(state => state.subPanel), distinctUntilChanged());
         this.metadata$ = this.state$;
     }
 
@@ -310,6 +348,7 @@ export class MetadataStore implements StateStore {
                     this.parseListViewMetadata(data, metadata);
                     this.parseSearchMetadata(data, metadata);
                     this.parseRecordViewMetadata(data, metadata);
+                    this.parseSubPanelMetadata(data, metadata);
 
                     return metadata;
                 })
@@ -348,6 +387,12 @@ export class MetadataStore implements StateStore {
     protected parseSearchMetadata(data, metadata: Metadata): void {
         if (data && data.viewDefinition.search) {
             metadata.search = data.viewDefinition.search;
+        }
+    }
+
+    protected parseSubPanelMetadata(data, metadata: Metadata): void {
+        if (data && data.viewDefinition.subPanel) {
+            metadata.subPanel = data.viewDefinition.subPanel;
         }
     }
 

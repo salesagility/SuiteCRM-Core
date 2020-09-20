@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
 use SearchForm;
 use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use function in_array;
+use SuiteCRM\Core\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 
 /**
  * Class ViewDefinitionsHandler
@@ -91,6 +92,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $recordViewDefinitionHandler;
 
     /**
+     * @var SubPanelDefinitionHandler
+     */
+    private $subPanelDefinitionHandler;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -105,6 +111,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
      * @param RecordViewDefinitionHandler $recordViewDefinitionHandler
      * @param LoggerInterface $logger
+     * @param SubPanelDefinitionHandler $subPanelDefinitionHandler
      */
     public function __construct(
         string $projectDir,
@@ -119,17 +126,20 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
         FilterDefinitionProviderInterface $filterDefinitionProvider,
         RecordViewDefinitionHandler $recordViewDefinitionHandler,
-        LoggerInterface $logger
-    ) {
+        LoggerInterface $logger,
+        SubPanelDefinitionHandler $subPanelDefinitionHandler
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
         $this->chartDefinitionProvider = $chartDefinitionProvider;
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
+        $this->recordViewDefinitionHandler = $recordViewDefinitionHandler;
+        $this->subPanelDefinitionHandler = $subPanelDefinitionHandler;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
         $this->logger = $logger;
-        $this->recordViewDefinitionHandler = $recordViewDefinitionHandler;
     }
 
     /**
@@ -152,7 +162,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
                 'detailView',
                 'editView',
                 'listView',
-                'search'
+                'search',
+                'subPanel'
             ];
         }
 
@@ -162,6 +173,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         $viewDef = new ViewDefinition();
         $viewDef->setId($moduleName);
+
 
         if (in_array('listView', $views, true)) {
             $listViewDef = $this->fetchListViewDef($moduleName, $legacyModuleName, $fieldDefinition);
@@ -175,6 +187,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (in_array('recordView', $views, true)) {
             $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
             $viewDef->setRecordView($recordViewDefs);
+        }
+        
+        if (in_array('subPanel', $views, true)) {
+            $subPanelViewDefs = $this->subPanelDefinitionHandler->getSubPanelDef($legacyModuleName);
+            $viewDef->setSubPanel($subPanelViewDefs);
         }
 
         $this->close();

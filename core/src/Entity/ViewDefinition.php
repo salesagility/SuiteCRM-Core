@@ -105,6 +105,22 @@ class ViewDefinition
      */
     public $search;
 
+    /**
+     * Subpanel metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The subpanel metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $subpanel;
+
 
     /**
      * @return string
@@ -193,6 +209,27 @@ class ViewDefinition
     public function setSearch(array $search): ViewDefinition
     {
         $this->search = $search;
+
+        return $this;
+    }
+
+    /**
+     * Get Subpanel Metadata
+     * @return array
+     */
+    public function getSubPanel(): ?array
+    {
+        return $this->subpanel;
+    }
+
+    /**
+     * Set Subpanel Metadata
+     * @param array $subpanel
+     * @return ViewDefinition
+     */
+    public function setSubPanel(array $subpanel): ViewDefinition
+    {
+        $this->subpanel = $subpanel;
 
         return $this;
     }

@@ -17,6 +17,7 @@ use SuiteCRM\Core\Legacy\AppListStringsHandler;
 use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
 use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
 use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
+use SuiteCRM\Core\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 use SuiteCRM\Core\Legacy\ViewDefinitionsHandler;
 
 final class ViewDefinitionsHandlerTest extends Unit
@@ -107,7 +108,6 @@ final class ViewDefinitionsHandlerTest extends Unit
             ],
         ];
 
-
         /** @var AclManagerInterface $aclManager */
         $aclManager = $this->make(
             AclHandler::class,
@@ -122,7 +122,6 @@ final class ViewDefinitionsHandlerTest extends Unit
                 }
             ]
         );
-
 
         $bulkActionProvider = new BulkActionDefinitionProvider(
             $listViewBulkActions,
@@ -140,7 +139,6 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope
         );
-
 
         $lineActionDefinitionProvider = new LineActionDefinitionProvider(
             [],
@@ -192,6 +190,20 @@ final class ViewDefinitionsHandlerTest extends Unit
             $logger
         );
 
+
+        $subpanelKeyMap = [];
+
+        $subPanelDefinitionHandler = new SubPanelDefinitionHandler(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScope,
+            $moduleNameMapper,
+            $logger,
+            $subpanelKeyMap
+        );
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(
             $projectDir,
             $legacyDir,
@@ -205,12 +217,14 @@ final class ViewDefinitionsHandlerTest extends Unit
             $lineActionDefinitionProvider,
             $filterDefinitionHandler,
             $recordViewDefinitionHandler,
-            $logger
+            $logger,
+            $subPanelDefinitionHandler
         );
 
         // Needed for aspect mock
         /* @noinspection PhpIncludeInspection */
         require_once 'include/ListView/ListViewDisplay.php';
+        require_once 'include/ListView/ListView.php';
     }
 
     /**
@@ -361,7 +375,6 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertArrayHasKey('useTabs', $recordViewDefs->getRecordView()['templateMeta']);
         static::assertArrayHasKey('tabDefs', $recordViewDefs->getRecordView()['templateMeta']);
 
-
         static::assertNotNull($recordViewDefs->getRecordView()['panels']);
         static::assertIsArray($recordViewDefs->getRecordView()['panels']);
         static::assertNotEmpty($recordViewDefs->getRecordView()['panels']);
@@ -388,5 +401,28 @@ final class ViewDefinitionsHandlerTest extends Unit
         static::assertArrayHasKey('name', $firstCol);
         static::assertArrayHasKey('label', $firstCol);
         static::assertNotEmpty($firstCol['fieldDefinition']);
+    }
+
+    /**
+     * Test subpanel defs retrieval
+     * @throws Exception
+     */
+    public function testSubPanelDefs(): void
+    {
+        $viewDef = $this->viewDefinitionHandler->getViewDefs('accounts', ['subPanel']);
+
+        static::assertNotNull($viewDef);
+        static::assertNotEmpty($viewDef);
+        static::assertIsObject($viewDef);
+
+        $subPanels = $viewDef->subpanel;
+        static::assertIsArray($subPanels);
+
+        $firstSubPanel = array_pop($subPanels);
+
+        static::assertIsArray($firstSubPanel);
+        static::assertNotEmpty($firstSubPanel);
+        static::assertArrayHasKey('title_key', $firstSubPanel);
+        static::assertArrayHasKey('module', $firstSubPanel);
     }
 }

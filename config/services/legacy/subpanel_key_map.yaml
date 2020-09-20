@@ -1,0 +1,37 @@
+parameters:
+  legacy.subpanel_key_map:
+    account_aos_contracts:
+      title_key: "LBL_AOS_CONTRACTS"
+      icon: "list"
+    account_aos_invoices:
+      title_key: "LBL_AOS_INVOICES"
+      icon: "list"
+    account_aos_quotes:
+      title_key: "LBL_AOS_QUOTES"
+      icon: "graph"
+    accounts:
+      icon: "pencil"
+    activities:
+      icon: "graph"
+    bugs:
+      icon: "bug"
+    campaigns:
+      icon: "letter"
+    cases:
+      icon: "folder"
+    contacts:
+      icon: "person"
+    documents:
+      icon: "download"
+    history:
+      icon: "clock"
+    leads:
+      icon: "phone"
+    opportunities:
+      icon: "bulb"
+    products_services_purchased:
+      icon: "pound_with_border"
+    project:
+      icon: "bars"
+    securitygroups:
+      icon: "shield"

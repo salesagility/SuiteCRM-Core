@@ -42,6 +42,7 @@ services:
       $listViewColumnLimits: '%module.listview.column_limits%'
       $listViewSettingsLimits: '%module.listview.settings_limits%'
       $listViewActionsLimits: '%module.listview.actions_limits%'
+      $subpanelKeyMap: '%legacy.subpanel_key_map%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: ['app.process.handler']

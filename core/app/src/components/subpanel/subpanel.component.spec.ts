@@ -11,6 +11,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
 import {ListFilterModule} from '@components/list-filter/list-filter.module';
 
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+
+import {RecordViewStore} from '@store/record-view/record-view.store';
+import {recordViewMockData} from '@store/record-view/record-view.store.spec.mock';
+
 @Component({
     selector: 'subpanel-test-host-component',
     template: '<scrm-subpanel></scrm-subpanel>'
@@ -37,6 +43,8 @@ describe('SubpanelComponent', () => {
             ],
             declarations: [SubpanelComponent, SubpanelComponentTestHostComponent],
             providers: [
+                {provide: LanguageStore, useValue: languageStoreMock},
+                {provide: RecordViewStore, useValue: recordViewMockData},
             ],
         })
             .compileComponents();

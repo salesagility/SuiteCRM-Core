@@ -6,15 +6,33 @@
     </div>
     <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
         <div class="sub-panel-banner-buttons">
+            <div 
+                class="sub-panel-banner-button" 
+                *ngFor="let item of vm.subPanelMeta | keyvalue"
+                [ngClass]="{'sub-panel-banner-button-active': item.value['showPanel']==true}"
+            >
+                <div class="sub-panel-banner-button-icon">
+                    <scrm-image [image]="item.value['icon']"></scrm-image>
+                </div>
+
+                <div class="sub-panel-banner-button-title">
+                    {{ getModuleLabel(item.value['title_key']) }}
+                </div>
+
+                <div class="sub-panel-banner-button-stats">
+                    {{ getStatsValue() }}
+                </div>
+            </div>
+
         </div>
-        
-        <div id="sub-panels">
-            <scrm-panel [title]="'Example Sub Panel 1'">
-                
-            </scrm-panel>
-            <scrm-panel [title]="'Example Sub Panel 2'">
-                
-            </scrm-panel>
-        </div>
+    </div>
+
+    <div id="sub-panels">
+        <scrm-panel [title]="'Example Sub Panel 1'">
+            
+        </scrm-panel>
+        <scrm-panel [title]="'Example Sub Panel 2'">
+            
+        </scrm-panel>
     </div>
 </ng-container>

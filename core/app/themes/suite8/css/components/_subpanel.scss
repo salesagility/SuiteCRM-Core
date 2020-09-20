@@ -1,0 +1,66 @@
+.sub-panel-banner {
+    background-color: #f1d4ce;
+    color: #4e4958;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    padding-left: 0.625rem;
+    padding-right:0.625rem;
+    margin-bottom: 0.625rem;
+}
+
+.sub-panel-banner-text {
+    margin-left: 10.3125rem;
+}
+
+.sub-panel-banner-buttons {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 0.625rem;
+}
+
+.sub-panel-banner-button {
+    padding: 0.625rem;
+    border: 1px solid #6d697c;
+    width: 12rem;
+    text-align: center;
+    margin-top: -1px;
+    margin-left: -1px;
+    margin-bottom: 0;
+    margin-right: 0;
+    cursor: pointer;
+}
+
+.sub-panel-banner-button:hover {
+    background-color: #faeeeb;
+}
+
+.sub-panel-banner-button-active {
+    background-color: #faeeeb;
+}
+
+.sub-panel-banner-button-icon {
+    fill: #f9cfc9;
+    font-size: x-large;
+}
+
+.sub-panel-banner-button-title {
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: small;
+    line-height: 1.5;
+    width: 100%;
+    margin-top: 0.4375rem;
+    margin-bottom: 0.8125rem;
+    color: #625c71;
+}
+
+.sub-panel-banner-button-stats {
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-large;
+    font-weight: bolder;
+    width: 100%;
+    color: #ee8776;
+}
