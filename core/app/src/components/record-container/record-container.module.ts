@@ -4,7 +4,7 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {RecordContainerComponent} from './record-container.component';
 import {WidgetUiModule} from '../widget/widget.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {SubpanelModule} from '@components/subpanel/subpanel.module';
+import {SubpanelContainerModule} from '@components/subpanel-container/subpanel-container.module';
 import {RecordContentModule} from '@components/record-content/record-content.module';
 
 @NgModule({
@@ -15,7 +15,7 @@ import {RecordContentModule} from '@components/record-content/record-content.mod
         AppManagerModule.forChild(RecordContainerComponent),
         WidgetUiModule,
         AngularSvgIconModule,
-        SubpanelModule,
+        SubpanelContainerModule,
         RecordContentModule
     ]
 })

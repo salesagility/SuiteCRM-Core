@@ -1,0 +1,35 @@
+<ng-container *ngIf="(vm$ | async) as vm">
+    <div class="sub-panel-banner">
+        <scrm-image [image]="'eye'"></scrm-image>
+        <span class="sub-panel-banner-text">{{vm.appStrings['LBL_SELECT_SUBPANEL_BANNER'] || ''}}</span>
+        <scrm-image (click)="toggleSubPanels()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseShowSubPanels" class="float-right" [image]="toggleIcon"></scrm-image>    
+    </div>
+    <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
+        <div class="sub-panel-banner-buttons">
+            <div 
+                class="sub-panel-banner-button" 
+                *ngFor="let item of vm.subPanelMeta | keyvalue"
+                [ngClass]="{'sub-panel-banner-button-active': item.value['showPanel']==true}"
+                (click)="item.value['showPanel'] = !item.value['showPanel']"
+            >
+                <div class="sub-panel-banner-button-icon">
+                    <scrm-image [image]="item.value['icon']"></scrm-image>
+                </div>
+
+                <div class="sub-panel-banner-button-title">
+                    {{ getModuleLabel(item.value['title_key']) }}
+                </div>
+
+                <div class="sub-panel-banner-button-stats">
+                    {{ getStatsValue() }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sub-panels">
+        <ng-container *ngFor="let item of vm.subPanelMeta | keyvalue">
+            <scrm-subpanel class="sub-panel" *ngIf="item.value['showPanel'] == true" [title]="getModuleLabel(item.value['title_key'])"></scrm-subpanel>
+        </ng-container>
+    </div>
+</ng-container>
