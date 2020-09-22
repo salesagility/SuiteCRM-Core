@@ -62,7 +62,7 @@ export class FieldComponent {
 
             return this.navigation.getRecordRouterLink(
                 moduleName,
-                this.record.attributes[this.field.definition.id_name].id
+                this.record.attributes[this.field.definition.id_name]
             );
         }
 
