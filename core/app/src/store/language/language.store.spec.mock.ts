@@ -6,6 +6,11 @@ import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 
 export const languageMockData = {
     appStrings: {
+        LBL_NEW: 'New',
+        LBL_EDIT: 'Edit',
+        LBL_HISTORY: 'History',
+        LBL_SAVE_BUTTON_LABEL: 'Save',
+        LBL_CANCEL: 'Cancel',
         LBL_SEARCH_REAULTS_TITLE: 'Results',
         ERR_SEARCH_INVALID_QUERY: 'An error has occurred while performing the search. Your query syntax might not be valid.',
         ERR_SEARCH_NO_RESULTS: 'No results matching your search criteria. Try broadening your search.',
@@ -94,6 +99,11 @@ export const languageMockData = {
             LBL_TYPE: 'Type',
             LBL_INDUSTRY: 'Industry',
             LBL_ASSIGNED_TO: 'Assigned To',
+            LBL_NEW: 'New',
+            LBL_EDIT: 'Edit',
+            LBL_HISTORY: 'History',
+            LBL_SAVE_BUTTON_LABEL: 'Save',
+            LBL_CANCEL: 'Cancel'
         },
     }
 };

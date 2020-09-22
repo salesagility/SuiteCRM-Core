@@ -3,10 +3,12 @@ import {RecordViewStore} from '@store/record-view/record-view.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {RecordActionsAdapter} from '@store/record-view/adapters/actions.adapter';
 
 @Component({
     selector: 'scrm-record-header',
     templateUrl: 'record-header.component.html',
+    providers: [RecordActionsAdapter]
 })
 export class RecordHeaderComponent {
 

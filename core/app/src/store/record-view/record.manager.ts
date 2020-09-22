@@ -27,10 +27,10 @@ export class RecordManager {
     constructor(protected language: LanguageStore, protected definitions$: Observable<ViewFieldDefinition[]>) {
         this.state$ = this.store.asObservable().pipe(
             tap(record => {
-                this.updateStaging({...record});
+                this.updateStaging(deepClone(record));
             })
         );
-        this.staging$ = this.store.asObservable();
+        this.staging$ = this.staging.asObservable();
 
         this.subs.push(definitions$.subscribe(definitions => {
             this.definitions = definitions;
@@ -54,8 +54,24 @@ export class RecordManager {
         this.updateState(this.stagingState);
     }
 
+    resetStaging(): void {
+        this.updateStaging(deepClone(this.internalState));
+    }
+
     destroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    /**
+     * Get record
+     *
+     * @returns {object} Record
+     */
+    getRecord(): Record {
+        if (!this.internalState) {
+            return null;
+        }
+        return deepClone(this.internalState);
     }
 
     /**

@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -26,6 +26,8 @@ import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {RecordSettingsMenuModule} from '@components/record-settings-menu/record-settings-menu.module';
+import {RecordActionsAdapter} from '@store/record-view/adapters/actions.adapter';
+import {recordActionsMock} from '@store/record-view/adapters/actions.adapter.spec.mock';
 
 @Component({
     selector: 'record-header-test-host-component',
@@ -38,7 +40,7 @@ describe('RecordHeaderComponent', () => {
     let testHostComponent: RecordHeaderTestHostComponent;
     let testHostFixture: ComponentFixture<RecordHeaderTestHostComponent>;
 
-    beforeEach(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
                 ModuleTitleModule,
@@ -61,18 +63,55 @@ describe('RecordHeaderComponent', () => {
                 {provide: LanguageStore, useValue: languageStoreMock},
                 {provide: MetadataStore, useValue: metadataStoreMock},
                 {provide: AppStateStore, useValue: appStateStoreMock},
+                {provide: RecordActionsAdapter, useValue: recordActionsMock},
             ],
         })
             .compileComponents();
-    });
 
-    beforeEach(() => {
         testHostFixture = TestBed.createComponent(RecordHeaderTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
-    });
+    }));
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
     });
+
+    it('should have detail buttons', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        recordviewStoreMock.setMode('detail');
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            const element = testHostFixture.nativeElement;
+            const buttons = element.getElementsByClassName('settings-button');
+
+
+            expect(buttons).toBeTruthy();
+            expect(buttons.length).toEqual(3);
+            expect(buttons.item(0).textContent).toContain('New');
+            expect(buttons.item(1).textContent).toContain('Edit');
+            expect(buttons.item(2).textContent).toContain('History');
+        });
+    }));
+
+    it('should have edit buttons', async(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        recordviewStoreMock.setMode('edit');
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            const element = testHostFixture.nativeElement;
+            const buttons = element.getElementsByClassName('settings-button');
+
+
+            expect(buttons).toBeTruthy();
+            expect(buttons.length).toEqual(3);
+            expect(buttons.item(0).textContent).toContain('Save');
+            expect(buttons.item(1).textContent).toContain('Cancel');
+            expect(buttons.item(2).textContent).toContain('History');
+        });
+    }));
 });

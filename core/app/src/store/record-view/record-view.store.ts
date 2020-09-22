@@ -138,6 +138,39 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Get staging record
+     *
+     * @returns {string} ViewMode
+     */
+    getRecord(): Record {
+        if (!this.internalState) {
+            return null;
+        }
+        return this.recordManager.getRecord();
+    }
+
+    /**
+     * Get current view mode
+     *
+     * @returns {string} ViewMode
+     */
+    getMode(): ViewMode {
+        if (!this.internalState) {
+            return null;
+        }
+        return this.internalState.mode;
+    }
+
+    /**
+     * Set new mode
+     *
+     * @param {string} mode ViewMode
+     */
+    setMode(mode: ViewMode): void {
+        this.updateState({...this.internalState, mode});
+    }
+
+    /**
      * Update the state
      *
      * @param {object} state to set
@@ -175,7 +208,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected load(useCache = true): Observable<RecordData> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
 
-        return this.getRecord(
+        return this.retrieveRecord(
             this.internalState.module,
             this.internalState.recordID,
             useCache
@@ -202,7 +235,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<any>
      */
-    protected getRecord(
+    protected retrieveRecord(
         module: string,
         recordID: string,
         useCache = true

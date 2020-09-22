@@ -4,6 +4,7 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {RecordSettingsMenuComponent} from './record-settings-menu.component';
 import {ImageModule} from '@components/image/image.module';
 import {ButtonModule} from '@components/button/button.module';
+import {ButtonGroupModule} from '@components/button-group/button-group.module';
 
 @NgModule({
     declarations: [RecordSettingsMenuComponent],
@@ -12,7 +13,8 @@ import {ButtonModule} from '@components/button/button.module';
         CommonModule,
         AppManagerModule.forChild(RecordSettingsMenuComponent),
         ImageModule,
-        ButtonModule
+        ButtonModule,
+        ButtonGroupModule
     ]
 })
 export class RecordSettingsMenuModule {

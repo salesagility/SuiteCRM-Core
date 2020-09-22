@@ -7,6 +7,7 @@ import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MenuItemLink} from '@components/navbar/navbar.abstract';
 import {Panel, ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {ModeActions} from '@app-common/actions/action.model';
 
 export interface ChartType {
     key: string;
@@ -82,13 +83,9 @@ export interface SearchMeta {
 }
 
 export interface RecordViewMetadata {
-    actions: RecordAction[];
+    actions: ModeActions;
     templateMeta: RecordTemplateMetadata;
     panels: Panel[];
-}
-
-export interface RecordAction {
-    name: string;
 }
 
 export interface RecordTemplateMetadata {
@@ -407,7 +404,7 @@ export class MetadataStore implements StateStore {
         }
 
         const recordViewMeta: RecordViewMetadata = {
-            actions: [],
+            actions: {} as ModeActions,
             templateMeta: {} as RecordTemplateMetadata,
             panels: []
         };

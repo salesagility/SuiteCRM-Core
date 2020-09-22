@@ -1,10 +1,13 @@
 import {Component} from '@angular/core';
-import {ButtonInterface} from '@components/button/button.model';
-import {RecordViewStore} from '@store/record-view/record-view.store';
-import {combineLatest} from 'rxjs';
+import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {RecordActionsAdapter} from '@store/record-view/adapters/actions.adapter';
+import {ButtonGroupInterface} from '@components/button-group/button-group.model';
+import {Action} from '@app-common/actions/action.model';
+import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {LanguageStore} from '@store/language/language.store';
+import {ButtonInterface} from '@components/button/button.model';
 
 @Component({
     selector: 'scrm-record-settings-menu',
@@ -12,90 +15,89 @@ import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-n
 })
 export class RecordSettingsMenuComponent {
 
+    configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
+    config$ = this.configState.asObservable();
+
     vm$ = combineLatest([
-        this.recordStore.record$
+        this.actionsDataSource.getActions(),
+        this.screenSize.screenSize$,
+        this.languages.vm$
     ]).pipe(
-        map((
-            [
-                record
-            ]
-        ) => ({
-            record
-        }))
+        map(([actions, screenSize, languages]) => {
+            if (screenSize) {
+                this.screen = screenSize;
+            }
+            this.configState.next(this.getButtonGroupConfig(actions));
+
+            return {actions, screenSize, languages};
+        })
     );
 
+    protected buttonClass = 'settings-button';
+    protected buttonGroupClass = 'dropdown-button-secondary';
+
+    protected subs: Subscription[];
+    protected screen: ScreenSize = ScreenSize.Medium;
+    protected defaultBreakpoint = 5;
+    protected breakpoint: number;
+
     constructor(
-        protected recordStore: RecordViewStore,
-        protected router: Router,
-        private route: ActivatedRoute,
-        private moduleNameMapper: ModuleNameMapper
+        protected languages: LanguageStore,
+        protected actionsDataSource: RecordActionsAdapter,
+        protected screenSize: ScreenSizeObserverService,
+        protected systemConfigStore: SystemConfigStore
     ) {
     }
 
-    get historyButton(): ButtonInterface {
-        if (!this.recordStore) {
-            return null;
-        }
+
+    getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {
+        const buttons = [];
+
+        actions.forEach((action: Action) => {
+            buttons.push(this.buildButton(action));
+        });
 
         return {
-            label: this.recordStore.appStrings.LBL_HISTORY || '',
-            klass: 'settings-button',
-            icon: 'clock',
-            onClick: (): void => {
-                this.recordStore.showWidgets = !this.recordStore.showWidgets;
-            }
-        };
+            buttonKlass: [this.buttonClass],
+            dropdownLabel: this.languages.getAppString('LBL_OPTIONS') || '',
+            breakpoint: this.getBreakpoint(),
+            dropdownOptions: {
+                placement: ['bottom-right'],
+                wrapperKlass: [(this.buttonGroupClass)]
+            },
+            buttons
+        } as ButtonGroupInterface;
     }
 
-    get createButton(): ButtonInterface {
-        if (!this.recordStore) {
-            return null;
+    getBreakpoint(): number {
+
+        const breakpointMap = this.systemConfigStore.getConfigValue('listview_settings_limits');
+
+        if (this.screen && breakpointMap && breakpointMap[this.screen]) {
+            this.breakpoint = breakpointMap[this.screen];
+            return this.breakpoint;
         }
 
-        return {
-            label: this.recordStore.appStrings.LBL_NEW || '',
-            klass: 'settings-button',
-            onClick: (): void => {
+        if (this.breakpoint) {
+            return this.breakpoint;
+        }
 
-                const route = '/' + this.recordStore.vm.appData.module.name + '/edit';
-                const module = this.moduleNameMapper.toLegacy(this.recordStore.vm.appData.module.name);
-
-                this.router.navigate([route], {
-                    queryParams: {
-                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                        return_module: module,
-                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                        return_action: 'index',
-                    }
-                }).then();
-            }
-        };
+        return this.defaultBreakpoint;
     }
 
-    get editButton(): ButtonInterface {
-        if (!this.recordStore) {
-            return null;
+    protected buildButton(action: Action): ButtonInterface {
+        const button = {
+            label: action.label || '',
+            klass: this.buttonClass,
+            onClick: (): void => {
+                this.actionsDataSource.runAction(action.key);
+            }
+        } as ButtonInterface;
+
+        if (action.icon) {
+            button.icon = action.icon;
         }
 
-        return {
-            label: this.recordStore.appStrings.LBL_EDIT || '',
-            klass: 'settings-button',
-            onClick: (): void => {
-
-                const route = '/' + this.recordStore.vm.appData.module.name + '/edit';
-                const module = this.moduleNameMapper.toLegacy(this.recordStore.vm.appData.module.name);
-
-                this.router.navigate([route], {
-                    queryParams: {
-                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                        return_module: module,
-                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                        return_action: 'index',
-                        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                        record: this.route.snapshot.params.record
-                    }
-                }).then();
-            }
-        };
+        return button;
     }
 }
