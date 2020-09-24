@@ -97,7 +97,7 @@ class RecordViewHandler extends LegacyHandler implements RecordViewProviderInter
      * @return SugarBean
      * @throws InvalidArgumentException When the module is invalid.
      */
-    private function newBeanSafe($module): SugarBean
+    private function newBeanSafe(string $module): SugarBean
     {
         $bean = BeanFactory::newBean($module);
 

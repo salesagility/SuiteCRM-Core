@@ -15,7 +15,8 @@ import {RouterTestingModule} from '@angular/router/testing';
     template: `
         <div id="wrapper">
             <div *ngFor="let wrapper of fields" [id]="wrapper.field.type + '-' + wrapper.mode">
-                <scrm-field [mode]="wrapper.mode" [type]="wrapper.field.type" [field]="wrapper.field"></scrm-field>
+                <scrm-field [mode]="wrapper.mode" [type]="wrapper.field.type" [field]="wrapper.field" [record]="wrapper.record">
+                </scrm-field>
             </div>
         </div>`
 })
@@ -49,6 +50,23 @@ class FieldTestHostComponent {
                     id_name: 'contact_id'
                 }, value: 'Related Contact'
             }, mode: 'detail', expected: 'Related Contact'
+        },
+        {
+            field: {type: 'fullname', value: 'salutation first_name last_name'},
+            mode: 'detail',
+            expected: 'User Test Name',
+            record: {
+                type: '',
+                module: 'leads',
+                attributes: {
+                    // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
+                    salutation: 'User',
+                    // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
+                    first_name: 'Test',
+                    // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
+                    last_name: 'Name',
+                }
+            },
         }
     ];
 }

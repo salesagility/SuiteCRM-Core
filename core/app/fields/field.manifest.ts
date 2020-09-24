@@ -24,6 +24,8 @@ import {TextDetailFieldComponent} from '@fields/text/templates/detail/text.compo
 import {TextDetailFieldModule} from '@fields/text/templates/detail/text.module';
 import {RelateDetailFieldsModule} from '@fields/relate/templates/detail/relate.module';
 import {RelateDetailFieldsComponent} from '@fields/relate/templates/detail/relate.component';
+import {FullNameDetailFieldsComponent} from '@fields/fullname/templates/detail/fullname.component';
+import {FullNameDetailFieldsModule} from '@fields/fullname/templates/detail/fullname.module';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -38,7 +40,8 @@ export const fieldModules = [
     CurrencyDetailFieldModule,
     EmailListFieldsModule,
     TextDetailFieldModule,
-    RelateDetailFieldsModule
+    RelateDetailFieldsModule,
+    FullNameDetailFieldsModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -53,7 +56,8 @@ export const fieldComponents = [
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
-    RelateDetailFieldsComponent
+    RelateDetailFieldsComponent,
+    FullNameDetailFieldsComponent
 ];
 
 export const viewFieldsMap = {
@@ -83,5 +87,7 @@ export const viewFieldsMap = {
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
     'relate.detail': RelateDetailFieldsComponent,
-    'relate.list': RelateDetailFieldsComponent
+    'relate.list': RelateDetailFieldsComponent,
+    'fullname.list': FullNameDetailFieldsComponent,
+    'fullname.detail': FullNameDetailFieldsComponent
 };
