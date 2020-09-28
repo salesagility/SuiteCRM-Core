@@ -5,10 +5,15 @@ import {RecordCancelAction} from '@views/record/actions/cancel/record-cancel.act
 import {NavigationExtras, Router} from '@angular/router';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
+import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
 
 const mockRouter = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    navigate: (commands: any[], extras?: NavigationExtras) => null
+    navigate: (
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        commands: any[],
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        extras?: NavigationExtras
+    ) => null
 } as Router;
 
 export const recordActionsManagerMock = new RecordActionManager(
@@ -16,4 +21,5 @@ export const recordActionsManagerMock = new RecordActionManager(
     new RecordCreateAction(moduleNameMapperMock, mockRouter),
     new RecordHistoryAction(),
     new RecordCancelAction(),
+    new RecordSaveAction()
 );

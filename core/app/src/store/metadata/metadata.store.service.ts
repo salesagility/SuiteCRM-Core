@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
@@ -103,36 +103,45 @@ export interface TabDefinition {
     panelDefault: 'expanded' | 'collapsed';
 }
 
+/* eslint-disable camelcase*/
 export interface SubPanelTopButton {
-    widget_class: string
+    widget_class: string;
 }
+
+/* eslint-enable camelcase*/
 
 export interface SubPanelCollectionList {
     [key: string]: SubPanelCollectionItem;
 }
 
+/* eslint-disable camelcase*/
 export interface SubPanelCollectionItem {
-    module: string,
-    subpanel_name: string,
-    get_subpanel_data: string
+    module: string;
+    subpanel_name: string;
+    get_subpanel_data: string;
 }
+
+/* eslint-enable camelcase*/
 
 export interface SubPanelMeta {
     [key: string]: SubPanel;
-};
-
-export interface SubPanel {
-    order?: 10,
-    sort_order?: string,
-    sort_by?: string,
-    title_key?: string,
-    type?: string,
-    subpanel_name?: string,
-    header_definition_from_subpanel?: string,
-    module?: string,
-    top_buttons?: SubPanelTopButton[],
-    collection_list: SubPanelCollectionList
 }
+
+/* eslint-disable camelcase*/
+export interface SubPanel {
+    order?: 10;
+    sort_order?: string;
+    sort_by?: string;
+    title_key?: string;
+    type?: string;
+    subpanel_name?: string;
+    header_definition_from_subpanel?: string;
+    module?: string;
+    top_buttons?: SubPanelTopButton[];
+    collection_list: SubPanelCollectionList;
+}
+
+/* eslint-enable camelcase*/
 
 export interface Metadata {
     detailView?: any;
@@ -151,7 +160,6 @@ const initialState: Metadata = {
     recordView: {} as RecordViewMetadata,
     subPanel: {} as SubPanelMeta
 };
-
 
 
 let internalState: Metadata = deepClone(initialState);
@@ -179,7 +187,7 @@ export class MetadataStore implements StateStore {
     recordViewMetadata$: Observable<RecordViewMetadata>;
     metadata$: Observable<Metadata>;
     subPanelMetadata$: Observable<SubPanelMeta>;
-    
+
     protected store = new BehaviorSubject<Metadata>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'viewDefinition';
@@ -196,7 +204,7 @@ export class MetadataStore implements StateStore {
         'subPanel'
     ];
 
-    constructor(protected recordGQL: RecordGQL, protected appState: AppStateStore) {
+    constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
         this.fields$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
         this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());

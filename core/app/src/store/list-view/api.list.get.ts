@@ -36,8 +36,8 @@ export class ListGQL {
 
         const queryOptions = {
             query: gql`
-              query getListView($module: String!, $limit: Int, $offset: Int, $criteria: Iterable, $sort: Iterable) {
-                getListView(module: $module, limit: $limit, offset: $offset, criteria: $criteria, sort: $sort) {
+              query getRecordList($module: String!, $limit: Int, $offset: Int, $criteria: Iterable, $sort: Iterable) {
+                getRecordList(module: $module, limit: $limit, offset: $offset, criteria: $criteria, sort: $sort) {
                   ${fields.join('\n')}
                 }
               }

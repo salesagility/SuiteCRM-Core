@@ -1,4 +1,4 @@
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
@@ -109,7 +109,7 @@ export const languageMockData = {
 };
 
 
-class LanguageRecordGQLSpy extends RecordGQL {
+class LanguageRecordGQLSpy extends EntityGQL {
 
     constructor() {
         super(null);

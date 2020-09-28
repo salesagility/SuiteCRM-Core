@@ -1,7 +1,7 @@
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {ThemeImages, ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 
@@ -131,7 +131,7 @@ export const themeImagesMockData = {
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-class ThemeImagesRecordGQLSpy extends RecordGQL {
+class ThemeImagesRecordGQLSpy extends EntityGQL {
 
     constructor() {
         super(null);
@@ -157,7 +157,7 @@ class MockThemeImagesStore extends ThemeImagesStore {
         images: themeImagesMockData
     });
 
-    constructor(protected recordGQL: RecordGQL, protected appStateStore: AppStateStore) {
+    constructor(protected recordGQL: EntityGQL, protected appStateStore: AppStateStore) {
         super(recordGQL, appStateStore);
     }
 }

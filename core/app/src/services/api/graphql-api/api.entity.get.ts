@@ -7,7 +7,7 @@ import {ApolloQueryResult} from 'apollo-client';
 @Injectable({
     providedIn: 'root'
 })
-export class RecordGQL {
+export class EntityGQL {
 
     constructor(private apollo: Apollo) {
     }
@@ -15,23 +15,25 @@ export class RecordGQL {
     /**
      * Fetch data either from backend or cache
      *
-     * @param module to get from
-     * @param id of the record
-     * @param metadata with the fields to ask for
+     * @param {string} entity to get from
+     * @param {string} id of the record
+     * @param {object} metadata with the fields to ask for
+     *
+     * @returns {object}  Observable<ApolloQueryResult<any>>
      */
-    public fetch(module: string, id: string, metadata: { fields: string[] }): Observable<ApolloQueryResult<any>> {
+    public fetch(entity: string, id: string, metadata: { fields: string[] }): Observable<ApolloQueryResult<any>> {
         const fields = metadata.fields;
 
         const queryOptions = {
             query: gql`
-              query ${module}($id: ID!) {
-                ${module}(id: $id) {
+              query ${entity}($id: ID!) {
+                ${entity}(id: $id) {
                   ${fields.join('\n')}
                 }
               }
             `,
             variables: {
-                id: id,
+                id,
             },
         };
 

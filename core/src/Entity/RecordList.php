@@ -4,18 +4,18 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
-use App\Resolver\ListViewResolver;
+use App\Resolver\RecordListResolver;
 
 /**
  * @ApiResource(
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     itemOperations={
- *          "get"={"path"="/records/{id}"}
+ *          "get"={"path"="/record-list/{id}"}
  *     },
  *     collectionOperations={},
  *     graphql={
  *          "get"={
- *              "item_query"=ListViewResolver::class,
+ *              "item_query"=RecordListResolver::class,
  *              "args"={
  *                 "module"={"type"="String!"},
  *                 "limit"={"type"="Int"},
@@ -27,7 +27,7 @@ use App\Resolver\ListViewResolver;
  *      },
  * )
  */
-class ListView
+class RecordList
 {
     /**
      * The module
@@ -49,7 +49,7 @@ class ListView
     protected $id;
 
     /**
-     * ListView data
+     * RecordList data
      *
      * @var array
      *
@@ -65,7 +65,7 @@ class ListView
     public $records;
 
     /**
-     * ListView metadata
+     * RecordList metadata
      *
      * @var array
      *
@@ -73,7 +73,7 @@ class ListView
      *     attributes={
      *         "openapi_context"={
      *             "type"="array",
-     *             "description"="The list-view metadata",
+     *             "description"="The list metadata",
      *         },
      *     }
      * )
@@ -81,7 +81,7 @@ class ListView
     public $meta;
 
     /**
-     * ListView filters
+     * RecordList filters
      *
      * @var array
      *
@@ -89,7 +89,7 @@ class ListView
      *     attributes={
      *         "openapi_context"={
      *             "type"="array",
-     *             "description"="The list-view fukters",
+     *             "description"="The list-view filters",
      *         },
      *     }
      * )
@@ -113,7 +113,7 @@ class ListView
     }
 
     /**
-     * Get ListView records
+     * Get records
      * @return array
      */
     public function getRecords(): ?array
@@ -122,7 +122,7 @@ class ListView
     }
 
     /**
-     * Set ListView records
+     * Set records
      * @param array $records
      */
     public function setRecords(array $records): void
@@ -131,7 +131,7 @@ class ListView
     }
 
     /**
-     * Get ListView meta
+     * Get meta
      * @return array
      */
     public function getMeta(): array
@@ -140,7 +140,7 @@ class ListView
     }
 
     /**
-     * Set ListView meta
+     * Set meta
      * @param array $meta
      */
     public function setMeta(array $meta): void
@@ -149,7 +149,7 @@ class ListView
     }
 
     /**
-     * get ListView filters
+     * get filters
      * @return array
      */
     public function getFilters(): array
@@ -158,7 +158,7 @@ class ListView
     }
 
     /**
-     * Set ListView filters
+     * Set filters
      * @param array $filters
      */
     public function setFilters(array $filters): void

@@ -4,32 +4,31 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\ListView;
+use App\Entity\Record;
+use App\Service\RecordProviderInterface;
 use Exception;
-use SuiteCRM\Core\Legacy\ListViewHandler;
 
 /**
- * Class ListViewItemDataProvider
- * @package App\DataProvider
+ * Class RecordItemDataProvider
  */
-class ListViewItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class RecordItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
-     * @var ListViewHandler
+     * @var RecordProviderInterface
      */
-    protected $listViewHandler;
+    private $recordHandler;
 
     /**
-     * ListViewItemDataProvider constructor.
-     * @param ListViewHandler $listViewHandler
+     * RecordViewItemDataProvider constructor.
+     * @param RecordProviderInterface $recordHandler
      */
-    public function __construct(ListViewHandler $listViewHandler)
+    public function __construct(RecordProviderInterface $recordHandler)
     {
-        $this->listViewHandler = $listViewHandler;
+        $this->recordHandler = $recordHandler;
     }
 
     /**
-     * Define supported resources
+     * Defined supported resources
      * @param string $resourceClass
      * @param string|null $operationName
      * @param array $context
@@ -37,15 +36,16 @@ class ListViewItemDataProvider implements ItemDataProviderInterface, RestrictedD
      */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return ListView::class === $resourceClass;
+        return Record::class === $resourceClass;
     }
 
     /**
+     * Get get record by id
      * @param string $resourceClass
      * @param array|int|string $id
      * @param string|null $operationName
      * @param array $context
-     * @return ListView|null
+     * @return Record|null
      * @throws Exception
      */
     public function getItem(
@@ -53,7 +53,9 @@ class ListViewItemDataProvider implements ItemDataProviderInterface, RestrictedD
         $id,
         string $operationName = null,
         array $context = []
-    ): ?ListView {
-        return $this->listViewHandler->getListView($id);
+    ): ?Record {
+        $module = $context['args']['module'] ?? '';
+
+        return $this->recordHandler->getRecord($module, $id);
     }
 }

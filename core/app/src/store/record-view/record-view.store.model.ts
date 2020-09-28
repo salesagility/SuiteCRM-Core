@@ -24,9 +24,3 @@ export interface RecordViewState {
     widgets: boolean;
     mode: ViewMode;
 }
-
-export interface RecordData {
-    record: Record;
-    module: string;
-    recordID: string;
-}

@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {RecordMutationGQL} from '@services/api/graphql-api/api.record.create';
+import {EntityMutationGQL} from '@services/api/graphql-api/api.record.create';
 import {FetchResult} from 'apollo-link';
 import {ProcessService} from '@services/process/process.service';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
@@ -28,7 +28,7 @@ export const bulkActionMockData = {
 
 };
 
-class BulkActionProcessMutationGQLSpy extends RecordMutationGQL {
+class BulkActionProcessMutationGQLSpy extends EntityMutationGQL {
     constructor() {
         super(null);
     }

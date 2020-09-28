@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ViewStore} from '@store/view/view.store';
 import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
-import {BehaviorSubject, combineLatest, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {StateStore} from '@store/state';
 import {deepClone} from '@base/utils/object-utils';
 import {AppStateStore} from '@store/app-state/app-state.store';
@@ -10,13 +10,14 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {MessageService} from '@services/message/message.service';
-import {catchError, distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
-import {RecordViewGQL} from '@store/record-view/api.record.get';
+import {catchError, distinctUntilChanged, finalize, map, tap} from 'rxjs/operators';
+import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {Record} from '@app-common/record/record.model';
 import {ViewMode} from '@base/app-common/views/view.model';
-import {RecordData, RecordViewData, RecordViewModel, RecordViewState} from '@store/record-view/record-view.store.model';
-import {RecordManager} from '@store/record-view/record.manager';
+import {RecordViewData, RecordViewModel, RecordViewState} from '@store/record-view/record-view.store.model';
+import {RecordManager} from '@store/record/record.manager';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 
 const initialState: RecordViewState = {
     module: '',
@@ -51,16 +52,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected internalState: RecordViewState = deepClone(initialState);
     protected store = new BehaviorSubject<RecordViewState>(this.internalState);
     protected state$ = this.store.asObservable();
-    protected fieldsMetadata = {
-        fields: [
-            '_id',
-            'id',
-            'record'
-        ]
-    };
 
     constructor(
-        protected recordViewGQL: RecordViewGQL,
+        protected recordFetchGQL: RecordFetchGQL,
+        protected recordSaveGQL: RecordSaveGQL,
         protected appStateStore: AppStateStore,
         protected languageStore: LanguageStore,
         protected navigationStore: NavigationStore,
@@ -72,7 +67,13 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
-        this.recordManager = new RecordManager(languageStore, this.getViewFieldsObservable());
+        this.recordManager = new RecordManager(
+            languageStore,
+            this.getViewFieldsObservable(),
+            recordSaveGQL,
+            recordFetchGQL,
+            message
+        );
 
         this.record$ = this.recordManager.state$.pipe(distinctUntilChanged());
         this.stagingRecord$ = this.recordManager.staging$.pipe(distinctUntilChanged());
@@ -122,7 +123,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {string} recordID to use
      * @returns {object} Observable<any>
      */
-    public init(module: string, recordID: string): Observable<RecordData> {
+    public init(module: string, recordID: string): Observable<Record> {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
 
@@ -170,6 +171,21 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.updateState({...this.internalState, mode});
     }
 
+    save(): Observable<Record> {
+        this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, true);
+
+        return this.recordManager.save().pipe(
+            catchError(() => {
+                this.message.addDangerMessageByKey('LBL_ERROR_SAVING');
+                return of({} as Record);
+            }),
+            finalize(() => {
+                this.setMode('detail' as ViewMode);
+                this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, false);
+            })
+        );
+    }
+
     /**
      * Update the state
      *
@@ -205,97 +221,24 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<RecordViewState>
      */
-    protected load(useCache = true): Observable<RecordData> {
+    protected load(useCache = true): Observable<Record> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
 
-        return this.retrieveRecord(
+        return this.recordManager.retrieveRecord(
             this.internalState.module,
             this.internalState.recordID,
             useCache
         ).pipe(
-            tap((data: RecordData) => {
+            tap((data: Record) => {
                 this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
-
-                this.recordManager.init(data.record);
 
                 this.updateState({
                     ...this.internalState,
-                    recordID: data.recordID,
+                    recordID: data.id,
                     module: data.module,
                 });
             })
         );
     }
 
-    /**
-     * Get record cached Observable or call the backend
-     *
-     * @param {string} module to use
-     * @param {string} recordID to use
-     * @param {boolean} useCache if to use cache
-     * @returns {object} Observable<any>
-     */
-    protected retrieveRecord(
-        module: string,
-        recordID: string,
-        useCache = true
-    ): Observable<RecordData> {
-        if (this.cache$ == null || useCache === false) {
-            this.cache$ = this.fetch(module, recordID).pipe(
-                shareReplay(1)
-            );
-        }
-        return this.cache$;
-    }
-
-    /**
-     * Fetch the record from the backend
-     *
-     * @param {string} module to use
-     * @param {string} recordID to use
-     * @returns {object} Observable<any>
-     */
-    protected fetch(module: string, recordID: string): Observable<RecordData> {
-        return this.recordViewGQL.fetch(module, recordID, this.fieldsMetadata)
-            .pipe(
-                map(({data}) => {
-
-                    const recordData = {
-                        record: {
-                            type: '',
-                            module: '',
-                            attributes: {}
-                        } as Record,
-                        recordID,
-                        module,
-                    } as RecordData;
-
-                    const record: Record = {
-                        type: '',
-                        module: '',
-                        attributes: {}
-                    } as Record;
-
-                    if (!data) {
-                        return recordData;
-                    }
-
-                    const id = data.getRecordView.record.id;
-                    if (!id) {
-                        this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
-                        return recordData;
-                    }
-
-                    record.id = id;
-                    record.module = module;
-                    record.type = data.getRecordView.record && data.getRecordView.record.object_name;
-                    record.attributes = data.getRecordView.record;
-
-                    recordData.record = record;
-
-                    return recordData;
-                }),
-                catchError(err => throwError(err)),
-            );
-    }
 }

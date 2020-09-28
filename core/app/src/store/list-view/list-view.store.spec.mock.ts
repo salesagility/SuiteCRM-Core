@@ -16,7 +16,7 @@ import {messageServiceMock} from '@services/message/message.service.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
-    listView: {
+    recordList: {
         id: '/docroot/api/records/accounts',
         meta: {
             offsets: {
@@ -136,11 +136,11 @@ class ListRecordGQLSpy extends ListGQL {
 
         const data = {
             data: {
-                getListView: deepClone(listviewMockData.listView)
+                getRecordList: deepClone(listviewMockData.recordList)
             }
         };
 
-        data.data.getListView.meta.offsets = {
+        data.data.getRecordList.meta.offsets = {
             current: offset,
             next: (offset + limit) || 0,
             prev: (offset - limit) || 0,

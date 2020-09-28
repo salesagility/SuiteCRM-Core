@@ -2,9 +2,9 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use App\Entity\ListView;
+use App\Entity\RecordList;
 use App\Service\LegacyFilterMapper;
-use App\Service\ListViewProviderInterface;
+use App\Service\RecordListProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
@@ -15,10 +15,10 @@ use Symfony\Component\Security\Core\Security;
 use ViewList;
 
 /**
- * Class ListViewHandler
+ * Class RecordListHandler
  * @package SuiteCRM\Core\Legacy
  */
-class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
+class RecordListHandler extends LegacyHandler implements RecordListProviderInterface
 {
     public const HANDLER_KEY = 'list-view';
 
@@ -78,18 +78,18 @@ class ListViewHandler extends LegacyHandler implements ListViewProviderInterface
      * @param int $offset
      * @param int $limit
      * @param array $sort
-     * @return ListView
+     * @return RecordList
      */
-    public function getListView(
+    public function getList(
         string $moduleName,
         array $criteria = [],
         int $offset = -1,
         int $limit = -1,
         array $sort = []
-    ): ListView {
+    ): RecordList {
         $this->init();
 
-        $listView = new ListView();
+        $listView = new RecordList();
         $moduleName = $this->validateModuleName($moduleName);
         $bean = $this->newBeanSafe($moduleName);
 

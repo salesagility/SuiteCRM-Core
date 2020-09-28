@@ -15,7 +15,7 @@ describe('Listview Store', () => {
     it('#load', (done: DoneFn) => {
         service.updateSelection(SelectionStatus.NONE);
         service.init('accounts').subscribe(data => {
-            expect(data.records).toEqual(jasmine.objectContaining(listviewMockData.listView.records));
+            expect(data.records).toEqual(jasmine.objectContaining(listviewMockData.recordList.records));
             done();
         });
     });

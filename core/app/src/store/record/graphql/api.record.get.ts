@@ -7,7 +7,7 @@ import {ApolloQueryResult} from 'apollo-client';
 @Injectable({
     providedIn: 'root'
 })
-export class RecordViewGQL {
+export class RecordFetchGQL {
 
     constructor(private apollo: Apollo) {
     }
@@ -29,8 +29,8 @@ export class RecordViewGQL {
 
         const queryOptions = {
             query: gql`
-            query recordView($module: String!, $record: String!) {
-                getRecordView(module: $module, record: $record) {
+            query getRecord($module: String!, $record: String!) {
+                getRecord(module: $module, record: $record) {
                     ${fields.join('\n')}
                 }
             }

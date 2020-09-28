@@ -737,11 +737,11 @@ export class ListViewStore extends ViewStore implements StateStore,
                     pagination: {...pagination} as Pagination
                 };
 
-                if (!data || !data.getListView) {
+                if (!data || !data.getRecordList) {
                     return recordsList;
                 }
 
-                const listData = data.getListView;
+                const listData = data.getRecordList;
 
                 if (listData.records) {
                     listData.records.forEach((record: any) => {

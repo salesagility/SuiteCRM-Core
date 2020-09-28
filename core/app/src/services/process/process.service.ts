@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {RecordMutationGQL} from '@services/api/graphql-api/api.record.create';
+import {EntityMutationGQL} from '@services/api/graphql-api/api.record.create';
 
 export interface ProcessOptions {
     [key: string]: any;
@@ -48,7 +48,7 @@ export class ProcessService {
         ]
     };
 
-    constructor(private recordMutationGQL: RecordMutationGQL) {
+    constructor(private recordMutationGQL: EntityMutationGQL) {
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace SuiteCRM\Core\Legacy;
 
-use App\Service\ListViewProviderInterface;
+use App\Service\RecordListProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordDeletionProviderInterface;
 use BeanFactory;
@@ -21,7 +21,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
     private $moduleNameMapper;
 
     /**
-     * @var ListViewProviderInterface
+     * @var RecordListProviderInterface
      */
     private $listViewProvider;
 
@@ -33,7 +33,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param ListViewProviderInterface $listViewProvider
+     * @param RecordListProviderInterface $listViewProvider
      */
     public function __construct(
         string $projectDir,
@@ -42,7 +42,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        ListViewProviderInterface $listViewProvider
+        RecordListProviderInterface $listViewProvider
     )
     {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
@@ -99,7 +99,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
         $this->init();
         $this->startLegacyApp();
 
-        $listView = $this->listViewProvider->getListView(
+        $listView = $this->listViewProvider->getList(
             $this->moduleNameMapper->toFrontEnd($moduleName),
             $criteria,
             -1,

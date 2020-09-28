@@ -9,7 +9,9 @@ import {localStorageServiceMock} from '@services/local-storage/local-storage.ser
 import {deepClone} from '@base/utils/object-utils';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
 import {RecordViewStore} from '@store/record-view/record-view.store';
-import {RecordViewGQL} from '@store/record-view/api.record.get';
+import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
+import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
+import {Record} from '@app-common/record/record.model';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {
@@ -1109,7 +1111,7 @@ export const recordViewMockData = {
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-class RecordViewGQLSpy extends RecordViewGQL {
+class RecordViewGQLSpy extends RecordFetchGQL {
 
     constructor() {
         super(null);
@@ -1126,8 +1128,27 @@ class RecordViewGQLSpy extends RecordViewGQL {
     }
 }
 
+/* eslint-enable camelcase, @typescript-eslint/camelcase */
+
+class RecordSaveGQLSpy extends RecordSaveGQL {
+
+    constructor() {
+        super(null);
+    }
+
+    public save(record: Record): Observable<any> {
+
+        return of({
+            id: record.id,
+            module: record.module,
+            attributes: record.attributes
+        });
+    }
+}
+
 export const recordviewStoreMock = new RecordViewStore(
     new RecordViewGQLSpy(),
+    new RecordSaveGQLSpy(),
     appStateStoreMock,
     languageStoreMock,
     navigationMock,

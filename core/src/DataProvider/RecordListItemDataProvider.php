@@ -4,31 +4,32 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\RecordView;
-use App\Service\RecordViewProviderInterface;
+use App\Entity\RecordList;
 use Exception;
+use SuiteCRM\Core\Legacy\RecordListHandler;
 
 /**
- * Class RecordViewItemDataProvider
+ * Class RecordListItemDataProvider
+ * @package App\DataProvider
  */
-final class RecordViewItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class RecordListItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
-     * @var RecordViewProviderInterface
+     * @var RecordListHandler
      */
-    private $recordViewHandler;
+    protected $recordListHandler;
 
     /**
-     * RecordViewItemDataProvider constructor.
-     * @param RecordViewProviderInterface $recordViewHandler
+     * RecordListItemDataProvider constructor.
+     * @param RecordListHandler $recordListHandler
      */
-    public function __construct(RecordViewProviderInterface $recordViewHandler)
+    public function __construct(RecordListHandler $recordListHandler)
     {
-        $this->recordViewHandler = $recordViewHandler;
+        $this->recordListHandler = $recordListHandler;
     }
 
     /**
-     * Defined supported resources
+     * Define supported resources
      * @param string $resourceClass
      * @param string|null $operationName
      * @param array $context
@@ -36,16 +37,15 @@ final class RecordViewItemDataProvider implements ItemDataProviderInterface, Res
      */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return RecordView::class === $resourceClass;
+        return RecordList::class === $resourceClass;
     }
 
     /**
-     * Get get record by id
      * @param string $resourceClass
      * @param array|int|string $id
      * @param string|null $operationName
      * @param array $context
-     * @return RecordView|null
+     * @return RecordList|null
      * @throws Exception
      */
     public function getItem(
@@ -53,7 +53,7 @@ final class RecordViewItemDataProvider implements ItemDataProviderInterface, Res
         $id,
         string $operationName = null,
         array $context = []
-    ): ?RecordView {
-        return $this->recordViewHandler->getRecord($id);
+    ): ?RecordList {
+        return $this->recordListHandler->getList($id);
     }
 }

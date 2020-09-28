@@ -1,5 +1,5 @@
 import {NavigationStore} from '@store/navigation/navigation.store';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
 
@@ -195,7 +195,7 @@ export const navigationMockData = {
     }
 };
 
-class NavigationRecordGQLSpy extends RecordGQL {
+class NavigationRecordGQLSpy extends EntityGQL {
 
     constructor() {
         super(null);

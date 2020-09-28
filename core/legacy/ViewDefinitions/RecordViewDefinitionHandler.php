@@ -4,6 +4,7 @@ namespace SuiteCRM\Core\Legacy\ViewDefinitions;
 
 use App\Entity\FieldDefinition;
 use BeanFactory;
+use DetailView2;
 use Exception;
 use Psr\Log\LoggerInterface;
 use SuiteCRM\Core\Legacy\LegacyHandler;
@@ -180,9 +181,23 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $view->module = $module;
 
-        $view->preDisplay();
+        $this->loadMetadata($view);
 
         return $view->dv->defs;
+    }
+
+    /**
+     * @param ViewDetail $view
+     */
+    protected function loadMetadata(ViewDetail $view): void
+    {
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/DetailView/DetailView2.php';
+        $metadataFile = $view->getMetaDataFile();
+        $view->dv = new DetailView2();
+        $view->dv->ss =& $view->ss;
+        $view->dv->setup($view->module, $view->bean, $metadataFile,
+            get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
     }
 
     /**

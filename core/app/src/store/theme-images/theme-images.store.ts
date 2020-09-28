@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {StateStore} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
@@ -54,7 +54,7 @@ export class ThemeImagesStore implements StateStore {
         ]
     };
 
-    constructor(protected recordGQL: RecordGQL, protected appStateStore: AppStateStore) {
+    constructor(protected recordGQL: EntityGQL, protected appStateStore: AppStateStore) {
         this.images$ = this.state$.pipe(map(state => state.images), distinctUntilChanged());
     }
 

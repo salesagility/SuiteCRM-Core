@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
@@ -65,6 +65,20 @@ let cache: LanguageCache = deepClone(initialCache);
     providedIn: 'root',
 })
 export class LanguageStore implements StateStore {
+
+    /**
+     * Public long-lived observable streams
+     */
+    appStrings$: Observable<LanguageStringMap>;
+    appListStrings$: Observable<LanguageListStringMap>;
+    modStrings$: Observable<LanguageListStringMap>;
+    languageKey$: Observable<string>;
+
+    /**
+     * ViewModel that resolves once all the data is ready (or updated)...
+     */
+    vm$: Observable<LanguageStrings>;
+
     protected store = new BehaviorSubject<LanguageState>(internalState);
     protected state$ = this.store.asObservable();
 
@@ -104,36 +118,30 @@ export class LanguageStore implements StateStore {
         },
     };
 
-    /**
-     * Public long-lived observable streams
-     */
-    appStrings$ = this.state$.pipe(map(state => state.appStrings), distinctUntilChanged());
-    appListStrings$ = this.state$.pipe(map(state => state.appListStrings), distinctUntilChanged());
-    modStrings$ = this.state$.pipe(map(state => state.modStrings), distinctUntilChanged());
-    languageKey$ = this.state$.pipe(map(state => state.languageKey), distinctUntilChanged());
+    constructor(private recordGQL: EntityGQL, private appStateStore: AppStateStore) {
 
-    /**
-     * ViewModel that resolves once all the data is ready (or updated)...
-     */
-    vm$: Observable<LanguageStrings> = combineLatest(
-        [
-            this.appStrings$,
-            this.appListStrings$,
-            this.modStrings$,
-            this.languageKey$
-        ])
-        .pipe(
-            map((
-                [
-                    appStrings,
-                    appListStrings,
-                    modStrings,
-                    languageKey
-                ]) => ({appStrings, appListStrings, modStrings, languageKey})
-            )
-        );
+        this.appStrings$ = this.state$.pipe(map(state => state.appStrings), distinctUntilChanged());
+        this.appListStrings$ = this.state$.pipe(map(state => state.appListStrings), distinctUntilChanged());
+        this.modStrings$ = this.state$.pipe(map(state => state.modStrings), distinctUntilChanged());
+        this.languageKey$ = this.state$.pipe(map(state => state.languageKey), distinctUntilChanged());
 
-    constructor(private recordGQL: RecordGQL, private appStateStore: AppStateStore) {
+        this.vm$ = combineLatest(
+            [
+                this.appStrings$,
+                this.appListStrings$,
+                this.modStrings$,
+                this.languageKey$
+            ])
+            .pipe(
+                map((
+                    [
+                        appStrings,
+                        appListStrings,
+                        modStrings,
+                        languageKey
+                    ]) => ({appStrings, appListStrings, modStrings, languageKey})
+                )
+            );
     }
 
     /**

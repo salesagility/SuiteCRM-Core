@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {map, distinctUntilChanged, tap, shareReplay} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {StateStore} from '@base/store/state';
 import {deepClone} from '@base/utils/object-utils';
 
@@ -67,6 +67,20 @@ let cache$: Observable<any> = null;
 })
 export class NavigationStore implements StateStore {
 
+    /**
+     * Public long-lived observable streams
+     */
+    tabs$: Observable<string[]>;
+    groupedTabs$: Observable<GroupedTab[]>;
+    modules$: Observable<NavbarModuleMap>;
+    userActionMenu$: Observable<UserActionMenu[]>;
+    maxTabs$: Observable<number>;
+
+    /**
+     * ViewModel that resolves once all the data is ready (or updated)...
+     */
+    vm$: Observable<Navigation>;
+
     protected store = new BehaviorSubject<Navigation>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'navbar';
@@ -80,40 +94,34 @@ export class NavigationStore implements StateStore {
         ]
     };
 
-    /**
-     * Public long-lived observable streams
-     */
-    tabs$ = this.state$.pipe(map(state => state.tabs), distinctUntilChanged());
-    groupedTabs$ = this.state$.pipe(map(state => state.groupedTabs), distinctUntilChanged());
-    modules$ = this.state$.pipe(map(state => state.modules), distinctUntilChanged());
-    userActionMenu$ = this.state$.pipe(map(state => state.userActionMenu), distinctUntilChanged());
-    maxTabs$ = this.state$.pipe(map(state => state.maxTabs), distinctUntilChanged());
+    constructor(private recordGQL: EntityGQL) {
+
+        this.tabs$ = this.state$.pipe(map(state => state.tabs), distinctUntilChanged());
+        this.groupedTabs$ = this.state$.pipe(map(state => state.groupedTabs), distinctUntilChanged());
+        this.modules$ = this.state$.pipe(map(state => state.modules), distinctUntilChanged());
+        this.userActionMenu$ = this.state$.pipe(map(state => state.userActionMenu), distinctUntilChanged());
+        this.maxTabs$ = this.state$.pipe(map(state => state.maxTabs), distinctUntilChanged());
 
 
-    /**
-     * ViewModel that resolves once all the data is ready (or updated)...
-     */
-    vm$: Observable<Navigation> = combineLatest(
-        [
-            this.tabs$,
-            this.groupedTabs$,
-            this.modules$,
-            this.userActionMenu$,
-            this.maxTabs$
-        ])
-        .pipe(
-            map((
-                [
-                    tabs,
-                    groupedTabs,
-                    modules,
-                    userActionMenu,
-                    maxTabs
-                ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs})
-            )
-        );
-
-    constructor(private recordGQL: RecordGQL) {
+        this.vm$ = combineLatest(
+            [
+                this.tabs$,
+                this.groupedTabs$,
+                this.modules$,
+                this.userActionMenu$,
+                this.maxTabs$
+            ])
+            .pipe(
+                map((
+                    [
+                        tabs,
+                        groupedTabs,
+                        modules,
+                        userActionMenu,
+                        maxTabs
+                    ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs})
+                )
+            );
     }
 
 

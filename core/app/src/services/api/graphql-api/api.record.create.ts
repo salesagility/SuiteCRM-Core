@@ -7,7 +7,7 @@ import {FetchResult} from 'apollo-link';
 @Injectable({
     providedIn: 'root'
 })
-export class RecordMutationGQL {
+export class EntityMutationGQL {
 
     constructor(private apollo: Apollo) {
     }
@@ -15,23 +15,24 @@ export class RecordMutationGQL {
     /**
      * Create record on the backend
      *
-     * @param moduleGraphQLName to get from
-     * @param moduleCoreName to get from
-     * @param input
-     * @param metadata with the fields to ask for
-     * @returns Observable<any>
+     * @param {string} graphqlEntityName to use
+     * @param {string} entityName to use
+     * @param {object} input values
+     * @param {object} metadata with the fields to ask for
+     *
+     * @returns {object} Observable<any>
      */
-    public create(graphqlModuleName: string,
-                  coreModuleName: string,
+    public create(graphqlEntityName: string,
+                  entityName: string,
                   input: { [key: string]: any },
                   metadata: { fields: string[] }): Observable<FetchResult<any>> {
 
         const fields = metadata.fields;
         const mutationOptions = {
             mutation: gql`
-                mutation create${coreModuleName}($input: create${coreModuleName}Input!) {
-                  create${coreModuleName}(input: $input) {
-                    ${graphqlModuleName} {
+                mutation create${entityName}($input: create${entityName}Input!) {
+                  create${entityName}(input: $input) {
+                    ${graphqlEntityName} {
                       ${fields.join('\n')}
                     }
                     clientMutationId

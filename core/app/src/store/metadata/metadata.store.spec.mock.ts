@@ -1,4 +1,4 @@
-import {RecordGQL} from '@services/api/graphql-api/api.record.get';
+import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
@@ -654,7 +654,7 @@ export const metadataMockData = {
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
 
-class MetadataRecordGQLSpy extends RecordGQL {
+class MetadataRecordGQLSpy extends EntityGQL {
 
     constructor() {
         super(null);
