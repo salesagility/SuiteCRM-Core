@@ -48,6 +48,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param SystemConfigMappers $mappers
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
+     * @param array $moduleRouting
      * @param array $navigationTabLimits
      * @param array $listViewColumnLimits
      * @param array $listViewSettingsLimits
@@ -66,11 +67,13 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         SystemConfigMappers $mappers,
         array $systemConfigKeyMap,
         array $cacheResetActions,
+        array $moduleRouting,
         array $navigationTabLimits,
         array $listViewColumnLimits,
         array $listViewSettingsLimits,
         array $listViewActionsLimits
-    ) {
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
 
@@ -78,6 +81,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
         $this->injectedSystemConfigs['classicview_routing_exclusions'] = $exclusionsManager->get();
         $this->injectedSystemConfigs['cache_reset_actions'] = $cacheResetActions;
+        $this->injectedSystemConfigs['module_routing'] = $moduleRouting;
         $this->injectedSystemConfigs['navigation_tab_limits'] = $navigationTabLimits;
         $this->injectedSystemConfigs['listview_column_limits'] = $listViewColumnLimits;
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;

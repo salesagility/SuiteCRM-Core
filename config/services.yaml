@@ -22,6 +22,7 @@ services:
       $legacyPath: '%legacy.path%'
       $legacySessionName: '%legacy.session_name%'
       $defaultSessionName: '%default_session_name%'
+      $moduleRouting: '%legacy.module_routing%'
       $exposedSystemConfigs: '%legacy.exposed_system_configs%'
       $systemConfigKeyMap: '%legacy.system_config_key_map%'
       $menuItemMap: '%legacy.menu_item_map%'
@@ -44,11 +45,11 @@ services:
       $listViewActionsLimits: '%module.listview.actions_limits%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
-      tags: ['app.process.handler']
+      tags: [ 'app.process.handler' ]
     SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMapperInterface:
-      tags: ['user.preferences.mapper']
+      tags: [ 'user.preferences.mapper' ]
     SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMapperInterface:
-      tags: ['system.config.mapper']
+      tags: [ 'system.config.mapper' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -65,14 +66,14 @@ services:
   # as action arguments even if you don't extend any base controller class
   App\Controller\:
     resource: '../core/src/Controller/*'
-    tags: ['controller.service_arguments']
+    tags: [ 'controller.service_arguments' ]
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
   App\EventListener\LegacyRedirectListener:
     # set priority of 2050 to ensure the be the first running
-    tags: [{ name: kernel.event_listener, event: kernel.request, priority: 2050 }]
+    tags: [ { name: kernel.event_listener, event: kernel.request, priority: 2050 } ]
 
   App\Service\ProcessHandlerRegistry:
     # inject all services tagged with app.process.handler as first argument

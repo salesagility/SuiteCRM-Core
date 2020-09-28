@@ -56,7 +56,8 @@ class SystemConfigHandlerTest extends Unit
             'datef' => true,
             'timef' => true,
             'currency' => true,
-            'cache_reset_actions' => true
+            'cache_reset_actions' => true,
+            'module_routing' => true
         ];
 
         $moduleMapper = new ModuleNameMapperHandler(
@@ -178,6 +179,300 @@ class SystemConfigHandlerTest extends Unit
             'XLarge' => 14
         ];
 
+        $moduleRouting = [
+            'saved-search' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'calls-reschedule' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'calls' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'tasks' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'meetings' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'notes' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'leads' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'contacts' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'accounts' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'opportunities' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'email-templates' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'campaigns' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'prospects' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'prospect-lists' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'documents' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'cases' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'project' => [
+                'index' => true,
+                'list' => true,
+                'record' => false
+            ],
+            'project-task' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'bugs' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'business-hours' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'spots' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'roles' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'users' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'employees' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'template-section-line' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'surveys' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'survey-responses' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'survey-question-responses' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'survey-questions' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'survey-question-options' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'project-templates' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'task-templates' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'knowledge-base-categories' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'knowledge-base' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'events' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'event-locations' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'contracts' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'invoices' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'pdf-templates' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'product-categories' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'products' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'quotes' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'products-quotes' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'maps' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'markers' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'areas' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'address-cache' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'case-events' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'case-updates' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'reports' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'scheduled-reports' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'workflow' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'workflow-processed' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'security-groups' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'acl-roles' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'schedulers' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'oauth-keys' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+            'outbound-email-accounts' => [
+                'index' => true,
+                'list' => true,
+                'record' => true
+            ],
+
+        ];
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -191,6 +486,7 @@ class SystemConfigHandlerTest extends Unit
             $mappers,
             $systemConfigKeyMap,
             $cacheResetActions,
+            $moduleRouting,
             $navigationTabLimits,
             $listViewColumnLimits,
             $listViewSettingsLimits,

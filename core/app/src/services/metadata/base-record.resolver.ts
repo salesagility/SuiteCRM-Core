@@ -42,9 +42,15 @@ export class BaseRecordResolver extends BaseModuleResolver {
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        let routeModule = route.params.module;
+
+        if (!routeModule) {
+            routeModule = route.data.module;
+        }
+
         return forkJoin({
             base: super.resolve(route),
-            metadata: this.metadataStore.load(route.params.module, this.metadataStore.getMetadataTypes()),
+            metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
         });
     }
 }

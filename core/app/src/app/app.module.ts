@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
@@ -40,6 +40,9 @@ import {GraphQLError} from 'graphql';
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
+import {AppInit} from '@app/app-initializer';
+
+export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
 @NgModule({
     declarations: [
@@ -75,6 +78,13 @@ import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.co
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
         BnNgIdleService,
+        AppInit,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            multi: true,
+            deps: [AppInit]
+        }
     ],
     bootstrap: [AppComponent],
     entryComponents: [ColumnChooserComponent]

@@ -204,6 +204,11 @@ export class BaseMetadataResolver implements Resolve<any> {
     protected calculateActiveModule(route: ActivatedRouteSnapshot): string {
 
         let module = route.params.module;
+
+        if (!module) {
+            module = route.data.module;
+        }
+
         const parentModuleParam = this.getParentModuleMap()[module] || '';
         const parentModule = route.queryParams[parentModuleParam] || '';
 

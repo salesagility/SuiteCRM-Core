@@ -40,17 +40,24 @@ export class BaseModuleResolver extends BaseMetadataResolver {
     }
 
     resolve(route: ActivatedRouteSnapshot): any {
+        let routeModule = route.params.module;
+
+        if (!routeModule) {
+            routeModule = route.data.module;
+        }
+
         return forkJoin({
             base: super.resolve(route),
-            metadata: this.metadataStore.load(route.params.module, this.metadataStore.getMetadataTypes()),
+            metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
         }).pipe(
             tap(
                 () => {
-                    if (route.params.module) {
+                    if (routeModule) {
                         const module = this.calculateActiveModule(route);
 
                         this.appStateStore.setModule(module);
                     }
+
                     if (route.params.action) {
                         this.appStateStore.setView(route.params.action);
                     }

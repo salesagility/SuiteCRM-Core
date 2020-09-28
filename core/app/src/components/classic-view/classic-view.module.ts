@@ -1,9 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ClassicViewUiComponent} from './classic-view.component';
-import {ClassicViewUiRoutes} from './classic-view.routes';
 
 @NgModule({
     declarations: [
@@ -14,7 +12,6 @@ import {ClassicViewUiRoutes} from './classic-view.routes';
     ],
     imports: [
         AppManagerModule.forChild(ClassicViewUiComponent),
-        RouterModule.forChild(ClassicViewUiRoutes),
         CommonModule
     ]
 })

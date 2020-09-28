@@ -1,23 +1,24 @@
 parameters:
-    legacy.exposed_system_configs:
-        default_language: true
-        passwordsetting:
-            forgotpasswordON: true
-        languages: true
-        default_module: true
-        default_theme: true
-        module_name_map: true
-        action_name_map: true
-        classicview_routing_exclusions: true
-        default_decimal_seperator: true
-        default_number_grouping_seperator: true
-        default_currency_significant_digits: true
-        datef: true
-        timef: true
-        currency: true
-        list_max_entries_per_page: true
-        cache_reset_actions: true
-        navigation_tab_limits: true
-        listview_column_limits: true
-        listview_settings_limits: true
-        listview_actions_limits: true
+  legacy.exposed_system_configs:
+    default_language: true
+    passwordsetting:
+      forgotpasswordON: true
+    languages: true
+    default_module: true
+    default_theme: true
+    module_name_map: true
+    action_name_map: true
+    classicview_routing_exclusions: true
+    default_decimal_seperator: true
+    default_number_grouping_seperator: true
+    default_currency_significant_digits: true
+    datef: true
+    timef: true
+    currency: true
+    list_max_entries_per_page: true
+    cache_reset_actions: true
+    navigation_tab_limits: true
+    listview_column_limits: true
+    listview_settings_limits: true
+    listview_actions_limits: true
+    module_routing: true
