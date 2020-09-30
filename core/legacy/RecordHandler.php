@@ -81,16 +81,9 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $this->init();
         $this->startLegacyApp();
 
-        $moduleName = $this->validateModuleName($record->getModule());
         $id = $record->getAttributes()['id'] ?? '';
         /** @var SugarBean $bean */
-        $bean = null;
-
-        if (empty($id)) {
-            $bean = $this->newBeanSafe($moduleName);
-        } else {
-            $bean = BeanFactory::getBean($moduleName, $id);
-        }
+        $bean = $this->retrieveRecord($record->getModule(), $id);
 
         if (!$bean->ACLAccess('save')) {
             throw new AccessDeniedHttpException();
@@ -99,7 +92,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $this->setFields($bean, $record->getAttributes());
         $this->save($bean);
 
-        $savedRecord = $this->buildRecord($id, $record->getModule(), $bean);
+
+        $refreshedBean = $this->retrieveRecord($record->getModule(), $bean->id);
+
+        $savedRecord = $this->buildRecord($bean->id, $record->getModule(), $refreshedBean);
 
         $this->close();
 
@@ -213,6 +209,13 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     protected function retrieveRecord(string $module, string $id): SugarBean
     {
         $moduleName = $this->validateModuleName($module);
+
+        if (empty($id)){
+            return $this->newBeanSafe($moduleName);
+        }
+
+        BeanFactory::unregisterBean($moduleName, $id);
+
         /** @var SugarBean $bean */
         $bean = BeanFactory::getBean($moduleName, $id);
 
