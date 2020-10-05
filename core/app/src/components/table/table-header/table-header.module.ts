@@ -19,5 +19,5 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
         AngularSvgIconModule
     ]
 })
-export class TableheaderUiModule {
+export class TableHeaderModule {
 }

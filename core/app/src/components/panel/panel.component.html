@@ -11,7 +11,7 @@
         </span>
     </div>
 
-    <div class="card-body p-3" [ngbCollapse]="isCollapsed">
+    <div class="card-body p-{{bodyPadding}}" [ngbCollapse]="isCollapsed">
         <ng-content select="[panel-body]"></ng-content>
     </div>
 </div>

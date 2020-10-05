@@ -13,7 +13,7 @@ describe('Listview Store', () => {
     });
 
     it('#load', (done: DoneFn) => {
-        service.updateSelection(SelectionStatus.NONE);
+        service.recordList.updateSelection(SelectionStatus.NONE);
         service.init('accounts').subscribe(data => {
             expect(data.records).toEqual(jasmine.objectContaining(listviewMockData.recordList.records));
             done();
@@ -21,8 +21,8 @@ describe('Listview Store', () => {
     });
 
     it('#updateSelection select all', () => {
-        service.updateSelection(SelectionStatus.NONE);
-        service.updateSelection(SelectionStatus.ALL);
+        service.recordList.updateSelection(SelectionStatus.NONE);
+        service.recordList.updateSelection(SelectionStatus.ALL);
         service.selection$.pipe(take(1)).subscribe(data => {
             expect(data.all).toEqual(true);
             expect(data.status).toEqual(SelectionStatus.ALL);
@@ -31,9 +31,9 @@ describe('Listview Store', () => {
     });
 
     it('#updateSelection select page', () => {
-        service.updateSelection(SelectionStatus.NONE);
+        service.recordList.updateSelection(SelectionStatus.NONE);
         service.init('accounts').subscribe(() => {
-            service.updateSelection(SelectionStatus.PAGE);
+            service.recordList.updateSelection(SelectionStatus.PAGE);
             service.selection$.pipe(take(1)).subscribe(selection => {
                 expect(selection.all).toEqual(false);
                 expect(selection.status).toEqual(SelectionStatus.SOME);
@@ -45,7 +45,7 @@ describe('Listview Store', () => {
     });
 
     it('#updateSelection deselect all', () => {
-        service.updateSelection(SelectionStatus.NONE);
+        service.recordList.updateSelection(SelectionStatus.NONE);
         service.selection$.pipe(take(1)).subscribe(data => {
             expect(data.all).toEqual(false);
             expect(data.status).toEqual(SelectionStatus.NONE);
@@ -55,8 +55,8 @@ describe('Listview Store', () => {
     });
 
     it('#updateSelection toggleSelection', () => {
-        service.updateSelection(SelectionStatus.NONE);
-        service.toggleSelection('ac319818-dc26-f57d-03e1-5ed77dedd691');
+        service.recordList.updateSelection(SelectionStatus.NONE);
+        service.recordList.toggleSelection('ac319818-dc26-f57d-03e1-5ed77dedd691');
 
         service.selection$.pipe(take(1)).subscribe(data => {
             expect(data.status).toEqual(SelectionStatus.SOME);
@@ -66,7 +66,7 @@ describe('Listview Store', () => {
 
             expect(data.count).toEqual(1);
 
-            service.toggleSelection('ac319818-dc26-f57d-03e1-5ed77dedd691');
+            service.recordList.toggleSelection('ac319818-dc26-f57d-03e1-5ed77dedd691');
             service.selection$.pipe(take(1)).subscribe(newData => {
                 expect(newData.status).toEqual(SelectionStatus.NONE);
                 expect(newData.selected).toEqual({});
@@ -79,10 +79,10 @@ describe('Listview Store', () => {
 
     it('#changePage next', () => {
         service.init('accounts').pipe(take(1)).subscribe(() => {
-            service.changePage(PageSelection.FIRST);
-            const before = {...service.getPagination()};
-            service.changePage(PageSelection.NEXT);
-            const after = service.getPagination();
+            service.recordList.changePage(PageSelection.FIRST);
+            const before = {...service.recordList.getPagination()};
+            service.recordList.changePage(PageSelection.NEXT);
+            const after = service.recordList.getPagination();
 
             expect(before.next).toEqual(after.current);
         });
@@ -90,10 +90,10 @@ describe('Listview Store', () => {
 
     it('#changePage previous', () => {
         service.init('accounts').pipe(take(1)).subscribe(() => {
-            service.changePage(PageSelection.LAST);
-            const before = {...service.getPagination()};
-            service.changePage(PageSelection.PREVIOUS);
-            const after = service.getPagination();
+            service.recordList.changePage(PageSelection.LAST);
+            const before = {...service.recordList.getPagination()};
+            service.recordList.changePage(PageSelection.PREVIOUS);
+            const after = service.recordList.getPagination();
 
             expect(before.previous).toEqual(after.current);
         });
@@ -112,7 +112,7 @@ describe('Listview Store', () => {
             } as SearchCriteria;
 
             service.updateSearchCriteria(criteria);
-            const savedCriteria = service.searchCriteria;
+            const savedCriteria = service.recordList.criteria;
             const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
 
             expect(criteria).toEqual(savedCriteria);
@@ -133,7 +133,7 @@ describe('Listview Store', () => {
             } as SearchCriteria;
 
             service.updateSearchCriteria(criteria, false);
-            const savedCriteria = service.searchCriteria;
+            const savedCriteria = service.recordList.criteria;
             const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
 
             expect(criteria).toEqual(savedCriteria);

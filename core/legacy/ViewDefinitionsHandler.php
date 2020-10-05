@@ -10,6 +10,7 @@ use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProviderInterface;
 use App\Service\ModuleNameMapperInterface;
+use App\Service\SubPanelDefinitionProviderInterface;
 use App\Service\ViewDefinitionsProviderInterface;
 use Exception;
 use InvalidArgumentException;
@@ -17,8 +18,8 @@ use ListViewFacade;
 use Psr\Log\LoggerInterface;
 use SearchForm;
 use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
-use function in_array;
 use SuiteCRM\Core\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
+use function in_array;
 
 /**
  * Class ViewDefinitionsHandler
@@ -31,7 +32,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     /**
      * @var array
      */
-    protected static $listViewColumnInterface = [
+    protected $listViewColumnInterface = [
         'name' => '',
         'width' => '',
         'label' => '',
@@ -84,7 +85,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     /**
      * @var ModuleNameMapperInterface
      */
-    protected $moduleNameMapper;
+    private $moduleNameMapper;
 
     /**
      * @var RecordViewDefinitionHandler
@@ -127,9 +128,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         FilterDefinitionProviderInterface $filterDefinitionProvider,
         RecordViewDefinitionHandler $recordViewDefinitionHandler,
         LoggerInterface $logger,
-        SubPanelDefinitionHandler $subPanelDefinitionHandler
-    )
-    {
+        SubPanelDefinitionProviderInterface $subPanelDefinitionHandler
+    ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -188,7 +188,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
             $viewDef->setRecordView($recordViewDefs);
         }
-        
+
         if (in_array('subPanel', $views, true)) {
             $subPanelViewDefs = $this->subPanelDefinitionHandler->getSubPanelDef($legacyModuleName);
             $viewDef->setSubPanel($subPanelViewDefs);
@@ -319,7 +319,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      */
     protected function buildListViewColumn($column, $key, ?array $vardefs): array
     {
-        $column = array_merge(self::$listViewColumnInterface, $column);
+        $column = array_merge($this->listViewColumnInterface, $column);
         $column['name'] = strtolower($key);
 
         $column = $this->addFieldDefinition($vardefs, strtolower($key), $column);
@@ -402,7 +402,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     {
         $baseField = $this->getField($field);
 
-        $field = array_merge(self::$listViewColumnInterface, $baseField);
+        $field = array_merge($this->listViewColumnInterface, $baseField);
 
         if (!isset($vardefs[$key])) {
             return $field;

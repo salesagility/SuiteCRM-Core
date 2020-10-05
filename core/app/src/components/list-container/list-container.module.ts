@@ -2,22 +2,22 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ListcontainerUiComponent} from './list-container.component';
+import {ListContainerComponent} from './list-container.component';
 
-import {TableUiModule} from '../table/table.module';
+import {TableModule} from '../table/table.module';
 import {WidgetUiModule} from '../widget/widget.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
-    declarations: [ListcontainerUiComponent],
-    exports: [ListcontainerUiComponent],
+    declarations: [ListContainerComponent],
+    exports: [ListContainerComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ListcontainerUiComponent),
-        TableUiModule,
+        AppManagerModule.forChild(ListContainerComponent),
+        TableModule,
         WidgetUiModule,
         AngularSvgIconModule
     ]
 })
-export class ListcontainerUiModule {
+export class ListContainerModule {
 }

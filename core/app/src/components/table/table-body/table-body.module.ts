@@ -22,5 +22,5 @@ import {LineActionModule} from '@components/line-action-menu/line-action-menu.mo
         LineActionModule
     ]
 })
-export class TablebodyUiModule {
+export class TableBodyModule {
 }

@@ -9,6 +9,7 @@ import {Button, ButtonInterface} from '@components/button/button.model';
 export class PanelComponent implements OnInit {
 
     @Input() klass: string;
+    @Input() bodyPadding = 2;
     @Input() title: string;
     @Input() mode: 'collapsible' | 'closable' = 'closable';
     @Input() close: ButtonInterface = {

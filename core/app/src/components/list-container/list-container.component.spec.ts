@@ -2,8 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ListcontainerUiComponent} from './list-container.component';
-import {TableUiModule} from '@components/table/table.module';
+import {ListContainerComponent} from './list-container.component';
+import {TableModule} from '@components/table/table.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -20,13 +20,13 @@ import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 
 describe('ListcontainerUiComponent', () => {
-    let component: ListcontainerUiComponent;
-    let fixture: ComponentFixture<ListcontainerUiComponent>;
+    let component: ListContainerComponent;
+    let fixture: ComponentFixture<ListContainerComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                TableUiModule,
+                TableModule,
                 WidgetUiModule,
                 AngularSvgIconModule,
                 HttpClientTestingModule,
@@ -48,13 +48,13 @@ describe('ListcontainerUiComponent', () => {
                 },
                 {provide: MetadataStore, useValue: metadataStoreMock},
             ],
-            declarations: [ListcontainerUiComponent]
+            declarations: [ListContainerComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ListcontainerUiComponent);
+        fixture = TestBed.createComponent(ListContainerComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

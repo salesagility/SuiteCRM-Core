@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Filter, SearchMetaField} from '@store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
@@ -9,6 +8,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Field} from '@app-common/record/field.model';
 import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
+import {Filter, SearchMetaField} from '@app-common/metadata/list.metadata.model';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;
@@ -63,7 +63,7 @@ export class ListFilterComponent implements OnInit {
     initFields(): void {
 
         const languages = this.listStore.language;
-        const searchCriteria = this.listStore.searchCriteria;
+        const searchCriteria = this.listStore.recordList.criteria;
         const searchMeta = this.listStore.searchMeta;
         const searchFields = searchMeta.layout[this.searchCriteria.type];
 
@@ -83,8 +83,8 @@ export class ListFilterComponent implements OnInit {
             type: 'advanced'
         };
 
-        if (this.listStore.searchCriteria.type) {
-            this.searchCriteria.type = this.listStore.searchCriteria.type;
+        if (this.listStore.recordList.criteria.type) {
+            this.searchCriteria.type = this.listStore.recordList.criteria.type;
         }
 
         this.fields = [];

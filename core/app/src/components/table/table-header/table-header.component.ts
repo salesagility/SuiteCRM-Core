@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {BulkActionDataSource, SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {ListViewStore} from '@store/list-view/list-view.store';
 import {PaginationDataSource} from '@components/pagination/pagination.model';
 
 @Component({
@@ -8,12 +7,7 @@ import {PaginationDataSource} from '@components/pagination/pagination.model';
     templateUrl: 'table-header.component.html',
 })
 export class TableHeaderComponent {
-    selectionState: SelectionDataSource = this.data;
-    actionState: BulkActionDataSource = this.data;
-    paginationState: PaginationDataSource = this.data;
-
-    constructor(
-        protected data: ListViewStore
-    ) {
-    }
+    @Input() selection: SelectionDataSource;
+    @Input() bulkActions: BulkActionDataSource;
+    @Input() pagination: PaginationDataSource;
 }

@@ -17,10 +17,10 @@ import {MessageUiModule} from '@components/message/message.module';
 import {FilterUiModule} from '@components/filter/filter.module';
 import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
 import {WidgetUiModule} from '@components/widget/widget.module';
-import {TableUiModule} from '@components/table/table.module';
+import {TableModule} from '@components/table/table.module';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ListHeaderModule} from '@components/list-header/list-header.module';
-import {ListcontainerUiModule} from '@components/list-container/list-container.module';
+import {ListContainerModule} from '@components/list-container/list-container.module';
 import {ListModule} from '@views/list/list.module';
 import {RecordModule} from '@views/record/record.module';
 
@@ -61,10 +61,10 @@ import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.co
         ListModule,
         RecordModule,
         WidgetUiModule,
-        TableUiModule,
+        TableModule,
         ModuleTitleModule,
         ListHeaderModule,
-        ListcontainerUiModule,
+        ListContainerModule,
         ColumnChooserModule,
         ImageModule,
         BrowserAnimationsModule,

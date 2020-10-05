@@ -97,7 +97,7 @@ export class SettingsMenuComponent implements OnInit {
     }
 
     getFilters(): SearchCriteriaFilter {
-        return this.listStore.searchCriteria.filters;
+        return this.listStore.recordList.criteria.filters;
     }
 
     getBreakpoint(): number {

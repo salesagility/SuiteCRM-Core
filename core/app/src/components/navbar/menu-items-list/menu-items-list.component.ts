@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MenuItem} from '@components/navbar/navbar.abstract';
+import {MenuItem} from '@app-common/menu/menu.model';
 
 @Component({
     selector: 'scrm-menu-items-list',

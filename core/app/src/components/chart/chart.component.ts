@@ -1,21 +1,16 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ChartTypesMap} from '@store/metadata/metadata.store.service';
-import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
+import {LanguageStore} from '@store/language/language.store';
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {PipelineBySalesStage} from '@components/chart/types/pipeline-by-sales-stage/pipeline-by-sales-stage.service';
 import {AccountTypesPerMonthLineChart} from '@components/chart/types/account-types-per-month/account-types-per-month.service';
 import {LeadsByStatus} from '@components/chart/types/leads-by-status/leads-by-status.service';
 import {AppState, AppStateStore} from '@store/app-state/app-state.store';
+import {ChartTypesMap} from '@app-common/metadata/list.metadata.model';
 
 export interface ChartTypesDataSource {
     getChartTypes(): Observable<ChartTypesMap>;
-}
-
-export interface ChartsViewModel {
-    appStrings: LanguageStringMap;
-    types: ChartTypesMap;
 }
 
 @Component({

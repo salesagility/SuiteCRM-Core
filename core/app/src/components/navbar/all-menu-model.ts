@@ -1,4 +1,4 @@
-import {MenuItem} from '@components/navbar/navbar.abstract';
+import {MenuItem} from '@app-common/menu/menu.model';
 
 export interface AllMenuModel {
     modules: MenuItem[];

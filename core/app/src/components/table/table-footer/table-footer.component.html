@@ -2,10 +2,15 @@
 
 <div class="list-view-tableactions table-footer">
   <div class="row">
-    <scrm-bulk-action-menu [selectionSource]="selectionState" [actionSource]="actionState"></scrm-bulk-action-menu>
-    <div class="col mx-0 pl-0">
-      <scrm-pagination [state]="paginationState"></scrm-pagination>
-    </div>
+      <scrm-bulk-action-menu *ngIf="selection && bulkActions"
+                             [selectionSource]="selection"
+                             [actionSource]="bulkActions">
+      </scrm-bulk-action-menu>
+      <div class="col mx-0 pl-0">
+          <scrm-pagination *ngIf="pagination"
+                           [state]="pagination">
+          </scrm-pagination>
+      </div>
   </div>
 </div>
 

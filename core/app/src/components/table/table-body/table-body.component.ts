@@ -1,106 +1,118 @@
-import {Component, Input} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
+import {combineLatest, Observable, of} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
-import {ColumnDefinition, ListViewMeta, MetadataStore} from '@store/metadata/metadata.store.service';
-import {map} from 'rxjs/operators';
-import {ListViewStore, RecordSelection, SortingSelection} from '@store/list-view/list-view.store';
-import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
-import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {Record} from '@app-common/record/record.model';
 import {Field, FieldManager} from '@app-common/record/field.model';
+import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
+import {SortingSelection} from '@app-common/views/list/list-navigation.model';
+import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
+import {TableConfig} from '@components/table/table.model';
+import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {LineAction} from '@app-common/actions/line-action.model';
+import {RecordSelection} from '@app-common/views/list/record-selection.model';
+
+interface TableViewModel {
+    language: LanguageStrings;
+    columns: ColumnDefinition[];
+    lineActions: LineAction[];
+    selection: RecordSelection;
+    selected: { [key: string]: string };
+    selectionStatus: SelectionStatus;
+    displayedColumns: string[];
+    records: Record[] | readonly Record[];
+}
 
 @Component({
     selector: 'scrm-table-body',
     templateUrl: 'table-body.component.html',
 })
-export class TableBodyComponent {
-    @Input() module;
+export class TableBodyComponent implements OnInit {
+    @Input() config: TableConfig;
     language$: Observable<LanguageStrings> = this.language.vm$;
-    listMetadata$: Observable<ListViewMeta> = this.metadata.listMetadata$;
-    selection$: Observable<RecordSelection> = this.data.selection$;
-    sort$: Observable<SortingSelection> = this.data.sort$;
-    dataSource$: ListViewStore = this.data;
-    screen: ScreenSize = ScreenSize.Medium;
-    maxColumns = 5;
+    maxColumns = 4;
+    vm$: Observable<TableViewModel>;
 
-    vm$ = combineLatest([
-        this.language$,
-        this.listMetadata$,
-        this.selection$,
-        this.screenSize.screenSize$,
-        this.data.widgets$,
-        this.data.records$
-    ]).pipe(
-        map((
-            [
-                language,
-                listMetadata,
-                selection,
-                screenSize,
-                widgets,
-                records
-            ]
-        ) => {
-            const displayedColumns: string[] = ['checkbox'];
-            const sideBarOpen = widgets;
+    constructor(protected language: LanguageStore) {
+    }
 
-            if (screenSize) {
-                this.screen = screenSize;
-            }
+    ngOnInit(): void {
+        const lineAction$ = this.config.lineActions$ || of([]).pipe(shareReplay(1));
+        const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
 
-            this.calculateMaxColumns(sideBarOpen);
 
-            const columns = this.buildDisplayColumns(listMetadata);
-            displayedColumns.push(...columns);
+        this.vm$ = combineLatest([
+            this.language$,
+            this.config.columns,
+            lineAction$,
+            selection$,
+            this.config.maxColumns$,
+            this.config.dataSource.connect(null)
+        ]).pipe(
+            map((
+                [
+                    language,
+                    columns,
+                    lineActions,
+                    selection,
+                    maxColumns,
+                    records
+                ]
+            ) => {
+                const displayedColumns: string[] = [];
 
-            if (listMetadata.lineActions.length) {
-                displayedColumns.push('line-actions');
-            }
+                if (selection) {
+                    displayedColumns.push('checkbox');
+                }
 
-            return {
-                language,
-                listMetadata,
-                selected: selection.selected,
-                selectionStatus: selection.status,
-                displayedColumns,
-                records
-            };
-        })
-    );
+                this.maxColumns = maxColumns;
 
-    constructor(
-        protected language: LanguageStore,
-        protected metadata: MetadataStore,
-        protected data: ListViewStore,
-        protected screenSize: ScreenSizeObserverService,
-        protected systemConfigStore: SystemConfigStore
-    ) {
+                const columnsDefs = this.buildDisplayColumns(columns);
+                displayedColumns.push(...columnsDefs);
+
+                if (lineActions && lineActions.length) {
+                    displayedColumns.push('line-actions');
+                }
+
+                const selected = selection && selection.selected || {};
+                const selectionStatus = selection && selection.status || SelectionStatus.NONE;
+
+                return {
+                    language,
+                    columns,
+                    lineActions,
+                    selection,
+                    selected,
+                    selectionStatus,
+                    displayedColumns,
+                    records: records || []
+                };
+            })
+        );
     }
 
     toggleSelection(id: string): void {
-        this.data.toggleSelection(id);
+        this.config.toggleRecordSelection(id);
     }
 
     allSelected(status: SelectionStatus): boolean {
         return status === SelectionStatus.ALL;
     }
 
-    buildDisplayColumns(listMetadata): string[] {
+    buildDisplayColumns(fields: ColumnDefinition[]): string[] {
         let i = 0;
         let hasLinkField = false;
         const returnArray = [];
-        while (i < this.maxColumns && i < listMetadata.fields.length) {
-            returnArray.push(listMetadata.fields[i].name);
-            hasLinkField = hasLinkField || listMetadata.fields[i].link;
+        while (i < this.maxColumns && i < fields.length) {
+            returnArray.push(fields[i].name);
+            hasLinkField = hasLinkField || fields[i].link;
             i++;
         }
-        if (!hasLinkField && (this.maxColumns < listMetadata.fields.length)) {
-            for (i = this.maxColumns; i < listMetadata.fields.length; i++) {
-                if (listMetadata.fields[i].link) {
+        if (!hasLinkField && (this.maxColumns < fields.length)) {
+            for (i = this.maxColumns; i < fields.length; i++) {
+                if (fields[i].link) {
                     returnArray.splice(-1, 1);
-                    returnArray.push(listMetadata.fields[i].name);
+                    returnArray.push(fields[i].name);
                     break;
                 }
             }
@@ -108,33 +120,9 @@ export class TableBodyComponent {
         return returnArray;
     }
 
-    calculateMaxColumns(sideBar = true): void {
-        let sizeMap;
-        sizeMap = this.systemConfigStore.getConfigValue('listview_column_limits');
-
-        if (sideBar) {
-            sizeMap = sizeMap.with_sidebar;
-        } else {
-            sizeMap = sizeMap.without_sidebar;
-        }
-
-        if (this.screen && sizeMap) {
-            const maxCols = sizeMap[this.screen];
-            if (maxCols) {
-                this.maxColumns = maxCols;
-            }
-        }
-    }
-
-    getFieldLabel(label: string): string {
-        const module = this.data.appState.module;
-        const languages = this.data.appData.language;
-        return this.language.getFieldLabel(label, module, languages);
-    }
-
     getFieldSort(field: ColumnDefinition): SortDirectionDataSource {
         return {
-            getSortDirection: (): Observable<SortDirection> => this.sort$.pipe(
+            getSortDirection: (): Observable<SortDirection> => this.config.sort$.pipe(
                 map((sort: SortingSelection) => {
                     let direction = SortDirection.NONE;
 
@@ -146,7 +134,7 @@ export class TableBodyComponent {
                 })
             ),
             changeSortDirection: (direction: SortDirection): void => {
-                this.changeSort(field.name, direction);
+                this.config.updateSorting(field.name, direction);
             }
         } as SortDirectionDataSource;
     }
@@ -154,10 +142,6 @@ export class TableBodyComponent {
     getField(column: ColumnDefinition, record: Record): Field {
 
         return FieldManager.buildField(record, column);
-    }
-
-    protected changeSort(orderBy: string, sortOrder: SortDirection): void {
-        this.data.updateSorting(orderBy, sortOrder);
     }
 }
 

@@ -13,9 +13,9 @@ import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
-import {MenuItem} from '@components/navbar/navbar.abstract';
 import {LanguageStrings} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
+import {MenuItem} from '@app-common/menu/menu.model';
 
 const groupedMockMenuItem = {
     link: {
@@ -65,7 +65,7 @@ const groupedMockMenuItem = {
         }
     ],
     recentRecords: null
-}
+};
 
 @Component({
     selector: 'grouped-menu-item-test-host-component',
@@ -162,7 +162,7 @@ describe('GroupedMenuItemComponent', () => {
             subLinksItems = subLink.getElementsByClassName('submenu-nav-link');
 
             expect(subLinksItems.length).toEqual(1);
-            expect(subLinksItems[0].textContent).toContain(`item 1`);
+            expect(subLinksItems[0].textContent).toContain('item 1');
         }
     });
 });

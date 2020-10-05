@@ -1,7 +1,10 @@
 <ng-container>
- 	<scrm-panel [title]="title">
+    <scrm-panel [title]="store.getTitle()" bodyPadding="0">
         <span panel-header-button>
             <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
         </span>
+        <div panel-body>
+            <scrm-table [config]="adapter.getTable()"></scrm-table>
+        </div>
     </scrm-panel>
 </ng-container>

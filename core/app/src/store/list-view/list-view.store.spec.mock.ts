@@ -1,18 +1,14 @@
 import {ListViewStore} from '@store/list-view/list-view.store';
-import {Observable, of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
-import {ListGQL} from '@store/list-view/api.list.get';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
-import {deepClone} from '@base/utils/object-utils';
 import {bulkActionProcessMock} from '@services/process/processes/bulk-action/bulk-action.spec.mock';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
+import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
@@ -124,38 +120,7 @@ export const listviewMockData = {
 
 /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-class ListRecordGQLSpy extends ListGQL {
-
-    constructor() {
-        super(null);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public fetch(module: string, limit: number, offset: number, criteria: { [key: string]: string }, metadata: { fields: string[] }
-    ): Observable<any> {
-
-        const data = {
-            data: {
-                getRecordList: deepClone(listviewMockData.recordList)
-            }
-        };
-
-        data.data.getRecordList.meta.offsets = {
-            current: offset,
-            next: (offset + limit) || 0,
-            prev: (offset - limit) || 0,
-            total: 200,
-            end: 180
-        };
-
-        return of(data);
-    }
-}
-
 export const listviewStoreMock = new ListViewStore(
-    new ListRecordGQLSpy(),
-    systemConfigStoreMock,
-    userPreferenceStoreMock,
     appStateStoreMock,
     languageStoreMock,
     navigationMock,
@@ -163,7 +128,8 @@ export const listviewStoreMock = new ListViewStore(
     metadataStoreMock,
     localStorageServiceMock,
     bulkActionProcessMock,
-    messageServiceMock
+    messageServiceMock,
+    listStoreFactoryMock
 );
 
 listviewStoreMock.init('accounts').pipe(take(1)).subscribe();

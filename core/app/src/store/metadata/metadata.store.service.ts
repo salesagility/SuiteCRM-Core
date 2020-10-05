@@ -5,82 +5,11 @@ import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {deepClone} from '@base/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
-import {MenuItemLink} from '@components/navbar/navbar.abstract';
-import {Panel, ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Panel} from '@app-common/metadata/metadata.model';
 import {ModeActions} from '@app-common/actions/action.model';
-
-export interface ChartType {
-    key: string;
-    labelKey: string;
-    type: string;
-}
-
-export interface ChartTypesMap {
-    [key: string]: ChartType;
-}
-
-export interface BulkAction {
-    key: string;
-    labelKey: string;
-    params: { [key: string]: any };
-    acl: string[];
-}
-
-export interface BulkActionsMap {
-    [key: string]: BulkAction;
-}
-
-export interface LineAction {
-    key: string;
-    labelKey: string;
-    label: string;
-    module: string;
-    legacyModuleName: string;
-    icon: string;
-    action: string;
-    returnAction: string;
-    params: { [key: string]: any };
-    mapping: { [key: string]: any };
-    link: MenuItemLink;
-    acl: string[];
-}
-
-export interface ListViewMeta {
-    fields: ColumnDefinition[];
-    bulkActions: BulkActionsMap;
-    lineActions: LineAction[];
-    chartTypes: ChartTypesMap;
-    filters: Filter[];
-}
-
-export interface Filter {
-    id: string;
-    name: string;
-    contents: { [key: string]: any };
-}
-
-export interface ColumnDefinition extends ViewFieldDefinition {
-    width: string;
-    default: boolean;
-    module: string;
-    id: string;
-    sortable: boolean;
-}
-
-export interface SearchMetaField {
-    name?: string;
-    type?: string;
-    label?: string;
-    default?: boolean;
-    options?: string;
-}
-
-export interface SearchMeta {
-    layout: {
-        basic?: { [key: string]: SearchMetaField };
-        advanced?: { [key: string]: SearchMetaField };
-    };
-}
+import {ColumnDefinition, ListViewMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
+import {LineAction} from '@app-common/actions/line-action.model';
+import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 
 export interface RecordViewMetadata {
     actions: ModeActions;
@@ -103,46 +32,6 @@ export interface TabDefinition {
     panelDefault: 'expanded' | 'collapsed';
 }
 
-/* eslint-disable camelcase*/
-export interface SubPanelTopButton {
-    key: string;
-    labelKey: string;
-}
-
-/* eslint-enable camelcase*/
-
-export interface SubPanelCollectionList {
-    [key: string]: SubPanelCollectionItem;
-}
-
-/* eslint-disable camelcase*/
-export interface SubPanelCollectionItem {
-    module: string;
-    subpanel_name: string;
-    get_subpanel_data: string;
-}
-
-/* eslint-enable camelcase*/
-
-export interface SubPanelMeta {
-    [key: string]: SubPanel;
-}
-
-/* eslint-disable camelcase*/
-export interface SubPanel {
-    order?: 10;
-    sort_order?: string;
-    sort_by?: string;
-    title_key?: string;
-    type?: string;
-    subpanel_name?: string;
-    header_definition_from_subpanel?: string;
-    module?: string;
-    top_buttons?: SubPanelTopButton[];
-    collection_list: SubPanelCollectionList;
-}
-
-/* eslint-enable camelcase*/
 
 export interface Metadata {
     detailView?: any;
@@ -182,7 +71,8 @@ export class MetadataStore implements StateStore {
     /**
      * Public long-lived observable streams
      */
-    fields$: Observable<ColumnDefinition[]>;
+    listViewColumns$: Observable<ColumnDefinition[]>;
+    listViewLineActions$: Observable<LineAction[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
     recordViewMetadata$: Observable<RecordViewMetadata>;
@@ -206,7 +96,8 @@ export class MetadataStore implements StateStore {
     ];
 
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
-        this.fields$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
+        this.listViewColumns$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
+        this.listViewLineActions$ = this.state$.pipe(map(state => state.listView.lineActions), distinctUntilChanged());
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
         this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());
         this.recordViewMetadata$ = this.state$.pipe(map(state => state.recordView), distinctUntilChanged());

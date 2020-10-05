@@ -12,10 +12,10 @@ import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
-import {MenuItem} from '@components/navbar/navbar.abstract';
 import {LanguageStrings} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
 import {MenuRecentlyViewedComponent} from '@components/navbar/menu-recently-viewed/menu-recently-viewed.component';
+import {MenuItem} from '@app-common/menu/menu.model';
 
 const mockMenuItem = {
     link: {
@@ -45,7 +45,7 @@ const mockMenuItem = {
         }
     ],
     recentRecords: null
-}
+};
 
 @Component({
     selector: 'menu-item-test-host-component',

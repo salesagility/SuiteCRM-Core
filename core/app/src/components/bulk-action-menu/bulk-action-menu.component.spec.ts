@@ -14,7 +14,7 @@ import {shareReplay, take} from 'rxjs/operators';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
-import {BulkActionsMap} from '@store/metadata/metadata.store.service';
+import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 
 
 const selectionSubject = new BehaviorSubject<SelectionStatus>(SelectionStatus.NONE);

@@ -6,7 +6,8 @@ import {combineLatest, Observable} from 'rxjs';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {NavbarModule, Navigation, NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {Metadata, MetadataStore, SearchMeta} from '@store/metadata/metadata.store.service';
+import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
+import {SearchMeta} from '@app-common/metadata/list.metadata.model';
 
 
 export interface AppData {

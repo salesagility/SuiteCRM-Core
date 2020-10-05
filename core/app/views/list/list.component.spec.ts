@@ -3,15 +3,13 @@ import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {take} from 'rxjs/operators';
-import {of} from 'rxjs';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ListComponent} from './list.component';
 import {ListHeaderModule} from '@components/list-header/list-header.module';
-import {ListcontainerUiModule} from '@components/list-container/list-container.module';
+import {ListContainerModule} from '@components/list-container/list-container.module';
 import {ImageModule} from '@components/image/image.module';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
@@ -33,6 +31,8 @@ import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
+import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
+import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mock';
 
 @Component({
     selector: 'list-test-host-component',
@@ -50,7 +50,7 @@ describe('ListComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 ListHeaderModule,
-                ListcontainerUiModule,
+                ListContainerModule,
                 HttpClientTestingModule,
                 RouterTestingModule,
                 BrowserAnimationsModule,
@@ -65,71 +65,51 @@ describe('ListComponent', () => {
             ],
             declarations: [ListComponent, ListTestHostComponent],
             providers: [
-                {
-                    provide: ListViewStore, useValue: listviewStoreMock
-                },
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    },
-                },
-                {
-                    provide: SystemConfigStore, useValue: systemConfigStoreMock
-                },
-                {
-                    provide: UserPreferenceStore, useValue: userPreferenceStoreMock
-                },
-                {
-                    provide: NavigationStore, useValue: navigationMock
-                },
-                {
-                    provide: ModuleNavigation, useValue: mockModuleNavigation
-                },
-                {
-                    provide: LanguageStore, useValue: languageStoreMock
-                },
-                {
-                    provide: MetadataStore, useValue: metadataStoreMock
-                },
-                {
-                    provide: AppStateStore, useValue: appStateStoreMock
-                },
+                {provide: RecordListStoreFactory, useValue: listStoreFactoryMock},
+                {provide: ListViewStore, useValue: listviewStoreMock},
+                {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
+                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
+                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
+                {provide: NavigationStore, useValue: navigationMock},
+                {provide: ModuleNavigation, useValue: mockModuleNavigation},
+                {provide: LanguageStore, useValue: languageStoreMock},
+                {provide: MetadataStore, useValue: metadataStoreMock},
+                {provide: AppStateStore, useValue: appStateStoreMock},
             ],
         })
             .compileComponents();
         /* eslint-enable camelcase, @typescript-eslint/camelcase */
-    }));
 
-    beforeEach(() => {
         testHostFixture = TestBed.createComponent(ListTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
-    });
+    }));
 
-    it('should create', () => {
+
+    it('should create', async(() => {
         expect(testHostComponent).toBeTruthy();
-    });
+    }));
 
-    it('should have list header', () => {
+    it('should have list header', async(() => {
 
         const headerElement = testHostFixture.nativeElement.querySelector('scrm-list-header');
 
         expect(testHostComponent).toBeTruthy();
         expect(headerElement).toBeTruthy();
-    });
+    }));
 
-    it('should have list container', () => {
-        const listContainerElement = testHostFixture.nativeElement.querySelector('scrm-list-container-ui');
+    it('should have list container', async(() => {
+        const listContainerElement = testHostFixture.nativeElement.querySelector('scrm-list-container');
 
         expect(testHostComponent).toBeTruthy();
         expect(listContainerElement).toBeTruthy();
-    });
+    }));
 
-    it('should have title', () => {
+    it('should have title', async(() => {
         const element = testHostFixture.debugElement.query(By.css('.list-view-title')).nativeElement;
 
         expect(testHostFixture).toBeTruthy();
         expect(element).toBeTruthy();
         expect(element.textContent).toContain('ACCOUNTS');
-    });
+    }));
 });

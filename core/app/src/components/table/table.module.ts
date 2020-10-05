@@ -2,24 +2,24 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {TableUiComponent} from './table.component';
+import {TableComponent} from './table.component';
 
-import {TableheaderUiModule} from './table-header/table-header.module';
-import {TablebodyUiModule} from './table-body/table-body.module';
-import {TablefooterUiModule} from './table-footer/table-footer.module';
+import {TableHeaderModule} from './table-header/table-header.module';
+import {TableBodyModule} from './table-body/table-body.module';
+import {TableFooterModule} from './table-footer/table-footer.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
-    declarations: [TableUiComponent],
-    exports: [TableUiComponent],
+    declarations: [TableComponent],
+    exports: [TableComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(TableUiComponent),
-        TableheaderUiModule,
-        TablebodyUiModule,
-        TablefooterUiModule,
+        AppManagerModule.forChild(TableComponent),
+        TableHeaderModule,
+        TableBodyModule,
+        TableFooterModule,
         AngularSvgIconModule
     ]
 })
-export class TableUiModule {
+export class TableModule {
 }

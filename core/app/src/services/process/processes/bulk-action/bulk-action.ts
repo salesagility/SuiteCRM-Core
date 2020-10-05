@@ -3,12 +3,12 @@ import {Observable} from 'rxjs';
 import {catchError, take, tap} from 'rxjs/operators';
 import {Process, ProcessService} from '@services/process/process.service';
 import {AppStateStore} from '@store/app-state/app-state.store';
-import {SortingSelection} from '@store/list-view/list-view.store';
 import {MessageService} from '@services/message/message.service';
 import {BulkActionHandler} from '@services/process/processes/bulk-action/bulk-action.model';
 import {RedirectBulkAction} from '@services/process/processes/bulk-action/actions/redirect/redirect.bulk-action';
 import {ExportBulkAction} from '@services/process/processes/bulk-action/actions/export/export.bulk-action';
 import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
+import {SortingSelection} from '@app-common/views/list/list-navigation.model';
 
 export interface BulkActionProcessInput {
     action: string;

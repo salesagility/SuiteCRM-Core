@@ -18,6 +18,9 @@ import {RecordViewData, RecordViewModel, RecordViewState} from '@store/record-vi
 import {RecordManager} from '@store/record/record.manager';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
+import {SubpanelStoreMap} from '@store/supanel/subpanel.store';
+import {SubpanelStoreFactory} from '@store/supanel/subpanel.store.factory';
+import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 
 const initialState: RecordViewState = {
     module: '',
@@ -38,6 +41,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
     mode$: Observable<ViewMode>;
+    subpanels$: Observable<SubpanelStoreMap>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -52,6 +56,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected internalState: RecordViewState = deepClone(initialState);
     protected store = new BehaviorSubject<RecordViewState>(this.internalState);
     protected state$ = this.store.asObservable();
+    protected subpanels: SubpanelStoreMap;
+    protected subpanelsState: BehaviorSubject<SubpanelStoreMap>;
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -63,6 +69,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected metadataStore: MetadataStore,
         protected localStorage: LocalStorageService,
         protected message: MessageService,
+        protected subpanelFactory: SubpanelStoreFactory
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -95,6 +102,9 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 this.vm = {data, appData, metadata} as RecordViewModel;
                 return this.vm;
             }));
+
+        this.subpanelsState = new BehaviorSubject<SubpanelStoreMap>({} as SubpanelStoreMap);
+        this.subpanels$ = this.subpanelsState.asObservable();
     }
 
     get showWidgets(): boolean {
@@ -106,6 +116,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
             ...this.internalState,
             widgets: show
         });
+    }
+
+    getSubpanels(): SubpanelStoreMap {
+        return this.subpanels;
     }
 
     /**
@@ -126,6 +140,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     public init(module: string, recordID: string): Observable<Record> {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
+        this.initSubpanels(module);
 
         return this.load();
     }
@@ -135,6 +150,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     public clear(): void {
         this.cache$ = null;
+        this.subpanels = {};
+        this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
     }
 
@@ -193,6 +210,31 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     protected updateState(state: RecordViewState): void {
         this.store.next(this.internalState = state);
+    }
+
+    /**
+     * Init subpanels
+     *
+     * @param {string} module parent module
+     */
+    protected initSubpanels(module: string): void {
+        this.metadataStore.subPanelMetadata$.subscribe((meta: SubPanelMeta) => {
+
+            if (this.subpanels) {
+                Object.keys(this.subpanels).forEach((key: string) => {
+                    this.subpanels[key].clear();
+                });
+            }
+
+            this.subpanels = {};
+
+            Object.keys(meta).forEach((key: string) => {
+                this.subpanels[key] = this.subpanelFactory.create();
+                this.subpanels[key].init(module, meta[key]);
+            });
+
+            this.subpanelsState.next(this.subpanels);
+        });
     }
 
     /**

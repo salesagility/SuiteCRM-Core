@@ -15,6 +15,5 @@ export enum PageSelection {
 
 export interface PaginationDataSource {
     getPaginationCount(): Observable<PaginationCount>;
-
     changePage(page: PageSelection): void;
 }

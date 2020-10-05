@@ -200,7 +200,7 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $logger,
+            $fieldDefinitionsHandler,
             $subpanelKeyMap
         );
 
@@ -224,7 +224,10 @@ final class ViewDefinitionsHandlerTest extends Unit
         // Needed for aspect mock
         /* @noinspection PhpIncludeInspection */
         require_once 'include/ListView/ListViewDisplay.php';
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/ListView/ListView.php';
+        /* @noinspection PhpIncludeInspection */
+        require_once 'modules/Calls_Reschedule/Calls_Reschedule.php';
     }
 
     /**
@@ -418,11 +421,29 @@ final class ViewDefinitionsHandlerTest extends Unit
         $subPanels = $viewDef->subpanel;
         static::assertIsArray($subPanels);
 
-        $firstSubPanel = array_pop($subPanels);
+        $activities = $subPanels['activities'];
 
-        static::assertIsArray($firstSubPanel);
-        static::assertNotEmpty($firstSubPanel);
-        static::assertArrayHasKey('title_key', $firstSubPanel);
-        static::assertArrayHasKey('module', $firstSubPanel);
+        static::assertIsArray($activities);
+        static::assertNotEmpty($activities);
+        static::assertArrayHasKey('title_key', $activities);
+        static::assertArrayHasKey('module', $activities);
+        static::assertArrayHasKey('top_buttons', $activities);
+        static::assertNotEmpty($activities['top_buttons']);
+
+        static::assertArrayHasKey('key', $activities['top_buttons'][0]);
+        static::assertNotEmpty($activities['top_buttons'][0]['key']);
+        static::assertArrayHasKey('labelKey', $activities['top_buttons'][0]);
+        static::assertNotEmpty($activities['top_buttons'][0]['labelKey']);
+
+        static::assertArrayHasKey('columns', $activities);
+        static::assertNotEmpty($activities['columns']);
+
+        static::assertArrayHasKey('columns', $activities);
+        static::assertNotEmpty($activities['columns']);
+        static::assertNotEmpty($activities['columns'][0]);
+        static::assertArrayHasKey('name', $activities['columns'][0]);
+        static::assertArrayHasKey('label', $activities['columns'][0]);
+        static::assertArrayHasKey('fieldDefinition', $activities['columns'][0]);
+        static::assertArrayHasKey('type', $activities['columns'][0]);
     }
 }

@@ -132,8 +132,8 @@ describe('ListFilterComponent', () => {
                 expect(testHostComponent.searchCriteria.filters.name.values).toEqual(['test']);
 
                 expect(listviewStoreMock.showFilters).toEqual(false);
-                expect(listviewStoreMock.searchCriteria.filters.name.operator).toEqual('=');
-                expect(listviewStoreMock.searchCriteria.filters.name.values).toEqual(['test']);
+                expect(listviewStoreMock.recordList.criteria.filters.name.operator).toEqual('=');
+                expect(listviewStoreMock.recordList.criteria.filters.name.values).toEqual(['test']);
             });
         });
     }));
@@ -164,7 +164,7 @@ describe('ListFilterComponent', () => {
                 expect(testHostComponent.searchCriteria.filters.name.operator).toEqual('');
                 expect(testHostComponent.searchCriteria.filters.name.values).toEqual([]);
 
-                expect(listviewStoreMock.searchCriteria).toEqual({filters: {}});
+                expect(listviewStoreMock.recordList.criteria).toEqual({filters: {}});
             });
         });
     }));

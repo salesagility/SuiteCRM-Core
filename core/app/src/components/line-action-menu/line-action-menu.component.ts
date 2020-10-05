@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LanguageStore} from '@store/language/language.store';
-import {LineAction, ListViewMeta} from '@store/metadata/metadata.store.service';
 import {Record} from '@app-common/record/record.model';
+import {LineAction} from '@app-common/actions/line-action.model';
 
 @Component({
     selector: 'scrm-line-action-menu',
@@ -10,7 +10,7 @@ import {Record} from '@app-common/record/record.model';
 
 export class LineActionMenuComponent implements OnInit {
 
-    @Input() listMetaData: ListViewMeta;
+    @Input() lineActions: LineAction[];
     @Input() record: Record;
 
     items: LineAction[];
@@ -24,7 +24,7 @@ export class LineActionMenuComponent implements OnInit {
 
     setLineActions(): void {
         const actions = [];
-        this.listMetaData.lineActions.forEach(action => {
+        this.lineActions.forEach(action => {
             const recordAction = {...action};
 
             const params: { [key: string]: any } = {};

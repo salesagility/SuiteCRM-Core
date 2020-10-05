@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
-import {BulkActionsMap} from '@store/metadata/metadata.store.service';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 
 export enum SelectionStatus {
     ALL = 'ALL',
@@ -23,7 +23,6 @@ export interface SelectionDataSource {
 export interface BulkActionDataSource {
     getBulkActions(): Observable<BulkActionsMap>;
     executeBulkAction(action: string): void;
-
 }
 
 export interface BulkActionViewModel {

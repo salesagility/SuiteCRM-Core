@@ -3,27 +3,26 @@ import {TableBodyComponent} from './table-body.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {Component} from '@angular/core';
-import {ListViewStore} from '@store/list-view/list-view.store';
-import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {FieldModule} from '@fields/field.module';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {RouterTestingModule} from '@angular/router/testing';
+import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
+import {tableConfigMock} from '@components/table/table.component.spec.mock';
 
 @Component({
-    selector: 'table-body-ui-test-host-component',
-    template: '<scrm-table-body [module]="module"></scrm-table-body>'
+    selector: 'table-body-test-host-component',
+    template: '<scrm-table-body [config]="tableConfig"></scrm-table-body>'
 })
-class TableBodyUITestHostComponent {
-    module = 'accounts';
+class TableBodyTestHostComponent {
+    tableConfig = tableConfigMock;
 }
 
-describe('TablebodyUiComponent', () => {
-    let testHostComponent: TableBodyUITestHostComponent;
-    let testHostFixture: ComponentFixture<TableBodyUITestHostComponent>;
+describe('TableBodyComponent', () => {
+    let testHostComponent: TableBodyTestHostComponent;
+    let testHostFixture: ComponentFixture<TableBodyTestHostComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -34,20 +33,17 @@ describe('TablebodyUiComponent', () => {
                 SortButtonModule,
                 RouterTestingModule
             ],
-            declarations: [TableBodyComponent, TableBodyUITestHostComponent],
+            declarations: [TableBodyComponent, TableBodyTestHostComponent],
             providers: [
-                {provide: ListViewStore, useValue: listviewStoreMock},
-                {provide: MetadataStore, useValue: metadataStoreMock},
-                {
-                    provide: LanguageStore, useValue: languageStoreMock
-                },
+                {provide: LanguageStore, useValue: languageStoreMock},
+                {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
             ],
         })
             .compileComponents();
     });
 
     beforeEach(async(() => {
-        testHostFixture = TestBed.createComponent(TableBodyUITestHostComponent);
+        testHostFixture = TestBed.createComponent(TableBodyTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));

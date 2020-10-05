@@ -12,6 +12,7 @@ import {RecordViewStore} from '@store/record-view/record-view.store';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {Record} from '@app-common/record/record.model';
+import {subpanelFactoryMock} from '@store/supanel/subpanel.store.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {
@@ -1155,7 +1156,8 @@ export const recordviewStoreMock = new RecordViewStore(
     mockModuleNavigation,
     metadataStoreMock,
     localStorageServiceMock,
-    messageServiceMock
+    messageServiceMock,
+    subpanelFactoryMock
 );
 
 recordviewStoreMock.init('accounts', 'c4da5f04-2d4a-7a14-35ff-5f242b8f8a52').pipe(take(1)).subscribe();

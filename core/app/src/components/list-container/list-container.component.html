@@ -3,7 +3,7 @@
 <div class="list-view-container container-fluid">
     <div class="row">
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }">
-            <scrm-table-ui [module]="module"></scrm-table-ui>
+            <scrm-table [config]="tableConfig"></scrm-table>
         </div>
 
         <div class="col-lg-3 list-widget-container pl-0" *ngIf="getDisplayWidgets()">

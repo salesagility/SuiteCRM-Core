@@ -11,9 +11,9 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 
 import {MenuItemLinkComponent} from './menu-item-link.component';
-import {MenuItemLink} from '@components/navbar/navbar.abstract';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {ImageModule} from '@components/image/image.module';
+import {MenuItemLink} from '@app-common/menu/menu.model';
 
 const mockLink = {
     label: 'Test Link Label',
@@ -90,7 +90,7 @@ describe('MenuItemActionLinkComponent', () => {
     it('should have image', () => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.setIcon('plus')
+        testHostComponent.setIcon('plus');
         testHostFixture.detectChanges();
 
         expect(testHostFixture.nativeElement.querySelector('svg-icon')).toBeTruthy();
@@ -118,12 +118,13 @@ describe('MenuItemActionLinkComponent', () => {
             params: null
         };
 
-        testHostComponent.setLink(link)
+        testHostComponent.setLink(link);
         testHostFixture.detectChanges();
 
 
         const linkElement = testHostFixture.nativeElement.querySelector('a');
         const url = '/fake-module/edit?return_module=FakeModule&return_action=DetailView';
+
         expect(linkElement).toBeTruthy();
         expect(linkElement.href).toContain(url);
         expect(linkElement.text).toContain(mockLink.label);
@@ -133,7 +134,7 @@ describe('MenuItemActionLinkComponent', () => {
         expect(testHostComponent).toBeTruthy();
 
         const testClass = 'test-class';
-        testHostComponent.setClass(testClass)
+        testHostComponent.setClass(testClass);
         testHostFixture.detectChanges();
 
 

@@ -16,25 +16,7 @@ import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {AppState} from '@store/app-state/app-state.store';
 import {LinkTarget} from '@components/navbar/link-target';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-
-export interface RecentRecordsMenuItem {
-    summary: string;
-    url: string;
-}
-
-export interface MenuItemLink {
-    label: string;
-    url: string;
-    route?: string;
-    params?: { [key: string]: string };
-}
-
-export interface MenuItem {
-    link: MenuItemLink;
-    icon: string;
-    submenu: MenuItem[];
-    recentRecords?: RecentRecordsMenuItem[];
-}
+import {MenuItem} from '@app-common/menu/menu.model';
 
 export class NavbarAbstract implements NavbarModel {
     authenticated = true;

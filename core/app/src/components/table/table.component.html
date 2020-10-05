@@ -1,3 +1,13 @@
-<scrm-table-header></scrm-table-header>
-<scrm-table-body [module]="module"></scrm-table-body>
-<scrm-table-footer></scrm-table-footer>
+<scrm-table-header *ngIf="showHeader()"
+                   [selection]="config.selection"
+                   [bulkActions]="config.bulkActions"
+                   [pagination]="config.pagination">
+</scrm-table-header>
+
+<scrm-table-body [config]="config"></scrm-table-body>
+
+<scrm-table-footer *ngIf="showFooter()"
+                   [selection]="config.selection"
+                   [bulkActions]="config.bulkActions"
+                   [pagination]="config.pagination">
+</scrm-table-footer>

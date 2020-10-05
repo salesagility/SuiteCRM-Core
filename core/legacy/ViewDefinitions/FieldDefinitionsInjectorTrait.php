@@ -35,6 +35,7 @@ trait FieldDefinitionsInjectorTrait
 
         if ($field['name'] === 'email1') {
             $field['type'] = 'email';
+            $column['link'] = false;
         }
 
         return $field;

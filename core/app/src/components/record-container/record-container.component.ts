@@ -6,6 +6,7 @@ import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
 import {RecordContentAdapter} from '@store/record-view/adapters/record-content.adapter';
 import {RecordContentDataSource} from '@components/record-content/record-content.model';
+import {SubpanelContainerConfig} from '@components/subpanel-container/subpanel-container.model';
 
 @Component({
     selector: 'scrm-record-container',
@@ -53,5 +54,11 @@ export class RecordContainerComponent implements OnInit {
 
     getContentAdapter(): RecordContentDataSource {
         return this.contentAdapter;
+    }
+
+    getSubpanelsConfig(): SubpanelContainerConfig {
+        return {
+            subpanels$: this.recordViewStore.subpanels$
+        } as SubpanelContainerConfig;
     }
 }
