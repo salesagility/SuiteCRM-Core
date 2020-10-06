@@ -11,7 +11,7 @@ export class PanelComponent implements OnInit {
     @Input() klass: string;
     @Input() bodyPadding = 2;
     @Input() title: string;
-    @Input() mode: 'collapsible' | 'closable' = 'closable';
+    @Input() mode: 'collapsible' | 'closable' | 'none' = 'closable';
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
     } as ButtonInterface;

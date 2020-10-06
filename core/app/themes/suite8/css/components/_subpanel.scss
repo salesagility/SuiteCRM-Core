@@ -59,12 +59,17 @@
 .sub-panel-banner-button-stats {
     text-transform: uppercase;
     font-family: 'Courier New', Courier, monospace;
-    font-size: x-large;
-    font-weight: bolder;
-    width: 100%;
-    color: #ee8776;
+  font-size: x-large;
+  font-weight: bolder;
+  width: 100%;
+  color: #ee8776;
 }
 
 .sub-panel div.card {
-    margin-top: 0.625rem;
+  margin-top: 0.625rem;
+}
+
+.sub-panel .subpanel-icon {
+  font-size: x-large;
+  fill: white;
 }

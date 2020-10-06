@@ -3,6 +3,7 @@
     <div class="card-header">
         <scrm-close-button *ngIf="isClosable()" [config]="close"></scrm-close-button>
         <scrm-minimise-button *ngIf="isCollapsible()" [config]="minimiseConfig()"></scrm-minimise-button>
+        <ng-content select="[panel-icon-area]"></ng-content>
 
         <span class="pl-1">{{title}}</span>
 

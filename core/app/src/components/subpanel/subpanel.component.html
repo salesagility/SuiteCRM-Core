@@ -1,5 +1,8 @@
 <ng-container>
-    <scrm-panel [title]="store.getTitle()" bodyPadding="0">
+    <scrm-panel [title]="store.getTitle()" mode="none" bodyPadding="0">
+        <span class="subpanel-icon" panel-icon-area>
+            <scrm-image [image]="store.getIcon()"></scrm-image>
+        </span>
         <span panel-header-button>
             <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
         </span>
