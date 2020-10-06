@@ -37,11 +37,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         return self::HANDLER_KEY;
     }
 
-    /**
-     * @var array
-     */
-    private $subpanelKeyMap;
-
 
     /**
      * @var ModuleNameMapperInterface
@@ -57,7 +52,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
-     * @param array $subpanelKeyMap
      */
     public function __construct(
         string $projectDir,
@@ -66,12 +60,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        FieldDefinitionsProviderInterface $fieldDefinitionProvider,
-        array $subpanelKeyMap
+        FieldDefinitionsProviderInterface $fieldDefinitionProvider
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
-        $this->subpanelKeyMap = $subpanelKeyMap;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }
 
@@ -109,49 +101,27 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $tabs = $spd->layout_defs['subpanel_setup'];
 
-        $allTabs = $this->arrayMergeRecursiveDistinct($tabs, $this->subpanelKeyMap);
-
-        foreach ($allTabs as $key => $tab) {
+        foreach ($tabs as $key => $tab) {
 
             $subpanel = $spd->load_subpanel($key);
 
             $headerModule = $this->getHeaderModule($tab);
             $vardefs = $this->getSubpanelModuleVardefs($headerModule);
 
-            $allTabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
-            $allTabs[$key]['headerModule'] = $headerModule;
-            $allTabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
+            $tabs[$key]['icon'] = $tab['module'];
+            $tabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
+            $tabs[$key]['headerModule'] = $headerModule;
+            $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
 
             $columnSubpanel = $subpanel;
             if (!empty($tab['header_definition_from_subpanel']) && !empty($tab['collection_list'])) {
                 $columnSubpanel = $subpanel->sub_subpanels[$tab['header_definition_from_subpanel']];
             }
 
-            $allTabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
+            $tabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
         }
 
-        return $allTabs;
-    }
-
-    /**
-     * Merge arrays
-     * @param array $array1
-     * @param array $array2
-     * @return array
-     */
-    protected function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
-    {
-        $merged = $array1;
-
-        foreach ($array2 as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-
-        return $merged;
+        return $tabs;
     }
 
     /**
