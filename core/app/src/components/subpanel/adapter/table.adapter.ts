@@ -23,7 +23,7 @@ export class SubpanelTableAdapter {
 
             columns: this.getColumns(),
             sort$: this.store.recordList.sort$,
-            maxColumns$: of(10),
+            maxColumns$: of(5),
 
             dataSource: this.store.recordList,
             pagination: this.store.recordList,

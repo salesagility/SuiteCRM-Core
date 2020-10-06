@@ -4,6 +4,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {SubpanelContainerConfig} from '@components/subpanel-container/subpanel-container.model';
 import {SubpanelStoreMap} from '@store/supanel/subpanel.store';
+import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 
 interface SubpanelContainerViewModel {
     appStrings: LanguageStringMap;
@@ -13,6 +14,7 @@ interface SubpanelContainerViewModel {
 @Component({
     selector: 'scrm-subpanel-container',
     templateUrl: 'subpanel-container.component.html',
+    providers: [MaxColumnsCalculator]
 })
 export class SubpanelContainerComponent implements OnInit {
 
@@ -20,6 +22,7 @@ export class SubpanelContainerComponent implements OnInit {
 
     isCollapsed = false;
     toggleIcon = 'arrow_down_filled';
+    maxColumns$: Observable<number>;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
 
@@ -27,6 +30,7 @@ export class SubpanelContainerComponent implements OnInit {
 
     constructor(
         protected languageStore: LanguageStore,
+        protected maxColumnCalculator: MaxColumnsCalculator
     ) {
     }
 
@@ -37,6 +41,12 @@ export class SubpanelContainerComponent implements OnInit {
                 subpanels,
             }))
         );
+
+        this.maxColumns$ = this.getMaxColumns();
+    }
+
+    getMaxColumns(): Observable<number> {
+        return this.maxColumnCalculator.getMaxColumns(this.config.recordStore.widgets$);
     }
 
     toggleSubPanels(): void {

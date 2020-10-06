@@ -46,6 +46,7 @@
             <scrm-subpanel class="sub-panel"
                            [store]="item.value"
                            [recordStore]="config.recordStore"
+                           [maxColumns$]="maxColumns$"
                            *ngIf="item.value.show">
             </scrm-subpanel>
 

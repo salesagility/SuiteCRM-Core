@@ -58,7 +58,8 @@ export class RecordContainerComponent implements OnInit {
 
     getSubpanelsConfig(): SubpanelContainerConfig {
         return {
-            subpanels$: this.recordViewStore.subpanels$
+            subpanels$: this.recordViewStore.subpanels$,
+            recordStore: this.recordViewStore
         } as SubpanelContainerConfig;
     }
 }

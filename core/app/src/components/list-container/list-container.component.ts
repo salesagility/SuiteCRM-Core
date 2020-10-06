@@ -1,16 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ListViewStore} from '@store/list-view/list-view.store';
-import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {ScreenSize} from '@services/ui/screen-size-observer/screen-size-observer.service';
+import {Observable} from 'rxjs';
 import {TableConfig} from '@components/table/table.model';
 import {TableAdapter} from '@store/list-view/adapters/table.adapter';
+import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 
 @Component({
     selector: 'scrm-list-container',
     templateUrl: 'list-container.component.html',
-    providers: [TableAdapter]
+    providers: [TableAdapter, MaxColumnsCalculator]
 })
 
 export class ListContainerComponent implements OnInit {
@@ -23,9 +22,8 @@ export class ListContainerComponent implements OnInit {
 
     constructor(
         public store: ListViewStore,
-        protected screenSize: ScreenSizeObserverService,
-        protected systemConfigStore: SystemConfigStore,
-        protected adapter: TableAdapter
+        protected adapter: TableAdapter,
+        protected maxColumnCalculator: MaxColumnsCalculator
     ) {
     }
 
@@ -34,37 +32,8 @@ export class ListContainerComponent implements OnInit {
         this.tableConfig.maxColumns$ = this.getMaxColumns();
     }
 
-    calculateMaxColumns(sideBar = true): number {
-        let sizeMap;
-        sizeMap = this.systemConfigStore.getConfigValue('listview_column_limits');
-
-        if (sideBar) {
-            sizeMap = sizeMap.with_sidebar;
-        } else {
-            sizeMap = sizeMap.without_sidebar;
-        }
-
-        if (this.screen && sizeMap) {
-            const maxCols = sizeMap[this.screen];
-            if (maxCols) {
-                this.maxColumns = maxCols;
-            }
-        }
-
-        return this.maxColumns;
-    }
-
     getMaxColumns(): Observable<number> {
-        return combineLatest([this.store.widgets$, this.screenSize.screenSize$]).pipe(
-            map(([widgets, screenSize]) => {
-
-                if (screenSize) {
-                    this.screen = screenSize;
-                }
-
-                return this.calculateMaxColumns(widgets);
-            })
-        );
+        return this.maxColumnCalculator.getMaxColumns(this.store.widgets$);
     }
 
     getDisplayWidgets(): boolean {

@@ -9,6 +9,7 @@ import {SubPanelActionManager} from './actions-mananger.service';
 import {SubpanelTableAdapter} from '@components/subpanel/adapter/table.adapter';
 import {SubpanelStore} from '@store/supanel/subpanel.store';
 import {RecordViewStore} from '@store/record-view/record-view.store';
+import {TableConfig} from '@components/table/table.model';
 
 @Component({
     selector: 'scrm-subpanel',
@@ -19,10 +20,12 @@ import {RecordViewStore} from '@store/record-view/record-view.store';
 })
 export class SubpanelComponent implements OnInit {
     @Input() store: SubpanelStore;
+    @Input() maxColumns$: Observable<number>;
     @Input() recordStore: RecordViewStore;
 
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
+    tableConfig: TableConfig;
 
     constructor(
         protected actionManager: SubPanelActionManager,
@@ -32,6 +35,11 @@ export class SubpanelComponent implements OnInit {
 
     ngOnInit(): void {
         this.adapter = new SubpanelTableAdapter(this.store, this.languages);
+        this.tableConfig = this.adapter.getTable();
+        if (this.maxColumns$) {
+            this.tableConfig.maxColumns$ = this.maxColumns$;
+        }
+
         this.config$ = of(this.getButtonGroupConfig(this.buildAction())).pipe(shareReplay(1));
     }
 
