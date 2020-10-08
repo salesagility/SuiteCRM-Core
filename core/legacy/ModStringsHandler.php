@@ -15,7 +15,8 @@ class ModStringsHandler extends LegacyHandler
     public const HANDLER_KEY = 'mod-strings';
 
     protected static $extraModules = [
-        'SecurityGroups'
+        'SecurityGroups',
+        'Bugs'
     ];
 
     /**

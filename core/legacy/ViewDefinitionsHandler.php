@@ -112,7 +112,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
      * @param RecordViewDefinitionHandler $recordViewDefinitionHandler
      * @param LoggerInterface $logger
-     * @param SubPanelDefinitionHandler $subPanelDefinitionHandler
+     * @param SubPanelDefinitionProviderInterface $subPanelDefinitionHandler
      */
     public function __construct(
         string $projectDir,

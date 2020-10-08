@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {SubpanelContainerConfig} from '@components/subpanel-container/subpanel-container.model';
-import {SubpanelStoreMap} from '@store/supanel/subpanel.store';
+import {SubpanelStore, SubpanelStoreMap} from '@store/subpanel/subpanel.store';
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 
 interface SubpanelContainerViewModel {
@@ -56,5 +56,12 @@ export class SubpanelContainerComponent implements OnInit {
 
     getStatsValue(): string {
         return '26/6/18';
+    }
+
+    showSubpanel(item: SubpanelStore): void {
+        item.show = !item.show;
+        if (item.show) {
+            item.load().pipe(take(1)).subscribe();
+        }
     }
 }

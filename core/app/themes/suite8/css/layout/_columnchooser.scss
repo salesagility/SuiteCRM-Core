@@ -78,5 +78,5 @@
 }
 
 .cdk-drag {
-  z-index: 1060 !important;
+  z-index: map-get($zindex, modal-mid) !important;
 }

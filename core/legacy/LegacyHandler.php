@@ -139,6 +139,8 @@ abstract class LegacyHandler
 
         $app = new SugarApplication();
 
+        $GLOBALS['app'] = $app;
+
         if (!empty($sugar_config['default_module'])) {
             $app->default_module = $sugar_config['default_module'];
         }
@@ -184,6 +186,24 @@ abstract class LegacyHandler
         $this->switchSession($this->defaultSessionName);
 
         $this->state->setActiveScope(null);
+    }
+
+    /**
+     * @param string $module
+     * @param string|null $record
+     */
+    protected function initController(string $module, string $record = null)
+    {
+        global $app;
+
+        /** @var SugarController $controller */
+        $controller = $app->controller;
+        $controller->module = $module;
+
+        if ($record) {
+            $controller->record = $record;
+        }
+        $controller->loadBean();
     }
 
 

@@ -12,7 +12,7 @@ import {RecordViewStore} from '@store/record-view/record-view.store';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {Record} from '@app-common/record/record.model';
-import {subpanelFactoryMock} from '@store/supanel/subpanel.store.spec.mock';
+import {subpanelFactoryMock} from '@store/subpanel/subpanel.store.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {

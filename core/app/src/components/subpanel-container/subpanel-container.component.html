@@ -23,7 +23,7 @@
                 class="sub-panel-banner-button"
                 *ngFor="let item of vm.subpanels | keyvalue"
                 [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
-                (click)=" item.value.show = ! item.value.show"
+                (click)="showSubpanel(item.value)"
             >
                 <div class="sub-panel-banner-button-icon">
                     <scrm-image [image]="item.value.getIcon()"></scrm-image>

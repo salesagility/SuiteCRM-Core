@@ -65,7 +65,13 @@ export class ListFilterComponent implements OnInit {
         const languages = this.listStore.language;
         const searchCriteria = this.listStore.recordList.criteria;
         const searchMeta = this.listStore.searchMeta;
-        const searchFields = searchMeta.layout[this.searchCriteria.type];
+
+        let type = 'advanced';
+        if (!searchMeta.layout.advanced) {
+            type = 'basic';
+        }
+
+        const searchFields = searchMeta.layout[type];
 
         Object.keys(searchFields).forEach(key => {
             const name = searchFields[key].name;
@@ -80,12 +86,7 @@ export class ListFilterComponent implements OnInit {
     protected reset(): void {
         this.searchCriteria = {
             filters: {},
-            type: 'advanced'
         };
-
-        if (this.listStore.recordList.criteria.type) {
-            this.searchCriteria.type = this.listStore.recordList.criteria.type;
-        }
 
         this.fields = [];
         this.special = [];

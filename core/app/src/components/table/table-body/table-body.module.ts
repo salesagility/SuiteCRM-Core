@@ -8,6 +8,7 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {FieldModule} from '@fields/field.module';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {LineActionModule} from '@components/line-action-menu/line-action-menu.module';
+import {LoadingSpinnerModule} from '@components/loading-spinner/loading-spinner.module';
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -19,7 +20,8 @@ import {LineActionModule} from '@components/line-action-menu/line-action-menu.mo
         CdkTableModule,
         FieldModule,
         SortButtonModule,
-        LineActionModule
+        LineActionModule,
+        LoadingSpinnerModule
     ]
 })
 export class TableBodyModule {

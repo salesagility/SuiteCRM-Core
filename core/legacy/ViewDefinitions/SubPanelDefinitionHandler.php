@@ -22,6 +22,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     protected $defaultDefinition = [
         'name' => '',
         'label' => '',
+        'sortable' => true,
     ];
     /**
      * @var FieldDefinitionsProviderInterface
@@ -109,13 +110,14 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $vardefs = $this->getSubpanelModuleVardefs($headerModule);
 
             $tabs[$key]['icon'] = $tab['module'];
+            $tabs[$key]['name'] = $key;
             $tabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
 
             $columnSubpanel = $subpanel;
             if (!empty($tab['header_definition_from_subpanel']) && !empty($tab['collection_list'])) {
-                $columnSubpanel = $subpanel->sub_subpanels[$tab['header_definition_from_subpanel']];
+                $columnSubpanel = $subpanel->sub_subpanels[$headerModule];
             }
 
             $tabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
@@ -213,6 +215,11 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $column['name'] = $column['name'] ?? $key;
         }
 
+        $widgetClass = $column['widget_class'] ?? '';
+        if ($widgetClass === 'SubPanelDetailViewLink') {
+            $column['link'] = true;
+        }
+
         $column = $this->addFieldDefinition($vardefs, strtolower($key), $column, $this->defaultDefinition);
 
         return $column;
@@ -234,10 +241,30 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     protected function getHeaderModule(array $tab)
     {
         $vardefModule = $tab['module'];
-        if (!empty($tab['header_definition_from_subpanel']) && !empty($tab['collection_list'])) {
-            $vardefModule = $tab['collection_list'][$tab['header_definition_from_subpanel']]['module'];
+
+        if (empty($tab['header_definition_from_subpanel']) || empty($tab['collection_list'])) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
         }
 
+        $headerModule = $tab['header_definition_from_subpanel'];
+        $vardefModule = $tab['collection_list'][$headerModule]['module'] ?? '';
+
+        if ($vardefModule) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
+        }
+
+        $vardefModule = reset($tab['collection_list'])['module'] ?? '';
+        if ($vardefModule) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
+        }
+
+        $vardefModule = $tab['module'];
         $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
 
         return $vardefModule;

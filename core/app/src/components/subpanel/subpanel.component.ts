@@ -7,7 +7,7 @@ import {shareReplay} from 'rxjs/operators';
 import {ButtonGroupInterface} from '../button-group/button-group.model';
 import {SubPanelActionManager} from './actions-mananger.service';
 import {SubpanelTableAdapter} from '@components/subpanel/adapter/table.adapter';
-import {SubpanelStore} from '@store/supanel/subpanel.store';
+import {SubpanelStore} from '@store/subpanel/subpanel.store';
 import {RecordViewStore} from '@store/record-view/record-view.store';
 import {TableConfig} from '@components/table/table.model';
 

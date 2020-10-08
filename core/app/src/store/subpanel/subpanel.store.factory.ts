@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SubpanelStore} from '@store/supanel/subpanel.store';
+import {SubpanelStore} from '@store/subpanel/subpanel.store';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
 import {LanguageStore} from '@store/language/language.store';
 
@@ -10,7 +10,7 @@ export class SubpanelStoreFactory {
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
-        protected languageStore: LanguageStore
+        protected languageStore: LanguageStore,
     ) {
     }
 

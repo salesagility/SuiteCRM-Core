@@ -21,6 +21,7 @@ interface TableViewModel {
     selectionStatus: SelectionStatus;
     displayedColumns: string[];
     records: Record[] | readonly Record[];
+    loading: boolean;
 }
 
 @Component({
@@ -39,7 +40,7 @@ export class TableBodyComponent implements OnInit {
     ngOnInit(): void {
         const lineAction$ = this.config.lineActions$ || of([]).pipe(shareReplay(1));
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
-
+        const loading$ = this.config.loading$ || of(false).pipe(shareReplay(1));
 
         this.vm$ = combineLatest([
             this.language$,
@@ -47,7 +48,8 @@ export class TableBodyComponent implements OnInit {
             lineAction$,
             selection$,
             this.config.maxColumns$,
-            this.config.dataSource.connect(null)
+            this.config.dataSource.connect(null),
+            loading$
         ]).pipe(
             map((
                 [
@@ -56,7 +58,8 @@ export class TableBodyComponent implements OnInit {
                     lineActions,
                     selection,
                     maxColumns,
-                    records
+                    records,
+                    loading
                 ]
             ) => {
                 const displayedColumns: string[] = [];
@@ -85,7 +88,8 @@ export class TableBodyComponent implements OnInit {
                     selected,
                     selectionStatus,
                     displayedColumns,
-                    records: records || []
+                    records: records || [],
+                    loading
                 };
             })
         );

@@ -1,0 +1,33 @@
+.overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparentize($off-white, 0.4);
+  z-index: map-get($zindex, page-high);
+  cursor: default;
+}
+
+.loading-spinner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.loading-spinner .sk-cube-primary {
+  background-color: $suite-logo-pink;
+}
+
+.loading-spinner .sk-cube-secondary {
+  background-color: $suite-logo-blue;
+}

@@ -10,8 +10,13 @@ export interface SearchCriteriaFilter {
     [key: string]: SearchCriteriaFieldFilter;
 }
 
+export interface FilterPresetHandler {
+    type: string;
+    params: { [key: string]: string };
+}
+
 export interface SearchCriteria {
     name?: string;
-    type?: string;
-    filters: SearchCriteriaFilter;
+    preset?: FilterPresetHandler;
+    filters?: SearchCriteriaFilter;
 }

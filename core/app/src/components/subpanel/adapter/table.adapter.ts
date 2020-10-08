@@ -4,7 +4,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {TableConfig} from '@components/table/table.model';
 import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
-import {SubpanelStore} from '@store/supanel/subpanel.store';
+import {SubpanelStore} from '@store/subpanel/subpanel.store';
 import {map} from 'rxjs/operators';
 
 @Injectable()
@@ -24,6 +24,7 @@ export class SubpanelTableAdapter {
             columns: this.getColumns(),
             sort$: this.store.recordList.sort$,
             maxColumns$: of(5),
+            loading$: this.store.recordList.loading$,
 
             dataSource: this.store.recordList,
             pagination: this.store.recordList,

@@ -18,8 +18,8 @@ import {RecordViewData, RecordViewModel, RecordViewState} from '@store/record-vi
 import {RecordManager} from '@store/record/record.manager';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
-import {SubpanelStoreMap} from '@store/supanel/subpanel.store';
-import {SubpanelStoreFactory} from '@store/supanel/subpanel.store.factory';
+import {SubpanelStoreMap} from '@store/subpanel/subpanel.store';
+import {SubpanelStoreFactory} from '@store/subpanel/subpanel.store.factory';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 
 const initialState: RecordViewState = {
@@ -140,7 +140,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     public init(module: string, recordID: string): Observable<Record> {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
-        this.initSubpanels(module);
+        this.initSubpanels(module, recordID);
 
         return this.load();
     }
@@ -150,7 +150,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     public clear(): void {
         this.cache$ = null;
-        this.subpanels = {};
+        this.clearSubpanels();
         this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
     }
@@ -216,25 +216,29 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * Init subpanels
      *
      * @param {string} module parent module
+     * @param {string} recordId id
      */
-    protected initSubpanels(module: string): void {
+    protected initSubpanels(module: string, recordId: string): void {
         this.metadataStore.subPanelMetadata$.subscribe((meta: SubPanelMeta) => {
-
-            if (this.subpanels) {
-                Object.keys(this.subpanels).forEach((key: string) => {
-                    this.subpanels[key].clear();
-                });
-            }
-
-            this.subpanels = {};
+            this.clearSubpanels();
 
             Object.keys(meta).forEach((key: string) => {
                 this.subpanels[key] = this.subpanelFactory.create();
-                this.subpanels[key].init(module, meta[key]);
+                this.subpanels[key].init(module, recordId, meta[key]);
             });
 
             this.subpanelsState.next(this.subpanels);
         });
+    }
+
+    protected clearSubpanels(): void {
+        if (this.subpanels) {
+            Object.keys(this.subpanels).forEach((key: string) => {
+                this.subpanels[key].clear();
+            });
+        }
+
+        this.subpanels = {};
     }
 
     /**

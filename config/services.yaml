@@ -50,6 +50,8 @@ services:
       tags: [ 'user.preferences.mapper' ]
     SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMapperInterface:
       tags: [ 'system.config.mapper' ]
+    SuiteCRM\Core\Legacy\Data\PresetListDataHandlerInterface:
+      tags: [ 'app.data.preset.handler' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -101,3 +103,9 @@ services:
     # and use the value of the 'getKey' method to index the services
     arguments:
       - !tagged { tag: 'system.config.mapper', default_index_method: 'getKey' }
+
+  SuiteCRM\Core\Legacy\Data\PresetListDataHandlers:
+    # inject all services tagged with app.data.preset.handler as first argument
+    # and use the value of the 'getType' method to index the services
+    arguments:
+      - !tagged { tag: 'app.data.preset.handler', default_index_method: 'getType' }

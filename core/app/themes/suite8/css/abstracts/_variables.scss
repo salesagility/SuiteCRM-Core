@@ -20,6 +20,7 @@ $geyser-blue: #d7dde1;
 $cool-blue: #76858f;
 $dusky-blue: #666176;
 $midnight-blue: #534d64;
+$suite-logo-blue: #4e5063;
 $powdered-blue: #c6d0d8;
 $sky-blue: #a99ac9;
 $astral-blue: #4b7291;
@@ -32,6 +33,7 @@ $dull-orange: #ee8776;
 $bright-orange: #f08377;
 $vacant-orange: #a97375;
 
+
 $burnt-red: #ef8177;
 
 $mellow-yellow: #e2b98e;
@@ -39,6 +41,7 @@ $sandy-yellow: #e3a35f;
 
 $salmon-pink: #f5aea6;
 $coral-pink: #eb6657;
+$suite-logo-pink: #e67062;
 
 $light-purple: #8d74cc;
 
@@ -52,3 +55,20 @@ $breakpoint-large: 48em;
 $breakpoint-xlarge: 62em;
 $breakpoint-xxlarge: 75em;
 $breakpoint-xxxlarge: 105em;
+
+/* --------- Z-INDEXES ---------- */
+
+$zindex: (
+  app-high: 2000,
+  app-mid: 1750,
+  app-low: 1510,
+  modal-high: 1500,
+  modal-mid: 1250,
+  modal-low: 1040,
+  nav-high: 1019,
+  nav-mid: 750,
+  nav-low: 500,
+  page-high: 499,
+  page-mid: 50,
+  page-low: 10,
+);

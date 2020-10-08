@@ -5,6 +5,6 @@
   top: 4em;
   left: 0;
   width: 100%;
-  z-index: 1030;
+  z-index: map-get($zindex, app-low);
   border-radius: 0
 }

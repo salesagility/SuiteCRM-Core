@@ -130,4 +130,17 @@ class Record
     {
         $this->attributes = $attributes;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'module' => $this->getModule(),
+            'type' => $this->getType(),
+            'attributes' => $this->getAttributes()
+        ];
+    }
 }

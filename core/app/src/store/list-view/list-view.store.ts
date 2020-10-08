@@ -1,5 +1,5 @@
 import {deepClone} from '@base/utils/object-utils';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
@@ -89,6 +89,7 @@ export class ListViewStore extends ViewStore implements StateStore,
     protected internalState: ListViewState = deepClone(initialState);
     protected store = new BehaviorSubject<ListViewState>(this.internalState);
     protected state$ = this.store.asObservable();
+    protected subs: Subscription[] = [];
 
     constructor(
         protected appStateStore: AppStateStore,
@@ -134,6 +135,15 @@ export class ListViewStore extends ViewStore implements StateStore,
                 this.vm = {data, appData, metadata} as ListViewModel;
                 return this.vm;
             }));
+
+        this.subs.push(this.recordList.loading$.subscribe(
+            (loading: boolean) => {
+                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, loading);
+            },
+            () => {
+                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, false);
+            }
+        ));
     }
 
     get showFilters(): boolean {
@@ -168,6 +178,7 @@ export class ListViewStore extends ViewStore implements StateStore,
      */
     public destroy(): void {
         this.clear();
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     /**
@@ -184,27 +195,7 @@ export class ListViewStore extends ViewStore implements StateStore,
         this.storageLoad(module, 'search-criteria', (storage) => this.recordList.criteria = storage);
         this.storageLoad(module, 'sort-selection', (storage) => this.recordList.sort = storage);
 
-        this.initSearchCriteria();
-
         return this.load();
-    }
-
-    /**
-     * Init search criteria
-     */
-    public initSearchCriteria(): void {
-        const criteria = this.recordList.criteria;
-        const metadata = this.metadataStore.get();
-
-        if (metadata.search && metadata.search.layout) {
-            const searchMeta = metadata.search;
-
-            if (!searchMeta.layout.advanced) {
-                criteria.type = 'basic';
-            }
-        }
-
-        this.recordList.criteria = criteria;
     }
 
     /**

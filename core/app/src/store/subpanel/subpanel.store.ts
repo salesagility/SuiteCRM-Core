@@ -17,19 +17,28 @@ export class SubpanelStore implements StateStore {
     recordList: RecordListStore;
     metadata$: Observable<SubPanel>;
     metadata: SubPanel;
+    loading$: Observable<boolean>;
     protected metadataState: BehaviorSubject<SubPanel>;
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
-        protected languageStore: LanguageStore
+        protected languageStore: LanguageStore,
     ) {
         this.recordList = listStoreFactory.create();
         this.metadataState = new BehaviorSubject<SubPanel>({} as SubPanel);
         this.metadata$ = this.metadataState.asObservable();
+        this.loading$ = this.recordList.loading$;
     }
 
     getTitle(): string {
-        return this.languageStore.getFieldLabel(this.metadata.title_key, this.parentModule);
+        let label = this.languageStore.getFieldLabel(this.metadata.title_key, this.parentModule);
+
+        if (!label) {
+            const moduleList = this.languageStore.getAppListString('moduleList');
+            label = (moduleList && moduleList[this.metadata.title_key]) || '';
+        }
+
+        return label;
     }
 
     getIcon(): string {
@@ -37,7 +46,10 @@ export class SubpanelStore implements StateStore {
     }
 
     clear(): void {
+        this.metadataState.unsubscribe();
+        this.metadataState = null;
         this.recordList.clear();
+        this.recordList = null;
     }
 
     clearAuthBased(): void {
@@ -49,25 +61,16 @@ export class SubpanelStore implements StateStore {
      * Returns observable to be used in resolver if needed
      *
      * @param {string} parentModule name
+     * @param {string} parentId id
      * @param {object} meta to use
-     * @returns {object} Observable<any>
      */
-    public init(parentModule: string, meta: SubPanel): Observable<RecordList> {
+    public init(parentModule: string, parentId: string, meta: SubPanel): void {
         this.parentModule = parentModule;
         this.metadata = meta;
         this.metadataState.next(this.metadata);
-        this.recordList.init(meta.module, false);
+        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel');
 
-        this.initSearchCriteria();
-
-        // TODO return this.load();
-        return null;
-    }
-
-    /**
-     * Init search criteria
-     */
-    protected initSearchCriteria(): void {
+        this.initSearchCriteria(parentModule, parentId, meta.name);
     }
 
     /**
@@ -76,8 +79,28 @@ export class SubpanelStore implements StateStore {
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<ListViewState>
      */
-    protected load(useCache = true): Observable<RecordList> {
+    public load(useCache = true): Observable<RecordList> {
 
         return this.recordList.load(useCache);
+    }
+
+    /**
+     * Init search criteria
+     *
+     * @param {string} parentModule name
+     * @param {string} parentId id
+     * @param {string} subpanel name
+     */
+    protected initSearchCriteria(parentModule: string, parentId: string, subpanel: string): void {
+        this.recordList.criteria = {
+            preset: {
+                type: 'subpanel',
+                params: {
+                    subpanel,
+                    parentModule,
+                    parentId
+                }
+            }
+        };
     }
 }

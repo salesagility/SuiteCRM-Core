@@ -46,3 +46,4 @@ parameters:
             subtheme: true
             syncGCal: true
             list_max_entries_per_page: true
+            list_max_entries_per_subpanel: true

@@ -15,7 +15,7 @@ pre {
   background: black;
   border: gray;
   color: lightgreen;
-  z-index: 100000;
+  z-index: map-get($zindex, page-low);
 }
 
 /* width */

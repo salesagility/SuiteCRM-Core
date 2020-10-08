@@ -23,7 +23,7 @@ const initialSearchCriteria = {
 };
 
 const initialListSort = {
-    orderBy: 'date_entered',
+    orderBy: '',
     sortOrder: SortDirection.DESC
 };
 
@@ -109,8 +109,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
-
-        this.watchPageSize(configStore, preferencesStore);
     }
 
     connect(): Observable<any> {
@@ -118,7 +116,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     disconnect(): void {
-        this.destroy();
     }
 
     get criteria(): SearchCriteria {
@@ -180,10 +177,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      *
      * @param {string} module to use
      * @param {boolean} load if to load
+     * @param {string} pageSizeConfigKey string
      * @returns {object} Observable<any>
      */
-    public init(module: string, load = true): Observable<RecordList> {
+    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page'): Observable<RecordList> {
         this.internalState.module = module;
+
+        this.watchPageSize(pageSizeConfigKey);
 
         if (load === false) {
             return null;
@@ -200,7 +200,11 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @returns {object} Observable<ListViewState>
      */
     public load(useCache = true): Observable<RecordList> {
-        this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, true);
+
+        this.updateState({
+            ...this.internalState,
+            loading: true
+        });
 
         return this.getRecords(
             this.internalState.module,
@@ -210,12 +214,12 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             useCache
         ).pipe(
             tap((data: RecordList) => {
-                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, false);
                 this.calculatePageCount(data.records, data.pagination);
                 this.updateState({
                     ...this.internalState,
                     records: data.records,
-                    pagination: data.pagination
+                    pagination: data.pagination,
+                    loading: false
                 });
             })
         );
@@ -246,7 +250,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     updateSorting(orderBy: string, sortOrder: SortDirection, reload = true): void {
 
         if (sortOrder === SortDirection.NONE) {
-            orderBy = 'date_entered';
+            orderBy = '';
             sortOrder = SortDirection.DESC;
         }
 
@@ -276,7 +280,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      */
     public clear(): void {
         this.cache$ = null;
-        this.updateState(deepClone(initialState));
+        this.store.unsubscribe();
         this.preferencesSub.unsubscribe();
     }
 
@@ -405,6 +409,15 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
         if (page in pageMap && pageMap[page] >= 0) {
             pageToLoad = pageMap[page];
+
+            if (pageToLoad > this.internalState.pagination.last) {
+                return;
+            }
+
+            if (pageToLoad < 0) {
+                return;
+            }
+
             this.updatePagination(pageToLoad);
         }
     }
@@ -416,19 +429,18 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     /**
      * Subscribe to page size changes
      *
-     * @param {object} configStore to watch
-     * @param {object} preferencesStore to watch
+     * @param {string} pageSizeConfigKey key
      */
-    protected watchPageSize(configStore: SystemConfigStore, preferencesStore: UserPreferenceStore): void {
+    protected watchPageSize(pageSizeConfigKey: string): void {
 
-        const pageSizePreference = preferencesStore.getUserPreference('list_max_entries_per_page');
-        const pageSizeConfig = configStore.getConfigValue('list_max_entries_per_page');
+        const pageSizePreference = this.preferencesStore.getUserPreference(pageSizeConfigKey);
+        const pageSizeConfig = this.configStore.getConfigValue(pageSizeConfigKey);
         this.determinePageSize(pageSizePreference, pageSizeConfig);
 
-        this.preferencesSub = combineLatest([configStore.configs$, preferencesStore.userPreferences$])
+        this.preferencesSub = combineLatest([this.configStore.configs$, this.preferencesStore.userPreferences$])
             .pipe(
                 tap(([configs, preferences]) => {
-                    const key = 'list_max_entries_per_page';
+                    const key = pageSizeConfigKey;
                     const sizePreference = (preferences && preferences[key]) || null;
                     const sizeConfig = (configs && configs[key] && configs[key].value) || null;
 

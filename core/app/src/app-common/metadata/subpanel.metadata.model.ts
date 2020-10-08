@@ -29,6 +29,7 @@ export interface SubPanel {
     sort_by?: string;
     title_key?: string;
     type?: string;
+    name: string;
     subpanel_name?: string;
     header_definition_from_subpanel?: string;
     module?: string;

@@ -20,6 +20,7 @@ export interface TableConfig {
     lineActions$?: Observable<LineAction[]>;
     selection$?: Observable<RecordSelection>;
     sort$?: Observable<SortingSelection>;
+    loading$?: Observable<boolean>;
 
     selection?: SelectionDataSource;
     bulkActions?: BulkActionDataSource;

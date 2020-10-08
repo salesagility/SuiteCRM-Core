@@ -1,65 +1,70 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    <table cdk-table [dataSource]="config.dataSource"
-           aria-describedby="table-body"
-           class="list-view-table striped-table table">
+    <div class="position-relative d-flex flex-column">
+        <table cdk-table [dataSource]="config.dataSource"
+               aria-describedby="table-body"
+               class="list-view-table striped-table table">
 
-        <ng-container cdkColumnDef="checkbox" *ngIf="vm.selection">
+            <ng-container cdkColumnDef="checkbox" *ngIf="vm.selection">
 
-            <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
 
-            <td cdk-cell *cdkCellDef="let record">
-                <label class="checkbox-container">
-                    <input type="checkbox"
-                           [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
-                           (change)="toggleSelection(record['id'])"
-                           [disabled]="allSelected(vm.selectionStatus)"
-                           aria-hidden="true">
-                    <span class="checkmark"></span>
-                </label>
-            </td>
+                <td cdk-cell *cdkCellDef="let record">
+                    <label class="checkbox-container">
+                        <input type="checkbox"
+                               [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
+                               (change)="toggleSelection(record['id'])"
+                               [disabled]="allSelected(vm.selectionStatus)"
+                               aria-hidden="true">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
 
-        </ng-container>
+            </ng-container>
 
-        <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
+            <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
 
-            <th cdk-header-cell
-                *cdkHeaderCellDef
-                scope="col"
-                class="primary-table-header">
+                <th cdk-header-cell
+                    *cdkHeaderCellDef
+                    scope="col"
+                    class="primary-table-header">
 
-                {{column.translatedLabel}}
-                <scrm-sort-button *ngIf="config.sort$ && column.sortable"
-                                  [state]="getFieldSort(column)">
-                </scrm-sort-button>
+                    {{column.translatedLabel}}
+                    <scrm-sort-button *ngIf="config.sort$ && column.sortable"
+                                      [state]="getFieldSort(column)">
+                    </scrm-sort-button>
 
-            </th>
+                </th>
 
-            <td cdk-cell *cdkCellDef="let record">
-                <scrm-field [mode]="'list'"
-                            [type]="column.type"
-                            [field]="getField(column, record)"
-                            [record]="record">
-                </scrm-field>
-            </td>
+                <td cdk-cell *cdkCellDef="let record">
+                    <scrm-field [mode]="'list'"
+                                [type]="column.type"
+                                [field]="getField(column, record)"
+                                [record]="record">
+                    </scrm-field>
+                </td>
 
-        </ng-container>
+            </ng-container>
 
-        <ng-container cdkColumnDef="line-actions" *ngIf="vm.lineActions && vm.lineActions.length">
+            <ng-container cdkColumnDef="line-actions" *ngIf="vm.lineActions && vm.lineActions.length">
 
-            <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
 
-            <td cdk-cell *cdkCellDef="let record">
-                <scrm-line-action-menu [lineActions]="vm.lineActions" [record]="record"></scrm-line-action-menu>
-            </td>
+                <td cdk-cell *cdkCellDef="let record">
+                    <scrm-line-action-menu [lineActions]="vm.lineActions" [record]="record"></scrm-line-action-menu>
+                </td>
 
-        </ng-container>
+            </ng-container>
 
-        <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
+            <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
 
-    </table>
+        </table>
 
-    <div *ngIf="vm.records.length === 0">
-        <p class="lead text-center pt-3">{{vm.language.appStrings.MSG_LIST_VIEW_NO_RESULTS_BASIC}}</p>
+        <div *ngIf="!vm.loading && vm.records.length === 0">
+            <p class="lead text-center pt-3">{{vm.language.appStrings.MSG_LIST_VIEW_NO_RESULTS_BASIC}}</p>
+        </div>
+        <div *ngIf="vm.loading" [class.m-5]="!vm.records || vm.records.length === 0">
+            <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+        </div>
     </div>
 </ng-container>
