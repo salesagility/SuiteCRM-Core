@@ -1,8 +1,9 @@
-@import 'base/reset';
-
 @import 'abstracts/functions';
 @import 'abstracts/typography';
 @import 'abstracts/variables';
+
+@import 'base/base';
+@import 'base/reset';
 
 @import 'components/button';
 @import 'components/buttondanger';

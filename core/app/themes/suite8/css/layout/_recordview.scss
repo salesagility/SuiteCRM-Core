@@ -8,6 +8,25 @@
   border-bottom: 0.03em solid transparent;
 }
 
+.record-view-hr {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.record-view-hr-container {
+  font-size: 0.85em;
+  padding-top: 0.6em;
+  padding-left: 1.6em;
+  padding-right: 1.6em;
+}
+
+@media all and (min-width: $breakpoint-large) {
+  .record-view-hr-container {
+    font-size: 0.85em;
+    padding: 0.4em 1.6em;
+  }
+}
+
 .record-view-title {
   color: $shell-grey;
   font-size: 1em;
