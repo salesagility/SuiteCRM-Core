@@ -7,3 +7,4 @@ parameters:
     - 'legacy/themes/<theme>/images'
     - 'legacy/custom/themes/<theme>/images'
     - 'core/app/themes/<theme>/images'
+    - 'core/app/themes/<theme>/images/modules'
