@@ -4,7 +4,7 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ListContainerComponent} from './list-container.component';
 import {TableModule} from '@components/table/table.module';
-import {WidgetUiModule} from '@components/widget/widget.module';
+import {WidgetModule} from '@components/widget/widget.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
@@ -27,7 +27,7 @@ describe('ListcontainerUiComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 TableModule,
-                WidgetUiModule,
+                WidgetModule,
                 AngularSvgIconModule,
                 HttpClientTestingModule,
                 BrowserAnimationsModule,

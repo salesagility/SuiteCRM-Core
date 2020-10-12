@@ -18,4 +18,8 @@ export class RecordSaveAction extends RecordActionHandler {
     run(data: RecordActionData): void {
         data.store.save().pipe(take(1)).subscribe();
     }
+
+    shouldDisplay(): boolean {
+        return true;
+    }
 }

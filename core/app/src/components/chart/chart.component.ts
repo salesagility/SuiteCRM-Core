@@ -14,12 +14,12 @@ export interface ChartTypesDataSource {
 }
 
 @Component({
-    selector: 'scrm-chart-ui',
+    selector: 'scrm-chart',
     templateUrl: './chart.component.html',
     styleUrls: [],
     providers: [PipelineBySalesStage, AccountTypesPerMonthLineChart, LeadsByStatus]
 })
-export class ChartUiComponent {
+export class ChartComponent {
     appState$: Observable<AppState> = this.appStateStore.vm$;
     type = '';
     chartKey = '';

@@ -17,4 +17,8 @@ export class RecordEditAction extends RecordActionHandler {
     run(data: RecordActionData): void {
         data.store.setMode('edit' as ViewMode);
     }
+
+    shouldDisplay(): boolean {
+        return true;
+    }
 }

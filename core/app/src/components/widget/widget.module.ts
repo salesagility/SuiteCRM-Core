@@ -1,19 +1,15 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {WidgetUiComponent} from './widget.component';
-
-import {ChartUiModule} from '@components/chart/chart.module';
+import {WidgetComponent} from './widget.component';
 import {ImageModule} from '@components/image/image.module';
 
 @NgModule({
-    declarations: [WidgetUiComponent],
-    exports: [WidgetUiComponent],
+    declarations: [WidgetComponent],
+    exports: [WidgetComponent],
     imports: [
         CommonModule,
-        ChartUiModule,
         ImageModule
     ]
 })
-export class WidgetUiModule {
+export class WidgetModule {
 }

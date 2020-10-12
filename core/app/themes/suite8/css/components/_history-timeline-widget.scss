@@ -1,0 +1,59 @@
+.history-timeline-viewport {
+  height: 30em;
+}
+
+.history-timeline .card {
+  border: 0.17em solid;
+}
+
+.history-timeline .circle {
+  width: 2.5em;
+  height: 2.5em;
+  border: 0.17em solid;
+}
+
+.history-timeline .history-timeline-image {
+  font-size: x-large;
+}
+
+.history-timeline .history-timeline-entry-title {
+  font-size: small;
+  font-weight: bold;
+}
+
+.history-timeline .connector {
+  height: 0.5em;
+  width: 0.6em;
+  border-top: 0.17em solid;
+  border-bottom: 0.17em solid;
+}
+
+.history-timeline .history-timeline-entry.entry-yellow {
+  color: #f1c584;
+  border-color: #f1c584;
+}
+
+.history-timeline .history-timeline-entry.entry-yellow svg {
+  fill: #f1c584;
+  stroke: #f1c584;
+}
+
+.history-timeline .history-timeline-entry.entry-purple {
+  color: #c099bf;
+  border-color: #c099bf;
+}
+
+.history-timeline .history-timeline-entry.entry-purple svg {
+  fill: #c099bf;
+  stroke: #c099bf;
+}
+
+.history-timeline .history-timeline-entry.entry-blue {
+  color: #8ab2ba;
+  border-color: #8ab2ba;
+}
+
+.history-timeline .history-timeline-entry.entry-blue svg {
+  fill: #8ab2ba;
+  stroke: #8ab2ba;
+}

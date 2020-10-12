@@ -32,4 +32,8 @@ export class RecordCreateAction extends RecordActionHandler {
             }
         }).then();
     }
+
+    shouldDisplay(): boolean {
+        return true;
+    }
 }

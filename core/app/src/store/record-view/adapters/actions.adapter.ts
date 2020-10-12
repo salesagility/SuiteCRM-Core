@@ -60,15 +60,30 @@ export class RecordActionsAdapter implements ActionDataSource {
         protected store: RecordViewStore,
         protected metadata: MetadataStore,
         protected language: LanguageStore,
-        protected actions: RecordActionManager
+        protected actionManager: RecordActionManager
     ) {
     }
 
     getActions(): Observable<Action[]> {
         return combineLatest(
-            [this.metadata.recordViewMetadata$, this.store.mode$, this.store.record$, this.language.vm$]
+            [
+                this.metadata.recordViewMetadata$,
+                this.store.mode$,
+                this.store.record$,
+                this.language.vm$,
+                this.store.widgets$
+            ]
         ).pipe(
-            map(([meta, mode, record, languages]) => {
+            map((
+                [
+                    meta,
+                    mode,
+                    record,
+                    languages,
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    widgets
+                ]
+            ) => {
                 if (!mode || !meta) {
                     return [];
                 }
@@ -77,6 +92,13 @@ export class RecordActionsAdapter implements ActionDataSource {
                 const actions = [];
 
                 availableActions[mode].forEach(action => {
+
+                    const actionHandler = this.actionManager.getHandler(action.key, mode);
+
+                    if (!actionHandler || !actionHandler.shouldDisplay(this.store)) {
+                        return;
+                    }
+
                     const label = this.language.getFieldLabel(action.labelKey, record.module, languages);
                     actions.push({
                         ...action,
@@ -95,6 +117,6 @@ export class RecordActionsAdapter implements ActionDataSource {
             store: this.store
         };
 
-        this.actions.run(action, this.store.getMode(), data);
+        this.actionManager.run(action, this.store.getMode(), data);
     }
 }

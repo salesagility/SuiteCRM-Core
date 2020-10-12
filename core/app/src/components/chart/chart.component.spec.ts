@@ -5,7 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import {ChartUiComponent} from './chart.component';
+import {ChartComponent} from './chart.component';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
@@ -15,8 +15,8 @@ import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
 import {ListViewStore} from '@store/list-view/list-view.store';
 
 describe('ChartComponent', () => {
-    let component: ChartUiComponent;
-    let fixture: ComponentFixture<ChartUiComponent>;
+    let component: ChartComponent;
+    let fixture: ComponentFixture<ChartComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -26,19 +26,19 @@ describe('ChartComponent', () => {
                 {provide: ListViewStore, useValue: listviewStoreMock},
                 {provide: ThemeImagesStore, useValue: {images$: of(themeImagesMockData).pipe(take(1))}},
             ],
-            declarations: [ChartUiComponent]
+            declarations: [ChartComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ChartUiComponent);
+        fixture = TestBed.createComponent(ChartComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
 
     it('should create', async(inject([HttpTestingController],
-        (httpClient: HttpTestingController) => {
+        () => {
             expect(component).toBeTruthy();
         })));
 });

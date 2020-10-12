@@ -26,7 +26,8 @@ const initialState: RecordViewState = {
     module: '',
     recordID: '',
     loading: false,
-    widgets: true,
+    widgets: false,
+    showWidgets: false,
     mode: 'detail'
 };
 
@@ -40,6 +41,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     stagingRecord$: Observable<Record>;
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
+    showWidgets$: Observable<boolean>;
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
 
@@ -86,6 +88,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.stagingRecord$ = this.recordManager.staging$.pipe(distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
+        this.showWidgets$ = this.state$.pipe(map(state => state.showWidgets));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
         const data$ = combineLatest(
@@ -107,14 +110,25 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.subpanels$ = this.subpanelsState.asObservable();
     }
 
-    get showWidgets(): boolean {
+    get widgets(): boolean {
         return this.internalState.widgets;
+    }
+
+    set widgets(show: boolean) {
+        this.updateState({
+            ...this.internalState,
+            widgets: show
+        });
+    }
+
+    get showWidgets(): boolean {
+        return this.internalState.showWidgets;
     }
 
     set showWidgets(show: boolean) {
         this.updateState({
             ...this.internalState,
-            widgets: show
+            showWidgets: show
         });
     }
 
@@ -141,6 +155,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
         this.initSubpanels(module, recordID);
+
+        this.calculateShowWidgets();
 
         return this.load();
     }
@@ -239,6 +255,19 @@ export class RecordViewStore extends ViewStore implements StateStore {
         }
 
         this.subpanels = {};
+    }
+
+    /**
+     * Calculate if widgets are to display
+     */
+    protected calculateShowWidgets(): void {
+        let show = true;
+
+        show = show && !!this.subpanels.activities;
+        show = show && !!this.subpanels.history;
+
+        this.showWidgets = show;
+        this.widgets = show;
     }
 
     /**

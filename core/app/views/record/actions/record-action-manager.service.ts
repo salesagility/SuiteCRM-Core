@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RecordEditAction} from '@views/record/actions/edit/record-edit.action';
-import {ActionHandlerMap} from '@app-common/actions/action.model';
 import {ViewMode} from '@app-common/views/view.model';
-import {RecordActionData} from '@views/record/actions/record.action';
+import {RecordActionData, RecordActionHandler, RecordActionHandlerMap} from '@views/record/actions/record.action';
 import {RecordCreateAction} from '@views/record/actions/create/record-create.action';
 import {RecordHistoryAction} from '@views/record/actions/history/record-history.action';
 import {RecordCancelAction} from '@views/record/actions/cancel/record-cancel.action';
@@ -13,9 +12,9 @@ import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
 })
 export class RecordActionManager {
 
-    actions: { [key: string]: ActionHandlerMap } = {
-        edit: {} as ActionHandlerMap,
-        detail: {} as ActionHandlerMap
+    actions: { [key: string]: RecordActionHandlerMap } = {
+        edit: {} as RecordActionHandlerMap,
+        detail: {} as RecordActionHandlerMap
     };
 
     constructor(
@@ -38,5 +37,13 @@ export class RecordActionManager {
         }
 
         this.actions[mode][action].run(data);
+    }
+
+    getHandler(action: string, mode: ViewMode): RecordActionHandler {
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][action]) {
+            return null;
+        }
+
+        return this.actions[mode][action];
     }
 }

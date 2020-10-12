@@ -6,9 +6,15 @@ export interface RecordActionData extends ActionData {
     store: RecordViewStore;
 }
 
+export interface RecordActionHandlerMap {
+    [key: string]: RecordActionHandler;
+}
+
 export abstract class RecordActionHandler extends ActionHandler {
 
     abstract modes: ViewMode[];
 
     abstract run(data: RecordActionData): void;
+
+    abstract shouldDisplay(store: RecordViewStore): boolean;
 }

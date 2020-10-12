@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '../../app-manager/app-manager.module';
-import {ChartUiComponent} from './chart.component';
+import {ChartComponent} from './chart.component';
 import {ImageModule} from '@components/image/image.module';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -16,11 +16,11 @@ import {PieGridChartComponent} from './charts/pie-grid-chart/pie-grid-chart.comp
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 
 @NgModule({
-    declarations: [ChartUiComponent, VerticalBarChartComponent, LineChartComponent, PieGridChartComponent],
-    exports: [ChartUiComponent],
+    declarations: [ChartComponent, VerticalBarChartComponent, LineChartComponent, PieGridChartComponent],
+    exports: [ChartComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ChartUiComponent),
+        AppManagerModule.forChild(ChartComponent),
         ImageModule,
         DropdownButtonModule,
         NgbDropdownModule,
@@ -31,5 +31,5 @@ import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spi
         FullPageSpinnerModule
     ]
 })
-export class ChartUiModule {
+export class ChartModule {
 }

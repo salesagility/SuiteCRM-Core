@@ -18,4 +18,8 @@ export class RecordCancelAction extends RecordActionHandler {
         data.store.recordManager.resetStaging();
         data.store.setMode('detail' as ViewMode);
     }
+
+    shouldDisplay(): boolean {
+        return true;
+    }
 }

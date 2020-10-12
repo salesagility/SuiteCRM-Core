@@ -1,20 +1,18 @@
-<!-- Start List View Widget Section -->
-
-<div class="accordion list-view-widget mr-0">
-    <div [ngClass]="{'widget-header-closed': !displayWidgetContent}" class="widget-header">
+<div class="accordion widget-panel mr-0">
+    <div [ngClass]="{'widget-header-closed': !displayContent}" class="widget-header">
         <h3>
             {{title}}
             <scrm-image class="sicon float-right widget-close-icon"
                         (click)="toggleWidgetContent()"
-                        image="{{ widgetHeaderToggleIcon }}">
+                        image="{{ toggleIcon }}">
             </scrm-image>
         </h3>
     </div>
 
-    <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
-         [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
-        <scrm-chart-ui *ngIf="type === 'chart'"></scrm-chart-ui>
+    <div *ngIf="displayContent"
+         class="widget collapse show open-close-container"
+         data-parent=".widget-panel"
+         [@widgetContentFade]="displayContent ? 'true' : 'false'">
+        <ng-content select="[widget-body]"></ng-content>
     </div>
 </div>
-
-<!-- End List View Widget Section -->

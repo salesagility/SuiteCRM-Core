@@ -3,7 +3,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {LanguageStore} from '@store/language/language.store';
 
 @Component({
-    selector: 'scrm-widget-ui',
+    selector: 'scrm-widget',
     templateUrl: 'widget.component.html',
     animations: [
         trigger('widgetFade', [
@@ -29,29 +29,26 @@ import {LanguageStore} from '@store/language/language.store';
     ]
 })
 
-export class WidgetUiComponent implements OnInit {
-    @Input() type;
+export class WidgetComponent implements OnInit {
     @Input() title;
 
-    displayWidgetContent = true;
-    widgetHeaderToggleIcon = 'minimise_circled';
+    displayContent = true;
+    toggleIcon = 'minimise_circled';
 
     constructor(public languageStore: LanguageStore) {
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    toggleWidgetContent() {
-        if (this.widgetHeaderToggleIcon === 'minimise_circled') {
-            this.widgetHeaderToggleIcon = 'plus_thin';
-            this.displayWidgetContent = false;
+    toggleWidgetContent(): void {
+        if (this.toggleIcon === 'minimise_circled') {
+            this.toggleIcon = 'plus_thin';
+            this.displayContent = false;
         } else {
-            this.widgetHeaderToggleIcon = 'minimise_circled';
-            this.displayWidgetContent = true;
+            this.toggleIcon = 'minimise_circled';
+            this.displayContent = true;
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    ngOnInit() {
+    ngOnInit(): void {
         this.title = this.languageStore.getAppString(this.title);
     }
 }

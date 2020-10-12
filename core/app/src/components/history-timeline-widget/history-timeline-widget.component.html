@@ -1,0 +1,59 @@
+<div class="widget-background history-timeline">
+    <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="200" maxBufferPx="400" class="history-timeline-viewport">
+        <div *cdkVirtualFor="let entry of adapter">
+
+            <div class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
+                <div class="">
+                    <div class="circle">
+                        <div class="d-flex justify-content-center align-items-center h-100 history-timeline-image">
+                            <scrm-image [image]="entry.icon"></scrm-image>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="">
+                    <div class="d-flex justify-content-center h-100">
+                        <div class="connector mt-3">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="flex-grow-1">
+
+                    <div class="card">
+                        <div class="card-body p-1 pr-2 pl-2">
+                            <p class="card-title text-break history-timeline-entry-title">
+                                <scrm-field [type]="entry.title.type"
+                                            mode="list"
+                                            [field]="entry.title"
+                                            [record]="entry.record">
+                                </scrm-field>
+                            </p>
+                            <div class="card-text history-timeline-entry-user">
+                                <small class="font-italic text-break">
+                                    <scrm-field [type]="entry.user.type"
+                                                mode="list"
+                                                [field]="entry.user"
+                                                [record]="entry.record">
+                                    </scrm-field>
+                                </small>
+                            </div>
+                            <div class="card-text text-break history-timeline-entry-date">
+                                <small class="font-italic">
+                                    <scrm-field [type]="entry.date.type"
+                                                mode="list"
+                                                [field]="entry.date"
+                                                [record]="entry.record"></scrm-field>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </cdk-virtual-scroll-viewport>
+</div>

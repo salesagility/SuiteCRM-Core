@@ -22,5 +22,6 @@ export interface RecordViewState {
     recordID: string;
     loading: boolean;
     widgets: boolean;
+    showWidgets: boolean;
     mode: ViewMode;
 }

@@ -22,13 +22,14 @@ export class RecordContainerComponent implements OnInit {
     recordMeta$: Observable<RecordViewMetadata> = this.metadata.recordViewMetadata$;
 
     vm$ = combineLatest([
-        this.language$, this.recordMeta$,
+        this.language$, this.recordMeta$, this.recordViewStore.showWidgets$
     ]).pipe(
         map((
-            [language, recordMeta]
+            [language, recordMeta, showWidgets]
         ) => ({
             language,
             recordMeta,
+            showWidgets
         }))
     );
 

@@ -21,7 +21,9 @@
         </div>
 
         <div class="col-lg-3 record-widget-container pl-0" *ngIf="getDisplayWidgets()">
-            <scrm-widget-ui [type]="type" [title]="widgetTitle"></scrm-widget-ui>
+            <scrm-widget [title]="widgetTitle">
+                <scrm-history-timeline-widget widget-body></scrm-history-timeline-widget>
+            </scrm-widget>
         </div>
 
     </div>
