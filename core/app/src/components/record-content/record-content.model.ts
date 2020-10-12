@@ -5,6 +5,10 @@ import {Panel} from '@app-common/metadata/metadata.model';
 import {Record} from '@app-common/record/record.model';
 
 export interface RecordContentDataSource {
+    inlineEdit: boolean;
+
+    getEditAction(): void;
+
     getDisplayConfig(): Observable<RecordContentConfig>;
 
     getPanels(): Observable<Panel[]>;

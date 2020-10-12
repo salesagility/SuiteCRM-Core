@@ -9,6 +9,7 @@ import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '@store/theme-images/t
     styleUrls: []
 })
 export class ImageComponent {
+    @Input() image: string;
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
@@ -16,8 +17,6 @@ export class ImageComponent {
         map(([images]) => ({
             images
         })));
-
-    @Input() image: string;
 
     constructor(protected themeImagesStore: ThemeImagesStore) {
     }

@@ -46,13 +46,15 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
     getLayoutDataSource(panel: Panel): FieldLayoutDataSource {
         return {
+            inlineEdit: true,
             getConfig: (): Observable<FieldLayoutConfig> => this.dataSource.getDisplayConfig().pipe(map(config => ({
                 mode: config.mode,
                 maxColumns: config.maxColumns,
             }))),
             getLayout: (): Observable<Panel> => of(panel).pipe(shareReplay(1)),
             getFields: (): Observable<FieldMap> => this.dataSource.getRecord().pipe(map(record => (record.fields))),
-            getRecord: (): Observable<Record> => this.dataSource.getRecord()
+            getRecord: (): Observable<Record> => this.dataSource.getRecord(),
+            getEditAction: (): void => this.dataSource.getEditAction()
         } as FieldLayoutDataSource;
     }
 }

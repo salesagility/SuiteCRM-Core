@@ -288,6 +288,15 @@ button {
   padding: 0.2em;
 }
 
+.record-edit-button {
+  background-color: transparent;
+  border: none;
+  padding: 0.2em;
+  margin: -0.8em;
+  font-size: 0.8em;
+  fill: transparentize($nepal-grey, 0.5)
+}
+
 button.settings-button.dropdown-toggle::after {
   vertical-align: middle;
 }

@@ -7,15 +7,27 @@ import {LanguageStore} from '@store/language/language.store';
 import {Panel, PanelRow} from '@app-common/metadata/metadata.model';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
 import {Record} from '@app-common/record/record.model';
+import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
+import {RecordActionData} from '@views/record/actions/record.action';
 
 @Injectable()
 export class RecordContentAdapter implements RecordContentDataSource {
+    inlineEdit: true;
 
     constructor(
         protected store: RecordViewStore,
         protected metadata: MetadataStore,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected actions: RecordActionManager
     ) {
+    }
+
+    getEditAction(): void {
+        const data: RecordActionData = {
+            store: this.store
+        };
+
+        this.actions.run('edit', this.store.getMode(), data);
     }
 
     getDisplayConfig(): Observable<RecordContentConfig> {

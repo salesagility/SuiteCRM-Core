@@ -10,6 +10,10 @@ export interface FieldLayoutConfig {
 }
 
 export interface FieldLayoutDataSource {
+    inlineEdit: boolean;
+
+    getEditAction(): void;
+
     getConfig(): Observable<FieldLayoutConfig>;
 
     getLayout(): Observable<Panel>;

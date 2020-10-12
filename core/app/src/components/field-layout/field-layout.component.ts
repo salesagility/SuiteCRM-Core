@@ -107,5 +107,4 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
         }
         return this.config.maxColumns;
     }
-
 }

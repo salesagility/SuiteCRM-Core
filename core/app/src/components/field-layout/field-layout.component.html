@@ -16,6 +16,11 @@
                                 [field]="col.field"
                                 [record]="record">
                     </scrm-field>
+                    <button type="button" class="record-edit-button float-right"
+                            (click)="this.dataSource.getEditAction()"
+                            *ngIf="!col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
+                        <scrm-image class="sicon" image="pencil"></scrm-image>
+                    </button>
                 </div>
             </ng-container>
 

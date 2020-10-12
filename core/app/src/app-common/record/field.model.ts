@@ -19,6 +19,7 @@ export interface FieldDefinition {
     module?: string;
     rname?: string;
     table?: string;
+    readonly?: boolean;
 }
 
 export interface FieldMetadata {

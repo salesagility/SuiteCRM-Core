@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FieldLayoutComponent} from './field-layout.component';
 import {FieldModule} from '@fields/field.module';
 import {FieldGridModule} from '@components/field-grid/field-grid.module';
+import {ImageModule} from '@components/image/image.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {FieldGridModule} from '@components/field-grid/field-grid.module';
     imports: [
         CommonModule,
         FieldModule,
-        FieldGridModule
+        FieldGridModule,
+        ImageModule
     ]
 })
 export class FieldLayoutModule {
