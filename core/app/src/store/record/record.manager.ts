@@ -159,6 +159,9 @@ export class RecordManager {
         const fields = {} as FieldMap;
 
         viewFieldDefinitions.forEach(viewField => {
+            if (!viewField) {
+                return;
+            }
             fields[viewField.name] = this.buildField(viewField, record, this.language);
         });
 

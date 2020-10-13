@@ -52,6 +52,8 @@ services:
       tags: [ 'system.config.mapper' ]
     SuiteCRM\Core\Legacy\Data\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
+    App\Service\StatisticsProviderInterface:
+      tags: ['app.data.statistics.handler']
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -109,3 +111,9 @@ services:
     # and use the value of the 'getType' method to index the services
     arguments:
       - !tagged { tag: 'app.data.preset.handler', default_index_method: 'getType' }
+
+  App\Service\StatisticsProviderRegistry:
+    # inject all services tagged with app.data.statistics.handler as first argument
+    # and use the value of the 'getKey' method to index the services
+    arguments:
+      - !tagged { tag: 'app.data.statistics.handler', default_index_method: 'getKey' }

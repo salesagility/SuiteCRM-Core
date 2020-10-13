@@ -14,7 +14,7 @@ export class FieldComponent {
     @Input('mode') mode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
-    @Input('record') record: Record;
+    @Input('record') record: Record = null;
     @Input('klass') klass: { [key: string]: any } = null;
 
     map = viewFieldsMap;

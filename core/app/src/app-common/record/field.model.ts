@@ -49,6 +49,16 @@ export interface Field {
 
 export class FieldManager {
 
+    public static buildShallowField(type: string, value: string): Field {
+        return {
+            type,
+            value,
+            definition: {
+                type
+            }
+        } as Field;
+    }
+
     public static buildField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;

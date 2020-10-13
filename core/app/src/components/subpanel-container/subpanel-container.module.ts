@@ -6,6 +6,8 @@ import {SubpanelModule} from '../subpanel/subpanel.module';
 import {ImageModule} from '@components/image/image.module';
 import {RouterModule} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {InlineLoadingSpinnerModule} from '@components/inline-loading-spinner/inline-loading-spinner.module';
+import {FieldModule} from '@fields/field.module';
 
 @NgModule({
     declarations: [SubpanelContainerComponent],
@@ -16,7 +18,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         ImageModule,
         AppManagerModule.forChild(SubpanelContainerComponent),
         RouterModule,
-        SubpanelModule
+        SubpanelModule,
+        InlineLoadingSpinnerModule,
+        FieldModule
     ]
 })
 export class SubpanelContainerModule {

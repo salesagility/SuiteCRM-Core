@@ -5,6 +5,9 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
 import {LanguageStore} from '@store/language/language.store';
 import {SubPanel} from '@app-common/metadata/subpanel.metadata.model';
+import {Statistic, StatisticsQuery} from '@app-common/statistics/statistics.model';
+import {SubpanelStatisticsStore} from '@store/subpanel/subpanel-statistics.store';
+import {SubpanelStatisticsStoreFactory} from '@store/subpanel/subpanel-statistics.store.factory';
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -15,6 +18,7 @@ export class SubpanelStore implements StateStore {
     show = false;
     parentModule: string;
     recordList: RecordListStore;
+    statistics: SubpanelStatisticsStore;
     metadata$: Observable<SubPanel>;
     metadata: SubPanel;
     loading$: Observable<boolean>;
@@ -23,8 +27,10 @@ export class SubpanelStore implements StateStore {
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
         protected languageStore: LanguageStore,
+        protected statisticsStoreFactory: SubpanelStatisticsStoreFactory
     ) {
         this.recordList = listStoreFactory.create();
+        this.statistics = statisticsStoreFactory.create();
         this.metadataState = new BehaviorSubject<SubPanel>({} as SubPanel);
         this.metadata$ = this.metadataState.asObservable();
         this.loading$ = this.recordList.loading$;
@@ -70,6 +76,8 @@ export class SubpanelStore implements StateStore {
         this.metadataState.next(this.metadata);
         this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel');
 
+        this.initStatistics(meta, parentModule, parentId);
+
         this.initSearchCriteria(parentModule, parentId, meta.name);
     }
 
@@ -77,11 +85,21 @@ export class SubpanelStore implements StateStore {
      * Load / reload records using current pagination and criteria
      *
      * @param {boolean} useCache if to use cache
-     * @returns {object} Observable<ListViewState>
+     * @returns {object} Observable<RecordList>
      */
     public load(useCache = true): Observable<RecordList> {
 
         return this.recordList.load(useCache);
+    }
+
+    /**
+     * Load / reload statistics
+     *
+     * @param {boolean} useCache if to use cache
+     * @returns {object} Observable<Statistic>
+     */
+    public loadStatistics(useCache = true): Observable<Statistic> {
+        return this.statistics.load(useCache);
     }
 
     /**
@@ -102,5 +120,26 @@ export class SubpanelStore implements StateStore {
                 }
             }
         };
+    }
+
+    /**
+     * Init statistics store
+     *
+     * @param {object} meta for subpanel
+     * @param {string} parentModule name
+     * @param {string} parentId {id}
+     */
+    protected initStatistics(meta: SubPanel, parentModule: string, parentId: string): void {
+        this.statistics.init(
+            meta.module,
+            {
+                key: meta.module,
+                params: {
+                    parentModule,
+                    parentId
+                }
+            } as StatisticsQuery,
+            false
+        );
     }
 }

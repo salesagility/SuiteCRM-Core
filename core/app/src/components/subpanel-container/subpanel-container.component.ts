@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {SubpanelContainerConfig} from '@components/subpanel-container/subpanel-container.model';
@@ -39,7 +39,15 @@ export class SubpanelContainerComponent implements OnInit {
             map(([languages, subpanels]) => ({
                 appStrings: languages.appStrings || {},
                 subpanels,
-            }))
+            })),
+            tap(({subpanels}) => {
+                if (subpanels) {
+                    Object.keys(subpanels).forEach(subpanelKey => {
+                        const subpanel = subpanels[subpanelKey];
+                        subpanel.loadStatistics().pipe(take(1)).subscribe();
+                    });
+                }
+            })
         );
 
         this.maxColumns$ = this.getMaxColumns();
@@ -52,10 +60,6 @@ export class SubpanelContainerComponent implements OnInit {
     toggleSubPanels(): void {
         this.isCollapsed = !this.isCollapsed;
         this.toggleIcon = (this.isCollapsed) ? 'arrow_up_filled' : 'arrow_down_filled';
-    }
-
-    getStatsValue(): string {
-        return '26/6/18';
     }
 
     showSubpanel(item: SubpanelStore): void {
