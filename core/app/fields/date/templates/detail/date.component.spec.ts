@@ -1,12 +1,11 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DateDetailFieldComponent} from '@fields/date/templates/detail/date.component';
-import {distinctUntilChanged} from 'rxjs/operators';
-import {BehaviorSubject, of} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {Field} from '@app-common/record/field.model';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({
     selector: 'date-detail-field-test-host-component',
@@ -39,24 +38,7 @@ describe('DateDetailFieldComponent', () => {
                 CommonModule
             ],
             providers: [
-                {
-                    provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable().pipe(distinctUntilChanged())
-                    }
-                },
-                {
-                    provide: SystemConfigStore, useValue: {
-                        configs$: of({
-                            // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
-                            date_format: {
-                                id: '/docroot/api/system-configs/date_format',
-                                _id: 'date_format',
-                                value: 'dd.MM.yyyy',
-                                items: []
-                            }
-                        })
-                    }
-                }
+                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
             ],
         }).compileComponents();
 
@@ -82,7 +64,7 @@ describe('DateDetailFieldComponent', () => {
         testHostFixture.detectChanges();
 
 
-        expect(testHostFixture.nativeElement.textContent).toContain('2020-04-14');
+        expect(testHostFixture.nativeElement.textContent).toContain('14.04.2020');
     });
 
     it('should have custom formatted date', () => {
@@ -98,24 +80,6 @@ describe('DateDetailFieldComponent', () => {
         testHostFixture.detectChanges();
 
 
-        expect(testHostFixture.nativeElement.textContent).toContain('2020/03/15');
+        expect(testHostFixture.nativeElement.textContent).toContain('15.03.2020');
     });
-
-    it('should have system config based formatted date', () => {
-
-        expect(testHostComponent).toBeTruthy();
-
-        preferences.next({
-            // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
-            date_format: null,
-        });
-
-        testHostComponent.field.value = '2020-02-16';
-        testHostFixture.detectChanges();
-        testHostFixture.detectChanges();
-
-
-        expect(testHostFixture.nativeElement.textContent).toContain('16.02.2020');
-    });
-
 });

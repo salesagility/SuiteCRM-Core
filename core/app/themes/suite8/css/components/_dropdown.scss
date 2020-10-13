@@ -7,15 +7,31 @@
 }
 
 .dropdown-menu.submenu {
-  -webkit-border-radius: 0.25em;
-  -webkit-border-top-left-radius: 0;
-  -webkit-border-top-right-radius: 0;
-  -moz-border-radius: 0.25em;
-  -moz-border-radius-topleft: 0;
-  -moz-border-radius-topright: 0;
-  border-radius: 0.25em;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  -webkit-border-radius: 0 0 0.25em 0.25em;
+  -moz-border-radius: 0 0 0.25em 0.25em;
+  border-radius: 0 0 0.25em 0.25em;
+}
+
+ngb-datepicker.dropdown-menu {
+  padding: 0;
+  background-color: $white;
+}
+
+ngb-datepicker-navigation {
+  background-color: $nepal-grey;
+  padding: 0.1em;
+}
+
+.ngb-dp-weekdays {
+  background-color: $nepal-grey;
+}
+
+.ngb-dp-weekday {
+  color: $white;
+}
+
+.btn-light {
+  color: $coral-pink
 }
 
 .action-group .dropdown-menu {

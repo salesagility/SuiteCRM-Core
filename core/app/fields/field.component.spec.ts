@@ -9,6 +9,8 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
+import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
+import {datetimeFormatterMock} from '@services/datetime/datetime-formatter.service.spec.mock';
 
 @Component({
     selector: 'field-test-host-component',
@@ -33,10 +35,10 @@ class FieldTestHostComponent {
         {field: {type: 'float', value: '1000.5'}, mode: 'list', expected: '1,000.5'},
         {field: {type: 'phone', value: '+44 1111 123456'}, mode: 'detail', expected: '+44 1111 123456'},
         {field: {type: 'phone', value: '+44 1111 123456'}, mode: 'list', expected: '+44 1111 123456'},
-        {field: {type: 'date', value: '2020-05-15 23:11:01'}, mode: 'detail', expected: '2020-05-15'},
-        {field: {type: 'date', value: '2020-05-16 23:11:01'}, mode: 'list', expected: '2020-05-16'},
-        {field: {type: 'datetime', value: '2020-05-14 23:11:01'}, mode: 'detail', expected: '2020-05-14 23:11:01'},
-        {field: {type: 'datetime', value: '2020-05-13 23:12:02'}, mode: 'list', expected: '2020-05-13 23:12:02'},
+        {field: {type: 'date', value: '2020-05-15'}, mode: 'detail', expected: '15.05.2020'},
+        {field: {type: 'date', value: '2020-05-16'}, mode: 'list', expected: '16.05.2020'},
+        {field: {type: 'datetime', value: '2020-05-14 23:11:01'}, mode: 'detail', expected: '14.05.2020 23.11.01'},
+        {field: {type: 'datetime', value: '2020-05-13 23:12:02'}, mode: 'list', expected: '13.05.2020 23.12.02'},
         {field: {type: 'url', value: 'https://suitecrm.com/'}, mode: 'detail', expected: 'https://suitecrm.com/'},
         {field: {type: 'url', value: 'https://suitecrm.com/'}, mode: 'list', expected: 'https://suitecrm.com/'},
         {field: {type: 'currency', value: '1000.5'}, mode: 'detail', expected: '£1,000.5'},
@@ -101,6 +103,9 @@ describe('FieldComponent', () => {
                     provide: UserPreferenceStore, useValue: {
                         userPreferences$: preferences.asObservable()
                     }
+                },
+                {
+                    provide: DatetimeFormatter, useValue: datetimeFormatterMock
                 },
                 {
                     provide: SystemConfigStore, useValue: {

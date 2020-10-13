@@ -91,6 +91,18 @@ export const systemConfigMockData = {
                 Large: 6,
                 XLarge: 7
             }
+        },
+        date_format: {
+            id: '/docroot/api/system-configs/date_format',
+            _id: 'date_format',
+            value: 'dd.MM.yyyy',
+            items: []
+        },
+        time_format: {
+            id: '/docroot/api/system-configs/time_format',
+            _id: 'time_format',
+            value: 'HH.mm.ss',
+            items: []
         }
     }
 };

@@ -47,7 +47,9 @@ export const userPreferenceMockData = {
                 default_export_charset: 'UTF-8',
                 email_link_type: 'sugar',
                 subtheme: 'Dawn',
-                list_max_entries_per_page: 20
+                list_max_entries_per_page: 20,
+                date_format: 'dd.MM.yyyy',
+                time_format: 'HH.mm.ss',
             }
         }
     }

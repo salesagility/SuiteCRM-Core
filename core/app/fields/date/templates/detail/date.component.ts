@@ -1,7 +1,6 @@
 import {Component,} from '@angular/core';
-import {BaseDateTimeComponent} from '@fields/base/base-datetime.component';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.component';
+import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
 
 @Component({
     selector: 'scrm-date-detail',
@@ -11,9 +10,8 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 export class DateDetailFieldComponent extends BaseDateTimeComponent {
 
     constructor(
-        protected userPreferences: UserPreferenceStore,
-        protected systemConfig: SystemConfigStore
+        protected formatter: DatetimeFormatter,
     ) {
-        super(userPreferences, systemConfig);
+        super(formatter);
     }
 }

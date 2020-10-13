@@ -26,6 +26,10 @@ import {RelateDetailFieldsModule} from '@fields/relate/templates/detail/relate.m
 import {RelateDetailFieldsComponent} from '@fields/relate/templates/detail/relate.component';
 import {FullNameDetailFieldsComponent} from '@fields/fullname/templates/detail/fullname.component';
 import {FullNameDetailFieldsModule} from '@fields/fullname/templates/detail/fullname.module';
+import {DateEditFieldComponent} from '@fields/date/templates/edit/date.component';
+import {DateTimeEditFieldComponent} from '@fields/datetime/templates/edit/datetime.component';
+import {DateEditFieldModule} from '@fields/date/templates/edit/date.module';
+import {DateTimeEditFieldModule} from '@fields/datetime/templates/edit/datetime.module';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -35,7 +39,9 @@ export const fieldModules = [
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
     DateDetailFieldModule,
+    DateEditFieldModule,
     DateTimeDetailFieldModule,
+    DateTimeEditFieldModule,
     UrlDetailFieldModule,
     CurrencyDetailFieldModule,
     EmailListFieldsModule,
@@ -51,7 +57,9 @@ export const fieldComponents = [
     FloatDetailFieldComponent,
     PhoneDetailFieldComponent,
     DateDetailFieldComponent,
+    DateEditFieldComponent,
     DateTimeDetailFieldComponent,
+    DateTimeEditFieldComponent,
     UrlDetailFieldComponent,
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
@@ -75,8 +83,10 @@ export const viewFieldsMap = {
     'phone.detail': PhoneDetailFieldComponent,
     'date.list': DateDetailFieldComponent,
     'date.detail': DateDetailFieldComponent,
+    'date.edit': DateEditFieldComponent,
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
+    'datetime.edit': DateTimeEditFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,

@@ -1,0 +1,12 @@
+<span class="datetime-edit-containers">
+    <span>
+        <input ngbDatepicker
+               [ngClass]="klass"
+               [placeholder]="getDateFormat().toLowerCase()"
+               [(ngModel)]="dateModel"
+               (navigate)="date = $event.next"
+               #datepicker="ngbDatepicker">
+        <scrm-button [config]="getOpenButton(datepicker)">
+        </scrm-button>
+    </span>
+</span>
