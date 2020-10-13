@@ -20,6 +20,8 @@ export interface FieldDefinition {
     rname?: string;
     table?: string;
     readonly?: boolean;
+    // eslint-disable-next-line camelcase
+    inline_edit?: boolean;
 }
 
 export interface FieldMetadata {
