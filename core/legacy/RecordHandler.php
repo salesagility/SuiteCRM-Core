@@ -210,14 +210,14 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     {
         $moduleName = $this->validateModuleName($module);
 
-        if (empty($id)){
+        if (empty($id)) {
             return $this->newBeanSafe($moduleName);
         }
 
         BeanFactory::unregisterBean($moduleName, $id);
 
         /** @var SugarBean $bean */
-        $bean = BeanFactory::getBean($moduleName, $id);
+        $bean = BeanFactory::getBean($moduleName, $id, ['encode' => false]);
 
         if (!$bean) {
             $bean = $this->newBeanSafe($moduleName);
