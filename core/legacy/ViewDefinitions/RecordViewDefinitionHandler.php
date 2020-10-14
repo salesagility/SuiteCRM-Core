@@ -110,12 +110,43 @@ class RecordViewDefinitionHandler extends LegacyHandler
      */
     protected function addPanelDefinitions(array $viewDefs, ?array &$vardefs, array &$metadata): void
     {
-        foreach ($viewDefs['panels'] as $panelKey => $panel) {
+        $viewDefs = $viewDefs ?? [];
+        $panels = $viewDefs['panels'] ?? [];
+
+        foreach ($panels as $panelKey => $panel) {
             $panelRows = [];
+
+            if (is_string($panel)) {
+                $newRow = [
+                    'cols' => []
+                ];
+
+                $definition = $this->getBaseFieldCellDefinition($panel);
+                $this->addCell($newRow, $definition, $vardefs);
+                $panelRows[] = $newRow;
+
+                // to append to the end
+                $metadata['panels'][] = [
+                    'key' => $panelKey,
+                    'rows' => $panelRows
+                ];
+
+                continue;
+            }
+
             foreach ($panel as $row) {
                 $newRow = [
                     'cols' => []
                 ];
+
+                if (is_string($row)) {
+                    $definition = $this->getBaseFieldCellDefinition($row);
+                    $this->addCell($newRow, $definition, $vardefs);
+                    $panelRows[] = $newRow;
+
+                    continue;
+                }
+
                 foreach ($row as $cell) {
                     $definition = $cell;
 
@@ -123,22 +154,17 @@ class RecordViewDefinitionHandler extends LegacyHandler
                         continue;
                     }
 
+                    if (is_string($cell) && isset($row['name'])) {
+                        $definition = $row;
+                        $this->addCell($newRow, $definition, $vardefs);
+                        continue;
+                    }
+
                     if (is_string($cell)) {
                         $definition = $this->getBaseFieldCellDefinition($cell);
                     }
 
-                    if (empty($definition['name'])) {
-                        continue;
-                    }
-
-                    if (!isset($vardefs[$definition['name']])) {
-                        $message = "RecordViewDefinitions: '${$definition['name']}' not set on vardefs. Ignoring.";
-                        $this->logger->warning($message);
-                        continue;
-                    }
-
-                    $definition = $this->buildFieldCell($definition, $vardefs);
-                    $newRow['cols'][] = $definition;
+                    $this->addCell($newRow, $definition, $vardefs);
                 }
                 $panelRows[] = $newRow;
             }
@@ -149,6 +175,28 @@ class RecordViewDefinitionHandler extends LegacyHandler
                 'rows' => $panelRows
             ];
         }
+    }
+
+    /**
+     * @param $newRow
+     * @param $definition
+     * @param $vardefs
+     */
+    protected function addCell(&$newRow, $definition, &$vardefs): void
+    {
+        if (empty($definition['name'])) {
+            return;
+        }
+
+        if (!isset($vardefs[$definition['name']])) {
+            $message = "RecordViewDefinitions: '${$definition['name']}' not set on vardefs. Ignoring.";
+            $this->logger->warning($message);
+
+            return;
+        }
+
+        $definition = $this->buildFieldCell($definition, $vardefs);
+        $newRow['cols'][] = $definition;
     }
 
     /**

@@ -91,7 +91,7 @@ parameters:
     users:
       index: true
       list: true
-      record: true
+      record: false
     employees:
       index: true
       list: true
@@ -173,9 +173,9 @@ parameters:
       list: true
       record: true
     maps:
-      index: true
-      list: true
-      record: true
+      index: false
+      list: false
+      record: false
     markers:
       index: true
       list: true
@@ -213,22 +213,22 @@ parameters:
       list: true
       record: true
     security-groups:
-      index: true
-      list: true
-      record: true
+      index: false
+      list: false
+      record: false
     acl-roles:
       index: true
       list: true
       record: true
     schedulers:
-      index: true
-      list: true
-      record: true
+      index: false
+      list: false
+      record: false
     oauth-keys:
-      index: true
-      list: true
-      record: true
+      index: false
+      list: false
+      record: false
     outbound-email-accounts:
-      index: true
-      list: true
-      record: true
+      index: false
+      list: false
+      record: false
