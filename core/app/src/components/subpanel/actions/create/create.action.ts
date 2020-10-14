@@ -19,15 +19,16 @@ export class SubPanelCreateAction extends ActionHandler {
 
     run(data: ActionData): void {
         const store = data.store;
+        const action = data.action;
 
-        const moduleName = this.moduleNameMapper.toFrontend(data.subpanelMeta.module);
+        const moduleName = action.module;
 
         const route = `/${moduleName}/edit`;
 
         this.router.navigate([route], {
             queryParams: {
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                return_module: data.subpanelMeta.module,
+                return_module: this.moduleNameMapper.toLegacy(moduleName),
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
                 return_action: 'DetailView',
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

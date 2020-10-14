@@ -4,6 +4,7 @@ import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
 export interface SubPanelTopButton {
     key: string;
     labelKey: string;
+    module: string;
 }
 
 export interface SubPanelCollectionList {
@@ -33,6 +34,7 @@ export interface SubPanel {
     subpanel_name?: string;
     header_definition_from_subpanel?: string;
     module?: string;
+    legacyModule?: string;
     headerModule?: string;
     top_buttons?: SubPanelTopButton[];
     collection_list: SubPanelCollectionList;

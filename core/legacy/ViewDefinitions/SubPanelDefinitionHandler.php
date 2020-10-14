@@ -100,7 +100,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $mod = new $class();
         $spd = new SubPanelDefinitions($mod);
 
-        $tabs = $spd->layout_defs['subpanel_setup'];
+        $tabs = $spd->layout_defs['subpanel_setup'] ?? [];
 
         foreach ($tabs as $key => $tab) {
 
@@ -112,6 +112,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['icon'] = $tab['module'];
             $tabs[$key]['name'] = $key;
             $tabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
+            $tabs[$key]['legacyModule'] = $tab['module'];
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
 
@@ -137,11 +138,62 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $topButtons = [];
 
+        $mapped = [
+            'SubPanelTopCreateTaskButton' => [
+                'key' => 'create',
+                'labelKey' => 'LNK_NEW_TASK',
+                'module' => 'tasks'
+            ],
+            'SubPanelTopScheduleMeetingButton' => [
+                'key' => 'create',
+                'labelKey' => 'LNK_NEW_MEETING',
+                'module' => 'meetings'
+            ],
+            'SubPanelTopScheduleCallButton' => [
+                'key' => 'create',
+                'labelKey' => 'LNK_NEW_CALL',
+                'module' => 'calls'
+            ],
+            'SubPanelTopComposeEmailButton' => [
+                'skip' => true,
+            ],
+            'SubPanelTopCreateNoteButton' => [
+                'key' => 'create',
+                'labelKey' => 'LNK_NEW_NOTE',
+                'module' => 'notes'
+            ],
+            'SubPanelTopArchiveEmailButton' => [
+                'skip' => true,
+            ],
+            'SubPanelTopSummaryButton' => [
+                'skip' => true,
+            ],
+            'SubPanelTopFilterButton' => [
+                'skip' => true,
+            ],
+        ];
+
         foreach ($topButtonDefinitions as $top_button) {
+            if (empty($top_button['widget_class'])) {
+                continue;
+            }
+
+            $mappedButton = $mapped[$top_button['widget_class']] ?? null;
+
+            if ($mappedButton !== null && !empty($mappedButton['skip'])) {
+                continue;
+            }
+
+            if ($mappedButton !== null) {
+                $topButtons[] = $mappedButton;
+                continue;
+            }
+
             if (strpos($top_button['widget_class'], 'Create') !== false) {
                 $topButtons[] = [
                     'key' => 'create',
-                    'labelKey' => 'LBL_QUICK_CREATE'
+                    'labelKey' => 'LBL_QUICK_CREATE',
+                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module'])
                 ];
             }
         }

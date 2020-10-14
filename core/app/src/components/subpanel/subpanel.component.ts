@@ -49,7 +49,10 @@ export class SubpanelComponent implements OnInit {
         if (this.store.metadata) {
             if (this.store.metadata.top_buttons) {
                 this.store.metadata.top_buttons.forEach(button => {
-                    const label = this.languages.getAppString(button.labelKey);
+                    const label = this.languages.getFieldLabel(
+                        button.labelKey,
+                        button.module
+                    );
 
                     actions.push({
                         ...button,
@@ -69,8 +72,18 @@ export class SubpanelComponent implements OnInit {
             buttons.push(this.buildButton(action));
         });
 
+        let breakpoint = 1;
+        if (buttons && buttons.length > 1) {
+            breakpoint = -1;
+        }
+
+        const dropdownLabel = this.languages.getAppString('LBL_ACTIONS');
+
         return {
-            buttons
+            buttons,
+            breakpoint,
+            dropdownLabel,
+            buttonKlass: ['btn', 'btn-sm', 'btn-outline-light']
         } as ButtonGroupInterface;
     }
 
@@ -81,7 +94,8 @@ export class SubpanelComponent implements OnInit {
             onClick: (): void => {
                 this.actionManager.run(action.key, {
                     subpanelMeta: this.store.metadata,
-                    store: this.recordStore
+                    store: this.recordStore,
+                    action
                 });
             }
         } as AnyButtonInterface;
