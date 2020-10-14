@@ -1,0 +1,30 @@
+.widget {
+  background-color: $white;
+}
+
+.sub-panel .panel-card .card-header {
+  background-color: $midnight-blue;
+}
+
+.widget-header {
+  background-color: $midnight-blue;
+  -webkit-border-top-left-radius: 0.3em;
+  -webkit-border-top-right-radius: 0.3em;
+  -moz-border-radius-topleft: 0.3em;
+  -moz-border-radius-topright: 0.3em;
+  border-top-left-radius: 0.3em;
+  border-top-right-radius: 0.3em;
+  height: 2.8rem;
+
+  h3 {
+    color: $white;
+    font-size: 0.875rem;
+    margin: 0;
+    padding: 0 .75rem;
+    line-height: 1.5;
+  }
+}
+
+.widget-close-icon {
+  margin-right: 0.2em;
+}

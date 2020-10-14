@@ -291,10 +291,9 @@ button {
 .record-edit-button {
   background-color: transparent;
   border: none;
-  padding: 0.2em;
-  margin: -0.8em;
+  padding: 0 0.3em;
   font-size: 0.8em;
-  fill: transparentize($nepal-grey, 0.5)
+  fill: transparentize($nepal-grey, 0.5);
 }
 
 button.settings-button.dropdown-toggle::after {
@@ -338,7 +337,7 @@ button.settings-button.dropdown-toggle::after {
   font-size: 0.5em;
   fill: $white;
   padding: .25rem .35rem;
-  margin: 0.25rem 1em 0.25rem .3rem;
+  margin: 0 0.2em 0 0.2em;
 }
 
 .minimise-button:hover {

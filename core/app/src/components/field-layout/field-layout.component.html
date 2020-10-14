@@ -1,4 +1,4 @@
-<form class="field-layout">
+<form class="field-layout {{config.mode}}">
     <div [ngClass]="rowClass" *ngFor="let row of fieldGrid; index as i">
 
         <div *ngFor="let col of row.cols; index as colNumber"
@@ -9,18 +9,22 @@
                 <div class="label-container">
                     <strong><label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>:</strong>
                 </div>
-                <div>
-                    <scrm-field [type]="col.field.type"
-                                [mode]="config.mode"
-                                [klass]="inputClass"
-                                [field]="col.field"
-                                [record]="record">
-                    </scrm-field>
-                    <button type="button" class="record-edit-button float-right"
-                            (click)="this.dataSource.getEditAction()"
-                            *ngIf="col.field.definition.inline_edit !== false && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
-                        <scrm-image class="sicon" image="pencil"></scrm-image>
-                    </button>
+                <div class="d-flex">
+                    <div class="flex-grow-1 text-break">
+                        <scrm-field [type]="col.field.type"
+                                    [mode]="config.mode"
+                                    [klass]="inputClass"
+                                    [field]="col.field"
+                                    [record]="record">
+                        </scrm-field>
+                    </div>
+                    <div>
+                        <button type="button" class="record-edit-button"
+                                (click)="this.dataSource.getEditAction()"
+                                *ngIf="col.field.definition.inline_edit !== false && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
+                            <scrm-image class="sicon" image="pencil"></scrm-image>
+                        </button>
+                    </div>
                 </div>
             </ng-container>
 

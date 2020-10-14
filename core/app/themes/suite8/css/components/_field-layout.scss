@@ -18,5 +18,10 @@
 
 .field-layout textarea {
   margin-bottom: 1rem;
+}
+
+.field-layout.detail textarea.form-control:disabled,
+.field-layout.detail textarea.form-control[readonly] {
+  margin-bottom: 1rem;
   background-color: $white;
 }

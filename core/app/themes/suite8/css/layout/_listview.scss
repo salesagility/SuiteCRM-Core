@@ -47,27 +47,6 @@
   padding-left: 0.6em;
 }
 
-.widget {
-  background-color: $white;
-}
-
-.widget-header {
-  background-color: $midnight-blue;
-  -webkit-border-top-left-radius: 0.3em;
-  -webkit-border-top-right-radius: 0.3em;
-  -moz-border-radius-topleft: 0.3em;
-  -moz-border-radius-topright: 0.3em;
-  border-top-left-radius: 0.3em;
-  border-top-right-radius: 0.3em;
-
-  h3 {
-    color: $white;
-    font-size: 1.2em;
-    margin: 0;
-    padding: 0.8em;
-  }
-}
-
 .list-view-table {
   margin: 0;
   table-layout: fixed;

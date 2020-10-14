@@ -1,17 +1,22 @@
-<div class="card panel-card">
+<div class="card panel-card" [class.collapsed]="isCollapsed">
 
-    <div class="card-header">
-        <span class="pl-1">
-            <scrm-close-button *ngIf="isClosable()" [config]="close"></scrm-close-button>
-            <scrm-minimise-button *ngIf="isCollapsible()" [config]="minimiseConfig()"></scrm-minimise-button>
-            <ng-content select="[panel-icon-area]"></ng-content>
-        </span>
+    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <span class="pl-1">{{title}}</span>
+        <div class="flex-grow-1 align-items-center d-flex">
 
-        <span class="panel-buttons float-right">
+            <div class="d-flex align-items-center">
+                <scrm-close-button *ngIf="isClosable()" [config]="close"></scrm-close-button>
+                <scrm-minimise-button *ngIf="isCollapsible()" [config]="minimiseConfig()"></scrm-minimise-button>
+                <ng-content select="[panel-icon-area]"></ng-content>
+            </div>
+
+            <div class="pl-1 panel-title">{{title}}</div>
+        </div>
+
+
+        <div class="panel-buttons float-right">
             <ng-content select="[panel-header-button]"></ng-content>
-        </span>
+        </div>
     </div>
 
     <div class="card-body p-{{bodyPadding}}" [ngbCollapse]="isCollapsed">

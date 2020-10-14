@@ -5,7 +5,6 @@
 
 .tabs-layout .nav-tabs {
   border-bottom: 1px solid $off-white;
-  font-size: 0.9em;
 }
 
 .tabs-layout .nav-tabs .tab {
@@ -15,6 +14,9 @@
 .tabs-layout .nav-tabs .tab-link {
   background-color: $geyser-blue;
   color: $median-grey;
+  font-size: 0.875rem;
+  border: none;
+  padding: .4512rem 1rem;
 }
 
 .tabs-layout .nav-tabs .tab-link.active {

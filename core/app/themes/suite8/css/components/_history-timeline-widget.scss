@@ -1,5 +1,5 @@
 .history-timeline-viewport {
-  height: 30em;
+  height: 45em;
 }
 
 .history-timeline .card {
@@ -7,12 +7,12 @@
 }
 
 .history-timeline .circle {
-  width: 2.5em;
-  height: 2.5em;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 0.17em solid;
 }
 
-.history-timeline .history-timeline-image {
+.history-timeline .history-timeline-image svg {
   font-size: x-large;
 }
 
@@ -22,8 +22,8 @@
 }
 
 .history-timeline .connector {
-  height: 0.5em;
-  width: 0.6em;
+  height: 0.5rem;
+  width: 0.6rem;
   border-top: 0.17em solid;
   border-bottom: 0.17em solid;
 }

@@ -1,12 +1,12 @@
 .sub-panel-banner {
-  background-color: #f1d4ce;
-  color: #4e4958;
+  background-color: $light-salmon-pink;
+  color: $midnight-blue;
   padding: 0.3125rem 0.625rem;
   margin-bottom: 0.625rem;
 }
 
 .sub-panel-banner-text {
-  margin-left: 10.3125rem;
+  margin-left: 1em;
 }
 
 .sub-panel-banner-buttons {
@@ -17,12 +17,14 @@
 }
 
 .sub-panel-banner-button {
-  padding: 0.625rem;
-  border: 1px solid #6d697c;
-  width: 12rem;
+  padding: 0.3rem;
+  border: 1px solid $black;
+  width: 6.5rem;
+  min-height: 4.5rem;
   text-align: center;
   margin: -1px 0 0 -1px;
   cursor: pointer;
+  background-color: $white;
 }
 
 .sub-panel-banner-button:hover {
@@ -33,42 +35,39 @@
   background-color: #faeeeb;
 }
 
-.sub-panel-banner-button-icon {
-  fill: #f9cfc9;
-  stroke: #f9cfc9;
-  font-size: x-large;
+.sub-panel-banner-button-icon svg {
+  fill: $bright-light-salmon-pink;
+  stroke: $bright-light-salmon-pink;
+  font-size: 1.6em;
 }
 
 .sub-panel-banner-button-title {
   text-transform: uppercase;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
-  font-size: small;
+  font-weight: bolder;
+  font-size: 0.75em;
   line-height: 1.5;
   width: 100%;
-  margin-top: 0.4375rem;
-  margin-bottom: 0.8125rem;
-  color: #625c71;
+  padding: 0.6em 0;
+  color: $midnight-blue;
 }
 
 .sub-panel-banner-button-stats {
   text-transform: uppercase;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: x-large;
-  font-weight: bolder;
+  font-size: 1.05em;
+  font-weight: 900;
   width: 100%;
-  color: #ee8776;
+  color: $dull-orange;
 }
 
 .sub-panel div.card {
   margin-top: 0.625rem;
 }
 
-.sub-panel .panel-card .card-header {
+.widget-panel .panel-card .card-header {
   background-color: $midnight-blue;
 }
 
-.sub-panel .subpanel-icon {
+.sub-panel .subpanel-icon svg {
   font-size: x-large;
   fill: white;
   stroke: white;
