@@ -76,7 +76,7 @@ export class RecordManager {
 
             const type = field.type || '';
             const source = field.definition.source || '';
-            const rname = field.definition.rname || '';
+            const rname = field.definition.rname || 'name';
             const idName = field.definition.id_name || '';
 
             if (type === 'relate' && source === 'non-db' && idName === fieldName) {

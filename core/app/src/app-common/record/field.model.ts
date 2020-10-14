@@ -64,7 +64,7 @@ export class FieldManager {
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
         const type = (viewField && viewField.type) || '';
         const source = (definition && definition.source) || '';
-        const rname = (definition && definition.rname) || '';
+        const rname = (definition && definition.rname) || 'name';
         let value;
 
         if (type === 'relate' && source === 'non-db' && rname !== '') {
