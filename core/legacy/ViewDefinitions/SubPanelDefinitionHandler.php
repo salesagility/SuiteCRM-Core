@@ -102,9 +102,15 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $tabs = $spd->layout_defs['subpanel_setup'] ?? [];
 
+        $resultingTabs = [];
+
         foreach ($tabs as $key => $tab) {
 
             $subpanel = $spd->load_subpanel($key);
+
+            if ($subpanel === false) {
+                continue;
+            }
 
             $headerModule = $this->getHeaderModule($tab);
             $vardefs = $this->getSubpanelModuleVardefs($headerModule);
@@ -121,10 +127,16 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 $columnSubpanel = $subpanel->sub_subpanels[$headerModule];
             }
 
-            $tabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
+            if (empty($columnSubpanel)) {
+                continue;
+            }
+
+            $resultingTabs[$key] = $tabs[$key];
+
+            $resultingTabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
         }
 
-        return $tabs;
+        return $resultingTabs;
     }
 
     /**
@@ -227,14 +239,15 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      */
     protected function mapColumns(aSubPanel $subpanel, array $vardefs): array
     {
-        $subpanel->panel_definition['list_fields'];
+        $panelDefinition = $subpanel->panel_definition ?? [];
+        $listFields = $panelDefinition['list_fields'] ?? [];
         $definitions = [];
 
-        if (empty($subpanel->panel_definition['list_fields'])) {
+        if (empty($listFields)) {
             return [];
         }
 
-        foreach ($subpanel->panel_definition['list_fields'] as $key => $column) {
+        foreach ($listFields as $key => $column) {
             $usage = $column['usage'] ?? '';
 
             if ($usage === 'query_only') {
