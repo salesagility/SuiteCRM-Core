@@ -1,6 +1,6 @@
 <ng-container *ngIf="(vm$ | async) as vm">
 
-    <div class="sub-panel-banner">
+    <div class="sub-panel-banner rounded">
 
         <scrm-image [image]="'eye'"></scrm-image>
 
@@ -20,7 +20,7 @@
 
         <div class="sub-panel-banner-buttons">
             <div
-                class="sub-panel-banner-button"
+                class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between"
                 *ngFor="let item of vm.subpanels | keyvalue"
                 [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
                 (click)="showSubpanel(item.value)"
@@ -29,7 +29,7 @@
                     <scrm-image [image]="item.value.getIcon()"></scrm-image>
                 </div>
 
-                <div class="sub-panel-banner-button-title">
+                <div class="sub-panel-banner-button-title text-truncate">
                     {{item.value.getTitle()}}
                 </div>
 
