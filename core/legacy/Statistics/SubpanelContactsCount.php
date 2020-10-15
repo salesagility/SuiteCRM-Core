@@ -27,7 +27,7 @@ class SubpanelContactsCount implements StatisticsProviderInterface
         $statistic->setId(self::KEY);
         $statistic->setData([
             'type' => 'int',
-            'value' => '120'
+            'value' => '10'
         ]);
 
         return $statistic;
