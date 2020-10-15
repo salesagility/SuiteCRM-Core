@@ -44,6 +44,10 @@ export class CurrencyDetailFieldComponent extends BaseNumberComponent {
 
     getDigits(preferences: UserPreferenceMap, configs: SystemConfigMap): number {
 
+        if (this.field && this.field.metadata && isFinite(this.field.metadata.digits)) {
+            return this.field.metadata.digits;
+        }
+
         if (preferences && preferences.default_currency_significant_digits) {
             return preferences.default_currency_significant_digits;
         }

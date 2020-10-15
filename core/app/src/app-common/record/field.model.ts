@@ -30,6 +30,7 @@ export interface FieldMetadata {
     link?: boolean;
     rows?: number;
     cols?: number;
+    digits?: number;
 }
 
 export interface FieldMap {

@@ -17,8 +17,12 @@ export class FormatCurrencyPipe extends CurrencyPipe {
 
         let digitInfo = '1.2-2';
 
-        if (digits) {
-            digitInfo = `1.${digits}-${digits}`;
+        if (isFinite(digits)) {
+            if (digits < 1) {
+                digitInfo = '1.0-0';
+            } else {
+                digitInfo = `1.${digits}-${digits}`;
+            }
         }
 
         let transformed = super.transform(value, currencyCode, currencySymbol, digitInfo);

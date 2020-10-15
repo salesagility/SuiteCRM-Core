@@ -46,10 +46,16 @@ export class SubpanelStatisticsStore extends StatisticsStore {
     }
 
     protected addNewState(statistic: Statistic): void {
+        const field = FieldManager.buildShallowField(statistic.data.type, statistic.data.value);
+
+        field.metadata = {
+            digits: 0
+        };
+
         this.updateState({
             ...this.internalState,
             statistic,
-            field: FieldManager.buildShallowField(statistic.data.type, statistic.data.value),
+            field,
             loading: false
         });
     }
