@@ -3,15 +3,15 @@ parameters:
     saved-search:
       index: true
       list: true
-      record: true
+      record: false
     calls-reschedule:
       index: true
       list: true
-      record: true
+      record: false
     calls:
       index: true
       list: true
-      record: true
+      record: false
     tasks:
       index: true
       list: true
@@ -19,11 +19,11 @@ parameters:
     meetings:
       index: true
       list: true
-      record: true
+      record: false
     notes:
       index: true
       list: true
-      record: true
+      record: false
     leads:
       index: true
       list: true
@@ -43,11 +43,11 @@ parameters:
     email-templates:
       index: true
       list: true
-      record: true
+      record: false
     campaigns:
       index: true
       list: true
-      record: true
+      record: false
     prospects:
       index: true
       list: true
@@ -59,11 +59,11 @@ parameters:
     documents:
       index: true
       list: true
-      record: true
+      record: false
     cases:
       index: true
       list: true
-      record: true
+      record: false
     project:
       index: true
       list: true
@@ -71,7 +71,7 @@ parameters:
     project-task:
       index: true
       list: true
-      record: true
+      record: false
     bugs:
       index: true
       list: true
@@ -79,15 +79,15 @@ parameters:
     business-hours:
       index: true
       list: true
-      record: true
+      record: false
     spots:
       index: true
       list: true
-      record: true
+      record: false
     roles:
       index: true
       list: true
-      record: true
+      record: false
     users:
       index: true
       list: true
@@ -95,35 +95,35 @@ parameters:
     employees:
       index: true
       list: true
-      record: true
+      record: false
     template-section-line:
       index: true
       list: true
-      record: true
+      record: false
     surveys:
       index: true
       list: true
-      record: true
+      record: false
     survey-responses:
       index: true
       list: true
-      record: true
+      record: false
     survey-question-responses:
       index: true
       list: true
-      record: true
+      record: false
     survey-questions:
       index: true
       list: true
-      record: true
+      record: false
     survey-question-options:
       index: true
       list: true
-      record: true
+      record: false
     project-templates:
       index: true
       list: true
-      record: true
+      record: false
     task-templates:
       index: true
       list: true
@@ -139,23 +139,23 @@ parameters:
     events:
       index: true
       list: true
-      record: true
+      record: false
     event-locations:
       index: true
       list: true
-      record: true
+      record: false
     contracts:
       index: true
       list: true
-      record: true
+      record: false
     invoices:
       index: true
       list: true
-      record: true
+      record: false
     pdf-templates:
       index: true
       list: true
-      record: true
+      record: false
     product-categories:
       index: true
       list: true
@@ -163,15 +163,15 @@ parameters:
     products:
       index: true
       list: true
-      record: true
+      record: false
     quotes:
       index: true
       list: true
-      record: true
+      record: false
     products-quotes:
       index: true
       list: true
-      record: true
+      record: false
     maps:
       index: false
       list: false
@@ -179,39 +179,39 @@ parameters:
     markers:
       index: true
       list: true
-      record: true
+      record: false
     areas:
       index: true
       list: true
-      record: true
+      record: false
     address-cache:
       index: true
       list: true
-      record: true
+      record: false
     case-events:
       index: true
       list: true
-      record: true
+      record: false
     case-updates:
       index: true
       list: true
-      record: true
+      record: false
     reports:
       index: true
       list: true
-      record: true
+      record: false
     scheduled-reports:
       index: true
       list: true
-      record: true
+      record: false
     workflow:
       index: true
       list: true
-      record: true
+      record: false
     workflow-processed:
       index: true
       list: true
-      record: true
+      record: false
     security-groups:
       index: false
       list: false
@@ -219,7 +219,7 @@ parameters:
     acl-roles:
       index: true
       list: true
-      record: true
+      record: false
     schedulers:
       index: false
       list: false
