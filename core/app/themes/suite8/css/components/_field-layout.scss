@@ -23,5 +23,8 @@
 .field-layout.detail textarea.form-control:disabled,
 .field-layout.detail textarea.form-control[readonly] {
   margin-bottom: 1rem;
-  background-color: $white;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: inherit;
 }
