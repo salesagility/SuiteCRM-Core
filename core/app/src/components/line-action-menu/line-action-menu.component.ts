@@ -48,6 +48,6 @@ export class LineActionMenuComponent implements OnInit {
 
             actions.push(recordAction);
         });
-        this.items = actions;
+        this.items = actions.reverse();
     }
 }
