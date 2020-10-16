@@ -66,12 +66,15 @@ export class FieldManager {
         const type = (viewField && viewField.type) || '';
         const source = (definition && definition.source) || '';
         const rname = (definition && definition.rname) || 'name';
+        const viewName = viewField.name || '';
         let value;
 
-        if (type === 'relate' && source === 'non-db' && rname !== '') {
-            value = record.attributes[viewField.name][rname];
+        if (!viewName) {
+            value = '';
+        } else if (type === 'relate' && source === 'non-db' && rname !== '') {
+            value = record.attributes[viewName][rname];
         } else {
-            value = record.attributes[viewField.name];
+            value = record.attributes[viewName];
         }
 
 
