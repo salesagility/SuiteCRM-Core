@@ -16,11 +16,20 @@ import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-n
 import {ActionNameMapper} from '@services/navigation/action-name-mapper/action-name-mapper.service';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
+import {transition, trigger, useAnimation} from '@angular/animations';
+import {fadeIn} from 'ng-animate';
 
 @Component({
     selector: 'scrm-navbar-ui',
     templateUrl: './navbar.component.html',
-    styleUrls: []
+    styleUrls: [],
+    animations: [
+        trigger('mobileNavFade', [
+            transition(':enter', useAnimation(fadeIn, {
+                params: {timing: 0.5, delay: 0}
+            })),
+        ])
+    ]
 })
 export class NavbarUiComponent implements OnInit, OnDestroy {
 
