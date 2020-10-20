@@ -30,6 +30,10 @@ import {DateEditFieldComponent} from '@fields/date/templates/edit/date.component
 import {DateTimeEditFieldComponent} from '@fields/datetime/templates/edit/datetime.component';
 import {DateEditFieldModule} from '@fields/date/templates/edit/date.module';
 import {DateTimeEditFieldModule} from '@fields/datetime/templates/edit/datetime.module';
+import {EnumDetailFieldComponent} from '@fields/enum/templates/detail/enum.component';
+import {EnumDetailFieldModule} from '@fields/enum/templates/detail/enum.module';
+import {EnumEditFieldComponent} from '@fields/enum/templates/edit/enum.component';
+import {EnumEditFieldModule} from '@fields/enum/templates/edit/enum.module';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -47,7 +51,9 @@ export const fieldModules = [
     EmailListFieldsModule,
     TextDetailFieldModule,
     RelateDetailFieldsModule,
-    FullNameDetailFieldsModule
+    FullNameDetailFieldsModule,
+    EnumDetailFieldModule,
+    EnumEditFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -65,7 +71,9 @@ export const fieldComponents = [
     EmailListFieldsComponent,
     TextDetailFieldComponent,
     RelateDetailFieldsComponent,
-    FullNameDetailFieldsComponent
+    FullNameDetailFieldsComponent,
+    EnumDetailFieldComponent,
+    EnumEditFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -99,5 +107,8 @@ export const viewFieldsMap = {
     'relate.detail': RelateDetailFieldsComponent,
     'relate.list': RelateDetailFieldsComponent,
     'fullname.list': FullNameDetailFieldsComponent,
-    'fullname.detail': FullNameDetailFieldsComponent
+    'fullname.detail': FullNameDetailFieldsComponent,
+    'enum.list': EnumDetailFieldComponent,
+    'enum.detail': EnumDetailFieldComponent,
+    'enum.edit': EnumEditFieldComponent
 };

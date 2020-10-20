@@ -7,6 +7,7 @@ export interface FieldDefinition {
     name?: string;
     type?: string; // label key to use
     vname?: string; // original label
+    options?: string;
     reportable?: boolean;
     required?: boolean;
     // eslint-disable-next-line camelcase

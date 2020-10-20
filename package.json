@@ -47,6 +47,7 @@
     "luxon": "^1.25.0",
     "ng-animate": "^0.3.4",
     "ng-dynamic-component": "^6.1.0",
+    "ngx-chips": "^2.2.1",
     "nyc": "~14.1.1",
     "object-hash": "^2.0.2",
     "rxjs": "^6.6.3",

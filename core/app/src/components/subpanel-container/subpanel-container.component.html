@@ -20,7 +20,7 @@
 
         <div class="sub-panel-banner-buttons">
             <div
-                class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between"
+                class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between rounded"
                 *ngFor="let item of vm.subpanels | keyvalue"
                 [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
                 (click)="showSubpanel(item.value)"

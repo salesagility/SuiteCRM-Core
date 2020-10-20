@@ -48,7 +48,21 @@ export const languageMockData = {
         moduleList: {
             Home: 'Home',
             Accounts: 'Accounts',
-        }
+        },
+        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+        account_type_dom: {
+            '': '',
+            _analyst: 'Analyst',
+            _competitor: 'Competitor',
+            _customer: 'Customer',
+            _integrator: 'Integrator',
+            _investor: 'Investor',
+            _partner: 'Partner',
+            _press: 'Press',
+            _prospect: 'Prospect',
+            _reseller: 'Reseller',
+            _other: 'Other'
+        },
     },
     modStrings: {
         home: {

@@ -1,0 +1,43 @@
+tag-input tag {
+  padding: 0 0.5rem 0 .7rem !important;
+  line-height: 32px !important;
+  background-color: $light-grey !important;
+}
+
+tag-input tag delete-icon:hover {
+  transform: none !important;
+}
+
+tag-input tag delete-icon span {
+  background-color: $shell-grey;
+  border-radius: 50%;
+  padding: 0 0 2px 0;
+  font-size: 10px !important;
+  position: relative;
+  bottom: auto;
+  top: -2px;
+}
+
+tag-input tag delete-icon span:hover {
+  background-color: $median-grey;
+}
+
+tag-input tag delete-icon span svg {
+  height: 9px !important;
+  width: 14px;
+  vertical-align: middle !important;
+}
+
+tag-input tag delete-icon span svg path {
+  fill: none !important;
+  stroke: $pebble-grey;
+  stroke-width: 4px;
+}
+
+tag-input-form {
+  width: 100%;
+}
+
+.ng2-dropdown-menu {
+  max-height: 12em !important;
+}

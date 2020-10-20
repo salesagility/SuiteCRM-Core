@@ -11,13 +11,20 @@ import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
 import {datetimeFormatterMock} from '@services/datetime/datetime-formatter.service.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {TagInputModule} from 'ngx-chips';
+import {FormsModule} from '@angular/forms';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @Component({
     selector: 'field-test-host-component',
     template: `
         <div id="wrapper">
             <div *ngFor="let wrapper of fields" [id]="wrapper.field.type + '-' + wrapper.mode">
-                <scrm-field [mode]="wrapper.mode" [type]="wrapper.field.type" [field]="wrapper.field" [record]="wrapper.record">
+                <scrm-field [mode]="wrapper.mode" [type]="wrapper.field.type" [field]="wrapper.field"
+                            [record]="wrapper.record">
                 </scrm-field>
             </div>
         </div>`
@@ -69,7 +76,17 @@ class FieldTestHostComponent {
                     last_name: 'Name',
                 }
             },
-        }
+        },
+        {
+            field: {type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}},
+            mode: 'list',
+            expected: 'Customer'
+        },
+        {
+            field: {type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}},
+            mode: 'detail',
+            expected: 'Customer'
+        },
     ];
 }
 
@@ -96,9 +113,14 @@ describe('FieldComponent', () => {
                 ...fieldModules,
                 CommonModule,
                 DynamicModule.withComponents(fieldComponents),
-                RouterTestingModule
+                RouterTestingModule,
+                TagInputModule,
+                FormsModule,
+                BrowserDynamicTestingModule,
+                BrowserAnimationsModule
             ],
             providers: [
+                {provide: LanguageStore, useValue: languageStoreMock},
                 {
                     provide: UserPreferenceStore, useValue: {
                         userPreferences$: preferences.asObservable()
