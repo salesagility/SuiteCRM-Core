@@ -34,6 +34,10 @@ import {EnumDetailFieldComponent} from '@fields/enum/templates/detail/enum.compo
 import {EnumDetailFieldModule} from '@fields/enum/templates/detail/enum.module';
 import {EnumEditFieldComponent} from '@fields/enum/templates/edit/enum.component';
 import {EnumEditFieldModule} from '@fields/enum/templates/edit/enum.module';
+import {MultiEnumDetailFieldModule} from '@fields/multienum/templates/detail/multienum.module';
+import {MultiEnumEditFieldModule} from '@fields/multienum/templates/edit/multienum.module';
+import {MultiEnumDetailFieldComponent} from '@fields/multienum/templates/detail/multienum.component';
+import {MultiEnumEditFieldComponent} from '@fields/multienum/templates/edit/multienum.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -53,7 +57,9 @@ export const fieldModules = [
     RelateDetailFieldsModule,
     FullNameDetailFieldsModule,
     EnumDetailFieldModule,
-    EnumEditFieldModule
+    EnumEditFieldModule,
+    MultiEnumDetailFieldModule,
+    MultiEnumEditFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -73,7 +79,9 @@ export const fieldComponents = [
     RelateDetailFieldsComponent,
     FullNameDetailFieldsComponent,
     EnumDetailFieldComponent,
-    EnumEditFieldComponent
+    EnumEditFieldComponent,
+    MultiEnumDetailFieldComponent,
+    MultiEnumEditFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -110,5 +118,8 @@ export const viewFieldsMap = {
     'fullname.detail': FullNameDetailFieldsComponent,
     'enum.list': EnumDetailFieldComponent,
     'enum.detail': EnumDetailFieldComponent,
-    'enum.edit': EnumEditFieldComponent
+    'enum.edit': EnumEditFieldComponent,
+    'multienum.list': MultiEnumDetailFieldComponent,
+    'multienum.detail': MultiEnumDetailFieldComponent,
+    'multienum.edit': MultiEnumEditFieldComponent
 };

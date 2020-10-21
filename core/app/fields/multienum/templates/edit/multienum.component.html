@@ -1,0 +1,16 @@
+<tag-input [(ngModel)]="selectedValues"
+           [onlyFromAutocomplete]="true"
+           [clearOnBlur]="true"
+           [displayBy]="'label'"
+           [identifyBy]="'value'"
+           [placeholder]="getPlaceholderLabel()"
+           [secondaryPlaceholder]="getPlaceholderLabel()"
+           (onAdd)="onAdd()"
+           (onRemove)="onRemove()">
+    <tag-input-dropdown [displayBy]="'label'"
+                        [identifyBy]="'value'"
+                        [showDropdownIfEmpty]="true"
+                        [keepOpen]="false"
+                        [autocompleteItems]="this.options">
+    </tag-input-dropdown>
+</tag-input>

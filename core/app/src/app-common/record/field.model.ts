@@ -2,6 +2,12 @@ import {Record} from './record.model';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
 import {LanguageStore} from '@store/language/language.store';
+import {Observable} from 'rxjs';
+
+export interface Option {
+    value: string;
+    label: string;
+}
 
 export interface FieldDefinition {
     name?: string;
@@ -32,6 +38,7 @@ export interface FieldMetadata {
     rows?: number;
     cols?: number;
     digits?: number;
+    options$?: Observable<Option[]>;
 }
 
 export interface FieldMap {
@@ -41,6 +48,7 @@ export interface FieldMap {
 export interface Field {
     type: string;
     value?: string;
+    valueList?: string[];
     name?: string;
     label?: string;
     labelKey?: string;
@@ -69,6 +77,7 @@ export class FieldManager {
         const rname = (definition && definition.rname) || 'name';
         const viewName = viewField.name || '';
         let value;
+        let valueList = null;
 
         if (!viewName) {
             value = '';
@@ -76,6 +85,11 @@ export class FieldManager {
             value = record.attributes[viewName][rname];
         } else {
             value = record.attributes[viewName];
+        }
+
+        if (Array.isArray(value)) {
+            valueList = value;
+            value = null;
         }
 
 
@@ -88,6 +102,10 @@ export class FieldManager {
             definition,
             labelKey: viewField.label,
         } as Field;
+
+        if (valueList) {
+            field.valueList = valueList;
+        }
 
         if (language) {
             field.label = this.getFieldLabel(viewField.label, record.module, language);

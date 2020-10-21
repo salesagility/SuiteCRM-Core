@@ -5,3 +5,12 @@ a {
 .textarea {
   background: #ffffff
 }
+
+ul {
+  list-style-type: square;
+  padding-inline-start: 1em;
+}
+
+ul li::marker {
+  color: $midnight-blue;
+}

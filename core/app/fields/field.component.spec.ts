@@ -87,6 +87,24 @@ class FieldTestHostComponent {
             mode: 'detail',
             expected: 'Customer'
         },
+        {
+            field: {
+                type: 'multienum',
+                valueList: ['_customer', '_reseller'],
+                definition: {options: 'account_type_dom'}
+            },
+            mode: 'list',
+            expected: 'Customer'
+        },
+        {
+            field: {
+                type: 'multienum',
+                valueList: ['_customer', '_reseller'],
+                definition: {options: 'account_type_dom'}
+            },
+            mode: 'detail',
+            expected: 'Customer'
+        },
     ];
 }
 

@@ -127,7 +127,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
                 continue;
             }
 
-            if (!empty($properties['isMultiSelect'])) {
+            if (!empty($properties['isMultiSelect']) || $type === 'multienum') {
                 $multiSelectValue = $values[$field];
                 if (!is_array($values[$field])) {
                     $multiSelectValue = [];

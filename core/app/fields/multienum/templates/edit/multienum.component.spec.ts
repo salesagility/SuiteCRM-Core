@@ -1,6 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {EnumEditFieldComponent} from './enum.component';
 import {Field} from '@app-common/record/field.model';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
@@ -8,15 +7,20 @@ import {TagInputModule} from 'ngx-chips';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {MultiEnumEditFieldComponent} from '@fields/multienum/templates/edit/multienum.component';
 
 @Component({
-    selector: 'enum-edit-field-test-host-component',
-    template: '<scrm-enum-edit [field]="field"></scrm-enum-edit>'
+    selector: 'multienum-edit-field-test-host-component',
+    template: '<scrm-multienum-edit [field]="field"></scrm-multienum-edit>'
 })
-class EnumEditFieldTestHostComponent {
+class MultiEnumEditFieldTestHostComponent {
     field: Field = {
         type: 'enum',
-        value: '_customer',
+        value: null,
+        valueList: [
+            '_customer',
+            '_reseller'
+        ],
         metadata: null,
         definition: {
             options: 'account_type_dom'
@@ -24,15 +28,15 @@ class EnumEditFieldTestHostComponent {
     };
 }
 
-describe('EnumEditFieldComponent', () => {
-    let testHostComponent: EnumEditFieldTestHostComponent;
-    let testHostFixture: ComponentFixture<EnumEditFieldTestHostComponent>;
+describe('MultiEnumEditFieldComponent', () => {
+    let testHostComponent: MultiEnumEditFieldTestHostComponent;
+    let testHostFixture: ComponentFixture<MultiEnumEditFieldTestHostComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                EnumEditFieldTestHostComponent,
-                EnumEditFieldComponent,
+                MultiEnumEditFieldTestHostComponent,
+                MultiEnumEditFieldComponent,
             ],
             imports: [
                 TagInputModule,
@@ -45,7 +49,7 @@ describe('EnumEditFieldComponent', () => {
             ],
         }).compileComponents();
 
-        testHostFixture = TestBed.createComponent(EnumEditFieldTestHostComponent);
+        testHostFixture = TestBed.createComponent(MultiEnumEditFieldTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));
@@ -59,7 +63,11 @@ describe('EnumEditFieldComponent', () => {
 
         testHostComponent.field = {
             type: 'enum',
-            value: '_customer',
+            value: null,
+            valueList: [
+                '_customer',
+                '_reseller'
+            ],
             metadata: null,
             definition: {
                 options: 'account_type_dom'
@@ -70,7 +78,7 @@ describe('EnumEditFieldComponent', () => {
         testHostFixture.whenStable().then(() => {
 
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-enum-edit')[0];
+            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-multienum-edit')[0];
 
             expect(field).toBeTruthy();
 
@@ -78,18 +86,31 @@ describe('EnumEditFieldComponent', () => {
 
             expect(tagInput).toBeTruthy();
 
-            const tag = tagInput.getElementsByTagName('tag').item(0);
+            const tag1 = tagInput.getElementsByTagName('tag').item(0);
 
-            expect(tag).toBeTruthy();
+            expect(tag1).toBeTruthy();
 
-            const tagText = tag.getElementsByClassName('tag__text').item(0);
+            const tagText1 = tag1.getElementsByClassName('tag__text').item(0);
 
-            expect(tagText.textContent).toContain('Customer');
-            expect(tagText.textContent).not.toContain('_customer');
+            expect(tagText1.textContent).toContain('Customer');
+            expect(tagText1.textContent).not.toContain('_customer');
 
-            const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
+            const deleteIcon1 = tag1.getElementsByTagName('delete-icon').item(0);
 
-            expect(deleteIcon).toBeTruthy();
+            expect(deleteIcon1).toBeTruthy();
+
+            const tag2 = tagInput.getElementsByTagName('tag').item(1);
+
+            expect(tag2).toBeTruthy();
+
+            const tagText2 = tag2.getElementsByClassName('tag__text').item(0);
+
+            expect(tagText2.textContent).toContain('Reseller');
+            expect(tagText2.textContent).not.toContain('_reseller');
+
+            const deleteIcon2 = tag1.getElementsByTagName('delete-icon').item(0);
+
+            expect(deleteIcon2).toBeTruthy();
 
         });
 
@@ -102,7 +123,11 @@ describe('EnumEditFieldComponent', () => {
 
         testHostComponent.field = {
             type: 'enum',
-            value: '_customer',
+            value: null,
+            valueList: [
+                '_customer',
+                '_reseller'
+            ],
             metadata: null,
             definition: {
                 options: 'account_type_dom'
@@ -125,7 +150,7 @@ describe('EnumEditFieldComponent', () => {
 
                 expect(tag).toBeTruthy();
 
-                expect(tag.length).toEqual(0);
+                expect(tag.length).toEqual(1);
             });
 
         });
@@ -140,7 +165,11 @@ describe('EnumEditFieldComponent', () => {
 
         testHostComponent.field = {
             type: 'enum',
-            value: '_customer',
+            value: null,
+            valueList: [
+                '_customer',
+                '_reseller'
+            ],
             metadata: null,
             definition: {
                 options: 'account_type_dom'
@@ -148,7 +177,7 @@ describe('EnumEditFieldComponent', () => {
         };
 
         testHostFixture.detectChanges();
-        testHostFixture.whenRenderingDone().then(() => {
+        testHostFixture.whenStable().then(() => {
 
             const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
 

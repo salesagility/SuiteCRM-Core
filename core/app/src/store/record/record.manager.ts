@@ -89,6 +89,11 @@ export class RecordManager {
                 return;
             }
 
+            if (field.valueList) {
+                this.stagingState.attributes[fieldName] = field.valueList;
+                return;
+            }
+
             this.stagingState.attributes[fieldName] = field.value;
         });
 
@@ -159,7 +164,7 @@ export class RecordManager {
         const fields = {} as FieldMap;
 
         viewFieldDefinitions.forEach(viewField => {
-            if (!viewField) {
+            if (!viewField || !viewField.name) {
                 return;
             }
             fields[viewField.name] = this.buildField(viewField, record, this.language);
