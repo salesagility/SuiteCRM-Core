@@ -182,9 +182,6 @@
     "doctrine/reflection": {
         "version": "v1.1.0"
     },
-    "dunglas/angular-csrf-bundle": {
-        "version": "v1.2.0"
-    },
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },

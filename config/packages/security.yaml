@@ -29,30 +29,9 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/session-status$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/graphql, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/graphql/graphiql*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
-
-dunglas_angular_csrf:
-  token:
-    id: angular
-  header:
-    name: X-XSRF-TOKEN
-  cookie:
-    name: XSRF-TOKEN
-    expire: 0
-    path: /
-    secure: false
-    set_on:
-      - { path: ^/$ }
-      - { path: ^/session-status$ }
-  secure:
-    - { path: ^/ }
-  exclude:
-    - { path: ^/$ }
-    - { path: ^/logout$ }
-    - { path: ^/(_(profiler|wdt))/ }
-    - { path: ^/api }
-    - { path: ^/session-status$ }

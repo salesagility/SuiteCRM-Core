@@ -53,7 +53,7 @@ services:
     SuiteCRM\Core\Legacy\Data\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
     App\Service\StatisticsProviderInterface:
-      tags: ['app.data.statistics.handler']
+      tags: [ 'app.data.statistics.handler' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -93,6 +93,32 @@ services:
 
   App\Security\LegacySessionLogoutHandler:
     decorates: 'security.logout.handler.session'
+
+  App\Security\RouteMatcher:
+    class: App\Security\RouteMatcher
+    public: false
+
+  App\Security\CSRFTokenManager:
+    class: App\Security\CSRFTokenManager
+    public: false
+    arguments:
+      $tokenId: 'angular'
+
+  App\Security\CSRFCookieListener:
+    tags: [ { name: kernel.event_listener, event: kernel.response, method: onKernelResponse } ]
+    arguments:
+      $routes: [ '^/' ]
+      $cookieName: 'XSRF-TOKEN'
+      $cookieExpire: 0
+      $cookiePath: /
+      $cookieDomain: ~
+      $cookieSecure: false
+
+  App\Security\CSRFValidationListener:
+    tags: [ { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 12 } ]
+    arguments:
+      $routes: [  ]
+      $headerName: 'X-XSRF-TOKEN'
 
   SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers:
     # inject all services tagged with user.preferences.mapper as first argument

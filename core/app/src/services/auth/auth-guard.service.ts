@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate {
 
         return this.authService.fetchSessionStatus()
             .pipe(
-                take(1),
                 map((user: any) => {
                     if (user && user.active === true) {
                         this.authService.setCurrentUser(user);
