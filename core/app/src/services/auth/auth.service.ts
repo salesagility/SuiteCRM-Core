@@ -60,15 +60,15 @@ export class AuthService {
         const loginUrl = 'login';
 
         const headers = new HttpHeaders({
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json',
         });
-        const params = new HttpParams()
-            .set('username', username)
-            .set('password', password);
 
         return this.http.post(
             loginUrl,
-            params.toString(),
+            {
+                username,
+                password
+            },
             {headers}
         ).subscribe((response: any) => {
             onSuccess(caller, response);

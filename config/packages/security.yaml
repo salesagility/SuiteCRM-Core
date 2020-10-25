@@ -15,20 +15,18 @@ security:
       user_checker: App\Security\UserChecker
       security: false
     main:
+      anonymous: true
       user_checker: App\Security\UserChecker
-      anonymous: lazy
       guard:
         authenticators:
           - App\Security\LoginFormAuthenticator
-      form_login:
-        login_path: app_login
+      json_login:
         check_path: app_login
       logout:
         path: app_logout
 
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/session-status$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
