@@ -1,17 +1,12 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-
-
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
-
 import {AuthService} from '@services/auth/auth.service';
 import {MessageService} from '@services/message/message.service';
-import {ApiService} from '@services/api/api.service';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
-
 import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {Process} from '@services/process/process.service';
@@ -67,7 +62,6 @@ export class LoginUiComponent {
     );
 
     constructor(
-        protected api: ApiService,
         protected router: Router,
         protected auth: AuthService,
         protected message: MessageService,

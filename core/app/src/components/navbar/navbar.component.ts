@@ -1,8 +1,6 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-
-import {ApiService} from '@services/api/api.service';
 import {NavbarModel} from './navbar-model';
 import {NavbarAbstract} from './navbar.abstract';
 import {Navigation, NavigationStore} from '@store/navigation/navigation.store';
@@ -91,7 +89,6 @@ export class NavbarUiComponent implements OnInit, OnDestroy {
 
     constructor(protected navigationStore: NavigationStore,
                 protected languageStore: LanguageStore,
-                protected api: ApiService,
                 protected userPreferenceStore: UserPreferenceStore,
                 protected systemConfigStore: SystemConfigStore,
                 protected appState: AppStateStore,
