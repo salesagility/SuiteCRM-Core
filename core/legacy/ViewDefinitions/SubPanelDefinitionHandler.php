@@ -1,14 +1,14 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\ViewDefinitions;
+namespace App\Legacy\ViewDefinitions;
 
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
-use SuiteCRM\Core\Legacy\LegacyHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 
 /**
  * Class SubPanelDefinitionHandler

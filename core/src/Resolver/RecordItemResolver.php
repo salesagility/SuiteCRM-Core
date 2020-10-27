@@ -5,7 +5,7 @@ namespace App\Resolver;
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Entity\Record;
 use Exception;
-use SuiteCRM\Core\Legacy\RecordHandler;
+use App\Legacy\RecordHandler;
 
 class RecordItemResolver implements QueryItemResolverInterface
 {

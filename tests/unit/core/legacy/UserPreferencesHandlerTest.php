@@ -6,13 +6,13 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\CurrencyHandler;
-use SuiteCRM\Core\Legacy\DateTimeHandler;
-use SuiteCRM\Core\Legacy\UserPreferenceHandler;
-use SuiteCRM\Core\Legacy\UserPreferences\CurrencyPreferenceMapper;
-use SuiteCRM\Core\Legacy\UserPreferences\DateFormatPreferenceMapper;
-use SuiteCRM\Core\Legacy\UserPreferences\TimeFormatPreferenceMapper;
-use SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers;
+use App\Legacy\CurrencyHandler;
+use App\Legacy\DateTimeHandler;
+use App\Legacy\UserPreferenceHandler;
+use App\Legacy\UserPreferences\CurrencyPreferenceMapper;
+use App\Legacy\UserPreferences\DateFormatPreferenceMapper;
+use App\Legacy\UserPreferences\TimeFormatPreferenceMapper;
+use App\Legacy\UserPreferences\UserPreferencesMappers;
 use User;
 
 class UserPreferencesHandlerTest extends Unit

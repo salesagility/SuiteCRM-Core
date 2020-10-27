@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\ModStrings;
-use SuiteCRM\Core\Legacy\ModStringsHandler;
+use App\Legacy\ModStringsHandler;
 
 /**
  * Class ModStringsItemDataProvider

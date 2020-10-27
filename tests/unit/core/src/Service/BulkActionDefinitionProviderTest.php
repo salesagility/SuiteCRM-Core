@@ -6,7 +6,7 @@ use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\AclHandler;
+use App\Legacy\AclHandler;
 
 class BulkActionDefinitionProviderTest extends Unit
 {

@@ -5,7 +5,7 @@ namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Entity\ClassicView;
-use SuiteCRM\Core\Legacy\ClassicViewHandler;
+use App\Legacy\ClassicViewHandler;
 
 class ClassicViewResolver implements QueryItemResolverInterface
 {

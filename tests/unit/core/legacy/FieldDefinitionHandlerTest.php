@@ -5,8 +5,8 @@ namespace App\Tests;
 use App\Entity\FieldDefinition;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use App\Legacy\FieldDefinitionsHandler;
+use App\Legacy\ModuleNameMapperHandler;
 
 final class FieldDefinitionHandlerTest extends Unit
 {

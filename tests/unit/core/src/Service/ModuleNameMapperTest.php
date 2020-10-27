@@ -5,7 +5,7 @@ namespace App\Tests;
 use App\Service\ModuleNameMapperInterface;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use App\Legacy\ModuleNameMapperHandler;
 
 class ModuleNameMapperTest extends Unit
 {

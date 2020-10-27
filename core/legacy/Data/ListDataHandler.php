@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\Data;
+namespace App\Legacy\Data;
 
 use App\Service\LegacyFilterMapper;
 use BeanFactory;

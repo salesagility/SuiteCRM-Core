@@ -1,9 +1,9 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\SystemConfig;
+namespace App\Legacy\SystemConfig;
 
 use App\Entity\SystemConfig;
-use SuiteCRM\Core\Legacy\DateTimeHandler;
+use App\Legacy\DateTimeHandler;
 
 class TimeFormatConfigMapper implements SystemConfigMapperInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\SystemConfig;
+namespace App\Legacy\SystemConfig;
 
 use App\Entity\SystemConfig;
-use SuiteCRM\Core\Legacy\CurrencyHandler;
+use App\Legacy\CurrencyHandler;
 
 class DefaultCurrencyConfigMapper implements SystemConfigMapperInterface
 {

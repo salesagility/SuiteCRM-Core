@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 class DateTimeHandler extends LegacyHandler
 {

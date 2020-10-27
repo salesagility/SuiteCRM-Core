@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use SuiteCRM\Core\Legacy\AppListStringsProviderInterface;
+use App\Legacy\AppListStringsProviderInterface;
 
 class LineActionDefinitionProvider implements LineActionDefinitionProviderInterface
 {

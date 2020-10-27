@@ -1,8 +1,8 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\UserPreferences;
+namespace App\Legacy\UserPreferences;
 
-use SuiteCRM\Core\Legacy\CurrencyHandler;
+use App\Legacy\CurrencyHandler;
 
 class CurrencyPreferenceMapper implements UserPreferencesMapperInterface
 {

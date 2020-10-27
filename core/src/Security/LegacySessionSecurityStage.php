@@ -11,7 +11,7 @@ use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\ResolveInfo;
 use LogicException;
-use SuiteCRM\Core\Legacy\Authentication;
+use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

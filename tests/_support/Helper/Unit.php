@@ -4,7 +4,7 @@ namespace App\Tests\Helper;
 
 use Codeception\Module;
 use Codeception\TestInterface;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\LegacyScopeState;
 
 class Unit extends Module
 {

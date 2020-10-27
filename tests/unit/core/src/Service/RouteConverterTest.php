@@ -5,9 +5,9 @@ namespace App\Tests;
 use App\Service\RouteConverterInterface;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
-use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
-use SuiteCRM\Core\Legacy\RouteConverterHandler;
+use App\Legacy\ActionNameMapperHandler;
+use App\Legacy\ModuleNameMapperHandler;
+use App\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteConverterTest extends Unit

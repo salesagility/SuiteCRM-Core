@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\Statistics;
+namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Entity\Navbar;
 use App\Service\ModuleNameMapperInterface;

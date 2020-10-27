@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Service\ActionNameMapperInterface;
 use App\Service\ModuleNameMapperInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class RouteConverter
  *
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class RouteConverterHandler extends LegacyHandler implements RouteConverterInterface
 {

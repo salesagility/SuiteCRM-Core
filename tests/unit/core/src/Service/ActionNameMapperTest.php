@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use App\Service\ActionNameMapperInterface;
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
+use App\Legacy\ActionNameMapperHandler;
 
 class ActionNameMapperTest extends Unit
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Entity\FieldDefinition;
 use App\Service\FieldDefinitionsProviderInterface;
@@ -10,7 +10,7 @@ use SugarView;
 
 /**
  * Class FieldDefinitionsHandler
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsProviderInterface
 {

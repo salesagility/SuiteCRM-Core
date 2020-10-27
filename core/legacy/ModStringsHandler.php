@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;

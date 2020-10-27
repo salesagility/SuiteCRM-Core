@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use ApiBeanMapper;
 use App\Entity\Record;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class RecordViewHandler
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class RecordHandler extends LegacyHandler implements RecordProviderInterface
 {

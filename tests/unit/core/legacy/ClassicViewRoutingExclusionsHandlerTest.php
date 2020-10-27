@@ -1,7 +1,7 @@
 <?php namespace App\Tests;
 
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
+use App\Legacy\ClassicViewRoutingExclusionsHandler;
 
 class ClassicViewRoutingExclusionsHandlerTest extends Unit
 {

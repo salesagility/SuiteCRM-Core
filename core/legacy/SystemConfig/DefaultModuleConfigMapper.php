@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\SystemConfig;
+namespace App\Legacy\SystemConfig;
 
 use App\Entity\SystemConfig;
 use App\Service\ModuleNameMapperInterface;

@@ -1,8 +1,8 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\UserPreferences;
+namespace App\Legacy\UserPreferences;
 
-use SuiteCRM\Core\Legacy\DateTimeHandler;
+use App\Legacy\DateTimeHandler;
 
 class DateFormatPreferenceMapper implements UserPreferencesMapperInterface
 {

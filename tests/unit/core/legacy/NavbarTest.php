@@ -6,11 +6,11 @@ use App\Entity\Navbar;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
-use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
-use SuiteCRM\Core\Legacy\NavbarHandler;
-use SuiteCRM\Core\Legacy\RouteConverterHandler;
+use App\Legacy\ActionNameMapperHandler;
+use App\Legacy\ModuleNameMapperHandler;
+use App\Legacy\ModuleRegistryHandler;
+use App\Legacy\NavbarHandler;
+use App\Legacy\RouteConverterHandler;
 
 final class NavbarTest extends Unit
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\Data\PresetDataHandlers;
+namespace App\Legacy\Data\PresetDataHandlers;
 
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelDataPort;
-use SuiteCRM\Core\Legacy\Data\ListData;
-use SuiteCRM\Core\Legacy\Data\PresetListDataHandlerInterface;
-use SuiteCRM\Core\Legacy\Data\RecordMapper;
-use SuiteCRM\Core\Legacy\LegacyHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\Data\ListData;
+use App\Legacy\Data\PresetListDataHandlerInterface;
+use App\Legacy\Data\RecordMapper;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 
 class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandlerInterface
 {

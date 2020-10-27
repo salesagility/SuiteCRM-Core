@@ -5,7 +5,7 @@ namespace App\Tests;
 use App\Tests\Helper\Unit as Tester;
 use Codeception\Actor;
 use Codeception\Lib\Friend;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\LegacyScopeState;
 
 /**
  * Inherited Methods

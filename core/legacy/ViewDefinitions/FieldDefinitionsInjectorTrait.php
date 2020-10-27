@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SuiteCRM\Core\Legacy\ViewDefinitions;
+namespace App\Legacy\ViewDefinitions;
 
 
 trait FieldDefinitionsInjectorTrait

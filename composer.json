@@ -50,20 +50,13 @@
   },
   "autoload": {
     "psr-4": {
-      "SuiteCRM\\Core\\Legacy\\": "core/legacy/",
       "App\\": "core/src/",
-      "App\\Entity\\": "core/src/Entity/",
-      "App\\EventSubscriber\\": "core/src/EventSubscriber/",
-      "App\\Repository\\": "core/src/Repository",
-      "App\\Security\\": "core/src/Security",
-      "App\\Command\\": "core/src/Command/",
-      "App\\Controller\\": "core/src/Controller/",
-      "App\\DataFixtures\\": "core/src/DataFixtures/",
-      "App\\DataProvider\\": "core/src/DataProvider/",
-      "App\\DataPersister\\": "core/src/DataPersister/",
-      "App\\Services\\": "core/src/Service/",
-      "App\\EventListener\\": "core/src/EventListener/",
-      "App\\Resolver\\": "core/src/Resolver/"
+      "App\\Legacy\\": "core/legacy/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
     }
   },
   "scripts": {

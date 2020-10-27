@@ -7,7 +7,7 @@ use AspectMock\Test;
 use AuthenticationController;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\Authentication;
+use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

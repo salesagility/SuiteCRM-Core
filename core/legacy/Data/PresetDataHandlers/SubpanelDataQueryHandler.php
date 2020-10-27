@@ -1,12 +1,12 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\Data\PresetDataHandlers;
+namespace App\Legacy\Data\PresetDataHandlers;
 
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelCustomQueryPort;
-use SuiteCRM\Core\Legacy\LegacyHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 
 class SubpanelDataQueryHandler extends LegacyHandler
 {

@@ -46,11 +46,11 @@ services:
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
-    SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMapperInterface:
+    App\Legacy\UserPreferences\UserPreferencesMapperInterface:
       tags: [ 'user.preferences.mapper' ]
-    SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMapperInterface:
+    App\Legacy\SystemConfig\SystemConfigMapperInterface:
       tags: [ 'system.config.mapper' ]
-    SuiteCRM\Core\Legacy\Data\PresetListDataHandlerInterface:
+    App\Legacy\Data\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
     App\Service\StatisticsProviderInterface:
       tags: [ 'app.data.statistics.handler' ]
@@ -63,7 +63,7 @@ services:
 
   # makes classes in legacy/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
-  SuiteCRM\Core\Legacy\:
+  App\Legacy\:
     resource: '../core/legacy/*'
 
   # controllers are imported separately to make sure services can be injected
@@ -120,19 +120,19 @@ services:
       $routes: [  ]
       $headerName: 'X-XSRF-TOKEN'
 
-  SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers:
+  App\Legacy\UserPreferences\UserPreferencesMappers:
     # inject all services tagged with user.preferences.mapper as first argument
     # and use the value of the 'getKey' method to index the services
     arguments:
       - !tagged { tag: 'user.preferences.mapper', default_index_method: 'getKey' }
 
-  SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers:
+  App\Legacy\SystemConfig\SystemConfigMappers:
     # inject all services tagged with system.config.mapper as first argument
     # and use the value of the 'getKey' method to index the services
     arguments:
       - !tagged { tag: 'system.config.mapper', default_index_method: 'getKey' }
 
-  SuiteCRM\Core\Legacy\Data\PresetListDataHandlers:
+  App\Legacy\Data\PresetListDataHandlers:
     # inject all services tagged with app.data.preset.handler as first argument
     # and use the value of the 'getType' method to index the services
     arguments:

@@ -6,7 +6,7 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\RecordList;
 use Exception;
-use SuiteCRM\Core\Legacy\RecordListHandler;
+use App\Legacy\RecordListHandler;
 
 /**
  * Class RecordListItemDataProvider

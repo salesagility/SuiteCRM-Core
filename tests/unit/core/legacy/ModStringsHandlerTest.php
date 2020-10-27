@@ -5,9 +5,9 @@ namespace App\Tests;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\ModStrings;
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\ModStringsHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
-use SuiteCRM\Core\Legacy\ModuleRegistryHandler;
+use App\Legacy\ModStringsHandler;
+use App\Legacy\ModuleNameMapperHandler;
+use App\Legacy\ModuleRegistryHandler;
 
 class ModStringsHandlerTest extends Unit
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\ViewDefinitions;
+namespace App\Legacy\ViewDefinitions;
 
 use App\Entity\FieldDefinition;
 use BeanFactory;
 use DetailView2;
 use Exception;
 use Psr\Log\LoggerInterface;
-use SuiteCRM\Core\Legacy\LegacyHandler;
-use SuiteCRM\Core\Legacy\LegacyScopeState;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use ViewDetail;
 use ViewFactory;
 

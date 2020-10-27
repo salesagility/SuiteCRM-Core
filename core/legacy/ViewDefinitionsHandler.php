@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
@@ -17,8 +17,8 @@ use InvalidArgumentException;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
 use SearchForm;
-use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
-use SuiteCRM\Core\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
+use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
+use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 use function in_array;
 
 /**

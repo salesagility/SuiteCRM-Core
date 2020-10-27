@@ -12,13 +12,13 @@ use Codeception\Test\Unit;
 use Exception;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use SuiteCRM\Core\Legacy\AclHandler;
-use SuiteCRM\Core\Legacy\AppListStringsHandler;
-use SuiteCRM\Core\Legacy\FieldDefinitionsHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
-use SuiteCRM\Core\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
-use SuiteCRM\Core\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
-use SuiteCRM\Core\Legacy\ViewDefinitionsHandler;
+use App\Legacy\AclHandler;
+use App\Legacy\AppListStringsHandler;
+use App\Legacy\FieldDefinitionsHandler;
+use App\Legacy\ModuleNameMapperHandler;
+use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
+use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
+use App\Legacy\ViewDefinitionsHandler;
 
 final class ViewDefinitionsHandlerTest extends Unit
 {

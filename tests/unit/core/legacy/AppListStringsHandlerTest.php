@@ -5,7 +5,7 @@ namespace App\Tests;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\AppListStrings;
 use Codeception\Test\Unit;
-use SuiteCRM\Core\Legacy\AppListStringsHandler;
+use App\Legacy\AppListStringsHandler;
 
 class AppListStringsHandlerTest extends Unit
 {

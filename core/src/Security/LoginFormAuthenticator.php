@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Security\Exception\UserNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use SuiteCRM\Core\Legacy\Authentication;
+use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,10 +1,10 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\Statistics;
+namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
 use App\Service\StatisticsProviderInterface;
-use SuiteCRM\Core\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 
 class SubpanelOpportunitiesTotal extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {

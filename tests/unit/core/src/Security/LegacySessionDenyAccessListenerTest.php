@@ -14,7 +14,7 @@ use AspectMock\Test;
 use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
-use SuiteCRM\Core\Legacy\Authentication;
+use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

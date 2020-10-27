@@ -6,8 +6,8 @@ use ACLController;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\AclHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
+use App\Legacy\AclHandler;
+use App\Legacy\ModuleNameMapperHandler;
 
 class AclHandlerTest extends Unit
 {

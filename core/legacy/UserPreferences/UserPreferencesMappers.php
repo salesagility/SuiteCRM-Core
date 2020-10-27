@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\UserPreferences;
+namespace App\Legacy\UserPreferences;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 

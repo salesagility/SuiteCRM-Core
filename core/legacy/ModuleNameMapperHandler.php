@@ -1,13 +1,13 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Service\ModuleNameMapperInterface;
 use ModuleNameMapper;
 
 /**
  * Class ModuleNameMapper
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class ModuleNameMapperHandler extends LegacyHandler implements ModuleNameMapperInterface
 {

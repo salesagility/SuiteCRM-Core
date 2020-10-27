@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy\UserPreferences;
+namespace App\Legacy\UserPreferences;
 
 interface UserPreferencesMapperInterface
 {

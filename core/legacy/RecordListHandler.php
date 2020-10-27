@@ -1,18 +1,18 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Entity\RecordList;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordListProviderInterface;
 use InvalidArgumentException;
-use SuiteCRM\Core\Legacy\Data\ListData;
-use SuiteCRM\Core\Legacy\Data\ListDataHandler;
-use SuiteCRM\Core\Legacy\Data\PresetListDataHandlers;
+use App\Legacy\Data\ListData;
+use App\Legacy\Data\ListDataHandler;
+use App\Legacy\Data\PresetListDataHandlers;
 
 /**
  * Class RecordListHandler
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class RecordListHandler extends LegacyHandler implements RecordListProviderInterface
 {

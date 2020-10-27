@@ -1,12 +1,12 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\UserPreference;
 use App\Service\UserPreferencesProviderInterface;
 use RuntimeException;
-use SuiteCRM\Core\Legacy\UserPreferences\UserPreferencesMappers;
+use App\Legacy\UserPreferences\UserPreferencesMappers;
 use UnexpectedValueException;
 use User;
 

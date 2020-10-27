@@ -1,13 +1,13 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\SystemConfig;
 use App\Service\ActionNameMapperInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SystemConfigProviderInterface;
-use SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers;
+use App\Legacy\SystemConfig\SystemConfigMappers;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {

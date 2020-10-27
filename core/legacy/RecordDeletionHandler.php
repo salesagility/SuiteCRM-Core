@@ -1,6 +1,6 @@
 <?php
 
-namespace SuiteCRM\Core\Legacy;
+namespace App\Legacy;
 
 use App\Service\RecordListProviderInterface;
 use App\Service\ModuleNameMapperInterface;
@@ -9,7 +9,7 @@ use BeanFactory;
 
 /**
  * Class ListViewHandler
- * @package SuiteCRM\Core\Legacy
+ * @package App\Legacy
  */
 class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProviderInterface
 {

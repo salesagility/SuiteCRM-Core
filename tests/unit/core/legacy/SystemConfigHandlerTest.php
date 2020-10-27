@@ -5,16 +5,16 @@ namespace App\Tests;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\ActionNameMapperHandler;
-use SuiteCRM\Core\Legacy\ClassicViewRoutingExclusionsHandler;
-use SuiteCRM\Core\Legacy\CurrencyHandler;
-use SuiteCRM\Core\Legacy\DateTimeHandler;
-use SuiteCRM\Core\Legacy\ModuleNameMapperHandler;
-use SuiteCRM\Core\Legacy\SystemConfig\DateFormatConfigMapper;
-use SuiteCRM\Core\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
-use SuiteCRM\Core\Legacy\SystemConfig\SystemConfigMappers;
-use SuiteCRM\Core\Legacy\SystemConfig\TimeFormatConfigMapper;
-use SuiteCRM\Core\Legacy\SystemConfigHandler;
+use App\Legacy\ActionNameMapperHandler;
+use App\Legacy\ClassicViewRoutingExclusionsHandler;
+use App\Legacy\CurrencyHandler;
+use App\Legacy\DateTimeHandler;
+use App\Legacy\ModuleNameMapperHandler;
+use App\Legacy\SystemConfig\DateFormatConfigMapper;
+use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
+use App\Legacy\SystemConfig\SystemConfigMappers;
+use App\Legacy\SystemConfig\TimeFormatConfigMapper;
+use App\Legacy\SystemConfigHandler;
 
 class SystemConfigHandlerTest extends Unit
 {

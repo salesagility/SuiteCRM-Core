@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use Codeception\Test\Unit;
 use Exception;
-use SuiteCRM\Core\Legacy\CurrencyHandler;
+use App\Legacy\CurrencyHandler;
 
 class CurrencyHandlerTest extends Unit
 {
