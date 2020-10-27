@@ -40,7 +40,9 @@ export const languageMockData = {
         LBL_PANEL_ASSIGNMENT: 'OTHER',
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
         lbl_account_information: 'OVERVIEW',
-        LBL_PANEL_ADVANCED: 'MORE INFORMATION'
+        LBL_PANEL_ADVANCED: 'MORE INFORMATION',
+        LBL_AVERAGE_SPEND_PER_YEAR: 'Average Spend Per Year',
+        LBL_OPPORTUNITIES_TOTAL: 'Total Opportunity Value',
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

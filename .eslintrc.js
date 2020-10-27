@@ -16,6 +16,7 @@ module.exports = {
           ["@fields", "./core/app/fields"],
           ["@services", "./core/app/src/services"],
           ["@components", "./core/app/src/components"],
+          ["@containers", "./core/app/src/containers"],
           ["@store", "./core/app/src/store"]
         ],
         "extensions": [".ts", ".js"]

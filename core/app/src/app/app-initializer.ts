@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {RecordComponent} from '@views/record/record.component';
+import {RecordComponent} from '@views/record/components/record-view/record.component';
 import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';

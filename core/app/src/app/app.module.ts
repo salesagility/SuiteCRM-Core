@@ -22,7 +22,7 @@ import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ListHeaderModule} from '@components/list-header/list-header.module';
 import {ListContainerModule} from '@components/list-container/list-container.module';
 import {ListModule} from '@views/list/list.module';
-import {RecordModule} from '@views/record/record.module';
+import {RecordModule} from '@views/record/components/record-view/record.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';

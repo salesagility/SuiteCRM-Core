@@ -1,0 +1,7 @@
+<ndc-dynamic *ngIf="type && config"
+             [ndcDynamicComponent]="componentType"
+             [ndcDynamicInputs]="{
+        'config': config,
+        'context': context
+    }"
+></ndc-dynamic>

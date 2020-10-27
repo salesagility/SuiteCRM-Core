@@ -30,6 +30,11 @@ class SubpanelContractsRenewalDate implements StatisticsProviderInterface
             'value' => '2021-02-15'
         ]);
 
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'date',
+        ]);
+
         return $statistic;
     }
 }

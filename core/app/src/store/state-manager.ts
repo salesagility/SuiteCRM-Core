@@ -21,12 +21,12 @@ export class StateManager {
         protected navigationStore: NavigationStore,
         protected systemConfigStore: SystemConfigStore,
         protected themeImagesStore: ThemeImagesStore,
-        protected userPreferenceStore: UserPreferenceStore
+        protected userPreferenceStore: UserPreferenceStore,
     ) {
         this.stateStores.appStore = this.buildMapEntry(appStore, false);
         this.stateStores.navigationStore = this.buildMapEntry(navigationStore, true);
         this.stateStores.languageStore = this.buildMapEntry(languageStore, true);
-        this.stateStores.listViewMetaStore = this.buildMapEntry(metadataStore, false);
+        this.stateStores.metadataStore = this.buildMapEntry(metadataStore, false);
         this.stateStores.systemConfigStore = this.buildMapEntry(systemConfigStore, false);
         this.stateStores.themeImagesStore = this.buildMapEntry(themeImagesStore, false);
         this.stateStores.userPreferenceStore = this.buildMapEntry(userPreferenceStore, true);

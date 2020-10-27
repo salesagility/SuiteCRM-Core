@@ -26,8 +26,12 @@ class SubpanelEmpty implements StatisticsProviderInterface
         $statistic = new Statistic();
         $statistic->setId(self::KEY);
         $statistic->setData([
-            'type' => 'varchar',
             'value' => '-'
+        ]);
+
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'varchar',
         ]);
 
         return $statistic;

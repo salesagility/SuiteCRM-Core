@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RecordActionData, RecordActionHandler} from '@views/record/actions/record.action';
 import {ViewMode} from '@app-common/views/view.model';
-import {RecordViewStore} from '@store/record-view/record-view.store';
+import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 
 @Injectable({
     providedIn: 'root'

@@ -1,0 +1,35 @@
+<div *ngIf="(vm$ | async) as vm"
+     class="d-flex justify-content-center widget-bar">
+    <div class="p-2 widget-bar-entry-message" *ngIf="this.messageLabelKey">
+        {{vm.appStrings[this.messageLabelKey] || '' | uppercase}}
+    </div>
+    <ng-container *ngFor="let item of statistics | keyvalue">
+
+        <div class="d-flex justify-content-center widget-bar-entry">
+
+            <div class="p-2 widget-bar-entry-label" *ngIf="item.value.labelKey && vm.appStrings[item.value.labelKey]">
+                {{vm.appStrings[item.value.labelKey] | uppercase}}:
+            </div>
+
+            <ng-container *ngIf="item.key && vm.statistics[item.key]">
+
+                <div class="p-2 widget-bar-entry-value"
+                     *ngIf="!vm.statistics[item.key].loading && vm.statistics[item.key].field">
+                    <scrm-field [type]="vm.statistics[item.key].field.type" [field]="vm.statistics[item.key].field"
+                                mode="list"></scrm-field>
+                </div>
+
+            </ng-container>
+
+            <div class="p-2 widget-bar-entry-loading" *ngIf="(item.value.store.loading$ | async) as loading">
+                <scrm-inline-loading-spinner></scrm-inline-loading-spinner>
+
+                <ng-container *ngIf="!loading && (!item.key || !vm.statistics[item.key])">
+                    -
+                </ng-container>
+            </div>
+
+        </div>
+
+    </ng-container>
+</div>

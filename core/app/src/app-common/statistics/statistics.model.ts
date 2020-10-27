@@ -1,3 +1,5 @@
+import {ViewContext} from '@app-common/views/view.model';
+
 export interface StatisticsQueryMap {
     [key: string]: StatisticsQuery;
 }
@@ -5,6 +7,7 @@ export interface StatisticsQueryMap {
 export interface StatisticsQuery {
     key: string;
     params: any;
+    context: ViewContext;
 }
 
 export interface StatisticsMap {
@@ -14,14 +17,21 @@ export interface StatisticsMap {
 export interface Statistic {
     id: string;
     data: any;
+    metadata?: StatisticMetadata;
 }
 
-export interface SubpanelStatisticsData {
+export interface StatisticMetadata {
+    [key: string]: any;
+
+    type: string;
+}
+
+export interface SingleValueStatisticsData {
     type: string;
     value: string;
 }
 
-export interface SubpanelStatistic extends Statistic {
+export interface SingleValueStatistic extends Statistic {
     id: string;
-    data: SubpanelStatisticsData;
+    data: SingleValueStatisticsData;
 }

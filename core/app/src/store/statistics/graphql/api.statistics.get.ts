@@ -33,7 +33,8 @@ export class StatisticsFetchGQL {
                 edges {
                   node {
                     _id,
-                    data
+                    data,
+                    metadata
                   }
                 }
               }
@@ -56,7 +57,8 @@ export class StatisticsFetchGQL {
                     statistics[key] = {
                         // eslint-disable-next-line no-underscore-dangle
                         id: edge.node._id,
-                        data: edge.node.data
+                        data: edge.node.data,
+                        metadata: edge.node.metadata
                     } as Statistic;
                 });
             }

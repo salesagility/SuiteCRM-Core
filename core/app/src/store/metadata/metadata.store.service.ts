@@ -10,8 +10,10 @@ import {ModeActions} from '@app-common/actions/action.model';
 import {ColumnDefinition, ListViewMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
 import {LineAction} from '@app-common/actions/line-action.model';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
+import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 
 export interface RecordViewMetadata {
+    topWidget?: WidgetMetadata;
     actions: ModeActions;
     templateMeta: RecordTemplateMetadata;
     panels: Panel[];
@@ -310,7 +312,7 @@ export class MetadataStore implements StateStore {
         };
 
         const receivedMeta = data.viewDefinition.recordView;
-        const entries = {templateMeta: 'templateMeta', actions: 'actions', panels: 'panels'};
+        const entries = {templateMeta: 'templateMeta', actions: 'actions', panels: 'panels', topWidget: 'topWidget'};
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
 

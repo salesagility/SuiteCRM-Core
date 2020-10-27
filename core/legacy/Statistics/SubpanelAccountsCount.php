@@ -26,8 +26,12 @@ class SubpanelAccountsCount implements StatisticsProviderInterface
         $statistic = new Statistic();
         $statistic->setId(self::KEY);
         $statistic->setData([
-            'type' => 'int',
             'value' => '3'
+        ]);
+
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'int',
         ]);
 
         return $statistic;

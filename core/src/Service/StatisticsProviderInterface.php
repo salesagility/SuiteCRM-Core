@@ -14,8 +14,8 @@ interface StatisticsProviderInterface
 
     /**
      * Get statistics data
-     * @param array $param
+     * @param array $query
      * @return Statistic
      */
-    public function getData(array $param): Statistic;
+    public function getData(array $query): Statistic;
 }

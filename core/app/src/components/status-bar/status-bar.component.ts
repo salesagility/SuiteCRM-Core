@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {RecordViewStore} from '@store/record-view/record-view.store';
+import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 
 @Component({

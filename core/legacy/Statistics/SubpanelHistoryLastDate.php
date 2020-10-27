@@ -26,8 +26,12 @@ class SubpanelHistoryLastDate implements StatisticsProviderInterface
         $statistic = new Statistic();
         $statistic->setId(self::KEY);
         $statistic->setData([
-            'type' => 'date',
             'value' => '2020-09-23'
+        ]);
+
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'date',
         ]);
 
         return $statistic;

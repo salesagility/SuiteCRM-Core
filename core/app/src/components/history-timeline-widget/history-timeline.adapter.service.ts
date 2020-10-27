@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {RecordViewStore} from '@store/record-view/record-view.store';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {HistoryTimelineEntry} from '@components/history-timeline-widget/history-timeline-widget.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
@@ -230,7 +229,7 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
     private fetchedPages = new Set<number>();
     private pageSize = 5;
 
-    constructor(protected store: RecordViewStore) {
+    constructor() {
         super();
     }
 

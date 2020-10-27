@@ -1,0 +1,15 @@
+.widget-bar {
+  background-color: $coral-pink;
+  color: $white;
+  font-weight: bolder;
+}
+
+.widget-bar .widget-bar-entry-value {
+  font-weight: bolder;
+}
+
+.widget-bar .inline-spinner > div {
+  width: 0.45em;
+  height: 0.45em;
+  background-color: white;
+}

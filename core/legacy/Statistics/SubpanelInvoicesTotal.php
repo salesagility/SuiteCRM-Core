@@ -26,8 +26,12 @@ class SubpanelInvoicesTotal implements StatisticsProviderInterface
         $statistic = new Statistic();
         $statistic->setId(self::KEY);
         $statistic->setData([
-            'type' => 'currency',
             'value' => '50000'
+        ]);
+
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'currency',
         ]);
 
         return $statistic;

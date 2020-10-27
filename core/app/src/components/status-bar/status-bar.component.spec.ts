@@ -8,7 +8,7 @@ import {SettingsMenuModule} from '@components/settings-menu/settings-menu.module
 import {ImageModule} from '@components/image/image.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
-import {RecordViewStore} from '@store/record-view/record-view.store';
+import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 
 @Component({
     selector: 'status-bar-test-host-component',

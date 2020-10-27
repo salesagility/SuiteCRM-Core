@@ -61,6 +61,12 @@ class Statistic
     protected $data;
 
     /**
+     * @ApiProperty
+     * @var array|null
+     */
+    protected $metadata;
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
@@ -132,6 +138,25 @@ class Statistic
     public function setData(?array $data): Statistic
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param array|null $metadata
+     * @return Statistic
+     */
+    public function setMetadata(?array $metadata): Statistic
+    {
+        $this->metadata = $metadata;
 
         return $this;
     }
