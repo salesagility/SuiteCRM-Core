@@ -190,9 +190,6 @@ final class ViewDefinitionsHandlerTest extends Unit
             $logger
         );
 
-
-        $subpanelKeyMap = [];
-
         $subPanelDefinitionHandler = new SubPanelDefinitionHandler(
             $projectDir,
             $legacyDir,
@@ -200,8 +197,7 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $fieldDefinitionsHandler,
-            $subpanelKeyMap
+            $fieldDefinitionsHandler
         );
 
         $this->viewDefinitionHandler = new ViewDefinitionsHandler(

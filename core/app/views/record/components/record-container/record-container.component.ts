@@ -8,28 +8,28 @@ import {RecordContentAdapter} from '@views/record/adapters/record-content.adapte
 import {RecordContentDataSource} from '@components/record-content/record-content.model';
 import {SubpanelContainerConfig} from '@containers/subpanel/components/subpanel-container/subpanel-container.model';
 import {ViewContext} from '@app-common/views/view.model';
+import {TopWidgetAdapter} from '@views/record/adapters/top-widget.adapter';
 
 @Component({
     selector: 'scrm-record-container',
     templateUrl: 'record-container.component.html',
-    providers: [RecordContentAdapter]
+    providers: [RecordContentAdapter, TopWidgetAdapter]
 })
 export class RecordContainerComponent implements OnInit {
     type = '';
     widgetTitle = '';
 
     language$: Observable<LanguageStrings> = this.language.vm$;
-    recordMeta$: Observable<RecordViewMetadata> = this.metadata.recordViewMetadata$;
 
     vm$ = combineLatest([
-        this.language$, this.recordMeta$, this.recordViewStore.showWidgets$
+        this.language$, this.recordViewStore.showWidgets$, this.topWidgetAdapter.config$
     ]).pipe(
         map((
-            [language, recordMeta, showWidgets]
+            [language, showWidgets, topWidgetConfig]
         ) => ({
             language,
-            recordMeta,
-            showWidgets
+            showWidgets,
+            topWidgetConfig
         }))
     );
 
@@ -37,8 +37,12 @@ export class RecordContainerComponent implements OnInit {
         public recordViewStore: RecordViewStore,
         protected language: LanguageStore,
         protected metadata: MetadataStore,
-        protected contentAdapter: RecordContentAdapter
+        protected contentAdapter: RecordContentAdapter,
+        protected topWidgetAdapter: TopWidgetAdapter
     ) {
+    }
+
+    ngOnInit(): void {
     }
 
     getDisplayWidgets(): boolean {
@@ -48,9 +52,6 @@ export class RecordContainerComponent implements OnInit {
             this.widgetTitle = 'LBL_QUICK_HISTORY';
         }
         return display;
-    }
-
-    ngOnInit(): void {
     }
 
     getContentAdapter(): RecordContentDataSource {
@@ -66,5 +67,9 @@ export class RecordContainerComponent implements OnInit {
 
     getViewContext(): ViewContext {
         return this.recordViewStore.getViewContext();
+    }
+
+    hasTopWidgetMetadata(meta: RecordViewMetadata): boolean {
+        return !!(meta && meta.topWidget && meta.topWidget.type);
     }
 }

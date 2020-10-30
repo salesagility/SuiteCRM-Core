@@ -10,7 +10,7 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 import {MessageService} from '@services/message/message.service';
-import {catchError, distinctUntilChanged, finalize, map, tap} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {Record} from '@app-common/record/record.model';
 import {ViewContext, ViewMode} from '@app-common/views/view.model';
@@ -32,6 +32,7 @@ const initialState: RecordViewState = {
     loading: false,
     widgets: false,
     showWidgets: false,
+    showTopWidget: false,
     mode: 'detail'
 };
 
@@ -46,6 +47,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
     showWidgets$: Observable<boolean>;
+    showTopWidget$: Observable<boolean>;
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
 
@@ -94,6 +96,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.showWidgets$ = this.state$.pipe(map(state => state.showWidgets));
+        this.showTopWidget$ = this.state$.pipe(map(state => state.showTopWidget));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
         const data$ = combineLatest(
@@ -134,6 +137,17 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.updateState({
             ...this.internalState,
             showWidgets: show
+        });
+    }
+
+    get showTopWidget(): boolean {
+        return this.internalState.showTopWidget;
+    }
+
+    set showTopWidget(show: boolean) {
+        this.updateState({
+            ...this.internalState,
+            showTopWidget: show
         });
     }
 
@@ -178,7 +192,18 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.calculateShowWidgets();
 
-        return this.load();
+        return this.load().pipe(
+            tap(() => {
+                this.showTopWidget = true;
+                const subpanels = this.subpanelsState.value;
+                if (subpanels) {
+                    Object.keys(subpanels).forEach(subpanelKey => {
+                        const subpanel = subpanels[subpanelKey];
+                        subpanel.loadStatistics().pipe(take(1)).subscribe();
+                    });
+                }
+            })
+        );
     }
 
     /**

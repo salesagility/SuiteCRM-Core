@@ -24,6 +24,7 @@ export interface StatisticMetadata {
     [key: string]: any;
 
     type: string;
+    labelKey?: string;
 }
 
 export interface SingleValueStatisticsData {
@@ -34,4 +35,5 @@ export interface SingleValueStatisticsData {
 export interface SingleValueStatistic extends Statistic {
     id: string;
     data: SingleValueStatisticsData;
+    metadata?: StatisticMetadata;
 }

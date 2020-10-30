@@ -23,5 +23,6 @@ export interface RecordViewState {
     loading: boolean;
     widgets: boolean;
     showWidgets: boolean;
+    showTopWidget: boolean;
     mode: ViewMode;
 }

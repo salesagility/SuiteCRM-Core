@@ -119,6 +119,7 @@ export class MetadataStore implements StateStore {
     }
 
     public clearAuthBased(): void {
+        this.clear();
     }
 
     /**

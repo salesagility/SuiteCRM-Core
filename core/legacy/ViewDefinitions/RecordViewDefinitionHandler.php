@@ -268,6 +268,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
     protected function addTopWidgetConfig(array $viewDefs, array &$metadata): void
     {
         $metadata['topWidget'] = $viewDefs['topWidget'] ?? [];
+        $metadata['topWidget']['refreshOnRecordUpdate'] = $metadata['topWidget']['refreshOnRecordUpdate'] ?? true;
     }
 
     /**

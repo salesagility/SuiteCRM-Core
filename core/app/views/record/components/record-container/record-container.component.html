@@ -7,11 +7,12 @@
 
             <div class="container-fluid pl-0 pr-0">
 
-                <div class="row no-gutters" *ngIf="vm.recordMeta && vm.recordMeta.topWidget && vm.recordMeta.topWidget.type">
+                <div class="row no-gutters"
+                     *ngIf="vm.topWidgetConfig.show && hasTopWidgetMetadata(vm.topWidgetConfig.metadata)">
                     <div class="col pb-3">
-                        <scrm-top-widget [type]="vm.recordMeta.topWidget.type"
+                        <scrm-top-widget [type]="vm.topWidgetConfig.metadata.topWidget.type"
                                          [context]="getViewContext()"
-                                         [config]="vm.recordMeta.topWidget">
+                                         [config]="vm.topWidgetConfig.metadata.topWidget">
                         </scrm-top-widget>
                     </div>
                 </div>

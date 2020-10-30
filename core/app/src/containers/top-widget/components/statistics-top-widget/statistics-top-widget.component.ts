@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseWidgetComponent} from '@containers/top-widget/top-widget.model';
 import {
     SingleValueStatisticsState,
@@ -7,7 +7,7 @@ import {
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
 import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {StatisticsQuery} from '@app-common/statistics/statistics.model';
 
 interface StatisticsTopWidgetState {
@@ -30,10 +30,13 @@ interface StatisticsEntryMap {
     templateUrl: './statistics-top-widget.component.html',
     styles: []
 })
-export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements OnInit {
+export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements OnInit, OnDestroy {
     statistics: StatisticsEntryMap = {};
     vm$: Observable<StatisticsTopWidgetState>;
     messageLabelKey: string;
+    loading$: Observable<boolean>;
+    protected loading = true;
+    protected subs: Subscription[] = [];
 
     constructor(
         protected language: LanguageStore,
@@ -62,6 +65,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         }
 
         const statistics$: Observable<SingleValueStatisticsState>[] = [];
+        const loadings$: Observable<boolean>[] = [];
         this.config.options.statistics.forEach(statistic => {
 
             if (!statistic.type) {
@@ -83,14 +87,36 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             ).pipe(take(1)).subscribe();
 
             statistics$.push(this.statistics[statistic.type].store.state$);
+            loadings$.push(this.statistics[statistic.type].store.loading$);
         });
 
+        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
+
+            if (!loadings || loadings.length < 1) {
+                this.loading = false;
+                return false;
+            }
+
+            let loading = true;
+
+            loadings.forEach(value => {
+                loading = loading && value;
+            });
+
+            this.loading = loading;
+
+            return loading;
+        }));
+
+        this.subs.push(this.loading$.subscribe());
 
         this.vm$ = combineLatest([combineLatest(statistics$), this.language.appStrings$]).pipe(
             map(([statistics, appStrings]) => {
                 const statsMap: { [key: string]: SingleValueStatisticsState } = {};
                 statistics.forEach(value => {
-                    statsMap[value.statistic.id] = value;
+                    statsMap[value.query.key] = value;
+
+                    this.statistics[value.query.key].labelKey = this.getLabelKey(value);
                 });
 
                 return {
@@ -100,7 +126,42 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             })
         );
 
+        if (this.config.reload$) {
+            this.subs.push(this.config.reload$.subscribe(() => {
+                if (this.loading === false) {
 
+                    this.loading = true;
+                    this.config.options.statistics.forEach(statistic => {
+
+                        if (!statistic.type) {
+                            return;
+                        }
+
+                        if (!this.statistics[statistic.type] || !this.statistics[statistic.type].store) {
+                            return;
+                        }
+
+                        this.statistics[statistic.type].store.load(false).pipe(take(1)).subscribe();
+                    });
+
+                }
+            }));
+        }
+
+
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    getLabelKey(stat: SingleValueStatisticsState): string {
+        const labelKey = stat.statistic.metadata && stat.statistic.metadata.labelKey;
+        if (labelKey) {
+            return labelKey;
+        }
+
+        return this.statistics[stat.query.key].labelKey;
     }
 
 }

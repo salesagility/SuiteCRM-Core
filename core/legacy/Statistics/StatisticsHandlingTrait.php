@@ -26,6 +26,36 @@ trait StatisticsHandlingTrait
     }
 
     /**
+     * @param string $key
+     * @param string $dataType
+     * @param array $result
+     * @return Statistic
+     */
+    protected function buildResponse(string $key, string $dataType, array $result): Statistic
+    {
+        $statistic = new Statistic();
+        $statistic->setId($key);
+        $statistic->setData($result);
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => $dataType,
+        ]);
+
+        return $statistic;
+    }
+
+    /**
+     * @param Statistic $statistic
+     * @param array $newMeta
+     */
+    protected function addMetadata(Statistic $statistic, array $newMeta): void
+    {
+        $metadata = $statistic->getMetadata() ?? [];
+        $metadata = array_merge($metadata, $newMeta);
+        $statistic->setMetadata($metadata);
+    }
+
+    /**
      * Build currency statistic result
      * @param array $result
      * @return Statistic
