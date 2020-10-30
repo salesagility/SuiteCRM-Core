@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf23e38e428f9bcf7b5eb0eb29988ce1",
+    "content-hash": "57b049ad77f4a7b5f91c20334e6702c7",
     "packages": [
         {
             "name": "api-platform/api-pack",
@@ -6917,16 +6917,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "4.1.9",
+            "version": "4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "5782e342b978a3efd0b7a776b7808902840b8213"
+                "reference": "55d8d1d882fa0777e47de17b04c29b3c50fe29e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/5782e342b978a3efd0b7a776b7808902840b8213",
-                "reference": "5782e342b978a3efd0b7a776b7808902840b8213",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/55d8d1d882fa0777e47de17b04c29b3c50fe29e7",
+                "reference": "55d8d1d882fa0777e47de17b04c29b3c50fe29e7",
                 "shasum": ""
             },
             "require": {
@@ -6938,7 +6938,7 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "guzzlehttp/psr7": "~1.4",
-                "php": ">=5.6.0 <9.0",
+                "php": ">=5.6.0 <8.0",
                 "symfony/console": ">=2.7 <6.0",
                 "symfony/css-selector": ">=2.7 <6.0",
                 "symfony/event-dispatcher": ">=2.7 <6.0",
@@ -7004,7 +7004,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-10-23T17:59:47+00:00"
+            "time": "2020-03-23T17:07:20+00:00"
         },
         {
             "name": "codeception/lib-asserts",

@@ -36,7 +36,7 @@
   "require-dev": {
     "api-platform/schema-generator": "^2.2",
     "codeception/aspect-mock": "^3.1",
-    "codeception/codeception": "^4.0",
+    "codeception/codeception": "4.1.4",
     "codeception/module-asserts": "^1.1",
     "codeception/module-phpbrowser": "^1.0",
     "codeception/module-rest": "^1.2",
