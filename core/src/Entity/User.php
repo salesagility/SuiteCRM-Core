@@ -32,7 +32,7 @@ class User implements UserInterface, EquatableInterface
      *
      *
      * @ApiProperty(identifier=true)
-     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"fixed"=true, "default"="None"})
+     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"fixed"=true, "default"="None", "collation":"utf8_general_ci"})
      * @ORM\Id
      */
     private $id;
@@ -41,7 +41,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="user_name", type="string", length=60, nullable=true)
+     * @ORM\Column(name="user_name", type="string", length=60, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $user_name;
 
@@ -49,7 +49,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="user_hash", type="string", length=255, nullable=true)
+     * @ORM\Column(name="user_hash", type="string", length=255, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $userHash;
 
@@ -73,7 +73,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="authenticate_id", type="string", length=100, nullable=true)
+     * @ORM\Column(name="authenticate_id", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $authenticateId;
 
@@ -89,7 +89,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $firstName;
 
@@ -97,7 +97,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $lastName;
 
@@ -129,7 +129,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $description;
 
@@ -153,7 +153,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="modified_user_id", type="string", length=36, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="modified_user_id", type="string", length=36, nullable=true, options={"fixed"=true, "collation":"utf8_general_ci"})
      */
     private $modifiedUserId;
 
@@ -161,7 +161,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="created_by", type="string", length=36, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="created_by", type="string", length=36, nullable=true, options={"fixed"=true, "collation":"utf8_general_ci"})
      */
     private $createdBy;
 
@@ -169,7 +169,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="title", type="string", length=50, nullable=true)
+     * @ORM\Column(name="title", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $title;
 
@@ -177,7 +177,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $photo;
 
@@ -185,7 +185,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="department", type="string", length=50, nullable=true)
+     * @ORM\Column(name="department", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $department;
 
@@ -193,7 +193,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="phone_home", type="string", length=50, nullable=true)
+     * @ORM\Column(name="phone_home", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $phoneHome;
 
@@ -201,7 +201,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="phone_mobile", type="string", length=50, nullable=true)
+     * @ORM\Column(name="phone_mobile", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $phoneMobile;
 
@@ -209,7 +209,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="phone_work", type="string", length=50, nullable=true)
+     * @ORM\Column(name="phone_work", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $phoneWork;
 
@@ -217,7 +217,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="phone_other", type="string", length=50, nullable=true)
+     * @ORM\Column(name="phone_other", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $phoneOther;
 
@@ -225,7 +225,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="phone_fax", type="string", length=50, nullable=true)
+     * @ORM\Column(name="phone_fax", type="string", length=50, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $phoneFax;
 
@@ -233,7 +233,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="status", type="string", length=100, nullable=true)
+     * @ORM\Column(name="status", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $status;
 
@@ -241,7 +241,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="address_street", type="string", length=150, nullable=true)
+     * @ORM\Column(name="address_street", type="string", length=150, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $addressStreet;
 
@@ -249,7 +249,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="address_city", type="string", length=100, nullable=true)
+     * @ORM\Column(name="address_city", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $addressCity;
 
@@ -257,7 +257,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="address_state", type="string", length=100, nullable=true)
+     * @ORM\Column(name="address_state", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $addressState;
 
@@ -265,7 +265,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="address_country", type="string", length=100, nullable=true)
+     * @ORM\Column(name="address_country", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $addressCountry;
 
@@ -273,7 +273,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="address_postalcode", type="string", length=20, nullable=true)
+     * @ORM\Column(name="address_postalcode", type="string", length=20, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $addressPostalcode;
 
@@ -305,7 +305,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="employee_status", type="string", length=100, nullable=true)
+     * @ORM\Column(name="employee_status", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $employeeStatus;
 
@@ -313,7 +313,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="messenger_id", type="string", length=100, nullable=true)
+     * @ORM\Column(name="messenger_id", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $messengerId;
 
@@ -321,7 +321,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="messenger_type", type="string", length=100, nullable=true)
+     * @ORM\Column(name="messenger_type", type="string", length=100, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $messengerType;
 
@@ -329,7 +329,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="reports_to_id", type="string", length=36, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="reports_to_id", type="string", length=36, nullable=true, options={"fixed"=true, "collation":"utf8_general_ci"})
      */
     private $reportsToId;
 
@@ -353,7 +353,7 @@ class User implements UserInterface, EquatableInterface
      * @var string|null
      *
      * @ApiProperty
-     * @ORM\Column(name="factor_auth_interface", type="string", length=255, nullable=true)
+     * @ORM\Column(name="factor_auth_interface", type="string", length=255, nullable=true, options={"collation":"utf8_general_ci"})
      */
     private $factorAuthInterface;
 
