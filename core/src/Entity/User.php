@@ -32,7 +32,7 @@ class User implements UserInterface, EquatableInterface
      *
      *
      * @ApiProperty(identifier=true)
-     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"fixed"=true, "default"="None", "collation":"utf8_general_ci"})
+     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"fixed"=true, "collation":"utf8_general_ci"})
      * @ORM\Id
      */
     private $id;
