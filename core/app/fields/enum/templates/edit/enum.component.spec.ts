@@ -148,7 +148,7 @@ describe('EnumEditFieldComponent', () => {
         };
 
         testHostFixture.detectChanges();
-        testHostFixture.whenRenderingDone().then(() => {
+        testHostFixture.whenStable().then(() => {
 
             const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
 
