@@ -2,7 +2,7 @@ framework:
   secret: "%secret%"
 
 parameters:
-  secret: ThisTokenIsNotSoSecretChangeIt
+  secret: '%env(APP_SECRET)%'
   legacy.dir: '%kernel.project_dir%/legacy'
   legacy.path: '/legacy'
   legacy.session_name: 'LEGACYSESSID'
