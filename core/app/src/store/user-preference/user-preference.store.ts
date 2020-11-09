@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
 export interface UserPreferenceMap {

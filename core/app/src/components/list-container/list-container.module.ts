@@ -5,9 +5,9 @@ import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {ListContainerComponent} from './list-container.component';
 
 import {TableModule} from '../table/table.module';
-import {WidgetModule} from '../widget/widget.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ChartModule} from '@components/chart/chart.module';
+import {ListChartModule} from '@components/list-chart/list-chart.module';
+import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 
 @NgModule({
     declarations: [ListContainerComponent],
@@ -16,9 +16,9 @@ import {ChartModule} from '@components/chart/chart.module';
         CommonModule,
         AppManagerModule.forChild(ListContainerComponent),
         TableModule,
-        WidgetModule,
+        WidgetPanelModule,
         AngularSvgIconModule,
-        ChartModule
+        ListChartModule
     ]
 })
 export class ListContainerModule {

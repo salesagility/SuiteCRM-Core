@@ -26,9 +26,8 @@ export class RecordActionsAdapter implements ActionDataSource {
                 acl: []
             },
             {
-                key: 'history',
-                labelKey: 'LBL_HISTORY',
-                icon: 'clock',
+                key: 'toggle-widgets',
+                labelKey: 'LBL_WIDGETS',
                 params: {},
                 acl: []
             },
@@ -47,9 +46,8 @@ export class RecordActionsAdapter implements ActionDataSource {
                 acl: []
             },
             {
-                key: 'history',
-                labelKey: 'LBL_HISTORY',
-                icon: 'clock',
+                key: 'toggle-widgets',
+                labelKey: 'LBL_WIDGETS',
                 params: {},
                 acl: []
             },

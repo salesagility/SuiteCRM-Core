@@ -6,7 +6,7 @@ import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';

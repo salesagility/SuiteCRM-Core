@@ -1,43 +1,17 @@
 import {Pipe} from '@angular/core';
-import {CurrencyPipe} from '@angular/common';
+import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {FormatOptions} from '@services/formatters/formatter.model';
 
 @Pipe({
     name: 'formatCurrency'
 })
-export class FormatCurrencyPipe extends CurrencyPipe {
+export class FormatCurrencyPipe {
 
-    transform(
-        value: any,
-        currencyCode?: string,
-        currencySymbol?: string,
-        decimalsSeparator?: string,
-        groupSeparator?: string,
-        digits?: number
-    ): string | null {
+    constructor(protected formatter: CurrencyFormatter) {
+    }
 
-        let digitInfo = '1.2-2';
+    transform(value: any, options: FormatOptions = null): string | null {
 
-        if (isFinite(digits)) {
-            if (digits < 1) {
-                digitInfo = '1.0-0';
-            } else {
-                digitInfo = `1.${digits}-${digits}`;
-            }
-        }
-
-        let transformed = super.transform(value, currencyCode, currencySymbol, digitInfo);
-        if (!transformed) {
-            return transformed;
-        }
-
-        transformed = transformed.replace(',', 'group_separator');
-        transformed = transformed.replace('.', 'decimal_separator');
-        const decimalSymbol = decimalsSeparator || '.';
-        const groupSymbol = groupSeparator || ',';
-
-        transformed = transformed.replace('decimal_separator', decimalSymbol);
-        transformed = transformed.replace('group_separator', groupSymbol);
-
-        return transformed;
+        return this.formatter.toUserFormat(value, options);
     }
 }

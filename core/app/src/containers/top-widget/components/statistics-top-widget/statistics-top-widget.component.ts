@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BaseWidgetComponent} from '@containers/top-widget/top-widget.model';
+import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
 import {
     SingleValueStatisticsState,
     SingleValueStatisticsStore

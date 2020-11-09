@@ -78,13 +78,25 @@ class SubpanelDataQueryHandler extends LegacyHandler
     }
 
     /**
-     * @inheritDoc
+     * @param string $query
+     * @return array
      */
-    public function runQuery(string $query): array
+    public function fetchRow(string $query): array
     {
         $this->initQueryHandler();
 
-        return $this->queryHandler->runQuery($query);
+        return $this->queryHandler->fetchRow($query);
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     */
+    public function fetchAll(string $query): array
+    {
+        $this->initQueryHandler();
+
+        return $this->queryHandler->fetchAll($query);
     }
 
     protected function initQueryHandler(): void

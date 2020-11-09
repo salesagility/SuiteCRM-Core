@@ -1,4 +1,4 @@
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {StateStore} from '@store/state';
@@ -6,7 +6,7 @@ import {AppStateStore} from '@store/app-state/app-state.store';
 import {Injectable} from '@angular/core';
 import {FilterDataSource} from '@components/list-filter/list-filter.component';
 import {BulkActionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {ChartTypesDataSource} from '@components/chart/chart.component';
+import {ChartTypesDataSource} from '@components/list-chart/list-chart.component';
 import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';

@@ -6,6 +6,8 @@ import {BehaviorSubject, of} from 'rxjs';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
 import {Field} from '@app-common/record/field.model';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
+import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 
 
 @Component({
@@ -28,6 +30,7 @@ describe('IntDetailFieldComponent', () => {
         num_grp_sep: ',',
         dec_sep: '.',
     });
+    const mockStore = new UserPreferenceMockStore(preferences);
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     beforeEach(async(() => {
@@ -41,9 +44,7 @@ describe('IntDetailFieldComponent', () => {
             imports: [],
             providers: [
                 {
-                    provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable()
-                    }
+                    provide: UserPreferenceStore, useValue: mockStore
                 },
                 {
                     provide: SystemConfigStore, useValue: {
@@ -62,6 +63,9 @@ describe('IntDetailFieldComponent', () => {
                             }
                         })
                     }
+                },
+                {
+                    provide: NumberFormatter, useValue: new NumberFormatter(mockStore, 'en_us')
                 }
             ],
         }).compileComponents();

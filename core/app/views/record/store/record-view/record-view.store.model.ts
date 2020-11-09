@@ -22,7 +22,7 @@ export interface RecordViewState {
     recordID: string;
     loading: boolean;
     widgets: boolean;
-    showWidgets: boolean;
+    showSidebarWidgets: boolean;
     showTopWidget: boolean;
     mode: ViewMode;
 }

@@ -89,10 +89,9 @@ describe('RecordHeaderComponent', () => {
 
 
             expect(buttons).toBeTruthy();
-            expect(buttons.length).toEqual(3);
+            expect(buttons.length).toEqual(2);
             expect(buttons.item(0).textContent).toContain('New');
             expect(buttons.item(1).textContent).toContain('Edit');
-            expect(buttons.item(2).textContent).toContain('History');
         });
     }));
 
@@ -108,10 +107,9 @@ describe('RecordHeaderComponent', () => {
 
 
             expect(buttons).toBeTruthy();
-            expect(buttons.length).toEqual(3);
+            expect(buttons.length).toEqual(2);
             expect(buttons.item(0).textContent).toContain('Save');
             expect(buttons.item(1).textContent).toContain('Cancel');
-            expect(buttons.item(2).textContent).toContain('History');
         });
     }));
 });

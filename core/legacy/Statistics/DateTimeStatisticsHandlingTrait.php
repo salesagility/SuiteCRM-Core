@@ -32,6 +32,6 @@ trait DateTimeStatisticsHandlingTrait
             'value' => $days
         ];
 
-        return $this->buildResponse($key, 'int', $result);
+        return $this->buildSingleValueResponse($key, 'int', $result);
     }
 }

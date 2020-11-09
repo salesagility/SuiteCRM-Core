@@ -11,7 +11,7 @@ import {LanguageStringMap, LanguageStrings} from '@store/language/language.store
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
-import {ready} from '@base/utils/object-utils';
+import {ready} from '@base/app-common/utils/object-utils';
 import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {AppState} from '@store/app-state/app-state.store';
 import {LinkTarget} from '@components/navbar/link-target';

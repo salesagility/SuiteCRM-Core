@@ -1,6 +1,6 @@
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Injectable} from '@angular/core';
-import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
 
 @Injectable()
 export class DatetimeAdapter extends NgbDateAdapter<string> {

@@ -16,7 +16,6 @@ import {ClassicViewUiModule} from '@components/classic-view/classic-view.module'
 import {MessageUiModule} from '@components/message/message.module';
 import {FilterUiModule} from '@components/filter/filter.module';
 import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
-import {WidgetModule} from '@components/widget/widget.module';
 import {TableModule} from '@components/table/table.module';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ListHeaderModule} from '@components/list-header/list-header.module';
@@ -63,7 +62,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         FilterUiModule,
         ListModule,
         RecordModule,
-        WidgetModule,
         TableModule,
         ModuleTitleModule,
         ListHeaderModule,

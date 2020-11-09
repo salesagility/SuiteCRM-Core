@@ -3,8 +3,8 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
-use App\Service\StatisticsProviderInterface;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Service\StatisticsProviderInterface;
 
 class WonOpportunityAmountByYear extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
@@ -47,7 +47,7 @@ class WonOpportunityAmountByYear extends SubpanelDataQueryHandler implements Sta
 
         $dbQuery = 'SELECT AVG(opp_data.amount_by_year) as value FROM ( ' . $innerQuery . ' ) as opp_data';
 
-        $result = $this->runQuery($dbQuery);
+        $result = $this->fetchRow($dbQuery);
 
         $statistic = $this->buildCurrencyResult($result);
 

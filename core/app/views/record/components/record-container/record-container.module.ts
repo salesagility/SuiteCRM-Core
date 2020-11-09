@@ -2,12 +2,12 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {RecordContainerComponent} from './record-container.component';
-import {WidgetModule} from '@components/widget/widget.module';
+import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {SubpanelContainerModule} from '@containers/subpanel/components/subpanel-container/subpanel-container.module';
 import {RecordContentModule} from '@components/record-content/record-content.module';
-import {HistoryTimelineWidgetModule} from '@components/history-timeline-widget/history-timeline-widget.module';
 import {TopWidgetModule} from '@containers/top-widget/components/top-widget/top-widget.module';
+import {SidebarWidgetModule} from '@containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
 
 @NgModule({
     declarations: [RecordContainerComponent],
@@ -15,12 +15,12 @@ import {TopWidgetModule} from '@containers/top-widget/components/top-widget/top-
     imports: [
         CommonModule,
         AppManagerModule.forChild(RecordContainerComponent),
-        WidgetModule,
+        WidgetPanelModule,
         AngularSvgIconModule,
         SubpanelContainerModule,
         RecordContentModule,
-        HistoryTimelineWidgetModule,
-        TopWidgetModule
+        TopWidgetModule,
+        SidebarWidgetModule
     ]
 })
 export class RecordContainerModule {

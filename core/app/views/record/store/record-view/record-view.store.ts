@@ -3,7 +3,7 @@ import {ViewStore} from '@store/view/view.store';
 import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {StateStore} from '@store/state';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
@@ -31,7 +31,7 @@ const initialState: RecordViewState = {
     recordID: '',
     loading: false,
     widgets: false,
-    showWidgets: false,
+    showSidebarWidgets: false,
     showTopWidget: false,
     mode: 'detail'
 };
@@ -46,7 +46,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     stagingRecord$: Observable<Record>;
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
-    showWidgets$: Observable<boolean>;
+    showSidebarWidgets$: Observable<boolean>;
     showTopWidget$: Observable<boolean>;
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
@@ -95,7 +95,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.stagingRecord$ = this.recordManager.staging$.pipe(distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
-        this.showWidgets$ = this.state$.pipe(map(state => state.showWidgets));
+        this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
         this.showTopWidget$ = this.state$.pipe(map(state => state.showTopWidget));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
@@ -129,14 +129,14 @@ export class RecordViewStore extends ViewStore implements StateStore {
         });
     }
 
-    get showWidgets(): boolean {
-        return this.internalState.showWidgets;
+    get showSidebarWidgets(): boolean {
+        return this.internalState.showSidebarWidgets;
     }
 
-    set showWidgets(show: boolean) {
+    set showSidebarWidgets(show: boolean) {
         this.updateState({
             ...this.internalState,
-            showWidgets: show
+            showSidebarWidgets: show
         });
     }
 
@@ -306,12 +306,17 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * Calculate if widgets are to display
      */
     protected calculateShowWidgets(): void {
-        let show = true;
+        let show = false;
 
-        show = show && !!this.subpanels.activities;
-        show = show && !!this.subpanels.history;
+        const meta = this.metadataStore.get() || {};
+        const recordViewMeta = meta.recordView || {} as RecordViewMetadata;
+        const sidebarWidgetsConfig = recordViewMeta.sidebarWidgets || [];
 
-        this.showWidgets = show;
+        if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0){
+            show = true;
+        }
+
+        this.showSidebarWidgets = show;
         this.widgets = show;
     }
 

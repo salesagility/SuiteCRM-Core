@@ -1,3 +1,3 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    {{field.value | formatNumber:getDecimalsSymbol(vm.preferences, vm.configs):getGroupSymbol(vm.preferences, vm.configs)}}
+    {{field.value | formatNumber}}
 </ng-container>

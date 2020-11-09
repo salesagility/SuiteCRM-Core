@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
 export interface AppState {

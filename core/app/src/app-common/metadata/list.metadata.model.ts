@@ -1,16 +1,7 @@
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 import {LineAction} from '@app-common/actions/line-action.model';
-
-export interface ChartType {
-    key: string;
-    labelKey: string;
-    type: string;
-}
-
-export interface ChartTypesMap {
-    [key: string]: ChartType;
-}
+import {ChartTypesMap} from '@app-common/containers/chart/chart.model';
 
 export interface ListViewMeta {
     fields: ColumnDefinition[];

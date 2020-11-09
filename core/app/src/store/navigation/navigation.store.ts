@@ -4,7 +4,7 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {StateStore} from '@base/store/state';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 
 export interface Navigation {
     tabs: string[];

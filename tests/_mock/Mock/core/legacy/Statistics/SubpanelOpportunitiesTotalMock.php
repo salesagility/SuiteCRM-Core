@@ -25,7 +25,7 @@ class SubpanelOpportunitiesTotalMock extends SubpanelOpportunitiesTotal
     /**
      * @inheritDoc
      */
-    public function runQuery(string $query): array
+    public function fetchRow(string $query): array
     {
         return $this->getMockQueryResults();
     }

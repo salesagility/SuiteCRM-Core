@@ -5,8 +5,8 @@ import {CommonModule} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {Field} from '@app-common/record/field.model';
-import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/datetime/datetime-formatter.service.spec.mock';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({

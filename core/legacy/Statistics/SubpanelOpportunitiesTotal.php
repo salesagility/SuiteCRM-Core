@@ -44,7 +44,7 @@ class SubpanelOpportunitiesTotal extends SubpanelDataQueryHandler implements Sta
 
         $dbQuery = $this->joinQueryParts($parts);
 
-        $result = $this->runQuery($dbQuery);
+        $result = $this->fetchRow($dbQuery);
 
         $statistic = $this->buildCurrencyResult($result);
 

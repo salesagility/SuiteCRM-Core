@@ -7,9 +7,9 @@
         </div>
 
         <div class="col-lg-3 list-widget-container pl-0" *ngIf="getDisplayWidgets()">
-            <scrm-widget [title]="widgetTitle">
-                <scrm-chart widget-body></scrm-chart>
-            </scrm-widget>
+            <scrm-widget-panel [title]="widgetTitle">
+                <scrm-list-chart widget-body></scrm-list-chart>
+            </scrm-widget-panel>
         </div>
     </div>
 </div>

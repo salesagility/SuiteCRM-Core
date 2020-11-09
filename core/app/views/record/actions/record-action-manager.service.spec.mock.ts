@@ -1,6 +1,6 @@
 import {RecordEditAction} from '@views/record/actions/edit/record-edit.action';
 import {RecordCreateAction} from '@views/record/actions/create/record-create.action';
-import {RecordHistoryAction} from '@views/record/actions/history/record-history.action';
+import {RecordToggleWidgetsAction} from '@views/record/actions/toggle-widgets/record-widget-action.service';
 import {RecordCancelAction} from '@views/record/actions/cancel/record-cancel.action';
 import {NavigationExtras, Router} from '@angular/router';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
@@ -19,7 +19,7 @@ const mockRouter = {
 export const recordActionsManagerMock = new RecordActionManager(
     new RecordEditAction(),
     new RecordCreateAction(moduleNameMapperMock, mockRouter),
-    new RecordHistoryAction(),
+    new RecordToggleWidgetsAction(),
     new RecordCancelAction(),
     new RecordSaveAction()
 );

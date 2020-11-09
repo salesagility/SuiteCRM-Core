@@ -5,8 +5,9 @@ import {FloatDetailFieldComponent} from './float.component';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
-import {distinctUntilChanged} from 'rxjs/operators';
 import {Field} from '@app-common/record/field.model';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
+import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({
     selector: 'float-detail-field-test-host-component',
@@ -24,10 +25,13 @@ describe('FloatDetailFieldComponent', () => {
     let testHostFixture: ComponentFixture<FloatDetailFieldTestHostComponent>;
 
     /* eslint-disable camelcase,@typescript-eslint/camelcase */
-    const preferences = new BehaviorSubject({
+    const preferences = new BehaviorSubject<any>({
         num_grp_sep: ',',
         dec_sep: '.',
     });
+
+    const mockStore = new UserPreferenceMockStore(preferences);
+
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     /* eslint-disable camelcase,@typescript-eslint/camelcase */
@@ -36,14 +40,12 @@ describe('FloatDetailFieldComponent', () => {
             declarations: [
                 FloatDetailFieldTestHostComponent,
                 FloatDetailFieldComponent,
-                FormatNumberPipe
+                FormatNumberPipe,
             ],
             imports: [],
             providers: [
                 {
-                    provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable().pipe(distinctUntilChanged())
-                    }
+                    provide: UserPreferenceStore, useValue: mockStore
                 },
                 {
                     provide: SystemConfigStore, useValue: {
@@ -62,6 +64,9 @@ describe('FloatDetailFieldComponent', () => {
                             }
                         })
                     }
+                },
+                {
+                    provide: NumberFormatter, useValue: new NumberFormatter(mockStore, 'en_us')
                 }
             ],
         }).compileComponents();
@@ -118,22 +123,4 @@ describe('FloatDetailFieldComponent', () => {
         expect(testHostFixture.nativeElement.textContent).toContain('1.000,5');
     });
 
-    it('should have system config based formatted value', () => {
-
-        expect(testHostComponent).toBeTruthy();
-
-        /* eslint-disable camelcase,@typescript-eslint/camelcase */
-        preferences.next({
-            num_grp_sep: null,
-            dec_sep: null,
-        });
-        /* eslint-enable camelcase,@typescript-eslint/camelcase */
-
-        testHostComponent.field.value = '2000.500';
-        testHostFixture.detectChanges();
-        testHostFixture.detectChanges();
-
-
-        expect(testHostFixture.nativeElement.textContent).toContain('2;000,5');
-    });
 });

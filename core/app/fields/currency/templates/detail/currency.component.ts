@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {BaseNumberComponent} from '@fields/base/base-number.component';
-import {UserPreferenceMap, UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigMap, SystemConfigStore} from '@store/system-config/system-config.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {FormatOptions} from '@services/formatters/formatter.model';
 
 @Component({
     selector: 'scrm-currency-detail',
@@ -16,46 +17,13 @@ export class CurrencyDetailFieldComponent extends BaseNumberComponent {
         super(userPreferences, systemConfig);
     }
 
-    getCode(preferences: UserPreferenceMap, configs: SystemConfigMap): string {
-
-        if (preferences && preferences.currency && preferences.currency.iso4217) {
-            return preferences.currency.iso4217;
+    getOptions(): FormatOptions {
+        let options = null;
+        if (this.field && this.field.metadata && this.field.metadata.digits !== null && isFinite(this.field.metadata.digits)) {
+            options = {
+                digits: this.field.metadata.digits
+            };
         }
-
-        if (configs && configs.currency && configs.currency.items.iso4217) {
-            return configs.currency.items.iso4217;
-        }
-
-        return 'USD';
-    }
-
-    getCurrencySymbol(preferences: UserPreferenceMap, configs: SystemConfigMap): string {
-
-        if (preferences && preferences.currency && preferences.currency.symbol) {
-            return preferences.currency.symbol;
-        }
-
-        if (configs && configs.currency && configs.currency.items.symbol) {
-            return configs.currency.items.symbol;
-        }
-
-        return '$';
-    }
-
-    getDigits(preferences: UserPreferenceMap, configs: SystemConfigMap): number {
-
-        if (this.field && this.field.metadata && isFinite(this.field.metadata.digits)) {
-            return this.field.metadata.digits;
-        }
-
-        if (preferences && preferences.default_currency_significant_digits) {
-            return preferences.default_currency_significant_digits;
-        }
-
-        if (configs && configs.default_currency_significant_digits) {
-            return parseInt(configs.default_currency_significant_digits.value, 10);
-        }
-
-        return 2;
+        return options;
     }
 }

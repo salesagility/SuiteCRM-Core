@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
 
 export interface SystemConfig {
@@ -35,6 +35,9 @@ let cache$: Observable<any> = null;
     providedIn: 'root',
 })
 export class SystemConfigStore implements StateStore {
+
+    configs$: Observable<SystemConfigMap>;
+    loading$: Observable<boolean>;
     protected store = new BehaviorSubject<SystemConfigs>(internalState);
     protected state$ = this.store.asObservable();
     protected resourceName = 'systemConfigs';
@@ -47,13 +50,10 @@ export class SystemConfigStore implements StateStore {
         ]
     };
 
-    /**
-     * Public long-lived observable streams
-     */
-    configs$ = this.state$.pipe(map(state => state.configs), distinctUntilChanged());
-    loading$ = this.state$.pipe(map(state => state.loading));
 
     constructor(private collectionGQL: CollectionGQL) {
+        this.configs$ = this.state$.pipe(map(state => state.configs), distinctUntilChanged());
+        this.loading$ = this.state$.pipe(map(state => state.loading));
     }
 
     /**
@@ -160,6 +160,7 @@ export class SystemConfigStore implements StateStore {
 
                 if (data.systemConfigs && data.systemConfigs.edges) {
                     data.systemConfigs.edges.forEach((edge) => {
+                        // eslint-disable-next-line no-underscore-dangle
                         configs[edge.node._id] = edge.node;
                     });
                 }

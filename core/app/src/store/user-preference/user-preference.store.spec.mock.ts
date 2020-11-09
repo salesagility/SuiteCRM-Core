@@ -1,5 +1,5 @@
-import {Observable, of} from 'rxjs';
-import {shareReplay, take} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {distinctUntilChanged, shareReplay, take} from 'rxjs/operators';
 import {CollectionGQL} from '@services/api/graphql-api/api.collection.get';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 
@@ -35,7 +35,7 @@ export const userPreferenceMockData = {
                 email_reminder_time: '60',
                 reminder_checked: '0',
                 email_reminder_checked: '0',
-                currency: '-99',
+                currency: {id: '1', name: 'US Dollar', symbol: '$', iso4217: 'USD'},
                 default_currency_significant_digits: '2',
                 num_grp_sep: ',',
                 dec_sep: '.',
@@ -85,3 +85,24 @@ class UserPreferenceRecordGQLSpy extends CollectionGQL {
 
 export const userPreferenceStoreMock = new UserPreferenceStore(new UserPreferenceRecordGQLSpy());
 userPreferenceStoreMock.load().pipe(take(1)).subscribe();
+
+export class UserPreferenceMockStore extends UserPreferenceStore {
+
+    constructor(
+        protected mockData: BehaviorSubject<any>
+    ) {
+        super(new UserPreferenceRecordGQLSpy());
+
+        this.userPreferences$ = this.mockData.asObservable().pipe(distinctUntilChanged());
+    }
+
+    getUserPreference(key: string): any {
+
+        if (!this.mockData.value || !this.mockData.value[key]) {
+            return null;
+        }
+
+        return this.mockData.value[key];
+    }
+
+}

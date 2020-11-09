@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
@@ -9,26 +9,25 @@ import {RecordContentDataSource} from '@components/record-content/record-content
 import {SubpanelContainerConfig} from '@containers/subpanel/components/subpanel-container/subpanel-container.model';
 import {ViewContext} from '@app-common/views/view.model';
 import {TopWidgetAdapter} from '@views/record/adapters/top-widget.adapter';
+import {SidebarWidgetAdapter} from '@views/record/adapters/sidebar-widget.adapter';
+import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 
 @Component({
     selector: 'scrm-record-container',
     templateUrl: 'record-container.component.html',
-    providers: [RecordContentAdapter, TopWidgetAdapter]
+    providers: [RecordContentAdapter, TopWidgetAdapter, SidebarWidgetAdapter]
 })
 export class RecordContainerComponent implements OnInit {
-    type = '';
-    widgetTitle = '';
-
     language$: Observable<LanguageStrings> = this.language.vm$;
 
     vm$ = combineLatest([
-        this.language$, this.recordViewStore.showWidgets$, this.topWidgetAdapter.config$
+        this.language$, this.sidebarWidgetAdapter.config$, this.topWidgetAdapter.config$
     ]).pipe(
         map((
-            [language, showWidgets, topWidgetConfig]
+            [language, sidebarWidgetConfig, topWidgetConfig]
         ) => ({
             language,
-            showWidgets,
+            sidebarWidgetConfig,
             topWidgetConfig
         }))
     );
@@ -38,20 +37,12 @@ export class RecordContainerComponent implements OnInit {
         protected language: LanguageStore,
         protected metadata: MetadataStore,
         protected contentAdapter: RecordContentAdapter,
-        protected topWidgetAdapter: TopWidgetAdapter
+        protected topWidgetAdapter: TopWidgetAdapter,
+        protected sidebarWidgetAdapter: SidebarWidgetAdapter
     ) {
     }
 
     ngOnInit(): void {
-    }
-
-    getDisplayWidgets(): boolean {
-        const display = this.recordViewStore.showWidgets;
-        if (display) {
-            this.type = 'history';
-            this.widgetTitle = 'LBL_QUICK_HISTORY';
-        }
-        return display;
     }
 
     getContentAdapter(): RecordContentDataSource {
@@ -69,7 +60,7 @@ export class RecordContainerComponent implements OnInit {
         return this.recordViewStore.getViewContext();
     }
 
-    hasTopWidgetMetadata(meta: RecordViewMetadata): boolean {
-        return !!(meta && meta.topWidget && meta.topWidget.type);
+    hasTopWidgetMetadata(meta: WidgetMetadata): boolean {
+        return !!(meta && meta.type);
     }
 }

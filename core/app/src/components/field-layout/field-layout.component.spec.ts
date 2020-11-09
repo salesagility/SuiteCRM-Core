@@ -14,7 +14,7 @@ import {By} from '@angular/platform-browser';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Panel} from '@app-common/metadata/metadata.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '@components/field-layout/field-layout.model';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {Record} from '@app-common/record/record.model';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';

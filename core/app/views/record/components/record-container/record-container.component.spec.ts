@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RecordContainerComponent} from './record-container.component';
-import {WidgetModule} from '@components/widget/widget.module';
+import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
@@ -38,7 +38,7 @@ describe('RecordContainerComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                WidgetModule,
+                WidgetPanelModule,
                 AngularSvgIconModule,
                 HttpClientTestingModule,
                 BrowserAnimationsModule,

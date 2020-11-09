@@ -9,14 +9,17 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
-import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/datetime/datetime-formatter.service.spec.mock';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
 import {FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
+import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({
     selector: 'field-test-host-component',
@@ -121,6 +124,8 @@ describe('FieldComponent', () => {
         currency: {id: '1', name: 'Stirling Pound', symbol: '£', iso4217: 'GBP'},
         default_currency_significant_digits: 2
     });
+    const mockStore = new UserPreferenceMockStore(preferences);
+    const mockNumberFormatter = new NumberFormatter(mockStore, 'en_us');
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
     /* eslint-disable camelcase, @typescript-eslint/camelcase */
@@ -140,12 +145,16 @@ describe('FieldComponent', () => {
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
                 {
-                    provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable()
-                    }
+                    provide: UserPreferenceStore, useValue: mockStore
+                },
+                {
+                    provide: NumberFormatter, useValue: mockNumberFormatter
                 },
                 {
                     provide: DatetimeFormatter, useValue: datetimeFormatterMock
+                },
+                {
+                    provide: CurrencyFormatter, useValue: new CurrencyFormatter(mockStore, mockNumberFormatter, 'en_us')
                 },
                 {
                     provide: SystemConfigStore, useValue: {

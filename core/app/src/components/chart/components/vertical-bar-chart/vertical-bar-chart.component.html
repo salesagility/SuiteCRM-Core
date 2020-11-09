@@ -1,0 +1,22 @@
+<ngx-charts-bar-vertical *ngIf="results"
+                         class="vertical-bar-chart"
+                         (window:resize)="onResize()"
+                         [animations]="false"
+                         [results]="results"
+                         [view]="view"
+                         [scheme]="scheme"
+                         [gradient]="gradient"
+                         [xAxis]="xAxis"
+                         [yAxis]="yAxis"
+                         [legend]="legend"
+                         [legendPosition]="'below'"
+                         [showXAxisLabel]="showXAxisLabel"
+                         [showYAxisLabel]="showYAxisLabel"
+                         [xAxisLabel]="xAxisLabel"
+                         [yAxisLabel]="yAxisLabel"
+                         [yAxisTickFormatting]="yAxisTickFormatting">
+    <ng-template #tooltipTemplate let-model="model">
+        <div>{{model.name}}</div>
+        <div>{{ dataSource.options.tooltipFormatting(model.value) }}</div>
+    </ng-template>
+</ngx-charts-bar-vertical>

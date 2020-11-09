@@ -1,14 +1,9 @@
 import {Component} from '@angular/core';
 import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.component';
-import {
-    NgbDateAdapter,
-    NgbDateParserFormatter,
-    NgbInputDatepicker,
-    NgbTimeStruct
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeParserFormatter} from '@fields/base/datetime/datetime-parser-formatter.service';
 import {DatetimeAdapter} from '@fields/base/datetime/datetime-adapter.service';
-import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
 import {ButtonInterface} from '@components/button/button.model';
 
 @Component({

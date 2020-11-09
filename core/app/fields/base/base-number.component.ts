@@ -1,6 +1,6 @@
-import {UserPreferenceStore, UserPreferenceMap} from '@store/user-preference/user-preference.store';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {BaseFieldComponent} from './base-field.component';
-import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
+import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -28,31 +28,5 @@ export class BaseNumberComponent extends BaseFieldComponent {
         }
 
         return this.field.metadata.format !== false;
-    }
-
-    getGroupSymbol(preferences: UserPreferenceMap, configs: SystemConfigMap): string {
-
-        if (preferences && preferences.num_grp_sep) {
-            return preferences.num_grp_sep;
-        }
-
-        if (configs && configs.default_number_grouping_seperator) {
-            return configs.default_number_grouping_seperator.value;
-        }
-
-        return ',';
-    }
-
-    getDecimalsSymbol(preferences: UserPreferenceMap, configs: SystemConfigMap): string {
-
-        if (preferences && preferences.dec_sep) {
-            return preferences.dec_sep;
-        }
-
-        if (configs && configs.default_decimal_seperator) {
-            return configs.default_decimal_seperator.value;
-        }
-
-        return '.';
     }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {Panel} from '@app-common/metadata/metadata.model';
@@ -14,6 +14,7 @@ import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 
 export interface RecordViewMetadata {
     topWidget?: WidgetMetadata;
+    sidebarWidgets?: WidgetMetadata[];
     actions: ModeActions;
     templateMeta: RecordTemplateMetadata;
     panels: Panel[];
@@ -313,7 +314,13 @@ export class MetadataStore implements StateStore {
         };
 
         const receivedMeta = data.viewDefinition.recordView;
-        const entries = {templateMeta: 'templateMeta', actions: 'actions', panels: 'panels', topWidget: 'topWidget'};
+        const entries = {
+            templateMeta: 'templateMeta',
+            actions: 'actions',
+            panels: 'panels',
+            topWidget: 'topWidget',
+            sidebarWidgets: 'sidebarWidgets'
+        };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
 

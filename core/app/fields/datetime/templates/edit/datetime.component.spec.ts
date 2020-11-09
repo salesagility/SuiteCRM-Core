@@ -4,8 +4,8 @@ import {DateTimeEditFieldComponent} from './datetime.component';
 import {Field} from '@app-common/record/field.model';
 import {FormsModule} from '@angular/forms';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {DatetimeFormatter} from '@services/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/datetime/datetime-formatter.service.spec.mock';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from '@components/button/button.module';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
@@ -49,8 +49,17 @@ describe('DateTimeEditFieldComponent', () => {
             providers: [
                 {
                     provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable().pipe(distinctUntilChanged())
-                    }                },
+                        userPreferences$: preferences.asObservable().pipe(distinctUntilChanged()),
+                        getUserPreference: (key: string): any => {
+
+                            if (!preferences.value || !preferences.value[key]) {
+                                return null;
+                            }
+
+                            return preferences.value[key];
+                        }
+                    }
+                },
                 {
                     provide: DatetimeFormatter, useValue: datetimeFormatterMock
                 },

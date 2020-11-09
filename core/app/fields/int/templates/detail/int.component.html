@@ -1,4 +1,4 @@
 <ng-container *ngIf="!format">{{ field.value }}</ng-container>
 <ng-container *ngIf="format && (vm$ | async) as vm">
-    {{field.value | formatNumber:getDecimalsSymbol(vm.preferences, vm.configs):getGroupSymbol(vm.preferences, vm.configs)}}
+    {{field.value | formatNumber}}
 </ng-container>

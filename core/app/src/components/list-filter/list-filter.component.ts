@@ -3,7 +3,7 @@ import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language
 import {ListViewStore} from '@store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {ButtonInterface} from '@components/button/button.model';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Field} from '@app-common/record/field.model';

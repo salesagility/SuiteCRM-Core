@@ -1,4 +1,5 @@
 import {ViewContext} from '@app-common/views/view.model';
+import {SeriesResult} from '@app-common/containers/chart/chart.model';
 
 export interface StatisticsQueryMap {
     [key: string]: StatisticsQuery;
@@ -24,6 +25,7 @@ export interface StatisticMetadata {
     [key: string]: any;
 
     type: string;
+    dataType: string;
     labelKey?: string;
 }
 
@@ -35,5 +37,11 @@ export interface SingleValueStatisticsData {
 export interface SingleValueStatistic extends Statistic {
     id: string;
     data: SingleValueStatisticsData;
+    metadata?: StatisticMetadata;
+}
+
+export interface SeriesStatistic extends Statistic {
+    id: string;
+    data: SeriesResult;
     metadata?: StatisticMetadata;
 }

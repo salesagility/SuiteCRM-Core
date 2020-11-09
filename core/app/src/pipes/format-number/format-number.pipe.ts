@@ -1,25 +1,21 @@
-import {Pipe} from '@angular/core';
+import {Inject, LOCALE_ID, Pipe} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 
 @Pipe({
     name: 'formatNumber'
 })
 export class FormatNumberPipe extends DecimalPipe {
 
-    transform(value: any, decimalsSeparator?: string, groupSeparator?: string): string | null {
-        let transformed = super.transform(value);
-        if (!transformed) {
-            return transformed;
-        }
+    constructor(
+        protected formatter: NumberFormatter,
+        @Inject(LOCALE_ID) public locale: string
+    ) {
+        super(locale);
+    }
 
-        transformed = transformed.replace(',', 'group_separator');
-        transformed = transformed.replace('.', 'decimal_separator');
-        const decimalSymbol = decimalsSeparator || '.';
-        const groupSymbol = groupSeparator || ',';
+    transform(value: any): string | null {
 
-        transformed = transformed.replace('decimal_separator', decimalSymbol);
-        transformed = transformed.replace('group_separator', groupSymbol);
-
-        return transformed;
+        return this.formatter.toUserFormat(value);
     }
 }

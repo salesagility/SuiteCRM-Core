@@ -1,5 +1,5 @@
 import {Record} from '@app-common/record/record.model';
-import {deepClone} from '@base/utils/object-utils';
+import {deepClone} from '@base/app-common/utils/object-utils';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, map, shareReplay, tap} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';

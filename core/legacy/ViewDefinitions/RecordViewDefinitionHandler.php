@@ -3,12 +3,12 @@
 namespace App\Legacy\ViewDefinitions;
 
 use App\Entity\FieldDefinition;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use BeanFactory;
 use DetailView2;
 use Exception;
 use Psr\Log\LoggerInterface;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 use ViewDetail;
 use ViewFactory;
 
@@ -91,6 +91,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $metadata = [
             'templateMeta' => [],
             'topWidget' => [],
+            'sidebarWidgets' => [],
             'actions' => [],
             'panels' => [],
         ];
@@ -100,6 +101,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $this->addTemplateMeta($viewDefs, $metadata);
         $this->addTopWidgetConfig($viewDefs, $metadata);
+        $this->addSidebarWidgetConfig($viewDefs, $metadata);
         $this->addPanelDefinitions($viewDefs, $vardefs, $metadata);
 
         return $metadata;
@@ -269,6 +271,19 @@ class RecordViewDefinitionHandler extends LegacyHandler
     {
         $metadata['topWidget'] = $viewDefs['topWidget'] ?? [];
         $metadata['topWidget']['refreshOnRecordUpdate'] = $metadata['topWidget']['refreshOnRecordUpdate'] ?? true;
+    }
+
+    /**
+     * @param array $viewDefs
+     * @param array $metadata
+     */
+    protected function addSidebarWidgetConfig(array $viewDefs, array &$metadata): void
+    {
+        $metadata['sidebarWidgets'] = $viewDefs['sidebarWidgets'] ?? [];
+
+        foreach ($metadata['sidebarWidgets'] as $index => $widget) {
+            $metadata['sidebarWidgets'][$index]['refreshOnRecordUpdate'] = $widget['refreshOnRecordUpdate'] ?? true;
+        }
     }
 
     /**

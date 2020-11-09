@@ -17,7 +17,7 @@ export class TopWidgetAdapter {
             }
 
             return {
-                metadata,
+                widget: metadata.topWidget,
                 show
             };
         })
