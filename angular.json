@@ -13,7 +13,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "public",
+            "outputPath": "public/dist/",
             "index": "core/app/src/index.html",
             "main": "core/app/src/main.ts",
             "polyfills": "core/app/src/polyfills.ts",
@@ -23,7 +23,7 @@
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
               "core/app/themes/suite8/css/style.scss"
             ],
-            "deployUrl": "public/",
+            "deployUrl": "public/dist/",
             "assets": [
               "core/app/themes"
             ]
@@ -41,7 +41,7 @@
                 {
                   "glob": "**/*",
                   "input": "core/app/themes",
-                  "output": "public/themes"
+                  "output": "public/dist/themes"
                 }
               ]
             },

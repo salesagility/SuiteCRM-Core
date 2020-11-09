@@ -8,9 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class IndexController
+ * @package App\Controller
+ */
 class IndexController extends AbstractController
 {
-    public const INDEX_HTML_PATH = '/public/index.html';
+    public const INDEX_HTML_PATH = '/public/dist/index.html';
 
     /**
      * @var string
@@ -35,7 +39,7 @@ class IndexController extends AbstractController
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
 
-        if (!file_exists($indexHtmlPath)) {
+        if (!is_file($indexHtmlPath)) {
             throw new RuntimeException('Please run ng build from terminal');
         }
 
