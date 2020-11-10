@@ -78,5 +78,8 @@
     "symfony": {
       "allow-contrib": false
     }
-  }
+  },
+  "bin": [
+    "bin/console"
+  ]
 }
