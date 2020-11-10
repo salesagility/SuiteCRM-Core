@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use App\Entity\Navbar;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
@@ -12,6 +13,10 @@ use App\Legacy\ModuleRegistryHandler;
 use App\Legacy\NavbarHandler;
 use App\Legacy\RouteConverterHandler;
 
+/**
+ * Class NavbarTest
+ * @package App\Tests\unit\core\legacy
+ */
 final class NavbarTest extends Unit
 {
     /**

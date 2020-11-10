@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\AclHandler;
 
+/**
+ * Class BulkActionDefinitionProviderTest
+ * @package App\Tests
+ */
 class BulkActionDefinitionProviderTest extends Unit
 {
     /**

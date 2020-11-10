@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use Mock\Core\Legacy\Statistics\WonOpportunityAmountByYearMock;
 
-
+/**
+ * Class WonOpportunityAmountByYearTest
+ * @package App\Tests
+ */
 class WonOpportunityAmountByYearTest extends Unit
 {
     /**

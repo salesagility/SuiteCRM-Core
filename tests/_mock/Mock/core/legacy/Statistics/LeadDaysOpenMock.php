@@ -5,7 +5,7 @@ namespace Mock\Core\Legacy\Statistics;
 use App\Legacy\Statistics\LeadDaysOpen;
 use Doctrine\ORM\EntityManagerInterface;
 use Lead;
-use Mock\Helpers\Core\Legacy\Data\DBQueryResultsMocking;
+use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use SugarBean;
 
 class LeadDaysOpenMock extends LeadDaysOpen

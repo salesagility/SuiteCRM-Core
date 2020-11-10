@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\ModuleNameMapperInterface;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
 use App\Legacy\ModuleNameMapperHandler;
 
+/**
+ * Class ModuleNameMapperTest
+ * @package App\Tests
+ */
 class ModuleNameMapperTest extends Unit
 {
     /**

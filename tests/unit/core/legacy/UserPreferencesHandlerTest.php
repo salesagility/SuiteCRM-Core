@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
@@ -15,6 +16,10 @@ use App\Legacy\UserPreferences\TimeFormatPreferenceMapper;
 use App\Legacy\UserPreferences\UserPreferencesMappers;
 use User;
 
+/**
+ * Class UserPreferencesHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class UserPreferencesHandlerTest extends Unit
 {
     /**

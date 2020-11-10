@@ -1,8 +1,15 @@
-<?php namespace App\Tests;
+<?php
 
+namespace App\Tests\unit\core\legacy;
+
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ClassicViewRoutingExclusionsHandler;
 
+/**
+ * Class ClassicViewRoutingExclusionsHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class ClassicViewRoutingExclusionsHandlerTest extends Unit
 {
     /**

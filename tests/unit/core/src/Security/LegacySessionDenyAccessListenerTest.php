@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Security;
 
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Resource\Factory\AnnotationResourceFilterMetadataFactory;
@@ -10,6 +10,7 @@ use ApiPlatform\Core\Security\EventListener\DenyAccessListener;
 use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use App\Security\LegacySessionDenyAccessListener;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -20,6 +21,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Class LegacySessionDenyAccessListenerTest
+ * @package App\Tests\unit\core\src\Security
+ */
 class LegacySessionDenyAccessListenerTest extends Unit
 {
     /**

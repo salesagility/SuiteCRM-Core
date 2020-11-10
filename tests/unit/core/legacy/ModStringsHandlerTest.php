@@ -1,14 +1,19 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\ModStrings;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ModStringsHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ModuleRegistryHandler;
 
+/**
+ * Class ModStringsHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class ModStringsHandlerTest extends Unit
 {
     /**

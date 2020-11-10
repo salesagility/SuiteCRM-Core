@@ -1,7 +1,11 @@
 <?php
 
-namespace Mock\Helpers\Core\Legacy\Data;
+namespace App\Tests\_mock\Helpers\core\legacy\Data;
 
+/**
+ * Trait DBQueryResultsMocking
+ * @package App\Tests\_mock\Helpers\core\legacy\Data
+ */
 trait DBQueryResultsMocking
 {
 

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\RouteConverterInterface;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
 use App\Legacy\ActionNameMapperHandler;
@@ -10,6 +11,10 @@ use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class RouteConverterTest
+ * @package App\Tests
+ */
 class RouteConverterTest extends Unit
 {
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Security;
 
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\GraphQl\Resolver\Stage\SecurityStage;
@@ -8,6 +8,7 @@ use ApiPlatform\Core\Metadata\Resource\Factory\AnnotationResourceFilterMetadataF
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use App\Security\LegacySessionSecurityStage;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -20,6 +21,10 @@ use GraphQL\Type\Schema;
 use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class LegacySessionSecurityStageTest
+ * @package App\Tests\unit\core\src\Security
+ */
 class LegacySessionSecurityStageTest extends Unit
 {
     /**

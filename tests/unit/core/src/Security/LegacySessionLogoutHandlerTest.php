@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Security;
 
 use App\Security\LegacySessionLogoutHandler;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use AuthenticationController;
 use Codeception\Test\Unit;
@@ -13,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 
+/**
+ * Class LegacySessionLogoutHandlerTest
+ * @package App\Tests\unit\core\src\Security
+ */
 class LegacySessionLogoutHandlerTest extends Unit
 {
     /**

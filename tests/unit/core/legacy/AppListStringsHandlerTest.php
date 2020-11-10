@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\AppListStrings;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\AppListStringsHandler;
 
+/**
+ * Class AppListStringsHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class AppListStringsHandlerTest extends Unit
 {
     /**

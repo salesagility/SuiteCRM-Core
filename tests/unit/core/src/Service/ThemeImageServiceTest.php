@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\ThemeImageFinder;
 use App\Service\ThemeImageService;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * Class ThemeImageServiceTest
+ * @package App\Tests
+ */
 class ThemeImageServiceTest extends Unit
 {
     /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
+use App\Tests\UnitTester;
 use BeanFactory;
 use Codeception\Test\Unit;
 use DateInterval;
@@ -10,10 +11,13 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mock\Core\Legacy\Statistics\OpportunitySalesStageTimeSpanMock;
-use Mock\Helpers\Core\Legacy\Data\DBQueryResultsMocking;
+use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Opportunity;
 
-
+/**
+ * Class OpportunitySalesStageTimeSpanTest
+ * @package App\Tests\unit\core\legacy\Statistics
+ */
 class OpportunitySalesStageTimeSpanTest extends Unit
 {
     use DBQueryResultsMocking;

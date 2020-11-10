@@ -1,14 +1,19 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use ACLController;
+use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\AclHandler;
 use App\Legacy\ModuleNameMapperHandler;
 
+/**
+ * Class AclHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class AclHandlerTest extends Unit
 {
     /**

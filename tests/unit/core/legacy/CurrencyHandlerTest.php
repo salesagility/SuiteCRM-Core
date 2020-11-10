@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\CurrencyHandler;
 
+/**
+ * Class CurrencyHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class CurrencyHandlerTest extends Unit
 {
     /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\ActionNameMapperHandler;
@@ -16,6 +17,10 @@ use App\Legacy\SystemConfig\SystemConfigMappers;
 use App\Legacy\SystemConfig\TimeFormatConfigMapper;
 use App\Legacy\SystemConfigHandler;
 
+/**
+ * Class SystemConfigHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 class SystemConfigHandlerTest extends Unit
 {
     /**

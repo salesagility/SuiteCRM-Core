@@ -20,4 +20,10 @@ extensions:
     - Codeception\Extension\RunFailed
 params:
   - .env
+coverage:
+  enabled: true
+  include:
+    - core/*
+  exclude:
+    - core/app/*
 bootstrap: bootstrap.php

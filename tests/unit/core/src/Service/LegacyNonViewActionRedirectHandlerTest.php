@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\LegacyNonViewActionRedirectHandler;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\ActionNameMapperHandler;
@@ -12,6 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Router;
 
+/**
+ * Class LegacyNonViewActionRedirectHandlerTest
+ * @package App\Tests\unit\core\src\Service
+ */
 class LegacyNonViewActionRedirectHandlerTest extends Unit
 {
     /**

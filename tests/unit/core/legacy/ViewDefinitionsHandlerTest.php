@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
@@ -8,6 +8,7 @@ use App\Service\ChartDefinitionProvider;
 use App\Service\FilterDefinitionProvider;
 use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProvider;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use Monolog\Logger;
@@ -20,6 +21,10 @@ use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 use App\Legacy\ViewDefinitionsHandler;
 
+/**
+ * Class ViewDefinitionsHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 final class ViewDefinitionsHandlerTest extends Unit
 {
     /**

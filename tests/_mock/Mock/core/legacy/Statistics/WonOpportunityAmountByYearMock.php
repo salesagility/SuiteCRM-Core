@@ -3,7 +3,7 @@
 namespace Mock\Core\Legacy\Statistics;
 
 use App\Legacy\Statistics\WonOpportunityAmountByYear;
-use Mock\Helpers\Core\Legacy\Data\DBQueryResultsMocking;
+use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 class WonOpportunityAmountByYearMock extends WonOpportunityAmountByYear
 {

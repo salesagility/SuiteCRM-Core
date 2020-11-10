@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\src\Service;
 
 use App\Service\ActionNameMapperInterface;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ActionNameMapperHandler;
 
+/**
+ * Class ActionNameMapperTest
+ * @package App\Tests\unit\core\src\Service
+ */
 class ActionNameMapperTest extends Unit
 {
     /**

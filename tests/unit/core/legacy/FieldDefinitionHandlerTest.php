@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\unit\core\legacy;
 
 use App\Entity\FieldDefinition;
+use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\FieldDefinitionsHandler;
 use App\Legacy\ModuleNameMapperHandler;
 
+/**
+ * Class FieldDefinitionHandlerTest
+ * @package App\Tests\unit\core\legacy
+ */
 final class FieldDefinitionHandlerTest extends Unit
 {
     /**
