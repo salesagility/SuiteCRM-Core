@@ -1,5 +1,5 @@
 .sub-panel-banner {
-  background-color: $light-salmon-pink;
+  background-color: $salmon-pink;
   color: $midnight-blue;
   padding: 0.3125rem 0.625rem;
   margin-bottom: 0.625rem;
@@ -28,16 +28,16 @@
 }
 
 .sub-panel-banner-button:hover {
-  background-color: #faeeeb;
+  background-color: $midnight-blue-transparent;
 }
 
 .sub-panel-banner-button-active {
-  background-color: #faeeeb;
+  background-color: $midnight-blue-transparent;
 }
 
 .sub-panel-banner-button-icon svg {
-  fill: $bright-light-salmon-pink;
-  stroke: $bright-light-salmon-pink;
+  fill: $salmon-pink;
+  stroke: $salmon-pink;
   font-size: 1.6em;
 }
 
