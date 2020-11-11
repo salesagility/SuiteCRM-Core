@@ -7,8 +7,8 @@
 
         <div class="d-flex justify-content-center widget-bar-entry">
 
-            <div class="p-2 widget-bar-entry-label" *ngIf="item.value.labelKey && vm.appStrings[item.value.labelKey]">
-                {{vm.appStrings[item.value.labelKey] | uppercase}}:
+            <div class="p-2 widget-bar-entry-label" *ngIf="item.value.labelKey && getLabel(item.value.labelKey)">
+                {{getLabel(item.value.labelKey) | uppercase}}:
             </div>
 
             <ng-container *ngIf="item.key && vm.statistics[item.key]">

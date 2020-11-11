@@ -9,6 +9,7 @@ import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {StatisticsQuery} from '@app-common/statistics/statistics.model';
+import {ViewContext} from "@app-common/views/view.model";
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };
@@ -163,5 +164,13 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
         return this.statistics[stat.query.key].labelKey;
     }
+
+    getLabel(key: string): string {
+        const context = this.context || {} as ViewContext;
+        const module = context.module || '';
+
+        return this.language.getFieldLabel(key, module);
+    }
+
 
 }
