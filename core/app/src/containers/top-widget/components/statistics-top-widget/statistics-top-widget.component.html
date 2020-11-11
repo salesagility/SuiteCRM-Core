@@ -1,5 +1,5 @@
 <div *ngIf="(vm$ | async) as vm"
-     class="d-flex justify-content-center widget-bar">
+     class="d-flex justify-content-center widget-bar rounded">
     <div class="p-2 widget-bar-entry-message" *ngIf="this.messageLabelKey">
         {{vm.appStrings[this.messageLabelKey] || '' | uppercase}}
     </div>
