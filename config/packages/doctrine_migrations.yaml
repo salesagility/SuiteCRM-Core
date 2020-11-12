@@ -1,11 +1,12 @@
 doctrine_migrations:
-  name: 'SuiteCRM Migrations'
-  dir_name: '%kernel.project_dir%/core/src/Migrations'
-  namespace: App\Migrations
-  table_name: 'migration_versions'
-  column_name: 'version'
-  column_length: 14
-  executed_at_column_name: 'executed_at'
+  migrations_paths:
+    'App\Migrations': '%kernel.project_dir%/core/src/Migrations'
+  storage:
+    table_storage:
+      table_name: 'migration_versions'
+      version_column_name: 'version'
+      version_column_length: 1024
+      executed_at_column_name: 'executed_at'
   organize_migrations: false
   custom_template: ~
   all_or_nothing: false
