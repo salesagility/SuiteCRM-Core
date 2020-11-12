@@ -76,7 +76,8 @@
   "extra": {
     "src-dir": "core/src",
     "symfony": {
-      "allow-contrib": false
+      "allow-contrib": false,
+      "require": "4.4.*"
     }
   },
   "bin": [
