@@ -1,4 +1,4 @@
-<scrm-widget-panel title="LBL_QUICK_HISTORY">
+<scrm-widget-panel [title]="getHeaderLabel()">
     <div widget-body>
         <div class="widget-background history-timeline">
             <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="200" maxBufferPx="400"

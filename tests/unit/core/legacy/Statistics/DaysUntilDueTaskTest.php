@@ -75,7 +75,7 @@ class DaysUntilDueTaskTest extends Unit
         $result = $this->handler->getData(
             [
                 'context' => [
-                    'module' => 'tasks',
+                    'module' => 'accounts',
                     'id' => '12345',
                 ]
             ]
@@ -90,9 +90,9 @@ class DaysUntilDueTaskTest extends Unit
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
-        static::assertEquals('int', $result->getMetadata()['dataType']);
+        static::assertEquals('varchar', $result->getMetadata()['dataType']);
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('1', $result->getData()['value']);
+        static::assertEquals('-', $result->getData()['value']);
     }
 
     /**

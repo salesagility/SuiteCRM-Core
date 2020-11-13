@@ -51,17 +51,17 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
 
         if (!this.context || !this.context.module) {
-            this.messageLabelKey = 'LBL_BAD_CONFIG_BAD_CONTEXT';
+            this.messageLabelKey = 'LBL_CONFIG_BAD_CONTEXT';
             return;
         }
 
         if (!this.config) {
-            this.messageLabelKey = 'LBL_BAD_CONFIG_NO_CONFIG';
+            this.messageLabelKey = 'LBL_CONFIG_NO_CONFIG';
             return;
         }
 
         if (!this.config.options || !this.config.options.statistics || !this.config.options.statistics.length) {
-            this.messageLabelKey = 'LBL_BAD_CONFIG_NO_STATISTICS_KEY';
+            this.messageLabelKey = 'LBL_CONFIG_NO_STATISTICS_KEY';
             return;
         }
 

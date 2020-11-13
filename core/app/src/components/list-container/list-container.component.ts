@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {TableConfig} from '@components/table/table.model';
 import {TableAdapter} from '@store/list-view/adapters/table.adapter';
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
+import {LanguageStore} from '@store/language/language.store';
 
 @Component({
     selector: 'scrm-list-container',
@@ -23,7 +24,8 @@ export class ListContainerComponent implements OnInit {
     constructor(
         public store: ListViewStore,
         protected adapter: TableAdapter,
-        protected maxColumnCalculator: MaxColumnsCalculator
+        protected maxColumnCalculator: MaxColumnsCalculator,
+        public languageStore: LanguageStore
     ) {
     }
 
@@ -40,7 +42,7 @@ export class ListContainerComponent implements OnInit {
         const display = this.store.showWidgets;
         if (display) {
             this.type = 'chart';
-            this.widgetTitle = 'LBL_QUICK_CHARTS';
+            this.widgetTitle = this.languageStore.getFieldLabel('LBL_QUICK_CHARTS');
         }
         return display;
     }

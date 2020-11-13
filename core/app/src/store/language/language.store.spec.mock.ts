@@ -121,6 +121,9 @@ export const languageMockData = {
             LBL_HISTORY: 'History',
             LBL_SAVE_BUTTON_LABEL: 'Save',
             LBL_CANCEL: 'Cancel',
+            LBL_OUT_OF: 'Out of',
+            LBL_POSITION: 'Position',
+            LBL_SIZE_ANALYSIS: 'Size Analysis'
         },
     }
 };

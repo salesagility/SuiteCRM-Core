@@ -16,6 +16,9 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {take} from 'rxjs/operators';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('HistoryTimelineWidgetComponent', () => {
     let component: HistorySidebarWidgetComponent;
@@ -30,6 +33,7 @@ describe('HistoryTimelineWidgetComponent', () => {
                 {provide: RecordViewStore, useValue: recordviewStoreMock},
                 {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
                 {provide: SystemConfigStore, useValue: systemConfigStoreMock},
+                {provide: LanguageStore, useValue: languageStoreMock},
                 {provide: Router, useValue: mockRouter},
             ],
             imports: [
@@ -37,6 +41,7 @@ describe('HistoryTimelineWidgetComponent', () => {
                 ScrollingModule,
                 ImageModule,
                 FieldModule,
+                ApolloTestingModule,
                 RouterTestingModule
             ],
         }).compileComponents();

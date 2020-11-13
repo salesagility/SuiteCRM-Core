@@ -1,0 +1,66 @@
+<scrm-widget-panel [title]="getHeaderLabel()" *ngIf="(appStrings$ | async) as appStrings">
+    <div widget-body>
+
+        <ng-container>
+            <div *ngIf="this.messageLabelKey" class="p-3 statistics-sidebar-widget-message">
+                {{appStrings[this.messageLabelKey] || '' }}
+            </div>
+        </ng-container>
+
+
+        <div *ngIf="(vm$ | async) as vm"
+             class="statistics-sidebar-widget widget-background d-flex flex-column justify-content-center p-3">
+
+            <ng-container *ngFor="let item of getLayout()">
+
+                <div class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} statistics-sidebar-widget-row">
+
+                    <div class="statistics-sidebar-widget-col" *ngFor="let col of item.cols">
+
+                        <!-- VALUE -->
+                        <ng-container *ngIf="col.statistic && vm.statistics[col.statistic]">
+
+                            <div
+                                class="statistics-sidebar-widget-entry-value {{getSizeClass(col.size)}} {{getFontWeight(col.bold)}} {{getColor(col.color)}}"
+                                *ngIf="!vm.statistics[col.statistic].loading && vm.statistics[col.statistic].field">
+
+                                <scrm-field [type]="vm.statistics[col.statistic].field.type"
+                                            [field]="vm.statistics[col.statistic].field"
+                                            mode="list"></scrm-field>
+                            </div>
+
+                            <div class="statistics-sidebar-widget-entry-loading {{getSizeClass(col.size)}} "
+                                 *ngIf="vm.statistics[col.statistic].loading">
+                                <scrm-inline-loading-spinner></scrm-inline-loading-spinner>
+                            </div>
+
+                        </ng-container>
+
+                        <!-- LABEL -->
+                        <ng-container *ngIf="col.labelKey && getLabel(col.labelKey)">
+
+                            <div
+                                class="statistics-sidebar-widget-entry-label pl-1 pr-1 {{getSizeClass(col.size)}} {{getFontWeight(col.bold)}} {{getColor(col.color)}}">
+                                {{getLabel(col.labelKey)}}
+                            </div>
+
+                        </ng-container>
+
+
+                        <!-- MISCONFIGURATION -->
+                        <ng-container *ngIf="col.statistic && !loading && !vm.statistics[col.statistic]">
+
+                            <div class="statistics-sidebar-widget-entry-value {{getSizeClass(col.size)}}">
+                                -
+                            </div>
+
+                        </ng-container>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+</scrm-widget-panel>

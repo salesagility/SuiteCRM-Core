@@ -258,7 +258,7 @@ export class LanguageStore implements StateStore {
      * @param {object} lang to use
      * @returns {string} label
      */
-    public getFieldLabel(labelKey: string, module: string, lang: LanguageStrings = null): string {
+    public getFieldLabel(labelKey: string, module: string = null, lang: LanguageStrings = null): string {
         let languages = lang;
 
         if (!lang) {

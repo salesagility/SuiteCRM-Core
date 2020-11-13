@@ -30,7 +30,7 @@ import {LanguageStore} from '@store/language/language.store';
 })
 
 export class WidgetPanelComponent implements OnInit {
-    @Input() title;
+    @Input() title = '';
 
     displayContent = true;
 
@@ -38,6 +38,5 @@ export class WidgetPanelComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.title = this.languageStore.getAppString(this.title);
     }
 }
