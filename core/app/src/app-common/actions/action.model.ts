@@ -23,12 +23,14 @@ export interface Action {
     labelKey: string;
     label?: string;
     icon?: string;
-    params: { [key: string]: any };
-    acl: string[];
+    modes?: string[];
+    asyncProcess?: boolean;
+    params?: { [key: string]: any };
+    acl?: string[];
 }
 
 export interface ActionDataSource {
     getActions(): Observable<Action[]>;
 
-    runAction(action: string): void;
+    runAction(action: Action): void;
 }

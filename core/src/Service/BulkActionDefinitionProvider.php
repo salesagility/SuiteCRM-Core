@@ -2,19 +2,12 @@
 
 namespace App\Service;
 
-use function in_array;
-
-class BulkActionDefinitionProvider implements BulkActionDefinitionProviderInterface
+class BulkActionDefinitionProvider extends ActionDefinitionProvider implements BulkActionDefinitionProviderInterface
 {
     /**
      * @var array
      */
     private $listViewBulkActions;
-
-    /**
-     * @var AclManagerInterface
-     */
-    private $aclManager;
 
     /**
      * BulkActionDefinitionProvider constructor.
@@ -23,8 +16,8 @@ class BulkActionDefinitionProvider implements BulkActionDefinitionProviderInterf
      */
     public function __construct(array $listViewBulkActions, AclManagerInterface $aclManager)
     {
+        parent::__construct($aclManager);
         $this->listViewBulkActions = $listViewBulkActions;
-        $this->aclManager = $aclManager;
     }
 
     /**
@@ -32,51 +25,6 @@ class BulkActionDefinitionProvider implements BulkActionDefinitionProviderInterf
      */
     public function getBulkActions(string $module): array
     {
-        $defaults = $this->listViewBulkActions['default'];
-        $defaultActions = $defaults['actions'] ?? [];
-        $modulesConfig = $this->listViewBulkActions['modules'] ?? [];
-        $moduleActionConfig = $modulesConfig[$module] ?? [];
-        $exclude = $moduleActionConfig['exclude'] ?? [];
-        $moduleActions = $moduleActionConfig['actions'] ?? [];
-
-        $actions = array_merge($defaultActions, $moduleActions);
-        $filterActions = [];
-
-        foreach ($actions as $actionKey => $action) {
-
-            if (in_array($actionKey, $exclude, true)) {
-                continue;
-            }
-
-            if ($this->checkAccess($module, $action['acl'] ?? []) === false) {
-                continue;
-            }
-
-            $filterActions[$actionKey] = $action;
-        }
-
-        return $filterActions;
-    }
-
-    /**
-     * Check access
-     *
-     * @param string $module
-     * @param array $aclList
-     * @return bool
-     */
-    public function checkAccess(string $module, array $aclList): bool
-    {
-        if (empty($aclList)) {
-            return true;
-        }
-
-        foreach ($aclList as $acl) {
-            if ($this->aclManager->checkAccess($module, $acl, true) === false) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->filterActions($module, $this->listViewBulkActions);
     }
 }

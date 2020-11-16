@@ -92,6 +92,18 @@ export const systemConfigMockData = {
                 XLarge: 7
             }
         },
+        recordview_actions_limits: {
+            id: '/docroot/api/system-configs/recordview_actions_limits',
+            _id: 'recordview_actions_limits',
+            value: null,
+            items: {
+                XSmall: 3,
+                Small: 3,
+                Medium: 3,
+                Large: 3,
+                XLarge: 3
+            }
+        },
         date_format: {
             id: '/docroot/api/system-configs/date_format',
             _id: 'date_format',

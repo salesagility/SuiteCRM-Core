@@ -6,7 +6,7 @@ import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {Panel} from '@app-common/metadata/metadata.model';
-import {ModeActions} from '@app-common/actions/action.model';
+import {Action} from '@app-common/actions/action.model';
 import {ColumnDefinition, ListViewMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
 import {LineAction} from '@app-common/actions/line-action.model';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
@@ -15,7 +15,7 @@ import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 export interface RecordViewMetadata {
     topWidget?: WidgetMetadata;
     sidebarWidgets?: WidgetMetadata[];
-    actions: ModeActions;
+    actions: Action[];
     templateMeta: RecordTemplateMetadata;
     panels: Panel[];
 }
@@ -308,7 +308,7 @@ export class MetadataStore implements StateStore {
         }
 
         const recordViewMeta: RecordViewMetadata = {
-            actions: {} as ModeActions,
+            actions: [] as Action[],
             templateMeta: {} as RecordTemplateMetadata,
             panels: []
         };

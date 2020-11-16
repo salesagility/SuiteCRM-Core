@@ -4,14 +4,14 @@ namespace App\Legacy;
 
 use App\Service\RecordListProviderInterface;
 use App\Service\ModuleNameMapperInterface;
-use App\Service\RecordDeletionProviderInterface;
+use App\Service\RecordDeletionServiceInterface;
 use BeanFactory;
 
 /**
  * Class ListViewHandler
  * @package App\Legacy
  */
-class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProviderInterface
+class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServiceInterface
 {
     public const HANDLER_KEY = 'delete-records';
 
@@ -58,6 +58,27 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
         return self::HANDLER_KEY;
     }
 
+    /**
+     * Delete record
+     *
+     * @param string $moduleName
+     * @param string $id
+     * @return bool
+     */
+    public function deleteRecord(string $moduleName, string $id): bool
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        $success = true;
+        if (!$this->delete($moduleName, $id)) {
+            $success = false;
+        }
+
+        $this->close();
+
+        return $success;
+    }
 
     /**
      * Delete records
@@ -73,7 +94,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
 
         $success = true;
         foreach ($ids as $id) {
-            if (!$this->deleteRecord($moduleName, $id)) {
+            if (!$this->delete($moduleName, $id)) {
                 $success = false;
             }
         }
@@ -110,7 +131,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
 
         $success = true;
         foreach ($listView->getRecords() as $record) {
-            if (!$this->deleteRecord($moduleName, $record['id'])) {
+            if (!$this->delete($moduleName, $record['id'])) {
                 $success = false;
             }
         }
@@ -125,13 +146,15 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionProvi
      * @param string $id
      * @return bool
      */
-    protected function deleteRecord(string $moduleName, string $id): bool
+    protected function delete(string $moduleName, string $id): bool
     {
         $bean = BeanFactory::getBean($moduleName, $id);
         if ($bean && $bean->id && $bean->ACLAccess('Delete')) {
             $bean->mark_deleted($id);
+
             return true;
         }
+
         return false;
     }
 }

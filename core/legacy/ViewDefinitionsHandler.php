@@ -4,6 +4,8 @@ namespace App\Legacy;
 
 use App\Entity\FieldDefinition;
 use App\Entity\ViewDefinition;
+use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
+use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 use App\Service\BulkActionDefinitionProviderInterface;
 use App\Service\ChartDefinitionProviderInterface;
 use App\Service\FieldDefinitionsProviderInterface;
@@ -17,8 +19,6 @@ use InvalidArgumentException;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
 use SearchForm;
-use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
-use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
 use function in_array;
 
 /**
@@ -185,7 +185,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         }
 
         if (in_array('recordView', $views, true)) {
-            $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
+            $recordViewDefs = $this->recordViewDefinitionHandler->fetch(
+                $moduleName,
+                $legacyModuleName,
+                $fieldDefinition
+            );
             $viewDef->setRecordView($recordViewDefs);
         }
 
@@ -251,7 +255,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         $viewDef = new ViewDefinition();
         $viewDef->setId($moduleName);
-        $recordViewDefs = $this->recordViewDefinitionHandler->fetch($legacyModuleName, $fieldDefinition);
+        $recordViewDefs = $this->recordViewDefinitionHandler->fetch($moduleName, $legacyModuleName, $fieldDefinition);
         $viewDef->setRecordView($recordViewDefs);
 
         $this->close();

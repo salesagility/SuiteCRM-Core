@@ -13,7 +13,7 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
-import {BulkActionProcess, BulkActionProcessInput} from '@services/process/processes/bulk-action/bulk-action';
+import {AsyncActionService, AsyncActionInput} from '@services/process/processes/async-action/async-action';
 import {MessageService} from '@services/message/message.service';
 import {Process} from '@services/process/process.service';
 import {Record} from '@app-common/record/record.model';
@@ -98,7 +98,7 @@ export class ListViewStore extends ViewStore implements StateStore,
         protected moduleNavigation: ModuleNavigation,
         protected metadataStore: MetadataStore,
         protected localStorage: LocalStorageService,
-        protected bulkAction: BulkActionProcess,
+        protected bulkAction: AsyncActionService,
         protected message: MessageService,
         protected listStoreFactory: RecordListStoreFactory
     ) {
@@ -268,7 +268,7 @@ export class ListViewStore extends ViewStore implements StateStore,
             sort: null,
             ids: null,
             fields: displayedFields
-        } as BulkActionProcessInput;
+        } as AsyncActionInput;
 
 
         if (selection.all && selection.count > this.recordList.records.length) {

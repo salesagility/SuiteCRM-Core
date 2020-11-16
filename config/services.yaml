@@ -44,6 +44,8 @@ services:
       $listViewColumnLimits: '%module.listview.column_limits%'
       $listViewSettingsLimits: '%module.listview.settings_limits%'
       $listViewActionsLimits: '%module.listview.actions_limits%'
+      $recordViewActions: '%module.recordview.actions%'
+      $recordViewActionLimits: '%module.recordview.actions_limits%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]

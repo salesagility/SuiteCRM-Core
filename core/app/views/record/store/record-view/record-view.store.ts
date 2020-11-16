@@ -265,6 +265,32 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Load / reload record using current pagination and criteria
+     *
+     * @param {boolean} useCache if to use cache
+     * @returns {object} Observable<RecordViewState>
+     */
+    public load(useCache = true): Observable<Record> {
+        this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
+
+        return this.recordManager.retrieveRecord(
+            this.internalState.module,
+            this.internalState.recordID,
+            useCache
+        ).pipe(
+            tap((data: Record) => {
+                this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
+
+                this.updateState({
+                    ...this.internalState,
+                    recordID: data.id,
+                    module: data.module,
+                });
+            })
+        );
+    }
+
+    /**
      * Update the state
      *
      * @param {object} state to set
@@ -312,7 +338,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         const recordViewMeta = meta.recordView || {} as RecordViewMetadata;
         const sidebarWidgetsConfig = recordViewMeta.sidebarWidgets || [];
 
-        if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0){
+        if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0) {
             show = true;
         }
 
@@ -338,32 +364,6 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
             return fields;
         }));
-    }
-
-    /**
-     * Load / reload record using current pagination and criteria
-     *
-     * @param {boolean} useCache if to use cache
-     * @returns {object} Observable<RecordViewState>
-     */
-    protected load(useCache = true): Observable<Record> {
-        this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
-
-        return this.recordManager.retrieveRecord(
-            this.internalState.module,
-            this.internalState.recordID,
-            useCache
-        ).pipe(
-            tap((data: Record) => {
-                this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
-
-                this.updateState({
-                    ...this.internalState,
-                    recordID: data.id,
-                    module: data.module,
-                });
-            })
-        );
     }
 
 }

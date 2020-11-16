@@ -5,9 +5,9 @@ namespace App\Legacy\ViewDefinitions;
 use App\Entity\FieldDefinition;
 use App\Legacy\LegacyHandler;
 use App\Legacy\LegacyScopeState;
+use App\Service\RecordActionDefinitionProviderInterface;
 use BeanFactory;
 use DetailView2;
-use Exception;
 use Psr\Log\LoggerInterface;
 use ViewDetail;
 use ViewFactory;
@@ -27,6 +27,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
     private $logger;
 
     /**
+     * @var RecordActionDefinitionProviderInterface
+     */
+    private $actionDefinitionProvider;
+
+    /**
      * RecordViewDefinitionHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -34,6 +39,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param LoggerInterface $logger
+     * @param RecordActionDefinitionProviderInterface $actionDefinitionProvider
      */
     public function __construct(
         string $projectDir,
@@ -41,10 +47,12 @@ class RecordViewDefinitionHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RecordActionDefinitionProviderInterface $actionDefinitionProvider
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->logger = $logger;
+        $this->actionDefinitionProvider = $actionDefinitionProvider;
     }
 
     /**
@@ -57,19 +65,20 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
     /**
      * Get record view defs array. Using Session swapping.
+     * @param string $module
      * @param string $legacyModuleName
      * @param FieldDefinition $fieldDefinition
      * @return array
-     * @throws Exception
      */
     public function get(
+        string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
     ): array {
 
         $this->init();
 
-        $metadata = $this->fetch($legacyModuleName, $fieldDefinition);
+        $metadata = $this->fetch($module, $legacyModuleName, $fieldDefinition);
 
         $this->close();
 
@@ -78,12 +87,13 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
     /**
      * Get record view defs array. No swapping.
+     * @param string $module
      * @param string $legacyModuleName
      * @param FieldDefinition $fieldDefinition
      * @return array
-     * @throws Exception
      */
     public function fetch(
+        string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
     ): array {
@@ -103,6 +113,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->addTopWidgetConfig($viewDefs, $metadata);
         $this->addSidebarWidgetConfig($viewDefs, $metadata);
         $this->addPanelDefinitions($viewDefs, $vardefs, $metadata);
+        $this->addActionConfig($module, $metadata);
 
         return $metadata;
     }
@@ -284,6 +295,17 @@ class RecordViewDefinitionHandler extends LegacyHandler
         foreach ($metadata['sidebarWidgets'] as $index => $widget) {
             $metadata['sidebarWidgets'][$index]['refreshOnRecordUpdate'] = $widget['refreshOnRecordUpdate'] ?? true;
         }
+    }
+
+    /**
+     * @param string $module
+     * @param array $metadata
+     */
+    protected function addActionConfig(string $module, array &$metadata): void
+    {
+        $actions = $this->actionDefinitionProvider->getActions($module) ?? [];
+
+        $metadata['actions'] = array_values($actions);
     }
 
     /**

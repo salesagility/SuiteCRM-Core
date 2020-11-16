@@ -38,7 +38,7 @@ export class RecordSettingsMenuComponent {
 
     protected subs: Subscription[];
     protected screen: ScreenSize = ScreenSize.Medium;
-    protected defaultBreakpoint = 5;
+    protected defaultBreakpoint = 3;
     protected breakpoint: number;
 
     constructor(
@@ -49,18 +49,37 @@ export class RecordSettingsMenuComponent {
     ) {
     }
 
+    isXSmallScreen(): boolean {
+        return this.screen === ScreenSize.XSmall;
+    }
 
     getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {
-        const buttons = [];
+
+        const expanded = [];
+        const collapsed = [];
 
         actions.forEach((action: Action) => {
-            buttons.push(this.buildButton(action));
+            const button = this.buildButton(action);
+
+            if (action.params && action.params.expanded) {
+                expanded.push(button);
+                return;
+            }
+
+            collapsed.push(button);
         });
+
+        let breakpoint = this.getBreakpoint();
+        if (expanded.length < breakpoint) {
+            breakpoint = expanded.length;
+        }
+
+        const buttons = expanded.concat(collapsed);
 
         return {
             buttonKlass: [this.buttonClass],
-            dropdownLabel: this.languages.getAppString('LBL_OPTIONS') || '',
-            breakpoint: this.getBreakpoint(),
+            dropdownLabel: this.languages.getAppString('LBL_ACTIONS') || '',
+            breakpoint,
             dropdownOptions: {
                 placement: ['bottom-right'],
                 wrapperKlass: [(this.buttonGroupClass)]
@@ -71,7 +90,7 @@ export class RecordSettingsMenuComponent {
 
     getBreakpoint(): number {
 
-        const breakpointMap = this.systemConfigStore.getConfigValue('listview_settings_limits');
+        const breakpointMap = this.systemConfigStore.getConfigValue('recordview_actions_limits');
 
         if (this.screen && breakpointMap && breakpointMap[this.screen]) {
             this.breakpoint = breakpointMap[this.screen];
@@ -90,7 +109,7 @@ export class RecordSettingsMenuComponent {
             label: action.label || '',
             klass: this.buttonClass,
             onClick: (): void => {
-                this.actionsDataSource.runAction(action.key);
+                this.actionsDataSource.runAction(action);
             }
         } as ButtonInterface;
 

@@ -1,18 +1,20 @@
-import {BulkActionHandler, BulkActionHandlerData} from '@services/process/processes/bulk-action/bulk-action.model';
+import {AsyncActionData, AsyncActionHandler} from '@services/process/processes/async-action/async-action.model';
 import {Injectable} from '@angular/core';
 import {MessageService} from '@services/message/message.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ExportBulkAction extends BulkActionHandler {
+export class ExportAsyncAction extends AsyncActionHandler {
     key = 'export';
 
-    constructor(protected message: MessageService) {
+    constructor(
+        protected message: MessageService
+    ) {
         super();
     }
 
-    run(data: BulkActionHandlerData): void {
+    run(data: AsyncActionData): void {
 
         if (!data || !data.url || !data.formData) {
             this.message.addDangerMessageByKey('LBL_MISSING_HANDLER_DATA_ROUTE');

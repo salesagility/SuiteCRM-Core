@@ -6,7 +6,7 @@ import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
-import {bulkActionProcessMock} from '@services/process/processes/bulk-action/bulk-action.spec.mock';
+import {bulkActionProcessMock} from '@services/process/processes/async-action/async-action.spec.mock';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
 import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mock';
 

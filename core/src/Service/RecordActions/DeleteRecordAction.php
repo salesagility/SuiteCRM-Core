@@ -1,25 +1,18 @@
 <?php
 
-namespace App\Service\BulkActions;
+namespace App\Service\RecordActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Entity\Process;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ProcessHandlerInterface;
 use App\Service\RecordDeletionServiceInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
 
-class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInterface
+class DeleteRecordAction implements ProcessHandlerInterface
 {
-    protected const MSG_OPTIONS_NOT_FOUND = 'Process options is not defined';
+    protected const MSG_OPTIONS_NOT_FOUND = 'Process options are not defined';
 
-    protected const PROCESS_TYPE = 'bulk-delete';
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    protected const PROCESS_TYPE = 'record-delete';
 
     /**
      * @var ModuleNameMapperInterface
@@ -39,8 +32,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
     public function __construct(
         ModuleNameMapperInterface $moduleNameMapper,
         RecordDeletionServiceInterface $recordDeletionProvider
-    )
-    {
+    ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->recordDeletionProvider = $recordDeletionProvider;
     }
@@ -84,7 +76,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
 
         $options = $process->getOptions();
 
-        if (empty($options['module']) || empty($options['action'])) {
+        if (empty($options['module']) || empty($options['action']) || empty($options['id'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -94,18 +86,26 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
      */
     public function run(Process $process)
     {
-        $result = $this->deleteRecords($process);
-
-        $responseData = [
-            'reload' => true,
-        ];
+        $result = $this->deleteRecord($process);
 
         $process->setStatus('success');
-        $process->setMessages(['LBL_BULK_ACTION_DELETE_SUCCESS']);
+        $process->setMessages(['LBL_RECORD_DELETE_SUCCESS']);
         if (!$result) {
             $process->setStatus('error');
             $process->setMessages(['LBL_ACTION_ERROR']);
+
+            return;
         }
+
+        $options = $process->getOptions();
+
+        $responseData = [
+            'handler' => 'redirect',
+            'params' => [
+                'route' => $options['module'],
+                'queryParams' => []
+            ]
+        ];
 
         $process->setData($responseData);
     }
@@ -114,34 +114,13 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
      * @param Process $process
      * @return bool
      */
-    protected function deleteRecords(Process $process): bool
+    protected function deleteRecord(Process $process): bool
     {
         $options = $process->getOptions();
-        if (is_array($options['ids']) && count($options['ids'])) {
-            return $this->recordDeletionProvider->deleteRecords(
-                $this->moduleNameMapper->toLegacy($options['module']),
-                $options['ids']
-            );
-        }
 
-        if (is_array($options['criteria'])) {
-            $criteria = $options['criteria'];
-            $sort = $options['sort'] ?? [];
-            return $this->recordDeletionProvider->deleteRecordsFromCriteria(
-                $this->moduleNameMapper->toLegacy($options['module']),
-                $criteria,
-                $sort
-            );
-        }
-
-        return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setLogger(LoggerInterface $logger): void
-    {
-        $this->logger = $logger;
+        return $this->recordDeletionProvider->deleteRecord(
+            $this->moduleNameMapper->toLegacy($options['module']),
+            $options['id']
+        );
     }
 }

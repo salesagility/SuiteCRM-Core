@@ -2,8 +2,17 @@
 
 namespace App\Service;
 
-interface RecordDeletionProviderInterface
+interface RecordDeletionServiceInterface
 {
+    /**
+     * Delete record
+     *
+     * @param string $moduleName
+     * @param string $id
+     * @return bool
+     */
+    public function deleteRecord(string $moduleName, string $id): bool;
+
     /**
      * Delete records
      *

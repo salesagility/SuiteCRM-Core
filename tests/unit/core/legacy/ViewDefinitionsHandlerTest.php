@@ -8,6 +8,7 @@ use App\Service\ChartDefinitionProvider;
 use App\Service\FilterDefinitionProvider;
 use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProvider;
+use App\Service\RecordActionDefinitionProvider;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
@@ -186,13 +187,61 @@ final class ViewDefinitionsHandlerTest extends Unit
             ]
         );
 
+        /** @var AclManagerInterface $aclManager */
+        $aclManager = $this->make(
+            AclHandler::class,
+            [
+                'checkAccess' => static function (
+                    /** @noinspection PhpUnusedParameterInspection */
+                    string $module,
+                    string $action,
+                    bool $isOwner = false
+                ): bool {
+                    return true;
+                }
+            ]
+        );
+
+        $recordViewActions = [
+            'default' => [
+                'actions' => [
+                    'create' => [
+                        'key' => 'create',
+                        'labelKey' => 'LBL_NEW',
+                        'acl' => ['edit'],
+                        'mode' => ['detail']
+                    ],
+                    'edit' => [
+                        'key' => 'edit',
+                        'labelKey' => 'LBL_EDIT',
+                        'acl' => ['edit'],
+                        'mode' => ['detail']
+                    ],
+                    'delete' => [
+                        'key' => 'delete',
+                        'labelKey' => 'LBL_DELETE',
+                        'asyncProcess' => true,
+                        'acl' => ['delete'],
+                        'mode' => ['detail']
+                    ],
+                ]
+            ],
+        ];
+
+
+        $recordActionManager = new RecordActionDefinitionProvider(
+            $recordViewActions,
+            $aclManager
+        );
+
         $recordViewDefinitionHandler = new RecordViewDefinitionHandler(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $logger
+            $logger,
+            $recordActionManager
         );
 
         $subPanelDefinitionHandler = new SubPanelDefinitionHandler(

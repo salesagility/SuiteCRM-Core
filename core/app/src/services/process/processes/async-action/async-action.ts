@@ -4,13 +4,13 @@ import {catchError, take, tap} from 'rxjs/operators';
 import {Process, ProcessService} from '@services/process/process.service';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MessageService} from '@services/message/message.service';
-import {BulkActionHandler} from '@services/process/processes/bulk-action/bulk-action.model';
-import {RedirectBulkAction} from '@services/process/processes/bulk-action/actions/redirect/redirect.bulk-action';
-import {ExportBulkAction} from '@services/process/processes/bulk-action/actions/export/export.bulk-action';
+import {AsyncActionHandler} from '@services/process/processes/async-action/async-action.model';
 import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
 import {SortingSelection} from '@app-common/views/list/list-navigation.model';
+import {RedirectAsyncAction} from '@services/process/processes/async-action/actions/redirect/redirect.async-action';
+import {ExportAsyncAction} from '@services/process/processes/async-action/actions/export/export.async-action';
 
-export interface BulkActionProcessInput {
+export interface AsyncActionInput {
     action: string;
     module: string;
     criteria?: SearchCriteria;
@@ -21,29 +21,33 @@ export interface BulkActionProcessInput {
 @Injectable({
     providedIn: 'root',
 })
-export class BulkActionProcess {
+export class AsyncActionService {
 
-    actions: { [key: string]: BulkActionHandler } = {};
+    actions: { [key: string]: AsyncActionHandler } = {};
 
     constructor(
         private processService: ProcessService,
         private appStateStore: AppStateStore,
         protected message: MessageService,
-        protected redirectActionHandler: RedirectBulkAction,
-        protected exportBulkAction: ExportBulkAction
+        protected redirectAction: RedirectAsyncAction,
+        protected exportAction: ExportAsyncAction
     ) {
-        this.actions[redirectActionHandler.key] = redirectActionHandler;
-        this.actions[exportBulkAction.key] = exportBulkAction;
+        this.registerHandler(redirectAction);
+        this.registerHandler(exportAction);
+    }
+
+    public registerHandler(handler: AsyncActionHandler): void {
+        this.actions[handler.key] = handler;
     }
 
     /**
-     * Send bulk action request
+     * Send action request
      *
      * @param {string} action to submit
      * @param {string} data to send
-     * @returns {{}} Observable<Process>
+     * @returns {object} Observable<Process>
      */
-    public run(action: string, data: BulkActionProcessInput): Observable<Process> {
+    public run(action: string, data: AsyncActionInput): Observable<Process> {
         const options = {
             ...data
         };
@@ -76,7 +80,7 @@ export class BulkActionProcess {
                         return;
                     }
 
-                    const actionHandler: BulkActionHandler = this.actions[process.data.handler];
+                    const actionHandler: AsyncActionHandler = this.actions[process.data.handler];
 
                     if (!actionHandler) {
                         this.message.addDangerMessageByKey('LBL_MISSING_HANDLER');
@@ -87,7 +91,7 @@ export class BulkActionProcess {
 
                 }),
                 catchError(err => {
-                    this.message.addDangerMessageByKey('LBL_BULK_ACTION_ERROR');
+                    this.message.addDangerMessageByKey('LBL_ACTION_ERROR');
                     this.appStateStore.updateLoading(action, false);
                     throw err;
                 }),

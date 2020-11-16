@@ -275,7 +275,35 @@ export const metadataMockData = {
                 }
             }
         },
-        actions: [],
+        actions: [
+            {
+                key: 'create',
+                labelKey: 'LBL_NEW',
+                modes: ['detail'],
+                acl: ['edit'],
+                params: {
+                    expanded: true
+                },
+            },
+            {
+                key: 'edit',
+                labelKey: 'LBL_EDIT',
+                modes: ['detail'],
+                acl: ['edit'],
+                params: {
+                    expanded: true
+                },
+            },
+            {
+                key: 'save',
+                labelKey: 'LBL_SAVE_BUTTON_LABEL',
+                modes: ['edit'],
+                acl: ['edit'],
+                params: {
+                    expanded: true
+                },
+            },
+        ],
         panels: [
             {
                 key: 'lbl_account_information',

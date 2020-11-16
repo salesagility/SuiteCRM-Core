@@ -3,9 +3,6 @@
 namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Tests\UnitTester;
-use Codeception\Test\Unit;
-use Exception;
 use App\Legacy\ActionNameMapperHandler;
 use App\Legacy\ClassicViewRoutingExclusionsHandler;
 use App\Legacy\CurrencyHandler;
@@ -16,6 +13,9 @@ use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
 use App\Legacy\SystemConfig\SystemConfigMappers;
 use App\Legacy\SystemConfig\TimeFormatConfigMapper;
 use App\Legacy\SystemConfigHandler;
+use App\Tests\UnitTester;
+use Codeception\Test\Unit;
+use Exception;
 
 /**
  * Class SystemConfigHandlerTest
@@ -62,7 +62,8 @@ class SystemConfigHandlerTest extends Unit
             'timef' => true,
             'currency' => true,
             'cache_reset_actions' => true,
-            'module_routing' => true
+            'module_routing' => true,
+            'recordview_actions_limits' => true
         ];
 
         $moduleMapper = new ModuleNameMapperHandler(
@@ -182,6 +183,14 @@ class SystemConfigHandlerTest extends Unit
             'Medium' => 5,
             'Large' => 5,
             'XLarge' => 14
+        ];
+
+        $recordViewActionsLimits = [
+            'XSmall' => 3,
+            'Small' => 3,
+            'Medium' => 3,
+            'Large' => 3,
+            'XLarge' => 3
         ];
 
         $moduleRouting = [
@@ -495,7 +504,8 @@ class SystemConfigHandlerTest extends Unit
             $navigationTabLimits,
             $listViewColumnLimits,
             $listViewSettingsLimits,
-            $listViewActionsLimits
+            $listViewActionsLimits,
+            $recordViewActionsLimits
         );
     }
 
@@ -667,5 +677,32 @@ class SystemConfigHandlerTest extends Unit
         static::assertArrayHasKey('users', $cacheClearActions);
         static::assertNotEmpty($cacheClearActions['users']);
         static::assertContains('edit', $cacheClearActions['users']);
+    }
+
+    /**
+     * Test cache reset actions
+     */
+    public function testRecordViewActionsLimitsConfig(): void
+    {
+        $limitsConfig = $this->handler->getSystemConfig('recordview_actions_limits');
+        static::assertNotNull($limitsConfig);
+        static::assertEquals('recordview_actions_limits', $limitsConfig->getId());
+        static::assertNull($limitsConfig->getValue());
+        static::assertIsArray($limitsConfig->getItems());
+        static::assertNotEmpty($limitsConfig->getItems());
+
+        $limits = $limitsConfig->getItems();
+        static::assertNotNull($limits);
+        static::assertNotEmpty($limits);
+        static::assertEquals(
+            [
+                'XSmall' => 3,
+                'Small' => 3,
+                'Medium' => 3,
+                'Large' => 3,
+                'XLarge' => 3
+            ],
+            $limits
+        );
     }
 }

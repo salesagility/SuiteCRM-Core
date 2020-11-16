@@ -4,10 +4,10 @@ import {EntityMutationGQL} from '@services/api/graphql-api/api.record.create';
 import {FetchResult} from 'apollo-link';
 import {ProcessService} from '@services/process/process.service';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
-import {BulkActionProcess} from '@services/process/processes/bulk-action/bulk-action';
+import {AsyncActionService} from '@services/process/processes/async-action/async-action';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
-import {redirectBulkActionMock} from '@services/process/processes/bulk-action/actions/redirect/redirect.bulk-action.spec.mock';
-import {exportBulkActionMock} from '@services/process/processes/bulk-action/actions/export/export.bulk-action.spec.mock';
+import {redirectBulkActionMock} from '@services/process/processes/async-action/actions/redirect/redirect.async-action.spec.mock';
+import {exportBulkActionMock} from '@services/process/processes/async-action/actions/export/export.async-action.spec.mock';
 
 export const bulkActionMockData = {
     'bulk-merge': {
@@ -49,7 +49,7 @@ class BulkActionProcessMutationGQLSpy extends EntityMutationGQL {
 
 const processServiceMock = new ProcessService(new BulkActionProcessMutationGQLSpy());
 
-export const bulkActionProcessMock = new BulkActionProcess(
+export const bulkActionProcessMock = new AsyncActionService(
     processServiceMock,
     appStateStoreMock,
     messageServiceMock,
