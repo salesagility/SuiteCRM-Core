@@ -1,5 +1,5 @@
 <ng-container>
-    <scrm-panel [title]="store.getTitle()" mode="collapsible" bodyPadding="0">
+    <scrm-panel [title]="store.getTitle()" mode="closable" [close]="closeButton" bodyPadding="0">
         <span class="subpanel-icon pl-1" panel-icon-area>
             <scrm-image [image]="store.getIcon()"></scrm-image>
         </span>

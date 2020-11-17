@@ -331,6 +331,9 @@ button.settings-button.dropdown-toggle::after {
   margin-right: 1em;
   width: 1.5em;
   height: 1.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .minimise-button {

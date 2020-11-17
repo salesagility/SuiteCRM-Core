@@ -9,6 +9,7 @@ import {SubpanelTableAdapter} from '@containers/subpanel/adapters/table.adapter'
 import {SubpanelStore} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {TableConfig} from '@components/table/table.model';
 import {SubpanelActionManager} from '@containers/subpanel/components/subpanel/action-manager.service';
+import {ButtonInterface} from '@components/button/button.model';
 
 @Component({
     selector: 'scrm-subpanel',
@@ -21,6 +22,7 @@ export class SubpanelComponent implements OnInit {
     @Input() store: SubpanelStore;
     @Input() maxColumns$: Observable<number>;
 
+    closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
     tableConfig: TableConfig;
@@ -39,6 +41,12 @@ export class SubpanelComponent implements OnInit {
         }
 
         this.config$ = of(this.getButtonGroupConfig(this.buildAction())).pipe(shareReplay(1));
+
+        this.closeButton = {
+            onClick: (): void => {
+                this.store.show = false;
+            }
+        } as ButtonInterface;
     }
 
     buildAction(): any {
