@@ -185,6 +185,17 @@ trait StatisticsHandlingTrait
      */
     protected function buildCurrencyResult(array $result): Statistic
     {
+        return $this->buildNumberResult($result, 'currency');
+    }
+
+    /**
+     * Build number statistic result
+     * @param array $result
+     * @param string $type
+     * @return Statistic
+     */
+    protected function buildNumberResult(array $result, string $type): Statistic
+    {
         $value = $result['value'] ?? 0;
 
         if (empty($value)) {
@@ -196,7 +207,7 @@ trait StatisticsHandlingTrait
         $statistic->setData($result);
         $statistic->setMetadata([
             'type' => 'single-value-statistic',
-            'dataType' => 'currency',
+            'dataType' => $type,
         ]);
 
         return $statistic;
