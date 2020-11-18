@@ -30,6 +30,12 @@ module.exports = function (config) {
           '--no-sandbox',
           '--remote-debugging-port=9222',
         ]
+      },
+      FirefoxHeadless: {
+        base: 'Firefox',
+        flags: [
+          '--headless',
+        ]
       }
     },
     reporters: ['progress', 'kjhtml'],
@@ -37,7 +43,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'Chromium'],
+    browsers: ['Chrome', 'Chromium', 'Firefox'],
     singleRun: false,
     restartOnFileChange: true
   });
