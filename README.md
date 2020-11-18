@@ -24,10 +24,9 @@ SuiteCRM is published under the AGPLv3 license.
 |  Apache | 2.4 |
 
 ### Installation
-
-1: Run `composer install` in the root directory <br/>
+1: Run `composer install` or for production `composer install --no-dev` in the root directory <br/>
 2: Run `npm install` in the root directory <br/>
-3: Run `composer install` in legacy directory <br/>
+3: Run `composer install` or for production `composer install --no-dev` in legacy directory <br/>
 4: Run legacy theme compile in legacy directory <br/>
 ```
 ./vendor/bin/pscss -f compressed themes/suite8/css/Dawn/style.scss > themes/suite8/css/Dawn/style.css
@@ -42,17 +41,17 @@ chmod +x bin/console
 ``` 
 6: Run legacy install process <br/>
 7: Go back to root folder <br/>
-8: Run `composer dump-env dev` <br/>
+8: Run `composer dump-env dev` or for production `composer dump-env prod` <br/>
 9: Set the place-holders in `.env.local.php` to valid credentials <br/>
 ```
 'DATABASE_URL' => 'mysql://user:pass@db_host:db_port/db_name?serverVersion=db_version',
 ```
 
-10: Setup proxy config if you plan to use `ng serve` <br/>
+10: Setup proxy config if you plan to use `ng serve` - (Currently this does not do anything) <br/>
 * Copy `proxy.conf.env.json` to `proxy.conf.local.json` <br/>
 * Replace `"target": "http//<api_host>:<api_port>"` with your api url <br/>
 
-11: Run `ng build` or `ng serve` <br/>
+11: Run `ng build` or `ng serve` or for production run `ng build --prod` or `ng serve --prod` <br/>
 12: Run `composer dumpautoload` <br/>
 13: Re-set permissions <br/>
 ```
