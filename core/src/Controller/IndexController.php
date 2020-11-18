@@ -31,7 +31,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="index", methods={"GET"})
      * @param Security $security
      * @return Response
      */

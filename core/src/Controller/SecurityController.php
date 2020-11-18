@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="app_login", methods={"GET", "POST"})
      * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout", name="app_logout", methods={"GET", "POST"})
      * @throws Exception
      */
     public function logout(): void
