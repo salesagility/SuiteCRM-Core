@@ -10,7 +10,7 @@ use Exception;
 use DateInterval;
 use DateTime;
 use Task;
-use Mock\Core\Legacy\Statistics\DaysUntilDueTaskMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\DaysUntilDueTaskMock;
 
 
 /**

@@ -10,7 +10,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Mock\Core\Legacy\Statistics\OpportunitySalesStageTimeSpanMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\OpportunitySalesStageTimeSpanMock;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Opportunity;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mock\Core\Legacy\Statistics;
+namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
 use App\Legacy\Statistics\CaseDaysOpen;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,6 +8,10 @@ use aCase;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use SugarBean;
 
+/**
+ * Class CaseDaysOpenMock
+ * @package Mock\Core\Legacy\Statistics
+ */
 class CaseDaysOpenMock extends CaseDaysOpen
 {
     use DBQueryResultsMocking;

@@ -6,7 +6,7 @@ use App\Legacy\ModuleNameMapperHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
-use Mock\Core\Legacy\Statistics\WonOpportunityAmountByYearMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\WonOpportunityAmountByYearMock;
 
 /**
  * Class WonOpportunityAmountByYearTest
