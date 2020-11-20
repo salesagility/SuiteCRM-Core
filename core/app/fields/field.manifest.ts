@@ -38,6 +38,10 @@ import {MultiEnumDetailFieldModule} from '@fields/multienum/templates/detail/mul
 import {MultiEnumEditFieldModule} from '@fields/multienum/templates/edit/multienum.module';
 import {MultiEnumDetailFieldComponent} from '@fields/multienum/templates/detail/multienum.component';
 import {MultiEnumEditFieldComponent} from '@fields/multienum/templates/edit/multienum.component';
+import {BooleanDetailFieldModule} from '@fields/boolean/templates/detail/boolean.module';
+import {BooleanEditFieldModule} from '@fields/boolean/templates/edit/boolean.module';
+import {BooleanDetailFieldComponent} from '@fields/boolean/templates/detail/boolean.component';
+import {BooleanEditFieldComponent} from '@fields/boolean/templates/edit/boolean.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -59,7 +63,9 @@ export const fieldModules = [
     EnumDetailFieldModule,
     EnumEditFieldModule,
     MultiEnumDetailFieldModule,
-    MultiEnumEditFieldModule
+    MultiEnumEditFieldModule,
+    BooleanDetailFieldModule,
+    BooleanEditFieldModule
 ];
 export const fieldComponents = [
     VarcharDetailFieldComponent,
@@ -81,7 +87,9 @@ export const fieldComponents = [
     EnumDetailFieldComponent,
     EnumEditFieldComponent,
     MultiEnumDetailFieldComponent,
-    MultiEnumEditFieldComponent
+    MultiEnumEditFieldComponent,
+    BooleanDetailFieldComponent,
+    BooleanEditFieldComponent
 ];
 
 export const viewFieldsMap = {
@@ -121,5 +129,11 @@ export const viewFieldsMap = {
     'enum.edit': EnumEditFieldComponent,
     'multienum.list': MultiEnumDetailFieldComponent,
     'multienum.detail': MultiEnumDetailFieldComponent,
-    'multienum.edit': MultiEnumEditFieldComponent
+    'multienum.edit': MultiEnumEditFieldComponent,
+    'boolean.list': BooleanDetailFieldComponent,
+    'boolean.detail': BooleanDetailFieldComponent,
+    'boolean.edit': BooleanEditFieldComponent,
+    'bool.list': BooleanDetailFieldComponent,
+    'bool.detail': BooleanDetailFieldComponent,
+    'bool.edit': BooleanEditFieldComponent
 };
