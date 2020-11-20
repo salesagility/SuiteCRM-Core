@@ -5,6 +5,7 @@ namespace App\Legacy\Statistics;
 use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Service\StatisticsProviderInterface;
+use DateFormatService;
 use Elasticsearch\Endpoints\Indices\Refresh;
 
 
@@ -43,23 +44,71 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
         $queries = $this->getQueries($module, $id, $subpanel);
 
 
-        $parts = $queries[0]; //tasks
-        $parts['select'] = 'SELECT tasks.`date_start` AS `tasks_date_start`';
-        $parts['order_by'] .= ' ORDER BY `tasks_date_start` ASC LIMIT 1';
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+        $dateFormatService = new DateFormatService();
+
+        $dateNow = date("Y-m-d H:i:s");
+
+        if ($module === 'project' || $module === 'cases' || $module === 'opportunities' || $module === 'contacts') {
+            $parts = $queries[1];
+        } elseif ($module === 'prospects' || $module === 'accounts') {
+            $parts = $queries[0];
+        } elseif ($module === 'leads') {
+            $parts = $queries[2];
+        }
+        $parts['select'] = 'SELECT tasks.`date_start` AS `tasks_parent_date_start`';
+        $tasksWhere = "tasks.`date_start` >= '$dateNow' ";
+        if (!empty($parts['where'])) {
+            $tasksWhere = " AND " . $tasksWhere;
+        }
+        $parts['where'] .= $tasksWhere;
+        $parts['order_by'] .= ' ORDER BY `tasks_parent_date_start` ASC LIMIT 1';
         $innerQuery = $this->joinQueryParts($parts);
-        $tasksResult = $this->fetchRow($innerQuery);
+        $tasksParentResult = $this->fetchRow($innerQuery);
+
+        if ($module === 'contacts') {
+            $parts = $queries[0];
+            $parts['select'] = 'SELECT tasks.`date_start` AS `tasks_date_start`';
+            $tasksWhere = "tasks.`date_start` >= '$dateNow' ";
+            if (!empty($parts['where'])) {
+                $tasksWhere = " AND " . $tasksWhere;
+            }
+            $parts['where'] .= $tasksWhere;
+            $parts['order_by'] .= ' ORDER BY `tasks_date_start` ASC LIMIT 1';
+            $innerQuery = $this->joinQueryParts($parts);
+            $tasksResult = $this->fetchRow($innerQuery);
+        }
 
 
-
-        $parts = $queries[1]; //meetings
+        if ($module === 'project' || $module === 'cases' || $module === 'opportunities') {
+            $parts = $queries[0];
+        } elseif ($module === 'prospects' || $module === 'accounts' || $module === 'leads') {
+            $parts = $queries[1];
+        } elseif ($module === 'contacts') {
+            $parts = $queries[2];
+        }
         $parts['select'] = 'SELECT meetings.`date_start` AS `meetings_date_start`';
+        $meetingsWhere = "  meetings.`date_start` >= ' $dateNow ' ";
+        if (!empty($parts['where'])) {
+            $meetingsWhere = ' AND ' . $meetingsWhere;
+        }
+        $parts['where'] .= $meetingsWhere;
         $parts['order_by'] .= ' ORDER BY `meetings_date_start` ASC LIMIT 1';
         $innerQuery = $this->joinQueryParts($parts);
         $meetingsResult = $this->fetchRow($innerQuery);
 
-
-        $parts = $queries[2]; //calls
+        if ($module === 'project' || $module === 'cases' || $module === 'opportunities' || $module === 'prospects' || $module === 'accounts') {
+            $parts = $queries[2];
+        } else {
+            $parts = $queries[3];
+        }
         $parts['select'] = 'SELECT calls.`date_start` AS `calls_date_start` ';
+        $callsWhere = " calls.`date_start` >= ' $dateNow ' ";
+        if (!empty($parts['where'])) {
+            $callsWhere = ' AND ' . $callsWhere;
+        }
+        $parts['where'] .= $callsWhere;
         $parts['order_by'] .= ' ORDER BY `calls_date_start` ASC LIMIT 1';
         $innerQuery = $this->joinQueryParts($parts);
         $callsResult = $this->fetchRow($innerQuery);
@@ -78,29 +127,36 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
             $positions[$date[$i]] = 'calls_date_start';
             $i++;
         }
+        if (!empty($tasksParentResult['tasks_parent_date_start'])) {
+            $date[$i] = $tasksParentResult['tasks_parent_date_start'];
+            $positions[$date[$i]] = 'tasks_parent_date_start';
+            $i++;
+        }
         if (!empty($tasksResult['tasks_date_start'])) {
             $date[$i] = $tasksResult['tasks_date_start'];
             $positions[$date[$i]] = 'tasks_date_start';
         }
 
-        $min = min($date);
-        $date_now = date("Y-m-d H:i:s");
+        if (empty($date)) {
+            $statistic = $this->getEmptyResponse(self::KEY);
+            $this->close();
 
-        for ($x = 0; $x <= 2; $x++){
-            if ($min < $date_now){
-                asort($date);
-                $min = $date[$x];
-            }
+            return $statistic;
         }
 
+        $min = min($date);
+
+        $dateShown = $dateFormatService->toUserDate($min);
 
         if ('meetings_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $min]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
         } elseif ('calls_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $min]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
         } elseif ('tasks_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $min]);
-        }else {
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+        } elseif ('tasks_parent_date_start' === $positions[$min]) {
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+        } else {
             $statistic = $this->buildSingleValueResponse(self::KEY, 'varchar', ['value' => '-']);
         }
         $this->close();
