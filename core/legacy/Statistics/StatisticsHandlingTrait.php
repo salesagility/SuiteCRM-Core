@@ -224,6 +224,7 @@ trait StatisticsHandlingTrait
         $queryParts[] = $parts['from'] ?? '';
         $queryParts[] = $parts['where'] ?? '';
         $queryParts[] = $parts['group_by'] ?? '';
+        $queryParts[] = $parts['order_by'] ?? '';
 
         return implode(' ', $queryParts);
     }
