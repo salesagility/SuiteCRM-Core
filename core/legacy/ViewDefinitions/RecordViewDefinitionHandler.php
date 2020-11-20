@@ -199,12 +199,13 @@ class RecordViewDefinitionHandler extends LegacyHandler
      */
     protected function addCell(&$newRow, $definition, &$vardefs): void
     {
-        if (empty($definition['name'])) {
+        $fieldName = $definition['name'] ?? '';
+        if (empty($fieldName)) {
             return;
         }
 
-        if (!isset($vardefs[$definition['name']])) {
-            $message = "RecordViewDefinitions: '${$definition['name']}' not set on vardefs. Ignoring.";
+        if (!isset($vardefs[$fieldName])) {
+            $message = "RecordViewDefinitions: '$fieldName' not set on vardefs. Ignoring.";
             $this->logger->warning($message);
 
             return;
