@@ -68,7 +68,7 @@ class PastYearsClosedOpportunityAmounts extends SubpanelDataQueryHandler impleme
         $parts['where'] .= " AND opportunities.date_closed < '$endYearDateString'";
         $parts['where'] .= " AND opportunities.sales_stage IN ('$statuses') ";
         $parts['group_by'] = ' GROUP BY EXTRACT(YEAR FROM opportunities.date_closed), opportunities.sales_stage ';
-        $parts['order_by'] = ' opportunities.sales_stage ';
+        $parts['order_by'] = ' ORDER BY opportunities.sales_stage ';
 
         $innerQuery = $this->joinQueryParts($parts);
 
