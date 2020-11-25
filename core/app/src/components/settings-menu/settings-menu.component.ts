@@ -133,7 +133,7 @@ export class SettingsMenuComponent implements OnInit {
     }
 
     getMyFiltersButton(): DropdownButtonInterface {
-        const filters = this.listStore.getFilter() || [];
+        const filters = this.listStore.getFilter();
 
         const dropdownConfig = {
             label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',

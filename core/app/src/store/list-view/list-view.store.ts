@@ -13,7 +13,7 @@ import {NavigationStore} from '@store/navigation/navigation.store';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
-import {AsyncActionService, AsyncActionInput} from '@services/process/processes/async-action/async-action';
+import {AsyncActionInput, AsyncActionService} from '@services/process/processes/async-action/async-action';
 import {MessageService} from '@services/message/message.service';
 import {Process} from '@services/process/process.service';
 import {Record} from '@app-common/record/record.model';
@@ -231,7 +231,7 @@ export class ListViewStore extends ViewStore implements StateStore,
     }
 
     public getFilter(): any {
-        return this.metadata.listView.filters;
+        return deepClone(this.metadata.listView.filters || []);
     }
 
     public executeBulkAction(action: string): void {
