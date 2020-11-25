@@ -43,7 +43,7 @@ export const languageMockData = {
         LBL_PANEL_ADVANCED: 'MORE INFORMATION',
         LBL_AVERAGE_SPEND_PER_YEAR: 'Average Spend Per Year',
         LBL_OPPORTUNITIES_TOTAL: 'Total Opportunity Value',
-        LBL_WIDGETS: 'Widgets'
+        LBL_INSIGHTS: 'Insights'
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase

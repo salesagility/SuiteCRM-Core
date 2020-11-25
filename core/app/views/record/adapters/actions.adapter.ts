@@ -18,7 +18,7 @@ export class RecordActionsAdapter implements ActionDataSource {
         detail: [
             {
                 key: 'toggle-widgets',
-                labelKey: 'LBL_WIDGETS',
+                labelKey: 'LBL_INSIGHTS',
                 params: {
                     expanded: true
                 },
@@ -36,7 +36,7 @@ export class RecordActionsAdapter implements ActionDataSource {
             },
             {
                 key: 'toggle-widgets',
-                labelKey: 'LBL_WIDGETS',
+                labelKey: 'LBL_INSIGHTS',
                 params: {
                     expanded: true
                 },

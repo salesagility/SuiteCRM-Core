@@ -38,7 +38,7 @@ interface ChartSidebarWidgetState {
 })
 export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements OnInit {
     charts: ChartStatisticMap = {};
-    titleLabelKey = 'LBL_CHARTS';
+    titleLabelKey = 'LBL_INSIGHTS';
     title = '';
     messageLabelKey = 'LBL_CHART_NOT_FOUND';
     selectedChart = '';

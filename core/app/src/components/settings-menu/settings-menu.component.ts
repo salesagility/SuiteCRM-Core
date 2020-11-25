@@ -184,7 +184,7 @@ export class SettingsMenuComponent implements OnInit {
     getChartsButton(): ButtonInterface {
 
         return {
-            label: this.listStore.appStrings.LBL_CHARTS || '',
+            label: this.listStore.appStrings.LBL_INSIGHTS || '',
             klass: {
                 active: this.listStore.showWidgets
             },
