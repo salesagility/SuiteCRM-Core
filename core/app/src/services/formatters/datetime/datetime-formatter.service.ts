@@ -50,7 +50,13 @@ export class DatetimeFormatter implements Formatter {
         const timeFormatPreference = this.preferences.getUserPreference('time_format');
 
         if (timeFormatPreference) {
-            return timeFormatPreference;
+            let format: string = timeFormatPreference;
+
+            if (format.includes('aaaaaa')) {
+                format = format.replace('aaaaaa', 'aaaaa\'m\'');
+            }
+
+            return format;
         }
 
         return this.getInternalTimeFormat();
