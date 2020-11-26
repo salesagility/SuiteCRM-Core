@@ -75,7 +75,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     public function getSubPanelDef(string $moduleName): array
     {
         /* @noinspection PhpIncludeInspection */
-        include 'include/SubPanel/SubPanel.php';
+        require_once 'include/SubPanel/SubPanel.php';
 
         return $this->getModuleSubpanels($moduleName);
     }
