@@ -88,7 +88,7 @@ class ThemeImageService
     {
 
         $path = $this->buildPath($imagePath, $theme);
-        $fullPath = $this->projectDir . '/' . $path;
+        $fullPath = $this->projectDir . '/public/' . $path;
 
         $it = $this->themeImageFinder->find($fullPath);
 

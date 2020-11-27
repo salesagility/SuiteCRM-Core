@@ -23,7 +23,7 @@
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
               "core/app/themes/suite8/css/style.scss"
             ],
-            "deployUrl": "public/dist/",
+            "deployUrl": "dist/",
             "assets": [
               "core/app/themes"
             ]

@@ -3,8 +3,8 @@ parameters:
     # Order matters, lower ones will override the above ones
     - 'legacy/themes/default/images'
     - 'legacy/custom/themes/default/images'
-    - 'core/app/themes/default/images'
+    - 'dist/themes/default/images'
     - 'legacy/themes/<theme>/images'
     - 'legacy/custom/themes/<theme>/images'
-    - 'core/app/themes/<theme>/images'
-    - 'core/app/themes/<theme>/images/modules'
+    - 'dist/themes/<theme>/images'
+    - 'dist/themes/<theme>/images/modules'
