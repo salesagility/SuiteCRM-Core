@@ -1,0 +1,8 @@
+<ng-container *ngIf="(languages$ | async) as languages">
+    <ng-container *ngIf="!listKey && labelKey">
+        {{language.getFieldLabel(labelKey, module)}}
+    </ng-container>
+    <ng-container *ngIf="listKey && labelKey">
+        {{language.getListLabel(listKey, labelKey)}}
+    </ng-container>
+</ng-container>
