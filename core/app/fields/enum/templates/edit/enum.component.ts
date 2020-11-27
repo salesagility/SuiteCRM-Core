@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
 import {LanguageStore} from '@store/language/language.store';
+import {TagInputComponent} from 'ngx-chips';
 
 @Component({
     selector: 'scrm-enum-edit',
@@ -8,6 +9,8 @@ import {LanguageStore} from '@store/language/language.store';
     styleUrls: []
 })
 export class EnumEditFieldComponent extends BaseEnumComponent {
+
+    @ViewChild('tag') tag: TagInputComponent;
 
     constructor(protected languages: LanguageStore) {
         super(languages);
@@ -31,6 +34,10 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
 
     public onRemove(): void {
         this.field.value = '';
+        setTimeout(() => {
+            this.tag.focus(true, true);
+            this.tag.dropdown.show();
+        }, 200);
     }
 
     public getPlaceholderLabel(): string {

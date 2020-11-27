@@ -5,6 +5,7 @@
            [identifyBy]="'value'"
            [placeholder]="getPlaceholderLabel()"
            [secondaryPlaceholder]="getPlaceholderLabel()"
+           #tag
            (onAdd)="onAdd()"
            (onRemove)="onRemove()">
     <tag-input-dropdown [displayBy]="'label'"

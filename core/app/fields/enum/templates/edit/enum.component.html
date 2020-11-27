@@ -6,6 +6,7 @@
            [placeholder]="getPlaceholderLabel()"
            [secondaryPlaceholder]="getPlaceholderLabel()"
            maxItems="1"
+           #tag
            (onAdd)="onAdd($event)"
            (onRemove)="onRemove()">
     <tag-input-dropdown [displayBy]="'label'"
