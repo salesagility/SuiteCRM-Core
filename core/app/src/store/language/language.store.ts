@@ -283,6 +283,28 @@ export class LanguageStore implements StateStore {
     }
 
     /**
+     * Get list label
+     *
+     * @param {string} listKey to fetch
+     * @param {string} labelKey to fetch
+     * @returns {string} label
+     */
+    public getListLabel(listKey: string, labelKey: string): string {
+
+        if (!listKey || !labelKey) {
+            return '';
+        }
+
+        const listStrings = this.getAppListString(listKey);
+
+        if (!listStrings) {
+            return '';
+        }
+
+        return listStrings[labelKey] || '';
+    }
+
+    /**
      * Get all available string types
      *
      * @returns {string[]} string types

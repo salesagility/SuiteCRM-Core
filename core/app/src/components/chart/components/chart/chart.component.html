@@ -1,3 +1,4 @@
+<scrm-chart-message-area *ngIf="!isConfigured()" labelKey="LBL_BAD_CONFIG"></scrm-chart-message-area>
 <ndc-dynamic *ngIf="isConfigured()"
              [ndcDynamicComponent]="chartType"
              [ndcDynamicInputs]="{'dataSource': dataSource}">

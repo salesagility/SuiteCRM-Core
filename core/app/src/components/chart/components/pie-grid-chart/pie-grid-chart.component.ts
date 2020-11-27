@@ -1,16 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartComponent} from '@components/chart/components/base-chart/base-chart.component';
 import {SingleSeries} from '@app-common/containers/chart/chart.model';
+import {Subscription} from 'rxjs';
+import {LanguageStore} from '@store/language/language.store';
 
 @Component({
     selector: 'scrm-pie-grid-chart',
     templateUrl: './pie-grid-chart.component.html',
     styleUrls: []
 })
-export class PieGridChartComponent extends BaseChartComponent implements OnInit {
+export class PieGridChartComponent extends BaseChartComponent implements OnInit, OnDestroy {
     results: SingleSeries;
     height = 700;
     view = [300, this.height];
+    protected subs: Subscription[] = [];
 
     constructor() {
         super();
@@ -23,12 +26,16 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit 
 
         this.calculateView();
 
-        this.dataSource.getResults().subscribe(value => {
+        this.subs.push(this.dataSource.getResults().subscribe(value => {
             this.results = value.singleSeries;
             this.calculateHeightBasedOnResults();
             this.calculateView();
 
-        });
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     get scheme(): string {

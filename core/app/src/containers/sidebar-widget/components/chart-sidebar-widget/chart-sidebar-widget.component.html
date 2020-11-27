@@ -18,18 +18,20 @@
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-xs ">
-                            <scrm-chart *ngIf="getDataSource(vm.statistics)"
-                                        [type]="chartType"
-                                        [dataSource]="getDataSource(vm.statistics)">
-                            </scrm-chart>
-                            <div *ngIf="loading" [class.m-5]="!getDataSource(vm.statistics)">
-                                <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+                        <div class="col pl-0 pr-0 pb-1 pt-1 d-flex justify-content-center">
+                            <div>
+                                <scrm-chart *ngIf="getDataSource(vm.statistics)"
+                                            [type]="chartType"
+                                            [dataSource]="getDataSource(vm.statistics)">
+                                </scrm-chart>
+                                <div *ngIf="loading" [class.m-5]="!getDataSource(vm.statistics)">
+                                    <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+                                </div>
+                                <p *ngIf="!loading && (!isConfigured() || !getDataSource(vm.statistics))"
+                                   class="lead text-center pt-3">
+                                    {{vm.appStrings[this.messageLabelKey]}}
+                                </p>
                             </div>
-                            <p *ngIf="!loading && (!isConfigured() || !getDataSource(vm.statistics))"
-                               class="lead text-center pt-3">
-                                {{vm.appStrings[this.messageLabelKey]}}
-                            </p>
                         </div>
                     </div>
                 </div>

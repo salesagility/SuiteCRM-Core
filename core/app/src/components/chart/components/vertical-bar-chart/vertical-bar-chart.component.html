@@ -1,4 +1,6 @@
-<ngx-charts-bar-vertical *ngIf="results"
+<scrm-chart-message-area *ngIf="!results || !results.length || results.length < 1"
+                         labelKey="LBL_NO_DATA"></scrm-chart-message-area>
+<ngx-charts-bar-vertical *ngIf="results && results.length > 0"
                          class="vertical-bar-chart"
                          (window:resize)="onResize()"
                          [animations]="false"

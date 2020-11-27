@@ -1,3 +1,5 @@
+<scrm-chart-message-area *ngIf="!results || !results.length || results.length < 1"
+                         labelKey="LBL_NO_DATA"></scrm-chart-message-area>
 <ngx-charts-line-chart *ngIf="results && results.length > 0"
                        class="line-chart"
                        (window:resize)="onResize()"

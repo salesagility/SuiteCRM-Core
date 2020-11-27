@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartComponent} from '@components/chart/components/base-chart/base-chart.component';
 import {MultiSeries} from '@app-common/containers/chart/chart.model';
 import {isFalse} from '@app-common/utils/value-utils';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'scrm-line-chart',
     templateUrl: './line-chart.component.html',
     styleUrls: []
 })
-export class LineChartComponent extends BaseChartComponent implements OnInit {
+export class LineChartComponent extends BaseChartComponent implements OnInit, OnDestroy {
 
     results: MultiSeries;
     scheme: string;
@@ -27,6 +28,8 @@ export class LineChartComponent extends BaseChartComponent implements OnInit {
     xAxisTickFormatting: Function;
     tooltipDisabled: boolean;
 
+    protected subs: Subscription[] = [];
+
     constructor() {
         super();
     }
@@ -38,9 +41,9 @@ export class LineChartComponent extends BaseChartComponent implements OnInit {
 
         this.calculateView();
 
-        this.dataSource.getResults().subscribe(value => {
+        this.subs.push(this.dataSource.getResults().subscribe(value => {
             this.results = value.multiSeries;
-        });
+        }));
 
         this.scheme = this.getScheme();
         this.gradient = this.getGradient();
@@ -57,6 +60,10 @@ export class LineChartComponent extends BaseChartComponent implements OnInit {
         this.yAxisTickFormatting = this.getYAxisTickFormatting();
         this.xAxisTickFormatting = this.getXAxisTickFormatting();
         this.tooltipDisabled = this.getTooltipDisabled();
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     getScheme(): string {
