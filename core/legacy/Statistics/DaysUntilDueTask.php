@@ -6,6 +6,8 @@ use App\Entity\Statistic;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
+use DateFormatService;
+use DateTime;
 use Exception;
 use Task;
 use App\Legacy\LegacyHandler;
@@ -86,16 +88,26 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
         $this->init();
         $this->startLegacyApp();
 
-        $date_due = $this->getTask($id)->date_due;
-        $date = time();
-        $dbTime = strtotime($date_due);
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+        $dateFormatService = new DateFormatService();
 
-        $statistic = $this->getDateDiffStatistic(self::KEY, $date_due, $date);
+        $dateDue = $this->getTask($id)->date_due;
+        $completed = $this->getTask($id)->status;
+        $dbTime = $dateFormatService->toDateTime($dateDue);
+        $dateTime = new DateTime();
 
-        if ($dbTime > $date) {
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_UNTIL_DUE_TASK']);
+        $statistic = $this->getDateDiffStatistic(self::KEY, $dateDue, $dateFormatService->toDBDateTime($dateTime));
+
+        if ($completed !== 'Completed') {
+            if ($dbTime > $dateTime) {
+                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_UNTIL_DUE_TASK']);
+            } else {
+                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OVERDUE']);
+            }
         } else {
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OVERDUE']);
+            $statistic = $this->getEmptyResponse(self::KEY);
+            $this->addMetadata($statistic, ['labelKey' => 'LBL_TASK_COMPLETED']);
         }
 
         $this->close();
