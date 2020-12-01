@@ -54,7 +54,13 @@ final class RecordItemDataProvider implements ItemDataProviderInterface, Restric
         string $operationName = null,
         array $context = []
     ): ?Record {
-        $module = $context['args']['module'] ?? '';
+        $module = '';
+
+        if (!empty($context['args']['module'])) {
+            $module = $context['args']['module'];
+        } elseif (!empty($context['filters']['module'])) {
+            $module = $context['filters']['module'];
+        }
 
         return $this->recordHandler->getRecord($module, $id);
     }

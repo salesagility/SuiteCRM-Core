@@ -149,7 +149,7 @@ class RecordList
      * get filters
      * @return array
      */
-    public function getFilters(): array
+    public function getFilters(): ?array
     {
         return $this->filters;
     }
