@@ -42,6 +42,10 @@ import {BooleanDetailFieldModule} from '@fields/boolean/templates/detail/boolean
 import {BooleanEditFieldModule} from '@fields/boolean/templates/edit/boolean.module';
 import {BooleanDetailFieldComponent} from '@fields/boolean/templates/detail/boolean.component';
 import {BooleanEditFieldComponent} from '@fields/boolean/templates/edit/boolean.component';
+import {DynamicEnumDetailFieldModule} from '@fields/dynamicenum/templates/detail/dynamicenum.module';
+import {DynamicEnumEditFieldModule} from '@fields/dynamicenum/templates/edit/dynamicenum.module';
+import {DynamicEnumDetailFieldComponent} from '@fields/dynamicenum/templates/detail/dynamicenum.component';
+import {DynamicEnumEditFieldComponent} from '@fields/dynamicenum/templates/edit/dynamicenum.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -64,6 +68,8 @@ export const fieldModules = [
     EnumEditFieldModule,
     MultiEnumDetailFieldModule,
     MultiEnumEditFieldModule,
+    DynamicEnumDetailFieldModule,
+    DynamicEnumEditFieldModule,
     BooleanDetailFieldModule,
     BooleanEditFieldModule
 ];
@@ -88,6 +94,8 @@ export const fieldComponents = [
     EnumEditFieldComponent,
     MultiEnumDetailFieldComponent,
     MultiEnumEditFieldComponent,
+    DynamicEnumDetailFieldComponent,
+    DynamicEnumEditFieldComponent,
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent
 ];
@@ -130,6 +138,9 @@ export const viewFieldsMap = {
     'multienum.list': MultiEnumDetailFieldComponent,
     'multienum.detail': MultiEnumDetailFieldComponent,
     'multienum.edit': MultiEnumEditFieldComponent,
+    'dynamicenum.list': DynamicEnumDetailFieldComponent,
+    'dynamicenum.detail': DynamicEnumDetailFieldComponent,
+    'dynamicenum.edit': DynamicEnumEditFieldComponent,
     'boolean.list': BooleanDetailFieldComponent,
     'boolean.detail': BooleanDetailFieldComponent,
     'boolean.edit': BooleanEditFieldComponent,
