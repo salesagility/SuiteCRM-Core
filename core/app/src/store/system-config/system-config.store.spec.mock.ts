@@ -104,6 +104,14 @@ export const systemConfigMockData = {
                 XLarge: 3
             }
         },
+        ui: {
+            id: '/docroot/api/system-configs/ui',
+            _id: 'ui',
+            value: null,
+            items: {
+                alert_timeout: 3,
+            }
+        },
         date_format: {
             id: '/docroot/api/system-configs/date_format',
             _id: 'date_format',

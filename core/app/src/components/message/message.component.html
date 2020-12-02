@@ -1,9 +1,15 @@
-<div class="container-fluid alert-fixed" *ngIf="(appStrings$ | async) as appStrings">
-    <div *ngFor="let message of messages" class="message {{ message.type }} alert-dismissible fade show" role="alert">
-        <ng-container *ngIf="message.labelKey">{{appStrings[message.labelKey] || ''}}</ng-container>
-        <ng-container *ngIf="message.text">{{message.text}}</ng-container>
-        <a (click)="close(message)" type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </a>
+<div class="container-fluid alert-fixed message-wrapper" *ngIf="(appStrings$ | async) as appStrings">
+    <div class="d-flex justify-content-center flex-column align-items-center message-container">
+        <div *ngFor="let message of messages"
+             (click)="close(message)"
+             class="message {{ message.type }} alert-dismissible fade show shadow"
+             [@fade]
+             role="alert">
+            <ng-container *ngIf="message.labelKey">{{appStrings[message.labelKey] || ''}}</ng-container>
+            <ng-container *ngIf="message.text">{{message.text}}</ng-container>
+            <a (click)="close(message)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+        </div>
     </div>
 </div>

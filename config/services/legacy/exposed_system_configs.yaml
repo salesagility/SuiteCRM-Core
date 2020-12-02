@@ -24,3 +24,4 @@ parameters:
     listview_actions_limits: true
     module_routing: true
     recordview_actions_limits: true
+    ui: true

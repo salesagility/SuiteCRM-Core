@@ -2,9 +2,24 @@
 
 .alert-fixed {
   position: fixed;
-  top: 4em;
+  top: 3.3em;
   left: 0;
   width: 100%;
   z-index: map-get($zindex, app-low);
   border-radius: 0
+}
+
+.message-container {
+  .alert {
+    min-width: 39rem;
+  }
+
+  .alert:hover {
+    cursor: pointer;
+  }
+}
+
+
+.message-container:focus {
+  outline: none;
 }

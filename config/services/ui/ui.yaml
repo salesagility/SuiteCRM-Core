@@ -1,0 +1,3 @@
+parameters:
+  ui:
+    alert_timeout: 3

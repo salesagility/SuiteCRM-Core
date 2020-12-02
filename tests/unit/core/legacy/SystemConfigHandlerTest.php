@@ -487,6 +487,10 @@ class SystemConfigHandlerTest extends Unit
 
         ];
 
+        $ui = [
+            'alert_timeout' => 3
+        ];
+
         $this->handler = new SystemConfigHandler(
             $projectDir,
             $legacyDir,
@@ -505,7 +509,8 @@ class SystemConfigHandlerTest extends Unit
             $listViewColumnLimits,
             $listViewSettingsLimits,
             $listViewActionsLimits,
-            $recordViewActionsLimits
+            $recordViewActionsLimits,
+            $ui
         );
     }
 

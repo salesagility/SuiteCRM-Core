@@ -54,6 +54,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $listViewSettingsLimits
      * @param array $listViewActionsLimits
      * @param array $recordViewActionLimits
+     * @param array $uiConfigs
      */
     public function __construct(
         string $projectDir,
@@ -73,7 +74,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewColumnLimits,
         array $listViewSettingsLimits,
         array $listViewActionsLimits,
-        array $recordViewActionLimits
+        array $recordViewActionLimits,
+        array $uiConfigs
     )
     {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
@@ -89,6 +91,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
         $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;
         $this->injectedSystemConfigs['recordview_actions_limits'] = $recordViewActionLimits;
+        $this->injectedSystemConfigs['ui'] = $uiConfigs;
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
     }
