@@ -157,6 +157,7 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
                 SELECT COUNT(*)
                    FROM opportunities T2
                    WHERE T2.assigned_user_id = T1.assigned_user_id
+                   AND T2.deleted = '0' AND T1.deleted = '0'
                      AND (
                          T2.amount > T1.amount OR
                          (

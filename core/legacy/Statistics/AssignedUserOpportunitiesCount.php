@@ -160,6 +160,7 @@ class AssignedUserOpportunitiesCount extends SubpanelDataQueryHandler implements
                 WHERE T2.assigned_user_id = T1.assigned_user_id
                       $statusClause
                       $securityWhereClause
+                      AND T2.deleted = '0' AND T1.deleted = '0'
             ) as value
             FROM opportunities T1
             WHERE T1.id = :id
