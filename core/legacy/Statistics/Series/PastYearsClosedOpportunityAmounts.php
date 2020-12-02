@@ -56,7 +56,7 @@ class PastYearsClosedOpportunityAmounts extends SubpanelDataQueryHandler impleme
         $endYear = $yearsList[$years - 1];
         $endYearDateString = $nextYear . '-01-01';
 
-        $statusesList = ['Closed Won'];
+        $statusesList = ['Closed Won', 'Closed Lost'];
         $statuses = implode("' , '", $statusesList);
 
         $parts = $queries[0];

@@ -29,7 +29,7 @@ class StatisticsTopWidgetHostComponent {
         options: {
             statistics: [
                 {
-                    labelKey: 'LBL_AVERAGE_SPEND_PER_YEAR',
+                    labelKey: 'LBL_AVERAGE_CLOSED_WON_PER_YEAR',
                     type: 'accounts-won-opportunity-amount-by-year'
                 },
                 {
@@ -99,7 +99,7 @@ describe('StatisticsTopWidgetComponent', () => {
         const averageSpendCurrency = averageSpendField.getElementsByTagName('scrm-currency-detail').item(0);
 
         expect(averageSpendLabel).toBeTruthy();
-        expect(averageSpendLabel.textContent).toContain('AVERAGE SPEND PER YEAR:');
+        expect(averageSpendLabel.textContent).toContain('AVERAGE CLOSED WON PER YEAR:');
         expect(averageSpendValue).toBeTruthy();
         expect(averageSpendField).toBeTruthy();
         expect(averageSpendCurrency).toBeTruthy();

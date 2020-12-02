@@ -38,7 +38,7 @@ class SidebarWidgetHostComponent {
                     chartKey: 'accounts-past-years-closed-opportunity-amounts',
                     chartType: 'line-chart',
                     statisticsType: 'accounts-past-years-closed-opportunity-amounts',
-                    labelKey: 'LBL_SPEND_PER_YEAR',
+                    labelKey: 'LBL_CLOSED_PER_YEAR',
                     chartOptions: []
                 },
             ],

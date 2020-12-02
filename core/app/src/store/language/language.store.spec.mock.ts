@@ -41,7 +41,7 @@ export const languageMockData = {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
         lbl_account_information: 'OVERVIEW',
         LBL_PANEL_ADVANCED: 'MORE INFORMATION',
-        LBL_AVERAGE_SPEND_PER_YEAR: 'Average Spend Per Year',
+        LBL_AVERAGE_CLOSED_WON_PER_YEAR: 'Average Closed Won Per Year',
         LBL_OPPORTUNITIES_TOTAL: 'Total Opportunity Value',
         LBL_INSIGHTS: 'Insights',
         LBL_NO_DATA: 'No Data',
