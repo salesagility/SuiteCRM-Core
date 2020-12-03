@@ -3,6 +3,7 @@ import {ActionData, ActionHandler} from '@app-common/actions/action.model';
 export interface SubpanelActionData extends ActionData {
     parentId: string;
     parentModule: string;
+    module: string;
 }
 
 export interface SubpanelActionHandlerMap {

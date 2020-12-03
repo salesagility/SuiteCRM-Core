@@ -62,7 +62,10 @@ export class SubpanelComponent implements OnInit {
 
                     actions.push({
                         ...button,
-                        label
+                        label,
+                        params: {
+                            module: button.module
+                        }
                     });
                 });
             }
@@ -100,6 +103,7 @@ export class SubpanelComponent implements OnInit {
             onClick: (): void => {
                 this.actionManager.run(action.key, {
                     subpanelMeta: this.store.metadata,
+                    module: action.params.module || this.store.metadata.module,
                     parentModule: this.store.parentModule,
                     parentId: this.store.parentId,
                     action

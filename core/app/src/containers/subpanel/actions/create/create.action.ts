@@ -19,7 +19,7 @@ export class SubpanelCreateAction extends SubpanelActionHandler {
 
     run(data: SubpanelActionData): void {
 
-        const moduleName = data.subpanelMeta.module;
+        const moduleName = data.module;
 
         const route = `/${moduleName}/edit`;
 

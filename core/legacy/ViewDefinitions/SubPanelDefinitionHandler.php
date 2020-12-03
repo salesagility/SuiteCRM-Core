@@ -112,7 +112,14 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 continue;
             }
 
-            $headerModule = $this->getHeaderModule($tab);
+            $columnSubpanel = $subpanel;
+            if (!empty($tab['collection_list'])) {
+                $columnSubpanel = $subpanel->get_header_panel_def();
+                $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
+            } else {
+                $headerModule = $this->getHeaderModule($tab);
+            }
+
             $vardefs = $this->getSubpanelModuleVardefs($headerModule);
 
             $tabs[$key]['icon'] = $tab['module'];
@@ -121,11 +128,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['legacyModule'] = $tab['module'];
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
-
-            $columnSubpanel = $subpanel;
-            if (!empty($tab['header_definition_from_subpanel']) && !empty($tab['collection_list'])) {
-                $columnSubpanel = $subpanel->sub_subpanels[$headerModule];
-            }
 
             if (empty($columnSubpanel)) {
                 continue;
