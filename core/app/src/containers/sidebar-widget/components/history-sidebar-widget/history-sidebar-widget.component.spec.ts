@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {HistorySidebarWidgetComponent} from './history-sidebar-widget.component';
 import {CollectionViewer, ListRange} from '@angular/cdk/collections';
 import {of} from 'rxjs';
@@ -24,7 +24,7 @@ describe('HistoryTimelineWidgetComponent', () => {
     let component: HistorySidebarWidgetComponent;
     let fixture: ComponentFixture<HistorySidebarWidgetComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 HistorySidebarWidgetComponent

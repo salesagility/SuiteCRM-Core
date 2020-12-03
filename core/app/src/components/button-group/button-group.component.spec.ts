@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ButtonGroupComponent} from './button-group.component';
 import {Component} from '@angular/core';
@@ -72,7 +72,7 @@ describe('ButtonGroupComponent', () => {
     let testHostComponent: ButtonGroupTestHostComponent;
     let testHostFixture: ComponentFixture<ButtonGroupTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ButtonGroupTestHostComponent,
@@ -97,7 +97,7 @@ describe('ButtonGroupComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('buttons should be clickable', async(() => {
+    it('buttons should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const buttons = testHostFixture.nativeElement.getElementsByClassName('button-group-button');
 
@@ -119,7 +119,7 @@ describe('ButtonGroupComponent', () => {
         });
     }));
 
-    it('dropdown items should be clickable', async(() => {
+    it('dropdown items should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const element = testHostFixture.nativeElement;

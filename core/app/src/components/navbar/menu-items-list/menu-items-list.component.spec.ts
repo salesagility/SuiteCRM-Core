@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
@@ -52,7 +52,7 @@ describe('MenuItemsListComponent', () => {
     let testHostComponent: MenuItemListTestHostComponent;
     let testHostFixture: ComponentFixture<MenuItemListTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 MenuItemComponent,

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {ChartMessageAreaModule} from '@components/chart/components/chart-message-area/chart-message-area.module';
 import {LanguageStore} from '@store/language/language.store';
@@ -18,7 +18,7 @@ describe('ChartMessageAreaComponent', () => {
     let component: ChartMessageAreaTestHostComponent;
     let fixture: ComponentFixture<ChartMessageAreaTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [ChartMessageAreaTestHostComponent],
             providers: [

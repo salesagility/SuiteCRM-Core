@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {WidgetPanelComponent} from './widget-panel.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -18,7 +18,7 @@ describe('WidgetPanelComponent', () => {
     let component: WidgetPanelComponent;
     let fixture: ComponentFixture<WidgetPanelComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 AngularSvgIconModule,

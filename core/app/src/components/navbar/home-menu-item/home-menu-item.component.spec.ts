@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {HomeMenuItemComponent} from './home-menu-item.component';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
@@ -34,7 +34,7 @@ describe('HomeMenuItemComponent', () => {
     let testHostComponent: HomeMenuItemTestHostComponent;
     let testHostFixture: ComponentFixture<HomeMenuItemTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         TestBed.configureTestingModule({
             declarations: [HomeMenuItemComponent, MenuItemLinkComponent, HomeMenuItemTestHostComponent],

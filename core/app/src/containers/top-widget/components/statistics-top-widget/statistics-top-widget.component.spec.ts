@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {StatisticsTopWidgetComponent} from './statistics-top-widget.component';
 import {Component} from '@angular/core';
@@ -45,7 +45,7 @@ describe('StatisticsTopWidgetComponent', () => {
     let testHostComponent: StatisticsTopWidgetHostComponent;
     let testHostFixture: ComponentFixture<StatisticsTopWidgetHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 StatisticsTopWidgetHostComponent,

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {
@@ -96,7 +96,7 @@ describe('BulkActionMenuComponent', () => {
     let testHostComponent: BulkActionMenuTestHostComponent;
     let testHostFixture: ComponentFixture<BulkActionMenuTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 BulkActionMenuTestHostComponent,
@@ -153,7 +153,7 @@ describe('BulkActionMenuComponent', () => {
         expect(deSelectAll.nativeElement.text).toContain('Deselect All');
     });
 
-    it('should select all', async(() => {
+    it('should select all', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = SelectionStatus.NONE;
@@ -173,7 +173,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should select page', async(() => {
+    it('should select page', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = SelectionStatus.NONE;
@@ -193,7 +193,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should deselect all', async(() => {
+    it('should deselect all', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = SelectionStatus.ALL;
@@ -213,7 +213,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should toggle select all on checkbox click', async(() => {
+    it('should toggle select all on checkbox click', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = SelectionStatus.NONE;
@@ -247,7 +247,7 @@ describe('BulkActionMenuComponent', () => {
     }));
 
 
-    it('should have delete action', async(() => {
+    it('should have delete action', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         const deleteAction = el.query(By.css('.delete-bulk-action'));
@@ -264,7 +264,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should have export action', async(() => {
+    it('should have export action', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         const exportAction = el.query(By.css('.export-bulk-action'));
@@ -281,7 +281,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should have merge action', async(() => {
+    it('should have merge action', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         const mergeAction = el.query(By.css('.merge-bulk-action'));
@@ -298,7 +298,7 @@ describe('BulkActionMenuComponent', () => {
         });
     }));
 
-    it('should have mass update action', async(() => {
+    it('should have mass update action', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         const massUpdateAction = el.query(By.css('.massupdate-bulk-action'));

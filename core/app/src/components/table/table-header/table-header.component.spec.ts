@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TableHeaderComponent} from './table-header.component';
 import {PaginationModule} from '@components/pagination/pagination.module';
@@ -20,7 +20,7 @@ describe('TableheaderUiComponent', () => {
     let component: TableHeaderComponent;
     let fixture: ComponentFixture<TableHeaderComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 PaginationModule,

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {TableBodyComponent} from './table-body.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -42,19 +42,19 @@ describe('TableBodyComponent', () => {
             .compileComponents();
     });
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         testHostFixture = TestBed.createComponent(TableBodyTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));
 
-    it('should create', async(() => {
+    it('should create', waitForAsync(() => {
         testHostFixture.whenStable().then(() => {
             expect(testHostComponent).toBeTruthy();
         });
     }));
 
-    it('should have table body', async(() => {
+    it('should have table body', waitForAsync(() => {
 
         testHostFixture.whenStable().then(() => {
             const tableBodyElement = testHostFixture.nativeElement.querySelector('table');

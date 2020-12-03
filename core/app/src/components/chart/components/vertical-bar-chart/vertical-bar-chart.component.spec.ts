@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {VerticalBarChartComponent} from './vertical-bar-chart.component';
 
@@ -6,7 +6,7 @@ describe('VerticalBarChartComponent', () => {
     let component: VerticalBarChartComponent;
     let fixture: ComponentFixture<VerticalBarChartComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [VerticalBarChartComponent]
         })

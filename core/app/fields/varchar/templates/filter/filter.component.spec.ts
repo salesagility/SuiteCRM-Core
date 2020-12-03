@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharFilterFieldComponent} from './filter.component';
 import {Field} from '@app-common/record/field.model';
@@ -35,7 +35,7 @@ describe('VarcharFilterFieldComponent', () => {
     let testHostComponent: VarcharFilterFieldTestHostComponent;
     let testHostFixture: ComponentFixture<VarcharFilterFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 VarcharFilterFieldTestHostComponent,
@@ -73,7 +73,7 @@ describe('VarcharFilterFieldComponent', () => {
         expect(input.value).toContain('test filter value');
     });
 
-    it('should have update input when field changes', async(() => {
+    it('should have update input when field changes', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         testHostComponent.field.formControl.setValue('New Field value');
 
@@ -86,7 +86,7 @@ describe('VarcharFilterFieldComponent', () => {
 
     }));
 
-    it('should have update field when input changes', async(() => {
+    it('should have update field when input changes', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const input = testHostFixture.nativeElement.querySelector('input');

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {SortButtonComponent} from './sort-button.component';
 import {BehaviorSubject, Observable, of} from 'rxjs';
@@ -34,7 +34,7 @@ describe('SortButtonComponent', () => {
     let testHostComponent: SortButtonTestHostComponent;
     let testHostFixture: ComponentFixture<SortButtonTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 SortButtonTestHostComponent,
@@ -71,7 +71,7 @@ describe('SortButtonComponent', () => {
         expect(testHostFixture.debugElement.query(By.css('.sort-icon'))).toBeTruthy();
     });
 
-    it('should change selection to descending', async(() => {
+    it('should change selection to descending', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         sortDirectionSubject.next(SortDirection.NONE);
@@ -94,7 +94,7 @@ describe('SortButtonComponent', () => {
 
     }));
 
-    it('should change selection to ascending', async(() => {
+    it('should change selection to ascending', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastDirection = SortDirection.DESC;
@@ -116,7 +116,7 @@ describe('SortButtonComponent', () => {
 
     }));
 
-    it('should change selection to none', async(() => {
+    it('should change selection to none', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastDirection = SortDirection.ASC;

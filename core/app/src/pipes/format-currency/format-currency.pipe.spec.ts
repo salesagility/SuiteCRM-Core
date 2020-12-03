@@ -1,6 +1,6 @@
 import {FormatCurrencyPipe} from './format-currency.pipe';
 import {Component} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {BehaviorSubject} from 'rxjs';
@@ -32,7 +32,7 @@ describe('FormatCurrencyPipe', () => {
     const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en_us');
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 FormatCurrencyPipeTestHostComponent,

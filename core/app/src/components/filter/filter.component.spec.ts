@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FilterUiComponent} from './filter.component';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
@@ -10,7 +10,7 @@ describe('FilterUiComponent', () => {
     let component: FilterUiComponent;
     let fixture: ComponentFixture<FilterUiComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FilterUiComponent],
             providers: [

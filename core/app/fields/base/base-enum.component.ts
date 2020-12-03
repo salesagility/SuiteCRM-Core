@@ -1,11 +1,12 @@
 import {BaseFieldComponent} from './base-field.component';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '@store/language/language.store';
-import {OnDestroy, OnInit} from '@angular/core';
+import { OnDestroy, OnInit, Directive } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Option} from '@app-common/record/field.model';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 
+@Directive()
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
     selectedValues: Option[] = [];
     valueLabel = '';

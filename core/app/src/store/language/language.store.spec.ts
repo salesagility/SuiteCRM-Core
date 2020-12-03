@@ -1,12 +1,12 @@
 import {LanguageStore} from './language.store';
 import {languageStoreMock, languageMockData} from './language.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
-import {async, TestBed} from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('Language Store', () => {
     const service: LanguageStore = languageStoreMock;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule

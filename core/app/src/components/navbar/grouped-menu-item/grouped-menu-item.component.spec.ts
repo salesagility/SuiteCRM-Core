@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {GroupedMenuItemComponent} from './grouped-menu-item.component';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
@@ -92,7 +92,7 @@ describe('GroupedMenuItemComponent', () => {
     let testHostComponent: GroupedMenuItemTestHostComponent;
     let testHostFixture: ComponentFixture<GroupedMenuItemTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 GroupedMenuItemComponent,

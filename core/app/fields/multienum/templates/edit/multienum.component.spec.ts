@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
 import {LanguageStore} from '@store/language/language.store';
@@ -42,7 +42,7 @@ describe('MultiEnumEditFieldComponent', () => {
     let testHostComponent: MultiEnumEditFieldTestHostComponent;
     let testHostFixture: ComponentFixture<MultiEnumEditFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 MultiEnumEditFieldTestHostComponent,

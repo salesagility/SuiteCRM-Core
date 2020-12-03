@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -40,7 +40,7 @@ describe('RecordHeaderComponent', () => {
     let testHostComponent: RecordHeaderTestHostComponent;
     let testHostFixture: ComponentFixture<RecordHeaderTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 ModuleTitleModule,
@@ -77,7 +77,7 @@ describe('RecordHeaderComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have detail buttons', async(() => {
+    it('should have detail buttons', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         recordviewStoreMock.setMode('detail');
@@ -95,7 +95,7 @@ describe('RecordHeaderComponent', () => {
         });
     }));
 
-    it('should have edit buttons', async(() => {
+    it('should have edit buttons', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         recordviewStoreMock.setMode('edit');

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -45,7 +45,7 @@ describe('ListComponent', () => {
     let testHostComponent: ListTestHostComponent;
     let testHostFixture: ComponentFixture<ListTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         /* eslint-disable camelcase, @typescript-eslint/camelcase */
         TestBed.configureTestingModule({
             imports: [
@@ -86,11 +86,11 @@ describe('ListComponent', () => {
     }));
 
 
-    it('should create', async(() => {
+    it('should create', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
     }));
 
-    it('should have list header', async(() => {
+    it('should have list header', waitForAsync(() => {
 
         const headerElement = testHostFixture.nativeElement.querySelector('scrm-list-header');
 
@@ -98,14 +98,14 @@ describe('ListComponent', () => {
         expect(headerElement).toBeTruthy();
     }));
 
-    it('should have list container', async(() => {
+    it('should have list container', waitForAsync(() => {
         const listContainerElement = testHostFixture.nativeElement.querySelector('scrm-list-container');
 
         expect(testHostComponent).toBeTruthy();
         expect(listContainerElement).toBeTruthy();
     }));
 
-    it('should have title', async(() => {
+    it('should have title', waitForAsync(() => {
         const element = testHostFixture.debugElement.query(By.css('.list-view-title')).nativeElement;
 
         expect(testHostFixture).toBeTruthy();

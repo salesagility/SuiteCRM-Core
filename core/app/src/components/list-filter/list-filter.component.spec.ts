@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CloseButtonModule} from '@components/close-button/close-button.module';
 import {ButtonModule} from '@components/button/button.module';
 import {By} from '@angular/platform-browser';
@@ -25,7 +25,7 @@ describe('ListFilterComponent', () => {
     let testHostComponent: ListFilterComponent;
     let testHostFixture: ComponentFixture<ListFilterComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ListFilterComponent,
@@ -133,7 +133,7 @@ describe('ListFilterComponent', () => {
         expect(testHostFixture.debugElement.query(By.css('.filter-button')).nativeElement).toBeTruthy();
     });
 
-    it('should allow to insert filter value', async(() => {
+    it('should allow to insert filter value', waitForAsync(() => {
 
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
 
@@ -152,7 +152,7 @@ describe('ListFilterComponent', () => {
         });
     }));
 
-    it('should allow to applyFilter', async(() => {
+    it('should allow to applyFilter', waitForAsync(() => {
 
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
 
@@ -182,7 +182,7 @@ describe('ListFilterComponent', () => {
         });
     }));
 
-    it('should allow to clear filter', async(() => {
+    it('should allow to clear filter', waitForAsync(() => {
 
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();
 

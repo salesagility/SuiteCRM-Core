@@ -1,4 +1,4 @@
-import {Input} from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
 import {Field} from '@app-common/record/field.model';
 import {Record} from '@app-common/record/record.model';
@@ -6,6 +6,7 @@ import {Subscription} from 'rxjs';
 import {isVoid} from '@app-common/utils/value-utils';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
+@Directive()
 export class BaseFieldComponent implements FieldComponentInterface {
     @Input() mode: string;
     @Input() field: Field;

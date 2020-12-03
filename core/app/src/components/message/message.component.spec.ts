@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {MessageUiComponent} from './message.component';
 import {LanguageStore} from '@store/language/language.store';
@@ -16,7 +16,7 @@ describe('MessageComponent', () => {
     let component: MessageUiComponent;
     let fixture: ComponentFixture<MessageUiComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [MessageUiComponent],
             providers: [

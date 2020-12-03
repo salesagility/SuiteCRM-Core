@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BooleanDetailFieldComponent} from './boolean.component';
 import {Field} from '@app-common/record/field.model';
@@ -28,7 +28,7 @@ describe('BooleanDetailFieldComponent', () => {
     let testHostComponent: BooleanDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<BooleanDetailFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 BooleanDetailFieldTestHostComponent,

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {PhoneDetailFieldComponent} from './phone.component';
 import {Field} from '@app-common/record/field.model';
@@ -27,7 +27,7 @@ describe('PhoneDetailFieldComponent', () => {
     let testHostComponent: PhoneDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<PhoneDetailFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 PhoneDetailFieldComponent,

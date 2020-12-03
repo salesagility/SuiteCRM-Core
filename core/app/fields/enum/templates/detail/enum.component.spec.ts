@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EnumDetailFieldComponent} from './enum.component';
 import {Field} from '@app-common/record/field.model';
@@ -54,7 +54,7 @@ describe('EnumDetailFieldComponent', () => {
     let testHostComponent: EnumDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<EnumDetailFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 EnumDetailFieldTestHostComponent,

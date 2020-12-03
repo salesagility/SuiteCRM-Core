@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FieldComponent} from './field.component';
 import {DynamicModule} from 'ng-dynamic-component';
 import {fieldComponents, fieldModules} from '@fields/field.manifest';
@@ -157,7 +157,7 @@ describe('FieldComponent', () => {
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
     /* eslint-disable camelcase, @typescript-eslint/camelcase */
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FieldComponent, FieldTestHostComponent],
             imports: [

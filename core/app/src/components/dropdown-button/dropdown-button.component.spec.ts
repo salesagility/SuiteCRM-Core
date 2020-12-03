@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {DropdownButtonComponent} from './dropdown-button.component';
 import {Component} from '@angular/core';
@@ -43,7 +43,7 @@ describe('DropdownButtonComponent', () => {
     let testHostComponent: DropdownButtonTestHostComponent;
     let testHostFixture: ComponentFixture<DropdownButtonTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 DropdownButtonTestHostComponent,
@@ -75,7 +75,7 @@ describe('DropdownButtonComponent', () => {
         expect(button.className).toContain('some-class');
     });
 
-    it('should be clickable', async(() => {
+    it('should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const button = testHostFixture.nativeElement.querySelector('button');
         const divElement = testHostFixture.nativeElement.querySelector('div');

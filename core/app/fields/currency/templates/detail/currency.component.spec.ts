@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
 import {CurrencyDetailFieldComponent} from './currency.component';
@@ -38,7 +38,7 @@ describe('CurrencyDetailFieldComponent', () => {
     const mockCurrencyFormatter = new CurrencyFormatter(mockStore, mockNumberFormatter, 'en_us');
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 CurrencyDetailFieldTestHostComponent,

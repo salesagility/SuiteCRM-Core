@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TableComponent} from './table.component';
 import {TableHeaderModule} from '@components/table/table-header/table-header.module';
@@ -35,7 +35,7 @@ describe('TableComponent', () => {
     let component: TableTestHostComponent;
     let fixture: ComponentFixture<TableTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 TableHeaderModule,

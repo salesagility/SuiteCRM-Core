@@ -1,6 +1,8 @@
 import {BaseFieldComponent} from '@fields/base/base-field.component';
 import {isTrue} from '@app-common/utils/value-utils';
+import { Directive } from "@angular/core";
 
+@Directive()
 export class BaseBooleanComponent extends BaseFieldComponent {
 
     get checked(): boolean {

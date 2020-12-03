@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {EmailListFieldsComponent} from './email.component';
 import {Component} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
@@ -27,7 +27,7 @@ describe('EmailListFieldsComponent', () => {
     let testHostComponent: EmailListFieldsTestHostComponent;
     let testHostFixture: ComponentFixture<EmailListFieldsTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 EmailListFieldsComponent,

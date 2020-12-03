@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {ActionMenuComponent} from './action-menu.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -24,7 +24,7 @@ describe('ActionMenuComponent', () => {
     let testHostComponent: ActionMenuTestHostComponent;
     let testHostFixture: ComponentFixture<ActionMenuTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ActionMenuComponent,

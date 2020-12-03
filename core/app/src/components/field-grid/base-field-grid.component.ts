@@ -1,9 +1,10 @@
-import {Input, OnDestroy, OnInit} from '@angular/core';
+import { Input, OnDestroy, OnInit, Directive } from '@angular/core';
 import {FieldGridRow} from '@components/field-grid/field-grid.model';
 import {Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 
 
+@Directive()
 export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     @Input() special = false;
     @Input() actions = false;

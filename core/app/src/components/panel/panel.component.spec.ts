@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {PanelComponent} from './panel.component';
 import {By} from '@angular/platform-browser';
@@ -61,7 +61,7 @@ describe('PanelComponent', () => {
     let testHostComponent: PanelTestHostComponent;
     let testHostFixture: ComponentFixture<PanelTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 PanelTestHostComponent,
@@ -103,7 +103,7 @@ describe('PanelComponent', () => {
         expect(element.nativeElement.textContent).toContain(('Test Title'));
     });
 
-    it('should have close icon', async(() => {
+    it('should have close icon', waitForAsync(() => {
         testHostComponent.closeClicked = 0;
 
         expect(testHostComponent).toBeTruthy();
@@ -118,7 +118,7 @@ describe('PanelComponent', () => {
         });
     }));
 
-    it('should have configurable buttons', async(() => {
+    it('should have configurable buttons', waitForAsync(() => {
         testHostComponent.closeClicked = 0;
         testHostComponent.button1Clicked = 0;
         testHostComponent.button2Clicked = 0;

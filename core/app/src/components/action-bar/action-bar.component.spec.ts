@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -21,7 +21,7 @@ describe('ActionBarUiComponent', () => {
     let navigateCounter = 0;
     let lastSearchTerm = '';
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [RouterTestingModule, HttpClientTestingModule, FormsModule],
@@ -51,7 +51,7 @@ describe('ActionBarUiComponent', () => {
             .compileComponents();
     }));
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         fixture = TestBed.createComponent(ActionBarUiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
@@ -71,7 +71,7 @@ describe('ActionBarUiComponent', () => {
         expect(button).toBeTruthy();
     });
 
-    it('should navigate to global search on click', async(() => {
+    it('should navigate to global search on click', waitForAsync(() => {
 
         const global = fixture.nativeElement.getElementsByClassName('global-search')[0];
         const input = global.querySelector('input');

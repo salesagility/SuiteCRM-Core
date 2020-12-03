@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
@@ -40,7 +40,7 @@ describe('PaginationComponent', () => {
     let testHostComponent: PaginationTestHostComponent;
     let testHostFixture: ComponentFixture<PaginationTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 PaginationTestHostComponent,
@@ -95,7 +95,7 @@ describe('PaginationComponent', () => {
         expect(testHostFixture.debugElement.query(By.css('.pagination-count'))).toBeTruthy();
     });
 
-    it('should trigger page change to previous page', async(() => {
+    it('should trigger page change to previous page', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = PageSelection.LAST;
@@ -109,7 +109,7 @@ describe('PaginationComponent', () => {
         });
     }));
 
-    it('should trigger page change to first page', async(() => {
+    it('should trigger page change to first page', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = PageSelection.LAST;
@@ -123,7 +123,7 @@ describe('PaginationComponent', () => {
         });
     }));
 
-    it('should trigger page change to next page', async(() => {
+    it('should trigger page change to next page', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = PageSelection.LAST;
@@ -137,7 +137,7 @@ describe('PaginationComponent', () => {
         });
     }));
 
-    it('should trigger page change to last page', async(() => {
+    it('should trigger page change to last page', waitForAsync(() => {
         const el = testHostFixture.debugElement;
 
         lastStatus = PageSelection.FIRST;

@@ -1,6 +1,6 @@
 import {FormatNumberPipe} from './format-number.pipe';
 import {Component} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {BehaviorSubject} from 'rxjs';
@@ -28,7 +28,7 @@ describe('FormatNumberPipe', () => {
     const mockStore = new UserPreferenceMockStore(preferences);
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 FormatNumberPipeTestHostComponent,

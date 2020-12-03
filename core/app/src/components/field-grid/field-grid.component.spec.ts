@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FieldGridComponent} from './field-grid.component';
 import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
@@ -80,7 +80,7 @@ describe('FieldGridComponent', () => {
     let testHostComponent: FieldGridTestHostComponent;
     let testHostFixture: ComponentFixture<FieldGridTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 FieldGridTestHostComponent,
@@ -108,7 +108,7 @@ describe('FieldGridComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have grid list', async(() => {
+    it('should have grid list', waitForAsync(() => {
 
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('scrm-field-grid')).nativeElement).toBeTruthy();

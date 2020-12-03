@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RecordContainerComponent} from './record-container.component';
@@ -35,7 +35,7 @@ describe('RecordContainerComponent', () => {
     let component: RecordContainerComponent;
     let fixture: ComponentFixture<RecordContainerComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 WidgetPanelModule,

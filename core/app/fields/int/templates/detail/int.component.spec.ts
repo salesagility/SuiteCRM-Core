@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {IntDetailFieldComponent} from './int.component';
 import {Component} from '@angular/core';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
@@ -35,7 +35,7 @@ describe('IntDetailFieldComponent', () => {
     const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en-US');
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         /* eslint-disable camelcase,@typescript-eslint/camelcase */
         TestBed.configureTestingModule({
             declarations: [

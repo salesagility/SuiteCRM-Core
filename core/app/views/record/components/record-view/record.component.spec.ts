@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -44,7 +44,7 @@ describe('RecordComponent', () => {
     let testHostComponent: RecordTestHostComponent;
     let testHostFixture: ComponentFixture<RecordTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         /* eslint-disable camelcase, @typescript-eslint/camelcase */
         TestBed.configureTestingModule({
             imports: [

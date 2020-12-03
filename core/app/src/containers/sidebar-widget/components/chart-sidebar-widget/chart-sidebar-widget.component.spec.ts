@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ChartSidebarWidgetComponent} from './chart-sidebar-widget.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -9,7 +9,7 @@ describe('ChartSidebarWidgetComponent', () => {
     let component: ChartSidebarWidgetComponent;
     let fixture: ComponentFixture<ChartSidebarWidgetComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [ChartSidebarWidgetComponent],
             imports: [RouterTestingModule, HttpClientTestingModule, ApolloTestingModule],

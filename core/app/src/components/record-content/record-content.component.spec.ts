@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {RecordContentComponent} from './record-content.component';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Component} from '@angular/core';
@@ -915,7 +915,7 @@ describe('RecordContentComponent', () => {
     let testHostComponent: RecordContentComponentTestHostComponent;
     let testHostFixture: ComponentFixture<RecordContentComponentTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 RecordContentComponentTestHostComponent,
@@ -947,7 +947,7 @@ describe('RecordContentComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have panels', async(() => {
+    it('should have panels', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         displayConfigSubject.next({...mockDisplayConfigData});
@@ -963,7 +963,7 @@ describe('RecordContentComponent', () => {
 
     }));
 
-    it('should have correct panel titles', async(() => {
+    it('should have correct panel titles', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         displayConfigSubject.next({...mockDisplayConfigData});
@@ -997,7 +997,7 @@ describe('RecordContentComponent', () => {
 
     }));
 
-    it('panels should be collapsible', async(() => {
+    it('panels should be collapsible', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         displayConfigSubject.next({...mockDisplayConfigData});
@@ -1043,7 +1043,7 @@ describe('RecordContentComponent', () => {
         });
     }));
 
-    it('should have tabs', async(() => {
+    it('should have tabs', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const tabsDisplayConfig = {...mockDisplayConfigData};
@@ -1064,7 +1064,7 @@ describe('RecordContentComponent', () => {
         });
     }));
 
-    it('should have correct tabs titles', async(() => {
+    it('should have correct tabs titles', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const tabsDisplayConfig = {...mockDisplayConfigData};
@@ -1099,7 +1099,7 @@ describe('RecordContentComponent', () => {
 
     }));
 
-    it('tabs should be toggleable', async(() => {
+    it('tabs should be toggleable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const tabsDisplayConfig = {...mockDisplayConfigData};

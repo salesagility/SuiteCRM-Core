@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DateEditFieldComponent} from '@fields/date/templates/edit/date.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -30,7 +30,7 @@ describe('DateEditFieldComponent', () => {
     });
 
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 DateEditFieldTestHostComponent,

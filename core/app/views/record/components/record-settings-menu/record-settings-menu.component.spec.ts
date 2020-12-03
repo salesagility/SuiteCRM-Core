@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {RecordSettingsMenuComponent} from './record-settings-menu.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -42,7 +42,7 @@ describe('RecordSettingsMenuComponent', () => {
     let testHostComponent: RecordSettingsTestHostComponent;
     let testHostFixture: ComponentFixture<RecordSettingsTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 HttpClientTestingModule,

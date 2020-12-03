@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {UrlDetailFieldComponent} from './url.component';
 import {Field, FieldMetadata} from '@app-common/record/field.model';
@@ -28,7 +28,7 @@ describe('UrlDetailFieldComponent', () => {
     let testHostComponent: UrlDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<UrlDetailFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 UrlDetailFieldTestHostComponent,
@@ -83,7 +83,7 @@ describe('UrlDetailFieldComponent', () => {
         expect(el.target).toContain('_blank');
     });
 
-    it('should use configured target', async(() => {
+    it('should use configured target', waitForAsync(() => {
 
         testHostFixture.componentInstance.field.metadata = {
             target: '_self'

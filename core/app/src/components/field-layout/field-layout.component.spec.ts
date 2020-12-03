@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FieldLayoutComponent} from './field-layout.component';
 import {Component} from '@angular/core';
@@ -962,7 +962,7 @@ describe('FieldLayoutComponent', () => {
     let testHostComponent: FieldLayoutTestHostComponent;
     let testHostFixture: ComponentFixture<FieldLayoutTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 FieldLayoutTestHostComponent,
@@ -997,7 +997,7 @@ describe('FieldLayoutComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have field layout parent', async(() => {
+    it('should have field layout parent', waitForAsync(() => {
 
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('scrm-field-layout')).nativeElement).toBeTruthy();
@@ -1006,7 +1006,7 @@ describe('FieldLayoutComponent', () => {
         expect(testHostFixture.debugElement.query(By.css('.some-button')).nativeElement).toBeTruthy();
     }));
 
-    it('should display fields using defined layout', async(() => {
+    it('should display fields using defined layout', waitForAsync(() => {
 
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('scrm-field-layout')).nativeElement).toBeTruthy();

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {InlineLoadingSpinnerComponent} from './inline-loading-spinner.component';
 
@@ -6,7 +6,7 @@ describe('InlineLoadingSpinnerComponent', () => {
     let component: InlineLoadingSpinnerComponent;
     let fixture: ComponentFixture<InlineLoadingSpinnerComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [InlineLoadingSpinnerComponent]
         })

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
 import {FloatDetailFieldComponent} from './float.component';
@@ -43,7 +43,7 @@ describe('FloatDetailFieldComponent', () => {
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     /* eslint-disable camelcase,@typescript-eslint/camelcase */
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 FloatDetailFieldTestHostComponent,

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {MinimiseButtonComponent} from './minimise-button.component';
 import {ButtonInterface} from '@app-common/components/button/button.model';
@@ -26,7 +26,7 @@ describe('MinimiseButtonComponent', () => {
     let testHostComponent: MinimiseButtonTestHostComponent;
     let testHostFixture: ComponentFixture<MinimiseButtonTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 MinimiseButtonTestHostComponent,
@@ -72,7 +72,7 @@ describe('MinimiseButtonComponent', () => {
         expect(button.className).toContain('minimise-button');
     });
 
-    it('should be clickable', async(() => {
+    it('should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const button = testHostFixture.nativeElement.querySelector('button');
 
@@ -91,7 +91,7 @@ describe('MinimiseButtonComponent', () => {
         });
     }));
 
-    it('should toggle icon', async(() => {
+    it('should toggle icon', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const button = testHostFixture.nativeElement.querySelector('button');
 

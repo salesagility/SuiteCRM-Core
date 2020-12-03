@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {CloseButtonComponent} from './close-button.component';
 import {ButtonInterface} from '@app-common/components/button/button.model';
@@ -24,7 +24,7 @@ describe('CloseButtonComponent', () => {
     let testHostComponent: CloseButtonTestHostComponent;
     let testHostFixture: ComponentFixture<CloseButtonTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 CloseButtonTestHostComponent,
@@ -66,7 +66,7 @@ describe('CloseButtonComponent', () => {
         expect(button.className).toContain('close-button');
     });
 
-    it('should be clickable', async(() => {
+    it('should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const button = testHostFixture.nativeElement.querySelector('button');
 

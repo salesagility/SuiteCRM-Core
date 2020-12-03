@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {DropdownSubmenuComponent} from './dropdown-submenu.component';
 import {Component} from '@angular/core';
@@ -58,7 +58,7 @@ describe('DropdownSubmenuComponent', () => {
     let testHostComponent: DropdownSubmenuTestHostComponent;
     let testHostFixture: ComponentFixture<DropdownSubmenuTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 DropdownSubmenuTestHostComponent,
@@ -81,7 +81,7 @@ describe('DropdownSubmenuComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('dropdown items should be clickable', async(() => {
+    it('dropdown items should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const element = testHostFixture.nativeElement;

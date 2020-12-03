@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharDetailFieldComponent} from './varchar.component';
 import {Field} from '@app-common/record/field.model';
@@ -28,7 +28,7 @@ describe('VarcharDetailFieldComponent', () => {
     let testHostComponent: VarcharDetailFieldTestHostComponent;
     let testHostFixture: ComponentFixture<VarcharDetailFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 VarcharDetailFieldTestHostComponent,
