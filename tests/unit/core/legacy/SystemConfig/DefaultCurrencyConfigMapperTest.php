@@ -8,6 +8,8 @@ use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class DefaultCurrencyConfigMapper
@@ -73,6 +75,9 @@ class DefaultCurrencyConfigMapperTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -85,7 +90,8 @@ class DefaultCurrencyConfigMapperTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $this->handler = new DefaultCurrencyConfigMapper($currencyHandler);

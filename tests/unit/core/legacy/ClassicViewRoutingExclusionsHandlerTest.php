@@ -5,6 +5,8 @@ namespace App\Tests\unit\core\legacy;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ClassicViewRoutingExclusionsHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ClassicViewRoutingExclusionsHandlerTest
@@ -24,6 +26,9 @@ class ClassicViewRoutingExclusionsHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -35,7 +40,8 @@ class ClassicViewRoutingExclusionsHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
     }
 

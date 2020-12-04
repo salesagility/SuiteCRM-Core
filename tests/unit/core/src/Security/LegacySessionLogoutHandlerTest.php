@@ -11,6 +11,8 @@ use Exception;
 use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 
@@ -29,11 +31,6 @@ class LegacySessionLogoutHandlerTest extends Unit
      * @var LegacySessionLogoutHandler
      */
     protected $handler;
-
-    /**
-     * @var bool
-     */
-    protected $decoratedCalled = false;
 
     /**
      * @var bool
@@ -81,25 +78,19 @@ class LegacySessionLogoutHandlerTest extends Unit
             }
         ]);
 
-        /** @var SessionLogoutHandler $sessionLogoutHandler */
-        $sessionLogoutHandler = $self->make(
-            SessionLogoutHandler::class,
-            [
-                'logout' => static function (Request $request, Response $response, TokenInterface $token) use ($self) {
-                    $self->decoratedCalled = true;
-                }
-            ]
-        );
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
 
         $originalHandler = new Authentication(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
 
-        $this->handler = new LegacySessionLogoutHandler($sessionLogoutHandler, $originalHandler);
+        $this->handler = $originalHandler;
     }
 
     protected function _after(): void
@@ -107,7 +98,6 @@ class LegacySessionLogoutHandlerTest extends Unit
         $this->logoutCalled = false;
         $this->initCalled = false;
         $this->closeCalled = false;
-        $this->decoratedCalled = false;
     }
 
     // tests
@@ -127,6 +117,5 @@ class LegacySessionLogoutHandlerTest extends Unit
         static::assertTrue($this->logoutCalled);
         static::assertTrue($this->initCalled);
         static::assertTrue($this->logoutCalled);
-        static::assertTrue($this->decoratedCalled);
     }
 }

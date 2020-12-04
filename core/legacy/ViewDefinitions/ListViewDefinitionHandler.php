@@ -14,6 +14,7 @@ use App\Service\ListViewSidebarWidgetDefinitionProviderInterface;
 use Exception;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ListViewDefinitionHandler extends LegacyHandler
 {
@@ -82,9 +83,10 @@ class ListViewDefinitionHandler extends LegacyHandler
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
         ListViewSidebarWidgetDefinitionProviderInterface $sidebarWidgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
-        FilterDefinitionProviderInterface $filterDefinitionProvider
+        FilterDefinitionProviderInterface $filterDefinitionProvider,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->logger = $logger;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
         $this->sidebarWidgetDefinitionProvider = $sidebarWidgetDefinitionProvider;

@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Opportunity;
 use SugarBean;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -50,9 +51,10 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->entityManager = $entityManager;
     }

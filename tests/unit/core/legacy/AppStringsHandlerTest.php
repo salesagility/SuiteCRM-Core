@@ -7,6 +7,8 @@ use App\Entity\AppStrings;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\AppStringsHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class AppStringsHandlerTest
@@ -26,12 +28,16 @@ class AppStringsHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $this->handler = new AppStringsHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
     }
 

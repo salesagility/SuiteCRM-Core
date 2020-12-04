@@ -7,6 +7,8 @@ use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelContractsRenewalDateMock
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class SubPanelContractsRenewalDateTest
@@ -29,6 +31,9 @@ class SubPanelContractsRenewalDateTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -41,7 +46,8 @@ class SubPanelContractsRenewalDateTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
 
@@ -51,7 +57,8 @@ class SubPanelContractsRenewalDateTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
     }
 

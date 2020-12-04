@@ -1,17 +1,15 @@
 <?php
 
-
 namespace App\Security;
 
-
 use App\Legacy\Authentication;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
-use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-class LegacySessionLogoutHandler implements LogoutHandlerInterface
+/**
+ * Class LegacySessionLogoutHandler
+ * @package App\Security
+ */
+class LegacySessionLogoutHandler
 {
     /**
      * @var Authentication
@@ -23,24 +21,21 @@ class LegacySessionLogoutHandler implements LogoutHandlerInterface
     private $decorated;
 
     /**
-     * SessionSubscriber constructor.
-     * @param SessionLogoutHandler $decorated
+     * LegacySessionLogoutHandler constructor.
      * @param Authentication $authentication
      */
     public function __construct(
-        SessionLogoutHandler $decorated,
         Authentication $authentication
     ) {
-        $this->decorated = $decorated;
         $this->authentication = $authentication;
     }
 
     /**
-     * @inheritDoc
+     * @param LogoutEvent $logoutEvent
      */
-    public function logout(Request $request, Response $response, TokenInterface $token): void
+    public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $logoutEvent): void
     {
         $this->authentication->logout();
-        $this->decorated->logout($request, $response, $token);
+        $logoutEvent->getRequest()->getSession()->invalidate();
     }
 }

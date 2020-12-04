@@ -11,6 +11,7 @@ use BeanFactory;
 use DateFormatService;
 use DateTime;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Task;
 
 /**
@@ -44,9 +45,10 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
     }
 

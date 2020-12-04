@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Lead;
 use SugarBean;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LeadDaysOpen extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -49,9 +50,10 @@ class LeadDaysOpen extends LegacyHandler implements StatisticsProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->entityManager = $entityManager;
     }

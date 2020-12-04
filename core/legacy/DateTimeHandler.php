@@ -2,6 +2,7 @@
 
 namespace App\Legacy;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use DateFormatService;
 
 class DateTimeHandler extends LegacyHandler
@@ -32,9 +33,10 @@ class DateTimeHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        array $datetimeFormatMap
+        array $datetimeFormatMap,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->datetimeFormatMap = $datetimeFormatMap;
     }
 

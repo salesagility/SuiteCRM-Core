@@ -7,6 +7,7 @@ use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class ContactLastTouchPoint
@@ -39,7 +40,8 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        SessionInterface $session
     ) {
         parent::__construct(
             $projectDir,
@@ -47,7 +49,8 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
         $this->moduleNameMapper = $moduleNameMapper;
     }

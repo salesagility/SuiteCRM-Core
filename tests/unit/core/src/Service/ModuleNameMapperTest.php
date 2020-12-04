@@ -7,6 +7,8 @@ use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
 use App\Legacy\ModuleNameMapperHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ModuleNameMapperTest
@@ -26,12 +28,16 @@ class ModuleNameMapperTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $this->moduleMapper = new ModuleNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
     }
 

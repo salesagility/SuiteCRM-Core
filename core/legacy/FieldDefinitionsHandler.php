@@ -8,6 +8,7 @@ use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use Exception;
 use SugarView;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class FieldDefinitionsHandler
@@ -44,9 +45,11 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        FieldDefinitionMappers $mappers
+        FieldDefinitionMappers $mappers,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->mappers = $mappers;
     }

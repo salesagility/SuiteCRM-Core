@@ -28,6 +28,8 @@ use Codeception\Test\Unit;
 use Exception;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ViewDefinitionsHandlerTest
@@ -51,6 +53,9 @@ final class ViewDefinitionsHandlerTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -63,7 +68,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $groupedFieldTypesMap = [
@@ -97,7 +103,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $fieldDefinitionMapper
+            $fieldDefinitionMapper,
+            $session
         );
 
         $listViewBulkActions = [
@@ -177,7 +184,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $lineActionDefinitionProvider = new LineActionDefinitionProvider(
@@ -275,7 +283,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $logger,
-            $recordActionManager
+            $recordActionManager,
+            $session
         );
 
         $subPanelDefinitionHandler = new SubPanelDefinitionHandler(
@@ -285,7 +294,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $fieldDefinitionsHandler
+            $fieldDefinitionsHandler,
+            $session
         );
 
         $listViewDefinitionHandler = new ListViewDefinitionHandler(
@@ -298,7 +308,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $bulkActionProvider,
             $sidebarWidgetDefinitionProvider,
             $lineActionDefinitionProvider,
-            $filterDefinitionHandler
+            $filterDefinitionHandler,
+            $session
         );
 
         $obj = new ArrayObject([
@@ -320,7 +331,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $subPanelDefinitionHandler,
             $listViewDefinitionHandler,
             $logger,
-            $viewDefinitionMapper
+            $viewDefinitionMapper,
+            $session
         );
 
         // Needed for aspect mock

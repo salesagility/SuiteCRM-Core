@@ -8,6 +8,7 @@ use App\Legacy\SystemConfig\SystemConfigMappers;
 use App\Service\ActionNameMapperInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SystemConfigProviderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
@@ -75,9 +76,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewSettingsLimits,
         array $listViewActionsLimits,
         array $recordViewActionLimits,
-        array $uiConfigs
-    ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        array $uiConfigs,
+        SessionInterface $session
+    )
+    {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
 
         $this->injectedSystemConfigs['module_name_map'] = $moduleNameMapper->getLegacyToFrontendMap();

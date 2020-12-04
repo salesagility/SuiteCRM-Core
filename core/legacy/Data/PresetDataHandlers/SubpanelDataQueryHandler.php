@@ -7,6 +7,7 @@ use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelCustomQueryPort;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubpanelDataQueryHandler extends LegacyHandler
 {
@@ -37,9 +38,10 @@ class SubpanelDataQueryHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
     }
 

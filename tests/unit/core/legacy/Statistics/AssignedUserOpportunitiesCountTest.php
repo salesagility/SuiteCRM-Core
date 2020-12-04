@@ -9,6 +9,8 @@ use Codeception\Test\Unit;
 use Exception;
 use Mock\Core\Legacy\Statistics\AssignedUserOpportunitiesCountMock;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class AssignedUserOpportunitiesCountTest
@@ -31,6 +33,9 @@ class AssignedUserOpportunitiesCountTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -43,7 +48,8 @@ class AssignedUserOpportunitiesCountTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         /** @var PreparedStatementHandler $queryHandler */
@@ -68,7 +74,8 @@ class AssignedUserOpportunitiesCountTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $queryHandler
+            $queryHandler,
+            $session
         );
 
         $this->handler->setLogger($logger);

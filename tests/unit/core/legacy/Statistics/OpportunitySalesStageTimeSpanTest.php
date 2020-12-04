@@ -13,6 +13,8 @@ use Exception;
 use App\Tests\_mock\Mock\core\legacy\Statistics\OpportunitySalesStageTimeSpanMock;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Opportunity;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class OpportunitySalesStageTimeSpanTest
@@ -37,6 +39,9 @@ class OpportunitySalesStageTimeSpanTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -49,7 +54,8 @@ class OpportunitySalesStageTimeSpanTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         /** @var EntityManagerInterface $entityManager */
@@ -64,7 +70,8 @@ class OpportunitySalesStageTimeSpanTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $entityManager
+            $entityManager,
+            $session
         );
     }
 

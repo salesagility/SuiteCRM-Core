@@ -9,6 +9,8 @@ use BeanFactory;
 use Codeception\Test\Unit;
 use DateInterval;
 use DateTime;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Exception;
 use Task;
 
@@ -34,6 +36,9 @@ class DaysUntilDueTaskTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -46,7 +51,8 @@ class DaysUntilDueTaskTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $this->handler = new DaysUntilDueTaskMock(
@@ -55,7 +61,8 @@ class DaysUntilDueTaskTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
     }
 
@@ -137,7 +144,6 @@ class DaysUntilDueTaskTest extends Unit
      * Test Due Date Calculation
      * @throws Exception
      */
-
     public function testDueDateCalculation(): void
     {
         $this->handler->reset();

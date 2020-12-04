@@ -9,6 +9,7 @@ use App\Service\ModuleNameMapperInterface;
 use App\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class SubPanelDefinitionHandler
@@ -50,9 +51,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        FieldDefinitionsProviderInterface $fieldDefinitionProvider
+        FieldDefinitionsProviderInterface $fieldDefinitionProvider,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }

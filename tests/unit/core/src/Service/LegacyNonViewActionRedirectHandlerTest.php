@@ -10,6 +10,8 @@ use App\Legacy\ActionNameMapperHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Router;
 
@@ -40,12 +42,16 @@ class LegacyNonViewActionRedirectHandlerTest extends Unit
         $defaultSessionName = $this->tester->getDefaultSessionName();
         $legacyScope = $this->tester->getLegacyScope();
 
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $moduleMapper = new ModuleNameMapperHandler(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $actionMapper = new ActionNameMapperHandler(
@@ -53,7 +59,8 @@ class LegacyNonViewActionRedirectHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $converter = new RouteConverterHandler(
@@ -63,7 +70,8 @@ class LegacyNonViewActionRedirectHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleMapper,
-            $actionMapper
+            $actionMapper,
+            $session
         );
 
         $routes = [

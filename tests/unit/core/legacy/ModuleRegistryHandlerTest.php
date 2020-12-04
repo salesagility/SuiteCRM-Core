@@ -5,6 +5,8 @@ namespace App\Tests\unit\core\legacy;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ModuleRegistryHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ModuleRegistryHandlerTest
@@ -24,6 +26,9 @@ class ModuleRegistryHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -43,7 +48,8 @@ class ModuleRegistryHandlerTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $excludedModules
+            $excludedModules,
+            $session
         );
     }
 

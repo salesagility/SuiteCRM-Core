@@ -15,6 +15,7 @@ use App\Service\ViewDefinitionsProviderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SearchForm;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use function in_array;
 
 /**
@@ -109,9 +110,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         SubPanelDefinitionProviderInterface $subPanelDefinitionHandler,
         ListViewDefinitionHandler $listViewDefinitionsHandler,
         LoggerInterface $logger,
-        ViewDefinitionMappers $mappers
+        ViewDefinitionMappers $mappers,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->recordViewDefinitionHandler = $recordViewDefinitionHandler;

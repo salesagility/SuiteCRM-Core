@@ -5,6 +5,7 @@ namespace App\Legacy;
 use ACLController;
 use App\Service\AclManagerInterface;
 use App\Service\ModuleNameMapperInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AclHandler extends LegacyHandler implements AclManagerInterface
 {
@@ -30,9 +31,10 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
     }
 

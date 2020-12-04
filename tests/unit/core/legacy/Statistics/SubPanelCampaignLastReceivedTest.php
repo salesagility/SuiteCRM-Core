@@ -8,6 +8,8 @@ use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelEventsLastDateMock;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class SubPanelCampaignLastReceivedTest
@@ -30,6 +32,9 @@ class SubPanelCampaignLastReceivedTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -42,7 +47,8 @@ class SubPanelCampaignLastReceivedTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
 
@@ -52,7 +58,8 @@ class SubPanelCampaignLastReceivedTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
     }
 

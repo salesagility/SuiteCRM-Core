@@ -90,7 +90,10 @@ services:
     decorates: 'api_platform.graphql.resolver.stage.security'
 
   App\Security\LegacySessionLogoutHandler:
-    decorates: 'security.logout.handler.session'
+    tags:
+      - name: 'kernel.event_listener'
+        event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+        dispatcher: security.event_dispatcher.main
 
   App\Security\RouteMatcher:
     class: App\Security\RouteMatcher

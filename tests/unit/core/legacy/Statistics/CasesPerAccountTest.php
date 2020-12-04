@@ -8,6 +8,8 @@ use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use Mock\Core\Legacy\Statistics\CasesPerAccountMock;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -31,6 +33,9 @@ class CasesPerAccountTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -43,7 +48,8 @@ class CasesPerAccountTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
 
@@ -53,7 +59,8 @@ class CasesPerAccountTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
 
         /** @var LoggerInterface $logger */

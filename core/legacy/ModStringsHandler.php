@@ -8,6 +8,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\ModStrings;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ModuleRegistryInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ModStringsHandler extends LegacyHandler
 {
@@ -46,9 +47,10 @@ class ModStringsHandler extends LegacyHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        ModuleRegistryInterface $moduleRegistry
+        ModuleRegistryInterface $moduleRegistry,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->moduleRegistry = $moduleRegistry;
     }

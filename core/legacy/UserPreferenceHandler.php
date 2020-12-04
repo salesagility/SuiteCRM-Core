@@ -7,6 +7,7 @@ use App\Entity\UserPreference;
 use App\Legacy\UserPreferences\UserPreferencesMappers;
 use App\Service\UserPreferencesProviderInterface;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use UnexpectedValueException;
 use User;
 
@@ -49,9 +50,10 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         LegacyScopeState $legacyScopeState,
         array $exposedUserPreferences,
         UserPreferencesMappers $mappers,
-        array $userPreferencesKeyMap
+        array $userPreferencesKeyMap,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
 
         $this->exposedUserPreferences = $exposedUserPreferences;
         $this->mappers = $mappers;

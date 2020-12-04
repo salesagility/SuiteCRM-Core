@@ -9,6 +9,7 @@ use App\Legacy\Data\PresetListDataHandlers;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordListProviderInterface;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class RecordListHandler
@@ -52,9 +53,10 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         ListDataHandler $listDataHandler,
-        PresetListDataHandlers $presetHandlers
+        PresetListDataHandlers $presetHandlers,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listDataHandler = $listDataHandler;
         $this->presetHandlers = $presetHandlers;

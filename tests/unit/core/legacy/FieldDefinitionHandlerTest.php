@@ -12,6 +12,8 @@ use App\Tests\UnitTester;
 use ArrayObject;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class FieldDefinitionHandlerTest
@@ -36,12 +38,16 @@ final class FieldDefinitionHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $moduleNameMapper = new ModuleNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
 
         $groupedFieldTypesMap = [
@@ -76,7 +82,8 @@ final class FieldDefinitionHandlerTest extends Unit
             $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope(),
             $moduleNameMapper,
-            $fieldDefinitionMapper
+            $fieldDefinitionMapper,
+            $session
         );
     }
 

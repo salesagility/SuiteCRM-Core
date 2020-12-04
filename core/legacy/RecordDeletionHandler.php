@@ -6,6 +6,7 @@ use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordDeletionServiceInterface;
 use App\Service\RecordListProviderInterface;
 use BeanFactory;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class ListViewHandler
@@ -42,9 +43,11 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        RecordListProviderInterface $listViewProvider
-    ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        RecordListProviderInterface $listViewProvider,
+        SessionInterface $session
+    )
+    {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listViewProvider = $listViewProvider;
     }

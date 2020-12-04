@@ -9,6 +9,7 @@ use App\Service\NavigationProviderInterface;
 use App\Service\RouteConverterInterface;
 use GroupedTabStructure;
 use SugarView;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class NavbarHandler
@@ -57,9 +58,10 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         array $menuItemMap,
         ModuleNameMapperInterface $moduleNameMapper,
         RouteConverterInterface $routeConverter,
-        ModuleRegistryInterface $moduleRegistry
+        ModuleRegistryInterface $moduleRegistry,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->routeConverter = $routeConverter;
         $this->menuItemMap = $menuItemMap;

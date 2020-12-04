@@ -12,6 +12,8 @@ use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ModuleRegistryHandler;
 use App\Legacy\NavbarHandler;
 use App\Legacy\RouteConverterHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class NavbarTest
@@ -40,6 +42,9 @@ final class NavbarTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -94,7 +99,8 @@ final class NavbarTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $actionMapper = new ActionNameMapperHandler(
@@ -102,7 +108,8 @@ final class NavbarTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $routeConverter = new RouteConverterHandler(
@@ -112,7 +119,8 @@ final class NavbarTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $actionMapper
+            $actionMapper,
+            $session
         );
 
         $mockAccessibleModulesList = [
@@ -194,7 +202,8 @@ final class NavbarTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $excludedModules
+            $excludedModules,
+            $session
         );
 
         $this->navbarHandler = new NavbarHandler(
@@ -206,7 +215,8 @@ final class NavbarTest extends Unit
             $menuItemMap,
             $moduleNameMapper,
             $routeConverter,
-            $moduleRegistry
+            $moduleRegistry,
+            $session
         );
         $this->navbar = $this->navbarHandler->getNavbar();
     }

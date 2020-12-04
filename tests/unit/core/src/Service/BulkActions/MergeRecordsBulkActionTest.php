@@ -8,6 +8,8 @@ use App\Service\BulkActions\MergeRecordsBulkAction;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class MergeRecordsBulkActionTest
@@ -31,12 +33,16 @@ class MergeRecordsBulkActionTest extends Unit
     protected function _before(): void
     {
 
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $moduleNameMapper = new ModuleNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
 
         $this->service = new MergeRecordsBulkAction(

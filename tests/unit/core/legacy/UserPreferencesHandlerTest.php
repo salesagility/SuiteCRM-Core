@@ -14,6 +14,8 @@ use App\Legacy\UserPreferences\CurrencyPreferenceMapper;
 use App\Legacy\UserPreferences\DateFormatPreferenceMapper;
 use App\Legacy\UserPreferences\TimeFormatPreferenceMapper;
 use App\Legacy\UserPreferences\UserPreferencesMappers;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use User;
 
 /**
@@ -38,6 +40,9 @@ class UserPreferencesHandlerTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -91,7 +96,8 @@ class UserPreferencesHandlerTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $this->tester->getDatetimeFormatMap()
+            $this->tester->getDatetimeFormatMap(),
+            $session
         );
 
         $currencyHandler = new CurrencyHandler(
@@ -99,7 +105,8 @@ class UserPreferencesHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $mappersArray = [
@@ -138,7 +145,8 @@ class UserPreferencesHandlerTest extends Unit
             $legacyScope,
             $exposedUserPreferences,
             $mappers,
-            $systemConfigKeyMap
+            $systemConfigKeyMap,
+            $session
         );
     }
 

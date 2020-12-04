@@ -10,6 +10,7 @@ use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelDataPort;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandlerInterface
 {
@@ -42,9 +43,10 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        RecordMapper $recordMapper
+        RecordMapper $recordMapper,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->recordMapper = $recordMapper;
     }

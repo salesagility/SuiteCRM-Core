@@ -10,6 +10,8 @@ use App\Legacy\ActionNameMapperHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class RouteConverterTest
@@ -30,6 +32,9 @@ class RouteConverterTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -41,7 +46,8 @@ class RouteConverterTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $actionMapper = new ActionNameMapperHandler(
@@ -49,7 +55,8 @@ class RouteConverterTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $this->routeConverter = new RouteConverterHandler(
@@ -59,7 +66,8 @@ class RouteConverterTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleMapper,
-            $actionMapper
+            $actionMapper,
+            $session
         );
     }
 

@@ -10,6 +10,7 @@ use BeanFactory;
 use DetailView2;
 use EditView;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use UnexpectedValueException;
 use ViewDetail;
 use ViewEdit;
@@ -51,10 +52,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         LoggerInterface $logger,
-        RecordActionDefinitionProviderInterface $actionDefinitionProvider
+        RecordActionDefinitionProviderInterface $actionDefinitionProvider,
+        SessionInterface $session
     )
     {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->logger = $logger;
         $this->actionDefinitionProvider = $actionDefinitionProvider;
     }

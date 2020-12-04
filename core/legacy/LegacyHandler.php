@@ -7,6 +7,8 @@ use RuntimeException;
 use SugarApplication;
 use SugarController;
 use SugarThemeRegistry;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class LegacyHandler
@@ -41,25 +43,33 @@ abstract class LegacyHandler
     protected $state;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * LegacyHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
-        LegacyScopeState $legacyScopeState
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session
     ) {
         $this->projectDir = $projectDir;
         $this->legacyDir = $legacyDir;
         $this->legacySessionName = $legacySessionName;
         $this->defaultSessionName = $defaultSessionName;
         $this->state = $legacyScopeState;
+        $this->session = $session;
     }
 
     /**
@@ -74,11 +84,11 @@ abstract class LegacyHandler
         // Set working directory for legacy
         chdir($this->legacyDir);
 
+        $this->startLegacySession();
+
         if (!$this->runLegacyEntryPoint()) {
             throw new RuntimeException(self::MSG_LEGACY_BOOTSTRAP_FAILED);
         }
-
-        $this->switchSession($this->legacySessionName);
 
         $this->state->setActiveScope($this->getHandlerKey());
     }
@@ -146,24 +156,6 @@ abstract class LegacyHandler
     abstract public function getHandlerKey(): string;
 
     /**
-     * Close the legacy handler
-     */
-    public function close(): void
-    {
-        if ($this->state->getActiveScope() !== $this->getHandlerKey()) {
-            return;
-        }
-
-        if (!empty($this->projectDir)) {
-            chdir($this->projectDir);
-        }
-
-        $this->switchSession($this->defaultSessionName);
-
-        $this->state->setActiveScope(null);
-    }
-
-    /**
      * Start Legacy Suite app
      * @param string $currentModule
      * @return void
@@ -220,10 +212,28 @@ abstract class LegacyHandler
     }
 
     /**
+     * Close the legacy handler
+     */
+    public function close(): void
+    {
+        if ($this->state->getActiveScope() !== $this->getHandlerKey()) {
+            return;
+        }
+
+        if (!empty($this->projectDir)) {
+            chdir($this->projectDir);
+        }
+
+        $this->startSymfonySession();
+
+        $this->state->setActiveScope(null);
+    }
+
+    /**
      * @param string $module
      * @param string|null $record
      */
-    protected function initController(string $module, string $record = null)
+    protected function initController(string $module, string $record = null): void
     {
         global $app;
 
@@ -235,6 +245,36 @@ abstract class LegacyHandler
             $controller->record = $record;
         }
         $controller->loadBean();
+    }
+
+    protected function startSymfonySession(): void
+    {
+        session_write_close();
+        $this->session->setName($this->defaultSessionName);
+
+        if (isset($_COOKIE[$this->defaultSessionName])) {
+            $this->session->setId($_COOKIE[$this->defaultSessionName]);
+        }
+
+        $this->session->start();
+    }
+
+    protected function startLegacySession(): void
+    {
+        $this->session->save();
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            return;
+        }
+
+        session_name($this->legacySessionName);
+
+        if (!isset($_COOKIE[$this->legacySessionName])) {
+            $_COOKIE[$this->legacySessionName] = session_create_id();
+        }
+
+        session_id($_COOKIE[$this->legacySessionName]);
+        session_start();
     }
 
     /**

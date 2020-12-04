@@ -9,6 +9,8 @@ use Codeception\Test\Unit;
 use App\Legacy\ModStringsHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ModuleRegistryHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ModStringsHandlerTest
@@ -28,6 +30,9 @@ class ModStringsHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -39,7 +44,8 @@ class ModStringsHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $excludedModules = [
@@ -55,7 +61,8 @@ class ModStringsHandlerTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $excludedModules
+            $excludedModules,
+            $session
         );
 
 
@@ -66,7 +73,8 @@ class ModStringsHandlerTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $moduleNameMapper,
-            $moduleRegistry
+            $moduleRegistry,
+            $session
         );
     }
 

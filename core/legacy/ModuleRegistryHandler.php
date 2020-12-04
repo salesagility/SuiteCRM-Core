@@ -5,6 +5,7 @@ namespace App\Legacy;
 use ACLAction;
 use ACLController;
 use App\Service\ModuleRegistryInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInterface
 {
@@ -30,9 +31,10 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        array $frontendExcludedModules
+        array $frontendExcludedModules,
+        SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->frontendExcludedModules = $frontendExcludedModules;
     }
 

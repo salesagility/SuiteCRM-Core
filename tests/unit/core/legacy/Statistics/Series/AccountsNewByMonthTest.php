@@ -13,6 +13,8 @@ use BeanFactory;
 use Codeception\Test\Unit;
 use EmptyIterator;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class AccountsNewByMonthTest
@@ -35,6 +37,9 @@ class AccountsNewByMonthTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -47,7 +52,8 @@ class AccountsNewByMonthTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $filterMappers = new FilterMappers(new EmptyIterator());
@@ -63,7 +69,8 @@ class AccountsNewByMonthTest extends Unit
             $defaultSessionName,
             $legacyScope,
             $queryHandler,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
     }
 

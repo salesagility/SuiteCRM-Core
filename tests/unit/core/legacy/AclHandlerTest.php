@@ -9,6 +9,8 @@ use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\AclHandler;
 use App\Legacy\ModuleNameMapperHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class AclHandlerTest
@@ -56,12 +58,16 @@ class AclHandlerTest extends Unit
         ]);
 
 
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $moduleNameMapper = new ModuleNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
 
         test::double(AclHandler::class, [
@@ -75,7 +81,8 @@ class AclHandlerTest extends Unit
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
             $this->tester->getLegacyScope(),
-            $moduleNameMapper
+            $moduleNameMapper,
+            $session
         );
 
     }

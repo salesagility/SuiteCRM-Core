@@ -6,6 +6,8 @@ use App\Service\ActionNameMapperInterface;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use App\Legacy\ActionNameMapperHandler;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class ActionNameMapperTest
@@ -25,12 +27,16 @@ class ActionNameMapperTest extends Unit
 
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $this->actionMapper = new ActionNameMapperHandler(
             $this->tester->getProjectDir(),
             $this->tester->getLegacyDir(),
             $this->tester->getLegacySessionName(),
             $this->tester->getDefaultSessionName(),
-            $this->tester->getLegacyScope()
+            $this->tester->getLegacyScope(),
+            $session
         );
     }
 

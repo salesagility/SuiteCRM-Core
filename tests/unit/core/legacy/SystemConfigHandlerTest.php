@@ -16,6 +16,8 @@ use App\Legacy\SystemConfigHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Class SystemConfigHandlerTest
@@ -38,6 +40,9 @@ class SystemConfigHandlerTest extends Unit
      */
     protected function _before(): void
     {
+        $session = new Session(new MockArraySessionStorage('PHPSESSID'));
+        $session->start();
+
         $projectDir = $this->tester->getProjectDir();
         $legacyDir = $this->tester->getLegacyDir();
         $legacySessionName = $this->tester->getLegacySessionName();
@@ -71,7 +76,8 @@ class SystemConfigHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $actionMapper = new ActionNameMapperHandler(
@@ -79,7 +85,8 @@ class SystemConfigHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $classicViewExclusionHandler = new ClassicViewRoutingExclusionsHandler(
@@ -87,7 +94,8 @@ class SystemConfigHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $dateTimeHandler = new DateTimeHandler(
@@ -96,7 +104,8 @@ class SystemConfigHandlerTest extends Unit
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $this->tester->getDatetimeFormatMap()
+            $this->tester->getDatetimeFormatMap(),
+            $session
         );
 
         $currencyHandler = new CurrencyHandler(
@@ -104,7 +113,8 @@ class SystemConfigHandlerTest extends Unit
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
-            $legacyScope
+            $legacyScope,
+            $session
         );
 
         $mappersArray = [
@@ -510,7 +520,8 @@ class SystemConfigHandlerTest extends Unit
             $listViewSettingsLimits,
             $listViewActionsLimits,
             $recordViewActionsLimits,
-            $ui
+            $ui,
+            $session
         );
     }
 
