@@ -39,8 +39,9 @@ class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProv
         $this->init();
         $this->startLegacyApp();
 
-        $module = 'accounts';
+
         $id = $this->getCase($id)->account_id;
+        $module = 'accounts';
         $queries = $this->getQueries($module, $id, $subpanel);
         $parts = $queries[0];
         $parts['select'] = 'SELECT COUNT(*) as value';
@@ -56,7 +57,7 @@ class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProv
 
     /**
      * @param string $id
-     * @return aCase
+     * @return aCase $case
      */
 
     protected function getCase(string $id): aCase

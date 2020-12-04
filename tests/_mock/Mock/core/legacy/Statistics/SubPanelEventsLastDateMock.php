@@ -21,6 +21,7 @@ class SubPanelEventsLastDateMock extends SubPanelEventsLastDate
         return [
             [
                 'select' => '',
+                'where' => '',
                 'order_by' => '',
             ]
         ];

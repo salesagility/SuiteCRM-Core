@@ -67,6 +67,7 @@ class CasesPerAccountTest extends Unit
      * Skip over incomplete test
      * @skip Incomplete CasesPerAccountTest
      */
+
     public function testUnsupportedContextModule(): void
     {
         $this->handler->reset();
@@ -92,6 +93,7 @@ class CasesPerAccountTest extends Unit
         static::assertEquals('-', $result->getData()['value']);
     }
 
+
     /**
      * Skip over incomplete test
      * @skip Incomplete CasesPerAccountTest
@@ -112,7 +114,7 @@ class CasesPerAccountTest extends Unit
         $result = $this->handler->getData(
             [
                 'context' => [
-                    'module' => 'accounts',
+                    'module' => 'cases',
                     'id' => '12345',
                 ]
             ]
@@ -124,11 +126,11 @@ class CasesPerAccountTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('this is a test', $result->getData()['value']);
+        static::assertEquals('2', $result->getData()['value']);
         static::assertEquals('cases-per-accounts', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
-        static::assertEquals('varchar', $result->getMetadata()['dataType']);
+        static::assertEquals('int', $result->getMetadata()['dataType']);
     }
 }

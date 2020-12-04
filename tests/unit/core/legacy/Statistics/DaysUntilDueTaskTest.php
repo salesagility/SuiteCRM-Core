@@ -103,14 +103,14 @@ class DaysUntilDueTaskTest extends Unit
     {
         $this->handler->reset();
         $dateString = $this->getPastDateString(2) . ' 12:00:00';
-        $dateDue = $this->getPastDateString(2) . ' 10:00:00';
+        $dateDue = $this->getPastDateString(8) . ' 10:00:00';
         $bean = $this->buildTask($dateString, $dateDue);
 
         $rows = [
             [
                 'status' => 'In Progress',
-                'date_due' => '2015-11-1 17:45:00',
-                'date_entered' => '2020-10-01 17:45:00',
+                'date_due' => $dateDue,
+                'date_entered' => $dateString,
             ],
         ];
         $this->handler->setMockQueryResult($rows);
@@ -137,7 +137,7 @@ class DaysUntilDueTaskTest extends Unit
         static::assertArrayHasKey('dataType', $result->getMetadata());
         static::assertEquals('int', $result->getMetadata()['dataType']);
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('2', $result->getData()['value']);
+        static::assertEquals('8', $result->getData()['value']);
     }
 
     /**
