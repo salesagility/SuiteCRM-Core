@@ -6,7 +6,6 @@ use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Service\StatisticsProviderInterface;
 use DateFormatService;
-use Elasticsearch\Endpoints\Indices\Refresh;
 
 
 /**
@@ -146,16 +145,14 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
 
         $min = min($date);
 
-        $dateShown = $dateFormatService->toUserDate($min);
-
         if ('meetings_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $min]);
         } elseif ('calls_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $min]);
         } elseif ('tasks_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $min]);
         } elseif ('tasks_parent_date_start' === $positions[$min]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateShown]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $min]);
         } else {
             $statistic = $this->buildSingleValueResponse(self::KEY, 'varchar', ['value' => '-']);
         }

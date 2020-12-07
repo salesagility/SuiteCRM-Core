@@ -94,7 +94,7 @@ class SubPanelActivitiesNextDateTest extends Unit
 
         $rows = [
             [
-                'tasks_date_start' => '12/12/2019',
+                'tasks_parent_date_start' => '12/12/2019',
             ],
             [
                 'meetings_date_start' => '12/12/2019',
@@ -125,6 +125,6 @@ class SubPanelActivitiesNextDateTest extends Unit
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
-        static::assertEquals('datetime', $result->getMetadata()['dataType']);
+        static::assertEquals('date', $result->getMetadata()['dataType']);
     }
 }
