@@ -148,7 +148,10 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
      */
     protected function delete(string $moduleName, string $id): bool
     {
-        $bean = BeanFactory::getBean($moduleName, $id);
+        // NOTE: Do not use BeanFactory::getBean($moduleName, $id) with mark_deleted
+        // may cause errors when there are related records.
+        $bean = BeanFactory::newBean($moduleName);
+        $bean->retrieve($id);
         if ($bean && $bean->id && $bean->ACLAccess('Delete')) {
             $bean->mark_deleted($id);
 
