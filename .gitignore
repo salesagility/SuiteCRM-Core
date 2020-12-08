@@ -54,3 +54,7 @@ composer.phar
 
 # htacess
 /.htaccess
+
+# SASS
+/legacy/themes/suite8/css/Dawn/style.css
+/legacy/themes/suite8/css/Noon/style.css
