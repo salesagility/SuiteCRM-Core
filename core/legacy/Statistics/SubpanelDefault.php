@@ -27,12 +27,7 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
     {
         $subpanel = $query['key'];
         [$module, $id] = $this->extractContext($query);
-        $subpanelName = $query['params']['subpanel'] ?? '';
-        if (!empty($subpanelName)) {
-            $subpanel = $subpanelName;
-        }
-
-        if (empty($module) || empty($id) || empty($subpanel)) {
+        if (empty($module) || empty($id)) {
             return $this->getEmptyResponse(self::KEY);
         }
 
@@ -48,7 +43,6 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
 
         $this->close();
-
         return $statistic;
     }
 }
