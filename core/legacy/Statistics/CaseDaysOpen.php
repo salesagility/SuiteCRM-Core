@@ -110,6 +110,12 @@ class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
 
         $statistic = $this->getDateDiffStatistic(self::KEY, $start, $end);
 
+        if ($this->inClosedState($case)) {
+            $this->addMetadata($statistic, ['labelKey' => 'LBL_WAS_OPEN', 'endLabelKey' => 'LBL_STAT_DAYS']);
+        } else {
+            $this->addMetadata($statistic, ['labelKey' => 'LBL_HAS_BEEN_OPEN', 'endLabelKey' => 'LBL_STAT_DAYS']);
+        }
+
         $this->close();
 
         return $statistic;

@@ -18,6 +18,7 @@ interface StatisticsTopWidgetState {
 
 interface StatisticsEntry {
     labelKey: string;
+    endLabelKey?: string;
     type: string;
     store: SingleValueStatisticsStore;
 }
@@ -75,6 +76,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
             this.statistics[statistic.type] = {
                 labelKey: statistic.labelKey || '',
+                endLabelKey: statistic.endLabelKey || '',
                 type: statistic.type,
                 store: this.factory.create()
             };
@@ -117,7 +119,8 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
                 statistics.forEach(value => {
                     statsMap[value.query.key] = value;
 
-                    this.statistics[value.query.key].labelKey = this.getLabelKey(value);
+                    this.statistics[value.query.key].labelKey = this.getMetadataEntry(value, 'labelKey');
+                    this.statistics[value.query.key].endLabelKey = this.getMetadataEntry(value, 'endLabelKey');
                 });
 
                 return {
@@ -156,13 +159,13 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    getLabelKey(stat: SingleValueStatisticsState): string {
-        const labelKey = stat.statistic.metadata && stat.statistic.metadata.labelKey;
-        if (labelKey) {
-            return labelKey;
+    getMetadataEntry(stat: SingleValueStatisticsState, name: string ): string {
+        const value = stat.statistic.metadata && stat.statistic.metadata[name];
+        if (value !== null && value !== undefined) {
+            return value;
         }
 
-        return this.statistics[stat.query.key].labelKey;
+        return this.statistics[stat.query.key][name];
     }
 
     getLabel(key: string): string {

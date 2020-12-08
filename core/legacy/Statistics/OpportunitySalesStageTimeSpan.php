@@ -104,7 +104,7 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
 
             $statistic = $this->getDateDiffStatistic(self::KEY, $opp->date_entered, $end);
 
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OPEN']);
+            $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OPEN_FOR']);
 
         } else {
 
@@ -132,7 +132,7 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
     {
 
         $parts = [];
-        $parts['order_by'] = 'ORDER BY date_created as DESC';
+        $parts['order_by'] = 'ORDER BY date_created DESC';
 
 
         return $this->queryAuditInfo($this->entityManager, $bean, 'sales_stage', $parts, 'after_value_string');

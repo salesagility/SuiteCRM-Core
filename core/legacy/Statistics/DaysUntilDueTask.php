@@ -99,6 +99,7 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
         $timestamp = $dateTime->getTimestamp();
         $dateComp = $dateFormatService->toDBDateTime($timestamp);
 
+
         $statistic = $this->getDateDiffStatistic(self::KEY, $dateDue, $dateComp);
 
         if ($completed !== 'Completed') {
