@@ -146,7 +146,7 @@ class OpportunitySalesStageTimeSpanTest extends Unit
         static::assertArrayHasKey('dataType', $result->getMetadata());
         static::assertEquals('int', $result->getMetadata()['dataType']);
         static::assertArrayHasKey('labelKey', $result->getMetadata());
-        static::assertEquals('LBL_DAYS_OPEN', $result->getMetadata()['labelKey']);
+        static::assertEquals('LBL_DAYS_OPEN_FOR', $result->getMetadata()['labelKey']);
 
     }
 
@@ -194,7 +194,7 @@ class OpportunitySalesStageTimeSpanTest extends Unit
         static::assertArrayHasKey('dataType', $result->getMetadata());
         static::assertEquals('int', $result->getMetadata()['dataType']);
         static::assertArrayHasKey('labelKey', $result->getMetadata());
-        static::assertEquals('LBL_DAYS_OPEN', $result->getMetadata()['labelKey']);
+        static::assertEquals('LBL_DAYS_OPEN_FOR', $result->getMetadata()['labelKey']);
 
     }
 
