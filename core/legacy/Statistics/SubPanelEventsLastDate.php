@@ -107,11 +107,11 @@ class SubPanelEventsLastDate extends SubpanelDataQueryHandler implements Statist
         $dateValue = $date[0];
 
         if ('leads_date_end' === $positions[$dateValue]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $dateValue]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateValue]);
         } elseif ('contacts_date_end' === $positions[$dateValue]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $dateValue]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateValue]);
         } elseif ('date_end' === $positions[$dateValue]) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ['value' => $dateValue]);
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $dateValue]);
         } else {
             $statistic = $this->getEmptyResponse(self::KEY);
         }
