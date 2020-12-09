@@ -110,7 +110,7 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
             }
         } else {
             $statistic = $this->getEmptyResponse(self::KEY);
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_TASK_COMPLETED']);
+            $this->addMetadata($statistic, ['labelKey' => 'LBL_TASK_COMPLETED', 'endLabelKey' => '']);
         }
 
         $this->close();
