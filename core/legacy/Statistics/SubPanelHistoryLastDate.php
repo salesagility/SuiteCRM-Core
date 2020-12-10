@@ -110,14 +110,14 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
         } else {
             $max = max($date);
 
-            $userDate = $dateFormatService->toUserDate($max);
+            $date = $dateFormatService->toDBDate($max);
 
             if ('meetings_date_end' === $positions[$max]) {
-                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $userDate]);
+                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $date]);
             } elseif ('date_end' === $positions[$max]) {
-                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $userDate]);
+                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $date]);
             } elseif ('date_sent_received' === $positions[$max]) {
-                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $userDate]);
+                $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $date]);
             } else {
                 $statistic = $this->getEmptyResponse(self::KEY);
             }

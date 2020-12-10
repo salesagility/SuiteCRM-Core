@@ -5,6 +5,9 @@ namespace Mock\Core\Legacy\Statistics;
 use AcceptanceTester;
 use App\Legacy\Statistics\CasesPerAccount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
+use SugarBean;
+use aCase;
+use BeanFactory;
 
 class CasesPerAccountMock extends CasesPerAccount
 {
@@ -33,5 +36,18 @@ class CasesPerAccountMock extends CasesPerAccount
 
     protected function startLegacyApp(): void
     {
+    }
+
+    /**
+     * @param string $id
+     * @return aCase|null
+     */
+    protected function getCase(string $id): ?aCase
+    {
+        /** @var aCase $case */
+        $case = BeanFactory::getBean('Cases');
+        $case->account_id = '12345';
+
+        return $case;
     }
 }

@@ -120,7 +120,7 @@ class SubPanelHistoryLastDateTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('12/12/2019', $result->getData()['value']);
+        static::assertEquals('2019-12-12', $result->getData()['value']);
         static::assertEquals('history', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);

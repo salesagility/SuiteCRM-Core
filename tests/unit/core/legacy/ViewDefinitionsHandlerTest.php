@@ -40,6 +40,7 @@ final class ViewDefinitionsHandlerTest extends Unit
 
     /**
      * @throws Exception
+     * @noinspection UntrustedInclusionInspection
      */
     protected function _before(): void
     {
@@ -272,11 +273,10 @@ final class ViewDefinitionsHandlerTest extends Unit
         );
 
         // Needed for aspect mock
-        /* @noinspection PhpIncludeInspection */
         require_once 'include/ListView/ListViewDisplay.php';
-        /* @noinspection PhpIncludeInspection */
         require_once 'include/ListView/ListView.php';
-        /* @noinspection PhpIncludeInspection */
+        require_once 'include/SubPanel/SubPanel.php';
+        require_once 'include/SubPanel/SubPanelDefinitions.php';
         require_once 'modules/Calls_Reschedule/Calls_Reschedule.php';
     }
 
@@ -287,34 +287,34 @@ final class ViewDefinitionsHandlerTest extends Unit
     public function testListViewDefs(): void
     {
         $listViewDefs = $this->viewDefinitionHandler->getListViewDef('accounts');
-        static::assertNotNull($listViewDefs);
-        static::assertNotNull($listViewDefs->getListView());
-        static::assertIsArray($listViewDefs->getListView());
-        static::assertNotEmpty($listViewDefs->getListView());
+        ViewDefinitionsHandlerTest::assertNotNull($listViewDefs);
+        ViewDefinitionsHandlerTest::assertNotNull($listViewDefs->getListView());
+        ViewDefinitionsHandlerTest::assertIsArray($listViewDefs->getListView());
+        ViewDefinitionsHandlerTest::assertNotEmpty($listViewDefs->getListView());
 
         $firstColumn = $listViewDefs->getListView()['columns'][0];
-        static::assertIsArray($firstColumn);
-        static::assertNotEmpty($firstColumn);
+        ViewDefinitionsHandlerTest::assertIsArray($firstColumn);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstColumn);
 
-        static::assertArrayHasKey('name', $firstColumn);
-        static::assertArrayHasKey('label', $firstColumn);
-        static::assertArrayHasKey('link', $firstColumn);
-        static::assertIsBool($firstColumn['link']);
-        static::assertArrayHasKey('sortable', $firstColumn);
-        static::assertIsBool($firstColumn['sortable']);
-        static::assertArrayHasKey('fieldDefinition', $firstColumn);
-        static::assertIsArray($firstColumn['fieldDefinition']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $firstColumn);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('label', $firstColumn);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('link', $firstColumn);
+        ViewDefinitionsHandlerTest::assertIsBool($firstColumn['link']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('sortable', $firstColumn);
+        ViewDefinitionsHandlerTest::assertIsBool($firstColumn['sortable']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('fieldDefinition', $firstColumn);
+        ViewDefinitionsHandlerTest::assertIsArray($firstColumn['fieldDefinition']);
 
-        static::assertArrayHasKey('name', $firstColumn['fieldDefinition']);
-        static::assertArrayHasKey('type', $firstColumn['fieldDefinition']);
-        static::assertArrayHasKey('vname', $firstColumn['fieldDefinition']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $firstColumn['fieldDefinition']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('type', $firstColumn['fieldDefinition']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('vname', $firstColumn['fieldDefinition']);
 
         $actions = $listViewDefs->getListView()['bulkActions'];
-        static::assertIsArray($actions);
-        static::assertNotEmpty($actions);
+        ViewDefinitionsHandlerTest::assertIsArray($actions);
+        ViewDefinitionsHandlerTest::assertNotEmpty($actions);
 
-        static::assertArrayHasKey('delete', $actions);
-        static::assertSame([
+        ViewDefinitionsHandlerTest::assertArrayHasKey('delete', $actions);
+        ViewDefinitionsHandlerTest::assertSame([
             'key' => 'delete',
             'labelKey' => 'LBL_DELETE',
             'params' => [
@@ -324,8 +324,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             'acl' => ['delete']
         ], $actions['delete']);
 
-        static::assertArrayHasKey('export', $actions);
-        static::assertSame([
+        ViewDefinitionsHandlerTest::assertArrayHasKey('export', $actions);
+        ViewDefinitionsHandlerTest::assertSame([
             'key' => 'export',
             'labelKey' => 'LBL_EXPORT',
             'params' => [
@@ -343,37 +343,37 @@ final class ViewDefinitionsHandlerTest extends Unit
     public function testSearchDefs(): void
     {
         $searchDefs = $this->viewDefinitionHandler->getSearchDefs('accounts');
-        static::assertNotNull($searchDefs);
-        static::assertNotNull($searchDefs->getSearch());
-        static::assertIsArray($searchDefs->getSearch());
-        static::assertNotEmpty($searchDefs->getSearch());
-        static::assertArrayHasKey('layout', $searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertArrayHasKey('layout', $searchDefs->getSearch());
 
-        static::assertNotNull($searchDefs->getSearch()['layout']);
-        static::assertIsArray($searchDefs->getSearch()['layout']);
-        static::assertNotEmpty($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch()['layout']);
 
-        static::assertArrayHasKey('basic', $searchDefs->getSearch()['layout']);
-        static::assertNotNull($searchDefs->getSearch()['layout']['basic']);
-        static::assertIsArray($searchDefs->getSearch()['layout']['basic']);
-        static::assertNotEmpty($searchDefs->getSearch()['layout']['basic']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('basic', $searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch()['layout']['basic']);
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch()['layout']['basic']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch()['layout']['basic']);
 
         $first = array_pop($searchDefs->getSearch()['layout']['basic']);
-        static::assertIsArray($first);
-        static::assertNotEmpty($first);
+        ViewDefinitionsHandlerTest::assertIsArray($first);
+        ViewDefinitionsHandlerTest::assertNotEmpty($first);
 
-        static::assertArrayHasKey('name', $first);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $first);
 
-        static::assertArrayHasKey('advanced', $searchDefs->getSearch()['layout']);
-        static::assertNotNull($searchDefs->getSearch()['layout']['advanced']);
-        static::assertIsArray($searchDefs->getSearch()['layout']['advanced']);
-        static::assertNotEmpty($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('advanced', $searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch()['layout']['advanced']);
 
         $first = array_pop($searchDefs->getSearch()['layout']['advanced']);
-        static::assertIsArray($first);
-        static::assertNotEmpty($first);
+        ViewDefinitionsHandlerTest::assertIsArray($first);
+        ViewDefinitionsHandlerTest::assertNotEmpty($first);
 
-        static::assertArrayHasKey('name', $first);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $first);
     }
 
     /**
@@ -383,26 +383,26 @@ final class ViewDefinitionsHandlerTest extends Unit
     public function testSearchDefsFormatForSimpleConfiguration(): void
     {
         $searchDefs = $this->viewDefinitionHandler->getSearchDefs('workflow');
-        static::assertNotNull($searchDefs);
-        static::assertNotNull($searchDefs->getSearch());
-        static::assertIsArray($searchDefs->getSearch());
-        static::assertNotEmpty($searchDefs->getSearch());
-        static::assertArrayHasKey('layout', $searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch());
+        ViewDefinitionsHandlerTest::assertArrayHasKey('layout', $searchDefs->getSearch());
 
-        static::assertNotNull($searchDefs->getSearch()['layout']);
-        static::assertIsArray($searchDefs->getSearch()['layout']);
-        static::assertNotEmpty($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch()['layout']);
 
-        static::assertArrayHasKey('advanced', $searchDefs->getSearch()['layout']);
-        static::assertNotNull($searchDefs->getSearch()['layout']['advanced']);
-        static::assertIsArray($searchDefs->getSearch()['layout']['advanced']);
-        static::assertNotEmpty($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('advanced', $searchDefs->getSearch()['layout']);
+        ViewDefinitionsHandlerTest::assertNotNull($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertIsArray($searchDefs->getSearch()['layout']['advanced']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($searchDefs->getSearch()['layout']['advanced']);
 
         $first = array_pop($searchDefs->getSearch()['layout']['advanced']);
-        static::assertIsArray($first);
-        static::assertNotEmpty($first);
+        ViewDefinitionsHandlerTest::assertIsArray($first);
+        ViewDefinitionsHandlerTest::assertNotEmpty($first);
 
-        static::assertArrayHasKey('name', $first);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $first);
     }
 
     /**
@@ -412,48 +412,49 @@ final class ViewDefinitionsHandlerTest extends Unit
     public function testRecordViewDefs(): void
     {
         $recordViewDefs = $this->viewDefinitionHandler->getRecordViewDefs('accounts');
-        static::assertNotNull($recordViewDefs);
-        static::assertNotNull($recordViewDefs->getRecordView());
-        static::assertIsArray($recordViewDefs->getRecordView());
-        static::assertNotEmpty($recordViewDefs->getRecordView());
-        static::assertArrayHasKey('templateMeta', $recordViewDefs->getRecordView());
-        static::assertArrayHasKey('actions', $recordViewDefs->getRecordView());
-        static::assertArrayHasKey('panels', $recordViewDefs->getRecordView());
 
-        static::assertNotNull($recordViewDefs->getRecordView()['templateMeta']);
-        static::assertIsArray($recordViewDefs->getRecordView()['templateMeta']);
-        static::assertNotEmpty($recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertNotNull($recordViewDefs);
+        ViewDefinitionsHandlerTest::assertNotNull($recordViewDefs->getRecordView());
+        ViewDefinitionsHandlerTest::assertIsArray($recordViewDefs->getRecordView());
+        ViewDefinitionsHandlerTest::assertNotEmpty($recordViewDefs->getRecordView());
+        ViewDefinitionsHandlerTest::assertArrayHasKey('templateMeta', $recordViewDefs->getRecordView());
+        ViewDefinitionsHandlerTest::assertArrayHasKey('actions', $recordViewDefs->getRecordView());
+        ViewDefinitionsHandlerTest::assertArrayHasKey('panels', $recordViewDefs->getRecordView());
 
-        static::assertArrayHasKey('maxColumns', $recordViewDefs->getRecordView()['templateMeta']);
-        static::assertArrayHasKey('useTabs', $recordViewDefs->getRecordView()['templateMeta']);
-        static::assertArrayHasKey('tabDefs', $recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertNotNull($recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertIsArray($recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($recordViewDefs->getRecordView()['templateMeta']);
 
-        static::assertNotNull($recordViewDefs->getRecordView()['panels']);
-        static::assertIsArray($recordViewDefs->getRecordView()['panels']);
-        static::assertNotEmpty($recordViewDefs->getRecordView()['panels']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('maxColumns', $recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('useTabs', $recordViewDefs->getRecordView()['templateMeta']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('tabDefs', $recordViewDefs->getRecordView()['templateMeta']);
+
+        ViewDefinitionsHandlerTest::assertNotNull($recordViewDefs->getRecordView()['panels']);
+        ViewDefinitionsHandlerTest::assertIsArray($recordViewDefs->getRecordView()['panels']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($recordViewDefs->getRecordView()['panels']);
 
         $panels = $recordViewDefs->getRecordView()['panels'];
         $firstPanel = $panels[0];
 
-        static::assertIsArray($firstPanel);
-        static::assertNotEmpty($firstPanel);
-        static::assertArrayHasKey('key', $firstPanel);
-        static::assertArrayHasKey('key', $firstPanel);
-        static::assertNotEmpty($firstPanel['rows']);
+        ViewDefinitionsHandlerTest::assertIsArray($firstPanel);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstPanel);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('key', $firstPanel);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('key', $firstPanel);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstPanel['rows']);
 
         $firstRow = $firstPanel['rows'][0];
-        static::assertIsArray($firstRow);
-        static::assertNotEmpty($firstRow);
-        static::assertArrayHasKey('cols', $firstRow);
-        static::assertNotEmpty($firstRow['cols']);
+        ViewDefinitionsHandlerTest::assertIsArray($firstRow);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstRow);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('cols', $firstRow);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstRow['cols']);
 
         $firstCol = $firstRow['cols'][0];
-        static::assertIsArray($firstCol);
-        static::assertNotEmpty($firstCol);
-        static::assertArrayHasKey('fieldDefinition', $firstCol);
-        static::assertArrayHasKey('name', $firstCol);
-        static::assertArrayHasKey('label', $firstCol);
-        static::assertNotEmpty($firstCol['fieldDefinition']);
+        ViewDefinitionsHandlerTest::assertIsArray($firstCol);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstCol);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('fieldDefinition', $firstCol);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $firstCol);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('label', $firstCol);
+        ViewDefinitionsHandlerTest::assertNotEmpty($firstCol['fieldDefinition']);
     }
 
     /**
@@ -464,36 +465,36 @@ final class ViewDefinitionsHandlerTest extends Unit
     {
         $viewDef = $this->viewDefinitionHandler->getViewDefs('accounts', ['subPanel']);
 
-        static::assertNotNull($viewDef);
-        static::assertNotEmpty($viewDef);
-        static::assertIsObject($viewDef);
+        ViewDefinitionsHandlerTest::assertNotNull($viewDef);
+        ViewDefinitionsHandlerTest::assertNotEmpty($viewDef);
+        ViewDefinitionsHandlerTest::assertIsObject($viewDef);
 
         $subPanels = $viewDef->subpanel;
-        static::assertIsArray($subPanels);
+        ViewDefinitionsHandlerTest::assertIsArray($subPanels);
 
         $activities = $subPanels['activities'];
 
-        static::assertIsArray($activities);
-        static::assertNotEmpty($activities);
-        static::assertArrayHasKey('title_key', $activities);
-        static::assertArrayHasKey('module', $activities);
-        static::assertArrayHasKey('top_buttons', $activities);
-        static::assertNotEmpty($activities['top_buttons']);
+        ViewDefinitionsHandlerTest::assertIsArray($activities);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('title_key', $activities);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('module', $activities);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('top_buttons', $activities);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['top_buttons']);
 
-        static::assertArrayHasKey('key', $activities['top_buttons'][0]);
-        static::assertNotEmpty($activities['top_buttons'][0]['key']);
-        static::assertArrayHasKey('labelKey', $activities['top_buttons'][0]);
-        static::assertNotEmpty($activities['top_buttons'][0]['labelKey']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('key', $activities['top_buttons'][0]);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['top_buttons'][0]['key']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('labelKey', $activities['top_buttons'][0]);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['top_buttons'][0]['labelKey']);
 
-        static::assertArrayHasKey('columns', $activities);
-        static::assertNotEmpty($activities['columns']);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('columns', $activities);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['columns']);
 
-        static::assertArrayHasKey('columns', $activities);
-        static::assertNotEmpty($activities['columns']);
-        static::assertNotEmpty($activities['columns'][0]);
-        static::assertArrayHasKey('name', $activities['columns'][0]);
-        static::assertArrayHasKey('label', $activities['columns'][0]);
-        static::assertArrayHasKey('fieldDefinition', $activities['columns'][0]);
-        static::assertArrayHasKey('type', $activities['columns'][0]);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('columns', $activities);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['columns']);
+        ViewDefinitionsHandlerTest::assertNotEmpty($activities['columns'][0]);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('name', $activities['columns'][0]);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('label', $activities['columns'][0]);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('fieldDefinition', $activities['columns'][0]);
+        ViewDefinitionsHandlerTest::assertArrayHasKey('type', $activities['columns'][0]);
     }
 }

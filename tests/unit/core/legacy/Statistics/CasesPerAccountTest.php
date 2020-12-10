@@ -8,13 +8,7 @@ use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 use Mock\Core\Legacy\Statistics\CasesPerAccountMock;
-
-/**
- * Skip over incomplete test
- * @param AcceptanceTester $I
- * @skip Incomplete CasesPerAccountTest
- */
-
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CasesPerAccountTest
@@ -61,13 +55,24 @@ class CasesPerAccountTest extends Unit
             $legacyScope,
             $moduleNameMapper
         );
+
+        /** @var LoggerInterface $logger */
+        $logger = $this->makeEmpty(
+            LoggerInterface::class,
+            [
+                'error' => static function ($message, array $context = array()): bool {
+                    return $message || $context;
+                }
+            ]
+        );
+
+        $this->handler->setLogger($logger);
     }
 
     /**
-     * Skip over incomplete test
-     * @skip Incomplete CasesPerAccountTest
+     * Test Unsupported context module
+     * @throws Exception
      */
-
     public function testUnsupportedContextModule(): void
     {
         $this->handler->reset();
@@ -95,30 +100,26 @@ class CasesPerAccountTest extends Unit
 
 
     /**
-     * Skip over incomplete test
-     * @skip Incomplete CasesPerAccountTest
+     * Test Amount of Cases
+     * @throws Exception
      */
-
     public function testAmountofCases(): void
     {
         $this->handler->reset();
 
         $rows = [
             [
-                'subject' => 'this is a test',
-                'date_entered' => '2001-12-12 12:00:00',
+                'value' => '5',
             ],
         ];
         $this->handler->setMockQueryResult($rows);
 
-        $result = $this->handler->getData(
-            [
-                'context' => [
-                    'module' => 'cases',
-                    'id' => '12345',
-                ]
+        $result = $this->handler->getData([
+            'context' => [
+                'module' => 'cases',
+                'id' => '12345',
             ]
-        );
+        ]);
 
         static::assertNotNull($result);
         static::assertNotNull($result->getData());
@@ -126,8 +127,8 @@ class CasesPerAccountTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('2', $result->getData()['value']);
-        static::assertEquals('cases-per-accounts', $result->getId());
+        static::assertEquals('5', $result->getData()['value']);
+        static::assertEquals('cases-per-account', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());

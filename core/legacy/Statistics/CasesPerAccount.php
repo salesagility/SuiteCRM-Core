@@ -7,13 +7,19 @@ use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-
-class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProviderInterface
+class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProviderInterface, LoggerAwareInterface
 {
     use StatisticsHandlingTrait;
 
     public const KEY = 'cases-per-account';
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @inheritDoc
@@ -32,6 +38,7 @@ class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProv
     {
         $subpanel = 'cases';
         [$module, $id] = $this->extractContext($query);
+
         if (empty($module) || empty($id)) {
             return $this->getEmptyResponse(self::KEY);
         }
@@ -39,10 +46,17 @@ class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProv
         $this->init();
         $this->startLegacyApp();
 
+        $bean = $this->getCase($id);
 
-        $id = $this->getCase($id)->account_id;
+        if ($bean === null) {
+            $this->logger->error('CasesPerAccount: Unable to load case bean with id: ' . $id);
+
+            return $this->getEmptyResponse(self::KEY);
+        }
+
+        $accountID = $this->getCase($id)->account_id;
         $module = 'accounts';
-        $queries = $this->getQueries($module, $id, $subpanel);
+        $queries = $this->getQueries($module, $accountID, $subpanel);
         $parts = $queries[0];
         $parts['select'] = 'SELECT COUNT(*) as value';
 
@@ -57,16 +71,25 @@ class CasesPerAccount extends SubpanelDataQueryHandler implements StatisticsProv
 
     /**
      * @param string $id
-     * @return aCase $case
+     * @return aCase|null
      */
-
-    protected function getCase(string $id): aCase
+    protected function getCase(string $id): ?aCase
     {
         /** @var aCase $case */
         $case = BeanFactory::getBean('Cases', $id);
 
+        if ($case === false) {
+            $case = null;
+        }
+
         return $case;
     }
 
-
+    /**
+     * @inheritDoc
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
 }
