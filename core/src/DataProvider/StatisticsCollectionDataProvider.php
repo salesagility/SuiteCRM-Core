@@ -13,7 +13,7 @@ use App\Service\StatisticsProviderRegistry;
  * Class UserPreferenceCollectionDataProvider
  */
 class StatisticsCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
-    RestrictedDataProviderInterface
+                                                  RestrictedDataProviderInterface
 {
     /**
      * @var StatisticsProviderRegistry
@@ -50,14 +50,30 @@ class StatisticsCollectionDataProvider implements ContextAwareCollectionDataProv
         string $resourceClass,
         string $operationName = null,
         array $context = []
-    ): PaginatorInterface {
-
+    ): ?PaginatorInterface {
         $queries = $context['filters']['queries'] ?? [];
 
         $result = [];
 
         foreach ($queries as $query) {
-            $key = $query['key'] ?? 'default';
+            if (empty($query)) {
+                continue;
+            }
+
+            if (empty($query['key'])) {
+                continue;
+            }
+
+            [$module] = $this->extractContext($query);
+
+            $key = $query['key'];
+
+            $moduleKey = $module . '-' . $key;
+
+            if ($this->registry->has($moduleKey)) {
+                $result[$key] = $this->registry->get($moduleKey)->getData($query);
+                continue;
+            }
 
             if (!$this->registry->has($key)) {
                 $key = 'default';
@@ -67,5 +83,17 @@ class StatisticsCollectionDataProvider implements ContextAwareCollectionDataProv
         }
 
         return new ArrayPaginator($result, 0, count($result));
+    }
+
+    /**
+     * @param array $query
+     * @return array
+     */
+    protected function extractContext(array $query): array
+    {
+        $module = $query['context']['module'] ?? '';
+        $id = $query['context']['id'] ?? '';
+
+        return [$module, $id];
     }
 }
