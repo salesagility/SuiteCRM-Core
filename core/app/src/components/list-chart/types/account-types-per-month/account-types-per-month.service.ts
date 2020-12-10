@@ -84,19 +84,8 @@ export class AccountTypesPerMonthLineChart implements ChartDataSource {
         if (!parts || !parts[0]) {
             return null;
         }
-        const dateTime = DateTime.fromFormat(parts[0], this.getDateFormat());
+        const dateTime = DateTime.fromFormat(parts[0], 'yyyy-MM-dd');
         return dateTime.month;
-    }
-
-    getDateFormat(): string {
-
-        const dateFormat = this.configs.getConfigValue('date_format');
-
-        if (dateFormat) {
-            return dateFormat;
-        }
-
-        return 'yyyy-MM-dd';
     }
 
     tooltipFormatting(value: any): any {
