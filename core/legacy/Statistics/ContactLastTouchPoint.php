@@ -135,8 +135,14 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
             $date[$i] = $emailsResult2['emails_date_sent'];
             $positions[$date[$i]] = 'emails_date_sent';
         }
+        if (empty($date)) {
+            $statistic = $this->getEmptyResponse(self::KEY);
+            $this->close();
 
+            return $statistic;
+        }
         $max = max($date);
+
         if ('meetings_date_end' === $positions[$max]) {
             $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ["value" => $max]);
             $this->addMetadata($statistic, ['labelKey' => 'LBL_LAST_MEETING']);
