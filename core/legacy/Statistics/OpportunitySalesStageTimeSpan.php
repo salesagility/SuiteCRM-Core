@@ -130,12 +130,7 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
      */
     protected function getAuditInfo(SugarBean $bean): array
     {
-
-        $parts = [];
-        $parts['order_by'] = 'ORDER BY date_created DESC';
-
-
-        return $this->queryAuditInfo($this->entityManager, $bean, 'sales_stage', $parts, 'after_value_string');
+        return $this->queryAuditInfo($this->entityManager, $bean, 'sales_stage', [], 'after_value_string');
     }
 
     /**
