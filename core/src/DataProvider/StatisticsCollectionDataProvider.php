@@ -13,7 +13,7 @@ use App\Service\StatisticsProviderRegistry;
  * Class UserPreferenceCollectionDataProvider
  */
 class StatisticsCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
-                                                  RestrictedDataProviderInterface
+    RestrictedDataProviderInterface
 {
     /**
      * @var StatisticsProviderRegistry

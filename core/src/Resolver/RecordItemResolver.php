@@ -4,8 +4,8 @@ namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Entity\Record;
-use Exception;
 use App\Legacy\RecordHandler;
+use Exception;
 
 class RecordItemResolver implements QueryItemResolverInterface
 {

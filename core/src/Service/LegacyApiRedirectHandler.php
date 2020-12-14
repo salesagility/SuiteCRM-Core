@@ -16,7 +16,7 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
      * @param array $legacyApiPaths
      * @param String $legacyPath
      */
-    public function __construct(array $legacyApiPaths, String $legacyPath)
+    public function __construct(array $legacyApiPaths, string $legacyPath)
     {
         parent::__construct($legacyPath);
         $this->legacyApiPaths = $legacyApiPaths;

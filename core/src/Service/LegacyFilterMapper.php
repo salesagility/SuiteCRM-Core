@@ -55,26 +55,6 @@ class LegacyFilterMapper
     }
 
     /**
-     * Get order by
-     * @param array $sort
-     * @return string
-     */
-    public function getOrderBy(array $sort): string
-    {
-        return $sort['orderBy'] ?? 'date_entered';
-    }
-
-    /**
-     * Get sort order
-     * @param array $sort
-     * @return string
-     */
-    public function getSortOrder(array $sort): string
-    {
-        return $sort['sortOrder'] ?? 'DESC';
-    }
-
-    /**
      * Map Filter key to legacy
      * @param string $type
      * @param string $key
@@ -110,5 +90,25 @@ class LegacyFilterMapper
         $end = $item['end'] ?? '';
 
         return str_replace(['{operator}', '{start}', '{end}'], [$operator, $start, $end], $mappedValue);
+    }
+
+    /**
+     * Get order by
+     * @param array $sort
+     * @return string
+     */
+    public function getOrderBy(array $sort): string
+    {
+        return $sort['orderBy'] ?? 'date_entered';
+    }
+
+    /**
+     * Get sort order
+     * @param array $sort
+     * @return string
+     */
+    public function getSortOrder(array $sort): string
+    {
+        return $sort['sortOrder'] ?? 'DESC';
     }
 }

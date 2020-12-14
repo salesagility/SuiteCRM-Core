@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Resolver\RecordListResolver;
 
 /**
@@ -30,6 +30,51 @@ use App\Resolver\RecordListResolver;
 class RecordList
 {
     /**
+     * RecordList data
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The list-view data",
+     *         },
+     *     }
+     * )
+     */
+    public $records;
+    /**
+     * RecordList metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The list metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $meta;
+    /**
+     * RecordList filters
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The list-view filters",
+     *         },
+     *     }
+     * )
+     */
+    public $filters;
+    /**
      * The module
      *
      * @var string
@@ -47,54 +92,6 @@ class RecordList
      * )
      */
     protected $id;
-
-    /**
-     * RecordList data
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view data",
-     *         },
-     *     }
-     * )
-     */
-    public $records;
-
-    /**
-     * RecordList metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $meta;
-
-    /**
-     * RecordList filters
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view filters",
-     *         },
-     *     }
-     * )
-     */
-    public $filters;
 
     /**
      * @return string

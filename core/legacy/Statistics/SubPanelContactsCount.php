@@ -3,14 +3,14 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
-use App\Service\StatisticsProviderInterface;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Service\StatisticsProviderInterface;
 
 /**
  * Class SubPanelActivitiesNextDate
  * @package App\Legacy\Statistics
  */
-class SubPanelContactsCount extends SubpanelDataQueryHandler  implements StatisticsProviderInterface
+class SubPanelContactsCount extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
     use StatisticsHandlingTrait;
 

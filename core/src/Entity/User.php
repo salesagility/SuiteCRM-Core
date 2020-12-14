@@ -358,16 +358,6 @@ class User implements UserInterface, EquatableInterface
     private $factorAuthInterface;
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserName(): ?string
-    {
-        return (string)$this->user_name;
-    }
-
-    /**
      * @see UserInterface
      */
     public function getRoles(): array
@@ -377,32 +367,12 @@ class User implements UserInterface, EquatableInterface
         return array_unique($roles);
     }
 
-
     /**
      * @return string|int
      */
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function setUserName(?string $userName): self
-    {
-        $this->user_name = $userName;
-
-        return $this;
-    }
-
-    public function getUserHash(): ?string
-    {
-        return $this->userHash;
-    }
-
-    public function setUserHash(?string $userHash): self
-    {
-        $this->userHash = $userHash;
-
-        return $this;
     }
 
     public function getSystemGeneratedPassword(): ?bool
@@ -864,14 +834,6 @@ class User implements UserInterface, EquatableInterface
     /**
      * @inheritDoc
      */
-    public function getPassword(): string
-    {
-        return $this->getUserHash();
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getSalt(): ?string
     {
         return null;
@@ -903,5 +865,42 @@ class User implements UserInterface, EquatableInterface
         }
 
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPassword(): string
+    {
+        return $this->getUserHash();
+    }
+
+    public function getUserHash(): ?string
+    {
+        return $this->userHash;
+    }
+
+    public function setUserHash(?string $userHash): self
+    {
+        $this->userHash = $userHash;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserName(): ?string
+    {
+        return (string)$this->user_name;
+    }
+
+    public function setUserName(?string $userName): self
+    {
+        $this->user_name = $userName;
+
+        return $this;
     }
 }

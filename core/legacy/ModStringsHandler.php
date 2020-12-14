@@ -87,8 +87,8 @@ class ModStringsHandler extends LegacyHandler
         $allModStringsArray = [];
         foreach ($modules as $module) {
             $frontendName = $this->moduleNameMapper->toFrontEnd($module);
-            $moduleStrings =  return_module_language($language, $module);
-            if (!empty($moduleStrings)){
+            $moduleStrings = return_module_language($language, $module);
+            if (!empty($moduleStrings)) {
                 $moduleStrings = $this->removeEndingColon($moduleStrings);
             }
             $allModStringsArray[$frontendName] = $moduleStrings;

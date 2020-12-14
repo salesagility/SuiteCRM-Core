@@ -204,68 +204,19 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     }
 
     /**
-     * @inheritDoc
+     * @param $moduleName
+     * @return string
      */
-    public function getListViewDef(string $moduleName): ViewDefinition
+    private function validateModuleName($moduleName): string
     {
-        $this->init();
+        $moduleName = $this->moduleNameMapper->toLegacy($moduleName);
 
-        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
-        $legacyModuleName = $this->validateModuleName($moduleName);
+        if (!$this->moduleNameMapper->isValidModule($moduleName)) {
+            throw new InvalidArgumentException('Invalid module name: ' . $moduleName);
+        }
 
-        $viewDef = new ViewDefinition();
-        $viewDef->setId($moduleName);
-        $viewDef->setListView($this->fetchListViewDef($moduleName, $legacyModuleName, $fieldDefinition));
-
-        $this->close();
-
-        return $viewDef;
+        return $moduleName;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSearchDefs(string $moduleName): ViewDefinition
-    {
-        $this->init();
-
-        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
-
-        $legacyModuleName = $this->validateModuleName($moduleName);
-
-        $viewDef = new ViewDefinition();
-        $viewDef->setId($moduleName);
-        $viewDef->setSearch($this->fetchSearchDefs($legacyModuleName, $fieldDefinition));
-
-        $this->close();
-
-        return $viewDef;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRecordViewDefs(string $moduleName): ViewDefinition
-    {
-        $this->init();
-
-        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
-
-        $legacyModuleName = $this->validateModuleName($moduleName);
-
-        $viewDef = new ViewDefinition();
-        $viewDef->setId($moduleName);
-        $recordViewDefs = $this->recordViewDefinitionHandler->fetch($moduleName, $legacyModuleName, $fieldDefinition);
-        $viewDef->setRecordView($recordViewDefs);
-
-        $this->close();
-
-        return $viewDef;
-    }
-
-    /**
-     * Internal API
-     */
 
     /**
      * Get list view defs array
@@ -337,6 +288,69 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     }
 
     /**
+     * Internal API
+     */
+
+    /**
+     * Add field definition to current field metadata
+     * @param array|null $vardefs
+     * @param $key
+     * @param $field
+     * @return array
+     */
+    protected function addFieldDefinition(array $vardefs, $key, $field): array
+    {
+        $baseField = $this->getField($field);
+
+        $field = array_merge($this->listViewColumnInterface, $baseField);
+
+        if (!isset($vardefs[$key])) {
+            return $field;
+        }
+
+        $field['fieldDefinition'] = $vardefs[$key];
+
+        $field = $this->applyDefaults($field);
+
+        return $field;
+    }
+
+    /**
+     * Get base field structure
+     * @param $field
+     * @return array
+     */
+    protected function getField($field): array
+    {
+        $baseField = $field;
+
+        if (is_string($field)) {
+            $baseField = [
+                'name' => $field,
+            ];
+        }
+
+        return $baseField;
+    }
+
+    /**
+     * Apply defaults
+     * @param array $field
+     * @return array
+     */
+    protected function applyDefaults(array $field): array
+    {
+        foreach ($this->defaultFields as $attribute => $default) {
+            if (empty($field[$attribute])) {
+                $defaultValue = $field['fieldDefinition'][$default] ?? '';
+                $field[$attribute] = $defaultValue;
+            }
+        }
+
+        return $field;
+    }
+
+    /**
      * Get search defs array
      * @param string $module
      * @param FieldDefinition $fieldDefinition
@@ -371,52 +385,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $this->renameSearchLayout($definition, 'advanced_search', 'advanced');
 
         return $definition;
-    }
-
-    /**
-     * Merge searchFields defs info into vardefs
-     * @param array $definition
-     * @param FieldDefinition $fieldDefinition
-     * @param string $type
-     */
-    protected function mergeFieldDefinition(array &$definition, FieldDefinition $fieldDefinition, string $type): void
-    {
-        $vardefs = $fieldDefinition->getVardef();
-        if (isset($definition['layout'][$type])) {
-
-            foreach ($definition['layout'][$type] as $key => $field) {
-                $fieldName = $this->getFieldName($key, $field);
-
-                if (!empty($vardefs[$fieldName])) {
-                    $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
-                    $definition['layout'][$type][$key] = $merged;
-                }
-            }
-        }
-    }
-
-    /**
-     * Add field definition to current field metadata
-     * @param array|null $vardefs
-     * @param $key
-     * @param $field
-     * @return array
-     */
-    protected function addFieldDefinition(array $vardefs, $key, $field): array
-    {
-        $baseField = $this->getField($field);
-
-        $field = array_merge($this->listViewColumnInterface, $baseField);
-
-        if (!isset($vardefs[$key])) {
-            return $field;
-        }
-
-        $field['fieldDefinition'] = $vardefs[$key];
-
-        $field = $this->applyDefaults($field);
-
-        return $field;
     }
 
     /**
@@ -457,31 +425,24 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     }
 
     /**
-     * @param $moduleName
-     * @return string
-     */
-    private function validateModuleName($moduleName): string
-    {
-        $moduleName = $this->moduleNameMapper->toLegacy($moduleName);
-
-        if (!$this->moduleNameMapper->isValidModule($moduleName)) {
-            throw new InvalidArgumentException('Invalid module name: ' . $moduleName);
-        }
-
-        return $moduleName;
-    }
-
-    /**
-     * Rename layout entry
+     * Merge searchFields defs info into vardefs
      * @param array $definition
+     * @param FieldDefinition $fieldDefinition
      * @param string $type
-     * @param string $newName
      */
-    protected function renameSearchLayout(array &$definition, string $type, string $newName): void
+    protected function mergeFieldDefinition(array &$definition, FieldDefinition $fieldDefinition, string $type): void
     {
+        $vardefs = $fieldDefinition->getVardef();
         if (isset($definition['layout'][$type])) {
-            $definition['layout'][$newName] = $definition['layout'][$type];
-            unset($definition['layout'][$type]);
+
+            foreach ($definition['layout'][$type] as $key => $field) {
+                $fieldName = $this->getFieldName($key, $field);
+
+                if (!empty($vardefs[$fieldName])) {
+                    $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
+                    $definition['layout'][$type][$key] = $merged;
+                }
+            }
         }
     }
 
@@ -505,37 +466,76 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     }
 
     /**
-     * Get base field structure
-     * @param $field
-     * @return array
+     * Rename layout entry
+     * @param array $definition
+     * @param string $type
+     * @param string $newName
      */
-    protected function getField($field): array
+    protected function renameSearchLayout(array &$definition, string $type, string $newName): void
     {
-        $baseField = $field;
-
-        if (is_string($field)) {
-            $baseField = [
-                'name' => $field,
-            ];
+        if (isset($definition['layout'][$type])) {
+            $definition['layout'][$newName] = $definition['layout'][$type];
+            unset($definition['layout'][$type]);
         }
-
-        return $baseField;
     }
 
     /**
-     * Apply defaults
-     * @param array $field
-     * @return array
+     * @inheritDoc
      */
-    protected function applyDefaults(array $field): array
+    public function getListViewDef(string $moduleName): ViewDefinition
     {
-        foreach ($this->defaultFields as $attribute => $default) {
-            if (empty($field[$attribute])) {
-                $defaultValue = $field['fieldDefinition'][$default] ?? '';
-                $field[$attribute] = $defaultValue;
-            }
-        }
+        $this->init();
 
-        return $field;
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
+        $legacyModuleName = $this->validateModuleName($moduleName);
+
+        $viewDef = new ViewDefinition();
+        $viewDef->setId($moduleName);
+        $viewDef->setListView($this->fetchListViewDef($moduleName, $legacyModuleName, $fieldDefinition));
+
+        $this->close();
+
+        return $viewDef;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSearchDefs(string $moduleName): ViewDefinition
+    {
+        $this->init();
+
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
+
+        $legacyModuleName = $this->validateModuleName($moduleName);
+
+        $viewDef = new ViewDefinition();
+        $viewDef->setId($moduleName);
+        $viewDef->setSearch($this->fetchSearchDefs($legacyModuleName, $fieldDefinition));
+
+        $this->close();
+
+        return $viewDef;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRecordViewDefs(string $moduleName): ViewDefinition
+    {
+        $this->init();
+
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($moduleName);
+
+        $legacyModuleName = $this->validateModuleName($moduleName);
+
+        $viewDef = new ViewDefinition();
+        $viewDef->setId($moduleName);
+        $recordViewDefs = $this->recordViewDefinitionHandler->fetch($moduleName, $legacyModuleName, $fieldDefinition);
+        $viewDef->setRecordView($recordViewDefs);
+
+        $this->close();
+
+        return $viewDef;
     }
 }

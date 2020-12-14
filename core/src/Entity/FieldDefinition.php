@@ -20,6 +20,21 @@ use ApiPlatform\Core\Annotation\ApiResource;
 class FieldDefinition
 {
     /**
+     * Module vardef metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The module metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $vardef;
+    /**
      * The module
      *
      * @var string
@@ -37,22 +52,6 @@ class FieldDefinition
      * )
      */
     protected $id;
-
-    /**
-     * Module vardef metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The module metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $vardef;
 
     /**
      * @return string

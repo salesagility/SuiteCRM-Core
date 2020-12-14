@@ -4,10 +4,10 @@ namespace App\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\SystemConfig;
+use App\Legacy\SystemConfig\SystemConfigMappers;
 use App\Service\ActionNameMapperInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SystemConfigProviderInterface;
-use App\Legacy\SystemConfig\SystemConfigMappers;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
@@ -76,8 +76,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewActionsLimits,
         array $recordViewActionLimits,
         array $uiConfigs
-    )
-    {
+    ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->exposedSystemConfigs = $exposedSystemConfigs;
 
@@ -126,25 +125,6 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->close();
 
         return $configs;
-    }
-
-    /**
-     * Get system config
-     * @param string $configKey
-     * @return SystemConfig|null
-     */
-    public function getSystemConfig(string $configKey): ?SystemConfig
-    {
-        $this->init();
-
-        $config = $this->loadSystemConfig($configKey);
-
-        $this->mapConfigValues($config);
-        $this->mapKey($config);
-
-        $this->close();
-
-        return $config;
     }
 
     /**
@@ -267,5 +247,24 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         if (isset($this->systemConfigKeyMap[$config->getId()])) {
             $config->setId($this->systemConfigKeyMap[$config->getId()]);
         }
+    }
+
+    /**
+     * Get system config
+     * @param string $configKey
+     * @return SystemConfig|null
+     */
+    public function getSystemConfig(string $configKey): ?SystemConfig
+    {
+        $this->init();
+
+        $config = $this->loadSystemConfig($configKey);
+
+        $this->mapConfigValues($config);
+        $this->mapKey($config);
+
+        $this->close();
+
+        return $config;
     }
 }

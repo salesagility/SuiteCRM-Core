@@ -22,14 +22,6 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
     private $moduleNameMapper;
 
     /**
-     * @inheritDoc
-     */
-    public function getHandlerKey(): string
-    {
-        return self::HANDLER_KEY;
-    }
-
-    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -48,6 +40,14 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**

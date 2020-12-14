@@ -89,16 +89,6 @@ class LegacyRedirectListener
     }
 
     /**
-     * Check if request is a legacy view request
-     * @param RequestEvent $event
-     * @return bool
-     */
-    protected function isLegacyViewRoute(RequestEvent $event): bool
-    {
-        return $this->routeConverter->isLegacyViewRoute($event->getRequest());
-    }
-
-    /**
      * Check if it is legacy asset request
      * @param RequestEvent $event
      * @return bool
@@ -116,6 +106,16 @@ class LegacyRedirectListener
     protected function isLegacyApi(RequestEvent $event): bool
     {
         return $this->legacyApiRedirectHandler->isApiRequest($event->getRequest());
+    }
+
+    /**
+     * Check if request is a legacy view request
+     * @param RequestEvent $event
+     * @return bool
+     */
+    protected function isLegacyViewRoute(RequestEvent $event): bool
+    {
+        return $this->routeConverter->isLegacyViewRoute($event->getRequest());
     }
 
     /**

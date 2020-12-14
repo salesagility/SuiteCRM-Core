@@ -3,6 +3,7 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
+use App\Legacy\Data\AuditQueryingTrait;
 use App\Legacy\LegacyHandler;
 use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
@@ -13,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Opportunity;
 use SugarBean;
-use App\Legacy\Data\AuditQueryingTrait;
 
 class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -124,6 +124,18 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
     }
 
     /**
+     * @param $id
+     * @return Opportunity
+     */
+    protected function getOpportunity($id): Opportunity
+    {
+        /** @var Opportunity $opp */
+        $opp = BeanFactory::getBean('Opportunities', $id);
+
+        return $opp;
+    }
+
+    /**
      * @param SugarBean $bean
      * @return array
      * @throws DBALException
@@ -140,17 +152,5 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
     protected function inClosedStatus(Opportunity $opp): bool
     {
         return $opp->sales_stage === 'Closed Won' || $opp->sales_stage === 'Closed Lost';
-    }
-
-    /**
-     * @param $id
-     * @return Opportunity
-     */
-    protected function getOpportunity($id): Opportunity
-    {
-        /** @var Opportunity $opp */
-        $opp = BeanFactory::getBean('Opportunities', $id);
-
-        return $opp;
     }
 }

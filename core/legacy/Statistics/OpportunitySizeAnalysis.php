@@ -34,14 +34,6 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
     private $queryHandler;
 
     /**
-     * @inheritDoc
-     */
-    public function getKey(): string
-    {
-        return self::KEY;
-    }
-
-    /**
      * LeadDaysOpen constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -63,6 +55,14 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $moduleNameMapper);
         $this->queryHandler = $preparedStatementHandler;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getKey(): string
+    {
+        return self::KEY;
     }
 
     /**
@@ -120,11 +120,76 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
     }
 
     /**
-     * @inheritDoc
+     * @return Statistic
      */
-    public function setLogger(LoggerInterface $logger): void
+    protected function closeAndReturnEmpty(): Statistic
     {
-        $this->logger = $logger;
+        $statistic = $this->getEmptyResponse(self::KEY);
+        $this->close();
+
+        return $statistic;
+    }
+
+    /**
+     * @param $id
+     * @return Opportunity|null
+     */
+    protected function getOpportunity($id): ?Opportunity
+    {
+        /** @var Opportunity $bean */
+        $bean = BeanFactory::getBean('Opportunities', $id);
+
+        if ($bean === false) {
+            $bean = null;
+        }
+
+        return $bean;
+    }
+
+    /**
+     * @param Opportunity|null $bean
+     * @return array|String[]
+     */
+    protected function getQuerySalesStages(?Opportunity $bean): array
+    {
+        if ($bean === null) {
+            return [];
+        }
+
+        $closedStatuses = $this->getClosedSalesStages();
+        $openStatuses = $this->getOpenSalesStages();
+
+        $queryStatuses = $openStatuses;
+        if (in_array($bean->sales_stage, $closedStatuses, true)) {
+            $queryStatuses = $closedStatuses;
+        }
+
+        return $queryStatuses;
+    }
+
+    /**
+     * @return String[]
+     */
+    protected function getClosedSalesStages(): array
+    {
+        return ['Closed Won', 'Closed Lost'];
+    }
+
+    /**
+     * @return String[]
+     */
+    protected function getOpenSalesStages(): array
+    {
+        return [
+            'Prospecting',
+            'Qualification',
+            'Needs Analysis',
+            'Value Proposition',
+            'Id. Decision Makers',
+            'Perception Analysis',
+            'Proposal/Price Quote',
+            'Negotiation/Review'
+        ];
     }
 
     /**
@@ -181,75 +246,10 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
     }
 
     /**
-     * @return Statistic
+     * @inheritDoc
      */
-    protected function closeAndReturnEmpty(): Statistic
+    public function setLogger(LoggerInterface $logger): void
     {
-        $statistic = $this->getEmptyResponse(self::KEY);
-        $this->close();
-
-        return $statistic;
-    }
-
-    /**
-     * @return String[]
-     */
-    protected function getClosedSalesStages(): array
-    {
-        return ['Closed Won', 'Closed Lost'];
-    }
-
-    /**
-     * @return String[]
-     */
-    protected function getOpenSalesStages(): array
-    {
-        return [
-            'Prospecting',
-            'Qualification',
-            'Needs Analysis',
-            'Value Proposition',
-            'Id. Decision Makers',
-            'Perception Analysis',
-            'Proposal/Price Quote',
-            'Negotiation/Review'
-        ];
-    }
-
-    /**
-     * @param Opportunity|null $bean
-     * @return array|String[]
-     */
-    protected function getQuerySalesStages(?Opportunity $bean): array
-    {
-        if ($bean === null) {
-            return [];
-        }
-
-        $closedStatuses = $this->getClosedSalesStages();
-        $openStatuses = $this->getOpenSalesStages();
-
-        $queryStatuses = $openStatuses;
-        if (in_array($bean->sales_stage, $closedStatuses, true)) {
-            $queryStatuses = $closedStatuses;
-        }
-
-        return $queryStatuses;
-    }
-
-    /**
-     * @param $id
-     * @return Opportunity|null
-     */
-    protected function getOpportunity($id): ?Opportunity
-    {
-        /** @var Opportunity $bean */
-        $bean = BeanFactory::getBean('Opportunities', $id);
-
-        if ($bean === false) {
-            $bean = null;
-        }
-
-        return $bean;
+        $this->logger = $logger;
     }
 }

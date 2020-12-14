@@ -8,10 +8,10 @@ use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\GraphQl\Resolver\Stage\SecurityStageInterface;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
+use App\Legacy\Authentication;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\ResolveInfo;
 use LogicException;
-use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

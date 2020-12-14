@@ -2,14 +2,14 @@
 
 namespace App\Legacy\Data\PresetDataHandlers;
 
-use App\Service\ModuleNameMapperInterface;
-use BeanFactory;
-use SubpanelDataPort;
 use App\Legacy\Data\ListData;
 use App\Legacy\Data\PresetListDataHandlerInterface;
 use App\Legacy\Data\RecordMapper;
 use App\Legacy\LegacyHandler;
 use App\Legacy\LegacyScopeState;
+use App\Service\ModuleNameMapperInterface;
+use BeanFactory;
+use SubpanelDataPort;
 
 class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandlerInterface
 {

@@ -3,6 +3,8 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
@@ -10,8 +12,6 @@ use DateFormatService;
 use DateTime;
 use Exception;
 use Task;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 
 /**
  * Class DaysUntilDueTask

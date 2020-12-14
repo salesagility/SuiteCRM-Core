@@ -2,18 +2,18 @@
 
 namespace App\Legacy\Statistics;
 
+use aCase;
 use App\Entity\Statistic;
+use App\Legacy\Data\AuditQueryingTrait;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use aCase;
 use SugarBean;
-use App\Legacy\Data\AuditQueryingTrait;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 
 class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -123,25 +123,6 @@ class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
     }
 
     /**
-     * @param SugarBean $bean
-     * @return array
-     * @throws DBALException
-     */
-    protected function getAuditInfo(SugarBean $bean): array
-    {
-        return $this->queryAuditInfo($this->entityManager, $bean, 'state');
-    }
-
-
-    /**
-     * @param aCase $case
-     * @return bool
-     */
-    protected function inClosedState(aCase $case): bool
-    {
-        return $case->state === 'Closed';
-    }
-    /**
      * @param string $id
      * @return aCase
      */
@@ -152,6 +133,25 @@ class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
         $case = BeanFactory::getBean('Cases', $id);
 
         return $case;
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @return array
+     * @throws DBALException
+     */
+    protected function getAuditInfo(SugarBean $bean): array
+    {
+        return $this->queryAuditInfo($this->entityManager, $bean, 'state');
+    }
+
+    /**
+     * @param aCase $case
+     * @return bool
+     */
+    protected function inClosedState(aCase $case): bool
+    {
+        return $case->state === 'Closed';
     }
 
     /**

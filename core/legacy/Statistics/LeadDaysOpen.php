@@ -3,6 +3,9 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
+use App\Legacy\Data\AuditQueryingTrait;
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
@@ -11,9 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Lead;
 use SugarBean;
-use App\Legacy\Data\AuditQueryingTrait;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 
 class LeadDaysOpen extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -120,25 +120,6 @@ class LeadDaysOpen extends LegacyHandler implements StatisticsProviderInterface
     }
 
     /**
-     * @param SugarBean $bean
-     * @return array
-     * @throws DBALException
-     */
-    protected function getAuditInfo(SugarBean $bean): array
-    {
-        return $this->queryAuditInfo($this->entityManager, $bean, 'status');
-    }
-
-    /**
-     * @param Lead $lead
-     * @return bool
-     */
-    protected function inClosedStatus(Lead $lead): bool
-    {
-        return $lead->status === 'Converted' || $lead->status === 'Dead';
-    }
-
-    /**
      * @param string $id
      * @return Lead
      */
@@ -151,10 +132,29 @@ class LeadDaysOpen extends LegacyHandler implements StatisticsProviderInterface
     }
 
     /**
+     * @param SugarBean $bean
+     * @return array
+     * @throws DBALException
+     */
+    protected function getAuditInfo(SugarBean $bean): array
+    {
+        return $this->queryAuditInfo($this->entityManager, $bean, 'status');
+    }
+
+    /**
      * @return string
      */
     protected function getRecycledStatus(): string
     {
         return 'Recycled';
+    }
+
+    /**
+     * @param Lead $lead
+     * @return bool
+     */
+    protected function inClosedStatus(Lead $lead): bool
+    {
+        return $lead->status === 'Converted' || $lead->status === 'Dead';
     }
 }

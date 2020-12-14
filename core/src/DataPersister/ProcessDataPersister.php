@@ -66,18 +66,6 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
-     * Handler process deletion request
-     * @param $data
-     * @param array $context
-     * @throws InvalidResourceException
-     */
-    public function remove($data, array $context = [])
-    {
-        // Deleting processes is not supported
-        throw new InvalidResourceException();
-    }
-
-    /**
      * Check if user has the needed role
      * @param ProcessHandlerInterface $processHandler
      */
@@ -92,5 +80,17 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
         }
 
         throw new AccessDeniedException();
+    }
+
+    /**
+     * Handler process deletion request
+     * @param $data
+     * @param array $context
+     * @throws InvalidResourceException
+     */
+    public function remove($data, array $context = [])
+    {
+        // Deleting processes is not supported
+        throw new InvalidResourceException();
     }
 }

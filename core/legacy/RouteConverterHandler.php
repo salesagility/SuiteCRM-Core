@@ -21,18 +21,15 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
      * @var ModuleNameMapperInterface
      */
     protected $moduleNameMapper;
-
-    /**
-     * @var ActionNameMapperInterface
-     */
-    private $actionNameMapper;
-
-
     /**
      * Lazy initialized mapper
      * @var RouteConverter
      */
     protected $converter;
+    /**
+     * @var ActionNameMapperInterface
+     */
+    private $actionNameMapper;
 
     /**
      * SystemConfigHandler constructor.
@@ -67,6 +64,30 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
     }
 
     /**
+     * Check if the given $request route is a Legacy route
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function isLegacyRoute(Request $request): bool
+    {
+        if ($this->isLegacyViewRoute($request)) {
+            return true;
+        }
+
+        if ($request->getPathInfo() !== '/') {
+            return false;
+        }
+
+        $valid = false;
+        $valid |= !empty($request->get('module'));
+        $valid |= !empty($request->get('action'));
+        $valid |= !empty($request->get('entryPoint'));
+
+        return $valid;
+    }
+
+    /**
      * Check if the given $request route can be converted
      *
      * @param Request $request
@@ -94,27 +115,16 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
     }
 
     /**
-     * Check if the given $request route is a Legacy route
+     * Convert given $uri route
      *
-     * @param Request $request
-     * @return bool
+     * @param string $uri
+     * @return string
      */
-    public function isLegacyRoute(Request $request): bool
+    public function convertUri(string $uri): string
     {
-        if ($this->isLegacyViewRoute($request)) {
-            return true;
-        }
+        $request = Request::create($uri);
 
-        if ($request->getPathInfo() !== '/') {
-            return false;
-        }
-
-        $valid = false;
-        $valid |= !empty($request->get('module'));
-        $valid |= !empty($request->get('action'));
-        $valid |= !empty($request->get('entryPoint'));
-
-        return $valid;
+        return $this->convert($request);
     }
 
     /**
@@ -150,16 +160,21 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
     }
 
     /**
-     * Convert given $uri route
-     *
-     * @param string $uri
-     * @return string
+     * Get mapper. Initialize it if needed
+     * @return RouteConverter
      */
-    public function convertUri(string $uri): string
+    protected function getConverter(): RouteConverter
     {
-        $request = Request::create($uri);
+        if ($this->converter !== null) {
+            return $this->converter;
+        }
 
-        return $this->convert($request);
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/RouteConverter.php';
+
+        $this->converter = new RouteConverter();
+
+        return $this->converter;
     }
 
     /**
@@ -208,23 +223,5 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
         $this->close();
 
         return $result;
-    }
-
-    /**
-     * Get mapper. Initialize it if needed
-     * @return RouteConverter
-     */
-    protected function getConverter(): RouteConverter
-    {
-        if ($this->converter !== null) {
-            return $this->converter;
-        }
-
-        /* @noinspection PhpIncludeInspection */
-        require_once 'include/portability/RouteConverter.php';
-
-        $this->converter = new RouteConverter();
-
-        return $this->converter;
     }
 }

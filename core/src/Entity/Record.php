@@ -60,6 +60,19 @@ class Record
     protected $attributes;
 
     /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'module' => $this->getModule(),
+            'type' => $this->getType(),
+            'attributes' => $this->getAttributes()
+        ];
+    }
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
@@ -73,25 +86,6 @@ class Record
     public function setId(?string $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     * @return Record
-     */
-    public function setType(?string $type): Record
-    {
-        $this->type = $type;
-
-        return $this;
     }
 
     /**
@@ -114,6 +108,25 @@ class Record
     }
 
     /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Record
+     */
+    public function setType(?string $type): Record
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * Get record attributes
      * @return array|null
      */
@@ -129,18 +142,5 @@ class Record
     public function setAttributes(?array $attributes): void
     {
         $this->attributes = $attributes;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'module' => $this->getModule(),
-            'type' => $this->getType(),
-            'attributes' => $this->getAttributes()
-        ];
     }
 }

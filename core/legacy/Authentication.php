@@ -61,6 +61,15 @@ class Authentication extends LegacyHandler
     }
 
     /**
+     * Get auth controller
+     * @return AuthenticationController
+     */
+    protected function getAuthenticationController(): AuthenticationController
+    {
+        return new AuthenticationController();
+    }
+
+    /**
      * Legacy logout
      */
     public function logout(): void
@@ -73,7 +82,6 @@ class Authentication extends LegacyHandler
 
         $this->close();
     }
-
 
     /**
      * Check if legacy suite session is active
@@ -91,14 +99,5 @@ class Authentication extends LegacyHandler
         $this->close();
 
         return $result;
-    }
-
-    /**
-     * Get auth controller
-     * @return AuthenticationController
-     */
-    protected function getAuthenticationController(): AuthenticationController
-    {
-        return new AuthenticationController();
     }
 }

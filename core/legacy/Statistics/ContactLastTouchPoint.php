@@ -4,9 +4,9 @@ namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
-use App\Legacy\LegacyScopeState;
 
 /**
  * Class ContactLastTouchPoint

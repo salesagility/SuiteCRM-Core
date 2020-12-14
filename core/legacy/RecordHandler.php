@@ -73,6 +73,92 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     }
 
     /**
+     * @param string $module
+     * @param string $id
+     * @return SugarBean
+     */
+    protected function retrieveRecord(string $module, string $id): SugarBean
+    {
+        $moduleName = $this->validateModuleName($module);
+
+        if (empty($id)) {
+            return $this->newBeanSafe($moduleName);
+        }
+
+        BeanFactory::unregisterBean($moduleName, $id);
+
+        /** @var SugarBean $bean */
+        $bean = BeanFactory::getBean($moduleName, $id, ['encode' => false]);
+
+        if (!$bean) {
+            $bean = $this->newBeanSafe($moduleName);
+        }
+
+        return $bean;
+    }
+
+    /**
+     * @param $moduleName
+     * @return string
+     */
+    private function validateModuleName($moduleName): string
+    {
+        $moduleName = $this->moduleNameMapper->toLegacy($moduleName);
+
+        if (!$this->moduleNameMapper->isValidModule($moduleName)) {
+            throw new InvalidArgumentException('Invalid module name: ' . $moduleName);
+        }
+
+        return $moduleName;
+    }
+
+    /**
+     * @param string $module
+     *
+     * @return SugarBean
+     * @throws InvalidArgumentException When the module is invalid.
+     */
+    private function newBeanSafe(string $module): SugarBean
+    {
+        $bean = BeanFactory::newBean($module);
+
+        if (!$bean instanceof SugarBean) {
+            throw new InvalidArgumentException(sprintf('Module %s does not exist', $module));
+        }
+
+        return $bean;
+    }
+
+    /**
+     * @param string $id
+     * @param string $module
+     * @param SugarBean $bean
+     * @return Record
+     */
+    protected function buildRecord(string $id, string $module, SugarBean $bean): Record
+    {
+        $record = new Record();
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
+        $mapper = new ApiBeanMapper();
+        $mappedBean = $mapper->toArray($bean);
+
+
+        if ($bean->ACLAccess('edit')) {
+            $mappedBean['editable'] = true;
+        } else {
+            $mappedBean['editable'] = false;
+        }
+
+        $record->setId($id);
+        $record->setModule($module);
+        $record->setType($bean->object_name);
+        $record->setAttributes($mappedBean);
+
+        return $record;
+    }
+
+    /**
      * @param Record $record
      * @return Record
      */
@@ -147,47 +233,6 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
     /**
      * @param SugarBean $bean
-     */
-    public function save(SugarBean $bean)
-    {
-        $bean->save($bean->notify_on_save ?? false);
-    }
-
-    /**
-     * @param string $module
-     *
-     * @return SugarBean
-     * @throws InvalidArgumentException When the module is invalid.
-     */
-    private function newBeanSafe(string $module): SugarBean
-    {
-        $bean = BeanFactory::newBean($module);
-
-        if (!$bean instanceof SugarBean) {
-            throw new InvalidArgumentException(sprintf('Module %s does not exist', $module));
-        }
-
-        return $bean;
-    }
-
-
-    /**
-     * @param $moduleName
-     * @return string
-     */
-    private function validateModuleName($moduleName): string
-    {
-        $moduleName = $this->moduleNameMapper->toLegacy($moduleName);
-
-        if (!$this->moduleNameMapper->isValidModule($moduleName)) {
-            throw new InvalidArgumentException('Invalid module name: ' . $moduleName);
-        }
-
-        return $moduleName;
-    }
-
-    /**
-     * @param SugarBean $bean
      * @param array $values
      * @return bool
      */
@@ -202,56 +247,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     }
 
     /**
-     * @param string $module
-     * @param string $id
-     * @return SugarBean
-     */
-    protected function retrieveRecord(string $module, string $id): SugarBean
-    {
-        $moduleName = $this->validateModuleName($module);
-
-        if (empty($id)) {
-            return $this->newBeanSafe($moduleName);
-        }
-
-        BeanFactory::unregisterBean($moduleName, $id);
-
-        /** @var SugarBean $bean */
-        $bean = BeanFactory::getBean($moduleName, $id, ['encode' => false]);
-
-        if (!$bean) {
-            $bean = $this->newBeanSafe($moduleName);
-        }
-
-        return $bean;
-    }
-
-    /**
-     * @param string $id
-     * @param string $module
      * @param SugarBean $bean
-     * @return Record
      */
-    protected function buildRecord(string $id, string $module, SugarBean $bean): Record
+    public function save(SugarBean $bean)
     {
-        $record = new Record();
-        /* @noinspection PhpIncludeInspection */
-        require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
-        $mapper = new ApiBeanMapper();
-        $mappedBean = $mapper->toArray($bean);
-
-
-        if ($bean->ACLAccess('edit')) {
-            $mappedBean['editable'] = true;
-        } else {
-            $mappedBean['editable'] = false;
-        }
-
-        $record->setId($id);
-        $record->setModule($module);
-        $record->setType($bean->object_name);
-        $record->setAttributes($mappedBean);
-
-        return $record;
+        $bean->save($bean->notify_on_save ?? false);
     }
 }

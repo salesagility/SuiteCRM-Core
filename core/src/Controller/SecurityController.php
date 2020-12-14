@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Legacy\Authentication;
 use Exception;
 use RuntimeException;
-use App\Legacy\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

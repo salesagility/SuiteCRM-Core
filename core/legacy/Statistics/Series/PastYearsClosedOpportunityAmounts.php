@@ -97,18 +97,6 @@ class PastYearsClosedOpportunityAmounts extends SubpanelDataQueryHandler impleme
     }
 
     /**
-     * @return int
-     * @throws Exception
-     */
-    protected function getNextYear(): string
-    {
-        $now = new DateTime();
-        $now->ADD(new DateInterval('P1Y'));
-
-        return $now->format('Y');
-    }
-
-    /**
      * @param int $years
      * @return string[]
      * @throws Exception
@@ -123,5 +111,17 @@ class PastYearsClosedOpportunityAmounts extends SubpanelDataQueryHandler impleme
         }
 
         return $yearsList;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    protected function getNextYear(): string
+    {
+        $now = new DateTime();
+        $now->ADD(new DateInterval('P1Y'));
+
+        return $now->format('Y');
     }
 }

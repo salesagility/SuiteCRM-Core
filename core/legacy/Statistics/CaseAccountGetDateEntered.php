@@ -3,9 +3,9 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
+use App\Legacy\LegacyHandler;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
-use App\Legacy\LegacyHandler;
 use DateTime;
 use Exception;
 
@@ -64,16 +64,6 @@ class CaseAccountGetDateEntered extends LegacyHandler implements StatisticsProvi
     }
 
     /**
-     * @param string $accountId
-     * @param string $module
-     * @return string
-     */
-    protected function getAccountDateEntered(string $accountId, string $module): string
-    {
-        return BeanFactory::getBean($module, $accountId)->date_entered;
-    }
-
-    /**
      * @param string $id
      * @return string
      * @noinspection PhpPossiblePolymorphicInvocationInspection
@@ -86,5 +76,15 @@ class CaseAccountGetDateEntered extends LegacyHandler implements StatisticsProvi
         }
 
         return $case->account_id;
+    }
+
+    /**
+     * @param string $accountId
+     * @param string $module
+     * @return string
+     */
+    protected function getAccountDateEntered(string $accountId, string $module): string
+    {
+        return BeanFactory::getBean($module, $accountId)->date_entered;
     }
 }

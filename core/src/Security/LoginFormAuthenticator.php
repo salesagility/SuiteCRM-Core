@@ -2,10 +2,10 @@
 
 namespace App\Security;
 
+use App\Legacy\Authentication;
 use App\Security\Exception\UserNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use App\Legacy\Authentication;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -203,45 +203,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     }
 
     /**
-     * @param Request $request
-     * @param AuthenticationException $exception
-     * @return JsonResponse|RedirectResponse
-     */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-        ];
-
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getLoginUrl(): string
-    {
-        return $this->router->generate('app_login');
-    }
-
-    /**
-     * @return bool
-     */
-    public function supportsRememberMe(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Securely fetch an already authenticated user
-     * @return UserInterface|null
-     */
-    private function getAuthedUser(): ?UserInterface
-    {
-        return $this->security->getUser();
-    }
-
-    /**
      * @return array
      * @noinspection PhpPossiblePolymorphicInvocationInspection
      */
@@ -258,5 +219,44 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $lastName = $user->getLastName();
 
         return ['id' => $id, 'firstName' => $firstName, 'lastName' => $lastName];
+    }
+
+    /**
+     * Securely fetch an already authenticated user
+     * @return UserInterface|null
+     */
+    private function getAuthedUser(): ?UserInterface
+    {
+        return $this->security->getUser();
+    }
+
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse|RedirectResponse
+     */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    {
+        $data = [
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function supportsRememberMe(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLoginUrl(): string
+    {
+        return $this->router->generate('app_login');
     }
 }

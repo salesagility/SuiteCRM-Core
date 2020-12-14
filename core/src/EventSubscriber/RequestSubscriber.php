@@ -19,17 +19,6 @@ class RequestSubscriber implements EventSubscriberInterface
         $this->session = $session;
     }
 
-    public function onKernelRequest(RequestEvent $event): void
-    {
-        $request = $event->getRequest();
-        if (!$event->isMasterRequest() || $request->isXmlHttpRequest()) {
-            return;
-        }
-
-        $this->saveTargetPath($this->session, 'main', $request->getUri());
-    }
-
-
     /**
      * @return array
      */
@@ -38,5 +27,15 @@ class RequestSubscriber implements EventSubscriberInterface
         return [
             KernelEvents::REQUEST => ['onKernelRequest']
         ];
+    }
+
+    public function onKernelRequest(RequestEvent $event): void
+    {
+        $request = $event->getRequest();
+        if (!$event->isMasterRequest() || $request->isXmlHttpRequest()) {
+            return;
+        }
+
+        $this->saveTargetPath($this->session, 'main', $request->getUri());
     }
 }

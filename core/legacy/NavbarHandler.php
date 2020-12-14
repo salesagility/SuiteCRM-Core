@@ -108,6 +108,31 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     }
 
     /**
+     * Get list of modules the user has access to
+     * @return array
+     */
+    protected function getAccessibleModulesList(): array
+    {
+        return $this->moduleRegistry->getUserAccessibleModules();
+    }
+
+    /**
+     * Map legacy names to front end names
+     * @param array $legacyTabNames
+     * @return array
+     */
+    protected function createFrontendNameMap(array $legacyTabNames): array
+    {
+        $map = [];
+
+        foreach ($legacyTabNames as $legacyTabName) {
+            $map[$legacyTabName] = $this->moduleNameMapper->toFrontEnd($legacyTabName);
+        }
+
+        return $map;
+    }
+
+    /**
      * Fetch modules that are configured to display
      * @return array
      * Based on @see SugarView::displayHeader
@@ -117,15 +142,6 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         global $current_user;
 
         return query_module_access_list($current_user);
-    }
-
-    /**
-     * Get list of modules the user has access to
-     * @return array
-     */
-    protected function getAccessibleModulesList(): array
-    {
-        return $this->moduleRegistry->getUserAccessibleModules();
     }
 
     /**
@@ -174,104 +190,6 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected function getTabStructure(array $modules): array
     {
         return (new GroupedTabStructure())->get_tab_structure($modules, '', false, true);
-    }
-
-    /**
-     * Fetch the user action menu
-     */
-    protected function fetchUserActionMenu(): array
-    {
-        global $current_user;
-
-        $actions['LBL_PROFILE'] = [
-            'name' => 'profile',
-            'labelKey' => 'LBL_PROFILE',
-            'url' => 'index.php?module=Users&action=EditView&record=' . $current_user->id,
-            'icon' => '',
-        ];
-
-        // Order matters
-        $actionLabelMap = [
-            'LBL_PROFILE' => 'profile',
-            'LBL_EMPLOYEES' => 'employees',
-            'LBL_TRAINING' => 'training',
-            'LBL_ADMIN' => 'admin',
-            'LNK_ABOUT' => 'about',
-            'LBL_LOGOUT' => 'logout',
-        ];
-
-        $actionKeys = array_keys($actionLabelMap);
-
-        foreach ($this->getGlobalControlLinks() as $key => $value) {
-            foreach ($value as $linkAttribute => $attributeValue) {
-                // get the main link info
-                if ($linkAttribute === 'linkinfo') {
-
-                    $labelKey = key($attributeValue);
-                    $name = $labelKey;
-                    if (!empty($actionLabelMap[$labelKey])) {
-                        $name = $actionLabelMap[$labelKey];
-                    } else {
-                        $actionKeys[] = $labelKey;
-                    }
-
-                    $actions[$labelKey] = [
-                        'name' => $name,
-                        'labelKey' => $labelKey,
-                        'url' => current($attributeValue),
-                        'icon' => '',
-                    ];
-                }
-            }
-        }
-
-        $userActionMenu = [];
-
-        foreach ($actionKeys as $key) {
-            if (isset($actions[$key])) {
-                $userActionMenu[] = $actions[$key];
-            }
-        }
-
-        return array_values($userActionMenu);
-    }
-
-    /**
-     * Get max number of tabs
-     * @return int
-     * Based on @link SugarView
-     */
-    protected function getMaxTabs(): int
-    {
-        global $current_user;
-
-        $maxTabs = $current_user->getPreference('max_tabs');
-
-        // If the max_tabs isn't set incorrectly, set it within the range, to the default max sub tabs size
-        if (!isset($maxTabs) || $maxTabs <= 0 || $maxTabs > 10) {
-            // We have a default value. Use it
-            if (isset($GLOBALS['sugar_config']['default_max_tabs'])) {
-                $maxTabs = $GLOBALS['sugar_config']['default_max_tabs'];
-            } else {
-                $maxTabs = 8;
-            }
-        }
-
-        return $maxTabs;
-    }
-
-    /**
-     * Get global control links from legacy
-     * @return array
-     */
-    protected function getGlobalControlLinks(): array
-    {
-        $global_control_links = [];
-
-        /* @noinspection PhpIncludeInspection */
-        require 'include/globalControlLinks.php';
-
-        return $global_control_links;
     }
 
     /**
@@ -371,18 +289,100 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     }
 
     /**
-     * Map legacy names to front end names
-     * @param array $legacyTabNames
-     * @return array
+     * Fetch the user action menu
      */
-    protected function createFrontendNameMap(array $legacyTabNames): array
+    protected function fetchUserActionMenu(): array
     {
-        $map = [];
+        global $current_user;
 
-        foreach ($legacyTabNames as $legacyTabName) {
-            $map[$legacyTabName] = $this->moduleNameMapper->toFrontEnd($legacyTabName);
+        $actions['LBL_PROFILE'] = [
+            'name' => 'profile',
+            'labelKey' => 'LBL_PROFILE',
+            'url' => 'index.php?module=Users&action=EditView&record=' . $current_user->id,
+            'icon' => '',
+        ];
+
+        // Order matters
+        $actionLabelMap = [
+            'LBL_PROFILE' => 'profile',
+            'LBL_EMPLOYEES' => 'employees',
+            'LBL_TRAINING' => 'training',
+            'LBL_ADMIN' => 'admin',
+            'LNK_ABOUT' => 'about',
+            'LBL_LOGOUT' => 'logout',
+        ];
+
+        $actionKeys = array_keys($actionLabelMap);
+
+        foreach ($this->getGlobalControlLinks() as $key => $value) {
+            foreach ($value as $linkAttribute => $attributeValue) {
+                // get the main link info
+                if ($linkAttribute === 'linkinfo') {
+
+                    $labelKey = key($attributeValue);
+                    $name = $labelKey;
+                    if (!empty($actionLabelMap[$labelKey])) {
+                        $name = $actionLabelMap[$labelKey];
+                    } else {
+                        $actionKeys[] = $labelKey;
+                    }
+
+                    $actions[$labelKey] = [
+                        'name' => $name,
+                        'labelKey' => $labelKey,
+                        'url' => current($attributeValue),
+                        'icon' => '',
+                    ];
+                }
+            }
         }
 
-        return $map;
+        $userActionMenu = [];
+
+        foreach ($actionKeys as $key) {
+            if (isset($actions[$key])) {
+                $userActionMenu[] = $actions[$key];
+            }
+        }
+
+        return array_values($userActionMenu);
+    }
+
+    /**
+     * Get global control links from legacy
+     * @return array
+     */
+    protected function getGlobalControlLinks(): array
+    {
+        $global_control_links = [];
+
+        /* @noinspection PhpIncludeInspection */
+        require 'include/globalControlLinks.php';
+
+        return $global_control_links;
+    }
+
+    /**
+     * Get max number of tabs
+     * @return int
+     * Based on @link SugarView
+     */
+    protected function getMaxTabs(): int
+    {
+        global $current_user;
+
+        $maxTabs = $current_user->getPreference('max_tabs');
+
+        // If the max_tabs isn't set incorrectly, set it within the range, to the default max sub tabs size
+        if (!isset($maxTabs) || $maxTabs <= 0 || $maxTabs > 10) {
+            // We have a default value. Use it
+            if (isset($GLOBALS['sugar_config']['default_max_tabs'])) {
+                $maxTabs = $GLOBALS['sugar_config']['default_max_tabs'];
+            } else {
+                $maxTabs = 8;
+            }
+        }
+
+        return $maxTabs;
     }
 }

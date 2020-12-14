@@ -69,6 +69,23 @@ class ListDataHandler implements ListDataHandlerInterface
     }
 
     /**
+     * @param string $module
+     *
+     * @return SugarBean
+     * @throws InvalidArgumentException When the module is invalid.
+     */
+    private function getBean(string $module): SugarBean
+    {
+        $bean = BeanFactory::newBean($module);
+
+        if (!$bean instanceof SugarBean) {
+            throw new InvalidArgumentException(sprintf('Module %s does not exist', $module));
+        }
+
+        return $bean;
+    }
+
+    /**
      * @param string $type
      * @param SugarBean $bean
      * @param int $offset
@@ -99,6 +116,20 @@ class ListDataHandler implements ListDataHandlerInterface
         $listData->setOffsets($resultData['pageData']['offsets'] ?? []);
 
         return $listData;
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @return ViewList
+     */
+    protected function getLegacyListView(SugarBean $bean): ViewList
+    {
+        $legacyListView = new ViewList();
+        $legacyListView->bean = $bean;
+        $legacyListView->module = $bean->module_name;
+        $legacyListView->preDisplay();
+
+        return $legacyListView;
     }
 
     /**
@@ -149,37 +180,6 @@ class ListDataHandler implements ListDataHandlerInterface
     }
 
     /**
-     * @param SugarBean $bean
-     * @param SearchForm $searchForm
-     * @return string
-     */
-    protected function buildFilterClause(SugarBean $bean, SearchForm $searchForm): string
-    {
-        $where_clauses = $searchForm->generateSearchWhere(true, $bean->module_dir);
-
-        $where = '';
-        if (count($where_clauses) > 0) {
-            $where = '(' . implode(' ) AND ( ', $where_clauses) . ')';
-        }
-
-        return $where;
-    }
-
-    /**
-     * @param SugarBean $bean
-     * @return ViewList
-     */
-    protected function getLegacyListView(SugarBean $bean): ViewList
-    {
-        $legacyListView = new ViewList();
-        $legacyListView->bean = $bean;
-        $legacyListView->module = $bean->module_name;
-        $legacyListView->preDisplay();
-
-        return $legacyListView;
-    }
-
-    /**
      * Get Legacy sorting parameters
      * @param array $criteria
      * @return array
@@ -200,21 +200,20 @@ class ListDataHandler implements ListDataHandlerInterface
         return $params;
     }
 
-
     /**
-     * @param string $module
-     *
-     * @return SugarBean
-     * @throws InvalidArgumentException When the module is invalid.
+     * @param SugarBean $bean
+     * @param SearchForm $searchForm
+     * @return string
      */
-    private function getBean(string $module): SugarBean
+    protected function buildFilterClause(SugarBean $bean, SearchForm $searchForm): string
     {
-        $bean = BeanFactory::newBean($module);
+        $where_clauses = $searchForm->generateSearchWhere(true, $bean->module_dir);
 
-        if (!$bean instanceof SugarBean) {
-            throw new InvalidArgumentException(sprintf('Module %s does not exist', $module));
+        $where = '';
+        if (count($where_clauses) > 0) {
+            $where = '(' . implode(' ) AND ( ', $where_clauses) . ')';
         }
 
-        return $bean;
+        return $where;
     }
 }

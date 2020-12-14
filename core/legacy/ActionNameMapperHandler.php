@@ -39,6 +39,24 @@ class ActionNameMapperHandler extends LegacyHandler implements ActionNameMapperI
     }
 
     /**
+     * Get mapper. Initialize it if needed
+     * @return ActionNameMapper
+     */
+    protected function getMapper(): ActionNameMapper
+    {
+        if ($this->mapper !== null) {
+            return $this->mapper;
+        }
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/ActionNameMapper.php';
+
+        $this->mapper = new ActionNameMapper();
+
+        return $this->mapper;
+    }
+
+    /**
      * @inheritDoc
      */
     public function toLegacy(string $action): string
@@ -84,23 +102,5 @@ class ActionNameMapperHandler extends LegacyHandler implements ActionNameMapperI
         $this->close();
 
         return $result;
-    }
-
-    /**
-     * Get mapper. Initialize it if needed
-     * @return ActionNameMapper
-     */
-    protected function getMapper(): ActionNameMapper
-    {
-        if ($this->mapper !== null) {
-            return $this->mapper;
-        }
-
-        /* @noinspection PhpIncludeInspection */
-        require_once 'include/portability/ActionNameMapper.php';
-
-        $this->mapper = new ActionNameMapper();
-
-        return $this->mapper;
     }
 }

@@ -79,6 +79,59 @@ trait StatisticsHandlingTrait
     }
 
     /**
+     * @param SeriesResult $result
+     * @return array
+     */
+    protected function toSeriesArray(SeriesResult $result): array
+    {
+        $seriesArray = [];
+        if (isset($result->singleSeries)) {
+            $seriesArray['singleSeries'] = [];
+            foreach ($result->singleSeries as $singleSeriesEntry) {
+                $seriesArray['singleSeries'][] = $this->buildSeriesEntry($singleSeriesEntry);
+            }
+        }
+
+        if (isset($result->multiSeries)) {
+            $seriesArray['multiSeries'] = [];
+            foreach ($result->multiSeries as $multiSeriesEntry) {
+                $multiSeriesArray = [];
+                $multiSeriesArray['name'] = $multiSeriesEntry->name;
+                $multiSeriesArray['series'] = [];
+
+                foreach ($multiSeriesEntry->series as $singleSeriesEntry) {
+
+                    $multiSeriesArray['series'][] = $this->buildSeriesEntry($singleSeriesEntry);
+
+
+                }
+                $seriesArray['multiSeries'][] = $multiSeriesArray;
+            }
+        }
+
+        return $seriesArray;
+    }
+
+    /**
+     * @param SeriesItem $singleSeriesEntry
+     * @return array
+     */
+    protected function buildSeriesEntry(SeriesItem $singleSeriesEntry): array
+    {
+        $keys = ['name', 'value', 'extra', 'min', 'max', 'label'];
+
+        $entry = [];
+
+        foreach ($keys as $key) {
+            if ($singleSeriesEntry->$key !== null) {
+                $entry[$key] = $singleSeriesEntry->$key;
+            }
+        }
+
+        return $entry;
+    }
+
+    /**
      * @param array $result
      * @param string $groupingField
      * @param string $nameField
@@ -130,41 +183,6 @@ trait StatisticsHandlingTrait
         }
 
         return $series;
-    }
-
-
-    /**
-     * @param SeriesResult $result
-     * @return array
-     */
-    protected function toSeriesArray(SeriesResult $result): array
-    {
-        $seriesArray = [];
-        if (isset($result->singleSeries)) {
-            $seriesArray['singleSeries'] = [];
-            foreach ($result->singleSeries as $singleSeriesEntry) {
-                $seriesArray['singleSeries'][] = $this->buildSeriesEntry($singleSeriesEntry);
-            }
-        }
-
-        if (isset($result->multiSeries)) {
-            $seriesArray['multiSeries'] = [];
-            foreach ($result->multiSeries as $multiSeriesEntry) {
-                $multiSeriesArray = [];
-                $multiSeriesArray['name'] = $multiSeriesEntry->name;
-                $multiSeriesArray['series'] = [];
-
-                foreach ($multiSeriesEntry->series as $singleSeriesEntry) {
-
-                    $multiSeriesArray['series'][] = $this->buildSeriesEntry($singleSeriesEntry);
-
-
-                }
-                $seriesArray['multiSeries'][] = $multiSeriesArray;
-            }
-        }
-
-        return $seriesArray;
     }
 
     /**
@@ -239,25 +257,6 @@ trait StatisticsHandlingTrait
         $id = $query['context']['id'] ?? '';
 
         return array($module, $id);
-    }
-
-    /**
-     * @param SeriesItem $singleSeriesEntry
-     * @return array
-     */
-    protected function buildSeriesEntry(SeriesItem $singleSeriesEntry): array
-    {
-        $keys = ['name', 'value', 'extra', 'min', 'max', 'label'];
-
-        $entry = [];
-
-        foreach ($keys as $key) {
-            if ($singleSeriesEntry->$key !== null) {
-                $entry[$key] = $singleSeriesEntry->$key;
-            }
-        }
-
-        return $entry;
     }
 
 }

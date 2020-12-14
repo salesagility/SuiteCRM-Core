@@ -81,26 +81,6 @@ class LegacySessionDenyAccessListener
     }
 
     /**
-     * @param RequestEvent $event
-     * @throws ResourceClassNotFoundException
-     */
-    public function onSecurity(RequestEvent $event): void
-    {
-        $this->decorated->onSecurity($event);
-        $this->checkLegacySession($event->getRequest(), 'security');
-    }
-
-    /**
-     * @param RequestEvent $event
-     * @throws ResourceClassNotFoundException
-     */
-    public function onSecurityPostDenormalize(RequestEvent $event): void
-    {
-        $this->decorated->onSecurityPostDenormalize($event);
-        $this->checkLegacySession($event->getRequest(), 'security_post_denormalize');
-    }
-
-    /**
      * @param Request $request
      * @param string $attribute
      * @param array $extraVariables
@@ -135,5 +115,25 @@ class LegacySessionDenyAccessListener
             $this->session->invalidate();
             throw new AccessDeniedException();
         }
+    }
+
+    /**
+     * @param RequestEvent $event
+     * @throws ResourceClassNotFoundException
+     */
+    public function onSecurity(RequestEvent $event): void
+    {
+        $this->decorated->onSecurity($event);
+        $this->checkLegacySession($event->getRequest(), 'security');
+    }
+
+    /**
+     * @param RequestEvent $event
+     * @throws ResourceClassNotFoundException
+     */
+    public function onSecurityPostDenormalize(RequestEvent $event): void
+    {
+        $this->decorated->onSecurityPostDenormalize($event);
+        $this->checkLegacySession($event->getRequest(), 'security_post_denormalize');
     }
 }

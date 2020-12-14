@@ -16,7 +16,7 @@ class LegacyAssetRedirectHandler extends LegacyRedirectHandler
      * @param array $legacyAssetPaths
      * @param String $legacyPath
      */
-    public function __construct(array $legacyAssetPaths, String $legacyPath)
+    public function __construct(array $legacyAssetPaths, string $legacyPath)
     {
         parent::__construct($legacyPath);
         $this->legacyAssetPaths = $legacyAssetPaths;

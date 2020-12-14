@@ -45,6 +45,15 @@ class ThemeImageService
         $this->themeImageTypePriority = $this->buildTypePriorityMap($themeImageSupportedTypes);
     }
 
+    /**
+     * Build the priority map
+     * @param array $types
+     * @return array
+     */
+    protected function buildTypePriorityMap(array $types): array
+    {
+        return array_flip($types);
+    }
 
     /**
      * Get images for given $theme
@@ -59,7 +68,7 @@ class ThemeImageService
 
         foreach ($this->themeImagePaths as $themeImagePath) {
             $themeImages = $this->getImages($themeImagePath, $theme);
-            foreach ($themeImages as $imageKey => $image){
+            foreach ($themeImages as $imageKey => $image) {
                 $items[$imageKey] = $image;
             }
         }
@@ -90,7 +99,7 @@ class ThemeImageService
 
         foreach ($it as $file) {
             $filename = $file->getFilename();
-            $name =  pathinfo($filename, PATHINFO_FILENAME);
+            $name = pathinfo($filename, PATHINFO_FILENAME);
 
             $filePath = "$path/{$file->getFilename()}";
             $extension = $file->getExtension();
@@ -119,17 +128,6 @@ class ThemeImageService
     {
         return str_replace('<theme>', $theme, $imagePath);
     }
-
-    /**
-     * Build the priority map
-     * @param array $types
-     * @return array
-     */
-    protected function buildTypePriorityMap(array $types): array
-    {
-        return array_flip($types);
-    }
-
 
     /**
      * Check if current image has priority over already store image

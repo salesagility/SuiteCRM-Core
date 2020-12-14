@@ -39,8 +39,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
     public function __construct(
         ModuleNameMapperInterface $moduleNameMapper,
         RecordDeletionServiceInterface $recordDeletionProvider
-    )
-    {
+    ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->recordDeletionProvider = $recordDeletionProvider;
     }
@@ -127,6 +126,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
         if (is_array($options['criteria'])) {
             $criteria = $options['criteria'];
             $sort = $options['sort'] ?? [];
+
             return $this->recordDeletionProvider->deleteRecordsFromCriteria(
                 $this->moduleNameMapper->toLegacy($options['module']),
                 $criteria,

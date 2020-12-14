@@ -2,9 +2,9 @@
 
 namespace App\Legacy;
 
-use App\Service\RecordListProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordDeletionServiceInterface;
+use App\Service\RecordListProviderInterface;
 use BeanFactory;
 
 /**
@@ -43,8 +43,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         RecordListProviderInterface $listViewProvider
-    )
-    {
+    ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listViewProvider = $listViewProvider;
@@ -81,6 +80,26 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
     }
 
     /**
+     * @param string $moduleName
+     * @param string $id
+     * @return bool
+     */
+    protected function delete(string $moduleName, string $id): bool
+    {
+        // NOTE: Do not use BeanFactory::getBean($moduleName, $id) with mark_deleted
+        // may cause errors when there are related records.
+        $bean = BeanFactory::newBean($moduleName);
+        $bean->retrieve($id);
+        if ($bean && $bean->id && $bean->ACLAccess('Delete')) {
+            $bean->mark_deleted($id);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Delete records
      *
      * @param string $moduleName
@@ -104,7 +123,6 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         return $success;
     }
 
-
     /**
      * @param string $moduleName
      * @param array $criteria
@@ -115,8 +133,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         string $moduleName,
         array $criteria,
         array $sort
-    ): bool
-    {
+    ): bool {
         $this->init();
         $this->startLegacyApp();
 
@@ -139,25 +156,5 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         $this->close();
 
         return $success;
-    }
-
-    /**
-     * @param string $moduleName
-     * @param string $id
-     * @return bool
-     */
-    protected function delete(string $moduleName, string $id): bool
-    {
-        // NOTE: Do not use BeanFactory::getBean($moduleName, $id) with mark_deleted
-        // may cause errors when there are related records.
-        $bean = BeanFactory::newBean($moduleName);
-        $bean->retrieve($id);
-        if ($bean && $bean->id && $bean->ACLAccess('Delete')) {
-            $bean->mark_deleted($id);
-
-            return true;
-        }
-
-        return false;
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Legacy\ViewDefinitions;
 
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 
 /**
  * Class SubPanelDefinitionHandler
@@ -25,24 +25,13 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         'sortable' => true,
     ];
     /**
-     * @var FieldDefinitionsProviderInterface
-     */
-    private $fieldDefinitionProvider;
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getHandlerKey(): string
-    {
-        return self::HANDLER_KEY;
-    }
-
-
-    /**
      * @var ModuleNameMapperInterface
      */
     protected $moduleNameMapper;
+    /**
+     * @var FieldDefinitionsProviderInterface
+     */
+    private $fieldDefinitionProvider;
 
     /**
      * ViewDefinitionsHandler constructor.
@@ -68,6 +57,13 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
 
     /**
      * @inheritDoc
@@ -139,6 +135,51 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         }
 
         return $resultingTabs;
+    }
+
+    /**
+     * @param array $tab
+     * @return mixed|string
+     */
+    protected function getHeaderModule(array $tab)
+    {
+        $vardefModule = $tab['module'];
+
+        if (empty($tab['header_definition_from_subpanel']) || empty($tab['collection_list'])) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
+        }
+
+        $headerModule = $tab['header_definition_from_subpanel'];
+        $vardefModule = $tab['collection_list'][$headerModule]['module'] ?? '';
+
+        if ($vardefModule) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
+        }
+
+        $vardefModule = reset($tab['collection_list'])['module'] ?? '';
+        if ($vardefModule) {
+            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+            return $vardefModule;
+        }
+
+        $vardefModule = $tab['module'];
+        $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
+
+        return $vardefModule;
+    }
+
+    /**
+     * @param string $vardefModule
+     * @return array
+     */
+    protected function getSubpanelModuleVardefs(string $vardefModule): array
+    {
+        return $this->fieldDefinitionProvider->getVardef($vardefModule)->getVardef();
     }
 
     /**
@@ -290,50 +331,5 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $column = $this->addFieldDefinition($vardefs, strtolower($key), $column, $this->defaultDefinition);
 
         return $column;
-    }
-
-    /**
-     * @param string $vardefModule
-     * @return array
-     */
-    protected function getSubpanelModuleVardefs(string $vardefModule): array
-    {
-        return $this->fieldDefinitionProvider->getVardef($vardefModule)->getVardef();
-    }
-
-    /**
-     * @param array $tab
-     * @return mixed|string
-     */
-    protected function getHeaderModule(array $tab)
-    {
-        $vardefModule = $tab['module'];
-
-        if (empty($tab['header_definition_from_subpanel']) || empty($tab['collection_list'])) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
-        }
-
-        $headerModule = $tab['header_definition_from_subpanel'];
-        $vardefModule = $tab['collection_list'][$headerModule]['module'] ?? '';
-
-        if ($vardefModule) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
-        }
-
-        $vardefModule = reset($tab['collection_list'])['module'] ?? '';
-        if ($vardefModule) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
-        }
-
-        $vardefModule = $tab['module'];
-        $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-        return $vardefModule;
     }
 }

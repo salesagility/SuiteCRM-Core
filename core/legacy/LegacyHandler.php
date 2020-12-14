@@ -63,12 +63,6 @@ abstract class LegacyHandler
     }
 
     /**
-     * Get handler key
-     * @return string
-     */
-    abstract public function getHandlerKey(): string;
-
-    /**
      * Legacy handler initialization method
      */
     public function init(): void
@@ -113,6 +107,60 @@ abstract class LegacyHandler
         $this->state->setLegacyBootstrapped(true);
 
         return true;
+    }
+
+    /**
+     * Swap symfony session with legacy suite session
+     * @param string $sessionName
+     * @param array $keysToSync
+     */
+    protected function switchSession(string $sessionName, array $keysToSync = []): void
+    {
+        $carryOver = [];
+
+        foreach ($keysToSync as $key) {
+            if (!empty($_SESSION[$key])) {
+                $carryOver[$key] = $_SESSION[$key];
+            }
+        }
+
+        session_write_close();
+        session_name($sessionName);
+
+        if (!isset($_COOKIE[$sessionName])) {
+            $_COOKIE[$sessionName] = session_create_id();
+        }
+
+        session_id($_COOKIE[$sessionName]);
+        session_start();
+
+        foreach ($carryOver as $key => $value) {
+            $_SESSION[$key] = $value;
+        }
+    }
+
+    /**
+     * Get handler key
+     * @return string
+     */
+    abstract public function getHandlerKey(): string;
+
+    /**
+     * Close the legacy handler
+     */
+    public function close(): void
+    {
+        if ($this->state->getActiveScope() !== $this->getHandlerKey()) {
+            return;
+        }
+
+        if (!empty($this->projectDir)) {
+            chdir($this->projectDir);
+        }
+
+        $this->switchSession($this->defaultSessionName);
+
+        $this->state->setActiveScope(null);
     }
 
     /**
@@ -171,24 +219,6 @@ abstract class LegacyHandler
     }
 
     /**
-     * Close the legacy handler
-     */
-    public function close(): void
-    {
-        if ($this->state->getActiveScope() !== $this->getHandlerKey()) {
-            return;
-        }
-
-        if (!empty($this->projectDir)) {
-            chdir($this->projectDir);
-        }
-
-        $this->switchSession($this->defaultSessionName);
-
-        $this->state->setActiveScope(null);
-    }
-
-    /**
      * @param string $module
      * @param string|null $record
      */
@@ -204,37 +234,6 @@ abstract class LegacyHandler
             $controller->record = $record;
         }
         $controller->loadBean();
-    }
-
-
-    /**
-     * Swap symfony session with legacy suite session
-     * @param string $sessionName
-     * @param array $keysToSync
-     */
-    protected function switchSession(string $sessionName, array $keysToSync = []): void
-    {
-        $carryOver = [];
-
-        foreach ($keysToSync as $key) {
-            if (!empty($_SESSION[$key])) {
-                $carryOver[$key] = $_SESSION[$key];
-            }
-        }
-
-        session_write_close();
-        session_name($sessionName);
-
-        if (!isset($_COOKIE[$sessionName])) {
-            $_COOKIE[$sessionName] = session_create_id();
-        }
-
-        session_id($_COOKIE[$sessionName]);
-        session_start();
-
-        foreach ($carryOver as $key => $value) {
-            $_SESSION[$key] = $value;
-        }
     }
 
     /**

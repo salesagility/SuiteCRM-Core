@@ -25,7 +25,7 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
      * @param RouterInterface $router
      * @param String $legacyPath
      */
-    public function __construct(RouteConverterInterface $routeConverter, RouterInterface $router, String $legacyPath)
+    public function __construct(RouteConverterInterface $routeConverter, RouterInterface $router, string $legacyPath)
     {
         parent::__construct($legacyPath);
         $this->routeConverter = $routeConverter;

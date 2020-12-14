@@ -47,7 +47,7 @@ class StatisticsItemResolver implements QueryItemResolverInterface
 
         $moduleKey = $module . '-' . $key;
 
-        if($this->registry->has($moduleKey)){
+        if ($this->registry->has($moduleKey)) {
             return $this->registry->get($moduleKey)->getData($query);
         }
 

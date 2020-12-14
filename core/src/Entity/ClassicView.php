@@ -123,15 +123,6 @@ class ClassicView
     protected $html;
 
     /**
-     * Set Id
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * Get Id
      * @return string
      */
@@ -141,12 +132,12 @@ class ClassicView
     }
 
     /**
-     * Set Action
-     * @param string|null $action
+     * Set Id
+     * @param string $id
      */
-    public function setAction(?string $action): void
+    public function setId(string $id): void
     {
-        $this->action = $action;
+        $this->id = $id;
     }
 
     /**
@@ -159,12 +150,12 @@ class ClassicView
     }
 
     /**
-     * Set Record
-     * @param string|null $record
+     * Set Action
+     * @param string|null $action
      */
-    public function setRecord(?string $record): void
+    public function setAction(?string $action): void
     {
-        $this->record = $record;
+        $this->action = $action;
     }
 
     /**
@@ -177,12 +168,12 @@ class ClassicView
     }
 
     /**
-     * Set Html
-     * @param string $html
+     * Set Record
+     * @param string|null $record
      */
-    public function setHtml(string $html): void
+    public function setRecord(?string $record): void
     {
-        $this->html = $html;
+        $this->record = $record;
     }
 
     /**
@@ -192,5 +183,14 @@ class ClassicView
     public function getHtml(): ?string
     {
         return $this->html;
+    }
+
+    /**
+     * Set Html
+     * @param string $html
+     */
+    public function setHtml(string $html): void
+    {
+        $this->html = $html;
     }
 }

@@ -4,9 +4,9 @@ namespace App\Legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Entity\UserPreference;
+use App\Legacy\UserPreferences\UserPreferencesMappers;
 use App\Service\UserPreferencesProviderInterface;
 use RuntimeException;
-use App\Legacy\UserPreferences\UserPreferencesMappers;
 use UnexpectedValueException;
 use User;
 
@@ -91,24 +91,6 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
     }
 
     /**
-     * Get user preference
-     * @param string $key
-     * @return UserPreference|null
-     */
-    public function getUserPreference(string $key): ?UserPreference
-    {
-        $this->init();
-
-        $this->startLegacyApp();
-
-        $userPreference = $this->loadUserPreferenceCategory($key);
-
-        $this->close();
-
-        return $userPreference;
-    }
-
-    /**
      * Load user preference with given $key
      * @param string $category
      * @return UserPreference|null
@@ -149,6 +131,21 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         $userPreference->setItems($items);
 
         return $userPreference;
+    }
+
+    /**
+     * Get currently logged in user
+     * @return User
+     */
+    protected function getCurrentUser(): User
+    {
+        global $current_user;
+
+        if ($current_user === null) {
+            throw new UnexpectedValueException('Current user is not loaded');
+        }
+
+        return $current_user;
     }
 
     /**
@@ -230,21 +227,6 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
     }
 
     /**
-     * Get currently logged in user
-     * @return User
-     */
-    protected function getCurrentUser(): User
-    {
-        global $current_user;
-
-        if ($current_user === null) {
-            throw new UnexpectedValueException('Current user is not loaded');
-        }
-
-        return $current_user;
-    }
-
-    /**
      * Map user preference value if mapper defined
      * @param string $key
      * @param $preference
@@ -272,5 +254,23 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         }
 
         return $this->userPreferencesKeyMap[$key] ?? $key;
+    }
+
+    /**
+     * Get user preference
+     * @param string $key
+     * @return UserPreference|null
+     */
+    public function getUserPreference(string $key): ?UserPreference
+    {
+        $this->init();
+
+        $this->startLegacyApp();
+
+        $userPreference = $this->loadUserPreferenceCategory($key);
+
+        $this->close();
+
+        return $userPreference;
     }
 }

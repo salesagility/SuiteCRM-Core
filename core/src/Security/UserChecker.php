@@ -19,14 +19,6 @@ class UserChecker implements UserCheckerInterface
 
     /**
      * @param UserInterface $user
-     */
-    public function checkPostAuth(UserInterface $user): void
-    {
-        $this->checkUserStatus($user);
-    }
-
-    /**
-     * @param UserInterface $user
      * @return void
      */
     private function checkUserStatus(UserInterface $user): void
@@ -38,5 +30,13 @@ class UserChecker implements UserCheckerInterface
         if ($user->getDeleted()) {
             throw new UserDeletedException('Authentication: Invalid user');
         }
+    }
+
+    /**
+     * @param UserInterface $user
+     */
+    public function checkPostAuth(UserInterface $user): void
+    {
+        $this->checkUserStatus($user);
     }
 }

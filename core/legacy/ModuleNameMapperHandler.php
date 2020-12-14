@@ -44,6 +44,24 @@ class ModuleNameMapperHandler extends LegacyHandler implements ModuleNameMapperI
     }
 
     /**
+     * Get mapper. Initialize it if needed
+     * @return ModuleNameMapper
+     */
+    protected function getMapper(): ModuleNameMapper
+    {
+        if ($this->mapper !== null) {
+            return $this->mapper;
+        }
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/ModuleNameMapper.php';
+
+        $this->mapper = new ModuleNameMapper();
+
+        return $this->mapper;
+    }
+
+    /**
      * @inheritDoc
      */
     public function toFrontEnd(string $module): string
@@ -105,24 +123,5 @@ class ModuleNameMapperHandler extends LegacyHandler implements ModuleNameMapperI
         $this->close();
 
         return $result;
-    }
-
-
-    /**
-     * Get mapper. Initialize it if needed
-     * @return ModuleNameMapper
-     */
-    protected function getMapper(): ModuleNameMapper
-    {
-        if ($this->mapper !== null) {
-            return $this->mapper;
-        }
-
-        /* @noinspection PhpIncludeInspection */
-        require_once 'include/portability/ModuleNameMapper.php';
-
-        $this->mapper = new ModuleNameMapper();
-
-        return $this->mapper;
     }
 }

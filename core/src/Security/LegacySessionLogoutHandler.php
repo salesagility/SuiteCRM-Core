@@ -14,14 +14,13 @@ use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 class LegacySessionLogoutHandler implements LogoutHandlerInterface
 {
     /**
-     * @var SessionLogoutHandler
-     */
-    private $decorated;
-
-    /**
      * @var Authentication
      */
     protected $authentication;
+    /**
+     * @var SessionLogoutHandler
+     */
+    private $decorated;
 
     /**
      * SessionSubscriber constructor.

@@ -2,11 +2,11 @@
 
 namespace App\Legacy\Data\PresetDataHandlers;
 
+use App\Legacy\LegacyHandler;
+use App\Legacy\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelCustomQueryPort;
-use App\Legacy\LegacyHandler;
-use App\Legacy\LegacyScopeState;
 
 class SubpanelDataQueryHandler extends LegacyHandler
 {
@@ -77,6 +77,19 @@ class SubpanelDataQueryHandler extends LegacyHandler
         return $this->queryHandler->getQueries($parentBean, $subpanel);
     }
 
+    protected function initQueryHandler(): void
+    {
+
+        if ($this->queryHandler !== null) {
+            return;
+        }
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Subpanels/SubpanelCustomQueryPort.php';
+
+        $this->queryHandler = new SubpanelCustomQueryPort();
+    }
+
     /**
      * @param string $query
      * @return array
@@ -97,18 +110,5 @@ class SubpanelDataQueryHandler extends LegacyHandler
         $this->initQueryHandler();
 
         return $this->queryHandler->fetchAll($query);
-    }
-
-    protected function initQueryHandler(): void
-    {
-
-        if ($this->queryHandler !== null) {
-            return;
-        }
-
-        /* @noinspection PhpIncludeInspection */
-        require_once 'include/portability/Subpanels/SubpanelCustomQueryPort.php';
-
-        $this->queryHandler = new SubpanelCustomQueryPort();
     }
 }

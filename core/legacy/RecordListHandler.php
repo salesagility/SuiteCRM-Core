@@ -3,12 +3,12 @@
 namespace App\Legacy;
 
 use App\Entity\RecordList;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\RecordListProviderInterface;
-use InvalidArgumentException;
 use App\Legacy\Data\ListData;
 use App\Legacy\Data\ListDataHandler;
 use App\Legacy\Data\PresetListDataHandlers;
+use App\Service\ModuleNameMapperInterface;
+use App\Service\RecordListProviderInterface;
+use InvalidArgumentException;
 
 /**
  * Class RecordListHandler
@@ -114,18 +114,6 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
     }
 
     /**
-     * @param ListData $recordList
-     * @return bool
-     */
-    protected function currentPageHasNoRecords(ListData $recordList): bool
-    {
-        $totalRecords = (int)($recordList->getOffsets()['total'] ?? 0);
-        $current = (int)($recordList->getOrdering()['current'] ?? 0);
-
-        return $totalRecords && $current && $current >= $totalRecords;
-    }
-
-    /**
      * @param $moduleName
      * @return string
      */
@@ -162,6 +150,18 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         }
 
         return $this->listDataHandler->fetch($module, $criteria, $offset, $limit, $sort);
+    }
+
+    /**
+     * @param ListData $recordList
+     * @return bool
+     */
+    protected function currentPageHasNoRecords(ListData $recordList): bool
+    {
+        $totalRecords = (int)($recordList->getOffsets()['total'] ?? 0);
+        $current = (int)($recordList->getOrdering()['current'] ?? 0);
+
+        return $totalRecords && $current && $current >= $totalRecords;
     }
 
 }

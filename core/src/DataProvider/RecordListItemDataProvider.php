@@ -5,8 +5,8 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\RecordList;
-use Exception;
 use App\Legacy\RecordListHandler;
+use Exception;
 
 /**
  * Class RecordListItemDataProvider

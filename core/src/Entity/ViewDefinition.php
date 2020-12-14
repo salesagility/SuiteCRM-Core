@@ -23,6 +23,81 @@ use ApiPlatform\Core\Annotation\ApiResource;
 class ViewDefinition
 {
     /**
+     * Record View metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The record-view metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $recordView;
+    /**
+     * Edit View metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The edit-view metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $editView;
+    /**
+     * List View metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The list-view metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $listView;
+    /**
+     * Search metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The search metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $search;
+    /**
+     * Subpanel metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The subpanel metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $subpanel;
+    /**
      * The module
      *
      * @var string
@@ -40,87 +115,6 @@ class ViewDefinition
      * )
      */
     protected $id;
-
-    /**
-     * Record View metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The record-view metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $recordView;
-
-    /**
-     * Edit View metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The edit-view metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $editView;
-
-    /**
-     * List View metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $listView;
-
-    /**
-     * Search metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The search metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $search;
-
-    /**
-     * Subpanel metadata
-     *
-     * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The subpanel metadata",
-     *         },
-     *     }
-     * )
-     */
-    public $subpanel;
-
 
     /**
      * @return string

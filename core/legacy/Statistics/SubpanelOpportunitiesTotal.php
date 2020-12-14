@@ -3,8 +3,8 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
-use App\Service\StatisticsProviderInterface;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Service\StatisticsProviderInterface;
 
 class SubpanelOpportunitiesTotal extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {

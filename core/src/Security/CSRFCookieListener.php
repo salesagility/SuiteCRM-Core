@@ -59,8 +59,7 @@ class CSRFCookieListener
         $cookiePath,
         $cookieDomain,
         $cookieSecure
-    )
-    {
+    ) {
         $this->csrfTokenManager = $angularCsrfTokenManager;
         $this->routes = $routes;
         $this->cookieName = $cookieName;

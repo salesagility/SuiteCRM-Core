@@ -70,7 +70,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
 
         $modules = $this->applyUserActionFilter($modules);
 
-        foreach ($this->frontendExcludedModules as $excluded){
+        foreach ($this->frontendExcludedModules as $excluded) {
             unset($modules[$excluded]);
         }
 

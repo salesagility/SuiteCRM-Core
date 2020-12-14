@@ -30,7 +30,7 @@ class StatisticsProviderRegistry
      * @param String $providerKey
      * @param StatisticsProviderInterface $provider
      */
-    public function register(String $providerKey, StatisticsProviderInterface $provider): void
+    public function register(string $providerKey, StatisticsProviderInterface $provider): void
     {
         $this->registry[$providerKey] = $provider;
     }

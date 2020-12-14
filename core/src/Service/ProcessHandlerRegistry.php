@@ -36,7 +36,7 @@ class ProcessHandlerRegistry
      * @param String $processKey
      * @param ProcessHandlerInterface $handler
      */
-    public function register(String $processKey, ProcessHandlerInterface $handler): void
+    public function register(string $processKey, ProcessHandlerInterface $handler): void
     {
         $this->registry[$processKey] = $handler;
     }

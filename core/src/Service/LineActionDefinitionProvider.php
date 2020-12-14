@@ -7,34 +7,29 @@ use App\Legacy\AppListStringsProviderInterface;
 class LineActionDefinitionProvider implements LineActionDefinitionProviderInterface
 {
     /**
-     * @var array
-     */
-    private $listViewLineActions;
-
-    /**
-     * @var AclManagerInterface
-     */
-    private $aclManager;
-
-    /**
-     * @var FieldDefinitionsProviderInterface
-     */
-    private $fieldDefinitionProvider;
-
-    /**
      * @var ModuleNameMapperInterface
      */
     protected $moduleNameMapper;
-
     /**
      * @var AppListStringsProviderInterface
      */
     protected $appListStringProvider;
-
     /**
      * @var array
      */
     protected $appListStrings = [];
+    /**
+     * @var array
+     */
+    private $listViewLineActions;
+    /**
+     * @var AclManagerInterface
+     */
+    private $aclManager;
+    /**
+     * @var FieldDefinitionsProviderInterface
+     */
+    private $fieldDefinitionProvider;
 
     /**
      * LineActionDefinitionProvider constructor.
@@ -50,8 +45,7 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         ModuleNameMapperInterface $moduleNameMapper,
         AppListStringsProviderInterface $appListStringProvider
-    )
-    {
+    ) {
         $this->listViewLineActions = $listViewLineActions;
         $this->aclManager = $aclManager;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -106,6 +100,7 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
             }
             $createActions[] = array_merge($actionTemplate, $relatedModuleDef);
         }
+
         return $createActions;
     }
 
@@ -129,12 +124,14 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
             if (!array_key_exists($vardefModuleName, $allowedParentModules)) {
                 continue;
             }
+
             return [
                 'moduleName' => 'parent_type',
                 'name' => 'parent_name',
                 'id' => 'parent_id',
             ];
         }
+
         return [];
     }
 
