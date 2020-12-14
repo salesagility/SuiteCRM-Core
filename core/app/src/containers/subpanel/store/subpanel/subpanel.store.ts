@@ -140,6 +140,9 @@ export class SubpanelStore implements StateStore {
                 context: {
                     module: parentModule,
                     id: parentId
+                },
+                params: {
+                    subpanel: meta.name
                 }
             } as StatisticsQuery,
             false
