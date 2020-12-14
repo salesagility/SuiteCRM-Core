@@ -6,11 +6,11 @@ use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Service\StatisticsProviderInterface;
 
-class SubPanelContactsInvoicesTotal extends SubpanelDataQueryHandler implements StatisticsProviderInterface
+class SubPanelInvoicesTotal extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
     use StatisticsHandlingTrait;
 
-    public const KEY = 'contacts-invoices';
+    public const KEY = 'invoices';
 
     /**
      * @inheritDoc
@@ -25,10 +25,14 @@ class SubPanelContactsInvoicesTotal extends SubpanelDataQueryHandler implements 
      */
     public function getData(array $query): Statistic
     {
-        $subpanel = 'contact_aos_invoices';
         [$module, $id] = $this->extractContext($query);
         if (empty($module) || empty($id)) {
             return $this->getEmptyResponse(self::KEY);
+        }
+        $subpanel = $query['key'];
+        $subpanelName = $query['params']['subpanel'] ?? '';
+        if (!empty($subpanelName)) {
+            $subpanel = $subpanelName;
         }
 
         $this->init();

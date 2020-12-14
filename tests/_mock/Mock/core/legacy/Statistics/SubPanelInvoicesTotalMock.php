@@ -2,14 +2,14 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelQuotesInvoicesTotal;
+use App\Legacy\Statistics\SubPanelInvoicesTotal;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**
- * Class SubPanelCasesCountMock
+ * Class SubPanelInvoicesTotalMock
  * @package Mock\Core\Legacy\Statistics
  */
-class SubPanelQuotesInvoicesTotalMock extends SubPanelQuotesInvoicesTotal
+class SubPanelInvoicesTotalMock extends SubPanelInvoicesTotal
 {
     use DBQueryResultsMocking;
 

@@ -3,16 +3,16 @@
 namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
-use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelContactsCountMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelInvoicesTotalMock;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
 
 /**
- * Class SubPanelContactCount
+ * Class SubPanelInvoicesTotal
  * @package App\Tests
  */
-class SubPanelContactCountTest extends Unit
+class SubPanelInvoicesTotalTest extends Unit
 {
     /**
      * @var UnitTester
@@ -20,7 +20,7 @@ class SubPanelContactCountTest extends Unit
     protected $tester;
 
     /**
-     * @var SubPanelContactsCountMock
+     * @var SubPanelInvoicesTotalMock
      */
     private $handler;
 
@@ -45,7 +45,7 @@ class SubPanelContactCountTest extends Unit
         );
 
 
-        $this->handler = new SubPanelContactsCountMock(
+        $this->handler = new SubPanelInvoicesTotalMock(
             $projectDir,
             $legacyDir,
             $legacySessionName,
@@ -76,7 +76,7 @@ class SubPanelContactCountTest extends Unit
         static::assertNotNull($result->getMetadata());
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
-        static::assertEquals('contacts', $result->getId());
+        static::assertEquals('invoices', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
@@ -95,16 +95,20 @@ class SubPanelContactCountTest extends Unit
 
         $rows = [
             [
-                'value' => '20',
+                'value' => '4',
             ],
         ];
         $this->handler->setMockQueryResult($rows);
 
         $result = $this->handler->getData(
             [
+                'key' => 'invoices',
                 'context' => [
                     'module' => 'accounts',
                     'id' => '12345',
+                ],
+                'params' => [
+                    'subpanel' => 'test_subpanel'
                 ]
             ]
         );
@@ -115,8 +119,8 @@ class SubPanelContactCountTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('20', $result->getData()['value']);
-        static::assertEquals('contacts', $result->getId());
+        static::assertEquals('4', $result->getData()['value']);
+        static::assertEquals('invoices', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
