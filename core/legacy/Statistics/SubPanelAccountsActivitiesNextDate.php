@@ -9,14 +9,14 @@ use DateFormatService;
 
 
 /**
- * Class SubPanelActivitiesNextDate
+ * Class SubPanelAccountsActivitiesNextDate
  * @package App\Legacy\Statistics
  */
-class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements StatisticsProviderInterface
+class SubPanelAccountsActivitiesNextDate extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
     use DateTimeStatisticsHandlingTrait;
 
-    public const KEY = 'activities';
+    public const KEY = 'accounts-activities';
 
     /**
      * @inheritDoc
@@ -26,17 +26,28 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
         return self::KEY;
     }
 
+    public $parts;
+    public $queries;
+
+
+
     /**
      * @inheritDoc
      */
     public function getData(array $query): Statistic
     {
-        [$module, $id] = $this->extractContext($query);
-        $subpanel = 'activities';
+        $subpanel = $query['key'];
 
-        if (empty($module) || empty($id)) {
+        [$module, $id] = $this->extractContext($query);
+        if (empty($module) || empty($id) || empty($subpanel)) {
             return $this->getEmptyResponse(self::KEY);
         }
+
+        $subpanelName = $query['params']['subpanel'] ?? '';
+        if (!empty($subpanelName)) {
+            $subpanel = $subpanelName;
+        }
+
 
         $this->init();
         $this->startLegacyApp();
@@ -49,13 +60,7 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
 
         $dateNow = date("Y-m-d H:i:s");
 
-        if ($module === 'project' || $module === 'cases' || $module === 'opportunities' || $module === 'contacts') {
-            $parts = $queries[1];
-        } elseif ($module === 'prospects' || $module === 'accounts') {
-            $parts = $queries[0];
-        } elseif ($module === 'leads') {
-            $parts = $queries[2];
-        }
+        $parts = $queries[0];
         $parts['select'] = 'SELECT tasks.`date_start` AS `tasks_parent_date_start`';
         $tasksWhere = "tasks.`date_start` >= '$dateNow' ";
         if (!empty($parts['where'])) {
@@ -66,27 +71,7 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
         $innerQuery = $this->joinQueryParts($parts);
         $tasksParentResult = $this->fetchRow($innerQuery);
 
-        if ($module === 'contacts') {
-            $parts = $queries[0];
-            $parts['select'] = 'SELECT tasks.`date_start` AS `tasks_date_start`';
-            $tasksWhere = "tasks.`date_start` >= '$dateNow' ";
-            if (!empty($parts['where'])) {
-                $tasksWhere = " AND " . $tasksWhere;
-            }
-            $parts['where'] .= $tasksWhere;
-            $parts['order_by'] .= ' ORDER BY `tasks_date_start` ASC LIMIT 1';
-            $innerQuery = $this->joinQueryParts($parts);
-            $tasksResult = $this->fetchRow($innerQuery);
-        }
-
-
-        if ($module === 'project' || $module === 'cases' || $module === 'opportunities') {
-            $parts = $queries[0];
-        } elseif ($module === 'prospects' || $module === 'accounts' || $module === 'leads') {
-            $parts = $queries[1];
-        } elseif ($module === 'contacts') {
-            $parts = $queries[2];
-        }
+        $parts = $queries[1];
         $parts['select'] = 'SELECT meetings.`date_start` AS `meetings_date_start`';
         $meetingsWhere = "  meetings.`date_start` >= ' $dateNow ' ";
         if (!empty($parts['where'])) {
@@ -97,11 +82,7 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
         $innerQuery = $this->joinQueryParts($parts);
         $meetingsResult = $this->fetchRow($innerQuery);
 
-        if ($module === 'project' || $module === 'cases' || $module === 'opportunities' || $module === 'prospects' || $module === 'accounts') {
-            $parts = $queries[2];
-        } else {
-            $parts = $queries[3];
-        }
+        $parts = $queries[2];
         $parts['select'] = 'SELECT calls.`date_start` AS `calls_date_start` ';
         $callsWhere = " calls.`date_start` >= ' $dateNow ' ";
         if (!empty($parts['where'])) {

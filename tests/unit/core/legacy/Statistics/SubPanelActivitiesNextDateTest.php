@@ -3,7 +3,7 @@
 namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
-use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelActivitiesNextDateMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelAccountsActivitiesNextDateMock;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
@@ -20,7 +20,7 @@ class SubPanelActivitiesNextDateTest extends Unit
     protected $tester;
 
     /**
-     * @var SubPanelActivitiesNextDateMock
+     * @var SubPanelAccountsActivitiesNextDateMock
      */
     private $handler;
 
@@ -45,7 +45,7 @@ class SubPanelActivitiesNextDateTest extends Unit
         );
 
 
-        $this->handler = new SubPanelActivitiesNextDateMock(
+        $this->handler = new SubPanelAccountsActivitiesNextDateMock(
             $projectDir,
             $legacyDir,
             $legacySessionName,

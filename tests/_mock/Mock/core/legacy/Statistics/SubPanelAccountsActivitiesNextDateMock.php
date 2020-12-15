@@ -2,14 +2,14 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelActivitiesNextDate;
+use App\Legacy\Statistics\SubPanelAccountsActivitiesNextDate;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**
- * Class SubPanelActivitiesNextDateMock
+ * Class SubPanelAccountsActivitiesNextDateMock
  * @package Mock\Core\Legacy\Statistics
  */
-class SubPanelActivitiesNextDateMock extends SubPanelActivitiesNextDate
+class SubPanelAccountsActivitiesNextDateMock extends SubPanelAccountsActivitiesNextDate
 {
     use DBQueryResultsMocking;
 
