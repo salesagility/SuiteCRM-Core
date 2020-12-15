@@ -2,14 +2,14 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelAccountsActivitiesNextDate;
+use App\Legacy\Statistics\SubPanelActivitiesNextDate;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**
- * Class SubPanelAccountsActivitiesNextDateMock
+ * Class SubPanelActivitiesNextDateMock
  * @package Mock\Core\Legacy\Statistics
  */
-class SubPanelAccountsActivitiesNextDateMock extends SubPanelAccountsActivitiesNextDate
+class SubPanelActivitiesNextDateMock extends SubPanelActivitiesNextDate
 {
     use DBQueryResultsMocking;
 
@@ -19,21 +19,6 @@ class SubPanelAccountsActivitiesNextDateMock extends SubPanelAccountsActivitiesN
     public function getQueries(string $parentModule, string $parentId, string $subpanel): array
     {
         return [
-            [
-                'select' => '',
-                'where' => '',
-                'order_by' => '',
-            ],
-            [
-                'select' => '',
-                'where' => '',
-                'order_by' => '',
-            ],
-            [
-                'select' => '',
-                'where' => '',
-                'order_by' => '',
-            ],
             [
                 'select' => '',
                 'where' => '',

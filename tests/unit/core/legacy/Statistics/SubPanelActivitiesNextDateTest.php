@@ -3,7 +3,7 @@
 namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
-use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelAccountsActivitiesNextDateMock;
+use App\Tests\_mock\Mock\core\legacy\Statistics\SubPanelActivitiesNextDateMock;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
@@ -20,7 +20,7 @@ class SubPanelActivitiesNextDateTest extends Unit
     protected $tester;
 
     /**
-     * @var SubPanelAccountsActivitiesNextDateMock
+     * @var SubPanelActivitiesNextDateMock
      */
     private $handler;
 
@@ -45,7 +45,7 @@ class SubPanelActivitiesNextDateTest extends Unit
         );
 
 
-        $this->handler = new SubPanelAccountsActivitiesNextDateMock(
+        $this->handler = new SubPanelActivitiesNextDateMock(
             $projectDir,
             $legacyDir,
             $legacySessionName,
@@ -65,6 +65,7 @@ class SubPanelActivitiesNextDateTest extends Unit
 
         $result = $this->handler->getData(
             [
+                'key' => 'activities',
                 'context' => [
                 ]
             ]
@@ -94,22 +95,26 @@ class SubPanelActivitiesNextDateTest extends Unit
 
         $rows = [
             [
-                'tasks_parent_date_start' => '12/12/2019',
+                'meetings_date_start' => '2020-12-12',
             ],
             [
-                'meetings_date_start' => '12/12/2019',
+                'calls_date_start' => '2020-12-12',
             ],
             [
-                'calls_date_start' => '12/12/2019',
+                'tasks_date_start' => '2020-12-12',
             ],
         ];
         $this->handler->setMockQueryResult($rows);
 
         $result = $this->handler->getData(
             [
+                'key' => 'activities',
                 'context' => [
                     'module' => 'accounts',
                     'id' => '12345',
+                ],
+                'params' => [
+                    'subpanel' => 'activities-test'
                 ]
             ]
         );
@@ -120,11 +125,11 @@ class SubPanelActivitiesNextDateTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('12/12/2019', $result->getData()['value']);
+        static::assertEquals('-', $result->getData()['value']);
         static::assertEquals('activities', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
-        static::assertEquals('date', $result->getMetadata()['dataType']);
+        static::assertEquals('varchar', $result->getMetadata()['dataType']);
     }
 }

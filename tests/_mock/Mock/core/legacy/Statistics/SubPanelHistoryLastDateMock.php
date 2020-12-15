@@ -22,24 +22,13 @@ class SubPanelHistoryLastDateMock extends SubPanelHistoryLastDate
         return [
             [
                 'select' => '',
+                'where' => '',
                 'order_by' => '',
             ],
             [
                 'select' => '',
                 'order_by' => '',
             ],
-            [
-                'select' => '',
-                'order_by' => '',
-            ],
-            [
-                'select' => '',
-                'order_by' => '',
-            ],
-            [
-                'select' => '',
-                'order_by' => '',
-            ]
         ];
     }
 

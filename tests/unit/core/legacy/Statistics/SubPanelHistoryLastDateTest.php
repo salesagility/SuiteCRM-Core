@@ -65,6 +65,7 @@ class SubPanelHistoryLastDateTest extends Unit
 
         $result = $this->handler->getData(
             [
+                'key' => 'history',
                 'context' => [
                 ]
             ]
@@ -94,22 +95,26 @@ class SubPanelHistoryLastDateTest extends Unit
 
         $rows = [
             [
-                'meetings_date_end' => '2019-12-12',
+                'meetings_date_end' => '2020-12-12',
             ],
             [
-                'date_end' => '2019-12-12',
+                'calls_date_end' => '2020-12-12',
             ],
             [
-                'date_sent_received' => '2019-12-12',
+                'emails_date_end' => '2020-12-12',
             ],
         ];
         $this->handler->setMockQueryResult($rows);
 
         $result = $this->handler->getData(
             [
+                'key' => 'history',
                 'context' => [
                     'module' => 'accounts',
                     'id' => '12345',
+                ],
+                'params' => [
+                    'subpanel' => 'history-date'
                 ]
             ]
         );
@@ -120,12 +125,12 @@ class SubPanelHistoryLastDateTest extends Unit
         static::assertIsArray($result->getData());
         static::assertIsArray($result->getMetadata());
         static::assertArrayHasKey('value', $result->getData());
-        static::assertEquals('2019-12-12', $result->getData()['value']);
+        static::assertEquals('-', $result->getData()['value']);
         static::assertEquals('history', $result->getId());
         static::assertArrayHasKey('type', $result->getMetadata());
         static::assertEquals('single-value-statistic', $result->getMetadata()['type']);
         static::assertArrayHasKey('dataType', $result->getMetadata());
-        static::assertEquals('date', $result->getMetadata()['dataType']);
+        static::assertEquals('varchar', $result->getMetadata()['dataType']);
     }
 
 }

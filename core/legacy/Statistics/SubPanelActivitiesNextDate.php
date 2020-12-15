@@ -8,14 +8,14 @@ use App\Service\StatisticsProviderInterface;
 
 
 /**
- * Class SubPanelHistoryLastDate
+ * Class SubPanelActivitiesNextDate
  * @package App\Legacy\Statistics
  */
-class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements StatisticsProviderInterface
+class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
     use DateTimeStatisticsHandlingTrait;
 
-    public const KEY = 'history';
+    public const KEY = 'activities';
 
     /**
      * @inheritDoc
@@ -50,33 +50,33 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
 
         $queries = $this->getQueries($module, $id, $subpanel);
 
-        $result = $this->calculateQueryResult($queries, $dateNow, $id);
+        $result = $this->calculateQueryResult($queries, $dateNow);
 
-        $max = $this->calculateSmallestDate(
+        $min = $this->calculateSmallestDate(
             $result
         );
 
-        if (empty($max)) {
+        if (empty($min)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
 
             return $statistic;
         }
 
-        $statistic = $this->buildStatistic($max);
+        $statistic = $this->buildStatistic($min);
         $this->close();
 
         return $statistic;
     }
 
     /**
-     * @param string $max
+     * @param string $min
      * @return Statistic
      */
-    protected function buildStatistic(string $max): Statistic
+    protected function buildStatistic(string $min): Statistic
     {
-        if (!empty($max)) {
-            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $max]);
+        if (!empty($min)) {
+            $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $min]);
         } else {
             $statistic = $this->getEmptyResponse(self::KEY);
         }
@@ -100,16 +100,15 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
             return '';
         }
 
-        return max($date);
+        return min($date);
     }
 
     /**
      * @param $queries
      * @param  $dateNow
-     * @param string $id
      * @return array
      */
-    protected function calculateQueryResult($queries, $dateNow, string $id): array
+    protected function calculateQueryResult($queries, $dateNow): array
     {
         $result = [];
         for ($i = 0; $i <= 3; $i++) {
@@ -127,25 +126,15 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
             $tableName = explode(".", $table[3]);
             $tableName = $tableName[0];
 
-            if ($tableName === 'emails') {
-                $parts['select'] = "SELECT " . $tableName . ".`date_sent_received` AS `" . $tableName . "_date_end`";
-                $parts['order_by'] .= " ORDER BY `" . $tableName . "_date_end` DESC LIMIT 1";
-                $innerQuery = $this->joinQueryParts($parts);
-                $result[$i] = $this->fetchRow($innerQuery);
-                continue;
+            $parts['select'] = "SELECT " . $tableName . ".`date_start` AS `" . $tableName . "_date_start`";
+            $where = "" . $tableName . ".`date_start` >= '$dateNow' ";
+            if (!empty($parts['where'])) {
+                $where = " AND " . $where;
             }
-
-            if ($tableName === 'meetings' || $tableName === 'calls') {
-                $parts['select'] = "SELECT " . $tableName . ".`date_end` AS `" . $tableName . "_date_end`";
-                $where = "" . $tableName . ".`date_end` <= '$dateNow' AND " . $tableName . ".parent_id = '$id' ";
-                if (!empty($parts['where'])) {
-                    $where = " AND " . $where;
-                }
-                $parts['where'] .= $where;
-                $parts['order_by'] .= " ORDER BY `" . $tableName . "_date_end` DESC LIMIT 1";
-                $innerQuery = $this->joinQueryParts($parts);
-                $result[$i] = $this->fetchRow($innerQuery);
-            }
+            $parts['where'] .= $where;
+            $parts['order_by'] .= " ORDER BY `" . $tableName . "_date_start` ASC LIMIT 1";
+            $innerQuery = $this->joinQueryParts($parts);
+            $result[$i] = $this->fetchRow($innerQuery);
         }
 
 
