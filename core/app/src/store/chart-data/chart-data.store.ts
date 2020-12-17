@@ -7,6 +7,7 @@ import {ChartDataSource, ChartOptionMap, SeriesResult} from '@app-common/contain
 import {SeriesStatisticsState, SeriesStatisticsStore} from '@store/series-statistics/series-statistics.store';
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {ChartOptions} from '@app-common/metadata/charts-widget.metadata';
 
 const initialState = {
     module: '',
@@ -30,6 +31,7 @@ export class ChartDataStore extends SeriesStatisticsStore {
     loading$: Observable<boolean>;
     protected internalState: ChartDataState = deepClone(initialState);
     protected store = new BehaviorSubject<ChartDataState>(this.internalState);
+    protected defaultOptions: ChartOptions = {};
 
     constructor(
         protected fetchGQL: StatisticsFetchGQL,
@@ -41,11 +43,16 @@ export class ChartDataStore extends SeriesStatisticsStore {
         this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
     }
 
+    public setDefaultOptions(chartOptions: ChartOptions): void {
+        this.defaultOptions = chartOptions;
+    }
+
     protected addNewState(statistic: Statistic): void {
 
         if (!statistic.metadata || !statistic.metadata.dataType) {
             return;
         }
+        this.injectDefaultValues(statistic);
 
         const dataSource = this.buildCharDataSource(statistic);
 
@@ -54,6 +61,19 @@ export class ChartDataStore extends SeriesStatisticsStore {
             statistic,
             dataSource,
             loading: false
+        });
+    }
+
+    protected injectDefaultValues(statistic: Statistic): void {
+        if (!statistic.metadata.chartOptions) {
+            statistic.metadata.chartOptions = deepClone(this.defaultOptions);
+            return;
+        }
+
+        Object.keys(this.defaultOptions).forEach(optionKey => {
+            if (!(optionKey in statistic.metadata.chartOptions)) {
+                statistic.metadata.chartOptions[optionKey] = this.defaultOptions[optionKey];
+            }
         });
     }
 

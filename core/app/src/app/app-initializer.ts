@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ListComponent} from '@views/list/list.component';
+import {ListComponent} from '@views/list/components/list-view/list.component';
 import {Router} from '@angular/router';
 import {AuthGuard} from '@services/auth/auth-guard.service';
 import {BaseModuleResolver} from '@services/metadata/base-module.resolver';

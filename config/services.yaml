@@ -10,6 +10,8 @@ parameters:
 
 imports:
   - { resource: services/**/*.yaml }
+  - { resource: modules/**/*.yaml }
+  - { resource: modules/**/*.php }
 
 services:
   # default configuration for services in *this* file
@@ -40,7 +42,7 @@ services:
       $navigationTabLimits: '%themes.navigation_tab_limits%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewLineActions: '%module.listview.line_action%'
-      $listViewAvailableCharts: '%module.listview.available_charts%'
+      $listViewSidebarWidgets: '%module.listview.sidebar_widgets%'
       $listViewColumnLimits: '%module.listview.column_limits%'
       $listViewSettingsLimits: '%module.listview.settings_limits%'
       $listViewActionsLimits: '%module.listview.actions_limits%'

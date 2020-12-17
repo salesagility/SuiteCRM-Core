@@ -2,15 +2,15 @@
     <div widget-body>
         <div class="widget-background">
             <div class="mb-2 ml-1 mr-1">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row" *ngIf="isConfigured && chartOptions.toggle">
-                        <div class="col-xs">
-                            <form class="login-form mr-3 ml-1 mt-0 w-100">
+                        <div class="col pr-2 pl-2">
+                            <form class="login-form mb-0 mt-2 w-100">
 
-                                <select class="form-control w-100" [(ngModel)]="selectedChart">
+                                <select [(ngModel)]="selectedChart" class="m-0 w-100" name="chart">
                                     <option *ngFor="let chart of configuredCharts; index as i"
-                                            [value]="chart.chartType">
-                                        {{vm.appStrings[chart.labelKey]}}
+                                            [value]="getKey(chart)">
+                                        {{language.getFieldLabel(chart.labelKey)}}
                                     </option>
                                 </select>
                             </form>
@@ -20,7 +20,7 @@
                     <div class="row mt-3">
                         <div class="col pl-0 pr-0 pb-1 pt-1 d-flex justify-content-center">
                             <div>
-                                <scrm-chart *ngIf="getDataSource(vm.statistics)"
+                                <scrm-chart *ngIf="getDataSource(vm.statistics) && !loading"
                                             [type]="chartType"
                                             [dataSource]="getDataSource(vm.statistics)">
                                 </scrm-chart>
@@ -29,7 +29,7 @@
                                 </div>
                                 <p *ngIf="!loading && (!isConfigured() || !getDataSource(vm.statistics))"
                                    class="lead text-center pt-3">
-                                    {{vm.appStrings[this.messageLabelKey]}}
+                                    {{language.getFieldLabel(this.messageLabelKey)}}
                                 </p>
                             </div>
                         </div>

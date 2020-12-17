@@ -5,8 +5,8 @@ import {By} from '@angular/platform-browser';
 import {CloseButtonModule} from '@components/close-button/close-button.module';
 import {ButtonModule} from '@components/button/button.module';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
-import {ListViewStore} from '@store/list-view/list-view.store';
-import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {ListViewStore} from '@views/list/store/list-view/list-view.store';
+import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.module';
 

@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {StatusBarComponent} from './status-bar.component';
 import {ModuleTitleModule} from '../module-title/module-title.module';
-import {ActionMenuModule} from '../action-menu/action-menu.module';
-import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
+import {ActionMenuModule} from '@views/list/components/action-menu/action-menu.module';
+import {SettingsMenuModule} from '@views/list/components/settings-menu/settings-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({

@@ -1,0 +1,24 @@
+<!-- Start List View Container Section -->
+
+<div *ngIf="(vm$ | async) as vm" class="list-view-container container-fluid">
+    <div class="row">
+        <div [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }" class="col-lg-9">
+            <scrm-table [config]="tableConfig"></scrm-table>
+        </div>
+
+        <ng-container *ngIf="vm.sidebarWidgetConfig.widgetsEnabled">
+            <div [style.display]="getDisplay(!!(vm.sidebarWidgetConfig.show && vm.sidebarWidgetConfig.widgets))"
+                 class="col-lg-3 list-widget-container pl-0">
+                <div *ngFor="let widget of vm.sidebarWidgetConfig.widgets" class="mb-3">
+                    <scrm-sidebar-widget [config]="widget"
+                                         [context]="getViewContext()"
+                                         [context$]="store.context$"
+                                         [type]="widget.type">
+                    </scrm-sidebar-widget>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<!-- End List View Container Section -->

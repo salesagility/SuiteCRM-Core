@@ -2,12 +2,14 @@ import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 import {LineAction} from '@app-common/actions/line-action.model';
 import {ChartTypesMap} from '@app-common/containers/chart/chart.model';
+import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 
 export interface ListViewMeta {
     fields: ColumnDefinition[];
     bulkActions: BulkActionsMap;
     lineActions: LineAction[];
     chartTypes: ChartTypesMap;
+    sidebarWidgets?: WidgetMetadata[];
     filters: Filter[];
 }
 

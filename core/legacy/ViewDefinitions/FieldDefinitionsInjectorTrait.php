@@ -75,5 +75,4 @@ trait FieldDefinitionsInjectorTrait
 
         return $field;
     }
-
 }

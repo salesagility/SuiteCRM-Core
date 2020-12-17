@@ -9,7 +9,7 @@ import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {StatisticsQuery} from '@app-common/statistics/statistics.model';
-import {ViewContext} from "@app-common/views/view.model";
+import {ViewContext} from '@app-common/views/view.model';
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };
@@ -50,7 +50,6 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
     ngOnInit(): void {
 
-
         if (!this.context || !this.context.module) {
             this.messageLabelKey = 'LBL_CONFIG_BAD_CONTEXT';
             return;
@@ -64,6 +63,12 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         if (!this.config.options || !this.config.options.statistics || !this.config.options.statistics.length) {
             this.messageLabelKey = 'LBL_CONFIG_NO_STATISTICS_KEY';
             return;
+        }
+
+        if (this.context$) {
+            this.subs.push(this.context$.subscribe((context: ViewContext) => {
+                this.context = context;
+            }));
         }
 
         const statistics$: Observable<SingleValueStatisticsState>[] = [];
@@ -159,9 +164,9 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    getMetadataEntry(stat: SingleValueStatisticsState, name: string ): string {
+    getMetadataEntry(stat: SingleValueStatisticsState, name: string): string {
         const value = stat.statistic.metadata && stat.statistic.metadata[name];
-        if (value !== null && value !== undefined) {
+        if (value !== null && typeof value !== 'undefined') {
             return value;
         }
 

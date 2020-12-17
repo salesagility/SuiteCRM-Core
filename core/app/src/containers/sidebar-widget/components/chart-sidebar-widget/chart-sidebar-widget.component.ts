@@ -8,6 +8,7 @@ import {map, take, tap} from 'rxjs/operators';
 import {ChartDataSource} from '@app-common/containers/chart/chart.model';
 import {ChartDataStoreFactory} from '@store/chart-data/chart-data.store.factory';
 import {ChartDataState, ChartDataStore} from '@store/chart-data/chart-data.store';
+import {ViewContext} from '@app-common/views/view.model';
 
 interface ChartStatistic {
     key: string;
@@ -50,7 +51,7 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
     protected subs: Subscription[] = [];
 
 
-    constructor(protected language: LanguageStore, protected factory: ChartDataStoreFactory) {
+    constructor(public language: LanguageStore, protected factory: ChartDataStoreFactory) {
         super();
     }
 
@@ -61,8 +62,24 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
             return;
         }
 
+        if (this.context$) {
+            this.subs.push(this.context$.subscribe((context: ViewContext) => {
+                this.context = context;
+
+                Object.keys(this.charts).forEach(key => {
+                    const chart = this.charts[key];
+                    chart.store.context = context;
+                });
+            }));
+        }
+
         const options: ChartsWidgetOptions = this.config.options;
         const charts: ChartMetadata[] = options.charts;
+
+        if (options.defaultChart) {
+            this.selectedChart = options.defaultChart || '';
+        }
+
         this.setupCharts(charts);
         this.setHeaderTitle(options);
         this.reloadSelectedChart();
@@ -103,6 +120,10 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
         return statistics[this.selectedChart].dataSource;
     }
 
+    getKey(chart: ChartMetadata): string {
+        return chart.chartKey || chart.statisticsType || '';
+    }
+
     protected validateConfig(): boolean {
         if (!this.context || !this.context.module) {
             this.messageLabelKey = 'LBL_BAD_CONFIG_BAD_CONTEXT';
@@ -130,14 +151,14 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
 
         charts.forEach((chart: ChartMetadata) => {
 
-            const key = chart.chartKey || chart.statisticsType || '';
+            const key = this.getKey(chart);
 
             if (!key) {
                 return;
             }
 
             if (!this.selectedChart) {
-                this.selectedChart = key;
+                this.selectedChart = key || '';
                 this.chartType = chart.chartType;
             }
 
@@ -166,19 +187,25 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
             } as StatisticsQuery,
             false,
         );
+
+        this.charts[key].store.setDefaultOptions(chart.chartOptions);
     }
 
 
     protected setHeaderTitle(options: ChartsWidgetOptions): void {
-        if (!options.headerTitle) {
-            return;
+
+        if (this.config.labelKey) {
+            this.titleLabelKey = this.config.labelKey;
         }
 
-        if (!this.charts || !this.charts[this.selectedChart] || !this.charts[this.selectedChart].labelKey) {
-            return;
+        if (options.headerTitle) {
+            if (!this.charts || !this.charts[this.selectedChart] || !this.charts[this.selectedChart].labelKey) {
+                return;
+            }
+
+            this.titleLabelKey = this.charts[this.selectedChart].labelKey;
         }
 
-        this.titleLabelKey = this.charts[this.selectedChart].labelKey;
         this.title = this.language.getFieldLabel(this.titleLabelKey);
     }
 

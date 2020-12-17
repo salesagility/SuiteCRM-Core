@@ -1,0 +1,6 @@
+parameters:
+  module.listview.sidebar_widgets:
+    default:
+      widgets: []
+    modules:
+

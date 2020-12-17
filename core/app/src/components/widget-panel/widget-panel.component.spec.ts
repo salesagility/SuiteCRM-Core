@@ -11,8 +11,8 @@ import {of} from 'rxjs';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
-import {ListViewStore} from '@store/list-view/list-view.store';
-import {listviewStoreMock} from '@store/list-view/list-view.store.spec.mock';
+import {ListViewStore} from '@views/list/store/list-view/list-view.store';
+import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
 
 describe('WidgetPanelComponent', () => {
     let component: WidgetPanelComponent;

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartComponent} from '@components/chart/components/base-chart/base-chart.component';
-import {SingleSeries} from '@app-common/containers/chart/chart.model';
+import {SeriesResult, SingleSeries} from '@app-common/containers/chart/chart.model';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '@store/language/language.store';
 
@@ -15,7 +15,7 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
     view = [300, this.height];
     protected subs: Subscription[] = [];
 
-    constructor() {
+    constructor(public language: LanguageStore) {
         super();
     }
 
@@ -27,7 +27,7 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
         this.calculateView();
 
         this.subs.push(this.dataSource.getResults().subscribe(value => {
-            this.results = value.singleSeries;
+            this.parseResults(value);
             this.calculateHeightBasedOnResults();
             this.calculateView();
 
@@ -57,6 +57,25 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
             this.height = (Math.floor(this.results.length / perRow) * 200);
         } else {
             this.height = 50;
+        }
+    }
+
+    protected parseResults(value: SeriesResult): void {
+        this.results = [];
+
+        if (value.singleSeries && value.singleSeries.length) {
+
+            value.singleSeries.forEach(entry => {
+                const parsedValue = parseFloat('' + entry.value);
+                if (!parsedValue) {
+                    this.results.push(entry);
+                    return;
+                }
+                this.results.push({
+                    name: entry.name,
+                    value: parsedValue
+                });
+            });
         }
     }
 

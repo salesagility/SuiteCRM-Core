@@ -18,9 +18,9 @@ import {FilterUiModule} from '@components/filter/filter.module';
 import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
 import {TableModule} from '@components/table/table.module';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
-import {ListHeaderModule} from '@components/list-header/list-header.module';
-import {ListContainerModule} from '@components/list-container/list-container.module';
-import {ListModule} from '@views/list/list.module';
+import {ListHeaderModule} from '@views/list/components/list-header/list-header.module';
+import {ListContainerModule} from '@views/list/components/list-container/list-container.module';
+import {ListModule} from '@views/list/components/list-view/list.module';
 import {RecordModule} from '@views/record/components/record-view/record.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

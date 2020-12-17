@@ -5,6 +5,7 @@ import {deepClone} from '@base/app-common/utils/object-utils';
 import {Statistic, StatisticsMap, StatisticsQuery} from '@app-common/statistics/statistics.model';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
+import {ViewContext} from '@app-common/views/view.model';
 
 const initialState = {
     module: '',
@@ -47,6 +48,20 @@ export class StatisticsStore implements StateStore {
 
     clearAuthBased(): void {
         this.clear();
+    }
+
+    get context(): ViewContext {
+        return this.internalState.query.context;
+    }
+
+    set context(context: ViewContext) {
+        const query = deepClone(this.internalState.query);
+        query.context = context;
+
+        this.updateState({
+            ...this.internalState,
+            query
+        });
     }
 
     /**

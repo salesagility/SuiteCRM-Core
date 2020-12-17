@@ -281,7 +281,7 @@ export class MetadataStore implements StateStore {
         const entries = {
             bulkActions: 'bulkActions',
             lineActions: 'lineActions',
-            availableCharts: 'chartTypes',
+            sidebarWidgets: 'sidebarWidgets',
             availableFilters: 'filters'
         };
 

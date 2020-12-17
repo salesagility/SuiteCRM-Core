@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
-import {ListViewStore} from '@store/list-view/list-view.store';
+import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
 import {ButtonInterface} from '@components/button/button.model';
 import {deepClone} from '@base/app-common/utils/object-utils';

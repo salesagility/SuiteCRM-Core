@@ -78,6 +78,12 @@ export class StatisticsSidebarWidgetComponent extends BaseWidgetComponent implem
             return;
         }
 
+        if (this.context$) {
+            this.subs.push(this.context$.subscribe((context: ViewContext) => {
+                this.context = context;
+            }));
+        }
+
         this.options = this.config.options.sidebarStatistic;
 
         this.buildStatistics();
