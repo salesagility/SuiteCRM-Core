@@ -293,3 +293,13 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 .mobile-nav-close:hover svg polygon {
   fill: $white;
 }
+
+.nav-collapsed-items {
+  li {
+    a.dropdown-toggle {
+      &::after {
+        margin-left: 0.5em;
+      }
+    }
+  }
+}
