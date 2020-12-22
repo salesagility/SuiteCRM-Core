@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
-import {ApolloQueryResult} from 'apollo-client';
+import {ApolloQueryResult} from '@apollo/client/core';
 
 @Injectable({
     providedIn: 'root'

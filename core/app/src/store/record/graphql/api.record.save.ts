@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {Record} from '@app-common/record/record.model';
 import {map} from 'rxjs/operators';
-import {ApolloQueryResult} from 'apollo-client';
+import {ApolloQueryResult} from '@apollo/client/core';
 
 interface SaveInput {
     module: string;
@@ -42,14 +42,14 @@ export class RecordSaveGQL {
         const mutationOptions = {
             mutation: gql`
                 mutation saveRecord($input: saveRecordInput!) {
-                  saveRecord(input: $input) {
-                    record {
-                        attributes
-                        id
-                        _id
-                        module
+                    saveRecord(input: $input) {
+                        record {
+                            attributes
+                            id
+                            _id
+                            module
+                        }
                     }
-                  }
                 }
             `,
             variables: {

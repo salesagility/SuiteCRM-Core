@@ -2,10 +2,11 @@ import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import {Apollo, ApolloModule} from 'apollo-angular';
-import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import {onError} from 'apollo-link-error';
+import {Apollo} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {InMemoryCache} from '@apollo/client/core';
+import {onError} from '@apollo/link-error';
+import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -30,16 +31,15 @@ import {ErrorInterceptor} from '@services/auth/error.interceptor';
 import {AppManagerModule} from '../app-manager/app-manager.module';
 
 import {environment} from '../environments/environment';
-import {FetchPolicy} from 'apollo-client/core/watchQueryOptions';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 import {ImageModule} from '@components/image/image.module';
-import {AuthService} from '@services/auth/auth.service';
-import {GraphQLError} from 'graphql';
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
 import {AppInit} from '@app/app-initializer';
+import {AuthService} from '@services/auth/auth.service';
+import {GraphQLError} from 'graphql';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
@@ -50,9 +50,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     imports: [
         BrowserModule,
         HttpClientModule,
-        HttpClientModule,
-        ApolloModule,
-        HttpLinkModule,
         AppManagerModule,
         AppRoutingModule,
         FooterUiModule,
@@ -90,9 +87,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {
 
-        const uri = environment.graphqlApiUrl;
-        const cache = new InMemoryCache();
-
         const defaultOptions = {
             watchQuery: {
                 fetchPolicy: 'no-cache' as FetchPolicy
@@ -103,7 +97,7 @@ export class AppModule {
         };
 
         const http = httpLink.create({
-            uri,
+            uri: environment.graphqlApiUrl,
             withCredentials: true
         });
 
@@ -117,11 +111,10 @@ export class AppModule {
             }
         });
 
-
         apollo.create({
-            link: logoutLink.concat(http),
             defaultOptions,
-            cache
+            link: logoutLink.concat(http),
+            cache: new InMemoryCache()
         });
     }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
-import {ApolloQueryResult} from 'apollo-client';
+import {ApolloQueryResult} from '@apollo/client/core';
 import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
 import {map} from 'rxjs/operators';
 import {RecordList} from '@store/record-list/record-list.store';

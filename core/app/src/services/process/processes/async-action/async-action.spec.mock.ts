@@ -1,7 +1,7 @@
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {EntityMutationGQL} from '@services/api/graphql-api/api.record.create';
-import {FetchResult} from 'apollo-link';
+import {FetchResult} from '@apollo/client/core';
 import {ProcessService} from '@services/process/process.service';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {AsyncActionService} from '@services/process/processes/async-action/async-action';

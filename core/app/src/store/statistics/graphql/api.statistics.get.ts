@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {Statistic, StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
 import {map} from 'rxjs/operators';
-import {ApolloQueryResult} from 'apollo-client';
+import {ApolloQueryResult} from '@apollo/client/core';
 
 @Injectable({
     providedIn: 'root'
