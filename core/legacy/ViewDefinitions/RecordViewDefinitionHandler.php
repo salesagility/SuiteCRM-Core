@@ -8,8 +8,10 @@ use App\Legacy\LegacyScopeState;
 use App\Service\RecordActionDefinitionProviderInterface;
 use BeanFactory;
 use DetailView2;
+use EditView;
 use Psr\Log\LoggerInterface;
 use ViewDetail;
+use ViewEdit;
 use ViewFactory;
 
 class RecordViewDefinitionHandler extends LegacyHandler
@@ -96,7 +98,8 @@ class RecordViewDefinitionHandler extends LegacyHandler
         string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
 
         $metadata = [
             'templateMeta' => [],
@@ -106,13 +109,14 @@ class RecordViewDefinitionHandler extends LegacyHandler
             'panels' => [],
         ];
 
-        $viewDefs = $this->getDetailViewDefs($legacyModuleName);
+        $detailViewDefs = $this->getDetailViewDefs($legacyModuleName);
+        $editViewDefs = $this->getEditViewDefs($legacyModuleName);
         $vardefs = $fieldDefinition->getVardef();
 
-        $this->addTemplateMeta($viewDefs, $metadata);
-        $this->addTopWidgetConfig($viewDefs, $metadata);
-        $this->addSidebarWidgetConfig($viewDefs, $metadata);
-        $this->addPanelDefinitions($viewDefs, $vardefs, $metadata);
+        $this->addTemplateMeta($detailViewDefs, $metadata);
+        $this->addTopWidgetConfig($detailViewDefs, $metadata);
+        $this->addSidebarWidgetConfig($detailViewDefs, $metadata);
+        $this->addPanelDefinitions($detailViewDefs, $editViewDefs, $vardefs, $metadata);
         $this->addActionConfig($module, $metadata);
 
         return $metadata;
@@ -137,7 +141,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $view->module = $module;
 
-        $this->loadMetadata($view);
+        $this->loadDetailViewMetadata($view);
 
         return $view->dv->defs;
     }
@@ -145,7 +149,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
     /**
      * @param ViewDetail $view
      */
-    protected function loadMetadata(ViewDetail $view): void
+    protected function loadDetailViewMetadata(ViewDetail $view): void
     {
         /* @noinspection PhpIncludeInspection */
         require_once 'include/DetailView/DetailView2.php';
@@ -154,6 +158,43 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $view->dv->ss =& $view->ss;
         $view->dv->setup($view->module, $view->bean, $metadataFile,
             get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
+    }
+
+    /**
+     * Get detail view defs from legacy
+     * @param string $module
+     * @return array
+     */
+    protected function getEditViewDefs(string $module): array
+    {
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/MVC/View/ViewFactory.php';
+
+        /* @var ViewEdit $view */
+        $view = ViewFactory::loadView(
+            'edit',
+            $module,
+            BeanFactory::newBean($module)
+        );
+
+        $view->module = $module;
+
+        $this->loadEditViewMetadata($view);
+
+        return $view->ev->defs;
+    }
+
+    /**
+     * @param ViewEdit $view
+     */
+    protected function loadEditViewMetadata(ViewEdit $view): void
+    {
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/EditView/EditView2.php';
+        $metadataFile = $view->getMetaDataFile();
+        $view->ev = new EditView();
+        $view->ev->ss =& $view->ss;
+        $view->ev->setup($view->module, $view->bean, $metadataFile);
     }
 
     /**
@@ -191,14 +232,20 @@ class RecordViewDefinitionHandler extends LegacyHandler
     }
 
     /**
-     * @param array $viewDefs
+     * @param array $detailViewDefs
+     * @param array $editViewDefs
      * @param array|null $vardefs
      * @param array $metadata
      */
-    protected function addPanelDefinitions(array $viewDefs, ?array &$vardefs, array &$metadata): void
-    {
-        $viewDefs = $viewDefs ?? [];
-        $panels = $viewDefs['panels'] ?? [];
+    protected function addPanelDefinitions(
+        array $detailViewDefs,
+        array $editViewDefs,
+        ?array &$vardefs,
+        array &$metadata
+    ): void {
+        $detailViewDefs = $detailViewDefs ?? [];
+        $panels = $detailViewDefs['panels'] ?? [];
+        $editViewFields = $this->getCellFields($editViewDefs);
 
         foreach ($panels as $panelKey => $panel) {
             $panelRows = [];
@@ -209,7 +256,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
                 ];
 
                 $definition = $this->getBaseFieldCellDefinition($panel);
-                $this->addCell($newRow, $definition, $vardefs);
+                $this->addCell($newRow, $definition, $vardefs, $editViewFields);
                 $panelRows[] = $newRow;
 
                 // to append to the end
@@ -228,7 +275,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
                 if (is_string($row)) {
                     $definition = $this->getBaseFieldCellDefinition($row);
-                    $this->addCell($newRow, $definition, $vardefs);
+                    $this->addCell($newRow, $definition, $vardefs, $editViewFields);
                     $panelRows[] = $newRow;
 
                     continue;
@@ -243,7 +290,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
                     if (is_string($cell) && isset($row['name'])) {
                         $definition = $row;
-                        $this->addCell($newRow, $definition, $vardefs);
+                        $this->addCell($newRow, $definition, $vardefs, $editViewFields);
                         continue;
                     }
 
@@ -251,7 +298,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
                         $definition = $this->getBaseFieldCellDefinition($cell);
                     }
 
-                    $this->addCell($newRow, $definition, $vardefs);
+                    $this->addCell($newRow, $definition, $vardefs, $editViewFields);
                 }
                 $panelRows[] = $newRow;
             }
@@ -262,6 +309,60 @@ class RecordViewDefinitionHandler extends LegacyHandler
                 'rows' => $panelRows
             ];
         }
+    }
+
+    /**
+     * @param array $viewDefs
+     * @return array
+     */
+    protected function getCellFields(array $viewDefs): array
+    {
+        $panels = $viewDefs['panels'] ?? [];
+        $cells = [];
+
+        foreach ($panels as $panelKey => $panel) {
+
+            if (is_string($panel)) {
+
+                $definition = $this->getBaseFieldCellDefinition($panel);
+                $cells[$definition['name']] = $definition;
+
+                continue;
+            }
+
+            foreach ($panel as $row) {
+
+                if (is_string($row)) {
+                    $definition = $this->getBaseFieldCellDefinition($row);
+                    $cells[$definition['name']] = $definition;
+
+                    continue;
+                }
+
+                foreach ($row as $cell) {
+                    $definition = $cell;
+
+                    if (empty($cell)) {
+                        continue;
+                    }
+
+                    if (is_string($cell) && isset($row['name'])) {
+                        $definition = $row;
+                        $cells[$definition['name']] = $definition;
+                        continue;
+                    }
+
+                    if (is_string($cell)) {
+                        $definition = $this->getBaseFieldCellDefinition($cell);
+                        $cells[$definition['name']] = $definition;
+                    }
+
+                    $cells[$definition['name']] = $definition;
+                }
+            }
+        }
+
+        return $cells;
     }
 
     /**
@@ -280,8 +381,9 @@ class RecordViewDefinitionHandler extends LegacyHandler
      * @param $newRow
      * @param $definition
      * @param $vardefs
+     * @param array $editViewFields
      */
-    protected function addCell(&$newRow, $definition, &$vardefs): void
+    protected function addCell(&$newRow, $definition, &$vardefs, array $editViewFields): void
     {
         $fieldName = $definition['name'] ?? '';
         if (empty($fieldName)) {
@@ -296,6 +398,10 @@ class RecordViewDefinitionHandler extends LegacyHandler
         }
 
         $definition = $this->buildFieldCell($definition, $vardefs);
+
+        $definition = $this->mergeDisplayParams($definition);
+        $definition = $this->mergeEditViewDefs($definition, $editViewFields);
+
         $newRow['cols'][] = $definition;
     }
 
@@ -320,4 +426,57 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $metadata['actions'] = array_values($actions);
     }
+
+    /**
+     * @param $definition
+     * @param array $editViewFields
+     * @return mixed
+     */
+    protected function mergeEditViewDefs($definition, array $editViewFields)
+    {
+        if (isset($editViewFields[$definition['name']])) {
+            $fieldDefinitions = $definition['fieldDefinition'] ?? [];
+            $editViewDefinition = $editViewFields[$definition['name']] ?? [];
+            $toMerge = [
+                'required',
+                'readOnly'
+            ];
+
+            foreach ($toMerge as $key) {
+                $attribute = $editViewDefinition['displayParams'][$key] ?? null;
+                if ($attribute !== null) {
+                    $fieldDefinitions[$key] = $attribute;
+                }
+            }
+
+            $definition['fieldDefinition'] = $fieldDefinitions;
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param $definition
+     * @return mixed
+     */
+    protected function mergeDisplayParams($definition)
+    {
+        $fieldDefinitions = $definition['fieldDefinition'] ?? [];
+        $toMerge = [
+            'required',
+            'readOnly'
+        ];
+
+        foreach ($toMerge as $key) {
+            $attribute = $definition['displayParams'][$key] ?? null;
+            if ($attribute !== null) {
+                $fieldDefinitions[$key] = $attribute;
+            }
+        }
+
+        $definition['fieldDefinition'] = $fieldDefinitions;
+
+        return $definition;
+    }
+
 }
