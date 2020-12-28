@@ -124,7 +124,8 @@ export const languageMockData = {
             LBL_CANCEL: 'Cancel',
             LBL_OUT_OF: 'Out of',
             LBL_POSITION: 'Position',
-            LBL_SIZE_ANALYSIS: 'Size Analysis'
+            LBL_SIZE_ANALYSIS: 'Size Analysis',
+            LBL_AMOUNT: 'Amount'
         },
     }
 };

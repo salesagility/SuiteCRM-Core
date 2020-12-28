@@ -13,3 +13,11 @@ export const isFalse = (value: any): boolean => (value === false || value === 'f
  * @returns {boolean} isFalse
  */
 export const isTrue = (value: any): boolean => (value === true || value === 'true');
+
+/**
+ * Check if value is null or undefined
+ *
+ * @param {any} value to check
+ * @returns {boolean} isVoid
+ */
+export const isVoid = (value: any): boolean => (value === null || typeof value === 'undefined');
