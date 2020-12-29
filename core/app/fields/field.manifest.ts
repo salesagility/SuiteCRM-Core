@@ -115,10 +115,10 @@ export const viewFieldsMap = {
     'phone.detail': PhoneDetailFieldComponent,
     'date.list': DateDetailFieldComponent,
     'date.detail': DateDetailFieldComponent,
-    'date.edit': DateEditFieldComponent,
+    // 'date.edit': DateEditFieldComponent, To enable when date component is fixed
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
-    'datetime.edit': DateTimeEditFieldComponent,
+    // 'datetime.edit': DateTimeEditFieldComponent, To enable when datetime component is fixed
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,
