@@ -6,6 +6,14 @@ import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {AsyncValidatorInterface} from '@services/record/validation/aync-validator.Interface';
 import {OverridableMap} from '@app-common/types/OverridableMap';
 import {RequiredValidator} from '@services/record/validation/validators/required.validator';
+import {CurrencyValidator} from '@services/record/validation/validators/currency.validator';
+import {DateValidator} from '@services/record/validation/validators/date.validator';
+import {DateTimeValidator} from '@services/record/validation/validators/datetime.validator';
+import {FloatValidator} from '@services/record/validation/validators/float.validator';
+import {IntValidator} from '@services/record/validation/validators/int.validator';
+import {EmailValidator} from '@services/record/validation/validators/email.validator';
+import {PhoneValidator} from '@services/record/validation/validators/phone.validator';
+import {RangeValidator} from '@services/record/validation/validators/range.validator';
 
 export interface ValidationManagerInterface {
     registerValidator(module: string, key: string, validator: ValidatorInterface): void;
@@ -30,12 +38,28 @@ export class ValidationManager implements ValidationManagerInterface {
 
     constructor(
         protected requiredValidator: RequiredValidator,
+        protected rangeValidator: RangeValidator,
+        protected currencyValidator: CurrencyValidator,
+        protected dateValidator: DateValidator,
+        protected datetimeValidator: DateTimeValidator,
+        protected emailValidator: EmailValidator,
+        protected floatValidator: FloatValidator,
+        protected intValidator: IntValidator,
+        protected phoneValidator: PhoneValidator,
     ) {
 
         this.validators = new OverridableMap<ValidatorInterface>();
         this.asyncValidators = new OverridableMap<AsyncValidatorInterface>();
 
         this.validators.addEntry('default', 'required', requiredValidator);
+        this.validators.addEntry('default', 'range', rangeValidator);
+        this.validators.addEntry('default', 'currency', currencyValidator);
+        this.validators.addEntry('default', 'date', dateValidator);
+        this.validators.addEntry('default', 'datetime', datetimeValidator);
+        this.validators.addEntry('default', 'email', emailValidator);
+        this.validators.addEntry('default', 'float', floatValidator);
+        this.validators.addEntry('default', 'int', intValidator);
+        this.validators.addEntry('default', 'phone', phoneValidator);
     }
 
     public registerValidator(module: string, key: string, validator: ValidatorInterface): void {
