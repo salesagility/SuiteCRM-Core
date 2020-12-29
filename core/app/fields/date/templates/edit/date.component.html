@@ -3,8 +3,9 @@
         <input ngbDatepicker
                [ngClass]="klass"
                [placeholder]="getDateFormat().toLowerCase()"
-               [(ngModel)]="dateModel"
                (navigate)="date = $event.next"
+               [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+               [formControl]="field.formControl"
                #datepicker="ngbDatepicker">
         <scrm-button [config]="getOpenButton(datepicker)">
         </scrm-button>

@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
 import {LanguageStore} from '@store/language/language.store';
 import {TagInputComponent} from 'ngx-chips';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Component({
     selector: 'scrm-enum-edit',
@@ -12,8 +13,8 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
 
     @ViewChild('tag') tag: TagInputComponent;
 
-    constructor(protected languages: LanguageStore) {
-        super(languages);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
+        super(languages, typeFormatter);
     }
 
     ngOnInit(): void {
@@ -23,10 +24,12 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
     public onAdd(item): void {
         if (item && item.value) {
             this.field.value = item.value;
+            this.field.formControl.setValue(item.value);
             return;
         }
 
         this.field.value = '';
+        this.field.formControl.setValue('');
         this.selectedValues = [];
 
         return;
@@ -34,6 +37,7 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
 
     public onRemove(): void {
         this.field.value = '';
+        this.field.formControl.setValue('');
         setTimeout(() => {
             this.tag.focus(true, true);
             this.tag.dropdown.show();

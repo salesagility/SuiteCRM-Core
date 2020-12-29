@@ -3,6 +3,7 @@ import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
 import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
+import {fieldManagerMock} from '@services/record/field/field.manager.spec.mock';
 
 class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
     constructor() {
@@ -51,4 +52,5 @@ class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
 
 export const topWidgetStatisticsFactoryMock = new SingleValueStatisticsStoreFactory(
     new StatisticsFetchGQLSpy(),
+    fieldManagerMock
 );

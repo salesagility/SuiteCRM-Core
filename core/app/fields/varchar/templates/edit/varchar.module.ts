@@ -3,7 +3,8 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {VarcharEditFieldComponent} from './varchar.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {LabelModule} from '@components/label/label.module';
 
 @NgModule({
     declarations: [VarcharEditFieldComponent],
@@ -11,7 +12,9 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         AppManagerModule.forChild(VarcharEditFieldComponent),
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule,
+        LabelModule
     ]
 })
 export class VarcharEditFieldModule {

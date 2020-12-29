@@ -1,10 +1,11 @@
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
 import {LanguageStore} from '@store/language/language.store';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 export class BaseMultiEnumComponent extends BaseEnumComponent {
 
-    constructor(protected languages: LanguageStore) {
-        super(languages);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
+        super(languages, typeFormatter);
     }
 
     protected initValue(): void {

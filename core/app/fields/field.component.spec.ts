@@ -14,12 +14,18 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
+import {Field} from '@app-common/record/field.model';
+
+const buildField = (field: Field): Field => {
+    field.formControl = new FormControl(field.value);
+    return field;
+};
 
 @Component({
     selector: 'field-test-host-component',
@@ -35,36 +41,56 @@ import {UserPreferenceMockStore} from '@store/user-preference/user-preference.st
 class FieldTestHostComponent {
     value = '10';
     fields = [
-        {field: {type: 'varchar', value: 'My Varchar'}, mode: 'detail', expected: 'My Varchar'},
-        {field: {type: 'varchar', value: 'My Varchar'}, mode: 'list', expected: 'My Varchar'},
-        {field: {type: 'varchar', value: 'My Varchar'}, mode: 'edit', expected: 'My Varchar'},
-        {field: {type: 'varchar', criteria: {values: ['test'], operator: '='}}, mode: 'filter', expected: 'test'},
-        {field: {type: 'int', value: '10'}, mode: 'detail', expected: '10'},
-        {field: {type: 'int', value: '10'}, mode: 'list', expected: '10'},
-        {field: {type: 'float', value: '1000.5'}, mode: 'detail', expected: '1,000.5'},
-        {field: {type: 'float', value: '1000.5'}, mode: 'list', expected: '1,000.5'},
-        {field: {type: 'phone', value: '+44 1111 123456'}, mode: 'detail', expected: '+44 1111 123456'},
-        {field: {type: 'phone', value: '+44 1111 123456'}, mode: 'list', expected: '+44 1111 123456'},
-        {field: {type: 'date', value: '2020-05-15'}, mode: 'detail', expected: '15.05.2020'},
-        {field: {type: 'date', value: '2020-05-16'}, mode: 'list', expected: '16.05.2020'},
-        {field: {type: 'datetime', value: '2020-05-14 23:11:01'}, mode: 'detail', expected: '14.05.2020 23.11.01'},
-        {field: {type: 'datetime', value: '2020-05-13 23:12:02'}, mode: 'list', expected: '13.05.2020 23.12.02'},
-        {field: {type: 'url', value: 'https://suitecrm.com/'}, mode: 'detail', expected: 'https://suitecrm.com/'},
-        {field: {type: 'url', value: 'https://suitecrm.com/'}, mode: 'list', expected: 'https://suitecrm.com/'},
-        {field: {type: 'currency', value: '1000.5'}, mode: 'detail', expected: '£1,000.5'},
-        {field: {type: 'currency', value: '1000.5'}, mode: 'list', expected: '£1,000.5'},
-        {field: {type: 'text', value: 'My Text'}, mode: 'detail', expected: 'My Text'},
+        {field: buildField({type: 'varchar', value: 'My Varchar'}), mode: 'detail', expected: 'My Varchar'},
+        {field: buildField({type: 'varchar', value: 'My Varchar'}), mode: 'list', expected: 'My Varchar'},
+        {field: buildField({type: 'varchar', value: 'My Varchar'}), mode: 'edit', expected: 'My Varchar'},
         {
-            field: {
+            field: buildField({type: 'varchar', criteria: {values: ['test'], operator: '='}}),
+            mode: 'filter',
+            expected: 'test'
+        },
+        {field: buildField({type: 'int', value: '10'}), mode: 'detail', expected: '10'},
+        {field: buildField({type: 'int', value: '10'}), mode: 'list', expected: '10'},
+        {field: buildField({type: 'float', value: '1000.5'}), mode: 'detail', expected: '1,000.5'},
+        {field: buildField({type: 'float', value: '1000.5'}), mode: 'list', expected: '1,000.5'},
+        {field: buildField({type: 'phone', value: '+44 1111 123456'}), mode: 'detail', expected: '+44 1111 123456'},
+        {field: buildField({type: 'phone', value: '+44 1111 123456'}), mode: 'list', expected: '+44 1111 123456'},
+        {field: buildField({type: 'date', value: '2020-05-15'}), mode: 'detail', expected: '15.05.2020'},
+        {field: buildField({type: 'date', value: '2020-05-16'}), mode: 'list', expected: '16.05.2020'},
+        {
+            field: buildField({type: 'datetime', value: '2020-05-14 23:11:01'}),
+            mode: 'detail',
+            expected: '14.05.2020 23.11.01'
+        },
+        {
+            field: buildField({type: 'datetime', value: '2020-05-13 23:12:02'}),
+            mode: 'list',
+            expected: '13.05.2020 23.12.02'
+        },
+        {
+            field: buildField({type: 'url', value: 'https://suitecrm.com/'}),
+            mode: 'detail',
+            expected: 'https://suitecrm.com/'
+        },
+        {
+            field: buildField({type: 'url', value: 'https://suitecrm.com/'}),
+            mode: 'list',
+            expected: 'https://suitecrm.com/'
+        },
+        {field: buildField({type: 'currency', value: '1000.5'}), mode: 'detail', expected: '£1,000.5'},
+        {field: buildField({type: 'currency', value: '1000.5'}), mode: 'list', expected: '£1,000.5'},
+        {field: buildField({type: 'text', value: 'My Text'}), mode: 'detail', expected: 'My Text'},
+        {
+            field: buildField({
                 type: 'relate', definition: {
                     module: 'Contacts',
                     // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
                     id_name: 'contact_id'
                 }, value: 'Related Contact'
-            }, mode: 'detail', expected: 'Related Contact'
+            }), mode: 'detail', expected: 'Related Contact'
         },
         {
-            field: {type: 'fullname', value: 'salutation first_name last_name'},
+            field: buildField({type: 'fullname', value: 'salutation first_name last_name'}),
             mode: 'detail',
             expected: 'User Test Name',
             record: {
@@ -81,30 +107,30 @@ class FieldTestHostComponent {
             },
         },
         {
-            field: {type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}},
+            field: buildField({type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}}),
             mode: 'list',
             expected: 'Customer'
         },
         {
-            field: {type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}},
+            field: buildField({type: 'enum', value: '_customer', definition: {options: 'account_type_dom'}}),
             mode: 'detail',
             expected: 'Customer'
         },
         {
-            field: {
+            field: buildField({
                 type: 'multienum',
                 valueList: ['_customer', '_reseller'],
                 definition: {options: 'account_type_dom'}
-            },
+            }),
             mode: 'list',
             expected: 'Customer'
         },
         {
-            field: {
+            field: buildField({
                 type: 'multienum',
                 valueList: ['_customer', '_reseller'],
                 definition: {options: 'account_type_dom'}
-            },
+            }),
             mode: 'detail',
             expected: 'Customer'
         },

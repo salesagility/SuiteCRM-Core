@@ -1,5 +1,6 @@
 import {BaseFieldComponent} from '../base-field.component';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 export class BaseDateTimeComponent extends BaseFieldComponent {
 
@@ -7,8 +8,9 @@ export class BaseDateTimeComponent extends BaseFieldComponent {
 
     constructor(
         protected formatter: DatetimeFormatter,
+        protected typeFormatter: DataTypeFormatter
     ) {
-        super();
+        super(typeFormatter);
     }
 
     getDateFormat(): string {

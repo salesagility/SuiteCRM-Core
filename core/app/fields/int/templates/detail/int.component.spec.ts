@@ -8,6 +8,7 @@ import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
 import {Field} from '@app-common/record/field.model';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
+import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ describe('IntDetailFieldComponent', () => {
         dec_sep: '.',
     });
     const mockStore = new UserPreferenceMockStore(preferences);
+    const mockNumberFormatter = new NumberFormatter(mockStore, 'en-US');
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     beforeEach(async(() => {
@@ -43,8 +45,10 @@ describe('IntDetailFieldComponent', () => {
             ],
             imports: [],
             providers: [
+                {provide: UserPreferenceStore, useValue: mockStore},
                 {
-                    provide: UserPreferenceStore, useValue: mockStore
+                    provide: CurrencyFormatter,
+                    useValue: new CurrencyFormatter(mockStore, mockNumberFormatter, 'en_us')
                 },
                 {
                     provide: SystemConfigStore, useValue: {
@@ -64,9 +68,7 @@ describe('IntDetailFieldComponent', () => {
                         })
                     }
                 },
-                {
-                    provide: NumberFormatter, useValue: new NumberFormatter(mockStore, 'en_us')
-                }
+                {provide: NumberFormatter, useValue: mockNumberFormatter}
             ],
         }).compileComponents();
         /* eslint-enable camelcase,@typescript-eslint/camelcase */

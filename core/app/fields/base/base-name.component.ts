@@ -1,11 +1,12 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Field} from '@app-common/record/field.model';
 import {Record} from '@app-common/record/record.model';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 export class BaseNameComponent extends BaseFieldComponent {
 
-    constructor() {
-        super();
+    constructor(protected typeFormatter: DataTypeFormatter) {
+        super(typeFormatter);
     }
 
     getNameField(field: Field, record: Record): string {

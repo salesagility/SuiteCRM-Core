@@ -10,7 +10,8 @@ import {
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
 import {StatisticsState, StatisticsStore} from '@store/statistics/statistics.store';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {Field, FieldManager} from '@app-common/record/field.model';
+import {Field} from '@app-common/record/field.model';
+import {FieldManager} from '@services/record/field/field.manager';
 
 const initialState = {
     module: '',
@@ -38,6 +39,7 @@ export class SingleValueStatisticsStore extends StatisticsStore {
 
     constructor(
         protected fetchGQL: StatisticsFetchGQL,
+        protected fieldManager: FieldManager
     ) {
         super(fetchGQL);
         this.state$ = this.store.asObservable();
@@ -51,7 +53,7 @@ export class SingleValueStatisticsStore extends StatisticsStore {
             return;
         }
 
-        const field = FieldManager.buildShallowField(statistic.metadata.dataType, statistic.data.value);
+        const field = this.fieldManager.buildShallowField(statistic.metadata.dataType, statistic.data.value);
 
         field.metadata = {
             digits: 0

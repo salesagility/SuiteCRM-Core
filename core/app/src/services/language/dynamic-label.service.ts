@@ -74,8 +74,6 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
             return template;
         }
 
-        console.log(matches);
-
         let parsedTemplate = template;
 
         const module = (context && context.module) || '';

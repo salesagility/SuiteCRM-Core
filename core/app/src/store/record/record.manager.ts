@@ -1,13 +1,15 @@
 import {Record} from '@app-common/record/record.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
-import {catchError, map, shareReplay, tap} from 'rxjs/operators';
+import {catchError, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {Field, FieldManager, FieldMap} from '@app-common/record/field.model';
+import {Field, FieldMap} from '@app-common/record/field.model';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {MessageService} from '@services/message/message.service';
+import {AbstractControl, FormGroup} from '@angular/forms';
+import {FieldManager} from '@services/record/field/field.manager';
 
 const initialState = {
     id: '',
@@ -42,11 +44,12 @@ export class RecordManager {
         protected definitions$: Observable<ViewFieldDefinition[]>,
         protected recordSaveGQL: RecordSaveGQL,
         protected recordFetchGQL: RecordFetchGQL,
-        protected message: MessageService
+        protected message: MessageService,
+        protected fieldManager: FieldManager
     ) {
         this.state$ = this.store.asObservable().pipe(
             tap(record => {
-                this.updateStaging(deepClone(record));
+                this.updateStaging(record);
             })
         );
         this.staging$ = this.staging.asObservable();
@@ -107,8 +110,19 @@ export class RecordManager {
         );
     }
 
+    validate(): Observable<boolean> {
+
+        this.stagingState.formGroup.markAllAsTouched();
+        return this.stagingState.formGroup.statusChanges.pipe(
+            startWith(this.stagingState.formGroup.status),
+            filter(status => status !== 'PENDING'),
+            take(1),
+            map(status => status === 'VALID')
+        );
+    }
+
     resetStaging(): void {
-        this.updateStaging(deepClone(this.internalState));
+        this.updateStaging(this.internalState);
     }
 
     destroy(): void {
@@ -162,13 +176,18 @@ export class RecordManager {
      */
     protected initFields(record: Record, viewFieldDefinitions: ViewFieldDefinition[]): FieldMap {
         const fields = {} as FieldMap;
+        const formControls = {} as { [key: string]: AbstractControl };
+
 
         viewFieldDefinitions.forEach(viewField => {
             if (!viewField || !viewField.name) {
                 return;
             }
             fields[viewField.name] = this.buildField(viewField, record, this.language);
+            formControls[viewField.name] = fields[viewField.name].formControl;
         });
+
+        record.formGroup = new FormGroup(formControls);
 
         return fields;
     }
@@ -182,7 +201,7 @@ export class RecordManager {
      * @returns {object} field
      */
     protected buildField(viewField: ViewFieldDefinition, record: Record, language: LanguageStore): Field {
-        return FieldManager.buildField(record, viewField, language);
+        return this.fieldManager.buildField(record, viewField, language);
     }
 
     /**
@@ -200,7 +219,17 @@ export class RecordManager {
      * @param {object} state to set
      */
     protected updateStaging(state: Record): void {
-        this.staging.next(this.stagingState = state);
+
+        const shallowCopy = {...state};
+        shallowCopy.formGroup = null;
+        shallowCopy.fields = null;
+        const newState = deepClone(shallowCopy);
+        if (newState.module && this.definitions && this.definitions.length > 0) {
+            newState.fields = this.initFields(newState, this.definitions);
+        }
+
+
+        this.staging.next(this.stagingState = newState);
     }
 
     /**

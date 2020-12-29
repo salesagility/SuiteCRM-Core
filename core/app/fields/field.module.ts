@@ -4,6 +4,8 @@ import {FieldComponent} from './field.component';
 import {DynamicModule} from 'ng-dynamic-component';
 import {fieldComponents, fieldModules} from './field.manifest';
 import {RouterModule} from '@angular/router';
+import {LabelModule} from '@components/label/label.module';
+import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module';
 
 @NgModule({
     declarations: [
@@ -16,7 +18,9 @@ import {RouterModule} from '@angular/router';
         ...fieldModules,
         CommonModule,
         DynamicModule.withComponents(fieldComponents),
-        RouterModule
+        RouterModule,
+        LabelModule,
+        DynamicLabelModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

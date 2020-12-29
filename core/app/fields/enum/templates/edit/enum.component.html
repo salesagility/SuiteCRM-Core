@@ -5,6 +5,8 @@
            [identifyBy]="'value'"
            [placeholder]="getPlaceholderLabel()"
            [secondaryPlaceholder]="getPlaceholderLabel()"
+           [class]="getInvalidClass()"
+           [inputClass]="getInvalidClass()"
            maxItems="1"
            #tag
            (onAdd)="onAdd($event)"

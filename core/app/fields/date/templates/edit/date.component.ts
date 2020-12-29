@@ -1,10 +1,11 @@
-import {Component,} from '@angular/core';
+import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeAdapter} from '@fields/base/datetime/datetime-adapter.service';
 import {DatetimeParserFormatter} from '@fields/base/datetime/datetime-parser-formatter.service';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
 import {ButtonInterface} from '@components/button/button.model';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Component({
     selector: 'scrm-date-edit',
@@ -15,7 +16,7 @@ import {ButtonInterface} from '@components/button/button.model';
         {provide: NgbDateParserFormatter, useClass: DatetimeParserFormatter}
     ]
 })
-export class DateEditFieldComponent extends BaseDateTimeComponent{
+export class DateEditFieldComponent extends BaseDateTimeComponent implements OnInit, OnDestroy {
 
     date: {
         year: number;
@@ -24,21 +25,18 @@ export class DateEditFieldComponent extends BaseDateTimeComponent{
 
     constructor(
         protected formatter: DatetimeFormatter,
-        protected dateAdapter: NgbDateAdapter<string>
+        protected dateAdapter: NgbDateAdapter<string>,
+        protected typeFormatter: DataTypeFormatter
     ) {
-        super(formatter);
+        super(formatter, typeFormatter);
     }
 
-    get dateModel(): string {
-        return this.field.value;
+    ngOnInit(): void {
+        this.subscribeValueChanges();
     }
 
-    set dateModel(newValue: string) {
-        if (!newValue) {
-            this.field.value = '';
-            return;
-        }
-        this.field.value = newValue;
+    ngOnDestroy(): void {
+        this.unsubscribeAll();
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {

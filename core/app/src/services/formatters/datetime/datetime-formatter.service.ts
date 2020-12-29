@@ -83,11 +83,21 @@ export class DatetimeFormatter implements Formatter {
     }
 
     toUserFormat(dateString: string): string {
-        return formatDate(dateString, this.getDateFormat(), this.locale);
+        return formatDate(dateString, this.getDateTimeFormat(), this.locale);
     }
 
     toInternalFormat(dateString: string): string {
-        return formatDate(dateString, this.getInternalDateFormat(), this.locale);
+        if (!dateString) {
+            return '';
+        }
+
+        const dateTime = DateTime.fromFormat(dateString, this.getInternalDateTimeFormat());
+
+        if (dateTime.isValid) {
+            return '';
+        }
+
+        return formatDate(dateString, this.getInternalDateTimeFormat(), this.locale);
     }
 
     fromUserDate(datetime: string): NgbDateStruct {
@@ -103,5 +113,10 @@ export class DatetimeFormatter implements Formatter {
             month: parseInt(date[1], 10),
             year: parseInt(date[0], 10)
         };
+    }
+
+    validateUserFormat(dateString: string): boolean {
+        const dateTime = DateTime.fromFormat(dateString, this.getInternalDateTimeFormat());
+        return !dateTime.isValid;
     }
 }

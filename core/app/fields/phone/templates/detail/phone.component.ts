@@ -1,5 +1,6 @@
 import {Component,} from '@angular/core';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Component({
     selector: 'scrm-phone-detail',
@@ -7,6 +8,10 @@ import {BaseFieldComponent} from '@fields/base/base-field.component';
     styleUrls: []
 })
 export class PhoneDetailFieldComponent extends BaseFieldComponent {
+
+    constructor(protected typeFormatter: DataTypeFormatter) {
+        super(typeFormatter);
+    }
 
     getTelLink(phone: string): string {
         if (!phone) {

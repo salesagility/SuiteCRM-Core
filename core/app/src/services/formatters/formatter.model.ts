@@ -4,4 +4,6 @@ export interface FormatOptions {
 
 export interface Formatter {
     toUserFormat(value: string, options?: FormatOptions): string;
+
+    toInternalFormat(value: string): string;
 }

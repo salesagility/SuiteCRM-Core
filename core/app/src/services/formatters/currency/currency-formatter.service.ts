@@ -22,6 +22,29 @@ export class CurrencyFormatter implements Formatter {
     ) {
     }
 
+    toUserFormat(value: string, options: FormatOptions = null): string {
+        const symbol = (options && options.symbol) || this.getSymbol();
+        const code = (options && options.code) || this.getCode();
+        let digits = null;
+        if (options && options.digits !== null && isFinite(options.digits)) {
+            digits = options.digits;
+        }
+
+        const digitsInfo = this.getDigitsInfo(digits);
+
+        const formatted = formatCurrency(Number(value), this.locale, symbol, code, digitsInfo);
+        return this.replaceSeparators(formatted);
+    }
+
+    toInternalFormat(value: string): string {
+        if (!value) {
+            return '';
+        }
+
+        const transformed = value.replace(this.getSymbol(), '');
+        return this.numberFormatter.toInternalFormat(transformed);
+    }
+
     getCurrencyFormat(): CurrencyFormat {
         const currencyFormat = this.preferences.getUserPreference('currency');
 
@@ -40,21 +63,6 @@ export class CurrencyFormatter implements Formatter {
             symbol: '$'
         };
     }
-
-    toUserFormat(value: string, options: FormatOptions = null): string {
-        const symbol = (options && options.symbol) || this.getSymbol();
-        const code = (options && options.code) || this.getCode();
-        let digits = null;
-        if (options && options.digits !== null && isFinite(options.digits)) {
-            digits = options.digits;
-        }
-
-        const digitsInfo = this.getDigitsInfo(digits);
-
-        const formatted = formatCurrency(Number(value), this.locale, symbol, code, digitsInfo);
-        return this.replaceSeparators(formatted);
-    }
-
 
     getCode(): string {
         return this.getCurrencyFormat().iso4217;

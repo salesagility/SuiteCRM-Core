@@ -3,6 +3,7 @@ import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '@store/la
 import {OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Option} from '@app-common/record/field.model';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -13,8 +14,8 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     labels: LanguageStringMap;
     protected subs: Subscription[] = [];
 
-    constructor(protected languages: LanguageStore) {
-        super();
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
+        super(typeFormatter);
     }
 
 
@@ -46,6 +47,13 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    getInvalidClass(): string {
+        if (this.field.formControl && this.field.formControl.invalid && this.field.formControl.touched) {
+            return 'is-invalid';
+        }
+        return '';
     }
 
     protected buildProvidedOptions(options: Option[]): void {
@@ -99,5 +107,4 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             });
         }
     }
-
 }

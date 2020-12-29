@@ -4,6 +4,7 @@ import {ModuleNavigation} from '@services/navigation/module-navigation/module-na
 import {Record} from '@app-common/record/record.model';
 import {Field} from '@app-common/record/field.model';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {StringMap} from '@app-common/types/StringMap';
 
 @Component({
     selector: 'scrm-field',
@@ -48,6 +49,10 @@ export class FieldComponent {
         return !!(this.field.metadata && this.field.metadata.link);
     }
 
+    isEdit(): boolean {
+        return this.mode === 'edit';
+    }
+
     getLink(): string {
         if (this.type === 'relate') {
             return this.getRelateLink;
@@ -67,5 +72,16 @@ export class FieldComponent {
         }
 
         return '';
+    }
+
+    getMessageContext(item: any, record: Record): StringMap {
+        const context = item && item.message && item.message.context || {};
+        context.module = (record && record.module) || '';
+
+        return context;
+    }
+
+    getMessageLabelKey(item: any): string {
+        return (item && item.message && item.message.labelKey) || '';
     }
 }

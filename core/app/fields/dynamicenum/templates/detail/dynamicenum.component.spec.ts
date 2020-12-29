@@ -6,6 +6,15 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {BehaviorSubject, of, Subscription} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
+import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
+import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
+import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
+import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
+import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
+import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 
 const field: Field = {
     type: 'enum',
@@ -56,6 +65,14 @@ describe('DynamicEnumDetailFieldComponent', () => {
             imports: [],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
+                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
+                {provide: NumberFormatter, useValue: numberFormatterMock},
+                {provide: DatetimeFormatter, useValue: datetimeFormatterMock},
+                {provide: DateFormatter, useValue: dateFormatterMock},
+                {
+                    provide: CurrencyFormatter,
+                    useValue: new CurrencyFormatter(userPreferenceStoreMock, numberFormatterMock, 'en_us')
+                },
             ],
         }).compileComponents();
 

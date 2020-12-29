@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DateTimeEditFieldComponent} from './datetime.component';
 import {Field} from '@app-common/record/field.model';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule} from '@angular/forms';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
 import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
@@ -12,6 +12,13 @@ import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {distinctUntilChanged} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
+import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
+import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
+import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
+import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
+import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {DateTimeEditFieldModule} from '@fields/datetime/templates/edit/datetime.module';
 
 @Component({
     selector: 'datetime-edit-field-test-host-component',
@@ -20,7 +27,8 @@ import {BehaviorSubject} from 'rxjs';
 class DatetimeEditFieldTestHostComponent {
     field: Field = {
         type: 'datetime',
-        value: '2020-11-09 12:12:12'
+        value: '2020-11-09 12:12:12',
+        formControl: new FormControl('2020-11-09 12:12:12')
     };
 }
 
@@ -44,7 +52,8 @@ describe('DateTimeEditFieldComponent', () => {
             imports: [
                 FormsModule,
                 NgbModule,
-                ButtonModule
+                ButtonModule,
+                DateTimeEditFieldModule
             ],
             providers: [
                 {
@@ -62,6 +71,13 @@ describe('DateTimeEditFieldComponent', () => {
                 },
                 {
                     provide: DatetimeFormatter, useValue: datetimeFormatterMock
+                },
+                {provide: NumberFormatter, useValue: numberFormatterMock},
+                {provide: DatetimeFormatter, useValue: datetimeFormatterMock},
+                {provide: DateFormatter, useValue: dateFormatterMock},
+                {
+                    provide: CurrencyFormatter,
+                    useValue: new CurrencyFormatter(userPreferenceStoreMock, numberFormatterMock, 'en_us')
                 },
                 {
                     provide: ThemeImagesStore, useValue: themeImagesStoreMock
