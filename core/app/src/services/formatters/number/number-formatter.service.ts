@@ -56,7 +56,7 @@ export class NumberFormatter implements Formatter {
 
         let pattern = '^(';
         pattern += '(\\d{1,3}(\\' + group + '\\d{3})*)|';
-        pattern += '\\d*)';
+        pattern += '\\d*';
         pattern += ')$';
         return pattern;
     }

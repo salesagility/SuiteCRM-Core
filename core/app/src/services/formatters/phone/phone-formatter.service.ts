@@ -26,6 +26,6 @@ export class PhoneFormatter implements Formatter {
     }
 
     getUserFormatPattern(): string {
-        return '^([+]?|00)(([(]{0,1}[0-9]{1,4}[)]{0,1})\\s*)*|([-\\s\\./0-9])*$';
+        return '^([\\+]?|00)((([(]{0,1}\\s*[0-9]{1,4}\\s*[)]{0,1})\\s*)*|([\\-\\s\\./0-9])*)+$';
     }
 }

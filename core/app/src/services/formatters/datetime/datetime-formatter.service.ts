@@ -82,8 +82,16 @@ export class DatetimeFormatter implements Formatter {
         return dateFormat + ' ' + timeFormat;
     }
 
+    getInternalFormat(): string {
+        return this.getInternalDateTimeFormat();
+    }
+
+    getUserFormat(): string {
+        return this.getDateTimeFormat();
+    }
+
     toUserFormat(dateString: string): string {
-        return formatDate(dateString, this.getDateTimeFormat(), this.locale);
+        return formatDate(dateString, this.getUserFormat(), this.locale);
     }
 
     toInternalFormat(dateString: string): string {
@@ -91,32 +99,69 @@ export class DatetimeFormatter implements Formatter {
             return '';
         }
 
-        const dateTime = DateTime.fromFormat(dateString, this.getInternalDateTimeFormat());
+        const dateTime = this.toDateTime(dateString);
 
-        if (dateTime.isValid) {
+        if (!dateTime.isValid) {
             return '';
         }
 
-        return formatDate(dateString, this.getInternalDateTimeFormat(), this.locale);
+        return formatDate(dateTime.toJSDate(), this.getInternalFormat(), this.locale);
     }
 
-    fromUserDate(datetime: string): NgbDateStruct {
+    toDateTime(datetimeString: string): DateTime {
+        if (!datetimeString) {
+            return DateTime.invalid('empty');
+        }
+
+        let dateTime = this.fromUserFormat(datetimeString);
+
+        if (!dateTime.isValid) {
+            dateTime = this.fromInternalFormat(datetimeString);
+        }
+
+        return dateTime;
+    }
+
+    userFormatToStruct(datetime: string): NgbDateStruct {
         if (!datetime) {
             return null;
         }
 
-        const dateTime = DateTime.fromFormat(datetime, this.getDateFormat());
+        const dateTime = this.toDateTime(datetime);
 
-        const date = dateTime.toISODate().split('-');
+        if (!dateTime.isValid) {
+            return null;
+        }
+
         return {
-            day: parseInt(date[2], 10),
-            month: parseInt(date[1], 10),
-            year: parseInt(date[0], 10)
+            day: dateTime.day,
+            month: dateTime.month,
+            year: dateTime.year
         };
     }
 
+    fromUserFormat(datetime: string): DateTime {
+
+        datetime = datetime.replace('a', 'A');
+        datetime = datetime.replace('p', 'P');
+        datetime = datetime.replace('m', 'M');
+
+        let format = this.getUserFormat();
+
+        format = format.replace('aaaaa\'m\'', 'a');
+
+        return DateTime.fromFormat(datetime, format);
+    }
+
+    fromInternalFormat(datetime: string): DateTime {
+
+        const format = this.getInternalFormat();
+
+        return DateTime.fromFormat(datetime, format);
+    }
+
     validateUserFormat(dateString: string): boolean {
-        const dateTime = DateTime.fromFormat(dateString, this.getInternalDateTimeFormat());
+        const dateTime = this.fromUserFormat(dateString);
         return !dateTime.isValid;
     }
 }

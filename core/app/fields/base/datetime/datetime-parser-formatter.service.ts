@@ -14,7 +14,7 @@ export class DatetimeParserFormatter extends NgbDateParserFormatter {
             return null;
         }
 
-        return this.formatter.fromUserDate(value);
+        return this.formatter.userFormatToStruct(value);
     }
 
     format(date: NgbDateStruct | null): string {

@@ -1,6 +1,6 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {formatCurrency} from '@angular/common';
+import {formatCurrency, formatNumber} from '@angular/common';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {FormatOptions, Formatter} from '@services/formatters/formatter.model';
 
@@ -23,6 +23,7 @@ export class CurrencyFormatter implements Formatter {
     }
 
     toUserFormat(value: string, options: FormatOptions = null): string {
+
         const symbol = (options && options.symbol) || this.getSymbol();
         const code = (options && options.code) || this.getCode();
         let digits = null;
@@ -31,8 +32,14 @@ export class CurrencyFormatter implements Formatter {
         }
 
         const digitsInfo = this.getDigitsInfo(digits);
+        let formatted: string;
 
-        const formatted = formatCurrency(Number(value), this.locale, symbol, code, digitsInfo);
+        if (options && options.mode === 'edit') {
+            formatted = formatNumber(Number(value), this.locale, digitsInfo);
+            return this.replaceSeparators(formatted);
+        }
+
+        formatted = formatCurrency(Number(value), this.locale, symbol, code, digitsInfo);
         return this.replaceSeparators(formatted);
     }
 

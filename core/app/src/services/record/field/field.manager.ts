@@ -5,13 +5,14 @@ import {FormControl} from '@angular/forms';
 import {Field, FieldDefinition} from '@app-common/record/field.model';
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '@services/record/validation/validation.manager';
+import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FieldManager {
 
-    constructor(protected validationManager: ValidationManager) {
+    constructor(protected validationManager: ValidationManager, protected typeFormatter: DataTypeFormatter) {
     }
 
     public buildShallowField(type: string, value: string): Field {
@@ -50,6 +51,8 @@ export class FieldManager {
         const validators = this.validationManager.getValidations(record.module, viewField, record);
         const asyncValidators = this.validationManager.getAsyncValidations(record.module, viewField, record);
 
+        const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
+
         const field = {
             type: viewField.type,
             value,
@@ -58,7 +61,7 @@ export class FieldManager {
             },
             definition,
             labelKey: viewField.label,
-            formControl: new FormControl(value, validators, asyncValidators),
+            formControl: new FormControl(formattedValue, validators, asyncValidators),
             validators,
             asyncValidators
         } as Field;
