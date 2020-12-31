@@ -1,13 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {DynamicEnumEditFieldComponent} from './dynamicenum.component';
+import {BooleanFilterFieldComponent} from './boolean.component';
+import {FormControl, FormsModule} from '@angular/forms';
 import {Field} from '@app-common/record/field.model';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {TagInputModule} from 'ngx-chips';
-import {FormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
@@ -17,31 +12,42 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {TagInputModule} from 'ngx-chips';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
+
 
 @Component({
-    selector: 'dynamic-enum-edit-field-test-host-component',
-    template: '<scrm-dynamicenum-edit [field]="field"></scrm-dynamicenum-edit>'
+    selector: 'boolean-filter-field-test-host-component',
+    template: '<scrm-boolean-filter [field]="field"></scrm-boolean-filter>'
 })
-class DynamicEnumEditFieldTestHostComponent {
+class BooleanFilterFieldTestHostComponent {
     field: Field = {
-        type: 'enum',
-        value: '_customer',
+        type: 'boolean',
+        value: '1',
         metadata: null,
         definition: {
-            options: 'account_type_dom'
-        }
+            options: 'dom_int_bool'
+        },
+        criteria: {
+            values: ['1'],
+            operator: '='
+        },
+        formControl: new FormControl('1')
     };
 }
 
-describe('DynamicEnumEditFieldComponent', () => {
-    let testHostComponent: DynamicEnumEditFieldTestHostComponent;
-    let testHostFixture: ComponentFixture<DynamicEnumEditFieldTestHostComponent>;
+describe('BooleanFilterFieldComponent', () => {
+    let testHostComponent: BooleanFilterFieldTestHostComponent;
+    let testHostFixture: ComponentFixture<BooleanFilterFieldTestHostComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                DynamicEnumEditFieldTestHostComponent,
-                DynamicEnumEditFieldComponent,
+                BooleanFilterFieldTestHostComponent,
+                BooleanFilterFieldComponent,
             ],
             imports: [
                 TagInputModule,
@@ -62,7 +68,7 @@ describe('DynamicEnumEditFieldComponent', () => {
             ],
         }).compileComponents();
 
-        testHostFixture = TestBed.createComponent(DynamicEnumEditFieldTestHostComponent);
+        testHostFixture = TestBed.createComponent(BooleanFilterFieldTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));
@@ -75,19 +81,24 @@ describe('DynamicEnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostComponent.field = {
-            type: 'dynamicenum',
-            value: '_customer',
+            type: 'boolean',
+            value: '1',
             metadata: null,
             definition: {
-                options: 'account_type_dom'
-            }
+                options: 'dom_int_bool'
+            },
+            criteria: {
+                values: ['1'],
+                operator: '='
+            },
+            formControl: new FormControl('1')
         };
 
         testHostFixture.detectChanges();
         testHostFixture.whenStable().then(() => {
 
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-dynamicenum-edit')[0];
+            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-boolean-filter')[0];
 
             expect(field).toBeTruthy();
 
@@ -101,8 +112,8 @@ describe('DynamicEnumEditFieldComponent', () => {
 
             const tagText = tag.getElementsByClassName('tag__text').item(0);
 
-            expect(tagText.textContent).toContain('Customer');
-            expect(tagText.textContent).not.toContain('_customer');
+            expect(tagText.textContent).toContain('Yes');
+            expect(tagText.textContent).not.toContain('1');
 
             const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
@@ -111,4 +122,5 @@ describe('DynamicEnumEditFieldComponent', () => {
         });
 
     });
+
 });

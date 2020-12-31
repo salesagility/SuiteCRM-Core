@@ -67,6 +67,11 @@ export const languageMockData = {
             _reseller: 'Reseller',
             _other: 'Other'
         },
+        // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
+        dom_int_bool: {
+            1: 'Yes',
+            0: 'No',
+        },
     },
     modStrings: {
         home: {
