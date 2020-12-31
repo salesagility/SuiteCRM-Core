@@ -3,6 +3,7 @@ import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 import {LineAction} from '@app-common/actions/line-action.model';
 import {ChartTypesMap} from '@app-common/containers/chart/chart.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {FieldDefinition} from '@app-common/record/field.model';
 
 export interface ListViewMeta {
     fields: ColumnDefinition[];
@@ -33,6 +34,7 @@ export interface SearchMetaField {
     label?: string;
     default?: boolean;
     options?: string;
+    fieldDefinition?: FieldDefinition;
 }
 
 export interface SearchMeta {

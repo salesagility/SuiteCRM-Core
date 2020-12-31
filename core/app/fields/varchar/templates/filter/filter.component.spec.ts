@@ -1,7 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharFilterFieldComponent} from './filter.component';
-import {FormsModule} from '@angular/forms';
 import {Field} from '@app-common/record/field.model';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
@@ -12,6 +11,9 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {VarcharFilterFieldModule} from '@fields/varchar/templates/filter/filter.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'varchar-filter-field-test-host-component',
@@ -20,10 +22,12 @@ import {CurrencyFormatter} from '@services/formatters/currency/currency-formatte
 class VarcharFilterFieldTestHostComponent {
     field: Field = {
         type: 'varchar',
+        value: 'test filter value',
         criteria: {
             values: ['test filter value'],
             operator: '='
-        }
+        },
+        formControl: new FormControl('test filter value')
     };
 }
 
@@ -38,7 +42,8 @@ describe('VarcharFilterFieldComponent', () => {
                 VarcharFilterFieldComponent,
             ],
             imports: [
-                FormsModule
+                VarcharFilterFieldModule,
+                BrowserAnimationsModule
             ],
             providers: [
                 {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
@@ -70,7 +75,7 @@ describe('VarcharFilterFieldComponent', () => {
 
     it('should have update input when field changes', async(() => {
         expect(testHostComponent).toBeTruthy();
-        testHostComponent.field.criteria.values = ['New Field value'];
+        testHostComponent.field.formControl.setValue('New Field value');
 
         testHostFixture.detectChanges();
         testHostFixture.whenStable().then(() => {

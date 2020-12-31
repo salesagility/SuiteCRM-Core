@@ -50,7 +50,7 @@ export class FieldComponent {
     }
 
     isEdit(): boolean {
-        return this.mode === 'edit';
+        return this.mode === 'edit' || this.mode === 'filter';
     }
 
     getLink(): string {

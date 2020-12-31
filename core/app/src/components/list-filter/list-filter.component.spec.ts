@@ -14,6 +14,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ListFilterComponent', () => {
     let testHostComponent: ListFilterComponent;
@@ -31,7 +32,8 @@ describe('ListFilterComponent', () => {
                 DropdownButtonModule,
                 FieldGridModule,
                 RouterTestingModule,
-                ApolloTestingModule
+                ApolloTestingModule,
+                BrowserAnimationsModule
             ],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},

@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {VarcharFilterFieldComponent} from './filter.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
     declarations: [VarcharFilterFieldComponent],
@@ -11,7 +11,8 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         AppManagerModule.forChild(VarcharFilterFieldComponent),
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ]
 })
 export class VarcharFilterFieldModule {

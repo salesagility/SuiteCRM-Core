@@ -27,9 +27,13 @@ export class BaseFieldComponent implements FieldComponentInterface {
                     newValue = this.typeFormatter.toInternalFormat(this.field.type, newValue);
                 }
 
-                this.field.value = newValue;
+                this.setFieldValue(newValue);
             }));
         }
+    }
+
+    protected setFieldValue(newValue): void {
+        this.field.value = newValue;
     }
 
     protected unsubscribeAll(): void {

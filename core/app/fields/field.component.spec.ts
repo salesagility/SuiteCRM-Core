@@ -45,7 +45,7 @@ class FieldTestHostComponent {
         {field: buildField({type: 'varchar', value: 'My Varchar'}), mode: 'list', expected: 'My Varchar'},
         {field: buildField({type: 'varchar', value: 'My Varchar'}), mode: 'edit', expected: 'My Varchar'},
         {
-            field: buildField({type: 'varchar', criteria: {values: ['test'], operator: '='}}),
+            field: buildField({type: 'varchar', value: 'test', criteria: {values: ['test'], operator: '='}}),
             mode: 'filter',
             expected: 'test'
         },

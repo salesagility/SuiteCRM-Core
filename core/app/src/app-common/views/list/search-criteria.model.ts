@@ -1,5 +1,6 @@
 export interface SearchCriteriaFieldFilter {
     field?: string;
+    fieldType?: string;
     operator: string;
     values?: string[];
     start?: string;

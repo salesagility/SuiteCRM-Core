@@ -7,7 +7,7 @@ export interface AttributeMap {
 
 export interface Record {
     id?: string;
-    type: string;
+    type?: string;
     module: string;
     attributes: AttributeMap;
     fields?: FieldMap;

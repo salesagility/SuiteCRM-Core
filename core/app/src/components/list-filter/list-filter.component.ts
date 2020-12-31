@@ -5,10 +5,15 @@ import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-butt
 import {ButtonInterface} from '@components/button/button.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Field} from '@app-common/record/field.model';
+import {filter, map, startWith, take} from 'rxjs/operators';
+import {Field, FieldMap} from '@app-common/record/field.model';
 import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
 import {Filter, SearchMetaField} from '@app-common/metadata/list.metadata.model';
+import {FieldManager} from '@services/record/field/field.manager';
+import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Record} from '@app-common/record/record.model';
+import {AbstractControl, FormGroup} from '@angular/forms';
+import {MessageService} from '@services/message/message.service';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;
@@ -34,8 +39,14 @@ export class ListFilterComponent implements OnInit {
     searchCriteria: SearchCriteria;
 
     vm$: Observable<any>;
+    private record: Record;
 
-    constructor(protected listStore: ListViewStore, protected language: LanguageStore) {
+    constructor(
+        protected listStore: ListViewStore,
+        protected language: LanguageStore,
+        protected fieldManager: FieldManager,
+        protected message: MessageService
+    ) {
 
         this.vm$ = combineLatest([listStore.criteria$, listStore.metadata$]).pipe(
             map(([criteria, metadata]) => {
@@ -50,6 +61,11 @@ export class ListFilterComponent implements OnInit {
     ngOnInit(): void {
 
         this.reset();
+
+        this.record = {
+            module: this.listStore.getModuleName(),
+            attributes: {}
+        } as Record;
 
         this.initFields();
         this.initGridButtons();
@@ -72,15 +88,23 @@ export class ListFilterComponent implements OnInit {
         }
 
         const searchFields = searchMeta.layout[type];
+        const fields = {} as FieldMap;
+        const formControls = {} as { [key: string]: AbstractControl };
 
         Object.keys(searchFields).forEach(key => {
             const name = searchFields[key].name;
+
+            fields[name] = this.buildField(searchFields[key], languages, searchCriteria);
+            formControls[name] = fields[name].formControl;
+
             if (name.includes('_only')) {
-                this.special.push(this.buildField(searchFields[key], languages, searchCriteria));
+                this.special.push(fields[name]);
             } else {
-                this.fields.push(this.buildField(searchFields[key], languages, searchCriteria));
+                this.fields.push(fields[name]);
             }
         });
+
+        this.record.formGroup = new FormGroup(formControls);
     }
 
     protected reset(): void {
@@ -128,21 +152,34 @@ export class ListFilterComponent implements OnInit {
     }
 
     protected buildField(searchField: SearchMetaField, languages: LanguageStrings, searchCriteria: SearchCriteria): Field {
-        const module = this.listStore.appState.module;
-
         const fieldName = searchField.name;
-        this.searchCriteria.filters[fieldName] = this.initFieldFilter(searchCriteria, fieldName);
+        const type = searchField.type;
+        this.searchCriteria.filters[fieldName] = this.initFieldFilter(searchCriteria, fieldName, type);
 
-        return {
-            type: 'varchar',
-            value: '',
+        const definition = {
             name: searchField.name,
-            label: this.language.getFieldLabel(searchField.label, module, languages),
-            criteria: this.searchCriteria.filters[fieldName]
-        } as Field;
+            label: searchField.label,
+            type,
+            fieldDefinition: {}
+        } as ViewFieldDefinition;
+
+        if (searchField.fieldDefinition) {
+            definition.fieldDefinition = searchField.fieldDefinition;
+        }
+
+        if (type === 'bool' || type === 'boolean') {
+            definition.fieldDefinition.options = 'dom_int_bool';
+        }
+
+
+        const field = this.fieldManager.buildFilterField(this.record, definition, this.language);
+
+        field.criteria = this.searchCriteria.filters[fieldName];
+
+        return field;
     }
 
-    protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string): SearchCriteriaFieldFilter {
+    protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string, fieldType: string): SearchCriteriaFieldFilter {
         let fieldCriteria: SearchCriteriaFieldFilter;
 
         if (searchCriteria.filters[fieldName]) {
@@ -150,8 +187,9 @@ export class ListFilterComponent implements OnInit {
         } else {
             fieldCriteria = {
                 field: fieldName,
+                fieldType,
                 operator: '',
-                values: [],
+                values: []
             };
         }
 
@@ -159,8 +197,28 @@ export class ListFilterComponent implements OnInit {
     }
 
     protected applyFilter(): void {
-        this.listStore.showFilters = false;
-        this.listStore.updateSearchCriteria(this.searchCriteria);
+        this.validate().pipe(take(1)).subscribe(valid => {
+
+            if (valid) {
+                this.listStore.showFilters = false;
+                this.listStore.updateSearchCriteria(this.searchCriteria);
+                return;
+            }
+
+            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+        });
+
+    }
+
+    protected validate(): Observable<boolean> {
+
+        this.record.formGroup.markAllAsTouched();
+        return this.record.formGroup.statusChanges.pipe(
+            startWith(this.record.formGroup.status),
+            filter(status => status !== 'PENDING'),
+            take(1),
+            map(status => status === 'VALID')
+        );
     }
 
     protected clearFilter(): void {

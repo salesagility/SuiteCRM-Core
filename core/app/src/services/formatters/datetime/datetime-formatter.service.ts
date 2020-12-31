@@ -91,7 +91,17 @@ export class DatetimeFormatter implements Formatter {
     }
 
     toUserFormat(dateString: string): string {
-        return formatDate(dateString, this.getUserFormat(), this.locale);
+        if (!dateString) {
+            return '';
+        }
+
+        const dateTime = this.toDateTime(dateString);
+
+        if (!dateTime.isValid) {
+            return '';
+        }
+
+        return formatDate(dateTime.toJSDate(), this.getUserFormat(), this.locale);
     }
 
     toInternalFormat(dateString: string): string {

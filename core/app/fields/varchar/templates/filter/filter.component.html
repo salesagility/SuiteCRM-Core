@@ -1,1 +1,4 @@
-<input type="text" [ngClass]="klass" [(ngModel)]="value">
+<input [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+       [formControl]="field.formControl"
+       [ngClass]="klass"
+       type="text">
