@@ -46,6 +46,8 @@ import {DynamicEnumDetailFieldModule} from '@fields/dynamicenum/templates/detail
 import {DynamicEnumEditFieldModule} from '@fields/dynamicenum/templates/edit/dynamicenum.module';
 import {DynamicEnumDetailFieldComponent} from '@fields/dynamicenum/templates/detail/dynamicenum.component';
 import {DynamicEnumEditFieldComponent} from '@fields/dynamicenum/templates/edit/dynamicenum.component';
+import {MultiEnumFilterFieldModule} from '@fields/multienum/templates/filter/multienum.module';
+import {MultiEnumFilterFieldComponent} from '@fields/multienum/templates/filter/multienum.component';
 import {BooleanFilterFieldModule} from '@fields/boolean/templates/filter/boolean.module';
 import {BooleanFilterFieldComponent} from '@fields/boolean/templates/filter/boolean.component';
 
@@ -70,6 +72,7 @@ export const fieldModules = [
     EnumEditFieldModule,
     MultiEnumDetailFieldModule,
     MultiEnumEditFieldModule,
+    MultiEnumFilterFieldModule,
     DynamicEnumDetailFieldModule,
     DynamicEnumEditFieldModule,
     BooleanDetailFieldModule,
@@ -97,6 +100,7 @@ export const fieldComponents = [
     EnumEditFieldComponent,
     MultiEnumDetailFieldComponent,
     MultiEnumEditFieldComponent,
+    MultiEnumFilterFieldComponent,
     DynamicEnumDetailFieldComponent,
     DynamicEnumEditFieldComponent,
     BooleanDetailFieldComponent,
@@ -139,12 +143,15 @@ export const viewFieldsMap = {
     'enum.list': EnumDetailFieldComponent,
     'enum.detail': EnumDetailFieldComponent,
     'enum.edit': EnumEditFieldComponent,
+    'enum.filter': MultiEnumFilterFieldComponent,
     'multienum.list': MultiEnumDetailFieldComponent,
     'multienum.detail': MultiEnumDetailFieldComponent,
     'multienum.edit': MultiEnumEditFieldComponent,
+    'multienum.filter': MultiEnumFilterFieldComponent,
     'dynamicenum.list': DynamicEnumDetailFieldComponent,
     'dynamicenum.detail': DynamicEnumDetailFieldComponent,
     'dynamicenum.edit': DynamicEnumEditFieldComponent,
+    'dynamicenum.filter': MultiEnumEditFieldComponent,
     'boolean.list': BooleanDetailFieldComponent,
     'boolean.detail': BooleanDetailFieldComponent,
     'boolean.edit': BooleanEditFieldComponent,
