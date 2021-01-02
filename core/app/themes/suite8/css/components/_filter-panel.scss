@@ -1,0 +1,18 @@
+.filter-panel scrm-field .ng2-tag-input {
+  padding: 0 !important;
+  min-height: 30px;
+}
+
+.filter-panel scrm-field .ng2-tag-input .ng2-tags-container tag {
+  margin-bottom: 2px !important;
+  line-height: 27px !important;
+  height: 27px !important;
+}
+
+tag-input tag {
+  padding: 0 0.5rem 0 .7rem !important;
+  line-height: 30px !important;
+  height: 30px !important;
+  background-color: $light-grey !important;
+}
+

@@ -1,11 +1,17 @@
 tag-input tag {
+  margin-top: 0 !important;
   padding: 0 0.5rem 0 .7rem !important;
-  line-height: 32px !important;
+  line-height: 30px !important;
+  height: 30px !important;
   background-color: $light-grey !important;
 }
 
 tag-input tag delete-icon:hover {
   transform: none !important;
+}
+
+tag-input-form form input.ng2-tag-input__text-input {
+  height: 30px !important;
 }
 
 tag-input tag delete-icon span {
@@ -35,7 +41,7 @@ tag-input tag delete-icon span svg path {
 }
 
 tag-input-form {
-  width: 100%;
+  flex-grow: 1;
 }
 
 .ng2-dropdown-menu {

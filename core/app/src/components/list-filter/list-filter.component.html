@@ -1,5 +1,6 @@
 <scrm-panel [title]="appStrings['LBL_BASIC_FILTER'] || ''"
             [close]="closeButton"
+            klass="filter-panel"
             *ngIf="(vm$ | async) as vm">
 
     <span panel-header-button>

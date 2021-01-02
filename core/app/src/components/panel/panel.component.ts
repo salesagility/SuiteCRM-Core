@@ -8,7 +8,7 @@ import {Button, ButtonInterface} from '@components/button/button.model';
 })
 export class PanelComponent implements OnInit {
 
-    @Input() klass: string;
+    @Input() klass = '';
     @Input() bodyPadding = 2;
     @Input() title: string;
     @Input() mode: 'collapsible' | 'closable' | 'none' = 'closable';
