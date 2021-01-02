@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Legacy\Data\FilterMapper;
 
 class LegacyFilterMapper
 {
@@ -8,14 +8,20 @@ class LegacyFilterMapper
      * @var array
      */
     private $filterOperatorMap;
+    /**
+     * @var FilterMappers
+     */
+    private $mappers;
 
     /**
      * LegacyFilterMapper constructor.
      * @param array $filterOperatorMap
+     * @param FilterMappers $mappers
      */
-    public function __construct(array $filterOperatorMap)
+    public function __construct(array $filterOperatorMap, FilterMappers $mappers)
     {
         $this->filterOperatorMap = $filterOperatorMap;
+        $this->mappers = $mappers;
     }
 
     /**
@@ -74,15 +80,16 @@ class LegacyFilterMapper
      */
     protected function mapFilterValue(string $mappedValue, array $item)
     {
+        $fieldType = $item['fieldType'] ?? '';
+
+
         if ($mappedValue === 'values') {
 
-            if (count($item['values']) === 1) {
-                $legacyValue = $item['values'][0];
-            } else {
-                $legacyValue = $item['values'];
+            if ($this->mappers->hasMapper($fieldType)) {
+                return $this->mappers->get($fieldType)->mapValue($mappedValue, $item);
             }
 
-            return $legacyValue;
+            return $this->mappers->get('default')->mapValue($mappedValue, $item);
         }
 
         $operator = $item['operator'] ?? '';

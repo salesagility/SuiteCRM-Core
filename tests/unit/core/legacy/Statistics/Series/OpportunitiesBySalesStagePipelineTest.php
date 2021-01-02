@@ -2,14 +2,16 @@
 
 namespace App\Tests\unit\core\legacy\Statistics;
 
+use App\Legacy\Data\FilterMapper\FilterMappers;
+use App\Legacy\Data\FilterMapper\LegacyFilterMapper;
 use App\Legacy\Data\RecordMapper;
 use App\Legacy\ModuleNameMapperHandler;
-use App\Service\LegacyFilterMapper;
 use App\Tests\_mock\Mock\core\legacy\Data\ListDataQueryHandlerMock;
 use App\Tests\_mock\Mock\core\legacy\Statistics\Series\OpportunitiesBySalesStagePipelineMock;
 use App\Tests\UnitTester;
 use BeanFactory;
 use Codeception\Test\Unit;
+use EmptyIterator;
 use Exception;
 
 /**
@@ -48,7 +50,8 @@ class OpportunitiesBySalesStagePipelineTest extends Unit
             $legacyScope
         );
 
-        $legacyFilterMapper = new LegacyFilterMapper([]);
+        $filterMappers = new FilterMappers(new EmptyIterator());
+        $legacyFilterMapper = new LegacyFilterMapper([], $filterMappers);
         $recordMapper = new RecordMapper($moduleNameMapper);
 
         $queryHandler = new ListDataQueryHandlerMock($legacyFilterMapper, $recordMapper);

@@ -2,6 +2,8 @@
 
 namespace App\Legacy;
 
+use DateFormatService;
+
 class DateTimeHandler extends LegacyHandler
 {
     public const HANDLER_KEY = 'date-time';
@@ -10,6 +12,10 @@ class DateTimeHandler extends LegacyHandler
      */
     private $datetimeFormatMap;
 
+    /**
+     * @var DateFormatService
+     */
+    private $formatter;
 
     /**
      * SystemConfigHandler constructor.
@@ -48,5 +54,41 @@ class DateTimeHandler extends LegacyHandler
     public function mapFormat(string $format): string
     {
         return strtr($format, $this->datetimeFormatMap);
+    }
+
+    /**
+     * To user date format
+     * @param string $dateString
+     * @return string
+     */
+    public function toUserDate(string $dateString): string
+    {
+        return $this->getFormatter()->toUserDate($dateString);
+    }
+
+    /**
+     * To user date format
+     * @param string $dateString
+     * @return string
+     */
+    public function toUserDateTime(string $dateString): string
+    {
+        return $this->getFormatter()->toUserDateTime($dateString);
+    }
+
+    /**
+     * @return DateFormatService
+     */
+    protected function getFormatter(): DateFormatService
+    {
+        if ($this->formatter !== null) {
+            return $this->formatter;
+        }
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+        $this->formatter = new DateFormatService();
+
+        return $this->formatter;
     }
 }

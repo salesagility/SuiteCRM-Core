@@ -58,6 +58,8 @@ services:
       tags: [ 'system.config.mapper' ]
     App\Legacy\Data\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
+    App\Legacy\Data\FilterMapper\FilterMapperInterface:
+      tags: [ 'app.data.filter.mapper' ]
     App\Service\StatisticsProviderInterface:
       tags: [ 'app.data.statistics.handler' ]
 
@@ -149,3 +151,9 @@ services:
     # and use the value of the 'getKey' method to index the services
     arguments:
       - !tagged { tag: 'app.data.statistics.handler', default_index_method: 'getKey' }
+
+  App\Legacy\Data\FilterMapper\FilterMappers:
+    # inject all services tagged with app.data.filter.mapper as first argument
+    # and use the value of the 'getType' method to index the services
+    arguments:
+      - !tagged { tag: 'app.data.filter.mapper', default_index_method: 'getType' }

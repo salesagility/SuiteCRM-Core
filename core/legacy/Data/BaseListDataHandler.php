@@ -2,7 +2,7 @@
 
 namespace App\Legacy\Data;
 
-use App\Service\LegacyFilterMapper;
+use App\Legacy\Data\FilterMapper\LegacyFilterMapper;
 use BeanFactory;
 use InvalidArgumentException;
 use ListViewDataPort;
