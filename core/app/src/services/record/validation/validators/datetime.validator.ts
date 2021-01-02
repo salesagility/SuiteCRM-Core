@@ -8,6 +8,11 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 
 export const dateTimeValidator = (formatter: DatetimeFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
+
+        if (control.value == null || control.value.length === 0) {
+            return null;
+        }
+
         const invalid = formatter.validateUserFormat(control.value);
         return invalid ? {
             dateTimeValidator: {
@@ -16,7 +21,7 @@ export const dateTimeValidator = (formatter: DatetimeFormatter): StandardValidat
                     labelKey: 'LBL_VALIDATION_ERROR_DATETIME_FORMAT',
                     context: {
                         value: control.value,
-                        expected: formatter.toUserFormat('2020-01-12 12:30:40')
+                        expected: formatter.toUserFormat('2020-01-23 12:30:40')
                     }
                 }
             },

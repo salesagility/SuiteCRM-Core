@@ -8,6 +8,10 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 export const emailValidator = (): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
+        if (control.value == null || control.value.length === 0) {
+            return null;
+        }
+
         const result = Validators.email(control);
 
         if (result === null) {

@@ -3,6 +3,7 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {formatCurrency, formatNumber} from '@angular/common';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {FormatOptions, Formatter} from '@services/formatters/formatter.model';
+import {isVoid} from '@app-common/utils/value-utils';
 
 export interface CurrencyFormat {
     iso4217: string;
@@ -23,6 +24,10 @@ export class CurrencyFormatter implements Formatter {
     }
 
     toUserFormat(value: string, options: FormatOptions = null): string {
+
+        if (isVoid(value) || value === '') {
+            return '';
+        }
 
         const symbol = (options && options.symbol) || this.getSymbol();
         const code = (options && options.code) || this.getCode();
