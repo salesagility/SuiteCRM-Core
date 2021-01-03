@@ -6,6 +6,7 @@ import {NavigationExtras, Router} from '@angular/router';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
+import {messageServiceMock} from '@services/message/message.service.spec.mock';
 
 const mockRouter = {
     navigate: (
@@ -21,5 +22,5 @@ export const recordActionsManagerMock = new RecordActionManager(
     new RecordCreateAction(moduleNameMapperMock, mockRouter),
     new RecordToggleWidgetsAction(),
     new RecordCancelAction(),
-    new RecordSaveAction()
+    new RecordSaveAction(messageServiceMock)
 );
