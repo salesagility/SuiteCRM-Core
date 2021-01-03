@@ -40,10 +40,10 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid">
+            <div *ngIf="showFilters" class="container-fluid view-container pt-3">
                 <div class="row">
                     <div class="col">
-                        <scrm-list-filter *ngIf="showFilters"></scrm-list-filter>
+                        <scrm-list-filter></scrm-list-filter>
                     </div>
                 </div>
             </div>
