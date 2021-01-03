@@ -100,6 +100,13 @@ export class MessageService {
         });
     }
 
+    addWarningMessageByKey(labelKey: string): number {
+        return this.addMessage({
+            type: MessageTypes.warning,
+            labelKey
+        });
+    }
+
     addInfoMessage(text: string): number {
         return this.addMessage({
             type: MessageTypes.info,

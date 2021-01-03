@@ -56,7 +56,7 @@ export class MessageUiComponent implements OnInit, AfterViewInit {
         }
 
         this.messages.forEach(message => {
-            if (message.type === MessageTypes.success) {
+            if (message.type === MessageTypes.success || message.type === MessageTypes.warning) {
                 setTimeout(() => {
                     this.messageService.contains(message, true);
                 }, this.timeout * 1000);
