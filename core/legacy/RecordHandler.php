@@ -209,8 +209,15 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
             $type = $properties['type'] ?? '';
 
-            if ($type === 'relate') {
-                continue;
+            if ($type === 'relate' && isset($bean->field_defs[$field])) {
+
+                $idName = $bean->field_defs[$field]['id_name'] ?? '';
+
+                if ($idName !== $field) {
+                    $rName = $bean->field_defs[$field]['rname'] ?? '';
+                    $value = $values[$field][$rName] ?? '';;
+                    $values[$field] = $value;
+                }
             }
 
             if (!empty($properties['isMultiSelect']) || $type === 'multienum') {
