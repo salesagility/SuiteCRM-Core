@@ -88,7 +88,9 @@ export class RecordManager {
             }
 
             if (type === 'relate' && source === 'non-db' && rname !== '') {
-                this.stagingState.attributes[fieldName][rname] = field.value;
+                this.stagingState.attributes[fieldName][rname] = field.valueObject[rname];
+                this.stagingState.attributes[fieldName].id = field.valueObject.id;
+                this.stagingState.attributes[idName] = field.valueObject.id;
                 return;
             }
 

@@ -39,6 +39,7 @@ export interface FieldDefinition {
     inline_edit?: boolean;
     validation?: ValidationDefinition;
     validations?: ValidationDefinition[];
+    template?: string;
 }
 
 export interface FieldMetadata {
@@ -59,6 +60,7 @@ export interface Field {
     type: string;
     value?: string;
     valueList?: string[];
+    valueObject?: any;
     name?: string;
     label?: string;
     labelKey?: string;

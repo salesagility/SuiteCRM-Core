@@ -1,0 +1,23 @@
+<tag-input #tag
+           (onAdd)="onAdd($event)"
+           (onBlur)="resetStatus()"
+           (onRemove)="onRemove()"
+           [(ngModel)]="selectedValues"
+           [class]="getInvalidClass()"
+           [clearOnBlur]="true"
+           [displayBy]="getRelateFieldName()"
+           [inputClass]="getInvalidClass()"
+           [onTextChangeDebounce]="500"
+           [onlyFromAutocomplete]="true"
+           [placeholder]="getPlaceholderLabel()"
+           [secondaryPlaceholder]="getPlaceholderLabel()"
+           maxItems="1">
+    <tag-input-dropdown [autocompleteObservable]="search"
+                        [displayBy]="getRelateFieldName()"
+                        [keepOpen]="false"
+                        [showDropdownIfEmpty]="true">
+    </tag-input-dropdown>
+</tag-input>
+<small *ngIf="getMessage()" class="text-danger form-text text-muted">
+    <scrm-label [labelKey]="getMessage()" [module]="module"></scrm-label>
+</small>

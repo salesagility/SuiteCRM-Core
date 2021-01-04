@@ -7,7 +7,7 @@ import {DataTypeFormatter} from '@services/formatters/data-type.formatter.servic
     templateUrl: './relate.component.html',
     styleUrls: []
 })
-export class RelateDetailFieldsComponent extends BaseFieldComponent {
+export class RelateDetailFieldComponent extends BaseFieldComponent {
 
     constructor(protected typeFormatter: DataTypeFormatter) {
         super(typeFormatter);

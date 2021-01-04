@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RelateDetailFieldsComponent} from './relate.component';
+import {RelateDetailFieldComponent} from './relate.component';
 import {Component} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
 import {Record} from '@app-common/record/record.model';
@@ -48,7 +48,7 @@ describe('RelateRecordFieldsComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 RelateDetailFieldTestHostComponent,
-                RelateDetailFieldsComponent,
+                RelateDetailFieldComponent,
             ],
             imports: [RouterTestingModule],
             providers: [

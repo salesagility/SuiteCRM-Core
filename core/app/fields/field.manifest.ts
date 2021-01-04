@@ -23,7 +23,7 @@ import {EmailListFieldsComponent} from '@fields/email/templates/list/email.compo
 import {TextDetailFieldComponent} from '@fields/text/templates/detail/text.component';
 import {TextDetailFieldModule} from '@fields/text/templates/detail/text.module';
 import {RelateDetailFieldsModule} from '@fields/relate/templates/detail/relate.module';
-import {RelateDetailFieldsComponent} from '@fields/relate/templates/detail/relate.component';
+import {RelateDetailFieldComponent} from '@fields/relate/templates/detail/relate.component';
 import {FullNameDetailFieldsComponent} from '@fields/fullname/templates/detail/fullname.component';
 import {FullNameDetailFieldsModule} from '@fields/fullname/templates/detail/fullname.module';
 import {DateEditFieldComponent} from '@fields/date/templates/edit/date.component';
@@ -50,6 +50,8 @@ import {MultiEnumFilterFieldModule} from '@fields/multienum/templates/filter/mul
 import {MultiEnumFilterFieldComponent} from '@fields/multienum/templates/filter/multienum.component';
 import {BooleanFilterFieldModule} from '@fields/boolean/templates/filter/boolean.module';
 import {BooleanFilterFieldComponent} from '@fields/boolean/templates/filter/boolean.component';
+import {RelateEditFieldModule} from '@fields/relate/templates/edit/relate.module';
+import {RelateEditFieldComponent} from '@fields/relate/templates/edit/relate.component';
 
 export const fieldModules = [
     VarcharDetailFieldModule,
@@ -67,6 +69,7 @@ export const fieldModules = [
     EmailListFieldsModule,
     TextDetailFieldModule,
     RelateDetailFieldsModule,
+    RelateEditFieldModule,
     FullNameDetailFieldsModule,
     EnumDetailFieldModule,
     EnumEditFieldModule,
@@ -94,7 +97,8 @@ export const fieldComponents = [
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
-    RelateDetailFieldsComponent,
+    RelateDetailFieldComponent,
+    RelateEditFieldComponent,
     FullNameDetailFieldsComponent,
     EnumDetailFieldComponent,
     EnumEditFieldComponent,
@@ -136,8 +140,9 @@ export const viewFieldsMap = {
     'email.list': EmailListFieldsComponent,
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
-    'relate.detail': RelateDetailFieldsComponent,
-    'relate.list': RelateDetailFieldsComponent,
+    'relate.detail': RelateDetailFieldComponent,
+    'relate.list': RelateDetailFieldComponent,
+    'relate.edit': RelateEditFieldComponent,
     'fullname.list': FullNameDetailFieldsComponent,
     'fullname.detail': FullNameDetailFieldsComponent,
     'enum.list': EnumDetailFieldComponent,

@@ -28,19 +28,19 @@ export class FieldManager {
     public buildField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
-        const {value, valueList} = this.parseValue(viewField, definition, record);
+        const {value, valueList, valueObject} = this.parseValue(viewField, definition, record);
         const {validators, asyncValidators} = this.getValidators(record, viewField);
 
-        return this.setupField(viewField, value, valueList, record, definition, validators, asyncValidators, language);
+        return this.setupField(viewField, value, valueList, valueObject, record, definition, validators, asyncValidators, language);
     }
 
     public buildFilterField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
-        const {value, valueList} = this.parseValue(viewField, definition, record);
+        const {value, valueList, valueObject} = this.parseValue(viewField, definition, record);
         const {validators, asyncValidators} = this.getFilterValidators(record, viewField);
 
-        return this.setupField(viewField, value, valueList, record, definition, validators, asyncValidators, language);
+        return this.setupField(viewField, value, valueList, valueObject, record, definition, validators, asyncValidators, language);
     }
 
     public getFieldLabel(label: string, module: string, language: LanguageStore): string {
@@ -52,7 +52,7 @@ export class FieldManager {
         viewField: ViewFieldDefinition,
         definition: FieldDefinition,
         record: Record
-    ): { value: string; valueList: string[] } {
+    ): { value: string; valueList: string[]; valueObject?: any } {
 
         const type = (viewField && viewField.type) || '';
         const source = (definition && definition.source) || '';
@@ -65,6 +65,8 @@ export class FieldManager {
             value = '';
         } else if (type === 'relate' && source === 'non-db' && rname !== '') {
             value = record.attributes[viewName][rname];
+            const valueObject = record.attributes[viewName];
+            return {value, valueList, valueObject};
         } else {
             value = record.attributes[viewName];
         }
@@ -102,6 +104,7 @@ export class FieldManager {
         viewField: ViewFieldDefinition,
         value: string,
         valueList: string[],
+        valueObject: any,
         record: Record,
         definition: FieldDefinition,
         validators: ValidatorFn[],
@@ -126,6 +129,10 @@ export class FieldManager {
 
         if (valueList) {
             field.valueList = valueList;
+        }
+
+        if (valueObject) {
+            field.valueObject = valueObject;
         }
 
         if (language) {
