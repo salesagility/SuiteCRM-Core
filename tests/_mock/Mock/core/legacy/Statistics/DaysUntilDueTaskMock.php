@@ -3,8 +3,8 @@
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
 use App\Legacy\Statistics\DaysUntilDueTask;
-use Task;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
+use Task;
 
 /**
  * Class DaysUntilDueTaskMock
@@ -36,7 +36,10 @@ class DaysUntilDueTaskMock extends DaysUntilDueTask
         return $this->task;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

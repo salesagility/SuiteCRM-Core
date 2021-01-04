@@ -35,7 +35,10 @@ class OpportunitiesBySalesStagePipelineMock extends OpportunitiesBySalesStagePip
         $this->bean = $bean;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 
@@ -47,6 +50,9 @@ class OpportunitiesBySalesStagePipelineMock extends OpportunitiesBySalesStagePip
         return $this->getAllMockQueryResults();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function generateQuery(array $query): array
     {
         return [

@@ -20,7 +20,10 @@ class AssignedUserOpportunitiesCountMock extends AssignedUserOpportunitiesCount
         return $this->getMockQueryResults();
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

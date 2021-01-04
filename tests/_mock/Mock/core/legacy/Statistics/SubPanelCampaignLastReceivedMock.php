@@ -35,7 +35,10 @@ class SubPanelCampaignLastReceivedMock extends SubPanelCampaignsLastReceived
         return $this->getMockQueryResults();
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
 use App\Legacy\Statistics\LeadDaysOpen;
+use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Doctrine\ORM\EntityManagerInterface;
 use Lead;
-use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use SugarBean;
 
 /**
@@ -38,7 +38,10 @@ class LeadDaysOpenMock extends LeadDaysOpen
         return $this->lead;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

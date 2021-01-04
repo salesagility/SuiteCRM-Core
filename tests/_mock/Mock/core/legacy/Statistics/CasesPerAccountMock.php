@@ -2,11 +2,9 @@
 
 namespace Mock\Core\Legacy\Statistics;
 
-use AcceptanceTester;
+use aCase;
 use App\Legacy\Statistics\CasesPerAccount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
-use SugarBean;
-use aCase;
 use BeanFactory;
 
 class CasesPerAccountMock extends CasesPerAccount
@@ -34,7 +32,10 @@ class CasesPerAccountMock extends CasesPerAccount
         return $this->getMockQueryResults();
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

@@ -3,8 +3,8 @@
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
 use App\Legacy\Statistics\OpportunitySalesStageTimeSpan;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
+use Doctrine\ORM\EntityManagerInterface;
 use Opportunity;
 use SugarBean;
 
@@ -38,7 +38,10 @@ class OpportunitySalesStageTimeSpanMock extends OpportunitySalesStageTimeSpan
         return $this->opp;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

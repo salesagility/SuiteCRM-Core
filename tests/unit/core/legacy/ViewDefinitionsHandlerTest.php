@@ -9,7 +9,6 @@ use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ViewDefinitions\ListViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
-use App\Legacy\ViewDefinitionsHandler;
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
 use App\Service\FilterDefinitionProvider;
@@ -17,6 +16,7 @@ use App\Service\FilterDefinitionProviderInterface;
 use App\Service\LineActionDefinitionProvider;
 use App\Service\ListViewSidebarWidgetDefinitionProvider;
 use App\Service\RecordActionDefinitionProvider;
+use App\Tests\_mock\Mock\core\legacy\ViewDefinitionsHandlerMock;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
@@ -35,7 +35,7 @@ final class ViewDefinitionsHandlerTest extends Unit
     protected $tester;
 
     /**
-     * @var ViewDefinitionsHandler
+     * @var ViewDefinitionsHandlerMock
      */
     private $viewDefinitionHandler;
 
@@ -270,7 +270,7 @@ final class ViewDefinitionsHandlerTest extends Unit
             $filterDefinitionHandler
         );
 
-        $this->viewDefinitionHandler = new ViewDefinitionsHandler(
+        $this->viewDefinitionHandler = new ViewDefinitionsHandlerMock(
             $projectDir,
             $legacyDir,
             $legacySessionName,

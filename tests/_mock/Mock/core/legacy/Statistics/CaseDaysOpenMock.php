@@ -2,10 +2,10 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\CaseDaysOpen;
-use Doctrine\ORM\EntityManagerInterface;
 use aCase;
+use App\Legacy\Statistics\CaseDaysOpen;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
+use Doctrine\ORM\EntityManagerInterface;
 use SugarBean;
 
 /**
@@ -38,7 +38,10 @@ class CaseDaysOpenMock extends CaseDaysOpen
         return $this->case;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

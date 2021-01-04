@@ -34,7 +34,10 @@ class SubPanelInvoicesTotalMock extends SubPanelInvoicesTotal
         return $this->getMockQueryResults();
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 }

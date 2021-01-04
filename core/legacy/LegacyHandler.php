@@ -165,6 +165,7 @@ abstract class LegacyHandler
 
     /**
      * Start Legacy Suite app
+     * @param string $currentModule
      * @return void
      * Based on @see SugarApplication::execute
      * Not calling:
@@ -174,7 +175,7 @@ abstract class LegacyHandler
      * - controller->execute();
      * - sugar_cleanup
      */
-    protected function startLegacyApp(): void
+    protected function startLegacyApp(string $currentModule = ''): void
     {
         if ($this->state->isLegacyStarted()) {
             return;
@@ -194,8 +195,8 @@ abstract class LegacyHandler
         }
 
         $module = $app->default_module;
-        if (!empty($_REQUEST['module'])) {
-            $module = $_REQUEST['module'];
+        if (!empty($currentModule)) {
+            $module = $currentModule;
         }
 
         /** @var SugarController $controller */

@@ -141,6 +141,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
         $legacyModuleName = $this->validateModuleName($moduleName);
 
+        $this->startLegacyApp($legacyModuleName);
+
         $viewDef = new ViewDefinition();
         $viewDef->setId($moduleName);
 
