@@ -13,7 +13,7 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Component({
     selector: 'float-detail-field-test-host-component',
@@ -37,7 +37,7 @@ describe('FloatDetailFieldComponent', () => {
     });
 
     const mockStore = new UserPreferenceMockStore(preferences);
-    const mockNumberFormatter = new NumberFormatter(mockStore, 'en-US');
+    const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en-US');
 
 
     /* eslint-enable camelcase,@typescript-eslint/camelcase */

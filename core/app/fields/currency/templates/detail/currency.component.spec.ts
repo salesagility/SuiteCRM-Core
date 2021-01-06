@@ -9,6 +9,7 @@ import {Field} from '@app-common/record/field.model';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Component({
     selector: 'currency-detail-field-test-host-component',
@@ -33,7 +34,7 @@ describe('CurrencyDetailFieldComponent', () => {
         default_currency_significant_digits: 2
     });
     const mockStore = new UserPreferenceMockStore(preferences);
-    const mockNumberFormatter = new NumberFormatter(mockStore, 'en_us');
+    const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en_us');
     const mockCurrencyFormatter = new CurrencyFormatter(mockStore, mockNumberFormatter, 'en_us');
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 

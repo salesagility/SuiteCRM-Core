@@ -18,16 +18,19 @@ export class BaseFieldComponent implements FieldComponentInterface {
     protected subscribeValueChanges(): void {
         if (this.field && this.field.formControl) {
             this.subs.push(this.field.formControl.valueChanges.subscribe(value => {
-                let newValue = value;
-                if (isVoid(value)) {
-                    newValue = '';
+
+                if (!isVoid(value)){
+                    value = value.trim();
+                }
+                else{
+                    value = '';
                 }
 
                 if (this.typeFormatter && this.field.type) {
-                    newValue = this.typeFormatter.toInternalFormat(this.field.type, newValue);
+                    value = this.typeFormatter.toInternalFormat(this.field.type, value);
                 }
 
-                this.setFieldValue(newValue);
+                this.setFieldValue(value);
             }));
         }
     }

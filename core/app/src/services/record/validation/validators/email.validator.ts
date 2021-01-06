@@ -1,26 +1,19 @@
 import {ValidatorInterface} from '@services/record/validation/validator.Interface';
-import {AbstractControl, Validators} from '@angular/forms';
+import {AbstractControl} from '@angular/forms';
 import {Record} from '@app-common/record/record.model';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {Injectable} from '@angular/core';
 import {StandardValidationErrors, StandardValidatorFn} from '@app-common/services/validators/validators.model';
+import {EmailFormatter} from '@services/formatters/email/email-formatter.service';
 
-export const emailValidator = (): StandardValidatorFn => (
+export const emailValidator = (formatter: EmailFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
-
-        const result = Validators.email(control);
-
-        if (result === null) {
-            return null;
-        }
-
-        return {
+        const invalid = formatter.validateUserFormat(control.value);
+        return invalid ? {
             emailValidator: {
-                ...result,
+                valid: false,
+                format: formatter.getUserFormatPattern(),
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_EMAIL_FORMAT',
                     context: {
@@ -28,8 +21,8 @@ export const emailValidator = (): StandardValidatorFn => (
                         expected: 'example@example.org'
                     }
                 }
-            }
-        };
+            },
+        } : null;
     }
 );
 
@@ -38,6 +31,9 @@ export const emailValidator = (): StandardValidatorFn => (
     providedIn: 'root'
 })
 export class EmailValidator implements ValidatorInterface {
+
+    constructor(protected formatter: EmailFormatter) {
+    }
 
     applies(record: Record, viewField: ViewFieldDefinition): boolean {
         if (!viewField || !viewField.fieldDefinition) {
@@ -53,6 +49,6 @@ export class EmailValidator implements ValidatorInterface {
             return [];
         }
 
-        return [emailValidator()];
+        return [emailValidator(this.formatter)];
     }
 }

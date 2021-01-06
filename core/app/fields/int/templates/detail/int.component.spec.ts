@@ -9,7 +9,7 @@ import {Field} from '@app-common/record/field.model';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Component({
     selector: 'int-detail-field-test-host-component',
@@ -32,7 +32,7 @@ describe('IntDetailFieldComponent', () => {
         dec_sep: '.',
     });
     const mockStore = new UserPreferenceMockStore(preferences);
-    const mockNumberFormatter = new NumberFormatter(mockStore, 'en-US');
+    const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en-US');
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     beforeEach(async(() => {

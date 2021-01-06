@@ -5,6 +5,7 @@ import {NumberFormatter} from '@services/formatters/number/number-formatter.serv
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {BehaviorSubject} from 'rxjs';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Component({
     selector: 'format-number-pipe-test-host-component',
@@ -39,7 +40,7 @@ describe('FormatNumberPipe', () => {
                     provide: UserPreferenceStore, useValue: mockStore
                 },
                 {
-                    provide: NumberFormatter, useValue: new NumberFormatter(mockStore, 'en_us')
+                    provide: NumberFormatter, useValue: new NumberFormatter(mockStore, new FormControlUtils(),'en_us')
                 }
             ],
         }).compileComponents();

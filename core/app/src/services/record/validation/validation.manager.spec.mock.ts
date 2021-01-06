@@ -12,14 +12,16 @@ import {numberFormatterMock} from '@services/formatters/number/number-formatter.
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {phoneFormatterMock} from '@services/formatters/phone/phone-formatter.spec.mock';
+import {emailFormatterMock} from '@services/formatters/email/email-formatter.spec.mock';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 export const validationManagerMock = new ValidationManager(
-    new RequiredValidator(),
+    new RequiredValidator(new FormControlUtils()),
     new RangeValidator(),
     new CurrencyValidator(numberFormatterMock),
-    new DateValidator(dateFormatterMock),
+    new DateValidator(dateFormatterMock, new FormControlUtils()),
     new DateTimeValidator(datetimeFormatterMock),
-    new EmailValidator(),
+    new EmailValidator(emailFormatterMock),
     new FloatValidator(numberFormatterMock),
     new IntValidator(numberFormatterMock),
     new PhoneValidator(phoneFormatterMock)

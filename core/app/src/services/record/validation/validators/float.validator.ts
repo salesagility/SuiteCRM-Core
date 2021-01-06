@@ -9,21 +9,11 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 export const floatValidator = (formatter: NumberFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
-
-        const pattern = formatter.getFloatUserFormatPattern();
-        const regex = new RegExp(pattern);
-
-        if (regex.test(control.value)) {
-            return null;
-        }
-
-        return {
+        const invalid = formatter.validateFloatUserFormat(control.value);
+        return invalid ? {
             floatValidator: {
                 valid: false,
-                format: pattern,
+                format: formatter.getFloatUserFormatPattern(),
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_FLOAT_FORMAT',
                     context: {
@@ -31,8 +21,8 @@ export const floatValidator = (formatter: NumberFormatter): StandardValidatorFn 
                         expected: formatter.toUserFormat('1000.50')
                     }
                 }
-            }
-        };
+            },
+        } : null;
     }
 );
 

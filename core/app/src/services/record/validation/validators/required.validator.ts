@@ -4,10 +4,12 @@ import {AbstractControl} from '@angular/forms';
 import {Record} from '@app-common/record/record.model';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {StandardValidationErrors, StandardValidatorFn} from '@app-common/services/validators/validators.model';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
-export const requiredValidator = (): StandardValidatorFn => (
+export const requiredValidator = (utils: FormControlUtils): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
-        if (control.value == null || control.value.length === 0) {
+
+        if (utils.isEmptyTrimmedInputValue(control.value)) {
             return {
                 required: {
                     required: true,
@@ -30,6 +32,9 @@ export const requiredValidator = (): StandardValidatorFn => (
 })
 export class RequiredValidator implements ValidatorInterface {
 
+    constructor(protected utils: FormControlUtils) {
+    }
+
     applies(record: Record, viewField: ViewFieldDefinition): boolean {
         if (!viewField || !viewField.fieldDefinition) {
             return false;
@@ -39,7 +44,7 @@ export class RequiredValidator implements ValidatorInterface {
     }
 
     getValidator(): StandardValidatorFn[] {
-        return [requiredValidator()];
+        return [requiredValidator(this.utils)];
     }
 
 }

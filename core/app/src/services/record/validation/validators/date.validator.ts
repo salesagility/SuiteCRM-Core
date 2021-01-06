@@ -5,13 +5,10 @@ import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {Injectable} from '@angular/core';
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {StandardValidationErrors, StandardValidatorFn} from '@app-common/services/validators/validators.model';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 export const dateValidator = (formatter: DateFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
-
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
 
         const invalid = formatter.validateUserFormat(control.value);
         return invalid ? {
@@ -35,7 +32,7 @@ export const dateValidator = (formatter: DateFormatter): StandardValidatorFn => 
 })
 export class DateValidator implements ValidatorInterface {
 
-    constructor(protected formatter: DateFormatter) {
+    constructor(protected formatter: DateFormatter, protected utils: FormControlUtils) {
     }
 
     applies(record: Record, viewField: ViewFieldDefinition): boolean {

@@ -9,29 +9,19 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 export const phoneValidator = (formatter: PhoneFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
-
-        const pattern = formatter.getUserFormatPattern();
-        const regex = new RegExp(pattern, 'g');
-
-        if (regex.test(control.value)) {
-            return null;
-        }
-
-        return {
+        const invalid = formatter.validateUserFormat(control.value);
+        return invalid ? {
             phoneValidator: {
                 valid: false,
-                format: pattern,
+                format: formatter.getUserFormatPattern(),
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_PHONE_FORMAT',
                     context: {
                         value: control.value
                     }
                 }
-            }
-        };
+            },
+        } : null;
     }
 );
 

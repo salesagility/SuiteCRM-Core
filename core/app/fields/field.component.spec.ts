@@ -21,6 +21,7 @@ import {CurrencyFormatter} from '@services/formatters/currency/currency-formatte
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 import {Field} from '@app-common/record/field.model';
+import {FormControlUtils} from "@services/record/field/form-control.utils";
 
 const buildField = (field: Field): Field => {
     field.formControl = new FormControl(field.value);
@@ -151,7 +152,7 @@ describe('FieldComponent', () => {
         default_currency_significant_digits: 2
     });
     const mockStore = new UserPreferenceMockStore(preferences);
-    const mockNumberFormatter = new NumberFormatter(mockStore, 'en_us');
+    const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en_us');
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
     /* eslint-disable camelcase, @typescript-eslint/camelcase */

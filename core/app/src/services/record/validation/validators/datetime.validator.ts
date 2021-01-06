@@ -9,10 +9,6 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 export const dateTimeValidator = (formatter: DatetimeFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
-
         const invalid = formatter.validateUserFormat(control.value);
         return invalid ? {
             dateTimeValidator: {

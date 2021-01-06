@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {isVoid} from "@app-common/utils/value-utils";
 
 @Component({
     selector: 'scrm-varchar-filter',
@@ -18,6 +19,13 @@ export class VarcharFilterFieldComponent extends BaseFieldComponent implements O
 
         if (this.field.criteria.values && this.field.criteria.values.length > 0) {
             current = this.field.criteria.values[0];
+        }
+
+        if (!isVoid(current)){
+            current = current.trim();
+        }
+        else{
+            current = '';
         }
 
         this.field.value = current;

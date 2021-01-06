@@ -6,6 +6,7 @@ import {NumberFormatter} from '@services/formatters/number/number-formatter.serv
 import {BehaviorSubject} from 'rxjs';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Component({
     selector: 'format-currency-pipe-test-host-component',
@@ -28,7 +29,7 @@ describe('FormatCurrencyPipe', () => {
     });
 
     const mockStore = new UserPreferenceMockStore(preferences);
-    const mockNumberFormatter = new NumberFormatter(mockStore, 'en_us');
+    const mockNumberFormatter = new NumberFormatter(mockStore, new FormControlUtils(), 'en_us');
     /* eslint-enable camelcase,@typescript-eslint/camelcase */
 
     beforeEach(async(() => {

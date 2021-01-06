@@ -6,6 +6,7 @@ import {formatDate} from '@angular/common';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DateTime} from 'luxon';
 import {Formatter} from '@services/formatters/formatter.model';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 export interface DatetimeFormats {
     date: string;
@@ -31,6 +32,7 @@ export class DatetimeFormatter implements Formatter {
 
     constructor(
         protected preferences: UserPreferenceStore,
+        protected formUtils: FormControlUtils,
         @Inject(LOCALE_ID) public locale: string
     ) {
     }
@@ -170,8 +172,14 @@ export class DatetimeFormatter implements Formatter {
         return DateTime.fromFormat(datetime, format);
     }
 
-    validateUserFormat(dateString: string): boolean {
-        const dateTime = this.fromUserFormat(dateString);
+    validateUserFormat(inputValue: any): boolean {
+
+        const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
+        if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
+            return false;
+        }
+        const dateTime = this.fromUserFormat(trimmedInputValue);
         return !dateTime.isValid;
     }
+
 }

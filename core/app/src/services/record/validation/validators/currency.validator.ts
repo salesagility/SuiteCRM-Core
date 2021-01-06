@@ -9,21 +9,11 @@ import {StandardValidationErrors, StandardValidatorFn} from '@app-common/service
 export const currencyValidator = (formatter: NumberFormatter): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        if (control.value == null || control.value.length === 0) {
-            return null;
-        }
-
-        const pattern = formatter.getFloatUserFormatPattern();
-        const regex = new RegExp(pattern);
-
-        if (regex.test(control.value)) {
-            return null;
-        }
-
-        return {
+        const invalid = formatter.validateFloatUserFormat(control.value);
+        return invalid ? {
             currencyValidator: {
                 valid: false,
-                format: pattern,
+                format: formatter.getFloatUserFormatPattern(),
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_CURRENCY_FORMAT',
                     context: {
@@ -31,8 +21,8 @@ export const currencyValidator = (formatter: NumberFormatter): StandardValidator
                         expected: formatter.toUserFormat('1000.50')
                     }
                 }
-            }
-        };
+            },
+        } : null;
     }
 );
 

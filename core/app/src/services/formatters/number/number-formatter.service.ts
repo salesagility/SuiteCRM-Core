@@ -3,6 +3,7 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {formatNumber} from '@angular/common';
 import {Formatter} from '@services/formatters/formatter.model';
 import {isVoid} from '@app-common/utils/value-utils';
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class NumberFormatter implements Formatter {
 
     constructor(
         protected preferences: UserPreferenceStore,
+        protected formUtils: FormControlUtils,
         @Inject(LOCALE_ID) public locale: string
     ) {
     }
@@ -118,4 +120,28 @@ export class NumberFormatter implements Formatter {
 
         return transformed;
     }
+
+    validateIntUserFormat(inputValue: any): boolean {
+
+        const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
+        if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
+            return false;
+        }
+        const regex = new RegExp(this.getIntUserFormatPattern());
+        if (regex.test(trimmedInputValue)) {
+            return false;
+        }
+    }
+
+    validateFloatUserFormat(inputValue: any): boolean {
+
+        const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
+        if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
+            return false;
+        }
+        const regex = new RegExp(this.getFloatUserFormatPattern());
+        return !regex.test(trimmedInputValue);
+
+    }
+
 }
