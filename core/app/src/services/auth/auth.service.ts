@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
-import {LoginUiComponent} from '@components/login/login.component';
+import {LoginUiComponent} from '@views/login/components/login/login.component';
 import {User} from '@services/user/user';
 import {MessageService} from '@services/message/message.service';
 import {StateManager} from '@base/store/state-manager';
@@ -23,11 +23,12 @@ export interface SessionStatus {
     providedIn: 'root'
 })
 export class AuthService {
-    protected timerSet = false;
-    private currentUserSubject = new BehaviorSubject<User>({} as User);
-    currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
+
+    currentUser$: Observable<User>;
     isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     defaultTimeout = '3600';
+    protected timerSet = false;
+    private currentUserSubject = new BehaviorSubject<User>({} as User);
 
     constructor(
         private http: HttpClient,
@@ -39,6 +40,7 @@ export class AuthService {
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService
     ) {
+        this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     }
 
     getCurrentUser(): User {

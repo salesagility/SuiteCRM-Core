@@ -7,7 +7,7 @@ import {fadeIn} from 'ng-animate';
 import {AuthService} from '@services/auth/auth.service';
 import {MessageService} from '@services/message/message.service';
 import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
-import {SystemConfigStore, SystemConfigMap} from '@store/system-config/system-config.store';
+import {SystemConfigMap, SystemConfigStore} from '@store/system-config/system-config.store';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {Process} from '@services/process/process.service';
 
@@ -74,11 +74,11 @@ export class LoginUiComponent {
     }
 
     doLanguageChange(language: string): void {
-        this.languageStore.changeLanguage(language)
+        this.languageStore.changeLanguage(language);
     }
 
     doGetCurrentLanguage(): string {
-        return this.languageStore.getCurrentLanguage()
+        return this.languageStore.getCurrentLanguage();
     }
 
     flipCard(): void {
