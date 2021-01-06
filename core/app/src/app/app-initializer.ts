@@ -8,8 +8,8 @@ import {RecordComponent} from '@views/record/components/record-view/record.compo
 import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
 import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
-import {ClassicViewUiComponent} from '@components/classic-view/classic-view.component';
-import {ClassicViewResolver} from '@services/classic-view/classic-view.resolver';
+import {ClassicViewUiComponent} from '@views/classic/components/classic-view/classic-view.component';
+import {ClassicViewResolver} from '@views/classic/services/classic-view.resolver';
 
 @Injectable()
 export class AppInit {

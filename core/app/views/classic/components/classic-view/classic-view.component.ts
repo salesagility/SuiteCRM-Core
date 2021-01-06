@@ -2,8 +2,8 @@ import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChi
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {RouteConverter, RouteInfo} from '@services/navigation/route-converter/route-converter.service';
-import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
-import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
+import {IframePageChangeObserver} from '@views/classic/services/iframe-page-change-observer.service';
+import {IframeResizeHandlerHandler} from '@views/classic/services/iframe-resize-handler.service';
 import {AuthService} from '@services/auth/auth.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 

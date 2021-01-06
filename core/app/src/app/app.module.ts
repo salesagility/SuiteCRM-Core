@@ -13,7 +13,7 @@ import {AppComponent} from './app.component';
 
 import {NavbarUiModule} from '@components/navbar/navbar.module';
 import {FooterUiModule} from '@components/footer/footer.module';
-import {ClassicViewUiModule} from '@components/classic-view/classic-view.module';
+import {ClassicViewUiModule} from '@views/classic/components/classic-view/classic-view.module';
 import {MessageUiModule} from '@components/message/message.module';
 import {FilterUiModule} from '@components/filter/filter.module';
 import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';

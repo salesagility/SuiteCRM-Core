@@ -5,8 +5,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ClassicViewUiComponent} from './classic-view.component';
 import {ActivatedRoute} from '@angular/router';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {IframePageChangeObserver} from '@services/classic-view/iframe-page-change-observer.service';
-import {IframeResizeHandlerHandler} from '@services/classic-view/iframe-resize-handler.service';
+import {IframePageChangeObserver} from '@views/classic/services/iframe-page-change-observer.service';
+import {IframeResizeHandlerHandler} from '@views/classic/services/iframe-resize-handler.service';
 import {AuthService} from '@services/auth/auth.service';
 
 class ClassicViewUiComponentMock extends ClassicViewUiComponent {

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AppManagerModule} from '../../app-manager/app-manager.module';
+import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ClassicViewUiComponent} from './classic-view.component';
 
 @NgModule({
