@@ -106,7 +106,7 @@ button {
 
 .action-group {
   float: right;
-  margin: 0.3em;
+  margin: 0.3em 0;
 
   .dropdown:hover .dropdown-menu {
     display: block;
@@ -274,7 +274,7 @@ button {
 .pagination-button {
   background: transparent;
   border: none;
-  margin: 0.3em 0 0 0;
+  margin: 0.4em 0 0 0;
   padding: 0;
 }
 
@@ -325,10 +325,9 @@ button.settings-button.dropdown-toggle::after {
 }
 
 .close-button {
-  font-size: 1.25em;
+  font-size: 1em;
   font-weight: 700;
   line-height: 1;
-  margin-right: 1em;
   width: 1.5em;
   height: 1.5em;
   display: inline-flex;

@@ -12,7 +12,7 @@
   color: $shell-grey;
   font-size: 1.8em;
   font-weight: 300;
-  margin: 1em;
+  margin: 1em 0.7em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -28,9 +28,6 @@
 
 .list-view-container {
   font-size: 0.85em;
-  padding-top: 1em;
-  padding-left: 1.6em;
-  padding-right: 1.6em;
   margin-bottom: 4em;
 }
 
@@ -326,8 +323,8 @@ td.list-group-icon {
   .list-view-hr-container {
     font-size: 0.85em;
     padding-top: 0.6em;
-    padding-left: 1.6em;
-    padding-right: 1.6em;
+    padding-left: 1.2em;
+    padding-right: 1.2em;
   }
 
 .responsive-top-row .responsive-header-link {
@@ -382,7 +379,7 @@ td {
 }
 
 .pagination-count {
-  vertical-align: text-bottom;
+  vertical-align: super;
   margin: 0 0.3em;
   font-weight: bold;
 }

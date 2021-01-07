@@ -1,6 +1,6 @@
 <!-- Start List View Container Section -->
 
-<div *ngIf="(vm$ | async) as vm" class="list-view-container container-fluid">
+<div *ngIf="(vm$ | async) as vm" class="list-view-container container-fluid pt-2">
     <div class="row">
         <div [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }" class="col-lg-9">
             <scrm-table [config]="tableConfig"></scrm-table>
