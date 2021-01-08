@@ -3,14 +3,14 @@
 namespace App\Tests\unit\core\legacy\Statistics;
 
 use App\Legacy\ModuleNameMapperHandler;
+use App\Tests\_mock\Mock\core\legacy\Statistics\DaysUntilDueTaskMock;
 use App\Tests\UnitTester;
 use BeanFactory;
 use Codeception\Test\Unit;
-use Exception;
 use DateInterval;
 use DateTime;
+use Exception;
 use Task;
-use App\Tests\_mock\Mock\core\legacy\Statistics\DaysUntilDueTaskMock;
 
 
 /**
@@ -68,6 +68,7 @@ class DaysUntilDueTaskTest extends Unit
         $this->handler->reset();
         $dateString = $this->getPastDateString(2) . ' 12:00:00';
         $dateDue = $this->getPastDateString(1) . ' 12:00:00';
+
         $bean = $this->buildTask($dateString, $dateDue);
 
         $this->handler->setTask($bean);
@@ -102,18 +103,10 @@ class DaysUntilDueTaskTest extends Unit
     public function testOverdueCalculation(): void
     {
         $this->handler->reset();
-        $dateString = $this->getPastDateString(2) . ' 12:00:00';
-        $dateDue = $this->getPastDateString(8) . ' 10:00:00';
-        $bean = $this->buildTask($dateString, $dateDue);
+        $dateString = $this->getPastDateTimeString(2);
+        $dateDue = $this->getPastDateTimeString(8);
 
-        $rows = [
-            [
-                'status' => 'In Progress',
-                'date_due' => $dateDue,
-                'date_entered' => $dateString,
-            ],
-        ];
-        $this->handler->setMockQueryResult($rows);
+        $bean = $this->buildTask($dateString, $dateDue);
 
         $this->handler->setTask($bean);
 
@@ -148,18 +141,10 @@ class DaysUntilDueTaskTest extends Unit
     public function testDueDateCalculation(): void
     {
         $this->handler->reset();
-        $dateString = $this->getPastDateString(4) . ' 16:00:00';
-        $dateDue = $this->getPastDateString(2) . ' 10:00:00';
+        $dateString = $this->getPastDateTimeString(4);
+        $dateDue = $this->getPastDateTimeString(2);
         $bean = $this->buildTask($dateString, $dateDue);
-
-        $rows = [
-            [
-                'status' => 'In Progress',
-                'date_due' => '2025-11-1 17:45:00',
-                'date_entered' => '2020-10-01 17:45:00',
-            ],
-        ];
-        $this->handler->setMockQueryResult($rows);
+        $bean->status = 'In Progress';
 
         $this->handler->setTask($bean);
 
@@ -198,6 +183,19 @@ class DaysUntilDueTaskTest extends Unit
         $now->sub(new DateInterval('P' . $days . 'D'));
 
         return $now->format('Y-m-d');
+    }
+
+    /**
+     * @param int $days
+     * @return string
+     * @throws Exception
+     */
+    protected function getPastDateTimeString(int $days): string
+    {
+        $now = new DateTime();
+        $now->sub(new DateInterval('P' . $days . 'DT1H'));
+
+        return $now->format('Y-m-d H:i:s');
     }
 
     /**
