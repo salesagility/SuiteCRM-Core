@@ -1,3 +1,4 @@
 parameters:
   ui:
     alert_timeout: 3
+    modal_buttons_collapse_breakpoint: 4

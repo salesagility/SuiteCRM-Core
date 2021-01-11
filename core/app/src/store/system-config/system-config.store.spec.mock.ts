@@ -110,6 +110,7 @@ export const systemConfigMockData = {
             value: null,
             items: {
                 alert_timeout: 3,
+                modal_buttons_collapse_breakpoint: 4,
             }
         },
         date_format: {
