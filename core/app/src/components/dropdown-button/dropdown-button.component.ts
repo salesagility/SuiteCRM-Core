@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
-import {ButtonInterface} from '@components/button/button.model';
+import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

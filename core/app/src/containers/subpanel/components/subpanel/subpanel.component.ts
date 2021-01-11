@@ -1,15 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Action} from '@app-common/actions/action.model';
-import {AnyButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {AnyButtonInterface} from '@app-common/components/button/dropdown-button.model';
 import {LanguageStore} from '@store/language/language.store';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {ButtonGroupInterface} from '@components/button-group/button-group.model';
+import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
 import {SubpanelTableAdapter} from '@containers/subpanel/adapters/table.adapter';
 import {SubpanelStore} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {TableConfig} from '@components/table/table.model';
 import {SubpanelActionManager} from '@containers/subpanel/components/subpanel/action-manager.service';
-import {ButtonInterface} from '@components/button/button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 
 @Component({
     selector: 'scrm-subpanel',

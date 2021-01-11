@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
-import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
 
 export enum SelectionStatus {

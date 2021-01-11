@@ -1,4 +1,4 @@
-import {ButtonInterface} from '@components/button/button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
 export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface;

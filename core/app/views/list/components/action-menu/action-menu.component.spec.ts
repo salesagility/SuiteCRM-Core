@@ -10,6 +10,8 @@ import {mockModuleNavigation} from '@services/navigation/module-navigation/modul
 import {ButtonGroupModule} from '@components/button-group/button-group.module';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 @Component({
     selector: 'action-menu-test-host-component',
@@ -39,6 +41,7 @@ describe('ActionMenuComponent', () => {
                 {
                     provide: ModuleNavigation, useValue: mockModuleNavigation
                 },
+                {provide: LanguageStore, useValue: languageStoreMock},
             ],
         }).compileComponents();
     }));

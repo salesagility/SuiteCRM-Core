@@ -1,8 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {CloseButtonComponent} from './close-button.component';
-import {ButtonInterface} from '@components/button/button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 import {ButtonModule} from '@components/button/button.module';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 @Component({
     selector: 'close-button-test-host-component',
@@ -31,7 +33,9 @@ describe('CloseButtonComponent', () => {
             imports: [
                 ButtonModule
             ],
-            providers: [],
+            providers: [
+                {provide: LanguageStore, useValue: languageStoreMock}
+            ],
         }).compileComponents();
 
         testHostFixture = TestBed.createComponent(CloseButtonTestHostComponent);

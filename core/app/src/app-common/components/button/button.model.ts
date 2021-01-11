@@ -1,7 +1,11 @@
+export declare type ButtonCallback = (...args) => void;
+
 export interface ButtonInterface {
     klass?: string | string[] | Set<string> | { [key: string]: any };
-    onClick?: Function;
+    onClick?: ButtonCallback;
     label?: string;
+    labelKey?: string;
+    titleKey?: string;
     icon?: string;
 }
 
@@ -9,9 +13,11 @@ export class Button implements ButtonInterface {
 
     constructor(
         public klass: string | string[] | Set<string> | { [key: string]: any } = null,
-        public onClick: Function = null,
+        public onClick: ButtonCallback = null,
         public label: string = null,
-        public icon: string = null
+        public icon: string = null,
+        public labelKey: string = null,
+        public titleKey: string = null
     ) {
     }
 
@@ -20,7 +26,9 @@ export class Button implements ButtonInterface {
             button.klass,
             button.onClick,
             button.label,
-            button.icon
+            button.icon,
+            button.labelKey,
+            button.titleKey
         );
     }
 

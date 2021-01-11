@@ -4,10 +4,12 @@ import {ButtonGroupComponent} from './button-group.component';
 import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonGroupInterface} from '@components/button-group/button-group.model';
+import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {shareReplay} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 @Component({
     selector: 'dropdown-group-test-host-component',
@@ -81,7 +83,9 @@ describe('ButtonGroupComponent', () => {
                 NgbDropdownModule,
                 DropdownButtonModule
             ],
-            providers: [],
+            providers: [
+                {provide: LanguageStore, useValue: languageStoreMock}
+            ],
         }).compileComponents();
 
         testHostFixture = TestBed.createComponent(ButtonGroupTestHostComponent);

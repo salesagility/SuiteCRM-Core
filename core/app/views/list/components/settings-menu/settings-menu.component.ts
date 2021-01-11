@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {ButtonInterface} from '@components/button/button.model';
-import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
-import {ButtonGroupInterface} from '@components/button-group/button-group.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
+import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
 import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatest} from 'rxjs';

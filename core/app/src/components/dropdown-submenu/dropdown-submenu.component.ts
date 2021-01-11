@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AnyButtonInterface, DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {AnyButtonInterface, DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 
 @Component({
     selector: 'scrm-dropdown-submenu',

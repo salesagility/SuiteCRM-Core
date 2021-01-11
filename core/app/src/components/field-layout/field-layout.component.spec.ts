@@ -28,6 +28,8 @@ import {DateFormatter} from '@services/formatters/datetime/date-formatter.servic
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {currencyFormatterMock} from '@services/formatters/currency/currency-formatter.service.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 const mockConfigData: FieldLayoutConfig = {
@@ -981,7 +983,8 @@ describe('FieldLayoutComponent', () => {
                 {provide: NumberFormatter, useValue: numberFormatterMock},
                 {provide: DatetimeFormatter, useValue: datetimeFormatterMock},
                 {provide: DateFormatter, useValue: dateFormatterMock},
-                {provide: CurrencyFormatter, useValue: currencyFormatterMock}
+                {provide: CurrencyFormatter, useValue: currencyFormatterMock},
+                {provide: LanguageStore, useValue: languageStoreMock}
             ],
         }).compileComponents();
 

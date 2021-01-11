@@ -1,10 +1,12 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {MinimiseButtonComponent} from './minimise-button.component';
-import {ButtonInterface} from '@components/button/button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 import {ButtonModule} from '@components/button/button.module';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 @Component({
     selector: 'minimise-button-test-host-component',
@@ -37,6 +39,7 @@ describe('MinimiseButtonComponent', () => {
                 {
                     provide: ThemeImagesStore, useValue: themeImagesStoreMock
                 },
+                {provide: LanguageStore, useValue: languageStoreMock}
             ],
         }).compileComponents();
 

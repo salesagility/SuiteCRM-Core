@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
-import {ButtonInterface} from '@components/button/button.model';
+import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {ButtonInterface} from '@app-common/components/button/button.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {combineLatest, Observable} from 'rxjs';
 import {filter, map, startWith, take} from 'rxjs/operators';

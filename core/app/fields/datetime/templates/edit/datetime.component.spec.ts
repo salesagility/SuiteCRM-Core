@@ -19,6 +19,8 @@ import {DateFormatter} from '@services/formatters/datetime/date-formatter.servic
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {DateTimeEditFieldModule} from '@fields/datetime/templates/edit/datetime.module';
+import {LanguageStore} from '@store/language/language.store';
+import {languageStoreMock} from '@store/language/language.store.spec.mock';
 
 @Component({
     selector: 'datetime-edit-field-test-host-component',
@@ -56,6 +58,7 @@ describe('DateTimeEditFieldComponent', () => {
                 DateTimeEditFieldModule
             ],
             providers: [
+                {provide: LanguageStore, useValue: languageStoreMock},
                 {
                     provide: UserPreferenceStore, useValue: {
                         userPreferences$: preferences.asObservable().pipe(distinctUntilChanged()),

@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
-import {DropdownButtonInterface} from '@components/dropdown-button/dropdown-button.model';
+import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 
 
 @Component({
