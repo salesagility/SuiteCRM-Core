@@ -7,20 +7,40 @@ import {RecordActionManager} from '@views/record/actions/record-action-manager.s
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 
 const mockRouter = {
-    navigate: (
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-        commands: any[],
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-        extras?: NavigationExtras
-    ) => null
+    navigate: (commands: any[], extras?: NavigationExtras) => {
+        if (!extras || !commands) {
+            return null;
+        }
+
+        return null;
+    }
 } as Router;
+
+export class MockModal extends NgbModal {
+
+    constructor() {
+        super(null, null, null, null);
+    }
+
+    open(): NgbModalRef {
+        return {
+            componentInstance: {
+                textKey: '',
+                buttons: []
+            }
+        } as NgbModalRef;
+    }
+}
+
 
 export const recordActionsManagerMock = new RecordActionManager(
     new RecordEditAction(),
     new RecordCreateAction(moduleNameMapperMock, mockRouter),
     new RecordToggleWidgetsAction(),
-    new RecordCancelAction(),
+    new RecordCancelAction(new MockModal()),
     new RecordSaveAction(messageServiceMock)
 );

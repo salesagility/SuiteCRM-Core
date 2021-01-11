@@ -144,6 +144,19 @@ export class RecordManager {
     }
 
     /**
+     * Is staging record dirty
+     *
+     * @returns {object} Record
+     */
+    isDirty(): boolean {
+        if (!this.stagingState || !this.stagingState.formGroup) {
+            return false;
+        }
+
+        return this.stagingState.formGroup.dirty;
+    }
+
+    /**
      * Get record cached Observable or call the backend
      *
      * @param {string} module to use
