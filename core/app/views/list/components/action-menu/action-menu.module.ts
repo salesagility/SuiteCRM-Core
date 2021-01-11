@@ -6,7 +6,7 @@ import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ActionMenuComponent} from './action-menu.component';
 
 import {ButtonModule} from '@components/button/button.module';
-import {ModalUiModule} from '@components/modal/components/modal/modal.module';
+import {ModalModule} from '@components/modal/components/modal/modal.module';
 import {ButtonGroupModule} from '@components/button-group/button-group.module';
 
 
@@ -16,7 +16,7 @@ import {ButtonGroupModule} from '@components/button-group/button-group.module';
     imports: [
         CommonModule,
         AppManagerModule.forChild(ActionMenuComponent),
-        ModalUiModule,
+        ModalModule,
         ButtonModule,
         AngularSvgIconModule,
         ButtonGroupModule

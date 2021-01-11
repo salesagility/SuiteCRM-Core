@@ -2,22 +2,21 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
-import {ModalUiComponent} from './modal.component';
-
-import {ButtonModule} from '@components/button/button.module';
+import {ModalComponent} from './modal.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ImageModule} from '@components/image/image.module';
+import {CloseButtonModule} from '@components/close-button/close-button.module';
+import {LabelModule} from '@components/label/label.module';
 
 @NgModule({
-    declarations: [ModalUiComponent],
-    exports: [ModalUiComponent],
+    declarations: [ModalComponent],
+    exports: [ModalComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ModalUiComponent),
-        ButtonModule,
+        AppManagerModule.forChild(ModalComponent),
         AngularSvgIconModule,
-        ImageModule
+        CloseButtonModule,
+        LabelModule
     ]
 })
-export class ModalUiModule {
+export class ModalModule {
 }
