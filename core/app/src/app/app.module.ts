@@ -40,6 +40,8 @@ import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.co
 import {AppInit} from '@app/app-initializer';
 import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
+import {MessageModalComponent} from '@components/modal/components/message-modal/message-modal.component';
+import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
@@ -67,7 +69,8 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         ImageModule,
         BrowserAnimationsModule,
         NgbModule,
-        FullPageSpinnerModule
+        FullPageSpinnerModule,
+        MessageModalModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
@@ -82,7 +85,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         }
     ],
     bootstrap: [AppComponent],
-    entryComponents: [ColumnChooserComponent]
+    entryComponents: [ColumnChooserComponent, MessageModalComponent]
 })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {

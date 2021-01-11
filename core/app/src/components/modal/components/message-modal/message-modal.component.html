@@ -1,0 +1,15 @@
+<scrm-modal [closable]="true"
+            [close]="closeButton"
+            [title]="titleKey"
+            klass="message-modal">
+
+    <div class="p-3" modal-body>
+        <span><scrm-label [labelKey]="textKey"></scrm-label></span>
+    </div>
+
+    <div modal-footer>
+        <scrm-modal-button-group [activeModal]="activeModal"
+                                 [config$]="buttonGroup$">
+        </scrm-modal-button-group>
+    </div>
+</scrm-modal>

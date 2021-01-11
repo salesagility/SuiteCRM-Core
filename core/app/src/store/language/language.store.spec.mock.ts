@@ -11,6 +11,7 @@ export const languageMockData = {
         LBL_HISTORY: 'History',
         LBL_SAVE_BUTTON_LABEL: 'Save',
         LBL_CANCEL: 'Cancel',
+        LBL_OK: 'OK',
         LBL_SEARCH_REAULTS_TITLE: 'Results',
         ERR_SEARCH_INVALID_QUERY: 'An error has occurred while performing the search. Your query syntax might not be valid.',
         ERR_SEARCH_NO_RESULTS: 'No results matching your search criteria. Try broadening your search.',
@@ -45,6 +46,7 @@ export const languageMockData = {
         LBL_OPPORTUNITIES_TOTAL: 'Total Opportunity Value',
         LBL_INSIGHTS: 'Insights',
         LBL_NO_DATA: 'No Data',
+        WARN_UNSAVED_CHANGES: 'Are you sure you want to navigate away from this record?',
     },
     appListStrings: {
         // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
