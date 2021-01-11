@@ -15,6 +15,32 @@ button {
   display: inline-block;
 }
 
+.btn-main {
+  color: #fff;
+  background-color: $main;
+  border-color: $main;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: $primary;
+  border-color: $primary;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-main:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  color: $white;
+  background-color: $bright-orange;
+  border-color: $bright-orange;
+}
+
 .login-button {
   background-color: $coral-pink;
   letter-spacing: 0.1em;
