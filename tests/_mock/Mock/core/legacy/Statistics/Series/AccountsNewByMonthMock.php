@@ -35,7 +35,10 @@ class AccountsNewByMonthMock extends AccountsNewByMonth
         $this->bean = $bean;
     }
 
-    protected function startLegacyApp(): void
+    /**
+     * @inheritDoc
+     */
+    protected function startLegacyApp(string $currentModule = ''): void
     {
     }
 

@@ -6,6 +6,7 @@ use App\Service\ThemeImageFinder;
 use App\Service\ThemeImageService;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
+use Exception;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -24,15 +25,18 @@ class ThemeImageServiceTest extends Unit
      */
     protected $themeImageService;
 
+    /**
+     * @throws Exception
+     */
     protected function _before(): void
     {
         $themeImagePaths = [
             'legacy/themes/default/images',
             'legacy/custom/themes/default/images',
-            'core/app/themes/default/images',
+            'dist/themes/default/images',
             'legacy/themes/<theme>/images',
             'legacy/custom/themes/<theme>/images',
-            'core/app/themes/<theme>/images',
+            'dist/themes/<theme>/images',
         ];
         $themeImageSupportedTypes = [
             'svg',
@@ -43,7 +47,7 @@ class ThemeImageServiceTest extends Unit
         ];
 
         $mockImages = [
-            '/legacy/themes/default/images' => [
+            '/public/legacy/themes/default/images' => [
                 new SplFileInfo('logo.png', 'legacy/themes/default/images', 'legacy/themes/default/images'),
                 new SplFileInfo('legacy_image.png', 'legacy/themes/default/images', 'legacy/themes/default/images'),
                 new SplFileInfo('to_be_overwritten.png', 'legacy/themes/default/images',
@@ -51,13 +55,13 @@ class ThemeImageServiceTest extends Unit
                 new SplFileInfo('to_be_overwritten_with_different_extension.png', 'legacy/themes/default/images',
                     'legacy/themes/default/images')
             ],
-            '/legacy/themes/suite8/images' => [
+            '/public/legacy/themes/suite8/images' => [
                 new SplFileInfo('to_be_overwritten.png', 'legacy/themes/suite8/images', 'legacy/themes/suite8/images'),
                 new SplFileInfo('to_be_overwritten_with_different_extension.svg', 'legacy/themes/suite8/images',
                     'legacy/themes/suite8/images')
             ],
-            '/core/app/themes/suite8/images' => [
-                new SplFileInfo('logo.png', 'core/app/themes/suite8/images', 'core/app/themes/suite8/images'),
+            '/public/dist/themes/suite8/images' => [
+                new SplFileInfo('logo.png', 'dist/themes/suite8/images', 'dist/themes/suite8/images'),
             ]
         ];
 
@@ -109,7 +113,7 @@ class ThemeImageServiceTest extends Unit
     {
         $expected = [
             'logo' => [
-                'path' => 'core/app/themes/suite8/images/logo.png',
+                'path' => 'dist/themes/suite8/images/logo.png',
                 'name' => 'logo',
                 'type' => 'png'
             ],
