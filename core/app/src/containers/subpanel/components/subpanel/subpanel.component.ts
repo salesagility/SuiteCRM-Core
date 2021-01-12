@@ -34,7 +34,7 @@ export class SubpanelComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.adapter = new SubpanelTableAdapter(this.store, this.languages);
+        this.adapter = new SubpanelTableAdapter(this.store);
         this.tableConfig = this.adapter.getTable();
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;

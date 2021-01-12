@@ -1,11 +1,8 @@
-import {combineLatest, Observable, of} from 'rxjs';
+import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {map} from 'rxjs/operators';
-import {LanguageStore} from '@store/language/language.store';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {TableConfig} from '@components/table/table.model';
-import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
 import {ListViewStore} from '../store/list-view/list-view.store';
 
 @Injectable()
@@ -14,7 +11,6 @@ export class TableAdapter {
     constructor(
         protected store: ListViewStore,
         protected metadata: MetadataStore,
-        protected language: LanguageStore
     ) {
     }
 
@@ -23,7 +19,9 @@ export class TableAdapter {
             showHeader: true,
             showFooter: true,
 
-            columns: this.getColumns(),
+            module: this.store.getModuleName(),
+
+            columns: this.store.columns$,
             lineActions$: this.store.lineActions$,
             selection$: this.store.selection$,
             sort$: this.store.sort$,
@@ -43,25 +41,5 @@ export class TableAdapter {
                 this.store.updateLocalStorage();
             },
         } as TableConfig;
-    }
-
-    protected getColumns(): Observable<ColumnDefinition[]> {
-        return combineLatest(
-            [this.language.vm$, this.store.columns$, this.store.moduleName$]
-        ).pipe(
-            map(([languages, columns, module]) => {
-                const mapped: ColumnDefinition[] = [];
-
-                columns.forEach(column => {
-                    const translatedLabel = this.language.getFieldLabel(column.label, module, languages);
-                    mapped.push({
-                        ...column,
-                        translatedLabel
-                    });
-                });
-
-                return mapped;
-            })
-        );
     }
 }

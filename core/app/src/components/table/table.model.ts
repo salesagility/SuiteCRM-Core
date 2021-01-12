@@ -26,6 +26,8 @@ export interface TableConfig {
     bulkActions?: BulkActionDataSource;
     pagination?: PaginationDataSource;
 
+    module?: string;
+
     toggleRecordSelection(id: string): void;
 
     updateSorting(orderBy: string, sortOrder: SortDirection): void;

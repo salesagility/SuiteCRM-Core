@@ -1,6 +1,5 @@
-import {combineLatest, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
 import {SortDirection} from '@components/sort-button/sort-button.model';
 import {TableConfig} from '@components/table/table.model';
 import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
@@ -10,16 +9,15 @@ import {map} from 'rxjs/operators';
 @Injectable()
 export class SubpanelTableAdapter {
 
-    constructor(
-        protected store: SubpanelStore,
-        protected language: LanguageStore
-    ) {
+    constructor(protected store: SubpanelStore) {
     }
 
     getTable(): TableConfig {
         return {
             showHeader: false,
             showFooter: true,
+
+            module: this.store.metadata.headerModule,
 
             columns: this.getColumns(),
             sort$: this.store.recordList.sort$,
@@ -40,21 +38,6 @@ export class SubpanelTableAdapter {
     }
 
     protected getColumns(): Observable<ColumnDefinition[]> {
-
-        return combineLatest([this.language.vm$, this.store.metadata$]).pipe(
-            map(([languages, metadata]) => {
-                const mapped: ColumnDefinition[] = [];
-
-                metadata.columns.forEach(column => {
-                    const translatedLabel = this.language.getFieldLabel(column.label, metadata.headerModule, languages);
-                    mapped.push({
-                        ...column,
-                        translatedLabel
-                    });
-                });
-
-                return mapped;
-            })
-        );
+        return this.store.metadata$.pipe(map(metadata => metadata.columns));
     }
 }

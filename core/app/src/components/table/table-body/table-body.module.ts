@@ -9,6 +9,7 @@ import {FieldModule} from '@fields/field.module';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {LineActionModule} from '@components/line-action-menu/line-action-menu.module';
 import {LoadingSpinnerModule} from '@components/loading-spinner/loading-spinner.module';
+import {LabelModule} from '@components/label/label.module';
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -21,7 +22,8 @@ import {LoadingSpinnerModule} from '@components/loading-spinner/loading-spinner.
         FieldModule,
         SortButtonModule,
         LineActionModule,
-        LoadingSpinnerModule
+        LoadingSpinnerModule,
+        LabelModule
     ]
 })
 export class TableBodyModule {

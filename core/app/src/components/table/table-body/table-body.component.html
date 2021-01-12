@@ -28,7 +28,7 @@
                     scope="col"
                     class="primary-table-header">
 
-                    {{column.translatedLabel}}
+                    <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
                     <scrm-sort-button *ngIf="config.sort$ && column.sortable"
                                       [state]="getFieldSort(column)">
                     </scrm-sort-button>
@@ -61,7 +61,9 @@
         </table>
 
         <div *ngIf="!vm.loading && vm.records.length === 0">
-            <p class="lead text-center pt-3">{{vm.language.appStrings.MSG_LIST_VIEW_NO_RESULTS_BASIC}}</p>
+            <p class="lead text-center pt-3">
+                <scrm-label labelKey="MSG_LIST_VIEW_NO_RESULTS_BASIC"></scrm-label>
+            </p>
         </div>
         <div *ngIf="vm.loading" [class.m-5]="!vm.records || vm.records.length === 0">
             <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>

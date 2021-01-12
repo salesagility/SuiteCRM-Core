@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {Record} from '@app-common/record/record.model';
 import {Field} from '@app-common/record/field.model';
 import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
@@ -14,7 +13,6 @@ import {RecordSelection} from '@app-common/views/list/record-selection.model';
 import {FieldManager} from '@services/record/field/field.manager';
 
 interface TableViewModel {
-    language: LanguageStrings;
     columns: ColumnDefinition[];
     lineActions: LineAction[];
     selection: RecordSelection;
@@ -31,12 +29,10 @@ interface TableViewModel {
 })
 export class TableBodyComponent implements OnInit {
     @Input() config: TableConfig;
-    language$: Observable<LanguageStrings> = this.language.vm$;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
 
     constructor(
-        protected language: LanguageStore,
         protected fieldManager: FieldManager
     ) {
     }
@@ -47,7 +43,6 @@ export class TableBodyComponent implements OnInit {
         const loading$ = this.config.loading$ || of(false).pipe(shareReplay(1));
 
         this.vm$ = combineLatest([
-            this.language$,
             this.config.columns,
             lineAction$,
             selection$,
@@ -57,7 +52,6 @@ export class TableBodyComponent implements OnInit {
         ]).pipe(
             map((
                 [
-                    language,
                     columns,
                     lineActions,
                     selection,
@@ -85,7 +79,6 @@ export class TableBodyComponent implements OnInit {
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
 
                 return {
-                    language,
                     columns,
                     lineActions,
                     selection,

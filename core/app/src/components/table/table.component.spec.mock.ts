@@ -111,7 +111,6 @@ export const tableConfigMock: TableConfig = {
                 importable: 'required',
                 merge_filter: 'selected'
             },
-            translatedLabel: 'Name'
         } as ColumnDefinition
     ]),
     maxColumns$: of(4).pipe(shareReplay(1)),
