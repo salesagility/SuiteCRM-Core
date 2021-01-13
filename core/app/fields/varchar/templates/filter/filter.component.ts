@@ -23,6 +23,7 @@ export class VarcharFilterFieldComponent extends BaseFieldComponent implements O
         this.field.value = current;
         const formattedValue = this.typeFormatter.toUserFormat(this.field.type, current, {mode: 'edit'});
         this.field.formControl.setValue(formattedValue);
+        this.field.formControl.markAsDirty();
 
         this.subscribeValueChanges();
     }

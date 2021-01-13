@@ -33,6 +33,7 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
+        this.field.formControl.markAsDirty();
         this.field.criteria.operator = '=';
         this.field.criteria.values = value;
 
@@ -48,6 +49,7 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
 
         this.field.valueList = value;
         this.field.formControl.setValue(value);
+        this.field.formControl.markAsDirty();
         this.field.criteria.operator = '=';
         this.field.criteria.values = value;
         setTimeout(() => {

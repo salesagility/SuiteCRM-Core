@@ -15,5 +15,7 @@ export class BaseBooleanComponent extends BaseFieldComponent {
         }
 
         this.field.value = newValue;
+        this.field.formControl.setValue(newValue);
+        this.field.formControl.markAsDirty();
     }
 }

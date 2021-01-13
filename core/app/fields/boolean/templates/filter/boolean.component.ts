@@ -32,6 +32,7 @@ export class BooleanFilterFieldComponent extends BaseEnumComponent implements On
         if (item && item.value) {
             this.field.value = item.value;
             this.field.formControl.setValue(item.value);
+            this.field.formControl.markAsDirty();
             this.field.criteria.operator = '=';
             this.field.criteria.values = [item.value];
             return;
@@ -39,6 +40,7 @@ export class BooleanFilterFieldComponent extends BaseEnumComponent implements On
 
         this.field.value = '';
         this.field.formControl.setValue('');
+        this.field.formControl.markAsDirty();
         this.selectedValues = [];
         this.field.criteria.operator = '';
         this.field.criteria.values = [];
@@ -49,6 +51,7 @@ export class BooleanFilterFieldComponent extends BaseEnumComponent implements On
     public onRemove(): void {
         this.field.value = '';
         this.field.formControl.setValue('');
+        this.field.formControl.markAsDirty();
         this.field.criteria.operator = '';
         this.field.criteria.values = [];
         setTimeout(() => {

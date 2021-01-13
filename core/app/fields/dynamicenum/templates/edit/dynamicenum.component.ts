@@ -25,11 +25,13 @@ export class DynamicEnumEditFieldComponent extends BaseEnumComponent {
         if (item && item.value) {
             this.field.value = item.value;
             this.field.formControl.setValue(item.value);
+            this.field.formControl.markAsDirty();
             return;
         }
 
         this.field.value = '';
         this.field.formControl.setValue('');
+        this.field.formControl.markAsDirty();
         this.selectedValues = [];
 
         return;
@@ -38,6 +40,7 @@ export class DynamicEnumEditFieldComponent extends BaseEnumComponent {
     public onRemove(): void {
         this.field.value = '';
         this.field.formControl.setValue('');
+        this.field.formControl.markAsDirty();
         setTimeout(() => {
             this.tag.focus(true, true);
             this.tag.dropdown.show();

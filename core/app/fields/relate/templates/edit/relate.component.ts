@@ -56,5 +56,6 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.field.value = relateValue;
         this.field.valueObject = relate;
         this.field.formControl.setValue(relateValue);
+        this.field.formControl.markAsDirty();
     }
 }

@@ -25,6 +25,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
+        this.field.formControl.markAsDirty();
 
         return;
     }
@@ -33,6 +34,8 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
+        this.field.formControl.markAsDirty();
+
         setTimeout(() => {
             this.tag.focus(true, true);
             this.tag.dropdown.show();
