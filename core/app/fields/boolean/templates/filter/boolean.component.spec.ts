@@ -17,6 +17,7 @@ import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/tes
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {waitUntil} from '@app-common/testing/utils.spec';
 
 
 @Component({
@@ -77,49 +78,35 @@ describe('BooleanFilterFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', () => {
+    it('should have value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.field = {
-            type: 'boolean',
-            value: '1',
-            metadata: null,
-            definition: {
-                options: 'dom_int_bool'
-            },
-            criteria: {
-                values: ['1'],
-                operator: '='
-            },
-            formControl: new FormControl('1')
-        };
-
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
 
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-boolean-filter')[0];
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-boolean-filter')[0];
+        expect(field).toBeTruthy();
 
-            expect(field).toBeTruthy();
+        await waitUntil(() => field.getElementsByTagName('tag-input').item(0));
 
-            const tagInput = field.getElementsByTagName('tag-input').item(0);
+        const tagInput = field.getElementsByTagName('tag-input').item(0);
 
-            expect(tagInput).toBeTruthy();
+        expect(tagInput).toBeTruthy();
 
-            const tag = tagInput.getElementsByTagName('tag').item(0);
+        const tag = tagInput.getElementsByTagName('tag').item(0);
 
-            expect(tag).toBeTruthy();
+        expect(tag).toBeTruthy();
 
-            const tagText = tag.getElementsByClassName('tag__text').item(0);
+        const tagText = tag.getElementsByClassName('tag__text').item(0);
 
-            expect(tagText.textContent).toContain('Yes');
-            expect(tagText.textContent).not.toContain('1');
+        expect(tagText.textContent).toContain('Yes');
+        expect(tagText.textContent).not.toContain('1');
 
-            const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
+        const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
-            expect(deleteIcon).toBeTruthy();
+        expect(deleteIcon).toBeTruthy();
 
-        });
+        done();
 
     });
 

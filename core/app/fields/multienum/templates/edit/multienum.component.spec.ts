@@ -17,6 +17,7 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {waitUntil} from '@app-common/testing/utils.spec';
 
 @Component({
     selector: 'multienum-edit-field-test-host-component',
@@ -24,7 +25,7 @@ import {CurrencyFormatter} from '@services/formatters/currency/currency-formatte
 })
 class MultiEnumEditFieldTestHostComponent {
     field: Field = {
-        type: 'enum',
+        type: 'multienum',
         value: null,
         valueList: [
             '_customer',
@@ -75,103 +76,73 @@ describe('MultiEnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', () => {
+    it('should have value', async (done) => {
         expect(testHostComponent).toBeTruthy();
-
-        testHostComponent.field = {
-            type: 'enum',
-            value: null,
-            valueList: [
-                '_customer',
-                '_reseller'
-            ],
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
 
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenRenderingDone();
 
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-multienum-edit')[0];
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-multienum-edit')[0];
+        expect(field).toBeTruthy();
 
-            expect(field).toBeTruthy();
+        const tagInput = field.getElementsByTagName('tag-input').item(0);
 
-            const tagInput = field.getElementsByTagName('tag-input').item(0);
+        expect(tagInput).toBeTruthy();
 
-            expect(tagInput).toBeTruthy();
+        const tag1 = tagInput.getElementsByTagName('tag').item(0);
 
-            const tag1 = tagInput.getElementsByTagName('tag').item(0);
+        expect(tag1).toBeTruthy();
 
-            expect(tag1).toBeTruthy();
+        const tagText1 = tag1.getElementsByClassName('tag__text').item(0);
 
-            const tagText1 = tag1.getElementsByClassName('tag__text').item(0);
+        expect(tagText1.textContent).toContain('Customer');
+        expect(tagText1.textContent).not.toContain('_customer');
 
-            expect(tagText1.textContent).toContain('Customer');
-            expect(tagText1.textContent).not.toContain('_customer');
+        const deleteIcon1 = tag1.getElementsByTagName('delete-icon').item(0);
 
-            const deleteIcon1 = tag1.getElementsByTagName('delete-icon').item(0);
+        expect(deleteIcon1).toBeTruthy();
 
-            expect(deleteIcon1).toBeTruthy();
+        const tag2 = tagInput.getElementsByTagName('tag').item(1);
 
-            const tag2 = tagInput.getElementsByTagName('tag').item(1);
+        expect(tag2).toBeTruthy();
 
-            expect(tag2).toBeTruthy();
+        const tagText2 = tag2.getElementsByClassName('tag__text').item(0);
 
-            const tagText2 = tag2.getElementsByClassName('tag__text').item(0);
+        expect(tagText2.textContent).toContain('Reseller');
+        expect(tagText2.textContent).not.toContain('_reseller');
 
-            expect(tagText2.textContent).toContain('Reseller');
-            expect(tagText2.textContent).not.toContain('_reseller');
+        const deleteIcon2 = tag1.getElementsByTagName('delete-icon').item(0);
 
-            const deleteIcon2 = tag1.getElementsByTagName('delete-icon').item(0);
+        expect(deleteIcon2).toBeTruthy();
 
-            expect(deleteIcon2).toBeTruthy();
-
-        });
-
+        done();
     });
 
-    it('should allow removing value', () => {
+    it('should allow removing value', async (done) => {
         expect(testHostComponent).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
 
         const element = testHostFixture.nativeElement;
 
-        testHostComponent.field = {
-            type: 'enum',
-            value: null,
-            valueList: [
-                '_customer',
-                '_reseller'
-            ],
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
+        await waitUntil(() => element.getElementsByTagName('delete-icon').item(0));
+
+        const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+
+        expect(deleteIcon).toBeTruthy();
+
+        deleteIcon.click();
 
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenRenderingDone();
 
-            const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+        const tag = element.getElementsByTagName('tag');
 
-            expect(deleteIcon).toBeTruthy();
+        expect(tag).toBeTruthy();
+        expect(tag.length).toEqual(1);
 
-            deleteIcon.click();
-
-            testHostFixture.detectChanges();
-            testHostFixture.whenRenderingDone().then(() => {
-
-                const tag = element.getElementsByClassName('tag__text');
-
-                expect(tag).toBeTruthy();
-
-                expect(tag.length).toEqual(1);
-            });
-
-        });
-
-
+        done();
     });
 });

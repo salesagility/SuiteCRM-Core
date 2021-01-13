@@ -17,6 +17,7 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {waitUntil} from '@app-common/testing/utils.spec';
 
 @Component({
     selector: 'enum-edit-field-test-host-component',
@@ -71,148 +72,116 @@ describe('EnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', () => {
+    it('should have value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.field = {
-            type: 'enum',
-            value: '_customer',
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
-
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenRenderingDone();
 
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-enum-edit')[0];
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-enum-edit')[0];
+        expect(field).toBeTruthy();
 
-            expect(field).toBeTruthy();
+        const tagInput = field.getElementsByTagName('tag-input').item(0);
 
-            const tagInput = field.getElementsByTagName('tag-input').item(0);
+        expect(tagInput).toBeTruthy();
 
-            expect(tagInput).toBeTruthy();
+        const tag = tagInput.getElementsByTagName('tag').item(0);
 
-            const tag = tagInput.getElementsByTagName('tag').item(0);
+        expect(tag).toBeTruthy();
 
-            expect(tag).toBeTruthy();
+        const tagText = tag.getElementsByClassName('tag__text').item(0);
 
-            const tagText = tag.getElementsByClassName('tag__text').item(0);
+        expect(tagText.textContent).toContain('Customer');
+        expect(tagText.textContent).not.toContain('_customer');
 
-            expect(tagText.textContent).toContain('Customer');
-            expect(tagText.textContent).not.toContain('_customer');
+        const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
-            const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
+        expect(deleteIcon).toBeTruthy();
 
-            expect(deleteIcon).toBeTruthy();
-
-        });
-
+        done();
     });
 
-    it('should allow removing value', () => {
+    it('should allow removing value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
         const element = testHostFixture.nativeElement;
 
-        testHostComponent.field = {
-            type: 'enum',
-            value: '_customer',
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
+        testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
+
+        const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+
+        expect(deleteIcon).toBeTruthy();
+
+        deleteIcon.click();
 
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenStable();
 
-            const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-enum-edit')[0];
 
-            expect(deleteIcon).toBeTruthy();
+        expect(field).toBeTruthy();
 
-            deleteIcon.click();
+        await waitUntil(() => !field.getElementsByTagName('tag').item(0));
 
-            testHostFixture.detectChanges();
-            testHostFixture.whenRenderingDone().then(() => {
+        const tag = field.getElementsByTagName('tag');
 
-                const tag = element.getElementsByClassName('tag__text');
+        expect(tag).toBeTruthy();
+        expect(tag.length).toEqual(0);
 
-                expect(tag).toBeTruthy();
-
-                expect(tag.length).toEqual(0);
-            });
-
-        });
-
-
+        done();
     });
 
-    it('should allow adding value', () => {
+    it('should allow adding value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
         const element = testHostFixture.nativeElement;
 
-        testHostComponent.field = {
-            type: 'enum',
-            value: '_customer',
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
+        testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
+
+        const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+
+        expect(deleteIcon).toBeTruthy();
+
+        deleteIcon.click();
 
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenStable();
 
-            const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
+        const input = element.getElementsByTagName('tag-input-form').item(0);
 
-            expect(deleteIcon).toBeTruthy();
+        input.click();
 
-            deleteIcon.click();
+        testHostFixture.detectChanges();
+        await testHostFixture.whenStable();
 
-            testHostFixture.detectChanges();
-            testHostFixture.whenRenderingDone().then(() => {
+        const menu = document.getElementsByClassName('ng2-dropdown-menu').item(0);
+        const item = menu.getElementsByClassName('ng2-menu-item').item(0);
 
-                const input = element.getElementsByTagName('tag-input-form').item(0);
+        expect(menu).toBeTruthy();
+        expect(item).toBeTruthy();
 
-                input.click();
+        item.parentElement.click();
 
-                testHostFixture.detectChanges();
-                testHostFixture.whenRenderingDone().then(() => {
+        testHostFixture.detectChanges();
+        await testHostFixture.whenStable();
 
-                    const menu = window.document.getElementsByClassName('ng2-dropdown-menu').item(0);
-                    const item = menu.getElementsByClassName('ng2-menu-item').item(0);
+        const tag = element.getElementsByTagName('tag').item(0);
 
-                    expect(menu).toBeTruthy();
-                    expect(item).toBeTruthy();
+        expect(tag).toBeTruthy();
 
-                    item.parentElement.click();
+        const tagText = tag.getElementsByClassName('tag__text').item(0);
 
-                    testHostFixture.detectChanges();
-                    testHostFixture.whenRenderingDone().then(() => {
+        expect(tagText.textContent).toContain('Customer');
+        expect(tagText.textContent).not.toContain('_customer');
 
-                        const tag = element.getElementsByTagName('tag').item(0);
+        const newDeleteIcon = element.getElementsByTagName('delete-icon').item(0);
 
-                        expect(tag).toBeTruthy();
+        expect(newDeleteIcon).toBeTruthy();
 
-                        const tagText = tag.getElementsByClassName('tag__text').item(0);
+        done();
 
-                        expect(tagText.textContent).toContain('Customer');
-                        expect(tagText.textContent).not.toContain('_customer');
-
-                        const newDeleteIcon = element.getElementsByTagName('delete-icon').item(0);
-
-                        expect(newDeleteIcon).toBeTruthy();
-
-                    });
-
-                });
-
-            });
-
-        });
     });
 });

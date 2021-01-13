@@ -26,7 +26,7 @@ import {dataTypeFormatterMock} from '@services/formatters/data-type.formatter.sp
 })
 class MultiEnumFilterFieldTestHostComponent {
     field: Field = {
-        type: 'enum',
+        type: 'multienum',
         value: null,
         valueList: [
             '_customer',
@@ -80,6 +80,36 @@ describe('MultiEnumFilterFieldComponent', () => {
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should have value', async (done) => {
+        expect(testHostComponent).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
+
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-multienum-filter')[0];
+
+        expect(field).toBeTruthy();
+
+        const tagInput = field.getElementsByTagName('tag-input').item(0);
+
+        expect(tagInput).toBeTruthy();
+
+        const tag = tagInput.getElementsByTagName('tag').item(0);
+
+        expect(tag).toBeTruthy();
+
+        const tagText = tag.getElementsByClassName('tag__text').item(0);
+
+        expect(tagText.textContent).toContain('Customer');
+        expect(tagText.textContent).not.toContain('_customer');
+
+        const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
+
+        expect(deleteIcon).toBeTruthy();
+
+        done();
     });
 
 });

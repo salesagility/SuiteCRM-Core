@@ -20,18 +20,9 @@ import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mo
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RelateEditFieldModule} from '@fields/relate/templates/edit/relate.module';
-import {take} from 'rxjs/operators';
-import {interval} from 'rxjs';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
-
-export const waitUntil = async (untilTruthy: Function): Promise<boolean> => {
-    while (!untilTruthy()) {
-        await interval(25).pipe(take(1)).toPromise();
-    }
-    // eslint-disable-next-line compat/compat
-    return Promise.resolve(true);
-};
+import {waitUntil} from '@app-common/testing/utils.spec';
 
 @Component({
     selector: 'relate-edit-field-test-host-component',

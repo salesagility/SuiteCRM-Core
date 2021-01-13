@@ -71,44 +71,33 @@ describe('DynamicEnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', () => {
+    it('should have value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.field = {
-            type: 'dynamicenum',
-            value: '_customer',
-            metadata: null,
-            definition: {
-                options: 'account_type_dom'
-            }
-        };
-
         testHostFixture.detectChanges();
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenRenderingDone();
 
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-dynamicenum-edit')[0];
 
-            const field = testHostFixture.nativeElement.getElementsByTagName('scrm-dynamicenum-edit')[0];
+        expect(field).toBeTruthy();
 
-            expect(field).toBeTruthy();
+        const tagInput = field.getElementsByTagName('tag-input').item(0);
 
-            const tagInput = field.getElementsByTagName('tag-input').item(0);
+        expect(tagInput).toBeTruthy();
 
-            expect(tagInput).toBeTruthy();
+        const tag = tagInput.getElementsByTagName('tag').item(0);
 
-            const tag = tagInput.getElementsByTagName('tag').item(0);
+        expect(tag).toBeTruthy();
 
-            expect(tag).toBeTruthy();
+        const tagText = tag.getElementsByClassName('tag__text').item(0);
 
-            const tagText = tag.getElementsByClassName('tag__text').item(0);
+        expect(tagText.textContent).toContain('Customer');
+        expect(tagText.textContent).not.toContain('_customer');
 
-            expect(tagText.textContent).toContain('Customer');
-            expect(tagText.textContent).not.toContain('_customer');
+        const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
-            const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
+        expect(deleteIcon).toBeTruthy();
 
-            expect(deleteIcon).toBeTruthy();
-
-        });
-
+        done();
     });
 });
