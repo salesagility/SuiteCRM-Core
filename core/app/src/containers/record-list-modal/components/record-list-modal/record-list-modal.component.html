@@ -1,0 +1,21 @@
+<scrm-modal [closable]="true"
+            [close]="closeButton"
+            [title]="titleKey"
+            bodyKlass="m-0 small-font"
+            footerKlass="border-0"
+            headerKlass="border-0"
+            klass="record-list-modal">
+
+    <div modal-body>
+        <scrm-table *ngIf="tableConfig" [config]="tableConfig"></scrm-table>
+
+        <scrm-label *ngIf="!tableConfig" labelKey="LBL_CONFIG_NO_CONFIG"></scrm-label>
+
+        <ng-container *ngIf="tableConfig">
+            <div *ngIf="(loading$ | async) as loading">
+                <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
+            </div>
+        </ng-container>
+
+    </div>
+</scrm-modal>

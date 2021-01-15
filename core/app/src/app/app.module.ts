@@ -42,6 +42,8 @@ import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
 import {MessageModalComponent} from '@components/modal/components/message-modal/message-modal.component';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
+import {RecordListModalComponent} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.component';
+import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
@@ -70,7 +72,8 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         BrowserAnimationsModule,
         NgbModule,
         FullPageSpinnerModule,
-        MessageModalModule
+        MessageModalModule,
+        RecordListModalModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
@@ -85,7 +88,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         }
     ],
     bootstrap: [AppComponent],
-    entryComponents: [ColumnChooserComponent, MessageModalComponent]
+    entryComponents: [ColumnChooserComponent, MessageModalComponent, RecordListModalComponent]
 })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {

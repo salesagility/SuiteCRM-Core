@@ -164,6 +164,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         return this.internalState.records;
     }
 
+    getModule(): string {
+        return this.internalState.module;
+    }
+
     getRecord(id: string): Record {
         let record: Record = null;
         this.records.some(item => {
