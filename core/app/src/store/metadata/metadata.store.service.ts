@@ -157,26 +157,17 @@ export class MetadataStore implements StateStore {
     }
 
     /**
-     * Internal API
-     */
-
-    /**
-     * Update the state
-     *
-     * @param {object} state to set
-     */
-    protected updateState(state: Metadata): void {
-        this.store.next(internalState = state);
-    }
-
-    /**
      * Get ListViewMeta cached Observable or call the backend
      *
      * @param {string} module to fetch
      * @param {string[]} types to retrieve
      * @returns {object} Observable<any>
      */
-    protected getMetadata(module: string, types: string[]): Observable<Metadata> {
+    public getMetadata(module: string, types: string[] = null): Observable<Metadata> {
+
+        if (types === null) {
+            types = this.getMetadataTypes();
+        }
 
         let metadataCache: BehaviorSubject<Metadata> = null;
         // check for currently missing and
@@ -223,6 +214,19 @@ export class MetadataStore implements StateStore {
                 cache[module].next(value);
             })
         );
+    }
+
+    /**
+     * Internal API
+     */
+
+    /**
+     * Update the state
+     *
+     * @param {object} state to set
+     */
+    protected updateState(state: Metadata): void {
+        this.store.next(internalState = state);
     }
 
     /**
