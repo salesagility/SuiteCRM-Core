@@ -5,13 +5,16 @@ import {ChartTypesMap} from '@app-common/containers/chart/chart.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 import {FieldDefinition} from '@app-common/record/field.model';
 
-export interface ListViewMeta {
+export interface RecordListMeta {
     fields: ColumnDefinition[];
     bulkActions: BulkActionsMap;
     lineActions: LineAction[];
+    filters: Filter[];
+}
+
+export interface ListViewMeta extends RecordListMeta {
     chartTypes: ChartTypesMap;
     sidebarWidgets?: WidgetMetadata[];
-    filters: Filter[];
 }
 
 export interface Filter {
