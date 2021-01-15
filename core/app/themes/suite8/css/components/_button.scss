@@ -345,3 +345,11 @@ button.settings-button.dropdown-toggle::after {
 .minimise-button:hover {
   fill: $midnight-grey;
 }
+
+.select-button {
+  fill: $secondary;
+}
+
+.select-button:hover {
+  fill: $white;
+}

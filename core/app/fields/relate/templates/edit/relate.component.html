@@ -1,23 +1,31 @@
-<tag-input #tag
-           (onAdd)="onAdd($event)"
-           (onBlur)="resetStatus()"
-           (onRemove)="onRemove()"
-           [(ngModel)]="selectedValues"
-           [class]="getInvalidClass()"
-           [clearOnBlur]="true"
-           [displayBy]="getRelateFieldName()"
-           [inputClass]="getInvalidClass()"
-           [onTextChangeDebounce]="500"
-           [onlyFromAutocomplete]="true"
-           [placeholder]="getPlaceholderLabel()"
-           [secondaryPlaceholder]="getPlaceholderLabel()"
-           maxItems="1">
-    <tag-input-dropdown [autocompleteObservable]="search"
-                        [displayBy]="getRelateFieldName()"
-                        [keepOpen]="false"
-                        [showDropdownIfEmpty]="true">
-    </tag-input-dropdown>
-</tag-input>
+<div class="d-flex">
+    <div class="flex-grow-1">
+        <tag-input #tag
+                   (onAdd)="onAdd($event)"
+                   (onBlur)="resetStatus()"
+                   (onRemove)="onRemove()"
+                   [(ngModel)]="selectedValues"
+                   [class]="getInvalidClass()"
+                   [clearOnBlur]="true"
+                   [displayBy]="getRelateFieldName()"
+                   [inputClass]="getInvalidClass()"
+                   [onTextChangeDebounce]="500"
+                   [onlyFromAutocomplete]="true"
+                   [placeholder]="getPlaceholderLabel()"
+                   [secondaryPlaceholder]="getPlaceholderLabel()"
+                   maxItems="1">
+            <tag-input-dropdown [autocompleteObservable]="search"
+                                [displayBy]="getRelateFieldName()"
+                                [keepOpen]="false"
+                                [showDropdownIfEmpty]="true">
+            </tag-input-dropdown>
+        </tag-input>
+    </div>
+    <div>
+        <scrm-button [config]="selectButton">
+        </scrm-button>
+    </div>
+</div>
 <small *ngIf="getMessage()" class="text-danger form-text text-muted">
     <scrm-label [labelKey]="getMessage()" [module]="module"></scrm-label>
 </small>

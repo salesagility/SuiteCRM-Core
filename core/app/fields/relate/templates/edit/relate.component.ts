@@ -5,6 +5,9 @@ import {TagInputComponent} from 'ngx-chips';
 import {RelateService} from '@services/record/relate/relate.service';
 import {BaseRelateComponent} from '@fields/base/base-relate.component';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ButtonInterface} from '@app-common/components/button/button.model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RecordListModalComponent} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.component';
 
 @Component({
     selector: 'scrm-relate-edit',
@@ -14,14 +17,24 @@ import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-n
 })
 export class RelateEditFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
+    selectButton: ButtonInterface;
 
     constructor(
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected relateService: RelateService,
-        protected moduleNameMapper: ModuleNameMapper
+        protected moduleNameMapper: ModuleNameMapper,
+        protected modalService: NgbModal
     ) {
         super(languages, typeFormatter, relateService, moduleNameMapper);
+
+        this.selectButton = {
+            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'select-button'],
+            onClick: (): void => {
+                this.showSelectModal();
+            },
+            icon: 'cursor'
+        } as ButtonInterface;
     }
 
     ngOnInit(): void {
@@ -57,5 +70,11 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.field.valueObject = relate;
         this.field.formControl.setValue(relateValue);
         this.field.formControl.markAsDirty();
+    }
+
+    protected showSelectModal(): void {
+        const modal = this.modalService.open(RecordListModalComponent, {size: 'xl', scrollable: true});
+
+        modal.componentInstance.module = this.getRelatedModule();
     }
 }

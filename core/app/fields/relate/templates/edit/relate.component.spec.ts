@@ -23,6 +23,7 @@ import {RelateEditFieldModule} from '@fields/relate/templates/edit/relate.module
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 import {waitUntil} from '@app-common/testing/utils.spec';
+import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 
 @Component({
     selector: 'relate-edit-field-test-host-component',
@@ -37,7 +38,7 @@ class RelateEditFieldTestHostComponent {
             name: 'Related Account',
         },
         definition: {
-            module: 'accounts',
+            module: 'Accounts',
             // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
             id_name: 'account_id',
             rname: 'name'
@@ -67,7 +68,8 @@ describe('RelateRecordEditFieldComponent', () => {
                 RouterTestingModule,
                 RelateEditFieldModule,
                 BrowserDynamicTestingModule,
-                NoopAnimationsModule
+                NoopAnimationsModule,
+                RecordListModalModule
             ],
             providers: [
                 {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
@@ -159,6 +161,23 @@ describe('RelateRecordEditFieldComponent', () => {
         tag = tagInput.getElementsByTagName('tag').item(0);
 
         expect(tag).toBeFalsy();
+
+        done();
+    });
+
+
+    it('should have select button', async (done) => {
+        expect(testHostComponent).toBeTruthy();
+
+        testHostFixture.detectChanges();
+
+        await testHostFixture.whenRenderingDone();
+
+        const field = testHostFixture.nativeElement.getElementsByTagName('scrm-relate-edit')[0];
+
+        const select = field.getElementsByClassName('select-button').item(0);
+
+        expect(select).toBeTruthy();
 
         done();
     });

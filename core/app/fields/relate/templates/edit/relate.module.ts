@@ -6,6 +6,7 @@ import {TagInputModule} from 'ngx-chips';
 import {LabelModule} from '@components/label/label.module';
 import {FormsModule} from '@angular/forms';
 import {InlineLoadingSpinnerModule} from '@components/inline-loading-spinner/inline-loading-spinner.module';
+import {ButtonModule} from '@components/button/button.module';
 
 @NgModule({
     declarations: [RelateEditFieldComponent],
@@ -16,7 +17,8 @@ import {InlineLoadingSpinnerModule} from '@components/inline-loading-spinner/inl
         TagInputModule,
         LabelModule,
         FormsModule,
-        InlineLoadingSpinnerModule
+        InlineLoadingSpinnerModule,
+        ButtonModule
     ]
 })
 export class RelateEditFieldModule {
