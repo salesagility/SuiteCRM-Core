@@ -49,12 +49,11 @@ tests/_support/_generated/
 !tests/_support/_generated/.gitkeep
 
 # Composer
-/vendor/
 composer.phar
 
 # htacess
 /.htaccess
 
 # SASS
-/legacy/themes/suite8/css/Dawn/style.css
-/legacy/themes/suite8/css/Noon/style.css
+/public/legacy/themes/suite8/css/Dawn/style.css
+/public/legacy/themes/suite8/css/Noon/style.css
