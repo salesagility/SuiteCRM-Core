@@ -1,0 +1,72 @@
+/**
+ * Override secondary button color and outline secondary button
+ */
+
+.btn-outline-secondary {
+  color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-outline-secondary:hover {
+  color: $white;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-outline-secondary:focus, .btn-outline-secondary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(147, 164, 179, 0.5);
+}
+
+.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
+  color: $secondary;
+  background-color: transparent;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-outline-secondary.dropdown-toggle {
+  color: $white;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-secondary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(147, 164, 179, 0.5);
+}
+
+.btn-secondary {
+  color: $white;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-secondary:hover {
+  color: $white;
+  background-color: $bright-orange;
+  border-color: $bright-orange;
+}
+
+.btn-secondary:focus, .btn-secondary.focus {
+  color: $white;
+  background-color: $secondary;
+  border-color: $secondary;
+  box-shadow: 0 0 0 0.2rem rgba(147, 164, 179, 0.5);
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+  color: $white;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+  color: $white;
+  background-color: $bright-orange;
+  border-color: $bright-orange;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(147, 164, 179, 0.5);
+}

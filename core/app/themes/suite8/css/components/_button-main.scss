@@ -1,0 +1,72 @@
+/**
+ * Override main button color and outline main button
+ */
+
+.btn-outline-main {
+  color: $main;
+  border-color: $main;
+}
+
+.btn-outline-main:hover {
+  color: $white;
+  background-color: $main;
+  border-color: $main;
+}
+
+.btn-outline-main:focus, .btn-outline-main.focus {
+  box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
+}
+
+.btn-outline-main.disabled, .btn-outline-main:disabled {
+  color: $main;
+  background-color: transparent;
+}
+
+.btn-outline-main:not(:disabled):not(.disabled):active, .btn-outline-main:not(:disabled):not(.disabled).active,
+.show > .btn-outline-main.dropdown-toggle {
+  color: $white;
+  background-color: $main;
+  border-color: $main;
+}
+
+.btn-outline-main:not(:disabled):not(.disabled):active:focus, .btn-outline-main:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-main.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
+}
+
+.btn-main {
+  color: $white;
+  background-color: $main;
+  border-color: $main;
+}
+
+.btn-main:hover {
+  color: $white;
+  background-color: $bright-orange;
+  border-color: $bright-orange;
+}
+
+.btn-main:focus, .btn-main.focus {
+  color: $white;
+  background-color: $main;
+  border-color: $main;
+  box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
+}
+
+.btn-main.disabled, .btn-main:disabled {
+  color: $white;
+  background-color: $main;
+  border-color: $main;
+}
+
+.btn-main:not(:disabled):not(.disabled):active, .btn-main:not(:disabled):not(.disabled).active,
+.show > .btn-main.dropdown-toggle {
+  color: $white;
+  background-color: $bright-orange;
+  border-color: $bright-orange;
+}
+
+.btn-main:not(:disabled):not(.disabled):active:focus, .btn-main:not(:disabled):not(.disabled).active:focus,
+.show > .btn-main.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
+}
