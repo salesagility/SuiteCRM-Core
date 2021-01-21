@@ -91,7 +91,7 @@ services:
     # inject all services tagged with app.process.handler as first argument
     # and use the value of the 'getProcessType' method to index the services
     arguments:
-      - !tagged { tag: 'app.process.handler', default_index_method: 'getProcessType' }
+      - !tagged { tag: 'app.process.handler' }
 
   App\Security\LegacySessionDenyAccessListener:
     decorates: 'api_platform.security.listener.request.deny_access'
@@ -130,30 +130,25 @@ services:
 
   App\Legacy\UserPreferences\UserPreferencesMappers:
     # inject all services tagged with user.preferences.mapper as first argument
-    # and use the value of the 'getKey' method to index the services
     arguments:
-      - !tagged { tag: 'user.preferences.mapper', default_index_method: 'getKey' }
+      - !tagged { tag: 'user.preferences.mapper' }
 
   App\Legacy\SystemConfig\SystemConfigMappers:
     # inject all services tagged with system.config.mapper as first argument
-    # and use the value of the 'getKey' method to index the services
     arguments:
-      - !tagged { tag: 'system.config.mapper', default_index_method: 'getKey' }
+      - !tagged { tag: 'system.config.mapper' }
 
   App\Legacy\Data\PresetListDataHandlers:
     # inject all services tagged with app.data.preset.handler as first argument
-    # and use the value of the 'getType' method to index the services
     arguments:
-      - !tagged { tag: 'app.data.preset.handler', default_index_method: 'getType' }
+      - !tagged { tag: 'app.data.preset.handler' }
 
   App\Service\StatisticsProviderRegistry:
     # inject all services tagged with app.data.statistics.handler as first argument
-    # and use the value of the 'getKey' method to index the services
     arguments:
-      - !tagged { tag: 'app.data.statistics.handler', default_index_method: 'getKey' }
+      - !tagged { tag: 'app.data.statistics.handler' }
 
   App\Legacy\Data\FilterMapper\FilterMappers:
     # inject all services tagged with app.data.filter.mapper as first argument
-    # and use the value of the 'getType' method to index the services
     arguments:
-      - !tagged { tag: 'app.data.filter.mapper', default_index_method: 'getType' }
+      - !tagged { tag: 'app.data.filter.mapper' }
