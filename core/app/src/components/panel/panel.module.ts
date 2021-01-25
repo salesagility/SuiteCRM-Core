@@ -5,6 +5,7 @@ import {ButtonModule} from '@components/button/button.module';
 import {CloseButtonModule} from '@components/close-button/close-button.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.module';
+import {LabelModule} from '@components/label/label.module';
 
 @NgModule({
     declarations: [PanelComponent],
@@ -16,7 +17,8 @@ import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.
         ButtonModule,
         CloseButtonModule,
         NgbModule,
-        MinimiseButtonModule
+        MinimiseButtonModule,
+        LabelModule
     ]
 })
 export class PanelModule {
