@@ -5,6 +5,7 @@ import {Record} from '@app-common/record/record.model';
 import {Field} from '@app-common/record/field.model';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {StringMap} from '@app-common/types/StringMap';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'scrm-field',
@@ -20,7 +21,11 @@ export class FieldComponent {
 
     map = viewFieldsMap;
 
-    constructor(protected navigation: ModuleNavigation, private moduleNameMapper: ModuleNameMapper) {
+    constructor(
+        protected navigation: ModuleNavigation,
+        protected moduleNameMapper: ModuleNameMapper,
+        protected router: Router
+    ) {
     }
 
     get componentType(): any {
@@ -42,11 +47,15 @@ export class FieldComponent {
             return false;
         }
 
-        if (this.type === 'relate') {
+        if (this.type === 'relate' && this.field.metadata && this.field.metadata.link !== false) {
             return true;
         }
 
         return !!(this.field.metadata && this.field.metadata.link);
+    }
+
+    hasOnClick(): boolean {
+        return !!(this.field.metadata && this.field.metadata.onClick);
     }
 
     isEdit(): boolean {
@@ -83,5 +92,15 @@ export class FieldComponent {
 
     getMessageLabelKey(item: any): string {
         return (item && item.message && item.message.labelKey) || '';
+    }
+
+    onClick(): boolean {
+        if (this.field.metadata.onClick) {
+            this.field.metadata.onClick(this.field, this.record);
+            return;
+        }
+
+        this.router.navigateByUrl(this.getLink()).then();
+        return false;
     }
 }

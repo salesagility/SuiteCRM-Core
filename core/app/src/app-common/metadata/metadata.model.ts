@@ -1,4 +1,4 @@
-import {FieldDefinition} from '@app-common/record/field.model';
+import {FieldDefinition, FieldMetadata} from '@app-common/record/field.model';
 
 export interface ViewFieldDefinition {
     name?: string;
@@ -6,6 +6,7 @@ export interface ViewFieldDefinition {
     link?: boolean;
     type?: string;
     fieldDefinition?: FieldDefinition;
+    metadata?: FieldMetadata;
 }
 
 export interface Panel {

@@ -1,6 +1,7 @@
 import {SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
 import {Observable} from 'rxjs';
 import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
+import {Record} from '@app-common/record/record.model';
 
 export interface Option {
     value: string;
@@ -42,6 +43,8 @@ export interface FieldDefinition {
     template?: string;
 }
 
+export declare type FieldClickCallback = (field: Field, record: Record) => void;
+
 export interface FieldMetadata {
     format?: boolean;
     target?: string;
@@ -50,6 +53,7 @@ export interface FieldMetadata {
     cols?: number;
     digits?: number;
     options$?: Observable<Option[]>;
+    onClick?: FieldClickCallback;
 }
 
 export interface FieldMap {

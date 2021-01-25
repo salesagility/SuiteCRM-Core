@@ -2,6 +2,16 @@ a {
   color: $coral-pink;
 }
 
+a.clickable {
+  color: $coral-pink;
+  cursor: pointer;
+}
+
+a.clickable:hover {
+  color: $coral-pink;
+  text-decoration: underline;
+}
+
 .textarea {
   background: #ffffff
 }

@@ -1,5 +1,5 @@
-<ng-container *ngIf="isLink()">
-    <a [routerLink]="getLink()">
+<ng-container *ngIf="hasOnClick()">
+    <a (click)="onClick()" class="clickable field-link">
         <ndc-dynamic
             [ndcDynamicComponent]="componentType"
             [ndcDynamicInputs]="{
@@ -10,7 +10,19 @@
         ></ndc-dynamic>
     </a>
 </ng-container>
-<ng-container *ngIf="!isLink()">
+<ng-container *ngIf="isLink() && !hasOnClick()">
+    <a [routerLink]="getLink()" class="field-link">
+        <ndc-dynamic
+            [ndcDynamicComponent]="componentType"
+            [ndcDynamicInputs]="{
+                'field': field,
+                'klass': klass,
+                'record': record
+            }"
+        ></ndc-dynamic>
+    </a>
+</ng-container>
+<ng-container *ngIf="!isLink() && !hasOnClick()">
     <ndc-dynamic
         [ndcDynamicComponent]="componentType"
         [ndcDynamicInputs]="{
