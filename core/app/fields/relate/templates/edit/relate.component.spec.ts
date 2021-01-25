@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
 import {Record} from '@app-common/record/record.model';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -24,12 +24,14 @@ import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-n
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 import {waitUntil} from '@app-common/testing/utils.spec';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
+import {RelateEditFieldComponent} from '@fields/relate/templates/edit/relate.component';
 
 @Component({
     selector: 'relate-edit-field-test-host-component',
-    template: '<scrm-relate-edit [field]="field" [record]="record"></scrm-relate-edit>'
+    template: '<scrm-relate-edit #relate [field]="field" [record]="record"></scrm-relate-edit>'
 })
 class RelateEditFieldTestHostComponent {
+    @ViewChild('relate') relate: RelateEditFieldComponent;
     field: Field = {
         type: 'relate',
         value: 'Related Account',
