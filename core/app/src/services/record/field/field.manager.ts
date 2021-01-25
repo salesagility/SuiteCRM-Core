@@ -114,12 +114,16 @@ export class FieldManager {
 
         const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
 
+        const metadata = viewField.metadata || {};
+
+        if (viewField.link) {
+            metadata.link = viewField.link;
+        }
+
         const field = {
             type: viewField.type,
             value,
-            metadata: {
-                link: viewField.link,
-            },
+            metadata,
             definition,
             labelKey: viewField.label,
             formControl: new FormControl(formattedValue, validators, asyncValidators),

@@ -12,9 +12,14 @@ import {recordlistModalStoreFactoryMock} from '@containers/record-list-modal/sto
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {
+    mockModuleNavigation,
+    mockRouter
+} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {interval} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'record-list-modal-test-host-component',
@@ -48,6 +53,8 @@ describe('RecordListModalComponent', () => {
                 {provide: RecordListModalStoreFactory, useValue: recordlistModalStoreFactoryMock},
                 {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
                 {provide: ModuleNavigation, useValue: mockModuleNavigation},
+                {provide: Router, useValue: mockRouter},
+                RouterTestingModule
             ],
         })
             .compileComponents();
@@ -70,7 +77,7 @@ describe('RecordListModalComponent', () => {
         const table = document.getElementsByTagName('scrm-table');
 
         expect(table).toBeTruthy();
-        expect(table.length).toEqual(1);
+        expect(table.length).toBeTruthy();
 
         component.modal.close();
 
