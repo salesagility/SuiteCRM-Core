@@ -1,1 +1,3 @@
-<scrm-button *ngIf="internalConfig" [config]="internalConfig"></scrm-button>
+<ng-container *ngIf="internalConfig">
+    <scrm-button [config]="internalConfig"></scrm-button>
+</ng-container>

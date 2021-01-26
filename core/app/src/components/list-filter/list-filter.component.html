@@ -1,7 +1,7 @@
 <scrm-panel [titleKey]="'LBL_BASIC_FILTER'"
             [close]="closeButton"
             [mode]="panelMode"
-            [isCollapsed]="isCollapsed"
+            [isCollapsed$]="isCollapsed$"
             klass="filter-panel"
             *ngIf="(vm$ | async) as vm">
 

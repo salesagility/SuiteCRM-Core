@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Button, ButtonInterface} from '@app-common/components/button/button.model';
 
 export type MinimiseButtonStatus = 'minimised' | 'maximised';
@@ -8,7 +8,7 @@ export type MinimiseButtonStatus = 'minimised' | 'maximised';
     templateUrl: './minimise-button.component.html',
     styleUrls: []
 })
-export class MinimiseButtonComponent implements OnInit {
+export class MinimiseButtonComponent implements OnInit, OnChanges {
     @Input() config: ButtonInterface;
     @Input() status: MinimiseButtonStatus = 'maximised';
     internalConfig: ButtonInterface;
@@ -20,6 +20,12 @@ export class MinimiseButtonComponent implements OnInit {
 
     ngOnInit(): void {
         this.buildButton();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.config) {
+            this.buildButton();
+        }
     }
 
     buildButton(): void {

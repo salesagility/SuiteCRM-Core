@@ -9,6 +9,7 @@ export interface FilterConfig {
     searchFields$: Observable<SearchMetaFieldMap>;
     panelMode?: 'collapsible' | 'closable' | 'none';
     isCollapsed?: boolean;
+    collapseOnSearch?: boolean;
 
     onClose(): void;
 

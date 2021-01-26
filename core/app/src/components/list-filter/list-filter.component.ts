@@ -3,7 +3,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 import {ButtonInterface} from '@app-common/components/button/button.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
-import {combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {filter, map, startWith, take} from 'rxjs/operators';
 import {Field, FieldMap} from '@app-common/record/field.model';
 import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
@@ -30,7 +30,7 @@ export class ListFilterComponent implements OnInit {
     @Input() config: FilterConfig;
     panelMode: 'collapsible' | 'closable' | 'none' = 'closable';
     mode = 'filter';
-    isCollapsed = false;
+    isCollapsed$: Observable<boolean>;
 
     closeButton: ButtonInterface;
     myFilterButton: DropdownButtonInterface;
@@ -44,6 +44,8 @@ export class ListFilterComponent implements OnInit {
     searchCriteria: SearchCriteria;
 
     vm$: Observable<any>;
+
+    protected collapse: BehaviorSubject<boolean>;
     private record: Record;
 
     constructor(
@@ -69,8 +71,10 @@ export class ListFilterComponent implements OnInit {
             this.panelMode = this.config.panelMode;
         }
 
+        this.collapse = new BehaviorSubject<boolean>(false);
+        this.isCollapsed$ = this.collapse.asObservable();
         if (!isVoid(this.config.isCollapsed)) {
-            this.isCollapsed = this.config.isCollapsed;
+            this.collapse.next(this.config.isCollapsed);
         }
 
         this.reset();
@@ -231,6 +235,11 @@ export class ListFilterComponent implements OnInit {
         this.validate().pipe(take(1)).subscribe(valid => {
 
             if (valid) {
+
+                if (this.config.panelMode === 'collapsible' && this.config.collapseOnSearch) {
+                    this.collapse.next(true);
+                }
+
                 this.config.onSearch();
                 this.config.updateSearchCriteria(this.searchCriteria);
                 return;

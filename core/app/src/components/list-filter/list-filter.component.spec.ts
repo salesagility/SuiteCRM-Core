@@ -77,6 +77,10 @@ describe('ListFilterComponent', () => {
                 listviewStoreMock.showFilters = false;
             },
 
+            onSearch: (): void => {
+                listviewStoreMock.showFilters = false;
+            },
+
             updateSearchCriteria: (criteria: SearchCriteria, reload = true): void => {
                 listviewStoreMock.updateSearchCriteria(criteria, reload);
             }
