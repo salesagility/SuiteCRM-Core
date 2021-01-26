@@ -7,15 +7,26 @@
             klass="record-list-modal">
 
     <div modal-body>
-        <scrm-table *ngIf="tableConfig" [config]="tableConfig"></scrm-table>
 
         <scrm-label *ngIf="!tableConfig" labelKey="LBL_CONFIG_NO_CONFIG"></scrm-label>
 
-        <ng-container *ngIf="tableConfig">
-            <div *ngIf="(loading$ | async) as loading">
-                <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
+        <div *ngIf="tableConfig">
+            <div class="container-fluid">
+                <div class="row pb-3">
+                    <div class="col">
+                        <scrm-list-filter *ngIf="filterConfig" [config]="filterConfig"></scrm-list-filter>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <scrm-table [config]="tableConfig"></scrm-table>
+                    </div>
+                </div>
             </div>
-        </ng-container>
 
+            <ng-container *ngIf="(loading$ | async) as loading">
+                <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
+            </ng-container>
+        </div>
     </div>
 </scrm-modal>

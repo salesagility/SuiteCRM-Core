@@ -3,7 +3,7 @@ import {StateStore} from '@store/state';
 import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
-import {ColumnDefinition, RecordListMeta} from '@app-common/metadata/list.metadata.model';
+import {ColumnDefinition, RecordListMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {map, take, tap} from 'rxjs/operators';
 
@@ -11,9 +11,10 @@ import {map, take, tap} from 'rxjs/operators';
 export class RecordListModalStore implements StateStore {
 
     recordList: RecordListStore;
-    metadata$: Observable<RecordListMeta>;
+    listMetadata$: Observable<RecordListMeta>;
+    searchMetadata$: Observable<SearchMeta>;
     columns$: Observable<ColumnDefinition[]>;
-    metadata: RecordListMeta;
+    listMetadata: RecordListMeta;
     loading$: Observable<boolean>;
     metadataLoading$: Observable<boolean>;
     protected metadataLoadingState: BehaviorSubject<boolean>;
@@ -47,8 +48,7 @@ export class RecordListModalStore implements StateStore {
     public init(module: string): void {
 
         this.metadataLoadingState.next(true);
-        this.metadata$ = this.meta.getMetadata(module).pipe(
-            map(meta => meta.listView),
+        const meta$ = this.meta.getMetadata(module).pipe(
             tap(() => {
                 this.metadataLoadingState.next(false);
                 this.recordList.load().pipe(
@@ -56,8 +56,10 @@ export class RecordListModalStore implements StateStore {
                 ).subscribe();
             })
         );
+        this.listMetadata$ = meta$.pipe(map(meta => meta.listView));
+        this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
         this.recordList.init(module, false, 'list_max_entries_per_subpanel');
-        this.columns$ = this.metadata$.pipe(map(metadata => metadata.fields));
+        this.columns$ = this.listMetadata$.pipe(map(metadata => metadata.fields));
     }
 
 

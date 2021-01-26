@@ -86,4 +86,24 @@ describe('RecordListModalComponent', () => {
         done();
     });
 
+    it('should have a filter panel', async (done) => {
+        expect(component).toBeTruthy();
+
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
+
+        const table = document.getElementsByTagName('scrm-list-filter');
+
+        expect(table).toBeTruthy();
+        expect(table.length).toBeTruthy();
+
+        component.modal.close();
+
+        await interval(1000).pipe(take(1)).toPromise();
+
+        done();
+    });
+
 });

@@ -5,6 +5,7 @@ import {ModalModule} from '@components/modal/components/modal/modal.module';
 import {TableModule} from '@components/table/table.module';
 import {LabelModule} from '@components/label/label.module';
 import {LoadingSpinnerModule} from '@components/loading-spinner/loading-spinner.module';
+import {ListFilterModule} from '@components/list-filter/list-filter.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import {LoadingSpinnerModule} from '@components/loading-spinner/loading-spinner.
         TableModule,
         LabelModule,
         LoadingSpinnerModule,
+        ListFilterModule,
     ]
 })
 export class RecordListModalModule {

@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
 import {Record} from '@app-common/record/record.model';
 import {Field} from '@app-common/record/field.model';
-import {RecordListModalTableAdapterInterface} from '@containers/record-list-modal/adapters/table-adapter.model';
+import {RecordListModalTableAdapterInterface} from '@containers/record-list-modal/adapters/adapter.model';
 
 export class ModalRecordListTableAdapter implements RecordListModalTableAdapterInterface {
 

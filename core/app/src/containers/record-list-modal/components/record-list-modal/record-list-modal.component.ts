@@ -10,9 +10,11 @@ import {TableConfig} from '@components/table/table.model';
 import {RecordListModalStore} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store';
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 import {RecordListModalStoreFactory} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store.factory';
-import {RecordListModalTableAdapterInterface} from '@containers/record-list-modal/adapters/table-adapter.model';
+import {RecordListModalTableAdapterInterface} from '@containers/record-list-modal/adapters/adapter.model';
 import {distinctUntilChanged, skip} from 'rxjs/operators';
 import {RecordListModalResult} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.model';
+import {FilterConfig} from '@components/list-filter/list-filter.model';
+import {ModalRecordFilterAdapter} from '@containers/record-list-modal/adapters/filter.adapter';
 
 @Component({
     selector: 'scrm-record-list-modal',
@@ -32,11 +34,13 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     @Input() titleKey = '';
     @Input() module: string;
     @Input() adapter: RecordListModalTableAdapterInterface = null;
+    @Input() filterAdapter: ModalRecordFilterAdapter = null;
 
     loading$: Observable<boolean>;
 
     closeButton: ButtonInterface;
     tableConfig: TableConfig;
+    filterConfig: FilterConfig;
     store: RecordListModalStore;
 
     protected subs: Subscription[] = [];
@@ -74,6 +78,7 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         }
         this.initStore();
         this.initTableAdapter();
+        this.initFilterAdapters();
     }
 
     getMaxColumns(): Observable<number> {
@@ -87,6 +92,14 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
 
         this.tableConfig = this.adapter.getTable(this.store);
         this.tableConfig.maxColumns$ = this.getMaxColumns();
+    }
+
+    protected initFilterAdapters(): void {
+        if (this.filterAdapter === null) {
+            this.filterAdapter = new ModalRecordFilterAdapter();
+        }
+
+        this.filterConfig = this.filterAdapter.getConfig(this.store);
     }
 
     protected initStore(): void {
