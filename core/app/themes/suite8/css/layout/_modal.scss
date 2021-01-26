@@ -42,6 +42,7 @@
 .modal-content {
   border: none;
   background-color: $white;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
 }
 
 @media all and (min-width: $breakpoint-xlarge) {
