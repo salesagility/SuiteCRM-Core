@@ -6,7 +6,10 @@
 
             <div class="d-flex align-items-center">
                 <scrm-close-button *ngIf="isClosable()" [config]="close"></scrm-close-button>
-                <scrm-minimise-button *ngIf="isCollapsible()" [config]="minimiseConfig()"></scrm-minimise-button>
+                <scrm-minimise-button *ngIf="isCollapsible()"
+                                      [config]="minimiseConfig()"
+                                      [status]="getMinimiseStatus()">
+                </scrm-minimise-button>
                 <ng-content select="[panel-icon-area]"></ng-content>
             </div>
 

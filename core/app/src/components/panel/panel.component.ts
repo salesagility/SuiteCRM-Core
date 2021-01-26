@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Button, ButtonInterface} from '@app-common/components/button/button.model';
+import {MinimiseButtonStatus} from '@components/minimise-button/minimise-button.component';
 
 @Component({
     selector: 'scrm-panel',
@@ -13,11 +14,10 @@ export class PanelComponent implements OnInit {
     @Input() title: string;
     @Input() titleKey: string;
     @Input() mode: 'collapsible' | 'closable' | 'none' = 'closable';
+    @Input() isCollapsed = false;
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
     } as ButtonInterface;
-
-    isCollapsed = false;
 
     protected buttonClasses = ['btn', 'btn-outline-light', 'btn-sm'];
 
@@ -54,5 +54,12 @@ export class PanelComponent implements OnInit {
                 this.isCollapsed = !this.isCollapsed;
             },
         } as ButtonInterface;
+    }
+
+    getMinimiseStatus(): MinimiseButtonStatus {
+        if (this.isCollapsed) {
+            return 'minimised';
+        }
+        return 'maximised';
     }
 }

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Button, ButtonInterface} from '@app-common/components/button/button.model';
 
-type MinimiseButtonStatus = 'minimised' | 'maximised';
+export type MinimiseButtonStatus = 'minimised' | 'maximised';
 
 @Component({
     selector: 'scrm-minimise-button',
