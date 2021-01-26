@@ -13,6 +13,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
         return {
             panelMode: 'collapsible',
             isCollapsed: true,
+            collapseOnSearch: true,
             module: store.recordList.getModule(),
             criteria$: store.recordList.criteria$,
             searchFields$: store.searchMetadata$.pipe(
