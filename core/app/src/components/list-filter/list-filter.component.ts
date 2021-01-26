@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
-import {ListViewStore} from '@views/list/store/list-view/list-view.store';
+import {Component, Input, OnInit} from '@angular/core';
+import {LanguageStore} from '@store/language/language.store';
 import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 import {ButtonInterface} from '@app-common/components/button/button.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
@@ -8,12 +7,14 @@ import {combineLatest, Observable} from 'rxjs';
 import {filter, map, startWith, take} from 'rxjs/operators';
 import {Field, FieldMap} from '@app-common/record/field.model';
 import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
-import {Filter, SearchMetaField} from '@app-common/metadata/list.metadata.model';
+import {Filter, SearchMetaField, SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
 import {FieldManager} from '@services/record/field/field.manager';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {Record} from '@app-common/record/record.model';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {MessageService} from '@services/message/message.service';
+import {FilterConfig} from '@components/list-filter/list-filter.model';
+import {isVoid} from '@app-common/utils/value-utils';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;
@@ -25,7 +26,11 @@ export interface FilterDataSource {
     styleUrls: []
 })
 export class ListFilterComponent implements OnInit {
+
+    @Input() config: FilterConfig;
+    panelMode: 'collapsible' | 'closable' | 'none' = 'closable';
     mode = 'filter';
+    isCollapsed = false;
 
     closeButton: ButtonInterface;
     myFilterButton: DropdownButtonInterface;
@@ -42,32 +47,39 @@ export class ListFilterComponent implements OnInit {
     private record: Record;
 
     constructor(
-        protected listStore: ListViewStore,
         protected language: LanguageStore,
         protected fieldManager: FieldManager,
         protected message: MessageService
     ) {
 
-        this.vm$ = combineLatest([listStore.criteria$, listStore.metadata$]).pipe(
-            map(([criteria, metadata]) => {
-                this.reset();
-                this.initFields();
-
-                return {criteria, metadata};
-            }));
-
     }
 
     ngOnInit(): void {
 
+        this.vm$ = combineLatest([this.config.criteria$, this.config.searchFields$]).pipe(
+            map(([criteria, searchFields]) => {
+                this.reset();
+                this.initFields(criteria, searchFields);
+
+                return {criteria, searchFields};
+            })
+        );
+
+        if (this.config.panelMode) {
+            this.panelMode = this.config.panelMode;
+        }
+
+        if (!isVoid(this.config.isCollapsed)) {
+            this.isCollapsed = this.config.isCollapsed;
+        }
+
         this.reset();
 
         this.record = {
-            module: this.listStore.getModuleName(),
+            module: this.config.module,
             attributes: {}
         } as Record;
 
-        this.initFields();
         this.initGridButtons();
         this.initHeaderButtons();
     }
@@ -80,23 +92,13 @@ export class ListFilterComponent implements OnInit {
      */
     initFields(criteria: SearchCriteria, searchFields: SearchMetaFieldMap): void {
 
-        const languages = this.listStore.language;
-        const searchCriteria = this.listStore.recordList.criteria;
-        const searchMeta = this.listStore.searchMeta;
-
-        let type = 'advanced';
-        if (!searchMeta.layout.advanced) {
-            type = 'basic';
-        }
-
-        const searchFields = searchMeta.layout[type];
         const fields = {} as FieldMap;
         const formControls = {} as { [key: string]: AbstractControl };
 
         Object.keys(searchFields).forEach(key => {
             const name = searchFields[key].name;
 
-            fields[name] = this.buildField(searchFields[key], languages, searchCriteria);
+            fields[name] = this.buildField(searchFields[key], criteria);
             formControls[name] = fields[name].formControl;
 
             if (name.includes('_only')) {
@@ -109,6 +111,9 @@ export class ListFilterComponent implements OnInit {
         this.record.formGroup = new FormGroup(formControls);
     }
 
+    /**
+     * Reset criteria
+     */
     protected reset(): void {
         this.searchCriteria = {
             filters: {},
@@ -118,6 +123,9 @@ export class ListFilterComponent implements OnInit {
         this.special = [];
     }
 
+    /**
+     * Initialize grid buttons
+     */
     protected initGridButtons(): void {
         this.gridButtons = [
             {
@@ -133,11 +141,14 @@ export class ListFilterComponent implements OnInit {
         ] as ButtonInterface[];
     }
 
+    /**
+     * Initialize header buttons
+     */
     protected initHeaderButtons(): void {
 
         this.closeButton = {
             onClick: (): void => {
-                this.listStore.showFilters = false;
+                this.config.onClose();
             }
         } as ButtonInterface;
 
@@ -153,20 +164,27 @@ export class ListFilterComponent implements OnInit {
         };
     }
 
-    protected buildField(searchField: SearchMetaField, languages: LanguageStrings, searchCriteria: SearchCriteria): Field {
-        const fieldName = searchField.name;
-        const type = searchField.type;
+    /**
+     * Build filter field according to Field interface
+     *
+     * @param {object} fieldMeta to use
+     * @param {object} searchCriteria to use
+     * @returns {object} Field
+     */
+    protected buildField(fieldMeta: SearchMetaField, searchCriteria: SearchCriteria): Field {
+        const fieldName = fieldMeta.name;
+        const type = fieldMeta.type;
         this.searchCriteria.filters[fieldName] = this.initFieldFilter(searchCriteria, fieldName, type);
 
         const definition = {
-            name: searchField.name,
-            label: searchField.label,
+            name: fieldMeta.name,
+            label: fieldMeta.label,
             type,
             fieldDefinition: {}
         } as ViewFieldDefinition;
 
-        if (searchField.fieldDefinition) {
-            definition.fieldDefinition = searchField.fieldDefinition;
+        if (fieldMeta.fieldDefinition) {
+            definition.fieldDefinition = fieldMeta.fieldDefinition;
         }
 
         if (type === 'bool' || type === 'boolean') {
@@ -181,6 +199,14 @@ export class ListFilterComponent implements OnInit {
         return field;
     }
 
+    /**
+     * Init filter fields
+     *
+     * @param {object} searchCriteria to use
+     * @param {object} fieldName to init
+     * @param {object} fieldType to init
+     * @returns {object} SearchCriteriaFieldFilter
+     */
     protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string, fieldType: string): SearchCriteriaFieldFilter {
         let fieldCriteria: SearchCriteriaFieldFilter;
 
@@ -198,12 +224,15 @@ export class ListFilterComponent implements OnInit {
         return fieldCriteria;
     }
 
+    /**
+     * Apply current filter values
+     */
     protected applyFilter(): void {
         this.validate().pipe(take(1)).subscribe(valid => {
 
             if (valid) {
-                this.listStore.showFilters = false;
-                this.listStore.updateSearchCriteria(this.searchCriteria);
+                this.config.onSearch();
+                this.config.updateSearchCriteria(this.searchCriteria);
                 return;
             }
 
@@ -212,6 +241,11 @@ export class ListFilterComponent implements OnInit {
 
     }
 
+    /**
+     * Validate search current input
+     *
+     * @returns {object} Observable<boolean>
+     */
     protected validate(): Observable<boolean> {
 
         this.record.formGroup.markAllAsTouched();
@@ -223,7 +257,10 @@ export class ListFilterComponent implements OnInit {
         );
     }
 
+    /**
+     * Clear the current filter
+     */
     protected clearFilter(): void {
-        this.listStore.updateSearchCriteria({filters: {}}, false);
+        this.config.updateSearchCriteria({filters: {}}, false);
     }
 }

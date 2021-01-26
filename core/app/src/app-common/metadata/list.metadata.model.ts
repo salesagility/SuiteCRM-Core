@@ -40,10 +40,14 @@ export interface SearchMetaField {
     fieldDefinition?: FieldDefinition;
 }
 
+export interface SearchMetaFieldMap {
+    [key: string]: SearchMetaField;
+}
+
 export interface SearchMeta {
     layout: {
-        basic?: { [key: string]: SearchMetaField };
-        advanced?: { [key: string]: SearchMetaField };
+        basic?: SearchMetaFieldMap;
+        advanced?: SearchMetaFieldMap;
     };
 }
 

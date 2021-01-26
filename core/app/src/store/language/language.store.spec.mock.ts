@@ -29,6 +29,7 @@ export const languageMockData = {
         LBL_CLEAR_BUTTON_LABEL: 'Clear',
         LBL_SEARCH_BUTTON_LABEL: 'Search',
         LBL_SAVED_FILTER_SHORTCUT: 'My Filters',
+        LBL_BASIC_FILTER: 'Basic Filter',
         LBL_QUICK: 'Quick',
         LBL_DELETE: 'Delete',
         LBL_EXPORT: 'Export',

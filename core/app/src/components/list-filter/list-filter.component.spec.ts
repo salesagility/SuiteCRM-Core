@@ -4,7 +4,7 @@ import {ButtonModule} from '@components/button/button.module';
 import {By} from '@angular/platform-browser';
 import {PanelModule} from '@components/panel/panel.module';
 import {ListFilterComponent} from '@components/list-filter/list-filter.component';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {Metadata, MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
@@ -15,6 +15,11 @@ import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FilterConfig} from '@components/list-filter/list-filter.model';
+import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
+import {SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
+import {map} from 'rxjs/operators';
+import {ListFilterModule} from '@components/list-filter/list-filter.module';
 
 describe('ListFilterComponent', () => {
     let testHostComponent: ListFilterComponent;
@@ -33,7 +38,8 @@ describe('ListFilterComponent', () => {
                 FieldGridModule,
                 RouterTestingModule,
                 ApolloTestingModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                ListFilterModule
             ],
             providers: [
                 {provide: ListViewStore, useValue: listviewStoreMock},
@@ -44,6 +50,38 @@ describe('ListFilterComponent', () => {
 
         testHostFixture = TestBed.createComponent(ListFilterComponent);
         testHostComponent = testHostFixture.componentInstance;
+
+        testHostComponent.config = {
+
+            module: listviewStoreMock.getModuleName(),
+            criteria$: listviewStoreMock.criteria$,
+            searchFields$: listviewStoreMock.metadata$.pipe(
+                map((meta: Metadata) => {
+
+                    if (!meta || !meta.search) {
+                        return {} as SearchMetaFieldMap;
+                    }
+
+                    const searchMeta = meta.search;
+
+                    let type = 'advanced';
+                    if (!searchMeta.layout.advanced) {
+                        type = 'basic';
+                    }
+
+                    return searchMeta.layout[type];
+                })
+            ),
+
+            onClose: (): void => {
+                listviewStoreMock.showFilters = false;
+            },
+
+            updateSearchCriteria: (criteria: SearchCriteria, reload = true): void => {
+                listviewStoreMock.updateSearchCriteria(criteria, reload);
+            }
+        } as FilterConfig;
+
         testHostFixture.detectChanges();
     }));
 
@@ -63,7 +101,7 @@ describe('ListFilterComponent', () => {
 
         const element = testHostFixture.debugElement.query(By.css('.card-header'));
 
-        expect(element.nativeElement.textContent).toContain('My Filters');
+        expect(element.nativeElement.textContent).toContain('Basic Filter');
     });
 
     it('should have close icon', () => {

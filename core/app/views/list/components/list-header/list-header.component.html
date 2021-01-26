@@ -46,7 +46,7 @@
             <div *ngIf="showFilters" class="container-fluid pt-2 small-font">
                 <div class="row">
                     <div class="col">
-                        <scrm-list-filter></scrm-list-filter>
+                        <scrm-list-filter [config]="filterAdapter.getConfig()"></scrm-list-filter>
                     </div>
                 </div>
             </div>
