@@ -72,11 +72,13 @@ export class ListFilterComponent implements OnInit {
         this.initHeaderButtons();
     }
 
-    get appStrings(): LanguageStringMap {
-        return this.listStore.appStrings;
-    }
-
-    initFields(): void {
+    /**
+     * Initialize fields
+     *
+     * @param {object} criteria to use
+     * @param {object} searchFields to use
+     */
+    initFields(criteria: SearchCriteria, searchFields: SearchMetaFieldMap): void {
 
         const languages = this.listStore.language;
         const searchCriteria = this.listStore.recordList.criteria;
@@ -119,12 +121,12 @@ export class ListFilterComponent implements OnInit {
     protected initGridButtons(): void {
         this.gridButtons = [
             {
-                label: this.listStore.appStrings.LBL_CLEAR_BUTTON_LABEL || '',
+                labelKey: 'LBL_CLEAR_BUTTON_LABEL',
                 klass: ['clear-filters-button', 'btn', 'btn-outline-danger', 'btn-sm'],
                 onClick: this.clearFilter.bind(this)
             },
             {
-                label: this.listStore.appStrings.LBL_SEARCH_BUTTON_LABEL || '',
+                labelKey: 'LBL_SEARCH_BUTTON_LABEL',
                 klass: ['filter-button', 'btn', 'btn-danger', 'btn-sm'],
                 onClick: this.applyFilter.bind(this)
             }
@@ -140,13 +142,13 @@ export class ListFilterComponent implements OnInit {
         } as ButtonInterface;
 
         this.myFilterButton = {
-            label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
+            labelKey: 'LBL_SAVED_FILTER_SHORTCUT',
             klass: ['saved-filters-button', 'btn', 'btn-outline-light', 'btn-sm'],
             items: []
         } as DropdownButtonInterface;
 
         this.quickSearchButton = {
-            label: this.listStore.appStrings.LBL_QUICK || '',
+            labelKey: 'LBL_QUICK',
             klass: ['quick-filter-button', 'btn', 'btn-outline-light', 'btn-sm']
         };
     }

@@ -5,6 +5,7 @@ import {ButtonModule} from '@components/button/button.module';
 import {PanelModule} from '@components/panel/panel.module';
 import {FieldGridModule} from '@components/field-grid/field-grid.module';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
+import {LabelModule} from '@components/label/label.module';
 
 @NgModule({
     declarations: [ListFilterComponent],
@@ -16,7 +17,8 @@ import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.
         ButtonModule,
         PanelModule,
         FieldGridModule,
-        DropdownButtonModule
+        DropdownButtonModule,
+        LabelModule
     ]
 })
 export class ListFilterModule {

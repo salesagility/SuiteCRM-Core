@@ -1,4 +1,4 @@
-<scrm-panel [title]="appStrings['LBL_BASIC_FILTER'] || ''"
+<scrm-panel [titleKey]="'LBL_BASIC_FILTER'"
             [close]="closeButton"
             klass="filter-panel"
             *ngIf="(vm$ | async) as vm">
@@ -14,7 +14,9 @@
             <div class="float-right mt-4" *ngIf="special.length > 0" field-grid-special>
                 <div class="d-inline-block form-check mb-2 mr-sm-2" *ngFor="let item of special ">
                     <input class="form-check-input" type="checkbox" [value]="item.value">
-                    <label class="form-check-label">{{item.label}}</label>
+                    <label class="form-check-label">
+                        <scrm-label [labelKey]="item.labelKey"></scrm-label>
+                    </label>
                 </div>
             </div>
 
