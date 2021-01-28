@@ -7,6 +7,7 @@ use App\Entity\ViewDefinition;
 use App\Legacy\ViewDefinitions\ListViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
+use App\Legacy\ViewDefinitions\ViewDefinitionMappers;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\SubPanelDefinitionProviderInterface;
@@ -77,6 +78,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $listViewDefinitionsHandler;
 
     /**
+     * @var ViewDefinitionMappers
+     */
+    private $mappers;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -89,6 +95,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param SubPanelDefinitionProviderInterface $subPanelDefinitionHandler
      * @param ListViewDefinitionHandler $listViewDefinitionsHandler
      * @param LoggerInterface $logger
+     * @param ViewDefinitionMappers $mappers
      */
     public function __construct(
         string $projectDir,
@@ -101,7 +108,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         RecordViewDefinitionHandler $recordViewDefinitionHandler,
         SubPanelDefinitionProviderInterface $subPanelDefinitionHandler,
         ListViewDefinitionHandler $listViewDefinitionsHandler,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ViewDefinitionMappers $mappers
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
@@ -110,6 +118,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $this->subPanelDefinitionHandler = $subPanelDefinitionHandler;
         $this->listViewDefinitionsHandler = $listViewDefinitionsHandler;
         $this->logger = $logger;
+        $this->mappers = $mappers;
     }
 
     /**
@@ -168,6 +177,12 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (in_array('subPanel', $views, true)) {
             $subPanelViewDefs = $this->subPanelDefinitionHandler->getSubPanelDef($legacyModuleName);
             $viewDef->setSubPanel($subPanelViewDefs);
+        }
+
+        $mappers = $this->mappers->get($moduleName) ?? [];
+
+        foreach ($mappers as $mapper) {
+            $mapper->map($viewDef, $fieldDefinition);
         }
 
         $this->close();

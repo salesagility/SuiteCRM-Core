@@ -3,6 +3,7 @@
 namespace App\Legacy;
 
 use App\Entity\FieldDefinition;
+use App\Legacy\FieldDefinitions\FieldDefinitionMappers;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;
 use Exception;
@@ -22,6 +23,11 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
     private $moduleNameMapper;
 
     /**
+     * @var FieldDefinitionMappers
+     */
+    private $mappers;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -29,6 +35,7 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param FieldDefinitionMappers $mappers
      */
     public function __construct(
         string $projectDir,
@@ -36,10 +43,12 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        FieldDefinitionMappers $mappers
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->moduleNameMapper = $moduleNameMapper;
+        $this->mappers = $mappers;
     }
 
     /**
@@ -64,6 +73,12 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
         $vardefs = new FieldDefinition();
         $vardefs->setId($moduleName);
         $vardefs->setVardef($this->getDefinitions($legacyModuleName));
+
+        $mappers = $this->mappers->get($moduleName);
+
+        foreach ($mappers as $mapper) {
+            $mapper->map($vardefs);
+        }
 
         $this->close();
 

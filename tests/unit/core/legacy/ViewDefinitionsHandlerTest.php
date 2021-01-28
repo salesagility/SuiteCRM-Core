@@ -4,11 +4,16 @@ namespace App\Tests\unit\core\legacy;
 
 use App\Legacy\AclHandler;
 use App\Legacy\AppListStringsHandler;
+use App\Legacy\FieldDefinitions\FieldDefinitionMappers;
+use App\Legacy\FieldDefinitions\GroupedFieldDefinitionMapper;
+use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;
 use App\Legacy\FieldDefinitionsHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ViewDefinitions\ListViewDefinitionHandler;
+use App\Legacy\ViewDefinitions\RecordView\RecordViewGroupTypeMapper;
 use App\Legacy\ViewDefinitions\RecordViewDefinitionHandler;
 use App\Legacy\ViewDefinitions\SubPanelDefinitionHandler;
+use App\Legacy\ViewDefinitions\ViewDefinitionMappers;
 use App\Service\AclManagerInterface;
 use App\Service\BulkActionDefinitionProvider;
 use App\Service\FilterDefinitionProvider;
@@ -18,6 +23,7 @@ use App\Service\ListViewSidebarWidgetDefinitionProvider;
 use App\Service\RecordActionDefinitionProvider;
 use App\Tests\_mock\Mock\core\legacy\ViewDefinitionsHandlerMock;
 use App\Tests\UnitTester;
+use ArrayObject;
 use Codeception\Test\Unit;
 use Exception;
 use Monolog\Logger;
@@ -60,13 +66,38 @@ final class ViewDefinitionsHandlerTest extends Unit
             $legacyScope
         );
 
+        $groupedFieldTypesMap = [
+            'address' => [
+                'layout' => [
+                    'street',
+                    'postalcode',
+                    'city',
+                    'state',
+                    'country'
+                ],
+                'display' => 'vertical',
+                'showLabel' => ['edit']
+            ]
+        ];
+
+        $groupeFieldMapper = new GroupedFieldDefinitionMapper($groupedFieldTypesMap);
+        $obj = new ArrayObject([
+            $groupeFieldMapper,
+            new LegacyGroupedFieldDefinitionMapper()
+        ]);
+        $it = $obj->getIterator();
+
+        $fieldDefinitionMapper = new FieldDefinitionMappers($it);
+
+
         $fieldDefinitionsHandler = new FieldDefinitionsHandler(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScope,
-            $moduleNameMapper
+            $moduleNameMapper,
+            $fieldDefinitionMapper
         );
 
         $listViewBulkActions = [
@@ -270,6 +301,13 @@ final class ViewDefinitionsHandlerTest extends Unit
             $filterDefinitionHandler
         );
 
+        $obj = new ArrayObject([
+            new RecordViewGroupTypeMapper($groupeFieldMapper),
+        ]);
+        $it = $obj->getIterator();
+
+        $viewDefinitionMapper = new ViewDefinitionMappers($it);
+
         $this->viewDefinitionHandler = new ViewDefinitionsHandlerMock(
             $projectDir,
             $legacyDir,
@@ -281,7 +319,8 @@ final class ViewDefinitionsHandlerTest extends Unit
             $recordViewDefinitionHandler,
             $subPanelDefinitionHandler,
             $listViewDefinitionHandler,
-            $logger
+            $logger,
+            $viewDefinitionMapper
         );
 
         // Needed for aspect mock

@@ -1,0 +1,14 @@
+parameters:
+  record.fields.grouped_fields_type_map:
+    address:
+      layout:
+        - street
+        - postalcode
+        - city
+        - state
+        - country
+      display: vertical
+      showLabel:
+        - edit
+
+

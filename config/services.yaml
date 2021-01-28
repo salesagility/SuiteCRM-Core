@@ -48,6 +48,7 @@ services:
       $listViewActionsLimits: '%module.listview.actions_limits%'
       $recordViewActions: '%module.recordview.actions%'
       $recordViewActionLimits: '%module.recordview.actions_limits%'
+      $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $uiConfigs: '%ui%'
   _instanceof:
     App\Service\ProcessHandlerInterface:
@@ -56,6 +57,10 @@ services:
       tags: [ 'user.preferences.mapper' ]
     App\Legacy\SystemConfig\SystemConfigMapperInterface:
       tags: [ 'system.config.mapper' ]
+    App\Legacy\FieldDefinitions\FieldDefinitionMapperInterface:
+      tags: [ 'field.definition.mapper' ]
+    App\Legacy\ViewDefinitions\ViewDefinitionMapperInterface:
+      tags: [ 'view.definition.mapper' ]
     App\Legacy\Data\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
     App\Legacy\Data\FilterMapper\FilterMapperInterface:
@@ -137,6 +142,16 @@ services:
     # inject all services tagged with system.config.mapper as first argument
     arguments:
       - !tagged { tag: 'system.config.mapper' }
+
+  App\Legacy\FieldDefinitions\FieldDefinitionMappers:
+    # inject all services tagged with field.definition.mapper as first argument
+    arguments:
+      - !tagged { tag: 'field.definition.mapper' }
+
+  App\Legacy\ViewDefinitions\ViewDefinitionMappers:
+    # inject all services tagged with view.definition.mapper as first argument
+    arguments:
+      - !tagged { tag: 'view.definition.mapper' }
 
   App\Legacy\Data\PresetListDataHandlers:
     # inject all services tagged with app.data.preset.handler as first argument
