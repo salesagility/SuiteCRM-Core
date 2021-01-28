@@ -46,6 +46,7 @@ tag-input-form {
 
 .ng2-dropdown-menu {
   max-height: 12em !important;
+  z-index: map-get($zindex, modal-mid) !important;
 }
 
 tag-input.is-invalid .ng2-tag-input {
