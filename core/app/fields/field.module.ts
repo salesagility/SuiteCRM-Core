@@ -3,9 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FieldComponent} from './field.component';
 import {DynamicModule} from 'ng-dynamic-component';
 import {fieldComponents, fieldModules} from './field.manifest';
-import {RouterModule} from '@angular/router';
-import {LabelModule} from '@components/label/label.module';
-import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module';
+import {DynamicFieldModule} from '@fields/dynamic-field/dynamic-field.module';
 
 @NgModule({
     declarations: [
@@ -18,9 +16,7 @@ import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module
         ...fieldModules,
         CommonModule,
         DynamicModule.withComponents(fieldComponents),
-        RouterModule,
-        LabelModule,
-        DynamicLabelModule
+        DynamicFieldModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
