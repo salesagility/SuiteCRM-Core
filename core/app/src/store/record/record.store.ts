@@ -2,14 +2,11 @@ import {Record} from '@app-common/record/record.model';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
-import {LanguageStore} from '@store/language/language.store';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {Field, FieldMap} from '@app-common/record/field.model';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {MessageService} from '@services/message/message.service';
-import {AbstractControl, FormGroup} from '@angular/forms';
-import {FieldManager} from '@services/record/field/field.manager';
+import {RecordManager} from '@services/record/record.manager';
 
 const initialState = {
     id: '',
@@ -40,12 +37,11 @@ export class RecordStore {
     };
 
     constructor(
-        protected language: LanguageStore,
         protected definitions$: Observable<ViewFieldDefinition[]>,
         protected recordSaveGQL: RecordSaveGQL,
         protected recordFetchGQL: RecordFetchGQL,
         protected message: MessageService,
-        protected fieldManager: FieldManager
+        protected recordManager: RecordManager
     ) {
         this.state$ = this.store.asObservable().pipe(
             tap(record => {
@@ -66,7 +62,7 @@ export class RecordStore {
         };
 
         if (record.module && this.definitions && this.definitions.length > 0) {
-            newRecord.fields = this.initFields(record, this.definitions);
+            newRecord.fields = this.recordManager.initFields(record, this.definitions);
         }
 
         this.updateState(newRecord);
@@ -104,9 +100,7 @@ export class RecordStore {
 
         return this.recordSaveGQL.save(this.stagingState).pipe(
             tap((record: Record) => {
-                if (record.module && this.definitions && this.definitions.length > 0) {
-                    record.fields = this.initFields(record, this.definitions);
-                }
+                this.initFields(record);
                 this.updateState(record);
             })
         );
@@ -183,43 +177,6 @@ export class RecordStore {
      */
 
     /**
-     * Init Fields
-     *
-     * @param {object} record to use
-     * @param {object} viewFieldDefinitions to use
-     * @returns {object} fields
-     */
-    protected initFields(record: Record, viewFieldDefinitions: ViewFieldDefinition[]): FieldMap {
-        const fields = {} as FieldMap;
-        const formControls = {} as { [key: string]: AbstractControl };
-
-
-        viewFieldDefinitions.forEach(viewField => {
-            if (!viewField || !viewField.name) {
-                return;
-            }
-            fields[viewField.name] = this.buildField(viewField, record, this.language);
-            formControls[viewField.name] = fields[viewField.name].formControl;
-        });
-
-        record.formGroup = new FormGroup(formControls);
-
-        return fields;
-    }
-
-    /**
-     * Build Field
-     *
-     * @param {object} viewField to use
-     * @param {object} record to use
-     * @param {object} language to use
-     * @returns {object} field
-     */
-    protected buildField(viewField: ViewFieldDefinition, record: Record, language: LanguageStore): Field {
-        return this.fieldManager.buildField(record, viewField, language);
-    }
-
-    /**
      * Update the state
      *
      * @param {object} state to set
@@ -239,12 +196,21 @@ export class RecordStore {
         shallowCopy.formGroup = null;
         shallowCopy.fields = null;
         const newState = deepClone(shallowCopy);
-        if (newState.module && this.definitions && this.definitions.length > 0) {
-            newState.fields = this.initFields(newState, this.definitions);
-        }
+        this.initFields(newState);
 
 
         this.staging.next(this.stagingState = newState);
+    }
+
+    /**
+     * Init record fields
+     *
+     * @param {object} record Record
+     */
+    protected initFields(record: Record): void {
+        if (record.module && this.definitions && this.definitions.length > 0) {
+            record.fields = this.recordManager.initFields(record, this.definitions);
+        }
     }
 
     /**

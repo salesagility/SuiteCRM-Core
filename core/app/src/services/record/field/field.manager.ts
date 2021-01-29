@@ -25,6 +25,31 @@ export class FieldManager {
         } as Field;
     }
 
+    /**
+     * Build and add field to record
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object}Field
+     */
+    public addField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
+
+        const field = this.buildField(record, viewField, language);
+
+        this.addToRecord(record, viewField.name, field);
+
+        return field;
+    }
+
+    /**
+     * Build field
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object}Field
+     */
     public buildField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
@@ -34,6 +59,31 @@ export class FieldManager {
         return this.setupField(viewField, value, valueList, valueObject, record, definition, validators, asyncValidators, language);
     }
 
+    /**
+     * Build and add filter field to record
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object}Field
+     */
+    public addFilterField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
+
+        const field = this.buildFilterField(record, viewField, language);
+
+        this.addToRecord(record, viewField.name, field);
+
+        return field;
+    }
+
+    /**
+     * Build filter field
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object}Field
+     */
     public buildFilterField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
@@ -46,6 +96,30 @@ export class FieldManager {
     public getFieldLabel(label: string, module: string, language: LanguageStore): string {
         const languages = language.getLanguageStrings();
         return language.getFieldLabel(label, module, languages);
+    }
+
+    /**
+     * Add field to record
+     *
+     * @param {object} record Record
+     * @param {string} name string
+     * @param {object} field Field
+     */
+    public addToRecord(record: Record, name: string, field: Field): void {
+
+        if (!record || !name || !field) {
+            return;
+        }
+
+        if (!record.fields) {
+            record.fields = {};
+        }
+
+        record.fields[name] = field;
+
+        if (record.formGroup && field.formControl) {
+            record.formGroup.addControl(name, field.formControl);
+        }
     }
 
     protected parseValue(

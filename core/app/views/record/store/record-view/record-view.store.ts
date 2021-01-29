@@ -25,7 +25,7 @@ import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {SubpanelStoreFactory} from '@containers/subpanel/store/subpanel/subpanel.store.factory';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
-import {FieldManager} from '@services/record/field/field.manager';
+import {RecordManager} from '@services/record/record.manager';
 
 const initialState: RecordViewState = {
     module: '',
@@ -80,18 +80,17 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected localStorage: LocalStorageService,
         protected message: MessageService,
         protected subpanelFactory: SubpanelStoreFactory,
-        protected fieldManager: FieldManager
+        protected recordManager: RecordManager
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
         this.recordStore = new RecordStore(
-            languageStore,
             this.getViewFieldsObservable(),
             recordSaveGQL,
             recordFetchGQL,
             message,
-            fieldManager
+            recordManager
         );
 
         this.record$ = this.recordStore.state$.pipe(distinctUntilChanged());

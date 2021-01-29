@@ -11,10 +11,10 @@ import {Filter, SearchMetaField, SearchMetaFieldMap} from '@app-common/metadata/
 import {FieldManager} from '@services/record/field/field.manager';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {Record} from '@app-common/record/record.model';
-import {AbstractControl, FormGroup} from '@angular/forms';
 import {MessageService} from '@services/message/message.service';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
 import {isVoid} from '@app-common/utils/value-utils';
+import {RecordManager} from '@services/record/record.manager';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;
@@ -51,6 +51,7 @@ export class ListFilterComponent implements OnInit {
     constructor(
         protected language: LanguageStore,
         protected fieldManager: FieldManager,
+        protected recordManager: RecordManager,
         protected message: MessageService
     ) {
 
@@ -79,10 +80,7 @@ export class ListFilterComponent implements OnInit {
 
         this.reset();
 
-        this.record = {
-            module: this.config.module,
-            attributes: {}
-        } as Record;
+        this.record = this.recordManager.buildEmptyRecord(this.config.module);
 
         this.initGridButtons();
         this.initHeaderButtons();
@@ -97,13 +95,11 @@ export class ListFilterComponent implements OnInit {
     initFields(criteria: SearchCriteria, searchFields: SearchMetaFieldMap): void {
 
         const fields = {} as FieldMap;
-        const formControls = {} as { [key: string]: AbstractControl };
 
         Object.keys(searchFields).forEach(key => {
             const name = searchFields[key].name;
 
             fields[name] = this.buildField(searchFields[key], criteria);
-            formControls[name] = fields[name].formControl;
 
             if (name.includes('_only')) {
                 this.special.push(fields[name]);
@@ -111,8 +107,6 @@ export class ListFilterComponent implements OnInit {
                 this.fields.push(fields[name]);
             }
         });
-
-        this.record.formGroup = new FormGroup(formControls);
     }
 
     /**
@@ -196,7 +190,7 @@ export class ListFilterComponent implements OnInit {
         }
 
 
-        const field = this.fieldManager.buildFilterField(this.record, definition, this.language);
+        const field = this.fieldManager.addFilterField(this.record, definition, this.language);
 
         field.criteria = this.searchCriteria.filters[fieldName];
 

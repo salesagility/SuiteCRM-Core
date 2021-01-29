@@ -142,7 +142,11 @@ export class TableBodyComponent implements OnInit {
 
     getField(column: ColumnDefinition, record: Record): Field {
 
-        return this.fieldManager.buildField(record, column);
+        if (!column || !record) {
+            return null;
+        }
+
+        return this.fieldManager.addField(record, column);
     }
 }
 
