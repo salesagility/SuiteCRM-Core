@@ -47,7 +47,7 @@ class SubpanelOpportunitiesTotal extends SubpanelDataQueryHandler implements Sta
         $result = $this->fetchRow($dbQuery);
 
         $statistic = $this->buildCurrencyResult($result);
-
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_OPPORTUNITIES_TOTAL_SUM']);
         $this->close();
 
         return $statistic;

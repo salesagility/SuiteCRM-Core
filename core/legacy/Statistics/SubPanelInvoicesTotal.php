@@ -56,7 +56,7 @@ class SubPanelInvoicesTotal extends SubpanelDataQueryHandler implements Statisti
         }
 
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
-
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_INVOICES_OVERDUE']);
         $this->close();
 
         return $statistic;

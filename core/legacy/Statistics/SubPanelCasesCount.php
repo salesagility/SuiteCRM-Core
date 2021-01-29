@@ -42,7 +42,7 @@ class SubPanelCasesCount extends SubpanelDataQueryHandler implements StatisticsP
         $dbQuery = $this->joinQueryParts($parts);
         $result = $this->fetchRow($dbQuery);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
-
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_OPEN_CASES_COUNT']);
         $this->close();
 
         return $statistic;

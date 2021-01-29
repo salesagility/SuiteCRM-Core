@@ -41,7 +41,7 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
         $dbQuery = $this->joinQueryParts($parts);
         $result = $this->fetchRow($dbQuery);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
-
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_DEFAULT_TOTAL']);
         $this->close();
         return $statistic;
     }

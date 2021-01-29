@@ -64,6 +64,7 @@ class SubPanelActivitiesNextDate extends SubpanelDataQueryHandler implements Sta
         }
 
         $statistic = $this->buildStatistic($min);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_ACTIVITIES_NEXT_DATE']);
         $this->close();
 
         return $statistic;

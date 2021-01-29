@@ -70,6 +70,7 @@ class SubPanelCampaignsLastReceived extends SubpanelDataQueryHandler implements 
         $finalDate = $dateFormatService->toDBDate($result);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $finalDate]);
 
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CAMPAIGN_LAST_RECEIVED']);
         $this->close();
 
 
