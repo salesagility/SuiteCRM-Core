@@ -18,7 +18,7 @@ const initialState = {
     attributes: {}
 } as Record;
 
-export class RecordManager {
+export class RecordStore {
 
     state$: Observable<Record>;
     staging$: Observable<Record>;

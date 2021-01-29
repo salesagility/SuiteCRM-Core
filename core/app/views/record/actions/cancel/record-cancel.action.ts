@@ -19,7 +19,7 @@ export class RecordCancelAction extends RecordActionHandler {
 
     run(data: RecordActionData): void {
 
-        if (data.store.recordManager.isDirty()) {
+        if (data.store.recordStore.isDirty()) {
             this.showConfirmationModal(data);
             return;
         }
@@ -32,7 +32,7 @@ export class RecordCancelAction extends RecordActionHandler {
     }
 
     protected cancel(data: RecordActionData): void {
-        data.store.recordManager.resetStaging();
+        data.store.recordStore.resetStaging();
         data.store.setMode('detail' as ViewMode);
     }
 

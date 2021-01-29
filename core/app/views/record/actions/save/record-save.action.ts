@@ -17,7 +17,7 @@ export class RecordSaveAction extends RecordActionHandler {
     }
 
     run(data: RecordActionData): void {
-        data.store.recordManager.validate().pipe(take(1)).subscribe(valid => {
+        data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
             if (valid) {
                 data.store.save().pipe(take(1)).subscribe();
                 return;

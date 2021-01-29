@@ -19,7 +19,7 @@ import {
     RecordViewModel,
     RecordViewState
 } from '@views/record/store/record-view/record-view.store.model';
-import {RecordManager} from '@store/record/record.manager';
+import {RecordStore} from '@store/record/record.store';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
@@ -58,7 +58,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     vm$: Observable<RecordViewModel>;
     vm: RecordViewModel;
     data: RecordViewData;
-    recordManager: RecordManager;
+    recordStore: RecordStore;
 
     /** Internal Properties */
     protected cache$: Observable<any> = null;
@@ -85,7 +85,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
-        this.recordManager = new RecordManager(
+        this.recordStore = new RecordStore(
             languageStore,
             this.getViewFieldsObservable(),
             recordSaveGQL,
@@ -94,8 +94,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
             fieldManager
         );
 
-        this.record$ = this.recordManager.state$.pipe(distinctUntilChanged());
-        this.stagingRecord$ = this.recordManager.staging$.pipe(distinctUntilChanged());
+        this.record$ = this.recordStore.state$.pipe(distinctUntilChanged());
+        this.stagingRecord$ = this.recordStore.staging$.pipe(distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
@@ -228,7 +228,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         if (!this.internalState) {
             return null;
         }
-        return this.recordManager.getRecord();
+        return this.recordStore.getRecord();
     }
 
     /**
@@ -255,7 +255,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     save(): Observable<Record> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, true);
 
-        return this.recordManager.save().pipe(
+        return this.recordStore.save().pipe(
             catchError(() => {
                 this.message.addDangerMessageByKey('LBL_ERROR_SAVING');
                 return of({} as Record);
@@ -276,7 +276,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     public load(useCache = true): Observable<Record> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
 
-        return this.recordManager.retrieveRecord(
+        return this.recordStore.retrieveRecord(
             this.internalState.module,
             this.internalState.recordID,
             useCache
