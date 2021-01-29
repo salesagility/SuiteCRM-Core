@@ -252,7 +252,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
         if (reload) {
             this.updateSelection(SelectionStatus.NONE);
-            this.load(false).pipe(take(1)).subscribe();
+            // Change page trigger data re-load
+            this.changePage(PageSelection.FIRST);
         }
     }
 
