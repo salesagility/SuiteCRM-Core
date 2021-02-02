@@ -15,6 +15,13 @@ export class FieldManager {
     constructor(protected validationManager: ValidationManager, protected typeFormatter: DataTypeFormatter) {
     }
 
+    /**
+     * Build minimally initialised field object
+     *
+     * @param {string} type field type
+     * @param {string} value field value
+     * @returns {object} Field
+     */
     public buildShallowField(type: string, value: string): Field {
         return {
             type,
@@ -38,6 +45,7 @@ export class FieldManager {
         const field = this.buildField(record, viewField, language);
 
         this.addToRecord(record, viewField.name, field);
+        this.addGroupFields(record, viewField, language);
 
         return field;
     }
@@ -54,7 +62,7 @@ export class FieldManager {
 
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
         const {value, valueList, valueObject} = this.parseValue(viewField, definition, record);
-        const {validators, asyncValidators} = this.getValidators(record, viewField);
+        const {validators, asyncValidators} = this.getSaveValidators(record, viewField);
 
         return this.setupField(viewField, value, valueList, valueObject, record, definition, validators, asyncValidators, language);
     }
@@ -72,6 +80,7 @@ export class FieldManager {
         const field = this.buildFilterField(record, viewField, language);
 
         this.addToRecord(record, viewField.name, field);
+        this.addGroupFields(record, viewField, language);
 
         return field;
     }
@@ -122,6 +131,57 @@ export class FieldManager {
         }
     }
 
+    /**
+     * Create and add group fields to record
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     */
+    protected addGroupFields(record: Record, viewField: ViewFieldDefinition, language: LanguageStore): void {
+
+        const definition = (viewField && viewField.fieldDefinition) || {};
+        const groupFields = definition.groupFields || {};
+        const groupFieldsKeys = Object.keys(groupFields);
+
+        groupFieldsKeys.forEach(key => {
+            const fieldDefinition = groupFields[key];
+
+            if (this.isFieldInitialized(record, key)) {
+                return;
+            }
+
+            const groupViewField = {
+                name: fieldDefinition.name,
+                label: fieldDefinition.vname,
+                type: fieldDefinition.type,
+                fieldDefinition
+            };
+
+            const groupField = this.buildField(record, groupViewField, language);
+            this.addToRecord(record, fieldDefinition.name, groupField);
+        });
+    }
+
+    /**
+     * Is field initialized in record
+     *
+     * @param {object} record Record
+     * @param {string} fieldName field
+     * @returns {boolean} isInitialized
+     */
+    protected isFieldInitialized(record: Record, fieldName: string): boolean {
+        return !!record.fields[fieldName];
+    }
+
+    /**
+     * Parse value from record
+     *
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} definition FieldDefinition
+     * @param {object} record Record
+     * @returns {object} value object
+     */
     protected parseValue(
         viewField: ViewFieldDefinition,
         definition: FieldDefinition,
@@ -153,7 +213,14 @@ export class FieldManager {
         return {value, valueList};
     }
 
-    protected getValidators(
+    /**
+     * Get save validators for the given field definition
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @returns {object} Validator map
+     */
+    protected getSaveValidators(
         record: Record,
         viewField: ViewFieldDefinition
     ): { validators: ValidatorFn[]; asyncValidators: AsyncValidatorFn[] } {
@@ -163,6 +230,13 @@ export class FieldManager {
         return {validators, asyncValidators};
     }
 
+    /**
+     * Get Filter Validators for given field definition
+     *
+     * @param {object} record  Record
+     * @param {object} viewField ViewFieldDefinition
+     * @returns {object} validator map
+     */
     protected getFilterValidators(
         record: Record,
         viewField: ViewFieldDefinition
@@ -174,6 +248,20 @@ export class FieldManager {
         return {validators, asyncValidators};
     }
 
+    /**
+     * Build and initialize field object
+     *
+     * @param {object} viewField ViewFieldDefinition
+     * @param {string} value string
+     * @param {[]} valueList string[]
+     * @param {any} valueObject value object
+     * @param {object} record Record
+     * @param {object} definition FieldDefinition
+     * @param {[]} validators ValidatorFn[]
+     * @param {[]} asyncValidators AsyncValidatorFn[]
+     * @param {object} language LanguageStore
+     * @returns {object} Field
+     */
     protected setupField(
         viewField: ViewFieldDefinition,
         value: string,

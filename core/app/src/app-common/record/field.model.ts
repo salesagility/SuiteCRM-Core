@@ -18,6 +18,10 @@ export interface ValidationDefinition {
     blank?: string;
 }
 
+export interface FieldDefinitionMap {
+    [key: string]: FieldDefinition;
+}
+
 export interface FieldDefinition {
     name?: string;
     type?: string; // label key to use
@@ -41,6 +45,10 @@ export interface FieldDefinition {
     validation?: ValidationDefinition;
     validations?: ValidationDefinition[];
     template?: string;
+    display?: string;
+    layout?: string[];
+    showLabel?: string[];
+    groupFields?: FieldDefinitionMap;
 }
 
 export declare type FieldClickCallback = (field: Field, record: Record) => void;
