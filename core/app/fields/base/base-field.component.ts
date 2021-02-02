@@ -7,6 +7,7 @@ import {isVoid} from '@app-common/utils/value-utils';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 export class BaseFieldComponent implements FieldComponentInterface {
+    @Input() mode: string;
     @Input() field: Field;
     @Input() record: Record;
     @Input() klass: { [klass: string]: any } = null;

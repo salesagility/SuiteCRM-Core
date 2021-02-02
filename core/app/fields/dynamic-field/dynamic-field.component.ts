@@ -60,7 +60,7 @@ export class DynamicFieldComponent implements OnInit {
     }
 
     hasOnClick(): boolean {
-        return !!(this.field.metadata && this.field.metadata.onClick);
+        return !!(this.field && this.field.metadata && this.field.metadata.onClick);
     }
 
     isEdit(): boolean {
