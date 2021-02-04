@@ -14,8 +14,16 @@ export class FormatNumberPipe extends DecimalPipe {
         super(locale);
     }
 
-    transform(value: any): string | null {
+    transform(value: number | string, digitsInfo?: string, locale?: string): string | null;
+    // eslint-disable-next-line no-dupe-class-members
+    transform(value: null | undefined, digitsInfo?: string, locale?: string): null;
+    // eslint-disable-next-line no-dupe-class-members,@typescript-eslint/no-unused-vars
+    transform(value: number | string | null | undefined, digitsInfo?: string, locale?: string): string | null {
 
-        return this.formatter.toUserFormat(value);
+        if (!value) {
+            return null;
+        }
+
+        return this.formatter.toUserFormat('' + value);
     }
 }
