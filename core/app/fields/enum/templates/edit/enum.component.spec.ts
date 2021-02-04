@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {EnumEditFieldComponent} from './enum.component';
 import {Field} from '@app-common/record/field.model';
@@ -105,10 +105,10 @@ describe('EnumEditFieldComponent', () => {
     it('should allow removing value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
-        const element = testHostFixture.nativeElement;
-
         testHostFixture.detectChanges();
         await testHostFixture.whenRenderingDone();
+
+        const element = testHostFixture.nativeElement;
 
         const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
 
@@ -136,10 +136,10 @@ describe('EnumEditFieldComponent', () => {
     it('should allow adding value', async (done) => {
         expect(testHostComponent).toBeTruthy();
 
-        const element = testHostFixture.nativeElement;
-
         testHostFixture.detectChanges();
         await testHostFixture.whenRenderingDone();
+
+        const element = testHostFixture.nativeElement;
 
         const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
 

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {TableHeaderComponent} from './table-header.component';
 import {PaginationModule} from '@components/pagination/pagination.module';
@@ -25,7 +25,7 @@ describe('TableheaderUiComponent', () => {
             imports: [
                 PaginationModule,
                 BulkActionMenuModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule,
                 ApolloTestingModule,
                 ImageModule

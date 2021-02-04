@@ -26,6 +26,10 @@
             "deployUrl": "dist/",
             "assets": [
               "core/app/themes"
+            ],
+            "allowedCommonJsDependencies": [
+              "graphql-tag",
+              "zen-observable"
             ]
           },
           "configurations": {

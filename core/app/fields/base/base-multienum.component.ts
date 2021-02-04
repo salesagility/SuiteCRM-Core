@@ -1,7 +1,9 @@
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
 import {LanguageStore} from '@store/language/language.store';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {Component} from '@angular/core';
 
+@Component({template: ''})
 export class BaseMultiEnumComponent extends BaseEnumComponent {
 
     constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {StatisticsSidebarWidgetComponent} from './statistics-sidebar-widget.component';
 import {Component} from '@angular/core';
@@ -13,6 +13,7 @@ import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/tes
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 @Component({
     selector: 'statistics-sidebar-widget-test-host-component',
@@ -76,7 +77,8 @@ describe('StatisticsSidebarWidgetComponent', () => {
                 FieldModule,
                 CommonModule,
                 RouterTestingModule,
-                ApolloTestingModule
+                ApolloTestingModule,
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},

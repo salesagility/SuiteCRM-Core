@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
 import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module';
@@ -44,7 +44,7 @@ describe('DynamicLabelComponent', () => {
     let testHostComponent: DynamicLabelTestHostComponent;
     let testHostFixture: ComponentFixture<DynamicLabelTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 DynamicLabelTestHostComponent,

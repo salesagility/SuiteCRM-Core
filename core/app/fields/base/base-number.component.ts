@@ -4,7 +4,9 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {Component} from '@angular/core';
 
+@Component({template: ''})
 export class BaseNumberComponent extends BaseFieldComponent {
 
     preferences$ = this.userPreferences.userPreferences$;

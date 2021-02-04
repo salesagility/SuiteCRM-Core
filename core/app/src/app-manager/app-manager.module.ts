@@ -1,22 +1,10 @@
-import {
-  ANALYZE_FOR_ENTRY_COMPONENTS,
-  ModuleWithProviders,
-  NgModule,
-  NgModuleFactoryLoader,
-  SystemJsNgModuleLoader,
-  Type
-} from '@angular/core';
+import {ModuleWithProviders, NgModule, NgModuleFactoryLoader, SystemJsNgModuleLoader, Type} from '@angular/core';
 
 import {ROUTES} from '@angular/router';
 
 import {AppManager} from './app-manager.service';
 
-import {
-  APP_COMPONENT,
-  APP_MANIFESTS,
-  APP_MODULE,
-  AppManifest
-} from './app-manifest';
+import {APP_COMPONENT, APP_MANIFESTS, APP_MODULE, AppManifest} from './app-manifest';
 
 @NgModule()
 export class AppManagerModule {
@@ -38,11 +26,6 @@ export class AppManagerModule {
     return {
       ngModule: AppManagerModule,
       providers: [
-        {
-          provide: ANALYZE_FOR_ENTRY_COMPONENTS,
-          useValue: manifest,
-          multi: true
-        },
         // provider for @angular/router to parse
         {provide: ROUTES, useValue: manifest, multi: true},
         // provider for AppManager to analyze
@@ -55,11 +38,6 @@ export class AppManagerModule {
     return {
       ngModule: AppManagerModule,
       providers: [
-        {
-          provide: ANALYZE_FOR_ENTRY_COMPONENTS,
-          useValue: component,
-          multi: true
-        },
         // provider for @angular/router to parse
         {provide: ROUTES, useValue: [], multi: true},
         // provider for AppManager to analyze

@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginUiComponent} from './login.component';
 import {LanguageStore} from '@store/language/language.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
@@ -28,7 +28,7 @@ describe('LoginComponent', () => {
                 RouterTestingModule,
                 HttpClientTestingModule,
                 FormsModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ApolloTestingModule,
                 ButtonLoadingUiModule
             ],

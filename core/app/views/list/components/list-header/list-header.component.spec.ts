@@ -32,6 +32,7 @@ import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @Component({
     selector: 'list-header-test-host-component',
@@ -55,7 +56,8 @@ describe('ListHeaderComponent', () => {
                 HttpClientTestingModule,
                 ImageModule,
                 ListFilterModule,
-                RouterTestingModule
+                RouterTestingModule,
+                AngularSvgIconModule.forRoot()
             ],
             declarations: [ListHeaderComponent, ListHeaderTestHostComponent],
             providers: [

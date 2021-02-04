@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RecordContainerComponent} from './record-container.component';
 import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {recordviewStoreMock} from '@views/record/store/record-view/record-view.store.spec.mock';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
@@ -39,9 +39,9 @@ describe('RecordContainerComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 WidgetPanelModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ApolloTestingModule,
                 SubpanelModule
             ],

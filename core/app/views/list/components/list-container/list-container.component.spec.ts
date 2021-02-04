@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -6,7 +6,7 @@ import {ListContainerComponent} from './list-container.component';
 import {TableModule} from '@components/table/table.module';
 import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
 import {of} from 'rxjs';
@@ -28,9 +28,9 @@ describe('ListcontainerUiComponent', () => {
             imports: [
                 TableModule,
                 WidgetPanelModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ApolloTestingModule,
                 RouterTestingModule
             ],

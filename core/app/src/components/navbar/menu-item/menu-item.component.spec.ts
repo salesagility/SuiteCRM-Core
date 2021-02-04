@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {MenuItemComponent} from './menu-item.component';
 import {Component} from '@angular/core';
@@ -80,7 +80,7 @@ describe('ModuleMenuItemComponent', () => {
                 MenuRecentlyViewedComponent
             ],
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 RouterTestingModule,
                 HttpClientTestingModule,
                 ImageModule,

@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {WidgetPanelComponent} from './widget-panel.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ChartModule} from '@components/chart/components/chart/chart.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {of} from 'rxjs';
@@ -21,10 +21,10 @@ describe('WidgetPanelComponent', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 ChartModule,
                 HttpClientTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ApolloTestingModule,
                 ImageModule
             ],

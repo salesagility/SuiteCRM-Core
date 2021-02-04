@@ -30,7 +30,7 @@ describe('ImageComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ImageComponent, TestHostComponent],
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule
             ],
             providers: [

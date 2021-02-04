@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {GroupedMenuItemComponent} from './grouped-menu-item.component';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
@@ -101,7 +101,7 @@ describe('GroupedMenuItemComponent', () => {
                 MenuRecentlyViewedComponent
             ],
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 RouterTestingModule,
                 HttpClientTestingModule,
                 ImageModule,

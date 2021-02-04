@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {SortButtonComponent} from './sort-button.component';
 import {BehaviorSubject, Observable, of} from 'rxjs';
@@ -42,7 +42,7 @@ describe('SortButtonComponent', () => {
             ],
             imports: [
                 ImageModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule,
             ],
             providers: [

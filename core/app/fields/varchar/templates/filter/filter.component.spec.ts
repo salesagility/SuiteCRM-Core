@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharFilterFieldComponent} from './filter.component';
 import {Field} from '@app-common/record/field.model';
@@ -12,7 +12,7 @@ import {DateFormatter} from '@services/formatters/datetime/date-formatter.servic
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {VarcharFilterFieldModule} from '@fields/varchar/templates/filter/filter.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -43,7 +43,7 @@ describe('VarcharFilterFieldComponent', () => {
             ],
             imports: [
                 VarcharFilterFieldModule,
-                BrowserAnimationsModule
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},

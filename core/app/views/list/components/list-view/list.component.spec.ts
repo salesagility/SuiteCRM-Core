@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ListComponent} from './list.component';
 import {ListHeaderModule} from '@views/list/components/list-header/list-header.module';
@@ -53,7 +53,7 @@ describe('ListComponent', () => {
                 ListContainerModule,
                 HttpClientTestingModule,
                 RouterTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ImageModule,
                 ApolloTestingModule,
                 DynamicModule,

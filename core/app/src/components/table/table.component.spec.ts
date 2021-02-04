@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {TableComponent} from './table.component';
 import {TableHeaderModule} from '@components/table/table-header/table-header.module';
@@ -41,7 +41,7 @@ describe('TableComponent', () => {
                 TableHeaderModule,
                 TableBodyModule,
                 TableFooterModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule,
                 ApolloTestingModule,
                 ImageModule,

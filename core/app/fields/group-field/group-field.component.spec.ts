@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {GroupFieldComponent} from './group-field.component';
 import {LanguageStore} from '@store/language/language.store';
@@ -14,32 +14,30 @@ import {currencyFormatterMock} from '@services/formatters/currency/currency-form
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {CommonModule} from '@angular/common';
-import {DynamicModule} from 'ng-dynamic-component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {TagInputModule} from 'ngx-chips';
 import {FormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {DynamicFieldModule} from '@fields/dynamic-field/dynamic-field.module';
-import {baseFieldComponents, baseFieldModules} from '@fields/base-fields.manifest';
+import {baseFieldModules} from '@fields/base-fields.manifest';
 import {Record} from '@app-common/record/record.model';
 
 describe('GroupFieldComponent', () => {
     let component: GroupFieldComponent;
     let fixture: ComponentFixture<GroupFieldComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [GroupFieldComponent],
             imports: [
                 ...baseFieldModules,
                 CommonModule,
-                DynamicModule.withComponents(baseFieldComponents),
                 RouterTestingModule,
                 TagInputModule,
                 FormsModule,
                 BrowserDynamicTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 DynamicFieldModule
             ],
             providers: [

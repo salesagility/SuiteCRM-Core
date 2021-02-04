@@ -4,7 +4,8 @@ import {Field, FieldMap} from '@app-common/record/field.model';
 import {isVoid} from '@app-common/utils/value-utils';
 import {LanguageStore} from '@store/language/language.store';
 import {StringMap} from '@app-common/types/StringMap';
-import * as _ from 'lodash';
+import get from 'lodash-es/get';
+
 
 export declare type TemplateValueFilter = (value: string) => string;
 export declare type TemplateFieldFilter = (value: Field) => string;
@@ -135,13 +136,13 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
                     return;
                 }
 
-                value = _.get({fields}, path, '');
+                value = get({fields}, path, '');
 
                 parsedTemplate = parsedTemplate.replace(regexMatch, value);
                 return;
             }
 
-            value = _.get({context}, path, '');
+            value = get({context}, path, '');
 
             if (filter in this.valuePipes) {
                 value = this.valuePipes[filter](value);

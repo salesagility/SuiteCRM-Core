@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {MessageModalComponent} from './message-modal.component';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
@@ -10,6 +10,9 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
 import {ModalButtonInterface} from '@app-common/components/modal/modal.model';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {interval} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
     selector: 'messages-modal-test-host-component',
@@ -52,11 +55,12 @@ describe('MessageModalComponent', () => {
     let component: MessageModalTestHostComponent;
     let fixture: ComponentFixture<MessageModalTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [MessageModalTestHostComponent],
             imports: [
                 MessageModalModule,
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
@@ -78,40 +82,51 @@ describe('MessageModalComponent', () => {
         const modal = document.getElementsByClassName('message-modal');
 
         expect(modal).toBeTruthy();
-        expect(modal.length).toEqual(1);
+        expect(modal.length).toBeTruthy();
         component.modal.close();
     });
 
-    it('should have message', () => {
+    it('should have message', async (done) => {
         expect(component).toBeTruthy();
+
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
 
         const modal = document.getElementsByClassName('message-modal');
 
         expect(modal).toBeTruthy();
-        expect(modal.length).toEqual(1);
+        expect(modal.length).toBeTruthy();
 
         const body = modal.item(0).getElementsByClassName('modal-body');
 
         expect(body).toBeTruthy();
-        expect(body.length).toEqual(1);
+        expect(body.length).toBeTruthy();
 
         expect(body.item(0).textContent).toContain('Are you sure you want to navigate away from this record?');
 
         component.modal.close();
+        done();
     });
 
-    it('should have a clickable cancel button', () => {
+    it('should have a clickable cancel button', async (done) => {
         expect(component).toBeTruthy();
+
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
 
         const modal = document.getElementsByClassName('message-modal');
 
         expect(modal).toBeTruthy();
-        expect(modal.length).toEqual(1);
+        expect(modal.length).toBeTruthy();
 
         const footer = modal.item(0).getElementsByClassName('modal-footer');
 
         expect(footer).toBeTruthy();
-        expect(footer.length).toEqual(1);
+        expect(footer.length).toBeTruthy();
 
         const buttons = footer.item(0).getElementsByTagName('button');
 
@@ -125,21 +140,33 @@ describe('MessageModalComponent', () => {
 
         cancelButton.click();
 
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
+
         expect(component.cancelClicked).toEqual(1);
+
+        done();
     });
 
-    it('should have a clickable ok button', () => {
+    it('should have a clickable ok button', async (done) => {
         expect(component).toBeTruthy();
+
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
 
         const modal = document.getElementsByClassName('message-modal');
 
         expect(modal).toBeTruthy();
-        expect(modal.length).toEqual(1);
+        expect(modal.length).toBeTruthy();
 
         const footer = modal.item(0).getElementsByClassName('modal-footer');
 
         expect(footer).toBeTruthy();
-        expect(footer.length).toEqual(1);
+        expect(footer.length).toBeTruthy();
 
         const buttons = footer.item(0).getElementsByTagName('button');
 
@@ -154,6 +181,13 @@ describe('MessageModalComponent', () => {
         okButton.click();
 
         expect(component.okClicked).toEqual(1);
+
+        fixture.detectChanges();
+        await fixture.whenRenderingDone();
+
+        await interval(1000).pipe(take(1)).toPromise();
+
+        done();
     });
 
 });

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 import {Observable, of} from 'rxjs';
@@ -88,7 +88,7 @@ describe('ModalButtonGroupComponent', () => {
     let testHostComponent: ModalButtonGroupTestHostComponent;
     let testHostFixture: ComponentFixture<ModalButtonGroupTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ModalButtonGroupTestHostComponent,
@@ -111,7 +111,7 @@ describe('ModalButtonGroupComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('buttons should be clickable', async(() => {
+    it('buttons should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const buttons = testHostFixture.nativeElement.getElementsByClassName('button-group-button');
 
@@ -129,7 +129,7 @@ describe('ModalButtonGroupComponent', () => {
         });
     }));
 
-    it('buttons should be clickable and call close modal', async(() => {
+    it('buttons should be clickable and call close modal', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const buttons = testHostFixture.nativeElement.getElementsByClassName('button-group-button');
 
@@ -146,7 +146,7 @@ describe('ModalButtonGroupComponent', () => {
         });
     }));
 
-    it('buttons should be clickable and call dismiss modal', async(() => {
+    it('buttons should be clickable and call dismiss modal', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
         const buttons = testHostFixture.nativeElement.getElementsByClassName('button-group-button');
 
@@ -163,7 +163,7 @@ describe('ModalButtonGroupComponent', () => {
         });
     }));
 
-    it('dropdown items should be clickable', async(() => {
+    it('dropdown items should be clickable', waitForAsync(() => {
         expect(testHostComponent).toBeTruthy();
 
         const element = testHostFixture.nativeElement;

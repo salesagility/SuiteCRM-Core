@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
@@ -48,7 +48,7 @@ describe('PaginationComponent', () => {
             ],
             imports: [
                 ImageModule,
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 HttpClientTestingModule
             ],
             providers: [

@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DynamicFieldComponent} from '@fields/dynamic-field/dynamic-field.component';
 import {RouterModule} from '@angular/router';
-import {DynamicComponentModule} from 'ng-dynamic-component';
 import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module';
+import {DynamicModule} from 'ng-dynamic-component';
 
 @NgModule({
     declarations: [DynamicFieldComponent],
@@ -14,7 +14,7 @@ import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module
         CommonModule,
         RouterModule,
         DynamicLabelModule,
-        DynamicComponentModule,
+        DynamicModule,
     ]
 })
 export class DynamicFieldModule {

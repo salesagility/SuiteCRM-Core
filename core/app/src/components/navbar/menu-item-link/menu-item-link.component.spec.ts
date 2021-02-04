@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
@@ -56,7 +56,7 @@ describe('MenuItemActionLinkComponent', () => {
         TestBed.configureTestingModule({
             declarations: [MenuItemLinkComponent, MenuItemLinkTestHostComponent],
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 RouterTestingModule,
                 HttpClientTestingModule,
                 ImageModule,

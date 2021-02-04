@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CloseButtonModule} from '@components/close-button/close-button.module';
 import {ButtonModule} from '@components/button/button.module';
 import {By} from '@angular/platform-browser';
@@ -14,7 +14,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
 import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
 import {SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
@@ -38,7 +38,7 @@ describe('ListFilterComponent', () => {
                 FieldGridModule,
                 RouterTestingModule,
                 ApolloTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ListFilterModule
             ],
             providers: [

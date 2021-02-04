@@ -36,14 +36,12 @@ import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 import {ImageModule} from '@components/image/image.module';
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
-import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
 import {AppInit} from '@app/app-initializer';
 import {AuthService} from '@services/auth/auth.service';
 import {GraphQLError} from 'graphql';
-import {MessageModalComponent} from '@components/modal/components/message-modal/message-modal.component';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
-import {RecordListModalComponent} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.component';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
@@ -68,6 +66,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         ListHeaderModule,
         ListContainerModule,
         ColumnChooserModule,
+        AngularSvgIconModule.forRoot(),
         ImageModule,
         BrowserAnimationsModule,
         NgbModule,
@@ -87,8 +86,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
             deps: [AppInit]
         }
     ],
-    bootstrap: [AppComponent],
-    entryComponents: [ColumnChooserComponent, MessageModalComponent, RecordListModalComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {HistorySidebarWidgetComponent} from './history-sidebar-widget.component';
 import {CollectionViewer, ListRange} from '@angular/cdk/collections';
 import {of} from 'rxjs';
@@ -19,6 +19,7 @@ import {take} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('HistoryTimelineWidgetComponent', () => {
     let component: HistorySidebarWidgetComponent;
@@ -42,7 +43,8 @@ describe('HistoryTimelineWidgetComponent', () => {
                 ImageModule,
                 FieldModule,
                 ApolloTestingModule,
-                RouterTestingModule
+                RouterTestingModule,
+                NoopAnimationsModule
             ],
         }).compileComponents();
 

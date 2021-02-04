@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BooleanFilterFieldComponent} from './boolean.component';
 import {FormControl, FormsModule} from '@angular/forms';
@@ -14,7 +14,7 @@ import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.se
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {TagInputModule} from 'ngx-chips';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {waitUntil} from '@app-common/testing/utils.spec';
@@ -44,7 +44,7 @@ describe('BooleanFilterFieldComponent', () => {
     let testHostComponent: BooleanFilterFieldTestHostComponent;
     let testHostFixture: ComponentFixture<BooleanFilterFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 BooleanFilterFieldTestHostComponent,
@@ -54,7 +54,7 @@ describe('BooleanFilterFieldComponent', () => {
                 TagInputModule,
                 FormsModule,
                 BrowserDynamicTestingModule,
-                BrowserAnimationsModule
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},

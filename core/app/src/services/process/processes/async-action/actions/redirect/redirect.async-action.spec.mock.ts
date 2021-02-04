@@ -11,7 +11,7 @@ TestBed.configureTestingModule({
     ],
 }).compileComponents().then();
 
-const router = TestBed.get(Router); // Just if we need to test Route Service functionality
+const router = TestBed.inject(Router); // Just if we need to test Route Service functionality
 
 
 export const redirectBulkActionMock = new RedirectAsyncAction(router, messageServiceMock);

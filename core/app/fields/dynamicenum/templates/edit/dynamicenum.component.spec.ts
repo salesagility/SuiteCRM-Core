@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DynamicEnumEditFieldComponent} from './dynamicenum.component';
 import {Field} from '@app-common/record/field.model';
@@ -6,7 +6,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
 import {FormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
@@ -37,7 +37,7 @@ describe('DynamicEnumEditFieldComponent', () => {
     let testHostComponent: DynamicEnumEditFieldTestHostComponent;
     let testHostFixture: ComponentFixture<DynamicEnumEditFieldTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 DynamicEnumEditFieldTestHostComponent,
@@ -47,7 +47,7 @@ describe('DynamicEnumEditFieldComponent', () => {
                 TagInputModule,
                 FormsModule,
                 BrowserDynamicTestingModule,
-                BrowserAnimationsModule
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},

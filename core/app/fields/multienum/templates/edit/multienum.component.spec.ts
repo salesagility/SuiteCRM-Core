@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {Field} from '@app-common/record/field.model';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
 import {FormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {MultiEnumEditFieldComponent} from '@fields/multienum/templates/edit/multienum.component';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
@@ -52,7 +52,7 @@ describe('MultiEnumEditFieldComponent', () => {
                 TagInputModule,
                 FormsModule,
                 BrowserDynamicTestingModule,
-                BrowserAnimationsModule
+                NoopAnimationsModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},

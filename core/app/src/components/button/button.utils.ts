@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AnyButtonInterface} from '@app-common/components/button/dropdown-button.model';
-import * as _ from 'lodash';
+import partial from 'lodash-es/partial';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,7 @@ export class ButtonUtils {
     constructor() {
     }
 
-    addOnClickPartial(button: AnyButtonInterface, partial: any): AnyButtonInterface {
+    addOnClickPartial(button: AnyButtonInterface, partialInput: any): AnyButtonInterface {
         const copy = {...button};
 
         if (button && 'items' in copy) {
@@ -20,13 +20,13 @@ export class ButtonUtils {
             items.forEach(item => {
 
 
-                copy.items.push(this.addOnClickPartial(item, partial));
+                copy.items.push(this.addOnClickPartial(item, partialInput));
             });
 
             return copy;
         }
 
-        copy.onClick = copy.onClick && _.partial(copy.onClick, partial);
+        copy.onClick = copy.onClick && partial(copy.onClick, partialInput);
 
         return copy;
     }

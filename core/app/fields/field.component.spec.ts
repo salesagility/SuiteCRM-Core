@@ -1,7 +1,6 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {FieldComponent} from './field.component';
-import {DynamicModule} from 'ng-dynamic-component';
-import {fieldComponents, fieldModules} from '@fields/field.manifest';
+import {fieldModules} from '@fields/field.manifest';
 import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
@@ -16,13 +15,13 @@ import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
 import {FormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 import {Field} from '@app-common/record/field.model';
 import {DynamicFieldModule} from '@fields/dynamic-field/dynamic-field.module';
-import {FormControlUtils} from "@services/record/field/form-control.utils";
+import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 const buildField = (field: Field): Field => {
     field.formControl = new FormControl(field.value);
@@ -163,12 +162,11 @@ describe('FieldComponent', () => {
             imports: [
                 ...fieldModules,
                 CommonModule,
-                DynamicModule.withComponents(fieldComponents),
                 RouterTestingModule,
                 TagInputModule,
                 FormsModule,
                 BrowserDynamicTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 DynamicFieldModule
             ],
             providers: [

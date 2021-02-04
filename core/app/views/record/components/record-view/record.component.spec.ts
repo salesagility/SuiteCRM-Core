@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ImageModule} from '@components/image/image.module';
 import {DynamicModule} from 'ng-dynamic-component';
@@ -32,6 +32,7 @@ import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @Component({
     selector: 'record-test-host-component',
@@ -50,7 +51,7 @@ describe('RecordComponent', () => {
             imports: [
                 HttpClientTestingModule,
                 RouterTestingModule,
-                BrowserAnimationsModule,
+                NoopAnimationsModule,
                 ImageModule,
                 ApolloTestingModule,
                 DynamicModule,
@@ -58,7 +59,8 @@ describe('RecordComponent', () => {
                 DropdownButtonModule,
                 RecordContainerModule,
                 RecordHeaderModule,
-                StatusBarModule
+                StatusBarModule,
+                AngularSvgIconModule.forRoot()
             ],
             declarations: [RecordComponent, RecordTestHostComponent],
             providers: [

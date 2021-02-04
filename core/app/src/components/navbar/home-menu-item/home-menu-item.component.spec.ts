@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {HomeMenuItemComponent} from './home-menu-item.component';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
@@ -39,7 +39,7 @@ describe('HomeMenuItemComponent', () => {
         TestBed.configureTestingModule({
             declarations: [HomeMenuItemComponent, MenuItemLinkComponent, HomeMenuItemTestHostComponent],
             imports: [
-                AngularSvgIconModule,
+                AngularSvgIconModule.forRoot(),
                 RouterTestingModule,
                 HttpClientTestingModule,
                 ImageModule,
@@ -75,10 +75,10 @@ describe('HomeMenuItemComponent', () => {
         expect(testHostFixture.nativeElement.querySelector('svg-icon')).toBeTruthy();
     });
 
-    it('should have image', () => {
+    it('should active link', () => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.setActive(true)
+        testHostComponent.setActive(true);
         testHostFixture.detectChanges();
         const linkElement = testHostFixture.nativeElement.querySelector('li');
 
@@ -86,10 +86,10 @@ describe('HomeMenuItemComponent', () => {
         expect(linkElement.className).toContain('active');
     });
 
-    it('should have image', () => {
+    it('should home link', () => {
         expect(testHostComponent).toBeTruthy();
 
-        testHostComponent.setRoute('/home')
+        testHostComponent.setRoute('/home');
         testHostFixture.detectChanges();
         const linkElement = testHostFixture.nativeElement.querySelector('a');
         const url = '/home';
