@@ -15,14 +15,6 @@ export class PhoneFormatter implements Formatter {
     }
 
     toInternalFormat(value: string): string {
-
-        const pattern = this.getUserFormatPattern();
-
-        const regex = new RegExp(pattern);
-        if (!regex.test(value)) {
-            return '';
-        }
-
         return value;
     }
 
