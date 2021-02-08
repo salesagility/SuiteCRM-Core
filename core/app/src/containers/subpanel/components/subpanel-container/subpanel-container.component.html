@@ -19,31 +19,14 @@
     <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
 
         <div class="sub-panel-banner-buttons">
-            <div
-                class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between rounded"
-                *ngFor="let item of vm.subpanels | keyvalue"
-                [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
-                (click)="showSubpanel(item.value)"
-            >
-                <div class="sub-panel-banner-button-icon">
-                    <scrm-image [image]="item.value.getIcon()"></scrm-image>
-                </div>
 
-                <div class="sub-panel-banner-button-title text-truncate">
-                    {{item.value.getTitle()}}
-                </div>
+            <div class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between rounded"
+                 *ngFor="let item of vm.subpanels | keyvalue"
+                 [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
+                 (click)="showSubpanel(item.value)">
 
-                <div class="sub-panel-banner-button-stats" *ngIf="(item.value.statistics.state$ | async) as statistics">
-                    <ng-container *ngIf="statistics.loading || !statistics.field">
-                        <scrm-inline-loading-spinner></scrm-inline-loading-spinner>
-                    </ng-container>
-                    <ng-container *ngIf="statistics.field">
-                        <scrm-field [type]="statistics.field.type"
-                                    mode="list"
-                                    [field]="statistics.field">
-                        </scrm-field>
-                    </ng-container>
-                </div>
+                <scrm-grid-widget [config]="getGridConfig(item.value)"></scrm-grid-widget>
+
             </div>
         </div>
     </div>

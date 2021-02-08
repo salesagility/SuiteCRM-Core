@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {InlineLoadingSpinnerModule} from '@components/inline-loading-spinner/inline-loading-spinner.module';
 import {FieldModule} from '@fields/field.module';
+import {GridWidgetModule} from '@components/grid-widget/grid-widget.module';
 
 @NgModule({
     declarations: [SubpanelContainerComponent],
@@ -20,7 +21,8 @@ import {FieldModule} from '@fields/field.module';
         RouterModule,
         SubpanelModule,
         InlineLoadingSpinnerModule,
-        FieldModule
+        FieldModule,
+        GridWidgetModule
     ]
 })
 export class SubpanelContainerModule {

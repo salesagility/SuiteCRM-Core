@@ -1,5 +1,5 @@
-
 import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
+import {WidgetOptionMap} from '@app-common/metadata/widget.metadata';
 
 export interface SubPanelTopButton {
     key: string;
@@ -10,6 +10,7 @@ export interface SubPanelTopButton {
 export interface SubPanelCollectionList {
     [key: string]: SubPanelCollectionItem;
 }
+
 /* eslint-disable camelcase */
 export interface SubPanelCollectionItem {
     module: string;
@@ -25,6 +26,7 @@ export interface SubPanelMeta {
 
 /* eslint-disable camelcase */
 export interface SubPanel {
+    insightWidget?: WidgetOptionMap;
     order?: 10;
     sort_order?: string;
     sort_by?: string;
@@ -41,5 +43,6 @@ export interface SubPanel {
     columns: ColumnDefinition[];
     icon?: string;
 }
+
 /* eslint-enable camelcase */
 

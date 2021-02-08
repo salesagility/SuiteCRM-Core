@@ -28,9 +28,13 @@ export interface StatisticWidgetLayoutRow {
 }
 
 export interface StatisticWidgetLayoutCol {
+    icon?: string;
     labelKey?: string;
+    dynamicLabel?: string;
     statistic?: string;
+    display?: string;
     size?: TextSizes;
     color?: TextColor;
     bold?: boolean | string;
+    class?: string;
 }

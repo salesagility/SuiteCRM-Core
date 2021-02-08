@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import {StatisticsSidebarWidgetComponent} from './statistics-sidebar-widget.component';
+import {GridWidgetComponent, GridWidgetInput, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 import {Component} from '@angular/core';
 import {ViewContext} from '@app-common/views/view.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {sidebarWidgetStatisticsFactoryMock} from './statistics-sidebar-widget.component.spec.mock';
+import {gridWidgetFactoryMock} from '@components/grid-widget/grid-widget.component.spec.mock';
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
 import {FieldModule} from '@fields/field.module';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
@@ -16,13 +16,14 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {interval} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {StatisticsSidebarWidgetModule} from './statistics-sidebar-widget.module';
+import {GridWidgetModule} from './grid-widget.module';
 
 @Component({
-    selector: 'statistics-sidebar-widget-test-host-component',
-    template: '<scrm-statistics-sidebar-widget [context]="context" [config]="config"></scrm-statistics-sidebar-widget>'
+    selector: 'scrm-grid-widget-test-host-component',
+    template: '<scrm-grid-widget [config]="gConfig"></scrm-grid-widget>'
 })
 class StatisticsSidebarWidgetHostComponent {
+
     context: ViewContext = {
         module: 'accounts',
         id: '123'
@@ -63,9 +64,22 @@ class StatisticsSidebarWidgetHostComponent {
             }
         }
     };
+
+    gConfig = {
+        rowClass: 'statistics-sidebar-widget-row',
+        columnClass: 'statistics-sidebar-widget-col',
+        layout: this.config.options.sidebarStatistic,
+        widgetConfig: {} as WidgetMetadata,
+        queryArgs: {
+            module: this.context.module,
+            context: this.context,
+            params: {},
+        } as StatisticsQueryArgs,
+    } as GridWidgetInput;
+
 }
 
-describe('StatisticsSidebarWidgetComponent', () => {
+describe('GridWidgetComponent', () => {
     let testHostComponent: StatisticsSidebarWidgetHostComponent;
     let testHostFixture: ComponentFixture<StatisticsSidebarWidgetHostComponent>;
 
@@ -73,7 +87,7 @@ describe('StatisticsSidebarWidgetComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 StatisticsSidebarWidgetHostComponent,
-                StatisticsSidebarWidgetComponent,
+                GridWidgetComponent,
             ],
             imports: [
                 BrowserDynamicTestingModule,
@@ -82,11 +96,11 @@ describe('StatisticsSidebarWidgetComponent', () => {
                 RouterTestingModule,
                 ApolloTestingModule,
                 NoopAnimationsModule,
-                StatisticsSidebarWidgetModule
+                GridWidgetModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
-                {provide: SingleValueStatisticsStoreFactory, useValue: sidebarWidgetStatisticsFactoryMock},
+                {provide: SingleValueStatisticsStoreFactory, useValue: gridWidgetFactoryMock},
             ],
         }).compileComponents();
 
@@ -106,10 +120,9 @@ describe('StatisticsSidebarWidgetComponent', () => {
 
         await interval(300).pipe(take(1)).toPromise();
 
-
         expect(testHostComponent).toBeTruthy();
 
-        const widget = testHostFixture.nativeElement.getElementsByTagName('scrm-statistics-sidebar-widget')[0];
+        const widget = testHostFixture.nativeElement.getElementsByTagName('scrm-grid-widget')[0];
 
         expect(widget).toBeTruthy();
 

@@ -5,6 +5,9 @@ import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language
 import {SubpanelContainerConfig} from '@containers/subpanel/components/subpanel-container/subpanel-container.model';
 import {SubpanelStore, SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
+import {ViewContext} from '@app-common/views/view.model';
+import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {GridWidgetInput, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 
 interface SubpanelContainerViewModel {
     appStrings: LanguageStringMap;
@@ -59,5 +62,26 @@ export class SubpanelContainerComponent implements OnInit {
         if (item.show) {
             item.load().pipe(take(1)).subscribe();
         }
+    }
+
+    getGridConfig(vm: SubpanelStore): GridWidgetInput {
+
+        if (!vm.metadata || !vm.metadata.insightWidget) {
+            return {
+                layout: null,
+            } as GridWidgetInput;
+        }
+
+        return {
+            rowClass: 'statistics-sidebar-widget-row',
+            columnClass: 'statistics-sidebar-widget-col',
+            layout: vm.metadata.insightWidget.options.insightWidget,
+            widgetConfig: {reload$: this.config.sidebarActive$} as WidgetMetadata,
+            queryArgs: {
+                module: vm.metadata.name,
+                context: {module: vm.parentModule, id: vm.parentId} as ViewContext,
+                params: {subpanel: vm.metadata.name},
+            } as StatisticsQueryArgs,
+        } as GridWidgetInput;
     }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DynamicLabelService} from '@services/language/dynamic-label.service';
 import {StringMap} from '@app-common/types/StringMap';
 import {FieldMap} from '@app-common/record/field.model';
@@ -11,7 +11,7 @@ import {tap} from 'rxjs/operators';
     templateUrl: './dynamic-label.component.html',
     styleUrls: []
 })
-export class DynamicLabelComponent implements OnInit {
+export class DynamicLabelComponent implements OnInit, OnChanges {
     @Input() template = '';
     @Input() labelKey = '';
     @Input() context: StringMap = {};
@@ -30,6 +30,12 @@ export class DynamicLabelComponent implements OnInit {
             }
             this.parseLabel();
         }));
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.template || changes.context || changes.labelKey || changes.fields) {
+            this.parseLabel();
+        }
     }
 
     protected parseLabel(): void {

@@ -124,6 +124,11 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
             if (source === 'fields') {
                 const field = fields[variableName];
 
+                if (!field) {
+                    parsedTemplate = parsedTemplate.replace(regexMatch, '');
+                    return;
+                }
+
                 if (parts[2] && parts[2] === 'value' && field.type in this.fieldPipes) {
                     value = this.fieldPipes[field.type](field);
                     parsedTemplate = parsedTemplate.replace(regexMatch, value);
