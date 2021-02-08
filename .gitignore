@@ -33,7 +33,7 @@
 /cache/
 
 # Dependencies
-/node_modules/
+node_modules
 
 # Compiled Output
 /public/
