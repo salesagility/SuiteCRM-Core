@@ -60,7 +60,7 @@ class SubPanelContractsRenewalDate extends SubpanelDataQueryHandler implements S
         if (empty($result)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CONTRACT_RENEWAL']);
             return $statistic;
         }
 

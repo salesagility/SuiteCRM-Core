@@ -124,7 +124,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['legacyModule'] = $tab['module'];
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
-            
+
             if (empty($tabs[$key]['insightWidget'])) {
                 $tabs[$key]['insightWidget'] = [
                     'type' => 'statistics',
@@ -142,6 +142,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                                     'cols' => [
                                         [
                                             'labelKey' => $tabs[$key]['title_key'],
+                                            'class' => 'sub-panel-banner-button-title text-truncate',
+                                            'bold' => true,
                                         ]
                                     ]
                                 ],
@@ -149,6 +151,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                                     'cols' => [
                                         [
                                             'statistic' =>  $tabs[$key]['module'],
+                                            'class' => 'sub-panel-banner-button-stats',
+                                            'bold' => true,
                                         ],
                                     ]
                                 ],
