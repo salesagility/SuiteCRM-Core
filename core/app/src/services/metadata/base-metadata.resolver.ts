@@ -47,9 +47,10 @@ export class BaseMetadataResolver implements Resolve<any> {
                         (configs: any) => {
 
                             let language = configs.default_language.value;
+                            const storedLanguage = this.languageStore.getCurrentLanguage();
 
-                            if (this.languageStore.hasLanguageChanged()) {
-                                language = this.languageStore.getCurrentLanguage();
+                            if (storedLanguage) {
+                                language = storedLanguage;
                             }
 
                             return this.languageStore.load(language, langStrings);

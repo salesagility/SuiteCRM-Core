@@ -6,6 +6,7 @@ import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {StateStore} from '@base/store/state';
+import {LocalStorageService} from '@services/local-storage/local-storage.service';
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -118,7 +119,11 @@ export class LanguageStore implements StateStore {
         },
     };
 
-    constructor(private recordGQL: EntityGQL, private appStateStore: AppStateStore) {
+    constructor(
+        private recordGQL: EntityGQL,
+        private appStateStore: AppStateStore,
+        protected localStorage: LocalStorageService
+    ) {
 
         this.appStrings$ = this.state$.pipe(map(state => state.appStrings), distinctUntilChanged());
         this.appListStrings$ = this.state$.pipe(map(state => state.appListStrings), distinctUntilChanged());
@@ -185,7 +190,10 @@ export class LanguageStore implements StateStore {
         this.appStateStore.updateLoading('change-language', true);
 
         this.load(languageKey, types).pipe(
-            tap(() => this.appStateStore.updateLoading('change-language', false))
+            tap(() => {
+                this.localStorage.set('selected_language', languageKey);
+                this.appStateStore.updateLoading('change-language', false);
+            })
         ).subscribe();
     }
 
@@ -328,6 +336,13 @@ export class LanguageStore implements StateStore {
      * @returns {string} current language key
      */
     public getCurrentLanguage(): string {
+
+        const storedLanguage = this.localStorage.get('selected_language');
+
+        if (storedLanguage) {
+            return storedLanguage;
+        }
+
         return internalState.languageKey;
     }
 
@@ -340,7 +355,7 @@ export class LanguageStore implements StateStore {
      * @param {string[]} types to load
      * @returns {{}} Observable
      */
-    public load(languageKey: string, types: string[]): Observable<{}> {
+    public load(languageKey: string, types: string[]): Observable<any> {
 
         const streams$ = {};
 

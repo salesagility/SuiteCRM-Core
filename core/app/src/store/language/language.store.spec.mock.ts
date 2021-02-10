@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
 
 export const languageMockData = {
     appStrings: {
@@ -183,6 +184,6 @@ class LanguageRecordGQLSpy extends EntityGQL {
     }
 }
 
-export const languageStoreMock = new LanguageStore(new LanguageRecordGQLSpy(), appStateStoreMock);
+export const languageStoreMock = new LanguageStore(new LanguageRecordGQLSpy(), appStateStoreMock, localStorageServiceMock);
 languageStoreMock.load('en_us', languageStoreMock.getAvailableStringsTypes()).pipe(take(1)).subscribe();
 
