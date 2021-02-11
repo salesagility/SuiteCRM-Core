@@ -26,6 +26,11 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
     public function getData(array $query): Statistic
     {
         $subpanel = $query['key'];
+
+        if ($subpanel === 'default' && isset($query['params']['subpanel'])) {
+            $subpanel = $query['params']['subpanel'];
+        }
+
         [$module, $id] = $this->extractContext($query);
         if (empty($module) || empty($id)) {
             return $this->getEmptyResponse(self::KEY);
@@ -35,14 +40,17 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
         $this->startLegacyApp();
 
         $queries = $this->getQueries($module, $id, $subpanel);
+
         $parts = $queries[0];
         $parts['select'] = 'SELECT COUNT(*) as value';
 
         $dbQuery = $this->joinQueryParts($parts);
         $result = $this->fetchRow($dbQuery);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
+
         $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_DEFAULT_TOTAL']);
         $this->close();
+
         return $statistic;
     }
 }

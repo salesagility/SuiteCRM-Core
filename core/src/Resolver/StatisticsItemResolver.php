@@ -36,11 +36,6 @@ class StatisticsItemResolver implements QueryItemResolverInterface
             return null;
         }
 
-
-        if (empty($context['args']['query']['key'])) {
-            return $this->registry->get('default')->getData($query);
-        }
-
         [$module] = $this->extractContext($query);
 
         $key = $context['args']['query']['key'] ?? 'default';

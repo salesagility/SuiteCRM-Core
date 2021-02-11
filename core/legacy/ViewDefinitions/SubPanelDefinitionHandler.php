@@ -125,42 +125,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
 
-            if (empty($tabs[$key]['insightWidget'])) {
-                $tabs[$key]['insightWidget'] = [
-                    'type' => 'statistics',
-                    'options' => [
-                        'insightWidget' => [
-                            'rows' => [
-                                [
-                                    'cols' => [
-                                        [
-                                            'icon' => $tab['module'],
-                                        ],
-                                    ]
-                                ],
-                                [
-                                    'cols' => [
-                                        [
-                                            'labelKey' => $tabs[$key]['title_key'],
-                                            'class' => 'sub-panel-banner-button-title text-truncate',
-                                            'bold' => true,
-                                        ]
-                                    ]
-                                ],
-                                [
-                                    'cols' => [
-                                        [
-                                            'statistic' =>  $tabs[$key]['module'],
-                                            'class' => 'sub-panel-banner-button-stats',
-                                            'bold' => true,
-                                        ],
-                                    ]
-                                ],
-                            ]
-                        ]
-                    ]
-                ];
-            }
+            $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
 
             if (empty($columnSubpanel)) {
                 continue;
@@ -183,31 +148,24 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $vardefModule = $tab['module'];
 
         if (empty($tab['header_definition_from_subpanel']) || empty($tab['collection_list'])) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
+            return $this->moduleNameMapper->toFrontEnd($vardefModule);
         }
 
         $headerModule = $tab['header_definition_from_subpanel'];
         $vardefModule = $tab['collection_list'][$headerModule]['module'] ?? '';
 
         if ($vardefModule) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
+            return $this->moduleNameMapper->toFrontEnd($vardefModule);
         }
 
         $vardefModule = reset($tab['collection_list'])['module'] ?? '';
         if ($vardefModule) {
-            $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
-
-            return $vardefModule;
+            return $this->moduleNameMapper->toFrontEnd($vardefModule);
         }
 
         $vardefModule = $tab['module'];
-        $vardefModule = $this->moduleNameMapper->toFrontEnd($vardefModule);
 
-        return $vardefModule;
+        return $this->moduleNameMapper->toFrontEnd($vardefModule);
     }
 
     /**
@@ -365,8 +323,117 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $column['link'] = true;
         }
 
-        $column = $this->addFieldDefinition($vardefs, strtolower($key), $column, $this->defaultDefinition);
+        return $this->addFieldDefinition($vardefs, strtolower($key), $column, $this->defaultDefinition);
+    }
 
-        return $column;
+    /**
+     * @param $subpanel
+     * @param array $tabs
+     * @param $key
+     * @param $tab
+     * @return array
+     */
+    protected function mapInsightWidget($subpanel, array $tabs, $key, $tab): array
+    {
+        if (!empty($subpanel->panel_definition['insightWidget'])) {
+            $widgetConfig = [
+                'type' => 'statistics',
+                'options' => [
+                    'insightWidget' => $subpanel->panel_definition['insightWidget']
+                ]
+            ];
+
+            $this->replaceVariables($tabs, $key, $widgetConfig, $widgetRows);
+
+            return $widgetConfig;
+        }
+
+        if (empty($tabs[$key]['insightWidget'])) {
+            return $this->getDefaultWidgetConfig($tabs, $key, $tab);
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $tabs
+     * @param $key
+     * @param $tab
+     * @return array
+     */
+    protected function getDefaultWidgetConfig(array $tabs, $key, $tab): array
+    {
+        return [
+            'type' => 'statistics',
+            'options' => [
+                'insightWidget' => [
+                    'rows' => [
+                        [
+                            'cols' => [
+                                [
+                                    'icon' => $tab['module'],
+                                ],
+                            ]
+                        ],
+                        [
+                            'cols' => [
+                                [
+                                    'labelKey' => $tabs[$key]['title_key'],
+                                    'class' => 'sub-panel-banner-button-title',
+                                    'bold' => true,
+                                ]
+                            ]
+                        ],
+                        [
+                            'cols' => [
+                                [
+                                    'statistic' => $tabs[$key]['module'],
+                                    'class' => 'sub-panel-banner-button-stats',
+                                    'bold' => true,
+                                ],
+                            ]
+                        ],
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $titleKey
+     * @param $col
+     * @param array $widgetRows
+     * @param $rowKey
+     * @param $colKey
+     */
+    protected function replaceLabelKey(string $titleKey, $col, array &$widgetRows, $rowKey, $colKey): void
+    {
+        $labelKey = $col['labelKey'] ?? '';
+        if ($labelKey !== '') {
+            $labelKey = str_replace('{{title_key}}', $titleKey, $labelKey);
+            $widgetRows[$rowKey]['cols'][$colKey]['labelKey'] = $labelKey;
+        }
+    }
+
+    /**
+     * @param array $tabs
+     * @param $key
+     * @param array $widgetConfig
+     * @param $widgetRows
+     */
+    protected function replaceVariables(array $tabs, $key, array &$widgetConfig, &$widgetRows): void
+    {
+        $widgetRows = $widgetConfig['options']['insightWidget']['rows'] ?? [];
+
+        foreach ($widgetRows as $rowKey => $row) {
+            $cols = $row['cols'] ?? [];
+            foreach ($cols as $colKey => $col) {
+                $this->replaceLabelKey($tabs[$key]['title_key'], $col, $widgetRows, $rowKey, $colKey);
+            }
+        }
+
+        if (isset($widgetConfig['options']['insightWidget']['rows'])) {
+            $widgetConfig['options']['insightWidget']['rows'] = $widgetRows;
+        }
     }
 }
