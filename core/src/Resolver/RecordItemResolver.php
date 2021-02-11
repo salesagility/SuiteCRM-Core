@@ -4,21 +4,21 @@ namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Entity\Record;
-use App\Legacy\RecordHandler;
+use App\Service\RecordProviderInterface;
 use Exception;
 
 class RecordItemResolver implements QueryItemResolverInterface
 {
     /**
-     * @var RecordHandler
+     * @var RecordProviderInterface
      */
     protected $recordHandler;
 
     /**
      * RecordViewResolver constructor.
-     * @param RecordHandler $recordHandler
+     * @param RecordProviderInterface $recordHandler
      */
-    public function __construct(RecordHandler $recordHandler)
+    public function __construct(RecordProviderInterface $recordHandler)
     {
         $this->recordHandler = $recordHandler;
     }
