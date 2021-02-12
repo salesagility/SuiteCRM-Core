@@ -17,31 +17,31 @@
     ],
     "paths": {
       "@app/*": [
-        "./src/app/*"
+        "core/app/shell/src/app/*"
       ],
       "@base/*": [
-        "./src/*"
+        "core/app/shell/src/*"
       ],
       "@app-common/*": [
-        "./src/app-common/*"
+        "core/app/shell/src/app-common/*"
       ],
       "@views/*": [
-        "./views/*"
+        "core/app/shell/src/views/*"
       ],
       "@fields/*": [
-        "./fields/*"
+        "core/app/shell/src/fields/*"
       ],
       "@services/*": [
-        "./src/services/*"
+        "core/app/shell/src/services/*"
       ],
       "@components/*": [
-        "./src/components/*"
+        "core/app/shell/src/components/*"
       ],
       "@containers/*": [
-        "./src/containers/*"
+        "core/app/shell/src/containers/*"
       ],
       "@store/*": [
-        "./src/store/*"
+        "core/app/shell/src/store/*"
       ]
     },
     "lib": [

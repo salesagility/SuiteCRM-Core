@@ -1,36 +1,37 @@
 {
   "$schema": "node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "core/app",
   "projects": {
-    "SuiteCRM": {
-      "root": "core/app",
-      "sourceRoot": "core/app",
+    "shell": {
+      "root": "core/app/shell",
+      "sourceRoot": "core/app/shell/src",
       "projectType": "application",
       "prefix": "scrm",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:browser",
           "options": {
             "aot": true,
             "outputPath": "public/dist/",
-            "index": "core/app/src/index.html",
-            "main": "core/app/src/main.ts",
-            "polyfills": "core/app/src/polyfills.ts",
-            "tsConfig": "core/app/tsconfig.app.json",
+            "index": "core/app/shell/src/index.html",
+            "main": "core/app/shell/src/main.ts",
+            "polyfills": "core/app/shell/src/polyfills.ts",
+            "tsConfig": "core/app/shell/tsconfig.app.json",
             "scripts": [],
             "styles": [
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
-              "core/app/themes/suite8/css/style.scss"
+              "core/app/shell/src/themes/suite8/css/style.scss"
             ],
             "deployUrl": "dist/",
             "assets": [
-              "core/app/themes"
+              "core/app/shell/src/themes"
             ],
             "allowedCommonJsDependencies": [
               "graphql-tag",
               "zen-observable"
-            ]
+            ],
+            "extraWebpackConfig": "core/app/shell/webpack.config.js"
           },
           "configurations": {
             "serve": {
@@ -44,7 +45,7 @@
               "assets": [
                 {
                   "glob": "**/*",
-                  "input": "core/app/themes",
+                  "input": "core/app/shell/src/themes",
                   "output": "public/dist/themes"
                 }
               ]
@@ -58,8 +59,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "core/app/src/environments/environment.ts",
-                  "with": "core/app/src/environments/environment.prod.ts"
+                  "replace": "core/app/shell/src/environments/environment.ts",
+                  "with": "core/app/shell/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -69,19 +70,23 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "extraWebpackConfig": "core/app/shell/webpack.prod.config.js"
             }
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "SuiteCRM:build:serve",
-            "proxyConfig": "./proxy.conf.local.json"
+            "proxyConfig": "./proxy.conf.local.json",
+            "extraWebpackConfig": "core/app/shell/webpack.config.js",
+            "port": 5000
           },
           "configurations": {
             "production": {
-              "browserTarget": "SuiteCRM:build:production"
+              "browserTarget": "SuiteCRM:build:production",
+              "extraWebpackConfig": "core/app/shell/webpack.prod.config.js"
             }
           }
         },
@@ -92,41 +97,42 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "ngx-build-plus:karma",
           "options": {
-            "main": "core/app/src/test.ts",
-            "polyfills": "core/app/src/polyfills.ts",
-            "tsConfig": "core/app/tsconfig.spec.json",
-            "karmaConfig": "core/app/karma.conf.js",
+            "main": "core/app/shell/src/test.ts",
+            "polyfills": "core/app/shell/src/polyfills.ts",
+            "tsConfig": "core/app/shell/tsconfig.spec.json",
+            "karmaConfig": "core/app/shell/karma.conf.js",
             "styles": [
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
-              "core/app/themes/suite8/css/style.scss"
+              "core/app/shell/src/themes/suite8/css/style.scss"
             ],
             "scripts": [],
             "assets": [
-              "core/app/themes"
-            ]
+              "core/app/shell/src/themes"
+            ],
+            "extraWebpackConfig": "core/app/shell/webpack.config.js"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "./.eslintrc.js",
-            "tsConfig": "core/app/tsconfig.app.json",
+            "tsConfig": "core/app/shell/tsconfig.app.json",
             "fix": true
           }
         }
       }
     },
     "SuiteCRM-e2e": {
-      "root": "core/app/e2e",
+      "root": "core/app/shell/e2e",
       "projectType": "application",
       "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "core/app/e2e/protractor.conf.js",
+            "protractorConfig": "core/app/shell/e2e/protractor.conf.js",
             "devServerTarget": "SuiteCRM:serve"
           },
           "configurations": {

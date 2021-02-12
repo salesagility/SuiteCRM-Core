@@ -54,7 +54,7 @@ export class AppInit {
 
                 routes.push({
                     path: 'Login',
-                    loadChildren: () => import('../../views/login/components/login/login.module').then(m => m.LoginUiModule),
+                    loadChildren: () => import('@views/login/components/login/login.module').then(m => m.LoginUiModule),
                     canActivate: [LoginAuthGuard],
                     runGuardsAndResolvers: 'always',
                     resolve: {
