@@ -35,6 +35,12 @@ module.exports = {
         "@angular/common": {singleton: true},
         "@angular/router": {singleton: true},
 
+        "common": {
+          singleton: true,
+          import: "dist/common",
+          requiredVersion: false
+        },
+
       }
 
     }),

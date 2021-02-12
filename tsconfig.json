@@ -16,6 +16,10 @@
       "../../node_modules/@types"
     ],
     "paths": {
+      "common": [
+        "dist/common/common",
+        "dist/common"
+      ],
       "@app/*": [
         "core/app/shell/src/app/*"
       ],
