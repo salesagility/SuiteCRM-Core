@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {ListComponent} from '@views/list/components/list-view/list.component';
 import {Router} from '@angular/router';
 import {AuthGuard} from '@services/auth/auth-guard.service';
@@ -38,17 +38,29 @@ import {ClassicViewUiComponent} from '@views/classic/components/classic-view/cla
 import {ClassicViewResolver} from '@views/classic/services/classic-view.resolver';
 import {CreateRecordComponent} from '@views/create/components/create-view/create-record.component';
 import {isFalse} from '@app-common/utils/value-utils';
+import {ExtensionLoader} from '@services/extensions/extension-loader.service';
+
 
 @Injectable()
 export class AppInit {
 
-    constructor(private router: Router, protected systemConfigStore: SystemConfigStore) {
+    constructor(
+        private router: Router,
+        protected systemConfigStore: SystemConfigStore,
+        protected injector: Injector,
+        protected extensionLoader: ExtensionLoader
+    ) {
     }
 
     init(): Promise<void> {
+
         // eslint-disable-next-line compat/compat
         return new Promise<void>((resolve) => {
             this.systemConfigStore.load().subscribe(() => {
+
+                this.extensionLoader.load(this.injector);
+
+
                 const routes = this.router.config;
                 const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
 
