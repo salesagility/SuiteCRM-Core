@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "SuiteCRM:build"
+            "browserTarget": "shell:build"
           }
         },
         "test": {
@@ -111,7 +111,7 @@
             "assets": [
               "core/app/shell/src/themes"
             ],
-            "extraWebpackConfig": "core/app/shell/webpack.config.js"
+            "extraWebpackConfig": "core/app/shell/webpack.config.spec.js"
           }
         },
         "lint": {
@@ -153,5 +153,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "packageManager": "yarn"
   }
 }

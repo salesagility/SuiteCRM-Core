@@ -34,7 +34,7 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ListHeaderComponent} from './list-header.component';
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
 import {ActionMenuModule} from '@views/list/components/action-menu/action-menu.module';
-import {SettingsMenuModule} from 'views/list/components/settings-menu/settings-menu.module';
+import {SettingsMenuModule} from '@views/list/components/settings-menu/settings-menu.module';
 import {ImageModule} from '@components/image/image.module';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 
