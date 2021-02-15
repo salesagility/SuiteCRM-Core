@@ -25,3 +25,4 @@ parameters:
     module_routing: true
     recordview_actions_limits: true
     ui: true
+    extensions: true

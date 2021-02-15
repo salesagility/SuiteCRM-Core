@@ -35,6 +35,7 @@ services:
       $recordViewActionLimits: '%module.recordview.actions_limits%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $uiConfigs: '%ui%'
+      $extensions: '%extensions%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
