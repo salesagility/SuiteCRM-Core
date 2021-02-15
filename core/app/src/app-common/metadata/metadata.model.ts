@@ -5,6 +5,7 @@ export interface ViewFieldDefinition {
     label?: string;
     link?: boolean;
     type?: string;
+    display?: string;
     fieldDefinition?: FieldDefinition;
     metadata?: FieldMetadata;
 }

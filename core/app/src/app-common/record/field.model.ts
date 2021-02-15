@@ -76,6 +76,7 @@ export interface Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    display?: string;
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;

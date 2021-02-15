@@ -64,7 +64,7 @@ class FieldDefinition
     /**
      * @param string $id
      */
-    public function setId($id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -85,5 +85,21 @@ class FieldDefinition
     public function setVardef(array $vardef): void
     {
         $this->vardef = $vardef;
+    }
+
+    /**
+     * Get readonly metadata
+     * @param array $fieldDefinition
+     * @param ?array $readOnlyPatterns
+     * @return array
+     */
+    public function getReadOnlyFieldDefinition(array $fieldDefinition, ?array $readOnlyPatterns = []): array
+    {
+        $defaultReadOnlyPatterns = array('readonly' => true, 'type' => 'readonly');
+        if (empty($readOnlyPatterns)) {
+            $readOnlyPatterns = $defaultReadOnlyPatterns;
+        }
+
+        return array_uintersect_uassoc($fieldDefinition, $readOnlyPatterns, "strcasecmp", "strcasecmp");
     }
 }

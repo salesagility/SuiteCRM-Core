@@ -8,7 +8,7 @@ import {Field} from '@app-common/record/field.model';
     templateUrl: './field.component.html',
     styleUrls: []
 })
-export class FieldComponent {
+export class FieldComponent{
     @Input('mode') mode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
@@ -18,15 +18,27 @@ export class FieldComponent {
     map = viewFieldsMap;
 
     constructor() {
+
+    }
+
+    get componentMode(): string {
+        let mode = this.mode;
+        if(mode==='edit' && this.field.display && this.field.display==='readonly'){
+            mode = 'detail';
+        }
+
+        return mode;
     }
 
     get componentType(): any {
-        const key = this.type + '.' + this.mode;
+        const mode = this.componentMode;
+        const key = this.type + '.' + mode;
+
         if (this.map[key]) {
             return this.map[key];
         }
 
-        const defaultKey = 'varchar' + '.' + this.mode;
+        const defaultKey = 'varchar' + '.' + mode;
         return this.map[defaultKey];
     }
 }

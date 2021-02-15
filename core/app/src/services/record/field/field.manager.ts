@@ -284,6 +284,7 @@ export class FieldManager {
 
         const field = {
             type: viewField.type,
+            display: viewField.display,
             value,
             metadata,
             definition,
