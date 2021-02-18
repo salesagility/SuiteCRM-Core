@@ -26,8 +26,8 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartComponent} from '@components/chart/components/base-chart/base-chart.component';
-import {SingleSeries} from '@app-common/containers/chart/chart.model';
-import {isFalse} from '@app-common/utils/value-utils';
+import {SingleSeries} from 'common';
+import {isFalse} from 'common';
 import {Subscription} from 'rxjs';
 
 @Component({

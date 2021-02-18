@@ -28,16 +28,16 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {deepClone} from 'common';
 import {StateStore} from '@base/store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
-import {Panel} from '@app-common/metadata/metadata.model';
-import {Action} from '@app-common/actions/action.model';
-import {ColumnDefinition, ListViewMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
-import {LineAction} from '@app-common/actions/line-action.model';
-import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
-import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
-import {FieldDefinitionMap} from '@app-common/record/field.model';
+import {Panel} from 'common';
+import {Action} from 'common';
+import {ColumnDefinition, ListViewMeta, SearchMeta} from 'common';
+import {LineAction} from 'common';
+import {SubPanelMeta} from 'common';
+import {WidgetMetadata} from 'common';
+import {FieldDefinitionMap} from 'common';
 
 export interface SummaryTemplates {
     [key: string]: string;

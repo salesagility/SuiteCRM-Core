@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharDetailFieldComponent} from './varchar.component';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {HtmlSanitizeModule} from '@base/pipes/html-sanitize/html-sanitize.module';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';

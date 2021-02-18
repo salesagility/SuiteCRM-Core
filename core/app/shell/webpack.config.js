@@ -31,9 +31,21 @@ module.exports = {
       remotes: {},
 
       shared: {
-        "@angular/core": {singleton: true},
-        "@angular/common": {singleton: true},
-        "@angular/router": {singleton: true},
+        "@angular/core": {
+          singleton: true,
+          version: '11.0.0',
+          requiredVersion: '^11.0.0'
+        },
+        "@angular/common": {
+          singleton: true,
+          version: '11.0.0',
+          requiredVersion: '^11.0.0'
+        },
+        "@angular/router": {
+          singleton: true,
+          version: '11.0.0',
+          requiredVersion: '^11.0.0'
+        },
 
         "common": {
           singleton: true,

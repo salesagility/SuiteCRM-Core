@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {PhoneDetailFieldComponent} from './phone.component';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';

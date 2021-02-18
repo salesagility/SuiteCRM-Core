@@ -29,7 +29,7 @@ import {ViewStore} from '@store/view/view.store';
 import {Metadata, MetadataStore, RecordViewMetadata, SummaryTemplates} from '@store/metadata/metadata.store.service';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {StateStore} from '@store/state';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {deepClone} from 'common';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
@@ -38,19 +38,19 @@ import {LocalStorageService} from '@services/local-storage/local-storage.service
 import {MessageService} from '@services/message/message.service';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
-import {Record} from '@app-common/record/record.model';
-import {ViewContext, ViewMode} from '@app-common/views/view.model';
+import {Record} from 'common';
+import {ViewContext, ViewMode} from 'common';
 import {
     RecordViewData,
     RecordViewModel,
     RecordViewState
 } from '@views/record/store/record-view/record-view.store.model';
 import {RecordStore} from '@store/record/record.store';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {ViewFieldDefinition} from 'common';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {SubpanelStoreFactory} from '@containers/subpanel/store/subpanel/subpanel.store.factory';
-import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
+import {SubPanelMeta} from 'common';
 import {RecordManager} from '@services/record/record.manager';
 import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
 import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';

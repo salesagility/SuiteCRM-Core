@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuItemLink} from '@app-common/menu/menu.model';
+import {MenuItemLink} from 'common';
 
 @Component({
     selector: 'scrm-menu-item-link',

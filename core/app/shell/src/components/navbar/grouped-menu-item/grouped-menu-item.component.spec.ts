@@ -41,7 +41,7 @@ import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {LanguageStrings} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 const groupedMockMenuItem = {
     link: {

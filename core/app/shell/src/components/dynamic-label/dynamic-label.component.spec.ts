@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {DynamicLabelModule} from '@components/dynamic-label/dynamic-label.module';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';

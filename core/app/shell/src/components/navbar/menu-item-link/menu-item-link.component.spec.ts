@@ -39,7 +39,7 @@ import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.m
 import {MenuItemLinkComponent} from './menu-item-link.component';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {ImageModule} from '@components/image/image.module';
-import {MenuItemLink} from '@app-common/menu/menu.model';
+import {MenuItemLink} from 'common';
 
 const mockLink = {
     label: 'Test Link Label',

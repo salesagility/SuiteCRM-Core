@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {RecordActionData, RecordActionHandler} from '@views/record/actions/record.action';
-import {ViewMode} from '@app-common/views/view.model';
+import {ViewMode} from 'common';
 import {take} from 'rxjs/operators';
 import {MessageService} from '@services/message/message.service';
 

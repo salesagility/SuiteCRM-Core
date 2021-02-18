@@ -25,9 +25,9 @@
  */
 
 import {Component, Input, OnInit, Type} from '@angular/core';
-import {Record} from '@app-common/record/record.model';
-import {StringMap} from '@app-common/types/StringMap';
-import {Field} from '@app-common/record/field.model';
+import {Record} from 'common';
+import {StringMap} from 'common';
+import {Field} from 'common';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {Router} from '@angular/router';

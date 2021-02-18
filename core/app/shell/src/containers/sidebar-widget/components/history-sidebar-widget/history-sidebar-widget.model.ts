@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field} from '@app-common/record/field.model';
-import {Record} from '@app-common/record/record.model';
+import {Field} from 'common';
+import {Record} from 'common';
 
 export interface HistoryTimelineEntry {
     title: Field;

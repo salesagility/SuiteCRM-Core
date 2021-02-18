@@ -41,7 +41,7 @@ import {take} from 'rxjs/operators';
 import {LanguageStrings} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
 import {MenuRecentlyViewedComponent} from '@components/navbar/menu-recently-viewed/menu-recently-viewed.component';
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 const mockMenuItem = {
     link: {

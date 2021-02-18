@@ -29,7 +29,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 import {catchError, map, tap} from 'rxjs/operators';
-import {AttributeMap, Record} from '@app-common/record/record.model';
+import {AttributeMap, Record} from 'common';
 import {RelateService} from '@services/record/relate/relate.service';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';

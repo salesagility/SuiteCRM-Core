@@ -25,15 +25,15 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
+import {BaseWidgetComponent} from 'common';
 import {SingleValueStatisticsStore} from '@store/single-value-statistics/single-value-statistics.store';
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
 import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {StatisticsQuery} from '@app-common/statistics/statistics.model';
-import {ViewContext} from '@app-common/views/view.model';
-import {SingleValueStatisticsState} from '@app-common/statistics/statistics-store.model';
+import {StatisticsQuery} from 'common';
+import {ViewContext} from 'common';
+import {SingleValueStatisticsState} from 'common';
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };

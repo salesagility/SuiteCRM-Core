@@ -10,6 +10,7 @@
     "test:shell": "ng test shell",
     "serve:dist": "concurrently \"serve dist/shell -l 5000 -s\"",
     "build": "npm run build:shell",
+    "build:common": "ng build common --prod",
     "test": "npm run test:shell",
     "lint": "ng lint",
     "e2e": "ng e2e",

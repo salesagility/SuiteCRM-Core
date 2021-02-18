@@ -27,15 +27,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {Record} from '@app-common/record/record.model';
-import {Field} from '@app-common/record/field.model';
-import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
-import {SortingSelection} from '@app-common/views/list/list-navigation.model';
-import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
+import {
+    ColumnDefinition,
+    Field,
+    LineAction,
+    Record,
+    RecordSelection,
+    SelectionStatus,
+    SortDirection,
+    SortingSelection
+} from 'common';
+import {SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 import {TableConfig} from '@components/table/table.model';
-import {SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {LineAction} from '@app-common/actions/line-action.model';
-import {RecordSelection} from '@app-common/views/list/record-selection.model';
 import {FieldManager} from '@services/record/field/field.manager';
 
 interface TableViewModel {

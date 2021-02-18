@@ -33,7 +33,7 @@ import {ButtonModule} from '@components/button/button.module';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
-import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {DropdownButtonInterface} from 'common';
 import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.module';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';

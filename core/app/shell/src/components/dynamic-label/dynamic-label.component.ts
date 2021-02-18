@@ -26,8 +26,8 @@
 
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DynamicLabelService} from '@services/language/dynamic-label.service';
-import {StringMap} from '@app-common/types/StringMap';
-import {FieldMap} from '@app-common/record/field.model';
+import {StringMap} from 'common';
+import {FieldMap} from 'common';
 import {LanguageStore, LanguageStrings} from '@store/language/language.store';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';

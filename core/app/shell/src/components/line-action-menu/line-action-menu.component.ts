@@ -26,8 +26,8 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {LanguageStore} from '@store/language/language.store';
-import {Record} from '@app-common/record/record.model';
-import {LineAction} from '@app-common/actions/line-action.model';
+import {Record} from 'common';
+import {LineAction} from 'common';
 
 @Component({
     selector: 'scrm-line-action-menu',

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 export interface AllMenuModel {
     modules: MenuItem[];

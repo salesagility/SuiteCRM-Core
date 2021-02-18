@@ -30,7 +30,7 @@ import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {ModalModule} from '@components/modal/components/modal/modal.module';
 
 @Component({

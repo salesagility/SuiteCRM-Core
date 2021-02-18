@@ -28,8 +28,8 @@ import {Injectable} from '@angular/core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {Metadata} from '@store/metadata/metadata.store.service';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
-import {SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
+import {SearchCriteria} from 'common';
+import {SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 
 @Injectable()

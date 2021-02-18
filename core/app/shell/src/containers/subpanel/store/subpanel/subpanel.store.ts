@@ -30,13 +30,13 @@ import {RecordList, RecordListStore} from '@store/record-list/record-list.store'
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
 import {LanguageStore} from '@store/language/language.store';
-import {SubPanelDefinition} from '@app-common/metadata/subpanel.metadata.model';
-import {Statistic, StatisticsMap, StatisticsQuery, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
+import {SubPanelDefinition} from 'common';
+import {Statistic, StatisticsMap, StatisticsQuery, StatisticsQueryMap} from 'common';
 import {SingleValueStatisticsStore} from '@store/single-value-statistics/single-value-statistics.store';
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
-import {deepClone} from '@app-common/utils/object-utils';
-import {StatisticWidgetOptions} from '@app-common/metadata/widget.metadata';
-import {Record} from '@app-common/record/record.model';
+import {deepClone} from 'common';
+import {StatisticWidgetOptions} from 'common';
+import {Record} from 'common';
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;

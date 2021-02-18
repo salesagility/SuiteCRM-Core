@@ -27,9 +27,9 @@
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from '@services/record/validation/validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from '@app-common/record/record.model';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {StandardValidationErrors, StandardValidatorFn} from '@app-common/services/validators/validators.model';
+import {Record} from 'common';
+import {ViewFieldDefinition} from 'common';
+import {StandardValidationErrors, StandardValidatorFn} from 'common';
 import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 export const requiredValidator = (utils: FormControlUtils): StandardValidatorFn => (

@@ -1,9 +1,12 @@
 {
   "name": "common",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "11.0.0",
-    "@angular/core": "11.0.0"
+    "@angular/core": "11.0.0",
+    "@angular/forms": "11.0.0",
+    "rxjs": "^6.6.3",
+    "@ng-bootstrap/ng-bootstrap": "^9.0.2"
   },
   "dependencies": {
     "tslib": "^2.0.0"

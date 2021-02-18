@@ -26,20 +26,20 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {LanguageStore} from '@store/language/language.store';
-import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
-import {ButtonInterface} from '@app-common/components/button/button.model';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {DropdownButtonInterface} from 'common';
+import {ButtonInterface} from 'common';
+import {deepClone} from 'common';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {filter, map, startWith, take} from 'rxjs/operators';
-import {Field, FieldMap} from '@app-common/record/field.model';
-import {SearchCriteria, SearchCriteriaFieldFilter} from '@app-common/views/list/search-criteria.model';
-import {Filter, SearchMetaField, SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
+import {Field, FieldMap} from 'common';
+import {SearchCriteria, SearchCriteriaFieldFilter} from 'common';
+import {Filter, SearchMetaField, SearchMetaFieldMap} from 'common';
 import {FieldManager} from '@services/record/field/field.manager';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {Record} from '@app-common/record/record.model';
+import {ViewFieldDefinition} from 'common';
+import {Record} from 'common';
 import {MessageService} from '@services/message/message.service';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
-import {isVoid} from '@app-common/utils/value-utils';
+import {isVoid} from 'common';
 import {RecordManager} from '@services/record/record.manager';
 
 export interface FilterDataSource {

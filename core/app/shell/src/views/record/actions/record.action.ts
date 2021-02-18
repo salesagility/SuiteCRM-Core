@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler} from '@app-common/actions/action.model';
+import {ActionData, ActionHandler} from 'common';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {ViewMode} from '@app-common/views/view.model';
+import {ViewMode} from 'common';
 
 export interface RecordActionData extends ActionData {
     store: RecordViewStore;

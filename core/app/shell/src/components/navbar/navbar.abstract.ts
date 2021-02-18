@@ -37,12 +37,12 @@ import {LanguageStringMap, LanguageStrings} from '@store/language/language.store
 import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
-import {ready} from '@base/app-common/utils/object-utils';
+import {ready} from 'common';
 import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {AppState} from '@store/app-state/app-state.store';
 import {LinkTarget} from '@components/navbar/link-target';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 export class NavbarAbstract implements NavbarModel {
     authenticated = true;

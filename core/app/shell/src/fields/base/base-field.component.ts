@@ -26,10 +26,10 @@
 
 import {Component, Input} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
-import {Field} from '@app-common/record/field.model';
-import {Record} from '@app-common/record/record.model';
+import {Field} from 'common';
+import {Record} from 'common';
 import {Subscription} from 'rxjs';
-import {isVoid} from '@app-common/utils/value-utils';
+import {isVoid} from 'common';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Component({template: ''})

@@ -29,7 +29,7 @@ import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.compone
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {DateAdapter} from '@fields/base/datetime/date/date-adapter.service';
 import {DateParserFormatter} from '@fields/base/datetime/date/date-parser-formatter.service';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';

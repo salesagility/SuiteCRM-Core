@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FullNameDetailFieldsComponent} from './fullname.component';
 import {Component} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
@@ -37,7 +37,7 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 
 @Component({
     selector: 'fullname-detail-field-test-host-component',

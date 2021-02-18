@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DynamicEnumEditFieldComponent} from './dynamicenum.component';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';

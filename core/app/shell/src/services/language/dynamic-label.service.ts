@@ -26,10 +26,10 @@
 
 import {Injectable} from '@angular/core';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
-import {Field, FieldMap} from '@app-common/record/field.model';
-import {isVoid} from '@app-common/utils/value-utils';
+import {Field, FieldMap} from 'common';
+import {isVoid} from 'common';
 import {LanguageStore} from '@store/language/language.store';
-import {StringMap} from '@app-common/types/StringMap';
+import {StringMap} from 'common';
 import get from 'lodash-es/get';
 
 

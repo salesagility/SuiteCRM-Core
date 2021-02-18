@@ -40,9 +40,9 @@ import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
 import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
-import {Panel} from '@app-common/metadata/metadata.model';
+import {Panel} from 'common';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 const mockDisplayConfigData: RecordContentConfig = {

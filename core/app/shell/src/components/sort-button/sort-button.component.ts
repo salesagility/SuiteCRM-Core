@@ -25,7 +25,8 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {SortDirection, SortDirectionDataSource} from '@components/sort-button/sort-button.model';
+import {SortDirectionDataSource} from '@components/sort-button/sort-button.model';
+import {SortDirection} from 'common';
 import {Observable} from 'rxjs';
 
 @Component({

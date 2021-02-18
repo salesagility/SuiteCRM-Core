@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {RecordActionData, RecordActionHandler} from '@views/record/actions/record.action';
-import {ViewMode} from '@app-common/views/view.model';
+import {ViewMode} from 'common';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 
 @Injectable({

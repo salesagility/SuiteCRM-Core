@@ -25,13 +25,13 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {FieldMap} from '@app-common/record/field.model';
+import {FieldMap} from 'common';
 import {FieldGridColumn, FieldGridRow} from '@components/field-grid/field-grid.model';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {Panel} from '@app-common/metadata/metadata.model';
+import {Panel} from 'common';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '@components/field-layout/field-layout.model';
 import {BaseFieldGridComponent} from '@components/field-grid/base-field-grid.component';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 
 @Component({
     selector: 'scrm-field-layout',

@@ -27,8 +27,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {RelateDetailFieldComponent} from './relate.component';
 import {Component} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
-import {Record} from '@app-common/record/record.model';
+import {Field} from 'common';
+import {Record} from 'common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';

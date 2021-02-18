@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Button, ButtonInterface} from '@app-common/components/button/button.model';
+import {Button, ButtonInterface} from 'common';
 import {MinimiseButtonStatus} from '@components/minimise-button/minimise-button.component';
 import {Observable, Subscription} from 'rxjs';
 

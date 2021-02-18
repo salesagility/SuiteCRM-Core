@@ -25,12 +25,7 @@
  */
 
 import {Observable} from 'rxjs';
-
-export enum SortDirection {
-    NONE = 'NONE',
-    ASC = 'ASC',
-    DESC = 'DESC'
-}
+import {SortDirection} from 'common';
 
 export interface SortDirectionDataSource {
     getSortDirection(): Observable<SortDirection>;

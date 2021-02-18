@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface} from '@app-common/components/button/button.model';
-import {Field} from '@app-common/record/field.model';
+import {ButtonInterface} from 'common';
+import {Field} from 'common';
 
 export interface FieldGridColumn {
     field?: Field;

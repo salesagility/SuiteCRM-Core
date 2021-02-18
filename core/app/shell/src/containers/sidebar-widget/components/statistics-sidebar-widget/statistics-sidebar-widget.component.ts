@@ -25,11 +25,11 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
-import {ViewContext} from '@app-common/views/view.model';
+import {BaseWidgetComponent} from 'common';
+import {ViewContext} from 'common';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '@store/language/language.store';
-import {StatisticWidgetOptions, WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {StatisticWidgetOptions, WidgetMetadata} from 'common';
 import {GridWidgetConfig, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 
 @Component({

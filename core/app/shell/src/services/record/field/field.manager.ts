@@ -24,11 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record} from '@app-common/record/record.model';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Record} from 'common';
+import {ViewFieldDefinition} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
-import {Field, FieldDefinition} from '@app-common/record/field.model';
+import {Field, FieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '@services/record/validation/validation.manager';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';

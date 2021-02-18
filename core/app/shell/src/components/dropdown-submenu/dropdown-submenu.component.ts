@@ -25,7 +25,7 @@
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AnyButtonInterface, DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {AnyButtonInterface, DropdownButtonInterface} from 'common';
 
 @Component({
     selector: 'scrm-dropdown-submenu',

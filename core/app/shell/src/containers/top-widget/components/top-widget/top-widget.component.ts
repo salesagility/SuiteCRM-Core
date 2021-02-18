@@ -26,7 +26,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {componentTypeMap} from '@containers/top-widget/components/top-widget/top-widget.manifest';
-import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
+import {BaseWidgetComponent} from 'common';
 
 @Component({
     selector: 'scrm-top-widget',

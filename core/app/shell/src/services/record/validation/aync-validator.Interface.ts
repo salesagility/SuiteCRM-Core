@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record} from '@app-common/record/record.model';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Record} from 'common';
+import {ViewFieldDefinition} from 'common';
 import {AsyncValidatorFn} from '@angular/forms';
 
 export interface AsyncValidatorInterface {

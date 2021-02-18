@@ -25,13 +25,13 @@
  */
 
 import {of} from 'rxjs';
-import {SortDirection} from '@components/sort-button/sort-button.model';
+import {SortDirection} from 'common';
 import {TableConfig} from '@components/table/table.model';
 import {RecordListModalStore} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store';
 import {map} from 'rxjs/operators';
-import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
-import {Record} from '@app-common/record/record.model';
-import {Field} from '@app-common/record/field.model';
+import {ColumnDefinition} from 'common';
+import {Record} from 'common';
+import {Field} from 'common';
 import {RecordListModalTableAdapterInterface} from '@containers/record-list-modal/adapters/adapter.model';
 
 export class ModalRecordListTableAdapter implements RecordListModalTableAdapterInterface {

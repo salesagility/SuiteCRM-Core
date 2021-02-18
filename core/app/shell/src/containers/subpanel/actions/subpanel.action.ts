@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler} from '@app-common/actions/action.model';
+import {ActionData, ActionHandler} from 'common';
 import {SubpanelStore} from '@containers/subpanel/store/subpanel/subpanel.store';
 
 export interface SubpanelActionData extends ActionData {

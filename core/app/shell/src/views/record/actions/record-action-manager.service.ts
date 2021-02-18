@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {RecordEditAction} from '@views/record/actions/edit/record-edit.action';
-import {ViewMode} from '@app-common/views/view.model';
+import {ViewMode} from 'common';
 import {RecordActionData, RecordActionHandler, RecordActionHandlerMap} from '@views/record/actions/record.action';
 import {RecordCreateAction} from '@views/record/actions/create/record-create.action';
 import {RecordToggleWidgetsAction} from '@views/record/actions/toggle-widgets/record-widget-action.service';

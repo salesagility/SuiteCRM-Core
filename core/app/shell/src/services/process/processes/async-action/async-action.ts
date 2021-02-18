@@ -31,8 +31,8 @@ import {Process, ProcessService} from '@services/process/process.service';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {MessageService} from '@services/message/message.service';
 import {AsyncActionHandler} from '@services/process/processes/async-action/async-action.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
-import {SortingSelection} from '@app-common/views/list/list-navigation.model';
+import {SearchCriteria} from 'common';
+import {SortingSelection} from 'common';
 import {RedirectAsyncAction} from '@services/process/processes/async-action/actions/redirect/redirect.async-action';
 import {ExportAsyncAction} from '@services/process/processes/async-action/actions/export/export.async-action';
 

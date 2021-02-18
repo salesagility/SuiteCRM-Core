@@ -26,21 +26,21 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {deepClone} from 'common';
 import {
     SingleValueStatistic,
     SingleValueStatisticsData,
     Statistic,
     StatisticsQuery
-} from '@app-common/statistics/statistics.model';
+} from 'common';
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
-import {StatisticsStore} from '@store/statistics/statistics.store';
+import {StatisticsState, StatisticsStore} from '@store/statistics/statistics.store';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {FieldManager} from '@services/record/field/field.manager';
 import {
     SingleValueStatisticsState,
     SingleValueStatisticsStoreInterface
-} from '@app-common/statistics/statistics-store.model';
+} from 'common';
 
 const initialState = {
     module: '',

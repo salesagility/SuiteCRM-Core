@@ -27,8 +27,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {animate, transition, trigger} from '@angular/animations';
-import {ModalCloseFeedBack} from '@app-common/components/modal/modal.model';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ModalCloseFeedBack} from 'common';
+import {ButtonInterface} from 'common';
 import {ModalRecordListTableAdapter} from '@containers/record-list-modal/adapters/table.adapter';
 import {LanguageStore} from '@store/language/language.store';
 import {Observable, of, Subscription} from 'rxjs';

@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BooleanFilterFieldComponent} from './boolean.component';
 import {FormControl, FormsModule} from '@angular/forms';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
@@ -43,7 +43,7 @@ import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/tes
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {waitUntil} from '@app-common/testing/utils.spec';
+import {waitUntil} from 'common';
 
 
 @Component({

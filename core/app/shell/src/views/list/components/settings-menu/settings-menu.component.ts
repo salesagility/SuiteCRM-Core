@@ -52,16 +52,16 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {ButtonInterface} from '@app-common/components/button/button.model';
-import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
-import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
+import {ButtonInterface} from 'common';
+import {DropdownButtonInterface} from 'common';
+import {ButtonGroupInterface} from 'common';
 import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {SearchCriteriaFilter} from '@app-common/views/list/search-criteria.model';
+import {SearchCriteriaFilter} from 'common';
 
 @Component({
     selector: 'scrm-settings-menu',

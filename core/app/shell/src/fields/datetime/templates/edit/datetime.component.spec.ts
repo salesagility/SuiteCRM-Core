@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DateTimeEditFieldComponent} from './datetime.component';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {FormControl, FormsModule} from '@angular/forms';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';

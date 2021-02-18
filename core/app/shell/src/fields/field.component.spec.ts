@@ -45,7 +45,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {DynamicFieldModule} from '@fields/dynamic-field/dynamic-field.module';
 import {FormControlUtils} from '@services/record/field/form-control.utils';
 

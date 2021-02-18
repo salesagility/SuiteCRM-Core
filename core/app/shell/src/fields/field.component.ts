@@ -26,8 +26,8 @@
 
 import {Component, Input} from '@angular/core';
 import {viewFieldsMap} from './field.manifest';
-import {Record} from '@app-common/record/record.model';
-import {Field} from '@app-common/record/field.model';
+import {Record} from 'common';
+import {Field} from 'common';
 
 @Component({
     selector: 'scrm-field',

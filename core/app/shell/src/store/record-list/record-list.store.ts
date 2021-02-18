@@ -24,25 +24,29 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {
+    deepClone,
+    Pagination,
+    Record,
+    RecordSelection,
+    SearchCriteria,
+    SelectionStatus,
+    SortingSelection
+} from 'common';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
-import {SelectionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {ListGQL} from '@store/record-list/graphql/api.list.get';
 import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {LanguageStore} from '@store/language/language.store';
-import {SortDirection} from '@components/sort-button/sort-button.model';
+import {SortDirection} from 'common';
 import {MessageService} from '@services/message/message.service';
-import {Record} from '@app-common/record/record.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
-import {Pagination, SortingSelection} from '@app-common/views/list/list-navigation.model';
-import {RecordSelection} from '@app-common/views/list/record-selection.model';
 
 const initialSearchCriteria = {
     filters: {}

@@ -25,7 +25,7 @@
  */
 
 import { Input, Directive } from '@angular/core';
-import {ChartDataSource} from '@app-common/containers/chart/chart.model';
+import {ChartDataSource} from 'common';
 
 @Directive()
 export class BaseChartComponent {

@@ -47,7 +47,7 @@ import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/tes
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {DynamicFieldModule} from '@fields/dynamic-field/dynamic-field.module';
 import {baseFieldModules} from '@fields/base-fields.manifest';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 
 describe('GroupFieldComponent', () => {
     let component: GroupFieldComponent;

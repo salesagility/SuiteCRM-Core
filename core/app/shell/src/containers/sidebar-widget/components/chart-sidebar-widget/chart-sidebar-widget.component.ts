@@ -25,16 +25,16 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
-import {ChartMetadata, ChartsWidgetOptions} from '@app-common/metadata/charts-widget.metadata';
+import {BaseWidgetComponent} from 'common';
+import {ChartMetadata, ChartsWidgetOptions} from 'common';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {StatisticsQuery} from '@app-common/statistics/statistics.model';
+import {StatisticsQuery} from 'common';
 import {map, take, tap} from 'rxjs/operators';
-import {ChartDataSource} from '@app-common/containers/chart/chart.model';
+import {ChartDataSource} from 'common';
 import {ChartDataStoreFactory} from '@store/chart-data/chart-data.store.factory';
 import {ChartDataState, ChartDataStore} from '@store/chart-data/chart-data.store';
-import {ViewContext} from '@app-common/views/view.model';
+import {ViewContext} from 'common';
 
 interface ChartStatistic {
     key: string;

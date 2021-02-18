@@ -28,12 +28,12 @@ import {Component} from '@angular/core';
 import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {RecordActionsAdapter} from '@views/record/adapters/actions.adapter';
-import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
-import {Action} from '@app-common/actions/action.model';
+import {ButtonGroupInterface} from 'common';
+import {Action} from 'common';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {LanguageStore} from '@store/language/language.store';
-import {Button, ButtonInterface} from '@app-common/components/button/button.model';
+import {Button, ButtonInterface} from 'common';
 
 @Component({
     selector: 'scrm-record-settings-menu',

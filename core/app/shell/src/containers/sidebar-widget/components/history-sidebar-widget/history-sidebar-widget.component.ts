@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
-import {BaseWidgetComponent} from '@app-common/containers/widgets/base-widget.model';
+import {BaseWidgetComponent} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 
 @Component({

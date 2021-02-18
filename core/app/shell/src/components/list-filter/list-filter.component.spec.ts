@@ -42,8 +42,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
-import {SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
+import {SearchCriteria} from 'common';
+import {SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {ListFilterModule} from '@components/list-filter/list-filter.module';
 

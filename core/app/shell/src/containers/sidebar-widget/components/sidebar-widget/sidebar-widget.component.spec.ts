@@ -27,8 +27,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {Component} from '@angular/core';
-import {ViewContext} from '@app-common/views/view.model';
-import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {ViewContext} from 'common';
+import {WidgetMetadata} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {CommonModule} from '@angular/common';

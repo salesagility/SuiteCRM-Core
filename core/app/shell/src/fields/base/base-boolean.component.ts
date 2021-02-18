@@ -25,7 +25,7 @@
  */
 
 import {BaseFieldComponent} from '@fields/base/base-field.component';
-import {isTrue} from '@app-common/utils/value-utils';
+import {isTrue} from 'common';
 import {Component} from '@angular/core';
 
 @Component({template: ''})

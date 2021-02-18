@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 
 @Component({

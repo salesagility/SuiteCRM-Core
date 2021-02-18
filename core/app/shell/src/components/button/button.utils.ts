@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {AnyButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {AnyButtonInterface} from 'common';
 import partial from 'lodash-es/partial';
 
 @Injectable({

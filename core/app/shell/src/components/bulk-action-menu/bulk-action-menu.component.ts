@@ -28,15 +28,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {map} from 'rxjs/operators';
-import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
-import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
-
-export enum SelectionStatus {
-    ALL = 'ALL',
-    SOME = 'SOME',
-    PAGE = 'PAGE',
-    NONE = 'NONE',
-}
+import {BulkActionsMap, DropdownButtonInterface, SelectionStatus} from 'common';
 
 export interface SelectionDataSource {
     getSelectionStatus(): Observable<SelectionStatus>;
@@ -48,6 +40,7 @@ export interface SelectionDataSource {
 
 export interface BulkActionDataSource {
     getBulkActions(): Observable<BulkActionsMap>;
+
     executeBulkAction(action: string): void;
 }
 

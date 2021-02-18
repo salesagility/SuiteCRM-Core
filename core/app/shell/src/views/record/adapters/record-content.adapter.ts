@@ -30,9 +30,9 @@ import {Injectable} from '@angular/core';
 import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
 import {LanguageStore} from '@store/language/language.store';
-import {Panel, PanelRow} from '@app-common/metadata/metadata.model';
+import {Panel, PanelRow} from 'common';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
 import {RecordActionData} from '@views/record/actions/record.action';
 

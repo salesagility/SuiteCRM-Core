@@ -30,7 +30,7 @@ import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bo
 import {DatetimeParserFormatter} from '@fields/base/datetime/datetime-parser-formatter.service';
 import {DatetimeAdapter} from '@fields/base/datetime/datetime-adapter.service';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 @Component({

@@ -31,10 +31,10 @@ import {TagInputComponent} from 'ngx-chips';
 import {RelateService} from '@services/record/relate/relate.service';
 import {BaseRelateComponent} from '@fields/base/base-relate.component';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecordListModalComponent} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.component';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 import {RecordListModalResult} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.model';
 
 @Component({

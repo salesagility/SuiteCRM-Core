@@ -29,10 +29,10 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {ApolloQueryResult} from '@apollo/client/core';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
+import {SearchCriteria} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordList} from '@store/record-list/record-list.store';
-import {Pagination, SortingSelection} from '@app-common/views/list/list-navigation.model';
+import {Pagination, SortingSelection} from 'common';
 
 @Injectable({
     providedIn: 'root'

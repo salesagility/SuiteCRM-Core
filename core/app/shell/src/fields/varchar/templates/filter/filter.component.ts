@@ -27,7 +27,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
-import {isVoid} from "@app-common/utils/value-utils";
+import {isVoid} from 'common';
 
 @Component({
     selector: 'scrm-varchar-filter',

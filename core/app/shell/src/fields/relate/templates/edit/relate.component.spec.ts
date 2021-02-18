@@ -26,8 +26,8 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component, ViewChild} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
-import {Record} from '@app-common/record/record.model';
+import {Field} from 'common';
+import {Record} from 'common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
@@ -48,7 +48,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RelateEditFieldModule} from '@fields/relate/templates/edit/relate.module';
 import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
 import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
-import {waitUntil} from '@app-common/testing/utils.spec';
+import {waitUntil} from 'common';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 import {RelateEditFieldComponent} from '@fields/relate/templates/edit/relate.component';
 

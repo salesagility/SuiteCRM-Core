@@ -26,9 +26,9 @@
 
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {SortDirection} from '@components/sort-button/sort-button.model';
+import {SortDirection} from 'common';
 import {TableConfig} from '@components/table/table.model';
-import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
+import {ColumnDefinition} from 'common';
 import {SubpanelStore} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {map} from 'rxjs/operators';
 

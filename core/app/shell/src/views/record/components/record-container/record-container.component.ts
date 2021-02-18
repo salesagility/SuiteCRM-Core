@@ -33,10 +33,10 @@ import {map} from 'rxjs/operators';
 import {RecordContentAdapter} from '@views/record/adapters/record-content.adapter';
 import {RecordContentDataSource} from '@components/record-content/record-content.model';
 import {SubpanelContainerConfig} from '@containers/subpanel/components/subpanel-container/subpanel-container.model';
-import {ViewContext} from '@app-common/views/view.model';
+import {ViewContext} from 'common';
 import {TopWidgetAdapter} from '@views/record/adapters/top-widget.adapter';
 import {SidebarWidgetAdapter} from '@views/record/adapters/sidebar-widget.adapter';
-import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {WidgetMetadata} from 'common';
 
 @Component({
     selector: 'scrm-record-container',

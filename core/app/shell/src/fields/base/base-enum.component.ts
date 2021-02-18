@@ -28,7 +28,7 @@ import {BaseFieldComponent} from './base-field.component';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '@store/language/language.store';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Option} from '@app-common/record/field.model';
+import {Option} from 'common';
 import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
 
 

@@ -24,11 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record} from '@app-common/record/record.model';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {Record} from 'common';
+import {deepClone} from 'common';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {ViewFieldDefinition} from 'common';
 import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
 import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {MessageService} from '@services/message/message.service';

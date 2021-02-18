@@ -30,7 +30,7 @@ import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '@services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '@store/app-state/app-state.store';
-import {deepClone} from '@base/app-common/utils/object-utils';
+import {deepClone} from 'common';
 import {StateStore} from '@base/store/state';
 import {LocalStorageService} from '@services/local-storage/local-storage.service';
 

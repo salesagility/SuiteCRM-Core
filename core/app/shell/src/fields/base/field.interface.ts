@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 
 export interface FieldComponentInterface {
     field?: Field;

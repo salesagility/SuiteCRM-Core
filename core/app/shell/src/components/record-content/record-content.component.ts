@@ -26,10 +26,10 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {Panel} from '@app-common/metadata/metadata.model';
+import {Panel} from 'common';
 import {LanguageStore} from '@store/language/language.store';
-import {FieldMap} from '@app-common/record/field.model';
-import {Record} from '@app-common/record/record.model';
+import {FieldMap} from 'common';
+import {Record} from 'common';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '@components/field-layout/field-layout.model';
 import {map, shareReplay} from 'rxjs/operators';

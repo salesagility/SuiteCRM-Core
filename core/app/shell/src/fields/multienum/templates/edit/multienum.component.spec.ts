@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {TagInputModule} from 'ngx-chips';
@@ -43,7 +43,7 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-import {waitUntil} from '@app-common/testing/utils.spec';
+import {waitUntil} from 'common';
 
 @Component({
     selector: 'multienum-edit-field-test-host-component',

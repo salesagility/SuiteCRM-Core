@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EnumDetailFieldComponent} from './enum.component';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {BehaviorSubject, of, Subscription} from 'rxjs';

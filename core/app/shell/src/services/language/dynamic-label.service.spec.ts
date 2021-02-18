@@ -26,7 +26,7 @@
 
 import {TestBed} from '@angular/core/testing';
 import {dynamicLabelsMock} from '@services/language/dynamic-label.service.spec.mock';
-import {Field, FieldDefinition} from '@app-common/record/field.model';
+import {Field, FieldDefinition} from 'common';
 
 describe('DynamicLabel', () => {
     const service = dynamicLabelsMock;

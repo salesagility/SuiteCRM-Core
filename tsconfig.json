@@ -26,9 +26,6 @@
       "@base/*": [
         "core/app/shell/src/*"
       ],
-      "@app-common/*": [
-        "core/app/shell/src/app-common/*"
-      ],
       "@views/*": [
         "core/app/shell/src/views/*"
       ],

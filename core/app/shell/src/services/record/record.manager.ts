@@ -25,14 +25,14 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Record} from '@app-common/record/record.model';
+import {Record} from 'common';
 import {FormGroup} from '@angular/forms';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {FieldDefinitionMap, FieldMap} from '@app-common/record/field.model';
+import {ViewFieldDefinition} from 'common';
+import {FieldDefinitionMap, FieldMap} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {FieldManager} from '@services/record/field/field.manager';
 import {Params} from '@angular/router';
-import {isVoid} from '@app-common/utils/value-utils';
+import {isVoid} from 'common';
 
 @Injectable({
     providedIn: 'root'

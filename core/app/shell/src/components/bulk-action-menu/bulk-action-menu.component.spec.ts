@@ -24,15 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {
-    BulkActionDataSource,
-    BulkActionMenuComponent,
-    SelectionDataSource,
-    SelectionStatus
-} from './bulk-action-menu.component';
+import {BulkActionDataSource, BulkActionMenuComponent, SelectionDataSource,} from './bulk-action-menu.component';
 import {By} from '@angular/platform-browser';
 import {LanguageStore} from '@store/language/language.store';
 import {languageMockData} from '@store/language/language.store.spec.mock';
@@ -40,7 +35,7 @@ import {shareReplay, take} from 'rxjs/operators';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
-import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
+import {BulkActionsMap, SelectionStatus} from 'common';
 
 
 const selectionSubject = new BehaviorSubject<SelectionStatus>(SelectionStatus.NONE);

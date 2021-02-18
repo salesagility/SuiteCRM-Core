@@ -30,7 +30,7 @@ import {DateTimeDetailFieldComponent} from './datetime.component';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
 import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';

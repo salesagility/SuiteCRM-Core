@@ -26,7 +26,7 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {MultiEnumDetailFieldComponent} from '@fields/multienum/templates/detail/multienum.component';

@@ -4,7 +4,7 @@ import {LoadChildrenCallback} from '@angular/router';
 import {map, mergeMap} from 'rxjs/operators';
 import {loadRemoteModule} from '@angular-architects/module-federation';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {isFalse} from '@app-common/utils/value-utils';
+import {isFalse} from 'common';
 
 interface ExtensionConfig {
     remoteEntry?: string,

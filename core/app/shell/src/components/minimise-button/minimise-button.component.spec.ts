@@ -27,7 +27,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {MinimiseButtonComponent} from './minimise-button.component';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {ButtonModule} from '@components/button/button.module';
 import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
 import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';

@@ -25,8 +25,8 @@
  */
 
 import {Observable} from 'rxjs';
-import {SearchMetaFieldMap} from '@app-common/metadata/list.metadata.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
+import {SearchMetaFieldMap} from 'common';
+import {SearchCriteria} from 'common';
 
 export interface FilterConfig {
     klass?: string;

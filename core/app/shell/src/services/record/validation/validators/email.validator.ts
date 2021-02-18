@@ -26,10 +26,10 @@
 
 import {ValidatorInterface} from '@services/record/validation/validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from '@app-common/record/record.model';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Record} from 'common';
+import {ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
-import {StandardValidationErrors, StandardValidatorFn} from '@app-common/services/validators/validators.model';
+import {StandardValidationErrors, StandardValidatorFn} from 'common';
 import {EmailFormatter} from '@services/formatters/email/email-formatter.service';
 
 export const emailValidator = (formatter: EmailFormatter): StandardValidatorFn => (

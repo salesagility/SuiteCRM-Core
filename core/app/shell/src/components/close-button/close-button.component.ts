@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {Button, ButtonInterface} from '@app-common/components/button/button.model';
+import {Button, ButtonInterface} from 'common';
 
 @Component({
     selector: 'scrm-close-button',

@@ -29,7 +29,7 @@ import {StateStore} from '@store/state';
 import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
-import {ColumnDefinition, RecordListMeta, SearchMeta} from '@app-common/metadata/list.metadata.model';
+import {ColumnDefinition, RecordListMeta, SearchMeta} from 'common';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {map, take, tap} from 'rxjs/operators';
 

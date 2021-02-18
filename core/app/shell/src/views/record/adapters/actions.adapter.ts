@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {MetadataStore} from '@store/metadata/metadata.store.service';
 import {LanguageStore} from '@store/language/language.store';
-import {Action, ActionDataSource, ModeActions} from '@app-common/actions/action.model';
+import {Action, ActionDataSource, ModeActions} from 'common';
 import {combineLatest, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';

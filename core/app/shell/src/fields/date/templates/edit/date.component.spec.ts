@@ -32,7 +32,7 @@ import {BehaviorSubject, of} from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 
 @Component({

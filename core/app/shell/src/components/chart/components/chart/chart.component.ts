@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {ChartDataSource} from '@app-common/containers/chart/chart.model';
+import {ChartDataSource} from 'common';
 import {chartTypeMap} from '@components/chart/components/chart/chart.manifest';
 
 @Component({

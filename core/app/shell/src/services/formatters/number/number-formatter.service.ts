@@ -28,7 +28,7 @@ import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {formatNumber} from '@angular/common';
 import {Formatter} from '@services/formatters/formatter.model';
-import {isVoid} from '@app-common/utils/value-utils';
+import {isVoid} from 'common';
 import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 @Injectable({

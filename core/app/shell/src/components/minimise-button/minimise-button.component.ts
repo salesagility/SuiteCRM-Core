@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Button, ButtonInterface} from '@app-common/components/button/button.model';
+import {Button, ButtonInterface} from 'common';
 
 export type MinimiseButtonStatus = 'minimised' | 'maximised';
 

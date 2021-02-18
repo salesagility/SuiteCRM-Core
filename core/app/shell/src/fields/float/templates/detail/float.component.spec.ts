@@ -31,7 +31,7 @@ import {FloatDetailFieldComponent} from './float.component';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
 import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';

@@ -24,14 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone} from '@app-common/utils/object-utils';
+import {deepClone} from 'common';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {Injectable} from '@angular/core';
 import {FilterDataSource} from '@components/list-filter/list-filter.component';
-import {BulkActionDataSource, SelectionStatus} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {BulkActionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {SelectionStatus} from 'common';
 import {AppData, ViewStore} from '@store/view/view.store';
 import {LanguageStore} from '@store/language/language.store';
 import {NavigationStore} from '@store/navigation/navigation.store';
@@ -41,16 +42,16 @@ import {LocalStorageService} from '@services/local-storage/local-storage.service
 import {AsyncActionInput, AsyncActionService} from '@services/process/processes/async-action/async-action';
 import {MessageService} from '@services/message/message.service';
 import {Process} from '@services/process/process.service';
-import {Record} from '@app-common/record/record.model';
-import {SearchCriteria} from '@app-common/views/list/search-criteria.model';
+import {Record} from 'common';
+import {SearchCriteria} from 'common';
 import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
-import {ColumnDefinition, ListViewMeta} from '@app-common/metadata/list.metadata.model';
-import {BulkActionsMap} from '@app-common/actions/bulk-action.model';
-import {LineAction} from '@app-common/actions/line-action.model';
-import {Pagination, SortingSelection} from '@app-common/views/list/list-navigation.model';
-import {RecordSelection} from '@app-common/views/list/record-selection.model';
+import {ColumnDefinition, ListViewMeta} from 'common';
+import {BulkActionsMap} from 'common';
+import {LineAction} from 'common';
+import {Pagination, SortingSelection} from 'common';
+import {RecordSelection} from 'common';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
-import {ViewContext} from '@app-common/views/view.model';
+import {ViewContext} from 'common';
 
 export interface ListViewData {
     records: Record[];

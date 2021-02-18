@@ -29,7 +29,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {DropdownButtonComponent} from './dropdown-button.component';
 import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
-import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
+import {DropdownButtonInterface} from 'common';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {LanguageStore} from '@store/language/language.store';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';

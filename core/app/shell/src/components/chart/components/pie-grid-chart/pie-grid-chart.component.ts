@@ -26,7 +26,7 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartComponent} from '@components/chart/components/base-chart/base-chart.component';
-import {SeriesResult, SingleSeries} from '@app-common/containers/chart/chart.model';
+import {SeriesResult, SingleSeries} from 'common';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '@store/language/language.store';
 

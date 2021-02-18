@@ -32,7 +32,7 @@ import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '@store/na
 import {LanguageStrings, LanguageStringMap} from '@store/language/language.store';
 import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
 import {AppState} from '@store/app-state/app-state.store';
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 export interface NavbarModel {
     authenticated: boolean;

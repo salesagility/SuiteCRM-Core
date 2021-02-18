@@ -27,19 +27,19 @@
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {TableConfig} from '@components/table/table.model';
-import {Record} from '@app-common/record/record.model';
-import {DataSource} from '@angular/cdk/collections';
-import {ColumnDefinition} from '@app-common/metadata/list.metadata.model';
-import {LineAction} from '@app-common/actions/line-action.model';
 import {
-    BulkActionDataSource,
-    SelectionDataSource,
-    SelectionStatus
-} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {RecordSelection} from '@app-common/views/list/record-selection.model';
-import {SortDirection} from '@components/sort-button/sort-button.model';
-import {SortingSelection} from '@app-common/views/list/list-navigation.model';
-import {BulkAction, BulkActionsMap} from '@app-common/actions/bulk-action.model';
+    BulkAction,
+    BulkActionsMap,
+    ColumnDefinition,
+    LineAction,
+    Record,
+    RecordSelection,
+    SelectionStatus,
+    SortDirection,
+    SortingSelection
+} from 'common';
+import {DataSource} from '@angular/cdk/collections';
+import {BulkActionDataSource, SelectionDataSource,} from '@components/bulk-action-menu/bulk-action-menu.component';
 import {PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
 
 /* eslint-disable camelcase,@typescript-eslint/camelcase */

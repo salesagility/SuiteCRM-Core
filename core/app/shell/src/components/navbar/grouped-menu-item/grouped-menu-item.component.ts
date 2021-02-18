@@ -26,7 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {LanguageStrings} from '@store/language/language.store';
-import {MenuItem} from '@app-common/menu/menu.model';
+import {MenuItem} from 'common';
 
 @Component({
     selector: 'scrm-grouped-menu-item',

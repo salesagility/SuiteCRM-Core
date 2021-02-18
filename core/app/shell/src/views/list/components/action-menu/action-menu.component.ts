@@ -26,10 +26,10 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ModuleAction} from '@store/navigation/navigation.store';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {ButtonInterface} from 'common';
 import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
+import {ButtonGroupInterface} from 'common';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';

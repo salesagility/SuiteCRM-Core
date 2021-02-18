@@ -35,7 +35,7 @@ import {FieldModule} from '@fields/field.module';
 import {By} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 
 @Component({

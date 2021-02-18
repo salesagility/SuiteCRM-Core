@@ -26,7 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {LanguageStrings} from '@store/language/language.store';
-import {RecentRecordsMenuItem} from '@app-common/menu/menu.model';
+import {RecentRecordsMenuItem} from 'common';
 
 @Component({
     selector: 'scrm-menu-recently-viewed',

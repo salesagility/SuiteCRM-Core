@@ -30,7 +30,7 @@ import {DateDetailFieldComponent} from '@fields/date/templates/detail/date.compo
 import {BehaviorSubject} from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {Field} from '@app-common/record/field.model';
+import {Field} from 'common';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
 import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
 import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';

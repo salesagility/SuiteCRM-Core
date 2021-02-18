@@ -26,11 +26,11 @@
 
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from '@services/record/validation/validator.Interface';
-import {Record} from '@app-common/record/record.model';
-import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
+import {Record} from 'common';
+import {ViewFieldDefinition} from 'common';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {AsyncValidatorInterface} from '@services/record/validation/aync-validator.Interface';
-import {MapEntry, OverridableMap} from '@app-common/types/OverridableMap';
+import {MapEntry, OverridableMap} from 'common';
 import {RequiredValidator} from '@services/record/validation/validators/required.validator';
 import {CurrencyValidator} from '@services/record/validation/validators/currency.validator';
 import {DateValidator} from '@services/record/validation/validators/date.validator';

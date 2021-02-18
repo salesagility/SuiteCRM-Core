@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
-import {Statistic, StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
+import {Statistic, StatisticsMap, StatisticsQueryMap} from 'common';
 import {map} from 'rxjs/operators';
 import {ApolloQueryResult} from '@apollo/client/core';
 

@@ -32,7 +32,7 @@ import {TableConfig} from '@components/table/table.model';
 import {TableAdapter} from '@views/list/adapters/table.adapter';
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 import {LanguageStore} from '@store/language/language.store';
-import {ViewContext} from '@app-common/views/view.model';
+import {ViewContext} from 'common';
 import {ListViewSidebarWidgetAdapter} from '@views/list/adapters/sidebar-widget.adapter';
 import {map} from 'rxjs/operators';
 

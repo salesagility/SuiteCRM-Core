@@ -34,7 +34,7 @@ import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
-import {ModalButtonInterface} from '@app-common/components/modal/modal.model';
+import {ModalButtonInterface} from 'common';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {interval} from 'rxjs';

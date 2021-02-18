@@ -30,7 +30,7 @@ import {ButtonGroupComponent} from './button-group.component';
 import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonGroupInterface} from '@app-common/components/button/button-group.model';
+import {ButtonGroupInterface} from 'common';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {shareReplay} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
