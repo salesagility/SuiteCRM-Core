@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DropdownButtonInterface} from '@app-common/components/button/dropdown-button.model';
 import {ButtonInterface} from '@app-common/components/button/button.model';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
 @Component({
     selector: 'scrm-dropdown-button',
@@ -37,4 +38,12 @@ export class DropdownButtonComponent implements OnInit {
             this.config.placement = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
         }
     }
+
+    getPlacement(): PlacementArray {
+        if (this.config && !this.config.placement) {
+            return ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+        }
+        return this.config.placement;
+    }
+
 }

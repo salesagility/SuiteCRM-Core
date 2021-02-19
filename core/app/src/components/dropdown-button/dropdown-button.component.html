@@ -1,6 +1,6 @@
 <div ngbDropdown
      [autoClose]="autoClose"
-     [placement]="config.placement"
+     [placement]="getPlacement()"
      #dropDown="ngbDropdown"
      class="d-inline-block dropdown-button"
      [ngClass]="config.wrapperKlass">
