@@ -29,24 +29,24 @@ import {Component} from '@angular/core';
 import {DateTimeEditFieldComponent} from './datetime.component';
 import {Field} from 'common';
 import {FormControl, FormsModule} from '@angular/forms';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
+import {UserPreferenceStore} from 'core';
+import {DatetimeFormatter} from 'core';
+import {datetimeFormatterMock} from 'core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from '@components/button/button.module';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesStoreMock} from 'core';
 import {distinctUntilChanged} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
-import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
-import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {userPreferenceStoreMock} from 'core';
+import {NumberFormatter} from 'core';
+import {numberFormatterMock} from 'core';
+import {DateFormatter} from 'core';
+import {dateFormatterMock} from 'core';
+import {CurrencyFormatter} from 'core';
 import {DateTimeEditFieldModule} from '@fields/datetime/templates/edit/datetime.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'datetime-edit-field-test-host-component',

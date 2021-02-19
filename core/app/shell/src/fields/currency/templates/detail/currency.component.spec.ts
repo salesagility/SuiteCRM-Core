@@ -28,14 +28,14 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
 import {CurrencyDetailFieldComponent} from './currency.component';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {FormatCurrencyPipe} from '@base/pipes/format-currency/format-currency.pipe';
+import {UserPreferenceStore} from 'core';
+import {SystemConfigStore} from 'core';
+import {FormatCurrencyPipe} from 'core';
 import {Field} from 'common';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
-import {FormControlUtils} from '@services/record/field/form-control.utils';
+import {CurrencyFormatter} from 'core';
+import {NumberFormatter} from 'core';
+import {UserPreferenceMockStore} from 'core';
+import {FormControlUtils} from 'core';
 
 @Component({
     selector: 'currency-detail-field-test-host-component',

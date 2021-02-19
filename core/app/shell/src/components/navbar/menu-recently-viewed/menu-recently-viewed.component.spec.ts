@@ -34,12 +34,12 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {MenuRecentlyViewedComponent} from './menu-recently-viewed.component';
-import {LanguageStrings} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
+import {LanguageStrings} from 'core';
+import {languageMockData} from 'core';
 import {MenuItemLinkComponent} from '@components/navbar/menu-item-link/menu-item-link.component';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesMockData} from 'core';
 
 const recentRecords = [
     {

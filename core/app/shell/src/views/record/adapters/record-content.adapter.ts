@@ -27,9 +27,9 @@
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {combineLatest, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
+import {MetadataStore, RecordViewMetadata} from 'core';
 import {map} from 'rxjs/operators';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {Panel, PanelRow} from 'common';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';
 import {Record} from 'common';

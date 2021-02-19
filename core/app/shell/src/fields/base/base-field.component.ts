@@ -30,7 +30,7 @@ import {Field} from 'common';
 import {Record} from 'common';
 import {Subscription} from 'rxjs';
 import {isVoid} from 'common';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface {

@@ -25,8 +25,8 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {BulkActionDataSource, SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {PaginationDataSource} from '@components/pagination/pagination.model';
+import {BulkActionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {PaginationDataSource, SelectionDataSource} from 'common';
 
 @Component({
     selector: 'scrm-table-footer',

@@ -25,8 +25,8 @@
  */
 
 import {BaseFieldComponent} from '../base-field.component';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DatetimeFormatter} from 'core';
+import {DataTypeFormatter} from 'core';
 import {Component} from '@angular/core';
 
 @Component({template: ''})

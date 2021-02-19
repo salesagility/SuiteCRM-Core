@@ -29,10 +29,10 @@ import {Component} from '@angular/core';
 import {MinimiseButtonComponent} from './minimise-button.component';
 import {ButtonInterface} from 'common';
 import {ButtonModule} from '@components/button/button.module';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesStoreMock} from 'core';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'minimise-button-test-host-component',

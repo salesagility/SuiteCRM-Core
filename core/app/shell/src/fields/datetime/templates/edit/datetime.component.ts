@@ -29,9 +29,9 @@ import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.compone
 import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeParserFormatter} from '@fields/base/datetime/datetime-parser-formatter.service';
 import {DatetimeAdapter} from '@fields/base/datetime/datetime-adapter.service';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {DatetimeFormatter} from 'core';
 import {ButtonInterface} from 'common';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-datetime-edit',

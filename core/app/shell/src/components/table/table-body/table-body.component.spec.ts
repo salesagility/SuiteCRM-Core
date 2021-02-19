@@ -29,13 +29,13 @@ import {TableBodyComponent} from './table-body.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {Component} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {FieldModule} from '@fields/field.module';
 import {SortButtonModule} from '@components/sort-button/sort-button.module';
 import {RouterTestingModule} from '@angular/router/testing';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesStoreMock} from 'core';
 import {tableConfigMock} from '@components/table/table.component.spec.mock';
 
 @Component({

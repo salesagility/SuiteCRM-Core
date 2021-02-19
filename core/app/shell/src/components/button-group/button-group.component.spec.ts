@@ -34,8 +34,8 @@ import {ButtonGroupInterface} from 'common';
 import {DropdownButtonModule} from '@components/dropdown-button/dropdown-button.module';
 import {shareReplay} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'dropdown-group-test-host-component',

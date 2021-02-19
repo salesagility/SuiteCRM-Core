@@ -27,15 +27,15 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {IntDetailFieldComponent} from './int.component';
 import {Component} from '@angular/core';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {UserPreferenceStore} from 'core';
 import {BehaviorSubject, of} from 'rxjs';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {FormatNumberPipe} from '@base/pipes/format-number/format-number.pipe';
+import {SystemConfigStore} from 'core';
+import {FormatNumberPipe} from 'core';
 import {Field} from 'common';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {UserPreferenceMockStore} from '@store/user-preference/user-preference.store.spec.mock';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-import {FormControlUtils} from '@services/record/field/form-control.utils';
+import {NumberFormatter} from 'core';
+import {UserPreferenceMockStore} from 'core';
+import {CurrencyFormatter} from 'core';
+import {FormControlUtils} from 'core';
 
 @Component({
     selector: 'int-detail-field-test-host-component',

@@ -26,9 +26,9 @@
 
 import {Component} from '@angular/core';
 import {BaseNumberComponent} from '@fields/base/base-number.component';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {UserPreferenceStore} from 'core';
+import {SystemConfigStore} from 'core';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-float-detail',

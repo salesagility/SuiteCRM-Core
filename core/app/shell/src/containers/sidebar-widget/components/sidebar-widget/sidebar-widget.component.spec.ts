@@ -29,16 +29,16 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {ViewContext} from 'common';
 import {WidgetMetadata} from 'common';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {CommonModule} from '@angular/common';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {FieldModule} from '@fields/field.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {SidebarWidgetModule} from '@containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
-import {ChartDataStoreFactory} from '@store/chart-data/chart-data.store.factory';
-import {chartDataStoreFactoryMock} from '@store/chart-data/chart-data.store.spec.mock';
+import {ChartDataStoreFactory} from 'core';
+import {chartDataStoreFactoryMock} from 'core';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 

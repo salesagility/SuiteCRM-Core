@@ -25,10 +25,10 @@
  */
 
 import {Component} from '@angular/core';
-import {AuthService} from '@services/auth/auth.service';
+import {AuthService} from 'core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {LanguageStore, LanguageStrings} from '@store/language/language.store';
+import {LanguageStore, LanguageStrings} from 'core';
 import {LogoutModel} from '@components/logout/logout-model';
 
 @Component({

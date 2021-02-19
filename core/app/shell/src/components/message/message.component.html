@@ -26,8 +26,9 @@
 */
 -->
 <div class="container-fluid alert-fixed message-wrapper" *ngIf="(appStrings$ | async) as appStrings">
-    <div class="d-flex justify-content-center flex-column align-items-center message-container">
-        <div *ngFor="let message of messages"
+    <div class="d-flex justify-content-center flex-column align-items-center message-container"
+         *ngIf="(messages$ | async) as items">
+        <div *ngFor="let message of items"
              (click)="close(message)"
              class="message {{ message.type }} alert-dismissible fade show shadow"
              [@fade]

@@ -30,9 +30,9 @@ import {RecordToggleWidgetsAction} from '@views/record/actions/toggle-widgets/re
 import {RecordCancelAction} from '@views/record/actions/cancel/record-cancel.action';
 import {NavigationExtras, Router} from '@angular/router';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
-import {moduleNameMapperMock} from '@services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
+import {moduleNameMapperMock} from 'core';
 import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
-import {messageServiceMock} from '@services/message/message.service.spec.mock';
+import {messageServiceMock} from 'core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import {CancelCreateAction} from '@views/record/actions/cancel-create/cancel-create.action';

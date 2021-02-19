@@ -26,7 +26,7 @@
 
 import {Component} from '@angular/core';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-relate-detail',

@@ -27,10 +27,11 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {BulkActionDataSource, BulkActionMenuComponent, SelectionDataSource,} from './bulk-action-menu.component';
+import {BulkActionDataSource, BulkActionMenuComponent} from './bulk-action-menu.component';
+import {SelectionDataSource} from 'common';
 import {By} from '@angular/platform-browser';
-import {LanguageStore} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageMockData} from 'core';
 import {shareReplay, take} from 'rxjs/operators';
 import {ButtonModule} from '@components/button/button.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';

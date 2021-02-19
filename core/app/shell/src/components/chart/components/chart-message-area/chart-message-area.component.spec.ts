@@ -27,8 +27,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {ChartMessageAreaModule} from '@components/chart/components/chart-message-area/chart-message-area.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 
 @Component({

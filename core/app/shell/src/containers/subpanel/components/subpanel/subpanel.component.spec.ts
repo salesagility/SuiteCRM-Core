@@ -31,18 +31,18 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {recordviewStoreMock} from '@views/record/store/record-view/record-view.store.spec.mock';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ButtonGroupModule} from '@components/button-group/button-group.module';
 import {PanelModule} from '@components/panel/panel.module';
 import {SubpanelComponent} from './subpanel.component';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
+import {metadataStoreMock} from 'core';
 
 const store = recordviewStoreMock.getSubpanels().contacts;
 

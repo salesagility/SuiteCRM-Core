@@ -26,10 +26,10 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
+import {SystemConfigStore} from 'core';
+import {systemConfigStoreMock} from 'core';
 import {ButtonInterface} from 'common';
 import {ModalModule} from '@components/modal/components/modal/modal.module';
 

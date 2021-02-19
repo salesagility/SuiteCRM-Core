@@ -25,8 +25,8 @@
  */
 
 import {RecordListModalStoreFactory} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store.factory';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
-import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mock';
+import {metadataStoreMock} from 'core';
+import {listStoreFactoryMock} from 'core';
 
 export const recordlistModalStoreFactoryMock = new RecordListModalStoreFactory(
     listStoreFactoryMock,

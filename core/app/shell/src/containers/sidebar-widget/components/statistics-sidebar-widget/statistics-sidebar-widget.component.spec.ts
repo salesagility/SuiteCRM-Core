@@ -30,10 +30,10 @@ import {StatisticsSidebarWidgetComponent} from './statistics-sidebar-widget.comp
 import {Component} from '@angular/core';
 import {ViewContext} from 'common';
 import {WidgetMetadata} from 'common';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {sidebarWidgetStatisticsFactoryMock} from './statistics-sidebar-widget.component.spec.mock';
-import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
+import {SingleValueStatisticsStoreFactory} from 'core';
 import {FieldModule} from '@fields/field.module';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {CommonModule} from '@angular/common';

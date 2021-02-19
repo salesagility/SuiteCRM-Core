@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {Record} from 'common';
 import {LineAction} from 'common';
 

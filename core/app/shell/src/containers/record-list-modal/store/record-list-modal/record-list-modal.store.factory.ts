@@ -25,9 +25,9 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
+import {RecordListStoreFactory} from 'core';
 import {RecordListModalStore} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 
 @Injectable({
     providedIn: 'root',

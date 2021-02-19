@@ -29,15 +29,15 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ActionBarUiComponent} from './action-bar.component';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {GlobalSearch} from '@services/navigation/global-search/global-search.service';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
+import {GlobalSearch} from 'core';
 import {By} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 
 
 describe('ActionBarUiComponent', () => {

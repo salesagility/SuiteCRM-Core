@@ -28,10 +28,10 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {MessageModalComponent} from './message-modal.component';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
+import {SystemConfigStore} from 'core';
+import {systemConfigStoreMock} from 'core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
 import {ModalButtonInterface} from 'common';

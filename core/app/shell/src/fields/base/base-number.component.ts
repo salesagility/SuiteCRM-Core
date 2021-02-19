@@ -24,12 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {UserPreferenceStore} from 'core';
 import {BaseFieldComponent} from './base-field.component';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {SystemConfigStore} from 'core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 import {Component} from '@angular/core';
 
 @Component({template: ''})

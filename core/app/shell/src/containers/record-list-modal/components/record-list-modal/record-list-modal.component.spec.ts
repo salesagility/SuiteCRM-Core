@@ -30,18 +30,18 @@ import {RecordListModalComponent} from './record-list-modal.component';
 import {Component, OnInit} from '@angular/core';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 import {RecordListModalStoreFactory} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store.factory';
 import {recordlistModalStoreFactoryMock} from '@containers/record-list-modal/store/record-list-modal/record-list-modal.store.spec.mock';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesStoreMock} from '@store/theme-images/theme-images.store.spec.mock';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ThemeImagesStore} from 'core';
+import {themeImagesStoreMock} from 'core';
+import {ModuleNavigation} from 'core';
 import {
     mockModuleNavigation,
     mockRouter
-} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+} from 'core';
 import {interval} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {RouterTestingModule} from '@angular/router/testing';

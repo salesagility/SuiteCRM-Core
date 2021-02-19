@@ -34,13 +34,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
-import {LanguageStrings} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
+import {LanguageStrings} from 'core';
+import {languageMockData} from 'core';
 import {MenuItem} from 'common';
 
 const groupedMockMenuItem = {

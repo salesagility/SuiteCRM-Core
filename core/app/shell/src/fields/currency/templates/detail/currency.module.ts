@@ -29,7 +29,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {CurrencyDetailFieldComponent} from '@fields/currency/templates/detail/currency.component';
-import {FormatCurrencyModule} from '@base/pipes/format-currency/format-currency.module';
+import {FormatCurrencyModule} from 'core';
 
 @NgModule({
     declarations: [CurrencyDetailFieldComponent],

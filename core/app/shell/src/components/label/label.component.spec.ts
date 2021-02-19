@@ -28,8 +28,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {LabelComponent} from './label.component';
 import {Component} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {LabelModule} from '@components/label/label.module';
 
 

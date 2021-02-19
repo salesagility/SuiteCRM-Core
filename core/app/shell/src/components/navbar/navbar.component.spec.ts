@@ -32,12 +32,12 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {NavbarUiComponent} from './navbar.component';
-import {NavigationStore} from '@store/navigation/navigation.store';
-import {LanguageStore} from '@store/language/language.store';
-import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {NavigationStore} from 'core';
+import {LanguageStore} from 'core';
+import {navigationMock} from 'core';
+import {languageStoreMock} from 'core';
+import {UserPreferenceStore} from 'core';
+import {userPreferenceStoreMock} from 'core';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 
 describe('NavbarUiComponent', () => {

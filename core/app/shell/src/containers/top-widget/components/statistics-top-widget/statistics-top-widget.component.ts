@@ -25,11 +25,11 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BaseWidgetComponent} from 'common';
-import {SingleValueStatisticsStore} from '@store/single-value-statistics/single-value-statistics.store';
-import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
+import {BaseWidgetComponent} from '@containers/widgets/base-widget.model';
+import {SingleValueStatisticsStore} from 'core';
+import {SingleValueStatisticsStoreFactory} from 'core';
 import {map, take} from 'rxjs/operators';
-import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
+import {LanguageStore, LanguageStringMap} from 'core';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {StatisticsQuery} from 'common';
 import {ViewContext} from 'common';

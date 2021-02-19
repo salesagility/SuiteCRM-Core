@@ -26,12 +26,12 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {ScreenSize} from '@services/ui/screen-size-observer/screen-size-observer.service';
+import {ScreenSize} from 'core';
 import {combineLatest, Observable} from 'rxjs';
 import {TableConfig} from '@components/table/table.model';
 import {TableAdapter} from '@views/list/adapters/table.adapter';
-import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
-import {LanguageStore} from '@store/language/language.store';
+import {MaxColumnsCalculator} from 'core';
+import {LanguageStore} from 'core';
 import {ViewContext} from 'common';
 import {ListViewSidebarWidgetAdapter} from '@views/list/adapters/sidebar-widget.adapter';
 import {map} from 'rxjs/operators';

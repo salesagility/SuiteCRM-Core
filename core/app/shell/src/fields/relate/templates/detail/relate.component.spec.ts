@@ -30,16 +30,16 @@ import {Component} from '@angular/core';
 import {Field} from 'common';
 import {Record} from 'common';
 import {RouterTestingModule} from '@angular/router/testing';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
-import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
-import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
-import {currencyFormatterMock} from '@services/formatters/currency/currency-formatter.service.spec.mock';
+import {UserPreferenceStore} from 'core';
+import {userPreferenceStoreMock} from 'core';
+import {NumberFormatter} from 'core';
+import {numberFormatterMock} from 'core';
+import {DatetimeFormatter} from 'core';
+import {datetimeFormatterMock} from 'core';
+import {DateFormatter} from 'core';
+import {dateFormatterMock} from 'core';
+import {CurrencyFormatter} from 'core';
+import {currencyFormatterMock} from 'core';
 
 @Component({
     selector: 'relate-detail-field-test-host-component',

@@ -26,9 +26,9 @@
 
 import {Component, ViewChild} from '@angular/core';
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {TagInputComponent} from 'ngx-chips';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-dynamicenum-edit',

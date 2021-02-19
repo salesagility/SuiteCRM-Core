@@ -26,16 +26,16 @@
 
 import {Injectable} from '@angular/core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {LanguageStore} from '@store/language/language.store';
+import {MetadataStore} from 'core';
+import {LanguageStore} from 'core';
 import {Action, ActionDataSource, ModeActions} from 'common';
 import {combineLatest, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {RecordActionManager} from '@views/record/actions/record-action-manager.service';
 import {RecordActionData} from '@views/record/actions/record.action';
-import {AsyncActionInput, AsyncActionService} from '@services/process/processes/async-action/async-action';
-import {Process} from '@services/process/process.service';
-import {MessageService} from '@services/message/message.service';
+import {AsyncActionInput, AsyncActionService} from 'core';
+import {Process} from 'core';
+import {MessageService} from 'core';
 
 @Injectable()
 export class RecordActionsAdapter implements ActionDataSource {

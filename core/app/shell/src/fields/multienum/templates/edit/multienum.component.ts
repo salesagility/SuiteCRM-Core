@@ -25,10 +25,10 @@
  */
 
 import {Component, ViewChild} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {BaseMultiEnumComponent} from '@fields/base/base-multienum.component';
 import {TagInputComponent} from 'ngx-chips';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-multienum-edit',

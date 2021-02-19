@@ -39,7 +39,7 @@ import {
 } from 'common';
 import {SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 import {TableConfig} from '@components/table/table.model';
-import {FieldManager} from '@services/record/field/field.manager';
+import {FieldManager} from 'core';
 
 interface TableViewModel {
     columns: ColumnDefinition[];

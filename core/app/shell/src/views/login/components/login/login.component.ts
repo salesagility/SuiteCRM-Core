@@ -30,12 +30,12 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
-import {AuthService} from '@services/auth/auth.service';
-import {MessageService} from '@services/message/message.service';
-import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
-import {SystemConfigMap, SystemConfigStore} from '@store/system-config/system-config.store';
-import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
-import {Process} from '@services/process/process.service';
+import {AuthService} from 'core';
+import {MessageService} from 'core';
+import {RecoverPasswordService} from 'core';
+import {SystemConfigMap, SystemConfigStore} from 'core';
+import {LanguageStore, LanguageStringMap} from 'core';
+import {Process} from 'core';
 
 
 @Component({
@@ -117,7 +117,7 @@ export class LoginUiComponent {
 
     doLogin(): void {
         this.loading = true;
-        this.auth.doLogin(this, this.uname, this.passw, this.onLoginSuccess.bind(this), this.onLoginError.bind(this));
+        this.auth.doLogin(this.uname, this.passw, this.onLoginSuccess.bind(this), this.onLoginError.bind(this));
     }
 
     recoverPassword(): void {
@@ -145,20 +145,20 @@ export class LoginUiComponent {
             );
     }
 
-    onLoginSuccess(caller: LoginUiComponent): void {
+    onLoginSuccess(): void {
         this.loading = false;
-        caller.message.log('Login success');
-        caller.message.removeMessages();
+        this.message.log('Login success');
+        this.message.removeMessages();
 
-        const defaultModule = caller.systemConfigStore.getHomePage();
-        caller.router.navigate(['/' + defaultModule]).then();
+        const defaultModule = this.systemConfigStore.getHomePage();
+        this.router.navigate(['/' + defaultModule]).then();
 
         return;
     }
 
-    onLoginError(caller: LoginUiComponent): void {
+    onLoginError(): void {
         this.loading = false;
-        caller.message.log('Login failed');
-        caller.message.addDangerMessage('Login credentials incorrect, please try again.');
+        this.message.log('Login failed');
+        this.message.addDangerMessage('Login credentials incorrect, please try again.');
     }
 }

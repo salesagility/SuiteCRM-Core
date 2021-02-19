@@ -78,7 +78,7 @@
 
 import {Component} from '@angular/core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ModuleNavigation} from 'core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {RecordActionsAdapter} from '@views/record/adapters/actions.adapter';

@@ -30,14 +30,14 @@ import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 
 import {PaginationComponent} from './pagination.component';
-import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
-import {LanguageStore} from '@store/language/language.store';
-import {languageMockData} from '@store/language/language.store.spec.mock';
+import {PageSelection, PaginationCount, PaginationDataSource} from 'common';
+import {LanguageStore} from 'core';
+import {languageMockData} from 'core';
 import {By} from '@angular/platform-browser';
 import {ImageModule} from '@components/image/image.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesMockData} from 'core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 const pageSubject = new BehaviorSubject<PageSelection>(PageSelection.LAST);

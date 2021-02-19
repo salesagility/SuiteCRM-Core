@@ -52,7 +52,7 @@ import {RecordModule} from '@views/record/components/record-view/record.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ErrorInterceptor} from '@services/auth/error.interceptor';
+import {ErrorInterceptor} from 'core';
 
 import {AppManagerModule} from '../app-manager/app-manager.module';
 
@@ -63,7 +63,7 @@ import {ImageModule} from '@components/image/image.module';
 import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppInit} from '@app/app-initializer';
-import {AuthService} from '@services/auth/auth.service';
+import {AuthService} from 'core';
 import {GraphQLError} from 'graphql';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';

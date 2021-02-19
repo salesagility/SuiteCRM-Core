@@ -31,13 +31,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '@components/button/button.module';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {ModuleNavigation} from 'core';
+import {mockModuleNavigation} from 'core';
 import {ButtonGroupModule} from '@components/button-group/button-group.module';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {SystemConfigStore} from 'core';
+import {systemConfigStoreMock} from 'core';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'action-menu-test-host-component',

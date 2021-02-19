@@ -26,14 +26,17 @@
 
 import {Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
-import {BulkActionDataSource, SelectionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {PaginationDataSource} from '@components/pagination/pagination.model';
-import {ColumnDefinition} from 'common';
-import {Record} from 'common';
-import {SortDirection} from 'common';
-import {LineAction} from 'common';
-import {SortingSelection} from 'common';
-import {RecordSelection} from 'common';
+import {BulkActionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
+import {
+    ColumnDefinition,
+    LineAction,
+    PaginationDataSource,
+    Record,
+    RecordSelection,
+    SelectionDataSource,
+    SortDirection,
+    SortingSelection
+} from 'common';
 
 export interface TableConfig {
     showHeader: boolean;

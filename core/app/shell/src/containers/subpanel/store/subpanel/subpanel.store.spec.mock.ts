@@ -25,9 +25,9 @@
  */
 
 import {SubpanelStoreFactory} from '@containers/subpanel/store/subpanel/subpanel.store.factory';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {listStoreFactoryMock} from '@store/record-list/record-list.store.spec.mock';
-import {subpanelStatisticsFactoryMock} from '@store/single-value-statistics/single-value-statistics.store.spec.mock';
+import {languageStoreMock} from 'core';
+import {listStoreFactoryMock} from 'core';
+import {subpanelStatisticsFactoryMock} from 'core';
 
 export const subpanelFactoryMock = new SubpanelStoreFactory(
     listStoreFactoryMock,

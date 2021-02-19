@@ -26,9 +26,9 @@
 
 import {Component, OnInit} from '@angular/core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageStore, LanguageStrings} from '@store/language/language.store';
+import {LanguageStore, LanguageStrings} from 'core';
 import {map} from 'rxjs/operators';
 import {RecordContentAdapter} from '@views/record/adapters/record-content.adapter';
 import {RecordContentDataSource} from '@components/record-content/record-content.model';

@@ -27,12 +27,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {map, take} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageStore, LanguageStringMap, LanguageStrings} from '@store/language/language.store';
+import {LanguageStore, LanguageStringMap, LanguageStrings} from 'core';
 import {SubpanelContainerConfig} from '@containers/subpanel/components/subpanel-container/subpanel-container.model';
 import {SubpanelStore, SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
-import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
-import {ViewContext} from '@app-common/views/view.model';
-import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {MaxColumnsCalculator} from 'core';
+import {ViewContext} from 'common';
+import {WidgetMetadata} from 'common';
 import {GridWidgetConfig, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 
 interface SubpanelContainerViewModel {

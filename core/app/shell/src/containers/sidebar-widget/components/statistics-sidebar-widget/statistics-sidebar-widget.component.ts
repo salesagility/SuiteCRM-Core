@@ -28,7 +28,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseWidgetComponent} from 'common';
 import {ViewContext} from 'common';
 import {Subscription} from 'rxjs';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {StatisticWidgetOptions, WidgetMetadata} from 'common';
 import {GridWidgetConfig, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 

@@ -25,7 +25,7 @@
  */
 
 import {ViewMode} from 'common';
-import {TabDefinitions} from '@store/metadata/metadata.store.service';
+import {TabDefinitions} from 'core';
 import {Observable} from 'rxjs';
 import {Panel} from 'common';
 import {Record} from 'common';

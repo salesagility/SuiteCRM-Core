@@ -27,9 +27,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FilterUiComponent} from './filter.component';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
 
 describe('FilterUiComponent', () => {

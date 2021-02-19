@@ -26,8 +26,8 @@
 
 import {Component, OnInit} from '@angular/core';
 import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
-import {BaseWidgetComponent} from 'common';
-import {LanguageStore} from '@store/language/language.store';
+import {BaseWidgetComponent} from '@containers/widgets/base-widget.model';
+import {LanguageStore} from 'core';
 
 @Component({
     selector: 'scrm-history-timeline-widget',

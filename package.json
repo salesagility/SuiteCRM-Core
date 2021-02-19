@@ -11,14 +11,20 @@
     "serve:dist": "concurrently \"serve dist/shell -l 5000 -s\"",
     "build": "npm run build:shell",
     "build:common": "ng build common --prod",
+    "build:core": "ng build core --prod",
     "test": "npm run test:shell",
+    "gen-module-barrels": "barrelsby --delete -l all -e '.*\\.spec.*' -L -q",
+    "gen-index": "barrelsby --delete -e '.*\\.spec.*' -q",
+    "gen-index:core": "npm run gen-index -d core/app/core/src/lib/ -n core",
+    "gen-index:common": "npm run gen-index -d core/app/common/src/lib/ -n common",
+    "gen-lib-index": "npm run gen-index:core && npm run gen-index:common",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ngcc"
   },
   "private": true,
   "resolutions": {
-    "webpack": "^5.0.0"
+    "webpack": "^5.4.0"
   },
   "engines": {
     "node": ">= 10.0.0"
@@ -39,11 +45,10 @@
     "@angular/platform-browser": "11.0.0",
     "@angular/platform-browser-dynamic": "11.0.0",
     "@angular/router": "11.0.0",
-    "@nrwl/workspace": "^10.3.0",
-    "concurrently": "^5.3.0",
     "@apollo/client": "^3.3.7",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@nrwl/workspace": "^10.3.0",
     "@swimlane/ngx-charts": "^17.0.0",
     "@types/object-hash": "^1.3.4",
     "ajv": "~6.9.1",
@@ -51,6 +56,7 @@
     "apollo-angular": "^2.2.0",
     "bn-ng-idle": "^1.0.1",
     "bootstrap-css-only": "^4.4.1",
+    "concurrently": "^5.3.0",
     "core-js": "^3.8.3",
     "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
@@ -78,6 +84,7 @@
     "@types/node": "^12.19.15",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
+    "barrelsby": "^2.2.0",
     "codelyzer": "^6.0.0",
     "eslint": "^6.8.0",
     "eslint-import-resolver-alias": "^1.1.2",
@@ -96,6 +103,7 @@
     "karma-firefox-launcher": "^1.3.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ng-packagr": "^11.0.0",
     "prettier": "^1.16.1",
     "protractor": "~7.0.0",
     "ts-node": "^8.10.1",

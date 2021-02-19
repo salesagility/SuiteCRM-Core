@@ -33,16 +33,16 @@ import {TableModule} from '@components/table/table.module';
 import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesMockData} from 'core';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
+import {MetadataStore} from 'core';
+import {metadataStoreMock} from 'core';
 import {RouterTestingModule} from '@angular/router/testing';
 
 describe('ListcontainerUiComponent', () => {

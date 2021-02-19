@@ -26,10 +26,10 @@
 
 import {Component, ViewChild, ViewContainerRef} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {AppState, AppStateStore} from '@store/app-state/app-state.store';
+import {AppState, AppStateStore} from 'core';
 import {Observable} from 'rxjs';
-import {StateManager} from '@store/state-manager';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {StateManager} from 'core';
+import {SystemConfigStore} from 'core';
 import {debounceTime} from 'rxjs/operators';
 
 @Component({

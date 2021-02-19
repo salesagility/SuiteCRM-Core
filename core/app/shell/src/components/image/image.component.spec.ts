@@ -27,8 +27,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImageComponent} from './image.component';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesMockData} from 'core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {of} from 'rxjs';

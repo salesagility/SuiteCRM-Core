@@ -25,19 +25,19 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewStore} from '@store/view/view.store';
-import {Metadata, MetadataStore, RecordViewMetadata, SummaryTemplates} from '@store/metadata/metadata.store.service';
+import {ViewStore} from 'core';
+import {Metadata, MetadataStore, RecordViewMetadata, SummaryTemplates} from 'core';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
-import {StateStore} from '@store/state';
+import {StateStore} from 'core';
 import {deepClone} from 'common';
-import {AppStateStore} from '@store/app-state/app-state.store';
-import {LanguageStore} from '@store/language/language.store';
-import {NavigationStore} from '@store/navigation/navigation.store';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
-import {LocalStorageService} from '@services/local-storage/local-storage.service';
-import {MessageService} from '@services/message/message.service';
+import {AppStateStore} from 'core';
+import {LanguageStore} from 'core';
+import {NavigationStore} from 'core';
+import {ModuleNavigation} from 'core';
+import {LocalStorageService} from 'core';
+import {MessageService} from 'core';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
-import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
+import {RecordFetchGQL} from 'core';
 import {Record} from 'common';
 import {ViewContext, ViewMode} from 'common';
 import {
@@ -45,18 +45,18 @@ import {
     RecordViewModel,
     RecordViewState
 } from '@views/record/store/record-view/record-view.store.model';
-import {RecordStore} from '@store/record/record.store';
+import {RecordStore} from 'core';
 import {ViewFieldDefinition} from 'common';
-import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
+import {RecordSaveGQL} from 'core';
 import {SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.store';
 import {SubpanelStoreFactory} from '@containers/subpanel/store/subpanel/subpanel.store.factory';
 import {SubPanelMeta} from 'common';
-import {RecordManager} from '@services/record/record.manager';
-import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
-import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
+import {RecordManager} from 'core';
+import {StatisticsBatch} from 'core';
+import {StatisticsMap, StatisticsQueryMap} from 'common';
 import {Params} from '@angular/router';
-import {isVoid} from '@app-common/utils/value-utils';
-import {FieldDefinitionMap} from '@app-common/record/field.model';
+import {isVoid} from 'common';
+import {FieldDefinitionMap} from 'common';
 
 const initialState: RecordViewState = {
     module: '',

@@ -26,7 +26,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 
 @Component({
     selector: 'scrm-widget-panel',

@@ -35,8 +35,8 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {By} from '@angular/platform-browser';
 import {SortDirectionDataSource} from '@components/sort-button/sort-button.model';
 import {SortDirection} from 'common';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {ThemeImagesStore} from 'core';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
 
 const sortDirectionSubject = new BehaviorSubject<SortDirection>(SortDirection.NONE);

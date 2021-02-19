@@ -1,8 +1,8 @@
 export * from './actions/index';
 export * from './components/button/index';
 export * from './components/modal/index';
+export * from './components/pagination/index';
 export * from './containers/chart/index';
-export * from './containers/widgets/index';
 export * from './menu/index';
 export * from './metadata/index';
 export * from './record/index';
@@ -13,4 +13,4 @@ export * from './testing/utils.spec';
 export * from './types/index';
 export * from './utils/index';
 export * from './views/index';
-export * from './app-common.module';
+

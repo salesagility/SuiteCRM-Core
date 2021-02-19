@@ -31,8 +31,8 @@ import {Component} from '@angular/core';
 import {ButtonModule} from '@components/button/button.module';
 import {DropdownButtonInterface} from 'common';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'dropdown-button-test-host-component',

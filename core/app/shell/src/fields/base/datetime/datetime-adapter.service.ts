@@ -26,9 +26,8 @@
 
 import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {Injectable} from '@angular/core';
-import {DatetimeFormatter, DateTimeStruct} from '@services/formatters/datetime/datetime-formatter.service';
-import {padObjectValues} from '@app-common/utils/object-utils';
-
+import {DatetimeFormatter, DateTimeStruct} from 'core';
+import {padObjectValues} from 'common';
 
 @Injectable()
 export class DatetimeAdapter extends NgbDateAdapter<string> {

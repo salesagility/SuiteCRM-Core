@@ -26,8 +26,8 @@
 
 import {Record} from 'common';
 import {ViewMode} from 'common';
-import {AppData} from '@store/view/view.store';
-import {Metadata} from '@store/metadata/metadata.store.service';
+import {AppData} from 'core';
+import {Metadata} from 'core';
 
 export interface RecordViewModel {
     data: RecordViewData;

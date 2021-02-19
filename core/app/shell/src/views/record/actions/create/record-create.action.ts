@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {RecordActionData, RecordActionHandler} from '@views/record/actions/record.action';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ModuleNameMapper} from 'core';
 import {Router} from '@angular/router';
 import {ViewMode} from 'common';
 

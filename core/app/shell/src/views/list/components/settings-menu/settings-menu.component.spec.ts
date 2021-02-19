@@ -31,9 +31,9 @@ import {ColumnChooserModule} from '@components/columnchooser/columnchooser.modul
 import {FilterUiModule} from '@components/filter/filter.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
 import {ImageModule} from '@components/image/image.module';
 import {ButtonModule} from '@components/button/button.module';

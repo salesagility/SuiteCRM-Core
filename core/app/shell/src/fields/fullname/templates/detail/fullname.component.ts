@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {BaseNameComponent} from '@fields/base/base-name.component';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-fullname-detail',

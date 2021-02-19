@@ -3,7 +3,7 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/lib",
-    "target": "esnext",
+    "target": "es2015",
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,

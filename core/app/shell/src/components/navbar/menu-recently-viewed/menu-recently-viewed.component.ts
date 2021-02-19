@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {LanguageStrings} from '@store/language/language.store';
+import {LanguageStrings} from 'core';
 import {RecentRecordsMenuItem} from 'common';
 
 @Component({

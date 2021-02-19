@@ -26,8 +26,8 @@
 
 import {Component,} from '@angular/core';
 import {BaseDateTimeComponent} from '@fields/base/datetime/base-datetime.component';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DatetimeFormatter} from 'core';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-datetime-detail',

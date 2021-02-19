@@ -34,10 +34,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
 
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 
 import {MenuItemLinkComponent} from './menu-item-link.component';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {ImageModule} from '@components/image/image.module';
 import {MenuItemLink} from 'common';
 

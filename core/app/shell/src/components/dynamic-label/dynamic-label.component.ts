@@ -25,10 +25,10 @@
  */
 
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {DynamicLabelService} from '@services/language/dynamic-label.service';
+import {DynamicLabelService} from 'core';
 import {StringMap} from 'common';
 import {FieldMap} from 'common';
-import {LanguageStore, LanguageStrings} from '@store/language/language.store';
+import {LanguageStore, LanguageStrings} from 'core';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 

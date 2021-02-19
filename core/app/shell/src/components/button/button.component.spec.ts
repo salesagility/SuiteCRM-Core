@@ -30,8 +30,8 @@ import {ButtonComponent} from './button.component';
 import {Component} from '@angular/core';
 import {ButtonInterface} from 'common';
 import {ImageModule} from '@components/image/image.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 
 @Component({

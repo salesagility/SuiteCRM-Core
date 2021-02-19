@@ -27,9 +27,9 @@
 import {Component} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {LanguageStore, LanguageStrings} from '@store/language/language.store';
+import {LanguageStore, LanguageStrings} from 'core';
 import {ActionBarModel} from './action-bar-model';
-import {GlobalSearch} from '@services/navigation/global-search/global-search.service';
+import {GlobalSearch} from 'core';
 
 @Component({
     selector: 'scrm-action-bar-ui',

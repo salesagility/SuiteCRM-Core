@@ -27,7 +27,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Action} from 'common';
 import {AnyButtonInterface} from 'common';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {ButtonGroupInterface} from 'common';

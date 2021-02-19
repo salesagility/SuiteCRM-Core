@@ -27,18 +27,18 @@
 import {Injectable, Injector} from '@angular/core';
 import {ListComponent} from '@views/list/components/list-view/list.component';
 import {Router} from '@angular/router';
-import {AuthGuard} from '@services/auth/auth-guard.service';
-import {BaseModuleResolver} from '@services/metadata/base-module.resolver';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {AuthGuard} from 'core';
+import {BaseModuleResolver} from 'core';
+import {SystemConfigStore} from 'core';
 import {RecordComponent} from '@views/record/components/record-view/record.component';
-import {BaseRecordResolver} from '@services/metadata/base-record.resolver';
-import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
-import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
+import {BaseRecordResolver} from 'core';
+import {LoginAuthGuard} from 'core';
+import {BaseMetadataResolver} from 'core';
 import {ClassicViewUiComponent} from '@views/classic/components/classic-view/classic-view.component';
 import {ClassicViewResolver} from '@views/classic/services/classic-view.resolver';
 import {CreateRecordComponent} from '@views/create/components/create-view/create-record.component';
-import {isFalse} from '@app-common/utils/value-utils';
-import {ExtensionLoader} from '@services/extensions/extension-loader.service';
+import {isFalse} from 'common';
+import {ExtensionLoader} from 'core';
 
 
 @Injectable()

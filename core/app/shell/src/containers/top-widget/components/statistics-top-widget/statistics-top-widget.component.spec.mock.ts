@@ -24,12 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
-import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
+import {SingleValueStatisticsStoreFactory} from 'core';
+import {StatisticsFetchGQL} from 'core';
 import {StatisticsMap, StatisticsQueryMap} from 'common';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {fieldManagerMock} from '@services/record/field/field.manager.spec.mock';
+import {fieldManagerMock} from 'core';
 
 class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
     constructor() {

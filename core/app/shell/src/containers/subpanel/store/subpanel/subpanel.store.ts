@@ -25,15 +25,15 @@
  */
 
 import {Injectable} from '@angular/core';
-import {StateStore} from '@store/state';
-import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
+import {StateStore} from 'core';
+import {RecordList, RecordListStore} from 'core';
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
-import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
-import {LanguageStore} from '@store/language/language.store';
+import {RecordListStoreFactory} from 'core';
+import {LanguageStore} from 'core';
 import {SubPanelDefinition} from 'common';
 import {Statistic, StatisticsMap, StatisticsQuery, StatisticsQueryMap} from 'common';
-import {SingleValueStatisticsStore} from '@store/single-value-statistics/single-value-statistics.store';
-import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
+import {SingleValueStatisticsStore} from 'core';
+import {SingleValueStatisticsStoreFactory} from 'core';
 import {deepClone} from 'common';
 import {StatisticWidgetOptions} from 'common';
 import {Record} from 'common';

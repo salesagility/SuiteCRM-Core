@@ -20,6 +20,10 @@
         "dist/common/common",
         "dist/common"
       ],
+      "core": [
+        "dist/core/core",
+        "dist/core"
+      ],
       "@app/*": [
         "core/app/shell/src/app/*"
       ],
@@ -32,17 +36,11 @@
       "@fields/*": [
         "core/app/shell/src/fields/*"
       ],
-      "@services/*": [
-        "core/app/shell/src/services/*"
-      ],
       "@components/*": [
         "core/app/shell/src/components/*"
       ],
       "@containers/*": [
         "core/app/shell/src/containers/*"
-      ],
-      "@store/*": [
-        "core/app/shell/src/store/*"
       ]
     },
     "lib": [

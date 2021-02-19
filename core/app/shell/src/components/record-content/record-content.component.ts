@@ -27,7 +27,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
 import {Panel} from 'common';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {FieldMap} from 'common';
 import {Record} from 'common';
 import {RecordContentConfig, RecordContentDataSource} from '@components/record-content/record-content.model';

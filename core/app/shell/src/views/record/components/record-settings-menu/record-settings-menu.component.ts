@@ -30,9 +30,9 @@ import {map} from 'rxjs/operators';
 import {RecordActionsAdapter} from '@views/record/adapters/actions.adapter';
 import {ButtonGroupInterface} from 'common';
 import {Action} from 'common';
-import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {LanguageStore} from '@store/language/language.store';
+import {ScreenSize, ScreenSizeObserverService} from 'core';
+import {SystemConfigStore} from 'core';
+import {LanguageStore} from 'core';
 import {Button, ButtonInterface} from 'common';
 
 @Component({

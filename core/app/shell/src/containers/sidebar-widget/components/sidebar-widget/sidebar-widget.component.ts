@@ -26,7 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {componentTypeMap} from './sidebar-widget.manifest';
-import {BaseWidgetComponent} from 'common';
+import {BaseWidgetComponent} from '@containers/widgets/base-widget.model';
 
 @Component({
     selector: 'scrm-sidebar-widget',

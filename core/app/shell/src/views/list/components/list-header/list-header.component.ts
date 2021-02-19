@@ -26,7 +26,7 @@
 
 import {Component} from '@angular/core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ModuleNavigation} from 'core';
 import {FilterAdapter} from '@views/list/adapters/filter.adapter';
 
 @Component({

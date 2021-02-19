@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {DropdownButtonInterface} from 'common';
 import {ButtonInterface} from 'common';
 import {deepClone} from 'common';
@@ -34,13 +34,13 @@ import {filter, map, startWith, take} from 'rxjs/operators';
 import {Field, FieldMap} from 'common';
 import {SearchCriteria, SearchCriteriaFieldFilter} from 'common';
 import {Filter, SearchMetaField, SearchMetaFieldMap} from 'common';
-import {FieldManager} from '@services/record/field/field.manager';
+import {FieldManager} from 'core';
 import {ViewFieldDefinition} from 'common';
 import {Record} from 'common';
-import {MessageService} from '@services/message/message.service';
+import {MessageService} from 'core';
 import {FilterConfig} from '@components/list-filter/list-filter.model';
 import {isVoid} from 'common';
-import {RecordManager} from '@services/record/record.manager';
+import {RecordManager} from 'core';
 
 export interface FilterDataSource {
     getFilter(): Observable<Filter>;

@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 
 @Injectable()
 export class TopWidgetAdapter {

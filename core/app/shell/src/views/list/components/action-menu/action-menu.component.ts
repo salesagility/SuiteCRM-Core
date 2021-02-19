@@ -25,15 +25,15 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {ModuleAction} from '@store/navigation/navigation.store';
+import {ModuleAction} from 'core';
 import {ButtonInterface} from 'common';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ModuleNavigation} from 'core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {ButtonGroupInterface} from 'common';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {ScreenSize, ScreenSizeObserverService} from 'core';
+import {SystemConfigStore} from 'core';
 
 @Component({
     selector: 'scrm-action-menu',

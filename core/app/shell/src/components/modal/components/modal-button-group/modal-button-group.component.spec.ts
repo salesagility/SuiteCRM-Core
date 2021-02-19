@@ -31,11 +31,11 @@ import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {ModalButtonGroupInterface} from 'common';
 import {ModalButtonGroupModule} from '@components/modal/components/modal-button-group/modal-button-group.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
+import {SystemConfigStore} from 'core';
+import {systemConfigStoreMock} from 'core';
 
 @Component({
     selector: 'modal-button-group-test-host-component',

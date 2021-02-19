@@ -26,17 +26,9 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
+import {LanguageStore, LanguageStringMap} from 'core';
 import {map} from 'rxjs/operators';
-import {BulkActionsMap, DropdownButtonInterface, SelectionStatus} from 'common';
-
-export interface SelectionDataSource {
-    getSelectionStatus(): Observable<SelectionStatus>;
-
-    getSelectedCount(): Observable<number>;
-
-    updateSelection(state: SelectionStatus): void;
-}
+import {BulkActionsMap, DropdownButtonInterface, SelectionStatus, SelectionDataSource} from 'common';
 
 export interface BulkActionDataSource {
     getBulkActions(): Observable<BulkActionsMap>;

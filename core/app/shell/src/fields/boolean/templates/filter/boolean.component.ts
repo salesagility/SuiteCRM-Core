@@ -25,9 +25,9 @@
  */
 
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 import {TagInputComponent} from 'ngx-chips';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
 
 @Component({

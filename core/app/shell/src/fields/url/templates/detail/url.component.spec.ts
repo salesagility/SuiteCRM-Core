@@ -28,15 +28,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {UrlDetailFieldComponent} from './url.component';
 import {Field, FieldMetadata} from 'common';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
-import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
-import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {UserPreferenceStore} from 'core';
+import {userPreferenceStoreMock} from 'core';
+import {NumberFormatter} from 'core';
+import {numberFormatterMock} from 'core';
+import {DatetimeFormatter} from 'core';
+import {datetimeFormatterMock} from 'core';
+import {DateFormatter} from 'core';
+import {dateFormatterMock} from 'core';
+import {CurrencyFormatter} from 'core';
 
 @Component({
     selector: 'url-detail-field-test-host-component',

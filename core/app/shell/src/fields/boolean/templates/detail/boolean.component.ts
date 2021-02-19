@@ -26,7 +26,7 @@
 
 import {Component} from '@angular/core';
 import {BaseBooleanComponent} from '@fields/base/base-boolean.component';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-boolean-detail',

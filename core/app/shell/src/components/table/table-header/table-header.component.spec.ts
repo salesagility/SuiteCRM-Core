@@ -33,12 +33,12 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {ImageModule} from '@components/image/image.module';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
 

@@ -32,7 +32,7 @@ import {ActionBarUiComponent} from './action-bar.component';
 import {ImageModule} from '@components/image/image.module';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
+import {ButtonLoadingUiModule} from 'core';
 
 @NgModule({
     declarations: [ActionBarUiComponent],

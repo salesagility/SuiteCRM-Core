@@ -30,10 +30,10 @@ import {DateEditFieldComponent} from '@fields/date/templates/edit/date.component
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, of} from 'rxjs';
 import {CommonModule} from '@angular/common';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {UserPreferenceStore} from 'core';
+import {SystemConfigStore} from 'core';
 import {Field} from 'common';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
+import {userPreferenceStoreMock} from 'core';
 
 @Component({
     selector: 'date-edit-field-test-host-component',

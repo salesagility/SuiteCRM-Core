@@ -33,27 +33,27 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {recordviewStoreMock} from '@views/record/store/record-view/record-view.store.spec.mock';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImagesStore} from 'core';
 import {of} from 'rxjs';
-import {themeImagesMockData} from '@store/theme-images/theme-images.store.spec.mock';
+import {themeImagesMockData} from 'core';
 import {take} from 'rxjs/operators';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ModuleNavigation} from 'core';
 import {
     mockModuleNavigation,
     mockRouter
-} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {NavigationStore} from '@store/navigation/navigation.store';
-import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
-import {AppStateStore} from '@store/app-state/app-state.store';
-import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
+} from 'core';
+import {SystemConfigStore} from 'core';
+import {systemConfigStoreMock} from 'core';
+import {UserPreferenceStore} from 'core';
+import {userPreferenceStoreMock} from 'core';
+import {NavigationStore} from 'core';
+import {navigationMock} from 'core';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
+import {MetadataStore} from 'core';
+import {metadataStoreMock} from 'core';
+import {AppStateStore} from 'core';
+import {appStateStoreMock} from 'core';
 import {Router} from '@angular/router';
 import {SubpanelModule} from '@containers/subpanel/components/subpanel/subpanel.module';
 

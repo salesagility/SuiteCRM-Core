@@ -31,10 +31,10 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {LogoutUiComponent} from './logout.component';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {AuthService} from '@services/auth/auth.service';
-import {LanguageStore} from '@store/language/language.store';
+import {AuthService} from 'core';
+import {LanguageStore} from 'core';
 import {of} from 'rxjs';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {languageStoreMock} from 'core';
 import {take} from 'rxjs/operators';
 
 describe('LogoutComponent', () => {

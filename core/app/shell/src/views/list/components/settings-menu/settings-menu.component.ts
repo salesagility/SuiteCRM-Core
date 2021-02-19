@@ -59,8 +59,8 @@ import {ColumnChooserComponent} from '@components/columnchooser/columnchooser.co
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {ScreenSize, ScreenSizeObserverService} from 'core';
+import {SystemConfigStore} from 'core';
 import {SearchCriteriaFilter} from 'common';
 
 @Component({

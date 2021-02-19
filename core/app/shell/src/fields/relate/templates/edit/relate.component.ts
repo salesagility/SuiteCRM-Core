@@ -25,12 +25,12 @@
  */
 
 import {Component, ViewChild} from '@angular/core';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
-import {LanguageStore} from '@store/language/language.store';
+import {DataTypeFormatter} from 'core';
+import {LanguageStore} from 'core';
 import {TagInputComponent} from 'ngx-chips';
-import {RelateService} from '@services/record/relate/relate.service';
+import {RelateService} from 'core';
 import {BaseRelateComponent} from '@fields/base/base-relate.component';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ModuleNameMapper} from 'core';
 import {ButtonInterface} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecordListModalComponent} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.component';

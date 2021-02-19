@@ -35,8 +35,8 @@ import {ListViewStore} from '@views/list/store/list-view/list-view.store';
 import {listviewStoreMock} from '@views/list/store/list-view/list-view.store.spec.mock';
 import {DropdownButtonInterface} from 'common';
 import {MinimiseButtonModule} from '@components/minimise-button/minimise-button.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'panel-test-host-component',

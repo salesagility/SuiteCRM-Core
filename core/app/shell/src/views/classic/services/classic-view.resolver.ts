@@ -27,16 +27,16 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
-import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {LanguageStore} from '@store/language/language.store';
-import {NavigationStore} from '@store/navigation/navigation.store';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
-import {ThemeImagesStore} from '@store/theme-images/theme-images.store';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
-import {AppStateStore} from '@store/app-state/app-state.store';
-import {MessageService} from '@services/message/message.service';
-import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
+import {RouteConverter} from 'core';
+import {SystemConfigStore} from 'core';
+import {LanguageStore} from 'core';
+import {NavigationStore} from 'core';
+import {UserPreferenceStore} from 'core';
+import {ThemeImagesStore} from 'core';
+import {ModuleNameMapper} from 'core';
+import {AppStateStore} from 'core';
+import {MessageService} from 'core';
+import {BaseMetadataResolver} from 'core';
 
 @Injectable({providedIn: 'root'})
 export class ClassicViewResolver extends BaseMetadataResolver {

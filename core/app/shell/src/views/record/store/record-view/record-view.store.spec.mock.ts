@@ -26,23 +26,23 @@
 
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
-import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
-import {metadataStoreMock} from '@store/metadata/metadata.store.spec.mock';
-import {mockModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service.spec.mock';
-import {localStorageServiceMock} from '@services/local-storage/local-storage.service.spec.mock';
+import {appStateStoreMock} from 'core';
+import {languageStoreMock} from 'core';
+import {navigationMock} from 'core';
+import {metadataStoreMock} from 'core';
+import {mockModuleNavigation} from 'core';
+import {localStorageServiceMock} from 'core';
 import {deepClone} from 'common';
-import {messageServiceMock} from '@services/message/message.service.spec.mock';
+import {messageServiceMock} from 'core';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
-import {RecordFetchGQL} from '@store/record/graphql/api.record.get';
-import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
+import {RecordFetchGQL} from 'core';
+import {RecordSaveGQL} from 'core';
 import {Record} from 'common';
 import {subpanelFactoryMock} from '@containers/subpanel/store/subpanel/subpanel.store.spec.mock';
-import {recordManagerMock} from '@services/record/record.manager.spec.mock';
-import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
-import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
-import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
+import {recordManagerMock} from 'core';
+import {StatisticsBatch} from 'core';
+import {StatisticsFetchGQL} from 'core';
+import {StatisticsMap, StatisticsQueryMap} from 'common';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {

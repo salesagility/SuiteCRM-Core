@@ -32,15 +32,17 @@ import {
     BulkActionsMap,
     ColumnDefinition,
     LineAction,
+    PaginationCount,
+    PaginationDataSource,
     Record,
     RecordSelection,
+    SelectionDataSource,
     SelectionStatus,
     SortDirection,
     SortingSelection
 } from 'common';
 import {DataSource} from '@angular/cdk/collections';
-import {BulkActionDataSource, SelectionDataSource,} from '@components/bulk-action-menu/bulk-action-menu.component';
-import {PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
+import {BulkActionDataSource} from '@components/bulk-action-menu/bulk-action-menu.component';
 
 /* eslint-disable camelcase,@typescript-eslint/camelcase */
 export const tableConfigMock: TableConfig = {

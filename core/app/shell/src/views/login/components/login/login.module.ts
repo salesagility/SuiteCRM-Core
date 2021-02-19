@@ -34,7 +34,7 @@ import {LogoUiModule} from '@components/logo/logo.module';
 import {LoginUiRoutes} from './login.routes';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ImageModule} from '@components/image/image.module';
-import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
+import {ButtonLoadingUiModule} from 'core';
 
 @NgModule({
     declarations: [

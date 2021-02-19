@@ -29,8 +29,8 @@ import {Component} from '@angular/core';
 import {CloseButtonComponent} from './close-button.component';
 import {ButtonInterface} from 'common';
 import {ButtonModule} from '@components/button/button.module';
-import {LanguageStore} from '@store/language/language.store';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
+import {LanguageStore} from 'core';
+import {languageStoreMock} from 'core';
 
 @Component({
     selector: 'close-button-test-host-component',

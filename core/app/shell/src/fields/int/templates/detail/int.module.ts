@@ -29,7 +29,7 @@ import {CommonModule} from '@angular/common';
 
 import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {IntDetailFieldComponent} from './int.component';
-import {FormatNumberModule} from '@base/pipes/format-number/format-number.module';
+import {FormatNumberModule} from 'core';
 
 @NgModule({
     declarations: [IntDetailFieldComponent],

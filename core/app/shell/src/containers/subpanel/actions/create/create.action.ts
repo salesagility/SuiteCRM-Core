@@ -25,11 +25,11 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ModuleNameMapper} from 'core';
 import {Params, Router} from '@angular/router';
 import {SubpanelActionData, SubpanelActionHandler} from '@containers/subpanel/actions/subpanel.action';
-import {AttributeMap} from '@app-common/record/record.model';
-import {isVoid} from '@app-common/utils/value-utils';
+import {AttributeMap} from 'common';
+import {isVoid} from 'common';
 import get from 'lodash-es/get';
 
 

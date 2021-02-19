@@ -25,7 +25,7 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AppStateStore} from '@store/app-state/app-state.store';
+import {AppStateStore} from 'core';
 import {Observable, Subscription} from 'rxjs';
 import {ListViewModel, ListViewStore} from '@views/list/store/list-view/list-view.store';
 

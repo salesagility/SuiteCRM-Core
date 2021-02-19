@@ -32,16 +32,16 @@ import {
     NavbarModuleMap,
     Navigation,
     UserActionMenu
-} from '@store/navigation/navigation.store';
-import {LanguageStringMap, LanguageStrings} from '@store/language/language.store';
-import {RouteConverter} from '@services/navigation/route-converter/route-converter.service';
+} from 'core';
+import {LanguageStringMap, LanguageStrings} from 'core';
+import {RouteConverter} from 'core';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
 import {ready} from 'common';
-import {UserPreferenceMap} from '@store/user-preference/user-preference.store';
-import {AppState} from '@store/app-state/app-state.store';
+import {UserPreferenceMap} from 'core';
+import {AppState} from 'core';
 import {LinkTarget} from '@components/navbar/link-target';
-import {ModuleNavigation} from '@services/navigation/module-navigation/module-navigation.service';
+import {ModuleNavigation} from 'core';
 import {MenuItem} from 'common';
 
 export class NavbarAbstract implements NavbarModel {

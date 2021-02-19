@@ -27,7 +27,7 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Field} from 'common';
 import {Record} from 'common';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 import {Component} from '@angular/core';
 
 @Component({template: ''})

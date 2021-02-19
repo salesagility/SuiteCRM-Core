@@ -26,9 +26,9 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
-import {LanguageStore, LanguageStringMap} from '@store/language/language.store';
+import {LanguageStore, LanguageStringMap} from 'core';
 import {map} from 'rxjs/operators';
-import {PageSelection, PaginationCount, PaginationDataSource} from '@components/pagination/pagination.model';
+import {PageSelection, PaginationCount, PaginationDataSource} from 'common';
 
 export interface PaginationViewModel {
     appStrings: LanguageStringMap;

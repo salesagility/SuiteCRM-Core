@@ -32,15 +32,15 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginUiComponent} from './login.component';
-import {LanguageStore} from '@store/language/language.store';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
-import {RecoverPasswordService} from '@services/process/processes/recover-password/recover-password';
-import {languageStoreMock} from '@store/language/language.store.spec.mock';
-import {systemConfigStoreMock} from '@store/system-config/system-config.store.spec.mock';
-import {recoverPasswordMock} from '@services/process/processes/recover-password/recover-password.spec.mock';
+import {LanguageStore} from 'core';
+import {SystemConfigStore} from 'core';
+import {RecoverPasswordService} from 'core';
+import {languageStoreMock} from 'core';
+import {systemConfigStoreMock} from 'core';
+import {recoverPasswordMock} from 'core';
 import {By} from '@angular/platform-browser';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {ButtonLoadingUiModule} from '@base/directives/button-loading/button-loading.module';
+import {ButtonLoadingUiModule} from 'core';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;

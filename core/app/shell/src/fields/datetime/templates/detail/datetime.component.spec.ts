@@ -29,16 +29,16 @@ import {Component} from '@angular/core';
 import {DateTimeDetailFieldComponent} from './datetime.component';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
-import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
+import {UserPreferenceStore} from 'core';
 import {Field} from 'common';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
-import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-formatter.service.spec.mock';
-import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
-import {NumberFormatter} from '@services/formatters/number/number-formatter.service';
-import {numberFormatterMock} from '@services/formatters/number/number-formatter.spec.mock';
-import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
-import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
-import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {DatetimeFormatter} from 'core';
+import {datetimeFormatterMock} from 'core';
+import {userPreferenceStoreMock} from 'core';
+import {NumberFormatter} from 'core';
+import {numberFormatterMock} from 'core';
+import {DateFormatter} from 'core';
+import {dateFormatterMock} from 'core';
+import {CurrencyFormatter} from 'core';
 
 @Component({
     selector: 'datetime-detail-field-test-host-component',

@@ -26,8 +26,8 @@
 
 import {Component} from '@angular/core';
 import {BaseEnumComponent} from '@fields/base/base-enum.component';
-import {LanguageStore} from '@store/language/language.store';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {LanguageStore} from 'core';
+import {DataTypeFormatter} from 'core';
 
 @Component({
     selector: 'scrm-dynamicenum-detail',

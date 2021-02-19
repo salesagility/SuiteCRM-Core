@@ -27,7 +27,7 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '@store/theme-images/theme-images.store';
+import {ThemeImage, ThemeImageMap, ThemeImagesStore} from 'core';
 
 @Component({
     selector: 'scrm-image',

@@ -26,7 +26,7 @@
 
 import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 import {SortDirection} from 'common';
 import {TableConfig} from '@components/table/table.model';
 import {ListViewStore} from '../store/list-view/list-view.store';

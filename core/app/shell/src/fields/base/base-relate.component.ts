@@ -24,15 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {DataTypeFormatter} from '@services/formatters/data-type.formatter.service';
+import {DataTypeFormatter} from 'core';
 import {catchError, map, tap} from 'rxjs/operators';
 import {AttributeMap, Record} from 'common';
-import {RelateService} from '@services/record/relate/relate.service';
+import {RelateService} from 'core';
 import {BaseFieldComponent} from '@fields/base/base-field.component';
-import {ModuleNameMapper} from '@services/navigation/module-name-mapper/module-name-mapper.service';
+import {ModuleNameMapper} from 'core';
 
 @Component({template: ''})
 export class BaseRelateComponent extends BaseFieldComponent implements OnInit, OnDestroy {

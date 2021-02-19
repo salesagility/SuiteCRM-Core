@@ -33,7 +33,7 @@ import {map} from 'rxjs/operators';
 import {ButtonUtils} from '@components/button/button.utils';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import defaults from 'lodash-es/defaults';
-import {SystemConfigStore} from '@store/system-config/system-config.store';
+import {SystemConfigStore} from 'core';
 
 @Component({
     selector: 'scrm-modal-button-group',

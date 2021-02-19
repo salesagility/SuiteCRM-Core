@@ -26,7 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {ButtonInterface} from 'common';
-import {LanguageStore} from '@store/language/language.store';
+import {LanguageStore} from 'core';
 
 @Component({
     selector: 'scrm-button',

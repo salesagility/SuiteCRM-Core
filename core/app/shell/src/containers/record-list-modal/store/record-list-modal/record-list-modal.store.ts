@@ -25,12 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {StateStore} from '@store/state';
-import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
+import {StateStore} from 'core';
+import {RecordList, RecordListStore} from 'core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
+import {RecordListStoreFactory} from 'core';
 import {ColumnDefinition, RecordListMeta, SearchMeta} from 'common';
-import {MetadataStore} from '@store/metadata/metadata.store.service';
+import {MetadataStore} from 'core';
 import {map, take, tap} from 'rxjs/operators';
 
 @Injectable()
