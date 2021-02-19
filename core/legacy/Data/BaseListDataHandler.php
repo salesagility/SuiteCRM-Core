@@ -30,7 +30,8 @@ abstract class BaseListDataHandler
     public function __construct(
         LegacyFilterMapper $legacyFilterMapper,
         RecordMapper $recordMapper
-    ) {
+    )
+    {
         $this->legacyFilterMapper = $legacyFilterMapper;
         $this->recordMapper = $recordMapper;
     }
@@ -98,7 +99,9 @@ abstract class BaseListDataHandler
 
         $where = $this->buildFilterClause($bean, $searchForm);
 
-        $filter_fields = $legacyListView->lv->setupFilterFields([]);
+        $queryFields = $this->buildFilterFields($bean);
+
+        $filter_fields = $legacyListView->lv->setupFilterFields($queryFields);
 
         return [$params, $where, $filter_fields];
     }
@@ -145,7 +148,8 @@ abstract class BaseListDataHandler
         SugarBean $bean,
         array $listViewDefs,
         array $criteria = []
-    ): SearchForm {
+    ): SearchForm
+    {
 
         /* @noinspection PhpIncludeInspection */
         require_once 'include/SearchForm/SearchForm2.php';
@@ -201,4 +205,39 @@ abstract class BaseListDataHandler
 
         return $where;
     }
+
+
+    /**
+     * @param SugarBean $bean
+     * @return array
+     */
+    protected function buildFilterFields(SugarBean $bean): array
+    {
+        $parsedFilterFields = array();
+        $excludedRelationshipFields = array();
+
+        foreach ($bean->field_defs as $fieldName => $fieldDefinition) {
+            $type = $fieldDefinition['type'] ?? '';
+            $listShow = $fieldDefinition['list-show'] ?? true;
+            if ($type === 'link' || $listShow === false) {
+                continue;
+            }
+
+            $linkType = $fieldDefinition['link_type'] ?? '';
+            if ($linkType === 'relationship_info') {
+                $excludedRelationshipFields[] = $fieldName;
+                $relationshipFields = $fieldDefinition['relationship_fields'] ?? [];
+                if (!empty($relationshipFields)) {
+                    foreach ($relationshipFields as $relationshipField) {
+                        $excludedRelationshipFields[] = $relationshipField;
+                    }
+                }
+            }
+
+            $parsedFilterFields[] = $fieldName;
+        }
+
+        return array_diff($parsedFilterFields, $excludedRelationshipFields);
+    }
+
 }
