@@ -7,6 +7,10 @@
   cursor: pointer;
   margin: 0 0.5em;
   font-size: 1em;
+  svg {
+    position: relative;
+    top: -0.09em;
+  }
 }
 
 a.footer-link:not([href]):not([tabindex]) {

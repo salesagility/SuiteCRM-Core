@@ -3,14 +3,14 @@
  */
 
 .btn-outline-danger {
-  color: $salmon-pink;
-  border-color: $salmon-pink;
+  color: $btn-danger;
+  border-color: $btn-danger;
 }
 
 .btn-outline-danger:hover {
   color: #fff;
-  background-color: $salmon-pink;
-  border-color: $salmon-pink;
+  background-color: $btn-danger;
+  border-color: $btn-danger;
 }
 
 .btn-outline-danger:focus, .btn-outline-danger.focus {
@@ -18,15 +18,15 @@
 }
 
 .btn-outline-danger.disabled, .btn-outline-danger:disabled {
-  color: $salmon-pink;
+  color: $btn-danger;
   background-color: transparent;
 }
 
 .btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
 .show > .btn-outline-danger.dropdown-toggle {
   color: #fff;
-  background-color: $salmon-pink;
-  border-color: $salmon-pink;
+  background-color: $btn-danger;
+  border-color: $btn-danger;
 }
 
 .btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
@@ -36,8 +36,8 @@
 
 .btn-danger {
   color: #fff;
-  background-color: $salmon-pink;
-  border-color: $salmon-pink;
+  background-color: $btn-danger;
+  border-color: $btn-danger;
 }
 
 .btn-danger:hover {
@@ -55,8 +55,8 @@
 
 .btn-danger.disabled, .btn-danger:disabled {
   color: #fff;
-  background-color: $salmon-pink;
-  border-color: $salmon-pink;
+  background-color: $btn-danger;
+  border-color: $btn-danger;
 }
 
 .btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,

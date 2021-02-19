@@ -29,31 +29,43 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow {
-  color: #f1c584;
-  border-color: #f1c584;
+  color: $dark-yellow;
+  border-color: $dark-yellow;
+}
+
+.history-timeline .entry-yellow .card {
+  background: $light-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-yellow svg {
-  fill: #f1c584;
-  stroke: #f1c584;
+  fill: $dark-yellow;
+  stroke: $dark-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-purple {
-  color: #c099bf;
-  border-color: #c099bf;
+  color: $dark-purple;
+  border-color: $dark-purple;
 }
 
 .history-timeline .history-timeline-entry.entry-purple svg {
-  fill: #c099bf;
-  stroke: #c099bf;
+  fill: $dark-purple;
+  stroke: $dark-purple;
+}
+
+.history-timeline .entry-purple .card {
+  background: $light-purple;
 }
 
 .history-timeline .history-timeline-entry.entry-blue {
-  color: #8ab2ba;
-  border-color: #8ab2ba;
+  color: $mild-blue;
+  border-color: $mild-blue;
 }
 
 .history-timeline .history-timeline-entry.entry-blue svg {
-  fill: #8ab2ba;
-  stroke: #8ab2ba;
+  fill: $mild-blue;
+  stroke: $mild-blue;
+}
+
+.history-timeline .entry-blue .card {
+  background: $light-blue;
 }
