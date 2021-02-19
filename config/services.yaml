@@ -13,3 +13,4 @@ imports:
   - { resource: modules/**/*.yaml }
   - { resource: modules/**/*.php }
   - { resource: core_services.yaml }
+  - { resource: ../extentions/ }
