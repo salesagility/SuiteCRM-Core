@@ -25,11 +25,8 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
      */
     public function getData(array $query): Statistic
     {
-        $subpanel = $query['key'];
 
-        if ($subpanel === 'default' && isset($query['params']['subpanel'])) {
-            $subpanel = $query['params']['subpanel'];
-        }
+        $subpanel = $query['params']['subpanel'] ?? $query['key'];
 
         [$module, $id] = $this->extractContext($query);
         if (empty($module) || empty($id)) {
