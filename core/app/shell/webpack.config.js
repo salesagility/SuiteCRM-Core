@@ -53,6 +53,12 @@ module.exports = {
           requiredVersion: false
         },
 
+        "core": {
+          singleton: true,
+          import: "dist/core",
+          requiredVersion: false
+        },
+
       }
 
     }),
