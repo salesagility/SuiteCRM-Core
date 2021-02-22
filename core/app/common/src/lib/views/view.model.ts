@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SearchCriteria} from './list';
-import {SortingSelection} from './list';
+import {SortingSelection} from './list/list-navigation.model';
+import {SearchCriteria} from './list/search-criteria.model';
 
 export type ViewMode = 'detail' | 'edit' | 'list' | 'create';
 

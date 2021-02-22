@@ -77,9 +77,9 @@
  */
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface} from '../button';
-import {DropdownButtonInterface} from '../button';
-import {DropdownOptions} from '../button';
+import {DropdownButtonInterface} from '../button/dropdown-button.model';
+import {ButtonInterface} from '../button/button.model';
+import {DropdownOptions} from '../button/button-group.model';
 
 export declare type ModalButtonCallback = (activeModal: NgbActiveModal) => void;
 

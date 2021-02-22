@@ -25,11 +25,11 @@
  */
 
 import {ViewFieldDefinition} from './metadata.model';
-import {BulkActionsMap} from '../actions';
-import {LineAction} from '../actions';
-import {ChartTypesMap} from '../containers/chart';
 import {WidgetMetadata} from './widget.metadata';
-import {FieldDefinition} from '../record';
+import {LineAction} from '../actions/line-action.model';
+import {FieldDefinition} from '../record/field.model';
+import {BulkActionsMap} from '../actions/bulk-action.model';
+import {ChartTypesMap} from '../containers/chart/chart.model';
 
 export interface RecordListMeta {
     fields: ColumnDefinition[];

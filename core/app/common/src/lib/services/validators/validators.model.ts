@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {StringMap} from '../../types';
 import {AbstractControl, ValidatorFn} from '@angular/forms';
+import {StringMap} from '../../types/string-map';
 
 export interface StandardValidationErrors {
     [key: string]: StandardValidationError;

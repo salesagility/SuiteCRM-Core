@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {MenuItemLink} from '../menu';
+import {MenuItemLink} from '../menu/menu.model';
 
 export interface LineAction {
     key: string;

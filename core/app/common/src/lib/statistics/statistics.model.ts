@@ -25,7 +25,7 @@
  */
 
 import {ViewContext} from '../views/view.model';
-import {SeriesResult} from '../containers/chart';
+import {SeriesResult} from '../containers/chart/chart.model';
 
 export interface StatisticsQueryMap {
     [key: string]: StatisticsQuery;

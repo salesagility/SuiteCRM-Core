@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldDefinition, FieldMetadata} from '../record';
+import {FieldDefinition, FieldMetadata} from '../record/field.model';
 
 export interface ViewFieldDefinition {
     name?: string;
