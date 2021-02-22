@@ -26,8 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {TableComponent} from './table.component';
 
 import {TableHeaderModule} from './table-header/table-header.module';
@@ -40,7 +38,6 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     exports: [TableComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(TableComponent),
         TableHeaderModule,
         TableBodyModule,
         TableFooterModule,

@@ -26,8 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {LogoUiComponent} from './logo.component';
 import {ImageModule} from '@components/image/image.module';
 
@@ -36,7 +34,6 @@ import {ImageModule} from '@components/image/image.module';
     exports: [LogoUiComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(LogoUiComponent),
         ImageModule
     ]
 })

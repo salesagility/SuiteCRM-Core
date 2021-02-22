@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ListHeaderComponent} from './list-header.component';
 
 import {ModuleTitleModule} from '@components/module-title/module-title.module';
@@ -41,7 +40,6 @@ import {ListFilterModule} from '@components/list-filter/list-filter.module';
     exports: [ListHeaderComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ListHeaderComponent),
         ModuleTitleModule,
         ActionMenuModule,
         SettingsMenuModule,

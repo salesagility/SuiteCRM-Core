@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {ListContainerComponent} from './list-container.component';
 
 import {TableModule} from '@components/table/table.module';
@@ -40,7 +39,6 @@ import {SidebarWidgetModule} from '@containers/sidebar-widget/components/sidebar
     exports: [ListContainerComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(ListContainerComponent),
         TableModule,
         WidgetPanelModule,
         AngularSvgIconModule,

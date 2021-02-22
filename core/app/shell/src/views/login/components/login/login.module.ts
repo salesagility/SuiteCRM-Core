@@ -28,7 +28,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {LoginUiComponent} from './login.component';
 import {LogoUiModule} from '@components/logo/logo.module';
 import {LoginUiRoutes} from './login.routes';
@@ -46,7 +45,6 @@ import {ButtonLoadingUiModule} from 'core';
     imports: [
         FormsModule,
         LogoUiModule,
-        AppManagerModule.forChild(LoginUiComponent),
         RouterModule.forChild(LoginUiRoutes),
         CommonModule,
         AngularSvgIconModule,

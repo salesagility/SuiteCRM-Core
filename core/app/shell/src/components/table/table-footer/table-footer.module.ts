@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {TableFooterComponent} from './table-footer.component';
 
 import {PaginationModule} from '../../pagination/pagination.module';
@@ -39,7 +38,6 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     exports: [TableFooterComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(TableFooterComponent),
         PaginationModule,
         BulkActionMenuModule,
         AngularSvgIconModule

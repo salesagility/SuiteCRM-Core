@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {TableBodyComponent} from './table-body.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -42,7 +41,6 @@ import {LabelModule} from '@components/label/label.module';
     exports: [TableBodyComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(TableBodyComponent),
         AngularSvgIconModule,
         CdkTableModule,
         FieldModule,

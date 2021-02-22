@@ -26,7 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {DateTimeEditFieldComponent} from './datetime.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbDatepickerModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +37,6 @@ import {ButtonModule} from '@components/button/button.module';
     exports: [DateTimeEditFieldComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(DateTimeEditFieldComponent),
         FormsModule,
         NgbDatepickerModule,
         NgbTimepickerModule,

@@ -26,8 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {NavbarUiComponent} from './navbar.component';
 
 import {LogoUiModule} from '../logo/logo.module';
@@ -62,7 +60,6 @@ import { MenuItemsListComponent } from './menu-items-list/menu-items-list.compon
     ],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(NavbarUiComponent),
         LogoUiModule,
         LogoutUiModule,
         ActionBarUiModule,

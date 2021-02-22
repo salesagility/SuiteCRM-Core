@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {SettingsMenuComponent} from './settings-menu.component';
 
 import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
@@ -42,7 +41,6 @@ import {ButtonGroupModule} from '@components/button-group/button-group.module';
     exports: [SettingsMenuComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(SettingsMenuComponent),
         ColumnChooserModule,
         ImageModule,
         ButtonModule,

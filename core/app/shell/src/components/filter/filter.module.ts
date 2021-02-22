@@ -26,8 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {FilterUiComponent} from './filter.component';
 import {ImageModule} from '@components/image/image.module';
 
@@ -36,7 +34,6 @@ import {ImageModule} from '@components/image/image.module';
     exports: [FilterUiComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(FilterUiComponent),
         ImageModule
     ]
 })

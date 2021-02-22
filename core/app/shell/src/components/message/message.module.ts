@@ -26,8 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {AppManagerModule} from '../../app-manager/app-manager.module';
 import {MessageUiComponent} from './message.component';
 
 @NgModule({
@@ -35,7 +33,6 @@ import {MessageUiComponent} from './message.component';
     exports: [MessageUiComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(MessageUiComponent)
     ]
 })
 export class MessageUiModule {

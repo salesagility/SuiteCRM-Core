@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {UrlDetailFieldComponent} from '@fields/url/templates/detail/url.component';
 
 @NgModule({
@@ -35,7 +34,6 @@ import {UrlDetailFieldComponent} from '@fields/url/templates/detail/url.componen
     exports: [UrlDetailFieldComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(UrlDetailFieldComponent),
     ]
 })
 export class UrlDetailFieldModule {

@@ -54,8 +54,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ErrorInterceptor} from 'core';
 
-import {AppManagerModule} from '../app-manager/app-manager.module';
-
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
@@ -79,7 +77,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     imports: [
         BrowserModule,
         HttpClientModule,
-        AppManagerModule,
         AppRoutingModule,
         FooterUiModule,
         NavbarUiModule,

@@ -26,7 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {SubpanelContainerComponent} from './subpanel-container.component';
 import {SubpanelModule} from '../subpanel/subpanel.module';
 import {ImageModule} from '@components/image/image.module';
@@ -44,7 +43,6 @@ import {LabelModule} from '@components/label/label.module';
         CommonModule,
         NgbModule,
         ImageModule,
-        AppManagerModule.forChild(SubpanelContainerComponent),
         RouterModule,
         SubpanelModule,
         InlineLoadingSpinnerModule,

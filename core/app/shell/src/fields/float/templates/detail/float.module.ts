@@ -27,7 +27,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {FloatDetailFieldComponent} from './float.component';
 import {FormatNumberModule} from 'core';
 
@@ -36,7 +35,6 @@ import {FormatNumberModule} from 'core';
     exports: [FloatDetailFieldComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(FloatDetailFieldComponent),
         FormatNumberModule
     ]
 })

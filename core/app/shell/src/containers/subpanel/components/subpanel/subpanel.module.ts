@@ -26,7 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {SubpanelComponent} from './subpanel.component';
 import {PanelModule} from '@components/panel/panel.module';
 import {ImageModule} from '@components/image/image.module';
@@ -43,7 +42,6 @@ import {TableModule} from '@components/table/table.module';
         CommonModule,
         NgbModule,
         ImageModule,
-        AppManagerModule.forChild(SubpanelComponent),
         PanelModule,
         RouterModule,
         ButtonGroupModule,

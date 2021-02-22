@@ -26,7 +26,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {RecordContainerComponent} from './record-container.component';
 import {WidgetPanelModule} from '@components/widget-panel/widget-panel.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -40,7 +39,6 @@ import {SidebarWidgetModule} from '@containers/sidebar-widget/components/sidebar
     exports: [RecordContainerComponent],
     imports: [
         CommonModule,
-        AppManagerModule.forChild(RecordContainerComponent),
         WidgetPanelModule,
         AngularSvgIconModule,
         SubpanelContainerModule,

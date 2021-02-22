@@ -30,7 +30,6 @@ import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {AppManagerModule} from '@base/app-manager/app-manager.module';
 import {MetadataStore} from 'core';
 import {ImageModule} from '@components/image/image.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -64,7 +63,6 @@ describe('SubpanelComponent', () => {
                 CommonModule,
                 NgbModule,
                 ImageModule,
-                AppManagerModule.forChild(SubpanelComponent),
                 PanelModule,
                 RouterModule,
                 ButtonGroupModule,
