@@ -223,11 +223,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
      *
      * @returns {string} ViewMode
      */
-    getRecord(): Record {
+    getBaseRecord(): Record {
         if (!this.internalState) {
             return null;
         }
-        return this.recordStore.getRecord();
+        return this.recordStore.getBaseRecord();
     }
 
     /**

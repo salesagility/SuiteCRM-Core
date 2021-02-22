@@ -17,6 +17,7 @@ export class RecordCreateAction extends RecordActionHandler {
 
     run(data: RecordActionData): void {
         const store = data.store;
+        const baseRecord = store.getBaseRecord();
 
         const route = '/' + store.vm.appData.module.name + '/edit';
         const module = this.moduleNameMapper.toLegacy(store.vm.appData.module.name);
@@ -28,7 +29,7 @@ export class RecordCreateAction extends RecordActionHandler {
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
                 return_action: 'DetailView',
                 // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-                return_record: (store.getRecord() && store.getRecord().id) || ''
+                return_record: (baseRecord && baseRecord.id) || ''
             }
         }).then();
     }

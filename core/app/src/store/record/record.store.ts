@@ -130,11 +130,19 @@ export class RecordStore {
      *
      * @returns {object} Record
      */
-    getRecord(): Record {
+    getBaseRecord(): Record {
         if (!this.internalState) {
             return null;
         }
-        return deepClone(this.internalState);
+
+        const baseRecord = {
+            id: this.internalState.id,
+            type: this.internalState.type,
+            module: this.internalState.module,
+            attributes: this.internalState.attributes
+        } as Record;
+
+        return deepClone(baseRecord);
     }
 
     /**

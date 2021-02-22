@@ -70,7 +70,8 @@ export class RecordActionsAdapter implements ActionDataSource {
                     meta,
                     mode,
                     record,
-                    languages
+                    languages,
+                    widget
                 ]
             ) => {
                 if (!mode || !meta) {
@@ -135,13 +136,14 @@ export class RecordActionsAdapter implements ActionDataSource {
 
     protected runAsyncAction(action: Action): void {
         const actionName = `record-${action.key}`;
+        const baseRecord = this.store.getBaseRecord();
 
         this.message.removeMessages();
 
         const asyncData = {
             action: actionName,
-            module: this.store.getRecord().module,
-            id: this.store.getRecord().id,
+            module: baseRecord.module,
+            id: baseRecord.id,
         } as AsyncActionInput;
 
         this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe((process: Process) => {
