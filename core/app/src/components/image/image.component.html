@@ -3,7 +3,7 @@
 
         <svg-icon *ngIf="img.type === 'svg'" class="sicon" src="{{img.path}}"></svg-icon>
 
-        <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}">
+        <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}" class="{{klass}}">
 
     </ng-container>
 </ng-container>

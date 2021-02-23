@@ -343,12 +343,16 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
 
     protected setupVM(): void {
 
-        const statistics$: Observable<SingleValueStatisticsState>[] = [];
+        let allStatistics$: Observable<SingleValueStatisticsState[]> = of([]).pipe(shareReplay());
         const layout$ = of(this.getLayout()).pipe(shareReplay());
 
-        Object.keys(this.statistics).forEach(type => statistics$.push(this.statistics[type].store.state$));
+        if (this.statistics &&  Object.keys(this.statistics).length > 0){
+            const statistics$: Observable<SingleValueStatisticsState>[] = [];
+            Object.keys(this.statistics).forEach(type => statistics$.push(this.statistics[type].store.state$));
+            allStatistics$ = combineLatest(statistics$);
+        }
 
-        this.vm$ = combineLatest([combineLatest(statistics$), layout$]).pipe(
+        this.vm$ = combineLatest([allStatistics$, layout$]).pipe(
             map(([statistics, layout]) => {
 
                 const statsMap: { [key: string]: SingleValueStatisticsState } = {};

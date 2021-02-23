@@ -28,6 +28,7 @@ export interface StatisticWidgetLayoutRow {
 }
 
 export interface StatisticWidgetLayoutCol {
+    iconClass?: string;
     icon?: string;
     labelKey?: string;
     dynamicLabel?: string;

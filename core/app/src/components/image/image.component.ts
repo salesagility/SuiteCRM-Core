@@ -10,6 +10,7 @@ import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '@store/theme-images/t
 })
 export class ImageComponent {
     @Input() image: string;
+    @Input() klass = '';
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
