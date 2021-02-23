@@ -10,6 +10,7 @@ use BeanFactory;
 use DetailView2;
 use EditView;
 use Psr\Log\LoggerInterface;
+use UnexpectedValueException;
 use ViewDetail;
 use ViewEdit;
 use ViewFactory;
@@ -51,7 +52,8 @@ class RecordViewDefinitionHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         LoggerInterface $logger,
         RecordActionDefinitionProviderInterface $actionDefinitionProvider
-    ) {
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState);
         $this->logger = $logger;
         $this->actionDefinitionProvider = $actionDefinitionProvider;
@@ -76,7 +78,8 @@ class RecordViewDefinitionHandler extends LegacyHandler
         string $module,
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
 
         $this->init();
 
@@ -143,7 +146,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $this->loadDetailViewMetadata($view);
 
-        return $view->dv->defs;
+        return $view->dv->defs ?? [];
     }
 
     /**
@@ -151,13 +154,21 @@ class RecordViewDefinitionHandler extends LegacyHandler
      */
     protected function loadDetailViewMetadata(ViewDetail $view): void
     {
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/DetailView/DetailView2.php';
         $metadataFile = $view->getMetaDataFile();
         $view->dv = new DetailView2();
         $view->dv->ss =& $view->ss;
-        $view->dv->setup($view->module, $view->bean, $metadataFile,
-            get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
+
+        try {
+            $view->dv->setup($view->module, $view->bean, $metadataFile,
+                get_custom_file_if_exists('include/DetailView/DetailView.tpl'));
+
+        } catch (UnexpectedValueException $exception) {
+            // Detail View metadata definition[file] is not available & couldn't be derived by the system
+            $view->dv->defs = [];
+        }
     }
 
     /**
@@ -181,7 +192,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         $this->loadEditViewMetadata($view);
 
-        return $view->ev->defs;
+        return $view->ev->defs ?? [];
     }
 
     /**
@@ -189,12 +200,20 @@ class RecordViewDefinitionHandler extends LegacyHandler
      */
     protected function loadEditViewMetadata(ViewEdit $view): void
     {
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/EditView/EditView2.php';
         $metadataFile = $view->getMetaDataFile();
         $view->ev = new EditView();
         $view->ev->ss =& $view->ss;
-        $view->ev->setup($view->module, $view->bean, $metadataFile);
+
+        try {
+            $view->ev->setup($view->module, $view->bean, $metadataFile);
+
+        } catch (UnexpectedValueException $exception) {
+            // Edit View metadata definition[file] is not available & couldn't be derived by the system
+            $view->ev->defs = [];
+        }
     }
 
     /**
@@ -242,7 +261,8 @@ class RecordViewDefinitionHandler extends LegacyHandler
         array $editViewDefs,
         ?array &$vardefs,
         array &$metadata
-    ): void {
+    ): void
+    {
         $detailViewDefs = $detailViewDefs ?? [];
         $panels = $detailViewDefs['panels'] ?? [];
         $editViewFields = $this->getCellFields($editViewDefs);
