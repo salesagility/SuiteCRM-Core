@@ -8,12 +8,12 @@
         <div *ngFor="let groupField of getFields()" class="field-group-item d-flex flex-column">
 
             <!-- LABEL -->
-            <span *ngIf="groupField.labelKey && showLabel()" class="field-group-label pt-2">
+            <span *ngIf="groupField.labelKey && showLabel()" class="field-group-label pt-2 pr-1">
                 <label><scrm-label [labelKey]="groupField.labelKey" [module]="getModule()"></scrm-label></label>
             </span>
 
             <!-- VALUE -->
-            <span *ngIf="groupField.type" class="field-group-field">
+            <span *ngIf="groupField.type" class="field-group-field pr-1">
 
                 <scrm-dynamic-field [componentType]="getComponentType(groupField.type)"
                                     [field]="groupField"
