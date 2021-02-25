@@ -6,12 +6,14 @@
     "@angular/core": "^11.0.0",
     "rxjs": "^6.6.3",
     "apollo-angular": "^2.2.0",
+    "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
     "@apollo/client": "^3.3.7",
     "luxon": "^1.25.0",
     "bn-ng-idle": "^1.0.1",
     "@angular-architects/module-federation": "^1.1.0",
-    "lodash-es": "^4.17.20"
+    "lodash-es": "^4.17.20",
+    "ng-dynamic-component": "^8.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"

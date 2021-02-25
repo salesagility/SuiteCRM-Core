@@ -78,14 +78,14 @@
         "serve": {
           "builder": "ngx-build-plus:dev-server",
           "options": {
-            "browserTarget": "SuiteCRM:build:serve",
+            "browserTarget": "shell:build:serve",
             "proxyConfig": "./proxy.conf.local.json",
             "extraWebpackConfig": "core/app/shell/webpack.config.js",
             "port": 5000
           },
           "configurations": {
             "production": {
-              "browserTarget": "SuiteCRM:build:production",
+              "browserTarget": "shell:build:production",
               "extraWebpackConfig": "core/app/shell/webpack.prod.config.js"
             }
           }
@@ -202,11 +202,18 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "ngx-build-plus:karma",
           "options": {
             "main": "core/app/core/src/test.ts",
             "tsConfig": "core/app/core/tsconfig.spec.json",
-            "karmaConfig": "core/app/core/karma.conf.js"
+            "karmaConfig": "core/app/core/karma.conf.js",
+            "styles": [
+              "node_modules/bootstrap-css-only/css/bootstrap.min.css"
+            ],
+            "scripts": [],
+            "assets": [
+            ],
+            "extraWebpackConfig": "core/app/core/webpack.config.spec.js"
           }
         },
         "lint": {

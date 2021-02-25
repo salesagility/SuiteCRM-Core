@@ -25,21 +25,23 @@
  */
 
 import {Injectable, Injector} from '@angular/core';
-import {ListComponent} from '@views/list/components/list-view/list.component';
 import {Router} from '@angular/router';
-import {AuthGuard} from 'core';
-import {BaseModuleResolver} from 'core';
-import {SystemConfigStore} from 'core';
-import {RecordComponent} from '@views/record/components/record-view/record.component';
-import {BaseRecordResolver} from 'core';
-import {LoginAuthGuard} from 'core';
-import {BaseMetadataResolver} from 'core';
-import {ClassicViewUiComponent} from '@views/classic/components/classic-view/classic-view.component';
-import {ClassicViewResolver} from '@views/classic/services/classic-view.resolver';
-import {CreateRecordComponent} from '@views/create/components/create-view/create-record.component';
+import {
+    AuthGuard,
+    BaseMetadataResolver,
+    BaseModuleResolver,
+    BaseRecordResolver,
+    ClassicViewResolver,
+    ClassicViewUiComponent,
+    CreateRecordComponent,
+    ListComponent,
+    LoginAuthGuard,
+    RecordComponent,
+    SystemConfigStore,
+    ExtensionLoader,
+    LoginUiComponent
+} from 'core';
 import {isFalse} from 'common';
-import {ExtensionLoader} from 'core';
-
 
 @Injectable()
 export class AppInit {
@@ -66,7 +68,7 @@ export class AppInit {
 
                 routes.push({
                     path: 'Login',
-                    loadChildren: () => import('@views/login/components/login/login.module').then(m => m.LoginUiModule),
+                    component: LoginUiComponent,
                     canActivate: [LoginAuthGuard],
                     runGuardsAndResolvers: 'always',
                     resolve: {

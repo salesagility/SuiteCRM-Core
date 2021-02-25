@@ -16,6 +16,9 @@
       "../../node_modules/@types"
     ],
     "paths": {
+      "@app/*": [
+        "core/app/shell/src/app/*"
+      ],
       "common": [
         "dist/common/common",
         "dist/common"
@@ -23,24 +26,6 @@
       "core": [
         "dist/core/core",
         "dist/core"
-      ],
-      "@app/*": [
-        "core/app/shell/src/app/*"
-      ],
-      "@base/*": [
-        "core/app/shell/src/*"
-      ],
-      "@views/*": [
-        "core/app/shell/src/views/*"
-      ],
-      "@fields/*": [
-        "core/app/shell/src/fields/*"
-      ],
-      "@components/*": [
-        "core/app/shell/src/components/*"
-      ],
-      "@containers/*": [
-        "core/app/shell/src/containers/*"
       ]
     },
     "lib": [

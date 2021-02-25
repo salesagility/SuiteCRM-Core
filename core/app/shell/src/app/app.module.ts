@@ -37,36 +37,38 @@ import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
-import {NavbarUiModule} from '@components/navbar/navbar.module';
-import {FooterUiModule} from '@components/footer/footer.module';
-import {ClassicViewUiModule} from '@views/classic/components/classic-view/classic-view.module';
-import {MessageUiModule} from '@components/message/message.module';
-import {FilterUiModule} from '@components/filter/filter.module';
-import {ColumnChooserModule} from '@components/columnchooser/columnchooser.module';
-import {TableModule} from '@components/table/table.module';
-import {ModuleTitleModule} from '@components/module-title/module-title.module';
-import {ListHeaderModule} from '@views/list/components/list-header/list-header.module';
-import {ListContainerModule} from '@views/list/components/list-container/list-container.module';
-import {ListModule} from '@views/list/components/list-view/list.module';
-import {RecordModule} from '@views/record/components/record-view/record.module';
+import {
+    AuthService,
+    ClassicViewUiModule,
+    ColumnChooserModule,
+    CreateRecordModule,
+    ErrorInterceptor,
+    FilterUiModule,
+    FooterUiModule,
+    FullPageSpinnerModule,
+    ImageModule,
+    ListContainerModule,
+    ListHeaderModule,
+    ListModule,
+    MessageModalModule,
+    MessageUiModule,
+    ModuleTitleModule,
+    NavbarUiModule,
+    RecordListModalModule,
+    RecordModule,
+    TableModule
+} from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ErrorInterceptor} from 'core';
 
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
-import {ImageModule} from '@components/image/image.module';
-import {FullPageSpinnerModule} from '@components/full-page-spinner/full-page-spinner.module';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppInit} from '@app/app-initializer';
-import {AuthService} from 'core';
 import {GraphQLError} from 'graphql';
-import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
-import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {CreateRecordModule} from '@views/create/components/create-view/create-record.module';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
