@@ -39,8 +39,8 @@
 /public/
 
 # Custom
-/extentions/
-!extentions/.gitkeep
+/extensions/
+!extensions/.gitkeep
 
 # Tests
 tests/_output/
