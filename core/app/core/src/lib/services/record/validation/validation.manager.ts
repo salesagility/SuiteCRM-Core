@@ -26,11 +26,9 @@
 
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from './validator.Interface';
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
+import {MapEntry, OverridableMap, Record, StringMap, StringMatrix, ViewFieldDefinition} from 'common';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {AsyncValidatorInterface} from './aync-validator.Interface';
-import {MapEntry, OverridableMap} from 'common';
 import {RequiredValidator} from './validators/required.validator';
 import {CurrencyValidator} from './validators/currency.validator';
 import {DateValidator} from './validators/date.validator';
@@ -68,6 +66,12 @@ export class ValidationManager implements ValidationManagerInterface {
     protected saveValidators: OverridableMap<ValidatorInterface>;
     protected asyncSaveValidators: OverridableMap<AsyncValidatorInterface>;
     protected filterValidators: OverridableMap<ValidatorInterface>;
+    protected filterFieldExclusion: StringMatrix = {
+        default: {}
+    };
+    protected saveFieldExclusions: StringMatrix = {
+        default: {}
+    };
 
     constructor(
         protected requiredValidator: RequiredValidator,
@@ -85,56 +89,81 @@ export class ValidationManager implements ValidationManagerInterface {
         this.asyncSaveValidators = new OverridableMap<AsyncValidatorInterface>();
         this.filterValidators = new OverridableMap<ValidatorInterface>();
 
-        this.saveValidators.addEntry('default', 'required', requiredValidator);
-        this.saveValidators.addEntry('default', 'range', rangeValidator);
-        this.saveValidators.addEntry('default', 'currency', currencyValidator);
-        this.saveValidators.addEntry('default', 'date', dateValidator);
-        this.saveValidators.addEntry('default', 'datetime', datetimeValidator);
-        this.saveValidators.addEntry('default', 'email', emailValidator);
-        this.saveValidators.addEntry('default', 'float', floatValidator);
-        this.saveValidators.addEntry('default', 'int', intValidator);
-        this.saveValidators.addEntry('default', 'phone', phoneValidator);
+        this.saveValidators.addEntry('default', this.getKey('required', 'all'), requiredValidator);
+        this.saveValidators.addEntry('default', this.getKey('range', 'all'), rangeValidator);
+        this.saveValidators.addEntry('default', this.getKey('currency', 'all'), currencyValidator);
+        this.saveValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
+        this.saveValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);
+        this.saveValidators.addEntry('default', this.getKey('email', 'all'), emailValidator);
+        this.saveValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
+        this.saveValidators.addEntry('default', this.getKey('int', 'all'), intValidator);
+        this.saveValidators.addEntry('default', this.getKey('phone', 'all'), phoneValidator);
 
-        this.filterValidators.addEntry('default', 'date', dateValidator);
-        this.filterValidators.addEntry('default', 'datetime', datetimeValidator);
-        this.filterValidators.addEntry('default', 'float', floatValidator);
-        this.filterValidators.addEntry('default', 'currency', currencyValidator);
-        this.filterValidators.addEntry('default', 'int', intValidator);
-        this.filterValidators.addEntry('default', 'phone', phoneValidator);
+        this.filterValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
+        this.filterValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);
+        this.filterValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
+        this.filterValidators.addEntry('default', this.getKey('currency', 'all'), currencyValidator);
+        this.filterValidators.addEntry('default', this.getKey('int', 'all'), intValidator);
+        this.filterValidators.addEntry('default', this.getKey('phone', 'all'), phoneValidator);
     }
 
-    public registerSaveValidator(module: string, key: string, validator: ValidatorInterface): void {
-        this.filterValidators.addEntry(module, key, validator);
+    public registerFieldSaveValidator(module: string, type: string, field: string, validator: ValidatorInterface): void {
+        this.saveValidators.addEntry(module, this.getKey(type, field), validator);
     }
 
-    public registerFilterValidator(module: string, key: string, validator: ValidatorInterface): void {
-        this.saveValidators.addEntry(module, key, validator);
+    public registerSaveValidator(module: string, type: string, validator: ValidatorInterface): void {
+        this.saveValidators.addEntry(module, this.getKey(type, 'all'), validator);
     }
 
-    public excludeSaveValidator(module: string, key: string): void {
-        this.saveValidators.excludeEntry(module, key);
+    public registerFieldFilterValidator(module: string, type: string, field: string, validator: ValidatorInterface): void {
+        this.filterValidators.addEntry(module, this.getKey(type, field), validator);
     }
 
-    public excludeFilterValidator(module: string, key: string): void {
-        this.filterValidators.excludeEntry(module, key);
+    public registerFilterValidator(module: string, type: string, validator: ValidatorInterface): void {
+        this.filterValidators.addEntry(module, this.getKey(type, 'all'), validator);
     }
 
-    public registerAsyncSaveValidator(module: string, key: string, validator: AsyncValidatorInterface): void {
-        this.asyncSaveValidators.addEntry(module, key, validator);
+    public excludeFieldSaveValidator(module: string, type: string, field: string): void {
+
+        const moduleExclusions = this.saveFieldExclusions[module] || {};
+        const key = this.getKey(type, field);
+        moduleExclusions[key] = key;
+        this.saveFieldExclusions[module] = moduleExclusions;
     }
 
-    public excludeAsyncSaveValidator(module: string, key: string): void {
-        this.saveValidators.excludeEntry(module, key);
+    public excludeSaveValidator(module: string, type: string): void {
+        this.saveValidators.excludeEntry(module, this.getKey(type, 'all'));
+    }
+
+    public excludeFieldFilterValidator(module: string, type: string, field: string): void {
+        const moduleExclusions = this.filterFieldExclusion[module] || {};
+        const key = this.getKey(type, field);
+        moduleExclusions[key] = key;
+        this.filterFieldExclusion[module] = moduleExclusions;
+    }
+
+    public excludeFilterValidator(module: string, type: string): void {
+        this.filterValidators.excludeEntry(module, this.getKey(type, 'all'));
+    }
+
+    public registerAsyncSaveValidator(module: string, type: string, validator: AsyncValidatorInterface): void {
+        this.asyncSaveValidators.addEntry(module, this.getKey(type, 'all'), validator);
+    }
+
+    public excludeAsyncSaveValidator(module: string, type: string): void {
+        this.saveValidators.excludeEntry(module, this.getKey(type, 'all'));
     }
 
     public getSaveValidations(module: string, viewField: ViewFieldDefinition, record: Record): ValidatorFn[] {
         const entries = this.saveValidators.getGroupEntries(module);
-        return this.filterValidations(entries, record, viewField);
+        const exclusions = this.getExclusions(module, this.saveFieldExclusions);
+        return this.filterValidations(entries, exclusions, record, viewField);
     }
 
     public getFilterValidations(module: string, viewField: ViewFieldDefinition, record: Record): ValidatorFn[] {
         const entries = this.filterValidators.getGroupEntries(module);
-        return this.filterValidations(entries, record, viewField);
+        const exclusions = this.getExclusions(module, this.filterFieldExclusion);
+        return this.filterValidations(entries, exclusions, record, viewField);
     }
 
     public getAsyncSaveValidations(module: string, viewField: ViewFieldDefinition, record: Record): AsyncValidatorFn[] {
@@ -154,10 +183,34 @@ export class ValidationManager implements ValidationManagerInterface {
         return validations;
     }
 
-    protected filterValidations(entries: MapEntry<ValidatorInterface>, record: Record, viewField: ViewFieldDefinition): ValidatorFn[] {
+    public getKey(type: string, field: string): string {
+        return `${type}.${field}`;
+    }
+
+    protected parseType(key: string): string {
+        const partsType = key.split('.') || [];
+        return partsType[0] || '';
+    }
+
+    protected getExclusions(module: string, exclusionMap: StringMatrix): StringMap {
+        const defaultExclusions = exclusionMap['default'] || {};
+        const moduleExclusions = exclusionMap[module] || {};
+        return {...defaultExclusions, ...moduleExclusions};
+    }
+
+    protected filterValidations(
+        entries: MapEntry<ValidatorInterface>,
+        fieldExclusions: StringMap,
+        record: Record,
+        viewField: ViewFieldDefinition
+    ): ValidatorFn[] {
         let validations = [];
 
         Object.keys(entries).forEach(validatorKey => {
+            const defaultTypeKey = this.getKey(this.parseType(validatorKey), viewField.name);
+            if (fieldExclusions[validatorKey] || fieldExclusions[defaultTypeKey]) {
+                return;
+            }
 
             const validator = entries[validatorKey];
 

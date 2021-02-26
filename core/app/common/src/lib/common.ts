@@ -21,6 +21,7 @@ export * from './statistics/statistics.model';
 export * from './types/messages';
 export * from './types/overridable-map';
 export * from './types/string-map';
+export * from './types/string-matrix';
 export * from './types/user';
 export * from './utils/object-utils';
 export * from './utils/value-utils';

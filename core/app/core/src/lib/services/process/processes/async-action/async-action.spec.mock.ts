@@ -26,7 +26,6 @@
 
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {EntityMutationGQL} from '../../../api/graphql-api';
 import {FetchResult} from '@apollo/client/core';
 import {ProcessService} from '../../process.service';
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
@@ -34,6 +33,7 @@ import {AsyncActionService} from './async-action';
 import {messageServiceMock} from '../../../message/message.service.spec.mock';
 import {redirectBulkActionMock} from './actions/redirect/redirect.async-action.spec.mock';
 import {exportBulkActionMock} from './actions/export/export.async-action.spec.mock';
+import {EntityMutationGQL} from '../../../api/graphql-api/api.record.create';
 
 export const bulkActionMockData = {
     'bulk-merge': {
