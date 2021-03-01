@@ -10,14 +10,8 @@ module.exports = {
       "alias": {
         "map": [
           ["@app", "./core/app/src/app"],
-          ["@base", "./core/app/src"],
-          ["@app-common", "./core/app/src/app-common"],
-          ["@views", "./core/app/views"],
-          ["@fields", "./core/app/fields"],
-          ["@services", "./core/app/src/services"],
-          ["@components", "./core/app/src/components"],
-          ["@containers", "./core/app/src/containers"],
-          ["@store", "./core/app/src/store"]
+          ["common", "./dist/common/common"],
+          ["core", "./dist/core/core"],
         ],
         "extensions": [".ts", ".js"]
       },
@@ -38,7 +32,7 @@ module.exports = {
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./core/app/tsconfig.json",
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
   "plugins": [
