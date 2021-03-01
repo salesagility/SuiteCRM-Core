@@ -34,13 +34,14 @@ import {
     ClassicViewResolver,
     ClassicViewUiComponent,
     CreateRecordComponent,
+    ExtensionLoader,
     ListComponent,
     LoginAuthGuard,
+    LoginUiComponent,
     RecordComponent,
-    SystemConfigStore,
-    ExtensionLoader,
-    LoginUiComponent
+    SystemConfigStore
 } from 'core';
+import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
 
 @Injectable()
@@ -60,219 +61,219 @@ export class AppInit {
         return new Promise<void>((resolve) => {
             this.systemConfigStore.load().subscribe(() => {
 
-                this.extensionLoader.load(this.injector);
+                this.extensionLoader.load(this.injector).pipe(take(1)).subscribe(() => {
+                    const routes = this.router.config;
+                    const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
 
-
-                const routes = this.router.config;
-                const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
-
-                routes.push({
-                    path: 'Login',
-                    component: LoginUiComponent,
-                    canActivate: [LoginAuthGuard],
-                    runGuardsAndResolvers: 'always',
-                    resolve: {
-                        metadata: BaseMetadataResolver
-                    },
-                    data: {
-                        reuseRoute: false,
-                        load: {
-                            navigation: false,
-                            preferences: false,
-                            languageStrings: ['appStrings']
+                    routes.push({
+                        path: 'Login',
+                        component: LoginUiComponent,
+                        canActivate: [LoginAuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
                         }
-                    }
+                    });
+
+                    Object.keys(configRoutes).forEach(routeName => {
+                        if (configRoutes[routeName].index) {
+                            routes.push({
+                                path: routeName,
+                                component: ListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                            routes.push({
+                                path: routeName + '/index',
+                                component: ListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                        }
+
+                        if (configRoutes[routeName].list) {
+                            routes.push({
+                                path: routeName + '/list',
+                                component: ListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                        }
+
+                        if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {
+                            routes.push({
+                                path: routeName + '/create',
+                                component: CreateRecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName,
+                                    mode: 'create'
+                                }
+                            });
+
+                            routes.push({
+                                path: routeName + '/edit',
+                                component: CreateRecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName,
+                                    mode: 'create'
+                                }
+                            });
+                        }
+
+                        if (configRoutes[routeName].record) {
+                            routes.push({
+                                path: routeName + '/record/:record',
+                                component: RecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                            routes.push({
+                                path: routeName + '/edit/:record',
+                                component: RecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName,
+                                    mode: 'edit'
+                                }
+                            });
+                            routes.push({
+                                path: routeName + '/detail/:record',
+                                component: RecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                        }
+                    });
+
+                    routes.push({
+                        path: ':module',
+                        component: ClassicViewUiComponent,
+                        canActivate: [AuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            legacyUrl: ClassicViewResolver,
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true
+                        }
+                    });
+
+                    routes.push({
+                        path: ':module/:action',
+                        component: ClassicViewUiComponent,
+                        canActivate: [AuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            legacyUrl: ClassicViewResolver,
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true
+                        }
+                    });
+
+                    routes.push({
+                        path: ':module/:action/:record',
+                        component: ClassicViewUiComponent,
+                        canActivate: [AuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            legacyUrl: ClassicViewResolver,
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true
+                        }
+                    });
+
+                    routes.push({
+                        path: '**',
+                        redirectTo: 'Login'
+                    });
+
+                    routes.push({
+                        path: '',
+                        component: ClassicViewUiComponent
+                    });
+
+                    this.router.resetConfig(routes);
+                    resolve();
                 });
 
-                Object.keys(configRoutes).forEach(routeName => {
-                    if (configRoutes[routeName].index) {
-                        routes.push({
-                            path: routeName,
-                            component: ListComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                metadata: BaseModuleResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName
-                            }
-                        });
-                        routes.push({
-                            path: routeName + '/index',
-                            component: ListComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                metadata: BaseModuleResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName
-                            }
-                        });
-                    }
-
-                    if (configRoutes[routeName].list) {
-                        routes.push({
-                            path: routeName + '/list',
-                            component: ListComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                metadata: BaseModuleResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName
-                            }
-                        });
-                    }
-
-                    if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {
-                        routes.push({
-                            path: routeName + '/create',
-                            component: CreateRecordComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                view: BaseModuleResolver,
-                                metadata: BaseRecordResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName,
-                                mode: 'create'
-                            }
-                        });
-
-                        routes.push({
-                            path: routeName + '/edit',
-                            component: CreateRecordComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                view: BaseModuleResolver,
-                                metadata: BaseRecordResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName,
-                                mode: 'create'
-                            }
-                        });
-                    }
-
-                    if (configRoutes[routeName].record) {
-                        routes.push({
-                            path: routeName + '/record/:record',
-                            component: RecordComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                view: BaseModuleResolver,
-                                metadata: BaseRecordResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName
-                            }
-                        });
-                        routes.push({
-                            path: routeName + '/edit/:record',
-                            component: RecordComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                view: BaseModuleResolver,
-                                metadata: BaseRecordResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName,
-                                mode: 'edit'
-                            }
-                        });
-                        routes.push({
-                            path: routeName + '/detail/:record',
-                            component: RecordComponent,
-                            canActivate: [AuthGuard],
-                            runGuardsAndResolvers: 'always',
-                            resolve: {
-                                view: BaseModuleResolver,
-                                metadata: BaseRecordResolver
-                            },
-                            data: {
-                                reuseRoute: false,
-                                checkSession: true,
-                                module: routeName
-                            }
-                        });
-                    }
-                });
-
-                routes.push({
-                    path: ':module',
-                    component: ClassicViewUiComponent,
-                    canActivate: [AuthGuard],
-                    runGuardsAndResolvers: 'always',
-                    resolve: {
-                        legacyUrl: ClassicViewResolver,
-                    },
-                    data: {
-                        reuseRoute: false,
-                        checkSession: true
-                    }
-                });
-
-                routes.push({
-                    path: ':module/:action',
-                    component: ClassicViewUiComponent,
-                    canActivate: [AuthGuard],
-                    runGuardsAndResolvers: 'always',
-                    resolve: {
-                        legacyUrl: ClassicViewResolver,
-                    },
-                    data: {
-                        reuseRoute: false,
-                        checkSession: true
-                    }
-                });
-
-                routes.push({
-                    path: ':module/:action/:record',
-                    component: ClassicViewUiComponent,
-                    canActivate: [AuthGuard],
-                    runGuardsAndResolvers: 'always',
-                    resolve: {
-                        legacyUrl: ClassicViewResolver,
-                    },
-                    data: {
-                        reuseRoute: false,
-                        checkSession: true
-                    }
-                });
-
-                routes.push({
-                    path: '**',
-                    redirectTo: 'Login'
-                });
-
-                routes.push({
-                    path: '',
-                    component: ClassicViewUiComponent
-                });
-
-                this.router.resetConfig(routes);
-                resolve();
             });
         });
     }

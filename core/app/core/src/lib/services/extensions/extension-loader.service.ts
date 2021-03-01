@@ -1,5 +1,5 @@
-import {Compiler, Injectable, Injector, NgModuleFactory} from '@angular/core';
-import {from, isObservable, Observable, of} from 'rxjs';
+import {Compiler, Injectable, Injector, NgModuleFactory, NgModuleRef} from '@angular/core';
+import {forkJoin, from, isObservable, Observable, of} from 'rxjs';
 import {LoadChildrenCallback} from '@angular/router';
 import {map, mergeMap} from 'rxjs/operators';
 import {loadRemoteModule} from '@angular-architects/module-federation';
@@ -10,6 +10,10 @@ interface ExtensionConfig {
     remoteEntry?: string,
     remoteName?: string,
     enabled?: boolean
+}
+
+export interface ModuleRefMap {
+    [key: string]: NgModuleRef<any>
 }
 
 @Injectable({
@@ -28,9 +32,11 @@ export class ExtensionLoader {
      *
      * @param {object} injector Injector
      */
-    public load(injector: Injector): void {
+    public load(injector: Injector): Observable<ModuleRefMap> {
 
         const extensions = this.systemConfigStore.getConfigValue('extensions');
+
+        const extensionModules$ = {};
 
         Object.keys(extensions).forEach(extensionName => {
             if (!extensions[extensionName]) {
@@ -38,9 +44,24 @@ export class ExtensionLoader {
             }
 
             const config: ExtensionConfig = extensions[extensionName];
-            this.loadExtension(config, injector);
+
+
+            if (!config.remoteEntry || !config.remoteName) {
+                return;
+            }
+
+            if (!config.enabled || isFalse(config.enabled)) {
+                return;
+            }
+
+            extensionModules$[extensionName] = this.loadExtension(config, injector);
         });
 
+        if (Object.keys(extensionModules$).length < 1) {
+            return of({});
+        }
+
+        return forkJoin(extensionModules$);
     }
 
     /**
@@ -49,32 +70,23 @@ export class ExtensionLoader {
      * @param {object} config ExtensionConfig
      * @param {object} injector Injector
      */
-    public loadExtension(config: ExtensionConfig, injector: Injector): void {
-
-        if (!config.remoteEntry || !config.remoteName) {
-            return;
-        }
-
-        if (!config.enabled || isFalse(config.enabled)) {
-            return;
-        }
-
+    public loadExtension(config: ExtensionConfig, injector: Injector): Observable<NgModuleRef<any>> {
         const promise = () => loadRemoteModule({
             remoteEntry: config.remoteEntry,
             remoteName: config.remoteName,
             exposedModule: './Module'
         }).then(m => m.ExtensionModule);
 
-        this.loadModuleFactory(promise).pipe(
+        return this.loadModuleFactory(promise).pipe(
             map((factory: NgModuleFactory<any>) => {
-                factory.create(injector);
+                return factory.create(injector);
             })
-        ).subscribe();
+        );
     }
 
     /**
      * Check if object is a promise
-     * @param {any} obj promise
+     * @param {} obj promise
      * @returns {boolean} isPromise
      */
     protected isPromise<T = any>(obj: any): obj is Promise<T> {
