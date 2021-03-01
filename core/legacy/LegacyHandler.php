@@ -23,22 +23,22 @@ abstract class LegacyHandler
     /**
      * @var string
      */
-    private $legacyDir;
+    protected $legacyDir;
 
     /**
      * @var string
      */
-    private $legacySessionName;
+    protected $legacySessionName;
 
     /**
      * @var string
      */
-    private $defaultSessionName;
+    protected $defaultSessionName;
 
     /**
      * @var LegacyScopeState
      */
-    private $state;
+    protected $state;
 
     /**
      * LegacyHandler constructor.
