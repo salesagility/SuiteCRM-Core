@@ -3,14 +3,17 @@ import {UserPreferenceStore} from '@store/user-preference/user-preference.store'
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DateTime} from 'luxon';
-import {Formatter} from '@services/formatters/formatter.model';
+import {FormatOptions, Formatter} from '@services/formatters/formatter.model';
 import {FormControlUtils} from '@services/record/field/form-control.utils';
 
 export interface DatetimeFormats {
     date: string;
     time: string;
+}
+
+export interface DateTimeStruct extends NgbDateStruct, NgbTimeStruct {
 }
 
 @Injectable({
@@ -35,6 +38,7 @@ export class DatetimeFormatter implements Formatter {
         protected formUtils: FormControlUtils,
         @Inject(LOCALE_ID) public locale: string
     ) {
+
     }
 
     getDateFormat(): string {
@@ -92,37 +96,32 @@ export class DatetimeFormatter implements Formatter {
         return this.getDateTimeFormat();
     }
 
-    toUserFormat(dateString: string): string {
-        if (!dateString) {
-            return '';
-        }
-
-        const dateTime = this.toDateTime(dateString);
-
-        if (!dateTime.isValid) {
-            return '';
-        }
-
-        return formatDate(dateTime.toJSDate(), this.getUserFormat(), this.locale);
+    toUserFormat(dateString: string, options?: FormatOptions): string {
+        const fromFormat = (options && options.fromFormat) || '';
+        return dateString ? this.formatDateTime(dateString, this.getUserFormat(), fromFormat) : '';
     }
 
-    toInternalFormat(dateString: string): string {
-        if (!dateString) {
-            return '';
-        }
-
-        const dateTime = this.toDateTime(dateString);
-
-        if (!dateTime.isValid) {
-            return '';
-        }
-
-        return formatDate(dateTime.toJSDate(), this.getInternalFormat(), this.locale);
+    toInternalFormat(dateString: string, options?: FormatOptions): string {
+        const fromFormat = (options && options.fromFormat) || '';
+        return dateString ? this.formatDateTime(dateString, this.getInternalFormat(), fromFormat) : '';
     }
 
-    toDateTime(datetimeString: string): DateTime {
+    formatDateTime(dateString: string, format: string, fromFormat = ''): string {
+        const dateTime = this.toDateTime(dateString, fromFormat);
+
+        if (!dateTime.isValid) {
+            return dateString;
+        }
+        return formatDate(dateTime.toJSDate(), format, this.locale);
+    }
+
+    toDateTime(datetimeString: string, fromFormat = ''): DateTime {
         if (!datetimeString) {
             return DateTime.invalid('empty');
+        }
+
+        if (fromFormat) {
+            return DateTime.fromFormat(datetimeString, fromFormat);
         }
 
         let dateTime = this.fromUserFormat(datetimeString);
@@ -134,7 +133,13 @@ export class DatetimeFormatter implements Formatter {
         return dateTime;
     }
 
-    userFormatToStruct(datetime: string): NgbDateStruct {
+    userDateTimeFormatToStruct(datetime: string): DateTimeStruct {
+        const dateStruct = this.userDateFormatToStruct(datetime);
+        const timeStruct = this.userTimeFormatToStruct(datetime);
+        return {...dateStruct, ...timeStruct};
+    }
+
+    userDateFormatToStruct(datetime: string): NgbDateStruct {
         if (!datetime) {
             return null;
         }
@@ -149,27 +154,41 @@ export class DatetimeFormatter implements Formatter {
             day: dateTime.day,
             month: dateTime.month,
             year: dateTime.year
-        };
+        } as NgbDateStruct;
+    }
+
+    userTimeFormatToStruct(datetime: string): NgbTimeStruct {
+        if (!datetime) {
+            return null;
+        }
+
+        const dateTime = this.toDateTime(datetime);
+
+        if (!dateTime.isValid) {
+            return null;
+        }
+
+        return {
+            hour: dateTime.hour,
+            minute: dateTime.minute,
+            second: dateTime.second
+        } as NgbTimeStruct;
     }
 
     fromUserFormat(datetime: string): DateTime {
-
+        datetime = datetime.toString();
         datetime = datetime.replace('a', 'A');
         datetime = datetime.replace('p', 'P');
         datetime = datetime.replace('m', 'M');
 
         let format = this.getUserFormat();
-
         format = format.replace('aaaaa\'m\'', 'a');
-
         return DateTime.fromFormat(datetime, format);
     }
 
     fromInternalFormat(datetime: string): DateTime {
-
         const format = this.getInternalFormat();
-
-        return DateTime.fromFormat(datetime, format);
+        return DateTime.fromFormat(datetime.toString(), format);
     }
 
     validateUserFormat(inputValue: any): boolean {

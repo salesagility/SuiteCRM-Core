@@ -1,6 +1,7 @@
-import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Injectable} from '@angular/core';
-import {DatetimeFormatter} from '@services/formatters/datetime/datetime-formatter.service';
+import {DatetimeFormatter, DateTimeStruct} from '@services/formatters/datetime/datetime-formatter.service';
+import {padObjectValues} from '@app-common/utils/object-utils';
 
 @Injectable()
 export class DatetimeParserFormatter extends NgbDateParserFormatter {
@@ -9,21 +10,24 @@ export class DatetimeParserFormatter extends NgbDateParserFormatter {
         super();
     }
 
-    parse(value: string): NgbDateStruct | null {
+    parse(value: string): DateTimeStruct | null {
         if (!value) {
             return null;
         }
 
-        return this.formatter.userFormatToStruct(value);
+        return this.formatter.userDateTimeFormatToStruct(value);
     }
 
-    format(date: NgbDateStruct | null): string {
+    format(date: DateTimeStruct | null): string {
         if (!date) {
             return null;
         }
+        date = padObjectValues(date);
 
         const dateString = [date.year, date.month, date.day].join('-');
+        const timeString = ['00', '00', '00'].join(':');
+        const dateTimeString = dateString+' '+timeString;
 
-        return this.formatter.toUserFormat(dateString);
+        return this.formatter.toUserFormat(dateTimeString);
     }
 }

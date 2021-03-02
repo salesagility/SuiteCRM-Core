@@ -36,3 +36,19 @@ export const ready = (entries: (Array<any> | Record<string, any>)[]): boolean =>
 
     return areReady;
 };
+
+/**
+ * Pad all values of an object
+ * Singular digit numbers will be padded/prefixed with a 0
+ * e.g. numbers 1-9 will be padded with a 0 in front to 01-09
+ *
+ * @param {object} obj to pad
+ * @returns {object} any
+ */
+export const padObjectValues = (obj: any): any =>
+{
+    Object.keys(obj).forEach(key => {obj[key] = String(obj[key]).padStart(2, '0');});
+    return obj;
+};
+
+
