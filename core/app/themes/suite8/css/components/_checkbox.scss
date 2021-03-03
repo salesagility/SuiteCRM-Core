@@ -24,13 +24,12 @@
   position: absolute;
   top: -0.3em;
   left: 0;
-  height: 1em;
-  width: 1em;
   background-color: $white;
   -webkit-border-radius: 0.2em;
   -moz-border-radius: 0.2em;
   border-radius: 0.2em;
   border: 0.05em solid $midnight-blue;
+  padding: 0.50em 0.51em 0.50em 0.51em;
 }
 
 .checkbox-container input:disabled ~ .checkmark {
@@ -43,16 +42,11 @@
   display: block;
 }
 
-.checkbox-container input:indeterminate ~ .checkmark:after {
-  left: 0.33em;
-  top: 0.1em;
-  width: 0.3em;
-  height: 0.6em;
-  border: solid $midnight-blue;
-  border-width: 0 0.1em 0em 0;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
+.checkbox-container input:indeterminate ~ .checkmark:after {  
+  left: 0.45em;
+  top: 0.47em;
+  width: 0.9em;
+  background: url($cross-background-url) no-repeat right;
 }
 
 .list-view-table .checkbox-container .checkmark {
@@ -66,7 +60,7 @@
 
 /* When the checkbox is checked, add a blue background */
 .checkbox-container input:checked ~ .checkmark {
-  background-color: $off-white;
+  background-color: $white;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -83,15 +77,14 @@
 
 /* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
-  left: 0.33em;
-  top: 0.1em;
-  width: 0.3em;
-  height: 0.6em;
-  border: solid $midnight-blue;
-  border-width: 0 0.13em 0.13em 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+  background: url($cross-background-url) no-repeat right;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  left: 0.45em;
+  width: 0.9em;
+  height: 0.8em;
 }
 
 /* Modal Checboxes */
@@ -110,6 +103,8 @@
     margin: 0.5em 0 0 0;
   }
 }
+
+
 
 @media all and (min-width: $breakpoint-xsmall) and (max-width: $breakpoint-xlarge) {
   .modal-checkbox-container {
@@ -221,7 +216,7 @@
   /* Create a custom checkbox */
   .select-action-group .checkbox-container .checkmark {
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 0;
     height: 1em;
     width: 1em;
@@ -230,26 +225,13 @@
     -moz-border-radius: 0.2em;
     border-radius: 0.2em;
     border: 0.05em solid $midnight-blue;
-    margin: -0.3em 0 0 0em;
-    padding: 0;
+    margin: -0.36em 0 0 0em;
   }
 }
 
-@media all and (min-width: $breakpoint-medium) {
-  /* Create a custom checkbox */
-  .select-action-group .checkbox-container .checkmark {
-    position: absolute;
+@media all and (max-width: $breakpoint-large) {
+  .checkbox-container input:indeterminate ~ .checkmark:after {
     top: 0;
-    left: 0;
-    height: 1em;
-    width: 1em;
-    background-color: $white;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
-    border-radius: 0.2em;
-    border: 0.05em solid $midnight-blue;
-    margin: -0.3em 0 0 0em;
-    padding: 0;
   }
 }
 
@@ -281,15 +263,15 @@
 
 /* Style the checkmark/indicator */
 .select-action-group .checkbox-container .checkmark:after {
-  left: 0.33em;
-  top: 0.1em;
-  width: 0.3em;
-  height: 0.6em;
-  border: solid $midnight-blue;
-  border-width: 0 0.13em 0.13em 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+  width: 0.9em;
+  height: 0.8em;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  left: 0.45em;
+  top: 0.47em;
+  background: url($cross-background-url) no-repeat right;
 }
 
 /* Filter checkbox */
