@@ -14,6 +14,8 @@ import {DateDetailFieldModule} from '@fields/date/templates/detail/date.module';
 import {DateTimeDetailFieldModule} from '@fields/datetime/templates/detail/datetime.module';
 import {DateDetailFieldComponent} from '@fields/date/templates/detail/date.component';
 import {DateTimeDetailFieldComponent} from '@fields/datetime/templates/detail/datetime.component';
+import {DateFilterFieldModule} from '@fields/date/templates/filter/date.module';
+import {DateFilterFieldComponent} from '@fields/date/templates/filter/date.component';
 import {UrlDetailFieldModule} from '@fields/url/templates/detail/url.module';
 import {UrlDetailFieldComponent} from '@fields/url/templates/detail/url.component';
 import {CurrencyDetailFieldModule} from '@fields/currency/templates/detail/currency.module';
@@ -64,6 +66,7 @@ export const baseFieldModules = [
     PhoneDetailFieldModule,
     DateDetailFieldModule,
     DateEditFieldModule,
+    DateFilterFieldModule,
     DateTimeDetailFieldModule,
     DateTimeEditFieldModule,
     UrlDetailFieldModule,
@@ -94,6 +97,7 @@ export const baseFieldComponents = [
     PhoneDetailFieldComponent,
     DateDetailFieldComponent,
     DateEditFieldComponent,
+    DateFilterFieldComponent,
     DateTimeDetailFieldComponent,
     DateTimeEditFieldComponent,
     UrlDetailFieldComponent,
@@ -132,6 +136,7 @@ export const baseViewFieldsMap = {
     'date.list': DateDetailFieldComponent,
     'date.detail': DateDetailFieldComponent,
     'date.edit': DateEditFieldComponent,
+    'date.filter': DateFilterFieldComponent,
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
     // 'datetime.edit': DateTimeEditFieldComponent, To enable when datetime component is fixed
