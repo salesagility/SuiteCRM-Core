@@ -22,6 +22,8 @@ import {EmailListFieldsModule} from '@fields/email/templates/list/email.module';
 import {EmailListFieldsComponent} from '@fields/email/templates/list/email.component';
 import {TextDetailFieldComponent} from '@fields/text/templates/detail/text.component';
 import {TextDetailFieldModule} from '@fields/text/templates/detail/text.module';
+import {TextEditFieldModule} from '@fields/text/templates/edit/text.module';
+import {TextEditFieldComponent} from '@fields/text/templates/edit/text.component';
 import {RelateDetailFieldsModule} from '@fields/relate/templates/detail/relate.module';
 import {RelateDetailFieldComponent} from '@fields/relate/templates/detail/relate.component';
 import {FullNameDetailFieldsComponent} from '@fields/fullname/templates/detail/fullname.component';
@@ -68,6 +70,7 @@ export const baseFieldModules = [
     CurrencyDetailFieldModule,
     EmailListFieldsModule,
     TextDetailFieldModule,
+    TextEditFieldModule,
     RelateDetailFieldsModule,
     RelateEditFieldModule,
     FullNameDetailFieldsModule,
@@ -97,6 +100,7 @@ export const baseFieldComponents = [
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
+    TextEditFieldComponent,
     RelateDetailFieldComponent,
     RelateEditFieldComponent,
     FullNameDetailFieldsComponent,
@@ -140,6 +144,7 @@ export const baseViewFieldsMap = {
     'email.list': EmailListFieldsComponent,
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
+    'text.edit': TextEditFieldComponent,
     'relate.detail': RelateDetailFieldComponent,
     'relate.list': RelateDetailFieldComponent,
     'relate.edit': RelateEditFieldComponent,
