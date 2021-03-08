@@ -26,6 +26,7 @@ export interface StatisticWidgetLayoutRow {
     justify?: ContentJustify;
     align?: ContentAlign;
     cols: StatisticWidgetLayoutCol[];
+    class?: string;
 }
 
 export interface StatisticWidgetLayoutCol {

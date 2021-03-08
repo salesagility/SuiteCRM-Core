@@ -368,6 +368,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 'insightWidget' => [
                     'rows' => [
                         [
+                            'justify' => 'end',
                             'cols' => [
                                 [
                                     'icon' => $tab['module'],
@@ -375,6 +376,28 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                             ]
                         ],
                         [
+                            'align' => 'end',
+                            'justify' => 'start',
+                            'class' => 'flex-grow-1',
+                            'cols' => [
+                                [
+                                    'statistic' => $tabs[$key]['module'],
+                                    'class' => 'sub-panel-banner-value',
+                                    'bold' => true,
+                                ],
+                            ]
+                        ],
+                        [
+                            'justify' => 'start',
+                            'cols' => [
+                                [
+                                    'tooltipTitleKey' => $tabs[$key]['title_key'],
+                                    'class' => 'sub-panel-banner-tooltip',
+                                ]
+                            ]
+                        ],
+                        [
+                            'justify' => 'start',
                             'cols' => [
                                 [
                                     'labelKey' => $tabs[$key]['title_key'],
@@ -382,16 +405,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                                     'bold' => true,
                                 ]
                             ]
-                        ],
-                        [
-                            'cols' => [
-                                [
-                                    'statistic' => $tabs[$key]['module'],
-                                    'class' => 'sub-panel-banner-button-stats',
-                                    'bold' => true,
-                                ],
-                            ]
-                        ],
+                        ],                        
                     ]
                 ]
             ]

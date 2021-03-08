@@ -223,6 +223,14 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
         return alignMap[align] || 'align-items-center';
     }
 
+    getLayoutRowClass(row: StatisticWidgetLayoutRow): string {
+        let className = '';
+        if (row && row.class) {
+            className = row.class;
+        }
+        return className;
+    }
+
     getClass(layoutCol: StatisticWidgetLayoutCol): string {
         let className = '';
         if (layoutCol) {

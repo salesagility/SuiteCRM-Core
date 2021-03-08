@@ -3,14 +3,13 @@
 </div>
 
 <div *ngIf="!this.messageLabelKey && (vm$| async) as vm"
-     class="grid-widget d-flex flex-column d-flex justify-content-between">
+     class="grid-widget d-flex flex-column">
 
     <ng-container *ngFor="let item of vm.layout">
 
-        <div [title]="vm.tooltipTitleText"
-             class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}}">
+        <div class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}} {{getLayoutRowClass(item)}}">
 
-            <div class="mw-100 {{getColClass()}}" *ngFor="let col of item.cols">
+            <div class="{{getColClass()}}" *ngFor="let col of item.cols">
 
                 <ng-container *ngIf="col.display !== 'hidden'">
 
@@ -45,6 +44,17 @@
                         <div class="widget-entry-label text-truncate {{getClass(col)}}">
 
                             <scrm-label [labelKey]="col.labelKey" [module]="getContextModule()"></scrm-label>
+
+                        </div>
+
+                    </ng-container>
+
+                     <!-- TOOLTIP TITLE TEXT -->
+                     <ng-container *ngIf="col.tooltipTitleKey">
+
+                        <div class="text-truncate sub-panel-banner-tooltip">                            
+
+                            <label>{{vm.tooltipTitleText}}</label>
 
                         </div>
 

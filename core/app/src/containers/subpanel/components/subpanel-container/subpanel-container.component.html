@@ -1,36 +1,35 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-
-    <div class="sub-panel-banner rounded">
-
-        <scrm-image [image]="'eye'"></scrm-image>
-
-        <span class="sub-panel-banner-text">
-            {{vm.appStrings['LBL_SELECT_SUBPANEL_BANNER'] || ''}}
-        </span>
-
-        <scrm-image (click)="toggleSubPanels()"
-                    [attr.aria-expanded]="!isCollapsed"
-                    aria-controls="collapseShowSubPanels"
-                    class="float-right"
-                    [image]="toggleIcon">
-        </scrm-image>
-    </div>
-
-    <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
-
-        <div class="sub-panel-banner-buttons">
-
-            <div class="sub-panel-banner-button d-flex flex-column d-flex justify-content-between rounded"
-                 *ngFor="let item of vm.subpanels | keyvalue"
-                 [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
-                 (click)="showSubpanel(item.value)">
-
-                <scrm-grid-widget [config]="getGridConfig(item.value)"></scrm-grid-widget>
-
-            </div>
-        </div>
-    </div>
-
+    <ngb-accordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons"> 
+        <ngb-panel id="sub-panel-buttons">
+            <ng-template ngbPanelHeader>
+                <a class="clickable">
+                    <div class="d-flex align-items-center justify-content-between"> 
+                        <scrm-label labelKey="LBL_SELECT_SUBPANEL_BANNER"></scrm-label> 
+                        <scrm-image (click)="toggleSubPanels()"
+                        [attr.aria-expanded]="!isCollapsed"
+                        aria-controls="collapseShowSubPanels"
+                        class="float-right"
+                         [image]="toggleIcon">
+                        </scrm-image>
+                    </div>
+                </a>
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
+                    <div class="row insight-panel">
+                        <div class="col-sm-6 col-md-2 border-insight"
+                             *ngFor="let item of vm.subpanels | keyvalue"
+                             [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
+                             (click)="showSubpanel(item.value)">
+                            <scrm-grid-widget [config]="getGridConfig(item.value)"></scrm-grid-widget>
+            
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>  
+    
     <div id="sub-panels">
         <ng-container *ngFor="let item of vm.subpanels | keyvalue">
 
@@ -42,4 +41,5 @@
 
         </ng-container>
     </div>
+
 </ng-container>

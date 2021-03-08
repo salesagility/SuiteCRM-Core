@@ -1,5 +1,4 @@
 .sub-panel-banner {
-  background-color: $salmon-pink;
   color: $midnight-blue;
   padding: 0.3125rem 0.625rem;
   margin-bottom: 0.625rem;
@@ -7,28 +6,6 @@
 
 .sub-panel-banner-text {
   margin-left: 1em;
-}
-
-.sub-panel-banner-buttons {
-  display: flex; /* or inline-flex */
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-bottom: 0.625rem;
-}
-
-.sub-panel-banner-button {
-  padding: 0.3rem;
-  border: $nepal-grey solid 0.0625rem;
-  width: 7.5rem;
-  min-height: 5.9rem;
-  text-align: center;
-  margin: 0.2em 0.2em;
-  cursor: pointer;
-  background-color: $white;
-}
-
-.sub-panel-banner-button .grid-widget {
-  min-height: 5.9rem;
 }
 
 .sub-panel-banner-button:hover {
@@ -45,34 +22,107 @@
   font-size: 1.6em;
 }
 
-.sub-panel-banner-button-title {
-  text-transform: uppercase;
-  font-weight: bolder;
-  font-size: 0.75em;
-  line-height: 1.5;
-  width: 100%;
-  padding: 0.6em 0;
-  color: $midnight-blue;
-}
-
-.sub-panel-banner-button-stats {
-  text-transform: uppercase;
-  font-size: 1.05em;
-  font-weight: 900;
-  width: 100%;
-  color: $dull-orange;
+.sub-panel .subpanel-icon svg {
+  font-size: x-large;
+  fill: $white;
+  stroke: $white;
 }
 
 .sub-panel div.card {
   margin-top: 0.625rem;
 }
 
-.widget-panel .panel-card .card-header {
-  background-color: $midnight-blue;
+div.widget-panel .panel-card .card-header {
+  background-color: $white;
+  color: $midnight-blue;
+  font-weight: bold;
+  border-top: 3px solid $midnight-blue;
+  margin-bottom: 0.6rem;
 }
 
-.sub-panel .subpanel-icon svg {
-  font-size: x-large;
-  fill: white;
-  stroke: white;
+.insight-panel {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 1em;
+  .border-insight {
+    margin: 5px;
+    border: 3px solid $very-light-grey;
+    border-radius: 4px;
+    border-top: 3px solid $midnight-blue;
+  svg {
+    font-size: 1.5em;
+    fill: $midnight-blue;
+    stroke: $midnight-blue;
+    }
+  }
+  .col-md-2 {
+    flex: 0 0 15.666667%;
+    max-width: 15.666667%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .sub-panel-banner-button-icon {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.7em;
+  }
+  .sub-panel-banner-value {
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -0.5em;
+    color: $burnt-red;
+  }
+  .sub-panel-banner-tooltip {
+    border-bottom: 2px solid $very-light-grey;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    label {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 9rem;
+      margin: 0;
+    }
+  }
+  .sub-panel-banner-button-title {
+    text-transform: uppercase;
+    font-size: 0.62rem;
+    width: 9rem;
+    padding: 0.5em 0;
+    color: $midnight-blue;
+  }
+  .grid-widget {
+    height: 100%;
+    justify-content: flex-end;
+  }  
 }
+
+.accordion {
+  .card {
+    .card-header {
+      padding: .50rem 1.25rem;
+      background: $white;
+      border-top: 3px solid $midnight-blue;
+      a.clickable {
+        color: $midnight-blue;
+        font-weight: bold;
+        svg {
+          fill: $midnight-blue;
+        }
+      }
+    }
+    .card-body {
+      padding: 0;
+    }
+  }
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+
