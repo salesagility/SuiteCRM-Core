@@ -64,12 +64,6 @@ services:
   App\Legacy\:
     resource: '../core/legacy/*'
 
-  # makes classes in extensions/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
-  App\Extension\:
-    resource: '../extensions/*'
-    exclude: '../extensions/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
-
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
   App\Controller\:
