@@ -252,8 +252,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
         if (reload) {
             this.updateSelection(SelectionStatus.NONE);
-            // Change page trigger data re-load
-            this.changePage(PageSelection.FIRST);
+            // Reset pagination to default first page
+            this.resetPagination();
         }
     }
 
@@ -290,6 +290,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.updateState({...this.internalState, pagination});
 
         this.load(false).pipe(take(1)).subscribe();
+    }
+
+    /**
+     * Reset/Clear the pagination
+     */
+    public resetPagination(): void {
+        this.updatePagination(0);
     }
 
     /**
