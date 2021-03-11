@@ -30,6 +30,21 @@ trait StatisticsHandlingTrait
     }
 
     /**
+     * Build error response statistic
+     * @param string $key
+     * @return Statistic
+     */
+    protected function getErrorResponse(string $key): Statistic
+    {
+        $statistic = $this->getEmptyResponse($key);
+
+        $this->addMetadata($statistic, ['labelKey' => 'LBL_STATISTIC_ERROR']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_STATISTIC_ERROR_DESC']);
+
+        return $statistic;
+    }
+
+    /**
      * Build empty response statistic
      * @param string $key
      * @return Statistic
