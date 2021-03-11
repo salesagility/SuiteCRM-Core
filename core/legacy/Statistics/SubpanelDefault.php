@@ -5,12 +5,19 @@ namespace App\Legacy\Statistics;
 use App\Entity\Statistic;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Service\StatisticsProviderInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProviderInterface
+class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProviderInterface, LoggerAwareInterface
 {
     use StatisticsHandlingTrait;
 
     public const KEY = 'default';
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @inheritDoc
@@ -38,6 +45,12 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
 
         $queries = $this->getQueries($module, $id, $subpanel);
 
+        if (empty($queries)) {
+            $this->logger->error('default-statistic: No queries found.', ['query' => $query]);
+
+            return $this->getErrorResponse(self::KEY);
+        }
+
         $parts = $queries[0];
         $parts['select'] = 'SELECT COUNT(*) as value';
 
@@ -49,5 +62,13 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
         $this->close();
 
         return $statistic;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 }
