@@ -1,4 +1,5 @@
 import {Observable} from 'rxjs';
+import {SingleValueStatisticsStoreInterface} from '../statistics/statistics-store.model';
 
 export interface WidgetMetadata {
     type: string;
@@ -33,6 +34,7 @@ export interface StatisticWidgetLayoutCol {
     labelKey?: string;
     dynamicLabel?: string;
     statistic?: string;
+    store?: SingleValueStatisticsStoreInterface;
     display?: string;
     size?: TextSizes;
     color?: TextColor;

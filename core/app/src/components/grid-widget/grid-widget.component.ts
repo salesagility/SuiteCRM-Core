@@ -15,19 +15,19 @@ import {LanguageStore} from '@store/language/language.store';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay, take} from 'rxjs/operators';
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
-import {
-    SingleValueStatisticsState,
-    SingleValueStatisticsStore
-} from '@store/single-value-statistics/single-value-statistics.store';
 import {StatisticMetadata, StatisticsQuery} from '@app-common/statistics/statistics.model';
 import {ViewContext} from '@app-common/views/view.model';
 import {StringMap} from '@app-common/types/StringMap';
 import {FieldMap} from '@app-common/record/field.model';
+import {
+    SingleValueStatisticsState,
+    SingleValueStatisticsStoreInterface
+} from '@app-common/statistics/statistics-store.model';
 
 interface StatisticsEntry {
     labelKey?: string;
     type: string;
-    store: SingleValueStatisticsStore;
+    store: SingleValueStatisticsStoreInterface;
 }
 
 interface StatisticsEntryMap {

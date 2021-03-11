@@ -8,10 +8,13 @@ import {
     StatisticsQuery
 } from '@app-common/statistics/statistics.model';
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
-import {StatisticsState, StatisticsStore} from '@store/statistics/statistics.store';
+import {StatisticsStore} from '@store/statistics/statistics.store';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {Field} from '@app-common/record/field.model';
 import {FieldManager} from '@services/record/field/field.manager';
+import {
+    SingleValueStatisticsState,
+    SingleValueStatisticsStoreInterface
+} from '@app-common/statistics/statistics-store.model';
 
 const initialState = {
     module: '',
@@ -23,13 +26,9 @@ const initialState = {
     loading: false
 } as SingleValueStatisticsState;
 
-export interface SingleValueStatisticsState extends StatisticsState {
-    statistic: SingleValueStatistic;
-    field?: Field;
-}
 
 @Injectable()
-export class SingleValueStatisticsStore extends StatisticsStore {
+export class SingleValueStatisticsStore extends StatisticsStore implements SingleValueStatisticsStoreInterface {
     state$: Observable<SingleValueStatisticsState>;
     statistic$: Observable<Statistic>;
     loading$: Observable<boolean>;

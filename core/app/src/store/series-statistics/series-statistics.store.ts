@@ -3,9 +3,10 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {deepClone} from '@base/app-common/utils/object-utils';
 import {SeriesStatistic, StatisticsQuery} from '@app-common/statistics/statistics.model';
 import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
-import {StatisticsState, StatisticsStore} from '@store/statistics/statistics.store';
+import {StatisticsStore} from '@store/statistics/statistics.store';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {SeriesResult} from '@app-common/containers/chart/chart.model';
+import {StatisticsState} from '@app-common/statistics/statistics-store.model';
 
 const initialState = {
     module: '',
