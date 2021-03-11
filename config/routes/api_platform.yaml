@@ -2,3 +2,11 @@ api_platform:
   resource: .
   type: api_platform
   prefix: /api
+
+swagger_ui:
+  path: /docs/rest
+  controller: api_platform.swagger.action.ui
+
+graphiql:
+  path: /docs/graphql
+  controller: api_platform.graphql.action.graphiql

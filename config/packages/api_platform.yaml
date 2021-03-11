@@ -37,7 +37,8 @@ api_platform:
     # The oauth scopes.
     scopes: []
 
-  enable_swagger_ui: false
+  enable_swagger_ui: true
+  enable_re_doc: false
 
   # Specify a path name generator to use.
   path_segment_name_generator: api_platform.path_segment_name_generator.dash
