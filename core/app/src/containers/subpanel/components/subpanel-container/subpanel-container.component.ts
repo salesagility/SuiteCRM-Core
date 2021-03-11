@@ -7,7 +7,7 @@ import {SubpanelStore, SubpanelStoreMap} from '@containers/subpanel/store/subpan
 import {MaxColumnsCalculator} from '@services/ui/max-columns-calculator/max-columns-calculator.service';
 import {ViewContext} from '@app-common/views/view.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
-import {GridWidgetInput, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
+import {GridWidgetConfig, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 
 interface SubpanelContainerViewModel {
     appStrings: LanguageStringMap;
@@ -64,24 +64,48 @@ export class SubpanelContainerComponent implements OnInit {
         }
     }
 
-    getGridConfig(vm: SubpanelStore): GridWidgetInput {
+    getGridConfig(vm: SubpanelStore): GridWidgetConfig {
 
         if (!vm.metadata || !vm.metadata.insightWidget) {
             return {
                 layout: null,
-            } as GridWidgetInput;
+            } as GridWidgetConfig;
         }
+
+
+        const layout = vm.getWidgetLayout();
+
+        layout.rows.forEach(row => {
+
+            if (!row.cols || !row.cols.length) {
+                return;
+            }
+
+            row.cols.forEach(col => {
+
+                if (!col.statistic) {
+                    return;
+                }
+
+                const store = vm.getStatistic(col.statistic);
+                if (store) {
+                    col.store = store;
+                }
+            });
+
+        });
+
 
         return {
             rowClass: 'statistics-sidebar-widget-row',
             columnClass: 'statistics-sidebar-widget-col',
-            layout: vm.metadata.insightWidget.options.insightWidget,
-            widgetConfig: {reload$: this.config.sidebarActive$} as WidgetMetadata,
+            layout,
+            widgetConfig: {} as WidgetMetadata,
             queryArgs: {
                 module: vm.metadata.name,
                 context: {module: vm.parentModule, id: vm.parentId} as ViewContext,
                 params: {subpanel: vm.metadata.name},
             } as StatisticsQueryArgs,
-        } as GridWidgetInput;
+        } as GridWidgetConfig;
     }
 }

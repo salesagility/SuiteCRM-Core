@@ -1,6 +1,10 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import {GridWidgetComponent, GridWidgetInput, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
+import {
+    GridWidgetComponent,
+    GridWidgetConfig,
+    StatisticsQueryArgs
+} from '@components/grid-widget/grid-widget.component';
 import {Component} from '@angular/core';
 import {ViewContext} from '@app-common/views/view.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
@@ -75,7 +79,7 @@ class StatisticsSidebarWidgetHostComponent {
             context: this.context,
             params: {},
         } as StatisticsQueryArgs,
-    } as GridWidgetInput;
+    } as GridWidgetConfig;
 
 }
 

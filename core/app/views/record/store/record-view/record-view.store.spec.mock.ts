@@ -1,5 +1,5 @@
 import {Observable, of} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {shareReplay, take} from 'rxjs/operators';
 import {appStateStoreMock} from '@store/app-state/app-state.store.spec.mock';
 import {languageStoreMock} from '@store/language/language.store.spec.mock';
 import {navigationMock} from '@store/navigation/navigation.store.spec.mock';
@@ -14,6 +14,9 @@ import {RecordSaveGQL} from '@store/record/graphql/api.record.save';
 import {Record} from '@app-common/record/record.model';
 import {subpanelFactoryMock} from '@containers/subpanel/store/subpanel/subpanel.store.spec.mock';
 import {recordManagerMock} from '@services/record/record.manager.spec.mock';
+import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
+import {StatisticsFetchGQL} from '@store/statistics/graphql/api.statistics.get';
+import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {
@@ -1148,6 +1151,29 @@ class RecordSaveGQLSpy extends RecordSaveGQL {
     }
 }
 
+class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
+    constructor() {
+        super(null);
+    }
+
+    public fetch(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        module: string,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        queries: StatisticsQueryMap,
+    ): Observable<StatisticsMap> {
+        return of({
+            history: {
+                id: 'history',
+                data: {
+                    type: 'date',
+                    value: '2020-09-23'
+                }
+            }
+        }).pipe(shareReplay(1));
+    }
+}
+
 export const recordviewStoreMock = new RecordViewStore(
     new RecordViewGQLSpy(),
     new RecordSaveGQLSpy(),
@@ -1159,7 +1185,8 @@ export const recordviewStoreMock = new RecordViewStore(
     localStorageServiceMock,
     messageServiceMock,
     subpanelFactoryMock,
-    recordManagerMock
+    recordManagerMock,
+    new StatisticsBatch(new StatisticsFetchGQLSpy())
 );
 
 recordviewStoreMock.init('accounts', 'c4da5f04-2d4a-7a14-35ff-5f242b8f8a52').pipe(take(1)).subscribe();

@@ -21,11 +21,11 @@ export interface SubPanelCollectionItem {
 /* eslint-enable camelcase */
 
 export interface SubPanelMeta {
-    [key: string]: SubPanel;
+    [key: string]: SubPanelDefinition;
 }
 
 /* eslint-disable camelcase */
-export interface SubPanel {
+export interface SubPanelDefinition {
     insightWidget?: WidgetOptionMap;
     order?: 10;
     sort_order?: string;

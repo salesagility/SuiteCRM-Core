@@ -4,7 +4,7 @@ import {ViewContext} from '@app-common/views/view.model';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '@store/language/language.store';
 import {StatisticWidgetOptions, WidgetMetadata} from '@app-common/metadata/widget.metadata';
-import {GridWidgetInput, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
+import {GridWidgetConfig, StatisticsQueryArgs} from '@components/grid-widget/grid-widget.component';
 
 @Component({
     selector: 'scrm-statistics-sidebar-widget',
@@ -50,7 +50,7 @@ export class StatisticsSidebarWidgetComponent extends BaseWidgetComponent implem
         return this.language.getFieldLabel(key, module);
     }
 
-    getGridConfig(): GridWidgetInput {
+    getGridConfig(): GridWidgetConfig {
         return {
             rowClass: 'statistics-sidebar-widget-row',
             columnClass: 'statistics-sidebar-widget-col',
@@ -61,7 +61,7 @@ export class StatisticsSidebarWidgetComponent extends BaseWidgetComponent implem
                 context: this.context,
                 params: {},
             } as StatisticsQueryArgs,
-        } as GridWidgetInput;
+        } as GridWidgetConfig;
     }
 
 }

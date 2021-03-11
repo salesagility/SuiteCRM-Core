@@ -26,6 +26,8 @@ import {SubpanelStoreMap} from '@containers/subpanel/store/subpanel/subpanel.sto
 import {SubpanelStoreFactory} from '@containers/subpanel/store/subpanel/subpanel.store.factory';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 import {RecordManager} from '@services/record/record.manager';
+import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
+import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
 
 const initialState: RecordViewState = {
     module: '',
@@ -80,7 +82,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected localStorage: LocalStorageService,
         protected message: MessageService,
         protected subpanelFactory: SubpanelStoreFactory,
-        protected recordManager: RecordManager
+        protected recordManager: RecordManager,
+        protected statisticsBatch: StatisticsBatch,
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -197,13 +200,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         return this.load().pipe(
             tap(() => {
                 this.showTopWidget = true;
-                const subpanels = this.subpanelsState.value;
-                if (subpanels) {
-                    Object.keys(subpanels).forEach(subpanelKey => {
-                        const subpanel = subpanels[subpanelKey];
-                        subpanel.loadStatistics().pipe(take(1)).subscribe();
-                    });
-                }
+                this.loadSubpanelStatistics(module);
             })
         );
     }
@@ -290,6 +287,74 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 });
             })
         );
+    }
+
+    /**
+     * Load all statistics
+     *
+     * @param {string} module if to use cache
+     */
+    protected loadSubpanelStatistics(module: string): void {
+        const subpanels = this.subpanelsState.value;
+
+        if (!subpanels) {
+            return;
+        }
+
+        const queries: StatisticsQueryMap = {};
+
+        Object.keys(subpanels).forEach(subpanelKey => {
+
+            const subpanel = subpanels[subpanelKey];
+            const statsMap = subpanel.statistics;
+
+            if (!statsMap || !Object.keys(statsMap).length) {
+                return;
+            }
+
+            if (subpanel.shouldBatchStatistic() === false) {
+                subpanel.loadAllStatistics().pipe(take(1)).subscribe();
+                return;
+            }
+
+            const subpanelQueries = subpanel.getAllStatisticQuery();
+
+            Object.keys(subpanelQueries).forEach(subpanelQueryKey => {
+                const queryKey = this.buildStatKey(subpanelKey, subpanelQueryKey);
+                queries[queryKey] = subpanelQueries[subpanelQueryKey];
+            });
+
+            subpanel.setAllStatisticsLoading(true);
+        });
+
+        this.statisticsBatch.fetch(module, queries)
+            .pipe(take(1))
+            .subscribe((stats: StatisticsMap) => {
+
+                Object.keys(subpanels).forEach(subpanelKey => {
+
+                    const subpanel = subpanels[subpanelKey];
+                    const subpanelQueries = subpanel.getAllStatisticQuery();
+
+                    Object.keys(subpanelQueries).forEach(subpanelQueryKey => {
+                        const queryKey = this.buildStatKey(subpanelKey, subpanelQueryKey);
+                        const stat = stats[queryKey];
+                        if (!stat) {
+                            return;
+                        }
+                        subpanel.setStatistics(subpanelQueryKey, stat, true);
+                    });
+
+                    subpanel.setAllStatisticsLoading(false);
+                });
+            });
+    }
+
+    protected buildStatKey(subpanelKey: string, subpanelQueryKey: string): string {
+        subpanelKey = subpanelKey.replace(/_/g, '-');
+        subpanelQueryKey = subpanelQueryKey.replace(/_/g, '-');
+
+        return subpanelKey + '-' + subpanelQueryKey;
     }
 
     /**

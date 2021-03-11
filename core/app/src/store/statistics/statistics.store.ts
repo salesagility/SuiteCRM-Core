@@ -44,6 +44,15 @@ export class StatisticsStore implements StateStore {
         this.clear();
     }
 
+    /**
+     * Get Statistic query
+     *
+     * @returns {object} StatisticsQuery
+     */
+    public getQuery(): StatisticsQuery {
+        return deepClone(this.internalState.query);
+    }
+
     get context(): ViewContext {
         return this.internalState.query.context;
     }
@@ -94,12 +103,46 @@ export class StatisticsStore implements StateStore {
             loading: true,
         });
 
-        return this.fetchStatistics(this.internalState.module, this.internalState.query, useCache).pipe(
+        return this.fetchStatistics(this.internalState.module, this.getQuery(), useCache).pipe(
             map((data: StatisticsMap) => this.mapStatistics(data)),
             tap((statistic: Statistic) => {
                 this.addNewState(statistic);
             })
         );
+    }
+
+    /**
+     * Set loading
+     *
+     * @param {boolean} loading bool
+     */
+    public setLoading(loading: boolean): void {
+
+        this.updateState({
+            ...this.internalState,
+            loading
+        });
+    }
+
+    /**
+     * Set Statistic value
+     *
+     * @param {string} key string
+     * @param {object} statistic Statistic
+     * @param {boolean} cache bool
+     */
+    public setStatistic(key: string, statistic: Statistic, cache = false): void {
+
+        this.addNewState(statistic);
+
+        if (!cache) {
+            return;
+        }
+
+        const statMap: StatisticsMap = {};
+        statMap[key] = statistic;
+
+        this.cache$ = of(statMap).pipe(shareReplay(1));
     }
 
     protected addNewState(statistic: Statistic): void {

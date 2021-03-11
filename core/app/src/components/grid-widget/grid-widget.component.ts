@@ -44,7 +44,7 @@ interface GridWidgetState {
     tooltipTitleText: string;
 }
 
-export interface GridWidgetInput {
+export interface GridWidgetConfig {
     rowClass?: string;
     columnClass?: string;
     layout: StatisticWidgetOptions;
@@ -65,14 +65,14 @@ export interface StatisticsQueryArgs {
 })
 
 export class GridWidgetComponent implements OnInit, OnDestroy {
-    @Input() config: GridWidgetInput;
+    @Input() config: GridWidgetConfig;
     vm$: Observable<GridWidgetState>;
     loading = true;
     messageLabelKey: string;
     private subs: Subscription[] = [];
     private statistics: StatisticsEntryMap = {};
     private loading$: Observable<boolean>;
-    private gridWidgetInput: GridWidgetInput;
+    private gridWidgetInput: GridWidgetConfig;
 
     constructor(
         protected language: LanguageStore,
