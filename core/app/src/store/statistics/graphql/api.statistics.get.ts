@@ -30,13 +30,9 @@ export class StatisticsFetchGQL {
             query: gql`
             query getBatchedStatistics($module: String!, $queries: Iterable!){
               getBatchedStatistics(module: $module, queries: $queries) {
-                edges {
-                  node {
-                    _id,
-                    data,
-                    metadata
-                  }
-                }
+                  _id
+                  id
+                  items
               }
             }
         `,
@@ -49,16 +45,20 @@ export class StatisticsFetchGQL {
         return this.apollo.query(queryOptions).pipe(map((result: ApolloQueryResult<any>) => {
 
             const statistics: StatisticsMap = {};
+            const response = (result.data && result.data.getBatchedStatistics) || {} as any;
+            const items = response.items || {} as any;
+            const itemKeys = Object.keys(items);
 
-            if (result && result.data.getBatchedStatistics && result.data.getBatchedStatistics.edges) {
-                result.data.getBatchedStatistics.edges.forEach((edge: any) => {
+            if (itemKeys && itemKeys.length) {
+                itemKeys.forEach((itemKey: string) => {
+                    const item = items[itemKey];
                     // eslint-disable-next-line no-underscore-dangle
-                    const key = edge.node._id;
+                    const key = itemKey || item._id;
                     statistics[key] = {
                         // eslint-disable-next-line no-underscore-dangle
-                        id: edge.node._id,
-                        data: edge.node.data,
-                        metadata: edge.node.metadata
+                        id: item._id,
+                        data: item.data,
+                        metadata: item.metadata
                     } as Statistic;
                 });
             }

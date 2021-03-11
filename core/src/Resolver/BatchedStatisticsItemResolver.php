@@ -3,10 +3,10 @@
 namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
-use App\Entity\Statistic;
+use App\Entity\BatchedStatistics;
 use App\Service\StatisticsManagerInterface;
 
-class StatisticsItemResolver implements QueryItemResolverInterface
+class BatchedStatisticsItemResolver implements QueryItemResolverInterface
 {
     /**
      * @var StatisticsManagerInterface
@@ -14,7 +14,7 @@ class StatisticsItemResolver implements QueryItemResolverInterface
     private $manager;
 
     /**
-     * StatisticsItemResolver constructor.
+     * BatchedStatisticsItemResolver constructor.
      * @param StatisticsManagerInterface $manager
      */
     public function __construct(StatisticsManagerInterface $manager)
@@ -23,21 +23,17 @@ class StatisticsItemResolver implements QueryItemResolverInterface
     }
 
     /**
-     * @param Statistic|null $item
+     * @param BatchedStatistics|null $item
      *
      * @param array $context
-     * @return Statistic|null
+     * @return BatchedStatistics|null
      */
-    public function __invoke($item, array $context): ?Statistic
+    public function __invoke($item, array $context): ?BatchedStatistics
     {
         $query = $context['args']['queries'] ?? [];
         $module = $context['args']['module'] ?? '';
 
-        if (empty($query)) {
-            return null;
-        }
-
-        return $this->manager->getStatistic($module, $query);
+        return $this->manager->getBatched($module, $query);
     }
 
     /**

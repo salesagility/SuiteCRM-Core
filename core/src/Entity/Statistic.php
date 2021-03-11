@@ -5,7 +5,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Resolver\StatisticsCollectionResolver;
 use App\Resolver\StatisticsItemResolver;
 
 /**
@@ -24,13 +23,6 @@ use App\Resolver\StatisticsItemResolver;
  *                 "query"={"type"="Iterable"},
  *              }
  *          },
- *         "getBatched"={
- *             "collection_query"=StatisticsCollectionResolver::class,
- *             "args"={
- *                 "module"={"type"="String!"},
- *                 "queries"={"type"="Iterable!"},
- *             }
- *         },
  *      },
  * )
  */
@@ -159,5 +151,20 @@ class Statistic
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            '_id' => $this->getId(),
+            'messages' => $this->getMessages(),
+            'options' => $this->getOptions(),
+            'data' => $this->getData(),
+            'metadata' => $this->getMetadata(),
+        ];
     }
 }
