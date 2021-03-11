@@ -277,6 +277,14 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
                     return;
                 }
 
+                if (col.store) {
+                    this.statistics[col.statistic] = {
+                        type: col.statistic,
+                        store: col.store
+                    };
+                    return;
+                }
+
                 this.statistics[col.statistic] = {
                     type: col.statistic,
                     store: this.factory.create()
@@ -346,7 +354,7 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
         let allStatistics$: Observable<SingleValueStatisticsState[]> = of([]).pipe(shareReplay());
         const layout$ = of(this.getLayout()).pipe(shareReplay());
 
-        if (this.statistics &&  Object.keys(this.statistics).length > 0){
+        if (this.statistics && Object.keys(this.statistics).length > 0) {
             const statistics$: Observable<SingleValueStatisticsState>[] = [];
             Object.keys(this.statistics).forEach(type => statistics$.push(this.statistics[type].store.state$));
             allStatistics$ = combineLatest(statistics$);
