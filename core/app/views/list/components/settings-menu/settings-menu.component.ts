@@ -25,14 +25,15 @@ export class SettingsMenuComponent implements OnInit {
         this.listStore.widgets$,
         this.listStore.displayFilters$,
         this.listStore.criteria$,
-        this.screenSize.screenSize$
+        this.screenSize.screenSize$,
+        this.listStore.showSidebarWidgets$
     ]).pipe(
-        map(([widgets, displayFilters, criteria, screenSize]) => {
+        map(([widgets, displayFilters, criteria, screenSize, showSidebarWidgets]) => {
             if (screenSize) {
                 this.screen = screenSize;
             }
             this.configState.next(this.getButtonGroupConfig());
-            return {widgets, displayFilters, criteria, screenSize};
+            return {widgets, displayFilters, criteria, screenSize, showSidebarWidgets};
         })
     );
 
