@@ -111,6 +111,7 @@ export class RecordActionsAdapter implements ActionDataSource {
                         if (!actionHandler || !actionHandler.shouldDisplay(this.store)) {
                             return;
                         }
+                        action.status = actionHandler.getStatus(this.store) || '';
                     }
 
                     const label = this.language.getFieldLabel(action.labelKey, record.module, languages);

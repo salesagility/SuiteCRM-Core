@@ -14,6 +14,10 @@ export abstract class RecordActionHandler extends ActionHandler {
 
     abstract modes: ViewMode[];
 
+    getStatus(store: RecordViewStore): string {
+        return '';
+    }
+
     abstract run(data: RecordActionData): void;
 
     abstract shouldDisplay(store: RecordViewStore): boolean;

@@ -22,4 +22,8 @@ export class RecordToggleWidgetsAction extends RecordActionHandler {
     shouldDisplay(store: RecordViewStore): boolean {
         return store.widgets;
     }
+
+    getStatus(store: RecordViewStore): string {
+        return store.showSidebarWidgets ? 'active': '';
+    }
 }

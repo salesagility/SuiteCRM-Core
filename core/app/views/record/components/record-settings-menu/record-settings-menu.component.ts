@@ -7,7 +7,7 @@ import {Action} from '@app-common/actions/action.model';
 import {ScreenSize, ScreenSizeObserverService} from '@services/ui/screen-size-observer/screen-size-observer.service';
 import {SystemConfigStore} from '@store/system-config/system-config.store';
 import {LanguageStore} from '@store/language/language.store';
-import {ButtonInterface} from '@app-common/components/button/button.model';
+import {Button, ButtonInterface} from '@app-common/components/button/button.model';
 
 @Component({
     selector: 'scrm-record-settings-menu',
@@ -45,7 +45,7 @@ export class RecordSettingsMenuComponent {
         protected languages: LanguageStore,
         protected actionsDataSource: RecordActionsAdapter,
         protected screenSize: ScreenSizeObserverService,
-        protected systemConfigStore: SystemConfigStore
+        protected systemConfigStore: SystemConfigStore,
     ) {
     }
 
@@ -115,6 +115,10 @@ export class RecordSettingsMenuComponent {
 
         if (action.icon) {
             button.icon = action.icon;
+        }
+
+        if (action.status) {
+            Button.appendClasses(button, [action.status]);
         }
 
         return button;

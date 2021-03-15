@@ -23,6 +23,7 @@ export interface Action {
     labelKey: string;
     label?: string;
     icon?: string;
+    status?: string;
     modes?: string[];
     asyncProcess?: boolean;
     params?: { [key: string]: any };
