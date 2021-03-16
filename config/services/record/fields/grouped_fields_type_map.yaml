@@ -11,7 +11,8 @@ parameters:
         - last_name
       display: inline
       showLabel:
-        - edit
+        edit: ['first_name','last_name']
+        filter: ['*']
     address:
       layout:
         - street
@@ -21,6 +22,6 @@ parameters:
         - country
       display: vertical
       showLabel:
-        - edit
-
+        edit: ['*']
+        filter: ['*']
 

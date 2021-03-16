@@ -73,15 +73,22 @@ export class GroupFieldComponent extends BaseFieldComponent {
         return this.hasDisplay() && this.hasLayout() && this.hasGroupFields();
     }
 
-
-    showLabel(): boolean {
+    showLabel(fieldName: string): boolean {
         const definition = this.field.definition || null;
+        const showLabel = definition.showLabel || null;
 
-        if (!definition || !definition.showLabel || !definition.showLabel.length) {
+        if (!definition || !showLabel) {
             return false;
         }
 
-        return definition.showLabel.includes(this.mode);
+        const showLabelOptions = definition.showLabel[this.mode] || null;
+
+        // showLabel > viewMode not defined || defined without any values e.g. edit:
+        if(!showLabelOptions || typeof(showLabelOptions) === 'undefined'){
+            return false;
+        }
+
+        return (showLabelOptions.includes('*') || showLabelOptions.includes(fieldName));
     }
 
     /**

@@ -8,7 +8,7 @@
         <div *ngFor="let groupField of getFields()" class="field-group-item d-flex flex-column">
 
             <!-- LABEL -->
-            <span *ngIf="groupField.labelKey && showLabel()" class="field-group-label pt-2 pr-1">
+            <span *ngIf="groupField.labelKey && showLabel(groupField.definition.name)" class="field-group-label pt-2 pr-1">
                 <label><scrm-label [labelKey]="groupField.labelKey" [module]="getModule()"></scrm-label></label>
             </span>
 
