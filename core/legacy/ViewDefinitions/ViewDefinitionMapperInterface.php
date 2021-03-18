@@ -23,7 +23,7 @@ interface ViewDefinitionMapperInterface
      * Map value
      * @param ViewDefinition $definition
      * @param FieldDefinition $fieldDefinition
-     * @return mixed
      */
     public function map(ViewDefinition $definition, FieldDefinition $fieldDefinition): void;
+
 }
