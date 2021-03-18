@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {StateStore} from '@store/state';
 import {RecordList, RecordListStore} from '@store/record-list/record-list.store';
-import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '@store/record-list/record-list.store.factory';
 import {LanguageStore} from '@store/language/language.store';
 import {SubPanelDefinition} from '@app-common/metadata/subpanel.metadata.model';
@@ -10,6 +10,7 @@ import {SingleValueStatisticsStore} from '@store/single-value-statistics/single-
 import {SingleValueStatisticsStoreFactory} from '@store/single-value-statistics/single-value-statistics.store.factory';
 import {deepClone} from '@app-common/utils/object-utils';
 import {StatisticWidgetOptions} from '@app-common/metadata/widget.metadata';
+import {Record} from '@app-common/record/record.model';
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -24,12 +25,15 @@ export class SubpanelStore implements StateStore {
     show = false;
     parentModule: string;
     parentId: string;
+    parentRecord$: Observable<Record>;
+    parentRecord: Record;
     recordList: RecordListStore;
     statistics: SingleValueStatisticsStoreMap;
     metadata$: Observable<SubPanelDefinition>;
     metadata: SubPanelDefinition;
     loading$: Observable<boolean>;
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
+    protected subs: Subscription[] = [];
 
 
     constructor(
@@ -64,6 +68,7 @@ export class SubpanelStore implements StateStore {
         this.metadataState = null;
         this.recordList.clear();
         this.recordList = null;
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     clearAuthBased(): void {
@@ -77,8 +82,9 @@ export class SubpanelStore implements StateStore {
      * @param {string} parentModule name
      * @param {string} parentId id
      * @param {object} meta to use
+     * @param {object} parentRecord$ to use
      */
-    public init(parentModule: string, parentId: string, meta: SubPanelDefinition): void {
+    public init(parentModule: string, parentId: string, meta: SubPanelDefinition, parentRecord$: Observable<Record> = null): void {
         this.parentModule = parentModule;
         this.parentId = parentId;
         this.metadata = meta;
@@ -88,6 +94,12 @@ export class SubpanelStore implements StateStore {
         this.initStatistics(meta, parentModule, parentId);
 
         this.initSearchCriteria(parentModule, parentId, meta.name);
+
+        if (parentRecord$) {
+            this.parentRecord$ = parentRecord$;
+            this.parentRecord$.subscribe(record => this.parentRecord = record);
+        }
+
     }
 
     /**

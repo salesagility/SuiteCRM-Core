@@ -378,7 +378,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
             Object.keys(meta).forEach((key: string) => {
                 this.subpanels[key] = this.subpanelFactory.create();
-                this.subpanels[key].init(module, recordId, meta[key]);
+                this.subpanels[key].init(module, recordId, meta[key], this.record$);
             });
 
             this.subpanelsState.next(this.subpanels);

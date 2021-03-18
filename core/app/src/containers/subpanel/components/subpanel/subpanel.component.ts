@@ -106,6 +106,7 @@ export class SubpanelComponent implements OnInit {
                     module: action.params.module || this.store.metadata.module,
                     parentModule: this.store.parentModule,
                     parentId: this.store.parentId,
+                    store: this.store,
                     action
                 });
             }
