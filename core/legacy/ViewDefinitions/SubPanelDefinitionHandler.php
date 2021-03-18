@@ -186,7 +186,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      */
     protected function mapButtons(aSubPanel $subpanel, $tab): array
     {
-        $topButtonDefinitions = $this->getButtonDefinitions($subpanel, $tab);
+        $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
         $topButtons = [];
 
@@ -237,6 +237,9 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             }
 
             if ($mappedButton !== null) {
+                $mappedButton['additionalFields'] = $top_button['additionalFields'] ?? [];
+                $mappedButton['extraParams'] = $top_button['extraParams'] ?? [];
+                $mappedButton['widget_class'] = $top_button['widget_class'] ?? [];
                 $topButtons[] = $mappedButton;
                 continue;
             }
@@ -245,7 +248,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 $topButtons[] = [
                     'key' => 'create',
                     'labelKey' => 'LBL_QUICK_CREATE',
-                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module'])
+                    'widget_class' => $top_button['widget_class'],
+                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
+                    'additionalFields' => $top_button['additionalFields'] ?? [],
+                    'extraParams' => $top_button['extraParams'] ?? []
                 ];
             }
         }
@@ -258,18 +264,9 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param $tab
      * @return array
      */
-    protected function getButtonDefinitions(aSubPanel $subpanel, $tab): array
+    protected function getButtonDefinitions(aSubPanel $subpanel): array
     {
-        $defaultTopButtons = $subpanel->panel_definition['top_buttons'] ?? [];
-
-        $topButtonDefinitions = [];
-        if (!empty($tab['top_buttons'])) {
-            $topButtonDefinitions = $tab['top_buttons'];
-        } elseif (!empty($defaultTopButtons)) {
-            $topButtonDefinitions = $defaultTopButtons;
-        }
-
-        return $topButtonDefinitions;
+        return $subpanel->get_buttons() ?? [];
     }
 
     /**
