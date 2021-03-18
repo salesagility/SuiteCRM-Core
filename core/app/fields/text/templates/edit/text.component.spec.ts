@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {TextEditFieldComponent} from './text.component';
 import {Field} from '@app-common/record/field.model';
 import {UserPreferenceStore} from '@store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '@store/user-preference/user-preference.store.spec.mock';
@@ -11,6 +10,8 @@ import {datetimeFormatterMock} from '@services/formatters/datetime/datetime-form
 import {DateFormatter} from '@services/formatters/datetime/date-formatter.service';
 import {dateFormatterMock} from '@services/formatters/datetime/date-formatter.service.spec.mock';
 import {CurrencyFormatter} from '@services/formatters/currency/currency-formatter.service';
+import {FormControl} from '@angular/forms';
+import {TextEditFieldModule} from '@fields/text/templates/edit/text.module';
 
 @Component({
     selector: 'text-edit-field-test-host-component',
@@ -20,7 +21,8 @@ class TextEditFieldTestHostComponent {
     field: Field = {
         type: 'text',
         value: 'My Text',
-        metadata: null
+        metadata: null,
+        formControl: new FormControl('My Text')
     };
 }
 
@@ -32,9 +34,10 @@ describe('TextEditFieldComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 TextEditFieldTestHostComponent,
-                TextEditFieldComponent,
             ],
-            imports: [],
+            imports: [
+                TextEditFieldModule
+            ],
             providers: [
                 {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
                 {provide: NumberFormatter, useValue: numberFormatterMock},
@@ -58,7 +61,13 @@ describe('TextEditFieldComponent', () => {
 
     it('should have value', () => {
         expect(testHostComponent).toBeTruthy();
-        expect(testHostFixture.nativeElement.textContent).toContain('My Text');
+
+
+        const field = testHostFixture.nativeElement.getElementsByTagName('textarea').item(0);
+
+        expect(field).toBeTruthy();
+
+        expect(field.value).toContain('My Text');
     });
 
     it('should have default rows 6', () => {
