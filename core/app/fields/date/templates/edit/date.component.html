@@ -1,15 +1,15 @@
-<span class="datetime-edit-containers">
-    <span>
-        <input ngbDatepicker
-               [ngClass]="klass"
-               [placement]="getPlacement()"
-               [placeholder]="getDateFormat().toLowerCase()"
-               [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
-               [formControl]="field.formControl"
-               [startDate]="dateModel"
-               (ngModelChange)="setModel($event)"
-               #datepicker="ngbDatepicker">
+<div class="input-group mb-3">
+    <input ngbDatepicker
+           [ngClass]="klass"
+           [placement]="getPlacement()"
+           [placeholder]="getDateFormat().toLowerCase()"
+           [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+           [formControl]="field.formControl"
+           [startDate]="dateModel"
+           (ngModelChange)="setModel($event)"
+           #datepicker="ngbDatepicker">
+    <span class="input-group-append">
         <scrm-button [config]="getOpenButton(datepicker)">
         </scrm-button>
     </span>
-</span>
+</div>
