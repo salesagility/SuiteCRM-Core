@@ -55,11 +55,14 @@ export class SettingsMenuComponent implements OnInit {
 
     getButtonGroupConfig(): ButtonGroupInterface {
         const availableButtons = [
+            // Commented temporarily as it is not implemented
+            /*
             {button: this.getDisplayAsButton()},
             {
                 show: (): boolean => this.listStore.getFilter() && this.listStore.getFilter().length >= 1,
                 button: this.getMyFiltersButton(),
             },
+            */
             {button: this.getFilterButton()},
             {
                 show: (): boolean => !Object.keys(this.getFilters()).every(key => this.getFilters()[key].operator === ''),
