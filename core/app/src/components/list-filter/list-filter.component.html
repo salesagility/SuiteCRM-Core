@@ -2,7 +2,7 @@
             [close]="closeButton"
             [mode]="panelMode"
             [isCollapsed$]="isCollapsed$"
-            klass="filter-panel"
+            klass="filter-panel {{ (config && config.klass) || ''}}"
             *ngIf="(vm$ | async) as vm">
 
     <span panel-header-button>
@@ -10,7 +10,7 @@
         <scrm-button *ngIf="quickSearchButton" [config]="quickSearchButton"></scrm-button>
     </span>
 
-    <div panel-body class="p-3">
+    <div class="p-3 filter-body" panel-body>
         <scrm-field-grid [fieldMode]="mode" [fields]="fields" [actions]="true" [special]="special.length > 0">
 
             <div class="float-right mt-4" *ngIf="special.length > 0" field-grid-special>

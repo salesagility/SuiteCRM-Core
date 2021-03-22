@@ -1,0 +1,30 @@
+/* Light filter SCSS */
+
+.light-filter {
+    div.card-header {
+        background: none;
+        border-bottom: 2px dotted $very-light-grey;
+        padding: 0 0 0.8rem 0;
+        .panel-title {
+            color: $midnight-blue;
+            font-weight: bold;
+        }
+    }
+    div.card-body {
+      padding: 1.25rem 0 0 0 !important;
+
+      .filter-body {
+        padding: 0 !important;
+
+        form {
+          color: $midnight-blue;
+        }
+      }
+    }
+    .minimise-button {
+        font-size: 0.6rem;
+        fill: $coral-pink;
+        border: 1px solid $coral-pink;
+        border-radius: 0.2rem;
+    }
+}

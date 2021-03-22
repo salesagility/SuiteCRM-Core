@@ -20,7 +20,7 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
         return {
             showHeader: true,
             showFooter: true,
-
+            klass: 'light-table',
             module: store.recordList.getModule(),
 
             columns: store.columns$.pipe(map(columns => this.mapColumns(store, columns))),

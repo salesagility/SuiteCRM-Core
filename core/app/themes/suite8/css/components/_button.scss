@@ -273,9 +273,9 @@ button {
 
 .pagination-button {
   background: transparent;
-  border: none;
-  margin: 0.4em 0 0 0;
+  border: 1px solid;
   padding: 0;
+  margin: 0.3em;
 }
 
 .pagination-button .disabled {

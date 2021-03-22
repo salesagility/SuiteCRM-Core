@@ -11,6 +11,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
 
     getConfig(store: RecordListModalStore): FilterConfig {
         return {
+            klass: 'light-filter',
             panelMode: 'collapsible',
             isCollapsed: true,
             collapseOnSearch: true,

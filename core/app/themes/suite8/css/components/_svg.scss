@@ -346,7 +346,12 @@
 
 .pagination-icons {
   fill: $white;
-  margin: 0.2em;
+  margin: 0;
+  svg {
+    vertical-align: bottom;
+    width: 1.7em;
+    height: 1.7em;
+  }
 }
 
 .widget-close-icon svg {

@@ -1,10 +1,7 @@
 <div class="column-chooser-modal">
-    <div class="modal-header">
+    <div class="modal-header d-flex align-items-center">
         <div class="modal-title">{{ modalTitle }}</div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close Column Chooser Modal"
-                (click)="modal.dismiss('Cross click')">
-            <scrm-image class="sicon" image="close_modal"></scrm-image>
-        </button>
+        <scrm-close-button *ngIf="close" [config]="close"></scrm-close-button>
     </div>
 
     <!-- End of modal header section -->

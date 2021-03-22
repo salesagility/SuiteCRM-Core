@@ -1,0 +1,45 @@
+.light-table {
+    .list-view-tableactions {
+        background: none; 
+        padding: 0;     
+    }
+    .list-view-table {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        thead {
+          background: none;
+        }
+        .primary-table-header {
+          background: none;
+          color: $midnight-blue;
+        }
+    }
+    .bulk-action {
+        color: $midnight-blue;
+    }
+    .pagination-button {
+        border: 1px solid $burnt-red; 
+        margin: 0 0.2em;
+        border-radius: .2em;
+       .pagination-icons {
+           fill: $burnt-red;
+           margin: 0.1em;
+            svg {
+                height: 2em;
+                vertical-align: bottom;
+            }
+       }
+    }
+    .sort-icon {
+        fill: $midnight-blue;
+    }
+    .pagination-count {
+        vertical-align: text-bottom;
+        margin: 0.2em 0.3em 0;
+    }
+    table.list-view-table {
+        tr:nth-child(even) {
+            background: $pebble-grey;
+        }
+    }
+}

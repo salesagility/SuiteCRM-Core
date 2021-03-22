@@ -36,7 +36,6 @@
   margin: 0 auto;
   padding: 0;
   line-height: 0.9em;
-  color: $off-white;
 }
 
 .modal-content {
@@ -59,8 +58,26 @@
 
   .modal-header,
   .modal-footer {
-    background-color: $dusty-grey;
+    background-color: $white;
     max-height: 2.7rem;
+  }
+
+  .modal-header {
+    .close-button {
+      border: none;
+      color: $cool-blue;
+      font-size: 2em;
+      font-weight: normal;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      &:hover {
+        background: none;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+    }
   }
 
   .modal-options {
@@ -80,7 +97,7 @@
   -webkit-border-radius: 0.25em;
   -moz-border-radius: 0.25em;
   border-radius: 0.25em;
-  color: #534d64;
+  color: $midnight-blue;
   font-size: 1em;
   letter-spacing: 0.08em;
 }

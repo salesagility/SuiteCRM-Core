@@ -12,7 +12,7 @@ import {RecordSelection} from '@app-common/views/list/record-selection.model';
 export interface TableConfig {
     showHeader: boolean;
     showFooter: boolean;
-
+    klass?: string;
     dataSource: DataSource<Record>;
 
     columns: Observable<ColumnDefinition[]>;

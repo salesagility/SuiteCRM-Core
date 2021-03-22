@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { ButtonInterface } from '@base/app-common/components/button/button.model';
+import { ModalCloseFeedBack } from '@base/app-common/components/modal/modal.model';
 
 @Component({
     selector: 'scrm-columnchooser',
@@ -8,7 +10,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class ColumnChooserComponent implements OnInit {
-
+    close: ButtonInterface;
+    
     modalTitle = 'Choose Columns';
 
     displayed = [
@@ -50,7 +53,14 @@ export class ColumnChooserComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.close = {
+            klass: ['btn', 'btn-outline-light', 'btn-sm'],
+            onClick: (): void => {
+                this.modal.close({
+                    type: 'close-button'
+                } as ModalCloseFeedBack);
+            }
+        } as ButtonInterface;
     }
 
 }
