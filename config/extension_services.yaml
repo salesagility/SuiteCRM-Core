@@ -1,6 +1,0 @@
-services:
-  # makes classes in extensions/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
-  App\Extension\:
-    resource: '../extensions/*'
-    exclude: '../extensions/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'

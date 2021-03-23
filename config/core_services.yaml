@@ -66,6 +66,12 @@ services:
   App\Legacy\:
     resource: '../core/legacy/*'
 
+  # makes classes in extensions/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\Extension\:
+    resource: '../extensions/*'
+    exclude: '../extensions/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
   App\Controller\:
@@ -162,3 +168,24 @@ services:
     # inject all services tagged with subpanel.button.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'subpanel.button.definition.mapper' }
+
+  App\Service\ActionNameMapperInterface: '@App\Legacy\ActionNameMapperHandler'
+  App\Service\BulkActionDefinitionProviderInterface: '@App\Service\BulkActionDefinitionProvider'
+  App\Service\FieldDefinitionsProviderInterface: '@App\Legacy\FieldDefinitionsHandler'
+  App\Service\FilterDefinitionProviderInterface: '@App\Service\FilterDefinitionProvider'
+  App\Service\LineActionDefinitionProviderInterface: '@App\Service\LineActionDefinitionProvider'
+  App\Service\ListViewSidebarWidgetDefinitionProviderInterface: '@App\Service\ListViewSidebarWidgetDefinitionProvider'
+  App\Service\ModuleNameMapperInterface: '@App\Legacy\ModuleNameMapperHandler'
+  App\Service\ModuleRegistryInterface: '@App\Legacy\ModuleRegistryHandler'
+  App\Service\NavigationProviderInterface: '@App\Legacy\NavbarHandler'
+  App\Service\ProcessHandlerInterface: '@App\Legacy\ResetPasswordHandler'
+  App\Service\RecordActionDefinitionProviderInterface: '@App\Service\RecordActionDefinitionProvider'
+  App\Service\RecordDeletionServiceInterface: '@App\Legacy\RecordDeletionHandler'
+  App\Service\RecordListProviderInterface: '@App\Legacy\RecordListHandler'
+  App\Service\RecordProviderInterface: '@App\Legacy\RecordHandler'
+  App\Service\RouteConverterInterface: '@App\Legacy\RouteConverterHandler'
+  App\Service\StatisticsProviderInterface: '@App\Legacy\Statistics\SubpanelDefault'
+  App\Service\SubPanelDefinitionProviderInterface: '@App\Legacy\ViewDefinitions\SubPanelDefinitionHandler'
+  App\Service\SystemConfigProviderInterface: '@App\Legacy\SystemConfigHandler'
+  App\Service\UserPreferencesProviderInterface: '@App\Legacy\UserPreferenceHandler'
+  App\Service\ViewDefinitionsProviderInterface: '@App\Legacy\ViewDefinitionsHandler'
