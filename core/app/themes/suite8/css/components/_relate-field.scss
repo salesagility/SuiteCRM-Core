@@ -1,11 +1,10 @@
 .relate-btn {
-    .btn {
-      border: none;
-      margin-top: 1em;
-      &:hover {
-        background: $white;
-        fill: $nepal-grey;
-      }
+  .btn {
+    border: none;
+
+    &:hover {
+      background: $white;
+      fill: $nepal-grey;
     }
-   }
-   
+  }
+}
