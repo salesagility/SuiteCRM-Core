@@ -2,14 +2,14 @@
     <ngb-accordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons">
         <ngb-panel id="sub-panel-buttons">
             <ng-template ngbPanelHeader>
-                <a class="clickable">
+                <a (click)="toggleSubPanels()" class="clickable">
                     <div class="d-flex align-items-center justify-content-between">
                         <scrm-label labelKey="LBL_SELECT_SUBPANEL_BANNER"></scrm-label>
-                        <scrm-image (click)="toggleSubPanels()"
-                                    [attr.aria-expanded]="!isCollapsed"
-                                    aria-controls="collapseShowSubPanels"
-                                    class="float-right"
-                                    [image]="toggleIcon">
+                        <scrm-image
+                            [attr.aria-expanded]="!isCollapsed"
+                            [image]="toggleIcon"
+                            aria-controls="collapseShowSubPanels"
+                            class="float-right">
                         </scrm-image>
                     </div>
                 </a>
