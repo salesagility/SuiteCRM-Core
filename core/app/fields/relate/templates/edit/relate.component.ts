@@ -40,7 +40,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         super(languages, typeFormatter, relateService, moduleNameMapper);
 
         this.selectButton = {
-            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'select-button'],
+            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'select-button', 'm-0'],
             onClick: (): void => {
                 this.showSelectModal();
             },
