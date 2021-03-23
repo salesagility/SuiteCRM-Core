@@ -391,7 +391,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                             'justify' => 'start',
                             'cols' => [
                                 [
-                                    'tooltipTitleKey' => $tabs[$key]['title_key'],
+                                    'descriptionKey' => $tabs[$key]['title_key'] . '_INSIGHT_DESCRIPTION',
                                     'class' => 'sub-panel-banner-tooltip',
                                 ]
                             ]
@@ -405,7 +405,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                                     'bold' => true,
                                 ]
                             ]
-                        ],                        
+                        ],
                     ]
                 ]
             ]

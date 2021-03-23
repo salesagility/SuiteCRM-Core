@@ -64,14 +64,17 @@ class SubPanelCampaignsLastReceived extends SubpanelDataQueryHandler implements 
         if (empty($result)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CAMPAIGN_LAST_RECEIVED']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CAMPAIGN_LAST_RECEIVED_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CAMPAIGN_LAST_RECEIVED']);
+
             return $statistic;
         }
         $result = $result['last_received'];
         $finalDate = $dateFormatService->toDBDate($result);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $finalDate]);
 
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CAMPAIGN_LAST_RECEIVED']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CAMPAIGN_LAST_RECEIVED_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CAMPAIGN_LAST_RECEIVED']);
         $this->close();
 
 

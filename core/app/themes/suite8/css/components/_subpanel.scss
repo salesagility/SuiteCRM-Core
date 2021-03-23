@@ -16,7 +16,7 @@
   background-color: $midnight-blue-transparent;
 }
 
-.sub-panel-banner-button-icon svg {
+.widget-entry-icon svg {
   fill: $salmon-pink;
   stroke: $salmon-pink;
   font-size: 1.6em;
@@ -37,35 +37,50 @@ div.widget-panel .panel-card .card-header {
   color: $midnight-blue;
   font-weight: bold;
   border-top: 3px solid $midnight-blue;
-  margin-bottom: 0.6rem;
+  padding: 0.5rem 0.6rem;
 }
 
 .insight-panel {
   margin-left: 0;
   margin-right: 0;
   padding: 1em;
+
   .border-insight {
-    margin: 5px;
-    border: 3px solid $very-light-grey;
+    margin: 4px;
+    border: 0.15em solid $very-light-grey;
     border-radius: 4px;
     border-top: 3px solid $midnight-blue;
-  svg {
-    font-size: 1.5em;
-    fill: $midnight-blue;
-    stroke: $midnight-blue;
+
+    svg {
+      font-size: 1.5em;
+      fill: $midnight-blue;
+      stroke: $midnight-blue;
     }
   }
-  .col-md-2 {
-    flex: 0 0 15.666667%;
-    max-width: 15.666667%;
+
+  .insight-panel-card {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    cursor: pointer;
   }
-  .sub-panel-banner-button-icon {
+
+  .insight-panel-card:hover {
+    box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 15%);
+  }
+
+  @media (min-width: 768px) {
+    .col-md-2 {
+      flex: 0 0 15.666667%;
+      max-width: 15.666667%;
+    }
+  }
+
+  .widget-entry-icon {
     display: flex;
     justify-content: flex-end;
     margin-top: 0.7em;
   }
+
   .sub-panel-banner-value {
     font-size: 1rem;
     font-weight: bold;
@@ -75,29 +90,42 @@ div.widget-panel .panel-card .card-header {
     margin-top: -0.5em;
     color: $burnt-red;
   }
+
   .sub-panel-banner-tooltip {
-    border-bottom: 2px solid $very-light-grey;
-    font-size: 0.7rem;
-    line-height: 1rem;
-    label {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      width: 9rem;
-      margin: 0;
+    width: 100%;
+
+    .widget-entry-label {
+      border-bottom: 2px solid $very-light-grey;
+      font-size: 0.7rem;
+      line-height: 1rem;
+
+      label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        margin: 0;
+      }
+    }
+
+  }
+
+  .sub-panel-banner-button-title {
+    width: 100%;
+
+    .widget-entry-label {
+      text-transform: uppercase;
+      font-size: 0.62rem;
+      width: 100%;
+      padding: 0.5em 0;
+      color: $midnight-blue;
     }
   }
-  .sub-panel-banner-button-title {
-    text-transform: uppercase;
-    font-size: 0.62rem;
-    width: 9rem;
-    padding: 0.5em 0;
-    color: $midnight-blue;
-  }
+
   .grid-widget {
     height: 100%;
     justify-content: flex-end;
-  }  
+  }
 }
 
 .accordion {
@@ -106,18 +134,22 @@ div.widget-panel .panel-card .card-header {
       padding: .50rem 1.25rem;
       background: $white;
       border-top: 3px solid $midnight-blue;
+
       a.clickable {
         color: $midnight-blue;
         font-weight: bold;
+
         svg {
           fill: $midnight-blue;
         }
       }
     }
+
     .card-body {
       padding: 0;
     }
   }
+
   a {
     &:hover {
       text-decoration: none;

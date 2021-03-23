@@ -100,7 +100,9 @@ class SubPanelEventsLastDate extends SubpanelDataQueryHandler implements Statist
         if (empty($date)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_EVENTS_LAST_DATE']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_EVENTS_LAST_DATE_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_EVENTS_LAST_DATE']);
+
             return $statistic;
         }
 
@@ -115,7 +117,8 @@ class SubPanelEventsLastDate extends SubpanelDataQueryHandler implements Statist
         } else {
             $statistic = $this->getEmptyResponse(self::KEY);
         }
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_EVENTS_LAST_DATE']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_EVENTS_LAST_DATE_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_EVENTS_LAST_DATE']);
         $this->close();
 
 

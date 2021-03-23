@@ -33,6 +33,7 @@ export interface StatisticWidgetLayoutCol {
     iconClass?: string;
     icon?: string;
     labelKey?: string;
+    descriptionKey?: string;
     dynamicLabel?: string;
     statistic?: string;
     store?: SingleValueStatisticsStoreInterface;

@@ -7,15 +7,16 @@
 
     <ng-container *ngFor="let item of vm.layout">
 
-        <div class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}} {{getLayoutRowClass(item)}}">
+        <div [title]="vm.tooltipTitleText"
+             class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}} {{getLayoutRowClass(item)}}">
 
-            <div class="{{getColClass()}}" *ngFor="let col of item.cols">
+            <div class="{{getColClass()}} {{getClass(col)}}" *ngFor="let col of item.cols">
 
                 <ng-container *ngIf="col.display !== 'hidden'">
 
                     <!-- ICON -->
                     <ng-container *ngIf="col.icon">
-                        <div class="sub-panel-banner-button-icon">
+                        <div class="widget-entry-icon">
                             <scrm-image [image]="col.icon" [klass]="col.iconClass"></scrm-image>
                         </div>
                     </ng-container>
@@ -23,7 +24,7 @@
                     <!-- VALUE -->
                     <ng-container *ngIf="col.statistic && (vm.statistics[col.statistic]) as statistics">
 
-                        <div *ngIf="statistics.field" class="widget-entry-value {{getClass(col)}}">
+                        <div *ngIf="statistics.field" class="widget-entry-value">
 
                             <scrm-field [type]="statistics.field.type"
                                         [field]="statistics.field"
@@ -41,7 +42,7 @@
                     <!-- LABEL -->
                     <ng-container *ngIf="col.labelKey">
 
-                        <div class="widget-entry-label text-truncate {{getClass(col)}}">
+                        <div class="widget-entry-label text-truncate">
 
                             <scrm-label [labelKey]="col.labelKey" [module]="getContextModule()"></scrm-label>
 
@@ -49,12 +50,12 @@
 
                     </ng-container>
 
-                     <!-- TOOLTIP TITLE TEXT -->
-                     <ng-container *ngIf="col.tooltipTitleKey">
+                     <!-- DESCRIPTION TEXT -->
+                    <ng-container *ngIf="col.descriptionKey">
 
-                        <div class="text-truncate sub-panel-banner-tooltip">                            
+                        <div class="text-truncate widget-entry-label">
 
-                            <label>{{vm.tooltipTitleText}}</label>
+                            <label>{{vm.description}}</label>
 
                         </div>
 
@@ -63,7 +64,7 @@
                     <!-- DYNAMIC LABEL -->
                     <ng-container *ngIf="col.dynamicLabel">
 
-                        <div *ngIf="!loading" class="{{getClass(col)}}">
+                        <div *ngIf="!loading" class="widget-entry-dynamic-label">
 
                             <scrm-dynamic-label [context]="getMessageContext()"
                                                 [fields]="getMessageFields(vm.statistics)"

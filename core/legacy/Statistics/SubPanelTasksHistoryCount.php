@@ -45,7 +45,8 @@ class SubPanelTasksHistoryCount extends SubpanelDataQueryHandler implements Stat
         $innerQuery = $this->joinQueryParts($parts);
         $notes = $this->fetchRow($innerQuery);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $notes);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_DEFAULT_TOTAL']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_DEFAULT_TOTAL_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_DEFAULT_TOTAL']);
         $this->close();
 
         return $statistic;

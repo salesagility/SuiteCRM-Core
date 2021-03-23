@@ -51,12 +51,15 @@ class SubPanelInvoicesTotal extends SubpanelDataQueryHandler implements Statisti
         if (empty($result)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_INVOICES_OVERDUE']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_INVOICES_OVERDUE_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_INVOICES_OVERDUE']);
+
             return $statistic;
         }
 
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_INVOICES_OVERDUE']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_INVOICES_OVERDUE_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_INVOICES_OVERDUE']);
         $this->close();
 
         return $statistic;

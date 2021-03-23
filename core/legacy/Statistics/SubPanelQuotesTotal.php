@@ -57,13 +57,17 @@ class SubPanelQuotesTotal extends SubpanelDataQueryHandler implements Statistics
             $empty = $app_strings['LBL_NONE_OUTSTANDING'];
             $statistic = $this->buildSingleValueResponse(self::KEY, 'string', ['value' => $empty]);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_QUOTES_EXPIRY']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_QUOTES_EXPIRY_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_QUOTES_EXPIRY']);
+
             return $statistic;
         }
 
         $date = $result['expiration'];
         $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $date]);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_QUOTES_EXPIRY']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_QUOTES_EXPIRY_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_QUOTES_EXPIRY']);
+
         return $statistic;
     }
 }

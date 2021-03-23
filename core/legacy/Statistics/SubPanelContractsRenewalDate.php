@@ -3,8 +3,8 @@
 namespace App\Legacy\Statistics;
 
 use App\Entity\Statistic;
-use App\Service\StatisticsProviderInterface;
 use App\Legacy\Data\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Service\StatisticsProviderInterface;
 
 /**
  * Class SubPanelContractsRenewalDate
@@ -60,12 +60,15 @@ class SubPanelContractsRenewalDate extends SubpanelDataQueryHandler implements S
         if (empty($result)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CONTRACT_RENEWAL']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CONTRACT_RENEWAL_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CONTRACT_RENEWAL']);
+
             return $statistic;
         }
 
         $statistic = $this->buildSingleValueResponse(self::KEY, 'date', ['value' => $result['end_date']]);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CONTRACT_RENEWAL']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CONTRACT_RENEWAL_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CONTRACT_RENEWAL']);
         $this->close();
 
         return $statistic;

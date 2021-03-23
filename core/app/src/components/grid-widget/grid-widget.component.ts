@@ -41,7 +41,8 @@ interface StatisticsMap {
 interface GridWidgetState {
     layout: StatisticWidgetLayoutRow[];
     statistics: StatisticsMap;
-    tooltipTitleText: string;
+    tooltipTitleText?: string;
+    description?: string;
 }
 
 export interface GridWidgetConfig {
@@ -257,14 +258,14 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
             || fieldValue.length === 0;
     }
 
-    getTooltipTitleText(statisticMetadata: StatisticMetadata): string {
+    getLabel(statisticMetadata: StatisticMetadata, attribute: string): string {
 
-        let tooltipTitleKey = '';
-        if (statisticMetadata && statisticMetadata.tooltip_title_key) {
-            tooltipTitleKey = this.language.getFieldLabel(statisticMetadata.tooltip_title_key);
+        let label = '';
+        if (statisticMetadata && statisticMetadata[attribute]) {
+            label = this.language.getFieldLabel(statisticMetadata[attribute]);
         }
 
-        return tooltipTitleKey;
+        return label;
     }
 
     getLayout(): StatisticWidgetLayoutRow[] {
@@ -373,15 +374,22 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
 
                 const statsMap: { [key: string]: SingleValueStatisticsState } = {};
                 const tooltipTitles = [];
+                const descriptions = [];
 
                 statistics.forEach(value => {
 
                     statsMap[value.query.key] = value;
 
-                    const text = this.getTooltipTitleText(value.statistic.metadata);
-                    if (text) {
-                        tooltipTitles.push(text);
+                    const tooltip = this.getLabel(value.statistic.metadata, 'tooltip_title_key');
+                    if (tooltip) {
+                        tooltipTitles.push(tooltip);
                     }
+
+                    const description = this.getLabel(value.statistic.metadata, 'descriptionKey');
+                    if (description) {
+                        descriptions.push(description);
+                    }
+
 
                 });
 
@@ -389,6 +397,7 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
                     layout,
                     statistics: statsMap,
                     tooltipTitleText: tooltipTitles.join(' | '),
+                    description: descriptions.join(' | '),
                 } as GridWidgetState;
             }));
     }

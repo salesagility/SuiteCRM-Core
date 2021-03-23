@@ -39,7 +39,8 @@ trait StatisticsHandlingTrait
         $statistic = $this->getEmptyResponse($key);
 
         $this->addMetadata($statistic, ['labelKey' => 'LBL_STATISTIC_ERROR']);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_STATISTIC_ERROR_DESC']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_STATISTIC_ERROR_DESC_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_STATISTIC_ERROR_DESC']);
 
         return $statistic;
     }

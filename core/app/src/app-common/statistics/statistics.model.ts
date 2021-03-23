@@ -27,6 +27,7 @@ export interface StatisticMetadata {
     type: string;
     dataType: string;
     labelKey?: string;
+    descriptionKey?: string;
 }
 
 export interface SingleValueStatisticsData {

@@ -1,15 +1,15 @@
 <ng-container *ngIf="(vm$ | async) as vm">
-    <ngb-accordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons"> 
+    <ngb-accordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons">
         <ngb-panel id="sub-panel-buttons">
             <ng-template ngbPanelHeader>
                 <a class="clickable">
-                    <div class="d-flex align-items-center justify-content-between"> 
-                        <scrm-label labelKey="LBL_SELECT_SUBPANEL_BANNER"></scrm-label> 
+                    <div class="d-flex align-items-center justify-content-between">
+                        <scrm-label labelKey="LBL_SELECT_SUBPANEL_BANNER"></scrm-label>
                         <scrm-image (click)="toggleSubPanels()"
-                        [attr.aria-expanded]="!isCollapsed"
-                        aria-controls="collapseShowSubPanels"
-                        class="float-right"
-                         [image]="toggleIcon">
+                                    [attr.aria-expanded]="!isCollapsed"
+                                    aria-controls="collapseShowSubPanels"
+                                    class="float-right"
+                                    [image]="toggleIcon">
                         </scrm-image>
                     </div>
                 </a>
@@ -17,19 +17,19 @@
             <ng-template ngbPanelContent>
                 <div id="collapseShowSubPanels" [ngbCollapse]="isCollapsed">
                     <div class="row insight-panel">
-                        <div class="col-sm-6 col-md-2 border-insight"
+                        <div class="col-xs-6 col-sm-3 col-md-2 insight-panel-card border-insight"
                              *ngFor="let item of vm.subpanels | keyvalue"
                              [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
                              (click)="showSubpanel(item.value)">
                             <scrm-grid-widget [config]="getGridConfig(item.value)"></scrm-grid-widget>
-            
+
                         </div>
                     </div>
                 </div>
             </ng-template>
         </ngb-panel>
-    </ngb-accordion>  
-    
+    </ngb-accordion>
+
     <div id="sub-panels">
         <ng-container *ngFor="let item of vm.subpanels | keyvalue">
 

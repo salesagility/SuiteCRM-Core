@@ -59,12 +59,15 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
         if (empty($max)) {
             $statistic = $this->getEmptyResponse(self::KEY);
             $this->close();
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_HISTORY_LAST_DATE']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_HISTORY_LAST_DATE_TOOLTIP']);
+            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_HISTORY_LAST_DATE']);
+
             return $statistic;
         }
 
         $statistic = $this->buildStatistic($max);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_HISTORY_LAST_DATE']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_HISTORY_LAST_DATE_TOOLTIP']);
+        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_HISTORY_LAST_DATE']);
         $this->close();
 
         return $statistic;
