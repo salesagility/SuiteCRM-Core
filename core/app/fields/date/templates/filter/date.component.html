@@ -1,4 +1,4 @@
-<div class="input-group mb-3">
+<div class="input-group">
     <input ngbDatepicker
            [ngClass]="klass"
            [placement]="getPlacement()"
@@ -8,7 +8,7 @@
            [startDate]="dateModel"
            (ngModelChange)="setModel($event)"
            #datepicker="ngbDatepicker">
-    <span class="input-group-append">
+    <span class="input-group-append align-items-end">
         <scrm-button [config]="getOpenButton(datepicker)">
         </scrm-button>
     </span>

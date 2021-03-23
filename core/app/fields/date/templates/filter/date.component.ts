@@ -55,13 +55,13 @@ export class DateFilterFieldComponent extends BaseDateTimeComponent implements O
         this.unsubscribeAll();
     }
 
-    setModel($event: any) {
+    setModel($event: any): void {
         this.dateModel = this.formatter.userDateFormatToStruct($event);
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
         return {
-            klass: 'btn btn-sm btn-outline-secondary border-0',
+            klass: 'btn btn-sm btn-outline-secondary m-0 border-0',
             // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             onClick: () => {
                 datepicker.toggle();

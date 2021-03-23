@@ -53,7 +53,7 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
         return {
-            klass: 'btn btn-sm btn-outline-secondary border-0',
+            klass: 'btn btn-sm btn-outline-secondary m-0 border-0',
             // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             onClick: () => {
                 datepicker.toggle();
