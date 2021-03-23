@@ -1,6 +1,6 @@
 <scrm-widget-panel [title]="this.title" *ngIf="(vm$ | async) as vm">
     <div widget-body>
-        <div class="widget-background">
+        <div class="widget-background chart-sidebar-widget">
             <div class="mb-2 ml-1 mr-1">
                 <div class="container-fluid">
                     <div class="row" *ngIf="isConfigured && chartOptions.toggle">
@@ -24,7 +24,7 @@
                                             [type]="chartType"
                                             [dataSource]="getDataSource(vm.statistics)">
                                 </scrm-chart>
-                                <div *ngIf="loading" [class.m-5]="!getDataSource(vm.statistics)">
+                                <div *ngIf="loading" [class.m-5]="!getDataSource(vm.statistics)" class="chart-loading">
                                     <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
                                 </div>
                                 <p *ngIf="!loading && (!isConfigured() || !getDataSource(vm.statistics))"
