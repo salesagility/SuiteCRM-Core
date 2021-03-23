@@ -3,12 +3,14 @@
 </ng-container>
 
 <ng-container *ngIf="isConfigured()">
-    <div class="d-flex {{getDirection()}} justify-content-start align-items-start field-group">
+    <div class="d-flex {{getDirection()}} justify-content-start align-items-start field-group h-100">
 
-        <div *ngFor="let groupField of getFields()" class="field-group-item d-flex flex-column">
+        <div *ngFor="let groupField of getFields()"
+             class="field-group-item d-flex flex-column justify-content-end h-100">
 
             <!-- LABEL -->
-            <span *ngIf="groupField.labelKey && showLabel(groupField.definition.name)" class="field-group-label pt-2 pr-1">
+            <span *ngIf="groupField.labelKey && showLabel(groupField.definition.name)"
+                  class="field-group-label pt-2 pr-1">
                 <label><scrm-label [labelKey]="groupField.labelKey" [module]="getModule()"></scrm-label></label>
             </span>
 
