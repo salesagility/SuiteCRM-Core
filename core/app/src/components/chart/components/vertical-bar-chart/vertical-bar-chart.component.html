@@ -19,6 +19,6 @@
                          [yAxisTickFormatting]="yAxisTickFormatting">
     <ng-template #tooltipTemplate let-model="model">
         <div>{{model.name}}</div>
-        <div>{{ dataSource.options.tooltipFormatting(model.value) }}</div>
+        <div>{{ formatTooltipValue(model.value) }}</div>
     </ng-template>
 </ngx-charts-bar-vertical>

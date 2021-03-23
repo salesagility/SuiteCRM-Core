@@ -76,4 +76,11 @@ export class VerticalBarChartComponent extends BaseChartComponent implements OnI
         }
         return null;
     }
+
+    formatTooltipValue(value: any): any {
+        if (!this.dataSource || !this.dataSource.options || !this.dataSource.options.tooltipFormatting) {
+            return value;
+        }
+        return this.dataSource.options.tooltipFormatting(value);
+    }
 }
