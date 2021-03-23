@@ -8,21 +8,16 @@
 }
 
 .field-separation {
-  height: 0.0625rem;
+  height: 0.1em;
   color: darkgrey;
   background-image: linear-gradient(to right, grey 10%, rgba(255, 255, 255, 0) 0%);
   background-position: top;
-  background-size: 0.375rem 0.1875px;
+  background-size: 0.5em 0.1em;
   background-repeat: repeat-x;
-}
-
-.field-layout textarea {
-  margin-bottom: 1rem;
 }
 
 .field-layout.detail textarea.form-control:disabled,
 .field-layout.detail textarea.form-control[readonly] {
-  margin-bottom: 1rem;
   background-color: transparent;
   padding: 0;
   border: none;
