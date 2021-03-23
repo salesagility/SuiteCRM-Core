@@ -1,6 +1,6 @@
 <scrm-widget-panel [title]="getHeaderLabel()">
     <div widget-body>
-        <div class="widget-background history-timeline">
+        <div class="widget-background history-timeline p-2 pt-2">
             <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="200" maxBufferPx="400"
                                          class="history-timeline-viewport">
                 <div *cdkVirtualFor="let entry of adapter">
