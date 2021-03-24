@@ -48,7 +48,7 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "core/src/",
+      "App\\": "core/backend/",
       "App\\Legacy\\": "core/legacy/",
       "App\\Extension\\": "extensions/"
     }
@@ -72,7 +72,7 @@
     ]
   },
   "extra": {
-    "src-dir": "core/src",
+    "src-dir": "core/backend",
     "symfony": {
       "allow-contrib": false,
       "require": "5.2.*"

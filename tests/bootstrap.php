@@ -10,7 +10,7 @@ $kernel->init([
     'appDir' => __DIR__ . '/..',
     'cacheDir' => __DIR__ . '/../cache/test/aop',
     'includePaths' => [
-        __DIR__ . '/../core/src',
+        __DIR__ . '/../core/backend',
         __DIR__ . '/../core/legacy',
         __DIR__ . '/../vendor/api-platform',
     ],
@@ -22,7 +22,7 @@ $kernel->init([
 
 $kernel->loadFile(__DIR__ . '/../core/legacy/AclHandler.php');
 $kernel->loadFile(__DIR__ . '/../core/legacy/Authentication.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Metadata/Resource/ResourceMetadata.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Util/RequestAttributesExtractor.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Metadata/Resource/Factory/AnnotationResourceFilterMetadataFactory.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Security/EventListener/DenyAccessListener.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/ResourceMetadata.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Util/RequestAttributesExtractor.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/Factory/AnnotationResourceFilterMetadataFactory.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Security/EventListener/DenyAccessListener.php');

@@ -142,7 +142,7 @@
             "ref": "fc52d86631a6dfd9fdf3381d0b7e3df2069e51b3"
         },
         "files": [
-            "core/src/DataFixtures/AppFixtures.php"
+            "core/backend/DataFixtures/AppFixtures.php"
         ]
     },
     "doctrine/doctrine-migrations-bundle": {
@@ -155,7 +155,7 @@
         },
         "files": [
             "./config/packages/doctrine_migrations.yaml",
-            "./core/src/Migrations/.gitkeep"
+            "./core/backend/Migrations/.gitkeep"
         ]
     },
     "doctrine/event-manager": {
@@ -461,8 +461,8 @@
             "config/routes/dev/framework.yaml",
             "config/services.yaml",
             "public/index.php",
-            "core/src/Controller/.gitkeep",
-            "core/src/Kernel.php"
+            "core/backend/Controller/.gitkeep",
+            "core/backend/Kernel.php"
         ]
     },
     "symfony/http-client-contracts": {

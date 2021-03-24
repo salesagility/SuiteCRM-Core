@@ -9,7 +9,7 @@ actor: FunctionalTester
 modules:
     enabled:
         - Symfony:
-            app_path: 'core/src'
+            app_path: 'core/backend'
             environment: 'test'
 #        - Doctrine2:
 #            depends: Symfony

@@ -10,7 +10,7 @@ $kernel->init([
     'cacheDir' => __DIR__ . '/../../cache/test/aop',
     'debug' => true,
     'includePaths' => [
-        __DIR__ . '/../../core/src',
+        __DIR__ . '/../../core/backend',
         __DIR__ . '/../../core/legacy',
         __DIR__ . '/../../vendor/api-platform',
     ],
