@@ -97,12 +97,14 @@ class SecurityController extends AbstractController
         $id = $user->getId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
+        $userName = $user->getUsername();
 
         $data = [
             'active' => true,
             'id' => $id,
             'firstName' => $firstName,
-            'lastName' => $lastName
+            'lastName' => $lastName,
+            'userName' => $userName
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);

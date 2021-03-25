@@ -217,8 +217,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $id = $user->getId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
+        $userName = $user->getUsername();
 
-        return ['id' => $id, 'firstName' => $firstName, 'lastName' => $lastName];
+        return ['id' => $id, 'firstName' => $firstName, 'lastName' => $lastName, 'userName' => $userName];
     }
 
     /**
