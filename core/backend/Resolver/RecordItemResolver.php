@@ -3,7 +3,7 @@
 namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
-use App\Entity\Record;
+use App\Data\Entity\Record;
 use App\Service\RecordProviderInterface;
 use Exception;
 

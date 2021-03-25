@@ -2,8 +2,8 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
-use App\Entity\FieldDefinition;
-use App\Entity\ViewDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
+use App\ViewDefinitions\Entity\ViewDefinition;
 use App\Service\ModuleNameMapperInterface;
 
 /**

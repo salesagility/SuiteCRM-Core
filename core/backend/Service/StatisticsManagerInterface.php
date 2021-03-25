@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\BatchedStatistics;
-use App\Entity\Statistic;
+use App\Statistics\Entity\BatchedStatistics;
+use App\Statistics\Entity\Statistic;
 
 interface StatisticsManagerInterface
 {

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Process;
+use App\Process\Entity\Process;
 
 interface ProcessHandlerInterface
 {

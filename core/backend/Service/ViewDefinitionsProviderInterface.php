@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\ViewDefinition;
+use App\ViewDefinitions\Entity\ViewDefinition;
 use Exception;
 
 interface ViewDefinitionsProviderInterface

@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\Entity\FieldDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
 
 interface FieldDefinitionsProviderInterface
 {

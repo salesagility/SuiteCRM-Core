@@ -49,6 +49,7 @@
   "autoload": {
     "psr-4": {
       "App\\": "core/backend/",
+      "App\\Module\\": "core/modules/",
       "App\\Extension\\": "extensions/"
     }
   },

@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Entity;
+namespace App\UserPreferences\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -13,13 +12,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *          "get"
  *     },
  *     collectionOperations={
+ *          "get"
  *     },
  *     graphql={
  *         "item_query",
+ *         "collection_query"
  *     },
  * )
  */
-class ModStrings
+class UserPreference
 {
     /**
      * @ApiProperty(identifier=true)
@@ -29,9 +30,15 @@ class ModStrings
 
     /**
      * @ApiProperty
-     * @var array|null
+     * @var string|null
      */
-    protected $items;
+    protected $value;
+
+    /**
+     * @ApiProperty
+     * @var array
+     */
+    protected $items = [];
 
     /**
      * Get Id
@@ -45,9 +52,9 @@ class ModStrings
     /**
      * Set Id
      * @param string|null $id
-     * @return ModStrings
+     * @return UserPreference
      */
-    public function setId(?string $id): ModStrings
+    public function setId(?string $id): UserPreference
     {
         $this->id = $id;
 
@@ -55,20 +62,41 @@ class ModStrings
     }
 
     /**
-     * Get items
-     * @return array|null
+     * Get value
+     * @return string|null
      */
-    public function getItems(): ?array
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     * @param string|null $value
+     * @return UserPreference
+     */
+    public function setValue(?string $value): UserPreference
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get items
+     * @return array
+     */
+    public function getItems(): array
     {
         return $this->items;
     }
 
     /**
      * Set Items
-     * @param array|null $items
-     * @return ModStrings
+     * @param array $items
+     * @return UserPreference
      */
-    public function setItems(?array $items): ModStrings
+    public function setItems(array $items): UserPreference
     {
         $this->items = $items;
 

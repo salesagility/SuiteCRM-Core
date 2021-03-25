@@ -4,7 +4,7 @@
 namespace App\ViewDefinitions\LegacyHandler;
 
 
-use App\Entity\FieldDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Service\BulkActionDefinitionProviderInterface;

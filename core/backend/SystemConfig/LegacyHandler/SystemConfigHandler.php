@@ -4,7 +4,7 @@ namespace App\SystemConfig\LegacyHandler;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
 use App\Service\ActionNameMapperInterface;

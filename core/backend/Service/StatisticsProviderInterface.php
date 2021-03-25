@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 
 interface StatisticsProviderInterface
 {

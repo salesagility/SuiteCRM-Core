@@ -2,7 +2,7 @@
 
 namespace App\Tests\unit\core\legacy\FieldDefinitions;
 
-use App\Entity\FieldDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;

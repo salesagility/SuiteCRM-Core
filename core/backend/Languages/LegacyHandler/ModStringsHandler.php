@@ -7,7 +7,7 @@ namespace App\Languages\LegacyHandler;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Entity\ModStrings;
+use App\Languages\Entity\ModStrings;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ModuleRegistryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity;
+namespace App\SystemConfig\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;

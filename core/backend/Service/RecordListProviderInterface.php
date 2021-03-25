@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\RecordList;
+use App\Data\Entity\RecordList;
 
 interface RecordListProviderInterface
 {

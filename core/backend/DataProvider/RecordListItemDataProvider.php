@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Data\LegacyHandler\RecordListHandler;
-use App\Entity\RecordList;
+use App\Data\Entity\RecordList;
 use Exception;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Model\Statistics\ChartOptions;
 use App\Model\Statistics\Series;
 use App\Model\Statistics\SeriesItem;

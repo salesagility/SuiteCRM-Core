@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 
 interface SystemConfigProviderInterface
 {

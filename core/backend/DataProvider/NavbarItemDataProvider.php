@@ -4,7 +4,7 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\Navbar;
+use App\Navbar\Entity\Navbar;
 use App\Service\NavigationProviderInterface;
 use Symfony\Component\Security\Core\Security;
 

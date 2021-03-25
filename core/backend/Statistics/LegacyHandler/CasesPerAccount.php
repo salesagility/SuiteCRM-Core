@@ -4,7 +4,7 @@ namespace App\Statistics\LegacyHandler;
 
 use aCase;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
 use Psr\Log\LoggerAwareInterface;

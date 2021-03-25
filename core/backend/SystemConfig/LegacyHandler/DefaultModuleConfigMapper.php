@@ -2,7 +2,7 @@
 
 namespace App\SystemConfig\LegacyHandler;
 
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 use App\Service\ModuleNameMapperInterface;
 
 class DefaultModuleConfigMapper implements SystemConfigMapperInterface

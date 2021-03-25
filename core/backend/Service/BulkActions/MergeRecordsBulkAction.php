@@ -3,7 +3,7 @@
 namespace App\Service\BulkActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Entity\Process;
+use App\Process\Entity\Process;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;

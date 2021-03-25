@@ -7,7 +7,7 @@ use ApiPlatform\Core\DataProvider\ArrayPaginator;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 use App\Service\SystemConfigProviderInterface;
 
 /**

@@ -4,7 +4,7 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\Exception\InvalidResourceException;
-use App\Entity\Process;
+use App\Process\Entity\Process;
 use App\Service\ProcessHandlerInterface;
 use App\Service\ProcessHandlerRegistry;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

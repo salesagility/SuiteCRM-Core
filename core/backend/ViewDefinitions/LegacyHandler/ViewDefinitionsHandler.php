@@ -3,8 +3,8 @@
 namespace App\ViewDefinitions\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Entity\FieldDefinition;
-use App\Entity\ViewDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
+use App\ViewDefinitions\Entity\ViewDefinition;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Service\FieldDefinitionsProviderInterface;
 use App\Service\ModuleNameMapperInterface;

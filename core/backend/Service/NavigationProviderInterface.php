@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Navbar;
+use App\Navbar\Entity\Navbar;
 
 interface NavigationProviderInterface
 {

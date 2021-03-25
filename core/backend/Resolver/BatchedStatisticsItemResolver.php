@@ -3,7 +3,7 @@
 namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
-use App\Entity\BatchedStatistics;
+use App\Statistics\Entity\BatchedStatistics;
 use App\Service\StatisticsManagerInterface;
 
 class BatchedStatisticsItemResolver implements QueryItemResolverInterface

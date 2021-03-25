@@ -4,7 +4,7 @@ namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Data\LegacyHandler\RecordListHandler;
-use App\Entity\RecordList;
+use App\Data\Entity\RecordList;
 
 class RecordListResolver implements QueryItemResolverInterface
 {

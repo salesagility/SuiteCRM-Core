@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Record;
+use App\Data\Entity\Record;
 use Exception;
 
 interface RecordProviderInterface

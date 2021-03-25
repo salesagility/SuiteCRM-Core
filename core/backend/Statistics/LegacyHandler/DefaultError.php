@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Service\StatisticsProviderInterface;
 
 class DefaultError implements StatisticsProviderInterface

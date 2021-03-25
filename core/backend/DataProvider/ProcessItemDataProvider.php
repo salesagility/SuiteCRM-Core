@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Entity\Process;
+use App\Process\Entity\Process;
 
 class ProcessItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {

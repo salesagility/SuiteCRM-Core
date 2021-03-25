@@ -2,7 +2,7 @@
 
 namespace App\Tests\unit\core\legacy;
 
-use App\Entity\FieldDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Legacy\FieldDefinitions\FieldDefinitionMappers;
 use App\Legacy\FieldDefinitions\GroupedFieldDefinitionMapper;
 use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;

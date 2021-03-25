@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Legacy\Data\PreparedStatementHandler;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Legacy\Data\SecurityFiltersTrait;

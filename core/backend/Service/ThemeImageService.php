@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\ThemeImages;
+use App\Themes\Entity\ThemeImages;
 
 class ThemeImageService
 {

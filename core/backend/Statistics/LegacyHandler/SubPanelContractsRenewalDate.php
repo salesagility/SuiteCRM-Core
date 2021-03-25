@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Service\StatisticsProviderInterface;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 

@@ -2,7 +2,7 @@
 
 namespace App\SystemConfig\LegacyHandler;
 
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 use App\Currency\LegacyHandler\CurrencyHandler;
 
 class DefaultCurrencyConfigMapper implements SystemConfigMapperInterface

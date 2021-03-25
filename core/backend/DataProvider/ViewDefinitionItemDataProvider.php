@@ -4,7 +4,7 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\ViewDefinition;
+use App\ViewDefinitions\Entity\ViewDefinition;
 use App\Service\ViewDefinitionsProviderInterface;
 use Exception;
 

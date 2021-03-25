@@ -4,7 +4,7 @@ namespace App\Data\LegacyHandler;
 
 use ApiBeanMapper;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Entity\Record;
+use App\Data\Entity\Record;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordProviderInterface;

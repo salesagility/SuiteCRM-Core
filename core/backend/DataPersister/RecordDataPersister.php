@@ -4,7 +4,7 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\Exception\InvalidResourceException;
-use App\Entity\Record;
+use App\Data\Entity\Record;
 use App\Service\RecordProviderInterface;
 
 class RecordDataPersister implements ContextAwareDataPersisterInterface

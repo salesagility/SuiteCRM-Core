@@ -4,7 +4,7 @@
 namespace App\Data\LegacyHandler;
 
 
-use App\Entity\Record;
+use App\Data\Entity\Record;
 
 class ListData
 {

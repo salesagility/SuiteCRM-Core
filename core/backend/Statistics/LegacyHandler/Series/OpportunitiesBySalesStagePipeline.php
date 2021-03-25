@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler\Series;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\ListDataQueryHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;

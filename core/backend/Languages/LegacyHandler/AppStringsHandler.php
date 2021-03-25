@@ -4,7 +4,7 @@ namespace App\Languages\LegacyHandler;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Entity\AppStrings;
+use App\Languages\Entity\AppStrings;
 
 class AppStringsHandler extends LegacyHandler
 {

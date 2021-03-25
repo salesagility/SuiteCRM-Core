@@ -2,7 +2,7 @@
 
 namespace App\Statistics\LegacyHandler\Series;
 
-use App\Entity\Statistic;
+use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Statistics\LegacyHandler\StatisticsHandlingTrait;
 use App\Model\Statistics\ChartOptions;

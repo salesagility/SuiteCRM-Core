@@ -2,9 +2,9 @@
 
 namespace App\ViewDefinitions\LegacyHandler\RecordView;
 
-use App\Entity\FieldDefinition;
-use App\Entity\ViewDefinition;
-use App\Legacy\ViewDefinitions\ViewDefinitionMapperInterface;
+use App\FieldDefinitions\Entity\FieldDefinition;
+use App\ViewDefinitions\Entity\ViewDefinition;
+use App\ViewDefinitions\LegacyHandler\ViewDefinitionMapperInterface;
 
 class RecordViewReadOnlyMapper implements ViewDefinitionMapperInterface
 {

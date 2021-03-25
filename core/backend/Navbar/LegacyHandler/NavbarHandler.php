@@ -3,7 +3,7 @@
 namespace App\Navbar\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Entity\Navbar;
+use App\Navbar\Entity\Navbar;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\ModuleRegistryInterface;

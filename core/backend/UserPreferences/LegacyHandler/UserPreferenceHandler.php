@@ -3,7 +3,7 @@
 namespace App\UserPreferences\LegacyHandler;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Entity\UserPreference;
+use App\UserPreferences\Entity\UserPreference;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Service\UserPreferencesProviderInterface;

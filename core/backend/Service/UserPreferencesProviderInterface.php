@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\UserPreference;
+use App\UserPreferences\Entity\UserPreference;
 
 interface UserPreferencesProviderInterface
 {

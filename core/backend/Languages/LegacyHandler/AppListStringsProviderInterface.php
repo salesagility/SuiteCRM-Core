@@ -2,7 +2,7 @@
 
 namespace App\Languages\LegacyHandler;
 
-use App\Entity\AppListStrings;
+use App\Languages\Entity\AppListStrings;
 
 interface AppListStringsProviderInterface
 {

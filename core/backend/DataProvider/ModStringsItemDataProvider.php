@@ -4,7 +4,7 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\ModStrings;
+use App\Languages\Entity\ModStrings;
 use App\Languages\LegacyHandler\ModStringsHandler;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace App\FieldDefinitions\LegacyHandler;
 
-use App\Entity\FieldDefinition;
+use App\FieldDefinitions\Entity\FieldDefinition;
 
 class LegacyGroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface
 {

@@ -4,7 +4,7 @@ namespace App\Data\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Entity\RecordList;
+use App\Data\Entity\RecordList;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\RecordListProviderInterface;
 use InvalidArgumentException;
