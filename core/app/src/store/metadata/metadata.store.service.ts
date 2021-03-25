@@ -11,6 +11,11 @@ import {ColumnDefinition, ListViewMeta, SearchMeta} from '@app-common/metadata/l
 import {LineAction} from '@app-common/actions/line-action.model';
 import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 import {WidgetMetadata} from '@app-common/metadata/widget.metadata';
+import {FieldDefinitionMap} from '@app-common/record/field.model';
+
+export interface SummaryTemplates {
+    [key: string]: string;
+}
 
 export interface RecordViewMetadata {
     topWidget?: WidgetMetadata;
@@ -18,6 +23,8 @@ export interface RecordViewMetadata {
     actions: Action[];
     templateMeta: RecordTemplateMetadata;
     panels: Panel[];
+    summaryTemplates?: SummaryTemplates;
+    vardefs?: FieldDefinitionMap;
 }
 
 export interface RecordTemplateMetadata {
@@ -323,7 +330,9 @@ export class MetadataStore implements StateStore {
             actions: 'actions',
             panels: 'panels',
             topWidget: 'topWidget',
-            sidebarWidgets: 'sidebarWidgets'
+            sidebarWidgets: 'sidebarWidgets',
+            summaryTemplates: 'summaryTemplates',
+            vardefs: 'vardefs'
         };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);

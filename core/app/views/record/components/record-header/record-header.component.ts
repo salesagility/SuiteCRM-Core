@@ -34,4 +34,13 @@ export class RecordHeaderComponent {
         const appListStrings = this.recordViewStore.vm.appData.language.appListStrings;
         return this.moduleNavigation.getModuleLabel(module, appListStrings);
     }
+
+    /**
+     * Get Summary template
+     *
+     * @returns {string} template label
+     */
+    getSummaryTemplate(): string {
+        return this.recordViewStore.getSummaryTemplate();
+    }
 }

@@ -105,6 +105,9 @@ class RecordViewDefinitionHandler extends LegacyHandler
         FieldDefinition $fieldDefinition
     ): array
     {
+        $detailViewDefs = $this->getDetailViewDefs($legacyModuleName);
+        $editViewDefs = $this->getEditViewDefs($legacyModuleName);
+        $vardefs = $fieldDefinition->getVardef();
 
         $metadata = [
             'templateMeta' => [],
@@ -112,17 +115,16 @@ class RecordViewDefinitionHandler extends LegacyHandler
             'sidebarWidgets' => [],
             'actions' => [],
             'panels' => [],
+            'summaryTemplates' => [],
+            'vardefs' => $vardefs,
         ];
-
-        $detailViewDefs = $this->getDetailViewDefs($legacyModuleName);
-        $editViewDefs = $this->getEditViewDefs($legacyModuleName);
-        $vardefs = $fieldDefinition->getVardef();
 
         $this->addTemplateMeta($detailViewDefs, $metadata);
         $this->addTopWidgetConfig($detailViewDefs, $metadata);
         $this->addSidebarWidgetConfig($detailViewDefs, $metadata);
         $this->addPanelDefinitions($detailViewDefs, $editViewDefs, $vardefs, $metadata);
         $this->addActionConfig($module, $metadata);
+        $this->addSummaryTemplates($detailViewDefs, $metadata);
 
         return $metadata;
     }
@@ -237,6 +239,18 @@ class RecordViewDefinitionHandler extends LegacyHandler
     {
         $metadata['topWidget'] = $viewDefs['topWidget'] ?? [];
         $metadata['topWidget']['refreshOnRecordUpdate'] = $metadata['topWidget']['refreshOnRecordUpdate'] ?? true;
+    }
+
+    /**
+     * @param array $viewDefs
+     * @param array $metadata
+     */
+    protected function addSummaryTemplates(array $viewDefs, array &$metadata): void
+    {
+        $templates = $viewDefs['summaryTemplates'] ?? [];
+        $metadata['summaryTemplates']['create'] = $templates['create'] ?? 'LBL_CREATE';
+        $metadata['summaryTemplates']['edit'] = $templates['edit'] ?? 'LBL_SUMMARY_DEFAULT';
+        $metadata['summaryTemplates']['detail'] = $templates['detail'] ?? 'LBL_SUMMARY_DEFAULT';
     }
 
     /**

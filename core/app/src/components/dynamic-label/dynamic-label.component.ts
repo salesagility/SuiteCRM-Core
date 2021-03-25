@@ -16,6 +16,7 @@ export class DynamicLabelComponent implements OnInit, OnChanges {
     @Input() labelKey = '';
     @Input() context: StringMap = {};
     @Input() fields: FieldMap = {};
+    @Input() module: string = null;
 
     parsedLabel = '';
     vm$: Observable<LanguageStrings>;
@@ -26,7 +27,7 @@ export class DynamicLabelComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.vm$ = this.language.vm$.pipe(tap(() => {
             if (this.labelKey) {
-                this.template = this.language.getFieldLabel(this.labelKey);
+                this.template = this.language.getFieldLabel(this.labelKey, this.module);
             }
             this.parseLabel();
         }));

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ViewStore} from '@store/view/view.store';
-import {MetadataStore, RecordViewMetadata} from '@store/metadata/metadata.store.service';
+import {Metadata, MetadataStore, RecordViewMetadata, SummaryTemplates} from '@store/metadata/metadata.store.service';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {StateStore} from '@store/state';
 import {deepClone} from '@base/app-common/utils/object-utils';
@@ -28,6 +28,8 @@ import {SubPanelMeta} from '@app-common/metadata/subpanel.metadata.model';
 import {RecordManager} from '@services/record/record.manager';
 import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
 import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
+import {Params} from '@angular/router';
+import {FieldDefinitionMap} from '@app-common/record/field.model';
 
 const initialState: RecordViewState = {
     module: '',
@@ -290,6 +292,18 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Get summary template
+     *
+     * @returns {string} summary template label
+     */
+    getSummaryTemplate(): string {
+        const metadata = this.metadata || {} as Metadata;
+        const recordMeta = metadata.recordView || {} as RecordViewMetadata;
+        const templates = recordMeta.summaryTemplates || {} as SummaryTemplates;
+        return templates[this.getMode()] || '';
+    }
+
+    /**
      * Load all statistics
      *
      * @param {string} module if to use cache
@@ -400,9 +414,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     protected calculateShowWidgets(): void {
         let show = false;
-
-        const meta = this.metadataStore.get() || {};
-        const recordViewMeta = meta.recordView || {} as RecordViewMetadata;
+        const recordViewMeta = this.getRecordViewMetadata();
         const sidebarWidgetsConfig = recordViewMeta.sidebarWidgets || [];
 
         if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0) {
@@ -411,6 +423,26 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.showSidebarWidgets = show;
         this.widgets = show;
+    }
+
+    /**
+     * Get record view metadata
+     *
+     * @returns {object} metadata RecordViewMetadata
+     */
+    protected getRecordViewMetadata(): RecordViewMetadata {
+        const meta = this.metadataStore.get() || {};
+        return meta.recordView || {} as RecordViewMetadata;
+    }
+
+    /**
+     * Get vardefs
+     *
+     * @returns {object} vardefs FieldDefinitionMap
+     */
+    protected getVardefs(): FieldDefinitionMap {
+        const meta = this.getRecordViewMetadata();
+        return meta.vardefs || {} as FieldDefinitionMap;
     }
 
     /**
