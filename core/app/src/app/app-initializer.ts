@@ -10,6 +10,8 @@ import {LoginAuthGuard} from '@services/auth/login-auth-guard.service';
 import {BaseMetadataResolver} from '@services/metadata/base-metadata.resolver';
 import {ClassicViewUiComponent} from '@views/classic/components/classic-view/classic-view.component';
 import {ClassicViewResolver} from '@views/classic/services/classic-view.resolver';
+import {CreateRecordComponent} from '@views/create/components/create-view/create-record.component';
+import {isFalse} from '@app-common/utils/value-utils';
 
 @Injectable()
 export class AppInit {
@@ -91,6 +93,42 @@ export class AppInit {
                         });
                     }
 
+                    if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {
+                        routes.push({
+                            path: routeName + '/create',
+                            component: CreateRecordComponent,
+                            canActivate: [AuthGuard],
+                            runGuardsAndResolvers: 'always',
+                            resolve: {
+                                view: BaseModuleResolver,
+                                metadata: BaseRecordResolver
+                            },
+                            data: {
+                                reuseRoute: false,
+                                checkSession: true,
+                                module: routeName,
+                                mode: 'create'
+                            }
+                        });
+
+                        routes.push({
+                            path: routeName + '/edit',
+                            component: CreateRecordComponent,
+                            canActivate: [AuthGuard],
+                            runGuardsAndResolvers: 'always',
+                            resolve: {
+                                view: BaseModuleResolver,
+                                metadata: BaseRecordResolver
+                            },
+                            data: {
+                                reuseRoute: false,
+                                checkSession: true,
+                                module: routeName,
+                                mode: 'create'
+                            }
+                        });
+                    }
+
                     if (configRoutes[routeName].record) {
                         routes.push({
                             path: routeName + '/record/:record',
@@ -119,7 +157,8 @@ export class AppInit {
                             data: {
                                 reuseRoute: false,
                                 checkSession: true,
-                                module: routeName
+                                module: routeName,
+                                mode: 'edit'
                             }
                         });
                         routes.push({

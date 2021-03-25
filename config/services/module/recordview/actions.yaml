@@ -29,6 +29,15 @@ parameters:
             - edit
           acl:
             - edit
+        saveNew:
+          key: saveNew
+          labelKey: LBL_SAVE_BUTTON_LABEL
+          params:
+            expanded: true
+          modes:
+            - create
+          acl:
+            - edit
         delete:
           key: delete
           labelKey: LBL_DELETE

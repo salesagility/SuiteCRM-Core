@@ -2,9 +2,11 @@ import {Injectable} from '@angular/core';
 import {Record} from '@app-common/record/record.model';
 import {FormGroup} from '@angular/forms';
 import {ViewFieldDefinition} from '@app-common/metadata/metadata.model';
-import {FieldMap} from '@app-common/record/field.model';
+import {FieldDefinitionMap, FieldMap} from '@app-common/record/field.model';
 import {LanguageStore} from '@store/language/language.store';
 import {FieldManager} from '@services/record/field/field.manager';
+import {Params} from '@angular/router';
+import {isVoid} from '@app-common/utils/value-utils';
 
 @Injectable({
     providedIn: 'root'
@@ -57,5 +59,53 @@ export class RecordManager {
         });
 
         return record.fields;
+    }
+
+    /**
+     * Inject param fields
+     *
+     * @param {object} params Params
+     * @param {object} record Record
+     * @param {object} vardefs FieldDefinitionMap
+     */
+    public injectParamFields(params: Params, record: Record, vardefs: FieldDefinitionMap): void {
+
+        Object.keys(params).forEach(paramKey => {
+
+            const definition = vardefs[paramKey];
+
+            if (!isVoid(definition)) {
+                const type = definition.type || '';
+                const idName = definition.id_name || '';
+                const name = definition.name || '';
+                const rname = definition.rname || '';
+
+                if (type === 'relate' && idName === name) {
+                    record.attributes[paramKey] = params[paramKey];
+                    return;
+                }
+
+                if (type === 'relate') {
+                    const relate = {} as any;
+
+                    if (rname) {
+                        relate[rname] = params[paramKey];
+                    }
+
+                    if (idName && params[idName]) {
+                        relate.id = params[idName];
+                    }
+
+                    record.attributes[paramKey] = relate;
+
+                    return;
+                }
+
+                record.attributes[paramKey] = params[paramKey];
+
+                return;
+            }
+
+        });
     }
 }

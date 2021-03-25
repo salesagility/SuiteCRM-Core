@@ -42,6 +42,7 @@ import {GraphQLError} from 'graphql';
 import {MessageModalModule} from '@components/modal/components/message-modal/message-modal.module';
 import {RecordListModalModule} from '@containers/record-list-modal/components/record-list-modal/record-list-modal.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {CreateRecordModule} from '@views/create/components/create-view/create-record.module';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
@@ -61,6 +62,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         FilterUiModule,
         ListModule,
         RecordModule,
+        CreateRecordModule,
         TableModule,
         ModuleTitleModule,
         ListHeaderModule,

@@ -1,7 +1,7 @@
 <!-- Start Record View Container Section -->
 
 <div *ngIf="(vm$ | async) as vm"
-     class="record-view-container view-container container-fluid pt-3 small-font">
+     class="record-view-container view-container container-fluid pt-3 pb-3 small-font">
     <div class="row">
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !vm.sidebarWidgetConfig.show }">
 
@@ -23,7 +23,8 @@
                     </div>
                 </div>
 
-                <div class="row no-gutters pt-1 pb-4">
+                <div *ngIf="vm.showSubpanels"
+                     class="row no-gutters pt-1 pb-4">
                     <div class="col">
                         <scrm-subpanel-container [config]="getSubpanelsConfig()"></scrm-subpanel-container>
                     </div>

@@ -3,15 +3,15 @@
 namespace App\Tests\unit\core\legacy;
 
 use App\Entity\Navbar;
-use App\Tests\UnitTester;
-use AspectMock\Test;
-use Codeception\Test\Unit;
-use Exception;
 use App\Legacy\ActionNameMapperHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\ModuleRegistryHandler;
 use App\Legacy\NavbarHandler;
 use App\Legacy\RouteConverterHandler;
+use App\Tests\UnitTester;
+use AspectMock\Test;
+use Codeception\Test\Unit;
+use Exception;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -365,7 +365,7 @@ final class NavbarTest extends Unit
                         'url' => './#/accounts/edit',
                         'params' => [
                             'return_module' => 'Accounts',
-                            'return_action' => 'index'
+                            'return_action' => 'DetailView'
                         ],
                         'icon' => 'plus',
                         'actionLabelKey' => '',
@@ -410,7 +410,7 @@ final class NavbarTest extends Unit
                         'url' => './#/contacts/edit',
                         'params' => [
                             'return_module' => 'Contacts',
-                            'return_action' => 'index'
+                            'return_action' => 'DetailView'
                         ],
                         'icon' => 'plus',
                         'actionLabelKey' => '',

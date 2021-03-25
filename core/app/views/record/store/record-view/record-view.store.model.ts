@@ -24,5 +24,7 @@ export interface RecordViewState {
     widgets: boolean;
     showSidebarWidgets: boolean;
     showTopWidget: boolean;
+    showSubpanels: boolean;
     mode: ViewMode;
+    params: { [key: string]: string };
 }

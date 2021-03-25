@@ -4,6 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 import {RecordViewStore} from '@views/record/store/record-view/record-view.store';
 import {ActivatedRoute} from '@angular/router';
 import {RecordViewModel} from '@views/record/store/record-view/record-view.store.model';
+import {ViewMode} from '@app-common/views/view.model';
 
 @Component({
     selector: 'scrm-record',
@@ -20,7 +21,14 @@ export class RecordComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record).subscribe();
+        let mode = 'detail' as ViewMode;
+        const data = (this.route.snapshot && this.route.snapshot.data) || {};
+
+        if (data.mode) {
+            mode = data.mode;
+        }
+
+        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record, mode).subscribe();
         this.vm$ = this.recordStore.vm$;
     }
 

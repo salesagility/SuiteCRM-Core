@@ -21,14 +21,15 @@ export class RecordContainerComponent implements OnInit {
     language$: Observable<LanguageStrings> = this.language.vm$;
 
     vm$ = combineLatest([
-        this.language$, this.sidebarWidgetAdapter.config$, this.topWidgetAdapter.config$
+        this.language$, this.sidebarWidgetAdapter.config$, this.topWidgetAdapter.config$, this.recordViewStore.showSubpanels$
     ]).pipe(
         map((
-            [language, sidebarWidgetConfig, topWidgetConfig]
+            [language, sidebarWidgetConfig, topWidgetConfig, showSubpanels]
         ) => ({
             language,
             sidebarWidgetConfig,
-            topWidgetConfig
+            topWidgetConfig,
+            showSubpanels
         }))
     );
 

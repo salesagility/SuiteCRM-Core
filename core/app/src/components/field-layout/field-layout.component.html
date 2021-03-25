@@ -9,7 +9,8 @@
                 <div class="label-container">
                     <strong>
                         <label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>:
-                        <ng-container *ngIf="col.field.definition.required && config.mode === 'edit'">
+                        <ng-container
+                            *ngIf="col.field.definition.required && (['edit', 'create'].includes(config.mode))">
                             <span class="required">*</span>
                         </ng-container>
                     </strong>

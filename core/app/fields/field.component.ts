@@ -8,7 +8,7 @@ import {Field} from '@app-common/record/field.model';
     templateUrl: './field.component.html',
     styleUrls: []
 })
-export class FieldComponent{
+export class FieldComponent {
     @Input('mode') mode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
@@ -23,7 +23,12 @@ export class FieldComponent{
 
     get componentMode(): string {
         let mode = this.mode;
-        if(mode==='edit' && this.field.display && this.field.display==='readonly'){
+
+        if (mode === 'create') {
+            mode = 'edit';
+        }
+
+        if (mode === 'edit' && this.field.display && this.field.display === 'readonly') {
             mode = 'detail';
         }
 

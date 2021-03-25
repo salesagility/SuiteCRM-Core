@@ -9,6 +9,9 @@ import {RecordSaveAction} from '@views/record/actions/save/record-save.action';
 import {messageServiceMock} from '@services/message/message.service.spec.mock';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
+import {CancelCreateAction} from '@views/record/actions/cancel-create/cancel-create.action';
+import {actionNameMapperMock} from '@services/navigation/action-name-mapper/action-name-mapper.service.spec.mock';
+import {RecordSaveNewAction} from '@views/record/actions/save-new/record-save-new.action';
 
 const mockRouter = {
     navigate: (commands: any[], extras?: NavigationExtras) => {
@@ -42,5 +45,7 @@ export const recordActionsManagerMock = new RecordActionManager(
     new RecordCreateAction(moduleNameMapperMock, mockRouter),
     new RecordToggleWidgetsAction(),
     new RecordCancelAction(new MockModal()),
-    new RecordSaveAction(messageServiceMock)
+    new CancelCreateAction(new MockModal(), mockRouter, moduleNameMapperMock, actionNameMapperMock),
+    new RecordSaveAction(messageServiceMock),
+    new RecordSaveNewAction(messageServiceMock, mockRouter, moduleNameMapperMock, actionNameMapperMock)
 );

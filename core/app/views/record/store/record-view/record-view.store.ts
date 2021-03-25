@@ -29,6 +29,7 @@ import {RecordManager} from '@services/record/record.manager';
 import {StatisticsBatch} from '@store/statistics/statistics-batch.service';
 import {StatisticsMap, StatisticsQueryMap} from '@app-common/statistics/statistics.model';
 import {Params} from '@angular/router';
+import {isVoid} from '@app-common/utils/value-utils';
 import {FieldDefinitionMap} from '@app-common/record/field.model';
 
 const initialState: RecordViewState = {
@@ -38,7 +39,13 @@ const initialState: RecordViewState = {
     widgets: false,
     showSidebarWidgets: false,
     showTopWidget: false,
-    mode: 'detail'
+    showSubpanels: false,
+    mode: 'detail',
+    params: {
+        returnModule: '',
+        returnId: '',
+        returnAction: ''
+    }
 };
 
 @Injectable()
@@ -53,6 +60,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     widgets$: Observable<boolean>;
     showSidebarWidgets$: Observable<boolean>;
     showTopWidget$: Observable<boolean>;
+    showSubpanels$: Observable<boolean>;
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
 
@@ -85,7 +93,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected message: MessageService,
         protected subpanelFactory: SubpanelStoreFactory,
         protected recordManager: RecordManager,
-        protected statisticsBatch: StatisticsBatch,
+        protected statisticsBatch: StatisticsBatch
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -104,6 +112,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
         this.showTopWidget$ = this.state$.pipe(map(state => state.showTopWidget));
+        this.showSubpanels$ = this.state$.pipe(map(state => state.showSubpanels));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
         const data$ = combineLatest(
@@ -158,6 +167,28 @@ export class RecordViewStore extends ViewStore implements StateStore {
         });
     }
 
+    get showSubpanels(): boolean {
+        return this.internalState.showTopWidget;
+    }
+
+    set showSubpanels(show: boolean) {
+        this.updateState({
+            ...this.internalState,
+            showSubpanels: show
+        });
+    }
+
+    get params(): { [key: string]: string } {
+        return this.internalState.params || {};
+    }
+
+    set params(params: { [key: string]: string }) {
+        this.updateState({
+            ...this.internalState,
+            params
+        });
+    }
+
     getModuleName(): string {
         return this.internalState.module;
     }
@@ -190,11 +221,14 @@ export class RecordViewStore extends ViewStore implements StateStore {
      *
      * @param {string} module to use
      * @param {string} recordID to use
+     * @param {string} mode to use
+     * @param {object} params to set
      * @returns {object} Observable<any>
      */
-    public init(module: string, recordID: string): Observable<Record> {
+    public init(module: string, recordID: string, mode = 'detail' as ViewMode, params: Params = {}): Observable<Record> {
         this.internalState.module = module;
         this.internalState.recordID = recordID;
+        this.setMode(mode);
         this.initSubpanels(module, recordID);
 
         this.calculateShowWidgets();
@@ -203,6 +237,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
             tap(() => {
                 this.showTopWidget = true;
                 this.loadSubpanelStatistics(module);
+                this.parseParams(params);
             })
         );
     }
@@ -304,6 +339,28 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Parse query params
+     *
+     * @param {object} params to set
+     */
+    protected parseParams(params: Params = {}): void {
+        if (!params) {
+            return;
+        }
+
+        const currentParams = {...this.internalState.params};
+        Object.keys(params).forEach(paramKey => {
+            if (!isVoid(currentParams[paramKey])) {
+                currentParams[paramKey] = params[paramKey];
+                return;
+            }
+        });
+
+        this.params = params;
+    }
+
+
+    /**
      * Load all statistics
      *
      * @param {string} module if to use cache
@@ -387,6 +444,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @param {string} recordId id
      */
     protected initSubpanels(module: string, recordId: string): void {
+        this.showSubpanels = true;
         this.metadataStore.subPanelMetadata$.subscribe((meta: SubPanelMeta) => {
             this.clearSubpanels();
 
@@ -464,5 +522,4 @@ export class RecordViewStore extends ViewStore implements StateStore {
             return fields;
         }));
     }
-
 }
