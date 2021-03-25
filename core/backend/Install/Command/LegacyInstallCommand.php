@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Install\Command;
 
 use App\Install\LegacyHandler\InstallHandler;
 use Exception;
