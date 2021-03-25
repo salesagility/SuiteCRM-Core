@@ -6,7 +6,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Legacy\ActionNameMapperHandler;
 use App\Legacy\ClassicViewRoutingExclusionsHandler;
 use App\Legacy\CurrencyHandler;
-use App\Legacy\DateTimeHandler;
+use App\DateTime\LegacyHandler\DateTimeHandler;
 use App\Legacy\ModuleNameMapperHandler;
 use App\Legacy\SystemConfig\DateFormatConfigMapper;
 use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;

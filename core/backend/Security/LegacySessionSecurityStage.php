@@ -8,7 +8,7 @@ use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\GraphQl\Resolver\Stage\SecurityStageInterface;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
-use App\Legacy\Authentication;
+use App\Authentication\LegacyHandler\Authentication;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\ResolveInfo;
 use LogicException;

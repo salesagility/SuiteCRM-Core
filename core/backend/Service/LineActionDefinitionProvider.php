@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Legacy\AppListStringsProviderInterface;
+use App\Languages\LegacyHandler\AppListStringsProviderInterface;
 
 class LineActionDefinitionProvider implements LineActionDefinitionProviderInterface
 {

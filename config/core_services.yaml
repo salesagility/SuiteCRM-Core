@@ -38,21 +38,21 @@ services:
   _instanceof:
     App\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
-    App\Legacy\UserPreferences\UserPreferencesMapperInterface:
+    App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface:
       tags: [ 'user.preferences.mapper' ]
-    App\Legacy\SystemConfig\SystemConfigMapperInterface:
+    App\SystemConfig\LegacyHandler\SystemConfigMapperInterface:
       tags: [ 'system.config.mapper' ]
-    App\Legacy\FieldDefinitions\FieldDefinitionMapperInterface:
+    App\FieldDefinitions\LegacyHandler\FieldDefinitionMapperInterface:
       tags: [ 'field.definition.mapper' ]
-    App\Legacy\ViewDefinitions\ViewDefinitionMapperInterface:
+    App\ViewDefinitions\LegacyHandler\ViewDefinitionMapperInterface:
       tags: [ 'view.definition.mapper' ]
-    App\Legacy\Data\PresetListDataHandlerInterface:
+    App\Data\LegacyHandler\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
-    App\Legacy\Data\FilterMapper\FilterMapperInterface:
+    App\Data\LegacyHandler\FilterMapper\FilterMapperInterface:
       tags: [ 'app.data.filter.mapper' ]
     App\Service\StatisticsProviderInterface:
       tags: [ 'app.data.statistics.handler' ]
-    \App\Legacy\ViewDefinitions\SubpanelButtonMapperInterface:
+    App\ViewDefinitions\LegacyHandler\SubpanelButtonMapperInterface:
       tags: [ 'subpanel.button.definition.mapper' ]
 
   # makes classes in src/ available to be used as services
@@ -60,11 +60,6 @@ services:
   App\:
     resource: '../core/backend/*'
     exclude: '../core/backend/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
-
-  # makes classes in legacy/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
-  App\Legacy\:
-    resource: '../core/legacy/*'
 
   # makes classes in extensions/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -129,27 +124,27 @@ services:
       $routes: [ ]
       $headerName: 'X-XSRF-TOKEN'
 
-  App\Legacy\UserPreferences\UserPreferencesMappers:
+  App\UserPreferences\LegacyHandler\UserPreferencesMappers:
     # inject all services tagged with user.preferences.mapper as first argument
     arguments:
       - !tagged { tag: 'user.preferences.mapper' }
 
-  App\Legacy\SystemConfig\SystemConfigMappers:
+  App\SystemConfig\LegacyHandler\SystemConfigMappers:
     # inject all services tagged with system.config.mapper as first argument
     arguments:
       - !tagged { tag: 'system.config.mapper' }
 
-  App\Legacy\FieldDefinitions\FieldDefinitionMappers:
+  App\FieldDefinitions\LegacyHandler\FieldDefinitionMappers:
     # inject all services tagged with field.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'field.definition.mapper' }
 
-  App\Legacy\ViewDefinitions\ViewDefinitionMappers:
+  App\ViewDefinitions\LegacyHandler\ViewDefinitionMappers:
     # inject all services tagged with view.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'view.definition.mapper' }
 
-  App\Legacy\Data\PresetListDataHandlers:
+  App\Data\LegacyHandler\PresetListDataHandlers:
     # inject all services tagged with app.data.preset.handler as first argument
     arguments:
       - !tagged { tag: 'app.data.preset.handler' }
@@ -159,33 +154,33 @@ services:
     arguments:
       - !tagged { tag: 'app.data.statistics.handler' }
 
-  App\Legacy\Data\FilterMapper\FilterMappers:
+  App\Data\LegacyHandler\FilterMapper\FilterMappers:
     # inject all services tagged with app.data.filter.mapper as first argument
     arguments:
       - !tagged { tag: 'app.data.filter.mapper' }
 
-  App\Legacy\ViewDefinitions\SubpanelButtonMappers:
+  App\ViewDefinitions\LegacyHandler\SubpanelButtonMappers:
     # inject all services tagged with subpanel.button.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'subpanel.button.definition.mapper' }
 
-  App\Service\ActionNameMapperInterface: '@App\Legacy\ActionNameMapperHandler'
+  App\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Service\BulkActionDefinitionProviderInterface: '@App\Service\BulkActionDefinitionProvider'
-  App\Service\FieldDefinitionsProviderInterface: '@App\Legacy\FieldDefinitionsHandler'
+  App\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Service\FilterDefinitionProviderInterface: '@App\Service\FilterDefinitionProvider'
   App\Service\LineActionDefinitionProviderInterface: '@App\Service\LineActionDefinitionProvider'
   App\Service\ListViewSidebarWidgetDefinitionProviderInterface: '@App\Service\ListViewSidebarWidgetDefinitionProvider'
-  App\Service\ModuleNameMapperInterface: '@App\Legacy\ModuleNameMapperHandler'
-  App\Service\ModuleRegistryInterface: '@App\Legacy\ModuleRegistryHandler'
-  App\Service\NavigationProviderInterface: '@App\Legacy\NavbarHandler'
-  App\Service\ProcessHandlerInterface: '@App\Legacy\ResetPasswordHandler'
+  App\Service\ModuleNameMapperInterface: '@App\Module\LegacyHandler\ModuleNameMapperHandler'
+  App\Service\ModuleRegistryInterface: '@App\Module\LegacyHandler\ModuleRegistryHandler'
+  App\Service\NavigationProviderInterface: '@App\Navbar\LegacyHandler\NavbarHandler'
+  App\Service\ProcessHandlerInterface: '@App\Process\LegacyHandler\ResetPasswordHandler'
   App\Service\RecordActionDefinitionProviderInterface: '@App\Service\RecordActionDefinitionProvider'
-  App\Service\RecordDeletionServiceInterface: '@App\Legacy\RecordDeletionHandler'
-  App\Service\RecordListProviderInterface: '@App\Legacy\RecordListHandler'
-  App\Service\RecordProviderInterface: '@App\Legacy\RecordHandler'
-  App\Service\RouteConverterInterface: '@App\Legacy\RouteConverterHandler'
-  App\Service\StatisticsProviderInterface: '@App\Legacy\Statistics\SubpanelDefault'
-  App\Service\SubPanelDefinitionProviderInterface: '@App\Legacy\ViewDefinitions\SubPanelDefinitionHandler'
-  App\Service\SystemConfigProviderInterface: '@App\Legacy\SystemConfigHandler'
-  App\Service\UserPreferencesProviderInterface: '@App\Legacy\UserPreferenceHandler'
-  App\Service\ViewDefinitionsProviderInterface: '@App\Legacy\ViewDefinitionsHandler'
+  App\Service\RecordDeletionServiceInterface: '@App\Data\LegacyHandler\RecordDeletionHandler'
+  App\Service\RecordListProviderInterface: '@App\Data\LegacyHandler\RecordListHandler'
+  App\Service\RecordProviderInterface: '@App\Data\LegacyHandler\RecordHandler'
+  App\Service\RouteConverterInterface: '@App\Routes\LegacyHandler\RouteConverterHandler'
+  App\Service\StatisticsProviderInterface: '@App\Statistics\LegacyHandler\SubpanelDefault'
+  App\Service\SubPanelDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\SubPanelDefinitionHandler'
+  App\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
+  App\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
+  App\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'

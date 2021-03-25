@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\FieldDefinition;
-use App\Legacy\FieldDefinitionsHandler;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler;
 use Exception;
 
 /**

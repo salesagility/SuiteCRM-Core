@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Legacy\Authentication;
+use App\Authentication\LegacyHandler\Authentication;
 use Exception;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

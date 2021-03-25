@@ -11,7 +11,6 @@ $kernel->init([
     'cacheDir' => __DIR__ . '/../cache/test/aop',
     'includePaths' => [
         __DIR__ . '/../core/backend',
-        __DIR__ . '/../core/legacy',
         __DIR__ . '/../vendor/api-platform',
     ],
     'excludePaths' => [
@@ -20,8 +19,8 @@ $kernel->init([
     ],
 ]);
 
-$kernel->loadFile(__DIR__ . '/../core/legacy/AclHandler.php');
-$kernel->loadFile(__DIR__ . '/../core/legacy/Authentication.php');
+$kernel->loadFile(__DIR__ . '/../core/backend/Engine/LegacyHandler/AclHandler.php');
+$kernel->loadFile(__DIR__ . '/../core/backend/Authentication/LegacyHandler/Authentication.php');
 $kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/ResourceMetadata.php');
 $kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Util/RequestAttributesExtractor.php');
 $kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/Factory/AnnotationResourceFilterMetadataFactory.php');

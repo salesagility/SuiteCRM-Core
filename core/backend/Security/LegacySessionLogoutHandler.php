@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Legacy\Authentication;
+use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 /**

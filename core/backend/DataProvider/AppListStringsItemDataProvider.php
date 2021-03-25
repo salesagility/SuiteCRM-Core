@@ -5,7 +5,7 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\AppListStrings;
-use App\Legacy\AppListStringsHandler;
+use App\Languages\LegacyHandler\AppListStringsHandler;
 
 /**
  * Class AppListStringsItemDataProvider

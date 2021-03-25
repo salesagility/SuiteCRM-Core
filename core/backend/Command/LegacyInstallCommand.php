@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Legacy\InstallHandler;
+use App\Install\LegacyHandler\InstallHandler;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

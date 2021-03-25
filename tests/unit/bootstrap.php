@@ -11,7 +11,6 @@ $kernel->init([
     'debug' => true,
     'includePaths' => [
         __DIR__ . '/../../core/backend',
-        __DIR__ . '/../../core/legacy',
         __DIR__ . '/../../vendor/api-platform',
     ],
     'excludePaths' => [

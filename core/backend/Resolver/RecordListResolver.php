@@ -3,8 +3,8 @@
 namespace App\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
+use App\Data\LegacyHandler\RecordListHandler;
 use App\Entity\RecordList;
-use App\Legacy\RecordListHandler;
 
 class RecordListResolver implements QueryItemResolverInterface
 {

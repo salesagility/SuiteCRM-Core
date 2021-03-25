@@ -8,7 +8,7 @@ use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
 use App\Legacy\CurrencyHandler;
-use App\Legacy\DateTimeHandler;
+use App\DateTime\LegacyHandler\DateTimeHandler;
 use App\Legacy\UserPreferenceHandler;
 use App\Legacy\UserPreferences\CurrencyPreferenceMapper;
 use App\Legacy\UserPreferences\DateFormatPreferenceMapper;
