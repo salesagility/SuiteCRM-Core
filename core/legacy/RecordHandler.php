@@ -166,12 +166,17 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      */
     public function saveRecord(Record $record): Record
     {
+        global $current_user;
         $this->init();
         $this->startLegacyApp();
 
         $id = $record->getAttributes()['id'] ?? '';
         /** @var SugarBean $bean */
         $bean = $this->retrieveRecord($record->getModule(), $id);
+
+        if (empty($id)) {
+            $bean->assigned_user_id = $current_user->id;
+        }
 
         if (!$bean->ACLAccess('save')) {
             throw new AccessDeniedHttpException();
