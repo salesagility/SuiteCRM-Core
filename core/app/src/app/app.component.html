@@ -1,8 +1,10 @@
-<ng-container *ngIf="(appState$ | async) as appState">
-    <app-full-page-spinner *ngIf="appState.loading"></app-full-page-spinner>
-</ng-container>
-<scrm-navbar-ui></scrm-navbar-ui>
-<scrm-message-ui></scrm-message-ui>
-<div #mainOutlet></div>
-<router-outlet></router-outlet>
+<div class="app-shell">
+    <ng-container *ngIf="(appState$ | async) as appState">
+        <app-full-page-spinner *ngIf="appState.loading"></app-full-page-spinner>
+    </ng-container>
+    <scrm-navbar-ui></scrm-navbar-ui>
+    <scrm-message-ui></scrm-message-ui>
+    <div #mainOutlet></div>
+    <router-outlet></router-outlet>
+</div>
 <scrm-footer-ui></scrm-footer-ui>
