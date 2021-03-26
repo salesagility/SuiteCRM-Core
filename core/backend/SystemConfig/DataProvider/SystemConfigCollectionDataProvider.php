@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataProvider;
+namespace App\SystemConfig\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ArrayPaginator;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;

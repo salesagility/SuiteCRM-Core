@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataProvider;
+namespace App\Data\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;

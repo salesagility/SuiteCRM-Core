@@ -1,26 +1,26 @@
 <?php
 
-namespace App\DataProvider;
+namespace App\Statistics\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Statistics\Entity\BatchedStatistics;
-use App\Service\StatisticsManagerInterface;
+use App\Statistics\Entity\Statistic;
+use App\Service\StatisticsProviderRegistry;
 
-class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class StatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
-     * @var StatisticsManagerInterface
+     * @var StatisticsProviderRegistry
      */
-    private $manager;
+    private $registry;
 
     /**
-     * BatchedStatisticsItemDataProvider constructor.
-     * @param StatisticsManagerInterface $manager
+     * StatisticsItemDataProvider constructor.
+     * @param StatisticsProviderRegistry $registry
      */
-    public function __construct(StatisticsManagerInterface $manager)
+    public function __construct(StatisticsProviderRegistry $registry)
     {
-        $this->manager = $manager;
+        $this->registry = $registry;
     }
 
 
@@ -31,29 +31,29 @@ class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, Re
      * @param array $context
      * @return bool
      */
-    public function supports(
+    public
+    function supports(
         string $resourceClass,
         string $operationName = null,
         array $context = []
     ): bool {
-        return BatchedStatistics::class === $resourceClass;
+        return Statistic::class === $resourceClass;
     }
 
     /**
-     * Get batched statistics
+     * Get chart data for given chart id
      * @param string $resourceClass
      * @param array|int|string $id
      * @param string|null $operationName
      * @param array $context
-     * @return BatchedStatistics|null
+     * @return Statistic|null
      */
     public function getItem(
         string $resourceClass,
         $id,
         string $operationName = null,
         array $context = []
-    ): ?BatchedStatistics {
-
+    ): ?Statistic {
         return null;
     }
 }

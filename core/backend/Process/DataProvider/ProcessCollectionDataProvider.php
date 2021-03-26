@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataProvider;
+namespace App\Process\DataProvider;
 
 
 use ApiPlatform\Core\DataProvider\ArrayPaginator;
