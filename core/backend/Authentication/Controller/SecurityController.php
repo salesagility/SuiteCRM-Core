@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Authentication\Controller;
 
 use App\Authentication\LegacyHandler\Authentication;
 use Exception;

@@ -69,8 +69,14 @@ services:
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
-  App\Controller\:
-    resource: '../core/backend/Controller/*'
+  App\Authentication\Controller\:
+    resource: '../core/backend/Authentication/Controller/*'
+    tags: [ 'controller.service_arguments' ]
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\Engine\Controller\:
+    resource: '../core/backend/Engine/Controller/*'
     tags: [ 'controller.service_arguments' ]
 
   # add more service definitions when explicit configuration is needed

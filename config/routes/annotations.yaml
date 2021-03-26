@@ -1,3 +1,3 @@
 controllers:
-  resource: ../../core/backend/Controller/
+  resource: ../../core/backend/**/Controller/*
   type: annotation
