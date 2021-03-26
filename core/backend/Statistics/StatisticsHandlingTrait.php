@@ -3,10 +3,10 @@
 namespace App\Statistics;
 
 use App\Statistics\Entity\Statistic;
-use App\Model\Statistics\ChartOptions;
-use App\Model\Statistics\Series;
-use App\Model\Statistics\SeriesItem;
-use App\Model\Statistics\SeriesResult;
+use App\Statistics\Model\ChartOptions;
+use App\Statistics\Model\Series;
+use App\Statistics\Model\SeriesItem;
+use App\Statistics\Model\SeriesResult;
 
 trait StatisticsHandlingTrait
 {

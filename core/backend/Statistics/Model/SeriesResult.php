@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Statistics;
+namespace App\Statistics\Model;
 
 class SeriesResult
 {

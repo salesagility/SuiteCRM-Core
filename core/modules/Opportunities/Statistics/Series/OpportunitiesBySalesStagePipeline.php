@@ -7,7 +7,7 @@ use App\Statistics\Entity\Statistic;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Statistics\StatisticsHandlingTrait;
-use App\Model\Statistics\ChartOptions;
+use App\Statistics\Model\ChartOptions;
 use App\Service\ModuleNameMapperInterface;
 use App\Service\StatisticsProviderInterface;
 use BeanFactory;
