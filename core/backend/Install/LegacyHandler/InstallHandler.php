@@ -54,7 +54,14 @@ class InstallHandler extends LegacyHandler
         SessionInterface $session,
         LoggerInterface $logger
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->legacyDir = $legacyDir;
         $this->logger = $logger;
     }
@@ -115,6 +122,7 @@ class InstallHandler extends LegacyHandler
      */
     public function createConfig(array $inputArray): void
     {
+        $siteURL = $inputArray['site_host'] . '/legacy';
         $configArray = [
             'dbUSRData' => 'same',
             'default_currency_iso4217' => 'USD',
@@ -135,12 +143,12 @@ class InstallHandler extends LegacyHandler
             'setup_db_database_name' => $inputArray['db_name'],
             'setup_db_drop_tables' => 0,
             'setup_db_host_name' => $inputArray['db_host'],
-            'setup_db_pop_demo_data' => $inputArray['demo'],
+            'demoData' => $inputArray['demoData'],
             'setup_db_type' => 'mysql',
             'setup_db_username_is_privileged' => true,
             'setup_site_admin_password' => $inputArray['site_password'],
             'setup_site_admin_user_name' => $inputArray['site_username'],
-            'setup_site_url' => $inputArray['site_host'],
+            'setup_site_url' => $siteURL,
             'setup_system_name' => 'SuiteCRM',
         ];
 
@@ -154,5 +162,34 @@ class InstallHandler extends LegacyHandler
         } catch (IOExceptionInterface $exception) {
             echo 'An error occurred while creating your silent install config at ' . $exception->getPath();
         }
+    }
+
+    /**
+     * Create local env file
+     * @param array $inputArray
+     */
+    public function createEnv(array $inputArray): void
+    {
+
+        $password = $inputArray['db_password'] ?? '';
+        $username = $inputArray['db_username'] ?? '';
+        $dbName = $inputArray['db_name'] ?? '';
+        $host = $inputArray['db_host'] ?? '';
+        $port = $inputArray['db_port'] ?? '3306';
+
+        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$host:$port/$dbName\"";
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile('.env.local', $dbUrl);
+    }
+
+    /**
+     * Check if is installed
+     * @return bool is installed
+     */
+    public function isInstalled(): bool
+    {
+        $filesystem = new Filesystem();
+
+        return $filesystem->exists('.env.local');
     }
 }

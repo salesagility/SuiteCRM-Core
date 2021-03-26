@@ -5,11 +5,11 @@ namespace App\Install\Command;
 use App\Install\LegacyHandler\InstallHandler;
 use Exception;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * Class LegacyInstallCommand
@@ -25,7 +25,12 @@ class LegacyInstallCommand extends Command
     /**
      * @var InstallHandler
      */
-    private $installHandler;
+    protected $installHandler;
+
+    /**
+     * @var array
+     */
+    protected $inputs = [];
 
     /**
      * LegacyInstallCommand constructor.
@@ -33,59 +38,114 @@ class LegacyInstallCommand extends Command
      */
     public function __construct(InstallHandler $installHandler)
     {
+
+        $this->inputs['db_username'] = [
+            'question' => new Question('Please enter the db username: '),
+            'argument' => new InputOption(
+                'db_username',
+                'dbu',
+                InputOption::VALUE_REQUIRED,
+                'database username'
+            )
+        ];
+
+        $dbPasswordQuestion = new Question('Please enter the db password: ');
+        $dbPasswordQuestion->setHidden(true);
+        $dbPasswordQuestion->setHiddenFallback(false);
+        $this->inputs['db_password'] = [
+            'question' => $dbPasswordQuestion,
+            'argument' => new InputOption(
+                'db_password',
+                'dbp',
+                InputOption::VALUE_REQUIRED,
+                'database password'
+            ),
+        ];
+
+        $this->inputs['db_host'] = [
+            'question' => new Question('Please enter the db host: '),
+            'argument' => new InputOption(
+                'db_host',
+                'dbh',
+                InputOption::VALUE_REQUIRED,
+                'database host'
+            )
+        ];
+
+        $this->inputs['db_name'] = [
+            'question' => new Question('Please enter the db name: '),
+            'argument' => new InputOption(
+                'db_name',
+                'dbn',
+                InputOption::VALUE_REQUIRED,
+                'database name'
+            ),
+        ];
+
+        $this->inputs['site_username'] = [
+            'question' => new Question('Please enter the admin username: '),
+            'argument' => new InputOption(
+                'site_username',
+                'u',
+                InputOption::VALUE_REQUIRED,
+                'site username'
+            ),
+        ];
+
+        $adminPasswordQuestion = new Question('Please enter the admin password: ');
+        $adminPasswordQuestion->setHidden(true);
+        $adminPasswordQuestion->setHiddenFallback(false);
+        $this->inputs['site_password'] = [
+            'question' => $adminPasswordQuestion,
+            'argument' => new InputOption(
+                'site_password',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'site password'
+            ),
+        ];
+
+        $this->inputs['site_host'] = [
+            'question' => new Question('Please enter the suite 8 address (e.g. https://<your_host/): '),
+            'argument' => new InputOption(
+                'site_host',
+                'a',
+                InputOption::VALUE_REQUIRED,
+                'site host'
+            ),
+        ];
+
+        $this->inputs['demoData'] = [
+            'question' => new ChoiceQuestion(
+                'Install demo data?: ',
+                ['yes', 'no'],
+                'no'
+            ),
+            'argument' => new InputOption(
+                'demoData',
+                'd',
+                InputOption::VALUE_OPTIONAL,
+                'Install "demo data" during install process'
+            ),
+        ];
+
         parent::__construct();
         $this->installHandler = $installHandler;
     }
 
     protected function configure(): void
     {
+        $inputs = [];
+
+        foreach ($this->inputs as $key => $item) {
+            $inputs[$key] = $item['argument'];
+        }
+
         $this
-            ->setDescription('Install the legacy application')
-            ->setHelp('This command will install the legacy application')
+            ->setDescription('Install the application')
+            ->setHelp('This command will install the suite 8 and legacy application')
             ->setDefinition(
-                new InputDefinition([
-                    new InputArgument(
-                        'db_username',
-                        InputOption::VALUE_REQUIRED,
-                        'database username'
-                    ),
-                    new InputArgument(
-                        'db_password',
-                        InputOption::VALUE_REQUIRED,
-                        'database password'
-                    ),
-                    new InputArgument(
-                        'db_host',
-                        InputOption::VALUE_REQUIRED,
-                        'database host'
-                    ),
-                    new InputArgument(
-                        'db_name',
-                        InputOption::VALUE_REQUIRED,
-                        'database name'
-                    ),
-                    new InputArgument(
-                        'site_username',
-                        InputOption::VALUE_REQUIRED,
-                        'site username'
-                    ),
-                    new InputArgument(
-                        'site_password',
-                        InputOption::VALUE_REQUIRED,
-                        'site password'
-                    ),
-                    new InputArgument(
-                        'site_host',
-                        InputOption::VALUE_REQUIRED,
-                        'site host'
-                    ),
-                    new InputOption(
-                        'demo',
-                        'd',
-                        InputOption::VALUE_REQUIRED,
-                        'Install "demo data" during install process'
-                    ),
-                ])
+                $inputs
             );
     }
 
@@ -104,20 +164,26 @@ class LegacyInstallCommand extends Command
             '',
         ]);
 
-        $demoData = $input->getOption('demo');
-        $demoDataOutput = ($demoData !== false);
+        if ($this->installHandler->isInstalled()) {
+            $output->writeln('Already installed. Stopping');
 
-        $inputArray = [
-            'db_username' => $input->getArgument('db_username'),
-            'db_password' => $input->getArgument('db_password'),
-            'db_host' => $input->getArgument('db_host'),
-            'db_name' => $input->getArgument('db_name'),
-            'site_username' => $input->getArgument('site_username'),
-            'site_password' => $input->getArgument('site_password'),
-            'site_host' => $input->getArgument('site_host'),
-            'demo' => $demoDataOutput
-        ];
+            return 0;
+        }
 
+        $inputArray = [];
+
+        $helper = $this->getHelper('question');
+
+        foreach ($this->inputs as $key => $option) {
+            $value = $input->getOption($key);
+            if (empty($value)) {
+                $value = $helper->ask($input, $output, $option['question']);
+            }
+            $inputArray[$key] = $value;
+        }
+
+
+        $this->installHandler->createEnv($inputArray);
         $this->installHandler->createConfig($inputArray);
 
         $output->writeln('Step 1: Config Creation Complete');
