@@ -2,9 +2,10 @@
 
 namespace App\Statistics\LegacyHandler;
 
-use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
-use App\Service\StatisticsProviderInterface;
+use App\Statistics\Entity\Statistic;
+use App\Statistics\Service\StatisticsProviderInterface;
+use App\Statistics\StatisticsHandlingTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 

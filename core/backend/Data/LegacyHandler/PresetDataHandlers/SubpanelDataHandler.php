@@ -5,8 +5,8 @@ namespace App\Data\LegacyHandler\PresetDataHandlers;
 use App\Data\LegacyHandler\ListData;
 use App\Data\LegacyHandler\PresetListDataHandlerInterface;
 use App\Data\LegacyHandler\RecordMapper;
-use App\LegacyHandler;
-use App\LegacyScopeState;
+use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelDataPort;
@@ -35,6 +35,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RecordMapper $recordMapper
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,

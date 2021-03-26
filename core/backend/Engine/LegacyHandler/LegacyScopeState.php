@@ -2,7 +2,6 @@
 
 namespace App\Engine\LegacyHandler;
 
-
 class LegacyScopeState
 {
     /**

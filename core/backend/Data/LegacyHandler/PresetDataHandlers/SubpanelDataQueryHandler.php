@@ -2,8 +2,8 @@
 
 namespace App\Data\LegacyHandler\PresetDataHandlers;
 
-use App\LegacyHandler;
-use App\LegacyScopeState;
+use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelCustomQueryPort;
@@ -31,6 +31,7 @@ class SubpanelDataQueryHandler extends LegacyHandler
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,

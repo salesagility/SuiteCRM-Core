@@ -4,6 +4,7 @@ namespace App\Statistics\LegacyHandler;
 
 use App\Statistics\Entity\Statistic;
 use App\Service\StatisticsProviderInterface;
+use App\Statistics\StatisticsHandlingTrait;
 
 class DefaultError implements StatisticsProviderInterface
 {
