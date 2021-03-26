@@ -4,7 +4,7 @@ namespace App\Data\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Resolver\RecordItemResolver;
+use App\Data\Resolver\RecordItemResolver;
 
 /**
  * @ApiResource(

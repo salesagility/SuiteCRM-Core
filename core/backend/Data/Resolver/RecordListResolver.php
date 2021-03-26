@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resolver;
+namespace App\Data\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Data\LegacyHandler\RecordListHandler;

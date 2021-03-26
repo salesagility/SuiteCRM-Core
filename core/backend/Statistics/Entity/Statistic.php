@@ -5,7 +5,7 @@ namespace App\Statistics\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Resolver\StatisticsItemResolver;
+use App\Statistics\Resolver\StatisticsItemResolver;
 
 /**
  * @ApiResource(

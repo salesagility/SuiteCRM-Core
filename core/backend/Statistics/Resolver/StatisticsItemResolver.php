@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resolver;
+namespace App\Statistics\Resolver;
 
 use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Statistics\Entity\Statistic;
