@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubpanelOpportunitiesTotal;
+use App\Module\Opportunities\Statistics\Subpanels\SubpanelOpportunitiesTotal;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**

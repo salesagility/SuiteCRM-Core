@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelEventsLastDate;
+use App\Module\Events\Statistics\Subpanels\SubPanelEventsLastDate;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**

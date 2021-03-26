@@ -2,7 +2,7 @@
 
 namespace App\Tests\unit\core\legacy\Statistics;
 
-use App\Legacy\ModuleNameMapperHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Tests\_mock\Mock\core\legacy\Statistics\DaysUntilDueTaskMock;
 use App\Tests\UnitTester;
 use BeanFactory;

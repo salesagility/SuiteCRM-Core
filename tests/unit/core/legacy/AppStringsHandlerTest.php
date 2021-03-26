@@ -3,10 +3,10 @@
 namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Entity\AppStrings;
+use App\Languages\Entity\AppStrings;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
-use App\Legacy\AppStringsHandler;
+use App\Languages\LegacyHandler\AppStringsHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

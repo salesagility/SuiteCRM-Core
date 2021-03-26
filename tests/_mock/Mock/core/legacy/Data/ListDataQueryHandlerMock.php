@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Data;
 
-use App\Legacy\Data\ListDataQueryHandler;
+use App\Data\LegacyHandler\ListDataQueryHandler;
 use SugarBean;
 
 class ListDataQueryHandlerMock extends ListDataQueryHandler

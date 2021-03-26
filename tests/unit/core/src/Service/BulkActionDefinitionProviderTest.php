@@ -2,12 +2,12 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Service\AclManagerInterface;
-use App\Service\BulkActionDefinitionProvider;
+use App\Engine\Service\AclManagerInterface;
+use App\Process\Service\BulkActionDefinitionProvider;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
-use App\Legacy\AclHandler;
+use App\Engine\LegacyHandler\AclHandler;
 
 /**
  * Class BulkActionDefinitionProviderTest

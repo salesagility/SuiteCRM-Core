@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\legacy;
 
+use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
-use App\Legacy\ClassicViewRoutingExclusionsHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

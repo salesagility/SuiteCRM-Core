@@ -2,16 +2,16 @@
 
 namespace App\Tests\unit\core\legacy;
 
-use App\Entity\Navbar;
-use App\Legacy\ActionNameMapperHandler;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\ModuleRegistryHandler;
-use App\Legacy\NavbarHandler;
-use App\Legacy\RouteConverterHandler;
+use App\Navbar\Entity\Navbar;
 use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
+use App\Engine\LegacyHandler\ActionNameMapperHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\Module\LegacyHandler\ModuleRegistryHandler;
+use App\Navbar\LegacyHandler\NavbarHandler;
+use App\Routes\LegacyHandler\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

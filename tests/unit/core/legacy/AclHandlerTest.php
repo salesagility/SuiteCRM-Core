@@ -7,8 +7,8 @@ use App\Tests\UnitTester;
 use AspectMock\Test;
 use Codeception\Test\Unit;
 use Exception;
-use App\Legacy\AclHandler;
-use App\Legacy\ModuleNameMapperHandler;
+use App\Engine\LegacyHandler\AclHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

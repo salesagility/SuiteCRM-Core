@@ -5,7 +5,7 @@ namespace App\Tests\unit\core\legacy;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
-use App\Legacy\CurrencyHandler;
+use App\Currency\LegacyHandler\CurrencyHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

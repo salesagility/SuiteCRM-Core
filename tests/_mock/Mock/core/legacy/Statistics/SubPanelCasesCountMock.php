@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelCasesCount;
+use App\Module\Cases\Statistics\Subpanels\SubPanelCasesCount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**

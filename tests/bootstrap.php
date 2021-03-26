@@ -21,7 +21,7 @@ $kernel->init([
 
 $kernel->loadFile(__DIR__ . '/../core/backend/Engine/LegacyHandler/AclHandler.php');
 $kernel->loadFile(__DIR__ . '/../core/backend/Authentication/LegacyHandler/Authentication.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/ResourceMetadata.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Util/RequestAttributesExtractor.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Metadata/Resource/Factory/AnnotationResourceFilterMetadataFactory.php');
-$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/backend/Security/EventListener/DenyAccessListener.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Metadata/Resource/ResourceMetadata.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Util/RequestAttributesExtractor.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Metadata/Resource/Factory/AnnotationResourceFilterMetadataFactory.php');
+$kernel->loadFile(__DIR__ . '/../vendor/api-platform/core/src/Security/EventListener/DenyAccessListener.php');

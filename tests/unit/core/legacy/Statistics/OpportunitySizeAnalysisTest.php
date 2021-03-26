@@ -2,8 +2,8 @@
 
 namespace App\Tests\unit\core\legacy\Statistics;
 
-use App\Legacy\Data\PreparedStatementHandler;
-use App\Legacy\ModuleNameMapperHandler;
+use App\Data\LegacyHandler\PreparedStatementHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

@@ -2,11 +2,11 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
-use App\Legacy\ModuleNameMapperHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

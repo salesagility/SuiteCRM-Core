@@ -2,7 +2,7 @@
 
 namespace Mock\Core\Legacy\Statistics;
 
-use App\Legacy\Statistics\AssignedUserOpportunitiesCount;
+use App\Module\Users\Statistics\AssignedUserOpportunitiesCount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use BeanFactory;
 use Opportunity;

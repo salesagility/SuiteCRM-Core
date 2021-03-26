@@ -3,7 +3,7 @@
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
 use aCase;
-use App\Legacy\Statistics\CaseDaysOpen;
+use App\Module\Cases\Statistics\CaseDaysOpen;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Doctrine\ORM\EntityManagerInterface;
 use SugarBean;

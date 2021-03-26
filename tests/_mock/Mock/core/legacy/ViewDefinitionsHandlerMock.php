@@ -4,7 +4,7 @@
 namespace App\Tests\_mock\Mock\core\legacy;
 
 
-use App\Legacy\ViewDefinitionsHandler;
+use App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler;
 
 class ViewDefinitionsHandlerMock extends ViewDefinitionsHandler
 {

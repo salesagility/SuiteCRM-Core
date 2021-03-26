@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\SubPanelQuotesTotal;
+use App\Module\Quotes\Statistics\Subpanels\SubPanelQuotesTotal;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 
 /**

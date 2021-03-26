@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics;
 
-use App\Legacy\Statistics\DaysUntilDueTask;
+use App\Module\Tasks\Statistics\DaysUntilDueTask;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use Task;
 

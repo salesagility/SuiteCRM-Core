@@ -3,7 +3,7 @@
 namespace Mock\Core\Legacy\Statistics;
 
 use aCase;
-use App\Legacy\Statistics\CasesPerAccount;
+use App\Module\Cases\Statistics\CasesPerAccount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use BeanFactory;
 

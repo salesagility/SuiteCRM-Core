@@ -3,9 +3,9 @@
 namespace App\Tests\unit\core\legacy\SystemConfig;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\SystemConfig\DefaultModuleConfigMapper;
-use App\Legacy\SystemConfig\SystemConfigMappers;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\SystemConfig\LegacyHandler\DefaultModuleConfigMapper;
+use App\SystemConfig\LegacyHandler\SystemConfigMappers;
 use App\Tests\UnitTester;
 use ArrayObject;
 use Codeception\Test\Unit;

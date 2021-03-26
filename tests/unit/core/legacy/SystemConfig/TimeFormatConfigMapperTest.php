@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\legacy\SystemConfig;
 
-use App\Entity\SystemConfig;
+use App\SystemConfig\Entity\SystemConfig;
 use App\DateTime\LegacyHandler\DateTimeHandler;
-use App\Legacy\SystemConfig\TimeFormatConfigMapper;
+use App\SystemConfig\LegacyHandler\TimeFormatConfigMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

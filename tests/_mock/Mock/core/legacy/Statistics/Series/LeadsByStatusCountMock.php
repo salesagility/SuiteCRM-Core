@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics\Series;
 
-use App\Legacy\Statistics\Series\LeadsByStatusCount;
+use App\Module\Leads\Statistics\Series\LeadsByStatusCount;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use SugarBean;
 

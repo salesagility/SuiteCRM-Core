@@ -3,11 +3,11 @@
 namespace App\Tests\unit\core\legacy;
 
 use App\FieldDefinitions\Entity\FieldDefinition;
-use App\Legacy\FieldDefinitions\FieldDefinitionMappers;
-use App\Legacy\FieldDefinitions\GroupedFieldDefinitionMapper;
-use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;
-use App\Legacy\FieldDefinitionsHandler;
-use App\Legacy\ModuleNameMapperHandler;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionMappers;
+use App\FieldDefinitions\LegacyHandler\GroupedFieldDefinitionMapper;
+use App\FieldDefinitions\LegacyHandler\LegacyGroupedFieldDefinitionMapper;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Tests\UnitTester;
 use ArrayObject;
 use Codeception\Test\Unit;

@@ -3,7 +3,7 @@
 namespace App\Tests\unit\core\legacy\FieldDefinitions;
 
 use App\FieldDefinitions\Entity\FieldDefinition;
-use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;
+use App\FieldDefinitions\LegacyHandler\LegacyGroupedFieldDefinitionMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

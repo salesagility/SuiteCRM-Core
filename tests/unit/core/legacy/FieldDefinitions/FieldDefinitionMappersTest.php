@@ -2,10 +2,10 @@
 
 namespace App\Tests\unit\core\legacy\FieldDefinitions;
 
-use App\Legacy\FieldDefinitions\FieldDefinitionMapperInterface;
-use App\Legacy\FieldDefinitions\FieldDefinitionMappers;
-use App\Legacy\FieldDefinitions\GroupedFieldDefinitionMapper;
-use App\Legacy\FieldDefinitions\LegacyGroupedFieldDefinitionMapper;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionMapperInterface;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionMappers;
+use App\FieldDefinitions\LegacyHandler\GroupedFieldDefinitionMapper;
+use App\FieldDefinitions\LegacyHandler\LegacyGroupedFieldDefinitionMapper;
 use App\Tests\UnitTester;
 use ArrayObject;
 use Codeception\Test\Unit;

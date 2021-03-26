@@ -15,7 +15,7 @@ use AspectMock\Test;
 use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
-use App\Legacy\Authentication;
+use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\src\Service\RecordActions;
 
-use App\Entity\Process;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Service\RecordActions\DuplicateRecordAction;
+use App\Process\Entity\Process;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\Process\Service\RecordActions\DuplicateRecordAction;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

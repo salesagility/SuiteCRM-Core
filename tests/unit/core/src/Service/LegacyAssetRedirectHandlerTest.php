@@ -2,7 +2,7 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Service\LegacyAssetRedirectHandler;
+use App\Routes\Service\LegacyAssetRedirectHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Symfony\Component\HttpFoundation\Request;

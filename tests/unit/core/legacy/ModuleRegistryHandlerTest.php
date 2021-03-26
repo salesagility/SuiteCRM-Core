@@ -4,7 +4,7 @@ namespace App\Tests\unit\core\legacy;
 
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
-use App\Legacy\ModuleRegistryHandler;
+use App\Module\LegacyHandler\ModuleRegistryHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

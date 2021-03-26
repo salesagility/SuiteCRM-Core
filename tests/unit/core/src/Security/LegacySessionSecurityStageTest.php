@@ -18,7 +18,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Schema;
-use App\Legacy\Authentication;
+use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace App\Tests\unit\core\src\Service\RecordActions;
 
-use App\Entity\Process;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Service\BulkActions\DeleteRecordsBulkAction;
-use App\Service\RecordDeletionServiceInterface;
+use App\Process\Entity\Process;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\Process\Service\BulkActions\DeleteRecordsBulkAction;
+use App\Data\Service\RecordDeletionServiceInterface;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

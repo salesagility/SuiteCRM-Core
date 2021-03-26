@@ -2,7 +2,7 @@
 
 namespace App\Tests\_mock\Mock\core\legacy\Statistics\Series;
 
-use App\Legacy\Statistics\Series\OpportunitiesBySalesStagePipeline;
+use App\Module\Opportunities\Statistics\Series\OpportunitiesBySalesStagePipeline;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use SugarBean;
 

@@ -2,7 +2,7 @@
 
 namespace Mock\Core\Legacy\Statistics;
 
-use App\Legacy\Statistics\OpportunitySizeAnalysis;
+use App\Module\Opportunities\Statistics\OpportunitySizeAnalysis;
 use App\Tests\_mock\Helpers\core\legacy\Data\DBQueryResultsMocking;
 use BeanFactory;
 use Opportunity;

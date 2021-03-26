@@ -2,8 +2,8 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Service\ThemeImageFinder;
-use App\Service\ThemeImageService;
+use App\Themes\Service\ThemeImageFinder;
+use App\Themes\Service\ThemeImageService;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

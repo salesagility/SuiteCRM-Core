@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Legacy\AclHandler;
-use App\Service\AclManagerInterface;
-use App\Service\ListViewSidebarWidgetDefinitionProvider;
+use App\Engine\LegacyHandler\AclHandler;
+use App\Engine\Service\AclManagerInterface;
+use App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProvider;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

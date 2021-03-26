@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\legacy\SystemConfig;
 
-use App\Entity\SystemConfig;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\SystemConfig\DefaultModuleConfigMapper;
+use App\SystemConfig\Entity\SystemConfig;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\SystemConfig\LegacyHandler\DefaultModuleConfigMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

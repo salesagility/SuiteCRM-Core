@@ -2,10 +2,10 @@
 
 namespace App\Tests\unit\core\legacy\Statistics;
 
-use App\Legacy\Data\FilterMapper\FilterMappers;
-use App\Legacy\Data\FilterMapper\LegacyFilterMapper;
-use App\Legacy\Data\RecordMapper;
-use App\Legacy\ModuleNameMapperHandler;
+use App\Data\LegacyHandler\FilterMapper\FilterMappers;
+use App\Data\LegacyHandler\FilterMapper\LegacyFilterMapper;
+use App\Data\LegacyHandler\RecordMapper;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Tests\_mock\Mock\core\legacy\Data\ListDataQueryHandlerMock;
 use App\Tests\_mock\Mock\core\legacy\Statistics\Series\OpportunitiesBySalesStagePipelineMock;
 use App\Tests\UnitTester;

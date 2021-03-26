@@ -3,12 +3,12 @@
 namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Entity\ModStrings;
+use App\Languages\Entity\ModStrings;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
-use App\Legacy\ModStringsHandler;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\ModuleRegistryHandler;
+use App\Languages\LegacyHandler\ModStringsHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\Module\LegacyHandler\ModuleRegistryHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 

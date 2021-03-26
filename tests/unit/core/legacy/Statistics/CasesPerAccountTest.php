@@ -3,7 +3,7 @@
 namespace App\Tests\unit\core\legacy\Statistics;
 
 use AcceptanceTester;
-use App\Legacy\ModuleNameMapperHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

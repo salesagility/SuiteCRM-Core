@@ -2,9 +2,9 @@
 
 namespace App\Tests\unit\core\legacy\SystemConfig;
 
-use App\Entity\SystemConfig;
-use App\Legacy\CurrencyHandler;
-use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
+use App\SystemConfig\Entity\SystemConfig;
+use App\Currency\LegacyHandler\CurrencyHandler;
+use App\SystemConfig\LegacyHandler\DefaultCurrencyConfigMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

@@ -3,16 +3,16 @@
 namespace App\Tests\unit\core\legacy;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Legacy\ActionNameMapperHandler;
-use App\Legacy\ClassicViewRoutingExclusionsHandler;
-use App\Legacy\CurrencyHandler;
+use App\Engine\LegacyHandler\ActionNameMapperHandler;
+use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
+use App\Currency\LegacyHandler\CurrencyHandler;
 use App\DateTime\LegacyHandler\DateTimeHandler;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\SystemConfig\DateFormatConfigMapper;
-use App\Legacy\SystemConfig\DefaultCurrencyConfigMapper;
-use App\Legacy\SystemConfig\SystemConfigMappers;
-use App\Legacy\SystemConfig\TimeFormatConfigMapper;
-use App\Legacy\SystemConfigHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\SystemConfig\LegacyHandler\DateFormatConfigMapper;
+use App\SystemConfig\LegacyHandler\DefaultCurrencyConfigMapper;
+use App\SystemConfig\LegacyHandler\SystemConfigMappers;
+use App\SystemConfig\LegacyHandler\TimeFormatConfigMapper;
+use App\SystemConfig\LegacyHandler\SystemConfigHandler;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;

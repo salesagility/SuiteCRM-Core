@@ -2,13 +2,13 @@
 
 namespace App\Tests\unit\core\src\Service;
 
-use App\Service\RouteConverterInterface;
+use App\Routes\Service\RouteConverterInterface;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
-use App\Legacy\ActionNameMapperHandler;
-use App\Legacy\ModuleNameMapperHandler;
-use App\Legacy\RouteConverterHandler;
+use App\Engine\LegacyHandler\ActionNameMapperHandler;
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
+use App\Routes\LegacyHandler\RouteConverterHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
