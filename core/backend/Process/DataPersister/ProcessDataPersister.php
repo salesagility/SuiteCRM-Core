@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataPersister;
+namespace App\Process\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\Exception\InvalidResourceException;
