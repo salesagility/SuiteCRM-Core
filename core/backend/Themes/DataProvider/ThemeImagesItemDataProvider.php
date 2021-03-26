@@ -5,7 +5,7 @@ namespace App\Themes\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Themes\Entity\ThemeImages;
-use App\Service\ThemeImageService;
+use App\Themes\Service\ThemeImageService;
 
 /**
  * Class ThemeImagesItemDataProvider

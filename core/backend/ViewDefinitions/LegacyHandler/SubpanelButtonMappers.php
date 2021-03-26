@@ -2,7 +2,7 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
-use App\Service\ModuleAwareRegistry;
+use App\Module\Service\ModuleAwareRegistry;
 
 class SubpanelButtonMappers extends ModuleAwareRegistry
 {

@@ -3,8 +3,8 @@
 namespace App\Module\Contracts\Statistics\Subpanels;
 
 use App\Statistics\Entity\Statistic;
-use App\Service\StatisticsProviderInterface;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 
 /**

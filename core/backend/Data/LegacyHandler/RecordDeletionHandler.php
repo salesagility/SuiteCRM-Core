@@ -4,9 +4,9 @@ namespace App\Data\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\RecordDeletionServiceInterface;
-use App\Service\RecordListProviderInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Data\Service\RecordDeletionServiceInterface;
+use App\Data\Service\RecordListProviderInterface;
 use BeanFactory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

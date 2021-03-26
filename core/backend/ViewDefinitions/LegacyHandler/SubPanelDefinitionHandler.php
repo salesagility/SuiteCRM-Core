@@ -4,9 +4,9 @@ namespace App\ViewDefinitions\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\FieldDefinitionsProviderInterface;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\SubPanelDefinitionProviderInterface;
+use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -43,6 +43,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,

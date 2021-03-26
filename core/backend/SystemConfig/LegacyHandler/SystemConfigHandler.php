@@ -7,9 +7,9 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\SystemConfig\Entity\SystemConfig;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
-use App\Service\ActionNameMapperInterface;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\SystemConfigProviderInterface;
+use App\Process\Service\ActionNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\SystemConfig\Service\SystemConfigProviderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface

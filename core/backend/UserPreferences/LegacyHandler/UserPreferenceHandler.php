@@ -6,7 +6,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\UserPreferences\Entity\UserPreference;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\UserPreferencesProviderInterface;
+use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use UnexpectedValueException;

@@ -5,10 +5,10 @@ namespace App\Module\Users\Statistics;
 use App\Data\LegacyHandler\PreparedStatementHandler;
 use App\Data\LegacyHandler\SecurityFiltersTrait;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
-use App\Service\StatisticsProviderInterface;
+use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 use BeanFactory;
 use Doctrine\DBAL\DBALException;
@@ -44,6 +44,7 @@ class AssignedUserOpportunitiesCount extends SubpanelDataQueryHandler implements
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param PreparedStatementHandler $preparedStatementHandler
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,

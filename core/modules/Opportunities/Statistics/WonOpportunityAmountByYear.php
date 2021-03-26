@@ -4,7 +4,7 @@ namespace App\Module\Opportunities\Statistics;
 
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
-use App\Service\StatisticsProviderInterface;
+use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 
 class WonOpportunityAmountByYear extends SubpanelDataQueryHandler implements StatisticsProviderInterface

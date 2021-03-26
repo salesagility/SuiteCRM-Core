@@ -8,7 +8,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
-use App\Service\SystemConfigProviderInterface;
+use App\SystemConfig\Service\SystemConfigProviderInterface;
 
 /**
  * Class SystemConfigCollectionDataProvider

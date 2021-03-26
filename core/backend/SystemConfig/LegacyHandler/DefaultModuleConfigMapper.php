@@ -3,7 +3,7 @@
 namespace App\SystemConfig\LegacyHandler;
 
 use App\SystemConfig\Entity\SystemConfig;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 
 class DefaultModuleConfigMapper implements SystemConfigMapperInterface
 {

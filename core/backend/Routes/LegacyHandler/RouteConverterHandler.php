@@ -4,9 +4,9 @@ namespace App\Routes\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ActionNameMapperInterface;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\RouteConverterInterface;
+use App\Process\Service\ActionNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Routes\Service\RouteConverterInterface;
 use InvalidArgumentException;
 use RouteConverter;
 use Symfony\Component\HttpFoundation\Request;

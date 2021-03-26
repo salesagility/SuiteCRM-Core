@@ -4,7 +4,7 @@ namespace App\Data\LegacyHandler\PresetDataHandlers;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelCustomQueryPort;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

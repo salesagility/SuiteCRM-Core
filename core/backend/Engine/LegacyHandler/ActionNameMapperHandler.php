@@ -3,7 +3,7 @@
 namespace App\Engine\LegacyHandler;
 
 use ActionNameMapper;
-use App\Service\ActionNameMapperInterface;
+use App\Process\Service\ActionNameMapperInterface;
 
 class ActionNameMapperHandler extends LegacyHandler implements ActionNameMapperInterface
 {

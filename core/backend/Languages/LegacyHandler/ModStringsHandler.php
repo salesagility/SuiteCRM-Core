@@ -8,8 +8,8 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Languages\Entity\ModStrings;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\ModuleRegistryInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleRegistryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ModStringsHandler extends LegacyHandler

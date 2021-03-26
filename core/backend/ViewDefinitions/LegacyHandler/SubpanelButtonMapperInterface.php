@@ -2,7 +2,7 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
-use App\Service\ModuleAwareRegistryItemInterface;
+use App\Module\Service\ModuleAwareRegistryItemInterface;
 
 interface SubpanelButtonMapperInterface extends ModuleAwareRegistryItemInterface
 {

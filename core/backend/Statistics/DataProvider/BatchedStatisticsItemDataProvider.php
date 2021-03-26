@@ -5,7 +5,7 @@ namespace App\Statistics\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Statistics\Entity\BatchedStatistics;
-use App\Service\StatisticsManagerInterface;
+use App\Statistics\Service\StatisticsManagerInterface;
 
 class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {

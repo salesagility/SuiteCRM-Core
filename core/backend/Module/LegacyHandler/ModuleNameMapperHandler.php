@@ -3,7 +3,7 @@
 namespace App\Module\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 use ModuleNameMapper;
 
 /**

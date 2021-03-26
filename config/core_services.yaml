@@ -36,7 +36,7 @@ services:
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $uiConfigs: '%ui%'
   _instanceof:
-    App\Service\ProcessHandlerInterface:
+    App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
     App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface:
       tags: [ 'user.preferences.mapper' ]
@@ -50,7 +50,7 @@ services:
       tags: [ 'app.data.preset.handler' ]
     App\Data\LegacyHandler\FilterMapper\FilterMapperInterface:
       tags: [ 'app.data.filter.mapper' ]
-    App\Service\StatisticsProviderInterface:
+    App\Statistics\Service\StatisticsProviderInterface:
       tags: [ 'app.data.statistics.handler' ]
     App\ViewDefinitions\LegacyHandler\SubpanelButtonMapperInterface:
       tags: [ 'subpanel.button.definition.mapper' ]
@@ -86,7 +86,7 @@ services:
     # set priority of 2050 to ensure the be the first running
     tags: [ { name: kernel.event_listener, event: kernel.request, priority: 2050 } ]
 
-  App\Service\ProcessHandlerRegistry:
+  App\Process\Service\ProcessHandlerRegistry:
     # inject all services tagged with app.process.handler as first argument
     # and use the value of the 'getProcessType' method to index the services
     arguments:
@@ -155,7 +155,7 @@ services:
     arguments:
       - !tagged { tag: 'app.data.preset.handler' }
 
-  App\Service\StatisticsProviderRegistry:
+  App\Statistics\Service\StatisticsProviderRegistry:
     # inject all services tagged with app.data.statistics.handler as first argument
     arguments:
       - !tagged { tag: 'app.data.statistics.handler' }
@@ -170,23 +170,23 @@ services:
     arguments:
       - !tagged { tag: 'subpanel.button.definition.mapper' }
 
-  App\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
-  App\Service\BulkActionDefinitionProviderInterface: '@App\Service\BulkActionDefinitionProvider'
-  App\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
-  App\Service\FilterDefinitionProviderInterface: '@App\Service\FilterDefinitionProvider'
-  App\Service\LineActionDefinitionProviderInterface: '@App\Service\LineActionDefinitionProvider'
-  App\Service\ListViewSidebarWidgetDefinitionProviderInterface: '@App\Service\ListViewSidebarWidgetDefinitionProvider'
-  App\Service\ModuleNameMapperInterface: '@App\Module\LegacyHandler\ModuleNameMapperHandler'
-  App\Service\ModuleRegistryInterface: '@App\Module\LegacyHandler\ModuleRegistryHandler'
-  App\Service\NavigationProviderInterface: '@App\Navbar\LegacyHandler\NavbarHandler'
-  App\Service\ProcessHandlerInterface: '@App\Process\LegacyHandler\ResetPasswordHandler'
-  App\Service\RecordActionDefinitionProviderInterface: '@App\Service\RecordActionDefinitionProvider'
-  App\Service\RecordDeletionServiceInterface: '@App\Data\LegacyHandler\RecordDeletionHandler'
-  App\Service\RecordListProviderInterface: '@App\Data\LegacyHandler\RecordListHandler'
-  App\Service\RecordProviderInterface: '@App\Data\LegacyHandler\RecordHandler'
-  App\Service\RouteConverterInterface: '@App\Routes\LegacyHandler\RouteConverterHandler'
-  App\Service\StatisticsProviderInterface: '@App\Statistics\LegacyHandler\SubpanelDefault'
-  App\Service\SubPanelDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\SubPanelDefinitionHandler'
-  App\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
-  App\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
-  App\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'
+  App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
+  App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
+  App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
+  App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'
+  App\Process\Service\LineActionDefinitionProviderInterface: '@App\Process\Service\LineActionDefinitionProvider'
+  App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProviderInterface: '@App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProvider'
+  App\Module\Service\ModuleNameMapperInterface: '@App\Module\LegacyHandler\ModuleNameMapperHandler'
+  App\Module\Service\ModuleRegistryInterface: '@App\Module\LegacyHandler\ModuleRegistryHandler'
+  App\Routes\Service\NavigationProviderInterface: '@App\Navbar\LegacyHandler\NavbarHandler'
+  App\Process\Service\ProcessHandlerInterface: '@App\Process\LegacyHandler\ResetPasswordHandler'
+  App\Data\Service\RecordActionDefinitionProviderInterface: '@App\Data\Service\RecordActionDefinitionProvider'
+  App\Data\Service\RecordDeletionServiceInterface: '@App\Data\LegacyHandler\RecordDeletionHandler'
+  App\Data\Service\RecordListProviderInterface: '@App\Data\LegacyHandler\RecordListHandler'
+  App\Data\Service\RecordProviderInterface: '@App\Data\LegacyHandler\RecordHandler'
+  App\Routes\Service\RouteConverterInterface: '@App\Routes\LegacyHandler\RouteConverterHandler'
+  App\Statistics\SubpanelDefault: '@App\Statistics\LegacyHandler\SubpanelDefault'
+  App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\SubPanelDefinitionHandler'
+  App\SystemConfig\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
+  App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
+  App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'

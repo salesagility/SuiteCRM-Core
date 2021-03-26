@@ -5,7 +5,7 @@ namespace App\ViewDefinitions\LegacyHandler;
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\RecordActionDefinitionProviderInterface;
+use App\Data\Service\RecordActionDefinitionProviderInterface;
 use BeanFactory;
 use DetailView2;
 use EditView;

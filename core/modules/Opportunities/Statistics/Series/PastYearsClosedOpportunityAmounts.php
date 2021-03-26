@@ -4,9 +4,9 @@ namespace App\Module\Opportunities\Statistics\Series;
 
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 use App\Statistics\Model\ChartOptions;
-use App\Service\StatisticsProviderInterface;
 use DateInterval;
 use DateTime;
 use Exception;

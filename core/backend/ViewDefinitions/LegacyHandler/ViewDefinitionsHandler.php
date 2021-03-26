@@ -4,12 +4,12 @@ namespace App\ViewDefinitions\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
+use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\ViewDefinitions\Entity\ViewDefinition;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Service\FieldDefinitionsProviderInterface;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\SubPanelDefinitionProviderInterface;
-use App\Service\ViewDefinitionsProviderInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
+use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SearchForm;

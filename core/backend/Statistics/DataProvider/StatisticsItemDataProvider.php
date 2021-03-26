@@ -5,7 +5,7 @@ namespace App\Statistics\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Statistics\Entity\Statistic;
-use App\Service\StatisticsProviderRegistry;
+use App\Statistics\Service\StatisticsProviderRegistry;
 
 class StatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {

@@ -5,7 +5,7 @@ namespace App\Module\Campaigns\Statistics\Subpanels;
 use App\Statistics\DateTimeStatisticsHandlingTrait;
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
-use App\Service\StatisticsProviderInterface;
+use App\Statistics\Service\StatisticsProviderInterface;
 use DateFormatService;
 
 /**

@@ -4,7 +4,7 @@ namespace App\ViewDefinitions\LegacyHandler;
 
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\ViewDefinitions\Entity\ViewDefinition;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 
 /**
  * Class SubpanelButtonTraverser

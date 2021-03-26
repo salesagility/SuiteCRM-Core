@@ -2,10 +2,10 @@
 
 namespace App\Routes\EventListener;
 
-use App\Service\LegacyApiRedirectHandler;
-use App\Service\LegacyAssetRedirectHandler;
-use App\Service\LegacyNonViewActionRedirectHandler;
-use App\Service\RouteConverterInterface;
+use App\Routes\Service\LegacyApiRedirectHandler;
+use App\Routes\Service\LegacyAssetRedirectHandler;
+use App\Routes\Service\LegacyNonViewActionRedirectHandler;
+use App\Routes\Service\RouteConverterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 

@@ -5,7 +5,7 @@ namespace App\Navbar\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Navbar\Entity\Navbar;
-use App\Service\NavigationProviderInterface;
+use App\Routes\Service\NavigationProviderInterface;
 use Symfony\Component\Security\Core\Security;
 
 final class NavbarItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface

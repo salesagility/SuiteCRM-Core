@@ -4,7 +4,7 @@
 namespace App\ViewDefinitions\LegacyHandler\Subpanel;
 
 
-use App\Service\FieldDefinitionsProviderInterface;
+use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\ViewDefinitions\LegacyHandler\SubpanelButtonMapperInterface;
 use BeanFactory;
 

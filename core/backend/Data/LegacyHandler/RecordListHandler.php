@@ -5,8 +5,8 @@ namespace App\Data\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Data\Entity\RecordList;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\RecordListProviderInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Data\Service\RecordListProviderInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

@@ -7,7 +7,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\UserPreferences\Entity\UserPreference;
-use App\Service\UserPreferencesProviderInterface;
+use App\UserPreferences\Service\UserPreferencesProviderInterface;
 
 /**
  * Class UserPreferenceCollectionDataProvider

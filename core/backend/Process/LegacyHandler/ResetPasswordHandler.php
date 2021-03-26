@@ -7,7 +7,7 @@ namespace App\Process\LegacyHandler;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Process\Entity\Process;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Service\ProcessHandlerInterface;
+use App\Process\Service\ProcessHandlerInterface;
 use BadFunctionCallException;
 use Exception;
 use Psr\Log\LoggerAwareInterface;

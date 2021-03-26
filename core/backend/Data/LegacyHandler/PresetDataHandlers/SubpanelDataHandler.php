@@ -7,7 +7,7 @@ use App\Data\LegacyHandler\PresetListDataHandlerInterface;
 use App\Data\LegacyHandler\RecordMapper;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelDataPort;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

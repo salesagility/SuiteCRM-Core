@@ -4,7 +4,7 @@ namespace App\Module\Cases\Statistics;
 
 use App\Statistics\Entity\Statistic;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Service\StatisticsProviderInterface;
+use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 use BeanFactory;
 use DateTime;

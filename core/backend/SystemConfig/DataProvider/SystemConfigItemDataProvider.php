@@ -5,7 +5,7 @@ namespace App\SystemConfig\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
-use App\Service\SystemConfigProviderInterface;
+use App\SystemConfig\Service\SystemConfigProviderInterface;
 
 /**
  * Class SystemConfigItemDataProvider

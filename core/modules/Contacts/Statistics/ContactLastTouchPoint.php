@@ -6,8 +6,8 @@ use App\Statistics\DateTimeStatisticsHandlingTrait;
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleNameMapperInterface;
-use App\Service\StatisticsProviderInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Statistics\Service\StatisticsProviderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

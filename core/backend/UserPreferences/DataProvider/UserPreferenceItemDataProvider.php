@@ -5,7 +5,7 @@ namespace App\UserPreferences\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\UserPreferences\Entity\UserPreference;
-use App\Service\UserPreferencesProviderInterface;
+use App\UserPreferences\Service\UserPreferencesProviderInterface;
 
 /**
  * Class UserPreferenceItemDataProvider

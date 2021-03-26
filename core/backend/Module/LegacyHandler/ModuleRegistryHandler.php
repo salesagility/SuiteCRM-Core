@@ -6,7 +6,7 @@ use ACLAction;
 use ACLController;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Service\ModuleRegistryInterface;
+use App\Module\Service\ModuleRegistryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInterface

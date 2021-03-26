@@ -5,7 +5,7 @@ namespace App\Data\LegacyHandler;
 
 
 use App\Data\Entity\Record;
-use App\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleNameMapperInterface;
 
 class RecordMapper
 {
