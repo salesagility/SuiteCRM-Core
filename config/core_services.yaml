@@ -82,7 +82,7 @@ services:
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
-  App\EventListener\LegacyRedirectListener:
+  App\Routes\EventListener\LegacyRedirectListener:
     # set priority of 2050 to ensure the be the first running
     tags: [ { name: kernel.event_listener, event: kernel.request, priority: 2050 } ]
 

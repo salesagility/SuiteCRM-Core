@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Routes\EventListener;
 
 use App\Service\LegacyApiRedirectHandler;
 use App\Service\LegacyAssetRedirectHandler;
