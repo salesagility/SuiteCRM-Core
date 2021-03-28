@@ -239,11 +239,12 @@ ul.main li a,
   }
 
   .global-links-dropdown a:hover {
-    color: $salmon-pink;
+    color: $white;
     -webkit-transition: color 0.5s ease-out;
     -moz-transition: color 0.5s ease-out;
     -o-transition: color 0.5s ease-out;
     transition: color 0.5s ease-out;
+    background: $dull-orange;
   }
 }
 
