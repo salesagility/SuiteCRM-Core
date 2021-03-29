@@ -31,6 +31,12 @@ export class AppComponent {
 
         }
 
+        if (routerEvent instanceof NavigationEnd) {
+            // reset scroll on navigation
+            window.scrollTo(0, 0);
+        }
+
+
         if (routerEvent instanceof NavigationEnd ||
             routerEvent instanceof NavigationCancel ||
             routerEvent instanceof NavigationError) {
