@@ -12,7 +12,7 @@
   "config": {
     "vendor-dir": "vendor",
     "platform": {
-      "php": "7.2.9"
+      "php": "7.3.0"
     },
     "optimize-autoloader": true,
     "sort-packages": true
@@ -27,7 +27,7 @@
     "symfony/flex": "^1.6",
     "symfony/framework-bundle": "5.2.*",
     "symfony/monolog-bundle": "^3.5",
-    "symfony/orm-pack": "^1.0",
+    "symfony/orm-pack": "^v2.1",
     "symfony/security-bundle": "5.2.*",
     "symfony/yaml": "5.2.*",
     "webonyx/graphql-php": "^0.13.8"
