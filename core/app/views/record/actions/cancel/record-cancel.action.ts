@@ -47,7 +47,7 @@ export class RecordCancelAction extends RecordActionHandler {
                 onClick: activeModal => activeModal.dismiss()
             } as ModalButtonInterface,
             {
-                labelKey: 'LBL_OK',
+                labelKey: 'LBL_PROCEED',
                 klass: ['btn-main'],
                 onClick: activeModal => {
                     this.cancel(data);
