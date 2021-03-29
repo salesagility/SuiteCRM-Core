@@ -2,11 +2,10 @@
 
 namespace App\Tests\unit\core\src\Service;
 
+use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
-use InvalidArgumentException;
-use App\Module\LegacyHandler\ModuleNameMapperHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -75,8 +74,8 @@ class ModuleNameMapperTest extends Unit
      */
     public function testInvalidLegacyModuleNameToFrontEndConversion(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->moduleMapper->toFrontEnd('FakeModule');
+        $frontend = $this->moduleMapper->toFrontEnd('FakeModule');
+        static::assertEquals('FakeModule', $frontend);
     }
 
     /**
@@ -93,8 +92,8 @@ class ModuleNameMapperTest extends Unit
      */
     public function testInvalidLegacyModuleNameToCoreConversion(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->moduleMapper->toCore('FakeModule');
+        $core = $this->moduleMapper->toCore('FakeModule');
+        static::assertEquals('FakeModule', $core);
     }
 
 }

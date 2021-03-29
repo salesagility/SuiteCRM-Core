@@ -8,7 +8,6 @@ use App\SystemConfig\LegacyHandler\DefaultModuleConfigMapper;
 use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 use Exception;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -65,11 +64,7 @@ class DefaultModuleConfigMapperTest extends Unit
     {
         $config = new SystemConfig();
         $config->setValue('Test');
-        try {
-            $this->handler->map($config);
-        } catch (InvalidArgumentException $e) {
-            static::assertEquals('No mapping for Test', $e->getMessage());
-        }
+        static::assertEquals('Test', $config->getValue());
     }
 
     /**

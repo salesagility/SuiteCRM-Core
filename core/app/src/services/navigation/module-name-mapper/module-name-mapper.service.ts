@@ -24,6 +24,10 @@ export class ModuleNameMapper {
      */
     public toFrontend(module: string): string {
         const map = this.getLegacyToFrontendMap();
+        if (!map[module]) {
+            return module;
+        }
+
         return map[module];
     }
 
@@ -35,6 +39,10 @@ export class ModuleNameMapper {
      */
     public toLegacy(module: string): string {
         const map = this.getFrontendToLegacyMap();
+        if (!map[module]) {
+            return module;
+        }
+
         return map[module];
     }
 

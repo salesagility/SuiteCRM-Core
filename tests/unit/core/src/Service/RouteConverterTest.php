@@ -255,15 +255,15 @@ class RouteConverterTest extends Unit
      */
     public function testLegacyInvalidModuleIndexRequest(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $resultingRoute = './#/FakeModule';
         $queryParams = [
             'module' => 'FakeModule',
         ];
 
         $request = new Request($queryParams);
 
-        $this->routeConverter->convert($request);
-
+        $route = $this->routeConverter->convert($request);
+        static::assertEquals($resultingRoute, $route);
     }
 
     /**
