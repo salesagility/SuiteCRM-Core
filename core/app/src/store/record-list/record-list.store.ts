@@ -1,6 +1,6 @@
 import {deepClone} from '@base/app-common/utils/object-utils';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
+import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '@store/state';
 import {AppStateStore} from '@store/app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
@@ -229,15 +229,36 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             this.internalState.pagination,
             useCache
         ).pipe(
-            tap((data: RecordList) => {
-                this.calculatePageCount(data.records, data.pagination);
-                this.updateState({
-                    ...this.internalState,
-                    records: data.records,
-                    pagination: data.pagination,
-                    loading: false
+            catchError(() => {
+                this.message.addDangerMessageByKey('LBL_GET_RECORD_LIST_ERROR');
+                return of({
+                    records: [],
+                    criteria: deepClone(initialSearchCriteria),
+                    sort: deepClone(initialListSort),
+                    pagination: {
+                        pageSize: 5,
+                        current: 0,
+                        previous: 0,
+                        next: 5,
+                        last: 0,
+                        total: 0,
+                        pageFirst: 0,
+                        pageLast: 0
+                    },
+                    selection: deepClone(initialSelection),
                 });
-            })
+            }),
+            tap(
+                (data: RecordList) => {
+                    this.calculatePageCount(data.records, data.pagination);
+                    this.updateState({
+                        ...this.internalState,
+                        records: data.records,
+                        pagination: data.pagination,
+                        loading: false
+                    });
+                },
+            )
         );
     }
 
