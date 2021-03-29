@@ -34,3 +34,7 @@ parameters:
           acl:
             - massupdate
     modules:
+      employees:
+        exclude:
+          - delete
+          - merge

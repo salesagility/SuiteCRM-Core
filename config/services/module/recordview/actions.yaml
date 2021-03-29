@@ -57,3 +57,6 @@ parameters:
           acl:
             - export
     modules:
+      employees:
+        exclude:
+          - delete
