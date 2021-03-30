@@ -68,7 +68,7 @@ class LegacyInstallCommand extends Command
             'question' => new Question('Please enter the db username: '),
             'argument' => new InputOption(
                 'db_username',
-                'dbu',
+                'U',
                 InputOption::VALUE_REQUIRED,
                 'database username'
             )
@@ -81,7 +81,7 @@ class LegacyInstallCommand extends Command
             'question' => $dbPasswordQuestion,
             'argument' => new InputOption(
                 'db_password',
-                'dbp',
+                'P',
                 InputOption::VALUE_REQUIRED,
                 'database password'
             ),
@@ -91,7 +91,7 @@ class LegacyInstallCommand extends Command
             'question' => new Question('Please enter the db host: '),
             'argument' => new InputOption(
                 'db_host',
-                'dbh',
+                'H',
                 InputOption::VALUE_REQUIRED,
                 'database host'
             )
@@ -101,7 +101,7 @@ class LegacyInstallCommand extends Command
             'question' => new Question('Please enter the db name: '),
             'argument' => new InputOption(
                 'db_name',
-                'dbn',
+                'N',
                 InputOption::VALUE_REQUIRED,
                 'database name'
             ),
@@ -134,7 +134,7 @@ class LegacyInstallCommand extends Command
             'question' => new Question('Please enter the suite 8 address (e.g. https://<your_host/): '),
             'argument' => new InputOption(
                 'site_host',
-                'a',
+                'S',
                 InputOption::VALUE_REQUIRED,
                 'site host'
             ),
