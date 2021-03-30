@@ -1,0 +1,8 @@
+<div class="container-fluid" style="margin-top: 70px">
+    <div *ngFor="let message of messages" class="message {{ message.type }}" role="alert">
+        {{ message.text }}
+        <button (click)="close(message)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>

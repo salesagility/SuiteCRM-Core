@@ -1,0 +1,262 @@
+/* The checkbox container */
+.checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 1.3em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkbox-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1em;
+  width: 1em;
+  background-color: $white;
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+  border: 0.05em solid $midnight-blue;
+}
+
+.list-view-table .checkbox-container .checkmark {
+  background-color: $off-white;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: $light-grey;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: $off-white;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 0.33em;
+  top: 0.1em;
+  width: 0.3em;
+  height: 0.6em;
+  border: solid $midnight-blue;
+  border-width: 0 0.13em 0.13em 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* Modal Checboxes */
+
+@media all and (min-width: $breakpoint-xlarge) {
+  /* The checkbox container */
+  .modal-checkbox-container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 1.3em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0.5em 0 0 -1em;
+  }
+}
+
+@media all and (min-width: $breakpoint-xsmall) and (max-width: $breakpoint-xlarge) {
+  .modal-checkbox-container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 1.3em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0.5em;
+  }
+}
+
+/* Hide the browser's default checkbox */
+.modal-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.modal-checkbox-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.9em;
+  width: 0.9em;
+  background-color: $dusty-grey;
+  -webkit-border-radius: 0.15em;
+  -moz-border-radius: 0.15em;
+  border-radius: 0.15em;
+  border: 0.05em solid $white;
+}
+
+/* On mouse-over, add a grey background color */
+.modal-checkbox-container:hover input ~ .checkmark {
+  background-color: $dusty-grey;
+}
+
+/* When the checkbox is checked, add a blue background */
+.modal-checkbox-container input:checked ~ .checkmark {
+  background-color: $dusty-grey;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.modal-checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.modal-checkbox-container .checkmark:after {
+  left: 0.28em;
+  top: 0.1em;
+  width: 0.28em;
+  height: 0.55em;
+  border: solid $white;
+  border-width: 0 0.13em 0.13em 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.create-popup-checkbox {
+  margin: 0 0 2.5em 0;
+}
+
+/* The checkbox container */
+.select-action-group .checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 1.3em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.select-action-group .checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+@media all and (max-width: $breakpoint-medium) {
+  /* Create a custom checkbox */
+  .select-action-group .checkbox-container .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1em;
+    width: 1em;
+    background-color: $white;
+    -webkit-border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    border-radius: 0.2em;
+    border: 0.05em solid $midnight-blue;
+    margin: -0.3em 0 0 1em;
+    padding: 0;
+  }
+}
+
+@media all and (min-width: $breakpoint-medium) {
+  /* Create a custom checkbox */
+  .select-action-group .checkbox-container .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1em;
+    width: 1em;
+    background-color: $white;
+    -webkit-border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    border-radius: 0.2em;
+    border: 0.05em solid $midnight-blue;
+    margin: -0.3em 0 0 0.6em;
+    padding: 0;
+  }
+}
+
+.list-view-table .checkbox-container .checkmark {
+  background-color: $off-white;
+}
+
+/* On mouse-over, add a grey background color */
+.select-action-group .checkbox-container:hover input ~ .checkmark {
+  background-color: $light-grey;
+}
+
+/* When the checkbox is checked, add a blue background */
+.select-action-group .checkbox-container input:checked ~ .checkmark {
+  background-color: $off-white;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.select-action-group .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.select-action-group .checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.select-action-group .checkbox-container .checkmark:after {
+  left: 0.33em;
+  top: 0.1em;
+  width: 0.3em;
+  height: 0.6em;
+  border: solid $midnight-blue;
+  border-width: 0 0.13em 0.13em 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

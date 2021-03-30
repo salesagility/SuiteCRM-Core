@@ -1,0 +1,30 @@
+/* --------- ACTION BAR SECTION ---------- */
+
+.global-action-bar {
+  clear: both;
+  margin-top: 3.1em;
+  background-color: $light-grey;
+}
+
+@media all and (max-width: $breakpoint-small) {
+  .global-action-bar .col,
+  .global-action-bar .col-6 {
+    margin: 0;
+    padding: 0;
+  }
+  .global-action-bar .action-group {
+    margin: 0.3em 0.3em 0.3em 0;
+  }
+
+  .global-action-bar .global-search {
+    margin: 0.3em;
+    padding: 0;
+  }
+}
+
+.action-view-all {
+  font-style: italic;
+  font-weight: 300;
+  float: right;
+  font-size: 0.9em;
+}

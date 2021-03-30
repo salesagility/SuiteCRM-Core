@@ -1,0 +1,3 @@
+<?php
+
+// stub for emailbody

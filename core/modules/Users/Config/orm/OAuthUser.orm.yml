@@ -1,0 +1,20 @@
+SuiteCRM\Core\Modules\Users\Entity\OAuthUser:
+  type: entity
+  table: oauth_users
+  repositoryClass:  SuiteCRM\Core\Modules\Users\Storage\OAuthUserStorage
+  id:
+    id:
+      type:   integer
+      generator:
+        strategy: AUTO
+  fields:
+    username:
+      unique: true
+      type:   string
+      column: user_name
+    password:
+      type:   string
+      column: user_hash
+  indexes:
+    user_name_index:
+      columns: [ user_name ]

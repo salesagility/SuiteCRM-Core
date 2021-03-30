@@ -1,0 +1,258 @@
+/* --------- BUTTON SECTION ---------- */
+
+button {
+  padding: 0.6em 0.95em;
+  margin: 0.3em;
+  background-color: $salmon-pink;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  color: $off-white;
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.login-form button {
+  letter-spacing: 0.1em;
+}
+
+.alerts-button,
+.quickcreate-button,
+.favourites-button {
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  border: none;
+  margin: 0.2em 0.2em 0 0.2em;
+  padding: 0.1em 0.8em;
+  line-height: 1.9em;
+}
+
+@media all and (max-width: $breakpoint-small) {
+  .alerts-button,
+  .quickcreate-button,
+  .favourites-button {
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    border-radius: 0.25em;
+    border: none;
+    margin: 0.2em 0.2em 0 0.2em;
+    padding: 0.185em 0.7em;
+    font-size: 0.8em;
+  }
+
+  .quickcreate-button {
+    padding: 0.3em 0.5em 0.185em 0.5em;
+  }
+
+  .alerts-button.dropdown-toggle::after,
+  .quickcreate-button.dropdown-toggle::after,
+  .favourites-button.dropdown-toggle::after {
+    vertical-align: middle;
+  }
+
+  .global-search button {
+    font-size: 0.8em;
+    height: 2.2em;
+  }
+}
+
+.alerts-button:hover,
+.quickcreate-button:hover,
+.favourites-button:hover {
+  opacity: 0.8;
+}
+
+.alerts-button {
+  background-color: $burnt-red;
+}
+
+.quickcreate-button {
+  background-color: $sky-blue;
+  color: $white;
+}
+
+.favourites-button {
+  background-color: $mellow-yellow;
+}
+
+.alerts-button.dropdown-toggle::after,
+.quickcreate-button.dropdown-toggle::after,
+.favourites-button.dropdown-toggle::after {
+  color: $light-grey;
+}
+
+.action-group {
+  float: right;
+  margin: 0.3em;
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+}
+
+.action-alert,
+.action-favourite,
+.action-new {
+  float: left;
+}
+
+@media all and (min-width: $breakpoint-medium) {
+  .login-form {
+    button {
+      background-color: $coral-pink;
+      width: 26.5em;
+    }
+  }
+}
+
+@media all and (max-width: $breakpoint-medium) {
+  .login-form {
+    button {
+      background-color: $coral-pink;
+      width: 20em;
+    }
+  }
+}
+
+.action-button {
+  background-color: $cool-blue;
+  text-transform: uppercase;
+  padding: 0.3em 1em;
+  font-weight: 400;
+}
+
+.action-button:hover {
+  background-color: $midnight-blue;
+}
+
+.settings-button {
+  background-color: $nepal-grey;
+  margin: 0.2em;
+  padding: 0.3em 1em;
+  font-size: 0.8em;
+}
+
+.settings-button:hover {
+  background-color: $midnight-blue;
+}
+
+.widget-header .btn-link {
+  color: $white;
+}
+
+.bulk-action-button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: 0.09em solid $light-grey;
+  -webkit-border-radius: 0.15em;
+  -moz-border-radius: 0.15em;
+  border-radius: 0.15em;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  padding: 0.2em 0.5em;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.search-button {
+  background-color: $white;
+  margin: 0;
+}
+
+.widget-transparent-button {
+  background-color: transparent;
+  border: 0.1em solid $midnight-grey;
+  color: $midnight-grey;
+  text-align: left;
+  padding: 0.5em 1em;
+}
+
+.widget-transparent-button.dropdown-toggle::after {
+  float: right;
+  margin: 0.5em;
+}
+
+.remove-button {
+  background-color: transparent;
+  border: 0.1em solid $sky-blue;
+  color: $sky-blue;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  margin: 0.2em 0.2em 0 0.2em;
+  padding: 0.1em 0.8em;
+  line-height: 1.9em;
+}
+
+.navbar-toggler {
+  background-color: $midnight-blue;
+}
+
+.modal-button-save {
+  background-color: #50585e;
+  border: 0.05em solid $light-grey;
+  color: $white;
+  padding: 0.3rem 1rem;
+  font-size: 0.8em;
+  font-weight: bold;
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+}
+
+.modal-button-cancel {
+  background-color: $dusty-grey;
+  border: 0.05em solid $nepal-grey;
+  color: $white;
+  padding: 0.3rem 1rem;
+  font-size: 0.8em;
+  font-weight: bold;
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+}
+
+.charts-active {
+  background-color: $midnight-blue;
+}
+
+.pagination-button {
+  background: transparent;
+  border: none;
+  margin: 0.3em 0 0 0;
+  padding: 0;
+}
+
+.create-popup-button {
+  background-color: transparent;
+  border: none;
+  padding: 0.2em;
+}
+
+button.settings-button.dropdown-toggle::after {
+  vertical-align: middle;
+}
+
+.list-icon-button {
+  background: transparent;
+
+  padding: 0;
+  cursor: pointer;
+}
+
+.list-icon-button.responsive-list-data {
+  width: 25%;
+  border: 0.1em solid #aa9dcc;
+  border-radius: 0;
+  margin: 0;
+  padding: 0.5em 0;
+}
+
+.select-action-group .bulk-action-button {
+  padding: 0.3em 0.95em 0.3em 2.2em;
+}

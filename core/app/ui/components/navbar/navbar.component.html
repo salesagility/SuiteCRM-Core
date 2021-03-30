@@ -1,0 +1,191 @@
+<!-- Start of main navbar section -->
+
+<div class="top-panel fixed-top">
+
+    <!-- Start of empty navbar section until data is loaded -->
+
+    <ng-template [ngIf]="!loaded">
+        <nav class="navbar navbar-expand-lg">
+            <div class="navbar-collapse collapse order-4 order-md-0 collapsenav">
+                <ul class="navbar-nav">
+                    <li class="top-nav nav-item">&nbsp;</li>
+                </ul>
+            </div>
+        </nav>
+    </ng-template>
+
+    <!-- End of empty  section until data is loaded -->
+
+    <!-- Start of empty navbar with logo -->
+
+    <ng-template [ngIf]="loaded">
+        <ng-template [ngIf]="!navbar.authenticated">
+            <nav class="navbar ml-0 pl-0">
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="pl-0">
+                            <scrm-logo-ui aria-label="SuiteCRM Logo"></scrm-logo-ui>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </ng-template>
+
+        <!-- End of empty navbar section with logo -->
+
+        <!-- Start of navbar section with data once authenticated -->
+
+        <ng-template [ngIf]="navbar.authenticated">
+            <nav id="navbar" class="navbar navbar-expand-md navbar-1">
+                <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
+                        class="navbar-toggler"
+                        data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                    <scrm-svg-icon-ui class="responsive-menu-toggler" file="hamburger.svg"></scrm-svg-icon-ui>
+                </button>
+                <div class="navbar-collapse collapse collapsenav">
+                    <ul class="navbar-nav home-nav">
+                        <li class="nav-item home-nav-link">
+                            <a class="home-nav-link" href="#/Home" aria-label="Home">
+                                <scrm-svg-icon-ui class="home-icon" file="home_icon.svg"></scrm-svg-icon-ui>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Navbar with grouped tabs -->
+
+                    <ul *ngIf="navbar.useGroupTabs" class="navbar-nav grouped">
+                        <li class="top-nav nav-item dropdown main-grouped" *ngFor="let item of navbar.menu">
+               <span data-toggle="collapse" data-target=".navbar-collapse">
+                 <a class="nav-link-grouped dropdown-toggle" data-toggle="dropdown" href="{{ item.link.url }}">
+                   {{ item.link.label }}
+                 </a>
+               </span>
+                            <ul class="dropdown-menu main">
+                                <li class="nav-item dropdown-submenu submenu" *ngFor="let sub of item.submenu">
+                                    <a class="nav-link action-link dropdown-item dropdown-toggle"
+                                       href="{{ sub.link.url }}">
+                                        {{ sub.link.label }}
+                                    </a>
+                                    <ul *ngIf="sub.submenu.length" class="dropdown-menu submenu">
+                                        <li *ngFor="let subitem of sub.submenu" class="nav-item">
+                                            <a class="nav-link action-link" href="{{ subitem.link.url }}">
+                                                <scrm-svg-icon-ui
+                                                        file="{{ subitem.link.iconRef.resolved }}.svg"></scrm-svg-icon-ui>
+                                                {{ subitem.link.label }}
+                                            </a>
+                                        </li>
+                                        <ng-template [ngIf]="sub.recentRecords.length">
+                                            <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
+                                            <li class="nav-item" *ngFor="let rec of sub.recentRecords">
+                                                <a class="nav-link action-link"
+                                                   href="#/{{ rec.moduleName }}/{{ rec.itemId }}">
+                                                    {{ rec.itemSummary }}
+                                                </a>
+                                            </li>
+                                        </ng-template>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
+                                <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
+                        <li *ngFor="let recentRecord of item.recentRecords" class="nav-item">
+                            <a class="nav-link action-link" href="#">
+                                {{ recentRecord.itemSummary }}
+                            </a>
+                        </li>
+        </ng-template>
+        </li>
+        </ul>
+
+        <!-- Navbar with non-grouped tabs -->
+
+        <ul *ngIf="!navbar.useGroupTabs" class="navbar-nav">
+            <li class="top-nav nav-item dropdown non-grouped" *ngFor="let item of navbar.all.modules">
+                <!-- TODO: Implement a cleaner solution than hard coded ngIf -->
+
+                <ng-template [ngIf]="item.link.label !== 'Home'">
+           <span data-toggle="collapse" data-target=".navbar-collapse">
+             <a class="nav-link-nongrouped dropdown-toggle" href="{{ item.link.url }}">
+               {{ item.link.label }}
+             </a>
+           </span>
+                    <div class="dropdown-menu submenu">
+            <li class="nav-item" *ngFor="let sub of item.submenu">
+                <a class="nav-link action-link" href="{{ sub.link.url }}">
+                    <scrm-svg-icon-ui file="{{ sub.link.iconRef.resolved }}.svg"></scrm-svg-icon-ui>
+                    {{ sub.link.label }}
+                </a>
+            </li>
+            <ng-template [ngIf]="item.recentRecords && item.recentRecords.length">
+                <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
+                <li *ngFor="let recentRecord of item.recentRecords" class="nav-item">
+                    <a class="nav-link action-link" href="#">
+                        {{ recentRecord.itemSummary }}
+                    </a>
+                </li>
+            </ng-template>
+</div>
+</ng-template>
+</li>
+</ul>
+<ul *ngIf="!navbar.useGroupTabs" class="navbar-nav">
+    <li class="top-nav nav-item dropdown non-grouped">
+        <a class="nav-link-nongrouped dropdown-toggle">More</a>
+        <div class="dropdown-menu more-menu submenu">
+    <li class="nav-item" *ngFor="let item of navbar.all.modules">
+        <a class="nav-link action-link" href="{{ item.link.url }}">
+            {{ item.link.label }}
+        </a>
+    </li>
+    <li class="nav-item" *ngFor="let item of navbar.all.extra">
+        <a class="nav-link action-link" href="{{ item.link.url }}">
+            {{ item.link.label }}
+        </a>
+    </li>
+    </div>
+    </li>
+</ul>
+<ul class="navbar-nav d-md-none">
+    <li>
+        <a class="nav-link close-navmenu" data-target=".navbar-collapse" data-toggle="collapse">
+            <scrm-svg-icon-ui file="cross_purple.svg" file="cross_purple.svg"></scrm-svg-icon-ui>
+            <span>Close menu</span>
+        </a>
+    </li>
+</ul>
+</div>
+<div class="navbar navbar-expand-md navbar-2">
+    <div class="global-links">
+        <ul class="navbar-nav">
+            <li class="global-link-item">
+                <a class="nav-link primary-global-link dropdown-toggle" data-toggle="dropdown">
+                    <scrm-svg-icon-ui class="global-action-icon sicon-2x" file="user.svg"
+                                      file="user.svg"></scrm-svg-icon-ui>
+                    {{ navbar.currentUser.name }}
+                </a>
+                <div class="dropdown-menu global-links-dropdown dropdown-menu-right">
+                    <a class="dropdown-item global-links-sublink" href="#/Users/EditView/{{ navbar.currentUser.id }}">
+                        Profile
+                    </a>
+                    <ng-template [ngIf]="navbar.globalActions">
+                        <a class="dropdown-item global-links-sublink" *ngFor="let globalAction of navbar.globalActions"
+                           target="{{ globalAction.link.target }}" href="{{ globalAction.link.url }}">
+                            {{ globalAction.link.label }}
+                        </a>
+                    </ng-template>
+                    <scrm-logo-ui></scrm-logo-ui>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<!-- End of navbar section with data once authenticated -->
+
+<scrm-action-bar-ui></scrm-action-bar-ui>
+</ng-template>
+</ng-template>
+</div>
+
+<!-- End of main navbar section -->

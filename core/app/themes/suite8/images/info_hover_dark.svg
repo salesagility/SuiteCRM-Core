@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="26px" viewBox="0 0 25 26" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>18_info_hover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="18_info_hover">
+            <g id="Group-3-Copy-3" transform="translate(1.750000, 2.000000)">
+                <g id="Page-1" transform="translate(8.555556, 4.671441)" fill="#F29489">
+                    <path d="M3.93566648,12.8745729 L0.706696265,12.8745729 L0.706696265,6.11568375 L3.93566648,6.11568375 L3.93566648,12.8745729 Z M2.32120557,3.56064019 C1.60567313,3.56064019 0.961016386,3.12962687 0.686902368,2.46890271 C0.412788349,1.80723483 0.564966638,1.04633129 1.07065715,0.540618994 C1.57634525,0.0349308973 2.33727299,-0.116306092 2.99797295,0.157807926 C3.65869711,0.430978226 4.08971043,1.07657869 4.08971043,1.79116741 C4.08971043,2.2609458 3.90350019,2.71088189 3.57172979,3.04265955 C3.23995213,3.37443721 2.79001604,3.56064019 2.32118137,3.56064019 L2.32120557,3.56064019 Z"
+                          id="Fill-1"></path>
+                </g>
+                <circle id="Oval-3" stroke="#F29489" cx="11" cy="11" r="11"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

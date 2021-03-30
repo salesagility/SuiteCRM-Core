@@ -1,0 +1,132 @@
+@media all and (max-width: $breakpoint-xsmall) {
+  .modal-header,
+  .modal-footer {
+    background-color: $dusty-grey;
+  }
+  .modal-body {
+    margin: 0;
+    overflow-y: scroll;
+    max-height: $breakpoint-xsmall;
+  }
+}
+
+@media all and (min-width: $breakpoint-xsmall) and (max-width: $breakpoint-xlarge) {
+  .modal-header,
+  .modal-footer {
+    background-color: $dusty-grey;
+  }
+  .modal-redirect-text {
+    color: $white;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin: 0 0 0 3em;
+  }
+  .modal-body {
+    margin: 0;
+    overflow-y: scroll;
+    max-height: $breakpoint-medium;
+  }
+  .modal-redirect-text {
+    margin: 0 0 0 2.5em;
+  }
+  .modal-options {
+    margin: 0 0 0.5em 0;
+  }
+}
+
+.modal-title {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+  line-height: 0.9em;
+  color: $off-white;
+}
+
+.modal-content {
+  border: none;
+  background-color: $white;
+}
+
+@media all and (min-width: $breakpoint-xlarge) {
+  .modal-body {
+    margin: 1em;
+  }
+
+  .modal-redirect-text {
+    color: $white;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin: 1em 0 0 0;
+  }
+
+  .modal-header,
+  .modal-footer {
+    background-color: $dusty-grey;
+    max-height: 2.7rem;
+  }
+
+  .modal-options {
+    float: left;
+    text-align: right;
+  }
+
+  .modal-buttons {
+    float: right;
+    text-align: right;
+  }
+}
+
+.modal-field-header {
+  background-color: $light-grey;
+  padding: 0.6em 0.7em;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  color: #534d64;
+  font-size: 1em;
+  letter-spacing: 0.08em;
+}
+
+.modal-backdrop {
+  background-color: #454c53;
+}
+
+.modal-backdrop.show {
+  opacity: 0.9;
+}
+
+.modal-header .close {
+  margin: -0.3em 0;
+  padding: 0;
+  opacity: 1;
+}
+
+.relate-input-group {
+  display: inline;
+}
+
+.modal-redirect-text {
+  color: $white;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+/* width */
+.modal-body::-webkit-scrollbar {
+  width: 0.8em;
+}
+
+/* Track */
+.modal-body::-webkit-scrollbar-track {
+  background: $light-grey;
+}
+
+/* Handle */
+.modal-body::-webkit-scrollbar-thumb {
+  background: $dusty-grey;
+}
+
+/* Handle on hover */
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: $dusty-grey;
+}

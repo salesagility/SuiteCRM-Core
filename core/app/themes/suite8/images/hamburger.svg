@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="14px" viewBox="0 0 30 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>hamburger</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="hamburger" stroke-width="2" stroke="#FFFFFF">
+            <g id="Group">
+                <path d="M0.5,1 L30.5,1" id="Line"></path>
+                <path d="M0.5,7 L30.5,7" id="Line"></path>
+                <path d="M0.5,13 L30.5,13" id="Line"></path>
+            </g>
+        </g>
+    </g>
+</svg>

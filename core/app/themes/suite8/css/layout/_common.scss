@@ -1,0 +1,59 @@
+/* --------- COMMON SECTION ---------- */
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: $off-white;
+}
+
+/* <pre> tags shows up in a well separated visible format at a high z-index */
+pre {
+  font-family: monospace;
+  font-size: 1em;
+  background: black;
+  border: gray;
+  color: lightgreen;
+  z-index: 100000;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.8em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $dusky-blue;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $midnight-blue;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $midnight-blue;
+}
+
+.navbar-nav a:not([href]):not([tabindex]), .global-links a:not([href]):not([tabindex]) {
+  color: $light-grey;
+}
+
+.navbar-nav a:not([href]):not([tabindex]):focus,
+.navbar-nav a:not([href]):not([tabindex]):hover,
+.global-links a:not([href]):not([tabindex]):focus,
+.global-links a:not([href]):not([tabindex]):hover {
+  color: $salmon-pink;
+  -webkit-transition: color 0.5s ease-out;
+  -moz-transition: color 0.5s ease-out;
+  -o-transition: color 0.5s ease-out;
+  transition: color 0.5s ease-out;
+  cursor: pointer;
+}
+
+iframe {
+  padding-top: 7em;
+}

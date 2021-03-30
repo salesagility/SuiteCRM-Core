@@ -1,0 +1,105 @@
+<!-- Start of action bar section -->
+
+<div class="global-action-bar row pb-2 pt-2 mr-0">
+    <div class="col-6">
+        <form novalidate class="global-search ng-untouched ng-pristine ng-valid">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-default search-button" type="submit" aria-label="Search">
+                        <scrm-svg-icon-ui class="search-icon sicon" file="search.svg"
+                                          file="search.svg"></scrm-svg-icon-ui>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col justify-content-right">
+        <div class="action-group">
+            <div class="action-alert dropdown">
+                <button class="alerts-button dropdown-toggle" type="button" aria-label="Toggle Alerts">
+                    <scrm-svg-icon-ui class="action-btn-icon" file="alert_icon.svg"
+                                      file="alert_icon.svg"></scrm-svg-icon-ui>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <h4>ASSIGNED TASK</h4>
+                        <a href="#">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="alert_icon.svg" file="alert_icon.svg">
+                            </scrm-svg-icon-ui>
+                            Create Wireframe
+                        </a>
+                    </li>
+                    <li>
+                        <h4>DUE DATE EXPIRED</h4>
+                        <a href="#">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="alert_icon.svg" file="alert_icon.svg">
+                            </scrm-svg-icon-ui>
+                            Call John Doe to discuss...
+                        </a>
+                    </li>
+                    <li>
+                        <h4>ASSIGNED LEAD</h4>
+                        <a href="#">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="alert_icon.svg" file="alert_icon.svg">
+                            </scrm-svg-icon-ui>
+                            John Doe
+                        </a>
+                    </li>
+                    <li>
+                        <h4>NEW CASE</h4>
+                        <a href="#">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="alert_icon.svg" file="alert_icon.svg">
+                            </scrm-svg-icon-ui>
+                            Johnston &amp; Co
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-view-all" href="#">
+                            View All
+                        </a>
+                    </li>
+                </div>
+            </div>
+            <div class="action-favourite dropdown">
+                <button class="favourites-button dropdown-toggle" type="button" aria-label="Toggle Favourites">
+                    <scrm-svg-icon-ui class="action-btn-icon" file="star_icon.svg"
+                                      file="star_icon.svg"></scrm-svg-icon-ui>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <li *ngFor="let item of actionBar.favoriteRecords">
+                        <h4>{{ item.itemSummaryShort }}</h4>
+                        <a href="redirect-to-the-record-{{ item.id }}-of-module-{{
+                  item.moduleName
+                }}">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="star_icon.svg" file="star_icon.svg">
+                            </scrm-svg-icon-ui>
+                            {{ item.itemSummary }}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-view-all" href="#">
+                            View All
+                        </a>
+                    </li>
+                </div>
+            </div>
+            <div class="action-new dropdown">
+                <button class="quickcreate-button dropdown-toggle" type="button" aria-label="Quick Create">
+                    NEW
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <li *ngFor="let item of actionBar.createLinks">
+                        <a href="{{ item.url }}">
+                            <scrm-svg-icon-ui class="action-btn-icon" file="plus.svg"
+                                              file="plus.svg"></scrm-svg-icon-ui>
+                            {{ item.label }}
+                        </a>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End of action bar section -->

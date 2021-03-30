@@ -1,0 +1,141 @@
+## SuiteCRM 8 ##
+
+build/
+config/
+!config/.gitkeep
+cache/
+extentions/
+!extentions/.gitkeep
+logs/
+!logs/.gitkeep
+public/
+
+# Theme
+.sass-cache
+*.css.map
+*.min.css
+
+# Tests
+core/tests/coverage
+
+# Composer
+vendor/
+composer.phar
+
+
+# Profiling files
+chrome-profiler-events.json
+speed-measure-plugin.json
+
+# Compiled output
+dist
+tmp
+out-tsc
+
+# Only exists if Bazel was run
+bazel-out
+
+# e2e test files
+e2e/*.js
+e2e/*.map
+
+## Generic ##
+
+# Logs
+*.log
+
+# composer
+/vendor/*
+
+#Ignore bower_components
+bower_components/
+node_modules/
+
+# htacess
+/.htaccess
+
+## IDE specific items
+# Eclipse
+*.pydevproject
+.project
+.buildpath
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+# IntelliJ Idea
+*.iml
+*.ipr
+*.iws
+.idea/
+.phpstorm.meta.php
+.sass-cache/
+.php_cs.cache
+# NetBeans
+nbproject/
+#Visual Studio Code
+.vscode/
+# Vim
+.*.sw[a-z]
+*.un~
+*.sln
+*.suo
+*.phpproj
+Session.vim
+# Windows
+Thumbs.db
+Desktop.ini
+.DS_Store
+.DS_Store?
+.save
+#browserstack
+BrowserStackLocal
+browserstack.err
+
+
+# zips and executables
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.exe
+
+# sql
+*.sql
+*.sql.gz
+*.sqlite
+
+# Ignore testing environment
+build/tmp/
+
+# Misc
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+.c9/
+*.launch

@@ -1,0 +1,13 @@
+server:
+  environment: 'develop'
+storage:
+  mysql:
+    driver: 'pdo_mysql'
+    host: 'mariadb'
+    dbname: 'suitecrm_8_app'
+    user: 'root'
+    password: ''
+    io: 'both'
+modules:
+  paths:
+    - /../../modules/

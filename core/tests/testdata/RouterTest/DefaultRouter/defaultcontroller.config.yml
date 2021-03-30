@@ -1,0 +1,20 @@
+app:
+  default_route:
+    controller: "Oauth"
+server:
+  environment: 'develop'
+storage:
+  mysql:
+    driver: 'pdo_mysql'
+    host: 'mariadb'
+    dbname: 'suitecrm_8_app'
+    user: 'root'
+    password: ''
+    io: 'both'
+entity:
+  namespaces:
+    core/modules/Users/Config/orm: 'SuiteCRM\Core\Modules\Users\Entity'
+modules:
+  enabled:
+    - Users
+    - Administration

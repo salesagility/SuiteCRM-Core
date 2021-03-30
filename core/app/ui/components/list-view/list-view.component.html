@@ -1,0 +1,521 @@
+<!-- Start List View Section -->
+
+<div class="list-view">
+
+    <!-- Start List View Header Section -->
+
+    <div class="list-view-header">
+        <ng-template [ngIf]="displayResponsiveTable">
+            <div class="d-flex flex-nowrap">
+                <div class="row">
+                    <div class="col">
+                        <div class="order-3">
+                            <div class="list-view-actions float-right">
+                                <scrm-modal-view></scrm-modal-view>
+                                <button type="button" class="action-button">
+                                    Import
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-2">
+                            <h2 class="list-view-title">{{ listViewData.module }}</h2>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="order-1">
+                            <div class="list-view-settings float-right">
+                                <button type="button" class="settings-button dropdown-toggle">
+                                    Display As
+                                </button>
+                                <button type="button" class="settings-button dropdown-toggle">
+                                    My Filters
+                                </button>
+                                <button type="button" class="settings-button">
+                                    <scrm-svg-icon-ui class="sicon" file="filter_icon.svg"></scrm-svg-icon-ui>
+                                    Filter
+                                </button>
+                                <button type="button" class="settings-button">
+                                    <scrm-svg-icon-ui class="sicon" file="cross_white.svg"></scrm-svg-icon-ui>
+                                    Clear
+                                </button>
+                                <button type="button" class="settings-button" (click)="toggleWidgets()"
+                                        [ngClass]="{ 'charts-active': displayWidgets }">
+                                    <scrm-svg-icon-ui class="sicon" file="pie_icon.svg"></scrm-svg-icon-ui>
+                                    Charts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template [ngIf]="!displayResponsiveTable">
+            <div class="row mr-0">
+                <div class="col-md-4">
+                    <h2 class="list-view-title">{{ listViewData.module }}</h2>
+                </div>
+                <div class="col-md-8">
+                    <div class="row mr-1 ml-1">
+                        <div class="w-100">
+                            <div class="list-view-actions float-right">
+                                <scrm-modal-view></scrm-modal-view>
+                                <button type="button" class="action-button">
+                                    Import
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-100">
+                            <div class="list-view-settings float-right">
+                                <button type="button" class="settings-button dropdown-toggle">
+                                    Display As
+                                </button>
+                                <button type="button" class="settings-button dropdown-toggle">
+                                    My Filters
+                                </button>
+                                <button type="button" class="settings-button">
+                                    <scrm-svg-icon-ui class="sicon" file="filter_icon.svg"></scrm-svg-icon-ui>
+                                    Filter
+                                </button>
+                                <button type="button" class="settings-button">
+                                    <scrm-svg-icon-ui class="sicon" file="cross_white.svg"></scrm-svg-icon-ui>
+                                    Clear
+                                </button>
+                                <button type="button" class="settings-button" (click)="toggleWidgets()"
+                                        [ngClass]="{ 'charts-active': displayWidgets }">
+                                    <scrm-svg-icon-ui class="sicon" file="pie_icon.svg"></scrm-svg-icon-ui>
+                                    Charts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- End List View Section -->
+
+    <!-- Start List View Container Section -->
+
+    <div class="list-view-container container-fluid">
+        <div class="row">
+
+            <!-- Start List View Table Section -->
+
+            <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !displayWidgets }">
+
+                <!-- Start List View Table Header Section -->
+
+                <div class="list-view-tableactions table-header">
+                    <div class="row">
+                        <div class="bulk-action float-left">
+                            <div class="dropdown select-action-group float-left">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" [checked]="allSelected" aria-hidden="true">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <button class="bulk-action-button dropdown-toggle" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" aria-hidden="true"
+                                        aria-label="Select Action Menu"></button>
+                                <div class="dropdown-menu" aria-hidden="true">
+                                    <a class="dropdown-item" (click)="selectAll()">
+                                        Select All
+                                    </a>
+                                    <a class="dropdown-item" (click)="selectAll()">
+                                        Select This Page
+                                    </a>
+                                    <a class="dropdown-item" (click)="deselectAll()">
+                                        Deselect All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropdown bulk-action-group float-left">
+                                <button class="bulk-action-button  dropdown-toggle" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-hidden="true" aria-expanded="false">
+                                    Bulk Action
+                                </button>
+                                <div class="dropdown-menu" aria-hidden="true">
+                                    <a class="dropdown-item">Email</a>
+                                    <a class="dropdown-item">Mass Update</a>
+                                    <a class="dropdown-item">Mail Merge</a>
+                                    <a class="dropdown-item">Merge</a>
+                                    <a class="dropdown-item">Print as PDF</a>
+                                    <a class="dropdown-item">Export</a>
+                                    <a class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mx-0 pl-0">
+                            <div class="bulk-action float-right">
+                                <button class="pagination-button" aria-label="Navigate to first page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_prev.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <button class="pagination-button" aria-label="Previous page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_first.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <span class="pagination-count" [ngClass]="{
+                'hide-pagination-count': displayResponsiveTable
+              }">
+                    (1- 20 of 200)
+                  </span>
+                                <button class="pagination-button" aria-label="Next page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_last.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <button class="pagination-button" aria-label="Navigate to last page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_next.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End List View Table Header Section -->
+
+                <!-- Start List View Table Data Section -->
+
+                <div [ngClass]="{ 'table-wrapper': !displayResponsiveTable }">
+                    <table class="list-view-table table" [ngClass]="{
+          'table-striped': !showCollapsed,
+          'responsive-table': showCollapsed
+        }">
+
+                        <!-- Start of mobile inner table structure -->
+
+                        <thead class="primary-table-header">
+                        <tr>
+                            <th *ngIf="displayResponsiveTable" class="show-table-rows"></th>
+                            <ng-template [ngIf]="displayResponsiveTable" *ngFor="let title of listViewData.columns">
+                                <th *ngIf="title.key == 'name'" (click)="order(title.key)">
+                      <span [ngClass]="{
+                    active: title.key == orderBy,
+                    desc: desc == 'DESC'
+                  }">
+                        {{ title.label }}
+                        <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key != orderBy"
+                                          file="{{ listViewIconUnsorted }}">
+                        </scrm-svg-icon-ui>
+                        <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key == orderBy"
+                                          file="{{ listViewIconSorted }}">
+                        </scrm-svg-icon-ui>
+                      </span>
+                                </th>
+                            </ng-template>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <ng-template [ngIf]="displayResponsiveTable" *ngFor="let row of listViewData.rows">
+                            <tr [ngClass]="{ 'responsive-top-row': row.expanded }">
+                                <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }" aria-hidden="true">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" [checked]="allSelected" aria-hidden="true">
+                                        <span class="checkmark" (click)="selectAll()"></span>
+                                    </label>
+                                </td>
+
+                                <ng-template [ngIf]="displayResponsiveTable" *ngFor="let col of listViewData.columns">
+                                    <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }"
+                                        class="primary-table-data"
+                                        *ngIf="col.link == true && col.key == 'name'">
+                                        <scrm-field view-type="list-view" field-type="{{
+                      listViewData.rows[0].field_name_map[col.key].type
+                    }}" field-name="{{ col.key }}" field-value="{{ row[col.key] }}" row="{{ row | json }}">
+                                        </scrm-field>
+                                    </td>
+                                </ng-template>
+
+                                <td [ngClass]="{
+                  'responsive-table-toggler': displayResponsiveTable
+                }">
+                                    <scrm-svg-icon-ui *ngIf="row.expanded" class="sicon-x2"
+                                                      file="mobile_collapse_icon.svg"
+                                                      (click)="expandRow(row)">
+                                    </scrm-svg-icon-ui>
+                                    <scrm-svg-icon-ui *ngIf="!row.expanded" class="sicon-x2"
+                                                      file="mobile_expand_icon.svg"
+                                                      (click)="expandRow(row)">
+                                    </scrm-svg-icon-ui>
+                                </td>
+                            </tr>
+                            <tr class="responsive-table-row" [ngClass]="{
+                'show-collapsed-header': !row.expanded,
+                'display-block-table': row.expanded
+              }" *ngIf="row.expanded">
+                                <ng-template *ngFor="let title of listViewData.columns" [ngIf]="title.key != 'name'">
+                                    <th [ngClass]="{
+                    'show-table-header': !displayResponsiveTable,
+                    active: title.key == orderBy,
+                    desc: desc == 'DESC'
+                  }" (click)="order(title.key)">
+                                        {{ title.label }}
+                                    </th>
+                                    <td>{{ row[title.key] }}</td>
+                                </ng-template>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button responsive-list-data" aria-label="Phone"
+                                            aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="phone_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button responsive-list-data" aria-label="Calendar"
+                                            aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="calendar_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button responsive-list-data" aria-label="List"
+                                            aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="list_icon_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button responsive-list-data" aria-label="Email"
+                                            aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon-2x list-data-icon" file="email_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                        <!-- End of mobile inner table structure -->
+
+                        <!-- Start of desktop inner table structure -->
+
+                        <ng-template [ngIf]="!displayResponsiveTable">
+                            <th class="primary-table-header"></th>
+                            <th class="primary-table-header" *ngFor="let title of listViewData.columns"
+                                (click)="order(title.key)">
+                    <span [ngClass]="{
+                  active: title.key == orderBy,
+                  desc: desc == 'DESC'
+                }">
+                      {{ title.label }}
+                      <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key != orderBy"
+                                        file="{{ listViewIconUnsorted }}">
+                      </scrm-svg-icon-ui>
+                      <scrm-svg-icon-ui class="sicon sort-icon" *ngIf="title.key == orderBy"
+                                        file="{{ listViewIconSorted }}">
+                      </scrm-svg-icon-ui>
+                    </span>
+                            </th>
+                            <th class="primary-table-header"></th>
+                            <th class="primary-table-header"></th>
+                            <th class="primary-table-header"></th>
+                            <th class="primary-table-header"></th>
+                        </ng-template>
+                        <ng-template [ngIf]="!displayResponsiveTable" *ngFor="let row of listViewData.rows">
+                            <tr>
+                                <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }">
+                                    <label class="checkbox-container" aria-label="Checkbox Container">
+                                        <input type="checkbox" [checked]="allSelected" aria-hidden="true">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td [ngClass]="{ 'show-table-rows': displayResponsiveTable }"
+                                    *ngFor="let col of listViewData.columns">
+                                    <scrm-field view-type="list-view" field-type="{{
+                    listViewData.rows[0].field_name_map[col.key].type
+                  }}" field-name="{{ col.key }}" field-value="{{ row[col.key] }}" row="{{ row | json }}">
+                                    </scrm-field>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button" aria-label="Phone" aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon list-data-icon" file="phone_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button" aria-label="Calendar" aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon list-data-icon" file="calendar_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button" aria-label="List" aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon list-data-icon" file="list_icon_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                                <td class="list-group-icon">
+                                    <button class="list-icon-button" aria-label="Email" aria-hidden="true">
+                                        <scrm-svg-icon-ui class="sicon list-data-icon" file="email_purple.svg">
+                                        </scrm-svg-icon-ui>
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                        <!-- End of desktop inner table structure -->
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- End List View Table Data Section -->
+
+                <!-- Start List View Table Footer Section -->
+
+                <div class="list-view-tableactions table-footer">
+                    <div class="row">
+                        <div class="bulk-action float-left">
+                            <div class="dropdown select-action-group float-left">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" [checked]="allSelected" aria-hidden="true">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <button class="bulk-action-button dropdown-toggle" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" aria-hidden="true"
+                                        aria-label="Select Action Menu"></button>
+                                <div class="dropdown-menu" aria-hidden="true">
+                                    <a class="dropdown-item" (click)="selectAll()">
+                                        Select All
+                                    </a>
+                                    <a class="dropdown-item" (click)="selectAll()">
+                                        Select This Page
+                                    </a>
+                                    <a class="dropdown-item" (click)="deselectAll()">
+                                        Deselect All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropdown bulk-action-group float-left">
+                                <button class="bulk-action-button  dropdown-toggle" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-hidden="true" aria-expanded="false">
+                                    Bulk Action
+                                </button>
+                                <div class="dropdown-menu" aria-hidden="true">
+                                    <a class="dropdown-item">Email</a>
+                                    <a class="dropdown-item">Mass Update</a>
+                                    <a class="dropdown-item">Mail Merge</a>
+                                    <a class="dropdown-item">Merge</a>
+                                    <a class="dropdown-item">Print as PDF</a>
+                                    <a class="dropdown-item">Export</a>
+                                    <a class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mx-0 pl-0">
+                            <div class="bulk-action float-right">
+                                <button class="pagination-button" aria-label="Navigate to first page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_prev.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <button class="pagination-button" aria-label="Previous page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_first.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <span class="pagination-count" [ngClass]="{
+                'hide-pagination-count': displayResponsiveTable
+              }">
+                    (1- 20 of 200)
+                  </span>
+                                <button class="pagination-button" aria-label="Next page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_last.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                                <button class="pagination-button" aria-label="Navigate to last page">
+                                    <scrm-svg-icon-ui class="sicon-2x pagination-icons" file="icon_next.svg">
+                                    </scrm-svg-icon-ui>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End List View Table Section -->
+
+            <!-- Start List View Widget Section -->
+
+            <div class="col-lg-3" *ngIf="displayWidgets" [@widgetFade]>
+                <div class="accordion list-view-widget mr-0">
+                    <div class="widget-header">
+                        <h3>
+                            Quick Charts
+                            <scrm-svg-icon-ui class="sicon float-right widget-close-icon"
+                                              (click)="toggleWidgetContent()"
+                                              file="{{ widgetHeaderToggleIcon }}">
+                            </scrm-svg-icon-ui>
+                        </h3>
+                    </div>
+
+                    <div *ngIf="displayWidgetContent" class="widget collapse show" data-parent=".list-view-widget"
+                         [@widgetContentFade]="displayWidgetContent ? 'true' : 'false'" class="open-close-container">
+                        <div class="card-body">
+                            <div class="chart-create">
+                                <button class="quickcreate-button" type="button">
+                                    <scrm-svg-icon-ui class="sicon widget-button-icon"
+                                                      file="plus.svg"></scrm-svg-icon-ui>
+                                    New Chart
+                                </button>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="pipeline-chart col-xs">
+                                        <div class="accordion">
+                                            <button class="widget-transparent-button btn-block dropdown-toggle"
+                                                    type="button"
+                                                    data-toggle="collapse" data-target=".pipeline-chart-content">
+                                                Pipeline By Sales Stage
+                                            </button>
+                                            <div class="collapse show pipeline-chart-content"
+                                                 data-parent=".pipeline-chart">
+                                                <img alt="Pipeline Chart" class="w-100"
+                                                     src="./assets/themes/suite8/images/pipeline_chart.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="donut-chart col-xs">
+                                        <div class="accordion">
+                                            <button class="widget-transparent-button btn-block dropdown-toggle"
+                                                    type="button"
+                                                    data-toggle="collapse" data-target=".donut-chart-content">
+                                                Display as Donut Chart
+                                            </button>
+                                            <div class="collapse show donut-chart-content" data-parent=".donut-chart">
+                                                <img alt="Donut Chart" class="w-100"
+                                                     src="./assets/themes/suite8/images/donut_chart.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-create">
+                                <button class="quickcreate-button" type="button">
+                                    <scrm-svg-icon-ui class="sicon widget-button-icon"
+                                                      file="edit.svg"></scrm-svg-icon-ui>
+                                    Edit
+                                </button>
+                                <button class="remove-button" type="button">
+                                    <scrm-svg-icon-ui class="sicon widget-button-icon" file="cross_white.svg">
+                                    </scrm-svg-icon-ui>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End List View Widget Section -->
+
+        </div>
+    </div>
+
+    <!-- End List View Container Section -->
+
+</div>
+
+<!-- End List View Section -->

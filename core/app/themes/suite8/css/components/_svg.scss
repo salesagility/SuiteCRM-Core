@@ -1,0 +1,403 @@
+/* --------- SVG SECTION ---------- */
+
+.home-nav-link svg {
+  fill: $white;
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.2em;
+  height: 1.5em;
+  margin-top: -0.2em;
+}
+
+.action-link svg,
+.action-link svg path,
+.action-link svg polygon {
+  fill: $white;
+  margin: 0 0.8em 0 0;
+}
+
+.action-link:hover svg,
+.action-link:hover svg path,
+.action-link:hover svg polygon {
+  fill: $salmon-pink;
+}
+
+.nav-link {
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+  }
+}
+
+.nav-link:hover svg,
+.nav-link:hover svg *,
+.home-nav-link:hover svg {
+  fill: $salmon-pink;
+}
+
+.action_btn_alert .dropdown-menu svg,
+.action_btn_favourite .dropdown-menu svg,
+.action_btn_new .dropdown-menu svg {
+  margin: 0 0.3em 0 0;
+}
+
+.action_btn_alert .dropdown-menu svg path {
+  fill: $burnt-red;
+}
+
+.action_btn_favourite .dropdown-menu svg path {
+  fill: $mellow-yellow;
+}
+
+.action_btn_new .dropdown-menu svg polygon {
+  fill: $sky-blue;
+}
+
+.back-to-top svg {
+  width: 1em;
+  height: 1em;
+  margin: 0 0.5em;
+}
+
+.back-to-top svg polygon {
+  fill: $midnight-grey;
+}
+
+.back-to-top svg polygon {
+  fill: $midnight-grey;
+}
+
+.sicon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.sicon-xs svg {
+  width: 0.5em;
+  height: 0.5em;
+}
+
+.sicon-2x svg {
+  width: 1.9em;
+  height: 1.9em;
+}
+
+.sicon-3x svg {
+  width: 3.8em;
+  height: 3.8em;
+}
+
+.sicon-4x svg {
+  width: 7.5em;
+  height: 7.5em;
+}
+
+.sicon-5x svg {
+  width: 15em;
+  height: 15em;
+}
+
+.search-icon svg {
+  vertical-align: baseline;
+}
+
+.search-icon svg path {
+  fill: $light-grey;
+}
+
+.search-icon svg path {
+  fill: $light-grey;
+}
+
+.search-icon:hover svg path {
+  fill: $salmon-pink;
+}
+
+@media all and (max-width: $breakpoint-xsmall) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      margin-left: 2em;
+      pointer-events: none;
+    }
+  }
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      margin-left: 1.5em;
+    }
+  }
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      margin-left: 0.5em;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media all and (min-width: 24.5em) and (max-width: $breakpoint-medium) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      margin-left: 3em;
+      pointer-events: none;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media all and (min-width: $breakpoint-medium) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      padding-left: 0.2em;
+      pointer-events: none;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+.recent-link scrm-svg-icon > svg {
+  margin: 0.3em 0.8em 0.8em 0;
+}
+
+.action-btn-icon {
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+  }
+}
+
+.action-btn-icon svg path,
+.global-links svg path {
+  fill: $white;
+}
+
+.navbar-toggler:hover svg path {
+  stroke: $salmon-pink;
+}
+
+.close-navmenu svg polygon {
+  fill: $light-grey;
+}
+
+.close-navmenu svg {
+  margin: 0 0.3em 0 0;
+}
+
+.back-to-top svg {
+  width: 1em;
+  height: 1em;
+  margin: 0 0.5em;
+}
+
+.back-to-top svg polygon {
+  fill: $midnight-grey;
+}
+
+.login-form {
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 1em;
+
+    path,
+    polygon,
+    rect {
+      fill: $powdered-blue;
+    }
+  }
+}
+
+.list-view-settings svg {
+  fill: $white;
+  margin: 0 0.5em 0 0;
+  vertical-align: middle;
+}
+
+.sort-icon {
+  fill: $light-grey;
+  margin: 0 0.2em;
+}
+
+.pagination-icons {
+  fill: $white;
+  margin: 0.2em;
+}
+
+.widget-close-icon svg {
+  fill: $white;
+  cursor: pointer;
+}
+
+.widget-button-icon {
+  fill: $white;
+  margin: 0 0.5em 0 0;
+  vertical-align: middle;
+}
+
+.remove-button svg {
+  fill: $sky-blue;
+}
+
+.expand-table-row svg {
+  fill: $sky-blue;
+}
+
+.modal .close svg {
+  fill: $white;
+}
+
+.info-icon {
+  margin: 0 0 0 0.5em;
+}
+
+.info-icon svg circle {
+  fill: $white;
+}
+
+.info-icon svg path {
+  fill: $dusty-grey;
+}
+
+.create-popup-arrow svg {
+  width: 1.2em;
+}
+
+.create-popup-cross svg {
+  width: 0.75em;
+  height: 0.75em;
+}
+
+.create-popup-arrow svg polygon,
+.create-popup-cross svg polygon,
+.create-popup-calendar svg * {
+  fill: #c3c1c9;
+}
+
+@media all and (min-width: $breakpoint-large) {
+  button svg {
+    vertical-align: -0.2em;
+    display: inline-block;
+  }
+}
+
+.list-data-icon {
+  margin: 0;
+  padding: 0;
+}
+
+.list-data-icon svg {
+  fill: #aa9dcc;
+  margin: 0;
+  padding: 0;
+}
+
+.back-top-icon {
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}
+
+.responsive-menu-toggler svg path {
+  fill: $white;
+}

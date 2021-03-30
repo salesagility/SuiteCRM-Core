@@ -1,0 +1,302 @@
+/* --------- DROPDOWN SECTION ---------- */
+
+.dropdown-menu {
+  background-color: $dusky-blue;
+  width: max-content;
+  min-width: 9em;
+}
+
+.dropdown-menu.submenu {
+  -webkit-border-radius: 0.25em;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius: 0.25em;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  border-radius: 0.25em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dropdown-menu a:hover {
+  background-color: $dusky-blue;
+  cursor: pointer;
+}
+
+.action-group .dropdown-menu {
+  background-color: $white;
+  margin-top: 0;
+  font-size: 0.8em;
+}
+
+.action-group h4 {
+  font-size: 0.8em;
+  color: $midnight-grey;
+}
+
+.action-group .dropdown-menu li {
+  padding: 0.5em;
+}
+
+.action-group .dropdown-menu li a {
+  color: $median-grey;
+}
+
+.action-group .dropdown-menu li a:hover {
+  background: none;
+  text-decoration: none;
+}
+
+.action-alert .dropdown-menu li:not(:last-of-type),
+.action-favourite .dropdown-menu li:not(:last-of-type),
+.action-new .dropdown-menu li:not(:last-of-type) {
+  border-bottom: 0.05em dotted $midnight-grey;
+}
+
+.action-alert .dropdown-menu svg,
+.action-favourite .dropdown-menu svg,
+.action-new .dropdown-menu svg {
+  margin: 0 0.3em 0 0;
+}
+
+.action-alert .dropdown-menu svg path {
+  fill: $burnt-red;
+}
+
+.action-favourite .dropdown-menu svg path {
+  fill: $mellow-yellow;
+}
+
+.action-new .dropdown-menu svg polygon {
+  fill: $sky-blue;
+}
+
+.action-group .action-alert .dropdown-menu li a:hover {
+  color: $burnt-red;
+}
+
+.action-group .action-favourite .dropdown-menu li a:hover {
+  color: $mellow-yellow;
+}
+
+.action-group .action-new .dropdown-menu li a:hover {
+  color: $sky-blue;
+}
+
+.action-alert .dropdown-menu {
+  border: 0.35em solid $burnt-red;
+}
+
+.action-favourite .dropdown-menu {
+  border: 0.35em solid $mellow-yellow;
+}
+
+.action-new .dropdown-menu {
+  border: 0.35em solid $sky-blue;
+}
+
+.alerts-button.dropdown-toggle[_ngcontent-c1]::after,
+.quickcreate-button.dropdown-toggle[_ngcontent-c1]::after,
+.favourites-button.dropdown-toggle[_ngcontent-c1]::after {
+  vertical-align: 0.05em;
+}
+
+a.close-navmenu {
+  color: $light-grey;
+  font-size: 0.8em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+a.close-navmenu:hover {
+  color: $salmon-pink;
+}
+
+.close-navmenu svg polygon {
+  fill: $light-grey;
+}
+
+.close-navmenu svg {
+  margin: 0 0.3em 0 0;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 1.5em;
+  top: 40%;
+}
+
+.dropdown-submenu:hover .dropdown-menu,
+.dropdown-submenu:focus .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: -2.2em;
+  left: 100%;
+}
+
+li.main-grouped:hover {
+  background-color: $dusky-blue;
+}
+
+ul.main li.nav-item,
+.main ul li {
+  padding: 0em 1em;
+}
+
+ul.main li a,
+.main ul li a,
+.non-grouped .action-link {
+  font-size: 0.8em;
+}
+
+.top-nav .dropdown-menu,
+.top-nav .submenu {
+  margin: 0;
+  padding: 0;
+}
+
+.global-links-dropdown {
+  margin: 0;
+  position: absolute;
+  -webkit-border-radius: 0.25em;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius: 0.25em;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  border-radius: 0.25em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.primary-global-link {
+  height: 3.1em;
+  line-height: 3.1em;
+}
+
+.global-link-item .nav-link {
+  height: 3.1em;
+  line-height: 3.1em;
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (min-width: $breakpoint-large) {
+  .global-links-sublink {
+    background-color: $dusky-blue;
+    padding: 0.4em 0.8em 0.4em 1.8em;
+    font-size: 0.8em;
+    border-bottom: none;
+    color: $light-grey;
+  }
+
+  .global-links-sublink:not(:last-of-type) {
+    border-bottom: 0.05em solid $midnight-grey;
+  }
+
+  .global-links-dropdown a:hover {
+    color: $salmon-pink;
+    -webkit-transition: color 0.5s ease-out;
+    -moz-transition: color 0.5s ease-out;
+    -o-transition: color 0.5s ease-out;
+    transition: color 0.5s ease-out;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-large) {
+  .global-links .dropdown-menu {
+    border: none;
+    background-color: $dusky-blue;
+  }
+
+  .global-links a {
+    border: none;
+    padding: 0.4em 0.8em 0.4em 1.8em;
+    font-size: 0.9em;
+    color: $light-grey;
+  }
+}
+
+
+@media (max-width: $breakpoint-xlarge) {
+  .dropdown-menu {
+    width: 50%;
+  }
+  .dropdown-menu .dropdown-submenu {
+    width: auto;
+  }
+}
+
+@media all and (max-height: $breakpoint-xxxlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-xxlarge;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-xxlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-large;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-xlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-medium;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-large) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-small;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-small) {
+  .more-menu {
+    height: max-content;
+    max-height: 15em;
+    overflow-y: scroll;
+  }
+}
+
+.bulk-action-group .dropdown-menu,
+.select-action-group .dropdown-menu {
+  background-color: $dusty-grey;
+  font-size: 1em;
+  -webkit-border-radius: 0.25em;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius: 0.25em;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  border-radius: 0.25em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border: none;
+}
+
+.bulk-action-group .dropdown-menu a,
+.select-action-group .dropdown-menu a {
+  color: $white;
+}
+
+.bulk-action-group .dropdown-menu a:hover,
+.select-action-group .dropdown-menu a:hover {
+  background-color: $nepal-grey;
+  color: $white;
+  cursor: pointer;
+}

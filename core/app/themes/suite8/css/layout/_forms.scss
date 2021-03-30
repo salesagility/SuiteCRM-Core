@@ -1,0 +1,32 @@
+/* --------- FORM SECTION ---------- */
+
+
+.login-form {
+  @media all and (min-width: $breakpoint-xsmall) {
+    text-align: center;
+    width: 25em;
+    margin: 20% auto;
+  }
+
+  @media all and (max-width: $breakpoint-xsmall) {
+    text-align: center;
+    margin: 5% auto;
+    position: absolute;
+    width: 95%;
+    top: 25%;
+  }
+
+  img {
+    margin-bottom: 1.3em;
+  }
+
+  .forgotten-password {
+    text-align: center;
+    margin: 0.2em 0 0 0;
+  }
+
+  .forgotten-password-link {
+    clear: both;
+    color: $salmon-pink;
+  }
+}

@@ -1,0 +1,206 @@
+/* --------- NAVBAR SECTION ---------- */
+
+.navbar {
+  height: 3.1em;
+  background-color: $midnight-blue;
+  padding: 0 1.6em;
+  margin: 0;
+}
+
+@media only screen and (min-width: $breakpoint-large) {
+  .navbar-nav {
+    .main-grouped:hover .dropdown-menu.main,
+    .global-link-item:hover .dropdown-menu,
+    .non-grouped:hover .dropdown-menu {
+      display: block;
+    }
+  }
+
+  .nav-link-grouped,
+  .nav-link-nongrouped {
+    color: $off-white;
+    line-height: 3.1em;
+    padding: 1em 0.5em 1em 0.5em;
+  }
+
+  .nav-link-grouped:hover,
+  .nav-link-nongrouped:hover {
+    color: $light-grey;
+    border-top: 0.2em solid $salmon-pink;
+    padding: 0.8em 0.5em 1em 0.5em;
+    text-decoration: none;
+  }
+}
+
+.home-nav {
+  line-height: 3.1em;
+}
+
+a.home-nav-link {
+  color: $white;
+  line-height: 3.1em;
+  padding: 1em 0.5em 1em 0.5em;
+}
+
+.recent-link scrm-svg-icon-ui > svg {
+  margin: 0.3em 0.8em 0.8em 0;
+}
+
+.recent-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  color: $light-grey;
+}
+
+.nav-link:hover {
+  color: $salmon-pink;
+}
+
+.global-link-item:hover {
+  color: $salmon-pink;
+}
+
+.submenu,
+.globalactions {
+  background-color: $dusky-blue;
+  color: $light-grey;
+  margin: 0;
+  border: 0;
+}
+
+.submenu li {
+  border: 0;
+  padding: 0 0.3em;
+  -webkit-transition: color 0.5s ease-out;
+  -moz-transition: color 0.5s ease-out;
+  -o-transition: color 0.5s ease-out;
+  transition: color 0.5s ease-out;
+}
+
+.nav-menu-icon {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.action-btn-icon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+h4.recently-viewed-header {
+  border-top: 0.05em solid darken($light-grey, 20%);
+  color: darken($light-grey, 20%);
+  font-weight: bold;
+  margin: 0.8em 0 0 0;
+  padding: 0.8em;
+  font-size: 0.9em;
+}
+
+.nav-link:hover svg path,
+.nav-link:hover svg polygon {
+  fill: $salmon-pink;
+}
+
+.navbar-1 {
+  float: left;
+  width: 100%;
+}
+
+.navbar-2 {
+  float: right;
+  padding: 0;
+}
+
+@media only screen and (max-width: $breakpoint-large) {
+  .navbar-1,
+  .navbar-2 {
+    padding: 0;
+    margin: 0;
+    float: left;
+    top: 0;
+    z-index: 3;
+  }
+
+  .top-nav .dropdown-toggle::after {
+    display: none;
+  }
+
+  .navbar-header {
+    padding: 0 0.8em;
+  }
+
+  .navbar-toggler {
+    padding: 0.8em 1.6em;
+  }
+
+  .navbar-nav li {
+    padding: 0 1.6em;
+  }
+
+  .nav-link {
+    font-size: 0.85em;
+    color: $white;
+  }
+
+  .nav-link-grouped,
+  .nav-link-nongrouped {
+    color: $off-white;
+    line-height: 3.1em;
+    padding: 0.8em 0.5em 1em 0.5em;
+    font-size: 0.85em;
+  }
+
+  .nav-link-grouped:hover,
+  .nav-link-nongrouped:hover {
+    color: $light-grey;
+    text-decoration: none;
+  }
+  .navbar-nav,
+  .navbar-nav li {
+    border-bottom: 0.05em solid $off-white;
+  }
+
+  .navbar-nav:last-child,
+  .navbar-nav li:last-child {
+    border: none;
+  }
+
+  .top-nav.nav-item:hover {
+    padding: 0 1.6em;
+  }
+
+  .global-action-icon svg {
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0 0.6em 0 0;
+  }
+
+  .global-links .nav-link {
+    font-size: 0.85em;
+    font-weight: bold;
+  }
+
+  .navbar-nav > li > .dropdown-menu,
+  .collapsenav .navbar-nav > li {
+    background-color: $dusky-blue;
+  }
+}
+
+.navbar-toggler:hover svg path {
+  stroke: $salmon-pink;
+}
+
+scrm-logo-ui img {
+  margin: 0.3em;
+  padding-left: 0.5em;
+}
+
+a.nav-link.dropdown-toggle::after,
+a.nav-link-grouped.dropdown-toggle::after,
+a.nav-link-nongrouped.dropdown-toggle::after {
+  vertical-align: middle;
+}

@@ -1,0 +1,52 @@
+{
+  "name": "salesagility/suitecrm",
+  "description": "SuiteCRM Application",
+  "homepage": "https://suitecrm.com",
+  "type": "project",
+  "config": {
+    "vendor-dir": "vendor",
+    "platform": {
+      "php": "7.2.0"
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "require": {
+    "ext-json": "*",
+    "bshaffer/oauth2-server-httpfoundation-bridge": "^1.4",
+    "bshaffer/oauth2-server-php": "^1.11.1",
+    "composer/installers": "~1.0",
+    "doctrine/cache": "^1.8",
+    "doctrine/dbal": "^2.9",
+    "doctrine/orm": "2.6.*",
+    "monolog/monolog": "^1.23",
+    "symfony/config": "^4.2",
+    "symfony/console": "^4.3",
+    "symfony/http-foundation": "^4.2",
+    "symfony/routing": "4.4.x-dev",
+    "symfony/yaml": "^4.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "^7.3",
+    "phpmetrics/phpmetrics": "^2.4.1",
+    "phploc/phploc": "^4.0.1",
+    "doctrine/doctrine-fixtures-bundle": "~3.2",
+    "dama/doctrine-test-bundle": "^5.0"
+  },
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "SalesAgility Ltd"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SuiteCRM\\Core\\Base\\": "core/base/",
+      "SuiteCRM\\Core\\Modules\\": "core/modules/",
+      "SuiteCRM\\Core\\Legacy\\": "core/legacy/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

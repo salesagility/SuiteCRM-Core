@@ -1,0 +1,42 @@
+SuiteCRM\Core\Modules\Users\Entity\OAuthAuthorizationCode:
+  type:             entity
+  table:            oauth_authorisation_codes
+  repositoryClass:  SuiteCRM\Core\Modules\Users\Storage\OAuthAuthorizationCodeStorage
+  id:
+    id:
+      type:   integer
+      generator:
+        strategy: AUTO
+  fields:
+    code:
+      type:       string
+      max_length: 40
+      unique:     true
+    client_id:
+      type:       integer
+    user_id:
+      type:       integer
+      nullable:   true
+    expires:
+      type:       datetime
+    redirect_uri:
+      type:       string
+      max_length: 200
+    scope:
+      type:       string
+      max_length: 50
+      nullable:   true
+    id_token:
+      type: string
+      length: 1000
+  manyToOne:
+    client:
+      targetEntity: SuiteCRM\Core\Modules\Users\Entity\OAuthClient
+      joinColumn:
+        name:                 client_id
+        referencedColumnName: id
+    user:
+      targetEntity: SuiteCRM\Core\Modules\Users\Entity\OAuthUser
+      joinColumn:
+        name:                 user_id
+        referencedColumnName: id

@@ -1,0 +1,89 @@
+.footer a {
+  font-size: 0.8em;
+}
+
+.footer-link {
+  color: $midnight-grey;
+  cursor: pointer;
+  margin: 0 0.5em;
+  font-size: 1em;
+}
+
+a.footer-link:not([href]):not([tabindex]) {
+  color: $midnight-grey;
+}
+
+.footer-link:hover {
+  color: $median-grey;
+  text-decoration: none;
+}
+
+.back-to-top .footer-link {
+  text-transform: uppercase;
+  font-size: 0.75em;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+@media all and (min-width: $breakpoint-medium) {
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 0 1.85em;
+    width: 100%;
+    height: 3.1em;
+    line-height: 3.1em;
+    background-color: $light-grey;
+    color: $midnight-blue;
+  }
+
+  .copyright-links {
+    float: left;
+    line-height: 3.1em;
+  }
+
+  .back-to-top {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    float: right;
+    line-height: 3.1em;
+  }
+}
+
+@media all and (max-width: $breakpoint-medium) {
+  .copyright-links {
+    float: left;
+    width: 60%;
+    padding: 0.5em 0 0 0.25em;
+  }
+
+  .back-to-top {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    float: right;
+    line-height: 3.1em;
+    width: 35%;
+  }
+
+  .back-to-top .footer-link {
+    float: right;
+    margin: 0;
+  }
+
+  .footer {
+    left: 0;
+    bottom: 0;
+    padding: 0;
+    width: 100%;
+    height: 3.1em;
+    background-color: $light-grey;
+    color: $midnight-blue;
+    margin: 0;
+  }
+
+  .footer-link {
+    display: block;
+    float: left;
+  }
+}
