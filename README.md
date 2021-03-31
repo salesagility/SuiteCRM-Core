@@ -1,62 +1,65 @@
-[![SuiteCRM Logo](https://suitecrm.com/wp-content/uploads/2017/12/logo.png)](https://suitecrm.com)
+<a href="https://suitecrm.com">
+  <img width="180px" height="41px" src="https://suitecrm.com/wp-content/uploads/2017/12/logo.png" align="right" />
+</a>
 
-# SuiteCRM 8.0-alpha
+# SuiteCRM 8.0.0-beta-1
+
+[![LICENSE](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](https://github.com/salesagility/suitecrm/blob/hotfix/LICENSE.txt)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/salesagility/SuiteCRM-Core/issues)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/suitecrm/Lobby)
+[![Twitter](https://img.shields.io/twitter/follow/suitecrm.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=suitecrm)
+
+[Website](https://suitecrm.com) | 
+[Maintainers](https://salesagility.com) |
+[Community & Forum](https://suitecrm.com/suitecrm/forum) |
+[Code of Conduct](https://docs.suitecrm.com/community/code-of-conduct/)
 
 [SuiteCRM](https://suitecrm.com) is the award-winning open-source, enterprise-ready Customer Relationship Management (CRM) software application.
 
 Our vision is to be the most adopted open source enterprise CRM in the world, giving users full control of their data and freedom to own and customise their business solution.
 
-Try out a free fully working [SuiteCRM demo available here](https://suitecrm.com/demo/)
+Find out more about SuiteCRM 8 and checkout the online demo [here](https://suitecrm.com/suitecrm8/)
 
-### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./legacy/LICENSE.txt)
+### Getting Started ###
+
+Visit the [Administration Guide](https://docs.suitecrm.com/8.x/admin/) for details on getting started, system compatibility and installing SuiteCRM 8
+
+See the [Release Notes](https://docs.suitecrm.com/8.x/admin/releases/) for more detail and known issues in the beta build
+
+
+### Roadmap ###
+
+View the [Roadmap](https://suitecrm.com/suitecrm-roadmap/) for details on what is coming in SuiteCRM 8.
+
+
+### Contribute ###
+
+We would love to have you feedback and input to help make SuiteCRM 8 Great for everyone
+
+SuiteCRM 8 is still in active development and all current releases are not yet production ready, so be sure to check the [Release Notes and list of Known Issues](https://docs.suitecrm.com/8.x/admin/releases/) before getting involved
+
+If you have found an issue you think we should know about, or have a suggestion/feedback, please [Submit An Issue](https://github.com/salesagility/SuiteCRM-Core/issues).
+
+If you want to get involved or submit a Fix, fork the repo and when ready please [Submit An PR](https://github.com/salesagility/SuiteCRM-Core/pulls) - More detail for developers will be coming soon so stay tuned
+
+### Security ###
+
+We take security seriously here at SuiteCRM so if you have discovered a security risk report it by
+emailing [security@suitecrm.com](mailto:security@suitecrm.com). This will be delivered to the product team who handle security issues.
+Please don't disclose security bugs publicly until they have been handled by the security team.
+
+Your email will be acknowledged within 24 hours during the business week (Mon - Fri), and you’ll receive a more
+detailed response to your email within 72 hours during the business week (Mon - Fri) indicating the next steps in
+handling your report.
+
+
+### Support ###
+
+SuiteCRM is an open-source project. If you require help with support then please use our [support forum](https://suitecrm.com/suitecrm/forum/). By using the forums the knowledge is shared with everyone in the community. Our developer and community team members answer questions on the forum daily but it also allows the other members of the community to contribute. If you would like customisations to specifically fit your SuiteCRM needs then please visit the [website](https://suitecrm.com/).
+
+### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./LICENSE.txt)
 
 SuiteCRM is published under the AGPLv3 license.
 
-## Quick Start Guide
 
-### System Requirements
 
-|  Requirement |  Version | |  Database |  Version |
-|---|---|---|---|---|
-|  PHP | 7.2+ | | MariaDB | 10.2+ |
-|  Angular | 9 | | MySQL | 5.6-5.7|
-|  Node.js | 10 | | SQL Server | 2012+ |
-|  Apache | 2.4 |
-
-### Installation
-1: Run `composer install` or for production `composer install --no-dev` in the root directory <br/>
-2: Run `npm install` in the root directory <br/>
-3: Run `composer install` or for production `composer install --no-dev` in legacy directory <br/>
-4: Run legacy theme compile in legacy directory <br/>
-```
-./vendor/bin/pscss -f compressed themes/suite8/css/Dawn/style.scss > themes/suite8/css/Dawn/style.css
-./vendor/bin/pscss -f compressed themes/suite8/css/Noon/style.scss > themes/suite8/css/Noon/style.css
-```
-5: Set permissions <br/>
-```
-chown -R {user ID}:{web user group} .
-find . -type d -exec chmod 0755 {} \;
-find . -type f -exec chmod 0644 {} \;
-chmod +x bin/console
-``` 
-6: Run legacy install process <br/>
-7: Go back to root folder <br/>
-8: Run `composer dump-env dev` or for production `composer dump-env prod` <br/>
-9: Set the place-holders in `.env.local.php` to valid credentials <br/>
-```
-'DATABASE_URL' => 'mysql://user:pass@db_host:db_port/db_name?serverVersion=db_version',
-```
-
-10: Setup proxy config if you plan to use `ng serve` - (Currently this does not do anything) <br/>
-* Copy `proxy.conf.env.json` to `proxy.conf.local.json` <br/>
-* Replace `"target": "http//<api_host>:<api_port>"` with your api url <br/>
-
-11: Run `ng build` or `ng serve` or for production run `ng build --prod` or `ng serve --prod` <br/>
-12: Run `composer dumpautoload` <br/>
-13: Re-set permissions <br/>
-```
-chown -R {user ID}:{web user group} .
-find . -type d -exec chmod 0755 {} \;
-find . -type f -exec chmod 0644 {} \;
-chmod +x bin/console
-```
