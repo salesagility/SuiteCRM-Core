@@ -1,0 +1,641 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+/**** Detail view ***/
+
+.favorite_icon_fill svg {
+  height: 28px;
+  width: 28px;
+}
+
+.favorite_icon_outline svg {
+  height: 28px;
+  width: 28px;
+}
+
+.vcard {
+  font-size: inherit;
+  border: none;
+  color: $main-font-color;
+}
+
+.vcard .suitepicon {
+  font-size: 18px;
+}
+
+p.msg {
+	padding:10px;
+}
+
+.moduleTitle .module-title-text {
+  height: auto;
+  line-height: 36px;
+  margin-bottom: 0.2em;
+}
+
+.nav-tabs > li.tab-inline-pagination {
+  float: right;
+  line-height: $tab-height;
+  position: relative;
+  right: -0.9em;
+  bottom: 7.2em;
+  padding-top: 5px;
+}
+
+.nav-tabs > li.tab-inline-pagination .btn-pagination[disabled] {
+  background-color: $disabled-btn-bg;
+}
+
+.btn-pagination .suitepicon {
+  line-height: inherit;
+}
+
+.buttons .pagination .btn-pagination {
+  height: 28px;
+  line-height: 18px;
+  font-size: 10px;
+  padding: 0 10px 0 10px;
+  background-color: $default-btn-bg;
+  font-weight: 600;
+}
+
+.nav-tabs > li.tab-inline-pagination .btn-pagination {
+  background-color: $default-btn-bg;
+  font-size: 10px;
+  font-weight: 600;
+  height: 28px;
+  line-height: 18px;
+  padding: 5px 10px 0 10px;
+  display: inline-block;
+}
+
+.buttons .pagination .btn-pagination:hover {
+  height: 28px;
+  line-height: 18px;
+  font-size: 10px;
+  padding: 0 10px 0 10px;
+  background-color: $default-btn-bg;
+  font-weight: 600;
+}
+
+.nav-tabs > li.tab-inline-pagination .btn-pagination:hover {
+  background-color: $default-btn-bg-hover;
+}
+
+.nav-tabs > li.tab-inline-pagination .glyphicon-chevron-left {
+  margin-right: 4px;
+}
+
+.nav-tabs > li.tab-inline-pagination .glyphicon-chevron-right {
+  margin-left: 4px;
+}
+
+.pagination-range-label {
+  color: $main-font-color;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.mobile-pagination {
+  display: none;
+  line-height: $tab-height;
+  visibility: collapse;
+}
+
+.mobile-pagination .btn-pagination[disabled] {
+  background-color: $disabled-btn-bg;
+}
+
+.mobile-pagination .btn-pagination {
+  background-color: $default-btn-bg;
+  font-size: 10px;
+  font-weight: 600;
+  height: 28px;
+  line-height: 14px;
+  padding: 2px 10px 2px 10px;
+}
+
+.mobile-pagination .btn-pagination:hover {
+  background-color: $default-btn-bg-hover;
+}
+
+.mobile-pagination .glyphicon-chevron-left {
+  margin-right: 0px;
+}
+
+.mobile-pagination .glyphicon-chevron-right {
+  margin-left: 0px;
+}
+
+@media (max-width: 750px) {
+
+  .moduleTitle {
+    display: inline-block;
+    text-align:center;
+    width:100%;
+  }
+
+  .favorite {
+    padding: 0 0;
+    display: inline-block;
+    float: none !important;
+    width: 32px;
+    height: 32px;
+    padding: 0 0;
+    width: 32px;
+  }
+
+  .nav-tabs > li.tab-inline-pagination {
+    display: none;
+    visibility: collapse;
+  }
+
+  .nav-tabs > .mobile-pagination {
+    display: none;
+    visibility: collapse;
+  }
+
+  .mobile-pagination {
+    display: block;
+    visibility: visible;
+  }
+
+  .mobile-pagination > table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+  }
+
+  .mobile-pagination .pagination-range-label {
+    font-size: 10px;
+  }
+
+  .moduleTitle .module-title-text {
+    font-size: 18px;
+    float: none;
+    margin-bottom: 0;
+    display: inline-block;
+  }
+
+  .tab-inline-pagination .pagination-range-label {
+    display: none;
+    visibility: hidden;
+  }
+
+  .pointer {
+    font-size: 32px;
+  }
+  .buttons .pagination {
+    visibility: collapse;
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pagination-label {
+    display: none;
+    visibility: collapse;
+  }
+
+  .nav-tabs > li.tab-inline-pagination .glyphicon-chevron-left {
+    margin-right: 0px;
+  }
+
+  .nav-tabs > li.tab-inline-pagination .glyphicon-chevron-right {
+    margin-left: 0px;
+  }
+
+  .mobile-pagination .glyphicon-chevron-left {
+    margin-right: 0px;
+  }
+
+  .mobile-pagination .glyphicon-chevron-right {
+    margin-left: 0px;
+  }
+}
+
+// Remove underline on the icons in activities panel and history panel
+#list_subpanel_activities .evenListRowS1 td:nth-of-type(2) a {
+  border-bottom: none;
+}
+
+#list_subpanel_activities .oddListRowS1 td:nth-of-type(2) a {
+  border-bottom: none;
+}
+
+#subpanel_history .evenListRowS1 td:nth-of-type(2) a {
+  border-bottom: none;
+}
+
+#subpanel_history .oddListRowS1 td:nth-of-type(2) a {
+  border-bottom: none;
+}
+
+.subpanel-table .SugarActionMenu .single a {
+  min-height: 32px;
+  line-height: 32px;
+}
+
+.subpanel-table {
+ .listViewThLinkS1{
+  svg {
+    position: relative;
+    top: 0.3em;
+    left: 0.4em;
+  }
+ }
+}
+
+#list_subpanel_projecttask {
+ .subpanel-table {
+  .sugar_action_button {
+    .suitepicon{
+      font-size: 0.7em;
+    }
+  }
+ }
+}
+
+table.footable > tbody > tr.footable-empty > td {
+  font-size: 1.25em;
+  color: $black;
+}
+
+.detail-view-row {
+  .inlineEditIcon {
+    svg {
+      display: block;
+      width: 0.9em;
+      height: 0.9em;
+      opacity: 0.2;
+      fill:$btn-color-black;
+    }
+  }
+}
+
+@media print {
+  .bootstrap-container {
+    margin: 0;
+  }
+
+  .bootstrap-container.col-sm-offset-3 {
+    margin-top: 0;
+  }
+
+  .btn {
+    @include hideWhenPrinting();
+  }
+
+  .button {
+    @include hideWhenPrinting();
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .detail-view-row .label {
+    border: none;
+    display: inline-block;
+    padding: 0;
+  }
+
+  .detail-view-row .detail-view-field {
+    display: inline-block;
+    padding: 0;
+  }
+
+  .detail-view-row {
+    .sugar_field:empty {
+      line-height: 0;
+      height: 0;
+      visibility: collapse;
+      display: none;
+    }
+  }
+
+  .detail-view-row > .col-sm-6 {
+    display: inline-block;
+    width: 50%;
+
+    .col-sm-4 {
+      display: inline-block;
+      width: 40%;
+      line-height: 24px;
+    }
+
+    .col-sm-8 {
+      display: inline-block;
+      width: 50%;
+      line-height: 24px;
+    }
+  }
+
+
+  .detail-view-row [field="description"] {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .detail-view-row [field="description_html"] {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .detail-view-row [field="billing_address_street"] {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .detail-view-row [field="shipping_address_street"] {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .detail-view-row [field="email1"] {
+    display: inline-block;
+    width: 100%;
+  }
+
+
+  .favorite {
+    @include hideWhenPrinting();
+  }
+
+  .module-title-text {
+    @include hideWhenPrinting();
+  }
+
+  .nav.nav-tabs {
+    @include hideWhenPrinting();
+  }
+
+  .mobile-pagination {
+    @include hideWhenPrinting();
+  }
+
+  #subpanel_list {
+    @include hideWhenPrinting();
+  }
+
+  .tab-inline-pagination {
+    @include hideWhenPrinting()
+  }
+
+  .tab-content > .active.tab-pane-NOBOOTSTRAPTOGGLER {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .tab-content > .fade.tab-pane-NOBOOTSTRAPTOGGLER {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .tab-content > .in.tab-pane-NOBOOTSTRAPTOGGLER {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .tab-content .tab-pane-NOBOOTSTRAPTOGGLER:not(.active) {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  footer {
+    @include hideWhenPrinting()
+  }
+}
+
+
+.email-link {
+  display: block;
+  float: left;
+}
+
+.confirm-opt-in-tick {
+  float: right;
+  padding: 0 10px;
+}
+
+
+.email-opt-in {
+  font-size: 14px;
+}
+
+.email-opt-in-not-sent {
+  color: $opt-in-tick-color-not-sent;
+}
+
+.email-opt-in-failed {
+  color: $opt-in-tick-color-failed;
+}
+
+.email-opt-in-sent {
+  color: $opt-in-tick-color-sent;
+}
+
+.email-opt-in-confirmed {
+  color: $confirm-opt-in-tick-color-in-confirmed;
+}
+
+.email-line-through {
+  text-decoration: line-through;
+}
+
+// Fix for list view confirm opt in ticks
+.table-responsive.list > tbody > tr > td {
+  .email-opt-in .suitepicon {
+    font-size: $page-font-size;
+  }
+
+  .email-opt-in-not-sent .suitepicon {
+    @extend  .email-opt-in-not-sent;
+  }
+
+  .email-opt-in-failed .suitepicon {
+    @extend  .email-opt-in-failed;
+  }
+
+  .email-opt-in-sent .suitepicon {
+    @extend  .email-opt-in-sent;
+  }
+
+  .email-opt-in-confirmed .suitepicon {
+    @extend  .email-opt-in-confirmed;
+  }
+}
+
+.email-opt-in .suitepicon {
+  line-height: inherit;
+}
+
+div.detail-view-row {
+  margin: 0;
+  min-width: 48px;
+  display: flex;
+  @media only screen and (max-width: 750px) {
+    display: block;
+  }
+  .detail-view-field {
+    #EditView {
+      width: 100%;
+      margin-bottom: 0.6em;
+      input[type=text] {
+        background-color:$transparent-color;
+        border: 1px solid $base-border-light-color;
+        width: 100%;
+        margin-right: 3px;
+        &:focus {
+          border-color :$input-border-focus;
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+      }
+    }
+    .inlineEditIcon {
+      display: flex;
+      justify-content: flex-end;
+      flex-grow: 1;
+    }
+  }
+  .detail-view-bordered {
+    border-right: $base-border-color solid 0.0625rem;
+    &:last-child {
+      border-right: none;
+    }
+    @media only screen and (max-width: 750px) {
+      border-right: none;
+    }
+  }
+}
+
+.detail-view-row-item {
+  margin:0;
+  min-width: 48px;
+  min-height: 30px;
+  padding-left: 2rem;
+}
+
+.detail-view-row .label {
+  font-size: 14px;
+  font-weight: 700;
+  width: 98%;
+  text-align: left;
+  padding: 0;
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.detail-view-field {
+  font-size: 14px;
+  font-weight: 400;
+  color: $main-font-color;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: $border-radius-base;
+  text-align: left;
+  vertical-align: baseline;
+  white-space: inherit;
+  width: 98%;
+  padding-bottom: 0.5em;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.detail-view-field span {
+  line-height: normal;
+  display: inline-block;
+  vertical-align: middle;
+  flex-grow: 1;
+}
+
+.detail-view-field a {
+  flex-grow: 1;
+}
+
+table.subpanel-table .pagination .sugar_action_button:hover {
+  background-color: $btn-color-hover-white;
+}
+
+table.subpanel-table .pagination li.sugar_action_button:hover > form > a {
+  background-color: $btn-color-hover-white;
+  color: $btn-color-hover-textblack;
+}
+
+table.subpanel-table .pagination li.sugar_action_button:hover > span.suitepicon {
+  color: $btn-color-hover-textblack;
+}
+
+table.subpanel-table .pagination .SugarActionMenu li.single a:hover {
+  background-color: $btn-color-hover-white;
+  color: $btn-color-hover-textblack;
+}
+
+table.subpanel-table .pagination li.single > form {
+  position: absolute;
+  top: -39px;
+  right: 4px;
+}
+
+table.subpanel-table .pagination li.single > a {
+  position: absolute;
+  top: -39px;
+  right: 7px;
+}
+
+.header-module-title {
+  color: #777777;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.subpanel-table {
+  #selectLinkTop {
+    li.sugar_action_button {
+      position: relative;
+      top: -91px;
+      left: 0.5rem;
+    }
+    input[type=checkbox] {
+      margin: 3px 0 3px 3px;
+    }
+  }
+}
+
+.detail-border-bottom {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-top: 1px solid $header-bottom-border;
+}
