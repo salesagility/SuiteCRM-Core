@@ -1,0 +1,94 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+#SearchSettings {
+  .modules-container {
+    max-height: 300px;
+    overflow-x: auto;
+    column-count: 3;
+    margin-top: 10px
+  }
+}
+
+#search-time {
+  margin-top: 20px
+}
+
+.td-container {
+  padding: 10px;
+}
+
+// ~ ~ ~ ~
+// Visual fixes for module selector
+// ~ ~ ~ ~
+
+.settings-buttons {
+  margin-top: 10px;
+}
+
+.search-module-selector {
+  position: relative;
+
+  .yui-dt-hd, .yui-dt-bd {
+    width: 50% !important;
+
+    min-width: 300px !important;
+
+    table {
+      width: 100% !important;
+    }
+  }
+
+  .yui-dt-hd *, .yui-dt-hd {
+    background-color: transparent !important;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .yui-dt-bd {
+    overflow-x: auto;
+    overflow-y: scroll;
+  }
+
+  .edit tr td table tr td {
+    padding: 10px;
+    margin-right: 0;
+  }
+
+  .view tr {
+    padding: 0;
+  }
+
+  .yui-dt0-col-label .yui-dt-liner{
+    overflow: auto;
+  }
+}
+
+#GlobalSearchSettings {
+  background-color: transparent;
+  & * {
+    border: none;
+  }
+}

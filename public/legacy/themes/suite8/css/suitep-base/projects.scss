@@ -1,0 +1,111 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+/** Style **/
+select#Duration_unit {
+  padding: 0 52px 0 5px;
+}
+
+select#Lag_unit {
+  padding: 0 52px 0 5px;
+}
+
+.projects-gantt-chart-popup fieldset > table tr > td {
+  display: block;
+  float: left;
+  width: 50%;
+}
+
+/** make align with task name **/
+.projects-gantt-chart-popup table > tbody > tr > td:nth-of-type(2) {
+  padding-top: $input-line-height + 4px;
+}
+
+#dialog .projects-gantt-chart-popup input.text {
+  width: auto;
+}
+
+#dialog .projects-gantt-chart-popup input#Lag[type=text] {
+  width: 72px;
+}
+
+#dialog .projects-gantt-chart-popup input#Duration[type=text] {
+  width: 72px;
+}
+
+input#Resources {
+  width: auto;
+}
+
+input[type=radio]#Milestone {
+  line-height: $input-line-height;
+}
+
+label#Milestone_label {
+  line-height: $input-line-height;
+}
+
+input[type=radio]#Subtask {
+  line-height: $input-line-height;
+}
+
+label#Subtask_label {
+  line-height: $input-line-height;
+}
+
+.projects-gantt-chart-popup label {
+  display: inline-block;
+}
+
+.projects-gantt-chart-popup input[type=radio]#Milestone {
+  margin-left: 20px;
+}
+
+/** fix popup message **/
+.blockMsg h1 {
+  font-size: $page-font-size;
+  font-weight: bold;
+}
+
+a#create_link.utilsLink {
+  font-size: $page-font-size;
+  font-weight: 500;
+  background: $danger-btn-bg;
+  color: $default-btn-color;
+  cursor: pointer;
+  padding: 5px 20px 5px 20px;
+  margin: 0 0 0 0;
+  border: none;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  line-height: $button-line-height;
+  height: $button-line-height;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a#create_link.utilsLink:hover {
+  background-color: $danger-btn-bg-hover;
+}

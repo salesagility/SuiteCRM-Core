@@ -1,0 +1,215 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+@font-face {
+    font-family: "suitepicon";
+    src: url("../../../../../themes/suite8/css/suitep-base/suitepicon.eot#iefix") format("embedded-opentype"),
+    url("../../../../../themes/suite8/css/suitep-base/suitepicon.woff") format("woff"),
+    url("../../../../../themes/suite8/css/suitep-base/suitepicon.ttf") format("truetype"),
+    url("../../../../../themes/suite8/css/suitep-base/suitepicon.svg#suitepicon") format("svg");
+}
+
+.suitepicon {
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.suitepicon:before {
+    font-family: suitepicon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    vertical-align: top;
+}
+
+/**
+ * CSS Fallbacks
+ */
+.suitepicon-module- {
+    @extend .suitepicon-module-default;
+}
+.suitepicon-action- {
+    @extend .suitepicon-action-empty-action;
+}
+.suitepicon-admin- {
+    @extend .suitepicon-admin-password;
+}
+
+/**
+ * Class Aliases
+ * instead of creating mulitple icons in the font we can simply reuse the icons if the names are slightly different
+ */
+
+.suitepicon-action-view-status {
+    @extend .suitepicon-module-opportunitiesbyleadsourcebyoutcomedashlet;
+}
+
+.suitepicon-action-view-news {
+    @extend .suitepicon-dashlet-sugarnewsdashlet;
+}
+
+.suitepicon-action-list {
+    @extend .suitepicon-action-view;
+}
+
+.suitepicon-action-create {
+    @extend .suitepicon-action-add;
+}
+
+.suitepicon-action-create-lead-vcard {
+    @extend .suitepicon-action-create-contact-vcard;
+}
+
+.suitepicon-module-sugarfeed {
+    @extend .suitepicon-action-alerts-small
+}
+
+.suitepicon-module-jjwg-areas {
+    @extend .suitepicon-module-areas-maps;
+}
+
+.suitepicon-module-outboundemailaccounts {
+    @extend .suitepicon-module-default;
+}
+
+.suitepicon-module-aow-processed {
+    @extend .suitepicon-module-process;
+}
+
+.suitepicon-module-aos-products {
+    @extend .suitepicon-module-products;
+}
+
+.suitepicon-module-projecttask {
+    @extend .suitepicon-module-project-tasks;
+}
+
+.suitepicon-module-projecttask {
+    @extend .suitepicon-module-project-tasks;
+}
+
+.suitepicon-module-project {
+    @extend .suitepicon-module-project-tasks;
+}
+
+.suitepicon-module-am-projecttemplates {
+    @extend .suitepicon-module-project-tasks;
+}
+
+.suitepicon-module-surveyquestionoptions {
+    @extend .suitepicon-module-surveys;
+}
+
+.suitepicon-module-surveyquestionresponses {
+    @extend .suitepicon-module-surveys;
+}
+
+.suitepicon-module-surveyresponses {
+    @extend .suitepicon-module-surveys;
+}
+
+.suitepicon-module-surveyquestions {
+    @extend .suitepicon-module-surveys;
+}
+
+.suitepicon-dashlet-invadersdashlet {
+    @extend .suitepicon-action-invade;
+}
+
+.suitepicon-dashlet-sugarfeeddashlet {
+    @extend .suitepicon-action-alerts-small;
+}
+
+.suitepicon-dashlet-sugarnewsdashlet {
+    @extend .suitepicon-dashlet-sugarnews;
+}
+
+.suitepicon-dashlet-jotpaddashlet {
+    @extend .suitepicon-dashlet-jotpad;
+}
+
+.suitepicon-dashlet-spotsdashlet {
+    @extend .suitepicon-module-spots;
+}
+
+.suitepicon-module-user {
+    @extend .suitepicon-module-users;
+}
+
+.suitepicon-module-contact {
+    @extend .suitepicon-module-contacts;
+}
+
+.suitepicon-module-lead {
+    @extend .suitepicon-module-leads;
+}
+
+// Charts
+.suitepicon-module-opportunitiesbyleadsourcebyoutcomedashlet {
+    @extend .suitepicon-dashlet-charts-horizontal;
+}
+
+.suitepicon-module-opportunitiesbyleadsourcedashlet {
+    @extend .suitepicon-dashlet-charts-pie;
+}
+
+.suitepicon-module-campaignroichartdashlet {
+    @extend .suitepicon-dashlet-charts-groupby;
+}
+
+.suitepicon-module-mypipelinebysalesstagedashlet {
+    @extend .suitepicon-dashlet-charts-funnel;
+}
+
+.suitepicon-module-outcomebymonthdashlet {
+    @extend .suitepicon-dashlet-charts-vertical;
+}
+
+.suitepicon-module-pipelinebysalesstagedashlet {
+    @extend .suitepicon-dashlet-charts-funnel;
+}
+
+.suitepicon-module-aos-products-quotes {
+    @extend .suitepicon-module-products;
+}
+
+.suitepicon-module-campaignlog {
+    @extend .suitepicon-module-campaigns;
+}
+
+// @see sidebar.scss
+.button-toggle-expanded span {
+    @extend .suitepicon;
+    @extend .suitepicon-action-move-left;
+    line-height: 30px;
+    margin-left: 4px;
+}
+
+.button-toggle-collapsed span {
+    @extend .suitepicon;
+    @extend .suitepicon-action-move-right;
+    line-height: 30px;
+    margin-left: 7px;
+}
