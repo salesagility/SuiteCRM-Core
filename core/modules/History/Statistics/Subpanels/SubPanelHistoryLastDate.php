@@ -73,7 +73,7 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
         $this->init();
         $this->startLegacyApp();
 
-        $dateNow = date("Y-m-d");
+        $dateNow = date("Y-m-d H:i:s");
 
         $queries = $this->getQueries($module, $id, $subpanel);
 
