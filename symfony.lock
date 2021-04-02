@@ -21,6 +21,12 @@
     "behat/gherkin": {
         "version": "v4.6.0"
     },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
+    "browserstack/browserstack-local": {
+        "version": "v1.1.0"
+    },
     "codeception/aspect-mock": {
         "version": "3.1.0"
     },
@@ -81,6 +87,27 @@
     "composer/xdebug-handler": {
         "version": "1.4.0"
     },
+    "consolidation/annotated-command": {
+        "version": "4.2.3"
+    },
+    "consolidation/config": {
+        "version": "2.0.1"
+    },
+    "consolidation/log": {
+        "version": "2.0.2"
+    },
+    "consolidation/output-formatters": {
+        "version": "4.1.2"
+    },
+    "consolidation/robo": {
+        "version": "2.2.2"
+    },
+    "consolidation/self-update": {
+        "version": "1.2.0"
+    },
+    "container-interop/container-interop": {
+        "version": "1.2.0"
+    },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
         "recipe": {
@@ -92,6 +119,12 @@
         "files": [
             "config/packages/test/dama_doctrine_test_bundle.yaml"
         ]
+    },
+    "defuse/php-encryption": {
+        "version": "v2.2.1"
+    },
+    "dflydev/dot-access-data": {
+        "version": "v1.1.0"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -119,6 +152,9 @@
     },
     "doctrine/dbal": {
         "version": "v2.10.1"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
@@ -185,8 +221,20 @@
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },
+    "elasticsearch/elasticsearch": {
+        "version": "v5.5.0"
+    },
+    "ezyang/htmlpurifier": {
+        "version": "v4.13.0"
+    },
     "fig/link-util": {
         "version": "1.1.0"
+    },
+    "filp/whoops": {
+        "version": "2.12.0"
+    },
+    "firebase/php-jwt": {
+        "version": "v5.2.1"
     },
     "flow/jsonpath": {
         "version": "0.5.0"
@@ -203,11 +251,41 @@
             ".php_cs.dist"
         ]
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.2"
+    },
     "goaop/framework": {
         "version": "2.3.4"
     },
     "goaop/parser-reflection": {
         "version": "2.1.1"
+    },
+    "google/apiclient": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "49c5d7a66d863d28513979bf0666dc77599100c0"
+        }
+    },
+    "google/apiclient-services": {
+        "version": "v0.166.0"
+    },
+    "google/auth": {
+        "version": "v1.15.0"
+    },
+    "google/recaptcha": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.1",
+            "ref": "d087df3e087f50da3955f2def05079380da5894b"
+        }
+    },
+    "grasmash/expander": {
+        "version": "1.0.0"
     },
     "guzzlehttp/guzzle": {
         "version": "6.5.2"
@@ -218,14 +296,59 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "guzzlehttp/ringphp": {
+        "version": "1.1.1"
+    },
+    "guzzlehttp/streams": {
+        "version": "3.0.0"
+    },
+    "gymadarasz/ace": {
+        "version": "v1.2.3.stable"
+    },
+    "gymadarasz/imagesloaded": {
+        "version": "v4.1.01"
+    },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.1"
+    },
     "jakubledl/dissect": {
         "version": "v1.0.1"
+    },
+    "jeremykendall/php-domain-parser": {
+        "version": "4.0.3-alpha"
+    },
+    "jeroendesloovere/vcard": {
+        "version": "1.5.0"
     },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
+    "lcobucci/jwt": {
+        "version": "3.3.3"
+    },
+    "leafo/scssphp": {
+        "version": "v0.7.8"
+    },
+    "league/container": {
+        "version": "2.5.0"
+    },
+    "league/event": {
+        "version": "2.2.0"
+    },
     "league/html-to-markdown": {
         "version": "4.9.1"
+    },
+    "league/oauth2-server": {
+        "version": "5.1.6"
+    },
+    "league/uri": {
+        "version": "4.2.3"
+    },
+    "mikey179/vfsstream": {
+        "version": "v1.6.8"
+    },
+    "mockery/mockery": {
+        "version": "1.4.3"
     },
     "monolog/monolog": {
         "version": "1.25.3"
@@ -245,6 +368,12 @@
             "./config/packages/nelmio_cors.yaml"
         ]
     },
+    "nesbot/carbon": {
+        "version": "2.46.0"
+    },
+    "nikic/fast-route": {
+        "version": "v1.3.0"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -253,6 +382,15 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
+    },
+    "onelogin/php-saml": {
+        "version": "3.6.1"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.4.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v2.0.19"
     },
     "phar-io/manifest": {
         "version": "1.0.3"
@@ -274,6 +412,15 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "phpmailer/phpmailer": {
+        "version": "v6.4.0"
+    },
+    "phpoption/phpoption": {
+        "version": "1.7.5"
+    },
+    "phpseclib/phpseclib": {
+        "version": "3.0.6"
     },
     "phpspec/prophecy": {
         "version": "v1.10.2"
@@ -303,6 +450,9 @@
         },
         "files": []
     },
+    "pimple/pimple": {
+        "version": "v3.4.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -326,6 +476,12 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "react/promise": {
+        "version": "v2.8.0"
+    },
+    "robrichards/xmlseclibs": {
+        "version": "3.1.1"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
@@ -375,8 +531,17 @@
     "sebastian/version": {
         "version": "2.0.1"
     },
+    "slim/slim": {
+        "version": "3.12.3"
+    },
+    "smarty/smarty": {
+        "version": "v2.6.31"
+    },
     "softcreatr/jsonpath": {
         "version": "0.7.2"
+    },
+    "soundasleep/html2text": {
+        "version": "0.5.0"
     },
     "symfony/asset": {
         "version": "v4.4.4"
@@ -518,6 +683,9 @@
     "symfony/polyfill-ctype": {
         "version": "v1.13.1"
     },
+    "symfony/polyfill-iconv": {
+        "version": "v1.22.1"
+    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.20.0"
     },
@@ -607,6 +775,15 @@
     "symfony/string": {
         "version": "v5.1.9"
     },
+    "symfony/translation": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        }
+    },
     "symfony/translation-contracts": {
         "version": "v1.1.7"
     },
@@ -666,11 +843,23 @@
     "symfony/yaml": {
         "version": "v4.4.4"
     },
+    "tedivm/jshrink": {
+        "version": "v1.4.0"
+    },
     "theseer/tokenizer": {
         "version": "1.1.3"
     },
+    "tinymce/tinymce": {
+        "version": "4.9.11"
+    },
+    "tuupola/slim-jwt-auth": {
+        "version": "2.4.0"
+    },
     "twig/twig": {
         "version": "v2.12.3"
+    },
+    "vlucas/phpdotenv": {
+        "version": "v3.6.8"
     },
     "webmozart/assert": {
         "version": "1.6.0"
@@ -678,13 +867,73 @@
     "webonyx/graphql-php": {
         "version": "v0.13.8"
     },
+    "wikimedia/composer-merge-plugin": {
+        "version": "v1.4.1"
+    },
     "willdurand/negotiation": {
         "version": "v2.3.1"
+    },
+    "zbateson/mail-mime-parser": {
+        "version": "1.3.1"
+    },
+    "zbateson/mb-wrapper": {
+        "version": "1.0.1"
+    },
+    "zbateson/stream-decorators": {
+        "version": "1.0.4"
     },
     "zendframework/zend-code": {
         "version": "3.4.1"
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.1"
+    },
+    "zf1/zend-cache": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-crypt": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-exception": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-gdata": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-http": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-loader": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-locale": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-mime": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-oauth": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-registry": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-search": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-search-lucene": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-uri": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-validate": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-version": {
+        "version": "1.12.20"
+    },
+    "zf1/zend-xml": {
+        "version": "1.12.20"
     }
 }
