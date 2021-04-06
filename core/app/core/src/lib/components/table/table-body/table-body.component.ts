@@ -129,14 +129,19 @@ export class TableBodyComponent implements OnInit {
         return status === SelectionStatus.ALL;
     }
 
-    buildDisplayColumns(fields: ColumnDefinition[]): string[] {
+    buildDisplayColumns(metaFields: ColumnDefinition[]): string[] {
         let i = 0;
         let hasLinkField = false;
         const returnArray = [];
+
+        const fields = metaFields.filter(function(field){
+            return !field.display || field.display!=='hidden';
+        });
+
         while (i < this.maxColumns && i < fields.length) {
-            returnArray.push(fields[i].name);
-            hasLinkField = hasLinkField || fields[i].link;
-            i++;
+                returnArray.push(fields[i].name);
+                hasLinkField = hasLinkField || fields[i].link;
+                i++;
         }
         if (!hasLinkField && (this.maxColumns < fields.length)) {
             for (i = this.maxColumns; i < fields.length; i++) {

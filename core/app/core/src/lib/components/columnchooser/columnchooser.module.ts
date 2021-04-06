@@ -29,9 +29,10 @@ import {CommonModule} from '@angular/common';
 
 import {ColumnChooserComponent} from './columnchooser.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { CloseButtonModule } from '../close-button/close-button.module';
-import {ImageModule} from '../image/image.module';
+import {CloseButtonModule} from '../close-button/close-button.module';
+import {ModalModule} from "../modal/components/modal/modal.module";
+import {LabelModule} from "../label/label.module";
+import {ButtonModule} from "../button/button.module";
 
 @NgModule({
     declarations: [ColumnChooserComponent],
@@ -39,9 +40,10 @@ import {ImageModule} from '../image/image.module';
     imports: [
         CommonModule,
         DragDropModule,
-        ImageModule,
-        NgbModule,
-        CloseButtonModule
+        CloseButtonModule,
+        ModalModule,
+        LabelModule,
+        ButtonModule
     ],
     entryComponents: [ColumnChooserComponent]
 })

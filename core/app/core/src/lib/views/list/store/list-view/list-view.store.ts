@@ -56,6 +56,8 @@ import {AppData, ViewStore} from '../../../../store/view/view.store';
 import {LocalStorageService} from '../../../../services/local-storage/local-storage.service';
 import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
 import {Process} from '../../../../services/process/process.service';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ColumnChooserComponent} from "../../../../components/columnchooser/columnchooser.component";
 
 export interface ListViewData {
     records: Record[];
@@ -95,6 +97,7 @@ export class ListViewStore extends ViewStore implements StateStore,
      * Public long-lived observable streams
      */
     moduleName$: Observable<string>;
+    columns: BehaviorSubject<ColumnDefinition[]>;
     columns$: Observable<ColumnDefinition[]>;
     lineActions$: Observable<LineAction[]>;
     records$: Observable<Record[]>;
@@ -134,7 +137,8 @@ export class ListViewStore extends ViewStore implements StateStore,
         protected localStorage: LocalStorageService,
         protected bulkAction: AsyncActionService,
         protected message: MessageService,
-        protected listStoreFactory: RecordListStoreFactory
+        protected listStoreFactory: RecordListStoreFactory,
+        protected modalService: NgbModal
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -180,6 +184,13 @@ export class ListViewStore extends ViewStore implements StateStore,
                 this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, false);
             }
         ));
+
+        let listViewColumns: ColumnDefinition[] = [];
+        this.subs.push(metadataStore.listViewColumns$.subscribe(cols => {
+            listViewColumns = cols;
+        }));
+        this.columns = new BehaviorSubject<ColumnDefinition[]>(listViewColumns);
+        this.columns$ = this.columns.asObservable();
     }
 
     get showFilters(): boolean {
@@ -445,4 +456,42 @@ export class ListViewStore extends ViewStore implements StateStore,
 
         loader(storage[module]);
     }
+
+    openColumnChooserDialog(): void {
+
+        const modalRef = this.modalService.open(ColumnChooserComponent, {
+            ariaLabelledBy: 'modal-basic-title',
+            centered: true,
+            size: 'lg',
+            windowClass: 'column-chooser-modal'
+        });
+
+        const displayedColumns = this.columns.getValue().filter(function (col) {
+            return !col.display || col.display !== 'hidden';
+        });
+
+        const hiddenColumns = this.columns.getValue().filter(function (col) {
+            return col.display && col.display === 'hidden';
+        });
+
+        modalRef.componentInstance.displayed = displayedColumns;
+        modalRef.componentInstance.hidden = hiddenColumns;
+
+        modalRef.result.then((result) => {
+
+            let allColumns: ColumnDefinition[] = [];
+            const selectedDisplayColumns: ColumnDefinition[] = result.displayed;
+            const selectedHideColumns: ColumnDefinition[] = result.hidden;
+
+            selectedDisplayColumns.forEach(function (column) {
+                column.display = 'show';
+            });
+            selectedHideColumns.forEach(function (column) {
+                column.display = 'hidden';
+            });
+            allColumns.push(...selectedDisplayColumns, ...selectedHideColumns);
+            this.columns.next(allColumns);
+        });
+    }
+
 }

@@ -55,7 +55,6 @@ import {ButtonGroupInterface, ButtonInterface, DropdownButtonInterface, SearchCr
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ColumnChooserComponent} from '../../../../components/columnchooser/columnchooser.component';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {
@@ -269,12 +268,7 @@ export class SettingsMenuComponent implements OnInit {
             },
             icon: 'column_chooser',
             onClick: (): void => {
-                this.modalService.open(ColumnChooserComponent, {
-                    ariaLabelledBy: 'modal-basic-title',
-                    centered: true,
-                    size: 'lg',
-                    windowClass: 'column-chooser-modal'
-                });
+                this.listStore.openColumnChooserDialog();
             }
         };
     }

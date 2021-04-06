@@ -24,10 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, ModalCloseFeedBack} from 'common';
+import {ButtonInterface, ColumnDefinition, ModalCloseFeedBack} from "common";
+import {AppStateStore} from "../../store/app-state/app-state.store";
+import {LanguageStore} from "../../store/language/language.store";
 
 @Component({
     selector: 'scrm-columnchooser',
@@ -35,38 +37,21 @@ import {ButtonInterface, ModalCloseFeedBack} from 'common';
 })
 
 export class ColumnChooserComponent implements OnInit {
-    close: ButtonInterface;
+    @Input() displayed: ColumnDefinition[];
+    @Input() hidden: ColumnDefinition[];
 
-    modalTitle = 'Choose Columns';
+    titleKey = 'LBL_COLUMN_SELECTOR_MODAL_TITLE';
+    closeButtonIcon: ButtonInterface;
+    closeButton: ButtonInterface;
+    saveButton: ButtonInterface;
 
-    displayed = [
-        'Name',
-        'City',
-        'Billing Country',
-        'Phone',
-        'User',
-        'Email Address',
-        'Date Created',
-    ];
-
-    hidden = [
-        'Annual Revenue',
-        'Phone Fax',
-        'Billing Street',
-        'Billing Post Code',
-        'Shipping Street',
-        'Shipping Postcode',
-        'Rating',
-        'Website',
-        'Ownership',
-        'Employees'
-    ];
-
-    constructor(public modal: NgbActiveModal) {
+    constructor(
+        protected appState: AppStateStore,
+        protected languageStore: LanguageStore,
+        public modal: NgbActiveModal) {
     }
 
-
-    drop(event: CdkDragDrop<string[]>): void {
+    drop(event: CdkDragDrop<{}[], any>): void {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -77,8 +62,17 @@ export class ColumnChooserComponent implements OnInit {
         }
     }
 
+    getHeaderLabel(): string {
+        return this.languageStore.getFieldLabel('LBL_COLUMN_SELECTOR_MODAL_TITLE');
+    }
+
+    getColumnLabel(label: string): string {
+        return this.languageStore.getFieldLabel(label, this.appState.getModule());
+    }
+
     ngOnInit(): void {
-        this.close = {
+
+        this.closeButtonIcon = {
             klass: ['btn', 'btn-outline-light', 'btn-sm'],
             onClick: (): void => {
                 this.modal.close({
@@ -86,6 +80,29 @@ export class ColumnChooserComponent implements OnInit {
                 } as ModalCloseFeedBack);
             }
         } as ButtonInterface;
+
+        this.closeButton = {
+            klass: ['btn', 'modal-button-cancel'],
+            labelKey: 'LBL_COLUMN_SELECTOR_CLOSE_BUTTON',
+            onClick: (): void => {
+                this.modal.close({
+                    type: 'close-button'
+                } as ModalCloseFeedBack);
+            }
+        } as ButtonInterface;
+
+        this.saveButton = {
+            klass: ['btn', 'modal-button-save'],
+            labelKey: 'LBL_COLUMN_SELECTOR_SAVE_BUTTON',
+            onClick: (): void => {
+                this.modal.close({
+                    type: 'close-button',
+                    displayed: this.displayed,
+                    hidden: this.hidden
+                } as ModalCloseFeedBack);
+            }
+        } as ButtonInterface;
+
     }
 
 }

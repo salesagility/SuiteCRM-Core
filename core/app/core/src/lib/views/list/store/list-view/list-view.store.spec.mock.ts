@@ -35,6 +35,7 @@ import {bulkActionProcessMock} from '../../../../services/process/processes/asyn
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.mock';
 import {messageServiceMock} from '../../../../services/message/message.service.spec.mock';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const listviewMockData = {
@@ -155,7 +156,8 @@ export const listviewStoreMock = new ListViewStore(
     localStorageServiceMock,
     bulkActionProcessMock,
     messageServiceMock,
-    listStoreFactoryMock
+    listStoreFactoryMock,
+    new NgbModal(undefined, undefined, undefined, undefined)
 );
 
 listviewStoreMock.init('accounts').pipe(take(1)).subscribe();
