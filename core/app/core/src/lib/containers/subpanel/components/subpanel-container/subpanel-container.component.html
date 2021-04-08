@@ -47,7 +47,7 @@
                         <div class="col-xs-6 col-sm-3 col-md-2 insight-panel-card border-insight"
                              *ngFor="let item of vm.subpanels | keyvalue"
                              [ngClass]="{'sub-panel-banner-button-active': item.value.show === true}"
-                             (click)="showSubpanel(item.value)">
+                             (click)="showSubpanel(item.key, item.value)">
                             <scrm-grid-widget [config]="getGridConfig(item.value)"></scrm-grid-widget>
 
                         </div>
