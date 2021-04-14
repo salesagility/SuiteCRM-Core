@@ -6,7 +6,6 @@
     "start": "npm run start:shell",
     "start:shell": "ng serve shell  -o --port 5000",
     "start:all": "concurrently \"npm run start:shell\"",
-    "build:shell": "ng build shell --prod",
     "serve:dist": "concurrently \"serve dist/shell -l 5000 -s\"",
     "build-dev": "npm run build-dev:common && npm run build-dev:core && npm run build-dev:shell ",
     "build-dev:shell": "ng build shell",
@@ -72,6 +71,7 @@
     "object-hash": "^2.1.1",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.0",
+    "webpack": "^5.4.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
