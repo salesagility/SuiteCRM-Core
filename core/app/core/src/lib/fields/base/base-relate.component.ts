@@ -104,6 +104,10 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
         return (this.field && this.field.definition && this.field.definition.rname) || 'name';
     }
 
+    getRelateIdField(): string {
+        return (this.field && this.field.definition && this.field.definition.id_name) || '';
+    }
+
     getRelatedModule(): string {
         const legacyName = (this.field && this.field.definition && this.field.definition.module) || '';
         if (!legacyName) {

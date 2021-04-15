@@ -26,7 +26,7 @@
 
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
-import {ButtonInterface, Record} from 'common';
+import {ButtonInterface, Field, Record} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -46,6 +46,7 @@ import {TagModel} from "ngx-chips/core/accessor";
 export class RelateEditFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
     selectButton: ButtonInterface;
+    idField: Field;
 
     /**
      * Constructor
@@ -79,6 +80,10 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      */
     ngOnInit(): void {
         super.ngOnInit();
+        const idFieldName = this.getRelateIdField();
+        if (idFieldName && this.record && this.record.fields[idFieldName]){
+            this.idField = this.record.fields[idFieldName];
+        }
     }
 
     /**
@@ -124,6 +129,12 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.field.valueObject = relate;
         this.field.formControl.setValue(relateValue);
         this.field.formControl.markAsDirty();
+
+        if (this.idField){
+            this.idField.value = id;
+            this.idField.formControl.setValue(id);
+            this.idField.formControl.markAsDirty();
+        }
     }
 
     /**
