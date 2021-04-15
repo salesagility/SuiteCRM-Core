@@ -264,7 +264,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
     protected function addTopWidgetConfig(array $viewDefs, array &$metadata): void
     {
         $metadata['topWidget'] = $viewDefs['topWidget'] ?? [];
-        $metadata['topWidget']['refreshOnRecordUpdate'] = $metadata['topWidget']['refreshOnRecordUpdate'] ?? true;
+        $metadata['topWidget']['refreshOn'] = $metadata['topWidget']['refreshOn'] ?? 'data-update';
     }
 
     /**
@@ -288,7 +288,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $metadata['sidebarWidgets'] = $viewDefs['sidebarWidgets'] ?? [];
 
         foreach ($metadata['sidebarWidgets'] as $index => $widget) {
-            $metadata['sidebarWidgets'][$index]['refreshOnRecordUpdate'] = $widget['refreshOnRecordUpdate'] ?? true;
+            $metadata['sidebarWidgets'][$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
         }
     }
 

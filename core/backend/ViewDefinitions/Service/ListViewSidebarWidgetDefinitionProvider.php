@@ -67,7 +67,7 @@ class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDe
         $widgets = $this->filterDefinitionEntries($module, 'widgets', $this->widgets, $this->aclManager);
 
         foreach ($widgets as $index => $widget) {
-            $widgets[$index]['refreshOnRecordUpdate'] = $widget['refreshOnRecordUpdate'] ?? true;
+            $widgets[$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
         }
 
         return array_values($widgets);

@@ -40,9 +40,13 @@ export class ListViewSidebarWidgetAdapter {
 
             if (metadata.sidebarWidgets && metadata.sidebarWidgets.length) {
                 metadata.sidebarWidgets.forEach(widget => {
-                    if (widget && widget.refreshOnRecordUpdate) {
-                        widget.reload$ = this.store.criteria$.pipe(map(() => true));
+
+                    if (widget && widget.refreshOn === 'data-update') {
+                        widget.reload$ = this.store.dataSetUpdate$.pipe(map(() => true));
+                    } else if (widget && widget.refreshOn === 'data-reload') {
+                        widget.reload$ = this.store.records$.pipe(map(() => true));
                     }
+
                 });
             }
 

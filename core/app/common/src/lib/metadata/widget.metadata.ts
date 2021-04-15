@@ -32,7 +32,7 @@ export interface WidgetMetadata {
     labelKey?: string;
     options: WidgetOptionMap;
     reload$?: Observable<boolean>;
-    refreshOnRecordUpdate?: boolean;
+    refreshOn?: string;
 }
 
 export interface WidgetOptionMap {

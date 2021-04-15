@@ -113,6 +113,8 @@ export class ListViewStore extends ViewStore implements StateStore,
     showSidebarWidgets$: Observable<boolean>;
     displayFilters$: Observable<boolean>;
     recordList: RecordListStore;
+    dataUpdate$: Observable<boolean>;
+    dataSetUpdate$: Observable<boolean>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -126,6 +128,7 @@ export class ListViewStore extends ViewStore implements StateStore,
     protected internalState: ListViewState = deepClone(initialState);
     protected store = new BehaviorSubject<ListViewState>(this.internalState);
     protected state$ = this.store.asObservable();
+    protected dataUpdateState: BehaviorSubject<boolean>;
     protected subs: Subscription[] = [];
 
     constructor(
@@ -191,6 +194,9 @@ export class ListViewStore extends ViewStore implements StateStore,
         }));
         this.columns = new BehaviorSubject<ColumnDefinition[]>(listViewColumns);
         this.columns$ = this.columns.asObservable();
+
+        this.initDataUpdateState();
+        this.initDataSetUpdatedState();
     }
 
     get showFilters(): boolean {
@@ -355,6 +361,10 @@ export class ListViewStore extends ViewStore implements StateStore,
                 this.recordList.clearSelection();
                 this.load(false).pipe(take(1)).subscribe();
             }
+
+            if (process.data && process.data.dataUpdated) {
+                this.dataUpdateState.next(true);
+            }
         });
     }
 
@@ -495,4 +505,25 @@ export class ListViewStore extends ViewStore implements StateStore,
         });
     }
 
+
+    /**
+     * Initialize data update state.
+     * It should be emitted on any change in values on the record list.
+     * Reload/Pagination is not considered as a data update
+     */
+    protected initDataUpdateState(): void {
+        this.dataUpdateState = new BehaviorSubject<boolean>(true);
+        this.dataUpdate$ = this.dataUpdateState.asObservable();
+    }
+
+    /**
+     *  Initialize the dataSet update state.
+     *  It should be emitted on any change in dataSet e.g. due to data filter, due to data delete,
+     *  due to data edit or any event which causes change in the resulting dataSet.
+     */
+    protected initDataSetUpdatedState(): void {
+        this.dataSetUpdate$ = combineLatest(
+            [this.criteria$, this.dataUpdate$]
+        ).pipe(map(() => true));
+    }
 }

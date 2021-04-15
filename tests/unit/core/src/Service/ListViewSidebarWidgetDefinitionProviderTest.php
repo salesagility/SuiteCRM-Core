@@ -126,7 +126,7 @@ class ListViewSidebarWidgetDefinitionProviderTest extends Unit
                         ]
                     ],
                 ],
-                'refreshOnRecordUpdate' => true
+                'refreshOn' => 'data-update'
             ]
         ];
         $widgets = $this->service->getSidebarWidgets('leads');

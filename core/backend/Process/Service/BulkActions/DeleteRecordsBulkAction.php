@@ -124,6 +124,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
 
         $responseData = [
             'reload' => true,
+            'dataUpdated' => true,
         ];
 
         $process->setStatus('success');

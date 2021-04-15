@@ -38,7 +38,7 @@ export class TopWidgetAdapter {
     ]).pipe(
         map(([metadata, show]) => {
 
-            if (metadata.topWidget && metadata.topWidget.refreshOnRecordUpdate) {
+            if (metadata.topWidget && metadata.topWidget.refreshOn === 'data-update') {
                 metadata.topWidget.reload$ = this.store.record$.pipe(map(() => true));
             }
 

@@ -40,7 +40,7 @@ export class SidebarWidgetAdapter {
 
             if (metadata.sidebarWidgets && metadata.sidebarWidgets.length) {
                 metadata.sidebarWidgets.forEach(widget => {
-                    if (widget && widget.refreshOnRecordUpdate) {
+                    if (widget && widget.refreshOn === 'data-update') {
                         widget.reload$ = this.store.record$.pipe(map(() => true));
                     }
                 });
