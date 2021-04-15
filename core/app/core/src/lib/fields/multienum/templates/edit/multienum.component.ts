@@ -29,6 +29,7 @@ import {TagInputComponent} from 'ngx-chips';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
+import {TagModel} from "ngx-chips/core/accessor";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -71,4 +72,15 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     public getPlaceholderLabel(): string {
         return this.languages.getAppString('LBL_SELECT_ITEM') || '';
     }
+
+    public selectFirstElement(): void {
+        const filteredElements: TagModel = this.tag.dropdown.items;
+        if (filteredElements.length !== 0) {
+            const firstElement = filteredElements[0];
+            this.selectedValues.push(firstElement);
+            this.onAdd();
+            this.tag.dropdown.hide();
+        }
+    }
+
 }

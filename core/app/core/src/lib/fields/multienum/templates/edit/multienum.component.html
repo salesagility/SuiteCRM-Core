@@ -35,7 +35,8 @@
            [inputClass]="getInvalidClass()"
            #tag
            (onAdd)="onAdd()"
-           (onRemove)="onRemove()">
+           (onRemove)="onRemove()"
+           (keyup.enter)="selectFirstElement()">
     <tag-input-dropdown [displayBy]="'label'"
                         [identifyBy]="'value'"
                         [showDropdownIfEmpty]="true"

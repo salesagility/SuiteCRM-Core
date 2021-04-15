@@ -31,6 +31,7 @@
                    (onAdd)="onAdd($event)"
                    (onBlur)="resetStatus()"
                    (onRemove)="onRemove()"
+                   (keyup.enter)="selectFirstElement()"
                    [(ngModel)]="selectedValues"
                    [class]="getInvalidClass()"
                    [clearOnBlur]="true"

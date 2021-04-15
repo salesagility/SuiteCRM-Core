@@ -35,6 +35,7 @@ import {BaseRelateComponent} from '../../../base/base-relate.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
+import {TagModel} from "ngx-chips/core/accessor";
 
 @Component({
     selector: 'scrm-relate-edit',
@@ -178,4 +179,15 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.tag.writeValue([record.attributes]);
         this.onAdd(record.attributes);
     }
+
+    public selectFirstElement(): void {
+        const filteredElements: TagModel = this.tag.dropdown.items;
+        if (filteredElements.length !== 0) {
+            const firstElement = filteredElements[0];
+            this.selectedValues.push(firstElement);
+            this.onAdd(firstElement);
+            this.tag.dropdown.hide();
+        }
+    }
+
 }

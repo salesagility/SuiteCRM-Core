@@ -37,7 +37,8 @@
            maxItems="1"
            #tag
            (onAdd)="onAdd($event)"
-           (onRemove)="onRemove()">
+           (onRemove)="onRemove()"
+           (keyup.enter)="selectFirstElement()">
     <tag-input-dropdown [displayBy]="'label'"
                         [identifyBy]="'value'"
                         [showDropdownIfEmpty]="true"
