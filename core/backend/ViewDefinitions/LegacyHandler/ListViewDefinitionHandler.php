@@ -176,7 +176,7 @@ class ListViewDefinitionHandler extends LegacyHandler
 
         $vardefs = $fieldDefinition->getVardef();
 
-        $displayColumns = ListViewFacade::getDisplayColumns($legacyModuleName);
+        $displayColumns = ListViewFacade::getAllColumns($legacyModuleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
 

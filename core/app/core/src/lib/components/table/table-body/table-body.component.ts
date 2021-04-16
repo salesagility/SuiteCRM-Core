@@ -135,7 +135,8 @@ export class TableBodyComponent implements OnInit {
         const returnArray = [];
 
         const fields = metaFields.filter(function(field){
-            return !field.display || field.display!=='hidden';
+            return !field.hasOwnProperty('default')
+                || (field.hasOwnProperty('default') && field.default === true);
         });
 
         while (i < this.maxColumns && i < fields.length) {

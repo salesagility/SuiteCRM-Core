@@ -467,11 +467,12 @@ export class ListViewStore extends ViewStore implements StateStore,
         });
 
         const displayedColumns = this.columns.getValue().filter(function (col) {
-            return !col.display || col.display !== 'hidden';
+            return !col.hasOwnProperty('default')
+                || (col.hasOwnProperty('default') && col.default === true);
         });
 
         const hiddenColumns = this.columns.getValue().filter(function (col) {
-            return col.display && col.display === 'hidden';
+            return col.hasOwnProperty('default') && col.default === false;
         });
 
         modalRef.componentInstance.displayed = displayedColumns;
@@ -484,10 +485,10 @@ export class ListViewStore extends ViewStore implements StateStore,
             const selectedHideColumns: ColumnDefinition[] = result.hidden;
 
             selectedDisplayColumns.forEach(function (column) {
-                column.display = 'show';
+                column.default = true;
             });
             selectedHideColumns.forEach(function (column) {
-                column.display = 'hidden';
+                column.default = false;
             });
             allColumns.push(...selectedDisplayColumns, ...selectedHideColumns);
             this.columns.next(allColumns);
