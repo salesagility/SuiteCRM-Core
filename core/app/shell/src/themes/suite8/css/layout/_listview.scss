@@ -405,9 +405,10 @@ td {
 }
 
 .pagination-count {
-  vertical-align: text-bottom;
   margin: 0 0.3em;
   font-weight: bold;
+  position: relative;
+  bottom: 0.1em;
 }
 
 .list-view .col-lg-12, .list-view .col-lg-9, .list-view .col-lg-3 {
