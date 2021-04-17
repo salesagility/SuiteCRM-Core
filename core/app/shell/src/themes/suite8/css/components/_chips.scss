@@ -83,3 +83,9 @@ tag-input-form {
 tag-input.is-invalid .ng2-tag-input {
   border-bottom: 1px solid $amaranth;
 }
+
+tag-input-form {
+  ::placeholder {
+    color: $dusky-blue;
+  }
+}

@@ -33,6 +33,7 @@
     <div class="d-flex {{getDirection()}} justify-content-start align-items-start field-group h-100">
 
         <div *ngFor="let groupField of getFields()"
+             [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
              class="field-group-item d-flex flex-column justify-content-end h-100">
 
             <!-- LABEL -->
