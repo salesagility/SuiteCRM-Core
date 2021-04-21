@@ -29,10 +29,9 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {ApolloQueryResult} from '@apollo/client/core';
-import {SearchCriteria} from 'common';
+import {Pagination, Record, SearchCriteria, SortingSelection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordList} from '../record-list.store';
-import {Pagination, SortingSelection} from 'common';
 
 @Injectable({
     providedIn: 'root'
@@ -48,7 +47,7 @@ export class ListGQL {
         ]
     };
 
-    constructor(private apollo: Apollo) {
+    constructor(protected apollo: Apollo) {
     }
 
     /**
@@ -121,7 +120,7 @@ export class ListGQL {
                 if (listData.records) {
                     listData.records.forEach((record: any) => {
                         recordsList.records.push(
-                            record
+                            this.mapRecord(record)
                         );
                     });
                 }
@@ -152,6 +151,10 @@ export class ListGQL {
             }));
     }
 
+    /**
+     * Map sort.
+     * @param {object} sort to map
+     */
     protected mapSort(sort: SortingSelection): { [key: string]: string } {
         const sortOrderMap = {
             NONE: '',
@@ -163,5 +166,13 @@ export class ListGQL {
             sortOrder: sortOrderMap[sort.sortOrder],
             orderBy: sort.orderBy
         };
+    }
+
+    /**
+     * Map record. Allow for extensions
+     * @param record
+     */
+    protected mapRecord(record: any): Record {
+        return record;
     }
 }
