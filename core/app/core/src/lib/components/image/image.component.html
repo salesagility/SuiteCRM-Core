@@ -28,7 +28,7 @@
 <ng-container *ngIf="(vm$ | async) as vm">
     <ng-container *ngIf="getImage(vm, image) as img">
 
-        <svg-icon *ngIf="img.type === 'svg'" class="sicon" src="{{img.path}}"></svg-icon>
+        <svg-icon *ngIf="img.type === 'svg'" [svgClass]="klass || ''" class="sicon" src="{{img.path}}"></svg-icon>
 
         <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}" class="{{klass}}">
 

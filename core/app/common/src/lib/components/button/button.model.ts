@@ -33,6 +33,7 @@ export interface ButtonInterface {
     labelKey?: string;
     titleKey?: string;
     icon?: string;
+    iconKlass?: string;
 }
 
 export class Button implements ButtonInterface {

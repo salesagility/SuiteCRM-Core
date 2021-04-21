@@ -42,8 +42,15 @@
                 <a ngbDropdownItem
                    [ngClass]="item && item.klass"
                    (click)="item && click(item.onClick, dropDown)">
-                    <scrm-image *ngIf="item.icon" [image]="item.icon"></scrm-image>
-                    {{item && item.label}}
+
+                    <div class="d-flex align-items-center">
+                        <div *ngIf="item.icon">
+                            <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
+                        </div>
+                        <div class="flex-grow-1">
+                            {{item && item.label}}
+                        </div>
+                    </div>
                 </a>
             </ng-container>
 
