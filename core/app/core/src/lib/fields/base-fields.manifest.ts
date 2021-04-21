@@ -56,6 +56,7 @@ import {VarcharFilterFieldModule} from './varchar/templates/filter/filter.module
 import {BooleanFilterFieldModule} from './boolean/templates/filter/boolean.module';
 import {RelateDetailFieldComponent} from './relate/templates/detail/relate.component';
 import {RelateEditFieldModule} from './relate/templates/edit/relate.module';
+import {RelateFilterFieldComponent} from './relate/templates/filter/relate.component';
 import {TextDetailFieldModule} from './text/templates/detail/text.module';
 import {PhoneDetailFieldModule} from './phone/templates/detail/phone.module';
 import {DynamicEnumDetailFieldComponent} from './dynamicenum/templates/detail/dynamicenum.component';
@@ -64,6 +65,7 @@ import {DateEditFieldModule} from './date/templates/edit/date.module';
 import {DynamicEnumEditFieldComponent} from './dynamicenum/templates/edit/dynamicenum.component';
 import {MultiEnumFilterFieldModule} from './multienum/templates/filter/multienum.module';
 import {RelateDetailFieldsModule} from './relate/templates/detail/relate.module';
+import {RelateFilterFieldModule} from './relate/templates/filter/relate.module';
 import {BooleanEditFieldModule} from './boolean/templates/edit/boolean.module';
 import {VarcharEditFieldModule} from './varchar/templates/edit/varchar.module';
 import {EmailListFieldsComponent} from './email/templates/list/email.component';
@@ -103,6 +105,7 @@ export const baseFieldModules = [
     TextEditFieldModule,
     RelateDetailFieldsModule,
     RelateEditFieldModule,
+    RelateFilterFieldModule,
     FullNameDetailFieldsModule,
     EnumDetailFieldModule,
     EnumEditFieldModule,
@@ -134,6 +137,7 @@ export const baseFieldComponents = [
     TextEditFieldComponent,
     RelateDetailFieldComponent,
     RelateEditFieldComponent,
+    RelateFilterFieldComponent,
     FullNameDetailFieldsComponent,
     EnumDetailFieldComponent,
     EnumEditFieldComponent,
@@ -177,9 +181,10 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
     'text.edit': TextEditFieldComponent,
-    'relate.detail': RelateDetailFieldComponent,
     'relate.list': RelateDetailFieldComponent,
     'relate.edit': RelateEditFieldComponent,
+    'relate.detail': RelateDetailFieldComponent,
+    'relate.filter': RelateFilterFieldComponent,
     'fullname.list': FullNameDetailFieldsComponent,
     'fullname.detail': FullNameDetailFieldsComponent,
     'enum.list': EnumDetailFieldComponent,

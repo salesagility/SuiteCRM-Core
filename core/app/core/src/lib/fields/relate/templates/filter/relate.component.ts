@@ -38,15 +38,16 @@ import {RecordListModalResult} from '../../../../containers/record-list-modal/co
 import {TagModel} from "ngx-chips/core/accessor";
 
 @Component({
-    selector: 'scrm-relate-edit',
+    selector: 'scrm-relate-filter',
     templateUrl: './relate.component.html',
     styleUrls: [],
     providers: [RelateService]
 })
-export class RelateEditFieldComponent extends BaseRelateComponent {
+export class RelateFilterFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
     selectButton: ButtonInterface;
     idField: Field;
+    selectedTags: string[];
 
     /**
      * Constructor
@@ -79,25 +80,13 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * On init handler
      */
     ngOnInit(): void {
-        this.initValue();
+        this.field.valueList = [];
+
+        if (this.field.criteria.values && this.field.criteria.values.length > 0) {
+            this.field.valueList = this.field.criteria.values;
+            this.selectedTags = this.field.criteria.values;
+        }
         super.ngOnInit();
-        const idFieldName = this.getRelateIdField();
-        if (idFieldName && this.record && this.record.fields[idFieldName]){
-            this.idField = this.record.fields[idFieldName];
-        }
-    }
-
-    protected initValue(): void {
-        if (!this.field.valueObject) {
-            return;
-        }
-
-        if (!this.field.valueObject.id) {
-            return;
-        }
-
-        this.selectedValues = [];
-        this.selectedValues.push(this.field.valueObject);
     }
 
     /**
@@ -112,19 +101,25 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             this.setValue(item.id, item[relateName]);
             return;
         }
-
-        this.setValue('', '');
-        this.selectedValues = [];
-
-        return;
     }
 
     /**
      * Handle item removal
      */
-    onRemove(): void {
-        this.setValue('', '');
-        this.selectedValues = [];
+    onRemove(item): void {
+
+        let itemValue: string = '';
+        //if: handle the case, when the chips are rendered from the saved criteria as a String Array
+        //elseif: handle the case, when the chips are rendered from the search observable as a relate Objects
+        if (typeof item === 'string' && item !== ''){
+            itemValue = item;
+        }
+        else if (typeof item === 'object' && item !== null) {
+            itemValue = item.name;
+        }
+
+        this.field.valueList = this.field.valueList.filter(element => element !== itemValue);
+        this.updateSearchCriteria();
 
         setTimeout(() => {
             this.tag.focus(true, true);
@@ -138,17 +133,19 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {string} relateValue to set
      */
     protected setValue(id: string, relateValue: string): void {
-        const relate = this.buildRelate(id, relateValue);
-        this.field.value = relateValue;
-        this.field.valueObject = relate;
-        this.field.formControl.setValue(relateValue);
-        this.field.formControl.markAsDirty();
+        this.field.valueList.push(relateValue);
 
-        if (this.idField){
-            this.idField.value = id;
-            this.idField.formControl.setValue(id);
-            this.idField.formControl.markAsDirty();
-        }
+        this.updateSearchCriteria();
+    }
+
+    /**
+     * Set value on field criteria and form
+     */
+    protected updateSearchCriteria(): void {
+        this.field.criteria.operator = '=';
+        this.field.criteria.values = this.field.valueList;
+        this.field.formControl.setValue(this.field.valueList);
+        this.field.formControl.markAsDirty();
     }
 
     /**
@@ -201,7 +198,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} record to set
      */
     protected setItem(record: Record): void {
-        this.tag.writeValue([record.attributes]);
+        this.tag.appendTag(record.attributes);
         this.onAdd(record.attributes);
     }
 
@@ -209,7 +206,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         const filteredElements: TagModel = this.tag.dropdown.items;
         if (filteredElements.length !== 0) {
             const firstElement = filteredElements[0];
-            this.selectedValues.push(firstElement);
+            this.tag.appendTag(firstElement);
             this.onAdd(firstElement);
             this.tag.dropdown.hide();
         }

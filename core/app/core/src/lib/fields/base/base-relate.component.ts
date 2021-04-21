@@ -58,7 +58,6 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
     }
 
     ngOnInit(): void {
-        this.initValue();
 
         if (this.relateService) {
             this.relateService.init(this.getRelatedModule());
@@ -167,17 +166,4 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
         return relate;
     }
 
-
-    protected initValue(): void {
-        if (!this.field.valueObject) {
-            return;
-        }
-
-        if (!this.field.valueObject.id) {
-            return;
-        }
-
-        this.selectedValues = [];
-        this.selectedValues.push(this.field.valueObject);
-    }
 }

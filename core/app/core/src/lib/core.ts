@@ -236,6 +236,8 @@ export * from './fields/relate/templates/detail/relate.component';
 export * from './fields/relate/templates/detail/relate.module';
 export * from './fields/relate/templates/edit/relate.component';
 export * from './fields/relate/templates/edit/relate.module';
+export * from './fields/relate/templates/filter/relate.component';
+export * from './fields/relate/templates/filter/relate.module';
 export * from './fields/text/templates/detail/text.component';
 export * from './fields/text/templates/detail/text.module';
 export * from './fields/text/templates/edit/text.component';
