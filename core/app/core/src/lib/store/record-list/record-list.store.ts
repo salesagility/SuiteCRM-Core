@@ -311,6 +311,14 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     /**
+     * Reset search criteria
+     * @param {boolean} reload flag
+     */
+    public resetSearchCriteria(reload = true): void {
+        this.updateSearchCriteria(deepClone(initialSearchCriteria), reload);
+    }
+
+    /**
      * Update current list view sorting
      *
      * @param {string} orderBy to set

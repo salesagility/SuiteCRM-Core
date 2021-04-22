@@ -51,13 +51,15 @@ import {MessageService} from '../../../../services/message/message.service';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {BulkActionDataSource} from '../../../../components/bulk-action-menu/bulk-action-menu.component';
-import {FilterDataSource} from '../../../../components/list-filter/list-filter.component';
 import {AppData, ViewStore} from '../../../../store/view/view.store';
 import {LocalStorageService} from '../../../../services/local-storage/local-storage.service';
 import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
 import {Process} from '../../../../services/process/process.service';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ColumnChooserComponent} from "../../../../components/columnchooser/columnchooser.component";
+import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved-filter.model';
+import {FilterListStore} from '../../../../store/saved-filters/filter-list.store';
+import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-list.store.factory';
 
 export interface ListViewData {
     records: Record[];
@@ -74,11 +76,29 @@ export interface ListViewModel {
     metadata: Metadata;
 }
 
+const initialFilter: SavedFilter = {
+    key: 'default',
+    module: 'saved-search',
+    attributes: {
+        contents: ''
+    },
+    criteria: {
+        name: 'default',
+        filters: {}
+    }
+};
+
+const initialFilters: SavedFilterMap = {
+    'default': deepClone(initialFilter)
+};
+
 const initialState: ListViewState = {
     module: '',
     widgets: true,
     displayFilters: false,
-    showSidebarWidgets: false
+    showSidebarWidgets: false,
+    activeFilters: deepClone(initialFilters),
+    openFilter: deepClone(initialFilter)
 };
 
 export interface ListViewState {
@@ -86,12 +106,13 @@ export interface ListViewState {
     widgets: boolean;
     showSidebarWidgets: boolean;
     displayFilters: boolean;
+    activeFilters: SavedFilterMap;
+    openFilter: SavedFilter;
 }
 
 @Injectable()
 export class ListViewStore extends ViewStore implements StateStore,
-    BulkActionDataSource,
-    FilterDataSource {
+    BulkActionDataSource {
 
     /**
      * Public long-lived observable streams
@@ -115,6 +136,9 @@ export class ListViewStore extends ViewStore implements StateStore,
     recordList: RecordListStore;
     dataUpdate$: Observable<boolean>;
     dataSetUpdate$: Observable<boolean>;
+    activeFilters$: Observable<SavedFilterMap>;
+    openFilter$: Observable<SavedFilter>;
+    filterList: FilterListStore;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -141,7 +165,8 @@ export class ListViewStore extends ViewStore implements StateStore,
         protected bulkAction: AsyncActionService,
         protected message: MessageService,
         protected listStoreFactory: RecordListStoreFactory,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        protected filterListStoreFactory: FilterListStoreFactory
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -163,6 +188,8 @@ export class ListViewStore extends ViewStore implements StateStore,
         this.widgets$ = this.state$.pipe(map(state => state.widgets), distinctUntilChanged());
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
         this.displayFilters$ = this.state$.pipe(map(state => state.displayFilters), distinctUntilChanged());
+        this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
+        this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
 
         const data$ = combineLatest(
             [this.records$, this.criteria$, this.pagination$, this.selection$, this.loading$]
@@ -192,11 +219,14 @@ export class ListViewStore extends ViewStore implements StateStore,
         this.subs.push(metadataStore.listViewColumns$.subscribe(cols => {
             listViewColumns = cols;
         }));
+
         this.columns = new BehaviorSubject<ColumnDefinition[]>(listViewColumns);
         this.columns$ = this.columns.asObservable();
 
         this.initDataUpdateState();
         this.initDataSetUpdatedState();
+
+        this.filterList = this.filterListStoreFactory.create();
     }
 
     get showFilters(): boolean {
@@ -257,22 +287,12 @@ export class ListViewStore extends ViewStore implements StateStore,
     }
 
     /**
-     * Initial list records load if not cached and update state.
-     * Returns observable to be used in resolver if needed
+     * get active filters
      *
-     * @param {string} module to use
-     * @returns {object} Observable<any>
+     * @returns {object} active filters
      */
-    public init(module: string): Observable<RecordList> {
-        this.internalState.module = module;
-        this.recordList.init(module, false);
-
-        this.calculateShowWidgets();
-
-        this.storageLoad(module, 'search-criteria', (storage) => this.recordList.criteria = storage);
-        this.storageLoad(module, 'sort-selection', (storage) => this.recordList.sort = storage);
-
-        return this.load();
+    get activeFilters(): SavedFilterMap {
+        return deepClone(this.internalState.activeFilters);
     }
 
     /**
@@ -299,9 +319,6 @@ export class ListViewStore extends ViewStore implements StateStore,
         );
     }
 
-    public getFilter(): any {
-        return deepClone(this.metadata.listView.filters || []);
-    }
 
     public executeBulkAction(action: string): void {
         const selection = this.recordList.selection;
@@ -369,20 +386,88 @@ export class ListViewStore extends ViewStore implements StateStore,
     }
 
     /**
-     * Update the search criteria
+     * Initial list records load if not cached and update state.
+     * Returns observable to be used in resolver if needed
      *
-     * @param {object} criteria to set
+     * @param {string} module to use
+     * @returns {object} Observable<any>
+     */
+    public init(module: string): Observable<RecordList> {
+        this.internalState.module = module;
+        this.recordList.init(module, false);
+        this.filterList.init(module);
+
+        this.filterList.load(false).pipe(take(1)).subscribe();
+
+        this.calculateShowWidgets();
+
+        this.storageLoad(module, 'active-filters', (storage) => this.setFilters(storage, false));
+        this.storageLoad(module, 'sort-selection', (storage) => this.recordList.sort = storage);
+
+        return this.load();
+    }
+
+    /**
+     * Set open filters
+     *
+     * @param {object} filter to set
+     */
+    public setOpenFilter(filter: SavedFilter): void {
+        this.updateState({...this.internalState, openFilter: deepClone(filter)});
+    }
+
+    /**
+     * Set active filters
+     *
+     * @param {object} filters to set
      * @param {boolean} reload flag
      */
-    public updateSearchCriteria(criteria: SearchCriteria, reload = true): void {
-        this.recordList.updateSearchCriteria(criteria, reload);
+    public setFilters(filters: SavedFilterMap, reload = true): void {
+
+        const filterKey = Object.keys(filters).shift();
+        const filter = filters[filterKey];
+
+        this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
+
+        this.updateSearchCriteria(reload)
+    }
+
+    /**
+     * Reset active filters
+     *
+     * @param {boolean} reload flag
+     */
+    public resetFilters(reload = true): void {
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(initialFilters),
+            openFilter: deepClone(initialFilter)
+        });
+
+        this.updateSearchCriteria(reload)
+    }
+
+
+    /**
+     * Update the search criteria
+     *
+     * @param {boolean} reload flag
+     */
+    public updateSearchCriteria(reload = true): void {
+
+        const filters = {...this.internalState.activeFilters};
+        const filterKey = Object.keys(filters).shift();
+        const filter = filters[filterKey];
+
+        this.recordList.updateSearchCriteria(filter.criteria, reload);
         if (reload) {
             this.updateLocalStorage();
         }
     }
 
     public updateLocalStorage(): void {
-        this.storageSave(this.internalState.module, 'search-criteria', this.recordList.criteria);
+        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
         this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
     }
 
@@ -425,7 +510,7 @@ export class ListViewStore extends ViewStore implements StateStore,
      */
     protected load(useCache = true): Observable<RecordList> {
 
-        this.storageSave(this.internalState.module, 'search-criteria', this.recordList.criteria);
+        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
         this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
 
         return this.recordList.load(useCache);

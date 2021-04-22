@@ -25,11 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {SearchCriteria, SearchMetaFieldMap} from 'common';
+import {SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {Metadata} from '../../../store/metadata/metadata.store.service';
 import {FilterConfig} from '../../../components/list-filter/list-filter.model';
+import {SavedFilter, SavedFilterMap} from '../../../store/saved-filters/saved-filter.model';
 
 @Injectable()
 export class FilterAdapter {
@@ -41,7 +42,7 @@ export class FilterAdapter {
         return {
 
             module: this.store.getModuleName(),
-            criteria$: this.store.criteria$,
+            filter$: this.store.openFilter$,
             searchFields$: this.store.metadata$.pipe(
                 map((meta: Metadata) => {
 
@@ -68,8 +69,15 @@ export class FilterAdapter {
                 this.store.showFilters = false;
             },
 
-            updateSearchCriteria: (criteria: SearchCriteria, reload = true): void => {
-                this.store.updateSearchCriteria(criteria, reload);
+            updateFilter: (filter: SavedFilter, reload = true): void => {
+
+                const filters = {} as SavedFilterMap;
+                filters[filter.key] = filter;
+                this.store.setFilters(filters, reload);
+            },
+
+            resetFilter: (reload?: boolean): void => {
+                this.store.resetFilters(reload);
             }
         } as FilterConfig;
     }

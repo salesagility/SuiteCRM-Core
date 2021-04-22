@@ -24,11 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {PageSelection, SearchCriteria, SelectionStatus} from 'common';
+import {PageSelection, SelectionStatus} from 'common';
 import {take} from 'rxjs/operators';
 import {ListViewStore} from './list-view.store';
 import {listviewMockData, listviewStoreMock} from './list-view.store.spec.mock';
 import {localStorageServiceMock} from '../../../../services/local-storage/local-storage.service.spec.mock';
+import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {SearchCriteriaFieldFilter} from '../../../../../../../common/src/lib/views/list/search-criteria.model';
 
 describe('Listview Store', () => {
     const service: ListViewStore = listviewStoreMock;
@@ -39,7 +41,7 @@ describe('Listview Store', () => {
     it('#load', (done: DoneFn) => {
         service.recordList.updateSelection(SelectionStatus.NONE);
         service.init('accounts').subscribe(data => {
-            expect(data.records).toEqual(jasmine.objectContaining(listviewMockData.recordList.records));
+            expect(data.records[0]).toEqual(jasmine.objectContaining(listviewMockData.recordList.records[0]));
             done();
         });
     });
@@ -126,42 +128,49 @@ describe('Listview Store', () => {
     it('#updateCriteria with reload', () => {
         service.init('accounts').pipe(take(1)).subscribe(() => {
 
-            const criteria = {
-                filters: {
-                    name: {
-                        operator: '=',
-                        values: ['test']
+            const filters = service.activeFilters;
+            filters.default = {
+                key: 'default',
+                module: 'saved-search',
+                criteria: {
+                    filters: {
+                        name: {
+                            operator: '=',
+                            values: ['test 2']
+                        } as SearchCriteriaFieldFilter
                     }
-                }
-            } as SearchCriteria;
+                },
+                attributes: {}
+            } as SavedFilter;
 
-            service.updateSearchCriteria(criteria);
+            const criteria = filters.default.criteria;
+
+            service.setFilters(filters);
             const savedCriteria = service.recordList.criteria;
-            const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
+            const localStorageCriteria = localStorageServiceMock.get('active-filters').accounts;
 
             expect(criteria).toEqual(savedCriteria);
-            expect(criteria).toEqual(localStorageCriteria);
+            expect(criteria).toEqual(localStorageCriteria.default.criteria);
         });
     });
 
     it('#updateCriteria without reload', () => {
         service.init('accounts').pipe(take(1)).subscribe(() => {
 
-            const criteria = {
-                filters: {
-                    name: {
-                        operator: '=',
-                        values: ['test 2']
-                    }
-                }
-            } as SearchCriteria;
+            const filters = service.activeFilters;
+            filters.default.criteria.filters.name = {
+                operator: '=',
+                values: ['test 2']
+            };
 
-            service.updateSearchCriteria(criteria, false);
+            const criteria = filters.default.criteria;
+
+            service.setFilters(filters, false);
             const savedCriteria = service.recordList.criteria;
-            const localStorageCriteria = localStorageServiceMock.get('search-criteria').accounts;
+            const localStorageCriteria = localStorageServiceMock.get('active-filters').accounts;
 
             expect(criteria).toEqual(savedCriteria);
-            expect(criteria).not.toEqual(localStorageCriteria);
+            expect(criteria).not.toEqual(localStorageCriteria.criteria);
         });
     });
 });

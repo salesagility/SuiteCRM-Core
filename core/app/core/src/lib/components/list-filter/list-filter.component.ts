@@ -31,7 +31,6 @@ import {
     DropdownButtonInterface,
     Field,
     FieldMap,
-    Filter,
     isVoid,
     Record,
     SearchCriteria,
@@ -47,10 +46,7 @@ import {RecordManager} from '../../services/record/record.manager';
 import {FilterConfig} from './list-filter.model';
 import {LanguageStore} from '../../store/language/language.store';
 import {MessageService} from '../../services/message/message.service';
-
-export interface FilterDataSource {
-    getFilter(): Observable<Filter>;
-}
+import {SavedFilter} from '../../store/saved-filters/saved-filter.model';
 
 @Component({
     selector: 'scrm-list-filter',
@@ -66,7 +62,6 @@ export class ListFilterComponent implements OnInit {
 
     closeButton: ButtonInterface;
     myFilterButton: DropdownButtonInterface;
-    quickSearchButton: ButtonInterface;
 
     gridButtons = [];
 
@@ -74,6 +69,7 @@ export class ListFilterComponent implements OnInit {
     special: Field[] = [];
 
     searchCriteria: SearchCriteria;
+    filter: SavedFilter;
 
     vm$: Observable<any>;
 
@@ -91,9 +87,11 @@ export class ListFilterComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.vm$ = combineLatest([this.config.criteria$, this.config.searchFields$]).pipe(
-            map(([criteria, searchFields]) => {
+        this.vm$ = combineLatest([this.config.filter$, this.config.searchFields$]).pipe(
+            map(([filter, searchFields]) => {
                 this.reset();
+                this.filter = filter;
+                const criteria = this.getCriteria(filter);
                 this.initFields(criteria, searchFields);
 
                 return {criteria, searchFields};
@@ -188,10 +186,23 @@ export class ListFilterComponent implements OnInit {
             items: []
         } as DropdownButtonInterface;
 
-        this.quickSearchButton = {
-            labelKey: 'LBL_QUICK',
-            klass: ['quick-filter-button', 'btn', 'btn-outline-light', 'btn-sm']
-        };
+    }
+
+    /**
+     * Get criteria from filter
+     * @param filter
+     */
+    protected getCriteria(filter: SavedFilter): SearchCriteria {
+
+        if (!filter || !filter.criteria) {
+            return {filters: {}};
+        }
+
+        if (!filter.criteria.filters) {
+            return {...filter.criteria, filters: {}};
+        }
+
+        return deepClone(filter.criteria);
     }
 
     /**
@@ -220,7 +231,6 @@ export class ListFilterComponent implements OnInit {
         if (type === 'bool' || type === 'boolean') {
             definition.fieldDefinition.options = 'dom_int_bool';
         }
-
 
         const field = this.fieldManager.addFilterField(this.record, definition, this.language);
 
@@ -266,8 +276,11 @@ export class ListFilterComponent implements OnInit {
                     this.collapse.next(true);
                 }
 
+                const filter = deepClone(this.filter);
+                filter.criteria = this.searchCriteria;
+
                 this.config.onSearch();
-                this.config.updateSearchCriteria(this.searchCriteria);
+                this.config.updateFilter(filter);
                 return;
             }
 
@@ -296,6 +309,6 @@ export class ListFilterComponent implements OnInit {
      * Clear the current filter
      */
     protected clearFilter(): void {
-        this.config.updateSearchCriteria({filters: {}}, false);
+        this.config.resetFilter(false);
     }
 }

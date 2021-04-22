@@ -24,32 +24,6 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-/**
- * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
- * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * In accordance with Section 7(b) of the GNU Affero General Public License
- * version 3, these Appropriate Legal Notices must retain the display of the
- * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
- * feasible for technical reasons, the Appropriate Legal Notices must display
- * the words "Supercharged by SuiteCRM".
- */
-
 import {Component, OnInit} from '@angular/core';
 import {ButtonGroupInterface, ButtonInterface, DropdownButtonInterface, SearchCriteriaFilter} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -61,6 +35,7 @@ import {
     ScreenSize,
     ScreenSizeObserverService
 } from '../../../../services/ui/screen-size-observer/screen-size-observer.service';
+import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved-filter.model';
 
 @Component({
     selector: 'scrm-settings-menu',
@@ -77,14 +52,24 @@ export class SettingsMenuComponent implements OnInit {
         this.listStore.displayFilters$,
         this.listStore.criteria$,
         this.screenSize.screenSize$,
-        this.listStore.showSidebarWidgets$
+        this.listStore.showSidebarWidgets$,
+        this.listStore.filterList.records$
     ]).pipe(
-        map(([widgets, displayFilters, criteria, screenSize, showSidebarWidgets]) => {
+        map((
+            [
+                widgets,
+                displayFilters,
+                criteria,
+                screenSize,
+                showSidebarWidgets,
+                savedFilters
+            ]
+        ) => {
             if (screenSize) {
                 this.screen = screenSize;
             }
             this.configState.next(this.getButtonGroupConfig());
-            return {widgets, displayFilters, criteria, screenSize, showSidebarWidgets};
+            return {widgets, displayFilters, criteria, screenSize, showSidebarWidgets, savedFilters};
         })
     );
 
@@ -105,15 +90,16 @@ export class SettingsMenuComponent implements OnInit {
     }
 
     getButtonGroupConfig(): ButtonGroupInterface {
+
         const availableButtons = [
             // Commented temporarily as it is not implemented
             /*
             {button: this.getDisplayAsButton()},
+             */
             {
-                show: (): boolean => this.listStore.getFilter() && this.listStore.getFilter().length >= 1,
+                show: (): boolean => this.listStore.filterList.getFilters() && this.listStore.filterList.getFilters().length >= 1,
                 button: this.getMyFiltersButton(),
             },
-            */
             {button: this.getFilterButton()},
             {
                 show: (): boolean => !Object.keys(this.getFilters()).every(key => this.getFilters()[key].operator === ''),
@@ -188,7 +174,7 @@ export class SettingsMenuComponent implements OnInit {
     }
 
     getMyFiltersButton(): DropdownButtonInterface {
-        const filters = this.listStore.getFilter();
+        const filters = this.listStore.filterList.getFilters();
 
         const dropdownConfig = {
             label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
@@ -197,30 +183,38 @@ export class SettingsMenuComponent implements OnInit {
             items: []
         } as DropdownButtonInterface;
 
+        const activeFilters = this.listStore.activeFilters;
 
-        filters.forEach((filter: any) => {
-            dropdownConfig.items.push({
-                label: filter.name,
+        filters.forEach((filter: SavedFilter) => {
+
+            const isActive = Object.keys(activeFilters).some(key => key === filter.key);
+
+            const button = {
+                label: filter.attributes.name,
                 onClick: (): void => {
-                    const parsedFilter: any = [];
-                    Object.keys(filter.filters).forEach(key => {
-                        parsedFilter.push({
-                            field: key,
-                            operator: '=',
-                            values: [filter.filters[key]],
-                        });
-                    });
+                    this.listStore.showFilters = false;
 
-                    const newItem = {
-                        filter
-                    };
-                    parsedFilter.map(item => {
-                        newItem.filter.filters[item.field] = parsedFilter[0];
-                    });
+                    if (isActive) {
+                        this.listStore.resetFilters();
 
-                    this.listStore.updateSearchCriteria({filters: newItem.filter.filters});
+                    } else {
+                        this.listStore.setOpenFilter(filter);
+                        const selectedFilters = {} as SavedFilterMap;
+                        selectedFilters[filter.key] = filter;
+                        this.listStore.setFilters(selectedFilters);
+                    }
+
                 }
-            });
+            } as ButtonInterface;
+
+
+            if (isActive) {
+                button.icon = 'filter';
+                button.iconKlass = 'small';
+                button.klass = ['active'];
+            }
+
+            dropdownConfig.items.push(button);
         });
 
         return dropdownConfig;
@@ -231,7 +225,8 @@ export class SettingsMenuComponent implements OnInit {
             label: this.listStore.appStrings.LBL_CLEAR_BUTTON_LABEL || '',
             icon: 'filter',
             onClick: (): void => {
-                this.listStore.updateSearchCriteria({filters: {}}, true);
+                this.listStore.showFilters = false;
+                this.listStore.resetFilters();
             }
         };
     }

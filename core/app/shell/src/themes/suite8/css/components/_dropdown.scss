@@ -387,9 +387,21 @@ ul.main li a,
   min-width: 10em;
   border: 0;
   margin: 0;
+
   .dropdown-item {
     padding: .25em .8em;
   }
+
+  .dropdown-item.active {
+    color: $mellow-yellow;
+    font-weight: bold;
+
+    svg {
+      fill: $mellow-yellow;
+      stroke: $mellow-yellow;
+    }
+  }
+
 }
 
 .dropdown-button-secondary .dropdown-menu a,

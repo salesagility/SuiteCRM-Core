@@ -25,11 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {SearchCriteria, SearchMeta, SearchMetaFieldMap} from 'common';
+import {SearchMeta, SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
 import {RecordListModalFilterAdapterInterface} from './adapter.model';
 import {FilterConfig} from '../../../components/list-filter/list-filter.model';
+import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
 
 @Injectable()
 export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInterface {
@@ -41,7 +42,14 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
             isCollapsed: true,
             collapseOnSearch: true,
             module: store.recordList.getModule(),
-            criteria$: store.recordList.criteria$,
+            filter$: store.recordList.criteria$.pipe(
+                map(criteria => {
+                    return {
+                        key: 'default',
+                        criteria
+                    } as SavedFilter
+                })
+            ),
             searchFields$: store.searchMetadata$.pipe(
                 map((searchMeta: SearchMeta) => {
 
@@ -64,8 +72,12 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
             onSearch: (): void => {
             },
 
-            updateSearchCriteria: (criteria: SearchCriteria, reload = true): void => {
-                store.recordList.updateSearchCriteria(criteria, reload);
+            updateFilter: (filter: SavedFilter, reload = true): void => {
+                store.recordList.updateSearchCriteria(filter.criteria, reload);
+            },
+
+            resetFilter: (reload?: boolean): void => {
+                store.recordList.resetSearchCriteria(reload);
             }
         } as FilterConfig;
     }

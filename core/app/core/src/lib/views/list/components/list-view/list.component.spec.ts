@@ -59,6 +59,8 @@ import {mockModuleNavigation} from '../../../../services/navigation/module-navig
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
+import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
+import {moduleNameMapperMock} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 
 @Component({
     selector: 'list-test-host-component',
@@ -101,6 +103,7 @@ describe('ListComponent', () => {
                 {provide: LanguageStore, useValue: languageStoreMock},
                 {provide: MetadataStore, useValue: metadataStoreMock},
                 {provide: AppStateStore, useValue: appStateStoreMock},
+                {provide: ModuleNameMapper, useValue: moduleNameMapperMock},
             ],
         })
             .compileComponents();

@@ -26,12 +26,12 @@
 
 import {Observable} from 'rxjs';
 import {SearchMetaFieldMap} from 'common';
-import {SearchCriteria} from 'common';
+import {SavedFilter} from '../../store/saved-filters/saved-filter.model';
 
 export interface FilterConfig {
     klass?: string;
     module: string;
-    criteria$: Observable<SearchCriteria>;
+    filter$: Observable<SavedFilter>;
     searchFields$: Observable<SearchMetaFieldMap>;
     panelMode?: 'collapsible' | 'closable' | 'none';
     isCollapsed?: boolean;
@@ -41,5 +41,9 @@ export interface FilterConfig {
 
     onSearch(): void;
 
-    updateSearchCriteria(criteria: SearchCriteria, reload?: boolean): void;
+    onSave(): void;
+
+    updateFilter(filter: SavedFilter, reload?: boolean): void;
+
+    resetFilter(reload?: boolean): void;
 }

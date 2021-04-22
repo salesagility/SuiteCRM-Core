@@ -29,7 +29,7 @@ import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {SearchCriteria, SearchMetaFieldMap} from 'common';
+import {SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
 import {ButtonModule} from '../button/button.module';
@@ -45,6 +45,7 @@ import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {FilterConfig} from './list-filter.model';
 import {ListFilterModule} from './list-filter.module';
 import {listviewStoreMock} from '../../views/list/store/list-view/list-view.store.spec.mock';
+import {SavedFilter, SavedFilterMap} from '../../store/saved-filters/saved-filter.model';
 
 describe('ListFilterComponent', () => {
     let testHostComponent: ListFilterComponent;
@@ -79,7 +80,7 @@ describe('ListFilterComponent', () => {
         testHostComponent.config = {
 
             module: listviewStoreMock.getModuleName(),
-            criteria$: listviewStoreMock.criteria$,
+            filter$: listviewStoreMock.openFilter$,
             searchFields$: listviewStoreMock.metadata$.pipe(
                 map((meta: Metadata) => {
 
@@ -106,8 +107,15 @@ describe('ListFilterComponent', () => {
                 listviewStoreMock.showFilters = false;
             },
 
-            updateSearchCriteria: (criteria: SearchCriteria, reload = true): void => {
-                listviewStoreMock.updateSearchCriteria(criteria, reload);
+            updateFilter: (filter: SavedFilter, reload = true): void => {
+
+                const filters = {} as SavedFilterMap;
+                filters[filter.key] = filter;
+                listviewStoreMock.setFilters(filters, reload);
+            },
+
+            resetFilter: (reload?: boolean): void => {
+                listviewStoreMock.resetFilters(reload);
             }
         } as FilterConfig;
 
@@ -146,7 +154,6 @@ describe('ListFilterComponent', () => {
 
         expect(testHostComponent).toBeTruthy();
         expect(testHostFixture.debugElement.query(By.css('.saved-filters-button')).nativeElement).toBeTruthy();
-        expect(testHostFixture.debugElement.query(By.css('.quick-filter-button')).nativeElement).toBeTruthy();
     });
 
     it('should have grid list', () => {
@@ -233,7 +240,7 @@ describe('ListFilterComponent', () => {
                 expect(testHostComponent.searchCriteria.filters.name.operator).toEqual('');
                 expect(testHostComponent.searchCriteria.filters.name.values).toEqual([]);
 
-                expect(listviewStoreMock.recordList.criteria).toEqual({filters: {}});
+                expect(listviewStoreMock.recordList.criteria).toEqual({name: 'default', filters: {}});
             });
         });
     }));
