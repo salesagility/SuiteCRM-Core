@@ -98,7 +98,7 @@ describe('EnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -124,11 +124,9 @@ describe('EnumEditFieldComponent', () => {
         const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon).toBeTruthy();
-
-        done();
     });
 
-    it('should allow removing value', async (done) => {
+    it('should allow removing value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -155,11 +153,9 @@ describe('EnumEditFieldComponent', () => {
 
         expect(tag).toBeTruthy();
         expect(tag.length).toEqual(0);
-
-        done();
     });
 
-    it('should allow adding value', async (done) => {
+    it('should allow adding value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -206,8 +202,5 @@ describe('EnumEditFieldComponent', () => {
         const newDeleteIcon = element.getElementsByTagName('delete-icon').item(0);
 
         expect(newDeleteIcon).toBeTruthy();
-
-        done();
-
     });
 });

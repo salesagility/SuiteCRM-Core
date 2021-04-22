@@ -97,7 +97,7 @@ describe('DynamicEnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -123,7 +123,5 @@ describe('DynamicEnumEditFieldComponent', () => {
         const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon).toBeTruthy();
-
-        done();
     });
 });

@@ -104,7 +104,7 @@ describe('BooleanFilterFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -131,9 +131,6 @@ describe('BooleanFilterFieldComponent', () => {
         const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon).toBeTruthy();
-
-        done();
-
     });
 
 });

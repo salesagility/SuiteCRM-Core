@@ -102,7 +102,7 @@ describe('MultiEnumEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -141,11 +141,9 @@ describe('MultiEnumEditFieldComponent', () => {
         const deleteIcon2 = tag1.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon2).toBeTruthy();
-
-        done();
     });
 
-    it('should allow removing value', async (done) => {
+    it('should allow removing value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -168,7 +166,5 @@ describe('MultiEnumEditFieldComponent', () => {
 
         expect(tag).toBeTruthy();
         expect(tag.length).toEqual(1);
-
-        done();
     });
 });

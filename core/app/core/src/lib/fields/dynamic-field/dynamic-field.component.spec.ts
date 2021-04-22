@@ -98,7 +98,7 @@ describe('DynamicFieldComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should render field component', async (done) => {
+    it('should render field component', async () => {
 
         fixture.detectChanges();
         await fixture.whenRenderingDone();
@@ -109,7 +109,5 @@ describe('DynamicFieldComponent', () => {
 
         expect(el).toBeTruthy();
         expect(el.textContent).toContain('My Varchar');
-
-        done();
     });
 });

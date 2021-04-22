@@ -138,7 +138,7 @@ describe('GridWidgetComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have statistics', async (done) => {
+    it('should have statistics', async () => {
 
         testHostFixture.detectChanges();
         await testHostFixture.whenRenderingDone();
@@ -202,7 +202,5 @@ describe('GridWidgetComponent', () => {
         expect(infoValue).toBeTruthy();
         expect(infoValue.item(0)).toBeTruthy();
         expect(infoValue.item(0).textContent).toContain('200');
-
-        done();
     });
 });

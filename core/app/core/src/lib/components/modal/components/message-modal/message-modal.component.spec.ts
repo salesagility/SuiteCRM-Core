@@ -112,7 +112,7 @@ describe('MessageModalComponent', () => {
         component.modal.close();
     });
 
-    it('should have message', async (done) => {
+    it('should have message', async () => {
         expect(component).toBeTruthy();
 
         fixture.detectChanges();
@@ -133,10 +133,9 @@ describe('MessageModalComponent', () => {
         expect(body.item(0).textContent).toContain('Are you sure you want to navigate away from this record?');
 
         component.modal.close();
-        done();
     });
 
-    it('should have a clickable cancel button', async (done) => {
+    it('should have a clickable cancel button', async () => {
         expect(component).toBeTruthy();
 
         fixture.detectChanges();
@@ -172,11 +171,9 @@ describe('MessageModalComponent', () => {
         await interval(1000).pipe(take(1)).toPromise();
 
         expect(component.cancelClicked).toEqual(1);
-
-        done();
     });
 
-    it('should have a clickable ok button', async (done) => {
+    it('should have a clickable ok button', async () => {
         expect(component).toBeTruthy();
 
         fixture.detectChanges();
@@ -212,8 +209,6 @@ describe('MessageModalComponent', () => {
         await fixture.whenRenderingDone();
 
         await interval(1000).pipe(take(1)).toPromise();
-
-        done();
     });
 
 });

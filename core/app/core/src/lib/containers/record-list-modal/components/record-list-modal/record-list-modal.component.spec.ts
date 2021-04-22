@@ -92,7 +92,7 @@ describe('RecordListModalComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should have a table', async (done) => {
+    it('should have a table', async () => {
         expect(component).toBeTruthy();
 
         fixture.detectChanges();
@@ -108,11 +108,9 @@ describe('RecordListModalComponent', () => {
         component.modal.close();
 
         await interval(1000).pipe(take(1)).toPromise();
-
-        done();
     });
 
-    it('should have a filter panel', async (done) => {
+    it('should have a filter panel', async () => {
         expect(component).toBeTruthy();
 
         fixture.detectChanges();
@@ -128,8 +126,6 @@ describe('RecordListModalComponent', () => {
         component.modal.close();
 
         await interval(1000).pipe(take(1)).toPromise();
-
-        done();
     });
 
 });

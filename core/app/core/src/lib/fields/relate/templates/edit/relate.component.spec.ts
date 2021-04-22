@@ -120,7 +120,7 @@ describe('RelateRecordEditFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -147,11 +147,9 @@ describe('RelateRecordEditFieldComponent', () => {
         const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon).toBeTruthy();
-
-        done();
     });
 
-    it('should remove value', async (done) => {
+    it('should remove value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -188,12 +186,10 @@ describe('RelateRecordEditFieldComponent', () => {
         tag = tagInput.getElementsByTagName('tag').item(0);
 
         expect(tag).toBeFalsy();
-
-        done();
     });
 
 
-    it('should have select button', async (done) => {
+    it('should have select button', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -205,8 +201,6 @@ describe('RelateRecordEditFieldComponent', () => {
         const select = field.getElementsByClassName('select-button').item(0);
 
         expect(select).toBeTruthy();
-
-        done();
     });
 
 });
