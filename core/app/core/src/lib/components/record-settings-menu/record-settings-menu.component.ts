@@ -27,14 +27,13 @@
 import {Component} from '@angular/core';
 import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Action, Button, ButtonGroupInterface, ButtonInterface} from 'common';
+import {Action, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {
     ScreenSize,
     ScreenSizeObserverService
 } from '../../../../services/ui/screen-size-observer/screen-size-observer.service';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {RecordActionsAdapter} from '../../adapters/actions.adapter';
 
 @Component({
     selector: 'scrm-record-settings-menu',
@@ -70,7 +69,7 @@ export class RecordSettingsMenuComponent {
 
     constructor(
         protected languages: LanguageStore,
-        protected actionsDataSource: RecordActionsAdapter,
+        protected actionsDataSource: ActionDataSource,
         protected screenSize: ScreenSizeObserverService,
         protected systemConfigStore: SystemConfigStore,
     ) {
