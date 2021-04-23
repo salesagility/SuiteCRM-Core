@@ -46,7 +46,6 @@ import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {themeImagesStoreMock} from '../../../../store/theme-images/theme-images.store.spec.mock';
 import {navigationMock} from '../../../../store/navigation/navigation.store.spec.mock';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
-import {RecordSettingsMenuModule} from '../record-settings-menu/record-settings-menu.module';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
@@ -54,6 +53,7 @@ import {systemConfigStoreMock} from '../../../../store/system-config/system-conf
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {recordActionsMock} from '../../adapters/actions.adapter.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
+import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
 
 @Component({
     selector: 'record-header-test-host-component',
@@ -75,7 +75,7 @@ describe('RecordHeaderComponent', () => {
                 HttpClientTestingModule,
                 ImageModule,
                 RouterTestingModule,
-                RecordSettingsMenuModule
+                ActionGroupMenuModule
             ],
             declarations: [RecordHeaderComponent, RecordHeaderTestHostComponent],
             providers: [

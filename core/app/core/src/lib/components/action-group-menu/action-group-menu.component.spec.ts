@@ -25,48 +25,73 @@
  */
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {RecordSettingsMenuComponent} from './record-settings-menu.component';
+import {ActionGroupMenuComponent} from './action-group-menu.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {of} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {shareReplay, take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {ButtonModule} from '../../../../components/button/button.module';
-import {RecordViewStore} from '../../store/record-view/record-view.store';
-import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
-import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
-import {NavigationStore} from '../../../../store/navigation/navigation.store';
-import {recordviewStoreMock} from '../../store/record-view/record-view.store.spec.mock';
-import {themeImagesMockData} from '../../../../store/theme-images/theme-images.store.spec.mock';
-import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
-import {userPreferenceStoreMock} from '../../../../store/user-preference/user-preference.store.spec.mock';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.mock';
-import {ImageModule} from '../../../../components/image/image.module';
-import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
-import {navigationMock} from '../../../../store/navigation/navigation.store.spec.mock';
-import {AppStateStore} from '../../../../store/app-state/app-state.store';
-import {RecordSettingsMenuModule} from './record-settings-menu.module';
-import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
-import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
-import {RecordActionsAdapter} from '../../adapters/actions.adapter';
-import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
-import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
-import {recordActionsMock} from '../../adapters/actions.adapter.spec.mock';
-import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
+import {ButtonModule} from '../button/button.module';
+import {ActionGroupMenuModule} from './action-group-menu.module';
+import {RecordViewStore} from '../../views/record/store/record-view/record-view.store';
+import {recordviewStoreMock} from '../../views/record/store/record-view/record-view.store.spec.mock';
+import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import {themeImagesMockData} from '../../store/theme-images/theme-images.store.spec.mock';
+import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
+import {mockModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service.spec.mock';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {systemConfigStoreMock} from '../../store/system-config/system-config.store.spec.mock';
+import {userPreferenceStoreMock} from '../../store/user-preference/user-preference.store.spec.mock';
+import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
+import {navigationMock} from '../../store/navigation/navigation.store.spec.mock';
+import {NavigationStore} from '../../store/navigation/navigation.store';
+import {LanguageStore} from '../../store/language/language.store';
+import {languageStoreMock} from '../../store/language/language.store.spec.mock';
+import {metadataStoreMock} from '../../store/metadata/metadata.store.spec.mock';
+import {appStateStoreMock} from '../../store/app-state/app-state.store.spec.mock';
+import {MetadataStore} from '../../store/metadata/metadata.store.service';
+import {AppStateStore} from '../../store/app-state/app-state.store';
+import {recordActionsMock} from '../../views/record/adapters/actions.adapter.spec.mock';
+import {RecordActionsAdapter} from '../../views/record/adapters/actions.adapter';
+import {ImageModule} from '../image/image.module';
+import {ActionDataSource} from 'common';
+import {Action} from '../../../../../common/src/lib/actions/action.model';
 
 @Component({
-    selector: 'record-setting-test-host-component',
-    template: '<scrm-record-settings-menu></scrm-record-settings-menu>'
+    selector: 'action-group-menu-test-host-component',
+    template: '<scrm-action-group-menu [config]="config"></scrm-action-group-menu>'
 })
-class RecordSettingsTestHostComponent {
+class ActionGroupMenuTestHostComponent {
+    config = {
+
+        getActions: (): Observable<Action[]> => {
+            return of([
+                {
+                    key: 'new',
+                    labelKey: 'LBL_NEW',
+                    label: 'New',
+                    klass: ['settings-button']
+                } as Action,
+                {
+                    key: 'edit',
+                    labelKey: 'LBL_Edit',
+                    label: 'Edit',
+                    klass: ['settings-button']
+                } as Action
+            ]).pipe(shareReplay());
+        },
+
+        runAction: (): void => {
+        }
+
+    } as ActionDataSource;
 }
 
-describe('RecordSettingsMenuComponent', () => {
+describe('ActionGroupMenuComponent', () => {
 
-    let testHostComponent: RecordSettingsTestHostComponent;
-    let testHostFixture: ComponentFixture<RecordSettingsTestHostComponent>;
+    let testHostComponent: ActionGroupMenuTestHostComponent;
+    let testHostFixture: ComponentFixture<ActionGroupMenuTestHostComponent>;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
@@ -75,10 +100,10 @@ describe('RecordSettingsMenuComponent', () => {
                 ApolloTestingModule,
                 ImageModule,
                 ButtonModule,
-                RecordSettingsMenuModule,
+                ActionGroupMenuModule,
                 RouterTestingModule
             ],
-            declarations: [RecordSettingsMenuComponent, RecordSettingsTestHostComponent],
+            declarations: [ActionGroupMenuComponent, ActionGroupMenuTestHostComponent],
             providers: [
                 {provide: RecordViewStore, useValue: recordviewStoreMock},
                 {
@@ -99,7 +124,7 @@ describe('RecordSettingsMenuComponent', () => {
         })
             .compileComponents();
 
-        testHostFixture = TestBed.createComponent(RecordSettingsTestHostComponent);
+        testHostFixture = TestBed.createComponent(ActionGroupMenuTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     }));
@@ -111,13 +136,10 @@ describe('RecordSettingsMenuComponent', () => {
     it('should have buttons', () => {
         expect(testHostComponent).toBeTruthy();
 
-        recordviewStoreMock.setMode('detail');
-
         testHostFixture.detectChanges();
         testHostFixture.whenStable().then(() => {
             const element = testHostFixture.nativeElement;
             const buttons = element.getElementsByClassName('settings-button');
-
 
             expect(buttons).toBeTruthy();
             expect(buttons.length).toEqual(2);

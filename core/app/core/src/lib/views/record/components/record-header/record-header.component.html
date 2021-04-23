@@ -49,7 +49,10 @@
                     <div class="w-100"></div>
                     <div class="col">
                         <div class="order-1">
-                            <scrm-record-settings-menu></scrm-record-settings-menu>
+                            <scrm-action-group-menu
+                                [config]="actionsAdapter"
+                                klass="record-view-actions float-right">
+                            </scrm-action-group-menu>
                         </div>
                     </div>
                 </div>
@@ -71,7 +74,10 @@
                         <div class="w-100">
                         </div>
                         <div class="w-100">
-                            <scrm-record-settings-menu></scrm-record-settings-menu>
+                            <scrm-action-group-menu
+                                [config]="actionsAdapter"
+                                klass="record-view-actions float-right">
+                            </scrm-action-group-menu>
                         </div>
                     </div>
                 </div>

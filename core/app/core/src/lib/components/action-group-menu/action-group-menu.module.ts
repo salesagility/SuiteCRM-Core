@@ -26,14 +26,14 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RecordSettingsMenuComponent} from './record-settings-menu.component';
-import {ButtonGroupModule} from '../../../../components/button-group/button-group.module';
-import {ButtonModule} from '../../../../components/button/button.module';
-import {ImageModule} from '../../../../components/image/image.module';
+import {ActionGroupMenuComponent} from './action-group-menu.component';
+import {ButtonGroupModule} from '../button-group/button-group.module';
+import {ButtonModule} from '../button/button.module';
+import {ImageModule} from '../image/image.module';
 
 @NgModule({
-    declarations: [RecordSettingsMenuComponent],
-    exports: [RecordSettingsMenuComponent],
+    declarations: [ActionGroupMenuComponent],
+    exports: [ActionGroupMenuComponent],
     imports: [
         CommonModule,
         ImageModule,
@@ -41,5 +41,5 @@ import {ImageModule} from '../../../../components/image/image.module';
         ButtonGroupModule
     ]
 })
-export class RecordSettingsMenuModule {
+export class ActionGroupMenuModule {
 }

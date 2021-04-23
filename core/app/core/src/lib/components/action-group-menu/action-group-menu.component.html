@@ -26,7 +26,7 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div class="record-view-actions float-right"
+    <div class="{{klass}}"
          [class.float-right]="!isXSmallScreen()"
          [class.float-left]="isXSmallScreen()">
         <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>

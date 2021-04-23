@@ -27,9 +27,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RecordHeaderComponent} from './record-header.component';
-import {RecordSettingsMenuModule} from '../record-settings-menu/record-settings-menu.module';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {DynamicLabelModule} from '../../../../components/dynamic-label/dynamic-label.module';
+import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
 
 @NgModule({
     declarations: [RecordHeaderComponent],
@@ -37,8 +37,8 @@ import {DynamicLabelModule} from '../../../../components/dynamic-label/dynamic-l
     imports: [
         CommonModule,
         ModuleTitleModule,
-        RecordSettingsMenuModule,
-        DynamicLabelModule
+        DynamicLabelModule,
+        ActionGroupMenuModule
     ]
 })
 export class RecordHeaderModule {

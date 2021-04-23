@@ -24,40 +24,36 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
-import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Action, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
-import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {
     ScreenSize,
     ScreenSizeObserverService
-} from '../../../../services/ui/screen-size-observer/screen-size-observer.service';
-import {LanguageStore} from '../../../../store/language/language.store';
+} from '../../services/ui/screen-size-observer/screen-size-observer.service';
+import {LanguageStore} from '../../store/language/language.store';
+import {LanguageStrings} from 'core';
+
+export interface ActionGroupMenuViewModel {
+    actions: Action[];
+    screenSize: ScreenSize;
+    languages: LanguageStrings;
+}
 
 @Component({
-    selector: 'scrm-record-settings-menu',
-    templateUrl: 'record-settings-menu.component.html',
+    selector: 'scrm-action-group-menu',
+    templateUrl: './action-group-menu.component.html',
 })
-export class RecordSettingsMenuComponent {
+export class ActionGroupMenuComponent implements OnInit {
 
+    @Input() klass = '';
+    @Input() config: ActionDataSource;
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
-    vm$ = combineLatest([
-        this.actionsDataSource.getActions(),
-        this.screenSize.screenSize$,
-        this.languages.vm$
-    ]).pipe(
-        map(([actions, screenSize, languages]) => {
-            if (screenSize) {
-                this.screen = screenSize;
-            }
-            this.configState.next(this.getButtonGroupConfig(actions));
-
-            return {actions, screenSize, languages};
-        })
-    );
+    vm$: Observable<ActionGroupMenuViewModel>;
 
     protected buttonClass = 'settings-button';
     protected buttonGroupClass = 'dropdown-button-secondary';
@@ -69,10 +65,26 @@ export class RecordSettingsMenuComponent {
 
     constructor(
         protected languages: LanguageStore,
-        protected actionsDataSource: ActionDataSource,
         protected screenSize: ScreenSizeObserverService,
         protected systemConfigStore: SystemConfigStore,
     ) {
+    }
+
+    ngOnInit(): void {
+        this.vm$ = combineLatest([
+            this.config.getActions(),
+            this.screenSize.screenSize$,
+            this.languages.vm$
+        ]).pipe(
+            map(([actions, screenSize, languages]) => {
+                if (screenSize) {
+                    this.screen = screenSize;
+                }
+                this.configState.next(this.getButtonGroupConfig(actions));
+
+                return {actions, screenSize, languages};
+            })
+        );
     }
 
     isXSmallScreen(): boolean {
@@ -135,7 +147,7 @@ export class RecordSettingsMenuComponent {
             label: action.label || '',
             klass: this.buttonClass,
             onClick: (): void => {
-                this.actionsDataSource.runAction(action);
+                this.config.runAction(action);
             }
         } as ButtonInterface;
 

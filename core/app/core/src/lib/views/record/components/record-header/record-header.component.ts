@@ -104,7 +104,11 @@ export class RecordHeaderComponent {
         }))
     );
 
-    constructor(protected recordViewStore: RecordViewStore, protected moduleNavigation: ModuleNavigation) {
+    constructor(
+        public actionsAdapter: RecordActionsAdapter,
+        protected recordViewStore: RecordViewStore,
+        protected moduleNavigation: ModuleNavigation
+    ) {
     }
 
     get moduleTitle(): string {

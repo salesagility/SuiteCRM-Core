@@ -2,6 +2,8 @@ export * from './components/action-bar/action-bar-model';
 export * from './components/action-bar/action-bar.component';
 export * from './components/action-bar/action-bar.module';
 export * from './components/action-bar/favorite-record-model';
+export * from './components/action-group-menu/action-group-menu.component';
+export * from './components/action-group-menu/action-group-menu.module';
 export * from './components/bulk-action-menu/bulk-action-menu.component';
 export * from './components/bulk-action-menu/bulk-action-menu.module';
 export * from './components/button/button.component';
@@ -380,8 +382,6 @@ export * from './views/record/components/record-container/record-container.compo
 export * from './views/record/components/record-container/record-container.module';
 export * from './views/record/components/record-header/record-header.component';
 export * from './views/record/components/record-header/record-header.module';
-export * from './views/record/components/record-settings-menu/record-settings-menu.component';
-export * from './views/record/components/record-settings-menu/record-settings-menu.module';
 export * from './views/record/components/record-view/record.component';
 export * from './views/record/components/record-view/record.module';
 export * from './views/record/store/record-view/record-view.store.model';
