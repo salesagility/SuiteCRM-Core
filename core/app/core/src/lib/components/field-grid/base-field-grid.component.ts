@@ -39,6 +39,9 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     @Input() inputClass: { [klass: string]: any } = {};
     @Input() rowClass: { [klass: string]: any } = {};
     @Input() colClass: { [klass: string]: any } = {};
+
+    @Input() maxColumns: number;
+
     fieldGrid: FieldGridRow[];
 
     baseColClass = {
@@ -105,7 +108,13 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     }
 
     get colNumber(): number {
-        return this.sizeMap[this.currentSize];
+        const max = this.sizeMap[this.currentSize];
+
+        if (this.maxColumns && max > this.maxColumns) {
+            return this.maxColumns;
+        }
+
+        return max;
     }
 
     protected addSpecialSlots(grid: FieldGridRow[]): void {
