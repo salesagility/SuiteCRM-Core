@@ -34,7 +34,7 @@
             <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
         </span>
         <div panel-body>
-            <scrm-table [config]="tableConfig"></scrm-table>
+            <scrm-table [config]="tableConfig" [store]="store"></scrm-table>
         </div>
     </scrm-panel>
 </ng-container>

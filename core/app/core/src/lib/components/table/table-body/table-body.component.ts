@@ -40,6 +40,7 @@ import {
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
+import {SubpanelStore} from "../../../containers/subpanel/store/subpanel/subpanel.store";
 
 interface TableViewModel {
     columns: ColumnDefinition[];
@@ -58,6 +59,7 @@ interface TableViewModel {
 })
 export class TableBodyComponent implements OnInit {
     @Input() config: TableConfig;
+    @Input() store: SubpanelStore;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
 

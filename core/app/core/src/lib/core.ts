@@ -164,6 +164,8 @@ export * from './containers/sidebar-widget/components/statistics-sidebar-widget/
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.module';
 export * from './containers/subpanel/actions/subpanel.action';
 export * from './containers/subpanel/actions/create/create.action';
+export * from './containers/subpanel/actions/unlink/unlink.action';
+export * from './containers/subpanel/adapters/subpanel-actions.adapter';
 export * from './containers/subpanel/adapters/table.adapter';
 export * from './containers/subpanel/components/subpanel/action-manager.service';
 export * from './containers/subpanel/components/subpanel/subpanel.component';

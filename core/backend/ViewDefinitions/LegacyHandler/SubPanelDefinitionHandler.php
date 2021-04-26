@@ -34,6 +34,7 @@ use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
+use Codeception\Step\Action;
 use SubPanelDefinitions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -80,7 +81,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         SessionInterface $session
-    ) {
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -153,8 +155,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['legacyModule'] = $tab['module'];
             $tabs[$key]['headerModule'] = $headerModule;
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
-
             $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
+            $tabs[$key]['lineActions'] = $this->getSubpanelLineActions($subpanel, $tabs[$key]['module']);
 
             if (empty($columnSubpanel)) {
                 continue;
@@ -287,8 +289,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     }
 
     /**
-     * @param $subpanel
-     * @param $tab
+     * @param aSubPanel $subpanel
      * @return array
      */
     protected function getButtonDefinitions(aSubPanel $subpanel): array
@@ -476,4 +477,55 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $widgetConfig['options']['insightWidget']['rows'] = $widgetRows;
         }
     }
+
+    /**
+     * @param array $subpanel_def
+     * @param $subpanel_module
+     * @description  this function fetches all the line actions defined for a subpanel
+     * for now, only the remove action is filtered from all available line actions
+     */
+    public function getSubpanelLineActions($subpanel_def, $subpanel_module): array
+    {
+        $lineActions = [];
+        $unlinkLineAction = [];
+        $subpanelLineActions = ['edit_button', 'close_button', 'remove_button'];
+
+        $thepanel = $subpanel_def->isCollection() ? $subpanel_def->get_header_panel_def() : $subpanel_def;
+
+        foreach ($thepanel->get_list_fields() as $field_name => $list_field) {
+
+            $usage = empty($list_field['usage']) ? '' : $list_field['usage'];
+
+            if ($usage !== 'query_only') {
+                $list_field['name'] = $field_name;
+
+                if (isset($list_field['alias'])) {
+                    $list_field['name'] = $list_field['alias'];
+                } else {
+                    $list_field['name'] = $field_name;
+                }
+
+                if (false !== stripos($list_field['name'], 'button')
+                    && in_array($list_field['name'], $subpanelLineActions, true)
+                ) {
+                    $lineActions[] = $list_field['name'];
+                }
+            }
+        }
+
+        if (in_array('remove_button', $lineActions, true)) {
+            $unlinkLineAction = [
+                [
+                    'key' => 'unlink',
+                    'action' => 'unlink',
+                    'icon' => 'unlink',
+                    'labelKey' => 'LBL_UNLINK_RECORD',
+                    'module' => $subpanel_module,
+                    'routing' => false,
+                ],
+            ];
+        }
+        return $unlinkLineAction;
+    }
+
 }

@@ -32,6 +32,7 @@ export interface SubpanelActionData extends ActionData {
     parentModule: string;
     store: SubpanelStore;
     module: string;
+    id?: string;
 }
 
 export interface SubpanelActionHandlerMap {

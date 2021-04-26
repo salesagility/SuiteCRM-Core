@@ -32,7 +32,7 @@
                    [pagination]="config.pagination">
     </scrm-table-header>
 
-    <scrm-table-body [config]="config"></scrm-table-body>
+    <scrm-table-body [config]="config" [store]="store"></scrm-table-body>
 
     <scrm-table-footer *ngIf="showFooter()"
                    [selection]="config.selection"

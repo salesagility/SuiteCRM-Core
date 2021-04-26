@@ -26,6 +26,7 @@
 
 import {ColumnDefinition} from './list.metadata.model';
 import {WidgetOptionMap} from './widget.metadata';
+import {LineAction} from "../actions/line-action.model";
 
 export interface SubPanelTopButton {
     key: string;
@@ -68,6 +69,8 @@ export interface SubPanelDefinition {
     collection_list: SubPanelCollectionList;
     columns: ColumnDefinition[];
     icon?: string;
+    lineActions?: LineAction[];
+    get_subpanel_data?: string;
 }
 
 /* eslint-enable camelcase */

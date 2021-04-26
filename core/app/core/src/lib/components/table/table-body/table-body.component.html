@@ -77,7 +77,7 @@
                 <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
 
                 <td cdk-cell *cdkCellDef="let record">
-                    <scrm-line-action-menu [lineActions]="vm.lineActions" [record]="record"></scrm-line-action-menu>
+                    <scrm-line-action-menu [lineActions]="vm.lineActions" [record]="record" [store]="store"></scrm-line-action-menu>
                 </td>
 
             </ng-container>

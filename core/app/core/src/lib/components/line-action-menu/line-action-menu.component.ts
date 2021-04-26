@@ -27,6 +27,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LineAction, Record} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
+import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
+import {SubpanelActionData} from "../../containers/subpanel/actions/subpanel.action";
+import {SubpanelStore} from "../../containers/subpanel/store/subpanel/subpanel.store";
 
 @Component({
     selector: 'scrm-line-action-menu',
@@ -37,10 +40,13 @@ export class LineActionMenuComponent implements OnInit {
 
     @Input() lineActions: LineAction[];
     @Input() record: Record;
+    @Input() store: SubpanelStore;
 
     items: LineAction[];
 
-    constructor(protected languageStore: LanguageStore) {
+    constructor(protected languageStore: LanguageStore,
+                protected actionManager: SubpanelActionManager
+    ) {
     }
 
     ngOnInit(): void {
@@ -49,30 +55,52 @@ export class LineActionMenuComponent implements OnInit {
 
     setLineActions(): void {
         const actions = [];
+
         this.lineActions.forEach(action => {
             const recordAction = {...action};
 
-            const params: { [key: string]: any } = {};
-            /* eslint-disable camelcase,@typescript-eslint/camelcase*/
-            params.return_module = action.legacyModuleName;
-            params.return_action = action.returnAction;
-            params.return_id = this.record.id;
-            /* eslint-enable camelcase,@typescript-eslint/camelcase */
-            params[action.mapping.moduleName] = action.legacyModuleName;
-
-            params[action.mapping.name] = this.record.attributes.name;
-            params[action.mapping.id] = this.record.id;
+            const routing = action.routing ?? '';
 
             recordAction.label = this.languageStore.getAppString(recordAction.labelKey);
-            recordAction.link = {
-                label: recordAction.label,
-                url: null,
-                route: '/' + action.module + '/' + action.action,
-                params
-            };
+
+            if (routing !== false) {
+
+                const params: { [key: string]: any } = {};
+                /* eslint-disable camelcase,@typescript-eslint/camelcase*/
+                params.return_module = action.legacyModuleName;
+                params.return_action = action.returnAction;
+                params.return_id = this.record.id;
+                /* eslint-enable camelcase,@typescript-eslint/camelcase */
+                params[action.mapping.moduleName] = action.legacyModuleName;
+
+                params[action.mapping.name] = this.record.attributes.name;
+                params[action.mapping.id] = this.record.id;
+
+                recordAction.link = {
+                    label: recordAction.label,
+                    url: null,
+                    route: '/' + action.module + '/' + action.action,
+                    params
+                };
+            }
 
             actions.push(recordAction);
         });
         this.items = actions.reverse();
     }
+
+    runAction(actionKey: string) {
+
+        const subpanelActionData = {
+            subpanelMeta: this.store.metadata,
+            module: this.record.module || this.store.metadata.module,
+            id: this.record.id,
+            parentModule: this.store.parentModule,
+            parentId: this.store.parentId,
+            store: this.store
+        } as SubpanelActionData;
+
+        this.actionManager.run(actionKey, subpanelActionData);
+    }
+
 }

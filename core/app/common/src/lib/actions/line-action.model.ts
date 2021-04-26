@@ -39,4 +39,5 @@ export interface LineAction {
     mapping: { [key: string]: any };
     link: MenuItemLink;
     acl: string[];
+    routing?: boolean;
 }

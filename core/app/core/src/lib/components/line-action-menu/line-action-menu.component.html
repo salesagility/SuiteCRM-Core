@@ -28,16 +28,22 @@
 <div id="line-action-div" class="line-action float-right"
 >
     <div
-            *ngFor="let item of items"
-            class="line-action-item line-action float-right"
-            placement="left" ngbTooltip="{{ item.label }}"
+        *ngFor="let item of items"
+        class="line-action-item line-action float-right"
+        placement="left" ngbTooltip="{{ item.label }}"
     >
-        <a
-                [ngClass]="item.key"
-                [routerLink]="item.link.route"
-                [queryParams]="item.link.params"
-        >
+        <a *ngIf="item.routing === false"
+           [ngClass]="item.key"
+           (click)="runAction(item.action)">
             <scrm-image image="{{ item.icon }}"></scrm-image>
         </a>
+
+        <a *ngIf="item.routing !== false"
+           [ngClass]="item.key"
+           [routerLink]="item.link.route"
+           [queryParams]="item.link.params">
+            <scrm-image image="{{ item.icon }}"></scrm-image>
+        </a>
+
     </div>
 </div>
