@@ -29,7 +29,7 @@ import {SearchMeta, SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
 import {RecordListModalFilterAdapterInterface} from './adapter.model';
-import {FilterConfig} from '../../../components/list-filter/list-filter.model';
+import {FilterConfig} from '../../list-filter/components/list-filter/list-filter.model';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
 
 @Injectable()

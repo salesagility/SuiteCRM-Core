@@ -31,7 +31,7 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {SubpanelContainerComponent} from './subpanel-container.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ButtonModule} from '../../../../components/button/button.module';
-import {ListFilterModule} from '../../../../components/list-filter/list-filter.module';
+import {ListFilterModule} from '../../../list-filter/components/list-filter/list-filter.module';
 import {ActionMenuModule} from '../../../../views/list/components/action-menu/action-menu.module';
 import {ImageModule} from '../../../../components/image/image.module';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';

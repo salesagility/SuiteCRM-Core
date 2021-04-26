@@ -29,7 +29,7 @@ import {SearchMetaFieldMap} from 'common';
 import {map} from 'rxjs/operators';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {Metadata} from '../../../store/metadata/metadata.store.service';
-import {FilterConfig} from '../../../components/list-filter/list-filter.model';
+import {FilterConfig} from '../../../containers/list-filter/components/list-filter/list-filter.model';
 import {SavedFilter, SavedFilterMap} from '../../../store/saved-filters/saved-filter.model';
 
 @Injectable()

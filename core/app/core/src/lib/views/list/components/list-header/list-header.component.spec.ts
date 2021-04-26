@@ -52,7 +52,7 @@ import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
-import {ListFilterModule} from '../../../../components/list-filter/list-filter.module';
+import {ListFilterModule} from '../../../../containers/list-filter/components/list-filter/list-filter.module';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';

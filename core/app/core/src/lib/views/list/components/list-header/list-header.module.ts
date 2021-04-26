@@ -30,7 +30,7 @@ import {CommonModule} from '@angular/common';
 import {ListHeaderComponent} from './list-header.component';
 
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ListFilterModule} from '../../../../components/list-filter/list-filter.module';
+import {ListFilterModule} from '../../../../containers/list-filter/components/list-filter/list-filter.module';
 import {ActionMenuModule} from '../action-menu/action-menu.module';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {SettingsMenuModule} from '../settings-menu/settings-menu.module';

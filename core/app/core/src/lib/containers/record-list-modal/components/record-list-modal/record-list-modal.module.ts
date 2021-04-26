@@ -30,7 +30,7 @@ import {RecordListModalComponent} from './record-list-modal.component';
 import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loading-spinner.module';
 import {LabelModule} from '../../../../components/label/label.module';
 import {ModalModule} from '../../../../components/modal/components/modal/modal.module';
-import {ListFilterModule} from '../../../../components/list-filter/list-filter.module';
+import {ListFilterModule} from '../../../list-filter/components/list-filter/list-filter.module';
 import {TableModule} from '../../../../components/table/table.module';
 
 

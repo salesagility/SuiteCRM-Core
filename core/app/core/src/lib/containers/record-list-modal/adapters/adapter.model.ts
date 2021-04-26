@@ -26,7 +26,7 @@
 
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
 import {TableConfig} from '../../../components/table/table.model';
-import {FilterConfig} from '../../../components/list-filter/list-filter.model';
+import {FilterConfig} from '../../list-filter/components/list-filter/list-filter.model';
 
 export interface RecordListModalTableAdapterInterface {
 

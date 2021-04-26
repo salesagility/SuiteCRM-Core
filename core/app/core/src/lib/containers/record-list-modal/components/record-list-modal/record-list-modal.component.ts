@@ -37,7 +37,7 @@ import {RecordListModalStore} from '../../store/record-list-modal/record-list-mo
 import {RecordListModalStoreFactory} from '../../store/record-list-modal/record-list-modal.store.factory';
 import {TableConfig} from '../../../../components/table/table.model';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
-import {FilterConfig} from '../../../../components/list-filter/list-filter.model';
+import {FilterConfig} from '../../../list-filter/components/list-filter/list-filter.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RecordListModalResult} from './record-list-modal.model';
 
