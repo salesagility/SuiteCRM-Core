@@ -41,6 +41,7 @@
 ngb-datepicker.dropdown-menu {
   padding: 0;
   background-color: $white;
+  z-index: map-get($zindex, nav-max);
 }
 
 ngb-datepicker-navigation {
