@@ -168,6 +168,7 @@ export * from './containers/sidebar-widget/components/statistics-sidebar-widget/
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.module';
 export * from './containers/subpanel/actions/subpanel.action';
 export * from './containers/subpanel/actions/create/create.action';
+export * from './containers/subpanel/actions/select/select.action';
 export * from './containers/subpanel/adapters/line-actions.adapter.factory';
 export * from './containers/subpanel/adapters/line-actions.adapter';
 export * from './containers/subpanel/adapters/table.adapter.factory';

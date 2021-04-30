@@ -27,6 +27,7 @@
 import {Injectable} from '@angular/core';
 import {SubpanelCreateAction} from '../../actions/create/create.action';
 import {SubpanelActionData, SubpanelActionHandlerMap} from '../../actions/subpanel.action';
+import {SubpanelSelectAction} from "../../actions/select/select.action";
 
 @Injectable({
     providedIn: 'root',
@@ -37,8 +38,10 @@ export class SubpanelActionManager {
 
     constructor(
         protected create: SubpanelCreateAction,
+        protected select: SubpanelSelectAction,
     ) {
         this.actions[create.key] = create;
+        this.actions[select.key] = select;
     }
 
     run(action: string, data: SubpanelActionData): void {

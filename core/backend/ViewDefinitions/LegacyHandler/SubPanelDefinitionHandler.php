@@ -80,7 +80,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         SessionInterface $session
-    ) {
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);
         $this->moduleNameMapper = $moduleNameMapper;
@@ -252,6 +253,12 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             'SubPanelTopFilterButton' => [
                 'skip' => true,
             ],
+            'SubPanelTopSelectUsersButton' => [
+                'skip' => true,
+            ],
+            'SubPanelTopSelectContactsButton' => [
+                'skip' => true,
+            ],
         ];
 
         foreach ($topButtonDefinitions as $top_button) {
@@ -277,6 +284,17 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 $topButtons[] = [
                     'key' => 'create',
                     'labelKey' => 'LBL_QUICK_CREATE',
+                    'widget_class' => $top_button['widget_class'],
+                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
+                    'additionalFields' => $top_button['additionalFields'] ?? [],
+                    'extraParams' => $top_button['extraParams'] ?? []
+                ];
+            }
+
+            if (strpos($top_button['widget_class'], 'Select') !== false) {
+                $topButtons[] = [
+                    'key' => 'select',
+                    'labelKey' => 'LBL_SELECT_BUTTON_LABEL',
                     'widget_class' => $top_button['widget_class'],
                     'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
                     'additionalFields' => $top_button['additionalFields'] ?? [],
