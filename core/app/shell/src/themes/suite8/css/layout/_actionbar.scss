@@ -33,6 +33,18 @@
 }
 
 @media all and (max-width: $breakpoint-small) {
+  .content {
+    margin-top: 5em;      
+  }
+}
+
+@media all and (max-width: $breakpoint-large) {    // both for mobile & iPad
+  .global-action-bar {
+    margin-top: 0;
+  }  
+}
+
+@media all and (max-width: $breakpoint-small) {
   .global-action-bar .col,
   .global-action-bar .col-6 {
     margin: 0;
