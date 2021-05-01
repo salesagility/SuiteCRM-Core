@@ -77,10 +77,10 @@
                             </li>
                         </ng-template>
                         <ng-template [ngIf]="mainNavLink">
-                            <li class="" *ngFor="let item of navbar.menu" ngbDropdownItem>
+                            <li class="" *ngFor="let item of navbar.menu" ngbDropdownItem (click)="changeSubNav($event, item)">
                                 <a class="mobile-nav-link">{{ item.link.label }}</a>
                                 <scrm-image class="sicon-xs mobile-nav-arrow" image="arrow_right_filled"
-                                            (click)="changeSubNav($event, item)"></scrm-image>
+                                            ></scrm-image>
                             </li>
                         </ng-template>
                         <ng-template [ngIf]="mobileSubNav">
