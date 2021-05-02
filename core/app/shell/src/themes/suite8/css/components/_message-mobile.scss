@@ -1,0 +1,9 @@
+@media all and (max-width: $breakpoint-small) {
+    .message-container{
+      .alert {
+        min-width: 22rem;
+        overflow: auto;
+        max-height: 10em;
+      }
+    }
+}
