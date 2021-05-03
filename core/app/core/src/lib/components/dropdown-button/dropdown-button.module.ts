@@ -30,6 +30,7 @@ import {DropdownButtonComponent} from './dropdown-button.component';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownSubmenuModule} from '../dropdown-submenu/dropdown-submenu.module';
 import {ImageModule} from '../image/image.module';
+import {LabelModule} from '../label/label.module';
 
 @NgModule({
     declarations: [DropdownButtonComponent],
@@ -40,7 +41,8 @@ import {ImageModule} from '../image/image.module';
         CommonModule,
         NgbDropdownModule,
         ImageModule,
-        DropdownSubmenuModule
+        DropdownSubmenuModule,
+        LabelModule
     ]
 })
 export class DropdownButtonModule {
