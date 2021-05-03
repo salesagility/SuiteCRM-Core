@@ -50,6 +50,8 @@ import {currencyFormatterMock} from '../../../../services/formatters/currency/cu
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
 import {waitUntil} from '../../../../../testing/utils.spec';
+import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
+import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 
 @Component({
     selector: 'relate-edit-field-test-host-component',
@@ -107,6 +109,7 @@ describe('RelateRecordEditFieldComponent', () => {
                 {provide: LanguageStore, useValue: languageStoreMock},
                 {provide: RecordListStoreFactory, useValue: listStoreFactoryMock},
                 {provide: ModuleNameMapper, useValue: moduleNameMapperMock},
+                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
             ],
         })
             .compileComponents();
