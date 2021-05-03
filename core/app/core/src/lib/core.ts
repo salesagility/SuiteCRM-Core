@@ -301,6 +301,7 @@ export * from './services/process/process.service';
 export * from './services/process/processes/async-action/async-action.model';
 export * from './services/process/processes/async-action/async-action';
 export * from './services/process/processes/async-action/actions/export/export.async-action';
+export * from './services/process/processes/async-action/actions/noop/noop.async-action';
 export * from './services/process/processes/async-action/actions/redirect/redirect.async-action';
 export * from './services/process/processes/recover-password/recover-password';
 export * from './services/record/record.manager';

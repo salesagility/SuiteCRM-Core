@@ -31,10 +31,10 @@ import {Process, ProcessService} from '../../process.service';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {MessageService} from '../../../message/message.service';
 import {AsyncActionHandler} from './async-action.model';
-import {SearchCriteria} from 'common';
-import {SortingSelection} from 'common';
+import {SearchCriteria, SortingSelection} from 'common';
 import {RedirectAsyncAction} from './actions/redirect/redirect.async-action';
 import {ExportAsyncAction} from './actions/export/export.async-action';
+import {NoopAsyncAction} from './actions/noop/noop.async-action';
 
 export interface AsyncActionInput {
     action: string;
@@ -56,10 +56,12 @@ export class AsyncActionService {
         private appStateStore: AppStateStore,
         protected message: MessageService,
         protected redirectAction: RedirectAsyncAction,
-        protected exportAction: ExportAsyncAction
+        protected exportAction: ExportAsyncAction,
+        protected noopAction: NoopAsyncAction
     ) {
         this.registerHandler(redirectAction);
         this.registerHandler(exportAction);
+        this.registerHandler(noopAction);
     }
 
     public registerHandler(handler: AsyncActionHandler): void {
@@ -69,23 +71,24 @@ export class AsyncActionService {
     /**
      * Send action request
      *
-     * @param {string} action to submit
+     * @param {string} actionName to submit
      * @param {string} data to send
+     * @param {string} presetHandlerKey to use
      * @returns {object} Observable<Process>
      */
-    public run(action: string, data: AsyncActionInput): Observable<Process> {
+    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null): Observable<Process> {
         const options = {
             ...data
         };
 
-        this.appStateStore.updateLoading(action, true);
+        this.appStateStore.updateLoading(actionName, true);
 
         return this.processService
-            .submit(action, options)
+            .submit(actionName, options)
             .pipe(
                 take(1),
                 tap((process: Process) => {
-                    this.appStateStore.updateLoading(action, false);
+                    this.appStateStore.updateLoading(actionName, false);
 
                     let handler = 'addSuccessMessageByKey';
                     if (process.status === 'error') {
@@ -102,11 +105,13 @@ export class AsyncActionService {
                         return;
                     }
 
-                    if (process.data && !process.data.handler) {
+                    const actionHandlerKey = presetHandlerKey || (process.data && process.data.handler) || null;
+
+                    if (!actionHandlerKey) {
                         return;
                     }
 
-                    const actionHandler: AsyncActionHandler = this.actions[process.data.handler];
+                    const actionHandler: AsyncActionHandler = this.actions[actionHandlerKey];
 
                     if (!actionHandler) {
                         this.message.addDangerMessageByKey('LBL_MISSING_HANDLER');
@@ -118,7 +123,7 @@ export class AsyncActionService {
                 }),
                 catchError(err => {
                     this.message.addDangerMessageByKey('LBL_ACTION_ERROR');
-                    this.appStateStore.updateLoading(action, false);
+                    this.appStateStore.updateLoading(actionName, false);
                     throw err;
                 }),
             );
