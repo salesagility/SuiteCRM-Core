@@ -388,8 +388,18 @@ ul.main li a,
   border: 0;
   margin: 0;
 
+}
+
+.filter-select .dropdown-menu,
+.filter-action-group .dropdown-menu,
+.select-action-group .dropdown-menu {
+
   .dropdown-item {
     padding: .25em .8em;
+
+    svg {
+      margin: 0 0.5em 0 0;
+    }
   }
 
   .dropdown-item.active {
@@ -401,7 +411,6 @@ ul.main li a,
       stroke: $mellow-yellow;
     }
   }
-
 }
 
 .dropdown-button-secondary .dropdown-menu a,

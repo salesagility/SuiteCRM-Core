@@ -217,6 +217,7 @@ export class ListFilterStore implements StateStore {
         }
 
         const button = {
+            wrapperKlass: ['filter-select'],
             labelKey: 'LBL_SAVED_FILTER_SHORTCUT',
             klass: ['btn', 'btn-outline-light', 'btn-sm'],
             items: [],
