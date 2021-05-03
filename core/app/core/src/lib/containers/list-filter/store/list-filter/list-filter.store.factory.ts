@@ -24,36 +24,26 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
-import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {Injectable} from '@angular/core';
+import {MessageService} from '../../../../services/message/message.service';
+import {SaveFilterStoreFactory} from '../saved-filter/saved-filter.store.factory';
+import {ListFilterStore} from './list-filter.store';
 
-export interface FilterConfig {
-    klass?: string;
-    module: string;
-    savedFilterEdit?: boolean;
-    filter$: Observable<SavedFilter>;
-    savedFilters$: Observable<SavedFilter[]>;
-    searchFields$: Observable<SearchMetaFieldMap>;
-    listFields: ColumnDefinition[];
-    panelMode?: 'collapsible' | 'closable' | 'none';
-    isCollapsed?: boolean;
-    collapseOnSearch?: boolean;
+@Injectable({
+    providedIn: 'root',
+})
+export class ListFilterStoreFactory {
 
-    onClose(): void;
+    constructor(
+        protected message: MessageService,
+        protected savedFilterStoreFactory: SaveFilterStoreFactory
+    ) {
+    }
 
-    onSearch(): void;
-
-    onSave(): void;
-
-    updateFilter(filter: SavedFilter, reload?: boolean): void;
-
-    resetFilter(reload?: boolean): void;
-
-    addSavedFilter(filter: SavedFilter): void;
-
-    removeSavedFilter(filter: SavedFilter): void;
-
-    setOpenFilter(filter: SavedFilter): void;
-
+    create(): ListFilterStore {
+        return new ListFilterStore(
+            this.message,
+            this.savedFilterStoreFactory
+        );
+    }
 }

@@ -24,36 +24,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
-import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {ActionData, ActionHandler, ViewMode} from 'common';
+import {SavedFilterStore} from '../store/saved-filter/saved-filter.store';
+import {ListFilterStore} from '../store/list-filter/list-filter.store';
 
-export interface FilterConfig {
-    klass?: string;
-    module: string;
-    savedFilterEdit?: boolean;
-    filter$: Observable<SavedFilter>;
-    savedFilters$: Observable<SavedFilter[]>;
-    searchFields$: Observable<SearchMetaFieldMap>;
-    listFields: ColumnDefinition[];
-    panelMode?: 'collapsible' | 'closable' | 'none';
-    isCollapsed?: boolean;
-    collapseOnSearch?: boolean;
+export interface SavedFilterActionData extends ActionData {
+    store: SavedFilterStore;
+    listFilterStore: ListFilterStore;
+}
 
-    onClose(): void;
+export interface SavedFilterActionHandlerMap {
+    [key: string]: SavedFilterActionHandler;
+}
 
-    onSearch(): void;
+export abstract class SavedFilterActionHandler extends ActionHandler {
 
-    onSave(): void;
+    abstract modes: ViewMode[];
 
-    updateFilter(filter: SavedFilter, reload?: boolean): void;
+    getStatus(store: SavedFilterStore): string {
+        return '';
+    }
 
-    resetFilter(reload?: boolean): void;
+    abstract run(data: SavedFilterActionData): void;
 
-    addSavedFilter(filter: SavedFilter): void;
-
-    removeSavedFilter(filter: SavedFilter): void;
-
-    setOpenFilter(filter: SavedFilter): void;
-
+    abstract shouldDisplay(store: SavedFilterStore): boolean;
 }

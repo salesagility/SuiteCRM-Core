@@ -31,6 +31,7 @@ import {RecordListModalStore} from '../store/record-list-modal/record-list-modal
 import {RecordListModalFilterAdapterInterface} from './adapter.model';
 import {FilterConfig} from '../../list-filter/components/list-filter/list-filter.model';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
+import {of} from 'rxjs';
 
 @Injectable()
 export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInterface {
@@ -41,6 +42,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
             panelMode: 'collapsible',
             isCollapsed: true,
             collapseOnSearch: true,
+            savedFilterEdit: false,
             module: store.recordList.getModule(),
             filter$: store.recordList.criteria$.pipe(
                 map(criteria => {
@@ -50,6 +52,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
                     } as SavedFilter
                 })
             ),
+            savedFilters$: of([]),
             searchFields$: store.searchMetadata$.pipe(
                 map((searchMeta: SearchMeta) => {
 
@@ -65,6 +68,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
                     return searchMeta.layout[type];
                 })
             ),
+            listFields: [],
 
             onClose: (): void => {
             },
@@ -78,7 +82,16 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
 
             resetFilter: (reload?: boolean): void => {
                 store.recordList.resetSearchCriteria(reload);
-            }
+            },
+
+            addSavedFilter: (filter: SavedFilter): void => {
+            },
+
+            removeSavedFilter: (filter: SavedFilter): void => {
+            },
+
+            setOpenFilter: (filter: SavedFilter): void => {
+            },
         } as FilterConfig;
     }
 }

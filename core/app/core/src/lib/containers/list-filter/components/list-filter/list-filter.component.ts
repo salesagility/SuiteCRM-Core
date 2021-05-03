@@ -24,291 +24,67 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {
-    ButtonInterface,
-    deepClone,
-    DropdownButtonInterface,
-    Field,
-    FieldMap,
-    isVoid,
-    Record,
-    SearchCriteria,
-    SearchCriteriaFieldFilter,
-    SearchMetaField,
-    SearchMetaFieldMap,
-    ViewFieldDefinition
-} from 'common';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {filter, map, startWith, take} from 'rxjs/operators';
-import {FieldManager} from '../../services/record/field/field.manager';
-import {RecordManager} from '../../services/record/record.manager';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ScreenSizeMap} from 'common';
+import {Observable, of} from 'rxjs';
+import {shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';
-import {LanguageStore} from '../../store/language/language.store';
-import {MessageService} from '../../services/message/message.service';
-import {SavedFilter} from '../../store/saved-filters/saved-filter.model';
+import {RecordGridConfig} from '../../../../components/record-grid/record-grid.model';
+import {ListFilterStoreFactory} from '../../store/list-filter/list-filter.store.factory';
+import {ListFilterStore} from '../../store/list-filter/list-filter.store';
+import {SavedFilterActionsAdapter} from '../../adapters/actions.adapter';
+import {SavedFilterActionAdapterFactory} from '../../adapters/actions.adapter.factory';
 
 @Component({
     selector: 'scrm-list-filter',
     templateUrl: './list-filter.component.html',
-    styleUrls: []
+    styleUrls: [],
 })
-export class ListFilterComponent implements OnInit {
+export class ListFilterComponent implements OnInit, OnDestroy {
 
     @Input() config: FilterConfig;
-    panelMode: 'collapsible' | 'closable' | 'none' = 'closable';
-    mode = 'filter';
-    isCollapsed$: Observable<boolean>;
-
-    closeButton: ButtonInterface;
-    myFilterButton: DropdownButtonInterface;
-
-    gridButtons = [];
-
-    fields: Field[] = [];
-    special: Field[] = [];
-
-    searchCriteria: SearchCriteria;
-    filter: SavedFilter;
 
     vm$: Observable<any>;
-
-    protected collapse: BehaviorSubject<boolean>;
-    private record: Record;
+    store: ListFilterStore;
+    filterActionsAdapter: SavedFilterActionsAdapter;
 
     constructor(
-        protected language: LanguageStore,
-        protected fieldManager: FieldManager,
-        protected recordManager: RecordManager,
-        protected message: MessageService
+        protected storeFactory: ListFilterStoreFactory,
+        protected actionAdapterFactory: SavedFilterActionAdapterFactory
     ) {
-
+        this.store = storeFactory.create();
+        this.filterActionsAdapter = actionAdapterFactory.create(this.store.filterStore, this.store);
     }
 
     ngOnInit(): void {
-
-        this.vm$ = combineLatest([this.config.filter$, this.config.searchFields$]).pipe(
-            map(([filter, searchFields]) => {
-                this.reset();
-                this.filter = filter;
-                const criteria = this.getCriteria(filter);
-                this.initFields(criteria, searchFields);
-
-                return {criteria, searchFields};
-            })
-        );
-
-        if (this.config.panelMode) {
-            this.panelMode = this.config.panelMode;
-        }
-
-        this.collapse = new BehaviorSubject<boolean>(false);
-        this.isCollapsed$ = this.collapse.asObservable();
-        if (!isVoid(this.config.isCollapsed)) {
-            this.collapse.next(this.config.isCollapsed);
-        }
-
-        this.reset();
-
-        this.record = this.recordManager.buildEmptyRecord(this.config.module);
-
-        this.initGridButtons();
-        this.initHeaderButtons();
+        this.store.init(this.config);
+        this.vm$ = this.store.vm$;
     }
 
-    /**
-     * Initialize fields
-     *
-     * @param {object} criteria to use
-     * @param {object} searchFields to use
-     */
-    initFields(criteria: SearchCriteria, searchFields: SearchMetaFieldMap): void {
-
-        const fields = {} as FieldMap;
-
-        Object.keys(searchFields).forEach(key => {
-            const name = searchFields[key].name;
-
-            fields[name] = this.buildField(searchFields[key], criteria);
-
-            if (name.includes('_only')) {
-                this.special.push(fields[name]);
-            } else {
-                this.fields.push(fields[name]);
-            }
-        });
+    ngOnDestroy(): void {
+        this.store.clear();
+        this.store = null;
     }
 
-    /**
-     * Reset criteria
-     */
-    protected reset(): void {
-        this.searchCriteria = {
-            filters: {},
-        };
+    getGridConfig(): RecordGridConfig {
 
-        this.fields = [];
-        this.special = [];
+        return {
+            record$: this.store.filterStore.stagingRecord$,
+            mode$: this.store.filterStore.mode$,
+            fields$: this.store.filterStore.getViewFieldsKeys$(),
+            actions: this.filterActionsAdapter,
+            appendActions: true,
+            klass: 'mt-2 p-2 saved-search-container rounded',
+            buttonClass: 'btn btn-outline-danger btn-sm',
+            labelDisplay: 'inline',
+            maxColumns$: of(4).pipe(shareReplay(1)),
+            sizeMap$: of({
+                handset: 1,
+                tablet: 2,
+                web: 3,
+                wide: 4
+            } as ScreenSizeMap).pipe(shareReplay(1)),
+        } as RecordGridConfig;
     }
 
-    /**
-     * Initialize grid buttons
-     */
-    protected initGridButtons(): void {
-        this.gridButtons = [
-            {
-                labelKey: 'LBL_CLEAR_BUTTON_LABEL',
-                klass: ['clear-filters-button', 'btn', 'btn-outline-danger', 'btn-sm'],
-                onClick: this.clearFilter.bind(this)
-            },
-            {
-                labelKey: 'LBL_SEARCH_BUTTON_LABEL',
-                klass: ['filter-button', 'btn', 'btn-danger', 'btn-sm'],
-                onClick: this.applyFilter.bind(this)
-            }
-        ] as ButtonInterface[];
-    }
-
-    /**
-     * Initialize header buttons
-     */
-    protected initHeaderButtons(): void {
-
-        this.closeButton = {
-            onClick: (): void => {
-                this.config.onClose();
-            }
-        } as ButtonInterface;
-
-        this.myFilterButton = {
-            labelKey: 'LBL_SAVED_FILTER_SHORTCUT',
-            klass: ['saved-filters-button', 'btn', 'btn-outline-light', 'btn-sm'],
-            items: []
-        } as DropdownButtonInterface;
-
-    }
-
-    /**
-     * Get criteria from filter
-     * @param filter
-     */
-    protected getCriteria(filter: SavedFilter): SearchCriteria {
-
-        if (!filter || !filter.criteria) {
-            return {filters: {}};
-        }
-
-        if (!filter.criteria.filters) {
-            return {...filter.criteria, filters: {}};
-        }
-
-        return deepClone(filter.criteria);
-    }
-
-    /**
-     * Build filter field according to Field interface
-     *
-     * @param {object} fieldMeta to use
-     * @param {object} searchCriteria to use
-     * @returns {object} Field
-     */
-    protected buildField(fieldMeta: SearchMetaField, searchCriteria: SearchCriteria): Field {
-        const fieldName = fieldMeta.name;
-        const type = fieldMeta.type;
-        this.searchCriteria.filters[fieldName] = this.initFieldFilter(searchCriteria, fieldName, type);
-
-        const definition = {
-            name: fieldMeta.name,
-            label: fieldMeta.label,
-            type,
-            fieldDefinition: {}
-        } as ViewFieldDefinition;
-
-        if (fieldMeta.fieldDefinition) {
-            definition.fieldDefinition = fieldMeta.fieldDefinition;
-        }
-
-        if (type === 'bool' || type === 'boolean') {
-            definition.fieldDefinition.options = 'dom_int_bool';
-        }
-
-        const field = this.fieldManager.addFilterField(this.record, definition, this.language);
-
-        field.criteria = this.searchCriteria.filters[fieldName];
-
-        return field;
-    }
-
-    /**
-     * Init filter fields
-     *
-     * @param {object} searchCriteria to use
-     * @param {object} fieldName to init
-     * @param {object} fieldType to init
-     * @returns {object} SearchCriteriaFieldFilter
-     */
-    protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string, fieldType: string): SearchCriteriaFieldFilter {
-        let fieldCriteria: SearchCriteriaFieldFilter;
-
-        if (searchCriteria.filters[fieldName]) {
-            fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
-        } else {
-            fieldCriteria = {
-                field: fieldName,
-                fieldType,
-                operator: '',
-                values: []
-            };
-        }
-
-        return fieldCriteria;
-    }
-
-    /**
-     * Apply current filter values
-     */
-    protected applyFilter(): void {
-        this.validate().pipe(take(1)).subscribe(valid => {
-
-            if (valid) {
-
-                if (this.config.panelMode === 'collapsible' && this.config.collapseOnSearch) {
-                    this.collapse.next(true);
-                }
-
-                const filter = deepClone(this.filter);
-                filter.criteria = this.searchCriteria;
-
-                this.config.onSearch();
-                this.config.updateFilter(filter);
-                return;
-            }
-
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
-        });
-
-    }
-
-    /**
-     * Validate search current input
-     *
-     * @returns {object} Observable<boolean>
-     */
-    protected validate(): Observable<boolean> {
-
-        this.record.formGroup.markAllAsTouched();
-        return this.record.formGroup.statusChanges.pipe(
-            startWith(this.record.formGroup.status),
-            filter(status => status !== 'PENDING'),
-            take(1),
-            map(status => status === 'VALID')
-        );
-    }
-
-    /**
-     * Clear the current filter
-     */
-    protected clearFilter(): void {
-        this.config.resetFilter(false);
-    }
 }

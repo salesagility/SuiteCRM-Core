@@ -31,7 +31,7 @@ import {ListViewStore} from './list-view.store';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {localStorageServiceMock} from '../../../../services/local-storage/local-storage.service.spec.mock';
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
-import {bulkActionProcessMock} from '../../../../services/process/processes/async-action/async-action.spec.mock';
+import {asyncActionServiceMock} from '../../../../services/process/processes/async-action/async-action.spec.mock';
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.mock';
 import {messageServiceMock} from '../../../../services/message/message.service.spec.mock';
@@ -155,7 +155,7 @@ export const listviewStoreMock = new ListViewStore(
     mockModuleNavigation,
     metadataStoreMock,
     localStorageServiceMock,
-    bulkActionProcessMock,
+    asyncActionServiceMock,
     messageServiceMock,
     listStoreFactoryMock,
     new NgbModal(undefined, undefined, undefined, undefined),

@@ -43,7 +43,7 @@ export class VarcharFilterFieldComponent extends BaseFieldComponent implements O
     ngOnInit(): void {
         let current = '';
 
-        if (this.field.criteria.values && this.field.criteria.values.length > 0) {
+        if (this.field.criteria && this.field.criteria.values && this.field.criteria.values.length > 0) {
             current = this.field.criteria.values[0];
         }
 

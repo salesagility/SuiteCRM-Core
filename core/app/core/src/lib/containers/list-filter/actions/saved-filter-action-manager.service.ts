@@ -24,36 +24,36 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
-import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {Injectable} from '@angular/core';
+import {ViewMode} from 'common';
+import {SavedFilterActionData, SavedFilterActionHandler, SavedFilterActionHandlerMap} from './saved-filter.action';
 
-export interface FilterConfig {
-    klass?: string;
-    module: string;
-    savedFilterEdit?: boolean;
-    filter$: Observable<SavedFilter>;
-    savedFilters$: Observable<SavedFilter[]>;
-    searchFields$: Observable<SearchMetaFieldMap>;
-    listFields: ColumnDefinition[];
-    panelMode?: 'collapsible' | 'closable' | 'none';
-    isCollapsed?: boolean;
-    collapseOnSearch?: boolean;
+@Injectable({
+    providedIn: 'root',
+})
+export class SavedFilterActionManager {
 
-    onClose(): void;
+    actions: { [key: string]: SavedFilterActionHandlerMap } = {
+        edit: {} as SavedFilterActionHandlerMap,
+        detail: {} as SavedFilterActionHandlerMap,
+    };
 
-    onSearch(): void;
+    constructor() {
+    }
 
-    onSave(): void;
+    run(actionKey: string, mode: ViewMode, data: SavedFilterActionData): void {
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][actionKey]) {
+            return;
+        }
 
-    updateFilter(filter: SavedFilter, reload?: boolean): void;
+        this.actions[mode][actionKey].run(data);
+    }
 
-    resetFilter(reload?: boolean): void;
+    getHandler(action: string, mode: ViewMode): SavedFilterActionHandler {
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][action]) {
+            return null;
+        }
 
-    addSavedFilter(filter: SavedFilter): void;
-
-    removeSavedFilter(filter: SavedFilter): void;
-
-    setOpenFilter(filter: SavedFilter): void;
-
+        return this.actions[mode][action];
+    }
 }

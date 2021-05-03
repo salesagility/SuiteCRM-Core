@@ -26,32 +26,47 @@
 */
 -->
 <scrm-panel [titleKey]="'LBL_BASIC_FILTER'"
-            [close]="closeButton"
-            [mode]="panelMode"
-            [isCollapsed$]="isCollapsed$"
+            [close]="store.closeButton"
+            [isCollapsed$]="store.isCollapsed$"
+            [mode]="store.panelMode"
             klass="filter-panel {{ (config && config.klass) || ''}}"
             *ngIf="(vm$ | async) as vm">
 
-    <span panel-header-button>
-        <scrm-dropdown-button *ngIf="myFilterButton" [config]="myFilterButton"></scrm-dropdown-button>
-    </span>
+    <div *ngIf="store.myFilterButton" panel-header-button>
+        <scrm-dropdown-button [config]="store.myFilterButton"></scrm-dropdown-button>
+    </div>
 
     <div class="p-3 filter-body" panel-body>
-        <scrm-field-grid [fieldMode]="mode" [fields]="fields" [actions]="true" [special]="special.length > 0">
 
-            <div class="float-right mt-4" *ngIf="special.length > 0" field-grid-special>
-                <div class="d-inline-block form-check mb-2 mr-sm-2" *ngFor="let item of special ">
+        <scrm-field-grid [actions]="true"
+                         [appendActions]="false"
+                         [fieldMode]="store.mode"
+                         [fields]="store.fields"
+                         [special]="store.special.length > 0"
+        >
+
+            <div *ngIf="store.special.length > 0" class="float-right mt-4" field-grid-special>
+
+                <div *ngFor="let item of store.special " class="d-inline-block form-check mb-2 mr-sm-2">
+
                     <input class="form-check-input" type="checkbox" [value]="item.value">
+
                     <label class="form-check-label">
                         <scrm-label [labelKey]="item.labelKey"></scrm-label>
                     </label>
+
                 </div>
             </div>
 
-            <span class="float-right mt-4" field-grid-actions>
-            <scrm-button *ngFor="let button of gridButtons" [config]="button"></scrm-button>
-        </span>
+            <div *ngIf="store.gridButtons" class="mt-4 align-self-end" field-grid-actions>
+                <scrm-button *ngFor="let button of store.gridButtons" [config]="button"></scrm-button>
+            </div>
         </scrm-field-grid>
+
+        <ng-container *ngIf="config && config.savedFilterEdit">
+            <scrm-record-grid [config]="getGridConfig()"></scrm-record-grid>
+        </ng-container>
+
     </div>
 
 </scrm-panel>

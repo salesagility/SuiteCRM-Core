@@ -98,7 +98,7 @@ describe('RecordListModalComponent', () => {
         fixture.detectChanges();
         await fixture.whenRenderingDone();
 
-        await interval(1000).pipe(take(1)).toPromise();
+        await interval(1500).pipe(take(1)).toPromise();
 
         const table = document.getElementsByTagName('scrm-table');
 
@@ -107,7 +107,7 @@ describe('RecordListModalComponent', () => {
 
         component.modal.close();
 
-        await interval(1000).pipe(take(1)).toPromise();
+        await interval(1500).pipe(take(1)).toPromise();
     });
 
     it('should have a filter panel', async () => {
@@ -116,7 +116,7 @@ describe('RecordListModalComponent', () => {
         fixture.detectChanges();
         await fixture.whenRenderingDone();
 
-        await interval(1000).pipe(take(1)).toPromise();
+        await interval(1500).pipe(take(1)).toPromise();
 
         const table = document.getElementsByTagName('scrm-list-filter');
 
@@ -125,7 +125,7 @@ describe('RecordListModalComponent', () => {
 
         component.modal.close();
 
-        await interval(1000).pipe(take(1)).toPromise();
+        await interval(1500).pipe(take(1)).toPromise();
     });
 
 });

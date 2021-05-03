@@ -24,36 +24,17 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
-import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {SavedFilterActionAdapterFactory} from './actions.adapter.factory';
+import {languageStoreMock} from '../../../store/language/language.store.spec.mock';
+import {savedFilterActionManagerMock} from '../actions/saved-filter-action-manager.spec.mock';
+import {asyncActionServiceMock} from '../../../services/process/processes/async-action/async-action.spec.mock';
+import {confirmationModalServiceMock} from '../../../services/modals/confirmation-modal.spec.mock';
+import {messageServiceMock} from '../../../services/message/message.service.spec.mock';
 
-export interface FilterConfig {
-    klass?: string;
-    module: string;
-    savedFilterEdit?: boolean;
-    filter$: Observable<SavedFilter>;
-    savedFilters$: Observable<SavedFilter[]>;
-    searchFields$: Observable<SearchMetaFieldMap>;
-    listFields: ColumnDefinition[];
-    panelMode?: 'collapsible' | 'closable' | 'none';
-    isCollapsed?: boolean;
-    collapseOnSearch?: boolean;
-
-    onClose(): void;
-
-    onSearch(): void;
-
-    onSave(): void;
-
-    updateFilter(filter: SavedFilter, reload?: boolean): void;
-
-    resetFilter(reload?: boolean): void;
-
-    addSavedFilter(filter: SavedFilter): void;
-
-    removeSavedFilter(filter: SavedFilter): void;
-
-    setOpenFilter(filter: SavedFilter): void;
-
-}
+export const savedFilterActionAdapterFactoryMock = new SavedFilterActionAdapterFactory(
+    languageStoreMock,
+    savedFilterActionManagerMock,
+    asyncActionServiceMock,
+    messageServiceMock,
+    confirmationModalServiceMock
+);

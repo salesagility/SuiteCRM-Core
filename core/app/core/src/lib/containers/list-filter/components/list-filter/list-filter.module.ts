@@ -27,11 +27,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ListFilterComponent} from './list-filter.component';
-import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
-import {ButtonModule} from '../button/button.module';
-import {LabelModule} from '../label/label.module';
-import {PanelModule} from '../panel/panel.module';
-import {FieldGridModule} from '../field-grid/field-grid.module';
+import {DropdownButtonModule} from '../../../../components/dropdown-button/dropdown-button.module';
+import {ButtonModule} from '../../../../components/button/button.module';
+import {LabelModule} from '../../../../components/label/label.module';
+import {PanelModule} from '../../../../components/panel/panel.module';
+import {FieldGridModule} from '../../../../components/field-grid/field-grid.module';
+import {RecordGridModule} from '../../../../components/record-grid/record-grid.module';
 
 @NgModule({
     declarations: [ListFilterComponent],
@@ -44,7 +45,9 @@ import {FieldGridModule} from '../field-grid/field-grid.module';
         PanelModule,
         FieldGridModule,
         DropdownButtonModule,
-        LabelModule
+        LabelModule,
+        RecordGridModule,
+        ButtonModule
     ]
 })
 export class ListFilterModule {

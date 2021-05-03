@@ -40,9 +40,10 @@ export class FilterAdapter {
 
     getConfig(): FilterConfig {
         return {
-
+            savedFilterEdit: true,
             module: this.store.getModuleName(),
             filter$: this.store.openFilter$,
+            savedFilters$: this.store.filterList.records$,
             searchFields$: this.store.metadata$.pipe(
                 map((meta: Metadata) => {
 
@@ -60,6 +61,7 @@ export class FilterAdapter {
                     return searchMeta.layout[type];
                 })
             ),
+            listFields: this.store.metadata.listView.fields,
 
             onClose: (): void => {
                 this.store.showFilters = false;

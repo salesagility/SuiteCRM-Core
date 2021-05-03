@@ -121,6 +121,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             return;
         }
 
+        if (!this.optionsMap) {
+            return;
+        }
+
         if (typeof this.optionsMap[this.field.value] !== 'string') {
             return;
         }

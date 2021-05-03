@@ -34,6 +34,7 @@ import {messageServiceMock} from '../../../message/message.service.spec.mock';
 import {redirectBulkActionMock} from './actions/redirect/redirect.async-action.spec.mock';
 import {exportBulkActionMock} from './actions/export/export.async-action.spec.mock';
 import {EntityMutationGQL} from '../../../api/graphql-api/api.record.create';
+import {noopActionMock} from './actions/noop/noop.async-action.spec.mock';
 
 export const bulkActionMockData = {
     'bulk-merge': {
@@ -75,10 +76,11 @@ class BulkActionProcessMutationGQLSpy extends EntityMutationGQL {
 
 const processServiceMock = new ProcessService(new BulkActionProcessMutationGQLSpy());
 
-export const bulkActionProcessMock = new AsyncActionService(
+export const asyncActionServiceMock = new AsyncActionService(
     processServiceMock,
     appStateStoreMock,
     messageServiceMock,
     redirectBulkActionMock,
-    exportBulkActionMock
+    exportBulkActionMock,
+    noopActionMock
 );

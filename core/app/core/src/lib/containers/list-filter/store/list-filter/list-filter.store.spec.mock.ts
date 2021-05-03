@@ -24,36 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
-import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {ListFilterStoreFactory} from './list-filter.store.factory';
+import {messageServiceMock} from '../../../../services/message/message.service.spec.mock';
+import {savedFilterStoreFactoryMock} from '../saved-filter/saved-filter.store.spec.mock';
 
-export interface FilterConfig {
-    klass?: string;
-    module: string;
-    savedFilterEdit?: boolean;
-    filter$: Observable<SavedFilter>;
-    savedFilters$: Observable<SavedFilter[]>;
-    searchFields$: Observable<SearchMetaFieldMap>;
-    listFields: ColumnDefinition[];
-    panelMode?: 'collapsible' | 'closable' | 'none';
-    isCollapsed?: boolean;
-    collapseOnSearch?: boolean;
-
-    onClose(): void;
-
-    onSearch(): void;
-
-    onSave(): void;
-
-    updateFilter(filter: SavedFilter, reload?: boolean): void;
-
-    resetFilter(reload?: boolean): void;
-
-    addSavedFilter(filter: SavedFilter): void;
-
-    removeSavedFilter(filter: SavedFilter): void;
-
-    setOpenFilter(filter: SavedFilter): void;
-
-}
+export const listFilterStoreFactoryMock = new ListFilterStoreFactory(
+    messageServiceMock,
+    savedFilterStoreFactoryMock
+);

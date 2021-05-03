@@ -342,6 +342,24 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     /**
+     * Map sort order to SortDirection enum
+     * @param {string} sortOrder to map
+     * @returns {string} SortDirection
+     */
+    public mapSortOrder(sortOrder: string): SortDirection {
+        let direction = SortDirection.NONE;
+        const sort = sortOrder.toLowerCase();
+
+        if (sort === 'asc') {
+            direction = SortDirection.ASC
+        } else if (sort === 'desc') {
+            direction = SortDirection.DESC
+        }
+
+        return direction;
+    }
+
+    /**
      * Update the pagination
      *
      * @param {number} current to set

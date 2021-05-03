@@ -429,6 +429,15 @@ export class ListViewStore extends ViewStore implements StateStore,
 
         this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
 
+        if (filter.criteria) {
+            const orderBy = filter.criteria.orderBy ?? '';
+            const sortOrder = filter.criteria.sortOrder ?? '';
+            let direction = this.recordList.mapSortOrder(sortOrder);
+
+            this.recordList.updateSorting(orderBy, direction, false);
+            this.updateLocalStorage();
+        }
+
         this.updateSearchCriteria(reload)
     }
 

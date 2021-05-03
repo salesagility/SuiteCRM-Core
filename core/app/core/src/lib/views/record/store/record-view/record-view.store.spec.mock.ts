@@ -26,7 +26,7 @@
 
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
-import {deepClone, Record, StatisticsMap, StatisticsQueryMap} from 'common';
+import {deepClone, Record, RecordMapperRegistry, StatisticsMap, StatisticsQueryMap} from 'common';
 import {navigationMock} from '../../../../store/navigation/navigation.store.spec.mock';
 import {RecordViewStore} from './record-view.store';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
@@ -41,6 +41,8 @@ import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.
 import {messageServiceMock} from '../../../../services/message/message.service.spec.mock';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {StatisticsFetchGQL} from '../../../../store/statistics/graphql/api.statistics.get';
+import {RecordStoreStoreFactory} from '../../../../store/record/record.store.factory';
+import {BaseSaveRecordMapper} from '../../../../store/record/record-mappers/base-save.record-mapper';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordViewMockData = {
@@ -1198,6 +1200,15 @@ class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
     }
 }
 
+const mockRecordStoreFactory = new RecordStoreStoreFactory(
+    new RecordViewGQLSpy(),
+    new RecordSaveGQLSpy(),
+    messageServiceMock,
+    recordManagerMock,
+    new RecordMapperRegistry(),
+    new BaseSaveRecordMapper()
+);
+
 export const recordviewStoreMock = new RecordViewStore(
     new RecordViewGQLSpy(),
     new RecordSaveGQLSpy(),
@@ -1210,7 +1221,8 @@ export const recordviewStoreMock = new RecordViewStore(
     messageServiceMock,
     subpanelFactoryMock,
     recordManagerMock,
-    new StatisticsBatch(new StatisticsFetchGQLSpy())
+    new StatisticsBatch(new StatisticsFetchGQLSpy()),
+    mockRecordStoreFactory
 );
 
 recordviewStoreMock.init('accounts', 'c4da5f04-2d4a-7a14-35ff-5f242b8f8a52').pipe(take(1)).subscribe();
