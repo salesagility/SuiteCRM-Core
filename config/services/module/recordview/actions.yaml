@@ -43,6 +43,8 @@ parameters:
           labelKey: LBL_DELETE
           asyncProcess: true
           params:
+            displayConfirmation: true
+            confirmationLabel: NTC_DELETE_CONFIRMATION
           modes:
             - detail
           acl:
