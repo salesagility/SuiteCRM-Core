@@ -291,6 +291,7 @@ export * from './services/message/message.service';
 export * from './services/metadata/base-metadata.resolver';
 export * from './services/metadata/base-module.resolver';
 export * from './services/metadata/base-record.resolver';
+export * from './services/modals/confirmation-modal.service';
 export * from './services/navigation/action-name-mapper/action-name-mapper.service';
 export * from './services/navigation/global-search/global-search.service';
 export * from './services/navigation/module-name-mapper/module-name-mapper.service';

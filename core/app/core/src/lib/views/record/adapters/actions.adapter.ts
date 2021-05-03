@@ -36,6 +36,7 @@ import {RecordActionData} from '../actions/record.action';
 import {LanguageStore} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
+import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 
 @Injectable()
 export class RecordActionsAdapter implements ActionDataSource {
@@ -87,7 +88,8 @@ export class RecordActionsAdapter implements ActionDataSource {
         protected language: LanguageStore,
         protected actionManager: RecordActionManager,
         protected asyncActionService: AsyncActionService,
-        protected message: MessageService
+        protected message: MessageService,
+        protected confimation: ConfirmationModalService
     ) {
     }
 
@@ -165,7 +167,22 @@ export class RecordActionsAdapter implements ActionDataSource {
     }
 
     runAction(action: Action): void {
+        const params = (action && action.params) || {} as { [key: string]: any };
+        const displayConfirmation = params.displayConfirmation || false;
+        const confirmationLabel = params.confirmationLabel || '';
 
+        if (displayConfirmation) {
+            this.confimation.showModal(confirmationLabel, () => {
+                this.callAction(action);
+            });
+
+            return;
+        }
+
+        this.callAction(action);
+    }
+
+    protected callAction(action: Action) {
         if (action.asyncProcess) {
             this.runAsyncAction(action);
             return;
