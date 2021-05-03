@@ -26,77 +26,45 @@
 
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
-import {Observable} from 'rxjs';
-import {deepClone, Record} from 'common';
-import {map} from 'rxjs/operators';
+import {Record} from 'common';
 import {ApolloQueryResult} from '@apollo/client/core';
-
-interface SaveInput {
-    module: string;
-    attributes: { [key: string]: any };
-    _id?: string;
-}
+import {RecordSaveGQL} from '../../../../../store/record/graphql/api.record.save';
+import {SavedFilter} from '../../../../../store/saved-filters/saved-filter.model';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
-export class RecordSaveGQL {
+export class SavedFilterSaveGQL extends RecordSaveGQL {
 
     constructor(protected apollo: Apollo) {
+        super(apollo);
     }
 
-    /**
-     * Save record on the backend
-     *
-     * @param {object} record to save
-     *
-     * @returns {object} Observable<Record>
-     */
-    public save(record: Record): Observable<Record> {
-
-        const input: SaveInput = {
-            module: record.module,
-            attributes: deepClone(record.attributes),
-        };
-
-        if (record.id) {
-            // eslint-disable-next-line no-underscore-dangle
-            input._id = record.id;
-        }
-
-        const mutationOptions = {
-            mutation: gql`
-                mutation saveRecord($input: saveRecordInput!) {
-                    saveRecord(input: $input) {
-                        record {
-                            attributes
-                            id
-                            _id
-                            module
-                        }
-                    }
-                }
-            `,
-            variables: {
-                input
-            },
-        };
-
-        return this.apollo.mutate(mutationOptions).pipe(map((result: ApolloQueryResult<any>) => this.mapToRecord(result)));
+    public save(record: Record): Observable<SavedFilter> {
+        return super.save(record);
     }
 
-    protected mapToRecord(response: ApolloQueryResult<any>): Record {
+    protected mapToRecord(response: ApolloQueryResult<any>): SavedFilter {
         if (!response.data || !response.data.saveRecord || !response.data.saveRecord.record) {
             return null;
         }
 
-        return {
+        const savedFilter = {
             // eslint-disable-next-line no-underscore-dangle
             id: response.data.saveRecord.record._id,
             type: response.data.saveRecord.record.type || '',
             module: response.data.saveRecord.record.module || '',
-            attributes: response.data.saveRecord.record.attributes || '',
-        } as Record;
+            attributes: response.data.saveRecord.record.attributes || null,
+        } as SavedFilter;
+
+        savedFilter.key = savedFilter.id || (savedFilter.attributes && savedFilter.attributes.id) || '';
+
+        const contents = (savedFilter.attributes && savedFilter.attributes.contents) || null;
+        if (contents) {
+            savedFilter.criteria = contents;
+        }
+
+        return savedFilter;
     }
 }

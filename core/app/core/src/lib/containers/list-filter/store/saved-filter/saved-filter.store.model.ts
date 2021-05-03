@@ -24,29 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-export interface SearchCriteriaFieldFilter {
-    field?: string;
-    fieldType?: string;
-    operator: string;
-    values?: string[];
-    start?: string;
-    end?: string;
+import {ViewMode} from 'common';
+import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+
+export interface FilterContainerData {
+    module?: string;
+    recordID?: string;
+    mode?: ViewMode;
+    record: SavedFilter;
+    loading: boolean;
 }
 
-export interface SearchCriteriaFilter {
-    [key: string]: SearchCriteriaFieldFilter;
-}
-
-export interface FilterPresetHandler {
-    type: string;
-    params: { [key: string]: string };
-}
-
-export interface SearchCriteria {
-    name?: string;
-    preset?: FilterPresetHandler;
-    filters?: SearchCriteriaFilter;
-    orderBy?: string;
-    sortOrder?: string;
-    searchModule?: string;
+export interface FilterContainerState {
+    module: string;
+    searchModule: string;
+    recordID: string;
+    loading: boolean;
+    mode: ViewMode;
 }
