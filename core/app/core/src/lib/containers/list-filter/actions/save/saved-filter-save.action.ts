@@ -26,38 +26,38 @@
 
 import {Injectable} from '@angular/core';
 import {ViewMode} from 'common';
-import {SavedFilterActionData, SavedFilterActionHandler, SavedFilterActionHandlerMap} from './saved-filter.action';
-import {SavedFilterSaveAction} from './save/saved-filter-save.action';
+import {take} from 'rxjs/operators';
+import {MessageService} from '../../../../services/message/message.service';
+import {SavedFilterActionData, SavedFilterActionHandler} from '../saved-filter.action';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
-export class SavedFilterActionManager {
+export class SavedFilterSaveAction extends SavedFilterActionHandler {
 
-    actions: { [key: string]: SavedFilterActionHandlerMap } = {
-        edit: {} as SavedFilterActionHandlerMap,
-        detail: {} as SavedFilterActionHandlerMap,
-    };
+    key = 'save';
+    modes = ['edit' as ViewMode];
 
-    constructor(
-        save: SavedFilterSaveAction
-    ) {
-        save.modes.forEach(mode => this.actions[mode][save.key] = save);
+    constructor(protected message: MessageService) {
+        super();
     }
 
-    run(actionKey: string, mode: ViewMode, data: SavedFilterActionData): void {
-        if (!this.actions || !this.actions[mode] || !this.actions[mode][actionKey]) {
-            return;
-        }
+    run(data: SavedFilterActionData): void {
+        data.store.validate().pipe(take(1)).subscribe(valid => {
+            if (valid) {
+                data.store.save().pipe(take(1)).subscribe(savedFilter => {
+                    data.listFilterStore.config.addSavedFilter(data.store.recordStore.extractBaseRecord(savedFilter));
+                    data.listFilterStore.applyFilter();
+                    this.message.addSuccessMessageByKey('LBL_SAVED_FILTER_SAVED')
+                });
+                return;
+            }
 
-        this.actions[mode][actionKey].run(data);
+            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+        });
     }
 
-    getHandler(action: string, mode: ViewMode): SavedFilterActionHandler {
-        if (!this.actions || !this.actions[mode] || !this.actions[mode][action]) {
-            return null;
-        }
-
-        return this.actions[mode][action];
+    shouldDisplay(): boolean {
+        return true;
     }
 }
