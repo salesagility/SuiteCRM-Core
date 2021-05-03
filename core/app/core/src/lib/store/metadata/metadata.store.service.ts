@@ -28,16 +28,20 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {deepClone} from 'common';
+import {
+    Action,
+    ColumnDefinition,
+    deepClone,
+    FieldDefinitionMap,
+    LineAction,
+    ListViewMeta,
+    Panel,
+    SearchMeta,
+    SubPanelMeta,
+    WidgetMetadata
+} from 'common';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
-import {Panel} from 'common';
-import {Action} from 'common';
-import {ColumnDefinition, ListViewMeta, SearchMeta} from 'common';
-import {LineAction} from 'common';
-import {SubPanelMeta} from 'common';
-import {WidgetMetadata} from 'common';
-import {FieldDefinitionMap} from 'common';
 
 export interface SummaryTemplates {
     [key: string]: string;
@@ -237,7 +241,9 @@ export class MetadataStore implements StateStore {
             map((value: Metadata) => {
 
                 Object.keys(loadedTypes).forEach((type) => {
-                    value[type] = loadedTypes[type];
+                    if (!value[type] && loadedTypes[type]) {
+                        value[type] = loadedTypes[type];
+                    }
                 });
 
                 return value;

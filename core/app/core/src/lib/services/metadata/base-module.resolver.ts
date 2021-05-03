@@ -75,6 +75,7 @@ export class BaseModuleResolver extends BaseMetadataResolver {
         return forkJoin({
             base: super.resolve(route),
             metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
+            savedSearchMeta: this.metadataStore.getMetadata('saved-search', ['recordView'])
         }).pipe(
             tap(
                 () => {
