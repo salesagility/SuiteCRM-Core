@@ -85,6 +85,14 @@ import {TextEditFieldComponent} from './text/templates/edit/text.component';
 import {DateFilterFieldModule} from './date/templates/filter/date.module';
 import {DateFilterFieldComponent} from './date/templates/filter/date.component';
 import {TextEditFieldModule} from './text/templates/edit/text.module';
+import {DropdownEnumEditFieldModule} from './dropdownenum/templates/edit/dropdownenum.module';
+import {DropdownEnumDetailFieldModule} from './dropdownenum/templates/detail/dropdownenum.module';
+import {RadioEnumDetailFieldModule} from './radioenum/templates/detail/radioenum.module';
+import {RadioEnumEditFieldModule} from './radioenum/templates/edit/radioenum.module';
+import {DropdownEnumDetailFieldComponent} from './dropdownenum/templates/detail/dropdownenum.component';
+import {DropdownEnumEditFieldComponent} from './dropdownenum/templates/edit/dropdownenum.component';
+import {RadioEnumDetailFieldComponent} from './radioenum/templates/detail/radioenum.component';
+import {RadioEnumEditFieldComponent} from './radioenum/templates/edit/radioenum.component';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -109,6 +117,10 @@ export const baseFieldModules = [
     FullNameDetailFieldsModule,
     EnumDetailFieldModule,
     EnumEditFieldModule,
+    DropdownEnumDetailFieldModule,
+    DropdownEnumEditFieldModule,
+    RadioEnumDetailFieldModule,
+    RadioEnumEditFieldModule,
     MultiEnumDetailFieldModule,
     MultiEnumEditFieldModule,
     MultiEnumFilterFieldModule,
@@ -141,6 +153,10 @@ export const baseFieldComponents = [
     FullNameDetailFieldsComponent,
     EnumDetailFieldComponent,
     EnumEditFieldComponent,
+    DropdownEnumDetailFieldComponent,
+    DropdownEnumEditFieldComponent,
+    RadioEnumDetailFieldComponent,
+    RadioEnumEditFieldComponent,
     MultiEnumDetailFieldComponent,
     MultiEnumEditFieldComponent,
     MultiEnumFilterFieldComponent,
@@ -187,6 +203,15 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'relate.filter': RelateFilterFieldComponent,
     'fullname.list': FullNameDetailFieldsComponent,
     'fullname.detail': FullNameDetailFieldsComponent,
+    'enum-radio.list': RadioEnumDetailFieldComponent,
+    'enum-radio.detail': RadioEnumDetailFieldComponent,
+    'enum-radio.edit': RadioEnumEditFieldComponent,
+    'enum-dropdown.list': DropdownEnumDetailFieldComponent,
+    'enum-dropdown.detail': DropdownEnumDetailFieldComponent,
+    'enum-dropdown.edit': DropdownEnumEditFieldComponent,
+    'enum-chips.list': EnumDetailFieldComponent,
+    'enum-chips.detail': EnumDetailFieldComponent,
+    'enum-chips.edit': EnumEditFieldComponent,
     'enum.list': EnumDetailFieldComponent,
     'enum.detail': EnumDetailFieldComponent,
     'enum.edit': EnumEditFieldComponent,
