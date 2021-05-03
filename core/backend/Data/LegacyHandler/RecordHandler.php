@@ -28,11 +28,11 @@
 namespace App\Data\LegacyHandler;
 
 use ApiBeanMapper;
-use App\Engine\LegacyHandler\LegacyHandler;
 use App\Data\Entity\Record;
+use App\Data\Service\RecordProviderInterface;
+use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
-use App\Data\Service\RecordProviderInterface;
 use BeanFactory;
 use InvalidArgumentException;
 use SugarBean;
@@ -171,7 +171,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
         $mapper = new ApiBeanMapper();
-        $mappedBean = $mapper->toArray($bean);
+        $mappedBean = $mapper->toApi($bean);
 
 
         if ($bean->ACLAccess('edit')) {
@@ -235,42 +235,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         }
 
         /* @noinspection PhpIncludeInspection */
-        require_once 'include/SugarFields/SugarFieldHandler.php';
+        require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
+        $mapper = new ApiBeanMapper();
 
-        foreach ($bean->field_defs as $field => $properties) {
-            if (!isset($values[$field])) {
-                continue;
-            }
-
-            $type = $properties['type'] ?? '';
-
-            if ($type === 'relate' && isset($bean->field_defs[$field])) {
-
-                $idName = $bean->field_defs[$field]['id_name'] ?? '';
-
-                if ($idName !== $field) {
-                    $rName = $bean->field_defs[$field]['rname'] ?? '';
-                    $value = $values[$field][$rName] ?? '';;
-                    $values[$field] = $value;
-                }
-            }
-
-            if (!empty($properties['isMultiSelect']) || $type === 'multienum') {
-                $multiSelectValue = $values[$field];
-                if (!is_array($values[$field])) {
-                    $multiSelectValue = [];
-                }
-                $values[$field] = encodeMultienumValue($multiSelectValue);
-            }
-
-            $bean->$field = $values[$field];
-        }
-
-        foreach ($bean->relationship_fields as $field => $link) {
-            if (!empty($values[$field])) {
-                $bean->$field = $values[$field];
-            }
-        }
+        $mapper->toBean($bean, $values);
     }
 
     /**
