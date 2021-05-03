@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Button, ButtonInterface} from 'common';
 
 @Component({
@@ -32,7 +32,7 @@ import {Button, ButtonInterface} from 'common';
     templateUrl: './close-button.component.html',
     styleUrls: []
 })
-export class CloseButtonComponent implements OnInit {
+export class CloseButtonComponent {
     @Input() config: ButtonInterface;
 
     buttonClasses = ['close-button'];
@@ -40,9 +40,10 @@ export class CloseButtonComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit(): void {
+    getConfig(): ButtonInterface {
         const btn = Button.fromButton(this.config);
         btn.addClasses(this.buttonClasses);
-        this.config = btn;
+
+        return btn;
     }
 }
