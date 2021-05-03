@@ -1,7 +1,8 @@
-@media all and (max-width: $breakpoint-small) {
-    .list-view {          
-        .pagination-count {
-            display: none;
+@media all and (max-width: $breakpoint-xlarge) {
+    .list-view {
+        .list-widget-container {
+            margin-left: 1.1em;
+            margin-top: 1em;
         }
     }
 }
@@ -21,6 +22,32 @@
             .list-view-title {
                 margin: 0;
             }
+        }
+        .list-widget-container {
+            margin-top: 1em;
+            margin-left: 1.1em;
+        }
+    }
+}
+
+
+@media all and (max-width: $breakpoint-small) {
+    .list-view {          
+        .pagination-count {
+            display: none;
+        }
+        .chart-sidebar-widget {
+            .login-form {
+                right: 0.4em;
+                width: 95% !important;
+                left: 0.4em;
+            }
+            .chart-widget {
+                margin-top: 3rem !important;
+            }
+        }
+        .list-widget-container {
+            margin-left: 1.1em;
         }
     }
 }
