@@ -15,6 +15,8 @@ export * from './metadata/subpanel.metadata.model';
 export * from './metadata/widget.metadata';
 export * from './record/field.model';
 export * from './record/record.model';
+export * from './record/record-mappers/record-mapper.model';
+export * from './record/record-mappers/record-mapper.registry';
 export * from './services/ui/resize.model';
 export * from './services/validators/validators.model';
 export * from './statistics/statistics-store.model';

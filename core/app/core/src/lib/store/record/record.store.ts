@@ -24,11 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record} from 'common';
-import {deepClone} from 'common';
+import {deepClone, MapEntry, Record, RecordMapper, RecordMapperRegistry, ViewFieldDefinition} from 'common';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
-import {ViewFieldDefinition} from 'common';
 import {RecordFetchGQL} from './graphql/api.record.get';
 import {RecordSaveGQL} from './graphql/api.record.save';
 import {MessageService} from '../../services/message/message.service';
@@ -67,8 +65,11 @@ export class RecordStore {
         protected recordSaveGQL: RecordSaveGQL,
         protected recordFetchGQL: RecordFetchGQL,
         protected message: MessageService,
-        protected recordManager: RecordManager
+        protected recordManager: RecordManager,
+        protected recordMappers: RecordMapperRegistry,
     ) {
+
+
         this.state$ = this.store.asObservable().pipe(
             tap(record => {
                 this.updateStaging(record);
@@ -87,51 +88,32 @@ export class RecordStore {
             ...record,
         };
 
-        if (record.module && this.definitions && this.definitions.length > 0) {
-            newRecord.fields = this.recordManager.initFields(record, this.definitions);
-        }
+        this.initRecord(newRecord);
 
         this.updateState(newRecord);
     }
 
+    getStaging(): Record {
+        if (!this.stagingState) {
+            return null;
+        }
+        return this.stagingState;
+    }
+
+    setStaging(record: Record): void {
+
+        this.initRecord(record);
+
+        this.staging.next(this.stagingState = record);
+    }
+
     save(): Observable<Record> {
 
-        Object.keys(this.stagingState.fields).forEach(fieldName => {
-            const field = this.stagingState.fields[fieldName];
-
-            const type = field.type || '';
-            const source = field.definition.source || '';
-            const rname = field.definition.rname || 'name';
-            const idName = field.definition.id_name || '';
-
-            if (type === 'relate' && source === 'non-db' && idName === fieldName) {
-                this.stagingState.attributes[fieldName] = field.value;
-                return;
-            }
-
-            if (type === 'relate' && source === 'non-db' && rname !== '' && field.valueObject) {
-                const attribute = this.stagingState.attributes[fieldName] || {} as any;
-
-                attribute[rname] = field.valueObject[rname];
-                attribute.id = field.valueObject.id;
-
-                this.stagingState.attributes[fieldName] = attribute;
-                this.stagingState.attributes[idName] = field.valueObject.id;
-
-                return;
-            }
-
-            if (field.valueList) {
-                this.stagingState.attributes[fieldName] = field.valueList;
-                return;
-            }
-
-            this.stagingState.attributes[fieldName] = field.value;
-        });
+        this.mapStagingFields();
 
         return this.recordSaveGQL.save(this.stagingState).pipe(
             tap((record: Record) => {
-                this.initFields(record);
+                this.initRecord(record);
                 this.updateState(record);
             })
         );
@@ -174,6 +156,17 @@ export class RecordStore {
         } as Record;
 
         return deepClone(baseRecord);
+    }
+
+    /**
+     * Extract base record
+     *
+     * @returns {object} Record
+     */
+    extractBaseRecord(record: Record): Record {
+        const {fields, formGroup, ...base} = record;
+
+        return {...base}
     }
 
     /**
@@ -235,10 +228,22 @@ export class RecordStore {
         shallowCopy.formGroup = null;
         shallowCopy.fields = null;
         const newState = deepClone(shallowCopy);
-        this.initFields(newState);
+        this.initRecord(newState);
 
 
         this.staging.next(this.stagingState = newState);
+    }
+
+    /**
+     * Map staging fields
+     */
+    protected mapStagingFields(): void {
+        const mappers: MapEntry<RecordMapper> = this.recordMappers.get(this.stagingState.module);
+
+        Object.keys(mappers).forEach(key => {
+            const mapper = mappers[key];
+            mapper.map(this.stagingState);
+        });
     }
 
     /**
@@ -246,7 +251,8 @@ export class RecordStore {
      *
      * @param {object} record Record
      */
-    protected initFields(record: Record): void {
+    protected initRecord(record: Record): void {
+
         if (record.module && this.definitions && this.definitions.length > 0) {
             record.fields = this.recordManager.initFields(record, this.definitions);
         }

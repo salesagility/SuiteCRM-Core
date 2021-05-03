@@ -335,6 +335,7 @@ export * from './store/record/record.store.factory';
 export * from './store/record/record.store';
 export * from './store/record/graphql/api.record.get';
 export * from './store/record/graphql/api.record.save';
+export * from './store/record/record-mappers/base-save.record-mapper';
 export * from './store/record-list/record-list.store.factory';
 export * from './store/record-list/record-list.store';
 export * from './store/record-list/graphql/api.list.get';
