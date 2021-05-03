@@ -331,6 +331,7 @@ export * from './store/chart-data/chart-data.store';
 export * from './store/language/language.store';
 export * from './store/metadata/metadata.store.service';
 export * from './store/navigation/navigation.store';
+export * from './store/record/record.store.factory';
 export * from './store/record/record.store';
 export * from './store/record/graphql/api.record.get';
 export * from './store/record/graphql/api.record.save';

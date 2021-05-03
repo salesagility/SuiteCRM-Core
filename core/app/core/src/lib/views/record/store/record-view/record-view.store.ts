@@ -62,6 +62,7 @@ import {ViewStore} from '../../../../store/view/view.store';
 import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
 import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
+import {RecordStoreStoreFactory} from '../../../../store/record/record.store.factory';
 
 const initialState: RecordViewState = {
     module: '',
@@ -124,18 +125,13 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected message: MessageService,
         protected subpanelFactory: SubpanelStoreFactory,
         protected recordManager: RecordManager,
-        protected statisticsBatch: StatisticsBatch
+        protected statisticsBatch: StatisticsBatch,
+        protected recordStoreFactory: RecordStoreStoreFactory
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
 
-        this.recordStore = new RecordStore(
-            this.getViewFieldsObservable(),
-            recordSaveGQL,
-            recordFetchGQL,
-            message,
-            recordManager
-        );
+        this.recordStore = recordStoreFactory.create(this.getViewFieldsObservable());
 
         this.record$ = this.recordStore.state$.pipe(distinctUntilChanged());
         this.stagingRecord$ = this.recordStore.staging$.pipe(distinctUntilChanged());
