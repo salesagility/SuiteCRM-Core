@@ -35,6 +35,10 @@ export interface FieldRegistryInterface {
     exclude(module: string, key: string): void;
 
     get(module: string, type: string, mode: string): Type<BaseFieldComponent>;
+
+    has(module: string, type: string, mode: string): boolean;
+
+    getDisplayType(module: string, type: string, displayType: string, mode: string): Type<BaseFieldComponent>;
 }
 
 export class BaseFieldRegistry implements FieldRegistryInterface {
@@ -52,6 +56,17 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
         this.map.excludeEntry(module, key);
     }
 
+    public getDisplayType(module: string, type: string, displayType: string, mode: string): Type<BaseFieldComponent> {
+
+        const displayTypeKey = this.getDisplayTypeKey(type, displayType);
+
+        if (displayType && this.has(module, displayTypeKey, mode)) {
+            return this.get(module, displayTypeKey, mode);
+        }
+
+        return this.get(module, type, mode);
+    }
+
     public get(module: string, type: string, mode: string): Type<BaseFieldComponent> {
 
         const moduleFields = this.map.getGroupEntries(module);
@@ -65,8 +80,23 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
         return moduleFields[defaultKey];
     }
 
+    public has(module: string, type: string, mode: string): boolean {
+
+        const moduleFields = this.map.getGroupEntries(module);
+
+        const key = BaseFieldRegistry.getKey(type, mode);
+        return !!moduleFields[key];
+    }
+
     public static getKey(type: string, mode: string): string {
         return type + '.' + mode;
+    }
+
+    public getDisplayTypeKey(type: string, displayType: string): string {
+        if (!type || !displayType) {
+            return '';
+        }
+        return type + '-' + displayType;
     }
 
     protected init(): void {

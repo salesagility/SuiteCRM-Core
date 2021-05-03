@@ -72,6 +72,7 @@ export interface FieldDefinition {
     validations?: ValidationDefinition[];
     template?: string;
     display?: string;
+    displayType?: string;
     layout?: string[];
     showLabel?: string[];
     groupFields?: FieldDefinitionMap;

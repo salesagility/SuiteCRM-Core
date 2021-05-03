@@ -25,7 +25,7 @@
  */
 
 import {Component} from '@angular/core';
-import {Field} from 'common';
+import {Field, FieldDefinition} from 'common';
 import {BaseFieldComponent} from '../base/base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {GroupFieldRegistry} from '../group-field.registry';
@@ -41,9 +41,12 @@ export class GroupFieldComponent extends BaseFieldComponent {
         super(typeFormatter);
     }
 
-    getComponentType(type: string): any {
+    getComponentType(type: string, definition: FieldDefinition): any {
         let module = (this.record && this.record.module) || 'default';
-        return this.registry.get(module, type, this.mode);
+
+        const displayType = (definition && definition.displayType) || '';
+
+        return this.registry.getDisplayType(module, type, displayType, this.mode);
     }
 
     /**

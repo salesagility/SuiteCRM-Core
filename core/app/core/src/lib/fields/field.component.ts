@@ -26,8 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {viewFieldsMap} from './field.manifest';
-import {Record} from 'common';
-import {Field} from 'common';
+import {Field, Record} from 'common';
 import {FieldRegistry} from './field.registry';
 
 @Component({
@@ -64,6 +63,9 @@ export class FieldComponent {
 
     get componentType(): any {
         let module = (this.record && this.record.module) || 'default';
-        return this.registry.get(module, this.type, this.componentMode);
+
+        const displayType = (this.field.definition && this.field.definition.displayType) || '';
+
+        return this.registry.getDisplayType(module, this.type, displayType, this.componentMode);
     }
 }

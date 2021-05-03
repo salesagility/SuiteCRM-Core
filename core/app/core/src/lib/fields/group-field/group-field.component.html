@@ -45,7 +45,7 @@
             <!-- VALUE -->
             <span *ngIf="groupField.type" class="field-group-field pr-1">
 
-                <scrm-dynamic-field [componentType]="getComponentType(groupField.type)"
+                <scrm-dynamic-field [componentType]="getComponentType(groupField.type, groupField.definition)"
                                     [field]="groupField"
                                     [klass]="klass"
                                     [mode]="mode"
