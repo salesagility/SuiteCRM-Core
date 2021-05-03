@@ -32,7 +32,7 @@
         <div class="flex-grow-1 align-items-center d-flex">
 
             <div class="d-flex align-items-center">
-                <scrm-close-button *ngIf="isClosable()" [config]="close"></scrm-close-button>
+                <scrm-close-button *ngIf="isClosable()" [config]="getCloseButton()"></scrm-close-button>
                 <scrm-minimise-button *ngIf="isCollapsible()"
                                       [config]="minimiseButton"
                                       [status]="minimiseStatus">

@@ -63,7 +63,6 @@ export class PanelComponent implements OnInit, OnDestroy {
                 this.initMinimiseButton();
             }));
         }
-        this.initCloseButton();
         this.initMinimiseButton();
     }
 
@@ -71,15 +70,17 @@ export class PanelComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    initCloseButton(): void {
+    getCloseButton(): ButtonInterface {
         if (!this.close) {
-            return;
+            return null;
         }
 
         const btn = Button.fromButton(this.close);
         btn.addClasses(this.buttonClasses);
 
         this.close = btn;
+
+        return btn;
     }
 
     isClosable(): boolean {
