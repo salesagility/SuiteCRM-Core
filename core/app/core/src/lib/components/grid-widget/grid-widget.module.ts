@@ -33,6 +33,7 @@ import {GridWidgetComponent} from './grid-widget.component';
 import {LabelModule} from '../label/label.module';
 import {DynamicLabelModule} from '../dynamic-label/dynamic-label.module';
 import {ImageModule} from '../image/image.module';
+import {NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
     declarations: [GridWidgetComponent],
@@ -46,7 +47,8 @@ import {ImageModule} from '../image/image.module';
         WidgetPanelModule,
         LabelModule,
         ImageModule,
-        DynamicLabelModule
+        DynamicLabelModule,
+        NgbTooltipModule
     ]
 })
 export class GridWidgetModule {

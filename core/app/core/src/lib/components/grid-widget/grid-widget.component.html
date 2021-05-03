@@ -30,12 +30,13 @@
 </div>
 
 <div *ngIf="!this.messageLabelKey && (vm$| async) as vm"
-     class="grid-widget d-flex flex-column">
+     class="grid-widget d-flex flex-column"
+     ngbTooltip="{{vm.tooltipTitleText}}" placement="auto" container="body">
 
     <ng-container *ngFor="let item of vm.layout">
 
-        <div [title]="vm.tooltipTitleText"
-             class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}} {{getLayoutRowClass(item)}}">
+        <div
+            class="d-flex {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getRowClass()}} {{getLayoutRowClass(item)}}">
 
             <div class="{{getColClass()}} {{getClass(col)}}" *ngFor="let col of item.cols">
 
@@ -77,7 +78,7 @@
 
                     </ng-container>
 
-                     <!-- DESCRIPTION TEXT -->
+                    <!-- DESCRIPTION TEXT -->
                     <ng-container *ngIf="col.descriptionKey">
 
                         <div class="text-truncate widget-entry-label">
