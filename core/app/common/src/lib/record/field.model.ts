@@ -73,6 +73,7 @@ export interface FieldDefinition {
     template?: string;
     display?: string;
     displayType?: string;
+    displayDirection?: string;
     layout?: string[];
     showLabel?: string[];
     groupFields?: FieldDefinitionMap;
