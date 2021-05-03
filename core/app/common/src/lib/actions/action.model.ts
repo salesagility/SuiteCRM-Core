@@ -49,6 +49,7 @@ export interface Action {
     labelKey: string;
     label?: string;
     icon?: string;
+    klass?: string[];
     status?: string;
     modes?: string[];
     asyncProcess?: boolean;

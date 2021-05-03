@@ -33,8 +33,7 @@ import {
     ScreenSize,
     ScreenSizeObserverService
 } from '../../services/ui/screen-size-observer/screen-size-observer.service';
-import {LanguageStore} from '../../store/language/language.store';
-import {LanguageStrings} from 'core';
+import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 
 export interface ActionGroupMenuViewModel {
     actions: Action[];
@@ -49,13 +48,13 @@ export interface ActionGroupMenuViewModel {
 export class ActionGroupMenuComponent implements OnInit {
 
     @Input() klass = '';
+    @Input() buttonClass = 'btn btn-sm';
     @Input() config: ActionDataSource;
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
     vm$: Observable<ActionGroupMenuViewModel>;
 
-    protected buttonClass = 'settings-button';
     protected buttonGroupClass = 'dropdown-button-secondary';
 
     protected subs: Subscription[];
@@ -157,6 +156,10 @@ export class ActionGroupMenuComponent implements OnInit {
 
         if (action.status) {
             Button.appendClasses(button, [action.status]);
+        }
+
+        if (action.klass) {
+            Button.appendClasses(button, action.klass);
         }
 
         return button;
