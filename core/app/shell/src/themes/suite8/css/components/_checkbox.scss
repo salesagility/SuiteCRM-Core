@@ -255,12 +255,6 @@
   }
 }
 
-@media all and (max-width: $breakpoint-large) {
-  .checkbox-container input:indeterminate ~ .checkmark:after {
-    top: 0;
-  }
-}
-
 .list-view-table .checkbox-container .checkmark {
   background-color: $off-white;
 }

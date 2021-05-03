@@ -1,16 +1,23 @@
 @media all and (max-width: $breakpoint-small) {
-    .list-view {
-        .list-view-header {
-            .col-md-4 {
-                padding: 0.3em 0;
-            }            
-        }        
+    .list-view {          
+        .pagination-count {
+            display: none;
+        }
     }
 }
 
 @media all and (max-width: $breakpoint-large) {
     .list-view {
-        .list-view-header {           
+        .list-view-header {  
+            .container-fluid {
+                .row {
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+            }
+            .col-md-4 {
+                padding: 0.3em 0;
+            }         
             .list-view-title {
                 margin: 0;
             }
