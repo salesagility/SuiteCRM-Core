@@ -30,21 +30,35 @@
 
         <div [ngClass]="colClass" *ngFor="let col of row.cols">
 
-            <ng-container *ngIf="col.field">
-                <label [ngClass]="labelClass">{{col.field.label}}</label>
-                <scrm-field [type]="col.field.type"
-                            [mode]="fieldMode"
-                            [klass]="inputClass"
-                            [field]="col.field">
-                </scrm-field>
-            </ng-container>
-
-            <ng-container *ngIf="col.actionSlot">
-                <ng-content select="[field-grid-actions]"></ng-content>
-            </ng-container>
-
-            <ng-container *ngIf="col.specialSlot">
-                <ng-content select="[field-grid-special]"></ng-content>
+            <ng-container>
+                <div [class.align-items-center]="labelDisplay === 'inline'"
+                     [class.flex-column]="labelDisplay === 'top'"
+                     [class.flex-row]="labelDisplay === 'inline'"
+                     [class.justify-content-end]="!col.field"
+                     class="d-flex"
+                >
+                    <div *ngIf="col.field"
+                         [class.pr-3]="labelDisplay === 'inline'">
+                        <label *ngIf="col.field.label" [ngClass]="labelClass">{{col.field.label}}</label>
+                        <scrm-label *ngIf="!col.field.label && col.field.labelKey"
+                                    [labelKey]="col.field.labelKey"
+                                    [ngClass]="labelClass"></scrm-label>
+                    </div>
+                    <div *ngIf="col.field"
+                         [class.flex-grow-1]="labelDisplay === 'inline'">
+                        <scrm-field [field]="col.field"
+                                    [klass]="inputClass"
+                                    [mode]="fieldMode"
+                                    [type]="col.field.type">
+                        </scrm-field>
+                    </div>
+                    <ng-container *ngIf="col.actionSlot">
+                        <ng-content select="[field-grid-actions]"></ng-content>
+                    </ng-container>
+                    <ng-container *ngIf="col.specialSlot">
+                        <ng-content select="[field-grid-actions]"></ng-content>
+                    </ng-container>
+                </div>
             </ng-container>
         </div>
     </div>

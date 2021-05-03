@@ -27,20 +27,29 @@
 import {Directive, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {FieldGridRow} from './field-grid.model';
+import {FieldGridRow, LabelDisplay} from './field-grid.model';
+import {ScreenSizeMap} from 'common';
 
 
 @Directive()
 export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     @Input() special = false;
     @Input() actions = false;
+    @Input() appendActions = false;
 
+    @Input() labelDisplay: LabelDisplay = 'top';
     @Input() labelClass: { [klass: string]: any } = {};
     @Input() inputClass: { [klass: string]: any } = {};
     @Input() rowClass: { [klass: string]: any } = {};
     @Input() colClass: { [klass: string]: any } = {};
 
     @Input() maxColumns: number;
+    @Input() sizeMap: ScreenSizeMap = {
+        handset: 1,
+        tablet: 2,
+        web: 3,
+        wide: 4
+    };
 
     fieldGrid: FieldGridRow[];
 
@@ -52,6 +61,7 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
 
     baseRowClass = {
         'form-row': true,
+        'align-items-center': true
     };
 
     baseLabelClass = {
@@ -65,12 +75,6 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     };
 
     protected currentSize = 'web';
-    protected sizeMap = {
-        handset: 1,
-        tablet: 2,
-        web: 3,
-        wide: 4
-    };
 
     protected subscriptions: Subscription[] = [];
 
@@ -137,6 +141,14 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
                 grid.push(newRow);
 
                 newRow.cols[0][type] = true;
+            });
+
+        } else if (this.appendActions === true) {
+
+            let lastRow = grid[grid.length - 1];
+            let place = this.colNumber - 1;
+            neededSlots.forEach(type => {
+                lastRow.cols[place][type] = true;
             });
 
         } else {

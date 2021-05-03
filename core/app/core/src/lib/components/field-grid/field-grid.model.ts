@@ -24,8 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface} from 'common';
-import {Field} from 'common';
+import {ButtonInterface, Field} from 'common';
 
 export interface FieldGridColumn {
     field?: Field;
@@ -37,3 +36,5 @@ export interface FieldGridColumn {
 export interface FieldGridRow {
     cols: FieldGridColumn[];
 }
+
+export type LabelDisplay = 'top' | 'inline';

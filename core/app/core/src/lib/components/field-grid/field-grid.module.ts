@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {FieldGridComponent} from './field-grid.component';
 import {FieldModule} from '../../fields/field.module';
 import {ButtonModule} from '../button/button.module';
+import {LabelModule} from '../label/label.module';
 
 @NgModule({
     declarations: [FieldGridComponent],
@@ -38,7 +39,8 @@ import {ButtonModule} from '../button/button.module';
     imports: [
         CommonModule,
         ButtonModule,
-        FieldModule
+        FieldModule,
+        LabelModule
     ]
 })
 export class FieldGridModule {
