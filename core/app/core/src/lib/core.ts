@@ -127,6 +127,7 @@ export * from './components/widget-panel/widget-panel.component';
 export * from './components/widget-panel/widget-panel.module';
 export * from './containers/list-filter/actions/saved-filter-action-manager.service';
 export * from './containers/list-filter/actions/saved-filter.action';
+export * from './containers/list-filter/actions/delete/saved-filter-delete.action';
 export * from './containers/list-filter/actions/save/saved-filter-save.action';
 export * from './containers/list-filter/adapters/actions.adapter.factory';
 export * from './containers/list-filter/adapters/actions.adapter';

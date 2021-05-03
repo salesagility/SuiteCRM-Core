@@ -28,6 +28,7 @@ import {Injectable} from '@angular/core';
 import {ViewMode} from 'common';
 import {SavedFilterActionData, SavedFilterActionHandler, SavedFilterActionHandlerMap} from './saved-filter.action';
 import {SavedFilterSaveAction} from './save/saved-filter-save.action';
+import {SavedFilterDeleteAction} from './delete/saved-filter-delete.action';
 
 @Injectable({
     providedIn: 'root',
@@ -40,9 +41,11 @@ export class SavedFilterActionManager {
     };
 
     constructor(
-        save: SavedFilterSaveAction
+        save: SavedFilterSaveAction,
+        deleteAction: SavedFilterDeleteAction
     ) {
         save.modes.forEach(mode => this.actions[mode][save.key] = save);
+        deleteAction.modes.forEach(mode => this.actions[mode][deleteAction.key] = deleteAction);
     }
 
     run(actionKey: string, mode: ViewMode, data: SavedFilterActionData): void {
