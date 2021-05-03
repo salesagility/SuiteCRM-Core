@@ -433,6 +433,48 @@ export class ListViewStore extends ViewStore implements StateStore,
     }
 
     /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public addSavedFilter(filter: SavedFilter): void {
+
+        const newState = {...this.internalState};
+        const activeFilters = this.activeFilters;
+
+        if (filter.key && activeFilters[filter.key]) {
+            activeFilters[filter.key] = filter;
+            newState.activeFilters = activeFilters;
+        }
+
+        newState.openFilter = filter;
+
+        this.filterList.addFilter(filter);
+
+        this.updateState(newState);
+    }
+
+    /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public removeSavedFilter(filter: SavedFilter): void {
+
+        if (!filter || !filter.key) {
+            return;
+        }
+
+        this.filterList.removeFilter(filter);
+
+        const newState = {...this.internalState};
+
+        if (newState.openFilter && newState.openFilter.key === filter.key) {
+            this.resetFilters(true)
+        }
+    }
+
+    /**
      * Reset active filters
      *
      * @param {boolean} reload flag

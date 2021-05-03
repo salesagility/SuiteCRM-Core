@@ -46,4 +46,11 @@ export interface FilterConfig {
     updateFilter(filter: SavedFilter, reload?: boolean): void;
 
     resetFilter(reload?: boolean): void;
+
+    addSavedFilter(filter: SavedFilter): void;
+
+    removeSavedFilter(filter: SavedFilter): void;
+
+    setOpenFilter(filter: SavedFilter): void;
+
 }

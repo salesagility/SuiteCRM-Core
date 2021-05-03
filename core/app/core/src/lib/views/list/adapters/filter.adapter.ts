@@ -78,7 +78,20 @@ export class FilterAdapter {
 
             resetFilter: (reload?: boolean): void => {
                 this.store.resetFilters(reload);
-            }
+            },
+
+            addSavedFilter: (filter: SavedFilter): void => {
+                this.store.addSavedFilter(filter);
+            },
+
+            removeSavedFilter: (filter: SavedFilter): void => {
+                this.store.removeSavedFilter(filter);
+            },
+
+            setOpenFilter: (filter: SavedFilter): void => {
+                this.store.setOpenFilter(filter);
+            },
+
         } as FilterConfig;
     }
 }
