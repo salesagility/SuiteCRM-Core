@@ -159,10 +159,29 @@ export class DatetimeFormatter implements Formatter {
         return dateTime;
     }
 
-    userDateTimeFormatToStruct(datetime: string): DateTimeStruct {
-        const dateStruct = this.userDateFormatToStruct(datetime);
-        const timeStruct = this.userTimeFormatToStruct(datetime);
-        return {...dateStruct, ...timeStruct};
+    userDateTimeFormatToStruct(datetime: string): { date: NgbDateStruct; time: NgbTimeStruct } {
+        if (!datetime) {
+            return null;
+        }
+
+        const dateTime = this.toDateTime(datetime);
+
+        if (!dateTime.isValid) {
+            return null;
+        }
+
+        return {
+            date: {
+                day: dateTime.day,
+                month: dateTime.month,
+                year: dateTime.year
+            } as NgbDateStruct,
+            time: {
+                hour: dateTime.hour,
+                minute: dateTime.minute,
+                second: dateTime.second,
+            } as NgbTimeStruct
+        };
     }
 
     userDateFormatToStruct(datetime: string): NgbDateStruct {

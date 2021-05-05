@@ -24,40 +24,65 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface} from 'common';
+import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
+import {
+    NgbCalendar,
+    NgbDateStruct,
+    NgbPopover, NgbPopoverConfig,
+    NgbTimeStruct
+} from '@ng-bootstrap/ng-bootstrap';
+import {ButtonInterface, isEmptyString} from 'common';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
-import {DatetimeAdapter} from '../../../base/datetime/datetime-adapter.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
-import {DatetimeParserFormatter} from '../../../base/datetime/datetime-parser-formatter.service';
-import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
+import {DatetimeFormatter} from "../../../../services/formatters/datetime/datetime-formatter.service";
+import {DateTimeModel} from "../../datetime.model";
+import {PlacementArray} from "@ng-bootstrap/ng-bootstrap/util/positioning";
 
 @Component({
     selector: 'scrm-datetime-edit',
     templateUrl: './datetime.component.html',
-    styleUrls: [],
-    providers: [
-        {provide: NgbDateAdapter, useClass: DatetimeAdapter},
-        {provide: NgbDateParserFormatter, useClass: DatetimeParserFormatter}
-    ]
+    styleUrls: []
 })
 export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements OnInit, OnDestroy {
 
-    date: {
-        year: number;
-        month: number;
-    };
+    @ViewChild(NgbPopover, {static: true})
+    private popover: NgbPopover;
+
+    dateTimeModel: DateTimeModel = new DateTimeModel();
 
     constructor(
         protected formatter: DatetimeFormatter,
-        protected dateAdapter: NgbDateAdapter<string>,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected calendar: NgbCalendar,
+        protected config: NgbPopoverConfig,
     ) {
         super(formatter, typeFormatter);
+        config.autoClose = "outside";
+        config.placement = this.getPlacement();
     }
 
     ngOnInit(): void {
+
+        // Note: handle NgbDatePicker default validation
+        // Note: convert empty form value to null for the ngb date validator to pass it
+        if (isEmptyString(this.field.value)) {
+            this.dateTimeModel.date = this.calendar.getToday() as NgbDateStruct;
+            this.dateTimeModel.time = {hour: 0, minute: 0, second: 0} as NgbTimeStruct;
+            this.field.formControl.setValue(null);
+        } else {
+            this.dateTimeModel = DateTimeModel.toDateTimeStruct(this.formatter, this.field.value);
+            if (this.dateTimeModel === null) {
+                this.field.formControl.setValue(null);
+                return;
+            }
+            this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+        }
+
+        // enable seconds in timepicker
+        if (this.formatter.getTimeFormat().includes('ss')) {
+            this.dateTimeModel.displaySeconds = true;
+        }
+
         this.subscribeValueChanges();
     }
 
@@ -65,13 +90,39 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
         this.unsubscribeAll();
     }
 
+    protected setFormValues(dateTimeString: string) {
+        this.field.value = dateTimeString;
+        this.field.formControl.setValue(dateTimeString);
+        this.field.formControl.markAsDirty();
+    }
 
-    getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
+    onDateChange(date: NgbDateStruct | null) {
+        this.dateTimeModel.date = date;
+        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+    }
+
+    onTimeChange(time: NgbTimeStruct | null) {
+        this.dateTimeModel.time = time;
+        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+    }
+
+    onInputChange($event: any) {
+        const dateTimeModel = DateTimeModel.toDateTimeStruct(this.formatter, $event.target.value);
+        if(!dateTimeModel){
+            return;
+        }
+        this.dateTimeModel = dateTimeModel;
+    }
+
+    getOpenButton(): ButtonInterface {
         return {
-            klass: 'record-action-button float-right',
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-            onClick: () => datepicker.toggle(),
+            klass: 'btn btn-sm btn-outline-secondary m-0 border-0',
             icon: 'calendar'
         };
     }
+
+    getPlacement(): PlacementArray {
+        return ['bottom-right', 'top-right', 'bottom-left', 'top-left'];
+    }
+
 }

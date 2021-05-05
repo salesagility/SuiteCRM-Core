@@ -28,7 +28,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DateTimeEditFieldComponent} from './datetime.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgbDatepickerModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerModule, NgbModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from '../../../../components/button/button.module';
 import {ImageModule} from '../../../../components/image/image.module';
 
@@ -42,7 +42,8 @@ import {ImageModule} from '../../../../components/image/image.module';
         NgbTimepickerModule,
         ImageModule,
         ButtonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgbModule
     ]
 })
 export class DateTimeEditFieldModule {

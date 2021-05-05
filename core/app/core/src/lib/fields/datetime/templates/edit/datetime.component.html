@@ -25,16 +25,38 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<span class="datetime-edit-containers">
-    <span>
-        <input ngbDatepicker
-               [ngClass]="klass"
-               [placeholder]="getDateFormat().toLowerCase()"
-               (navigate)="date = $event.next"
-               [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
-               [formControl]="field.formControl"
-               #datepicker="ngbDatepicker">
-        <scrm-button [config]="getOpenButton(datepicker)">
+
+<div class="input-group mr-2">
+
+    <input
+        [ngClass]="klass"
+        [placeholder]="getDateTimeFormat().toLowerCase()"
+        [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+        [formControl]="field.formControl"
+        (change)="onInputChange($event)"
+    >
+
+    <div class="input-group-append">
+        <scrm-button [config]="getOpenButton()" [ngbPopover]="calendarContent">
         </scrm-button>
-    </span>
-</span>
+    </div>
+</div>
+
+<ng-template #calendarContent>
+    <div>
+        <div>
+            <ngb-datepicker name="datepicker"
+                            [ngModel]="dateTimeModel.date"
+                            (dateSelect)="onDateChange($event)" [startDate]="dateTimeModel.date"></ngb-datepicker>
+        </div>
+
+        <div class="d-flex justify-content-center mt-auto">
+            <ngb-timepicker name="timepicker"
+                            [ngModel]="dateTimeModel.time" (ngModelChange)="onTimeChange($event)"
+                            [seconds]="dateTimeModel.displaySeconds" [hourStep]="dateTimeModel.hourStep"
+                            [minuteStep]="dateTimeModel.minuteStep"
+                            [secondStep]="dateTimeModel.secondStep">
+            </ngb-timepicker>
+        </div>
+    </div>
+</ng-template>

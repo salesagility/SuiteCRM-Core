@@ -178,7 +178,10 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'date.filter': DateFilterFieldComponent,
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
-    // 'datetime.edit': DateTimeEditFieldComponent, To enable when datetime component is fixed
+    'datetime.edit': DateTimeEditFieldComponent,
+    'datetimecombo.list': DateTimeDetailFieldComponent,
+    'datetimecombo.detail': DateTimeDetailFieldComponent,
+    'datetimecombo.edit': DateTimeEditFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,

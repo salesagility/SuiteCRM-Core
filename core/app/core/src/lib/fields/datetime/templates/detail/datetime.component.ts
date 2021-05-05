@@ -42,4 +42,5 @@ export class DateTimeDetailFieldComponent extends BaseDateTimeComponent {
     ) {
         super(formatter, typeFormatter);
     }
+
 }
