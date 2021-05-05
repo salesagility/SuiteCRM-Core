@@ -30,13 +30,16 @@ import {EnumDetailFieldModule} from './enum/templates/detail/enum.module';
 import {FullNameDetailFieldsModule} from './fullname/templates/detail/fullname.module';
 import {VarcharDetailFieldComponent} from './varchar/templates/detail/varchar.component';
 import {UrlDetailFieldComponent} from './url/templates/detail/url.component';
-import {DateTimeEditFieldModule} from './datetime/templates/edit/datetime.module';
 import {DateDetailFieldModule} from './date/templates/detail/date.module';
 import {CurrencyDetailFieldModule} from './currency/templates/detail/currency.module';
 import {TextDetailFieldComponent} from './text/templates/detail/text.component';
 import {VarcharEditFieldComponent} from './varchar/templates/edit/varchar.component';
+import {DateTimeEditFieldModule} from './datetime/templates/edit/datetime.module';
+import {DateFilterFieldComponent} from './date/templates/filter/date.component';
 import {DateTimeDetailFieldComponent} from './datetime/templates/detail/datetime.component';
 import {DateTimeDetailFieldModule} from './datetime/templates/detail/datetime.module';
+import {DateTimeFilterFieldComponent} from "./datetime/templates/filter/datetime.component";
+import {DateTimeFilterFieldModule} from "./datetime/templates/filter/datetime.module";
 import {MultiEnumDetailFieldComponent} from './multienum/templates/detail/multienum.component';
 import {EnumEditFieldComponent} from './enum/templates/edit/enum.component';
 import {BooleanDetailFieldComponent} from './boolean/templates/detail/boolean.component';
@@ -79,7 +82,6 @@ import {VarcharDetailFieldModule} from './varchar/templates/detail/varchar.modul
 import {FieldComponentMap} from './field.model';
 import {TextEditFieldComponent} from './text/templates/edit/text.component';
 import {DateFilterFieldModule} from './date/templates/filter/date.module';
-import {DateFilterFieldComponent} from './date/templates/filter/date.component';
 import {TextEditFieldModule} from './text/templates/edit/text.module';
 import {DropdownEnumEditFieldModule} from './dropdownenum/templates/edit/dropdownenum.module';
 import {DropdownEnumDetailFieldModule} from './dropdownenum/templates/detail/dropdownenum.module';
@@ -102,6 +104,7 @@ export const baseFieldModules = [
     DateFilterFieldModule,
     DateTimeDetailFieldModule,
     DateTimeEditFieldModule,
+    DateTimeFilterFieldModule,
     UrlDetailFieldModule,
     CurrencyDetailFieldModule,
     EmailListFieldsModule,
@@ -136,6 +139,7 @@ export const baseFieldComponents = [
     DateFilterFieldComponent,
     DateTimeDetailFieldComponent,
     DateTimeEditFieldComponent,
+    DateTimeFilterFieldComponent,
     UrlDetailFieldComponent,
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
@@ -179,9 +183,11 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'datetime.list': DateTimeDetailFieldComponent,
     'datetime.detail': DateTimeDetailFieldComponent,
     'datetime.edit': DateTimeEditFieldComponent,
+    'datetime.filter': DateTimeFilterFieldComponent,
     'datetimecombo.list': DateTimeDetailFieldComponent,
     'datetimecombo.detail': DateTimeDetailFieldComponent,
     'datetimecombo.edit': DateTimeEditFieldComponent,
+    'datetimecombo.filter': DateTimeFilterFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,
