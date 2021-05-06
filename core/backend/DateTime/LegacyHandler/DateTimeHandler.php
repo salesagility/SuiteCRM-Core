@@ -107,6 +107,16 @@ class DateTimeHandler extends LegacyHandler
     }
 
     /**
+     * To user date format
+     * @param string $dateString
+     * @return string
+     */
+    public function toDBDateTime(string $dateString): string
+    {
+        return $this->getFormatter()->toDBDateTime($dateString);
+    }
+
+    /**
      * @return DateFormatService
      */
     protected function getFormatter(): DateFormatService

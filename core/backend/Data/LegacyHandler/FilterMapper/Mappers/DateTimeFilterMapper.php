@@ -73,7 +73,7 @@ class DateTimeFilterMapper implements FilterMapperInterface
             if (empty($value)) {
                 continue;
             }
-            $mapped[] = $this->dateTimeHandler->toUserDateTime($value);
+            $mapped[] = $this->dateTimeHandler->toDBDateTime($value);
         }
 
         $legacyValue = $mapped;
