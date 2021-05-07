@@ -30,6 +30,7 @@ import {CommonModule} from '@angular/common';
 import {ButtonComponent} from './button.component';
 import {LabelModule} from '../label/label.module';
 import {ImageModule} from '../image/image.module';
+import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [ButtonComponent],
@@ -38,6 +39,7 @@ import {ImageModule} from '../image/image.module';
         CommonModule,
         ImageModule,
         LabelModule,
+        NgbTooltipModule,
     ]
 })
 export class ButtonModule {

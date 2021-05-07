@@ -28,7 +28,7 @@
 <button type="button"
         [ngClass]="config.klass"
         (click)="config.onClick && config.onClick()"
-        [title]="language.getFieldLabel(config.titleKey)">
+        [ngbTooltip]="language.getFieldLabel(config.titleKey)">
     <scrm-image *ngIf="config.icon" [image]="config.icon" [klass]="config.iconKlass || ''"></scrm-image>
     {{ config.label || '' }}
     <scrm-label *ngIf="config.labelKey" [labelKey]="config.labelKey"></scrm-label>
