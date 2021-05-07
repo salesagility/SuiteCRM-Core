@@ -294,7 +294,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             if (strpos($top_button['widget_class'], 'Select') !== false) {
                 $topButtons[] = [
                     'key' => 'select',
-                    'labelKey' => 'LBL_SELECT_BUTTON_LABEL',
+                    'labelKey' => 'LBL_LINK',
                     'widget_class' => $top_button['widget_class'],
                     'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
                     'additionalFields' => $top_button['additionalFields'] ?? [],
