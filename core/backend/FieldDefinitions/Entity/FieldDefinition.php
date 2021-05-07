@@ -128,4 +128,5 @@ class FieldDefinition
 
         return array_uintersect_uassoc($fieldDefinition, $readOnlyPatterns, "strcasecmp", "strcasecmp");
     }
+
 }
