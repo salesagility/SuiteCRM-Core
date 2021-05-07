@@ -37,6 +37,7 @@ import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-ima
 export class ImageComponent {
     @Input() image: string;
     @Input() klass = '';
+    @Input() title = '';
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
