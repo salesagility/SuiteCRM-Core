@@ -25,12 +25,14 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, Record} from 'common';
+import {Record, ViewMode} from 'common';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 import {RecordListModalComponent} from "../../../record-list-modal/components/record-list-modal/record-list-modal.component";
 import {RecordListModalResult} from "../../../record-list-modal/components/record-list-modal/record-list-modal.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {SubpanelActionsAdapter} from "../../adapters/subpanel-actions.adapter";
+import {take} from 'rxjs/operators';
+import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
+import {MessageService} from '../../../../services/message/message.service';
 
 
 @Injectable({
@@ -39,12 +41,19 @@ import {SubpanelActionsAdapter} from "../../adapters/subpanel-actions.adapter";
 export class SubpanelSelectAction extends SubpanelActionHandler {
     key = 'select';
 
-    constructor(
-        protected subpanelAdaptor: SubpanelActionsAdapter,
-        protected modalService: NgbModal
+    modes: ViewMode[] = ['list'];
 
+    constructor(
+        protected modalService: NgbModal,
+        protected message: MessageService,
+        protected asyncActionService: AsyncActionService
     ) {
         super();
+    }
+
+
+    shouldDisplay(data: SubpanelActionData): boolean {
+        return true;
     }
 
     run(data: SubpanelActionData): void {
@@ -58,7 +67,7 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
     protected showSelectModal(data: SubpanelActionData): void {
         const modal = this.modalService.open(RecordListModalComponent, {size: 'xl', scrollable: true});
 
-        modal.componentInstance.module = data.module; //this.getRelatedModule();
+        modal.componentInstance.module = data.module;
 
         modal.result.then((result: RecordListModalResult) => {
 
@@ -68,21 +77,19 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
 
             const record = this.getSelectedRecord(result);
 
-            const action: Action =
-                {
-                    key: this.key,
-                    asyncProcess: true,
-                    params: {
-                        store: data.store,
-                        payload: {
-                            baseModule: data.parentModule,
-                            baseRecordId: data.parentId,
-                            relateModule: record.module,
-                            relateRecordId: record.id
-                        }
-                    }
+            const input = {
+                action: 'record-select',
+                module: data.store.parentModule,
+                id: data.store.parentId || '',
+                payload: {
+                    baseModule: data.parentModule,
+                    baseRecordId: data.parentId,
+                    relateModule: record.module,
+                    relateRecordId: record.id
                 }
-            this.subpanelAdaptor.runAction(action);
+            } as AsyncActionInput;
+
+            this.runAsyncAction(input, data);
         });
     }
 
@@ -110,6 +117,17 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
         });
 
         return record;
+    }
+
+    protected runAsyncAction(asyncData: AsyncActionInput, data: SubpanelActionData): void {
+        const actionName = 'record-select';
+
+        this.message.removeMessages();
+
+        this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe(() => {
+            data.store.load(false).pipe(take(1)).subscribe();
+            data.store.loadAllStatistics(false).pipe(take(1)).subscribe();
+        });
     }
 
 }
