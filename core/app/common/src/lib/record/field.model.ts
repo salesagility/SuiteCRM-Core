@@ -77,6 +77,8 @@ export interface FieldDefinition {
     layout?: string[];
     showLabel?: string[];
     groupFields?: FieldDefinitionMap;
+    dynamic?: boolean;
+    parentenum?: string;
 }
 
 export declare type FieldClickCallback = (field: Field, record: Record) => void;

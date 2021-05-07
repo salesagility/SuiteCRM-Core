@@ -27,10 +27,9 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Option} from 'common';
+import {Field, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
-
 
 @Component({template: ''})
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -40,13 +39,23 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     options: Option[] = [];
     labels: LanguageStringMap;
     protected subs: Subscription[] = [];
+    protected mappedOptions: { [key: string]: Option[] };
+    protected isDynamicEnum: boolean = false;
 
     constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
         super(typeFormatter);
     }
 
-
     ngOnInit(): void {
+
+        if (this.field.definition.dynamic === true
+            && this.field.definition.parentenum
+            && this.record
+            && this.record.fields) {
+            this.isDynamicEnum = true;
+            const parentEnum: Field = this.record.fields[this.field.definition.parentenum];
+            this.subscribeToParentValueChanges(parentEnum);
+        }
 
         if (this.field.metadata && this.field.metadata.options$) {
             this.subs.push(this.field.metadata.options$.subscribe((options: Option[]) => {
@@ -68,9 +77,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             }));
         }
 
-
     }
-
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
@@ -85,11 +92,12 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     protected buildProvidedOptions(options: Option[]): void {
         this.options = options;
-
         this.optionsMap = {};
+
         options.forEach(option => {
             this.optionsMap[option.value] = option.label;
         });
+
     }
 
     protected buildAppStringListOptions(appStrings: LanguageListStringMap): void {
@@ -97,15 +105,16 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         if (!appStrings || !this.field.definition.options || !appStrings[this.field.definition.options]) {
             return;
         }
-
         this.optionsMap = appStrings[this.field.definition.options] as LanguageStringMap;
+
         if (!this.optionsMap || !Object.keys(this.optionsMap)) {
             return;
         }
-        this.buildOptionsArray();
+        this.buildOptionsArray(appStrings);
     }
 
-    protected buildOptionsArray(): void {
+    protected buildOptionsArray(appStrings: LanguageListStringMap): void {
+
         this.options = [];
         Object.keys(this.optionsMap).forEach(key => {
 
@@ -114,6 +123,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                 label: this.optionsMap[key]
             });
         });
+
+        if (this.isDynamicEnum) {
+            this.buildDynamicEnumOptions(appStrings);
+        }
     }
 
     protected initValue(): void {
@@ -125,11 +138,12 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             return;
         }
 
+        this.selectedValues = [];
+
         if (typeof this.optionsMap[this.field.value] !== 'string') {
             return;
         }
 
-        this.selectedValues = [];
         if (this.field.value) {
             this.valueLabel = this.optionsMap[this.field.value];
             this.selectedValues.push({
@@ -138,4 +152,77 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             });
         }
     }
+
+    buildDynamicEnumOptions(appStrings: LanguageListStringMap) {
+
+        const parentEnum = this.record.fields[this.field.definition.parentenum];
+
+        if (parentEnum) {
+
+            const parentOptionMap: LanguageStringMap = appStrings[parentEnum.definition.options] as LanguageStringMap;
+
+            if (parentOptionMap && Object.keys(parentOptionMap).length != 0) {
+
+                this.mappedOptions = this.createParentChildOptionsMap(parentOptionMap, this.options);
+
+                let parentValues: string[] = [];
+                if (parentEnum.definition.type === 'multienum') {
+                    parentValues = parentEnum.valueList;
+                } else {
+                    parentValues.push(parentEnum.value);
+                }
+                this.options = this.filterMatchingOptions(parentValues);
+
+            }
+        }
+    }
+
+    filterMatchingOptions(values: string[]): Option[] {
+
+        let filteredOptions: Option[] = [];
+
+        if (!values || !values.length) {
+            return [];
+        }
+
+        values.forEach(value => {
+            if (!this.mappedOptions[value]) {
+                return;
+            }
+            filteredOptions = filteredOptions.concat([...this.mappedOptions[value]]);
+        });
+
+        return filteredOptions;
+    }
+
+    createParentChildOptionsMap(parentOptions: LanguageStringMap, childOptions: Option[]): { [key: string]: Option[] } {
+        const mappedOptions: { [key: string]: Option[] } = {};
+        Object.keys(parentOptions).forEach(key => {
+                mappedOptions[key] = childOptions.filter(
+                    option => String(option.value).startsWith(parentOptions[key])
+                )
+            }
+        )
+        return mappedOptions;
+    }
+
+    subscribeToParentValueChanges(parentEnum: Field) {
+
+        this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
+
+            if (typeof values === 'string') {
+                values = [values];
+            }
+
+            // Reset selected values on Form Control
+            this.field.value = '';
+            this.field.formControl.setValue('');
+
+            // Rebuild available enum options
+            this.options = this.filterMatchingOptions(values);
+
+            this.initValue();
+        }));
+    }
+
 }

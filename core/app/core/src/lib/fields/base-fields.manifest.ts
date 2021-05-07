@@ -27,7 +27,6 @@
 import {PhoneDetailFieldComponent} from './phone/templates/detail/phone.component';
 import {MultiEnumFilterFieldComponent} from './multienum/templates/filter/multienum.component';
 import {EnumDetailFieldModule} from './enum/templates/detail/enum.module';
-import {DynamicEnumDetailFieldModule} from './dynamicenum/templates/detail/dynamicenum.module';
 import {FullNameDetailFieldsModule} from './fullname/templates/detail/fullname.module';
 import {VarcharDetailFieldComponent} from './varchar/templates/detail/varchar.component';
 import {UrlDetailFieldComponent} from './url/templates/detail/url.component';
@@ -59,17 +58,14 @@ import {RelateEditFieldModule} from './relate/templates/edit/relate.module';
 import {RelateFilterFieldComponent} from './relate/templates/filter/relate.component';
 import {TextDetailFieldModule} from './text/templates/detail/text.module';
 import {PhoneDetailFieldModule} from './phone/templates/detail/phone.module';
-import {DynamicEnumDetailFieldComponent} from './dynamicenum/templates/detail/dynamicenum.component';
 import {RelateEditFieldComponent} from './relate/templates/edit/relate.component';
 import {DateEditFieldModule} from './date/templates/edit/date.module';
-import {DynamicEnumEditFieldComponent} from './dynamicenum/templates/edit/dynamicenum.component';
 import {MultiEnumFilterFieldModule} from './multienum/templates/filter/multienum.module';
 import {RelateDetailFieldsModule} from './relate/templates/detail/relate.module';
 import {RelateFilterFieldModule} from './relate/templates/filter/relate.module';
 import {BooleanEditFieldModule} from './boolean/templates/edit/boolean.module';
 import {VarcharEditFieldModule} from './varchar/templates/edit/varchar.module';
 import {EmailListFieldsComponent} from './email/templates/list/email.component';
-import {DynamicEnumEditFieldModule} from './dynamicenum/templates/edit/dynamicenum.module';
 import {BooleanDetailFieldModule} from './boolean/templates/detail/boolean.module';
 import {UrlDetailFieldModule} from './url/templates/detail/url.module';
 import {MultiEnumEditFieldComponent} from './multienum/templates/edit/multienum.component';
@@ -124,8 +120,6 @@ export const baseFieldModules = [
     MultiEnumDetailFieldModule,
     MultiEnumEditFieldModule,
     MultiEnumFilterFieldModule,
-    DynamicEnumDetailFieldModule,
-    DynamicEnumEditFieldModule,
     BooleanDetailFieldModule,
     BooleanEditFieldModule,
     BooleanFilterFieldModule
@@ -160,8 +154,6 @@ export const baseFieldComponents = [
     MultiEnumDetailFieldComponent,
     MultiEnumEditFieldComponent,
     MultiEnumFilterFieldComponent,
-    DynamicEnumDetailFieldComponent,
-    DynamicEnumEditFieldComponent,
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent,
     BooleanFilterFieldComponent
@@ -220,9 +212,9 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'multienum.detail': MultiEnumDetailFieldComponent,
     'multienum.edit': MultiEnumEditFieldComponent,
     'multienum.filter': MultiEnumFilterFieldComponent,
-    'dynamicenum.list': DynamicEnumDetailFieldComponent,
-    'dynamicenum.detail': DynamicEnumDetailFieldComponent,
-    'dynamicenum.edit': DynamicEnumEditFieldComponent,
+    'dynamicenum.list': EnumDetailFieldComponent,
+    'dynamicenum.detail': EnumDetailFieldComponent,
+    'dynamicenum.edit': EnumEditFieldComponent,
     'dynamicenum.filter': MultiEnumEditFieldComponent,
     'boolean.list': BooleanDetailFieldComponent,
     'boolean.detail': BooleanDetailFieldComponent,
