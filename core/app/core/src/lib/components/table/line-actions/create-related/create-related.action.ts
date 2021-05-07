@@ -25,30 +25,45 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
-import {RecordActionData, RecordActionHandler} from '../record.action';
+import {Router} from '@angular/router';
+import {Action, ActionHandler, ViewMode} from 'common';
+import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
+import {LineActionData} from '../line.action';
 
 @Injectable({
     providedIn: 'root'
 })
-export class RecordToggleWidgetsAction extends RecordActionHandler {
+export class CreateRelatedLineAction extends ActionHandler<LineActionData> {
+    key = 'create';
+    modes = ['list' as ViewMode];
 
-    key = 'toggle-widgets';
-    modes = ['detail' as ViewMode, 'edit' as ViewMode];
-
-    constructor() {
+    constructor(protected moduleNameMapper: ModuleNameMapper, protected router: Router) {
         super();
     }
 
-    run(data: RecordActionData): void {
-        data.store.showSidebarWidgets = !data.store.showSidebarWidgets;
+    run(data: LineActionData, action: Action = null): void {
+
+        const configs = action.params['create'] || {} as any;
+
+        const params: { [key: string]: any } = {};
+        /* eslint-disable camelcase,@typescript-eslint/camelcase*/
+        params.return_module = configs.legacyModuleName;
+        params.return_action = configs.returnAction;
+        params.return_id = data.record.id;
+        /* eslint-enable camelcase,@typescript-eslint/camelcase */
+        params[configs.mapping.moduleName] = configs.legacyModuleName;
+
+        params[configs.mapping.name] = data.record.attributes.name;
+        params[configs.mapping.id] = data.record.id;
+
+        const route = '/' + configs.module + '/' + configs.action;
+
+        this.router.navigate([route], {
+            queryParams: params
+        }).then();
     }
 
-    shouldDisplay(data: RecordActionData): boolean {
-        return data.store.widgets;
-    }
-
-    getStatus(data: RecordActionData): string {
-        return data.store.showSidebarWidgets ? 'active' : '';
+    shouldDisplay(data: LineActionData): boolean {
+        return true;
     }
 }

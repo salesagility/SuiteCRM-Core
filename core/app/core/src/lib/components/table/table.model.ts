@@ -27,8 +27,8 @@
 import {Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
 import {
+    ActionDataSource,
     ColumnDefinition,
-    LineAction,
     PaginationDataSource,
     Record,
     RecordSelection,
@@ -46,7 +46,7 @@ export interface TableConfig {
 
     columns: Observable<ColumnDefinition[]>;
     maxColumns$: Observable<number>;
-    lineActions$?: Observable<LineAction[]>;
+    lineActions?: ActionDataSource;
     selection$?: Observable<RecordSelection>;
     sort$?: Observable<SortingSelection>;
     loading$?: Observable<boolean>;

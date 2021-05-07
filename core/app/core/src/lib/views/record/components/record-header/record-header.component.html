@@ -76,6 +76,7 @@
                         <div class="w-100">
                             <scrm-action-group-menu
                                 [config]="actionsAdapter"
+                                [actionContext]="getActionContext(vm.record)"
                                 klass="record-view-actions float-right"
                                 buttonClass="settings-button"
                             >

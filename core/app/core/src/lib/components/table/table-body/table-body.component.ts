@@ -28,9 +28,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
+    Action,
     ColumnDefinition,
     Field,
-    LineAction,
     Record,
     RecordSelection,
     SelectionStatus,
@@ -40,11 +40,10 @@ import {
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
-import {SubpanelStore} from "../../../containers/subpanel/store/subpanel/subpanel.store";
 
 interface TableViewModel {
     columns: ColumnDefinition[];
-    lineActions: LineAction[];
+    lineActions: Action[];
     selection: RecordSelection;
     selected: { [key: string]: string };
     selectionStatus: SelectionStatus;
@@ -59,7 +58,6 @@ interface TableViewModel {
 })
 export class TableBodyComponent implements OnInit {
     @Input() config: TableConfig;
-    @Input() store: SubpanelStore;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
 
@@ -69,13 +67,13 @@ export class TableBodyComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const lineAction$ = this.config.lineActions$ || of([]).pipe(shareReplay(1));
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         const loading$ = this.config.loading$ || of(false).pipe(shareReplay(1));
+        const lineActions$ = (this.config.lineActions && this.config.lineActions.getActions()) || of([]).pipe(shareReplay(1));
 
         this.vm$ = combineLatest([
             this.config.columns,
-            lineAction$,
+            lineActions$,
             selection$,
             this.config.maxColumns$,
             this.config.dataSource.connect(null),
@@ -136,15 +134,15 @@ export class TableBodyComponent implements OnInit {
         let hasLinkField = false;
         const returnArray = [];
 
-        const fields = metaFields.filter(function(field){
+        const fields = metaFields.filter(function (field) {
             return !field.hasOwnProperty('default')
                 || (field.hasOwnProperty('default') && field.default === true);
         });
 
         while (i < this.maxColumns && i < fields.length) {
-                returnArray.push(fields[i].name);
-                hasLinkField = hasLinkField || fields[i].link;
-                i++;
+            returnArray.push(fields[i].name);
+            hasLinkField = hasLinkField || fields[i].link;
+            i++;
         }
         if (!hasLinkField && (this.maxColumns < fields.length)) {
             for (i = this.maxColumns; i < fields.length; i++) {

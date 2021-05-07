@@ -27,7 +27,6 @@
 import {Injectable} from '@angular/core';
 import {SubpanelCreateAction} from '../../actions/create/create.action';
 import {SubpanelActionData, SubpanelActionHandlerMap} from '../../actions/subpanel.action';
-import {SubpanelUnlinkAction} from "../../actions/unlink/unlink.action";
 
 @Injectable({
     providedIn: 'root',
@@ -38,10 +37,8 @@ export class SubpanelActionManager {
 
     constructor(
         protected create: SubpanelCreateAction,
-        protected unlink: SubpanelUnlinkAction,
     ) {
         this.actions[create.key] = create;
-        this.actions[unlink.key] = unlink;
     }
 
     run(action: string, data: SubpanelActionData): void {

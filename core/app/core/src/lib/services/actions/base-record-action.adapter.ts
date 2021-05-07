@@ -25,52 +25,54 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionDataSource} from 'common';
-import {Observable, of} from 'rxjs';
-import {take} from 'rxjs/operators';
-import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {MessageService} from '../../../services/message/message.service';
-import {Process} from '../../../services/process/process.service';
+import {Action, ActionContext, ActionManager} from 'common';
+import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
+import {MessageService} from '../message/message.service';
+import {ConfirmationModalService} from '../modals/confirmation-modal.service';
+import {BaseActionsAdapter} from './base-action.adapter';
+import {LanguageStore} from '../../store/language/language.store';
 
-@Injectable({
-    providedIn: 'root',
-})
-export class SubpanelActionsAdapter implements ActionDataSource {
+@Injectable()
+export abstract class BaseRecordActionsAdapter<D> extends BaseActionsAdapter<D> {
 
-    constructor(
+
+    protected constructor(
+        protected actionManager: ActionManager<D>,
         protected asyncActionService: AsyncActionService,
-        protected message: MessageService
+        protected message: MessageService,
+        protected confirmation: ConfirmationModalService,
+        protected language: LanguageStore
     ) {
+        super(
+            actionManager,
+            asyncActionService,
+            message,
+            confirmation,
+            language
+        )
     }
 
-    getActions(): Observable<Action[]> {
-        // not yet implemented
-        return of([]);
+    /**
+     * Get action name
+     * @param action
+     */
+    protected getActionName(action: Action) {
+        return `record-${action.key}`;
     }
 
-    runAction(action: Action): void {
-        if (action.asyncProcess) {
-            this.runAsyncAction(action);
-            return;
-        }
-    }
-
-    protected runAsyncAction(action: Action): void {
-        const actionName = `record-${action.key}`;
-        this.message.removeMessages();
-
-        const asyncData = {
+    /**
+     * Build backend process input
+     *
+     * @param action
+     * @param actionName
+     * @param moduleName
+     * @param context
+     */
+    protected buildActionInput(action: Action, actionName: string, moduleName: string, context: ActionContext = null): AsyncActionInput {
+        return {
             action: actionName,
-            module: action.params.payload.relateModule,
-            payload: {...action.params.payload}
+            module: moduleName,
+            id: (context && context.record && context.record.id) || '',
         } as AsyncActionInput;
-
-        this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe((process: Process) => {
-            if (process.data.status === 'success' && process.data && process.data.reload) {
-                action.params.store.load(false).pipe(take(1)).subscribe();
-                action.params.store.loadAllStatistics(false).pipe(take(1)).subscribe();
-            }
-        });
     }
-
 }

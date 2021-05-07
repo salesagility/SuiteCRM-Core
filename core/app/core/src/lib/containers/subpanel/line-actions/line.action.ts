@@ -24,26 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Action, ActionHandler, Record} from 'common';
+import {LineActionData} from '../../../components/table/line-actions/line.action';
+import {SubpanelStore} from '../store/subpanel/subpanel.store';
 
-import {LineActionMenuComponent} from './line-action-menu.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RouterModule} from '@angular/router';
-import {ImageModule} from '../image/image.module';
-import {ButtonGroupModule} from '../button-group/button-group.module';
+export interface SubpanelLineActionData extends LineActionData {
+    record: Record;
+    store: SubpanelStore;
+}
 
-@NgModule({
-    declarations: [LineActionMenuComponent],
-    exports: [LineActionMenuComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        ImageModule,
-        RouterModule,
-        ButtonGroupModule,
-    ]
-})
+export abstract class SubpanelLineActionHandler extends ActionHandler<SubpanelLineActionData> {
 
-export class LineActionModule {
+    abstract run(data: SubpanelLineActionData, action?: Action): void;
+
+    abstract shouldDisplay(data: SubpanelLineActionData): boolean;
 }

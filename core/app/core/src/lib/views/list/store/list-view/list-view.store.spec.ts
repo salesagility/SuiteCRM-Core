@@ -24,13 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {PageSelection, SelectionStatus} from 'common';
+import {PageSelection, SelectionStatus, SearchCriteriaFieldFilter} from 'common';
 import {take} from 'rxjs/operators';
 import {ListViewStore} from './list-view.store';
 import {listviewMockData, listviewStoreMock} from './list-view.store.spec.mock';
 import {localStorageServiceMock} from '../../../../services/local-storage/local-storage.service.spec.mock';
 import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
-import {SearchCriteriaFieldFilter} from '../../../../../../../common/src/lib/views/list/search-criteria.model';
 
 describe('Listview Store', () => {
     const service: ListViewStore = listviewStoreMock;

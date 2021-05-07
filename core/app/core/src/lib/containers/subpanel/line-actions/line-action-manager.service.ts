@@ -25,37 +25,15 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordActionData} from './record.action';
-import {RecordCancelAction} from './cancel/record-cancel.action';
-import {RecordSaveAction} from './save/record-save.action';
-import {RecordToggleWidgetsAction} from './toggle-widgets/record-widget-action.service';
-import {RecordEditAction} from './edit/record-edit.action';
-import {RecordCreateAction} from './create/record-create.action';
-import {RecordSaveNewAction} from './save-new/record-save-new.action';
-import {CancelCreateAction} from './cancel-create/cancel-create.action';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
+import {SubpanelLineActionData} from './line.action';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RecordActionManager extends BaseActionManager<RecordActionData> {
+export class SubpanelLineActionManager extends BaseActionManager<SubpanelLineActionData> {
 
-    constructor(
-        protected edit: RecordEditAction,
-        protected create: RecordCreateAction,
-        protected toggleWidgets: RecordToggleWidgetsAction,
-        protected cancel: RecordCancelAction,
-        protected cancelCreate: CancelCreateAction,
-        protected save: RecordSaveAction,
-        protected saveNew: RecordSaveNewAction,
-    ) {
+    constructor() {
         super();
-        edit.modes.forEach(mode => this.actions[mode][edit.key] = edit);
-        create.modes.forEach(mode => this.actions[mode][create.key] = create);
-        toggleWidgets.modes.forEach(mode => this.actions[mode][toggleWidgets.key] = toggleWidgets);
-        cancel.modes.forEach(mode => this.actions[mode][cancel.key] = cancel);
-        save.modes.forEach(mode => this.actions[mode][save.key] = save);
-        saveNew.modes.forEach(mode => this.actions[mode][saveNew.key] = saveNew);
-        cancelCreate.modes.forEach(mode => this.actions[mode][cancelCreate.key] = cancelCreate);
     }
 }

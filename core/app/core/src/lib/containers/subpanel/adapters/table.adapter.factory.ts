@@ -24,26 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Injectable} from '@angular/core';
+import {SubpanelStore} from '../store/subpanel/subpanel.store';
+import {SubpanelTableAdapter} from './table.adapter';
+import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 
-import {LineActionMenuComponent} from './line-action-menu.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RouterModule} from '@angular/router';
-import {ImageModule} from '../image/image.module';
-import {ButtonGroupModule} from '../button-group/button-group.module';
 
-@NgModule({
-    declarations: [LineActionMenuComponent],
-    exports: [LineActionMenuComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        ImageModule,
-        RouterModule,
-        ButtonGroupModule,
-    ]
+@Injectable({
+    providedIn: 'root',
 })
+export class SubpanelTableAdapterFactory {
 
-export class LineActionModule {
+    constructor(protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory) {
+    }
+
+    create(store: SubpanelStore): SubpanelTableAdapter {
+        return new SubpanelTableAdapter(
+            store,
+            this.lineActionsAdapterFactory
+        );
+    }
 }

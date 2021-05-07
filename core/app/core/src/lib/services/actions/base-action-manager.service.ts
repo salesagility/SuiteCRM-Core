@@ -24,26 +24,34 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Injectable} from '@angular/core';
+import {Action, ActionData, ActionHandler, ActionHandlerMap, ActionManager, ViewMode} from 'common';
 
-import {LineActionMenuComponent} from './line-action-menu.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RouterModule} from '@angular/router';
-import {ImageModule} from '../image/image.module';
-import {ButtonGroupModule} from '../button-group/button-group.module';
-
-@NgModule({
-    declarations: [LineActionMenuComponent],
-    exports: [LineActionMenuComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        ImageModule,
-        RouterModule,
-        ButtonGroupModule,
-    ]
+@Injectable({
+    providedIn: 'root',
 })
+export class BaseActionManager<D extends ActionData> implements ActionManager<D> {
 
-export class LineActionModule {
+    actions: { [key: string]: ActionHandlerMap<D> } = {
+        edit: {} as ActionHandlerMap<D>,
+        create: {} as ActionHandlerMap<D>,
+        list: {} as ActionHandlerMap<D>,
+        detail: {} as ActionHandlerMap<D>
+    };
+
+    run(action: Action, mode: ViewMode, data: D): void {
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][action.key]) {
+            return;
+        }
+
+        this.actions[mode][action.key].run(data, action);
+    }
+
+    getHandler(action: Action, mode: ViewMode): ActionHandler<D> {
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][action.key]) {
+            return null;
+        }
+
+        return this.actions[mode][action.key];
+    }
 }

@@ -34,7 +34,6 @@ use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
-use Codeception\Step\Action;
 use SubPanelDefinitions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -81,9 +80,9 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         SessionInterface $session
-    )
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+    ) {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }
@@ -133,6 +132,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         foreach ($tabs as $key => $tab) {
 
+            /** @var aSubPanel $subpanel */
             $subpanel = $spd->load_subpanel($key);
 
             if ($subpanel === false) {
@@ -479,18 +479,19 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     }
 
     /**
-     * @param array $subpanel_def
-     * @param $subpanel_module
+     * @param aSubPanel $subpanelDef
+     * @param string $subpanelModule
      * @description  this function fetches all the line actions defined for a subpanel
      * for now, only the remove action is filtered from all available line actions
+     * @return array
      */
-    public function getSubpanelLineActions($subpanel_def, $subpanel_module): array
+    public function getSubpanelLineActions(aSubPanel $subpanelDef, $subpanelModule): array
     {
         $lineActions = [];
         $unlinkLineAction = [];
         $subpanelLineActions = ['edit_button', 'close_button', 'remove_button'];
 
-        $thepanel = $subpanel_def->isCollection() ? $subpanel_def->get_header_panel_def() : $subpanel_def;
+        $thepanel = $subpanelDef->isCollection() ? $subpanelDef->get_header_panel_def() : $subpanelDef;
 
         foreach ($thepanel->get_list_fields() as $field_name => $list_field) {
 
@@ -514,17 +515,28 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         }
 
         if (in_array('remove_button', $lineActions, true)) {
+
             $unlinkLineAction = [
                 [
                     'key' => 'unlink',
                     'action' => 'unlink',
                     'icon' => 'unlink',
+                    'asyncProcess' => true,
                     'labelKey' => 'LBL_UNLINK_RECORD',
-                    'module' => $subpanel_module,
+                    'module' => $subpanelModule,
                     'routing' => false,
+                    'params' => [
+                        'linkFieldMapping' => [
+                            'get_emails_by_assign_or_link' => 'emails'
+                        ],
+                        'displayConfirmation' => true,
+                        'confirmationLabel' => 'LBL_UNLINK_RELATIONSHIP_CONFIRM'
+                    ],
+                    'modes' => ['list']
                 ],
             ];
         }
+
         return $unlinkLineAction;
     }
 

@@ -24,20 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {MenuItemLink} from '../menu/menu.model';
+import {Injectable} from '@angular/core';
+import {LineActionData} from './line.action';
+import {CreateRelatedLineAction} from './create-related/create-related.action';
+import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
 
-export interface LineAction {
-    key: string;
-    labelKey: string;
-    label: string;
-    module: string;
-    legacyModuleName: string;
-    icon: string;
-    action: string;
-    returnAction: string;
-    params: { [key: string]: any };
-    mapping: { [key: string]: any };
-    link: MenuItemLink;
-    acl: string[];
-    routing?: boolean;
+@Injectable({
+    providedIn: 'root',
+})
+export class LineActionActionManager extends BaseActionManager<LineActionData> {
+
+    constructor(
+        protected createRelated: CreateRelatedLineAction,
+    ) {
+        super();
+        createRelated.modes.forEach(mode => this.actions[mode][createRelated.key] = createRelated);
+    }
 }

@@ -55,8 +55,7 @@ import {AppStateStore} from '../../store/app-state/app-state.store';
 import {recordActionsMock} from '../../views/record/adapters/actions.adapter.spec.mock';
 import {RecordActionsAdapter} from '../../views/record/adapters/actions.adapter';
 import {ImageModule} from '../image/image.module';
-import {ActionDataSource} from 'common';
-import {Action} from '../../../../../common/src/lib/actions/action.model';
+import {ActionDataSource, Action} from 'common';
 
 @Component({
     selector: 'action-group-menu-test-host-component',

@@ -24,71 +24,59 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ActionDataSource, SortDirection} from 'common';
-import {ListViewStore} from '../store/list-view/list-view.store';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {TableConfig} from '../../../components/table/table.model';
-import {LineActionsAdapter} from './line-actions.adapter';
-import {LineActionActionManager} from '../../../components/table/line-actions/line-action-manager.service';
+import {Action, ActionContext, Record, ViewMode} from 'common';
+import {combineLatest, Observable, of} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../../services/message/message.service';
+import {Process} from '../../../services/process/process.service';
+import {ListViewStore} from '../store/list-view/list-view.store';
+import {LineActionActionManager} from '../../../components/table/line-actions/line-action-manager.service';
+import {BaseLineActionsAdapter} from '../../../components/table/adapters/base-line-actions.adapter';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {LanguageStore} from '../../../store/language/language.store';
 
 @Injectable()
-export class TableAdapter {
+export class LineActionsAdapter extends BaseLineActionsAdapter {
 
     constructor(
         protected store: ListViewStore,
-        protected metadata: MetadataStore,
         protected actionManager: LineActionActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore
     ) {
+        super(
+            actionManager,
+            asyncActionService,
+            message,
+            confirmation,
+            language
+        )
     }
 
-    getTable(): TableConfig {
-        return {
-            showHeader: true,
-            showFooter: true,
-
-            module: this.store.getModuleName(),
-
-            columns: this.store.columns$,
-            lineActions: this.getLineActionsDataSource(),
-            selection$: this.store.selection$,
-            sort$: this.store.sort$,
-            maxColumns$: of(4),
-
-            dataSource: this.store.recordList,
-            selection: this.store.recordList,
-            bulkActions: this.store,
-            pagination: this.store.recordList,
-
-            toggleRecordSelection: (id: string): void => {
-                this.store.recordList.toggleSelection(id);
-            },
-
-            updateSorting: (orderBy: string, sortOrder: SortDirection): void => {
-                this.store.recordList.updateSorting(orderBy, sortOrder);
-                this.store.updateLocalStorage();
-            },
-        } as TableConfig;
-    }
-
-    getLineActionsDataSource(): ActionDataSource {
-
-        return new LineActionsAdapter(
-            this.store,
-            this.actionManager,
-            this.asyncActionService,
-            this.message,
-            this.confirmation,
-            this.language
+    getActions(context: ActionContext = null): Observable<Action[]> {
+        return combineLatest(
+            [this.store.lineActions$, of('list' as ViewMode).pipe(shareReplay())]
+        ).pipe(
+            map(([lineActions, mode]) => {
+                return this.parseModeActions(lineActions, mode, context);
+            })
         );
+    }
+
+    protected getModuleName(record?: Record): string {
+        return this.store.getModuleName();
+    }
+
+    protected reload(action: Action, process: Process, record?: Record): void {
+        this.store.recordList.clearSelection();
+        this.store.recordList.resetPagination();
+    }
+
+    protected getMode(): ViewMode {
+        return 'list' as ViewMode;
     }
 }

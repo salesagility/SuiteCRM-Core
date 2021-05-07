@@ -42,6 +42,7 @@ export interface AsyncActionInput {
     criteria?: SearchCriteria;
     sort?: SortingSelection;
     ids?: string[];
+    id?: string;
     payload?: { [key: string]: any };
 }
 

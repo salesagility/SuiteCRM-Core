@@ -105,6 +105,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewSettingsLimits,
         array $listViewActionsLimits,
         array $recordViewActionLimits,
+        array $listViewLineActionsLimits,
         array $uiConfigs,
         array $extensions,
         SessionInterface $session
@@ -123,6 +124,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
         $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;
         $this->injectedSystemConfigs['recordview_actions_limits'] = $recordViewActionLimits;
+        $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
         $this->injectedSystemConfigs['ui'] = $uiConfigs;
         $this->injectedSystemConfigs['extensions'] = $extensions;
         $this->mappers = $mappers;

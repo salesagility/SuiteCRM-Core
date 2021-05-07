@@ -25,82 +25,144 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {LineAction, Record} from 'common';
-import {LanguageStore} from '../../store/language/language.store';
+import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface, Record} from 'common';
+import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
-import {SubpanelActionData} from "../../containers/subpanel/actions/subpanel.action";
-import {SubpanelStore} from "../../containers/subpanel/store/subpanel/subpanel.store";
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {
+    ScreenSize,
+    ScreenSizeObserverService
+} from '../../services/ui/screen-size-observer/screen-size-observer.service';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {map} from 'rxjs/operators';
+
+export interface LineActionMenuViewModel {
+    actions: Action[];
+    screenSize: ScreenSize;
+    languages: LanguageStrings;
+}
 
 @Component({
     selector: 'scrm-line-action-menu',
     templateUrl: 'line-action-menu.component.html'
 })
-
 export class LineActionMenuComponent implements OnInit {
 
-    @Input() lineActions: LineAction[];
+    @Input() klass = '';
     @Input() record: Record;
-    @Input() store: SubpanelStore;
+    @Input() config: ActionDataSource;
+    @Input() limitConfigKey = 'listview_line_actions_limits';
+    configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
+    config$ = this.configState.asObservable();
 
-    items: LineAction[];
+    vm$: Observable<LineActionMenuViewModel>;
 
-    constructor(protected languageStore: LanguageStore,
-                protected actionManager: SubpanelActionManager
+    protected buttonClass = 'line-action-item line-action';
+    protected buttonGroupClass = 'float-right';
+
+    protected subs: Subscription[];
+    protected screen: ScreenSize = ScreenSize.Medium;
+    protected defaultBreakpoint = 3;
+    protected breakpoint: number;
+
+
+    constructor(
+        protected languageStore: LanguageStore,
+        protected actionManager: SubpanelActionManager,
+        protected languages: LanguageStore,
+        protected screenSize: ScreenSizeObserverService,
+        protected systemConfigStore: SystemConfigStore,
     ) {
     }
 
     ngOnInit(): void {
-        this.setLineActions();
+        this.vm$ = combineLatest([
+            this.config.getActions(this.record),
+            this.screenSize.screenSize$,
+            this.languages.vm$
+        ]).pipe(
+            map(([actions, screenSize, languages]) => {
+                if (screenSize) {
+                    this.screen = screenSize;
+                }
+                this.configState.next(this.getButtonGroupConfig(actions));
+
+                return {actions, screenSize, languages};
+            })
+        );
     }
 
-    setLineActions(): void {
-        const actions = [];
+    getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {
 
-        this.lineActions.forEach(action => {
-            const recordAction = {...action};
+        const expanded = [];
+        const collapsed = [];
 
-            const routing = action.routing ?? '';
+        actions.forEach((action: Action) => {
+            const button = this.buildButton(action);
 
-            recordAction.label = this.languageStore.getAppString(recordAction.labelKey);
-
-            if (routing !== false) {
-
-                const params: { [key: string]: any } = {};
-                /* eslint-disable camelcase,@typescript-eslint/camelcase*/
-                params.return_module = action.legacyModuleName;
-                params.return_action = action.returnAction;
-                params.return_id = this.record.id;
-                /* eslint-enable camelcase,@typescript-eslint/camelcase */
-                params[action.mapping.moduleName] = action.legacyModuleName;
-
-                params[action.mapping.name] = this.record.attributes.name;
-                params[action.mapping.id] = this.record.id;
-
-                recordAction.link = {
-                    label: recordAction.label,
-                    url: null,
-                    route: '/' + action.module + '/' + action.action,
-                    params
-                };
+            if (action.params && action.params.expanded) {
+                expanded.push(button);
+                return;
             }
 
-            actions.push(recordAction);
+            collapsed.push(button);
         });
-        this.items = actions.reverse();
+
+        let breakpoint = this.getBreakpoint();
+        if (expanded.length < breakpoint) {
+            breakpoint = expanded.length;
+        }
+
+        const buttons = expanded.concat(collapsed);
+
+        return {
+            buttonKlass: [this.buttonClass],
+            dropdownLabel: this.languages.getAppString('LBL_ACTIONS') || '',
+            breakpoint,
+            dropdownOptions: {
+                placement: ['bottom-right'],
+                wrapperKlass: [(this.buttonGroupClass)]
+            },
+            buttons
+        } as ButtonGroupInterface;
     }
 
-    runAction(actionKey: string) {
+    getBreakpoint(): number {
+        const breakpointMap = this.systemConfigStore.getConfigValue(this.limitConfigKey);
 
-        const subpanelActionData = {
-            subpanelMeta: this.store.metadata,
-            module: this.record.module || this.store.metadata.module,
-            id: this.record.id,
-            parentModule: this.store.parentModule,
-            parentId: this.store.parentId,
-            store: this.store
-        } as SubpanelActionData;
+        if (this.screen && breakpointMap && breakpointMap[this.screen]) {
+            this.breakpoint = breakpointMap[this.screen];
+            return this.breakpoint;
+        }
 
-        this.actionManager.run(actionKey, subpanelActionData);
+        if (this.breakpoint) {
+            return this.breakpoint;
+        }
+
+        return this.defaultBreakpoint;
     }
 
+    protected buildButton(action: Action): ButtonInterface {
+        const button = {
+            titleKey: action.labelKey || '',
+            klass: this.buttonClass,
+            icon: action.icon || '',
+            onClick: (): void => {
+                this.config.runAction(action, {
+                    module: (this.record && this.record.module) || '',
+                    record: this.record
+                } as ActionContext);
+            }
+        } as ButtonInterface;
+
+        if (action.icon) {
+            button.icon = action.icon;
+        }
+
+        if (action.status) {
+            Button.appendClasses(button, [action.status]);
+        }
+
+        return button;
+    }
 }

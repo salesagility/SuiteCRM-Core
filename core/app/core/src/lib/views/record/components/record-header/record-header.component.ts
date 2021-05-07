@@ -82,6 +82,7 @@ import {map} from 'rxjs/operators';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
+import {ActionContext, Record} from 'common';
 
 @Component({
     selector: 'scrm-record-header',
@@ -124,5 +125,20 @@ export class RecordHeaderComponent {
      */
     getSummaryTemplate(): string {
         return this.recordViewStore.getSummaryTemplate();
+    }
+
+    /**
+     * Build action context
+     * @param record
+     */
+    getActionContext(record: Record): ActionContext {
+        if (!record) {
+            return {} as ActionContext
+        }
+
+        return {
+            module: record.module || '',
+            record
+        } as ActionContext
     }
 }

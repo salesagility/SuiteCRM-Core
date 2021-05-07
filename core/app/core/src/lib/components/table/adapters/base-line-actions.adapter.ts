@@ -24,26 +24,32 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Injectable} from '@angular/core';
+import {Action, ActionContext} from 'common';
+import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {MessageService} from '../../../services/message/message.service';
+import {LineActionActionManager} from '../line-actions/line-action-manager.service';
+import {LineActionData} from '../line-actions/line.action';
+import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
+import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
+import {LanguageStore} from '../../../store/language/language.store';
 
-import {LineActionMenuComponent} from './line-action-menu.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RouterModule} from '@angular/router';
-import {ImageModule} from '../image/image.module';
-import {ButtonGroupModule} from '../button-group/button-group.module';
+@Injectable()
+export abstract class BaseLineActionsAdapter extends BaseRecordActionsAdapter<LineActionData> {
 
-@NgModule({
-    declarations: [LineActionMenuComponent],
-    exports: [LineActionMenuComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        ImageModule,
-        RouterModule,
-        ButtonGroupModule,
-    ]
-})
+    protected constructor(
+        protected actionManager: LineActionActionManager,
+        protected asyncActionService: AsyncActionService,
+        protected message: MessageService,
+        protected confirmation: ConfirmationModalService,
+        protected language: LanguageStore
+    ) {
+        super(actionManager, asyncActionService, message, confirmation, language)
+    }
 
-export class LineActionModule {
+    protected buildActionData(action: Action, context?: ActionContext): LineActionData {
+        return {
+            record: (context && context.record) || null
+        } as LineActionData;
+    }
 }

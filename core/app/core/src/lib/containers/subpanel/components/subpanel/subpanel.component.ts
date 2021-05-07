@@ -33,6 +33,7 @@ import {SubpanelTableAdapter} from '../../adapters/table.adapter';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {SubpanelStore} from '../../store/subpanel/subpanel.store';
 import {SubpanelActionManager} from './action-manager.service';
+import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory';
 
 @Component({
     selector: 'scrm-subpanel',
@@ -53,11 +54,12 @@ export class SubpanelComponent implements OnInit {
     constructor(
         protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
+        protected tableAdapterFactory: SubpanelTableAdapterFactory
     ) {
     }
 
     ngOnInit(): void {
-        this.adapter = new SubpanelTableAdapter(this.store);
+        this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;

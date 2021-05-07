@@ -27,7 +27,7 @@
 import {combineLatest, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {Panel, PanelRow, Record} from 'common';
+import {Action, Panel, PanelRow, Record} from 'common';
 import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {RecordActionManager} from '../actions/record-action-manager.service';
@@ -52,7 +52,11 @@ export class RecordContentAdapter implements RecordContentDataSource {
             store: this.store
         };
 
-        this.actions.run('edit', this.store.getMode(), data);
+        const action = {
+            key: 'edit'
+        } as Action;
+
+        this.actions.run(action, this.store.getMode(), data);
     }
 
     getDisplayConfig(): Observable<RecordContentConfig> {

@@ -127,7 +127,17 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
             if ($this->checkAccess($relatedModuleName, $actionDefinition['acl']) === false) {
                 continue;
             }
-            $createActions[] = array_merge($actionTemplate, $relatedModuleDef);
+
+            $action = array_merge($actionTemplate, $relatedModuleDef);
+            $action['modes'] = $action['modes'] ?? ['list'];
+            $action['params'] = $action['params'] ?? [];
+            $action['params']['create'] = $action['params']['create'] ?? [];
+
+            $action['params']['create']['module'] = $action['module'];
+            $action['params']['create']['mapping'] = $action['mapping'] ?? [];
+            $action['params']['create']['legacyModuleName'] =  $action['legacyModuleName'] ?? '';
+            $action['params']['create']['action'] = $action['action'] ?? 'edit';
+            $createActions[] = $action;
         }
 
         return $createActions;

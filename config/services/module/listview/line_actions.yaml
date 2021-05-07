@@ -6,29 +6,41 @@ parameters:
           key: create
           related_modules:
             calls:
-              name : create-calls
-              module : calls
+              name: create-calls
+              module: calls
               icon: phone
               labelKey: LBL_SCHEDULE_CALL
-              returnAction: DetailView
+              params:
+                create:
+                  module: calls
+                  returnAction: DetailView
             meetings:
-              name : create-meetings
+              name: create-meetings
               module: meetings
               icon: calendar
               labelKey: LBL_SCHEDULE_MEETING
-              returnAction: DetailView
+              params:
+                create:
+                  module: meetings
+                  returnAction: DetailView
             tasks:
-              name : create-tasks
+              name: create-tasks
               module: tasks
               icon: list
               labelKey: LBL_CREATE_TASK
-              returnAction: DetailView
+              params:
+                create:
+                  module: tasks
+                  returnAction: DetailView
             emails:
-              name : create-emails
+              name: create-emails
               module: emails
               icon: email
               action: compose
               labelKey: LBL_COMPOSE_EMAIL_BUTTON_LABEL
-              returnAction: index
+              params:
+                create:
+                  module: emails
+                  returnAction: index
           acl:
             - edit

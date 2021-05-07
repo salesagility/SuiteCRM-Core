@@ -39,7 +39,7 @@ export interface SubpanelActionHandlerMap {
     [key: string]: SubpanelActionHandler;
 }
 
-export abstract class SubpanelActionHandler extends ActionHandler {
+export abstract class SubpanelActionHandler extends ActionHandler<SubpanelActionData> {
 
     abstract run(data: SubpanelActionData): void;
 }

@@ -25,10 +25,10 @@
  */
 
 import {
+    Action,
     BulkActionsMap,
     ColumnDefinition,
     deepClone,
-    LineAction,
     ListViewMeta,
     Pagination,
     Record,
@@ -120,7 +120,7 @@ export class ListViewStore extends ViewStore implements StateStore,
     moduleName$: Observable<string>;
     columns: BehaviorSubject<ColumnDefinition[]>;
     columns$: Observable<ColumnDefinition[]>;
-    lineActions$: Observable<LineAction[]>;
+    lineActions$: Observable<Action[]>;
     records$: Observable<Record[]>;
     criteria$: Observable<SearchCriteria>;
     context$: Observable<ViewContext>;

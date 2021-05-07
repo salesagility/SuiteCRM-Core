@@ -27,7 +27,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Action, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
+import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {
     ScreenSize,
@@ -49,6 +49,7 @@ export class ActionGroupMenuComponent implements OnInit {
 
     @Input() klass = '';
     @Input() buttonClass = 'btn btn-sm';
+    @Input() actionContext: ActionContext;
     @Input() config: ActionDataSource;
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
@@ -146,7 +147,7 @@ export class ActionGroupMenuComponent implements OnInit {
             label: action.label || '',
             klass: this.buttonClass,
             onClick: (): void => {
-                this.config.runAction(action);
+                this.config.runAction(action, this.actionContext);
             }
         } as ButtonInterface;
 

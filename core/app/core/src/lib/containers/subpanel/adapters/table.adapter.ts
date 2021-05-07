@@ -26,15 +26,19 @@
 
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ColumnDefinition, LineAction, SortDirection} from 'common';
+import {ActionDataSource, ColumnDefinition, SortDirection} from 'common';
 import {map} from 'rxjs/operators';
 import {TableConfig} from '../../../components/table/table.model';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
+import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 
 @Injectable()
 export class SubpanelTableAdapter {
 
-    constructor(protected store: SubpanelStore) {
+    constructor(
+        protected store: SubpanelStore,
+        protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory
+    ) {
     }
 
     getTable(): TableConfig {
@@ -45,7 +49,7 @@ export class SubpanelTableAdapter {
             module: this.store.metadata.headerModule,
 
             columns: this.getColumns(),
-            lineActions$: this.getLineActions(),
+            lineActions: this.getLineActions(),
             sort$: this.store.recordList.sort$,
             maxColumns$: of(5),
             loading$: this.store.recordList.loading$,
@@ -67,7 +71,7 @@ export class SubpanelTableAdapter {
         return this.store.metadata$.pipe(map(metadata => metadata.columns));
     }
 
-    protected getLineActions(): Observable<LineAction[]> {
-        return this.store.metadata$.pipe(map(metadata => metadata.lineActions));
+    protected getLineActions(): ActionDataSource {
+        return this.lineActionsAdapterFactory.create(this.store);
     }
 }

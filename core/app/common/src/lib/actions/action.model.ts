@@ -25,19 +25,30 @@
  */
 
 import {Observable} from 'rxjs';
+import {ViewMode} from '../views/view.model';
+import {Record} from '../record/record.model';
+import {SearchCriteria} from '../views/list/search-criteria.model';
 
 export interface ActionData {
     [key: string]: any;
 }
 
-export interface ActionHandlerMap {
-    [key: string]: ActionHandler;
+export interface ActionHandlerMap<D extends ActionData> {
+    [key: string]: ActionHandler<D>;
 }
 
-export abstract class ActionHandler {
+export abstract class ActionHandler<D extends ActionData> {
     abstract key: string;
 
-    abstract run(data: ActionData): void;
+    abstract modes: ViewMode[];
+
+    abstract run(data: D, action?: Action): void;
+
+    getStatus(data: D): string {
+        return '';
+    }
+
+    abstract shouldDisplay(data: D): boolean;
 }
 
 export interface ModeActions {
@@ -58,7 +69,23 @@ export interface Action {
 }
 
 export interface ActionDataSource {
-    getActions(): Observable<Action[]>;
+    getActions(context?: ActionContext): Observable<Action[]>;
 
-    runAction(action: Action): void;
+    runAction(action: Action, context?: ActionContext): void;
+}
+
+export interface ActionManager<D extends ActionData> {
+
+    run(action: Action, mode: ViewMode, data: D): void;
+
+    getHandler(action: Action, mode: ViewMode): ActionHandler<D>;
+}
+
+export interface ActionContext {
+    [key: string]: any;
+
+    module?: string;
+    record?: Record;
+    ids?: string[];
+    criteria?: SearchCriteria;
 }

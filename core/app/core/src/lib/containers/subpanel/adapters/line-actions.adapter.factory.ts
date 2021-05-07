@@ -24,26 +24,38 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Injectable} from '@angular/core';
+import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {MessageService} from '../../../services/message/message.service';
+import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
+import {LanguageStore} from '../../../store/language/language.store';
+import {SubpanelStore} from '../store/subpanel/subpanel.store';
+import {SubpanelLineActionsAdapter} from './line-actions.adapter';
+import {SubpanelLineActionManager} from '../line-actions/line-action-manager.service';
 
-import {LineActionMenuComponent} from './line-action-menu.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RouterModule} from '@angular/router';
-import {ImageModule} from '../image/image.module';
-import {ButtonGroupModule} from '../button-group/button-group.module';
 
-@NgModule({
-    declarations: [LineActionMenuComponent],
-    exports: [LineActionMenuComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        ImageModule,
-        RouterModule,
-        ButtonGroupModule,
-    ]
+@Injectable({
+    providedIn: 'root',
 })
+export class SubpanelLineActionsAdapterFactory {
 
-export class LineActionModule {
+    constructor(
+        protected actionManager: SubpanelLineActionManager,
+        protected asyncActionService: AsyncActionService,
+        protected message: MessageService,
+        protected confirmation: ConfirmationModalService,
+        protected language: LanguageStore
+    ) {
+    }
+
+    create(store: SubpanelStore): SubpanelLineActionsAdapter {
+        return new SubpanelLineActionsAdapter(
+            store,
+            this.actionManager,
+            this.asyncActionService,
+            this.message,
+            this.confirmation,
+            this.language
+        );
+    }
 }

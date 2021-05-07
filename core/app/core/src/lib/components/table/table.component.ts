@@ -26,7 +26,6 @@
 
 import {Component, Input} from '@angular/core';
 import {TableConfig} from './table.model';
-import {SubpanelStore} from "../../containers/subpanel/store/subpanel/subpanel.store";
 
 @Component({
     selector: 'scrm-table',
@@ -35,7 +34,6 @@ import {SubpanelStore} from "../../containers/subpanel/store/subpanel/subpanel.s
 })
 export class TableComponent {
     @Input() config: TableConfig;
-    @Input() store: SubpanelStore;
 
     showHeader(): boolean {
         return this.config.showHeader;

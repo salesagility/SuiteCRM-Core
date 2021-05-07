@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {Params, Router} from '@angular/router';
 import {ModuleNameMapper,} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
-import {AttributeMap, isVoid} from 'common';
+import {AttributeMap, isVoid, ViewMode} from 'common';
 import get from 'lodash-es/get';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 
@@ -37,6 +37,7 @@ import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 })
 export class SubpanelCreateAction extends SubpanelActionHandler {
     key = 'create';
+    modes = ['list' as ViewMode];
 
     constructor(
         protected moduleNameMapper: ModuleNameMapper,
@@ -65,6 +66,10 @@ export class SubpanelCreateAction extends SubpanelActionHandler {
         this.router.navigate([route], {
             queryParams
         }).then();
+    }
+
+    shouldDisplay(): boolean {
+        return true;
     }
 
     /**

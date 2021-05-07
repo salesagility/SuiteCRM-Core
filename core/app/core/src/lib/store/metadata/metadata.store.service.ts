@@ -33,7 +33,6 @@ import {
     ColumnDefinition,
     deepClone,
     FieldDefinitionMap,
-    LineAction,
     ListViewMeta,
     Panel,
     SearchMeta,
@@ -112,7 +111,7 @@ export class MetadataStore implements StateStore {
      * Public long-lived observable streams
      */
     listViewColumns$: Observable<ColumnDefinition[]>;
-    listViewLineActions$: Observable<LineAction[]>;
+    listViewLineActions$: Observable<Action[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
     recordViewMetadata$: Observable<RecordViewMetadata>;

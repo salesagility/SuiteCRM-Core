@@ -22,6 +22,7 @@ parameters:
     listview_column_limits: true
     listview_settings_limits: true
     listview_actions_limits: true
+    listview_line_actions_limits: true
     module_routing: true
     recordview_actions_limits: true
     ui: true

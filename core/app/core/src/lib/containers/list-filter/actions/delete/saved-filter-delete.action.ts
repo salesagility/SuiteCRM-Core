@@ -30,7 +30,6 @@ import {take} from 'rxjs/operators';
 import {MessageService} from '../../../../services/message/message.service';
 import {SavedFilterActionData, SavedFilterActionHandler} from '../saved-filter.action';
 import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
-import {SavedFilterStore} from '../../store/saved-filter/saved-filter.store';
 import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
 
 @Injectable({
@@ -74,8 +73,8 @@ export class SavedFilterDeleteAction extends SavedFilterActionHandler {
         });
     }
 
-    shouldDisplay(store: SavedFilterStore): boolean {
-
+    shouldDisplay(data: SavedFilterActionData): boolean {
+        const store = data && data.store;
         const filter = (store && store.recordStore.getBaseRecord()) || {} as SavedFilter;
 
         return !!filter.id;

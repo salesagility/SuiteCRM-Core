@@ -26,15 +26,15 @@
 
 import {ViewFieldDefinition} from './metadata.model';
 import {WidgetMetadata} from './widget.metadata';
-import {LineAction} from '../actions/line-action.model';
 import {FieldDefinition} from '../record/field.model';
 import {BulkActionsMap} from '../actions/bulk-action.model';
 import {ChartTypesMap} from '../containers/chart/chart.model';
+import {Action} from '../actions/action.model';
 
 export interface RecordListMeta {
     fields: ColumnDefinition[];
     bulkActions: BulkActionsMap;
-    lineActions: LineAction[];
+    lineActions: Action[];
     filters: Filter[];
 }
 

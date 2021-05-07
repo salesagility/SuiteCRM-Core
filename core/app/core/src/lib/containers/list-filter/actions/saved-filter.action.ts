@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler, ViewMode} from 'common';
+import {ActionData, ActionHandler} from 'common';
 import {SavedFilterStore} from '../store/saved-filter/saved-filter.store';
 import {ListFilterStore} from '../store/list-filter/list-filter.store';
 
@@ -33,19 +33,9 @@ export interface SavedFilterActionData extends ActionData {
     listFilterStore: ListFilterStore;
 }
 
-export interface SavedFilterActionHandlerMap {
-    [key: string]: SavedFilterActionHandler;
-}
-
-export abstract class SavedFilterActionHandler extends ActionHandler {
-
-    abstract modes: ViewMode[];
-
-    getStatus(store: SavedFilterStore): string {
-        return '';
-    }
+export abstract class SavedFilterActionHandler extends ActionHandler<SavedFilterActionData> {
 
     abstract run(data: SavedFilterActionData): void;
 
-    abstract shouldDisplay(store: SavedFilterStore): boolean;
+    abstract shouldDisplay(data: SavedFilterActionData): boolean;
 }

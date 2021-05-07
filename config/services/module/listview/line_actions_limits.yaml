@@ -1,0 +1,14 @@
+parameters:
+  module.listview.line_actions_limits:
+    without_sidebar:
+      XSmall: 5
+      Small: 5
+      Medium: 5
+      Large: 7
+      XLarge: 8
+    with_sidebar:
+      XSmall: 5
+      Small: 5
+      Medium: 5
+      Large: 6
+      XLarge: 7

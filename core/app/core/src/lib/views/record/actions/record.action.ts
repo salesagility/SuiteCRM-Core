@@ -24,26 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler, ViewMode} from 'common';
+import {ActionData, ActionHandler} from 'common';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 
 export interface RecordActionData extends ActionData {
     store: RecordViewStore;
 }
 
-export interface RecordActionHandlerMap {
-    [key: string]: RecordActionHandler;
-}
-
-export abstract class RecordActionHandler extends ActionHandler {
-
-    abstract modes: ViewMode[];
-
-    getStatus(store: RecordViewStore): string {
-        return '';
-    }
+export abstract class RecordActionHandler extends ActionHandler<RecordActionData> {
 
     abstract run(data: RecordActionData): void;
 
-    abstract shouldDisplay(store: RecordViewStore): boolean;
+    abstract shouldDisplay(data: RecordActionData): boolean;
 }

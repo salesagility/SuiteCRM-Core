@@ -35,25 +35,31 @@
 
     <div modal-body>
 
-        <scrm-label *ngIf="!tableConfig" labelKey="LBL_CONFIG_NO_CONFIG"></scrm-label>
+        <ng-container *ngIf="!tableConfig">
+            <scrm-label labelKey="LBL_CONFIG_NO_CONFIG"></scrm-label>
+        </ng-container>
 
-        <div *ngIf="tableConfig">
-            <div class="container-fluid">
-                <div class="row pb-3">
-                    <div class="col">
-                        <scrm-list-filter *ngIf="filterConfig" [config]="filterConfig"></scrm-list-filter>
+        <ng-container *ngIf="tableConfig">
+            <div>
+                <div class="container-fluid">
+                    <div class="row pb-3">
+                        <div class="col">
+                            <scrm-list-filter *ngIf="filterConfig" [config]="filterConfig"></scrm-list-filter>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <scrm-table [config]="tableConfig"></scrm-table>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <scrm-table [config]="tableConfig"></scrm-table>
-                    </div>
-                </div>
+
+                <ng-container *ngIf="(loading$ | async) as loading">
+                    <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
+                </ng-container>
             </div>
 
-            <ng-container *ngIf="(loading$ | async) as loading">
-                <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
-            </ng-container>
-        </div>
+        </ng-container>
     </div>
+
 </scrm-modal>

@@ -25,42 +25,22 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
-import {SavedFilterActionData, SavedFilterActionHandler, SavedFilterActionHandlerMap} from './saved-filter.action';
+import {SavedFilterActionData} from './saved-filter.action';
 import {SavedFilterSaveAction} from './save/saved-filter-save.action';
 import {SavedFilterDeleteAction} from './delete/saved-filter-delete.action';
+import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class SavedFilterActionManager {
-
-    actions: { [key: string]: SavedFilterActionHandlerMap } = {
-        edit: {} as SavedFilterActionHandlerMap,
-        detail: {} as SavedFilterActionHandlerMap,
-    };
+export class SavedFilterActionManager extends BaseActionManager<SavedFilterActionData> {
 
     constructor(
         save: SavedFilterSaveAction,
         deleteAction: SavedFilterDeleteAction
     ) {
+        super();
         save.modes.forEach(mode => this.actions[mode][save.key] = save);
         deleteAction.modes.forEach(mode => this.actions[mode][deleteAction.key] = deleteAction);
-    }
-
-    run(actionKey: string, mode: ViewMode, data: SavedFilterActionData): void {
-        if (!this.actions || !this.actions[mode] || !this.actions[mode][actionKey]) {
-            return;
-        }
-
-        this.actions[mode][actionKey].run(data);
-    }
-
-    getHandler(action: string, mode: ViewMode): SavedFilterActionHandler {
-        if (!this.actions || !this.actions[mode] || !this.actions[mode][action]) {
-            return null;
-        }
-
-        return this.actions[mode][action];
     }
 }

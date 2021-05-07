@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionDataSource, ModeActions} from 'common';
+import {Action, ActionContext, ModeActions, ViewMode} from 'common';
 import {combineLatest, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
@@ -37,9 +37,10 @@ import {LanguageStore} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
+import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 
 @Injectable()
-export class RecordActionsAdapter implements ActionDataSource {
+export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionData> {
 
     defaultActions: ModeActions = {
         detail: [
@@ -89,131 +90,77 @@ export class RecordActionsAdapter implements ActionDataSource {
         protected actionManager: RecordActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
-        protected confimation: ConfirmationModalService
+        protected confirmation: ConfirmationModalService
     ) {
+        super(
+            actionManager,
+            asyncActionService,
+            message,
+            confirmation,
+            language
+        )
     }
 
-    getActions(): Observable<Action[]> {
+    getActions(context?: ActionContext): Observable<Action[]> {
         return combineLatest(
             [
                 this.metadata.recordViewMetadata$,
                 this.store.mode$,
                 this.store.record$,
-                this.language.vm$,
-                this.store.widgets$
+                this.store.language$,
+                this.store.widgets$,
             ]
         ).pipe(
             map((
                 [
                     meta,
-                    mode,
-                    record,
-                    languages,
-                    widget
+                    mode
                 ]
             ) => {
                 if (!mode || !meta) {
                     return [];
                 }
 
-                const availableActions = {
-                    detail: [],
-                    edit: [],
-                    create: [],
-                } as ModeActions;
-
-                if (meta.actions && meta.actions.length) {
-                    meta.actions.forEach(action => {
-                        if (!action.modes || !action.modes.length) {
-                            return;
-                        }
-
-                        action.modes.forEach(actionMode => {
-                            if (!availableActions[actionMode]) {
-                                return;
-                            }
-                            availableActions[actionMode].push(action);
-                        });
-                    });
-                }
-
-                availableActions.detail = availableActions.detail.concat(this.defaultActions.detail);
-                availableActions.edit = availableActions.edit.concat(this.defaultActions.edit);
-                availableActions.create = availableActions.create.concat(this.defaultActions.create);
-
-                const actions = [];
-
-                availableActions[mode].forEach(action => {
-
-                    if (!action.asyncProcess) {
-                        const actionHandler = this.actionManager.getHandler(action.key, mode);
-
-                        if (!actionHandler || !actionHandler.shouldDisplay(this.store)) {
-                            return;
-                        }
-                        action.status = actionHandler.getStatus(this.store) || '';
-                    }
-
-                    const label = this.language.getFieldLabel(action.labelKey, record.module, languages);
-                    actions.push({
-                        ...action,
-                        label
-                    });
-                });
-
-                return actions;
+                return this.parseModeActions(meta.actions, mode);
             })
         );
     }
 
-    runAction(action: Action): void {
-        const params = (action && action.params) || {} as { [key: string]: any };
-        const displayConfirmation = params.displayConfirmation || false;
-        const confirmationLabel = params.confirmationLabel || '';
-
-        if (displayConfirmation) {
-            this.confimation.showModal(confirmationLabel, () => {
-                this.callAction(action);
-            });
-
-            return;
-        }
-
-        this.callAction(action);
+    protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
+        return {
+            store: this.store
+        } as RecordActionData;
     }
 
-    protected callAction(action: Action) {
-        if (action.asyncProcess) {
-            this.runAsyncAction(action);
-            return;
-        }
-        this.runFrontEndAction(action);
-    }
-
-    protected runAsyncAction(action: Action): void {
-        const actionName = `record-${action.key}`;
+    /**
+     * Build backend process input
+     *
+     * @param action
+     * @param actionName
+     * @param moduleName
+     * @param context
+     */
+    protected buildActionInput(action: Action, actionName: string, moduleName: string, context: ActionContext = null): AsyncActionInput {
         const baseRecord = this.store.getBaseRecord();
 
         this.message.removeMessages();
 
-        const asyncData = {
+        return {
             action: actionName,
             module: baseRecord.module,
             id: baseRecord.id,
         } as AsyncActionInput;
-
-        this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe((process: Process) => {
-            if (process.data && process.data.reload) {
-                this.store.load(false).pipe(take(1)).subscribe();
-            }
-        });
     }
 
-    protected runFrontEndAction(action: Action): void {
-        const data: RecordActionData = {
-            store: this.store
-        };
+    protected getMode(): ViewMode {
+        return this.store.getMode();
+    }
 
-        this.actionManager.run(action.key, this.store.getMode(), data);
+    protected getModuleName(context?: ActionContext): string {
+        return this.store.getModuleName();
+    }
+
+    protected reload(action: Action, process: Process, context?: ActionContext): void {
+        this.store.load(false).pipe(take(1)).subscribe();
     }
 }

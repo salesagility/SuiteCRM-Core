@@ -25,25 +25,11 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div id="line-action-div" class="line-action float-right"
->
-    <div
-        *ngFor="let item of items"
-        class="line-action-item line-action float-right"
-        placement="left" ngbTooltip="{{ item.label }}"
-    >
-        <a *ngIf="item.routing === false"
-           [ngClass]="item.key"
-           (click)="runAction(item.action)">
-            <scrm-image image="{{ item.icon }}"></scrm-image>
-        </a>
-
-        <a *ngIf="item.routing !== false"
-           [ngClass]="item.key"
-           [routerLink]="item.link.route"
-           [queryParams]="item.link.params">
-            <scrm-image image="{{ item.icon }}"></scrm-image>
-        </a>
-
+<ng-container *ngIf="(vm$ | async) as vm">
+    <div id="line-action-div" class="line-action float-right">
+        <div class="{{klass}}">
+            <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+        </div>
     </div>
-</div>
+</ng-container>
+
