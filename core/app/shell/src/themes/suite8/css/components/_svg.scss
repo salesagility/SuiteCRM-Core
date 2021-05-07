@@ -85,20 +85,22 @@
 }
 
 .line-action-item {
-  padding-right: 0.600em;
+  padding: 0.2em;
+  background: none;
 }
 
 .line-action svg polygon {
   fill: $sky-blue;
 }
 
-.line-action svg path {
+.line-action svg {
   fill: $sky-blue;
 }
 
-.line-action svg rect {
-  fill: $sky-blue;
+.line-action:hover svg {
+  fill: $bright-purple;
 }
+
 
 .back-to-top svg {
   width: 1em;
