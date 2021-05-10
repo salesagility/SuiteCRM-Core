@@ -1,0 +1,35 @@
+ @media all and (max-width: $breakpoint-xlarge) {
+    .column-chooser-modal {
+      .modal-dialog {
+        max-width: 35em;
+      }
+      .modal-body {
+          overflow: auto;
+      }
+      .close-button {
+        color: $shell-grey;
+        font-size: 1.5em;
+        border: none;
+      }
+      .column-chooser-container {
+        margin: 1em 0.75em 1.5em 0.75em;
+        width: 45%;
+      }
+      .modal-header, .modal-footer {
+        background: $white;
+        padding: 0;
+      }
+    }
+  }
+
+  @media all and (max-width: $breakpoint-small) {
+    .column-chooser-modal {
+      .modal-dialog {
+        width: auto;
+      }
+      .column-chooser-container {
+        width: 93%;
+      }
+    }
+  }
+  
