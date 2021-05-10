@@ -11,6 +11,11 @@ export class BaseSaveRecordMapper implements RecordMapper {
     }
 
     map(record: Record): void {
+
+        if(!record.fields || !record.fields.length){
+            return;
+        }
+
         Object.keys(record.fields).forEach(fieldName => {
             const field = record.fields[fieldName];
 
