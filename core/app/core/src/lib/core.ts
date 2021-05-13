@@ -257,6 +257,8 @@ export * from './fields/fullname/templates/detail/fullname.component';
 export * from './fields/fullname/templates/detail/fullname.module';
 export * from './fields/group-field/group-field.component';
 export * from './fields/group-field/group-field.module';
+export * from './fields/html/templates/detail/html.component';
+export * from './fields/html/templates/detail/html.module';
 export * from './fields/int/templates/detail/int.component';
 export * from './fields/int/templates/detail/int.module';
 export * from './fields/multienum/templates/detail/multienum.component';

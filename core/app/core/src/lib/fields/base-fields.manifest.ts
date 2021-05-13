@@ -91,6 +91,8 @@ import {DropdownEnumDetailFieldComponent} from './dropdownenum/templates/detail/
 import {DropdownEnumEditFieldComponent} from './dropdownenum/templates/edit/dropdownenum.component';
 import {RadioEnumDetailFieldComponent} from './radioenum/templates/detail/radioenum.component';
 import {RadioEnumEditFieldComponent} from './radioenum/templates/edit/radioenum.component';
+import {HtmlDetailFieldComponent} from './html/templates/detail/html.component';
+import {HtmlDetailFieldModule} from './html/templates/detail/html.module';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -125,7 +127,8 @@ export const baseFieldModules = [
     MultiEnumFilterFieldModule,
     BooleanDetailFieldModule,
     BooleanEditFieldModule,
-    BooleanFilterFieldModule
+    BooleanFilterFieldModule,
+    HtmlDetailFieldModule
 ];
 export const baseFieldComponents = [
     VarcharDetailFieldComponent,
@@ -160,7 +163,8 @@ export const baseFieldComponents = [
     MultiEnumFilterFieldComponent,
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent,
-    BooleanFilterFieldComponent
+    BooleanFilterFieldComponent,
+    HtmlDetailFieldComponent
 ];
 
 export const baseViewFieldsMap: FieldComponentMap = {
@@ -232,5 +236,6 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.list': BooleanDetailFieldComponent,
     'bool.detail': BooleanDetailFieldComponent,
     'bool.edit': BooleanEditFieldComponent,
-    'bool.filter': BooleanFilterFieldComponent
+    'bool.filter': BooleanFilterFieldComponent,
+    'html.detail': HtmlDetailFieldComponent
 };
