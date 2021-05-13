@@ -12,7 +12,7 @@ export class BaseSaveRecordMapper implements RecordMapper {
 
     map(record: Record): void {
 
-        if(!record.fields || !record.fields.length){
+        if(!record.fields || !Object.keys(record.fields).length){
             return;
         }
 
