@@ -24,33 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {AttributeMap, SearchCriteria} from 'common';
+import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
+import {Observable} from 'rxjs';
+import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
-
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+export interface RecordThreadConfig {
+    module: string;
+    klass?: string;
+    maxListHeight?: number;
+    create?: boolean;
+    direction?: 'asc' | 'desc';
+    itemConfig: RecordThreadItemConfig;
+    createConfig?: RecordThreadItemConfig;
+    filters$: Observable<SearchCriteria>;
+    presetFields$?: Observable<AttributeMap>;
+    store?: RecordThreadStore;
 }

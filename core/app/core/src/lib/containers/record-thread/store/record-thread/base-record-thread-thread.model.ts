@@ -24,33 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
+export interface BaseRecordItemStoreFactoryInterface<T extends BaseRecordContainerStore<M>, M> {
 
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+    create(): T;
 }

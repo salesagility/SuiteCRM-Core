@@ -24,33 +24,34 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {DropdownButtonModule} from '../../../../components/dropdown-button/dropdown-button.module';
+import {ButtonModule} from '../../../../components/button/button.module';
+import {LabelModule} from '../../../../components/label/label.module';
+import {PanelModule} from '../../../../components/panel/panel.module';
+import {FieldGridModule} from '../../../../components/field-grid/field-grid.module';
+import {RecordGridModule} from '../../../../components/record-grid/record-grid.module';
+import {RecordThreadItemComponent} from './record-thread-item.component';
+import {FieldLayoutModule} from '../../../../components/field-layout/field-layout.module';
+import {RecordFlexboxModule} from '../../../../components/record-flexbox/record-flexbox.module';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
-
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+@NgModule({
+    declarations: [RecordThreadItemComponent],
+    exports: [
+        RecordThreadItemComponent
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        PanelModule,
+        FieldGridModule,
+        DropdownButtonModule,
+        LabelModule,
+        RecordGridModule,
+        FieldLayoutModule,
+        RecordFlexboxModule,
+    ]
+})
+export class RecordThreadItemModule {
 }

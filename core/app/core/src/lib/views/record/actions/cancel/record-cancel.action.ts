@@ -36,7 +36,7 @@ import {MessageModalComponent} from '../../../../components/modal/components/mes
 export class RecordCancelAction extends RecordActionHandler {
 
     key = 'cancel';
-    modes = ['edit' as ViewMode];
+    modes = ['edit' as ViewMode, 'detail' as ViewMode];
 
     constructor(private modalService: NgbModal) {
         super();

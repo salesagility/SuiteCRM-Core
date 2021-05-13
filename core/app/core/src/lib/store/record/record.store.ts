@@ -26,7 +26,7 @@
 
 import {deepClone, MapEntry, Record, RecordMapper, RecordMapperRegistry, ViewFieldDefinition} from 'common';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
-import {catchError, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
 import {RecordFetchGQL} from './graphql/api.record.get';
 import {RecordSaveGQL} from './graphql/api.record.save';
 import {MessageService} from '../../services/message/message.service';
@@ -70,12 +70,12 @@ export class RecordStore {
     ) {
 
 
-        this.state$ = this.store.asObservable().pipe(
-            tap(record => {
-                this.updateStaging(record);
-            })
-        );
+        this.state$ = this.store.asObservable().pipe(distinctUntilChanged());
         this.staging$ = this.staging.asObservable();
+
+        this.subs.push(this.state$.subscribe(record => {
+            this.updateStaging(record);
+        }));
 
         this.subs.push(definitions$.subscribe(definitions => {
             this.definitions = definitions;
@@ -105,6 +105,13 @@ export class RecordStore {
         this.initRecord(record);
 
         this.staging.next(this.stagingState = record);
+    }
+
+    setRecord(record: Record): void {
+
+        this.initRecord(record);
+
+        this.updateState(record);
     }
 
     save(): Observable<Record> {
@@ -153,6 +160,28 @@ export class RecordStore {
             type: this.internalState.type,
             module: this.internalState.module,
             attributes: this.internalState.attributes
+        } as Record;
+
+        return deepClone(baseRecord);
+    }
+
+    /**
+     * Get record
+     *
+     * @returns {object} Record
+     */
+    getBaseStaging(): Record {
+        if (!this.stagingState) {
+            return null;
+        }
+
+        this.mapStagingFields();
+
+        const baseRecord = {
+            id: this.stagingState.id,
+            type: this.stagingState.type,
+            module: this.stagingState.module,
+            attributes: this.stagingState.attributes
         } as Record;
 
         return deepClone(baseRecord);
@@ -224,12 +253,8 @@ export class RecordStore {
      */
     protected updateStaging(state: Record): void {
 
-        const shallowCopy = {...state};
-        shallowCopy.formGroup = null;
-        shallowCopy.fields = null;
-        const newState = deepClone(shallowCopy);
+        const newState = deepClone(this.extractBaseRecord(state));
         this.initRecord(newState);
-
 
         this.staging.next(this.stagingState = newState);
     }

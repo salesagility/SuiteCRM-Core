@@ -43,7 +43,7 @@ import {SubpanelStoreFactory} from '../../../../containers/subpanel/store/subpan
 import {AuthService} from '../../../../services/auth/auth.service';
 import {MessageService} from '../../../../services/message/message.service';
 import {Record, ViewMode} from 'common';
-import {RecordStoreStoreFactory} from '../../../../store/record/record.store.factory';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 
 @Injectable()
 export class CreateViewStore extends RecordViewStore {
@@ -62,7 +62,7 @@ export class CreateViewStore extends RecordViewStore {
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
         protected auth: AuthService,
-        protected recordStoreFactory: RecordStoreStoreFactory
+        protected recordStoreFactory: RecordStoreFactory
     ) {
         super(
             recordFetchGQL,

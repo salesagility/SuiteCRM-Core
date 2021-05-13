@@ -24,33 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
+import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
+import {ViewMode} from 'common';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
 
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+export interface RecordThreadItemConfig {
+    klass?: string;
+    collapsible?: boolean;
+    collapseLimit?: number;
+    metadata: RecordThreadItemMetadata;
+    store?: RecordThreadItemStore;
+    initialMode?: ViewMode;
+    buttonClass?: string;
+    labelClass?: { [klass: string]: any };
+    inputClass?: { [klass: string]: any };
+    rowClass?: { [klass: string]: any };
+    colClass?: { [klass: string]: any };
 }

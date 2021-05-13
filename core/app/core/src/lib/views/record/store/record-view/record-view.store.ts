@@ -62,7 +62,7 @@ import {ViewStore} from '../../../../store/view/view.store';
 import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
 import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
-import {RecordStoreStoreFactory} from '../../../../store/record/record.store.factory';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 
 const initialState: RecordViewState = {
     module: '',
@@ -95,6 +95,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     showSubpanels$: Observable<boolean>;
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
+    viewContext$: Observable<ViewContext>;
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -126,7 +127,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected subpanelFactory: SubpanelStoreFactory,
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
-        protected recordStoreFactory: RecordStoreStoreFactory
+        protected recordStoreFactory: RecordStoreFactory
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -159,6 +160,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.subpanelsState = new BehaviorSubject<SubpanelStoreMap>({} as SubpanelStoreMap);
         this.subpanels$ = this.subpanelsState.asObservable();
+
+
+        this.viewContext$ = this.record$.pipe(map(() => {
+            return this.getViewContext();
+        }));
     }
 
     get widgets(): boolean {
@@ -228,6 +234,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         return {
             module: this.getModuleName(),
             id: this.getRecordId(),
+            record: this.getBaseRecord()
         };
     }
 

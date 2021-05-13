@@ -49,9 +49,9 @@ export interface SummaryTemplates {
 export interface RecordViewMetadata {
     topWidget?: WidgetMetadata;
     sidebarWidgets?: WidgetMetadata[];
-    actions: Action[];
-    templateMeta: RecordTemplateMetadata;
-    panels: Panel[];
+    actions?: Action[];
+    templateMeta?: RecordTemplateMetadata;
+    panels?: Panel[];
     summaryTemplates?: SummaryTemplates;
     vardefs?: FieldDefinitionMap;
 }

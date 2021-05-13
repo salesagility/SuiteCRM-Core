@@ -526,6 +526,16 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     /**
+     * Set Pagination page size
+     *
+     * @param {number} pageSize to set
+     */
+    public setPageSize(pageSize: number): void {
+        const pagination = {...this.internalState.pagination, pageSize};
+        this.updateState({...this.internalState, pagination});
+    }
+
+    /**
      * Internal API
      */
 
@@ -569,16 +579,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         }
 
         this.setPageSize(size);
-    }
-
-    /**
-     * Set Pagination page size
-     *
-     * @param {number} pageSize to set
-     */
-    protected setPageSize(pageSize: number): void {
-        const pagination = {...this.internalState.pagination, pageSize};
-        this.updateState({...this.internalState, pagination});
     }
 
     /**

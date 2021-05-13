@@ -25,39 +25,40 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordMapperRegistry, ViewFieldDefinition} from 'common';
-import {RecordStore} from './record.store';
-import {Observable} from 'rxjs';
-import {RecordFetchGQL} from './graphql/api.record.get';
-import {RecordSaveGQL} from './graphql/api.record.save';
-import {MessageService} from '../../services/message/message.service';
-import {RecordManager} from '../../services/record/record.manager';
-import {BaseSaveRecordMapper} from './record-mappers/base-save.record-mapper';
+import {RecordThreadItemStore} from './record-thread-item.store';
+import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
+import {MessageService} from '../../../../services/message/message.service';
+import {FieldManager} from '../../../../services/record/field/field.manager';
+import {LanguageStore} from '../../../../store/language/language.store';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
+import {BaseRecordItemStoreFactoryInterface} from './base-record-thread-thread.model';
+import {RecordThreadItemMetadata} from './record-thread-item.store.model';
+
 
 @Injectable({
     providedIn: 'root',
 })
-export class RecordStoreFactory {
+export class RecordThreadItemStoreFactory implements BaseRecordItemStoreFactoryInterface<RecordThreadItemStore, RecordThreadItemMetadata> {
 
     constructor(
-        protected recordFetchGQL: RecordFetchGQL,
-        protected recordSaveGQL: RecordSaveGQL,
+        protected appStateStore: AppStateStore,
+        protected meta: MetadataStore,
         protected message: MessageService,
-        protected recordManager: RecordManager,
-        protected recordMappers: RecordMapperRegistry,
-        protected baseMapper: BaseSaveRecordMapper,
+        protected fieldManager: FieldManager,
+        protected language: LanguageStore,
+        protected storeFactory: RecordStoreFactory
     ) {
-        recordMappers.register('default', baseMapper.getKey(), baseMapper);
     }
 
-    create(definitions$: Observable<ViewFieldDefinition[]>): RecordStore {
-        return new RecordStore(
-            definitions$,
-            this.recordSaveGQL,
-            this.recordFetchGQL,
+    create(): RecordThreadItemStore {
+        return new RecordThreadItemStore(
+            this.appStateStore,
+            this.meta,
             this.message,
-            this.recordManager,
-            this.recordMappers
+            this.fieldManager,
+            this.language,
+            this.storeFactory
         );
     }
 }

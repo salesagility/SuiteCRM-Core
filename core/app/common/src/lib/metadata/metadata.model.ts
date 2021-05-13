@@ -49,3 +49,7 @@ export interface PanelRow {
 export interface PanelCell extends ViewFieldDefinition {
     name?: string;
 }
+
+export interface ViewFieldDefinitionMap {
+    [key: string]: ViewFieldDefinition
+}

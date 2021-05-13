@@ -24,33 +24,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
+import {Panel, ViewFieldDefinitionMap, ViewMode} from 'common';
+
+export interface RecordContainerState {
+    module?: string;
+    recordId?: string;
+    mode: ViewMode;
+    loading: {
+        data: boolean;
+        metadata: boolean;
+    }
 }
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
-
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+export interface RecordContainerMetadata {
+    definition: ViewFieldDefinitionMap;
+    layout: Panel;
 }

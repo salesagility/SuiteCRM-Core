@@ -86,6 +86,10 @@ export class RecordContainerComponent implements OnInit {
         return this.recordViewStore.getViewContext();
     }
 
+    getViewContext$(): Observable<ViewContext> {
+        return this.recordViewStore.viewContext$;
+    }
+
     hasTopWidgetMetadata(meta: WidgetMetadata): boolean {
         return !!(meta && meta.type);
     }

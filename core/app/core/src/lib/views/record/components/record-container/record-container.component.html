@@ -64,6 +64,7 @@
             <div class="mb-3" *ngFor="let widget of vm.sidebarWidgetConfig.widgets">
                 <scrm-sidebar-widget [type]="widget.type"
                                      [context]="getViewContext()"
+                                     [context$]="getViewContext$()"
                                      [config]="widget">
                 </scrm-sidebar-widget>
             </div>

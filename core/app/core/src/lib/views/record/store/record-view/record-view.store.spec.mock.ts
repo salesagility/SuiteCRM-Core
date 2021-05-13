@@ -41,7 +41,7 @@ import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.
 import {messageServiceMock} from '../../../../services/message/message.service.spec.mock';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {StatisticsFetchGQL} from '../../../../store/statistics/graphql/api.statistics.get';
-import {RecordStoreStoreFactory} from '../../../../store/record/record.store.factory';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {BaseSaveRecordMapper} from '../../../../store/record/record-mappers/base-save.record-mapper';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
@@ -1200,7 +1200,7 @@ class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
     }
 }
 
-const mockRecordStoreFactory = new RecordStoreStoreFactory(
+const mockRecordStoreFactory = new RecordStoreFactory(
     new RecordViewGQLSpy(),
     new RecordSaveGQLSpy(),
     messageServiceMock,

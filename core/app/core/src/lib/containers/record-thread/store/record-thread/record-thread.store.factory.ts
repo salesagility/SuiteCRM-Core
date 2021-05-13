@@ -24,33 +24,26 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {Injectable} from '@angular/core';
+import {RecordThreadStore} from './record-thread.store';
+import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
+import {RecordThreadItemStoreFactory} from './record-thread-item.store.factory';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
+@Injectable({
+    providedIn: 'root',
+})
+export class RecordThreadStoreFactory {
 
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
+    constructor(
+        protected recordListFactory: RecordListStoreFactory,
+        protected recordStoreFactory: RecordThreadItemStoreFactory
+    ) {
+    }
 
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+    create(): RecordThreadStore {
+        return new RecordThreadStore(
+            this.recordListFactory,
+            this.recordStoreFactory
+        );
+    }
 }

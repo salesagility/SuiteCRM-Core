@@ -1,0 +1,80 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2021 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+
+<div class="record-thread {{(config && config.klass) || ''}}">
+    <div *ngIf="!loading && !records && !records.length"
+         class="d-flex record-thread-no-data justify-content-center h3">
+        <scrm-label labelKey="LBL_NO_DATA"></scrm-label>
+    </div>
+
+    <div *ngIf="loading" class="d-flex record-thread-loading justify-content-center">
+        <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+    </div>
+
+
+    <div #list
+         *ngIf="records && records.length"
+         [ngStyle]="{'max-height.px': maxHeight, 'overflow-y': 'auto'}"
+         class="record-thread-list">
+
+        <div *ngIf="direction === 'asc' && !allLoaded()"
+             class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+            <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+        </div>
+
+
+        <div *ngFor="let record of records">
+            <scrm-record-thread-item [config]="buildItem(record)"></scrm-record-thread-item>
+        </div>
+
+
+        <div *ngIf="direction === 'desc' && !allLoaded()"
+             class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+            <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+        </div>
+
+    </div>
+
+    <ng-container *ngIf="config.create && createStore">
+
+        <div class="d-flex flex-column record-thread-create-container">
+
+            <div *ngIf="!loading" class="flex-grow-1">
+                <scrm-record-thread-item [config]="buildCreateItem()"></scrm-record-thread-item>
+            </div>
+
+            <div class="flex-grow-1 d-flex justify-content-start pt-1 record-thread-create-buttons">
+                <scrm-button [config]="getCreateButton()"></scrm-button>
+            </div>
+
+        </div>
+
+    </ng-container>
+
+
+</div>

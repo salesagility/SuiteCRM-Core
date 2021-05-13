@@ -24,33 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-a {
-  color: $coral-pink;
-}
+import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
 
-a.clickable {
-  color: $coral-pink;
-  cursor: pointer;
-}
-
-a.clickable:hover {
-  color: $coral-pink;
-  text-decoration: underline;
-}
-
-.textarea {
-  background: #ffffff
-}
-
-ul {
-  list-style-type: square;
-  padding-inline-start: 1em;
-}
-
-ul li::marker {
-  color: $midnight-blue;
-}
-
-.text-danger {
-  color: $btn-danger;
+export interface RecordThreadItemMetadata {
+    headerLayout?: FieldFlexbox;
+    bodyLayout?: FieldFlexbox;
 }
