@@ -177,6 +177,8 @@ export * from './containers/sidebar-widget/components/history-sidebar-widget/his
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-sidebar-widget.model';
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-sidebar-widget.module';
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-timeline.adapter.service';
+export * from './containers/sidebar-widget/components/record-thread-sidebar-widget/record-thread-sidebar-widget.component';
+export * from './containers/sidebar-widget/components/record-thread-sidebar-widget/record-thread-sidebar-widget.module';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.component';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.manifest';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';

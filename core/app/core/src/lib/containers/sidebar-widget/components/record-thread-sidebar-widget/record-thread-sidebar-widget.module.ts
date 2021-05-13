@@ -24,23 +24,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {HistorySidebarWidgetComponent} from '../history-sidebar-widget/history-sidebar-widget.component';
-import {StatisticsSidebarWidgetModule} from '../statistics-sidebar-widget/statistics-sidebar-widget.module';
-import {HistorySidebarWidgetModule} from '../history-sidebar-widget/history-sidebar-widget.module';
-import {StatisticsSidebarWidgetComponent} from '../statistics-sidebar-widget/statistics-sidebar-widget.component';
-import {ChartSidebarWidgetModule} from '../chart-sidebar-widget/chart-sidebar-widget.module';
-import {ChartSidebarWidgetComponent} from '../chart-sidebar-widget/chart-sidebar-widget.component';
-import {RecordThreadSidebarWidgetComponent} from '../record-thread-sidebar-widget/record-thread-sidebar-widget.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FieldModule} from '../../../../fields/field.module';
+import {WidgetPanelModule} from '../../../../components/widget-panel/widget-panel.module';
+import {LabelModule} from '../../../../components/label/label.module';
+import {RecordThreadSidebarWidgetComponent} from './record-thread-sidebar-widget.component';
+import {RecordThreadModule} from '../../../record-thread/components/record-thread/record-thread.module';
+import {RecordThreadItemModule} from '../../../record-thread/components/record-thread-item/record-thread-item.module';
 
-export const sidebarWidgetModules = [
-    HistorySidebarWidgetModule,
-    ChartSidebarWidgetModule,
-    StatisticsSidebarWidgetModule
-];
-
-export const componentTypeMap = {
-    'history-timeline': HistorySidebarWidgetComponent,
-    chart: ChartSidebarWidgetComponent,
-    statistics: StatisticsSidebarWidgetComponent,
-    'record-thread': RecordThreadSidebarWidgetComponent
-};
+@NgModule({
+    declarations: [RecordThreadSidebarWidgetComponent],
+    exports: [
+        RecordThreadSidebarWidgetComponent
+    ],
+    imports: [
+        CommonModule,
+        FieldModule,
+        WidgetPanelModule,
+        LabelModule,
+        RecordThreadModule,
+        RecordThreadItemModule
+    ]
+})
+export class RecordThreadSidebarWidgetModule {
+}
