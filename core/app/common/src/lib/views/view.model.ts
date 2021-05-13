@@ -26,12 +26,14 @@
 
 import {SortingSelection} from './list/list-navigation.model';
 import {SearchCriteria} from './list/search-criteria.model';
+import {Record} from '../record/record.model';
 
 export type ViewMode = 'detail' | 'edit' | 'list' | 'create';
 
 export interface ViewContext {
     module: string;
     id?: string;
+    record?: Record;
     criteria?: SearchCriteria;
     sort?: SortingSelection;
 }
