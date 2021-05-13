@@ -26,7 +26,6 @@
  */
 
 
-
 namespace App\Data\LegacyHandler;
 
 
@@ -82,6 +81,17 @@ class ListData
      */
     public function setOffsets(array $offsets): ListData
     {
+        if (empty($offsets)) {
+            $this->offsets = [];
+
+            return $this;
+        }
+
+        $this->offsets = [];
+        foreach ($offsets as $key => $value) {
+            $this->offsets[$key] = (int)($value ?? 0);
+        }
+
         $this->offsets = $offsets;
 
         return $this;
