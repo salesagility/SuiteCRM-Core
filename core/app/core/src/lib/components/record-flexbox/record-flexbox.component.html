@@ -1,0 +1,100 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2021 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+
+<div *ngIf="(vm$| async) as vm" class="d-flex flex-column {{(config && config.klass) || ''}}">
+
+    <ng-container *ngFor="let item of vm.layout.rows">
+
+        <div [ngClass]="getRowClass()"
+             class="d-flex record-flexbox-row {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getLayoutRowClass(item)}}">
+
+            <div *ngFor="let col of item.cols"
+                 [ngClass]="getColClass()"
+                 class="record-flexbox-col {{getClass(col)}}">
+
+                <ng-container *ngIf="col.display !== 'hidden'">
+
+                    <div [class.align-items-center]="getLabelDisplay(col) === 'inline'"
+                         [class.flex-column]="getLabelDisplay(col) === 'top'"
+                         [class.flex-row]="getLabelDisplay(col) === 'inline'"
+                         [class.justify-content-end]="!col.field"
+                         class="d-flex"
+                    >
+                        <ng-container *ngIf="getField(vm.record, col.field) as field">
+
+                            <ng-container *ngIf="shouldDisplay(col, field)">
+                                <ng-container *ngIf="getLabelDisplay(col) !== 'none'">
+
+                                    <div [class.pr-3]="getLabelDisplay(col) === 'inline' && getDisplay(col) !== 'none'">
+
+                                        <label *ngIf="field.label" [ngClass]="getLabelClass(col)">
+                                            {{field.label}}
+                                        </label>
+
+                                        <scrm-label *ngIf="!field.label && field.labelKey"
+                                                    [labelKey]="field.labelKey"
+                                                    [ngClass]="getLabelClass(col)">
+                                        </scrm-label>
+                                    </div>
+
+                                </ng-container>
+
+                                <ng-container *ngIf="getDisplay(col) !== 'none'">
+
+                                    <div [class.flex-grow-1]="getLabelDisplay(col) === 'inline'">
+
+                                        <scrm-field [field]="field"
+                                                    [klass]="getFieldClass(col)"
+                                                    [mode]="vm.mode"
+                                                    [type]="field.type">
+                                        </scrm-field>
+
+                                    </div>
+
+                                </ng-container>
+
+
+                            </ng-container>
+
+                        </ng-container>
+
+
+                        <ng-container *ngIf="col.actionSlot && this.config.actions">
+                            <scrm-action-group-menu [buttonClass]="config.buttonClass"
+                                                    [config]="config.actions">
+                            </scrm-action-group-menu>
+                        </ng-container>
+
+                    </div>
+                </ng-container>
+
+            </div>
+
+        </div>
+    </ng-container>
+</div>

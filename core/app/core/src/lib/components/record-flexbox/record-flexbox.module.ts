@@ -24,17 +24,26 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface, Field} from 'common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FieldModule} from '../../fields/field.module';
+import {ButtonModule} from '../button/button.module';
+import {LabelModule} from '../label/label.module';
+import {RecordFlexboxComponent} from './record-flexbox.component';
+import {ActionGroupMenuModule} from '../action-group-menu/action-group-menu.module';
 
-export interface FieldGridColumn {
-    field?: Field;
-    buttons?: ButtonInterface[];
-    actionSlot?: boolean;
-    specialSlot?: boolean;
+@NgModule({
+    declarations: [RecordFlexboxComponent],
+    exports: [
+        RecordFlexboxComponent
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        FieldModule,
+        LabelModule,
+        ActionGroupMenuModule
+    ]
+})
+export class RecordFlexboxModule {
 }
-
-export interface FieldGridRow {
-    cols: FieldGridColumn[];
-}
-
-export type LabelDisplay = 'top' | 'inline' | 'none';

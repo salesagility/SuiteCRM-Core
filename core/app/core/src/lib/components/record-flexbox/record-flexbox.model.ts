@@ -24,17 +24,65 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface, Field} from 'common';
+import {
+    ActionDataSource,
+    ContentAlign,
+    ContentJustify,
+    Record,
+    TextColor,
+    TextSizes,
+    ViewFieldDefinition,
+    ViewMode
+} from 'common';
+import {Observable} from 'rxjs';
+import {LabelDisplay} from '../field-grid/field-grid.model';
 
-export interface FieldGridColumn {
-    field?: Field;
-    buttons?: ButtonInterface[];
+
+export interface FieldFlexbox {
+    rows: FieldFlexboxRow[];
+}
+
+export interface FieldFlexboxRow {
+    justify?: ContentJustify;
+    align?: ContentAlign;
+    cols: FieldFlexboxCol[];
+    class?: string;
+}
+
+export interface FieldFlexboxCol {
+    field: ViewFieldDefinition;
+    iconClass?: string;
+    icon?: string;
+    labelDisplay?: LabelDisplay;
+    hideIfEmpty?: boolean;
+    display?: string;
+    size?: TextSizes;
+    color?: TextColor;
+    bold?: boolean | string;
+    class?: string;
+    labelClass?: string;
+    inputClass?: string;
     actionSlot?: boolean;
     specialSlot?: boolean;
 }
 
-export interface FieldGridRow {
-    cols: FieldGridColumn[];
+
+export interface RecordFlexboxViewModel {
+    record: Record;
+    mode: string;
+    layout: FieldFlexbox;
 }
 
-export type LabelDisplay = 'top' | 'inline' | 'none';
+export interface RecordFlexboxConfig {
+    record$: Observable<Record>;
+    mode$: Observable<ViewMode>;
+    layout$: Observable<FieldFlexbox>;
+    actions?: ActionDataSource;
+    klass?: string;
+    buttonClass?: string;
+    labelClass?: { [klass: string]: any };
+    inputClass?: { [klass: string]: any };
+    rowClass?: { [klass: string]: any };
+    colClass?: { [klass: string]: any };
+    labelDisplay?: LabelDisplay;
+}
