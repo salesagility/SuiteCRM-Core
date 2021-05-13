@@ -25,14 +25,11 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Record} from 'common';
+import {FieldDefinitionMap, FieldMap, isVoid, Record, ViewFieldDefinition} from 'common';
 import {FormGroup} from '@angular/forms';
-import {ViewFieldDefinition} from 'common';
-import {FieldDefinitionMap, FieldMap} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldManager} from './field/field.manager';
 import {Params} from '@angular/router';
-import {isVoid} from 'common';
 
 @Injectable({
     providedIn: 'root'
@@ -53,8 +50,11 @@ export class RecordManager {
      */
     buildEmptyRecord(module: string): Record {
         return {
+            id: '',
             module,
-            attributes: {},
+            attributes: {
+                id: ''
+            },
             fields: {},
             formGroup: new FormGroup({}),
         } as Record;
