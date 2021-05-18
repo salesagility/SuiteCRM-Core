@@ -42,4 +42,8 @@ export interface RecordThreadItemConfig {
     inputClass?: { [klass: string]: any };
     rowClass?: { [klass: string]: any };
     colClass?: { [klass: string]: any };
+
+    collapsed(): void;
+
+    expanded(): void;
 }

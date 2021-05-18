@@ -48,8 +48,8 @@
         </div>
 
 
-        <div *ngFor="let record of records">
-            <scrm-record-thread-item [config]="buildItem(record)"></scrm-record-thread-item>
+        <div #item *ngFor="let record of records">
+            <scrm-record-thread-item [config]="buildItem(record, item)"></scrm-record-thread-item>
         </div>
 
 
@@ -62,9 +62,10 @@
 
     <ng-container *ngIf="config.create && createStore">
 
-        <div class="d-flex flex-column record-thread-create-container">
+        <div *ngIf="!loading"
+             class="d-flex flex-column record-thread-create-container">
 
-            <div *ngIf="!loading" class="flex-grow-1">
+            <div class="flex-grow-1">
                 <scrm-record-thread-item [config]="buildCreateItem()"></scrm-record-thread-item>
             </div>
 

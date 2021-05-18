@@ -97,6 +97,11 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
             labelKey: this.collapsed ? 'LBL_SHOW_MORE' : 'LBL_SHOW_LESS',
             onClick: () => {
                 this.collapsed = !this.collapsed;
+                if (this.collapsed) {
+                    this.config && this.config.collapsed()
+                } else {
+                    this.config && this.config.expanded();
+                }
             }
         } as ButtonInterface;
     }

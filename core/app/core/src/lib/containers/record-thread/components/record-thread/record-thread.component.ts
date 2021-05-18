@@ -122,11 +122,17 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subs.forEach(sub => sub.unsubscribe())
     }
 
-    buildItem(item: RecordThreadItemStore): RecordThreadItemConfig {
+    buildItem(item: RecordThreadItemStore, itemRef: any): RecordThreadItemConfig {
         return {
             ...this.config.itemConfig,
             store: item,
-            klass: 'record-thread-list-item'
+            klass: 'record-thread-list-item',
+            expanded: (): void => {
+                this.scrollToItem(itemRef);
+            },
+            collapsed: (): void => {
+                this.scrollToItem(itemRef);
+            }
         } as RecordThreadItemConfig;
     }
 
@@ -145,14 +151,14 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             ...this.config.createConfig,
             store: this.createStore,
             rowClass: {'pt-1': true},
-            klass: 'record-thread-create-item'
+            klass: 'record-thread-create-item',
         } as RecordThreadItemConfig;
     }
 
     getCreateButton(): ButtonInterface {
         return {
             klass: 'create-thread-item-button btn btn-danger btn-sm',
-            labelKey: 'LBL_CREATE',
+            labelKey: 'LBL_SUBMIT_BUTTON_LABEL',
             onClick: () => {
                 this.createStore.validate().pipe(take(1)).subscribe(valid => {
                     if (valid) {
@@ -162,7 +168,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
                             this.shouldResetScroll = true;
 
-                            this.message.addSuccessMessageByKey('LBL_CASE_UPDATE_SUBMITTED')
+                            this.message.addSuccessMessageByKey('LBL_ACTION_SUCCESS')
                         });
                         return;
                     }
@@ -190,17 +196,34 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     protected scrollToEnd(): void {
+        if (!this.listContainer || !this.listContainer.nativeElement) {
+            return;
+        }
+
+        this.scrollTo(this.listContainer.nativeElement.scrollHeight);
+    }
+
+    protected scrollToTop(): void {
+        this.scrollTo(0);
+    }
+
+    protected scrollTo(position: number): void {
         try {
-            this.listContainer.nativeElement.scrollTop = this.listContainer.nativeElement.scrollHeight;
+            this.listContainer.nativeElement.scrollTop = position;
         } catch (err) {
         }
     }
 
-    protected scrollToTop(): void {
-        try {
-            this.listContainer.nativeElement.scrollTop = 0;
-        } catch (err) {
+    protected scrollToItem(item: any) {
+        if (!item || !this.listContainer || !this.listContainer.nativeElement) {
+            return;
         }
+
+        const elementTop = item.offsetTop;
+        const parentTop = this.listContainer.nativeElement.offsetTop;
+        const relativeTop = elementTop - parentTop;
+
+        this.scrollTo(relativeTop);
     }
 
     protected resetScroll(): void {
