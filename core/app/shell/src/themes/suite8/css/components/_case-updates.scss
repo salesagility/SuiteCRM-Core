@@ -1,0 +1,72 @@
+.record-thread-item.record-thread-list-item {
+  width: 90%;
+  margin-left: auto;
+
+  &.source-internal.internal-true {
+
+    .record-thread-item-body {
+      background-color: $light-blue;
+    }
+
+    .item-title {
+      color: $mild-blue;
+    }
+
+    .fadeout {
+      background: linear-gradient(rgba(255, 255, 255, 0) 0%, $light-blue 100%);
+    }
+
+    .record-thread-item-collapse {
+      .collapse-button {
+        color: $mild-blue;
+      }
+    }
+  }
+
+  &.source-contact {
+    margin-right: auto;
+
+    .record-thread-item-body {
+      background-color: $light-yellow;
+    }
+
+    .item-title {
+      color: $dark-yellow;
+    }
+
+    .fadeout {
+      background: linear-gradient(rgba(255, 255, 255, 0) 0%, $light-yellow 100%);
+    }
+
+    .record-thread-item-collapse {
+      .collapse-button {
+        color: $dark-yellow;
+      }
+    }
+
+  }
+
+  &.source-external {
+    margin-right: auto;
+
+    .record-thread-item-body {
+      background-color: $light-purple;
+    }
+
+    .item-title {
+      color: $dark-purple;
+    }
+
+    .fadeout {
+      background: linear-gradient(rgba(255, 255, 255, 0) 0%, $light-purple 100%);
+    }
+
+    .record-thread-item-collapse {
+      .collapse-button {
+        color: $dark-purple;
+      }
+    }
+
+  }
+
+}

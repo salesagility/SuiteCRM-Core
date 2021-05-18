@@ -9,7 +9,7 @@
 .record-thread-load-more {
   .load-more-button {
     font-size: .775rem;
-    color: $light-green;
+    color: $midnight-blue;
     font-weight: 700;
     margin: 0;
     padding: 0;
@@ -39,14 +39,24 @@
     word-wrap: break-word;
     background-clip: border-box;
     border-radius: .25rem;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
   }
 
-  .record-thread-item-body.collapsed {
+  .item-title {
+    color: $dark-green;
+  }
+
+  .record-thread-item-body.collapsed .item-content {
     max-height: 50px;
     overflow: hidden;
   }
 
-  .record-thread-item-body.expanded {
+  .record-thread-item-body.expanded .item-content {
     height: auto;
   }
 
@@ -63,7 +73,7 @@
 }
 
 .fadeout {
-  bottom: 0;
+  bottom: 1.3em;
   height: 2.6em;
   background: linear-gradient(rgba(255, 255, 255, 0) 0%, $very-light-green 100%);
   position: absolute;
