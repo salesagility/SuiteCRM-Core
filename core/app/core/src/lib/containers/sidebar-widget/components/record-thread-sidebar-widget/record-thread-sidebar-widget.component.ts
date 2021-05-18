@@ -53,6 +53,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
         maxListHeight?: number;
         direction?: 'asc' | 'desc';
         item: {
+            dynamicClass?: string[];
             itemClass?: string;
             collapsible?: boolean;
             collapseLimit?: number;
@@ -133,6 +134,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
                 collapsible: this.options.item.collapsible || false,
                 collapseLimit: this.options.item.collapseLimit || null,
                 klass: this.options.item.itemClass || '',
+                dynamicClass: this.options.item.dynamicClass || [],
                 metadata: {} as RecordThreadItemMetadata
             },
             createConfig: {
