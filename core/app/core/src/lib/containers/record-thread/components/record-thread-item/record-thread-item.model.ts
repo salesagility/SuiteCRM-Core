@@ -31,6 +31,7 @@ import {ViewMode} from 'common';
 
 export interface RecordThreadItemConfig {
     klass?: string;
+    dynamicClass?: string[];
     collapsible?: boolean;
     collapseLimit?: number;
     metadata: RecordThreadItemMetadata;

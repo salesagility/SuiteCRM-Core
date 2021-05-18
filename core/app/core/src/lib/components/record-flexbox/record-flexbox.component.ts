@@ -141,7 +141,7 @@ export class RecordFlexboxComponent {
             around: 'justify-content-around'
         };
 
-        return justifyMap[justify] || 'justify-content-center';
+        return justifyMap[justify] || '';
     }
 
     public getAlign(align: ContentAlign): string {
@@ -153,7 +153,7 @@ export class RecordFlexboxComponent {
             stretch: 'align-items-stretch'
         };
 
-        return alignMap[align] || 'align-items-center';
+        return alignMap[align] || '';
     }
 
     public getLayoutRowClass(row: StatisticWidgetLayoutRow): string {

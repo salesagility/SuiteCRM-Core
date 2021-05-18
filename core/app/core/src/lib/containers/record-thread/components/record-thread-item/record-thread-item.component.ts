@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RecordThreadItemConfig} from './record-thread-item.model';
-import {of} from 'rxjs';
+import {of, Subscription} from 'rxjs';
 import {FieldFlexbox, RecordFlexboxConfig} from '../../../../components/record-flexbox/record-flexbox.model';
 import {shareReplay} from 'rxjs/operators';
 import {ButtonInterface} from 'common';
@@ -36,13 +36,23 @@ import {ButtonInterface} from 'common';
     templateUrl: './record-thread-item.component.html',
     styleUrls: [],
 })
-export class RecordThreadItemComponent {
+export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @Input() config: RecordThreadItemConfig;
     @ViewChild('body') bodyEl: ElementRef;
     collapsed = false;
     collapsible = false;
     collapseLimit = 300;
+    dynamicClass = '';
+    protected subs: Subscription[] = [];
+
+    ngOnInit(): void {
+        this.initDynamicClass();
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
 
     ngAfterViewInit() {
         if (!this.config || !this.config.collapsible) {
@@ -89,5 +99,64 @@ export class RecordThreadItemComponent {
                 this.collapsed = !this.collapsed;
             }
         } as ButtonInterface;
+    }
+
+    protected initDynamicClass(): void {
+        if (!this.config || !this.config.dynamicClass || !this.config.dynamicClass.length) {
+            return;
+        }
+
+        this.subs.push(this.config.store.stagingRecord$.subscribe(record => {
+            const klasses = [];
+
+            if (!record || !record.fields || !Object.keys(record.fields).length) {
+                return;
+            }
+
+            this.config.dynamicClass.forEach(fieldKey => {
+                if (!fieldKey) {
+                    return;
+                }
+
+                if (!record.fields[fieldKey] && !record.attributes[fieldKey]) {
+                    return;
+                }
+
+                const prefix = fieldKey + '-';
+                let values = [];
+
+                if (!record.fields[fieldKey]) {
+
+                    if (Array.isArray(record.attributes[fieldKey])) {
+
+                        values = values.concat(record.attributes[fieldKey]);
+
+                    } else if (typeof record.attributes[fieldKey] !== 'object') {
+
+                        values.push(record.attributes[fieldKey]);
+                    }
+
+                } else {
+
+                    if (record.fields[fieldKey].value) {
+                        values.push(record.fields[fieldKey].value);
+                    }
+
+                    if (record.fields[fieldKey].valueList && record.fields[fieldKey].valueList.length) {
+                        values = values.concat(record.fields[fieldKey].valueList);
+                    }
+                }
+
+                if (!values || !values.length) {
+                    return;
+                }
+
+                const klass = prefix + values.join(' ' + prefix);
+                klasses.push(klass);
+            });
+
+            this.dynamicClass = klasses.join(' ');
+
+        }))
     }
 }

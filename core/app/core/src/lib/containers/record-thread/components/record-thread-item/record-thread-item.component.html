@@ -27,7 +27,7 @@
 -->
 
 <div *ngIf="config"
-     class="d-flex flex-column record-thread-item {{(config && config.klass) || ''}}">
+     class="d-flex flex-column record-thread-item {{(config && config.klass) || ''}} {{dynamicClass}}">
     <div class="record-thread-item-header flex-grow-1">
 
         <ng-container *ngIf="config.metadata && config.metadata.headerLayout">
