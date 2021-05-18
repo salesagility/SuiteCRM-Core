@@ -48,15 +48,6 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     ngOnInit(): void {
 
-        if (this.field.definition.dynamic === true
-            && this.field.definition.parentenum
-            && this.record
-            && this.record.fields) {
-            this.isDynamicEnum = true;
-            const parentEnum: Field = this.record.fields[this.field.definition.parentenum];
-            this.subscribeToParentValueChanges(parentEnum);
-        }
-
         if (this.field.metadata && this.field.metadata.options$) {
             this.subs.push(this.field.metadata.options$.subscribe((options: Option[]) => {
                 this.buildProvidedOptions(options);
@@ -80,6 +71,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     ngOnDestroy(): void {
+        this.isDynamicEnum = false;
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
@@ -153,6 +145,20 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         }
     }
 
+    checkAndInitAsDynamicEnum() {
+
+        if (this.field.definition.dynamic === true
+            && this.field.definition.parentenum
+            && this.record
+            && this.record.fields) {
+            this.isDynamicEnum = true;
+            const parentEnum: Field = this.record.fields[this.field.definition.parentenum];
+            if (parentEnum) {
+                this.subscribeToParentValueChanges(parentEnum);
+            }
+        }
+    }
+
     buildDynamicEnumOptions(appStrings: LanguageListStringMap) {
 
         const parentEnum = this.record.fields[this.field.definition.parentenum];
@@ -207,22 +213,23 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     subscribeToParentValueChanges(parentEnum: Field) {
+        if (parentEnum.formControl) {
+            this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
 
-        this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
+                if (typeof values === 'string') {
+                    values = [values];
+                }
 
-            if (typeof values === 'string') {
-                values = [values];
-            }
+                // Reset selected values on Form Control
+                this.field.value = '';
+                this.field.formControl.setValue('');
 
-            // Reset selected values on Form Control
-            this.field.value = '';
-            this.field.formControl.setValue('');
+                // Rebuild available enum options
+                this.options = this.filterMatchingOptions(values);
 
-            // Rebuild available enum options
-            this.options = this.filterMatchingOptions(values);
-
-            this.initValue();
-        }));
+                this.initValue();
+            }));
+        }
     }
 
 }

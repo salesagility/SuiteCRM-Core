@@ -45,6 +45,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     }
 
     ngOnInit(): void {
+        this.checkAndInitAsDynamicEnum();
         super.ngOnInit();
     }
 

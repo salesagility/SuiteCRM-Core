@@ -45,6 +45,8 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
     }
 
     ngOnInit(): void {
+
+        this.checkAndInitAsDynamicEnum();
         super.ngOnInit();
     }
 
