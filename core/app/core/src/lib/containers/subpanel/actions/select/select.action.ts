@@ -77,6 +77,15 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
 
             const record = this.getSelectedRecord(result);
 
+            let linkField: string = data.subpanelMeta.get_subpanel_data;
+
+            const module = record.module || '';
+            const collectionList = data.subpanelMeta.collection_list || null;
+
+            if (collectionList && collectionList[module] && collectionList[module].get_subpanel_data) {
+                linkField = collectionList[module].get_subpanel_data;
+            }
+
             const input = {
                 action: 'record-select',
                 module: data.store.parentModule,
@@ -84,6 +93,7 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
                 payload: {
                     baseModule: data.parentModule,
                     baseRecordId: data.parentId,
+                    linkField,
                     relateModule: record.module,
                     relateRecordId: record.id
                 }

@@ -27,26 +27,17 @@
 
 namespace App\Process\LegacyHandler;
 
-use Api\V8\BeanDecorator\BeanManager;
-use Api\V8\Factory\ValidatorFactory;
-use Api\V8\JsonApi\Helper\AttributeObjectHelper;
-use Api\V8\Param\CreateRelationshipParams;
-use Api\V8\Service\RelationshipService;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
-use App\Engine\LegacyHandler\LegacyHandler;
 use App\Process\Service\ProcessHandlerInterface;
-use BadFunctionCallException;
-use DBManagerFactory;
-use Exception;
-use OAuth2Clients;
+use LinkService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use User;
 
 class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
@@ -69,16 +60,32 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
     protected $validator;
 
     /**
-     * @var array
+     * LinkRelationHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
      */
-    protected static $beanAliases = [
-        User::class => 'Users',
-        OAuth2Clients::class => 'OAuth2Clients',
-    ];
-
-    public function __construct(string $projectDir, string $legacyDir, string $legacySessionName, string $defaultSessionName, LegacyScopeState $legacyScopeState, SessionInterface $session, ModuleNameMapperInterface $moduleNameMapper, ValidatorInterface $validator)
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        ModuleNameMapperInterface $moduleNameMapper,
+        ValidatorInterface $validator
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->validator = $validator;
     }
@@ -129,9 +136,14 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
         }
 
         ['payload' => $payload] = $process->getOptions();
-        ['baseModule' => $baseModule, 'baseRecordId' => $baseRecordId, 'relateModule' => $relateModule, 'relateRecordId' => $relateRecordId] = $payload;
+        [
+            'baseModule' => $baseModule,
+            'baseRecordId' => $baseRecordId,
+            'linkField' => $linkField,
+            'relateRecordId' => $relateRecordId
+        ] = $payload;
 
-        if (empty($payload) || empty($baseModule) || empty($baseRecordId) || empty($relateModule) || empty($relateRecordId)) {
+        if (empty($payload) || empty($baseModule) || empty($baseRecordId) || empty($linkField) || empty($relateRecordId)) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -143,52 +155,34 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
     {
         $this->init();
 
-        $dbManager = DBManagerFactory::getInstance();
-        $beanManager = new BeanManager($dbManager, static::$beanAliases);
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/Relationships/LinkService.php';
 
         ['payload' => $payload] = $process->getOptions();
-        ['baseModule' => $baseModule, 'baseRecordId' => $baseRecordId, 'relateModule' => $relateModule, 'relateRecordId' => $relateRecordId] = $payload;
-
+        [
+            'baseModule' => $baseModule,
+            'baseRecordId' => $baseRecordId,
+            'linkField' => $linkField,
+            'relateRecordId' => $relateRecordId
+        ] = $payload;
         $baseModule = $this->moduleNameMapper->toLegacy($baseModule);
-        $relationshipService = new RelationshipService($beanManager, new AttributeObjectHelper($beanManager));
-        $createRelationshipParams = new CreateRelationshipParams(new ValidatorFactory($this->validator), $beanManager);
-        $sourceBean = $beanManager->getBeanSafe($baseModule, $baseRecordId);
-        $relatedBean = $beanManager->getBeanSafe($this->moduleNameMapper->toLegacy($relateModule), $relateRecordId);
 
-        $createRelationshipParams->parameters = [
-            'moduleName' => $baseModule,
-            'id' => $baseRecordId,
-            'sourceBean' => $sourceBean,
-            'relatedBean' => $relatedBean
-        ];
+        $service = new LinkService();
 
-        try {
-            $relationshipService->createRelationship($createRelationshipParams);
+        $result = $service->run($baseModule, $baseRecordId, $linkField, $relateRecordId);
 
-            $process->setStatus('success');
-            $process->setMessages([
-                'LBL_LINK_RELATIONSHIP_SUCCESS'
-            ]);
-            $process->setData(['showMessage' => false]);
-            $process->setData(['reload' => true]);
-        } catch (BadFunctionCallException | \InvalidArgumentException $badFunctionCallException) {
-            //logged by suite 7
-            $this->logger->error($badFunctionCallException->getMessage(), ['exception' => $badFunctionCallException]);
-            $process->setStatus('error');
-            $process->setMessages([
-                'LBL_LINK_RELATIONSHIP_FAILED'
-            ]);
-            $process->setData(['showMessage' => true]);
-            $process->setData(['reload' => false]);
-        } catch (Exception $unknownException) {
-            $this->logger->error($unknownException->getMessage(), ['exception' => $unknownException]);
-            $process->setStatus('error');
-            $process->setMessages([
-                'LBL_LINK_RELATIONSHIP_FAILED'
-            ]);
-            $process->setData(['showMessage' => true]);
-            $process->setData(['reload' => true]);
+        $process->setStatus('success');
+        if ($result['success'] !== true) {
+            $process->setStatus('failure');
         }
+
+        if (!empty($result['message'])) {
+            $process->setMessages([
+                $result['message']
+            ]);
+        }
+
+        $process->setData(['reload' => true]);
 
         $this->close();
     }
