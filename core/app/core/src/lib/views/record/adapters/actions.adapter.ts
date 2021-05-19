@@ -121,7 +121,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
                     return [];
                 }
 
-                return this.parseModeActions(meta.actions, mode);
+                return this.parseModeActions(meta.actions, mode, this.store.getViewContext());
             })
         );
     }
