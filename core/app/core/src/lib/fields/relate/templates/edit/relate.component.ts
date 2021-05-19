@@ -82,7 +82,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.initValue();
         super.ngOnInit();
         const idFieldName = this.getRelateIdField();
-        if (idFieldName && this.record && this.record.fields[idFieldName]){
+        if (idFieldName && this.record && this.record.fields && this.record.fields[idFieldName]) {
             this.idField = this.record.fields[idFieldName];
         }
     }

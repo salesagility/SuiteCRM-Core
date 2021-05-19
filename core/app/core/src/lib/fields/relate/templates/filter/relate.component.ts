@@ -26,7 +26,7 @@
 
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
-import {ButtonInterface, Field, Record} from 'common';
+import {ButtonInterface, Record} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -46,7 +46,6 @@ import {TagModel} from "ngx-chips/core/accessor";
 export class RelateFilterFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
     selectButton: ButtonInterface;
-    idField: Field;
     selectedTags: string[];
 
     /**
@@ -81,10 +80,11 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
      */
     ngOnInit(): void {
         this.field.valueList = [];
+        const values = (this.field && this.field.criteria && this.field.criteria.values) || [];
 
-        if (this.field.criteria.values && this.field.criteria.values.length > 0) {
-            this.field.valueList = this.field.criteria.values;
-            this.selectedTags = this.field.criteria.values;
+        if (values.length > 0) {
+            this.field.valueList = values;
+            this.selectedTags = values;
         }
         super.ngOnInit();
     }
@@ -111,10 +111,9 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         let itemValue: string = '';
         //if: handle the case, when the chips are rendered from the saved criteria as a String Array
         //elseif: handle the case, when the chips are rendered from the search observable as a relate Objects
-        if (typeof item === 'string' && item !== ''){
+        if (typeof item === 'string' && item !== '') {
             itemValue = item;
-        }
-        else if (typeof item === 'object' && item !== null) {
+        } else if (typeof item === 'object' && item !== null) {
             itemValue = item.name;
         }
 

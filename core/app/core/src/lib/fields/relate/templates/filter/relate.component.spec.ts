@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component, ViewChild} from '@angular/core';
-import {Field, Record} from 'common';
+import {Field, Record, SearchCriteriaFieldFilter} from 'common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -49,7 +49,6 @@ import {languageStoreMock} from '../../../../store/language/language.store.spec.
 import {currencyFormatterMock} from '../../../../services/formatters/currency/currency-formatter.service.spec.mock';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
-import {waitUntil} from '../../../../../testing/utils.spec';
 
 @Component({
     selector: 'relate-filter-field-test-host-component',
@@ -69,7 +68,13 @@ class RelateFilterFieldTestHostComponent {
             // eslint-disable-next-line camelcase, @typescript-eslint/camelcase
             id_name: 'account_id',
             rname: 'name'
-        }
+        },
+        criteria: {
+            operator: '=',
+            values: [
+                'Related Account'
+            ]
+        } as SearchCriteriaFieldFilter
     };
 
     record: Record = {
@@ -120,15 +125,13 @@ describe('RelateRecordFilterFieldComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should have value', async (done) => {
+    it('should have value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
 
         const field = testHostFixture.nativeElement.getElementsByTagName('scrm-relate-filter')[0];
-
-
-        await waitUntil(() => field.getElementsByTagName('tag-input').item(0));
 
         const tagInput = field.getElementsByTagName('tag-input').item(0);
 
@@ -147,19 +150,15 @@ describe('RelateRecordFilterFieldComponent', () => {
         const deleteIcon = tagInput.getElementsByTagName('delete-icon').item(0);
 
         expect(deleteIcon).toBeTruthy();
-
-        done();
     });
 
-    it('should remove value', async (done) => {
+    it('should remove value', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
+        await testHostFixture.whenRenderingDone();
 
         const field = testHostFixture.nativeElement.getElementsByTagName('scrm-relate-filter')[0];
-
-        await testHostFixture.whenStable();
-        await waitUntil(() => field.getElementsByTagName('tag-input').item(0));
 
         const tagInput = field.getElementsByTagName('tag-input').item(0);
 
@@ -182,18 +181,15 @@ describe('RelateRecordFilterFieldComponent', () => {
         deleteIcon.click();
 
         testHostFixture.detectChanges();
-
-        await waitUntil(() => !(tagInput.getElementsByTagName('tag').item(0)));
+        await testHostFixture.whenRenderingDone();
 
         tag = tagInput.getElementsByTagName('tag').item(0);
 
         expect(tag).toBeFalsy();
-
-        done();
     });
 
 
-    it('should have select button', async (done) => {
+    it('should have select button', async () => {
         expect(testHostComponent).toBeTruthy();
 
         testHostFixture.detectChanges();
@@ -205,8 +201,6 @@ describe('RelateRecordFilterFieldComponent', () => {
         const select = field.getElementsByClassName('select-button').item(0);
 
         expect(select).toBeTruthy();
-
-        done();
     });
 
 });

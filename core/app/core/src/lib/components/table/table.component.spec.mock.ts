@@ -30,7 +30,6 @@ import {
     BulkAction,
     BulkActionsMap,
     ColumnDefinition,
-    LineAction,
     PaginationCount,
     PaginationDataSource,
     Record,
@@ -142,9 +141,6 @@ export const tableConfigMock: TableConfig = {
         } as ColumnDefinition
     ]),
     maxColumns$: of(4).pipe(shareReplay(1)),
-    lineActions$: of([
-        {} as LineAction
-    ]).pipe(shareReplay(1)),
     selection$: of({
         all: false,
         status: SelectionStatus.NONE,

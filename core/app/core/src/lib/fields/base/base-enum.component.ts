@@ -27,7 +27,7 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Field, Option} from 'common';
+import {Field, FieldDefinition, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
 
@@ -147,12 +147,14 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     checkAndInitAsDynamicEnum() {
 
-        if (this.field.definition.dynamic === true
-            && this.field.definition.parentenum
-            && this.record
-            && this.record.fields) {
+        const definition = (this.field && this.field.definition) || {} as FieldDefinition;
+        const dynamic = (definition && definition.dynamic) || false;
+        const parentEnumKey = (definition && definition.parentenum) || '';
+        const fields = (this.record && this.record.fields) || null;
+
+        if (dynamic && parentEnumKey && fields) {
             this.isDynamicEnum = true;
-            const parentEnum: Field = this.record.fields[this.field.definition.parentenum];
+            const parentEnum: Field = fields[parentEnumKey];
             if (parentEnum) {
                 this.subscribeToParentValueChanges(parentEnum);
             }
@@ -208,7 +210,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                     option => String(option.value).startsWith(parentOptions[key])
                 )
             }
-        )
+        );
         return mappedOptions;
     }
 

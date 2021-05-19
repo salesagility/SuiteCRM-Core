@@ -25,12 +25,7 @@
  */
 
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {
-    NgbCalendar,
-    NgbDateStruct,
-    NgbPopover, NgbPopoverConfig,
-    NgbTimeStruct
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateStruct, NgbPopover, NgbPopoverConfig, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonInterface, isEmptyString} from 'common';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -63,8 +58,10 @@ export class DateTimeFilterFieldComponent extends BaseDateTimeComponent implemen
 
     ngOnInit(): void {
 
+        const values = (this.field && this.field.criteria && this.field.criteria.values) || [];
+
         let criteria = '';
-        if (this.field.criteria.values && this.field.criteria.values.length > 0) {
+        if (values.length > 0) {
             criteria = this.field.criteria.values[0];
         }
 
