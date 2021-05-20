@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Input, Directive } from '@angular/core';
+import { Input, Directive, ElementRef} from '@angular/core';
 import {ChartDataSource} from 'common';
 
 @Directive()
@@ -34,16 +34,29 @@ export class BaseChartComponent {
     height = 300;
     view = [300, this.height];
 
+    constructor(protected elementRef:ElementRef) {
+    }
+
     onResize(): void {
         this.calculateView();
     }
 
     protected calculateView(): void {
-        let width = window.innerWidth * 0.7;
+        let width;
+        const el =  (this.elementRef && this.elementRef.nativeElement) || {} as HTMLElement;
+        const parentEl = (el.parentElement && el.parentElement.parentElement) || {} as HTMLElement;
+        const parentWidth = (parentEl && parentEl.offsetWidth) || 0;
 
-        if (window.innerWidth > 990) {
-            width = window.innerWidth * 0.23;
+        if (parentWidth > 0){
+            width = parentWidth;
+        } else {
+            width = window.innerWidth * 0.7;
+
+            if (window.innerWidth > 990) {
+                width = window.innerWidth * 0.23;
+            }
         }
         this.view = [width, this.height];
     }
+
 }

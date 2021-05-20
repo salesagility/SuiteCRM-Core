@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
 import {isFalse, MultiSeries} from 'common';
 import {Subscription} from 'rxjs';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
@@ -55,8 +55,8 @@ export class LineChartComponent extends BaseChartComponent implements OnInit, On
 
     protected subs: Subscription[] = [];
 
-    constructor() {
-        super();
+    constructor(protected elementRef:ElementRef) {
+        super(elementRef);
     }
 
     ngOnInit(): void {

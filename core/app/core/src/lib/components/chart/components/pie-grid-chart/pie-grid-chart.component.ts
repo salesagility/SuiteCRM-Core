@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
 import {SeriesResult, SingleSeries} from 'common';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
@@ -41,8 +41,8 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
     view = [300, this.height];
     protected subs: Subscription[] = [];
 
-    constructor(public language: LanguageStore) {
-        super();
+    constructor(public language: LanguageStore, protected elementRef:ElementRef) {
+        super(elementRef);
     }
 
     ngOnInit(): void {
