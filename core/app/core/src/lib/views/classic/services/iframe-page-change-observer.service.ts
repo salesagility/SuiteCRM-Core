@@ -58,9 +58,12 @@ export class IframePageChangeObserver {
 
     public destroy(): void {
 
-        this.iframe.contentWindow.removeEventListener('unload', this.unloadListener);
-        this.iframe.contentWindow.removeEventListener('load', this.loadListener);
+        const contentWindow = this.iframe && this.iframe.contentWindow;
 
+        if (contentWindow) {
+            contentWindow.removeEventListener('unload', this.unloadListener);
+            contentWindow.removeEventListener('load', this.loadListener);
+        }
         this.iframe = null;
         this.lastDispatched = null;
         this.changeCallback = null;
@@ -95,9 +98,9 @@ export class IframePageChangeObserver {
     }
 
     protected triggerPageChange(): void {
-        const newHref = this.iframe.contentWindow.location.href;
+        const newHref = this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.location.href;
 
-        if (newHref !== this.lastDispatched) {
+        if (newHref && newHref !== this.lastDispatched) {
             this.lastDispatched = newHref;
             this.changeCallback(newHref);
         }
