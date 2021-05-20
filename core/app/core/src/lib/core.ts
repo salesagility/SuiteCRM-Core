@@ -349,6 +349,7 @@ export * from './services/navigation/route-converter/route-converter.service';
 export * from './services/process/process.service';
 export * from './services/process/processes/async-action/async-action.model';
 export * from './services/process/processes/async-action/async-action';
+export * from './services/process/processes/async-action/actions/changelog/changelog.async-action';
 export * from './services/process/processes/async-action/actions/export/export.async-action';
 export * from './services/process/processes/async-action/actions/noop/noop.async-action';
 export * from './services/process/processes/async-action/actions/redirect/redirect.async-action';

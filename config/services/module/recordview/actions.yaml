@@ -58,6 +58,16 @@ parameters:
             - detail
           acl:
             - export
+        audit:
+          key: audit
+          labelKey: LNK_VIEW_CHANGE_LOG
+          asyncProcess: true
+          params:
+          modes:
+            - detail
+            - edit
+          acl:
+            - audit
     modules:
       employees:
         exclude:

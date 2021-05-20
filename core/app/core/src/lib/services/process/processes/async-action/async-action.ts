@@ -35,6 +35,7 @@ import {SearchCriteria, SortingSelection} from 'common';
 import {RedirectAsyncAction} from './actions/redirect/redirect.async-action';
 import {ExportAsyncAction} from './actions/export/export.async-action';
 import {NoopAsyncAction} from './actions/noop/noop.async-action';
+import {ChangelogAsyncAction} from "./actions/changelog/changelog.async-action";
 
 export interface AsyncActionInput {
     action: string;
@@ -59,11 +60,13 @@ export class AsyncActionService {
         protected message: MessageService,
         protected redirectAction: RedirectAsyncAction,
         protected exportAction: ExportAsyncAction,
-        protected noopAction: NoopAsyncAction
+        protected noopAction: NoopAsyncAction,
+        protected changelogAction: ChangelogAsyncAction
     ) {
         this.registerHandler(redirectAction);
         this.registerHandler(exportAction);
         this.registerHandler(noopAction);
+        this.registerHandler(changelogAction);
     }
 
     public registerHandler(handler: AsyncActionHandler): void {
