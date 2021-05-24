@@ -84,29 +84,18 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         this.store.setMetadata(this.config.itemConfig.metadata);
 
         this.store.init(this.config.module, false);
+        this.initCreate();
+        this.initDataSubscription();
 
         if (this.config.filters$) {
+
             this.subs.push(this.config.filters$.subscribe(filters => {
                 this.store.setFilters(filters).pipe(take(1)).subscribe();
             }));
+
+        } else {
+            this.store.load(false);
         }
-        this.initCreate();
-
-        this.subs.push(this.store.stores$.subscribe(records => {
-
-            if (!this.records || !this.records.length) {
-                this.shouldResetScroll = true;
-            }
-
-            if (this.direction === 'asc') {
-                this.records = records.reverse();
-                this.scheduleScrollReset();
-                return;
-            }
-
-            this.records = records;
-            this.scheduleScrollReset();
-        }));
 
         this.initLoading();
     }
@@ -288,6 +277,27 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             ...(record.attributes || {})
         };
     }
+
+
+    protected initDataSubscription(): void {
+
+        this.subs.push(this.store.stores$.subscribe(records => {
+
+            if (!this.records || !this.records.length) {
+                this.shouldResetScroll = true;
+            }
+
+            if (this.direction === 'asc') {
+                this.records = records.reverse();
+                this.scheduleScrollReset();
+                return;
+            }
+
+            this.records = records;
+            this.scheduleScrollReset();
+        }));
+    }
+
 
     protected initLoading(): void {
         const loading = [

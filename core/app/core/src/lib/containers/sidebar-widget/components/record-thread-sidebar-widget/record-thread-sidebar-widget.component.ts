@@ -25,11 +25,11 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AttributeMap, deepClone, SearchCriteria, SearchCriteriaFilter, StringMap, ViewContext} from 'common';
-import {Observable, Subscription} from 'rxjs';
+import {AttributeMap, deepClone, Record, SearchCriteria, SearchCriteriaFilter, StringMap, ViewContext} from 'common';
+import {Observable, of, Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
-import {distinctUntilChanged, map} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, shareReplay} from 'rxjs/operators';
 import {RecordThreadConfig} from '../../../record-thread/components/record-thread/record-thread.model';
 import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
 import {RecordThreadItemMetadata} from '../../../record-thread/store/record-thread/record-thread-item.store.model';
@@ -164,7 +164,20 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             return;
         }
 
-        this.filters$ = this.context$.pipe(
+        const parentFilters = this.options.filters.parentFilters || {} as StringMap;
+
+        let context$ = of({}).pipe(shareReplay());
+
+        if (Object.keys(parentFilters).length > 0) {
+            context$ = this.context$.pipe(
+                filter(context => {
+                    const record = (context && context.record) || {} as Record;
+                    return !!(record.attributes && Object.keys(record.attributes).length);
+                })
+            );
+        }
+
+        this.filters$ = context$.pipe(
             map(context => {
                 const filters = {filters: {} as SearchCriteriaFilter} as SearchCriteria;
 
