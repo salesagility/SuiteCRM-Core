@@ -53,7 +53,18 @@ $actions['modules']['saved-search']['actions']['delete'] = [
         'confirmationLabel' => 'NTC_DELETE_CONFIRMATION'
     ],
     'modes' => ['detail', 'edit'],
-    'acl' => ['delete'],
+    'acl' => [],
+];
+
+$actions['modules']['saved-search']['actions']['save'] = [
+    'key' => 'save',
+    'labelKey' => 'LBL_SAVE_BUTTON_LABEL',
+    'asyncProcess' => false,
+    'params' => [
+        'expanded' => true,
+    ],
+    'modes' => ['edit'],
+    'acl' => [],
 ];
 
 $container->setParameter('module.recordview.actions', $actions);
