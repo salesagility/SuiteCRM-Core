@@ -28,21 +28,25 @@
 
 namespace App\Engine\Service;
 
+use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
+
 trait DefinitionEntryHandlingTrait
 {
     /**
      * @param string $module
      * @param string $entryName
      * @param array $config
-     * @param AclManagerInterface $aclManager
+     * @param ActionAvailabilityChecker $actionAvailabilityChecker
      * @return array
      */
     public function filterDefinitionEntries(
         string $module,
         string $entryName,
         array &$config,
-        AclManagerInterface $aclManager
-    ): array {
+        ActionAvailabilityChecker $actionAvailabilityChecker
+    ): array
+    {
+
         $defaults = $config['default'] ?? [];
         $defaultEntries = $defaults[$entryName] ?? [];
         $modulesConfig = $config['modules'] ?? [];
@@ -52,43 +56,42 @@ trait DefinitionEntryHandlingTrait
 
         $entries = array_merge($defaultEntries, $moduleEntries);
         $filteredEntries = [];
-
         foreach ($entries as $entryKey => $entry) {
 
             if (in_array($entryKey, $exclude, true)) {
                 continue;
             }
 
-            if ($this->checkAccess($module, $entry['acl'] ?? [], $aclManager) === false) {
+            if ($this->checkAvailability($module, $entry['availability'] ?? ['acls'], $actionAvailabilityChecker) === false) {
                 continue;
             }
 
             $filteredEntries[$entryKey] = $entry;
         }
-
         return $filteredEntries;
     }
 
     /**
-     * Check access
+     * Check availability/accessibility status of the action/function to the user
      *
-     * @param string $module
-     * @param array $aclList
-     * @param AclManagerInterface $aclManager
+     * @param string $module - module to be queried
+     * @param array $actionList
+     * @param ActionAvailabilityChecker $actionAvailabilityChecker
      * @return bool
      */
-    public function checkAccess(string $module, array $aclList, AclManagerInterface $aclManager): bool
+    public function checkAvailability(string $module, array $actionList, ActionAvailabilityChecker $actionAvailabilityChecker): bool
     {
-        if (empty($aclList)) {
+        if (empty($actionList)) {
             return true;
         }
 
-        foreach ($aclList as $acl) {
-            if ($aclManager->checkAccess($module, $acl, true) === false) {
+        foreach ($actionList as $action) {
+            if ($actionAvailabilityChecker->checkAvailability($module, $action) === false) {
                 return false;
             }
         }
 
         return true;
     }
+
 }

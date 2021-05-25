@@ -66,8 +66,9 @@ parameters:
           modes:
             - detail
             - edit
-          acl:
-            - audit
+          availability:
+            - audited
+            - acls
     modules:
       employees:
         exclude:

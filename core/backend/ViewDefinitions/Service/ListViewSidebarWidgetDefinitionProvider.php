@@ -28,7 +28,7 @@
 
 namespace App\ViewDefinitions\Service;
 
-use App\Engine\Service\AclManagerInterface;
+use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 use App\Engine\Service\DefinitionEntryHandlingTrait;
 
 /**
@@ -40,9 +40,9 @@ class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDe
     use DefinitionEntryHandlingTrait;
 
     /**
-     * @var AclManagerInterface
+     * @var ActionAvailabilityChecker
      */
-    protected $aclManager;
+    protected $actionChecker;
     /**
      * @var array
      */
@@ -51,12 +51,12 @@ class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDe
     /**
      * ListViewSidebarWidgetDefinitionProvider constructor.
      * @param array $listViewSidebarWidgets
-     * @param AclManagerInterface $aclManager
+     * @param ActionAvailabilityChecker $actionChecker
      */
-    public function __construct(array $listViewSidebarWidgets, AclManagerInterface $aclManager)
+    public function __construct(array $listViewSidebarWidgets, ActionAvailabilityChecker $actionChecker)
     {
         $this->widgets = $listViewSidebarWidgets;
-        $this->aclManager = $aclManager;
+        $this->actionChecker = $actionChecker;
     }
 
     /**
@@ -64,7 +64,7 @@ class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDe
      */
     public function getSidebarWidgets(string $module): array
     {
-        $widgets = $this->filterDefinitionEntries($module, 'widgets', $this->widgets, $this->aclManager);
+        $widgets = $this->filterDefinitionEntries($module, 'widgets', $this->widgets, $this->actionChecker);
 
         foreach ($widgets as $index => $widget) {
             $widgets[$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';

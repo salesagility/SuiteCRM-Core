@@ -26,34 +26,19 @@
  */
 
 
-namespace App\Data\Service;
+namespace App\Engine\Service\ActionAvailabilityChecker;
 
-use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
-use App\Process\Service\ActionDefinitionProvider;
-
-class RecordActionDefinitionProvider extends ActionDefinitionProvider implements RecordActionDefinitionProviderInterface
+interface ActionAvailabilityCheckerInterface
 {
     /**
-     * @var array
+     * the unique action key, the availability/accessibility to be checked for
+     * @return string
      */
-    private $recordViewActions;
+    public function getType(): string;
 
     /**
-     * BulkActionDefinitionProvider constructor.
-     * @param array $recordViewActions
-     * @param ActionAvailabilityChecker $actionChecker
+     * @param string $module
+     * @return bool
      */
-    public function __construct(array $recordViewActions, ActionAvailabilityChecker $actionChecker)
-    {
-        parent::__construct($actionChecker);
-        $this->recordViewActions = $recordViewActions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getActions(string $module): array
-    {
-        return $this->filterActions($module, $this->recordViewActions);
-    }
+    public function checkAvailability(string $module): bool;
 }

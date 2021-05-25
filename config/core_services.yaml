@@ -50,6 +50,8 @@ services:
       tags: [ 'view.definition.mapper' ]
     App\Data\LegacyHandler\PresetListDataHandlerInterface:
       tags: [ 'app.data.preset.handler' ]
+    App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityCheckerInterface:
+      tags: [ 'app.engine.service.action.availability.checker' ]
     App\Data\LegacyHandler\FilterMapper\FilterMapperInterface:
       tags: [ 'app.data.filter.mapper' ]
     App\Statistics\Service\StatisticsProviderInterface:
@@ -170,6 +172,11 @@ services:
     # inject all services tagged with app.data.filter.mapper as first argument
     arguments:
       - !tagged { tag: 'app.data.filter.mapper' }
+
+  App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker:
+    # inject all services tagged with app.engine.service.action.availability.checker as first argument
+    arguments:
+      - !tagged { tag: 'app.engine.service.action.availability.checker' }
 
   App\ViewDefinitions\LegacyHandler\SubpanelButtonMappers:
     # inject all services tagged with subpanel.button.definition.mapper as first argument

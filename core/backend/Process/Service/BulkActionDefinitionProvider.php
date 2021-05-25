@@ -28,7 +28,7 @@
 
 namespace App\Process\Service;
 
-use App\Engine\Service\AclManagerInterface;
+use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 
 class BulkActionDefinitionProvider extends ActionDefinitionProvider implements BulkActionDefinitionProviderInterface
 {
@@ -40,11 +40,11 @@ class BulkActionDefinitionProvider extends ActionDefinitionProvider implements B
     /**
      * BulkActionDefinitionProvider constructor.
      * @param array $listViewBulkActions
-     * @param AclManagerInterface $aclManager
+     * @param ActionAvailabilityChecker $availabilityChecker
      */
-    public function __construct(array $listViewBulkActions, AclManagerInterface $aclManager)
+    public function __construct(array $listViewBulkActions, ActionAvailabilityChecker $availabilityChecker)
     {
-        parent::__construct($aclManager);
+        parent::__construct($availabilityChecker);
         $this->listViewBulkActions = $listViewBulkActions;
     }
 

@@ -28,7 +28,7 @@
 
 namespace App\Process\Service;
 
-use App\Engine\Service\AclManagerInterface;
+use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 use App\Engine\Service\DefinitionEntryHandlingTrait;
 
 class ActionDefinitionProvider
@@ -37,17 +37,17 @@ class ActionDefinitionProvider
     use DefinitionEntryHandlingTrait;
 
     /**
-     * @var AclManagerInterface
+     * @var ActionAvailabilityChecker
      */
-    protected $aclManager;
+    protected $actionChecker;
 
     /**
      * BulkActionDefinitionProvider constructor.
-     * @param AclManagerInterface $aclManager
+     * @param ActionAvailabilityChecker $actionChecker
      */
-    public function __construct(AclManagerInterface $aclManager)
+    public function __construct(ActionAvailabilityChecker $actionChecker)
     {
-        $this->aclManager = $aclManager;
+        $this->actionChecker = $actionChecker;
     }
 
     /**
@@ -57,6 +57,6 @@ class ActionDefinitionProvider
      */
     public function filterActions(string $module, array &$config): array
     {
-        return $this->filterDefinitionEntries($module, 'actions', $config, $this->aclManager);
+        return $this->filterDefinitionEntries($module, 'actions', $config, $this->actionChecker);
     }
 }
