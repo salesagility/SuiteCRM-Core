@@ -1,7 +1,6 @@
-@media all and (max-width: $breakpoint-large) { 
+@media all and (max-width: $breakpoint-xlarge) { 
     .record-list-modal {
         .modal-header , .modal-footer {
-            background : $white;
             padding: 0;
         }
         .close-button {
