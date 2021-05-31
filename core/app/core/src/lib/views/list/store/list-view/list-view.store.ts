@@ -28,7 +28,7 @@ import {
     Action,
     BulkActionsMap,
     ColumnDefinition,
-    deepClone,
+    deepClone, isFalse,
     ListViewMeta,
     Pagination,
     Record,
@@ -60,6 +60,8 @@ import {ColumnChooserComponent} from "../../../../components/columnchooser/colum
 import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved-filter.model';
 import {FilterListStore} from '../../../../store/saved-filters/filter-list.store';
 import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-list.store.factory';
+import {SelectModalService} from '../../../../services/modals/select-modal.service';
+import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 
 export interface ListViewData {
     records: Record[];
@@ -166,7 +168,9 @@ export class ListViewStore extends ViewStore implements StateStore,
         protected message: MessageService,
         protected listStoreFactory: RecordListStoreFactory,
         protected modalService: NgbModal,
-        protected filterListStoreFactory: FilterListStoreFactory
+        protected filterListStoreFactory: FilterListStoreFactory,
+        protected selectModalService: SelectModalService,
+        protected confirmation: ConfirmationModalService,
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -319,13 +323,18 @@ export class ListViewStore extends ViewStore implements StateStore,
         );
     }
 
-
     public executeBulkAction(action: string): void {
         const selection = this.recordList.selection;
         const definition = this.metadata.listView.bulkActions[action];
         const actionName = `bulk-${action}`;
 
         this.message.removeMessages();
+
+        if (isFalse(definition.params.allowAll) && selection.all) {
+            let message = this.appStrings.LBL_SELECT_ALL_NOT_ALLOWED;
+            this.message.addDangerMessage(message);
+            return;
+        }
 
         if (definition.params.min && selection.count < definition.params.min) {
             let message = this.appStrings.LBL_TOO_FEW_SELECTED;
@@ -356,7 +365,6 @@ export class ListViewStore extends ViewStore implements StateStore,
             fields: displayedFields
         } as AsyncActionInput;
 
-
         if (selection.all && selection.count > this.recordList.records.length) {
             data.criteria = this.recordList.criteria;
             data.sort = this.recordList.sort;
@@ -373,16 +381,81 @@ export class ListViewStore extends ViewStore implements StateStore,
             data.ids = Object.keys(selection.selected);
         }
 
-        this.bulkAction.run(actionName, data).subscribe((process: Process) => {
-            if (process.data && process.data.reload) {
-                this.recordList.clearSelection();
-                this.load(false).pipe(take(1)).subscribe();
-            }
+        const params = (definition && definition.params) || {} as { [key: string]: any };
+        const displayConfirmation = params.displayConfirmation || false;
+        const confirmationLabel = params.confirmationLabel || '';
+        const selectModal = definition.params && definition.params.selectModal;
+        const selectModule = selectModal && selectModal.module;
 
-            if (process.data && process.data.dataUpdated) {
-                this.dataUpdateState.next(true);
+        if (displayConfirmation) {
+            this.confirmation.showModal(confirmationLabel, () => {
+                if (!selectModule) {
+                    this.runBulkAction(actionName, data);
+                    return;
+                }
+                this.showSelectModal(selectModal.module, actionName, data);
+            });
+
+            return;
+        }
+
+        if (!selectModule) {
+            this.runBulkAction(actionName, data);
+            return;
+        }
+        this.showSelectModal(selectModal.module, actionName, data);
+
+    }
+
+    /**
+     * Run async buk action
+     *
+     * @returns void
+     * @param {string} selectModule: module for which records are listed in Select Modal/Popup
+     * @param {string} asyncAction: bulk action name
+     * @param {AsyncActionInput} asyncData: data passed to the async process
+     */
+    showSelectModal(selectModule: string, asyncAction: string, asyncData: AsyncActionInput) {
+
+        this.selectModalService.showSelectModal(selectModule, (modalRecord: Record) => {
+            if (modalRecord) {
+                const {fields, formGroup, ...baseRecord} = modalRecord;
+                asyncData.modalRecord = baseRecord;
             }
+            this.runBulkAction(asyncAction, asyncData);
         });
+    }
+
+    /**
+     * Run async buk action
+     *
+     * @returns void
+     * @param {string} asyncAction: bulk action name
+     * @param {AsyncActionInput} asyncData: data passed to the async process
+     */
+    runBulkAction(asyncAction: string, asyncData: AsyncActionInput): void {
+
+        this.bulkAction.run(asyncAction, asyncData).subscribe((process: Process) => {
+            this.handleBulkActionProcessResult(process);
+        });
+    }
+
+    /**
+     * Run this function once the process is executed
+     *
+     * @returns void
+     * @param {Process} process: data returned by the process once the process is executed
+     */
+    handleBulkActionProcessResult(process: Process): void {
+
+        if (process.data && process.data.reload) {
+            this.recordList.clearSelection();
+            this.load(false).pipe(take(1)).subscribe();
+        }
+
+        if (process.data && process.data.dataUpdated) {
+            this.dataUpdateState.next(true);
+        }
     }
 
     /**
@@ -498,7 +571,6 @@ export class ListViewStore extends ViewStore implements StateStore,
 
         this.updateSearchCriteria(reload)
     }
-
 
     /**
      * Update the search criteria

@@ -31,11 +31,11 @@ import {Process, ProcessService} from '../../process.service';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {MessageService} from '../../../message/message.service';
 import {AsyncActionHandler} from './async-action.model';
-import {SearchCriteria, SortingSelection} from 'common';
+import {Record, SearchCriteria, SortingSelection} from 'common';
 import {RedirectAsyncAction} from './actions/redirect/redirect.async-action';
 import {ExportAsyncAction} from './actions/export/export.async-action';
 import {NoopAsyncAction} from './actions/noop/noop.async-action';
-import {ChangelogAsyncAction} from "./actions/changelog/changelog.async-action";
+import {ChangelogAsyncAction} from './actions/changelog/changelog.async-action';
 
 export interface AsyncActionInput {
     action: string;
@@ -45,6 +45,7 @@ export interface AsyncActionInput {
     ids?: string[];
     id?: string;
     payload?: { [key: string]: any };
+    modalRecord?: Record
 }
 
 @Injectable({

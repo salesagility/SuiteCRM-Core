@@ -7,6 +7,8 @@ parameters:
           labelKey: LBL_DELETE
           params:
             min: 1
+            displayConfirmation: true
+            confirmationLabel: NTC_DELETE_CONFIRMATION_MULTIPLE
           acl:
             - delete
         export:

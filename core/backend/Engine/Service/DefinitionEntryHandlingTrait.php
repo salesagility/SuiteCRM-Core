@@ -62,7 +62,9 @@ trait DefinitionEntryHandlingTrait
                 continue;
             }
 
-            if ($this->checkAvailability($module, $entry['availability'] ?? ['acls'], $actionAvailabilityChecker) === false) {
+            $aclModule = $entry['aclModule'] ?? $module;
+
+            if ($this->checkAvailability($aclModule, $entry['availability'] ?? ['acls'], $actionAvailabilityChecker) === false) {
                 continue;
             }
 
