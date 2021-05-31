@@ -139,6 +139,9 @@ services:
       $routes: [ ]
       $headerName: 'X-XSRF-TOKEN'
 
+  App\Engine\Service\FolderSync\FolderComparator:
+    shared: false
+
   App\UserPreferences\LegacyHandler\UserPreferencesMappers:
     # inject all services tagged with user.preferences.mapper as first argument
     arguments:
@@ -204,3 +207,4 @@ services:
   App\SystemConfig\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
   App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
   App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'
+  App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'
