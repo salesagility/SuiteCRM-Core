@@ -1,0 +1,8 @@
+monolog:
+  channels: ['upgrade']
+  handlers:
+    upgrade:
+      type: stream
+      path: "%kernel.project_dir%/logs/upgrade.log"
+      level: debug
+      channels: ["upgrade"]

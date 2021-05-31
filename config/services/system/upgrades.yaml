@@ -1,0 +1,27 @@
+parameters:
+  upgrades:
+    toKeep:
+      - 'cache'
+      - 'extensions'
+      - 'public/extensions'
+      - 'public/legacy/modules'
+      - 'public/legacy/custom'
+      - 'public/legacy/cache'
+      - 'public/legacy/upload'
+      - 'public/legacy/Api/V8/OAuth2/private.key'
+      - 'public/legacy/Api/V8/OAuth2/public.key'
+      - 'public/legacy/config.php'
+      - 'public/legacy/config_override.php'
+      - 'public/legacy/config_si.php'
+      - 'public/legacy/suitecrm.log'
+      - 'public/legacy/install.log'
+      - 'logs'
+      - '.env.local'
+      - '.env.local.php'
+    toExpand:
+      - 'public'
+      - 'public/legacy'
+      - 'public/legacy/modules'
+      - 'public/legacy/Api'
+      - 'public/legacy/Api/V8'
+      - 'public/legacy/Api/V8/OAuth2'

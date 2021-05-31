@@ -24,6 +24,7 @@
   "prefer-stable": true,
   "require": {
     "ext-json": "*",
+    "ext-zip": "*",
     "api-platform/api-pack": "^1.2",
     "elasticsearch/elasticsearch": "^5.3",
     "ezyang/htmlpurifier": "^4.10",

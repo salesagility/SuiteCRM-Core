@@ -6,6 +6,7 @@ services:
     public: false       # Allows optimizing the container by removing unused services.
     bind:
       $projectDir: '%kernel.project_dir%'
+      $upgradePackageDir: '%packages.upgrade.dir%'
       $legacyDir: '%legacy.dir%'
       $legacyPath: '%legacy.path%'
       $legacySessionName: '%legacy.session_name%'
@@ -38,6 +39,7 @@ services:
       $legacyToFrontEndFieldsMap: '%record.fields.legacy_to_frontend_fields_map%'
       $uiConfigs: '%ui%'
       $extensions: '%extensions%'
+      $upgradeConfig: '%upgrades%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -59,6 +61,11 @@ services:
       tags: [ 'app.data.statistics.handler' ]
     App\ViewDefinitions\LegacyHandler\SubpanelButtonMapperInterface:
       tags: [ 'subpanel.button.definition.mapper' ]
+    # Always instantiate new instance for implementing classes
+    App\Engine\Model\ProcessStepInterface:
+      shared: false
+    App\Install\Service\Upgrade\UpgradeStepInterface:
+      tags: [ 'app.upgrade.step' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -186,6 +193,12 @@ services:
     # inject all services tagged with subpanel.button.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'subpanel.button.definition.mapper' }
+
+  App\Install\Service\Upgrade\UpgradeHandler:
+    # inject all services tagged with app.upgrade.step as first argument
+    arguments:
+      - !tagged { tag: 'app.upgrade.step' }
+      - '@monolog.logger.upgrade'
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
