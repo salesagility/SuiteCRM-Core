@@ -25,6 +25,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+//Mark as coming from an Sugar entry
+if (!defined('sugarEntry')) {
+    define('sugarEntry', true);
+}
 
 use Symfony\Component\Dotenv\Dotenv;
 
