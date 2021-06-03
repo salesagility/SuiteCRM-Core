@@ -13,6 +13,14 @@ imports:
   - { resource: services/**/*.yaml }
   - { resource: modules/**/*.yaml }
   - { resource: modules/**/*.php }
+  - { resource: ../extensions/*/config/services/*.yaml }
+  - { resource: ../extensions/*/config/services/*.php }
+  - { resource: ../extensions/*/config/services/**/*.yaml }
+  - { resource: ../extensions/*/config/services/**/*.php }
+  - { resource: ../extensions/*/config/modules/*.yaml }
+  - { resource: ../extensions/*/config/modules/*.php }
+  - { resource: ../extensions/*/config/modules/**/*.yaml }
+  - { resource: ../extensions/*/config/modules/**/*.php }
   - { resource: core_services.yaml }
   - { resource: ../extensions/*/config/*.yaml }
   - { resource: ../extensions/*/config/*.php }
