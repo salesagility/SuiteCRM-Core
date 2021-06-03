@@ -69,6 +69,17 @@ parameters:
           availability:
             - audited
             - acls
+        duplicate-merge:
+          key: duplicate-merge
+          labelKey: LBL_DUP_MERGE
+          asyncProcess: true
+          params:
+          modes:
+            - detail
+            - edit
+          availability:
+            - duplicate-merge
+            - acls
     modules:
       employees:
         exclude:
