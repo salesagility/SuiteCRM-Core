@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
  * Copyright (C) 2021 SalesAgility Ltd.
@@ -26,61 +25,61 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Service\Cache;
+namespace App\Install\Service\Upgrade\Steps;
 
 use App\Engine\Model\Feedback;
+use App\Engine\Model\ProcessStepTrait;
+use App\Install\Service\Cache\CacheBridge;
+use App\Install\Service\Upgrade\UpgradeStepInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Class CacheClear
- * @package App\Install\Service\Cache
+ * Class ClearSymfonyCache
+ * @package App\Install\Service\Upgrade\Steps;
  */
-class CacheClear
+class ClearSymfonyCache implements UpgradeStepInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
+    use ProcessStepTrait;
+
+    public const HANDLER_KEY = 'clear-symfony-cache';
+    public const POSITION = 900;
 
     /**
-     * CacheClear constructor.
-     * @param KernelInterface $kernel
+     * @var CacheBridge
      */
-    public function __construct(KernelInterface $kernel)
+    private $bridge;
+
+    /**
+     * RunMigrations constructor.
+     * @param CacheBridge $bridge
+     */
+    public function __construct(CacheBridge $bridge)
     {
-        $this->kernel = $kernel;
+        $this->bridge = $bridge;
     }
 
     /**
-     * @return Feedback
+     * @inheritDoc
+     */
+    public function getKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOrder(): int
+    {
+        return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
      * @throws Exception
      */
-    public function run(): Feedback
+    public function execute(array &$context): Feedback
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput([
-            'command' => 'cache:clear',
-        ]);
-
-        $output = new NullOutput();
-        $result = $application->run($input, $output);
-
-        $feedback = new Feedback();
-
-        if ($result === 0) {
-            $feedback->setSuccess(true)->setMessages(['Successfully cleared cache']);
-
-            return $feedback;
-        }
-
-        $feedback->setSuccess(false)->setMessages(['Error clearing cache']);
-
-        return $feedback;
+        return $this->bridge->clear();
     }
 }
