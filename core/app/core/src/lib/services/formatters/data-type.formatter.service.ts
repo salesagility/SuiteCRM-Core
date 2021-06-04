@@ -54,7 +54,6 @@ export class DataTypeFormatter {
         this.map.float = numberFormatter;
         this.map.date = dateFormatter;
         this.map.datetime = datetimeFormatter;
-        this.map.datetimecombo = datetimeFormatter;
         this.map.currency = currencyFormatter;
         this.map.phone = phoneFormatter;
     }

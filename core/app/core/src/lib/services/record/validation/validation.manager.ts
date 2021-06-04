@@ -33,7 +33,6 @@ import {RequiredValidator} from './validators/required.validator';
 import {CurrencyValidator} from './validators/currency.validator';
 import {DateValidator} from './validators/date.validator';
 import {DateTimeValidator} from './validators/datetime.validator';
-import {DateTimeComboValidator} from './validators/datetimecombo.validator';
 import {FloatValidator} from './validators/float.validator';
 import {IntValidator} from './validators/int.validator';
 import {EmailValidator} from './validators/email.validator';
@@ -80,7 +79,6 @@ export class ValidationManager implements ValidationManagerInterface {
         protected currencyValidator: CurrencyValidator,
         protected dateValidator: DateValidator,
         protected datetimeValidator: DateTimeValidator,
-        protected datetimecomboValidator: DateTimeComboValidator,
         protected emailValidator: EmailValidator,
         protected floatValidator: FloatValidator,
         protected intValidator: IntValidator,
@@ -96,7 +94,6 @@ export class ValidationManager implements ValidationManagerInterface {
         this.saveValidators.addEntry('default', this.getKey('currency', 'all'), currencyValidator);
         this.saveValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
         this.saveValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);
-        this.saveValidators.addEntry('default', this.getKey('datetimecombo', 'all'), datetimecomboValidator);
         this.saveValidators.addEntry('default', this.getKey('email', 'all'), emailValidator);
         this.saveValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
         this.saveValidators.addEntry('default', this.getKey('int', 'all'), intValidator);
@@ -104,7 +101,6 @@ export class ValidationManager implements ValidationManagerInterface {
 
         this.filterValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
         this.filterValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);
-        this.filterValidators.addEntry('default', this.getKey('datetimecombo', 'all'), datetimecomboValidator);
         this.filterValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
         this.filterValidators.addEntry('default', this.getKey('currency', 'all'), currencyValidator);
         this.filterValidators.addEntry('default', this.getKey('int', 'all'), intValidator);

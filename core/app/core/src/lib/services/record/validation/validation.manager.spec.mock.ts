@@ -40,7 +40,6 @@ import {datetimeFormatterMock} from '../../formatters/datetime/datetime-formatte
 import {phoneFormatterMock} from '../../formatters/phone/phone-formatter.spec.mock';
 import {emailFormatterMock} from '../../formatters/email/email-formatter.spec.mock';
 import {FormControlUtils} from '../field/form-control.utils';
-import {DateTimeComboValidator} from './validators/datetimecombo.validator';
 
 export const validationManagerMock = new ValidationManager(
     new RequiredValidator(new FormControlUtils()),
@@ -48,7 +47,6 @@ export const validationManagerMock = new ValidationManager(
     new CurrencyValidator(numberFormatterMock),
     new DateValidator(dateFormatterMock, new FormControlUtils()),
     new DateTimeValidator(datetimeFormatterMock),
-    new DateTimeComboValidator(datetimeFormatterMock),
     new EmailValidator(emailFormatterMock),
     new FloatValidator(numberFormatterMock),
     new IntValidator(numberFormatterMock),
