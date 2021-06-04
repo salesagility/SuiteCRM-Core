@@ -35,6 +35,7 @@ services:
       $recordViewActions: '%module.recordview.actions%'
       $recordViewActionLimits: '%module.recordview.actions_limits%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
+      $legacyToFrontEndFieldsMap: '%record.fields.legacy_to_frontend_fields_map%'
       $uiConfigs: '%ui%'
       $extensions: '%extensions%'
   _instanceof:

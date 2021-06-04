@@ -1,0 +1,15 @@
+parameters:
+  record.fields.legacy_to_frontend_fields_map:
+    datetime_map:
+      from: { type: datetimecombo }
+      to: { type: datetime }
+#    todo: to be enabled in future
+#         - after thorough review/testing
+#    dynamicenum_map:
+#      from: { type: dynamicenum }
+#      to: { type: enum, dynamic: true }
+#    todo: to be enabled in future
+#        - to be aligned/tested for all the readonly cases. e.g. customCode & displayParams
+#    readonly_map:
+#      from: { type: readonly, readonly: true }
+#      to: { display: readonly }
