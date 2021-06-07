@@ -273,8 +273,11 @@ abstract class LegacyHandler
 
     protected function startSymfonySession(): void
     {
-        $this->session->save();
-        session_write_close();
+        if ($this->session->isStarted()) {
+            $this->session->save();
+            session_write_close();
+        }
+
         $this->session->setName($this->defaultSessionName);
 
         if (isset($_COOKIE[$this->defaultSessionName])) {
@@ -286,7 +289,9 @@ abstract class LegacyHandler
 
     protected function startLegacySession(): void
     {
-        $this->session->save();
+        if ($this->session->isStarted()) {
+            $this->session->save();
+        }
 
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
