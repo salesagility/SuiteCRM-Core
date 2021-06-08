@@ -24,27 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ConfirmationModalService} from './confirmation-modal.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
+import {SelectModalService} from './select-modal.service';
+import {languageStoreMock} from '../../store/language/language.store.spec.mock';
+import {messageServiceMock} from '../message/message.service.spec.mock';
+import {ngbModalMock} from './confirmation-modal.spec.mock';
 
 
-export class MockNgbModal extends NgbModal {
-
-    constructor() {
-        super(null, null, null, null);
-    }
-
-    open(): NgbModalRef {
-        return {
-            componentInstance: {
-                textKey: '',
-                buttons: []
-            }
-        } as NgbModalRef;
-    }
-}
-
-
-export const ngbModalMock = new MockNgbModal();
-export const confirmationModalServiceMock = new ConfirmationModalService(new MockNgbModal());
+export const selectModalServiceMock = new SelectModalService(languageStoreMock, messageServiceMock, ngbModalMock);
