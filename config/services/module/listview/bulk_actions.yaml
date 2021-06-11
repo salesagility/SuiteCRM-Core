@@ -35,6 +35,9 @@ parameters:
             max: 5
           acl:
             - massupdate
+          availability:
+            - acls
+            - massupdate
     modules:
       employees:
         exclude:
