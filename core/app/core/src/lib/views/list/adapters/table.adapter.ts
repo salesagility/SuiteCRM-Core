@@ -36,6 +36,8 @@ import {AsyncActionService} from '../../../services/process/processes/async-acti
 import {MessageService} from '../../../services/message/message.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {LanguageStore} from '../../../store/language/language.store';
+import {BulkActionsAdapterFactory} from './bulk-actions.adapter.factory';
+import {BulkActionsAdapter} from './bulk-actions.adapter';
 
 @Injectable()
 export class TableAdapter {
@@ -47,7 +49,8 @@ export class TableAdapter {
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected bulkActionsAdapterFactory: BulkActionsAdapterFactory
     ) {
     }
 
@@ -66,7 +69,7 @@ export class TableAdapter {
 
             dataSource: this.store.recordList,
             selection: this.store.recordList,
-            bulkActions: this.store,
+            bulkActions: this.getBulkActionsDataSource(this.store),
             pagination: this.store.recordList,
 
             toggleRecordSelection: (id: string): void => {
@@ -90,5 +93,9 @@ export class TableAdapter {
             this.confirmation,
             this.language
         );
+    }
+
+    getBulkActionsDataSource(store: ListViewStore): BulkActionsAdapter {
+        return this.bulkActionsAdapterFactory.create(store);
     }
 }

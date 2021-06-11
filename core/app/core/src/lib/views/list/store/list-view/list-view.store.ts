@@ -26,9 +26,8 @@
 
 import {
     Action,
-    BulkActionsMap,
     ColumnDefinition,
-    deepClone, isFalse,
+    deepClone,
     ListViewMeta,
     Pagination,
     Record,
@@ -50,17 +49,13 @@ import {ModuleNavigation} from '../../../../services/navigation/module-navigatio
 import {MessageService} from '../../../../services/message/message.service';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
-import {BulkActionDataSource} from '../../../../components/bulk-action-menu/bulk-action-menu.component';
 import {AppData, ViewStore} from '../../../../store/view/view.store';
 import {LocalStorageService} from '../../../../services/local-storage/local-storage.service';
-import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
-import {Process} from '../../../../services/process/process.service';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ColumnChooserComponent} from "../../../../components/columnchooser/columnchooser.component";
 import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved-filter.model';
 import {FilterListStore} from '../../../../store/saved-filters/filter-list.store';
 import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-list.store.factory';
-import {SelectModalService} from '../../../../services/modals/select-modal.service';
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 
 export interface ListViewData {
@@ -113,8 +108,7 @@ export interface ListViewState {
 }
 
 @Injectable()
-export class ListViewStore extends ViewStore implements StateStore,
-    BulkActionDataSource {
+export class ListViewStore extends ViewStore implements StateStore {
 
     /**
      * Public long-lived observable streams
@@ -164,12 +158,10 @@ export class ListViewStore extends ViewStore implements StateStore,
         protected moduleNavigation: ModuleNavigation,
         protected metadataStore: MetadataStore,
         protected localStorage: LocalStorageService,
-        protected bulkAction: AsyncActionService,
         protected message: MessageService,
         protected listStoreFactory: RecordListStoreFactory,
         protected modalService: NgbModal,
         protected filterListStoreFactory: FilterListStoreFactory,
-        protected selectModalService: SelectModalService,
         protected confirmation: ConfirmationModalService,
     ) {
 
@@ -314,151 +306,6 @@ export class ListViewStore extends ViewStore implements StateStore,
     }
 
     /**
-     * Bulk action public API
-     */
-
-    getBulkActions(): Observable<BulkActionsMap> {
-        return this.metadata$.pipe(
-            map((metadata: Metadata) => metadata.listView.bulkActions)
-        );
-    }
-
-    public executeBulkAction(action: string): void {
-        const selection = this.recordList.selection;
-        const definition = this.metadata.listView.bulkActions[action];
-        const actionName = `bulk-${action}`;
-
-        this.message.removeMessages();
-
-        if (isFalse(definition.params.allowAll) && selection.all) {
-            let message = this.appStrings.LBL_SELECT_ALL_NOT_ALLOWED;
-            this.message.addDangerMessage(message);
-            return;
-        }
-
-        if (definition.params.min && selection.count < definition.params.min) {
-            let message = this.appStrings.LBL_TOO_FEW_SELECTED;
-            message = message.replace('{min}', definition.params.min);
-            this.message.addDangerMessage(message);
-            return;
-        }
-
-        if (definition.params.max && selection.count > definition.params.max) {
-            let message = this.appStrings.LBL_TOO_MANY_SELECTED;
-            message = message.replace('{max}', definition.params.max);
-            this.message.addDangerMessage(message);
-            return;
-        }
-
-        const displayedFields = [];
-
-        this.metadata.listView.fields.forEach(value => {
-            displayedFields.push(value.name);
-        });
-
-        const data = {
-            action: actionName,
-            module: this.internalState.module,
-            criteria: null,
-            sort: null,
-            ids: null,
-            fields: displayedFields
-        } as AsyncActionInput;
-
-        if (selection.all && selection.count > this.recordList.records.length) {
-            data.criteria = this.recordList.criteria;
-            data.sort = this.recordList.sort;
-        }
-
-        if (selection.all && selection.count <= this.recordList.records.length) {
-            data.ids = [];
-            this.recordList.records.forEach(record => {
-                data.ids.push(record.id);
-            });
-        }
-
-        if (!selection.all) {
-            data.ids = Object.keys(selection.selected);
-        }
-
-        const params = (definition && definition.params) || {} as { [key: string]: any };
-        const displayConfirmation = params.displayConfirmation || false;
-        const confirmationLabel = params.confirmationLabel || '';
-        const selectModal = definition.params && definition.params.selectModal;
-        const selectModule = selectModal && selectModal.module;
-
-        if (displayConfirmation) {
-            this.confirmation.showModal(confirmationLabel, () => {
-                if (!selectModule) {
-                    this.runBulkAction(actionName, data);
-                    return;
-                }
-                this.showSelectModal(selectModal.module, actionName, data);
-            });
-
-            return;
-        }
-
-        if (!selectModule) {
-            this.runBulkAction(actionName, data);
-            return;
-        }
-        this.showSelectModal(selectModal.module, actionName, data);
-
-    }
-
-    /**
-     * Run async buk action
-     *
-     * @returns void
-     * @param {string} selectModule: module for which records are listed in Select Modal/Popup
-     * @param {string} asyncAction: bulk action name
-     * @param {AsyncActionInput} asyncData: data passed to the async process
-     */
-    showSelectModal(selectModule: string, asyncAction: string, asyncData: AsyncActionInput) {
-
-        this.selectModalService.showSelectModal(selectModule, (modalRecord: Record) => {
-            if (modalRecord) {
-                const {fields, formGroup, ...baseRecord} = modalRecord;
-                asyncData.modalRecord = baseRecord;
-            }
-            this.runBulkAction(asyncAction, asyncData);
-        });
-    }
-
-    /**
-     * Run async buk action
-     *
-     * @returns void
-     * @param {string} asyncAction: bulk action name
-     * @param {AsyncActionInput} asyncData: data passed to the async process
-     */
-    runBulkAction(asyncAction: string, asyncData: AsyncActionInput): void {
-
-        this.bulkAction.run(asyncAction, asyncData).subscribe((process: Process) => {
-            this.handleBulkActionProcessResult(process);
-        });
-    }
-
-    /**
-     * Run this function once the process is executed
-     *
-     * @returns void
-     * @param {Process} process: data returned by the process once the process is executed
-     */
-    handleBulkActionProcessResult(process: Process): void {
-
-        if (process.data && process.data.reload) {
-            this.recordList.clearSelection();
-            this.load(false).pipe(take(1)).subscribe();
-        }
-
-        if (process.data && process.data.dataUpdated) {
-            this.dataUpdateState.next(true);
-        }
-    }
-
-    /**
      * Initial list records load if not cached and update state.
      * Returns observable to be used in resolver if needed
      *
@@ -594,6 +441,24 @@ export class ListViewStore extends ViewStore implements StateStore,
         this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
     }
 
+    public triggerDataUpdate(): void {
+        this.dataUpdateState.next(true);
+    }
+
+    /**
+     * Load / reload records using current pagination and criteria
+     *
+     * @param {boolean} useCache if to use cache
+     * @returns {object} Observable<ListViewState>
+     */
+    public load(useCache = true): Observable<RecordList> {
+
+        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
+        this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
+
+        return this.recordList.load(useCache);
+    }
+
     /**
      * Internal API
      */
@@ -623,20 +488,6 @@ export class ListViewStore extends ViewStore implements StateStore,
 
         this.showSidebarWidgets = show;
         this.widgets = show;
-    }
-
-    /**
-     * Load / reload records using current pagination and criteria
-     *
-     * @param {boolean} useCache if to use cache
-     * @returns {object} Observable<ListViewState>
-     */
-    protected load(useCache = true): Observable<RecordList> {
-
-        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
-        this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
-
-        return this.recordList.load(useCache);
     }
 
     /**

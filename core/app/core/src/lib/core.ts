@@ -421,6 +421,8 @@ export * from './views/classic/services/iframe-resize-handler.service';
 export * from './views/create/components/create-view/create-record.component';
 export * from './views/create/components/create-view/create-record.module';
 export * from './views/create/store/create-view/create-view.store';
+export * from './views/list/adapters/bulk-actions.adapter.factory';
+export * from './views/list/adapters/bulk-actions.adapter';
 export * from './views/list/adapters/filter.adapter';
 export * from './views/list/adapters/line-actions.adapter';
 export * from './views/list/adapters/sidebar-widget.adapter';
