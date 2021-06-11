@@ -30,23 +30,15 @@ import {DateTimeFilterFieldComponent} from './datetime.component';
 import {Field} from 'common';
 import {FormControl, FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {distinctUntilChanged} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
 import {ButtonModule} from '../../../../components/button/button.module';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {DateTimeFilterFieldModule} from './datetime.module';
-import {datetimeFormatterMock} from '../../../../services/formatters/datetime/datetime-formatter.service.spec.mock';
-import {CurrencyFormatter} from '../../../../services/formatters/currency/currency-formatter.service';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {userPreferenceStoreMock} from '../../../../store/user-preference/user-preference.store.spec.mock';
-import {numberFormatterMock} from '../../../../services/formatters/number/number-formatter.spec.mock';
-import {themeImagesStoreMock} from '../../../../store/theme-images/theme-images.store.spec.mock';
-import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
-import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
+import {UserPreferenceMockStore} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
-import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
-import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
+import {FormControlUtils} from '../../../../services/record/field/form-control.utils';
 
 @Component({
     selector: 'datetime-filter-field-test-host-component',
@@ -55,8 +47,12 @@ import {NumberFormatter} from '../../../../services/formatters/number/number-for
 class DatetimeFilterFieldTestHostComponent {
     field: Field = {
         type: 'datetime',
-        value: '2020-11-09 12:12:12',
-        formControl: new FormControl('2020-11-09 12:12:12')
+        value: '2020-11-09 10:12:14',
+        criteria: {
+            values: ['2020-11-09 10:12:14'],
+            operator: '='
+        },
+        formControl: new FormControl('2020-11-09 10:12:14')
     };
 }
 
@@ -66,10 +62,13 @@ describe('DateTimeFilterFieldComponent', () => {
 
     /* eslint-disable camelcase, @typescript-eslint/camelcase */
     const preferences = new BehaviorSubject({
-        date_format: 'yyyy-MM-dd',
-        time_format: 'HH:mm:ss',
+        date_format: 'MM-dd-yyyy',
+        time_format: 'hh:mm aaaaaa',
     });
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
+
+    const mockStore = new UserPreferenceMockStore(preferences);
+    const mockDatetimeFormatter = new DatetimeFormatter(mockStore, new FormControlUtils(), 'en_us');
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
@@ -85,32 +84,8 @@ describe('DateTimeFilterFieldComponent', () => {
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock},
-                {
-                    provide: UserPreferenceStore, useValue: {
-                        userPreferences$: preferences.asObservable().pipe(distinctUntilChanged()),
-                        getUserPreference: (key: string): any => {
-
-                            if (!preferences.value || !preferences.value[key]) {
-                                return null;
-                            }
-
-                            return preferences.value[key];
-                        }
-                    }
-                },
-                {
-                    provide: DatetimeFormatter, useValue: datetimeFormatterMock
-                },
-                {provide: NumberFormatter, useValue: numberFormatterMock},
-                {provide: DatetimeFormatter, useValue: datetimeFormatterMock},
-                {provide: DateFormatter, useValue: dateFormatterMock},
-                {
-                    provide: CurrencyFormatter,
-                    useValue: new CurrencyFormatter(userPreferenceStoreMock, numberFormatterMock, 'en_us')
-                },
-                {
-                    provide: ThemeImagesStore, useValue: themeImagesStoreMock
-                }
+                {provide: UserPreferenceStore, useValue: mockStore},
+                {provide: DatetimeFormatter, useValue: mockDatetimeFormatter}
             ],
         }).compileComponents();
 
@@ -122,4 +97,50 @@ describe('DateTimeFilterFieldComponent', () => {
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
     });
+
+    it('should have formatted datetime value', () => {
+        expect(testHostComponent).toBeTruthy();
+        const input = testHostFixture.nativeElement.querySelector('input');
+        expect(input.value).toContain('11-09-2020 10:12 am');
+    });
+
+    it('should have update input when field changes', waitForAsync(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            const input = testHostFixture.nativeElement.querySelector('input');
+            // user format
+            expect(input.value).toContain('11-09-2020 10:12 am');
+        });
+    }));
+
+    it('should have update input when field changes', waitForAsync(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        testHostComponent.field.formControl.setValue('11.09.2020 10.12.00');
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            const input = testHostFixture.nativeElement.querySelector('input');
+            expect(input.value).toContain('11.09.2020 10.12.00');
+        });
+
+    }));
+
+    it('should have update field when input changes', waitForAsync(() => {
+        expect(testHostComponent).toBeTruthy();
+
+        const input = testHostFixture.nativeElement.querySelector('input');
+        input.value = '11-09-2020 10:12 am';
+        input.dispatchEvent(new Event('input'));
+
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            // internal format
+            expect(testHostComponent.field.criteria.values[0]).toContain('2020-11-09 10:12:00');
+        });
+
+    }));
+
 });

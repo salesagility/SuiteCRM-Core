@@ -31,14 +31,9 @@ import {CommonModule} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
 import {Field} from 'common';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
-import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
-import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
-import {datetimeFormatterMock} from '../../../../services/formatters/datetime/datetime-formatter.service.spec.mock';
-import {CurrencyFormatter} from '../../../../services/formatters/currency/currency-formatter.service';
-import {userPreferenceStoreMock} from '../../../../store/user-preference/user-preference.store.spec.mock';
+import {UserPreferenceMockStore} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
-import {numberFormatterMock} from '../../../../services/formatters/number/number-formatter.spec.mock';
-import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
+import {FormControlUtils} from '../../../../services/record/field/form-control.utils';
 
 @Component({
     selector: 'datetime-detail-field-test-host-component',
@@ -49,7 +44,6 @@ class DateTimeDetailFieldTestHostComponent {
         type: 'datetime',
         value: '2020-05-01 23:23:23'
     };
-
 }
 
 describe('DatetimeDetailFieldComponent', () => {
@@ -63,6 +57,9 @@ describe('DatetimeDetailFieldComponent', () => {
     });
     /* eslint-enable camelcase, @typescript-eslint/camelcase */
 
+    const mockStore = new UserPreferenceMockStore(preferences);
+    const mockDatetimeFormatter = new DatetimeFormatter(mockStore, new FormControlUtils(), 'en_us');
+
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -73,19 +70,9 @@ describe('DatetimeDetailFieldComponent', () => {
                 CommonModule
             ],
             providers: [
-                {
-                    provide: UserPreferenceStore, useValue: userPreferenceStoreMock
-                },
-                {
-                    provide: DatetimeFormatter, useValue: datetimeFormatterMock
-                },
-                {provide: NumberFormatter, useValue: numberFormatterMock},
-                {provide: DatetimeFormatter, useValue: datetimeFormatterMock},
-                {provide: DateFormatter, useValue: dateFormatterMock},
-                {
-                    provide: CurrencyFormatter,
-                    useValue: new CurrencyFormatter(userPreferenceStoreMock, numberFormatterMock, 'en_us')
-                },
+                {provide: UserPreferenceStore, useValue: mockStore},
+                {provide: DatetimeFormatter, useValue: mockDatetimeFormatter},
+
             ],
         }).compileComponents();
 
@@ -112,6 +99,46 @@ describe('DatetimeDetailFieldComponent', () => {
         testHostComponent.field.value = '2020-04-14 21:11:01';
         testHostFixture.detectChanges();
 
-        expect(testHostFixture.nativeElement.textContent).toContain('14.04.2020 21.11.01');
+        testHostFixture.whenStable().then(() => {
+            expect(testHostFixture.nativeElement.textContent).toContain('2020-04-14 21:11:01');
+        });
     });
+
+    it('should have user preferences based formatted datetime(MM.dd.yyyy HH.mm.ss)', () => {
+
+        expect(testHostComponent).toBeTruthy();
+
+        /* eslint-disable camelcase, @typescript-eslint/camelcase */
+        preferences.next({
+            date_format: 'MM.dd.yyyy',
+            time_format: 'HH.mm.ss',
+        });
+        /* eslint-enable camelcase, @typescript-eslint/camelcase */
+
+        testHostComponent.field.value = '2021-05-16 10:12:15';
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            expect(testHostFixture.nativeElement.textContent).toContain('05.16.2021 10.12.15');
+        });
+    });
+
+    it('should have user preferences based formatted datetime(MM-dd-yyyy hh.mm aaaaaa)', () => {
+
+        expect(testHostComponent).toBeTruthy();
+
+        /* eslint-disable camelcase, @typescript-eslint/camelcase */
+        preferences.next({
+            date_format: 'MM-dd-yyyy',
+            time_format: 'hh.mm aaaaaa',
+        });
+        /* eslint-enable camelcase, @typescript-eslint/camelcase */
+
+        testHostComponent.field.value = '2021-06-04 00:00:00';
+        testHostFixture.detectChanges();
+        testHostFixture.whenStable().then(() => {
+            expect(testHostFixture.nativeElement.textContent).toContain('06-04-2021 12.00 am');
+
+        });
+    });
+
 });
