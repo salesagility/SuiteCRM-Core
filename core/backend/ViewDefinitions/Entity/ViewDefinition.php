@@ -122,6 +122,23 @@ class ViewDefinition
      * )
      */
     public $subpanel;
+
+    /**
+     * MassUpdate metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The massUpdate metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $massUpdate;
+
     /**
      * The module
      *
@@ -249,6 +266,27 @@ class ViewDefinition
     public function setSubPanel(array $subpanel): ViewDefinition
     {
         $this->subpanel = $subpanel;
+
+        return $this;
+    }
+
+    /**
+     * Get Mass Update definitions
+     * @return array
+     */
+    public function getMassUpdate(): ?array
+    {
+        return $this->massUpdate;
+    }
+
+    /**
+     * Set Mass Update definitions
+     * @param array $massUpdate
+     * @return ViewDefinition
+     */
+    public function setMassUpdate(array $massUpdate): ViewDefinition
+    {
+        $this->massUpdate = $massUpdate;
 
         return $this;
     }

@@ -37,6 +37,7 @@ services:
       $recordViewActionLimits: '%module.recordview.actions_limits%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $legacyToFrontEndFieldsMap: '%record.fields.legacy_to_frontend_fields_map%'
+      $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
@@ -66,6 +67,8 @@ services:
       shared: false
     App\Install\Service\Upgrade\UpgradeStepInterface:
       tags: [ 'app.upgrade.step' ]
+    App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
+      tags: [ 'massupdate.definition.mapper' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -204,6 +207,11 @@ services:
   App\Install\Service\Migrations\MigrationFactoryDecorator:
     decorates: Doctrine\Migrations\Version\DbalMigrationFactory
     arguments: ['@App\Install\Service\Migrations\MigrationFactoryDecorator.inner', '@service_container']
+
+  App\ViewDefinitions\Service\MassUpdateDefinitionMappers:
+    # inject all services tagged with massupdate.definition.mapper as first argument
+    arguments:
+      - !tagged { tag: 'massupdate.definition.mapper' }
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'

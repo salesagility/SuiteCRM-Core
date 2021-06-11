@@ -27,12 +27,13 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
+use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
-use App\ViewDefinitions\Entity\ViewDefinition;
-use App\Engine\LegacyHandler\LegacyHandler;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\ViewDefinitions\Entity\ViewDefinition;
+use App\ViewDefinitions\Service\MassUpdateDefinitionProviderInterface;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
 use InvalidArgumentException;
@@ -107,6 +108,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $mappers;
 
     /**
+     * @var MassUpdateDefinitionProviderInterface
+     */
+    private $massUpdateDefinitionProvider;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -118,8 +124,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param RecordViewDefinitionHandler $recordViewDefinitionHandler
      * @param SubPanelDefinitionProviderInterface $subPanelDefinitionHandler
      * @param ListViewDefinitionHandler $listViewDefinitionsHandler
+     * @param MassUpdateDefinitionProviderInterface $massUpdateDefinitionProvider
      * @param LoggerInterface $logger
      * @param ViewDefinitionMappers $mappers
+     * @param SessionInterface $session
      */
     public function __construct(
         string $projectDir,
@@ -132,16 +140,25 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         RecordViewDefinitionHandler $recordViewDefinitionHandler,
         SubPanelDefinitionProviderInterface $subPanelDefinitionHandler,
         ListViewDefinitionHandler $listViewDefinitionsHandler,
+        MassUpdateDefinitionProviderInterface $massUpdateDefinitionProvider,
         LoggerInterface $logger,
         ViewDefinitionMappers $mappers,
         SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->recordViewDefinitionHandler = $recordViewDefinitionHandler;
         $this->subPanelDefinitionHandler = $subPanelDefinitionHandler;
         $this->listViewDefinitionsHandler = $listViewDefinitionsHandler;
+        $this->massUpdateDefinitionProvider = $massUpdateDefinitionProvider;
         $this->logger = $logger;
         $this->mappers = $mappers;
     }
@@ -164,9 +181,10 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (empty($views)) {
             $views = [
                 'detailView',
-                'editView',
+                'recordView',
                 'listView',
                 'search',
+                'massUpdate',
                 'subPanel'
             ];
         }
@@ -202,6 +220,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         if (in_array('subPanel', $views, true)) {
             $subPanelViewDefs = $this->subPanelDefinitionHandler->getSubPanelDef($legacyModuleName);
             $viewDef->setSubPanel($subPanelViewDefs);
+        }
+
+        if (in_array('massUpdate', $views, true)) {
+            $massUpdateDefinitions = $this->massUpdateDefinitionProvider->getDefinitions($moduleName);
+            $viewDef->setMassUpdate($massUpdateDefinitions);
         }
 
         $mappers = $this->mappers->get($moduleName) ?? [];
@@ -327,7 +350,6 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     {
         $vardefs = $fieldDefinition->getVardef();
         if (isset($definition['layout'][$type])) {
-
             foreach ($definition['layout'][$type] as $key => $field) {
                 $fieldName = $this->getFieldName($key, $field);
 
