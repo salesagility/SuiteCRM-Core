@@ -178,7 +178,9 @@ export * from './containers/sidebar-widget/components/chart-sidebar-widget/chart
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-sidebar-widget.component';
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-sidebar-widget.model';
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-sidebar-widget.module';
+export * from './containers/sidebar-widget/components/history-sidebar-widget/history-timeline.adapter.factory';
 export * from './containers/sidebar-widget/components/history-sidebar-widget/history-timeline.adapter.service';
+export * from './containers/sidebar-widget/components/history-sidebar-widget/history-timeline.store.factory';
 export * from './containers/sidebar-widget/components/record-thread-sidebar-widget/record-thread-sidebar-widget.component';
 export * from './containers/sidebar-widget/components/record-thread-sidebar-widget/record-thread-sidebar-widget.module';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.component';
@@ -186,6 +188,7 @@ export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-wid
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.component';
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.module';
+export * from './containers/sidebar-widget/store/history-timeline/history-timeline.store';
 export * from './containers/subpanel/actions/subpanel.action';
 export * from './containers/subpanel/actions/create/create.action';
 export * from './containers/subpanel/actions/select/select.action';

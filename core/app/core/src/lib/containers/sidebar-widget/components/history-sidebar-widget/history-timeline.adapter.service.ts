@@ -25,273 +25,149 @@
  */
 
 import {Injectable} from '@angular/core';
-import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import {CollectionViewer, DataSource, ListRange} from '@angular/cdk/collections';
 import {HistoryTimelineEntry} from './history-sidebar-widget.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {HistoryTimelineStore} from '../../store/history-timeline/history-timeline.store';
+import {ViewContext, Record} from 'common';
+import {take} from 'rxjs/operators';
+import {HistoryTimelineStoreFactory} from './history-timeline.store.factory';
 
-/* eslint-disable camelcase, @typescript-eslint/camelcase */
-const mockRecord = {
-    type: 'Account',
-    module: 'accounts',
-    id: '47f0a247-4f34-e5c4-ffc3-5f7edecddb44',
-    attributes: {
-        name: 'V8 Api test Account',
-        date_entered: '2020-10-08 09:39:00',
-        date_modified: '2020-10-08 09:39:00',
-        modified_user_id: '1',
-        modified_by_name: {
-            user_name: 'admin',
-            id: '1'
-        },
-        created_by: '1',
-        created_by_name: {
-            user_name: 'admin',
-            id: '1'
-        },
-        description: 'aaaa',
-        deleted: '0',
-        assigned_user_id: '',
-        assigned_user_name: {
-            user_name: 'admin',
-            id: '1'
-        },
-        account_type: '',
-        industry: '',
-        annual_revenue: '',
-        phone_fax: '',
-        billing_address_street: '',
-        billing_address_street_2: '',
-        billing_address_street_3: '',
-        billing_address_street_4: '',
-        billing_address_city: '',
-        billing_address_state: '',
-        billing_address_postalcode: '',
-        billing_address_country: '',
-        rating: '',
-        phone_office: '',
-        phone_alternate: '',
-        website: 'WebSitelogic hook: website = name| V8 Api test Account',
-        ownership: '',
-        employees: '',
-        ticker_symbol: '',
-        shipping_address_street: '',
-        shipping_address_street_2: '',
-        shipping_address_street_3: '',
-        shipping_address_street_4: '',
-        shipping_address_city: '',
-        shipping_address_state: '',
-        shipping_address_postalcode: '',
-        shipping_address_country: '',
-        email1: '',
-        email_addresses_non_primary: '',
-        parent_id: '',
-        sic_code: '',
-        parent_name: {
-            name: '',
-            id: ''
-        },
-        email_opt_out: '',
-        invalid_email: '',
-        email: '',
-        campaign_id: '',
-        campaign_name: {
-            name: '',
-            id: ''
-        },
-        jjwg_maps_address_c: '',
-        jjwg_maps_geocode_status_c: '',
-        jjwg_maps_lat_c: '0.00000000',
-        jjwg_maps_lng_c: '0.00000000'
-    },
-    relationships: []
-};
-
-const mockTitleField = {
-    type: 'varchar',
-    value: 'title',
-    definition: {
-        name: 'name',
-        type: 'varchar',
-        vname: 'LBL_TITLE',
-    }
-};
-
-const mockUserField = {
-    type: 'varchar',
-    definition: {
-        name: 'assigned_user_name',
-        link: 'assigned_user_link',
-        vname: 'LBL_ASSIGNED_TO_NAME',
-        rname: 'user_name',
-        type: 'relate',
-        reportable: false,
-        source: 'non-db',
-        table: 'users',
-        id_name: 'assigned_user_id',
-        module: 'Users',
-        required: false
-    },
-    labelKey: 'LBL_ASSIGNED_TO',
-    label: 'Assigned to',
-    value: 'admin'
-};
-
-const mockDateField = {
-    type: 'datetime',
-    value: '2020-10-20 10:50:00',
-    name: 'date_entered',
-    definition: {
-        name: 'date_entered',
-        vname: 'LBL_DATE_ENTERED',
-        type: 'datetime',
-        group: 'created_by_name',
-        comment: 'Date record created',
-        enable_range_search: true,
-        options: 'date_range_search_dom',
-        inline_edit: false
-    }
-};
-
-/* eslint-enable camelcase, @typescript-eslint/camelcase */
-
+export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit' | 'notes' | string;
 
 @Injectable()
 export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
-    private mockEntries: HistoryTimelineEntry[] = [
-        {
-            title: {
-                ...mockTitleField,
-                value: 'Upcoming Call with Douglas Lees'
-            },
-            module: 'calls',
-            icon: 'Calls',
-            color: 'yellow',
-            user: {
-                ...mockUserField,
-                value: 'Joe Bloggs',
-            },
-            date: {
-                ...mockDateField,
-                value: '2020-11-20 15:30:00',
-            },
-            record: mockRecord
-        } as HistoryTimelineEntry,
-        {
-            title: {
-                ...mockTitleField,
-                value: 'Status changed to Converted'
-            },
-            module: 'history',
-            icon: 'History',
-            color: 'purple',
-            user: {
-                ...mockUserField,
-                value: 'Joe Bloggs',
-            },
-            date: {
-                ...mockDateField,
-                value: '2020-10-20 10:52:00',
-            },
-            record: mockRecord
-        } as HistoryTimelineEntry,
-        {
-            title: {
-                ...mockTitleField,
-                value: 'Meeting held with Douglas Lees to gather project requirements'
-            },
-            module: 'meetings',
-            icon: 'Meetings',
-            color: 'blue',
-            user: {
-                ...mockUserField,
-                value: 'Joe Bloggs',
-            },
-            date: {
-                ...mockDateField,
-                value: '2020-9-5 9:30:00',
-            },
-            record: mockRecord
-        } as HistoryTimelineEntry,
-        {
-            title: {
-                ...mockTitleField,
-                value: 'Call held with Douglas Lees to discuss potential opportunities'
-            },
-            module: 'calls',
-            icon: 'Calls',
-            color: 'yellow',
-            user: {
-                ...mockUserField,
-                value: 'Admin',
-            },
-            date: {
-                ...mockDateField,
-                value: '2020-9-4 11:24:00',
-            },
-            record: mockRecord
-        } as HistoryTimelineEntry,
-        {
-            title: {
-                ...mockTitleField,
-                value: 'Status changed to Researching'
-            },
-            module: 'history',
-            icon: 'History',
-            color: 'purple',
-            user: {
-                ...mockUserField,
-                value: 'Admin',
-            },
-            date: {
-                ...mockDateField,
-                value: '2020-9-3 15:11:00',
-            },
-            record: mockRecord
-        } as HistoryTimelineEntry,
-    ];
-    private cache: HistoryTimelineEntry[] = [...this.mockEntries];
-    private dataStream = new BehaviorSubject<HistoryTimelineEntry[]>(this.cache);
     private subscription = new Subscription();
-    private fetchedPages = new Set<number>();
-    private pageSize = 5;
+    private defaultPageSize = 10;
+    private cache: HistoryTimelineEntry[] = [{} as HistoryTimelineEntry];
+    private dataStream = new BehaviorSubject<HistoryTimelineEntry[]>(this.cache);
 
-    constructor() {
+    private store: HistoryTimelineStore;
+    private context: ViewContext;
+
+    constructor(protected historyTimelineStoreFactory: HistoryTimelineStoreFactory
+    ) {
         super();
     }
 
+    /**
+     * @returns {void}
+     * @param {ViewContext} context - parent module context
+     * @description adapter init function to initialize the timeline objects
+     */
+    init(context: ViewContext): void {
+        this.store = this.historyTimelineStoreFactory.create();
+        this.context = context;
+    }
+
+    /**
+     * @returns {HistoryTimelineEntry[]} Array of Objects to be parsed by the rendering component
+     * @param {CollectionViewer} collectionViewer object
+     * @description The angular cdk components built-in API which listens to the viewChange event
+     * this function provides the range for the recordset to be loaded; calculated dynamically
+     * by the cdk-virtual scroll component based on the container scroll event by the user
+     */
     connect(collectionViewer: CollectionViewer): Observable<HistoryTimelineEntry[] | ReadonlyArray<HistoryTimelineEntry>> {
         this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-            const startPage = this.getPageForIndex(range.start);
-            const endPage = this.getPageForIndex(range.end - 1);
-            for (let i = startPage; i <= endPage; i++) {
-                // TODO to be used when live data is used
-                // this.fetchPage(i);
-            }
+            this.fetchPage(range);
         }));
         return this.dataStream.asObservable();
     }
 
+    /**
+     * @returns {void}
+     * @description the cleanup function on cdk-component unload
+     */
     disconnect(): void {
+        this.cache.length = 0;
         this.subscription.unsubscribe();
     }
 
-    // TODO to be used when live data is used
-    private fetchPage(page: number): void {
-        if (this.fetchedPages.has(page)) {
+    /**
+     * @returns {void}
+     * @param {ListRange} range object contains the start & end integer values
+     * @description calculates the offsets/limit of the new recordset, which don't exist
+     * in local cache object to be fetched from the database
+     */
+    fetchPage(range: ListRange): void {
+        // calculate query offset and limit
+        let offset = 0;
+        let limit = 0;
+
+        // - 1 for initial/default empty value on Behavior Subject
+        const cacheLength = this.cache.length - 1;
+        if (cacheLength <= 0) {
+            offset = 0;
+            limit = this.defaultPageSize;
+        } else if (cacheLength < range.end) {
+            offset = cacheLength;
+            limit = range.end - cacheLength;
+        } else {
             return;
         }
-        this.fetchedPages.add(page);
 
-        this.cache.splice(
-            page * this.pageSize,
-            this.pageSize,
-            ...Array(this.pageSize).map((_, i) => this.mockEntries[i % this.mockEntries.length])
-        );
-
-        this.dataStream.next(this.cache);
+        this.retrieveRecords(offset, limit);
     }
 
-    private getPageForIndex(i: number): number {
-        return Math.floor(i / this.pageSize);
+    /**
+     * @returns {void}
+     * @param {number} offset record pointer
+     * @param {number} limit  record size
+     * @description retrieve the records based on the calculated offsets/limit by the caller function
+     */
+    retrieveRecords(offset: number, limit: number): void {
+
+        this.store.init(this.context.module, this.context.id, offset, limit);
+
+        this.store.load(false).pipe(take(1)).subscribe(value => {
+
+            const records: Record [] = value.records;
+
+            if (records && Object.keys(records).length > 0) {
+
+                Object.keys(records).forEach(key => {
+
+                    const gridColor = this.getActivityGridColor(records[key].module);
+
+                    this.cache.push({
+                        module: records[key].module,
+                        icon: records[key].attributes.module_name,
+                        color: gridColor,
+                        title: {
+                            type: 'varchar',
+                            value: records[key].attributes.name
+                        },
+                        user: {
+                            type: 'varchar',
+                            value: records[key].attributes.assigned_user_name.user_name,
+                        },
+                        date: {
+                            type: 'datetime',
+                            value: records[key].attributes.date_modified,
+                        },
+                        record: records[key]
+                    } as HistoryTimelineEntry);
+                });
+                this.dataStream.next(this.cache);
+            }
+        });
     }
+
+    /**
+     * @returns {string} color code
+     * @param {string} activity the valid activity types
+     * @description {returns the mapped color code defined for an activity}
+     */
+    getActivityGridColor(activity: ActivityTypes): string {
+        const colorMap = {
+            calls: 'yellow',
+            tasks: 'green',
+            meetings: 'blue',
+            history: 'purple',
+            notes: 'blue',
+            audit: 'blue'
+        };
+        return colorMap[activity] || 'yellow';
+    }
+
 }

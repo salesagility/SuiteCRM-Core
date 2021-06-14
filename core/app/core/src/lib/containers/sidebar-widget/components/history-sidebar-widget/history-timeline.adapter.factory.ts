@@ -24,44 +24,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
-import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
-import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
-import {emptyObject} from 'common';
+import {Injectable} from '@angular/core';
+import {HistoryTimelineAdapter} from "./history-timeline.adapter.service";
+import {HistoryTimelineStoreFactory} from "./history-timeline.store.factory";
 
-@Component({
-    selector: 'scrm-history-timeline-widget',
-    templateUrl: './history-sidebar-widget.component.html',
-    styleUrls: [],
-    providers: [HistoryTimelineAdapter]
+
+@Injectable({
+    providedIn: 'root',
 })
-export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit {
+export class HistoryTimelineAdapterFactory {
 
-    public adapter: HistoryTimelineAdapter;
-
-    constructor(
-        protected historyTimelineAdapterFactory: HistoryTimelineAdapterFactory,
-        protected languageStore: LanguageStore) {
-        super();
+    constructor(protected historyTimelineStoreFactory: HistoryTimelineStoreFactory) {
     }
 
-    ngOnInit(): void {
-        this.adapter = this.historyTimelineAdapterFactory.create();
-        this.adapter.init(this.context);
-    }
-
-    getHeaderLabel(): string {
-        return this.languageStore.getFieldLabel('LBL_QUICK_HISTORY');
-    }
-
-    /**
-     * @returns {boolean} true or false
-     * @param {object} obj object to be checked
-     * @description checks if an object is empty or not
-     */
-    isEmptyObject(obj: any): boolean {
-        return emptyObject(obj);
+    create(): HistoryTimelineAdapter {
+        return new HistoryTimelineAdapter(
+            this.historyTimelineStoreFactory
+        );
     }
 }

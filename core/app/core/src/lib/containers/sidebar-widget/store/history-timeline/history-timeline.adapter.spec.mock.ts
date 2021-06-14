@@ -24,44 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
-import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
-import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
-import {emptyObject} from 'common';
+import {HistoryTimelineStoreFactory} from '../../components/history-sidebar-widget/history-timeline.store.factory';
+import {timelineRecordListStoreFactoryMock} from './history-timeline-record-list.store.spec.mock';
 
-@Component({
-    selector: 'scrm-history-timeline-widget',
-    templateUrl: './history-sidebar-widget.component.html',
-    styleUrls: [],
-    providers: [HistoryTimelineAdapter]
-})
-export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit {
-
-    public adapter: HistoryTimelineAdapter;
-
-    constructor(
-        protected historyTimelineAdapterFactory: HistoryTimelineAdapterFactory,
-        protected languageStore: LanguageStore) {
-        super();
-    }
-
-    ngOnInit(): void {
-        this.adapter = this.historyTimelineAdapterFactory.create();
-        this.adapter.init(this.context);
-    }
-
-    getHeaderLabel(): string {
-        return this.languageStore.getFieldLabel('LBL_QUICK_HISTORY');
-    }
-
-    /**
-     * @returns {boolean} true or false
-     * @param {object} obj object to be checked
-     * @description checks if an object is empty or not
-     */
-    isEmptyObject(obj: any): boolean {
-        return emptyObject(obj);
-    }
-}
+export const timelineAdapterMock = new HistoryTimelineStoreFactory(
+    timelineRecordListStoreFactoryMock
+);

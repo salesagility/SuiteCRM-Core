@@ -32,7 +32,7 @@
                                          class="history-timeline-viewport">
                 <div *cdkVirtualFor="let entry of adapter">
 
-                    <div class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
+                    <div *ngIf="!isEmptyObject(entry)" class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
                         <div class="">
                             <div class="circle">
                                 <div
