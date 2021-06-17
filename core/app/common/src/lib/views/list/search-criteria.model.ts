@@ -39,7 +39,7 @@ export interface SearchCriteriaFilter {
 
 export interface FilterPresetHandler {
     type: string;
-    params: { [key: string]: string };
+    params: { [key: string]: string | number };
 }
 
 export interface SearchCriteria {

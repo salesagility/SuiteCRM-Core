@@ -71,10 +71,19 @@ export const ready = (entries: (Array<any> | Record<string, any>)[]): boolean =>
  * @param {object} obj to pad
  * @returns {object} any
  */
-export const padObjectValues = (obj: any): any =>
-{
-    Object.keys(obj).forEach(key => {obj[key] = String(obj[key]).padStart(2, '0');});
+export const padObjectValues = (obj: any): any => {
+    Object.keys(obj).forEach(key => {
+        obj[key] = String(obj[key]).padStart(2, '0');
+    });
     return obj;
 };
+
+/**
+ * @param {object} obj to be checked
+ * @returns {boolean} true/false
+ * @description Returns true, if the object is empty
+ */
+export const emptyObject = (obj: any): boolean =>
+    (obj && (Object.keys(obj).length === 0));
 
 
