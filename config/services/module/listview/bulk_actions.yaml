@@ -31,8 +31,29 @@ parameters:
           key: massupdate
           labelKey: LBL_MASS_UPDATE
           params:
-            min: 1
-            max: 5
+            allowAll: false
+            min: 2
+            max: 200
+            recordPanel:
+              title: LBL_MASS_UPDATE
+              #fields are populated by a mapper
+              #fields:
+              mode: massupdate
+              actions:
+                - key: cancel
+                  labelKey: LBL_CANCEL
+                  modes: ['massupdate']
+                - key: bulk-action
+                  labelKey: LBL_SUBMIT_BUTTON_LABEL
+                  modes: ['massupdate']
+                  klass: ['btn', 'btn-danger', 'btn-sm']
+                  params:
+                    allowAll: false
+                    min: 2
+                    max: 200
+                    bulkAction: massupdate
+                    displayConfirmation: true
+                    confirmationLabel: LBL_BULK_ACTION_MASS_UPDATE_CONFIRMATION
           acl:
             - massupdate
           availability:
