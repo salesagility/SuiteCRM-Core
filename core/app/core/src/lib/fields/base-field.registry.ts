@@ -71,10 +71,18 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
 
         const moduleFields = this.map.getGroupEntries(module);
 
-        const key = BaseFieldRegistry.getKey(type, mode);
+        let key = BaseFieldRegistry.getKey(type, mode);
         if (moduleFields[key]) {
             return moduleFields[key];
         }
+
+        if (mode === 'massupdate') {
+            key = BaseFieldRegistry.getKey(type, 'edit');
+            if (moduleFields[key]) {
+                return moduleFields[key];
+            }
+        }
+
 
         const defaultKey = BaseFieldRegistry.getKey('varchar', mode);
         return moduleFields[defaultKey];
