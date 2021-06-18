@@ -27,7 +27,7 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Field, FieldDefinition, Option} from 'common';
+import {Field, FieldDefinition, isVoid, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
 
@@ -97,12 +97,34 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         if (!appStrings || !this.field.definition.options || !appStrings[this.field.definition.options]) {
             return;
         }
-        this.optionsMap = appStrings[this.field.definition.options] as LanguageStringMap;
 
-        if (!this.optionsMap || !Object.keys(this.optionsMap)) {
-            return;
+        this.optionsMap = {} as LanguageStringMap;
+        this.addExtraOptions();
+
+        const options = appStrings[this.field.definition.options] as LanguageStringMap;
+
+        if (this.options && Object.keys(this.options)) {
+            this.optionsMap = {...this.optionsMap, ...options};
         }
+
         this.buildOptionsArray(appStrings);
+    }
+
+    private addExtraOptions() {
+        const extraOptions = this.field.metadata.extraOptions || [];
+
+        extraOptions.forEach((item: Option) => {
+            if (isVoid(item.value)) {
+                return;
+            }
+
+            let label = item.label || '';
+            if (item.labelKey) {
+                label = this.languages.getFieldLabel(item.labelKey);
+            }
+
+            this.optionsMap[item.value] = label;
+        });
     }
 
     protected buildOptionsArray(appStrings: LanguageListStringMap): void {

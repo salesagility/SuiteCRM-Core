@@ -31,7 +31,8 @@ import {Record} from './record.model';
 
 export interface Option {
     value: string;
-    label: string;
+    label?: string;
+    labelKey?: string;
 }
 
 export interface ValidationDefinition {
@@ -91,6 +92,7 @@ export interface FieldMetadata {
     cols?: number;
     digits?: number;
     options$?: Observable<Option[]>;
+    extraOptions?: Option[];
     onClick?: FieldClickCallback;
 }
 
