@@ -79,6 +79,8 @@ export interface ActionManager<D extends ActionData> {
     run(action: Action, mode: ViewMode, data: D): void;
 
     getHandler(action: Action, mode: ViewMode): ActionHandler<D>;
+
+    addHandler(action: Action, mode: ViewMode, handler: ActionHandler<D>);
 }
 
 export interface ActionContext {
