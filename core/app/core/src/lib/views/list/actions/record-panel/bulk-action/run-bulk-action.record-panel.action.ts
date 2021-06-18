@@ -173,5 +173,7 @@ export class RunBulkActionRecordPanelAction extends ListViewRecordPanelActionHan
         if (process.data && process.data.dataUpdated) {
             data.listStore.triggerDataUpdate();
         }
+
+        data.listStore.closeRecordPanel();
     }
 }

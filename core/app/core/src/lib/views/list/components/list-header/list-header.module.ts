@@ -34,6 +34,7 @@ import {ListFilterModule} from '../../../../containers/list-filter/components/li
 import {ActionMenuModule} from '../action-menu/action-menu.module';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
+import {RecordPanelModule} from '../../../../containers/record-panel/components/record-panel/record-panel.module';
 
 @NgModule({
     declarations: [ListHeaderComponent],
@@ -44,7 +45,8 @@ import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
         ActionMenuModule,
         SettingsMenuModule,
         AngularSvgIconModule,
-        ListFilterModule
+        ListFilterModule,
+        RecordPanelModule
     ]
 })
 export class ListHeaderModule {

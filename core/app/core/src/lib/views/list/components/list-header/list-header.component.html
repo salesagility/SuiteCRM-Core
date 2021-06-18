@@ -70,14 +70,20 @@
             <div class="list-view-hr-container">
                 <hr class="list-view-hr">
             </div>
-            <div *ngIf="showFilters" class="container-fluid pt-2 small-font">
+            <div *ngIf="actionPanel === 'filters'" class="container-fluid pt-2 small-font">
                 <div class="row">
                     <div class="col">
                         <scrm-list-filter [config]="filterAdapter.getConfig()"></scrm-list-filter>
                     </div>
                 </div>
             </div>
-
+            <div *ngIf="actionPanel === 'recordPanel' && recordPanelConfig" class="container-fluid pt-2 small-font">
+                <div class="row">
+                    <div class="col">
+                        <scrm-record-panel [config]="recordPanelConfig"></scrm-record-panel>
+                    </div>
+                </div>
+            </div>
         </ng-template>
     </div>
 </ng-container>

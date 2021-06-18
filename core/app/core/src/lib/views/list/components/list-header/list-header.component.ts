@@ -24,28 +24,32 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {FilterAdapter} from '../../adapters/filter.adapter';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {RecordPanelConfig} from '../../../../containers/record-panel/components/record-panel/record-panel.model';
+import {Subscription} from 'rxjs';
+import {RecordPanelAdapter} from '../../adapters/record-panel.adapter';
 
 @Component({
     selector: 'scrm-list-header',
     templateUrl: 'list-header.component.html',
-    providers: [FilterAdapter],
+    providers: [FilterAdapter, RecordPanelAdapter],
 })
-export class ListHeaderComponent {
+export class ListHeaderComponent implements OnInit, OnDestroy {
 
     displayResponsiveTable = false;
+    actionPanel = '';
+    recordPanelConfig: RecordPanelConfig;
+    protected subs: Subscription[] = [];
 
     constructor(
         public filterAdapter: FilterAdapter,
         protected listStore: ListViewStore,
-        protected moduleNavigation: ModuleNavigation) {
-    }
-
-    get showFilters(): boolean {
-        return this.listStore.showFilters;
+        protected moduleNavigation: ModuleNavigation,
+        protected recordPanelAdapter: RecordPanelAdapter
+    ) {
     }
 
     get moduleTitle(): string {
@@ -54,4 +58,19 @@ export class ListHeaderComponent {
         return this.moduleNavigation.getModuleLabel(module, appListStrings);
     }
 
+    ngOnInit(): void {
+        this.listStore.actionPanel$.subscribe(actionPanel => {
+            this.actionPanel = actionPanel;
+            if (this.actionPanel === 'recordPanel') {
+                this.recordPanelConfig = this.recordPanelAdapter.getConfig();
+            } else {
+                this.recordPanelConfig = null;
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+        this.recordPanelConfig = null;
+    }
 }

@@ -26,32 +26,37 @@
 
 import {Injectable} from '@angular/core';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {LanguageStore} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
-import {ListViewStore} from '../store/list-view/list-view.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
-import {SelectModalService} from '../../../services/modals/select-modal.service';
-import {BulkActionsAdapter} from './bulk-actions.adapter';
+import {ListViewRecordPanelActionsAdapter} from './record-panel-actions.adapter';
+import {RecordPanelStore} from '../../../containers/record-panel/store/record-panel/record-panel.store';
+import {ListViewStore} from '../store/list-view/list-view.store';
+import {RecordPanelActionManager} from '../actions/record-panel/record-panel-action-manager.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BulkActionsAdapterFactory {
+export class ListViewRecordPanelActionAdapterFactory {
 
     constructor(
+        protected language: LanguageStore,
+        protected actionManager: RecordPanelActionManager,
+        protected asyncActionService: AsyncActionService,
         protected message: MessageService,
-        protected confirmation: ConfirmationModalService,
-        protected selectModalService: SelectModalService,
-        protected asyncAction: AsyncActionService,
+        protected confirmation: ConfirmationModalService
     ) {
     }
 
-    create(store: ListViewStore): BulkActionsAdapter {
-        return new BulkActionsAdapter(
+    create(store: RecordPanelStore, listStore: ListViewStore): ListViewRecordPanelActionsAdapter {
+        return new ListViewRecordPanelActionsAdapter(
             store,
+            listStore,
+            this.language,
+            this.actionManager,
+            this.asyncActionService,
             this.message,
-            this.confirmation,
-            this.selectModalService,
-            this.asyncAction,
+            this.confirmation
         );
     }
 }

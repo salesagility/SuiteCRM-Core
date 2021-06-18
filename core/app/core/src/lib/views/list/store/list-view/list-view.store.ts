@@ -57,6 +57,7 @@ import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved
 import {FilterListStore} from '../../../../store/saved-filters/filter-list.store';
 import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-list.store.factory';
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
+import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
 
 export interface ListViewData {
     records: Record[];
@@ -92,8 +93,9 @@ const initialFilters: SavedFilterMap = {
 const initialState: ListViewState = {
     module: '',
     widgets: true,
-    displayFilters: false,
+    actionPanel: '',
     showSidebarWidgets: false,
+    recordPanelConfig: {} as RecordPanelMetadata,
     activeFilters: deepClone(initialFilters),
     openFilter: deepClone(initialFilter)
 };
@@ -101,8 +103,9 @@ const initialState: ListViewState = {
 export interface ListViewState {
     module: string;
     widgets: boolean;
+    actionPanel: string;
     showSidebarWidgets: boolean;
-    displayFilters: boolean;
+    recordPanelConfig: RecordPanelMetadata;
     activeFilters: SavedFilterMap;
     openFilter: SavedFilter;
 }
@@ -129,6 +132,7 @@ export class ListViewStore extends ViewStore implements StateStore {
     widgets$: Observable<boolean>;
     showSidebarWidgets$: Observable<boolean>;
     displayFilters$: Observable<boolean>;
+    actionPanel$: Observable<string>;
     recordList: RecordListStore;
     dataUpdate$: Observable<boolean>;
     dataSetUpdate$: Observable<boolean>;
@@ -183,7 +187,8 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.moduleName$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
         this.widgets$ = this.state$.pipe(map(state => state.widgets), distinctUntilChanged());
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
-        this.displayFilters$ = this.state$.pipe(map(state => state.displayFilters), distinctUntilChanged());
+        this.displayFilters$ = this.state$.pipe(map(state => state.actionPanel === 'filters'), distinctUntilChanged());
+        this.actionPanel$ = this.state$.pipe(map(state => state.actionPanel), distinctUntilChanged());
         this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
         this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
 
@@ -225,14 +230,19 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.filterList = this.filterListStoreFactory.create();
     }
 
+    get actionPanel(): string {
+        return this.internalState.actionPanel;
+    }
+
     get showFilters(): boolean {
-        return this.internalState.displayFilters;
+        return this.internalState.actionPanel === 'filters';
     }
 
     set showFilters(show: boolean) {
+
         this.updateState({
             ...this.internalState,
-            displayFilters: show
+            actionPanel: show ? 'filters' : ''
         });
     }
 
@@ -257,6 +267,31 @@ export class ListViewStore extends ViewStore implements StateStore {
             showSidebarWidgets: show
         });
     }
+
+    get recordPanelConfig(): RecordPanelMetadata {
+        return this.internalState.recordPanelConfig;
+    }
+
+    isRecordPanelOpen(): boolean {
+        return this.internalState.actionPanel === 'recordPanel';
+    }
+
+    openRecordPanel(config: RecordPanelMetadata): void {
+        this.updateState({
+            ...this.internalState,
+            actionPanel: 'recordPanel',
+            recordPanelConfig: config
+        });
+    }
+
+    closeRecordPanel(): void {
+        this.updateState({
+            ...this.internalState,
+            actionPanel: '',
+            recordPanelConfig: {} as RecordPanelMetadata
+        });
+    }
+
 
     getModuleName(): string {
         return this.internalState.module;
