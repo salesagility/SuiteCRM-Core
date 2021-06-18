@@ -48,7 +48,8 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         detail: [],
         list: [],
         edit: [],
-        create: []
+        create: [],
+        massupdate: []
     };
 
     protected constructor(
@@ -124,6 +125,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
             detail: [],
             edit: [],
             create: [],
+            massupdate: [],
         } as ModeActions;
 
         if (declaredActions && declaredActions.length) {
@@ -145,6 +147,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         availableActions.list = availableActions.list.concat(this.defaultActions.list);
         availableActions.edit = availableActions.edit.concat(this.defaultActions.edit);
         availableActions.create = availableActions.create.concat(this.defaultActions.create);
+        availableActions.massupdate = availableActions.massupdate.concat(this.defaultActions.massupdate);
 
         const actions = [];
 

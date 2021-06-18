@@ -36,7 +36,8 @@ export class BaseActionManager<D extends ActionData> implements ActionManager<D>
         edit: {} as ActionHandlerMap<D>,
         create: {} as ActionHandlerMap<D>,
         list: {} as ActionHandlerMap<D>,
-        detail: {} as ActionHandlerMap<D>
+        detail: {} as ActionHandlerMap<D>,
+        massupdate: {} as ActionHandlerMap<D>
     };
 
     run(action: Action, mode: ViewMode, data: D): void {
@@ -53,5 +54,15 @@ export class BaseActionManager<D extends ActionData> implements ActionManager<D>
         }
 
         return this.actions[mode][action.key];
+    }
+
+    addHandler(action: Action, mode: ViewMode, handler: ActionHandler<D>) {
+
+        if (!this.actions[mode]) {
+            this.actions[mode] = {} as ActionHandlerMap<D>;
+
+        }
+
+        this.actions[mode][action.key] = handler;
     }
 }

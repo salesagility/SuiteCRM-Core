@@ -131,7 +131,8 @@ export class MetadataStore implements StateStore {
         'listView',
         'search',
         'recordView',
-        'subPanel'
+        'subPanel',
+        'massUpdate'
     ];
 
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
