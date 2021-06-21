@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {Field} from 'common';
 import {TagInputModule} from 'ngx-chips';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule} from '@angular/forms';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
@@ -60,7 +60,11 @@ class MultiEnumEditFieldTestHostComponent {
         metadata: null,
         definition: {
             options: 'account_type_dom'
-        }
+        },
+        formControl: new FormControl([
+            '_customer',
+            '_reseller'
+        ])
     };
 }
 

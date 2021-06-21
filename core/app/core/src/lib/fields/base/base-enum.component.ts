@@ -111,7 +111,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     private addExtraOptions() {
-        const extraOptions = this.field.metadata.extraOptions || [];
+        const extraOptions = (this.field.metadata && this.field.metadata.extraOptions) || [];
 
         extraOptions.forEach((item: Option) => {
             if (isVoid(item.value)) {

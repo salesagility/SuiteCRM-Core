@@ -29,7 +29,7 @@ import {Component} from '@angular/core';
 import {EnumEditFieldComponent} from './enum.component';
 import {Field} from 'common';
 import {TagInputModule} from 'ngx-chips';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
@@ -56,7 +56,8 @@ class EnumEditFieldTestHostComponent {
         metadata: null,
         definition: {
             options: 'account_type_dom'
-        }
+        },
+        formControl: new FormControl('_customer')
     };
 }
 
@@ -155,52 +156,4 @@ describe('EnumEditFieldComponent', () => {
         expect(tag.length).toEqual(0);
     });
 
-    it('should allow adding value', async () => {
-        expect(testHostComponent).toBeTruthy();
-
-        testHostFixture.detectChanges();
-        await testHostFixture.whenRenderingDone();
-
-        const element = testHostFixture.nativeElement;
-
-        const deleteIcon = element.getElementsByTagName('delete-icon').item(0);
-
-        expect(deleteIcon).toBeTruthy();
-
-        deleteIcon.click();
-
-        testHostFixture.detectChanges();
-        await testHostFixture.whenStable();
-
-        const input = element.getElementsByTagName('tag-input-form').item(0);
-
-        input.click();
-
-        testHostFixture.detectChanges();
-        await testHostFixture.whenStable();
-
-        const menu = document.getElementsByClassName('ng2-dropdown-menu').item(0);
-        const item = menu.getElementsByClassName('ng2-menu-item').item(0);
-
-        expect(menu).toBeTruthy();
-        expect(item).toBeTruthy();
-
-        item.parentElement.click();
-
-        testHostFixture.detectChanges();
-        await testHostFixture.whenStable();
-
-        const tag = element.getElementsByTagName('tag').item(0);
-
-        expect(tag).toBeTruthy();
-
-        const tagText = tag.getElementsByClassName('tag__text').item(0);
-
-        expect(tagText.textContent).toContain('Customer');
-        expect(tagText.textContent).not.toContain('_customer');
-
-        const newDeleteIcon = element.getElementsByTagName('delete-icon').item(0);
-
-        expect(newDeleteIcon).toBeTruthy();
-    });
 });

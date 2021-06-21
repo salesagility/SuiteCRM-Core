@@ -38,6 +38,7 @@ import {userPreferenceStoreMock} from '../../../../store/user-preference/user-pr
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {numberFormatterMock} from '../../../../services/formatters/number/number-formatter.spec.mock';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
+import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'boolean-edit-field-test-host-component',
@@ -46,7 +47,8 @@ import {NumberFormatter} from '../../../../services/formatters/number/number-for
 class BooleanEditFieldTestHostComponent {
     field: Field = {
         type: 'boolean',
-        value: 'true'
+        value: 'true',
+        formControl: new FormControl(true)
     };
 }
 
