@@ -2015,12 +2015,12 @@ alphanum-sort@^1.0.2:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-angular-svg-icon@^11.0.0:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/angular-svg-icon/-/angular-svg-icon-11.2.0.tgz#cda349cb55643781b7a42d622f0f6610921ead2a"
-  integrity sha512-5SWvZyRPRV88n6/b+5AqI580Aq3xmQ1dd1ucYCMDrj4afQzQwJv2V7pBFcF3qNYzVZyF5TLDF006tGxMHYAb2g==
+angular-svg-icon@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/angular-svg-icon/-/angular-svg-icon-12.0.0.tgz#02afd674f7ef9b6239512ab96eae3872fa11f217"
+  integrity sha512-nPAbF/U6sHdY+Dt/J5TZuUNOGRZmxoqJioRfLGMeNt8ycbBbTwq1OmkZ7DLuF02+XGafGHwzmI5/2y9OWAl+TA==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.2.0"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
