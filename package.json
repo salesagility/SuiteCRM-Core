@@ -19,7 +19,7 @@
     "test:core": "ng test core",
     "gen-index": "barrelsby --delete -e '.*\\.spec.*' -q",
     "gen-index:core": "barrelsby --delete -e '.*\\.spec.*' -q -d core/app/core/src/lib/ -n 'core'",
-    "gen-index:common": "barrelsby --delete -e '.*\\.spec.*' -q -d './core/app/common/src/lib/' -n 'common'",
+    "gen-index:common": "barrelsby --delete -e '.*\\.spec.*' -q -d 'core/app/common/src/lib/' -n 'common'",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ngcc"
@@ -37,7 +37,7 @@
   "dependencies": {
     "@angular-architects/module-federation": "^1.1.0",
     "@angular/animations": "12.1.0",
-    "@angular/cdk": "^10.2.7",
+    "@angular/cdk": "^11.2.13",
     "@angular/common": "12.1.0",
     "@angular/compiler": "12.1.0",
     "@angular/core": "12.1.0",
