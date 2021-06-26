@@ -47,6 +47,10 @@
   font-weight: bold;
 }
 
+.history-timeline .history-timeline-entry-description {
+  white-space: pre;
+}
+
 .history-timeline .connector {
   height: 0.5rem;
   width: 0.6rem;
@@ -94,4 +98,32 @@
 
 .history-timeline .entry-blue .card {
   background: $light-blue;
+}
+
+.history-timeline .history-timeline-entry.entry-orange {
+  color: $burnt-orange;
+  border-color: $burnt-orange;
+}
+
+.history-timeline .history-timeline-entry.entry-orange svg {
+  fill: $burnt-orange;
+  stroke: $burnt-orange;
+}
+
+.history-timeline .entry-orange .card {
+  background: $lighter-orange;
+}
+
+.history-timeline .history-timeline-entry.entry-green {
+  color: $light-green;
+  border-color: $light-green;
+}
+
+.history-timeline .history-timeline-entry.entry-green svg {
+  fill: $light-green;
+  stroke: $light-green;
+}
+
+.history-timeline .entry-green .card {
+  background: $very-light-green;
 }
