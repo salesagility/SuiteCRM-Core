@@ -121,7 +121,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $selectOffset = $criteria['preset']['params']['offset'] ?? '';
         $selectLimit = $criteria['preset']['params']['limit'] ?? '';
 
-        $sort['orderBy'] = 'date_modified';
+        $sort['orderBy'] = 'date_end';
         $sort['sortOrder'] = 'DESC';
 
         if ($parentModule) {
@@ -239,20 +239,20 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $historyUnionQueryParams = (new SubpanelDataPort())->fetchFinalQuery(
             $parentBean,
             $selectModule,
-            $selectOffset,
-            $selectLimit,
-            $sort['orderBy'] ?? '',
-            $sort['sortOrder'] ?? '',
+            -1,
+            -1,
+            '',
+            '',
             $unionQueryColumns
         );
 
         $activitiesUnionQueryParams = (new SubpanelDataPort())->fetchFinalQuery(
             $parentBean,
             'activities',
-            $selectOffset,
-            $selectLimit,
-            $sort['orderBy'] ?? '',
-            $sort['sortOrder'] ?? '',
+            -1,
+            -1,
+            '',
+            '',
             $unionQueryColumns
         );
 
@@ -267,11 +267,10 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $historyUnionQuery = $historyUnionQueryParams[1];
         $activitiesUnionQuery = $activitiesUnionQueryParams[1];
         $auditUnionQuery = $this->queryAuditInfo($parentBean);
-
-        $combinedQuery = '(' . $historyUnionQuery . ')
-        UNION (' . $activitiesUnionQuery . ')
-        UNION (' . $auditUnionQuery . ')
-        ORDER BY date_end DESC Limit ' . $selectOffset . ', ' . $selectLimit;
+        $combinedQuery = $historyUnionQuery .
+            ' UNION ALL ' . $activitiesUnionQuery .
+            ' UNION ALL ' . $auditUnionQuery .
+            ' ORDER BY ' . $sort['orderBy'] . ' ' . $sort['sortOrder'] . ' Limit ' . $selectOffset . ', ' . $selectLimit;
 
         $listData = $this->fetchAll($combinedQuery);
 
@@ -281,7 +280,6 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $vardefs = $fieldDefinition->getVardef();
 
         $mod_strings = return_module_language($current_language, $legacyParentModule);
-        $labelChangedToText = $app_strings['LBL_CHANGED_TO_TEXT'];
 
         foreach ($listData as $key => $record) {
 
@@ -299,7 +297,14 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
                     //present field value
                     $auditFieldValue = $auditFieldValues[$index] ?? '';
 
-                    $auditDescription .= implode(" ", [$auditedFieldLabelKey, $labelChangedToText, $auditFieldValue, '<br/>']);
+                    if ($field === 'assigned_user_id') {
+                        // transform userid to username
+                        /** @var User $user */
+                        $user = BeanFactory::getBean('Users', $auditFieldValue);
+                        $auditFieldValue = $user->user_name ?? '';
+                    }
+
+                    $auditDescription .= implode(" ", [$auditedFieldLabelKey, $auditFieldValue, '<br/>']);
 
                     $listData[$key]['description'] = $auditDescription;
                     $listData[$key]['name'] = $app_strings['LBL_RECORD_CHANGED'];
@@ -320,25 +325,27 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         return $timelineEntryData;
     }
 
-
+    /**
+     * get audit data grouped by date created and created by
+     */
     protected function queryAuditInfo(
         SugarBean $bean
     ): string
     {
         $parts = [];
 
-        $parts['select'] = "SELECT id,
+        $parts['select'] = "SELECT max(id),
         GROUP_CONCAT(field_name) as name,
         GROUP_CONCAT(after_value_string) as status,
-        audit.date_created AS date_modified,
-        audit.date_created AS date_entered,
-        audit.date_created AS date_end,
+        max(audit.date_created) AS date_modified,
+        max(audit.date_created) AS date_entered,
+        max(audit.date_created) AS date_end,
         audit.created_by AS assigned_user_id,
         'audit' panel_name ";
 
         $parts['from'] = ' FROM ' . $bean->get_audit_table_name() . ' as audit';
         $parts['where'] = " WHERE parent_id = '" . $bean->id . "'";
-        $parts['group_by'] = ' GROUP BY `date_modified` ';
+        $parts['group_by'] = ' GROUP BY audit.date_created, audit.created_by ';
 
         foreach ($parts as $key => $item) {
             if (isset($queryParts[$key])) {
