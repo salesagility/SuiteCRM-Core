@@ -26,13 +26,24 @@
 */
 -->
 <scrm-widget-panel [title]="getHeaderLabel()">
-    <div widget-body>
-        <div class="widget-background history-timeline p-2 pt-2">
-            <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="200" maxBufferPx="400"
-                                         class="history-timeline-viewport">
-                <div *cdkVirtualFor="let entry of adapter">
+    <div widget-body *ngIf="(adapter?.dataStream$| async) as vm">
 
-                    <div
+        <div class="widget-background history-timeline p-2 pt-2">
+
+            <div *ngIf="adapter?.loading" class="d-flex record-thread-loading justify-content-center">
+                <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+            </div>
+
+            <cdk-virtual-scroll-viewport itemSize="100"
+                                         class="history-timeline-viewport"
+                                         [ngClass]="[vm.length <= 0 ? 'history-timeline-viewport-no-data' : 'history-timeline-viewport']"
+                                         (scroll)="onScroll()">
+
+                <scrm-chart-message-area *ngIf="!adapter?.loading && vm.length <= 0"
+                                         labelKey="LBL_NO_DATA"></scrm-chart-message-area>
+
+                <div *ngFor="let entry of vm;">
+                    <div *ngIf="vm.length > 0"
                          class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
                         <div class="">
                             <div class="circle">
@@ -47,7 +58,6 @@
                                 <div class="connector mt-3">
                                 </div>
                             </div>
-
 
                         </div>
                         <div class="flex-grow-1">

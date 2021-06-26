@@ -29,10 +29,12 @@ import {StateStore} from '../../../../store/state';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {Observable} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
+import {ViewContext} from 'common';
 
 @Injectable()
 export class HistoryTimelineStore implements StateStore {
-    recordList: RecordListStore;
+    private recordList: RecordListStore;
+    private viewContext: ViewContext;
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory
@@ -51,17 +53,14 @@ export class HistoryTimelineStore implements StateStore {
 
     /**
      * Initial list records load if not cached and update state.
-     * Returns observable to be used in resolver if needed
      *
-     * @param {string} parentModule name
-     * @param {string} parentId id
-     * @param {number} offset of the record
-     * @param {number} limit of the record
+     * @param {ViewContext} context of parent
      * @description initialize the Record List Store
+     * returns {void}
      */
-    public init(parentModule: string, parentId: string, offset: number, limit: number): void {
+    public init(context): void {
         this.recordList.init('history', false, 'list_max_entries_per_subpanel');
-        this.initSearchCriteria(parentModule, parentId, offset, limit);
+        this.initViewContext(context);
     }
 
     /**
@@ -78,23 +77,25 @@ export class HistoryTimelineStore implements StateStore {
     /**
      * Init search criteria
      *
-     * @param {string} parentModule name
-     * @param {string} parentId id
      * @param {number} offset of the recordset
      * @param {number} limit of the recordset
      * @description initialize the search module/criteria(offset/limit) for the record set
      */
-    protected initSearchCriteria(parentModule: string, parentId: string, offset: number, limit: number): void {
+    public initSearchCriteria(offset: number, limit: number): void {
         this.recordList.criteria = {
             preset: {
                 type: 'history-timeline',
                 params: {
-                    parentModule,
-                    parentId,
+                    parentModule: this.viewContext.module,
+                    parentId: this.viewContext.id,
                     offset,
                     limit
                 }
             }
         };
+    }
+
+    protected initViewContext(viewContext: ViewContext): void {
+        this.viewContext = viewContext;
     }
 }

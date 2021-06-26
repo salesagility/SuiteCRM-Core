@@ -24,13 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
-import {Subscription, timer} from 'rxjs';
-import {debounce} from 'rxjs/operators';
+import {combineLatest, Subscription, timer} from 'rxjs';
+import {debounce, map} from 'rxjs/operators';
+import {floor} from 'lodash-es';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 @Component({
     selector: 'scrm-history-timeline-widget',
@@ -38,7 +40,8 @@ import {debounce} from 'rxjs/operators';
     styleUrls: [],
     providers: [HistoryTimelineAdapter]
 })
-export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit, OnDestroy {
+export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 
     public adapter: HistoryTimelineAdapter;
     private subscription = new Subscription();
@@ -50,16 +53,40 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
     }
 
     ngOnInit(): void {
+        this.adapter = this.historyTimelineAdapterFactory.create();
+        this.adapter.init(this.context);
+    }
 
+    ngAfterViewInit(): void {
+
+        // watch out for the data list updates on the related subpanels activities and history
         // reload request will be ignored;
         // if they are notified multiple times within the dueTime/delay 500 ms
 
-        const debouncedReload = this.config.reload$.pipe(debounce(() => timer(500)));
+        const reloadMap = [];
+        reloadMap.push(this.config.reload$);
+        reloadMap.push(this.config.subpanelReload$);
+
+        const subpanelsToWatch = ['history', 'activities'];
+
+        const reload$ = combineLatest(reloadMap).pipe(
+            map(([reload, subpanelReload]) => {
+                if (reload) {
+                    return reload;
+                }
+
+                if (!subpanelReload) {
+                    return false;
+                }
+
+                return subpanelsToWatch.some(subpanelKey => !!subpanelReload[subpanelKey]);
+            }));
+
+        const debouncedReload = reload$.pipe(debounce(() => timer(1000)));
 
         this.subscription.add(debouncedReload.subscribe(reload => {
             if (reload) {
-                this.adapter = this.historyTimelineAdapterFactory.create();
-                this.adapter.init(this.context);
+                this.adapter.fetchTimelineEntries(true);
             }
         }));
     }
@@ -68,8 +95,29 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
         this.subscription.unsubscribe();
     }
 
+    /**
+     * @returns {string} Timeline Entry
+     * @description {fetch language label for the timeline widget header}
+     */
     getHeaderLabel(): string {
         return this.languageStore.getFieldLabel('LBL_QUICK_HISTORY');
+    }
+
+    /**
+     * @returns {void} Timeline Entry
+     * @description {checks if end of the scroll is reached to make a backend call for next set of timeline entries}
+     */
+    onScroll(): void {
+
+        if (!this.adapter) {
+            return;
+        }
+
+        const scrollOffset = this.virtualScroll.measureScrollOffset('bottom');
+
+        if (floor(scrollOffset) === 0) {
+            this.adapter.fetchTimelineEntries(false);
+        }
     }
 
 }

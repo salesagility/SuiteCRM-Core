@@ -28,6 +28,10 @@
   height: 45em;
 }
 
+.history-timeline-viewport-no-data {
+  height: 100px;
+}
+
 .history-timeline .card {
   border: 0.17em solid;
 }
@@ -42,9 +46,20 @@
   font-size: x-large;
 }
 
-.history-timeline .history-timeline-entry-title {
+.history-timeline {
   font-size: small;
   font-weight: bold;
+
+  .history-timeline-entry-title {
+  }
+
+  .history-timeline-entry-user {
+    border-top-style: double;
+  }
+}
+
+.history-timeline .history-timeline-entry-description {
+  white-space: pre;
 }
 
 .history-timeline .history-timeline-entry-description {

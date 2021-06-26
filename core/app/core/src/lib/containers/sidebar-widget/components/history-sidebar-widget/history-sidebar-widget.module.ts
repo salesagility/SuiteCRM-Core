@@ -31,6 +31,9 @@ import {HistorySidebarWidgetComponent} from './history-sidebar-widget.component'
 import {FieldModule} from '../../../../fields/field.module';
 import {WidgetPanelModule} from '../../../../components/widget-panel/widget-panel.module';
 import {ImageModule} from '../../../../components/image/image.module';
+import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loading-spinner.module';
+import {LabelModule} from '../../../../components/label/label.module';
+import {ChartMessageAreaModule} from '../../../../components/chart/components/chart-message-area/chart-message-area.module';
 
 @NgModule({
     declarations: [HistorySidebarWidgetComponent],
@@ -42,7 +45,10 @@ import {ImageModule} from '../../../../components/image/image.module';
         ScrollingModule,
         ImageModule,
         FieldModule,
-        WidgetPanelModule
+        WidgetPanelModule,
+        LoadingSpinnerModule,
+        LabelModule,
+        ChartMessageAreaModule
     ]
 })
 export class HistorySidebarWidgetModule {
