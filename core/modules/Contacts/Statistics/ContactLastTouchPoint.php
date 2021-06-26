@@ -50,7 +50,7 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
     /**
      * @var ModuleNameMapperInterface
      */
-    private $moduleNameMapper;
+    protected $moduleNameMapper;
 
     /**
      * ListDataHandler constructor.

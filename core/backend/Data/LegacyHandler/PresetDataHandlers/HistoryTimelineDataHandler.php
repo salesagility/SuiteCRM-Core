@@ -31,45 +31,39 @@ namespace App\Data\LegacyHandler\PresetDataHandlers;
 use App\Data\LegacyHandler\ListData;
 use App\Data\LegacyHandler\PresetListDataHandlerInterface;
 use App\Data\LegacyHandler\RecordMapper;
-use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Statistics\StatisticsHandlingTrait;
+use BadMethodCallException;
 use BeanFactory;
-use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use SubpanelDataPort;
+use SugarBean;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use User;
 
-class HistoryTimelineDataHandler extends LegacyHandler implements PresetListDataHandlerInterface
+class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements PresetListDataHandlerInterface, LoggerAwareInterface
 {
+    use StatisticsHandlingTrait;
+
     public const HANDLER_KEY = 'history-timeline-data-handlers';
 
     /**
-     * @var ModuleNameMapperInterface
+     * @var LoggerInterface
      */
-    private $moduleNameMapper;
-
+    private $logger;
     /**
      * @var RecordMapper
      */
     private $recordMapper;
 
     /**
-     * @var EntityManagerInterface
+     * @var FieldDefinitionsProviderInterface
      */
-    private $entityManager;
+    private $fieldDefinitionProvider;
 
-    /**
-     * HistoryTimelineDataHandler constructor.
-     * @param string $projectDir
-     * @param string $legacyDir
-     * @param string $legacySessionName
-     * @param string $defaultSessionName
-     * @param LegacyScopeState $legacyScopeState
-     * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param RecordMapper $recordMapper
-     * @param SessionInterface $session
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         string $projectDir,
         string $legacyDir,
@@ -77,14 +71,14 @@ class HistoryTimelineDataHandler extends LegacyHandler implements PresetListData
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        RecordMapper $recordMapper,
         SessionInterface $session,
-        EntityManagerInterface $entityManager
-    ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
-        $this->moduleNameMapper = $moduleNameMapper;
+        RecordMapper $recordMapper,
+        FieldDefinitionsProviderInterface $fieldDefinitionProvider
+    )
+    {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $moduleNameMapper, $session);
         $this->recordMapper = $recordMapper;
-        $this->entityManager = $entityManager;
+        $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }
 
     /**
@@ -112,7 +106,12 @@ class HistoryTimelineDataHandler extends LegacyHandler implements PresetListData
         int $offset = -1,
         int $limit = -1,
         array $sort = []
-    ): ListData {
+    ): ListData
+    {
+
+        $this->init();
+        $this->startLegacyApp();
+        global $current_language, $app_strings;
 
         $parentModule = $criteria['preset']['params']['parentModule'] ?? '';
         $parentId = $criteria['preset']['params']['parentId'] ?? '';
@@ -128,27 +127,234 @@ class HistoryTimelineDataHandler extends LegacyHandler implements PresetListData
         if ($parentModule) {
             $parentModule = $this->moduleNameMapper->toLegacy($parentModule);
         }
+        if (empty($parentModule)) {
+            throw new BadMethodCallException('Parent Module not defined!');
+        }
+
+        $legacyParentModule = $this->moduleNameMapper->toLegacy($parentModule);
 
         $this->initController($parentModule);
 
         $parentBean = BeanFactory::getBean($parentModule, $parentId);
 
+        $unionQueryColumns =
+            [
+                'tasks' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_due" => [
+                        "alias" => 'date_end',
+                        "sort_by" => 'date_end'
+                    ]
+                ],
+                'tasks_parent' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_due" => [
+                        "alias" => 'date_end',
+                        "sort_by" => 'date_end'
+                    ]
+                ],
+                'meetings' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_end" => [],
+                ],
+                'oldmeetings' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_end" => [],
+                ],
+                'calls' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_end" => [],
+                ],
+                'oldcalls' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [],
+                    "date_end" => [],
+                ],
+                'notes' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [],
+                    "date_entered" => [
+
+                        "alias" => 'date_end',
+                        "sort_by" => 'date_end'
+                    ],
+                    "date_due" => [],
+                ],
+                'emails' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [
+                        "alias" => 'date_end',
+                        "sort_by" => 'date_end'
+                    ],
+                    "date_entered" => [],
+                    "date_due" => [],
+                ],
+                'linkedemails' => [
+                    "name" => [],
+                    "status" => [],
+                    "date_modified" => [
+                        "alias" => 'date_end',
+                        "sort_by" => 'date_end'
+                    ],
+                    "date_entered" => [],
+                    "date_due" => [],
+                ],
+            ];
+
+        $panelToModuleName = [
+            'tasks' => 'Tasks',
+            'tasks_parent' => 'Tasks',
+            'meetings' => 'Meetings',
+            'oldmeetings' => 'Meetings',
+            'calls' => 'Calls',
+            'oldcalls' => 'Calls',
+            'notes' => 'Notes',
+            'emails' => 'Emails',
+            'linkedemails' => 'Emails',
+            'audit' => 'audit'
+        ];
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/Subpanels/SubpanelDataPort.php';
 
-        $data = (new SubpanelDataPort())->fetch(
+        $historyUnionQueryParams = (new SubpanelDataPort())->fetchFinalQuery(
             $parentBean,
             $selectModule,
             $selectOffset,
             $selectLimit,
             $sort['orderBy'] ?? '',
-            $sort['sortOrder'] ?? ''
+            $sort['sortOrder'] ?? '',
+            $unionQueryColumns
         );
 
-        $listData = new ListData();
-        $listData->setOffsets($data['offsets'] ?? []);
-        $listData->setOrdering($data['ordering'] ?? []);
-        $listData->setRecords($this->recordMapper->mapRecords($data['data'] ?? []));
-        return $listData;
+        $activitiesUnionQueryParams = (new SubpanelDataPort())->fetchFinalQuery(
+            $parentBean,
+            'activities',
+            $selectOffset,
+            $selectLimit,
+            $sort['orderBy'] ?? '',
+            $sort['sortOrder'] ?? '',
+            $unionQueryColumns
+        );
+
+        if ($historyUnionQueryParams === null || $activitiesUnionQueryParams === null) {
+            $timelineEntryData = new ListData();
+            $timelineEntryData->setOffsets([]);
+            $timelineEntryData->setOrdering([]);
+            $timelineEntryData->setRecords($this->recordMapper->mapRecords([]));
+            return $timelineEntryData;
+        }
+
+        $historyUnionQuery = $historyUnionQueryParams[1];
+        $activitiesUnionQuery = $activitiesUnionQueryParams[1];
+        $auditUnionQuery = $this->queryAuditInfo($parentBean);
+
+        $combinedQuery = '(' . $historyUnionQuery . ')
+        UNION (' . $activitiesUnionQuery . ')
+        UNION (' . $auditUnionQuery . ')
+        ORDER BY date_end DESC Limit ' . $selectOffset . ', ' . $selectLimit;
+
+        $listData = $this->fetchAll($combinedQuery);
+
+        /** Get Audit Data */
+        // Required to get Language Label for the Audited Column Name
+        $fieldDefinition = $this->fieldDefinitionProvider->getVardef($parentModule);
+        $vardefs = $fieldDefinition->getVardef();
+
+        $mod_strings = return_module_language($current_language, $legacyParentModule);
+        $labelChangedToText = $app_strings['LBL_CHANGED_TO_TEXT'];
+
+        foreach ($listData as $key => $record) {
+
+            if ($listData[$key]['panel_name'] === 'audit') {
+
+                $auditFields = explode(',', $record['name'] ?? '');
+                $auditFieldValues = explode(',', $record['status'] ?? '');
+                $auditDescription = '';
+
+                foreach ($auditFields as $index => $field) {
+                    //translated field name
+                    $auditFieldDefinition = $vardefs[$field] ?? [];
+                    $auditedFieldLabelKey = $mod_strings[$auditFieldDefinition['vname']] ?? '';
+
+                    //present field value
+                    $auditFieldValue = $auditFieldValues[$index] ?? '';
+
+                    $auditDescription .= implode(" ", [$auditedFieldLabelKey, $labelChangedToText, $auditFieldValue, '<br/>']);
+
+                    $listData[$key]['description'] = $auditDescription;
+                    $listData[$key]['name'] = $app_strings['LBL_RECORD_CHANGED'];
+                }
+            }
+
+            /** @var User $user */
+            $user = BeanFactory::getBean('Users', $record['assigned_user_id']);
+            $listData[$key]['assigned_user_name']['user_name'] = $user->user_name ?? '';
+            $listData[$key]['assigned_user_name']['user_id'] = $record['assigned_user_id'];
+            $listData[$key]['module_name'] = $panelToModuleName[$listData[$key]['panel_name']];
+        }
+
+        $timelineEntryData = new ListData();
+        $timelineEntryData->setOffsets($listData['offsets'] ?? []);
+        $timelineEntryData->setOrdering($listData['ordering'] ?? []);
+        $timelineEntryData->setRecords($this->recordMapper->mapRecords($listData ?? []));
+        return $timelineEntryData;
     }
+
+
+    protected function queryAuditInfo(
+        SugarBean $bean
+    ): string
+    {
+        $parts = [];
+
+        $parts['select'] = "SELECT id,
+        GROUP_CONCAT(field_name) as name,
+        GROUP_CONCAT(after_value_string) as status,
+        audit.date_created AS date_modified,
+        audit.date_created AS date_entered,
+        audit.date_created AS date_end,
+        audit.created_by AS assigned_user_id,
+        'audit' panel_name ";
+
+        $parts['from'] = ' FROM ' . $bean->get_audit_table_name() . ' as audit';
+        $parts['where'] = " WHERE parent_id = '" . $bean->id . "'";
+        $parts['group_by'] = ' GROUP BY `date_modified` ';
+
+        foreach ($parts as $key => $item) {
+            if (isset($queryParts[$key])) {
+                $parts[$key] = $queryParts[$key];
+            }
+        }
+
+        return $this->joinQueryParts($parts);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
 }

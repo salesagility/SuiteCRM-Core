@@ -28,6 +28,7 @@
 
 namespace App\Data\LegacyHandler\PresetDataHandlers;
 
+use App\Data\LegacyHandler\RecordMapper;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
@@ -42,7 +43,7 @@ class SubpanelDataQueryHandler extends LegacyHandler
     /**
      * @var ModuleNameMapperInterface
      */
-    private $moduleNameMapper;
+    protected $moduleNameMapper;
 
     /**
      * @var SubpanelCustomQueryPort
