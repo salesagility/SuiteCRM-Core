@@ -27,20 +27,22 @@
 import {Injectable} from '@angular/core';
 import {CollectionViewer, DataSource, ListRange} from '@angular/cdk/collections';
 import {HistoryTimelineEntry} from './history-sidebar-widget.model';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {HistoryTimelineStore} from '../../store/history-timeline/history-timeline.store';
-import {ViewContext, Record} from 'common';
-import {take} from 'rxjs/operators';
+import {ViewContext, Record, emptyObject} from 'common';
+import {startWith, switchMap, take} from 'rxjs/operators';
 import {HistoryTimelineStoreFactory} from './history-timeline.store.factory';
 
 export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit' | 'notes' | string;
 
 @Injectable()
 export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
-    private subscription = new Subscription();
+
     private defaultPageSize = 10;
-    private cache: HistoryTimelineEntry[] = [{} as HistoryTimelineEntry];
+
+    private cache: HistoryTimelineEntry[] = [];
     private dataStream = new BehaviorSubject<HistoryTimelineEntry[]>(this.cache);
+    private dataStream$ = this.dataStream.asObservable();
 
     private store: HistoryTimelineStore;
     private context: ViewContext;
@@ -67,11 +69,13 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
      * this function provides the range for the recordset to be loaded; calculated dynamically
      * by the cdk-virtual scroll component based on the container scroll event by the user
      */
-    connect(collectionViewer: CollectionViewer): Observable<HistoryTimelineEntry[] | ReadonlyArray<HistoryTimelineEntry>> {
-        this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-            this.fetchPage(range);
-        }));
-        return this.dataStream.asObservable();
+    connect(collectionViewer: CollectionViewer): Observable<HistoryTimelineEntry[]> {
+
+        return collectionViewer.viewChange.pipe(
+            startWith({start: 0, end: this.defaultPageSize}),
+            switchMap(viewChange => this.fetchPage(viewChange))
+        );
+
     }
 
     /**
@@ -80,7 +84,6 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
      */
     disconnect(): void {
         this.cache.length = 0;
-        this.subscription.unsubscribe();
     }
 
     /**
@@ -89,24 +92,25 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
      * @description calculates the offsets/limit of the new recordset, which don't exist
      * in local cache object to be fetched from the database
      */
-    fetchPage(range: ListRange): void {
-        // calculate query offset and limit
-        let offset = 0;
-        let limit = 0;
+    fetchPage(range: ListRange): Observable<HistoryTimelineEntry[]> {
 
-        // - 1 for initial/default empty value on Behavior Subject
-        const cacheLength = this.cache.length - 1;
+        const cacheLength = this.cache.length;
+
+        // limit is always defaultPageSize for performance reason
+        const limit = this.defaultPageSize;
+
+        // calculate offset
+        let offset = 0;
+
         if (cacheLength <= 0) {
             offset = 0;
-            limit = this.defaultPageSize;
         } else if (cacheLength < range.end) {
             offset = cacheLength;
-            limit = range.end - cacheLength;
         } else {
-            return;
+            return this.dataStream$;
         }
 
-        this.retrieveRecords(offset, limit);
+        return this.retrieveRecords(offset, limit);
     }
 
     /**
@@ -115,7 +119,7 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
      * @param {number} limit  record size
      * @description retrieve the records based on the calculated offsets/limit by the caller function
      */
-    retrieveRecords(offset: number, limit: number): void {
+    retrieveRecords(offset: number, limit: number): Observable<HistoryTimelineEntry[]> {
 
         this.store.init(this.context.module, this.context.id, offset, limit);
 
@@ -123,15 +127,22 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
 
             const records: Record [] = value.records;
 
-            if (records && Object.keys(records).length > 0) {
+            if (!emptyObject(records)) {
 
                 Object.keys(records).forEach(key => {
 
+                    const timelineModule = records[key].module;
+
+                    let moduleIcon = records[key].attributes.module_name;
+                    if (timelineModule === 'audit') {
+                        moduleIcon = 'History';
+                    }
+
                     const gridColor = this.getActivityGridColor(records[key].module);
 
-                    this.cache.push({
-                        module: records[key].module,
-                        icon: records[key].attributes.module_name,
+                    const timelineEntry = {
+                        module: timelineModule,
+                        icon: moduleIcon,
                         color: gridColor,
                         title: {
                             type: 'varchar',
@@ -143,14 +154,24 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
                         },
                         date: {
                             type: 'datetime',
-                            value: records[key].attributes.date_modified,
+                            value: records[key].attributes.date_end,
                         },
                         record: records[key]
-                    } as HistoryTimelineEntry);
+                    } as HistoryTimelineEntry;
+
+                    if (timelineModule === 'audit') {
+
+                        timelineEntry.description = {
+                            type: 'html',
+                            value: records[key].attributes.description
+                        };
+                    }
+                    this.cache.push(timelineEntry);
                 });
                 this.dataStream.next(this.cache);
             }
         });
+        return this.dataStream$;
     }
 
     /**
@@ -163,9 +184,9 @@ export class HistoryTimelineAdapter extends DataSource<HistoryTimelineEntry> {
             calls: 'yellow',
             tasks: 'green',
             meetings: 'blue',
-            history: 'purple',
-            notes: 'blue',
-            audit: 'blue'
+            notes: 'orange',
+            audit: 'purple',
+            history: 'purple'
         };
         return colorMap[activity] || 'yellow';
     }

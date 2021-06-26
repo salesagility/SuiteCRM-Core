@@ -32,7 +32,8 @@
                                          class="history-timeline-viewport">
                 <div *cdkVirtualFor="let entry of adapter">
 
-                    <div *ngIf="!isEmptyObject(entry)" class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
+                    <div
+                         class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
                         <div class="">
                             <div class="circle">
                                 <div
@@ -40,8 +41,6 @@
                                     <scrm-image [image]="entry.icon"></scrm-image>
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="">
                             <div class="d-flex justify-content-center h-100">
@@ -62,6 +61,16 @@
                                                     [record]="entry.record">
                                         </scrm-field>
                                     </p>
+                                    <div *ngIf="entry.description"
+                                         class="card-text history-timeline-entry-description">
+                                        <small class="text-break">
+                                            <scrm-field [type]="entry.description.type"
+                                                        mode="detail"
+                                                        [field]="entry.description"
+                                                        [record]="entry.record">
+                                            </scrm-field>
+                                        </small>
+                                    </div>
                                     <div class="card-text history-timeline-entry-user text-uppercase">
                                         <small class="text-break">
                                             <scrm-field [type]="entry.user.type"

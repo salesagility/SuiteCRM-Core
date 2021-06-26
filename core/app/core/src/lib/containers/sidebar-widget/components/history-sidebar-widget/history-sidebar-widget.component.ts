@@ -24,12 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
-import {emptyObject} from 'common';
+import {Subscription, timer} from 'rxjs';
+import {debounce} from 'rxjs/operators';
 
 @Component({
     selector: 'scrm-history-timeline-widget',
@@ -37,9 +38,10 @@ import {emptyObject} from 'common';
     styleUrls: [],
     providers: [HistoryTimelineAdapter]
 })
-export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit {
+export class HistorySidebarWidgetComponent extends BaseWidgetComponent implements OnInit, OnDestroy {
 
     public adapter: HistoryTimelineAdapter;
+    private subscription = new Subscription();
 
     constructor(
         protected historyTimelineAdapterFactory: HistoryTimelineAdapterFactory,
@@ -48,20 +50,26 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
     }
 
     ngOnInit(): void {
-        this.adapter = this.historyTimelineAdapterFactory.create();
-        this.adapter.init(this.context);
+
+        // reload request will be ignored;
+        // if they are notified multiple times within the dueTime/delay 500 ms
+
+        const debouncedReload = this.config.reload$.pipe(debounce(() => timer(500)));
+
+        this.subscription.add(debouncedReload.subscribe(reload => {
+            if (reload) {
+                this.adapter = this.historyTimelineAdapterFactory.create();
+                this.adapter.init(this.context);
+            }
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     getHeaderLabel(): string {
         return this.languageStore.getFieldLabel('LBL_QUICK_HISTORY');
     }
 
-    /**
-     * @returns {boolean} true or false
-     * @param {object} obj object to be checked
-     * @description checks if an object is empty or not
-     */
-    isEmptyObject(obj: any): boolean {
-        return emptyObject(obj);
-    }
 }

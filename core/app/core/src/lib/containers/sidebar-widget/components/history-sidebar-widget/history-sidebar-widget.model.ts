@@ -24,8 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field} from 'common';
-import {Record} from 'common';
+import {Record, Field} from 'common';
 
 export interface HistoryTimelineEntry {
     title: Field;
@@ -35,4 +34,5 @@ export interface HistoryTimelineEntry {
     user: Field;
     date: Field;
     record: Record;
+    description?: Field;
 }
