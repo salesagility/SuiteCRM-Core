@@ -111,6 +111,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * Get module subpanels
      * @param string $module
      * @return array
+     * @description This function gets all the available legacy subpanels/tabs for a module
+     * and re-format it to match the front-end requirements
      */
     protected function getModuleSubpanels(string $module): array
     {
@@ -127,48 +129,54 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $mod = new $class();
         $spd = new SubPanelDefinitions($mod);
 
-        $tabs = $spd->layout_defs['subpanel_setup'] ?? [];
+        // all subpanels available(defined) for a module
+        $availableSubpanels = $spd->layout_defs['subpanel_setup'] ?? [];
 
-        $resultingTabs = [];
+        // subpanels allowed bases on user ACL
+        $allowedSubpanels = $spd->get_available_tabs() ?? [];
 
-        foreach ($tabs as $key => $tab) {
+        $frontEndSubpanelDefs = [];
+
+        foreach ($allowedSubpanels as $subpanelKey) {
+
+            $legacySubpanelDef = $availableSubpanels[$subpanelKey];
+            $subpanelModule = $legacySubpanelDef['module'];
 
             /** @var aSubPanel $subpanel */
-            $subpanel = $spd->load_subpanel($key);
-
+            $subpanel = $spd->load_subpanel($subpanelKey);
             if ($subpanel === false) {
                 continue;
             }
 
             $columnSubpanel = $subpanel;
-            if (!empty($tab['collection_list'])) {
+            if (!empty($legacySubpanelDef['collection_list'])) {
                 $columnSubpanel = $subpanel->get_header_panel_def();
                 $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
             } else {
-                $headerModule = $this->getHeaderModule($tab);
+                $headerModule = $this->getHeaderModule($legacySubpanelDef);
             }
-
-            $vardefs = $this->getSubpanelModuleVardefs($headerModule);
-
-            $tabs[$key]['icon'] = $tab['module'];
-            $tabs[$key]['name'] = $key;
-            $tabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
-            $tabs[$key]['legacyModule'] = $tab['module'];
-            $tabs[$key]['headerModule'] = $headerModule;
-            $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
-            $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
-            $tabs[$key]['lineActions'] = $this->getSubpanelLineActions($subpanel, $tabs[$key]['module']);
-
             if (empty($columnSubpanel)) {
                 continue;
             }
 
-            $resultingTabs[$key] = $tabs[$key];
+            $frontEndSubpanelDef = $legacySubpanelDef;
 
-            $resultingTabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
+            // add new subpanel properties for front-end usage
+            $frontEndSubpanelDef['icon'] = $subpanelModule;
+            $frontEndSubpanelDef['name'] = $subpanelKey;
+            $frontEndSubpanelDef['module'] = $this->moduleNameMapper->toFrontEnd($subpanelModule);
+            $frontEndSubpanelDef['legacyModule'] = $subpanelModule;
+            $frontEndSubpanelDef['headerModule'] = $headerModule;
+            $frontEndSubpanelDef['top_buttons'] = $this->mapButtons($subpanel, $legacySubpanelDef);
+            $frontEndSubpanelDef['insightWidget'] = $this->mapInsightWidget($subpanel, $availableSubpanels, $subpanelKey, $legacySubpanelDef);
+            $frontEndSubpanelDef['lineActions'] = $this->getSubpanelLineActions($subpanel, $subpanelModule);
+
+            $frontEndSubpanelDefs[$subpanelKey] = $frontEndSubpanelDef;
+
+            $vardefs = $this->getSubpanelModuleVardefs($headerModule);
+            $frontEndSubpanelDefs[$subpanelKey]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
         }
-
-        return $resultingTabs;
+        return $frontEndSubpanelDefs;
     }
 
     /**
@@ -503,7 +511,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * for now, only the remove action is filtered from all available line actions
      * @return array
      */
-    public function getSubpanelLineActions(aSubPanel $subpanelDef, $subpanelModule): array
+    public function getSubpanelLineActions(aSubPanel $subpanelDef, string $subpanelModule): array
     {
         $lineActions = [];
         $unlinkLineAction = [];
