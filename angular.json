@@ -12,6 +12,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
+            "commonChunk": false,
             "aot": true,
             "outputPath": "public/dist/",
             "index": "core/app/shell/src/index.html",
@@ -63,12 +64,6 @@
               ]
             },
             "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "core/app/shell/src/environments/environment.ts",
@@ -78,11 +73,22 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
+              "namedChunks": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
               "extraWebpackConfig": "core/app/shell/webpack.prod.config.js"
             }
           }
