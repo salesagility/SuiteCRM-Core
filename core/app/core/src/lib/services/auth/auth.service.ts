@@ -36,12 +36,19 @@ import {LanguageStore} from '../../store/language/language.store';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
+import {isEmptyString} from 'common';
 
 export interface SessionStatus {
+    appStatus?: AppStatus;
     active?: boolean;
     id?: string;
     firstName?: string;
     lastName?: string;
+}
+
+export interface AppStatus {
+    installed?: boolean;
+    locked?: boolean;
 }
 
 @Injectable({
@@ -163,11 +170,15 @@ export class AuthService {
                     }
 
                     this.message.log('Logout success');
-                    this.message.addSuccessMessageByKey(messageKey);
+                    if(!isEmptyString(messageKey)) {
+                        this.message.addSuccessMessageByKey(messageKey);
+                    }
                 },
                 () => {
                     this.message.log('Error on logout');
-                    this.message.addSuccessMessageByKey(messageKey);
+                    if(!isEmptyString(messageKey)) {
+                        this.message.addSuccessMessageByKey(messageKey);
+                    }
                 }
             );
     }

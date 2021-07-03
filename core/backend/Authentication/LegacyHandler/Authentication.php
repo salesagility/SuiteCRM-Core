@@ -28,6 +28,7 @@
 namespace App\Authentication\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Install\Service\InstallationUtilsTrait;
 use AuthenticationController;
 use Exception;
 
@@ -36,6 +37,8 @@ use Exception;
  */
 class Authentication extends LegacyHandler
 {
+    use InstallationUtilsTrait;
+
     public const HANDLER_KEY = 'authentication';
     protected $config;
 
@@ -121,6 +124,38 @@ class Authentication extends LegacyHandler
 
         /** @var bool $result */
         $result = $authController->sessionAuthenticate();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
+     * Check if suite app is installed
+     * @return bool
+     */
+    public function getAppInstallStatus(): bool
+    {
+        $this->init();
+
+        /** @var bool $result */
+        $result = $this->isAppInstalled($this->legacyDir);
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
+     * Check if suite app is installed but locked
+     * @return bool
+     */
+    public function getAppInstallerLockStatus(): bool
+    {
+        $this->init();
+
+        /** @var bool $result */
+        $result = $this->isAppInstallerLocked($this->legacyDir);
 
         $this->close();
 

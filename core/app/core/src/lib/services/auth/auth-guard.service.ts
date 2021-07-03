@@ -29,7 +29,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/rou
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
-import {AuthService} from './auth.service';
+import {AuthService, SessionStatus} from './auth.service';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {Process} from '../process/process.service';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
@@ -112,7 +112,7 @@ export class AuthGuard implements CanActivate {
             }
         } as AsyncActionInput;
 
-        this.message.removeMessages();
+        //this.message.removeMessages();
 
         return this.asyncActionService.run(actionName, asyncData)
             .pipe(take(1),
@@ -152,8 +152,16 @@ export class AuthGuard implements CanActivate {
 
         return this.authService.fetchSessionStatus()
             .pipe(
-                map((user: any) => {
+                take(1),
+                map((user: SessionStatus) => {
+
+                    if (user && user.appStatus.installed === false) {
+                        this.message.addDangerMessageByKey('LBL_APP_NOT_INSTALLED');
+                        return this.router.parseUrl('install');
+                    }
+
                     if (user && user.active === true) {
+                        this.message.removeMessages();
                         this.authService.setCurrentUser(user);
                         return true;
                     }

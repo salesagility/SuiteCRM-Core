@@ -25,57 +25,71 @@
  */
 
 import {Injectable} from '@angular/core';
-import {CanActivate, Router, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
+import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
+import {AsyncActionService} from '../process/processes/async-action/async-action';
+import {MessageService} from '../message/message.service';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
-import {AuthService, SessionStatus} from './auth.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
-import {AppStateStore} from '../../store/app-state/app-state.store';
-import {MessageService} from '../message/message.service';
+import {AuthService, SessionStatus} from './auth.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoginAuthGuard implements CanActivate {
+export class InstallAuthGuard implements CanActivate {
     constructor(
-        protected router: Router,
-        private authService: AuthService,
         protected systemConfigStore: SystemConfigStore,
-        protected appStateStore: AppStateStore,
+        private authService: AuthService,
+        protected router: Router,
+        protected routeConverter: RouteConverter,
+        protected asyncActionService: AsyncActionService,
         protected message: MessageService
     ) {
     }
 
-    canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    canActivate(route): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+        return this.canActivateWebInstallation(route);
+    }
+
+    /**
+ * Allow web installation
+ * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+ * @param activatedRoute
+ */
+    protected canActivateWebInstallation(activatedRoute: ActivatedRouteSnapshot):
+    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
-        if (this.authService.isUserLoggedIn.value) {
-            return homePageUrlTree;
-        }
-
+        // this.message.removeMessages();
         return this.authService.fetchSessionStatus()
             .pipe(
                 take(1),
                 map((user: SessionStatus) => {
 
-                    if (user && user.appStatus.installed === false) {
-                        this.message.removeMessages();
-                        this.message.addDangerMessageByKey('LBL_APP_NOT_INSTALLED');
-                        return this.router.parseUrl('install');
+                    if (user && user.appStatus.locked === true && user.appStatus.installed === true) {
+                        this.message.addDangerMessageByKey('LBL_DISABLED_TITLE_2');
+
+                        if (user && user.active === false) {
+                            return homePageUrlTree;
+                        }
+
+                        return false;
                     }
 
                     if (user && user.active === true) {
-                        // Session is active, go to home page
-                        this.authService.setCurrentUser(user);
-                        return homePageUrlTree;
+                        this.authService.logout('', false);
+                        this.authService.isUserLoggedIn.next(false);
                     }
 
-                    // Stay on login
                     return true;
                 }),
                 catchError(() => of(true))
             );
     }
+
 }

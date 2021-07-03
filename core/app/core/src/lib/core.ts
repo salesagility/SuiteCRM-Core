@@ -353,6 +353,7 @@ export * from './services/api/graphql-api/api.record.create';
 export * from './services/auth/auth-guard.service';
 export * from './services/auth/auth.service';
 export * from './services/auth/error.interceptor';
+export * from './services/auth/install-auth-guard.service';
 export * from './services/auth/login-auth-guard.service';
 export * from './services/extensions/extension-loader.service';
 export * from './services/formatters/data-type.formatter.service';

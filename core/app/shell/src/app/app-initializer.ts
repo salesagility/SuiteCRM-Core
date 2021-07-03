@@ -38,6 +38,7 @@ import {
     InstallViewComponent,
     ListComponent,
     LoginAuthGuard,
+    InstallAuthGuard,
     LoginUiComponent,
     RecordComponent,
     SystemConfigStore
@@ -87,6 +88,7 @@ export class AppInit {
                     routes.push({
                         path: 'install',
                         component: InstallViewComponent,
+                        canActivate: [InstallAuthGuard],
                         runGuardsAndResolvers: 'always',
                         resolve: {
                             metadata: BaseMetadataResolver

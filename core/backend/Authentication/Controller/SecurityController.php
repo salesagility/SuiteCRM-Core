@@ -98,11 +98,26 @@ class SecurityController extends AbstractController
      */
     public function sessionStatus(Security $security): JsonResponse
     {
+        $isAppInstalled = $this->authentication->getAppInstallStatus();
+        $isAppInstallerLocked = $this->authentication->getAppInstallerLockStatus();
+        $appStatus =  [
+            'installed' => $isAppInstalled,
+            'locked' => $isAppInstallerLocked
+        ];
+
+        if (!$isAppInstalled) {
+            $response = new JsonResponse(['appStatus' => $appStatus], Response::HTTP_OK);
+            $response->headers->clearCookie('XSRF-TOKEN');
+            $this->session->invalidate();
+            $this->session->start();
+
+            return $response;
+        }
 
         $isActive = $this->authentication->checkSession();
 
         if ($isActive !== true) {
-            $response = new JsonResponse(['active' => false], Response::HTTP_OK);
+            $response = new JsonResponse(['active' => false, 'appStatus' => $appStatus], Response::HTTP_OK);
             $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
@@ -112,7 +127,7 @@ class SecurityController extends AbstractController
 
         $user = $security->getUser();
         if ($user === null) {
-            $response = new JsonResponse(['active' => false], Response::HTTP_OK);
+            $response = new JsonResponse(['active' => false , 'appStatus' => $appStatus], Response::HTTP_OK);
             $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
@@ -126,6 +141,7 @@ class SecurityController extends AbstractController
         $userName = $user->getUsername();
 
         $data = [
+            'appStatus' => $appStatus,
             'active' => true,
             'id' => $id,
             'firstName' => $firstName,
