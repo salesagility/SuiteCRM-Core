@@ -35,13 +35,15 @@ export interface AppState {
     module?: string;
     view?: string;
     loaded?: boolean;
+    routeUrl?: string;
 }
 
 const initialState: AppState = {
     loading: false,
     module: null,
     view: null,
-    loaded: false
+    loaded: false,
+    routeUrl: null
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -168,6 +170,24 @@ export class AppStateStore implements StateStore {
      */
     public getView(): string {
         return internalState.view;
+    }
+
+    /**
+     * Set route url
+     *
+     * @param {string} routeUrl to set
+     */
+    public setRouteUrl(routeUrl: string): void {
+        this.updateState({...internalState, routeUrl});
+    }
+
+    /**
+     * Get the route ulr
+     *
+     * @returns {string} current route url
+     */
+    public getRouteUrl(): string {
+        return internalState.routeUrl;
     }
 
     /**

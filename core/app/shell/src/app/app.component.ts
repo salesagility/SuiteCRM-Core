@@ -26,10 +26,8 @@
 
 import {Component, ViewChild, ViewContainerRef} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {AppState, AppStateStore} from 'core';
+import {AppState, AppStateStore, StateManager, SystemConfigStore} from 'core';
 import {Observable} from 'rxjs';
-import {StateManager} from 'core';
-import {SystemConfigStore} from 'core';
 import {debounceTime} from 'rxjs/operators';
 
 @Component({
@@ -60,6 +58,7 @@ export class AppComponent {
         if (routerEvent instanceof NavigationEnd) {
             // reset scroll on navigation
             window.scrollTo(0, 0);
+            this.appStateStore.setRouteUrl(routerEvent.url)
         }
 
 

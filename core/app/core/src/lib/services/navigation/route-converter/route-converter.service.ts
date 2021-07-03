@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, DefaultUrlSerializer, Params, UrlTree} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, DefaultUrlSerializer, Params, UrlTree} from '@angular/router';
 import {HttpParams} from '@angular/common/http';
 import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
@@ -156,6 +156,22 @@ export class RouteConverter {
     }
 
     /**
+     * Map route url to RouteInfo
+     *
+     * @param {ActivatedRouteSnapshot} routeSnapshot contains the requested Route Information
+     * @returns {object} RouteInfo of the current URL
+     * @description Parses route information from ActivatedRouteSnapshot to RouteInfo object
+     */
+    public parseRouteURL(routeSnapshot: ActivatedRouteSnapshot): RouteInfo {
+
+        return {
+            module: routeSnapshot?.url[0]?.path ?? '',
+            action: routeSnapshot?.url[1]?.path ?? 'index',
+            record: routeSnapshot?.url[2]?.path ?? ''
+        } as RouteInfo;
+    }
+
+    /**
      * Check if given routeInfo matches the provided activated route
      *
      * @param {object} route to check
@@ -281,4 +297,5 @@ export class RouteConverter {
     protected mapActionToFrontEnd(action: string): string {
         return this.actionNameMapper.toFrontend(action);
     }
+
 }

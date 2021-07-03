@@ -26,10 +26,16 @@
 
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
-import {MessageService} from '../../services/message/message.service';
+import {forkJoin, Observable, of} from 'rxjs';
+import {catchError, map, take, tap} from 'rxjs/operators';
+import {MessageService} from '../message/message.service';
 import {AuthService} from './auth.service';
+import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
+import {Process} from '../process/process.service';
+import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
+import {AppStateStore} from '../../store/app-state/app-state.store';
+import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
+import {isEmptyString} from 'common';
 
 @Injectable({
     providedIn: 'root'
@@ -38,16 +44,107 @@ export class AuthGuard implements CanActivate {
     constructor(
         protected message: MessageService,
         protected router: Router,
-        private authService: AuthService,
+        protected authService: AuthService,
+        protected preferences: UserPreferenceStore,
+        protected asyncActionService: AsyncActionService,
+        protected appState: AppStateStore,
+        protected routeConverter: RouteConverter
     ) {
     }
 
-    canActivate(
-        route: ActivatedRouteSnapshot
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    canActivate(route: ActivatedRouteSnapshot):
+    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        return this.authorizeUser(route);
+    }
+
+    /**
+     * Authorize user session and acl together in conjunction
+     *
+     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+     * @param {ActivatedRouteSnapshot} route information about the current route
+     */
+    protected authorizeUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        // Note: this session and acl are not always booleans
+        return forkJoin({
+            session: this.authorizeUserSession(route),
+            acl: this.authorizeUserACL(route)
+        }).pipe(map(({session, acl}) => {
+
+            if (session instanceof UrlTree) {
+                return session;
+            }
+            if (acl instanceof UrlTree) {
+                return acl;
+            }
+            return session && acl;
+        }
+        ));
+    }
+
+    /**
+     * Authorize user acl
+     *
+     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+     * @param {ActivatedRouteSnapshot} activatedRoute information about the current route
+     */
+    protected authorizeUserACL(activatedRoute: ActivatedRouteSnapshot):
+    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+        const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute);
+
+        const routeURL: string = this.appState.getRouteUrl() ?? '';
+
+        if (!routeInfo.module || routeInfo.module === 'home') {
+            return of(true);
+        }
+
+        const homeUrl = '';
+        const tree: UrlTree = this.router.parseUrl(homeUrl);
+
+        const actionName = 'user-acl';
+
+        const asyncData = {
+            action: actionName,
+            module: routeInfo.module,
+            payload: {
+                routeAction: routeInfo.action,
+                routeURL
+            }
+        } as AsyncActionInput;
+
+        this.message.removeMessages();
+
+        return this.asyncActionService.run(actionName, asyncData)
+            .pipe(take(1),
+                map((process: Process) => {
+                    if (process.data && process.data.result === true) {
+                        return true;
+                    }
+                    if (isEmptyString(routeURL)) {
+                        // Re-direct to home
+                        return tree;
+                    }
+                }),
+                catchError(() => of(tree)),
+                tap((result: boolean | UrlTree) => {
+                    if (result === true) {
+                        return true;
+                    }
+                })
+            );
+    }
+
+    /**
+     * Authorize user session
+     *
+     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+     * @param {ActivatedRouteSnapshot} route information about the current route
+     */
+    protected authorizeUserSession(route: ActivatedRouteSnapshot):
+    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
-            return true;
+            return of(true);
         }
 
         const loginUrl = 'Login';
@@ -61,6 +158,7 @@ export class AuthGuard implements CanActivate {
                         return true;
                     }
                     this.authService.logout('LBL_SESSION_EXPIRED', false);
+                    this.authService.isUserLoggedIn.next(false);
                     // Re-direct to login
                     return tree;
                 }),
