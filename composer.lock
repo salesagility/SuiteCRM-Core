@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fb47fab8de1555fa6f39359aa738cde",
+    "content-hash": "b3b66f5a1c18c81d44764b5a08442d17",
     "packages": [
         {
             "name": "api-platform/api-pack",
@@ -193,6 +193,69 @@
                 }
             ],
             "time": "2021-06-15T16:53:33+00:00"
+        },
+        {
+            "name": "beberlei/assert",
+            "version": "v3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "5e721d7e937ca3ba2cdec1e1adf195f9e5188372"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/5e721d7e937ca3ba2cdec1e1adf195f9e5188372",
+                "reference": "5e721d7e937ca3ba2cdec1e1adf195f9e5188372",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*",
+                "php": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "*",
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": ">=6.0.0",
+                "yoast/phpunit-polyfills": "^0.1.0"
+            },
+            "suggest": {
+                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                },
+                "files": [
+                    "lib/Assert/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2021-04-18T20:11:03+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -3347,6 +3410,63 @@
             "time": "2018-02-13T20:26:39+00:00"
         },
         {
+            "name": "nikolaposa/version",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikolaposa/version.git",
+                "reference": "0aada6b801962c084ae465f7569397dc2186b6a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikolaposa/version/zipball/0aada6b801962c084ae465f7569397dc2186b6a7",
+                "reference": "0aada6b801962c084ae465f7569397dc2186b6a7",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^3.2",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.17",
+                "phpstan/phpstan": "^0.12.10",
+                "phpstan/phpstan-beberlei-assert": "^0.12.2",
+                "phpstan/phpstan-phpunit": "^0.12.6",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Version\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikola Poša",
+                    "email": "posa.nikola@gmail.com",
+                    "homepage": "https://www.nikolaposa.in.rs"
+                }
+            ],
+            "description": "Value Object that represents a SemVer-compliant version number.",
+            "homepage": "https://github.com/nikolaposa/version",
+            "keywords": [
+                "semantic",
+                "semver",
+                "version",
+                "versioning"
+            ],
+            "time": "2020-12-12T10:47:10+00:00"
+        },
+        {
             "name": "onelogin/php-saml",
             "version": "3.6.1",
             "source": {
@@ -4417,6 +4537,61 @@
                 "xmldsig"
             ],
             "time": "2020-09-05T13:00:25+00:00"
+        },
+        {
+            "name": "shivas/versioning-bundle",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shivas/versioning-bundle.git",
+                "reference": "3654392b9f9d7fb4f70f9d98ec4f4304208ca6e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shivas/versioning-bundle/zipball/3654392b9f9d7fb4f70f9d98ec4f4304208ca6e5",
+                "reference": "3654392b9f9d7fb4f70f9d98ec4f4304208ca6e5",
+                "shasum": ""
+            },
+            "require": {
+                "nikolaposa/version": "^4",
+                "php": "^7.2 || ^8",
+                "symfony/console": "^3.4 || ^4 || ^5",
+                "symfony/framework-bundle": "^3.4 || ^4 || ^5",
+                "symfony/process": "^3.4 || ^4 || ^5"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^2",
+                "nyholm/symfony-bundle-test": "^1.7",
+                "phpunit/phpunit": "^7 || ^8",
+                "symfony/phpunit-bridge": "^5",
+                "twig/twig": "^2 || ^3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Shivas\\VersioningBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Audrius Karabanovas",
+                    "email": "audrius@karabanovas.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Symfony application versioning, simple console command to manage version (with providers e.g. git tag) of your application using Semantic Versioning 2.0.0 recommendations",
+            "homepage": "https://github.com/shivas/versioning-bundle",
+            "keywords": [
+                "semantic",
+                "semver",
+                "version",
+                "versioning"
+            ],
+            "time": "2021-05-15T17:44:47+00:00"
         },
         {
             "name": "slim/slim",
@@ -6571,6 +6746,65 @@
                 }
             ],
             "time": "2021-05-27T09:34:47+00:00"
+        },
+        {
+            "name": "symfony/process",
+            "version": "v5.2.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/53e36cb1c160505cdaf1ef201501669c4c317191",
+                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.15"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Executes commands in sub-processes",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-26T12:52:38+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -14559,65 +14793,6 @@
                 }
             ],
             "time": "2020-10-23T14:02:19+00:00"
-        },
-        {
-            "name": "symfony/process",
-            "version": "v5.2.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/53e36cb1c160505cdaf1ef201501669c4c317191",
-                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Executes commands in sub-processes",
-            "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-05-26T12:52:38+00:00"
         },
         {
             "name": "symfony/profiler-pack",
