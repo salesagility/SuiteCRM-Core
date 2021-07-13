@@ -58,4 +58,19 @@ $actions['modules']['leads']['actions']['records-to-target-list'] = [
     ]
 ];
 
+$actions['modules']['leads']['actions']['print-as-pdf'] = [
+    'key' => 'print-as-pdf',
+    'labelKey' => 'LBL_PRINT_AS_PDF',
+    'modes' => ['list'],
+    'acl' => ['view'],
+    'aclModule' => 'AOS_PDF_Templates',
+    'params' => [
+        'selectModal' => [
+            'module' => 'AOS_PDF_Templates'
+        ],
+        'allowAll' => false,
+        'max' => 50
+    ]
+];
+
 $container->setParameter('module.listview.bulk_action', $actions);
