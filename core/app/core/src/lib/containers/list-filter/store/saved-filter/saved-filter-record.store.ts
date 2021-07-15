@@ -33,7 +33,6 @@ import {
     Record,
     RecordMapperRegistry,
     SearchCriteria,
-    SearchCriteriaFieldFilter,
     SearchMetaField,
     SearchMetaFieldMap,
     ViewFieldDefinition
@@ -289,32 +288,6 @@ export class SavedFilterRecordStore extends RecordStore {
 
         const field = this.fieldManager.addFilterField(record, definition, this.language);
 
-        field.criteria = this.initFieldFilter(record.criteria, fieldName, type);
         record.criteria.filters[fieldName] = field.criteria;
-    }
-
-    /**
-     * Init filter fields
-     *
-     * @param {object} searchCriteria to use
-     * @param {object} fieldName to init
-     * @param {object} fieldType to init
-     * @returns {object} SearchCriteriaFieldFilter
-     */
-    protected initFieldFilter(searchCriteria: SearchCriteria, fieldName: string, fieldType: string): SearchCriteriaFieldFilter {
-        let fieldCriteria: SearchCriteriaFieldFilter;
-
-        if (searchCriteria.filters[fieldName]) {
-            fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
-        } else {
-            fieldCriteria = {
-                field: fieldName,
-                fieldType,
-                operator: '',
-                values: []
-            };
-        }
-
-        return fieldCriteria;
     }
 }

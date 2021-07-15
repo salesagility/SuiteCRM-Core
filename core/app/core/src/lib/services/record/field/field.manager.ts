@@ -24,13 +24,29 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field, FieldDefinition, Record, ViewFieldDefinition} from 'common';
+import {
+    AttributeDependency,
+    BaseField,
+    deepClone,
+    Field,
+    FieldAttribute,
+    FieldDefinition,
+    FieldLogic,
+    FieldMap,
+    Record,
+    SearchCriteria,
+    SearchCriteriaFieldFilter,
+    StringMap,
+    ViewFieldDefinition
+} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
+import get from 'lodash-es/get';
+import isObjectLike from 'lodash-es/isObjectLike';
 
 @Injectable({
     providedIn: 'root'
@@ -79,6 +95,15 @@ export class FieldManager {
             this.addToRecord.bind(this)
         );
 
+        this.addAttributes(
+            record,
+            record.fields,
+            viewField,
+            language,
+            this.buildAttribute.bind(this),
+            this.addAttributeToRecord.bind(this)
+        );
+
         return field;
     }
 
@@ -111,6 +136,42 @@ export class FieldManager {
     }
 
     /**
+     * Build field
+     *
+     * @param {object} record Record
+     * @param {object} parentField Field
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object} FieldAttribute
+     */
+    public buildAttribute(record: Record, parentField: Field, viewField: ViewFieldDefinition, language: LanguageStore = null): FieldAttribute {
+
+        const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
+        const {value, valueList, valueObject} = this.parseAttributeValue(viewField, definition, record, parentField);
+        const {validators, asyncValidators} = this.getSaveValidators(record, viewField);
+
+        const field = this.setupField(
+            record.module,
+            viewField,
+            value,
+            valueList,
+            valueObject,
+            record,
+            definition,
+            validators,
+            asyncValidators,
+            language
+        );
+
+        const fieldAttribute = field as FieldAttribute;
+        fieldAttribute.valuePath = definition.valuePath;
+        fieldAttribute.source = 'attribute';
+        fieldAttribute.parentKey = parentField.name;
+
+        return fieldAttribute;
+    }
+
+    /**
      * Build and add filter field to record
      *
      * @param {object} record Record
@@ -132,6 +193,17 @@ export class FieldManager {
             this.addToSavedFilter.bind(this)
         );
 
+        field.criteria = this.initFieldFilter(record.criteria, viewField, field);
+
+        this.addAttributes(
+            record,
+            record.criteriaFields,
+            viewField,
+            language,
+            this.buildFilterAttribute.bind(this),
+            this.addAttributeToSavedFilter.bind(this)
+        );
+
         return field;
     }
 
@@ -141,7 +213,7 @@ export class FieldManager {
      * @param {object} savedFilter SavedFilter
      * @param {object} viewField ViewFieldDefinition
      * @param {object} language LanguageStore
-     * @returns {object}Field
+     * @returns {object} Field
      */
     public buildFilterField(savedFilter: SavedFilter, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
@@ -160,6 +232,84 @@ export class FieldManager {
             asyncValidators,
             language
         );
+    }
+
+    /**
+     * Build filter attribute
+     *
+     * @param {object} savedFilter SavedFilter
+     * @param {object} parentField Field
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object} FieldAttribute
+     */
+    public buildFilterAttribute(
+        savedFilter: SavedFilter,
+        parentField: Field,
+        viewField: ViewFieldDefinition,
+        language: LanguageStore = null
+    ): FieldAttribute {
+
+        const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
+
+        if (!definition.valuePath) {
+            definition.valuePath = 'criteria.' + (viewField.name || definition.name);
+        }
+
+        const {value, valueList, valueObject} = this.parseFilterAttributeValue(viewField, definition, savedFilter, parentField);
+        const {validators, asyncValidators} = this.getFilterValidators(savedFilter, viewField);
+
+        const field = this.setupField(
+            savedFilter.searchModule,
+            viewField,
+            value,
+            valueList,
+            valueObject,
+            savedFilter,
+            definition,
+            validators,
+            asyncValidators,
+            language
+        );
+
+        const fieldAttribute = field as FieldAttribute;
+        fieldAttribute.valuePath = definition.valuePath;
+        fieldAttribute.source = 'attribute';
+        fieldAttribute.parentKey = parentField.definition.name;
+
+        return fieldAttribute;
+    }
+
+    /**
+     * Init filter fields
+     *
+     * @param {object} searchCriteria to use
+     * @param {object} viewField to init
+     * @param {object} field to init
+     * @returns {object} SearchCriteriaFieldFilter
+     */
+    protected initFieldFilter(searchCriteria: SearchCriteria, viewField: ViewFieldDefinition, field: Field): SearchCriteriaFieldFilter {
+        let fieldCriteria: SearchCriteriaFieldFilter;
+
+        const fieldName = viewField.name;
+        let fieldType = viewField.type;
+
+        if (fieldType === 'composite') {
+            fieldType = field.definition.type;
+        }
+
+        if (searchCriteria.filters[fieldName]) {
+            fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
+        } else {
+            fieldCriteria = {
+                field: fieldName,
+                fieldType,
+                operator: '',
+                values: []
+            };
+        }
+
+        return fieldCriteria;
     }
 
     public getFieldLabel(label: string, module: string, language: LanguageStore): string {
@@ -216,6 +366,53 @@ export class FieldManager {
     }
 
     /**
+     * Add attribute to record
+     *
+     * @param {object} record Record
+     * @param {object} field Field
+     * @param {string} name string
+     * @param {object} attribute FieldAttribute
+     */
+    public addAttributeToRecord(record: Record, field: Field, name: string, attribute: FieldAttribute): void {
+
+        if (!record || !name || !field || !attribute) {
+            return;
+        }
+
+        field.attributes = field.attributes || {};
+
+        field.attributes[name] = field;
+
+        if (record.formGroup && attribute.formControl) {
+            record.formGroup.addControl(name, attribute.formControl);
+        }
+
+    }
+
+    /**
+     * Add attribute to SavedFilter
+     *
+     * @param {object} savedFilter SavedFilter
+     * @param {object} field Field
+     * @param {string} name string
+     * @param {object} attribute FieldAttribute
+     */
+    public addAttributeToSavedFilter(savedFilter: SavedFilter, field: Field, name: string, attribute: FieldAttribute): void {
+
+        if (!savedFilter || !name || !field || !attribute) {
+            return;
+        }
+
+        field.attributes = field.attributes || {};
+
+        field.attributes[name] = attribute;
+
+        if (savedFilter.criteriaFormGroup && attribute.formControl) {
+            savedFilter.criteriaFormGroup.addControl(name, attribute.formControl);
+        }
+    }
+
+    /**
      * Create and add group fields to record
      *
      * @param {object} record Record
@@ -254,6 +451,84 @@ export class FieldManager {
 
             const groupField = buildFieldFunction(record, groupViewField, language);
             addRecordFunction(record, fieldDefinition.name, groupField);
+        });
+    }
+
+    /**
+     * Create and add attributes fields to field
+     *
+     * @param {object} record Record
+     * @param {object} fields FieldMap
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @param {function} buildAttributeFunction
+     * @param {function} addAttributeFunction
+     */
+    protected addAttributes(
+        record: Record,
+        fields: FieldMap,
+        viewField: ViewFieldDefinition,
+        language: LanguageStore,
+        buildAttributeFunction: Function,
+        addAttributeFunction: Function,
+    ): void {
+        const fieldKeys = Object.keys(fields) || [];
+
+
+        if (fieldKeys.length < 1) {
+            return;
+        }
+
+        fieldKeys.forEach(key => {
+            const field = fields[key];
+            this.addFieldAttributes(
+                record,
+                field,
+                language,
+                buildAttributeFunction,
+                addAttributeFunction
+            )
+        });
+
+    }
+
+    /**
+     * Create and add attributes fields to field
+     *
+     * @param {object} record Record
+     * @param {object} field Field
+     * @param {object} language LanguageStore
+     * @param {function} buildAttributeFunction
+     * @param {function} addAttributeFunction
+     */
+    protected addFieldAttributes(
+        record: Record,
+        field: Field,
+        language: LanguageStore,
+        buildAttributeFunction: Function,
+        addAttributeFunction: Function
+    ): void {
+
+        const definition = (field && field.definition) || {};
+        const attributes = definition.attributeFields || {};
+        const attributeKeys = Object.keys(attributes);
+
+        attributeKeys.forEach(key => {
+            const attributeDefinition = attributes[key];
+
+            if (!!field.attributes[key]) {
+                return;
+            }
+
+            const attributeViewField = {
+                name: attributeDefinition.name,
+                label: attributeDefinition.vname,
+                type: attributeDefinition.type,
+                fieldDefinition: attributeDefinition
+            };
+
+            const attributeField = buildAttributeFunction(record, field, attributeViewField, language);
+            addAttributeFunction(record, field, attributeDefinition.name, attributeField);
         });
     }
 
@@ -316,6 +591,108 @@ export class FieldManager {
         }
 
         return {value, valueList};
+    }
+
+
+    /**
+     * Parse attribute from field
+     *
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} definition FieldDefinition
+     * @param {object} record Record
+     * @param {object} field Field
+     * @returns {object} value object
+     */
+    protected parseAttributeValue(
+        viewField: ViewFieldDefinition,
+        definition: FieldDefinition,
+        record: Record,
+        field: Field
+    ): { value: string; valueList: string[]; valueObject?: any } {
+
+        const type = (viewField && viewField.type) || '';
+        const source = (definition && definition.source) || '';
+        const rname = (definition && definition.rname) || 'name';
+        const viewName = viewField.name || '';
+        let value: string;
+        let valueList: string[] = null;
+
+        if (!viewName || !field.attributes[viewName]) {
+            value = '';
+        } else if (type === 'relate' && source === 'non-db' && rname !== '') {
+            value = this.getParentValue(field, viewName, definition)[rname];
+            const valueObject = this.getParentValue(field, viewName, definition);
+            return {value, valueList, valueObject};
+        } else {
+            value = this.getParentValue(field, viewName, definition);
+        }
+
+        if (Array.isArray(value)) {
+            valueList = value;
+            value = null;
+        }
+
+        return {value, valueList};
+    }
+
+    /**
+     * Parse filter attribute from field
+     *
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} definition FieldDefinition
+     * @param {object} record Record
+     * @param {object} field Field
+     * @returns {object} value object
+     */
+    protected parseFilterAttributeValue(
+        viewField: ViewFieldDefinition,
+        definition: FieldDefinition,
+        record: Record,
+        field: Field
+    ): { value: string; valueList: string[]; valueObject?: any } {
+
+        const viewName = viewField.name || '';
+        let value: any;
+
+        if (!viewName) {
+            value = '';
+        } else {
+            value = this.getParentValue(field, viewName, definition);
+        }
+
+        if (Array.isArray(value)) {
+            return {
+                value: null,
+                valueList: value,
+                valueObject: null
+            }
+        }
+
+        if (isObjectLike(value)) {
+            return {
+                value: null,
+                valueList: null,
+                valueObject: value
+            }
+        }
+
+        return {value, valueList: null, valueObject: null};
+    }
+
+    /**
+     * Set attribute value on parent
+     *
+     * @param {object} field Field
+     * @param {string} name String
+     * @param {object} definition FieldDefinition
+     * @returns any
+     */
+    protected getParentValue(field: Field, name: string, definition: FieldDefinition): any {
+        if (definition.valuePath) {
+            return get(field, definition.valuePath, '');
+        }
+
+        return get(field.valueObject, name, '');
     }
 
     /**

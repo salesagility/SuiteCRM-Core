@@ -78,6 +78,8 @@ export interface FieldDefinition {
     layout?: string[];
     showLabel?: string[];
     groupFields?: FieldDefinitionMap;
+    attributeFields?: FieldDefinitionMap;
+    valuePath?: string;
     dynamic?: boolean;
     parentenum?: string;
 }
@@ -96,6 +98,15 @@ export interface FieldMetadata {
     onClick?: FieldClickCallback;
 }
 
+export interface FieldAttributeMap {
+    [key: string]: FieldAttribute;
+}
+
+
+export interface FieldAttribute extends Field {
+    valuePath?: string;
+}
+
 export interface FieldMap {
     [key: string]: Field;
 }
@@ -108,6 +119,8 @@ export interface Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    parentKey?: string;
+    attributes?: FieldAttributeMap;
     display?: string;
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
