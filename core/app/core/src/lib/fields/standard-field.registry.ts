@@ -32,7 +32,7 @@ import {BaseFieldRegistry} from './base-field.registry';
 @Injectable({
     providedIn: 'root'
 })
-export class GroupFieldRegistry extends BaseFieldRegistry {
+export class StandardFieldRegistry extends BaseFieldRegistry {
 
     constructor() {
         super();

@@ -222,7 +222,7 @@ export * from './fields/field.manifest';
 export * from './fields/field.model';
 export * from './fields/field.module';
 export * from './fields/field.registry';
-export * from './fields/group-field.registry';
+export * from './fields/standard-field.registry';
 export * from './fields/base/base-boolean.component';
 export * from './fields/base/base-enum.component';
 export * from './fields/base/base-field.component';

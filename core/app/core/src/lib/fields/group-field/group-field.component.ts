@@ -28,7 +28,7 @@ import {Component} from '@angular/core';
 import {Field, FieldDefinition} from 'common';
 import {BaseFieldComponent} from '../base/base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {GroupFieldRegistry} from '../group-field.registry';
+import {StandardFieldRegistry} from '../standard-field.registry';
 
 @Component({
     selector: 'scrm-group-field',
