@@ -12,7 +12,9 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
+            "namedChunks": true,
             "commonChunk": false,
+            "sourceMap": true,
             "aot": true,
             "outputPath": "public/dist/",
             "index": "core/app/shell/src/index.html",
