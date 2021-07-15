@@ -28,7 +28,7 @@ import {SortingSelection} from './list/list-navigation.model';
 import {SearchCriteria} from './list/search-criteria.model';
 import {Record} from '../record/record.model';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate';
+export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
 
 export interface ViewContext {
     module: string;

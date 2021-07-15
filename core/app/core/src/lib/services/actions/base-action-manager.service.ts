@@ -37,7 +37,8 @@ export class BaseActionManager<D extends ActionData> implements ActionManager<D>
         create: {} as ActionHandlerMap<D>,
         list: {} as ActionHandlerMap<D>,
         detail: {} as ActionHandlerMap<D>,
-        massupdate: {} as ActionHandlerMap<D>
+        massupdate: {} as ActionHandlerMap<D>,
+        filter: {} as ActionHandlerMap<D>
     };
 
     run(action: Action, mode: ViewMode, data: D): void {
