@@ -59,6 +59,10 @@ export class GroupFieldComponent extends BaseFieldComponent {
         const fields: Field[] = [];
 
         this.field.definition.layout.forEach(name => {
+            if (!this.record.fields[name] || this.record.fields[name].display === 'none'){
+                return;
+            }
+
             fields.push(this.record.fields[name]);
         });
 

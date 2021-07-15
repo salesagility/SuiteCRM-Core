@@ -32,7 +32,7 @@
              [class.field-column-bordered]="row.cols.length > 1 && colNumber < row.cols.length - 1"
              [ngClass]="colClass">
 
-            <ng-container *ngIf="col.field">
+            <ng-container *ngIf="col.field && col.field.display !== 'none'">
                 <div class="label-container">
                     <strong>
                         <label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>:

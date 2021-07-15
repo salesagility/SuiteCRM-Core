@@ -25,10 +25,13 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<scrm-dynamic-field [componentType]="componentType"
-                    [field]="field"
-                    [klass]="klass"
-                    [mode]="componentMode"
-                    [record]="record"
-                    [type]="type">
-</scrm-dynamic-field>
+<ng-container *ngIf="field && field.display !== 'none'">
+    <scrm-dynamic-field [componentType]="componentType"
+                        [field]="field"
+                        [klass]="klass"
+                        [mode]="componentMode"
+                        [record]="record"
+                        [type]="type">
+    </scrm-dynamic-field>
+</ng-container>
+
