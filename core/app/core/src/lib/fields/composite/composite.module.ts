@@ -24,31 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {GroupFieldModule} from './group-field/group-field.module';
-import {baseFieldComponents, baseFieldModules, baseViewFieldsMap} from './base-fields.manifest';
-import {GroupFieldComponent} from './group-field/group-field.component';
-import {FieldComponentMap} from './field.model';
-import {CompositeComponent} from './composite/composite.component';
-import {CompositeModule} from './composite/composite.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CompositeComponent} from './composite.component';
+import {LabelModule} from '../../components/label/label.module';
+import {DynamicFieldModule} from '../dynamic-field/dynamic-field.module';
+import {BaseComposite} from '../base/base-composite.component';
 
-export const fieldModules = [
-    ...baseFieldModules,
-    GroupFieldModule,
-    CompositeModule
-];
-export const fieldComponents = [
-    ...baseFieldComponents,
-    GroupFieldComponent,
-    CompositeComponent
-];
 
-export const viewFieldsMap: FieldComponentMap = {
-    ...baseViewFieldsMap,
-    'grouped-field.list': GroupFieldComponent,
-    'grouped-field.detail': GroupFieldComponent,
-    'grouped-field.edit': GroupFieldComponent,
-    'composite.list': CompositeComponent,
-    'composite.detail': CompositeComponent,
-    'composite.edit': CompositeComponent,
-    'composite.filter': CompositeComponent,
-};
+@NgModule({
+    declarations: [CompositeComponent, BaseComposite],
+    imports: [
+        CommonModule,
+        LabelModule,
+        DynamicFieldModule,
+    ]
+})
+export class CompositeModule {
+}

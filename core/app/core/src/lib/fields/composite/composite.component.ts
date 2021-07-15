@@ -24,31 +24,27 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {GroupFieldModule} from './group-field/group-field.module';
-import {baseFieldComponents, baseFieldModules, baseViewFieldsMap} from './base-fields.manifest';
-import {GroupFieldComponent} from './group-field/group-field.component';
-import {FieldComponentMap} from './field.model';
-import {CompositeComponent} from './composite/composite.component';
-import {CompositeModule} from './composite/composite.module';
+import {Component} from '@angular/core';
+import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
+import {StandardFieldRegistry} from '../standard-field.registry';
+import {RecordManager} from '../../services/record/record.manager';
+import {BaseComposite} from '../base/base-composite.component';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
-export const fieldModules = [
-    ...baseFieldModules,
-    GroupFieldModule,
-    CompositeModule
-];
-export const fieldComponents = [
-    ...baseFieldComponents,
-    GroupFieldComponent,
-    CompositeComponent
-];
+@Component({
+    selector: 'scrm-composite-field',
+    templateUrl: './composite.component.html',
+    styleUrls: []
+})
+export class CompositeComponent extends BaseComposite {
 
-export const viewFieldsMap: FieldComponentMap = {
-    ...baseViewFieldsMap,
-    'grouped-field.list': GroupFieldComponent,
-    'grouped-field.detail': GroupFieldComponent,
-    'grouped-field.edit': GroupFieldComponent,
-    'composite.list': CompositeComponent,
-    'composite.detail': CompositeComponent,
-    'composite.edit': CompositeComponent,
-    'composite.filter': CompositeComponent,
-};
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected registry: StandardFieldRegistry,
+        protected recordManager: RecordManager,
+        protected logic: FieldLogicManager
+    ) {
+        super(typeFormatter, registry, recordManager, logic);
+    }
+
+}
