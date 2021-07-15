@@ -28,6 +28,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {isVoid} from 'common';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-varchar-filter',
@@ -36,11 +37,12 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 })
 export class VarcharFilterFieldComponent extends BaseFieldComponent implements OnInit, OnDestroy {
 
-    constructor(protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
         let current = '';
 
         if (this.field.criteria && this.field.criteria.values && this.field.criteria.values.length > 0) {

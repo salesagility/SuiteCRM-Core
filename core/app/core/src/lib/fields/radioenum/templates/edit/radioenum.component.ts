@@ -30,6 +30,7 @@ import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {Option} from 'common';
 import {FormGroup} from '@angular/forms';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-radioenum-edit',
@@ -39,8 +40,8 @@ import {FormGroup} from '@angular/forms';
 export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     formGroup: FormGroup;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 
     get displayDirection(): string {

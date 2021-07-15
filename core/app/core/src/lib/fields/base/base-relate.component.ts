@@ -33,6 +33,7 @@ import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {LanguageStore} from '../../store/language/language.store';
 import {RelateService} from '../../services/record/relate/relate.service';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
 export class BaseRelateComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -44,9 +45,10 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected relateService: RelateService,
-        protected moduleNameMapper: ModuleNameMapper
+        protected moduleNameMapper: ModuleNameMapper,
+        protected logic: FieldLogicManager
     ) {
-        super(typeFormatter);
+        super(typeFormatter, logic);
     }
 
     get module(): string {
@@ -58,6 +60,8 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
     }
 
     ngOnInit(): void {
+
+        super.ngOnInit();
 
         if (this.relateService) {
             this.relateService.init(this.getRelatedModule());

@@ -1,5 +1,6 @@
 export * from './actions/action.model';
 export * from './actions/bulk-action.model';
+export * from './actions/field-logic-action.model';
 export * from './components/button/button-group.model';
 export * from './components/button/button.model';
 export * from './components/button/dropdown-button.model';

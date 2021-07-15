@@ -29,6 +29,7 @@ import {TagInputComponent} from 'ngx-chips';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-boolean-filter',
@@ -39,8 +40,8 @@ export class BooleanFilterFieldComponent extends BaseEnumComponent implements On
 
     @ViewChild('tag') tag: TagInputComponent;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 
     ngOnInit(): void {

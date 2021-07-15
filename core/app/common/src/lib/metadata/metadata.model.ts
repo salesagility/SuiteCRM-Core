@@ -25,6 +25,7 @@
  */
 
 import {FieldDefinition, FieldMetadata} from '../record/field.model';
+import {FieldLogicMap} from '../actions/field-logic-action.model';
 
 export interface ViewFieldDefinition {
     name?: string;
@@ -34,6 +35,7 @@ export interface ViewFieldDefinition {
     display?: string;
     fieldDefinition?: FieldDefinition;
     metadata?: FieldMetadata;
+    logic?: FieldLogicMap;
 }
 
 export interface Panel {

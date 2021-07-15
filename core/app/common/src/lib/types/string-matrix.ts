@@ -24,8 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {StringMap} from './string-map';
+import {StringArrayMap, StringMap} from './string-map';
 
 export interface StringMatrix {
     [key: string]: StringMap;
+}
+export interface StringArrayMatrix {
+    [key: string]: StringArrayMap;
 }

@@ -30,6 +30,7 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {TagModel} from "ngx-chips/core/accessor";
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-multienum-filter',
@@ -40,8 +41,8 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
 
     @ViewChild('tag') tag: TagInputComponent;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 
     ngOnInit(): void {

@@ -28,6 +28,7 @@ import {Component} from '@angular/core';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-date-detail',
@@ -38,8 +39,9 @@ export class DateDetailFieldComponent extends BaseDateTimeComponent {
 
     constructor(
         protected formatter: DatetimeFormatter,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
     ) {
-        super(formatter, typeFormatter);
+        super(formatter, typeFormatter, logic);
     }
 }

@@ -29,6 +29,7 @@ import {BaseNumberComponent} from '../../../base/base-number.component';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-int-detail',
@@ -40,8 +41,9 @@ export class IntDetailFieldComponent extends BaseNumberComponent {
     constructor(
         protected userPreferences: UserPreferenceStore,
         protected systemConfig: SystemConfigStore,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
     ) {
-        super(userPreferences, systemConfig, typeFormatter);
+        super(userPreferences, systemConfig, typeFormatter, logic);
     }
 }

@@ -28,6 +28,7 @@ import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-multienum-detail',
@@ -35,7 +36,7 @@ import {LanguageStore} from '../../../../store/language/language.store';
     styleUrls: []
 })
 export class MultiEnumDetailFieldComponent extends BaseMultiEnumComponent {
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 }

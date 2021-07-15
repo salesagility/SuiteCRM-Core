@@ -28,12 +28,13 @@ import {BaseFieldComponent} from './base-field.component';
 import {Field, Record} from 'common';
 import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
 export class BaseNameComponent extends BaseFieldComponent {
 
-    constructor(protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     getNameField(field: Field, record: Record): string {

@@ -30,6 +30,7 @@ import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {FormGroup} from '@angular/forms';
 import {Option} from 'common';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-dropdownenum-edit',
@@ -39,8 +40,8 @@ import {Option} from 'common';
 export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
     formGroup: FormGroup;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 
     ngOnInit(): void {

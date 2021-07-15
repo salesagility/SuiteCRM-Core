@@ -28,6 +28,7 @@ import {BaseFieldComponent} from '../base-field.component';
 import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from '../../../services/formatters/datetime/datetime-formatter.service';
+import {FieldLogicManager} from '../../field-logic/field-logic.manager';
 
 @Component({template: ''})
 export class BaseDateTimeComponent extends BaseFieldComponent {
@@ -36,9 +37,10 @@ export class BaseDateTimeComponent extends BaseFieldComponent {
 
     constructor(
         protected formatter: DatetimeFormatter,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
     ) {
-        super(typeFormatter);
+        super(typeFormatter, logic);
     }
 
     getDateFormat(): string {

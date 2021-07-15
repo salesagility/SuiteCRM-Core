@@ -27,3 +27,7 @@
 export interface StringMap {
     [key: string]: string;
 }
+
+export interface StringArrayMap {
+    [key: string]: string[];
+}

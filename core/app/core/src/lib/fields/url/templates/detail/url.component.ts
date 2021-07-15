@@ -27,6 +27,7 @@
 import {Component} from '@angular/core';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-url-detail',
@@ -35,8 +36,8 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 })
 export class UrlDetailFieldComponent extends BaseFieldComponent {
 
-    constructor(protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     get target(): string {

@@ -26,7 +26,7 @@
 
 import {Component, Input, OnChanges} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {Field} from 'common';
+import {Field, Record} from 'common';
 import {FieldGridColumn, FieldGridRow} from './field-grid.model';
 import {BaseFieldGridComponent} from './base-field-grid.component';
 
@@ -38,6 +38,7 @@ import {BaseFieldGridComponent} from './base-field-grid.component';
 export class FieldGridComponent extends BaseFieldGridComponent implements OnChanges {
 
     @Input() fields: Field[];
+    @Input() record: Record;
     @Input() fieldMode = 'detail';
 
     constructor(protected breakpointObserver: BreakpointObserver) {

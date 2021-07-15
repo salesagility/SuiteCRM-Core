@@ -27,13 +27,14 @@
 import {BaseFieldComponent} from './base-field.component';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
-export class BaseNumberComponent extends BaseFieldComponent {
+export class BaseNumberComponent extends BaseFieldComponent{
 
     preferences$ = this.userPreferences.userPreferences$;
     configs$ = this.systemConfig.configs$;
@@ -47,9 +48,10 @@ export class BaseNumberComponent extends BaseFieldComponent {
     constructor(
         protected userPreferences: UserPreferenceStore,
         protected systemConfig: SystemConfigStore,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
     ) {
-        super(typeFormatter);
+        super(typeFormatter, logic);
     }
 
     get format(): boolean {

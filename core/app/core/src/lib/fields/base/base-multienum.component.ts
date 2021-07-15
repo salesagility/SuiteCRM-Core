@@ -28,12 +28,13 @@ import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from './base-enum.component';
 import {LanguageStore} from '../../store/language/language.store';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
 export class BaseMultiEnumComponent extends BaseEnumComponent {
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(languages, typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(languages, typeFormatter, logic);
     }
 
     protected initValue(): void {

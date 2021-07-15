@@ -27,6 +27,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-varchar-edit',
@@ -35,11 +36,12 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 })
 export class VarcharEditFieldComponent extends BaseFieldComponent implements OnInit, OnDestroy {
 
-    constructor(protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
         this.subscribeValueChanges();
     }
 

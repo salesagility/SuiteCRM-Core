@@ -30,6 +30,7 @@ import {Subscription} from 'rxjs';
 import {Field, FieldDefinition, isVoid, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -42,11 +43,13 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     protected mappedOptions: { [key: string]: Option[] };
     protected isDynamicEnum: boolean = false;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     ngOnInit(): void {
+
+        super.ngOnInit();
 
         if (this.field.metadata && this.field.metadata.options$) {
             this.subs.push(this.field.metadata.options$.subscribe((options: Option[]) => {

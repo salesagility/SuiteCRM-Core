@@ -25,9 +25,10 @@
  */
 
 import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
+import {FieldLogicMap} from '../actions/field-logic-action.model';
 
 export interface Option {
     value: string;
@@ -82,6 +83,7 @@ export interface FieldDefinition {
     valuePath?: string;
     dynamic?: boolean;
     parentenum?: string;
+    logic?: FieldLogicMap;
 }
 
 export declare type FieldClickCallback = (field: Field, record: Record) => void;
@@ -111,6 +113,11 @@ export interface FieldMap {
     [key: string]: Field;
 }
 
+export interface AttributeDependency {
+    field: string;
+    attribute: string;
+}
+
 export interface Field {
     type: string;
     value?: string;
@@ -122,11 +129,99 @@ export interface Field {
     parentKey?: string;
     attributes?: FieldAttributeMap;
     display?: string;
+    defaultDisplay?: string;
+    source?: 'field' | 'attribute';
+    valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
     formControl?: FormControl;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
+    valueSubject?: BehaviorSubject<FieldValue>;
+    valueChanges$?: Observable<FieldValue>;
+    fieldDependencies?: string[];
+    attributeDependencies?: AttributeDependency[];
+    logic?: FieldLogicMap;
 }
+
+export class BaseField implements Field {
+    type: string;
+    name?: string;
+    label?: string;
+    labelKey?: string;
+    display?: string;
+    defaultDisplay?: string;
+    source?: 'field' | 'attribute';
+    metadata?: FieldMetadata;
+    definition?: FieldDefinition;
+    criteria?: SearchCriteriaFieldFilter;
+    formControl?: FormControl;
+    validators?: ValidatorFn[];
+    asyncValidators?: AsyncValidatorFn[];
+    attributes?: FieldAttributeMap;
+    valueSubject?: BehaviorSubject<FieldValue>;
+    valueChanges$?: Observable<FieldValue>;
+    fieldDependencies: string[] = [];
+    attributeDependencies: AttributeDependency[] = [];
+    logic?: FieldLogicMap;
+
+    protected valueState?: string;
+    protected valueListState?: string[];
+    protected valueObjectState?: any;
+
+    constructor() {
+        this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
+        this.valueChanges$ = this.valueSubject.asObservable();
+    }
+
+    get value(): string {
+        return this.valueState;
+    }
+
+    set value(value: string) {
+        const changed = value !== this.valueState;
+
+        this.valueState = value;
+
+        if (changed) {
+            this.emitValueChanges();
+        }
+    }
+
+    get valueList(): string[] {
+        return this.valueListState;
+    }
+
+    set valueList(value: string[]) {
+
+        this.valueListState = value;
+
+        this.emitValueChanges();
+    }
+
+    get valueObject(): any {
+        return this.valueObjectState;
+    }
+
+    set valueObject(value: any) {
+        this.valueObjectState = value;
+        this.emitValueChanges();
+    }
+
+    protected emitValueChanges() {
+        this.valueSubject.next({
+            value: this.valueState,
+            valueList: this.valueListState,
+            valueObject: this.valueObjectState
+        })
+    }
+}
+
+export interface FieldValue {
+    value?: string;
+    valueList?: string[];
+    valueObject?: any;
+}
+
 

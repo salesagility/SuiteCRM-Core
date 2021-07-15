@@ -33,6 +33,7 @@ import {DateParserFormatter} from '../../../base/datetime/date/date-parser-forma
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-date-edit',
@@ -50,9 +51,10 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
     constructor(
         protected formatter: DateFormatter,
         protected dateAdapter: NgbDateAdapter<string>,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
     ) {
-        super(formatter, typeFormatter);
+        super(formatter, typeFormatter, logic);
     }
 
     ngOnInit(): void {

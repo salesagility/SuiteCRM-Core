@@ -27,6 +27,7 @@
 import {Component} from '@angular/core';
 import {Field, FieldDefinition} from 'common';
 import {BaseFieldComponent} from '../base/base-field.component';
+import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {StandardFieldRegistry} from '../standard-field.registry';
 
@@ -37,8 +38,8 @@ import {StandardFieldRegistry} from '../standard-field.registry';
 })
 export class GroupFieldComponent extends BaseFieldComponent {
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected registry: GroupFieldRegistry) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected registry: StandardFieldRegistry, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     getComponentType(type: string, definition: FieldDefinition): any {

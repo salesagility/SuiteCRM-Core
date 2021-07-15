@@ -36,6 +36,7 @@ import {LanguageStore} from '../../../../store/language/language.store';
 import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
 import {TagModel} from "ngx-chips/core/accessor";
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-relate-edit',
@@ -56,15 +57,17 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} relateService service
      * @param {object} moduleNameMapper service
      * @param {object} modalService service
+     * @param {object} logic
      */
     constructor(
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected relateService: RelateService,
         protected moduleNameMapper: ModuleNameMapper,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        protected logic: FieldLogicManager
     ) {
-        super(languages, typeFormatter, relateService, moduleNameMapper);
+        super(languages, typeFormatter, relateService, moduleNameMapper, logic);
 
         this.selectButton = {
             klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'select-button', 'm-0'],

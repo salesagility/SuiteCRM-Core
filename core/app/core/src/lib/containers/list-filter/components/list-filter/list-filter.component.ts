@@ -25,9 +25,9 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ScreenSizeMap} from 'common';
+import {Record, ScreenSizeMap} from 'common';
 import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';
 import {RecordGridConfig} from '../../../../components/record-grid/record-grid.model';
 import {ListFilterStoreFactory} from '../../store/list-filter/list-filter.store.factory';
@@ -44,7 +44,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
 
     @Input() config: FilterConfig;
 
-    vm$: Observable<any>;
+    vm$: Observable<Record>;
     store: ListFilterStore;
     filterActionsAdapter: SavedFilterActionsAdapter;
 
@@ -58,7 +58,11 @@ export class ListFilterComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.init(this.config);
-        this.vm$ = this.store.vm$;
+        this.vm$ = this.store.vm$.pipe(map(([savedFilter]) => {
+            const record = {...savedFilter};
+            record.fields = savedFilter.criteriaFields;
+            return record;
+        }));
     }
 
     ngOnDestroy(): void {

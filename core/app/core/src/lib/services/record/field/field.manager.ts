@@ -743,7 +743,7 @@ export class FieldManager {
      * @param {[]} validators ValidatorFn[]
      * @param {[]} asyncValidators AsyncValidatorFn[]
      * @param {object} language LanguageStore
-     * @returns {object} Field
+     * @returns {object} BaseField
      */
     protected setupField(
         module: string,
@@ -756,7 +756,7 @@ export class FieldManager {
         validators: ValidatorFn[],
         asyncValidators: AsyncValidatorFn[],
         language: LanguageStore
-    ): Field {
+    ): BaseField {
 
         const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
 
@@ -766,17 +766,52 @@ export class FieldManager {
             metadata.link = viewField.link;
         }
 
-        const field = {
-            type: viewField.type,
-            display: viewField.display,
-            value,
-            metadata,
-            definition,
-            labelKey: viewField.label,
-            formControl: new FormControl(formattedValue, validators, asyncValidators),
-            validators,
-            asyncValidators
-        } as Field;
+        const field = new BaseField();
+
+        field.type = viewField.type;
+        field.display = viewField.display || definition.display || 'default';
+        field.defaultDisplay = field.display;
+        field.value = value;
+        field.metadata = metadata;
+        field.definition = definition;
+        field.labelKey = viewField.label || definition.vname || '';
+        field.formControl = new FormControl(formattedValue, validators, asyncValidators);
+        field.validators = validators;
+        field.asyncValidators = asyncValidators;
+        field.attributes = {};
+        field.source = 'field';
+        field.logic = viewField.logic || definition.logic || null;
+
+        if (field.logic && Object.keys(field.logic).length) {
+            const attributeDependencies: { [key: string]: AttributeDependency } = {};
+            const fieldDependencies: StringMap = {};
+
+            Object.keys(field.logic).forEach(logicKey => {
+                const entry = field.logic[logicKey] || {} as FieldLogic;
+
+                if (!entry.params) {
+                    return;
+                }
+
+                if (entry.params && entry.params.attributeDependencies) {
+                    entry.params.attributeDependencies.forEach(dependency => {
+                        const dependencyKey = dependency.field + '.' + dependency.attribute;
+                        attributeDependencies[dependencyKey] = dependency;
+                    });
+
+                }
+
+                if (entry.params && entry.params.fieldDependencies) {
+                    entry.params.fieldDependencies.forEach(dependency => {
+                        fieldDependencies[dependency] = dependency;
+                    });
+                }
+
+            });
+
+            field.attributeDependencies = Object.keys(attributeDependencies).map(key => attributeDependencies[key]);
+            field.fieldDependencies = Object.keys(fieldDependencies);
+        }
 
         if (valueList) {
             field.valueList = valueList;

@@ -24,25 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component,} from '@angular/core';
-import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
-import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
-import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
-import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {Action, ActionData, ActionHandler, Field, Record} from 'common';
 
-@Component({
-    selector: 'scrm-datetime-detail',
-    templateUrl: './datetime.component.html',
-    styleUrls: []
-})
-export class DateTimeDetailFieldComponent extends BaseDateTimeComponent {
+export interface FieldLogicActionData extends ActionData {
+    field: Field,
+    record?: Record
+}
 
-    constructor(
-        protected formatter: DatetimeFormatter,
-        protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
-    ) {
-        super(formatter, typeFormatter, logic);
-    }
+export abstract class FieldLogicActionHandler extends ActionHandler<FieldLogicActionData> {
 
+    abstract run(data: FieldLogicActionData, action: Action): void;
+
+    shouldDisplay(data: FieldLogicActionData): boolean {
+        return true
+    };
 }

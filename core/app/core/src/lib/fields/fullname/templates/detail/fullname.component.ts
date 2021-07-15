@@ -27,6 +27,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseNameComponent} from '../../../base/base-name.component';
+import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
     selector: 'scrm-fullname-detail',
@@ -36,11 +37,12 @@ import {BaseNameComponent} from '../../../base/base-name.component';
 export class FullNameDetailFieldsComponent extends BaseNameComponent implements OnInit {
     data: string;
 
-    constructor(protected typeFormatter: DataTypeFormatter) {
-        super(typeFormatter);
+    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+        super(typeFormatter, logic);
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
         this.data = this.getNameField(this.field, this.record);
     }
 }
