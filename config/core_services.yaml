@@ -23,7 +23,6 @@ services:
       $themeImageSupportedTypes: '%themes.image_supported_types%'
       $frontendExcludedModules: '%legacy.frontend_excluded_modules%'
       $datetimeFormatMap: '%legacy.datetime_format_map%'
-      $filterOperatorMap: '%legacy.filter_operator_map%'
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
       $listViewBulkActions: '%module.listview.bulk_action%'
@@ -56,8 +55,6 @@ services:
       tags: [ 'app.data.preset.handler' ]
     App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityCheckerInterface:
       tags: [ 'app.engine.service.action.availability.checker' ]
-    App\Data\LegacyHandler\FilterMapper\FilterMapperInterface:
-      tags: [ 'app.data.filter.mapper' ]
     App\Statistics\Service\StatisticsProviderInterface:
       tags: [ 'app.data.statistics.handler' ]
     App\ViewDefinitions\LegacyHandler\SubpanelButtonMapperInterface:
@@ -181,11 +178,6 @@ services:
     # inject all services tagged with app.data.statistics.handler as first argument
     arguments:
       - !tagged { tag: 'app.data.statistics.handler' }
-
-  App\Data\LegacyHandler\FilterMapper\FilterMappers:
-    # inject all services tagged with app.data.filter.mapper as first argument
-    arguments:
-      - !tagged { tag: 'app.data.filter.mapper' }
 
   App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker:
     # inject all services tagged with app.engine.service.action.availability.checker as first argument
