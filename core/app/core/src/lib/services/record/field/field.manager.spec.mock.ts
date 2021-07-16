@@ -27,5 +27,21 @@
 import {FieldManager} from './field.manager';
 import {validationManagerMock} from '../validation/validation.manager.spec.mock';
 import {dataTypeFormatterMock} from '../../formatters/data-type.formatter.spec.mock';
+import {FieldBuilder} from './field.builder';
+import {AttributeBuilder} from './attribute.builder';
+import {FilterFieldBuilder} from './filter-field.builder';
+import {GroupFieldBuilder} from './group-field.builder';
+import {FilterAttributeBuilder} from './filter-attribute.builder';
 
-export const fieldManagerMock = new FieldManager(validationManagerMock, dataTypeFormatterMock);
+export const fieldBuildMock = new FieldBuilder(validationManagerMock, dataTypeFormatterMock);
+export const attributeBuilderMock = new AttributeBuilder(validationManagerMock, dataTypeFormatterMock);
+export const groupFieldBuilderMock = new GroupFieldBuilder(validationManagerMock, dataTypeFormatterMock);
+export const filterFieldBuilderMock = new FilterFieldBuilder(validationManagerMock, dataTypeFormatterMock);
+export const filterAttributeBuilderMock = new FilterAttributeBuilder(validationManagerMock, dataTypeFormatterMock);
+export const fieldManagerMock = new FieldManager(
+    fieldBuildMock,
+    groupFieldBuilderMock,
+    attributeBuilderMock,
+    filterFieldBuilderMock,
+    filterAttributeBuilderMock
+);
