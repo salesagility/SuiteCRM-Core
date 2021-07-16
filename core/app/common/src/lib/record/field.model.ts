@@ -29,6 +29,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
+import {ObjectMap} from '../types/object-map';
 
 export interface Option {
     value: string;
@@ -84,6 +85,11 @@ export interface FieldDefinition {
     dynamic?: boolean;
     parentenum?: string;
     logic?: FieldLogicMap;
+    lineItems?: LineItemsMetadata;
+}
+
+export interface LineItemsMetadata {
+    definition: FieldDefinition;
 }
 
 export declare type FieldClickCallback = (field: Field, record: Record) => void;
@@ -104,7 +110,6 @@ export interface FieldAttributeMap {
     [key: string]: FieldAttribute;
 }
 
-
 export interface FieldAttribute extends Field {
     valuePath?: string;
 }
@@ -123,14 +128,16 @@ export interface Field {
     value?: string;
     valueList?: string[];
     valueObject?: any;
+    valueObjectArray?: ObjectMap[];
     name?: string;
     label?: string;
     labelKey?: string;
     parentKey?: string;
     attributes?: FieldAttributeMap;
+    items?: Record[];
     display?: string;
     defaultDisplay?: string;
-    source?: 'field' | 'attribute';
+    source?: 'field' | 'attribute' | 'item';
     valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
     metadata?: FieldMetadata;
     definition?: FieldDefinition;

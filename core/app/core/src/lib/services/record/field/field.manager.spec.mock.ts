@@ -32,16 +32,22 @@ import {AttributeBuilder} from './attribute.builder';
 import {FilterFieldBuilder} from './filter-field.builder';
 import {GroupFieldBuilder} from './group-field.builder';
 import {FilterAttributeBuilder} from './filter-attribute.builder';
+import {LineItemBuilder} from './line-item.builder';
+import {languageStoreMock} from '../../../store/language/language.store.spec.mock';
 
-export const fieldBuildMock = new FieldBuilder(validationManagerMock, dataTypeFormatterMock);
+export const fieldBuilderMock = new FieldBuilder(validationManagerMock, dataTypeFormatterMock);
 export const attributeBuilderMock = new AttributeBuilder(validationManagerMock, dataTypeFormatterMock);
 export const groupFieldBuilderMock = new GroupFieldBuilder(validationManagerMock, dataTypeFormatterMock);
 export const filterFieldBuilderMock = new FilterFieldBuilder(validationManagerMock, dataTypeFormatterMock);
 export const filterAttributeBuilderMock = new FilterAttributeBuilder(validationManagerMock, dataTypeFormatterMock);
+export const lineItemBuilderMock = new LineItemBuilder(validationManagerMock, dataTypeFormatterMock);
 export const fieldManagerMock = new FieldManager(
-    fieldBuildMock,
+    fieldBuilderMock,
     groupFieldBuilderMock,
     attributeBuilderMock,
     filterFieldBuilderMock,
-    filterAttributeBuilderMock
-);
+    filterAttributeBuilderMock,
+    lineItemBuilderMock,
+    languageStoreMock
+    )
+;

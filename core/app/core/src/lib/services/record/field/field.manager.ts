@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field, Record, ViewFieldDefinition} from 'common';
+import {Field, FieldDefinition, Record, ViewFieldDefinition} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {Injectable} from '@angular/core';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
@@ -33,6 +33,8 @@ import {GroupFieldBuilder} from './group-field.builder';
 import {AttributeBuilder} from './attribute.builder';
 import {FilterFieldBuilder} from './filter-field.builder';
 import {FilterAttributeBuilder} from './filter-attribute.builder';
+import {LineItemBuilder} from './line-item.builder';
+import {FormGroup} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +46,9 @@ export class FieldManager {
         protected groupFieldBuilder: GroupFieldBuilder,
         protected attributeBuilder: AttributeBuilder,
         protected filterFieldBuilder: FilterFieldBuilder,
-        protected filterAttributeBuilder: FilterAttributeBuilder
+        protected filterAttributeBuilder: FilterAttributeBuilder,
+        protected lineItemBuilder: LineItemBuilder,
+        protected languageStore: LanguageStore
     ) {
     }
 
@@ -96,6 +100,14 @@ export class FieldManager {
             this.attributeBuilder.addAttributeToRecord.bind(this.attributeBuilder)
         );
 
+        this.lineItemBuilder.addLineItems(
+            record,
+            record.fields,
+            viewField,
+            language,
+            this.addField.bind(this),
+        );
+
         return field;
     }
 
@@ -134,6 +146,39 @@ export class FieldManager {
         );
 
         return field;
+    }
+
+    /**
+     * Build line item and and to record
+     * @param {object} itemDefinition
+     * @param {object }item
+     * @param {object} parentRecord
+     * @param {object} parentField
+     */
+    public addLineItem(
+        itemDefinition: FieldDefinition,
+        parentRecord: Record,
+        parentField: Field,
+        item: Record = null
+    ) {
+        if (!item) {
+            item = {
+                id: '',
+                attributes: {},
+                fields: {},
+                formGroup: new FormGroup({}),
+            } as Record;
+        }
+
+        this.lineItemBuilder.addLineItem(
+            itemDefinition,
+            item,
+            this.addField.bind(this),
+            this.languageStore,
+            parentRecord,
+            parentField
+        );
+
     }
 
 

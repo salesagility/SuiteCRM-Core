@@ -22,6 +22,7 @@ export * from './services/validators/validators.model';
 export * from './statistics/statistics-store.model';
 export * from './statistics/statistics.model';
 export * from './types/messages';
+export * from './types/object-map';
 export * from './types/overridable-map';
 export * from './types/string-map';
 export * from './types/string-matrix';

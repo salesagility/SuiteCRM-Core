@@ -380,6 +380,7 @@ export * from './services/record/field/filter-attribute.builder';
 export * from './services/record/field/filter-field.builder';
 export * from './services/record/field/form-control.utils';
 export * from './services/record/field/group-field.builder';
+export * from './services/record/field/line-item.builder';
 export * from './services/record/relate/relate.service';
 export * from './services/record/validation/aync-validator.Interface';
 export * from './services/record/validation/validation.manager';
