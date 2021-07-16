@@ -35,24 +35,15 @@ if (!isset($container)) {
 /** @var Container $container */
 $actions = $container->getParameter('module.recordview.actions');
 
-if (!isset($actions['modules']['leads'])) {
-    $actions['modules']['leads'] = [];
+if (!isset($actions['modules']['contacts'])) {
+    $actions['modules']['contacts'] = [];
 }
 
-if (!isset($actions['modules']['leads']['actions'])) {
-    $actions['modules']['leads']['actions'] = [];
+if (!isset($actions['modules']['contacts']['actions'])) {
+    $actions['modules']['contacts']['actions'] = [];
 }
 
-$actions['modules']['leads']['actions']['convert-lead'] = [
-    'key' => 'convert-lead',
-    'labelKey' => 'LBL_CONVERTLEAD',
-    'asyncProcess' => true,
-    'params' => [],
-    'modes' => ['detail'],
-    'acl' => ['edit'],
-];
-
-$actions['modules']['leads']['actions']['print-as-pdf'] = [
+$actions['modules']['contacts']['actions']['print-as-pdf'] = [
     'key' => 'print-as-pdf',
     'labelKey' => 'LBL_PRINT_AS_PDF',
     'asyncProcess' => true,
