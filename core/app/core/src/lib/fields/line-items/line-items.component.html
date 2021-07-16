@@ -1,0 +1,69 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2021 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+<ng-container *ngIf="!isConfigured()">
+    <scrm-label labelKey="LBL_LINE_ITEMS_FIELD_CONFIG"></scrm-label>
+</ng-container>
+
+<ng-container *ngIf="isConfigured()">
+    <div class="line-items d-flex flex-column {{field.type}} {{field.name}}">
+
+        <div class="d-flex {{getDirection()}} justify-content-start align-items-end line-item h-100">
+
+            <div *ngFor="let item of getItems(); index as i"
+                 class="d-flex flex-row line-item-entry w-100 align-items-end">
+
+                <div class="flex-grow-1 line-item-entry-composite">
+                    <div *ngFor="let itemField of getItemFields(item)" class="{{itemField.type}} {{itemField.name}}">
+                        <scrm-dynamic-field [componentType]="getComponentType(itemField.type, itemField.definition)"
+                                            [field]="itemField"
+                                            [klass]="klass"
+                                            [mode]="mode"
+                                            [record]="item"
+                                            [type]="itemField.type">
+                        </scrm-dynamic-field>
+                    </div>
+
+                </div>
+
+                <div class="line-item-entry-buttons mb-1">
+                    <scrm-button *ngIf="isEditable()" [config]="getRemoveItemButton(item, i)">
+                    </scrm-button>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="line-item-buttons d-flex justify-content-end mt-1">
+            <scrm-button *ngIf="isEditable()" [config]="getAddItemButton()">
+            </scrm-button>
+        </div>
+    </div>
+
+</ng-container>
+
+

@@ -26,12 +26,19 @@
 */
 -->
 <ng-container *ngIf="field && field.display !== 'none'">
-    <scrm-dynamic-field [componentType]="componentType"
+    <scrm-dynamic-field *ngIf="type !== 'line-items'"
+                        [componentType]="componentType"
                         [field]="field"
                         [klass]="klass"
                         [mode]="componentMode"
                         [record]="record"
                         [type]="type">
     </scrm-dynamic-field>
+    <scrm-line-items-field *ngIf="type === 'line-items'"
+                           [field]="field"
+                           [klass]="klass"
+                           [mode]="componentMode"
+                           [record]="record">
+    </scrm-line-items-field>
 </ng-container>
 

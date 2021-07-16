@@ -29,6 +29,7 @@ export * from './types/string-matrix';
 export * from './types/user';
 export * from './utils/object-utils';
 export * from './utils/value-utils';
+export * from './utils/view-utils';
 export * from './views/view.model';
 export * from './views/list/list-navigation.model';
 export * from './views/list/record-selection.model';

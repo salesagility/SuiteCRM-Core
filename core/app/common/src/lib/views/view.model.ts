@@ -30,6 +30,8 @@ import {Record} from '../record/record.model';
 
 export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
 
+export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
+
 export interface ViewContext {
     module: string;
     id?: string;

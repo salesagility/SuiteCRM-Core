@@ -24,27 +24,26 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FieldComponent} from './field.component';
-import {fieldModules} from './field.manifest';
-import {DynamicFieldModule} from './dynamic-field/dynamic-field.module';
-import {LineItemsModule} from './line-items/line-items.module';
+import {LineItemsComponent} from './line-items.component';
+import {LabelModule} from '../../components/label/label.module';
+import {DynamicFieldModule} from '../dynamic-field/dynamic-field.module';
+import {ButtonModule} from '../../components/button/button.module';
+import {BaseLineItemsComponent} from '../base/base-line-items.component';
+
 
 @NgModule({
-    declarations: [
-        FieldComponent,
-    ],
+    declarations: [LineItemsComponent, BaseLineItemsComponent],
     exports: [
-        FieldComponent,
+        LineItemsComponent
     ],
     imports: [
-        ...fieldModules,
         CommonModule,
+        LabelModule,
         DynamicFieldModule,
-        LineItemsModule
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        ButtonModule,
+    ]
 })
-export class FieldModule {
+export class LineItemsModule {
 }

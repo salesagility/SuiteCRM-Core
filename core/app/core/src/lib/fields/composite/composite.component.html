@@ -34,13 +34,14 @@
 
         <div *ngFor="let attribute of getAttributes()"
              [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
+             [class.align-self-start]="getDirection() === 'flex-row' && attribute.labelKey && showLabel(attribute)"
              class="field-group-item d-flex flex-column justify-content-end h-100 w-100">
 
             <!-- LABEL -->
-            <span *ngIf="attribute.labelKey && showLabel(attribute)"
-                  [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
-                  class="field-group-label pt-2 pr-1">
-                <label><scrm-label [labelKey]="attribute.labelKey" [module]="getModule()"></scrm-label></label>
+            <span class="field-group-label pt-2 pr-1">
+                <label *ngIf="attribute.labelKey && showLabel(attribute)">
+                    <scrm-label [labelKey]="attribute.labelKey" [module]="getModule()"></scrm-label>
+                </label>
             </span>
 
             <!-- VALUE -->

@@ -24,27 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FieldComponent} from './field.component';
-import {fieldModules} from './field.manifest';
-import {DynamicFieldModule} from './dynamic-field/dynamic-field.module';
-import {LineItemsModule} from './line-items/line-items.module';
+import {EDITABLE_VIEW_MODES, ViewMode} from '../views/view.model';
 
-@NgModule({
-    declarations: [
-        FieldComponent,
-    ],
-    exports: [
-        FieldComponent,
-    ],
-    imports: [
-        ...fieldModules,
-        CommonModule,
-        DynamicFieldModule,
-        LineItemsModule
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class FieldModule {
-}
+/**
+ * Check if value is editable
+ *
+ * @param {string} value to check
+ * @returns {boolean} isEditable
+ */
+export const isEditable = (value: ViewMode): boolean => EDITABLE_VIEW_MODES.includes(value);
