@@ -30,11 +30,13 @@ import {savedFilterActionManagerMock} from '../actions/saved-filter-action-manag
 import {asyncActionServiceMock} from '../../../services/process/processes/async-action/async-action.spec.mock';
 import {confirmationModalServiceMock} from '../../../services/modals/confirmation-modal.spec.mock';
 import {messageServiceMock} from '../../../services/message/message.service.spec.mock';
+import {selectModalServiceMock} from '../../../services/modals/select-modal.spec.mock';
 
 export const savedFilterActionAdapterFactoryMock = new SavedFilterActionAdapterFactory(
     languageStoreMock,
     savedFilterActionManagerMock,
     asyncActionServiceMock,
     messageServiceMock,
-    confirmationModalServiceMock
+    confirmationModalServiceMock,
+    selectModalServiceMock
 );

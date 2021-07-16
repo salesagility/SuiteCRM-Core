@@ -31,7 +31,7 @@ import {
     ActionDataSource,
     ActionHandler,
     ActionManager,
-    ModeActions,
+    ModeActions, Record,
     ViewMode
 } from 'common';
 import {Observable} from 'rxjs';
@@ -41,6 +41,7 @@ import {MessageService} from '../message/message.service';
 import {Process} from '../process/process.service';
 import {ConfirmationModalService} from '../modals/confirmation-modal.service';
 import {LanguageStore} from '../../store/language/language.store';
+import {SelectModalService} from '../modals/select-modal.service';
 
 export abstract class BaseActionsAdapter<D extends ActionData> implements ActionDataSource {
 
@@ -57,7 +58,8 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected selectModalService: SelectModalService
     ) {
     }
 
@@ -81,15 +83,46 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         const displayConfirmation = params.displayConfirmation || false;
         const confirmationLabel = params.confirmationLabel || '';
 
+        const selectModal = action.params && action.params.selectModal;
+        const selectModule = selectModal && selectModal.module;
+
         if (displayConfirmation) {
             this.confirmation.showModal(confirmationLabel, () => {
-                this.callAction(action, context);
+                if (!selectModule) {
+                    this.callAction(action, context);
+                    return;
+                }
+                this.showSelectModal(selectModal.module, action, context);
             });
 
             return;
         }
 
-        this.callAction(action, context);
+        if (!selectModule) {
+            this.callAction(action, context);
+            return;
+        }
+
+        this.showSelectModal(selectModal.module, action, context);
+    }
+
+    /**
+     * Run async buk action
+     *
+     * @returns void
+     * @param {string} selectModule: module for which records are listed in Select Modal/Popup
+     * @param {string} asyncAction: bulk action name
+     * @param {ActionContext} context
+     */
+    public showSelectModal(selectModule: string, asyncAction: Action, context: ActionContext = null) {
+
+        this.selectModalService.showSelectModal(selectModule, (modalRecord: Record) => {
+            if (modalRecord) {
+                const {fields, formGroup, ...baseRecord} = modalRecord;
+                asyncAction.params.modalRecord = baseRecord;
+            }
+            this.callAction(asyncAction, context);
+        });
     }
 
     /**
@@ -99,7 +132,9 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
      * @param moduleName
      * @param context
      */
-    protected abstract buildActionInput(action: Action, actionName: string, moduleName: string, context?: ActionContext): AsyncActionInput;
+    protected abstract buildActionInput(action: Action, actionName: string,
+                                        moduleName: string,
+                                        context?: ActionContext): AsyncActionInput;
 
     /**
      * Get action name

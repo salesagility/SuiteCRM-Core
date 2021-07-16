@@ -32,6 +32,7 @@ import {LanguageStore} from '../../../store/language/language.store';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapter} from './line-actions.adapter';
 import {SubpanelLineActionManager} from '../line-actions/line-action-manager.service';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 
 @Injectable({
@@ -44,7 +45,8 @@ export class SubpanelLineActionsAdapterFactory {
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected selectModalService: SelectModalService
     ) {
     }
 
@@ -55,7 +57,8 @@ export class SubpanelLineActionsAdapterFactory {
             this.asyncActionService,
             this.message,
             this.confirmation,
-            this.language
+            this.language,
+            this.selectModalService
         );
     }
 }

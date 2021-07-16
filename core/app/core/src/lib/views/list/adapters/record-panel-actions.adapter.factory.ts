@@ -33,6 +33,7 @@ import {ListViewRecordPanelActionsAdapter} from './record-panel-actions.adapter'
 import {RecordPanelStore} from '../../../containers/record-panel/store/record-panel/record-panel.store';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {RecordPanelActionManager} from '../actions/record-panel/record-panel-action-manager.service';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable({
     providedIn: 'root',
@@ -44,7 +45,8 @@ export class ListViewRecordPanelActionAdapterFactory {
         protected actionManager: RecordPanelActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
-        protected confirmation: ConfirmationModalService
+        protected confirmation: ConfirmationModalService,
+        protected selectModalService: SelectModalService
     ) {
     }
 
@@ -56,7 +58,8 @@ export class ListViewRecordPanelActionAdapterFactory {
             this.actionManager,
             this.asyncActionService,
             this.message,
-            this.confirmation
+            this.confirmation,
+            this.selectModalService
         );
     }
 }

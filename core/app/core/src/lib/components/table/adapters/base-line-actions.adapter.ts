@@ -33,6 +33,7 @@ import {LineActionData} from '../line-actions/line.action';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 import {LanguageStore} from '../../../store/language/language.store';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export abstract class BaseLineActionsAdapter extends BaseRecordActionsAdapter<LineActionData> {
@@ -42,9 +43,10 @@ export abstract class BaseLineActionsAdapter extends BaseRecordActionsAdapter<Li
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected selectModalService: SelectModalService
     ) {
-        super(actionManager, asyncActionService, message, confirmation, language)
+        super(actionManager, asyncActionService, message, confirmation, language, selectModalService)
     }
 
     protected buildActionData(action: Action, context?: ActionContext): LineActionData {

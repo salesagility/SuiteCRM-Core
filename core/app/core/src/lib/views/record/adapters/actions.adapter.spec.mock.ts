@@ -32,6 +32,7 @@ import {RecordActionsAdapter} from './actions.adapter';
 import {metadataStoreMock} from '../../../store/metadata/metadata.store.spec.mock';
 import {messageServiceMock} from '../../../services/message/message.service.spec.mock';
 import {confirmationModalServiceMock} from '../../../services/modals/confirmation-modal.spec.mock';
+import {selectModalServiceMock} from '../../../services/modals/select-modal.spec.mock';
 
 export const recordActionsMock = new RecordActionsAdapter(
     recordviewStoreMock,
@@ -40,5 +41,6 @@ export const recordActionsMock = new RecordActionsAdapter(
     recordActionsManagerMock,
     asyncActionServiceMock,
     messageServiceMock,
-    confirmationModalServiceMock
+    confirmationModalServiceMock,
+    selectModalServiceMock
 );

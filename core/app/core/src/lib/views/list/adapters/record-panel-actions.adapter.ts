@@ -39,6 +39,7 @@ import {RecordPanelStore} from '../../../containers/record-panel/store/record-pa
 import {RecordPanelActionManager} from '../actions/record-panel/record-panel-action-manager.service';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {ListViewRecordPanelActionData} from '../actions/record-panel/record-panel.action';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export class ListViewRecordPanelActionsAdapter extends BaseRecordActionsAdapter<RecordPanelActionData> {
@@ -51,13 +52,15 @@ export class ListViewRecordPanelActionsAdapter extends BaseRecordActionsAdapter<
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
+        protected selectModalService: SelectModalService
     ) {
         super(
             actionManager,
             asyncActionService,
             message,
             confirmation,
-            language
+            language,
+            selectModalService
         )
     }
 

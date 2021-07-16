@@ -38,6 +38,7 @@ import {SavedFilterActionData} from '../actions/saved-filter.action';
 import {ListFilterStore} from '../store/list-filter/list-filter.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
+import {SelectModalService} from "../../../services/modals/select-modal.service";
 
 @Injectable()
 export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFilterActionData> {
@@ -50,13 +51,15 @@ export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFil
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
+        protected selectModalService: SelectModalService
     ) {
         super(
             actionManager,
             asyncActionService,
             message,
             confirmation,
-            language
+            language,
+            selectModalService
         )
     }
 

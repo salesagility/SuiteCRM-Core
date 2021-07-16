@@ -36,6 +36,7 @@ import {LineActionActionManager} from '../../../components/table/line-actions/li
 import {BaseLineActionsAdapter} from '../../../components/table/adapters/base-line-actions.adapter';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {LanguageStore} from '../../../store/language/language.store';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export class LineActionsAdapter extends BaseLineActionsAdapter {
@@ -46,15 +47,17 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected selectModalService: SelectModalService
     ) {
         super(
             actionManager,
             asyncActionService,
             message,
             confirmation,
-            language
-        )
+            language,
+            selectModalService
+        );
     }
 
     getActions(context: ActionContext = null): Observable<Action[]> {

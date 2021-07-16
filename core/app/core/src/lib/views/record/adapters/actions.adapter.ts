@@ -38,6 +38,7 @@ import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionData> {
@@ -90,15 +91,17 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
         protected actionManager: RecordActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
-        protected confirmation: ConfirmationModalService
+        protected confirmation: ConfirmationModalService,
+        protected selectModalService: SelectModalService
     ) {
         super(
             actionManager,
             asyncActionService,
             message,
             confirmation,
-            language
-        )
+            language,
+            selectModalService
+        );
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
@@ -149,6 +152,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
             action: actionName,
             module: baseRecord.module,
             id: baseRecord.id,
+            params: (action && action.params) || []
         } as AsyncActionInput;
     }
 

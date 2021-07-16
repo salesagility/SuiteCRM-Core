@@ -38,6 +38,7 @@ import {ConfirmationModalService} from '../../../services/modals/confirmation-mo
 import {LanguageStore} from '../../../store/language/language.store';
 import {BulkActionsAdapterFactory} from './bulk-actions.adapter.factory';
 import {BulkActionsAdapter} from './bulk-actions.adapter';
+import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export class TableAdapter {
@@ -50,7 +51,8 @@ export class TableAdapter {
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
-        protected bulkActionsAdapterFactory: BulkActionsAdapterFactory
+        protected bulkActionsAdapterFactory: BulkActionsAdapterFactory,
+        protected selectModalService: SelectModalService
     ) {
     }
 
@@ -91,7 +93,8 @@ export class TableAdapter {
             this.asyncActionService,
             this.message,
             this.confirmation,
-            this.language
+            this.language,
+            this.selectModalService
         );
     }
 

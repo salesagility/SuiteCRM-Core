@@ -37,6 +37,7 @@ import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-ac
 import {SubpanelLineActionData} from '../line-actions/line.action';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionManager} from '../line-actions/line-action-manager.service';
+import {SelectModalService} from "../../../services/modals/select-modal.service";
 
 @Injectable({
     providedIn: 'root',
@@ -49,9 +50,10 @@ export class SubpanelLineActionsAdapter extends BaseRecordActionsAdapter<Subpane
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected selectModalService: SelectModalService
     ) {
-        super(actionManager, asyncActionService, message, confirmation, language)
+        super(actionManager, asyncActionService, message, confirmation, language, selectModalService)
     }
 
     getActions(context: ActionContext = null): Observable<Action[]> {
