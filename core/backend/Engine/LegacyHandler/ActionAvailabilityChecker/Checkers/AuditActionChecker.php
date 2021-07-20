@@ -88,9 +88,10 @@ class AuditActionChecker extends LegacyHandler implements ActionAvailabilityChec
      * check availability status of the action/function as defined under module vardefs
      *
      * @param string $module - the active module
+     * @param array|null $entry
      * @return bool
      */
-    public function checkAvailability(string $module): bool
+    public function checkAvailability(string $module, ?array $entry = []): bool
     {
         $this->init();
         $bean = BeanFactory::newBean($this->moduleNameMapper->toLegacy($module));

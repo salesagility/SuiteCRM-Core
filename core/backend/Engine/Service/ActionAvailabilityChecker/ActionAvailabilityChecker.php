@@ -86,6 +86,7 @@ class ActionAvailabilityChecker
     /**
      * check the availability status of the action key, if found in registry
      * @param string $module
+     * @param array $entry
      * @param string $type
      * action key/type to check the availability for defined inside a configuration file e.g. actions.yaml in the format
      * - availability
@@ -93,10 +94,10 @@ class ActionAvailabilityChecker
      *  - acls
      * @return bool
      */
-    public function checkAvailability(string $module, string $type): bool
+    public function checkAvailability(string $module, array $entry, string $type): bool
     {
         if ($this->hasChecker($type)) {
-            return $this->get($type)->checkAvailability($module);
+            return $this->get($type)->checkAvailability($module, $entry);
         }
         return true;
     }

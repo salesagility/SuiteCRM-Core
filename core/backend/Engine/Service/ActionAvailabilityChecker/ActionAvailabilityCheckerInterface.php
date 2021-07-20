@@ -38,7 +38,8 @@ interface ActionAvailabilityCheckerInterface
 
     /**
      * @param string $module
+     * @param array|null $entry
      * @return bool
      */
-    public function checkAvailability(string $module): bool;
+    public function checkAvailability(string $module, ?array $entry = []): bool;
 }

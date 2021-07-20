@@ -64,7 +64,7 @@ trait DefinitionEntryHandlingTrait
 
             $aclModule = $entry['aclModule'] ?? $module;
 
-            if ($this->checkAvailability($aclModule, $entry['availability'] ?? ['acls'], $actionAvailabilityChecker) === false) {
+            if ($this->checkAvailability($aclModule, $entry, $actionAvailabilityChecker) === false) {
                 continue;
             }
 
@@ -77,18 +77,20 @@ trait DefinitionEntryHandlingTrait
      * Check availability/accessibility status of the action/function to the user
      *
      * @param string $module - module to be queried
-     * @param array $actionList
+     * @param array $entry
      * @param ActionAvailabilityChecker $actionAvailabilityChecker
      * @return bool
      */
-    public function checkAvailability(string $module, array $actionList, ActionAvailabilityChecker $actionAvailabilityChecker): bool
+    public function checkAvailability(string $module, array $entry, ActionAvailabilityChecker $actionAvailabilityChecker): bool
     {
-        if (empty($actionList)) {
+        $availabilityCheckerKeys = $entry['availability'] ?? ['acls'];
+
+        if (empty($availabilityCheckerKeys)) {
             return true;
         }
 
-        foreach ($actionList as $action) {
-            if ($actionAvailabilityChecker->checkAvailability($module, $action) === false) {
+        foreach ($availabilityCheckerKeys as $availabilityCheckerKey) {
+            if ($actionAvailabilityChecker->checkAvailability($module, $entry, $availabilityCheckerKey) === false) {
                 return false;
             }
         }
