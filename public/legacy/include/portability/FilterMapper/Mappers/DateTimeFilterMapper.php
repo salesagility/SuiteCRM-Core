@@ -25,26 +25,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+require_once __DIR__ . '/../FilterMapperInterface.php';
+require_once __DIR__ . '/../../Services/DateTime/DateFormatService.php';
 
-namespace App\Data\LegacyHandler\FilterMapper\Mappers;
-
-use App\Data\LegacyHandler\FilterMapper\FilterMapperInterface;
-use App\DateTime\LegacyHandler\DateTimeHandler;
-
-class DateFilterMapper implements FilterMapperInterface
+class DateTimeFilterMapper implements FilterMapperInterface
 {
     /**
-     * @var DateTimeHandler
+     * @var DateFormatService
      */
     private $dateTimeHandler;
 
     /**
      * DateFilterMapper constructor.
-     * @param DateTimeHandler $dateTimeHandler
      */
-    public function __construct(DateTimeHandler $dateTimeHandler)
+    public function __construct()
     {
-        $this->dateTimeHandler = $dateTimeHandler;
+        $this->dateTimeHandler = new DateFormatService();
     }
 
     /**
@@ -52,7 +48,7 @@ class DateFilterMapper implements FilterMapperInterface
      */
     public function getType(): string
     {
-        return 'date';
+        return 'datetime';
     }
 
     /**
@@ -73,7 +69,7 @@ class DateFilterMapper implements FilterMapperInterface
             if (empty($value)) {
                 continue;
             }
-            $mapped[] = $this->dateTimeHandler->toUserDate($value);
+            $mapped[] = $this->dateTimeHandler->toDBDateTime($value);
         }
 
         $legacyValue = $mapped;

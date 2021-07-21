@@ -25,38 +25,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
-namespace App\Data\LegacyHandler\FilterMapper\Mappers;
-
-use App\Data\LegacyHandler\FilterMapper\FilterMapperInterface;
-
-class DefaultFilterMapper implements FilterMapperInterface
+interface FilterMapperInterface
 {
     /**
-     * @inheritDoc
+     * Get the field type it applies to
+     * @return string
      */
-    public function getType(): string
-    {
-        return 'default';
-    }
+    public function getType(): string;
 
     /**
-     * @inheritDoc
+     * Map value
+     * @param string $mappedValue
+     * @param array $criteriaItem
+     * @return mixed|string|string[]
      */
-    public function mapValue(string $mappedValue, array $criteriaItem)
-    {
-        /** @var array */
-        $values = $criteriaItem['values'] ?? [];
-
-        if (empty($values)) {
-            return [];
-        }
-
-        $legacyValue = $values;
-        if (count($values) === 1) {
-            $legacyValue = $values[0];
-        }
-
-        return $legacyValue;
-    }
+    public function mapValue(string $mappedValue, array $criteriaItem);
 }

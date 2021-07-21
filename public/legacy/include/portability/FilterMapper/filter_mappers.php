@@ -6,7 +6,7 @@
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * to Section 15 as permitted in Section 7(a)=>FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
  * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
  *
@@ -16,7 +16,7 @@
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see http://www.gnu.org/licenses.
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License
  * version 3, these Appropriate Legal Notices must retain the display of the
@@ -25,33 +25,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+require_once __DIR__ . '/Mappers/DateFilterMapper.php';
+require_once __DIR__ . '/Mappers/DateTimeFilterMapper.php';
+require_once __DIR__ . '/Mappers/DefaultFilterMapper.php';
+require_once __DIR__ . '/Mappers/MultiEnumFilterMapper.php';
 
-namespace App\Data\LegacyHandler\FilterMapper\Mappers;
+$filter_mappers = [
+    'default' => new DefaultFilterMapper(),
+    'date' => new DateFilterMapper(),
+    'datetime' => new DateTimeFilterMapper(),
+    'multienum' => new MultiEnumFilterMapper()
+];
 
-use App\Data\LegacyHandler\FilterMapper\FilterMapperInterface;
-
-class MultiEnumFilterMapper implements FilterMapperInterface
-{
-    /**
-     * @inheritDoc
-     */
-    public function getType(): string
-    {
-        return 'multienum';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function mapValue(string $mappedValue, array $criteriaItem)
-    {
-        /** @var array */
-        $values = $criteriaItem['values'] ?? [];
-
-        if (empty($values)) {
-            return [];
-        }
-
-        return $criteriaItem['values'];
-    }
+$extensionPath = 'custom/application/Ext/FilterMappers/filter_mappers.ext.php';
+if (file_exists($extensionPath)) {
+    include($extensionPath);
 }
+

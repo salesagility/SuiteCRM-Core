@@ -25,10 +25,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
-namespace App\Data\LegacyHandler\FilterMapper;
-
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+require_once __DIR__ . '/FilterMapperInterface.php';
 
 class FilterMappers
 {
@@ -41,16 +38,16 @@ class FilterMappers
 
     /**
      * FilterMappers constructor.
-     * @param iterable $handlers
      */
-    public function __construct(iterable $handlers)
+    public function __construct()
     {
         /**
          * @var FilterMapperInterface[]
          */
-        $handlers = iterator_to_array($handlers);
+        $filter_mappers = [];
+        require 'filter_mappers.php';
 
-        foreach ($handlers as $handler) {
+        foreach ($filter_mappers as $handler) {
             $type = $handler->getType();
             $this->registry[$type] = $handler;
         }
@@ -61,13 +58,12 @@ class FilterMappers
      * Get the mapper for field type
      * @param string $type
      * @return FilterMapperInterface
-     * @throws ItemNotFoundException
      */
     public function get(string $type): FilterMapperInterface
     {
 
         if (empty($this->registry[$type])) {
-            throw new ItemNotFoundException(self::MSG_HANDLER_NOT_FOUND);
+            throw new RuntimeException(self::MSG_HANDLER_NOT_FOUND);
         }
 
         return $this->registry[$type];

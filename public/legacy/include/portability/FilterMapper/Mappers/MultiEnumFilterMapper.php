@@ -25,34 +25,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+require_once __DIR__ . '/../FilterMapperInterface.php';
 
-namespace App\Data\LegacyHandler\FilterMapper\Mappers;
-
-use App\Data\LegacyHandler\FilterMapper\FilterMapperInterface;
-use App\DateTime\LegacyHandler\DateTimeHandler;
-
-class DateTimeFilterMapper implements FilterMapperInterface
+class MultiEnumFilterMapper implements FilterMapperInterface
 {
-    /**
-     * @var DateTimeHandler
-     */
-    private $dateTimeHandler;
-
-    /**
-     * DateFilterMapper constructor.
-     * @param DateTimeHandler $dateTimeHandler
-     */
-    public function __construct(DateTimeHandler $dateTimeHandler)
-    {
-        $this->dateTimeHandler = $dateTimeHandler;
-    }
-
     /**
      * @inheritDoc
      */
     public function getType(): string
     {
-        return 'datetime';
+        return 'multienum';
     }
 
     /**
@@ -67,20 +49,6 @@ class DateTimeFilterMapper implements FilterMapperInterface
             return [];
         }
 
-        $mapped = [];
-
-        foreach ($values as $value) {
-            if (empty($value)) {
-                continue;
-            }
-            $mapped[] = $this->dateTimeHandler->toDBDateTime($value);
-        }
-
-        $legacyValue = $mapped;
-        if (count($mapped) === 1) {
-            $legacyValue = $mapped[0];
-        }
-
-        return $legacyValue;
+        return $criteriaItem['values'];
     }
 }
