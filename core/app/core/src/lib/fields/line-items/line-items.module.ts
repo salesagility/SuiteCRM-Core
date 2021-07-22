@@ -31,6 +31,7 @@ import {LabelModule} from '../../components/label/label.module';
 import {DynamicFieldModule} from '../dynamic-field/dynamic-field.module';
 import {ButtonModule} from '../../components/button/button.module';
 import {BaseLineItemsComponent} from '../base/base-line-items.component';
+import {DynamicLabelModule} from '../../components/dynamic-label/dynamic-label.module';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {BaseLineItemsComponent} from '../base/base-line-items.component';
         LabelModule,
         DynamicFieldModule,
         ButtonModule,
+        DynamicLabelModule,
     ]
 })
 export class LineItemsModule {

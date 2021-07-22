@@ -28,7 +28,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {RecordManager} from '../../services/record/record.manager';
-import {Field, FieldAttribute, FieldDefinition, isEditable, Record, ViewMode} from 'common';
+import {Field, FieldAttribute, FieldDefinition, isEditable, Record, StringMap, ViewMode} from 'common';
 import set from 'lodash-es/set';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldManager} from '../../services/record/field/field.manager';
@@ -178,6 +178,17 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         }
 
         return (showLabel.includes('*') || showLabel.includes(this.mode));
+    }
+
+    getMessageContext(item: any, record: Record): StringMap {
+        const context = item && item.message && item.message.context || {};
+        context.module = (record && record.module) || '';
+
+        return context;
+    }
+
+    getMessageLabelKey(item: any): string {
+        return (item && item.message && item.message.labelKey) || '';
     }
 
     /**

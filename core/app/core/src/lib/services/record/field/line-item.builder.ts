@@ -147,7 +147,7 @@ export class LineItemBuilder extends AttributeBuilder {
 
         buildLineItemFunction(itemRecord, itemViewField, language);
 
-        parentRecord.formGroup.addControl(parentField.name, itemRecord.formGroup);
+        parentField.itemFormArray.push(itemRecord.formGroup);
 
         const parentFieldDefinition = (parentField && parentField.definition && parentField.definition.lineItems) || {} as LineItemsMetadata;
         if (parentFieldDefinition.labelOnFirstLine && parentField.items.length > 0) {

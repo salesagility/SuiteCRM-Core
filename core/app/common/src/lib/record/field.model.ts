@@ -146,6 +146,7 @@ export interface Field {
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
     formControl?: FormControl;
+    itemFormArray?: FormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
@@ -167,6 +168,7 @@ export class BaseField implements Field {
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
     formControl?: FormControl;
+    itemFormArray?: FormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     attributes?: FieldAttributeMap;

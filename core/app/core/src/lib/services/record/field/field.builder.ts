@@ -37,7 +37,7 @@ import {
     StringMap,
     ViewFieldDefinition
 } from 'common';
-import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';
 
@@ -171,9 +171,17 @@ export class FieldBuilder {
         field.metadata = metadata;
         field.definition = definition;
         field.labelKey = viewField.label || definition.vname || '';
-        field.formControl = new FormControl(formattedValue, validators, asyncValidators);
+
         field.validators = validators;
         field.asyncValidators = asyncValidators;
+
+        if (field.type === 'line-items') {
+            field.itemFormArray = new FormArray([], validators, asyncValidators);
+            field.formControl = new FormControl(formattedValue);
+        } else {
+            field.formControl = new FormControl(formattedValue, validators, asyncValidators);
+        }
+
         field.attributes = {};
         field.source = 'field';
         field.logic = viewField.logic || definition.logic || null;

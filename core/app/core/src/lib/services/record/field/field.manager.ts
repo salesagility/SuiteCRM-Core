@@ -201,6 +201,10 @@ export class FieldManager {
 
         record.fields[name] = field;
 
+        if (record.formGroup && field.itemFormArray) {
+            record.formGroup.addControl(name + '-items', field.itemFormArray);
+        }
+
         if (record.formGroup && field.formControl) {
             record.formGroup.addControl(name, field.formControl);
         }

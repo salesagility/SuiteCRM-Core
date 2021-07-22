@@ -62,6 +62,17 @@
             <scrm-button *ngIf="isEditable()" [config]="getAddItemButton()">
             </scrm-button>
         </div>
+
+        <ng-container *ngIf="isEditable() && field.itemFormArray && field.itemFormArray.errors">
+            <ng-container *ngIf="field.itemFormArray.invalid">
+                <div *ngFor="let item of field.itemFormArray.errors | keyvalue" class="invalid-feedback d-block">
+                    <scrm-dynamic-label [context]="getMessageContext(item.value, record)"
+                                        [fields]="{field: field}"
+                                        [labelKey]="getMessageLabelKey(item.value)">
+                    </scrm-dynamic-label>
+                </div>
+            </ng-container>
+        </ng-container>
     </div>
 
 </ng-container>
