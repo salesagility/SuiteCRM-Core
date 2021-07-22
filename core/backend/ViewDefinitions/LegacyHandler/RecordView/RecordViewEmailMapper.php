@@ -97,6 +97,7 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
             $cell['type'] = 'line-items';
 
             $config = [
+                'labelOnFirstLine' => true,
                 'definition' => [
                     'name' => 'email-fields',
                     'vname' => 'LBL_EMAIL',
@@ -109,6 +110,7 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                             'type' => 'email',
                             'vname' => 'LBL_EMAIL_ADDRESS',
                             'labelKey' => 'LBL_EMAIL_ADDRESS',
+                            'showLabel' => ['*'],
                         ],
                         'primary' => [
                             'name' => 'primary',

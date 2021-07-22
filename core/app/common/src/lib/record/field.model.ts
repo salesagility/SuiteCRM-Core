@@ -26,7 +26,7 @@
 
 import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
@@ -90,6 +90,9 @@ export interface FieldDefinition {
 
 export interface LineItemsMetadata {
     definition: FieldDefinition;
+    labelOnFirstLine?: boolean;
+
+    [key: string]: any;
 }
 
 export declare type FieldClickCallback = (field: Field, record: Record) => void;

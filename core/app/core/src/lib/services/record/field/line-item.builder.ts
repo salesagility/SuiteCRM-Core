@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone, Field, FieldDefinition, FieldMap, Record, ViewFieldDefinition} from 'common';
+import {deepClone, Field, FieldDefinition, FieldMap, LineItemsMetadata, Record, ViewFieldDefinition} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
@@ -149,6 +149,34 @@ export class LineItemBuilder extends AttributeBuilder {
 
         parentRecord.formGroup.addControl(parentField.name, itemRecord.formGroup);
 
+        const parentFieldDefinition = (parentField && parentField.definition && parentField.definition.lineItems) || {} as LineItemsMetadata;
+        if (parentFieldDefinition.labelOnFirstLine && parentField.items.length > 0) {
+            this.hideAttributeLabels(itemRecord);
+        }
+
         parentField.items.push(itemRecord);
+    }
+
+    /**
+     * Hide attribute labels
+     * @param itemRecord
+     */
+    protected hideAttributeLabels(itemRecord: Record): void {
+        const subfields = itemRecord.fields || {};
+
+        Object.keys(subfields).forEach(subFieldKey => {
+            const subField = subfields[subFieldKey];
+
+            if (subField.type !== 'composite') {
+                return;
+            }
+
+            const subFieldAttributes = subField.attributes || {};
+            Object.keys(subFieldAttributes).forEach(subFieldAttributeKey => {
+                const subFieldAttribute = subFieldAttributes[subFieldAttributeKey];
+
+                subFieldAttribute.definition.showLabel = null;
+            })
+        })
     }
 }
