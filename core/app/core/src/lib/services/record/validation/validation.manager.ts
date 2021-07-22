@@ -38,6 +38,7 @@ import {IntValidator} from './validators/int.validator';
 import {EmailValidator} from './validators/email.validator';
 import {PhoneValidator} from './validators/phone.validator';
 import {RangeValidator} from './validators/range.validator';
+import {PrimaryEmailValidator} from './validators/primary-email.validator';
 
 export interface ValidationManagerInterface {
     registerSaveValidator(module: string, key: string, validator: ValidatorInterface): void;
@@ -83,6 +84,7 @@ export class ValidationManager implements ValidationManagerInterface {
         protected floatValidator: FloatValidator,
         protected intValidator: IntValidator,
         protected phoneValidator: PhoneValidator,
+        protected primaryEmailValidator: PrimaryEmailValidator,
     ) {
 
         this.saveValidators = new OverridableMap<ValidatorInterface>();
@@ -98,6 +100,7 @@ export class ValidationManager implements ValidationManagerInterface {
         this.saveValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
         this.saveValidators.addEntry('default', this.getKey('int', 'all'), intValidator);
         this.saveValidators.addEntry('default', this.getKey('phone', 'all'), phoneValidator);
+        this.saveValidators.addEntry('default', this.getKey('line-items', 'all'), primaryEmailValidator);
 
         this.filterValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
         this.filterValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);

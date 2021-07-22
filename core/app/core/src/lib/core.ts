@@ -395,6 +395,7 @@ export * from './services/record/validation/validators/email.validator';
 export * from './services/record/validation/validators/float.validator';
 export * from './services/record/validation/validators/int.validator';
 export * from './services/record/validation/validators/phone.validator';
+export * from './services/record/validation/validators/primary-email.validator';
 export * from './services/record/validation/validators/range.validator';
 export * from './services/record/validation/validators/required.validator';
 export * from './services/ui/max-columns-calculator/max-columns-calculator.service';
