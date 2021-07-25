@@ -24,43 +24,6 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
-import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {RecordViewStore} from '../store/record-view/record-view.store';
-
-@Injectable()
-export class SidebarWidgetAdapter {
-
-    config$ = combineLatest([
-        this.metadata.recordViewMetadata$, this.store.showSidebarWidgets$
-    ]).pipe(
-        map(([metadata, show]) => {
-
-            if (metadata.sidebarWidgets && metadata.sidebarWidgets.length) {
-                metadata.sidebarWidgets.forEach(widget => {
-                    if (widget && widget.refreshOn === 'data-update') {
-                        widget.reload$ = this.store.record$.pipe(map(() => true));
-                    }
-
-                    if (widget) {
-                        widget.subpanelReload$ = this.store.subpanelReload$;
-                    }
-                });
-            }
-
-            return {
-                widgets: metadata.sidebarWidgets || [],
-                show
-            };
-        })
-    );
-
-    constructor(
-        protected store: RecordViewStore,
-        protected metadata: MetadataStore
-    ) {
-    }
-
+export interface BooleanMap {
+    [key: string]: boolean;
 }

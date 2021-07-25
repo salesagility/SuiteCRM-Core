@@ -26,12 +26,14 @@
 
 import {Observable} from 'rxjs';
 import {SingleValueStatisticsStoreInterface} from '../statistics/statistics-store.model';
+import {BooleanMap} from '../types/boolean-map';
 
 export interface WidgetMetadata {
     type: string;
     labelKey?: string;
     options: WidgetOptionMap;
     reload$?: Observable<boolean>;
+    subpanelReload$?: Observable<BooleanMap>;
     refreshOn?: string;
 }
 

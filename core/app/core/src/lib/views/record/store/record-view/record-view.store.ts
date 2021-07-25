@@ -27,6 +27,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {
+    BooleanMap,
     deepClone,
     FieldDefinitionMap,
     isVoid,
@@ -96,6 +97,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     mode$: Observable<ViewMode>;
     subpanels$: Observable<SubpanelStoreMap>;
     viewContext$: Observable<ViewContext>;
+    subpanelReload$: Observable<BooleanMap>;
+
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -112,6 +115,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected state$ = this.store.asObservable();
     protected subpanels: SubpanelStoreMap;
     protected subpanelsState: BehaviorSubject<SubpanelStoreMap>;
+    protected subpanelReloadSubject = new BehaviorSubject<BooleanMap>({} as BooleanMap);
+    protected subpanelReloadSub: Subscription[] = [];
     protected subs: Subscription[] = [];
 
     constructor(
@@ -142,6 +147,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.showTopWidget$ = this.state$.pipe(map(state => state.showTopWidget));
         this.showSubpanels$ = this.state$.pipe(map(state => state.showSubpanels));
         this.mode$ = this.state$.pipe(map(state => state.mode));
+        this.subpanelReload$ = this.subpanelReloadSubject.asObservable();
 
         const data$ = combineLatest(
             [this.record$, this.loading$]
@@ -488,6 +494,15 @@ export class RecordViewStore extends ViewStore implements StateStore {
             });
 
             this.subpanelsState.next(this.subpanels);
+
+            Object.keys(this.subpanels).forEach(subpanelKey => {
+                const subpanel = this.subpanels[subpanelKey];
+                this.subpanelReloadSub.push(subpanel.recordList.records$.pipe(tap(() => {
+                    const update = {} as BooleanMap;
+                    update[subpanelKey] = true;
+                    this.subpanelReloadSubject.next(update);
+                })).subscribe());
+            });
         });
     }
 
@@ -496,6 +511,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
             Object.keys(this.subpanels).forEach((key: string) => {
                 this.subpanels[key].clear();
             });
+        }
+
+        if (this.subpanelReloadSub.length) {
+            this.subpanelReloadSub.forEach(sub => sub.unsubscribe());
+            this.subpanelReloadSub = [];
         }
 
         this.subpanels = {};
