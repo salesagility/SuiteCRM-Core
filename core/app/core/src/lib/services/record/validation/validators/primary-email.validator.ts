@@ -47,7 +47,7 @@ export const primaryEmailValidator = (viewField: ViewFieldDefinition, record: Re
         let count = 0;
         items.some(item => {
             const emailField = (item.fields && item.fields['email-fields']) || {} as Field;
-            const primary = (emailField.attributes && emailField.attributes['primary']) || null;
+            const primary = (emailField.attributes && emailField.attributes['primary_address']) || null;
 
             if (!primary) {
                 return false;

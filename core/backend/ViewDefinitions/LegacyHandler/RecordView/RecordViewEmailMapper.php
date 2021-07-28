@@ -95,6 +95,9 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
             }
 
             $cell['type'] = 'line-items';
+            $cell['name'] = 'email_addresses';
+            $cell['fieldDefinition']['name'] = 'email_addresses';
+            $cell['fieldDefinition']['module'] = 'EmailAddress';
 
             $config = [
                 'labelOnFirstLine' => true,
@@ -102,7 +105,7 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                     'name' => 'email-fields',
                     'vname' => 'LBL_EMAIL',
                     'type' => 'composite',
-                    'layout' => ['email_address', 'primary', 'invalid_email', 'opt_out'],
+                    'layout' => ['email_address', 'primary_address', 'opt_out', 'invalid_email'],
                     'display' => 'inline',
                     'attributeFields' => [
                         'email_address' => [
@@ -110,13 +113,16 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                             'type' => 'email',
                             'vname' => 'LBL_EMAIL_ADDRESS',
                             'labelKey' => 'LBL_EMAIL_ADDRESS',
+                            'required' => true,
+                            'valueParent' => 'record',
                             'showLabel' => ['*'],
                         ],
-                        'primary' => [
-                            'name' => 'primary',
+                        'primary_address' => [
+                            'name' => 'primary_address',
                             'type' => 'bool',
                             'vname' => 'LBL_PRIMARY',
                             'labelKey' => 'LBL_PRIMARY',
+                            'valueParent' => 'record',
                             'showLabel' => ['*'],
                         ],
                         'invalid_email' => [
@@ -124,12 +130,14 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                             'type' => 'bool',
                             'vname' => 'LBL_INVALID_EMAIL',
                             'labelKey' => 'LBL_INVALID_EMAIL',
+                            'valueParent' => 'record',
                             'showLabel' => ['*'],
                         ],
                         'opt_out' => [
                             'name' => 'opt_out',
                             'type' => 'bool',
                             'vname' => 'LBL_OPT_OUT',
+                            'valueParent' => 'record',
                             'showLabel' => ['*'],
                         ],
                     ],
