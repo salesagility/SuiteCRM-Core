@@ -89,12 +89,13 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      * @param index
      */
     removeItem(index: number): void {
-        const newItems = (index > -1) ? [
-            ...this.field.items.slice(0, index),
-            ...this.field.items.slice(index + 1)
-        ] : this.field.items;
 
-        this.updateItems(newItems);
+        this.fieldManager.removeLineItem(
+            this.field,
+            index
+        );
+
+        this.updateItems(this.field.items);
     }
 
     /**

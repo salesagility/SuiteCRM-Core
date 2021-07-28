@@ -149,7 +149,7 @@ export class FieldManager {
     }
 
     /**
-     * Build line item and and to record
+     * Build line item and add to record
      * @param {object} itemDefinition
      * @param {object }item
      * @param {object} parentRecord
@@ -180,6 +180,42 @@ export class FieldManager {
             parentField
         );
 
+        parentField.itemFormArray.updateValueAndValidity();
+    }
+
+    /**
+     * Remove line item
+     * @param {object} parentField
+     * @param index
+     */
+    public removeLineItem(parentField: Field, index: number) {
+        const item = parentField.items[index];
+
+        if (!item) {
+            return;
+        }
+
+        if (item.id) {
+            item.attributes.deleted = 1;
+        } else {
+            parentField.items = (index > -1) ? [
+                ...parentField.items.slice(0, index),
+                ...parentField.items.slice(index + 1)
+            ] : parentField.items;
+        }
+
+        parentField.itemFormArray.clear();
+
+        parentField.items.forEach(item => {
+            const deleted = item && item.attributes && item.attributes.deleted;
+            if (!item || deleted) {
+                return;
+            }
+
+            parentField.itemFormArray.push(item.formGroup);
+        });
+
+        parentField.itemFormArray.updateValueAndValidity();
     }
 
 
