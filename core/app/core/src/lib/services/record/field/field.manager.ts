@@ -164,6 +164,7 @@ export class FieldManager {
         if (!item) {
             item = {
                 id: '',
+                module: parentField.definition.module || '',
                 attributes: {},
                 fields: {},
                 formGroup: new FormGroup({}),

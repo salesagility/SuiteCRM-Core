@@ -136,7 +136,7 @@ export class FilterAttributeBuilder extends FilterFieldBuilder {
         if (!viewName) {
             value = '';
         } else {
-            value = this.getParentValue(field, viewName, definition);
+            value = this.getParentValue(record, field, viewName, definition);
         }
 
         if (Array.isArray(value)) {

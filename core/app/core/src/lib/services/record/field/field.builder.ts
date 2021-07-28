@@ -117,6 +117,10 @@ export class FieldBuilder {
             value = record.attributes[viewName];
         }
 
+        if (type === 'line-items') {
+            return {value: null, valueList};
+        }
+
         if (Array.isArray(value)) {
             valueList = value;
             value = null;
@@ -163,7 +167,7 @@ export class FieldBuilder {
 
         const field = new BaseField();
 
-        field.type = viewField.type;
+        field.type = viewField.type || definition.type;
         field.name = viewField.name || definition.name || '';
         field.display = viewField.display || definition.display || 'default';
         field.defaultDisplay = field.display;
@@ -176,6 +180,7 @@ export class FieldBuilder {
         field.asyncValidators = asyncValidators;
 
         if (field.type === 'line-items') {
+            field.valueObjectArray = record.attributes[field.name];
             field.itemFormArray = new FormArray([], validators, asyncValidators);
             field.formControl = new FormControl(formattedValue);
         } else {
@@ -255,14 +260,22 @@ export class FieldBuilder {
     /**
      * Set attribute value on parent
      *
+     * @param {object} record Record
      * @param {object} field Field
      * @param {string} name String
      * @param {object} definition FieldDefinition
      * @returns any
      */
-    protected getParentValue(field: Field, name: string, definition: FieldDefinition): any {
+    protected getParentValue(record: Record, field: Field, name: string, definition: FieldDefinition): any {
+        const valueParent = definition.valueParent ?? 'field';
+        const parent = valueParent === 'record' ? record : field;
+
         if (definition.valuePath) {
-            return get(field, definition.valuePath, '');
+            return get(parent, definition.valuePath, '');
+        }
+
+        if (valueParent === 'record') {
+            return get(record.attributes, name, '');
         }
 
         return get(field.valueObject, name, '');

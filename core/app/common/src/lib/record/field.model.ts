@@ -82,6 +82,7 @@ export interface FieldDefinition {
     groupFields?: FieldDefinitionMap;
     attributeFields?: FieldDefinitionMap;
     valuePath?: string;
+    valueParent?: string;
     dynamic?: boolean;
     parentenum?: string;
     logic?: FieldLogicMap;
@@ -115,6 +116,7 @@ export interface FieldAttributeMap {
 
 export interface FieldAttribute extends Field {
     valuePath?: string;
+    valueParent?: string;
 }
 
 export interface FieldMap {
@@ -181,6 +183,7 @@ export class BaseField implements Field {
     protected valueState?: string;
     protected valueListState?: string[];
     protected valueObjectState?: any;
+    protected valueObjectArrayState?: ObjectMap[];
 
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
@@ -218,6 +221,15 @@ export class BaseField implements Field {
 
     set valueObject(value: any) {
         this.valueObjectState = value;
+        this.emitValueChanges();
+    }
+
+    get valueObjectArray(): any {
+        return this.valueObjectArrayState;
+    }
+
+    set valueObjectArray(value: ObjectMap[]) {
+        this.valueObjectArrayState = value;
         this.emitValueChanges();
     }
 

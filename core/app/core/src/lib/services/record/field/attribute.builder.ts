@@ -30,6 +30,7 @@ import {LanguageStore} from '../../../store/language/language.store';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {Injectable} from '@angular/core';
+import isObjectLike from 'lodash-es/isObjectLike';
 
 @Injectable({
     providedIn: 'root'
@@ -152,6 +153,7 @@ export class AttributeBuilder extends FieldBuilder {
 
         const fieldAttribute = field as FieldAttribute;
         fieldAttribute.valuePath = definition.valuePath;
+        fieldAttribute.valueParent = definition.valueParent;
         fieldAttribute.source = 'attribute';
         fieldAttribute.parentKey = parentField.name;
 
@@ -205,22 +207,37 @@ export class AttributeBuilder extends FieldBuilder {
         let value: string;
         let valueList: string[] = null;
 
-        if (!viewName || !field.attributes[viewName]) {
-            value = '';
-        } else if (type === 'relate' && source === 'non-db' && rname !== '') {
-            value = this.getParentValue(field, viewName, definition)[rname];
-            const valueObject = this.getParentValue(field, viewName, definition);
+        if (type === 'relate' && source === 'non-db' && rname !== '') {
+            value = this.getParentValue(record, field, viewName, definition)[rname];
+            const valueObject = this.getParentValue(record, field, viewName, definition);
             return {value, valueList, valueObject};
-        } else {
-            value = this.getParentValue(field, viewName, definition);
         }
+
+        if (!viewName) {
+            value = '';
+        } else {
+            value = this.getParentValue(record, field, viewName, definition);
+        }
+
+        value = this.getParentValue(record, field, viewName, definition);
 
         if (Array.isArray(value)) {
-            valueList = value;
-            value = null;
+            return {
+                value: null,
+                valueList: value,
+                valueObject: null
+            }
         }
 
-        return {value, valueList};
+        if (isObjectLike(value)) {
+            return {
+                value: null,
+                valueList: null,
+                valueObject: value
+            }
+        }
+
+        return {value, valueList: null, valueObject: null};
     }
 
 }

@@ -1,4 +1,4 @@
-import {Record, RecordMapper} from 'common';
+import {deepClone, Record, RecordMapper} from 'common';
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class BaseSaveRecordMapper implements RecordMapper {
 
     map(record: Record): void {
 
-        if(!record.fields || !Object.keys(record.fields).length){
+        if (!record.fields || !Object.keys(record.fields).length) {
             return;
         }
 
@@ -38,6 +38,28 @@ export class BaseSaveRecordMapper implements RecordMapper {
                 record.attributes[fieldName] = attribute;
                 record.attributes[idName] = field.valueObject.id;
 
+                return;
+            }
+
+            if (field.valueObject) {
+                record.attributes[fieldName] = field.valueObject;
+                return;
+            }
+
+            if (field.items) {
+                record.attributes[fieldName] = [];
+                field.items.forEach(item => {
+                    record.attributes[fieldName].push({
+                        id: item.id,
+                        module: item.module,
+                        attributes: deepClone(item.attributes)
+                    } as Record)
+                });
+                return;
+            }
+
+            if (field.valueObjectArray) {
+                record.attributes[fieldName] = field.valueObjectArray;
                 return;
             }
 

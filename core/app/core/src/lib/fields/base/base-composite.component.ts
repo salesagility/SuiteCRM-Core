@@ -191,11 +191,18 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
      * @param {} value
      */
     protected setValueOnParent(attribute: FieldAttribute, value: any): void {
+        const valueParent = attribute.valueParent ?? 'field';
+        const parent = valueParent === 'record' ? this.record : this.field;
+
         if (attribute.valuePath) {
-            set(this.field, attribute.valuePath, value);
+            set(parent, attribute.valuePath, value);
             return;
         }
 
-        set(this.field.valueObject, attribute.name, value);
+        if (valueParent === 'record') {
+            set(this.record.attributes, attribute.name, value);
+        } else {
+            set(this.field.valueObject, attribute.name, value);
+        }
     }
 }
