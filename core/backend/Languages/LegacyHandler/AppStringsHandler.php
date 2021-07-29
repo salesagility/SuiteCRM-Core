@@ -93,6 +93,8 @@ class AppStringsHandler extends LegacyHandler
             $this->injectModuleLanguage($language, $module, $languageKeys, $appStringsArray);
         }
 
+        $appStringsArray = array_merge(load_install_language($language), $appStringsArray);
+
         $appStringsArray = $this->removeEndingColon($appStringsArray);
 
         $appStrings = new AppStrings();
