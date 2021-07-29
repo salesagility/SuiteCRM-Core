@@ -47,6 +47,7 @@ import {
     FooterUiModule,
     FullPageSpinnerModule,
     ImageModule,
+    InstallViewModule,
     ListContainerModule,
     ListHeaderModule,
     ListModule,
@@ -56,7 +57,7 @@ import {
     NavbarUiModule,
     RecordListModalModule,
     RecordModule,
-    TableModule
+    TableModule,
 } from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -88,6 +89,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         ListModule,
         RecordModule,
         CreateRecordModule,
+        InstallViewModule,
         TableModule,
         ModuleTitleModule,
         ListHeaderModule,

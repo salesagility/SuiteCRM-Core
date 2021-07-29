@@ -35,6 +35,7 @@ import {
     ClassicViewUiComponent,
     CreateRecordComponent,
     ExtensionLoader,
+    InstallViewComponent,
     ListComponent,
     LoginAuthGuard,
     LoginUiComponent,
@@ -75,6 +76,24 @@ export class AppInit {
                         },
                         data: {
                             reuseRoute: false,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
+                        }
+                    });
+
+                    routes.push({
+                        path: 'install',
+                        component: InstallViewComponent,
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: false,
                             load: {
                                 navigation: false,
                                 preferences: false,
