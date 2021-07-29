@@ -24,19 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Injectable} from '@angular/core';
+import {InstallViewActionData} from './install-view.action';
+import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
+import {InstallAction} from './install/install.action';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+@Injectable({
+    providedIn: 'root',
+})
+export class InstallActionManager extends BaseActionManager<InstallViewActionData> {
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
-
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+    constructor(
+        protected save: InstallAction,
+    ) {
+        super();
+        save.modes.forEach(mode => this.actions[mode][save.key] = save);
+    }
 }
-

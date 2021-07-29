@@ -24,19 +24,43 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {ViewMode} from 'common';
+import {InstallViewStore} from '../../store/install-view/install-view.store';
+import {InstallViewModel} from '../../store/install-view/install-view.store.model';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+@Component({
+    selector: 'scrm-install-view',
+    templateUrl: './install-view.component.html',
+    styleUrls: [],
+    providers: [InstallViewStore]
+})
+export class InstallViewComponent implements OnInit, OnDestroy {
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
+    vm$: Observable<InstallViewModel> = null;
+    showStatusBar = false;
 
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+    constructor(
+        protected store: InstallViewStore,
+        private route: ActivatedRoute
+    ) {
+    }
+
+    ngOnInit(): void {
+        let mode = 'edit' as ViewMode;
+        const data = (this.route.snapshot && this.route.snapshot.data) || {};
+
+        if (data.mode) {
+            mode = data.mode;
+        }
+
+        this.store.init(mode);
+        this.vm$ = this.store.vm$;
+    }
+
+    ngOnDestroy(): void {
+        this.store.clear();
+    }
 }
-

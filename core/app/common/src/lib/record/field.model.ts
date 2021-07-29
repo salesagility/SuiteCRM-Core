@@ -78,7 +78,7 @@ export interface FieldDefinition {
     displayType?: string;
     displayDirection?: string;
     layout?: string[];
-    showLabel?: string[];
+    showLabel?: any;
     groupFields?: FieldDefinitionMap;
     attributeFields?: FieldDefinitionMap;
     valuePath?: string;

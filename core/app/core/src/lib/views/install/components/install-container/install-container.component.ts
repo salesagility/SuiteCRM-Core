@@ -24,19 +24,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Component} from '@angular/core';
+import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
+import {InstallContentAdapter} from '../../adapters/install-content.adapter';
+import {RecordContentDataSource} from '../../../../components/record-content/record-content.model';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+@Component({
+    selector: 'scrm-install-container',
+    templateUrl: 'install-container.component.html',
+    providers: [InstallContentAdapter]
+})
+export class InstallContainerComponent {
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
+    constructor(
+        protected metadata: MetadataStore,
+        protected contentAdapter: InstallContentAdapter,
+    ) {
+    }
 
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+    getContentAdapter(): RecordContentDataSource {
+        return this.contentAdapter;
+    }
 }
-

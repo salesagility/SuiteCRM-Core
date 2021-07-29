@@ -234,7 +234,7 @@ export class FieldBuilder {
             field.label = this.getFieldLabel(viewField.label, module, language);
         }
 
-        if (viewField.label) {
+        if (!field.labelKey && viewField.label) {
             field.labelKey = viewField.label;
         }
         return field;

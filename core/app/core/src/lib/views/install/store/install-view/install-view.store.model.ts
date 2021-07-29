@@ -24,19 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Action, Panel, Record, ViewMode} from 'common';
+import {RecordTemplateMetadata} from '../../../../store/metadata/metadata.store.service';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+export interface InstallViewModel {
+    mode?: ViewMode;
+    record: Record;
+    loading: boolean;
+}
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
+export interface InstallViewState {
+    loading: boolean;
+    mode: ViewMode;
+    params: { [key: string]: string };
+}
 
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+export interface InstallViewMetadata {
+    actions?: Action[];
+    templateMeta?: RecordTemplateMetadata;
+    panels?: Panel[];
 }
 

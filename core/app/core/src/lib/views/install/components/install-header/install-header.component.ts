@@ -24,19 +24,49 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Component} from '@angular/core';
+import {combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {InstallActionsAdapter} from '../../adapters/actions.adapter';
+import {ActionContext, Record} from 'common';
+import {InstallViewStore} from '../../store/install-view/install-view.store';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+@Component({
+    selector: 'scrm-install-header',
+    templateUrl: 'install-header.component.html',
+    providers: [InstallActionsAdapter]
+})
+export class InstallHeaderComponent {
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+    vm$ = combineLatest([
+        this.store.record$
+    ]).pipe(
+        map(([record]) => ({record}))
+    );
+
+    constructor(
+        public actionsAdapter: InstallActionsAdapter,
+        protected store: InstallViewStore,
+    ) {
+    }
+
+    /**
+     * Build action context
+     * @param record
+     */
+    getActionContext(record: Record): ActionContext {
+        if (!record) {
+            return {} as ActionContext
+        }
+
+        return {
+            module: record.module || '',
+            record
+        } as ActionContext
+    }
+
+    getTitle() {
+
+    }
 }
-

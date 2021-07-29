@@ -24,19 +24,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {InstallViewComponent} from './install-view.component';
+import {FieldModule} from '../../../../fields/field.module';
+import {InstallHeaderModule} from '../install-header/install-header.module';
+import {InstallContainerModule} from '../install-container/install-container.module';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
-
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
-
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+@NgModule({
+    declarations: [InstallViewComponent],
+    exports: [InstallViewComponent],
+    imports: [
+        CommonModule,
+        FieldModule,
+        InstallHeaderModule,
+        InstallContainerModule
+    ],
+})
+export class InstallViewModule {
 }
-

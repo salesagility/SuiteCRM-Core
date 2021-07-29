@@ -24,19 +24,35 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {Injectable} from '@angular/core';
+import {ViewMode} from 'common';
+import {take} from 'rxjs/operators';
+import {InstallViewActionData, InstallViewActionHandler} from '../install-view.action';
+import {MessageService} from '../../../../services/message/message.service';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
+@Injectable({
+    providedIn: 'root'
+})
+export class InstallAction extends InstallViewActionHandler {
 
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
+    key = 'install';
+    modes = ['edit' as ViewMode];
 
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+    constructor(protected message: MessageService) {
+        super();
+    }
+
+    run(data: InstallViewActionData): void {
+        data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            if (valid) {
+                return;
+            }
+
+            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+        });
+    }
+
+    shouldDisplay(): boolean {
+        return true;
+    }
 }
-

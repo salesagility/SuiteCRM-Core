@@ -24,19 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SortingSelection} from './list/list-navigation.model';
-import {SearchCriteria} from './list/search-criteria.model';
-import {Record} from '../record/record.model';
+import {ActionData, ActionHandler} from 'common';
+import {InstallViewStore} from '../store/install-view/install-view.store';
 
-export type ViewMode = 'detail' | 'edit' | 'list' | 'create' | 'massupdate' | 'filter';
-
-export const EDITABLE_VIEW_MODES = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
-
-export interface ViewContext {
-    module?: string;
-    id?: string;
-    record?: Record;
-    criteria?: SearchCriteria;
-    sort?: SortingSelection;
+export interface InstallViewActionData extends ActionData {
+    store: InstallViewStore;
 }
 
+export abstract class InstallViewActionHandler extends ActionHandler<InstallViewActionData> {
+
+    abstract run(data: InstallViewActionData): void;
+
+    abstract shouldDisplay(data: InstallViewActionData): boolean;
+}
