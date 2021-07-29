@@ -93,11 +93,17 @@ import {RadioEnumDetailFieldComponent} from './radioenum/templates/detail/radioe
 import {RadioEnumEditFieldComponent} from './radioenum/templates/edit/radioenum.component';
 import {HtmlDetailFieldComponent} from './html/templates/detail/html.component';
 import {HtmlDetailFieldModule} from './html/templates/detail/html.module';
+import {PasswordDetailFieldModule} from './password/templates/detail/password.module';
+import {PasswordEditFieldModule} from './password/templates/edit/password.module';
+import {PasswordDetailFieldComponent} from './password/templates/detail/password.component';
+import {PasswordEditFieldComponent} from './password/templates/edit/password.component';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
     VarcharEditFieldModule,
     VarcharFilterFieldModule,
+    PasswordDetailFieldModule,
+    PasswordEditFieldModule,
     IntDetailFieldModule,
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
@@ -134,6 +140,8 @@ export const baseFieldComponents = [
     VarcharDetailFieldComponent,
     VarcharEditFieldComponent,
     VarcharFilterFieldComponent,
+    PasswordDetailFieldComponent,
+    PasswordEditFieldComponent,
     IntDetailFieldComponent,
     FloatDetailFieldComponent,
     PhoneDetailFieldComponent,
@@ -172,6 +180,9 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'varchar.detail': VarcharDetailFieldComponent,
     'varchar.edit': VarcharEditFieldComponent,
     'varchar.filter': VarcharFilterFieldComponent,
+    'password.list': PasswordDetailFieldComponent,
+    'password.detail': PasswordDetailFieldComponent,
+    'password.edit': PasswordEditFieldComponent,
     'char.list': VarcharDetailFieldComponent,
     'char.detail': VarcharDetailFieldComponent,
     'int.list': IntDetailFieldComponent,
