@@ -129,54 +129,62 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $mod = new $class();
         $spd = new SubPanelDefinitions($mod);
 
-        // all subpanels available(defined) for a module
-        $availableSubpanels = $spd->layout_defs['subpanel_setup'] ?? [];
+        // all subpanels defined for a module
+        $allTabs = $spd->layout_defs['subpanel_setup'] ?? [];
 
-        // subpanels allowed bases on user ACL
-        $allowedSubpanels = $spd->get_available_tabs() ?? [];
+        // subpanels available after filtering the hidden subpanels
+        // via [Admin => Modules and Subpanels] and [User > ACL Roles] settings
+        $availableTabs = $spd->get_available_tabs() ?? [];
 
-        $frontEndSubpanelDefs = [];
+        //filtered tabs
+        $tabs = array_filter(
+            $allTabs,
+            static function ($key) use ($availableTabs) {
+                return in_array($key, $availableTabs, true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
-        foreach ($allowedSubpanels as $subpanelKey) {
+        $resultingTabs = [];
 
-            $legacySubpanelDef = $availableSubpanels[$subpanelKey];
-            $subpanelModule = $legacySubpanelDef['module'];
+        foreach ($tabs as $key => $tab) {
 
             /** @var aSubPanel $subpanel */
-            $subpanel = $spd->load_subpanel($subpanelKey);
+            $subpanel = $spd->load_subpanel($key);
+
             if ($subpanel === false) {
                 continue;
             }
 
             $columnSubpanel = $subpanel;
-            if (!empty($legacySubpanelDef['collection_list'])) {
+            if (!empty($tab['collection_list'])) {
                 $columnSubpanel = $subpanel->get_header_panel_def();
                 $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
             } else {
-                $headerModule = $this->getHeaderModule($legacySubpanelDef);
+                $headerModule = $this->getHeaderModule($tab);
             }
+
+            $vardefs = $this->getSubpanelModuleVardefs($headerModule);
+
+            $tabs[$key]['icon'] = $tab['module'];
+            $tabs[$key]['name'] = $key;
+            $tabs[$key]['module'] = $this->moduleNameMapper->toFrontEnd($tab['module']);
+            $tabs[$key]['legacyModule'] = $tab['module'];
+            $tabs[$key]['headerModule'] = $headerModule;
+            $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
+            $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
+            $tabs[$key]['lineActions'] = $this->getSubpanelLineActions($subpanel, $tabs[$key]['module']);
+
             if (empty($columnSubpanel)) {
                 continue;
             }
 
-            $frontEndSubpanelDef = $legacySubpanelDef;
+            $resultingTabs[$key] = $tabs[$key];
 
-            // add new subpanel properties for front-end usage
-            $frontEndSubpanelDef['icon'] = $subpanelModule;
-            $frontEndSubpanelDef['name'] = $subpanelKey;
-            $frontEndSubpanelDef['module'] = $this->moduleNameMapper->toFrontEnd($subpanelModule);
-            $frontEndSubpanelDef['legacyModule'] = $subpanelModule;
-            $frontEndSubpanelDef['headerModule'] = $headerModule;
-            $frontEndSubpanelDef['top_buttons'] = $this->mapButtons($subpanel, $legacySubpanelDef);
-            $frontEndSubpanelDef['insightWidget'] = $this->mapInsightWidget($subpanel, $availableSubpanels, $subpanelKey, $legacySubpanelDef);
-            $frontEndSubpanelDef['lineActions'] = $this->getSubpanelLineActions($subpanel, $subpanelModule);
-
-            $frontEndSubpanelDefs[$subpanelKey] = $frontEndSubpanelDef;
-
-            $vardefs = $this->getSubpanelModuleVardefs($headerModule);
-            $frontEndSubpanelDefs[$subpanelKey]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
+            $resultingTabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
         }
-        return $frontEndSubpanelDefs;
+
+        return $resultingTabs;
     }
 
     /**
