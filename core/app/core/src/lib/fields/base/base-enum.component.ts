@@ -29,7 +29,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Field, FieldDefinition, isVoid, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
+import {
+    LanguageListStringMap,
+    LanguageStore,
+    LanguageStringMap,
+    LanguageStrings
+} from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 
 @Component({template: ''})
@@ -63,9 +68,9 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         }
 
         if (this.field.definition && this.field.definition.options) {
-            this.subs.push(this.languages.appListStrings$.subscribe((appStrings: LanguageListStringMap) => {
+            this.subs.push(this.languages.vm$.subscribe((strings: LanguageStrings) => {
 
-                this.buildAppStringListOptions(appStrings);
+                this.buildAppStringListOptions(strings.appListStrings);
                 this.initValue();
 
             }));
@@ -97,17 +102,15 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     protected buildAppStringListOptions(appStrings: LanguageListStringMap): void {
 
-        if (!appStrings || !this.field.definition.options || !appStrings[this.field.definition.options]) {
-            return;
-        }
-
         this.optionsMap = {} as LanguageStringMap;
         this.addExtraOptions();
 
-        const options = appStrings[this.field.definition.options] as LanguageStringMap;
+        if (appStrings && this.field.definition.options && appStrings[this.field.definition.options]) {
+            const options = appStrings[this.field.definition.options] as LanguageStringMap;
 
-        if (this.options && Object.keys(this.options)) {
-            this.optionsMap = {...this.optionsMap, ...options};
+            if (this.options && Object.keys(this.options)) {
+                this.optionsMap = {...this.optionsMap, ...options};
+            }
         }
 
         this.buildOptionsArray(appStrings);

@@ -159,7 +159,7 @@ export class FieldBuilder {
 
         const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
 
-        const metadata = viewField.metadata || {};
+        const metadata = viewField.metadata || definition.metadata || {};
 
         if (viewField.link) {
             metadata.link = viewField.link;
