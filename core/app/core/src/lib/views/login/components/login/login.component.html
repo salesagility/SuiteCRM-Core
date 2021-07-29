@@ -97,7 +97,7 @@
                     {{vm.appStrings['LBL_LOGIN_BUTTON_LABEL']}}
                 </button>
                 <div class="forgotten-password" *ngIf="vm.showForgotPassword">
-                    <a href="#" class="forgotten-password-link" (click)="flipCard()">
+                    <a class="forgotten-password-link" (click)="flipCard()">
                         {{vm.appStrings['LBL_LOGIN_FORGOT_PASSWORD']}}
                     </a>
                 </div>
@@ -144,7 +144,7 @@
                     {{vm.appStrings['LBL_GENERATE_PASSWORD_BUTTON_TITLE']}}
                 </button>
                 <div>
-                    <a href="#" class="back-link forgotten-password-link" (click)="flipCard()">
+                    <a class="back-link forgotten-password-link" (click)="flipCard()">
                         {{vm.appStrings['LBL_BACK']}}
                     </a>
                 </div>
