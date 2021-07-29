@@ -45,7 +45,7 @@
             </span>
 
             <!-- VALUE -->
-            <span *ngIf="attribute.type" class="field-group-field pr-1">
+            <span *ngIf="attribute.type" class="field-group-field pr-1 composite-field">
 
                 <scrm-dynamic-field [componentType]="getComponentType(attribute.type, attribute.definition)"
                                     [field]="attribute"

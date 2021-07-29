@@ -9,4 +9,24 @@
       align-self: flex-start !important;
     }
   }
+
 }
+
+.composite-field {  
+  .checkbox-field {
+    .checkmark {
+      margin-left: 0.6em;
+    }
+    position: relative;
+    top: 0.3em;
+  }
+}
+
+.line-item-entry-buttons-label-padding{
+  padding-top: 3.2em;
+}
+
+.line-item-entry-buttons-no-label-padding {
+  padding-top: 0.7em
+}
+
