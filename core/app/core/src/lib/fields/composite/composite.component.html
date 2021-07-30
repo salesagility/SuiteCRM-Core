@@ -30,7 +30,7 @@
 </ng-container>
 
 <ng-container *ngIf="isConfigured()">
-    <div class="d-flex {{getDirection()}} justify-content-start align-items-end field-group h-100">
+    <div class="d-flex {{getDirection()}} justify-content-start align-items-end field-group h-100 composite-field-wrapper">
 
         <div *ngFor="let attribute of getAttributes()"
              [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
