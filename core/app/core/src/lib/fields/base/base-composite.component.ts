@@ -127,8 +127,9 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
     showLabel(attribute: FieldAttribute): boolean {
         const definition = attribute.definition || null;
         const showLabel = definition.showLabel || null;
+        const labelDisplay = (attribute.metadata && attribute.metadata.labelDisplay) || '';
 
-        if (!definition || !showLabel) {
+        if (!definition || !showLabel || labelDisplay === 'hide') {
             return false;
         }
 

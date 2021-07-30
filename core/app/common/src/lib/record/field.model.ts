@@ -105,6 +105,7 @@ export interface FieldMetadata {
     rows?: number;
     cols?: number;
     digits?: number;
+    labelDisplay?: string;
     options$?: Observable<Option[]>;
     extraOptions?: Option[];
     onClick?: FieldClickCallback;

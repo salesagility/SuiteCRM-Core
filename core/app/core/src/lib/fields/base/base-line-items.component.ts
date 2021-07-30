@@ -28,7 +28,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {RecordManager} from '../../services/record/record.manager';
-import {Field, FieldAttribute, FieldDefinition, isEditable, Record, StringMap, ViewMode} from 'common';
+import {
+    Field,
+    FieldAttribute,
+    FieldDefinition,
+    isEditable,
+    LineItemsMetadata,
+    Record,
+    StringMap,
+    ViewMode
+} from 'common';
 import set from 'lodash-es/set';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldManager} from '../../services/record/field/field.manager';
@@ -71,6 +80,19 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      */
     getItems(): Record[] {
         this.field.items = this.field.items || [];
+
+        const definition = (this.field && this.field.definition && this.field.definition.lineItems) || {} as LineItemsMetadata;
+        const items = this.field.items || [];
+        const activeItems = items && items.filter(item => !(item && item.attributes && item.attributes.deleted));
+
+        activeItems.forEach((item, index) => {
+            let show = true;
+            if (definition.labelOnFirstLine && index > 0) {
+                show = false;
+            }
+            this.setAttributeLabelDisplay(item, show);
+        });
+
         return this.field.items;
     }
 
@@ -236,5 +258,30 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         }
 
         set(this.field.valueObject, attribute.name, value);
+    }
+
+    /**
+     * Set attribute label display
+     * @param {object} itemRecord
+     * @param {boolean} showLabel
+     */
+    protected setAttributeLabelDisplay(itemRecord: Record, showLabel: boolean): void {
+        const subfields = itemRecord.fields || {};
+
+        Object.keys(subfields).forEach(subFieldKey => {
+            const subField = subfields[subFieldKey];
+
+            if (subField.type !== 'composite') {
+                return;
+            }
+
+            const subFieldAttributes = subField.attributes || {};
+            Object.keys(subFieldAttributes).forEach(subFieldAttributeKey => {
+                const subFieldAttribute = subFieldAttributes[subFieldAttributeKey];
+                const metadata = subFieldAttribute.metadata || {};
+                metadata.labelDisplay = !showLabel ? 'hide' : 'default';
+                subFieldAttribute.metadata = metadata;
+            })
+        })
     }
 }
