@@ -54,12 +54,10 @@
                 </div>
 
                 <div class="line-item-entry-buttons mb-1 align-self-start"
-                    [class.line-item-entry-buttons-label-padding]="i === 0 && field.definition.lineItems.labelOnFirstLine"
-                    [class.line-item-entry-buttons-no-label-padding]="i !== 0 && field.definition.lineItems.labelOnFirstLine">                
+                     [class.line-item-entry-buttons-label-padding]="i === 0 && field.definition.lineItems.labelOnFirstLine"
+                     [class.line-item-entry-buttons-no-label-padding]="i !== 0 && field.definition.lineItems.labelOnFirstLine">
                     <scrm-button *ngIf="isEditable()" [config]="getRemoveItemButton(item, i)">
                     </scrm-button>
-
-                    </div>
                 </div>
             </ng-container>
 
