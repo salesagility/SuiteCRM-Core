@@ -41,6 +41,7 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
         this.selectedValues = [];
 
         if (!this.field.valueList || this.field.valueList.length < 1) {
+            this.initEnumDefault();
             return;
         }
 

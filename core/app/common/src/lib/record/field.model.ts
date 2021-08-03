@@ -88,6 +88,7 @@ export interface FieldDefinition {
     logic?: FieldLogicMap;
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
+    default?: string;
 }
 
 export interface LineItemsMetadata {

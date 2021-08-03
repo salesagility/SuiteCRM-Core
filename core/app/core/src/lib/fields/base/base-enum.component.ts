@@ -27,7 +27,7 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Field, FieldDefinition, isVoid, Option} from 'common';
+import {Field, FieldDefinition, isEmptyString, isVoid, Option} from 'common';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {
     LanguageListStringMap,
@@ -46,7 +46,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     labels: LanguageStringMap;
     protected subs: Subscription[] = [];
     protected mappedOptions: { [key: string]: Option[] };
-    protected isDynamicEnum: boolean = false;
+    protected isDynamicEnum = false;
 
     constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
         super(typeFormatter, logic);
@@ -116,7 +116,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.buildOptionsArray(appStrings);
     }
 
-    private addExtraOptions() {
+    protected addExtraOptions(): void {
         const extraOptions = (this.field.metadata && this.field.metadata.extraOptions) || [];
 
         extraOptions.forEach((item: Option) => {
@@ -150,6 +150,14 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     protected initValue(): void {
+
+        this.selectedValues = [];
+
+        if (!this.field.value) {
+            this.initEnumDefault();
+            return;
+        }
+
         if (typeof this.field.value !== 'string') {
             return;
         }
@@ -157,8 +165,6 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         if (!this.optionsMap) {
             return;
         }
-
-        this.selectedValues = [];
 
         if (typeof this.optionsMap[this.field.value] !== 'string') {
             return;
@@ -173,7 +179,49 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         }
     }
 
-    checkAndInitAsDynamicEnum() {
+    /**
+     *  Initialize the default value for the enum
+     *
+     *  @returns {void}
+     *  @description set default enum value, if defined in vardefs
+     * */
+    protected initEnumDefault(): void {
+
+        if (!isEmptyString(this.record?.id)) {
+            return;
+        }
+
+        let defaultVal = this.field?.definition?.default;
+        if (typeof defaultVal === 'string') {
+            defaultVal = defaultVal.trim();
+        }
+        if (!defaultVal) {
+            return;
+        }
+
+        this.selectedValues.push({
+            value: defaultVal,
+            label: this.optionsMap[defaultVal]
+        });
+
+        this.initEnumDefaultFieldValues(defaultVal);
+    }
+
+    protected initEnumDefaultFieldValues(defaultVal: string): void {
+
+        if (this.field.type === 'multienum') {
+            const defaultValues = this.selectedValues.map(option => option.value);
+            this.field.valueList = defaultValues;
+            this.field.formControl.setValue(defaultValues);
+
+        } else {
+            this.field.value = defaultVal;
+            this.field.formControl.setValue(defaultVal);
+        }
+        this.field.formControl.markAsDirty();
+    }
+
+    protected checkAndInitAsDynamicEnum(): void {
 
         const definition = (this.field && this.field.definition) || {} as FieldDefinition;
         const dynamic = (definition && definition.dynamic) || false;
@@ -189,7 +237,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         }
     }
 
-    buildDynamicEnumOptions(appStrings: LanguageListStringMap) {
+    protected buildDynamicEnumOptions(appStrings: LanguageListStringMap): void {
 
         const parentEnum = this.record.fields[this.field.definition.parentenum];
 
@@ -197,7 +245,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
             const parentOptionMap: LanguageStringMap = appStrings[parentEnum.definition.options] as LanguageStringMap;
 
-            if (parentOptionMap && Object.keys(parentOptionMap).length != 0) {
+            if (parentOptionMap && Object.keys(parentOptionMap).length !== 0) {
 
                 this.mappedOptions = this.createParentChildOptionsMap(parentOptionMap, this.options);
 
@@ -213,7 +261,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         }
     }
 
-    filterMatchingOptions(values: string[]): Option[] {
+    protected filterMatchingOptions(values: string[]): Option[] {
 
         let filteredOptions: Option[] = [];
 
@@ -231,18 +279,17 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         return filteredOptions;
     }
 
-    createParentChildOptionsMap(parentOptions: LanguageStringMap, childOptions: Option[]): { [key: string]: Option[] } {
+    protected createParentChildOptionsMap(parentOptions: LanguageStringMap, childOptions: Option[]): { [key: string]: Option[] } {
         const mappedOptions: { [key: string]: Option[] } = {};
         Object.keys(parentOptions).forEach(key => {
-                mappedOptions[key] = childOptions.filter(
-                    option => String(option.value).startsWith(parentOptions[key])
-                )
-            }
-        );
+            mappedOptions[key] = childOptions.filter(
+                option => String(option.value).startsWith(parentOptions[key])
+            );
+        });
         return mappedOptions;
     }
 
-    subscribeToParentValueChanges(parentEnum: Field) {
+    protected subscribeToParentValueChanges(parentEnum: Field): void {
         if (parentEnum.formControl) {
             this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
 
