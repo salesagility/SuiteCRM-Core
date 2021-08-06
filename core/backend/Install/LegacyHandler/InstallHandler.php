@@ -29,6 +29,9 @@ namespace App\Install\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Install\Service\InstallationUtilsTrait;
+use PDO;
+use PDOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -40,6 +43,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class InstallHandler extends LegacyHandler
 {
+    use InstallationUtilsTrait;
+
     public const HANDLER_KEY = 'install';
 
     /**
@@ -78,7 +83,8 @@ class InstallHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         LoggerInterface $logger
-    ) {
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -102,10 +108,11 @@ class InstallHandler extends LegacyHandler
         $errorLevelStored = error_reporting();
         error_reporting(0);
 
-        if (PHP_SAPI !== 'cli') {
-            $this->logger->error('CLI install can be run via CLI only.');
+        if (PHP_SAPI === 'cli') {
+            $this->logger->info('Install Script is running via CLI.');
 
-            return false;
+        } else {
+            $this->logger->info('Install Script is running via Web Server.');
         }
 
         if (!is_file('config_si.php')) {
@@ -114,24 +121,22 @@ class InstallHandler extends LegacyHandler
             return false;
         }
 
-        if (is_file('config.php')) {
-            $this->logger->error('SuiteCRM is already installed.');
-
-            return false;
-        }
-
         $_REQUEST['goto'] = 'SilentInstall';
         $_REQUEST['cli'] = 'true';
 
-        echo 'Starting SuiteCRM CLi Installation', PHP_EOL;
+        $this->echoCLI('Running SuiteCRM CLi Installation ...' . PHP_EOL);
+
         ob_start();
         include_once 'install.php';
         ob_end_clean();
 
         if (is_file('config.php')) {
-            echo 'SuiteCRM CLi Install Complete', PHP_EOL;
+            $this->echoCLI('SuiteCRM CLi Installation Completed' . PHP_EOL);
+            $status = true;
         } else {
-            echo 'SuiteCRM CLi Install Failed', PHP_EOL;
+            $this->echoCLI('SuiteCRM CLi Installation Failed' . PHP_EOL);
+            $this->logger->error('SuiteCRM CLi Install Failed');
+            $status = false;
         }
 
         chdir($this->projectDir);
@@ -139,13 +144,14 @@ class InstallHandler extends LegacyHandler
 
         error_reporting($errorLevelStored);
 
-        return true;
+        return $status;
     }
 
     /**
      * @param array $inputArray
+     * @return bool
      */
-    public function createConfig(array $inputArray): void
+    public function createConfig(array $inputArray): bool
     {
         $siteURL = $inputArray['site_host'] . '/legacy';
         $configArray = [
@@ -184,16 +190,37 @@ class InstallHandler extends LegacyHandler
             chdir($this->legacyDir);
             $filesystem->dumpFile('config_si.php', $contents);
             chdir($this->projectDir);
+
+            return true;
         } catch (IOExceptionInterface $exception) {
-            echo 'An error occurred while creating your silent install config at ' . $exception->getPath();
+            $this->logger->error('An error occurred while creating your silent install config at ' . $exception->getPath());
+            return false;
         }
+    }
+
+    /**
+     * Check db host connection before proceeding
+     * @param array $inputArray
+     * @return bool
+     */
+    public function checkDBConnection(array $inputArray): bool
+    {
+        try {
+            new PDO("mysql:host=" . $inputArray["db_host"] . ";", $inputArray['db_username'], $inputArray['db_password']);
+        } catch (PDOException $e) {
+            $this->logger->error('An error occurred while checking the Database Host Connection ' . $e->getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Create local env file
      * @param array $inputArray
+     * @return bool
      */
-    public function createEnv(array $inputArray): void
+    public function createEnv(array $inputArray): bool
     {
 
         $password = $inputArray['db_password'] ?? '';
@@ -204,7 +231,18 @@ class InstallHandler extends LegacyHandler
 
         $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$host:$port/$dbName\"";
         $filesystem = new Filesystem();
-        $filesystem->dumpFile('.env.local', $dbUrl);
+        try {
+            chdir($this->projectDir);
+
+            $filesystem->dumpFile('.env.local', $dbUrl);
+
+            chdir($this->legacyDir);
+
+            return true;
+        } catch (IOExceptionInterface $exception) {
+            $this->logger->error('An error occurred while creating the Database Env config at ' . $exception->getPath());
+            return false;
+        }
     }
 
     /**
@@ -215,6 +253,48 @@ class InstallHandler extends LegacyHandler
     {
         $filesystem = new Filesystem();
 
+        $this->logger->error('A SuiteCRM Instance is already been installed. Stopping ');
+
         return $filesystem->exists('.env.local');
     }
+
+
+    /**
+     * Check if is installer locked
+     * @return bool is locked
+     */
+    public function isInstallerLocked(): bool
+    {
+        return $this->isAppInstallerLocked($this->legacyDir);
+    }
+
+    public function echoCLI($message): void
+    {
+        if (PHP_SAPI === 'cli') {
+            echo $message;
+        }
+    }
+
+    /**
+     * Dump the content of env.local to .env.local.php(read by Suite8 Symfony framework for DB connection)
+     * The Dump operation proceeds only if the .env.local.php file exists
+     * usage:
+     * if (!$this->installHandler->checkEnvDump()) {
+     *   $output->writeln();
+     *  }
+     * @return bool
+     */
+    public function checkEnvDump(): bool
+    {
+        $filesystem = new Filesystem();
+
+        if (!$filesystem->exists('.env.local.php')) {
+
+            $this->logger->info('Note: The Env Dump File(.env.local.php) does not exist\n,
+            Run the command `composer dump-env $env` from project root where $env = prod or dev to generate it');
+            return false;
+        }
+        return true;
+    }
+
 }

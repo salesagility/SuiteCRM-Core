@@ -36,12 +36,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
+abstract class InstallStatus
+{
+    public const STARTED = -1;
+    public const SUCCESS = 0;
+    public const FAILED = 1;
+    public const LOCKED = 2;
+    public const INVALID = 3;
+}
+
 /**
  * Class LegacyInstallCommand
  * @package App\Command
  */
 class LegacyInstallCommand extends Command
 {
+
     /**
      * @var string
      */
@@ -180,7 +190,7 @@ class LegacyInstallCommand extends Command
      * @return bool|int|null
      * @throws Exception
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln([
             '',
@@ -189,10 +199,9 @@ class LegacyInstallCommand extends Command
             '',
         ]);
 
-        if ($this->installHandler->isInstalled()) {
-            $output->writeln('Already installed. Stopping');
-
-            return 0;
+        if ($this->installHandler->isInstallerLocked() === true) {
+            $output->writeln('Error: Installer Locked, Exiting');
+            return InstallStatus::LOCKED;
         }
 
         $inputArray = [];
@@ -207,16 +216,35 @@ class LegacyInstallCommand extends Command
             $inputArray[$key] = $value;
         }
 
+        $output->writeln([
+            'Checking DB Connection ...'
+        ]);
+        if (!$this->installHandler->checkDBConnection($inputArray)) {
+            $output->writeln('Error: DB Connection Error, Exiting');
 
-        $this->installHandler->createEnv($inputArray);
-        $this->installHandler->createConfig($inputArray);
+            return InstallStatus::FAILED;
+        }
+        $output->writeln(['DB Connection successful, Continuing', '']);
+
+        if (!$this->installHandler->createEnv($inputArray)) {
+            return InstallStatus::FAILED;
+        }
+
+        if (!$this->installHandler->createConfig($inputArray)) {
+            return InstallStatus::FAILED;
+        }
 
         $output->writeln('Step 1: Config Creation Complete');
 
-        $this->installHandler->installLegacy();
+        if (!$this->installHandler->installLegacy()) {
+            $output->writeln('Step 2: Legacy Installation Failed');
+
+            return InstallStatus::FAILED;
+        }
 
         $output->writeln('Step 2: Legacy Installation Complete');
 
-        return 0;
+        return InstallStatus::SUCCESS;
+
     }
 }
