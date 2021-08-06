@@ -45,7 +45,7 @@ export interface AsyncActionInput {
     ids?: string[];
     id?: string;
     payload?: { [key: string]: any };
-    modalRecord?: Record
+    modalRecord?: Record;
 }
 
 @Injectable({

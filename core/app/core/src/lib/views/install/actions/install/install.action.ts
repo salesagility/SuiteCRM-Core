@@ -25,10 +25,13 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
+import {ViewMode, Record} from 'common';
 import {take} from 'rxjs/operators';
 import {InstallViewActionData, InstallViewActionHandler} from '../install-view.action';
 import {MessageService} from '../../../../services/message/message.service';
+import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
+import {Process} from '../../../../services/process/process.service';
+import {Router} from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -38,13 +41,19 @@ export class InstallAction extends InstallViewActionHandler {
     key = 'install';
     modes = ['edit' as ViewMode];
 
-    constructor(protected message: MessageService) {
+    constructor(
+        protected message: MessageService,
+        protected asyncActionService: AsyncActionService,
+        protected router: Router
+    ) {
         super();
     }
 
     run(data: InstallViewActionData): void {
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
             if (valid) {
+                const stagingRecord = data.store.recordStore.getStaging();
+                this.runInstall(stagingRecord);
                 return;
             }
 
@@ -54,5 +63,30 @@ export class InstallAction extends InstallViewActionHandler {
 
     shouldDisplay(): boolean {
         return true;
+    }
+
+    runInstall(stagingRecord: Record): void {
+
+        const actionName = `suitecrm-app-${this.key}`;
+
+        this.message.removeMessages();
+
+        const asyncData = {
+            action: actionName,
+            module: stagingRecord.module,
+            id: stagingRecord.id,
+            payload: stagingRecord.formGroup.value
+        } as AsyncActionInput;
+
+        this.asyncActionService.run(
+            actionName,
+            asyncData
+        ).pipe(take(1)).subscribe((process: Process) => {
+
+            // redirect to /, if request is successful
+            if(process.data.statusCode === 0) {
+                this.router.navigate(['/'], {}).then();
+            }
+        });
     }
 }

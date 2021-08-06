@@ -275,26 +275,4 @@ class InstallHandler extends LegacyHandler
         }
     }
 
-    /**
-     * Dump the content of env.local to .env.local.php(read by Suite8 Symfony framework for DB connection)
-     * The Dump operation proceeds only if the .env.local.php file exists
-     * usage:
-     * if (!$this->installHandler->checkEnvDump()) {
-     *   $output->writeln();
-     *  }
-     * @return bool
-     */
-    public function checkEnvDump(): bool
-    {
-        $filesystem = new Filesystem();
-
-        if (!$filesystem->exists('.env.local.php')) {
-
-            $this->logger->info('Note: The Env Dump File(.env.local.php) does not exist\n,
-            Run the command `composer dump-env $env` from project root where $env = prod or dev to generate it');
-            return false;
-        }
-        return true;
-    }
-
 }
