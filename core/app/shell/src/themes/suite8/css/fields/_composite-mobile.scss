@@ -1,5 +1,16 @@
-@media all and (max-width: $breakpoint-small) {
+@media all and (max-width: $breakpoint-xxlarge) {
     .composite-field-wrapper {
       flex-wrap: wrap;
+      .checkbox-container {
+        input {
+          position: inherit;
+        }
+      }
+    }
+  }
+
+  @media all and (max-width: $breakpoint-xxlarge) {
+    .mailto-field {
+      margin-top: 0.5em;
     }
   }

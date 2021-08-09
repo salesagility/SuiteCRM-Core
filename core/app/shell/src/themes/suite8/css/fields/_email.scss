@@ -7,26 +7,42 @@
     .field-group-item {
       width: 25% !important;
       align-self: flex-start !important;
+      @media all and (max-width: $breakpoint-xxlarge) {
+        line-height: 1;
+      }
     }
   }
-
 }
 
 .composite-field {  
+  .checkmark {
+    margin-left: 0.68em;
+    @media all and (max-width: $breakpoint-xxlarge) {
+      margin-top: 0.3em;
+    }
+  }
   .checkbox-field {
     .checkmark {
-      margin-left: 0.6em;
+      margin-left: 0.68em;
+      @media all and (max-width: $breakpoint-xxlarge) {
+        margin-top: 0.3em;
+      }
     }
     position: relative;
     top: 0.3em;
+    @media all and (max-width: $breakpoint-xxlarge) {
+      padding-bottom: 0!important;
+    }
   }
 }
 
-.line-item-entry-buttons-label-padding{
-  padding-top: 3.2em;
+.line-item-entry-buttons-label-padding {
+  padding-top: 3.5em;
+  @media all and (max-width: $breakpoint-xxlarge) { 
+    padding-top: 2.2em;
+  }
 }
 
 .line-item-entry-buttons-no-label-padding {
-  padding-top: 0.7em
+  padding-top: 0.7em;
 }
-
