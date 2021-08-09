@@ -87,7 +87,6 @@ input {
       width: 18em;
       color: $shell-grey;
     }
-
     select {
       padding: 0.6em 0 0.6em 0.6em;
     }
@@ -238,4 +237,10 @@ input {
       display: none;
     }
   }
+}
+
+:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem $border-focus-blue;
+  border-color: $border-focus-blue;
 }
