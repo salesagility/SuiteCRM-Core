@@ -28,6 +28,7 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
+use ACLController;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
@@ -296,7 +297,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 continue;
             }
 
-            if (strpos($top_button['widget_class'], 'Create') !== false) {
+            if (strpos($top_button['widget_class'], 'Create') !== false
+                && ACLController::checkAccess($tab['module'], 'edit', true, 'module', true)) {
                 $topButtons[] = [
                     'key' => 'create',
                     'labelKey' => 'LBL_QUICK_CREATE',
