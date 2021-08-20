@@ -34,39 +34,41 @@
     klass="column-chooser-modal">
 
     <div modal-body>
-        <div class="column-chooser-container">
-            <h2 class="column-chooser-title">
-                <scrm-label labelKey="LBL_COLUMN_SELECTOR_DISPLAYED_COLS"></scrm-label>
-            </h2>
 
-            <div
-                cdkDropList
-                #displayedList="cdkDropList"
-                [cdkDropListData]="displayed"
-                [cdkDropListConnectedTo]="[hiddenList]"
-                class="column-chooser-list"
-                (cdkDropListDropped)="drop($event)">
-                <div class="column-chooser-item column-displayed" *ngFor="let item of displayed"
-                     cdkDrag>
-                    {{getColumnLabel(item.label)}}
+        <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight column-chooser-container">
+                <h2 class="column-chooser-title">
+                    <scrm-label labelKey="LBL_COLUMN_SELECTOR_DISPLAYED_COLS"></scrm-label>
+                </h2>
+
+                <div
+                    cdkDropList
+                    #displayedList="cdkDropList"
+                    [cdkDropListData]="displayed"
+                    [cdkDropListConnectedTo]="[hiddenList]"
+                    class="column-chooser-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="column-chooser-item column-displayed" *ngFor="let item of displayed"
+                         cdkDrag>
+                        {{getColumnLabel(item.label)}}
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="p-2 flex-fill bd-highlight column-chooser-container">
+                <h2 class="column-chooser-title">
+                    <scrm-label labelKey="LBL_COLUMN_SELECTOR_HIDDEN_COLS"></scrm-label>
+                </h2>
 
-        <div class="column-chooser-container">
-            <h2 class="column-chooser-title">
-                <scrm-label labelKey="LBL_COLUMN_SELECTOR_HIDDEN_COLS"></scrm-label>
-            </h2>
-
-            <div
-                cdkDropList
-                #hiddenList="cdkDropList"
-                [cdkDropListData]="hidden"
-                [cdkDropListConnectedTo]="[displayedList]"
-                class="column-chooser-list"
-                (cdkDropListDropped)="drop($event)">
-                <div class="column-chooser-item column-hidden" *ngFor="let item of hidden" cdkDrag>
-                    {{getColumnLabel(item.label)}}
+                <div
+                    cdkDropList
+                    #hiddenList="cdkDropList"
+                    [cdkDropListData]="hidden"
+                    [cdkDropListConnectedTo]="[displayedList]"
+                    class="column-chooser-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="column-chooser-item column-hidden" *ngFor="let item of hidden" cdkDrag>
+                        {{getColumnLabel(item.label)}}
+                    </div>
                 </div>
             </div>
         </div>
