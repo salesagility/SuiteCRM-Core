@@ -31,10 +31,16 @@ export interface FieldLogicMap {
     [key: string]: FieldLogic;
 }
 
+export enum LineActionEvent {
+    onLineItemAdd = 'onLineItemAdd',
+    onLineItemRemove = 'onLineItemRemove'
+}
+
 export interface FieldLogic extends Action {
     params?: {
         fieldDependencies?: string[];
         attributeDependencies?: AttributeDependency[];
-        [key: string]: any
+        triggerOnEvents?: [LineActionEvent: boolean][];
+        [key: string]: any;
     };
 }

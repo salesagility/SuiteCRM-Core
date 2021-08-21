@@ -29,10 +29,14 @@ import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {RecordManager} from '../../services/record/record.manager';
 import {
+    emptyObject,
     Field,
     FieldAttribute,
     FieldDefinition,
+    FieldLogicMap,
     isEditable,
+    isTrue,
+    LineActionEvent,
     LineItemsMetadata,
     Record,
     StringMap,
@@ -65,8 +69,14 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
+    /**
+     * Get component type
+     * @param {string} type
+     * @param {FieldDefinition} definition
+     * @returns {}
+     */
     getComponentType(type: string, definition: FieldDefinition): any {
-        let module = (this.record && this.record.module) || 'default';
+        const module = (this.record && this.record.module) || 'default';
 
         const displayType = (definition && definition.displayType) || '';
 
@@ -99,6 +109,7 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
     /**
      * Get the fields for the item record
      *
+     * @param {Record} item
      * @returns {object} Field[]
      */
     getItemFields(item: Record): Field[] {
@@ -108,7 +119,9 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
 
     /**
      * Remove item from array
-     * @param index
+     *
+     * @param {number} index
+     * @return {void}
      */
     removeItem(index: number): void {
 
@@ -118,10 +131,14 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         );
 
         this.updateItems(this.field.items);
+
+        this.triggerLineActionEvents(LineActionEvent.onLineItemRemove);
     }
 
     /**
-     * Remove item from array
+     * Add item to array
+     *
+     * @return {void}
      */
     addEmptyItem(): void {
         const itemDefinition = (this.field.definition.lineItems && this.field.definition.lineItems.definition) || {};
@@ -131,16 +148,25 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
             this.record,
             this.field
         );
+
+        this.triggerLineActionEvents(LineActionEvent.onLineItemAdd);
     }
 
     /**
      * Update items
-     * @param items
+     *
+     * @param {Record[]} items
+     * @return {void}
      */
     updateItems(items: Record[]): void {
         this.field.items = items;
     }
 
+    /**
+     * Get module
+     *
+     * @return {string}
+     */
     getModule(): string {
         if (!this.record) {
             return null;
@@ -149,6 +175,11 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         return this.record.module;
     }
 
+    /**
+     * Get Mode
+     *
+     * @return {string}
+     */
     getMode(): string {
         if (this.mode === 'filter') {
             return 'edit';
@@ -185,12 +216,14 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      * Check if its editable
      */
     isEditable(): boolean {
-        return isEditable(this.mode as ViewMode)
+        return isEditable(this.mode as ViewMode);
     }
 
     /**
      * Show label
-     * @param attribute
+     *
+     * @param {FieldAttribute} attribute
+     * @returns {boolean}
      */
     showLabel(attribute: FieldAttribute): boolean {
         const definition = attribute.definition || null;
@@ -203,6 +236,13 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         return (showLabel.includes('*') || showLabel.includes(this.mode));
     }
 
+    /**
+     * Get message context
+     *
+     * @param {} item
+     * @param {Record} record
+     * @return {object} StringMap
+     */
     getMessageContext(item: any, record: Record): StringMap {
         const context = item && item.message && item.message.context || {};
         context.module = (record && record.module) || '';
@@ -210,6 +250,12 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         return context;
     }
 
+    /**
+     * Get message label key
+     *
+     * @param {} item
+     * @return {string}
+     */
     getMessageLabelKey(item: any): string {
         return (item && item.message && item.message.labelKey) || '';
     }
@@ -250,6 +296,7 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      *
      * @param {object} attribute
      * @param {} value
+     * @returns {void}
      */
     protected setValueOnParent(attribute: FieldAttribute, value: any): void {
         if (attribute.valuePath) {
@@ -262,8 +309,10 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
 
     /**
      * Set attribute label display
+     *
      * @param {object} itemRecord
      * @param {boolean} showLabel
+     * @returns {void}
      */
     protected setAttributeLabelDisplay(itemRecord: Record, showLabel: boolean): void {
         const subfields = itemRecord.fields || {};
@@ -281,7 +330,34 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
                 const metadata = subFieldAttribute.metadata || {};
                 metadata.labelDisplay = !showLabel ? 'hide' : 'default';
                 subFieldAttribute.metadata = metadata;
-            })
-        })
+            });
+        });
+    }
+
+    /**
+     * Check and if enabled, Run custom field logic on line action events
+     * e.g. on line items row add/remove and so on as required
+     *
+     * @param {LineActionEvent} lineActionEvent
+     * @returns {void}
+     */
+    protected triggerLineActionEvents(lineActionEvent: LineActionEvent): void {
+
+        const fieldLogics = this.field?.logic || {} as FieldLogicMap;
+
+        if (emptyObject(fieldLogics)) {
+            return;
+        }
+
+        Object.keys(fieldLogics).forEach(logicKey => {
+
+            const fieldLogic = fieldLogics[logicKey] || null;
+
+            const onEvent = fieldLogic?.params?.triggerOnEvents?.[lineActionEvent];
+
+            if (isTrue(onEvent)) {
+                this.logic.runLogic(this.field, this.mode as ViewMode, this.record);
+            }
+        });
     }
 }

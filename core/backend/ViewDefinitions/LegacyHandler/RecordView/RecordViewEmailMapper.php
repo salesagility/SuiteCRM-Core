@@ -144,6 +144,19 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                 ]
             ];
             $cell['fieldDefinition']['lineItems'] = $config;
+
+            $cell['fieldDefinition']['logic'] = [
+                'emailPrimarySelectLogic' => [
+                    'key' => 'emailPrimarySelect',
+                    'modes' => ['edit', 'create', 'massupdate'],
+                    'params' => [
+                        'triggerOnEvents' => [
+                            'onLineItemAdd' => true,
+                            'onLineItemRemove' => true
+                        ]
+                    ]
+                ]
+            ];
             $cols[$cellKey] = $cell;
         }
 

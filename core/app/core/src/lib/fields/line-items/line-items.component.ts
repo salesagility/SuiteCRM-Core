@@ -59,7 +59,7 @@ export class LineItemsComponent extends BaseLineItemsComponent {
             klass: 'btn btn-sm btn-outline-secondary m-0 border-0',
             icon: 'plus',
             onClick: (): void => {
-                this.addEmptyItem()
+                this.addEmptyItem();
             },
 
         };
