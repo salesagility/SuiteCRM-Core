@@ -78,10 +78,16 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
             return $this->getErrorResponse(self::KEY);
         }
 
-        $parts = $queries[0];
-        $parts['select'] = 'SELECT COUNT(*) as value';
+        if (!empty($queries['isDatasourceFunction'])) {
+            $dbQuery = $queries['isDatasourceFunction']['countQuery'];
 
-        $dbQuery = $this->joinQueryParts($parts);
+        } else {
+            $parts = $queries[0];
+            $parts['select'] = 'SELECT COUNT(*) as value';
+
+            $dbQuery = $this->joinQueryParts($parts);
+        }
+
         $result = $this->fetchRow($dbQuery);
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
 
