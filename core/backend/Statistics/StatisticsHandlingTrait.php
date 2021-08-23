@@ -38,6 +38,24 @@ trait StatisticsHandlingTrait
 {
 
     /**
+     * Build empty blank statistic
+     * @param string $key
+     * @return Statistic
+     */
+    protected function getBlankResponse(string $key): Statistic
+    {
+        $statistic = new Statistic();
+        $statistic->setId($key);
+        $statistic->setData(['value' => '']);
+        $statistic->setMetadata([
+            'type' => 'single-value-statistic',
+            'dataType' => 'varchar',
+        ]);
+
+        return $statistic;
+    }
+
+    /**
      * Build empty response statistic
      * @param string $key
      * @return Statistic

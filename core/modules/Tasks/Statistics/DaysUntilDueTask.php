@@ -134,13 +134,13 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
 
         if ($completed !== 'Completed') {
             if ($dbTime > $dateTime) {
-                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_UNTIL_DUE_TASK']);
+                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_UNTIL_DUE_TASK', 'endLabelKey' => 'LBL_STAT_DAYS']);
             } else {
-                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OVERDUE']);
+                $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_OVERDUE', 'endLabelKey' => 'LBL_STAT_DAYS']);
             }
         } else {
-            $statistic = $this->getEmptyResponse(self::KEY);
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_TASK_COMPLETED', 'endLabelKey' => '']);
+            $statistic = $this->getBlankResponse(self::KEY);
+            $this->addMetadata($statistic, ['labelKey' => '', 'endLabelKey' => 'LBL_TASK_COMPLETED']);
         }
 
         $this->close();
