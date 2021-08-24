@@ -6,6 +6,7 @@ export * from './components/button/button.model';
 export * from './components/button/dropdown-button.model';
 export * from './components/modal/modal.model';
 export * from './components/pagination/pagination.model';
+export * from './components/registry/base-component.registry';
 export * from './containers/chart/chart.model';
 export * from './menu/menu.model';
 export * from './metadata/charts-widget.metadata';
