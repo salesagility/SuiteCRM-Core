@@ -24,30 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {ChartDataSource} from 'common';
-import {ChartRegistry} from './chart.registry';
+import {Injectable} from '@angular/core';
+import {BaseComponentRegistry} from 'common';
+import {BaseChartComponent} from '../base-chart/base-chart.component';
+import {chartTypeMap} from './chart.manifest';
 
-@Component({
-    selector: 'scrm-chart',
-    templateUrl: './chart.component.html',
-    styleUrls: []
+@Injectable({
+    providedIn: 'root'
 })
-export class ChartComponent implements OnInit {
-    @Input('dataSource') dataSource: ChartDataSource = null;
-    @Input('type') type: string;
+export class ChartRegistry extends BaseComponentRegistry<BaseChartComponent> {
 
-    constructor(protected registry: ChartRegistry) {
+    constructor() {
+        super();
     }
 
-    get chartType(): any {
-        return this.registry.get('default', this.type);
-    }
+    protected initDefault(): void {
 
-    ngOnInit(): void {
-    }
-
-    isConfigured(): boolean {
-        return !!(this.type && this.dataSource && this.chartType);
+        Object.keys(chartTypeMap).forEach(key => {
+            this.register('default', key, chartTypeMap[key]);
+        });
     }
 }

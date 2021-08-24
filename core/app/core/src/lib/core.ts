@@ -15,6 +15,7 @@ export * from './components/chart/components/base-chart/base-chart.component';
 export * from './components/chart/components/chart/chart.component';
 export * from './components/chart/components/chart/chart.manifest';
 export * from './components/chart/components/chart/chart.module';
+export * from './components/chart/components/chart/chart.registry';
 export * from './components/chart/components/chart-message-area/chart-message-area.component';
 export * from './components/chart/components/chart-message-area/chart-message-area.module';
 export * from './components/chart/components/line-chart/line-chart.component';
