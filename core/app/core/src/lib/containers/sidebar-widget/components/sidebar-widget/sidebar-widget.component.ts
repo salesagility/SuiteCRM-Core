@@ -45,4 +45,16 @@ export class SidebarWidgetComponent extends BaseWidgetComponent {
         const module = this.context.module ?? 'default';
         return this.registry.get(module, this.type);
     }
+
+    getErrorMessage(): string {
+        if (!this.type || !this.config) {
+            return 'LBL_CONFIG_NO_CONFIG';
+        }
+
+        if (!this.componentType) {
+            return 'LBL_WIDGET_NOT_FOUND';
+        }
+
+        return 'LBL_BAD_CONFIG';
+    }
 }

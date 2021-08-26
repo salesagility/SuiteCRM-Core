@@ -25,7 +25,13 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ndc-dynamic *ngIf="type && config"
+<div *ngIf="!(type && config && componentType)"
+     class="d-flex mb-4 mt-4 justify-content-center">
+    <div class="lead">
+        <scrm-label [labelKey]="getErrorMessage()"></scrm-label>
+    </div>
+</div>
+<ndc-dynamic *ngIf="type && config && componentType"
              [ndcDynamicComponent]="componentType"
              [ndcDynamicInputs]="{
                 'config': config,

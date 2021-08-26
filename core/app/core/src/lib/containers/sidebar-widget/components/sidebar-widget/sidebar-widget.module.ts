@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {SidebarWidgetComponent} from './sidebar-widget.component';
 import {DynamicModule} from 'ng-dynamic-component';
 import {sidebarWidgetModules} from './sidebar-widget.manifest';
+import {LabelModule} from '../../../../components/label/label.module';
 
 @NgModule({
     declarations: [SidebarWidgetComponent],
@@ -37,6 +38,7 @@ import {sidebarWidgetModules} from './sidebar-widget.manifest';
         CommonModule,
         ...sidebarWidgetModules,
         DynamicModule,
+        LabelModule,
     ]
 })
 export class SidebarWidgetModule {
