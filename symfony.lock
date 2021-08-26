@@ -1,7 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.2.1"
-    },
     "api-platform/core": {
         "version": "2.5",
         "recipe": {
@@ -686,9 +683,6 @@
     "symfony/options-resolver": {
         "version": "v4.4.4"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.7"
-    },
     "symfony/polyfill-ctype": {
         "version": "v1.13.1"
     },
@@ -721,9 +715,6 @@
     },
     "symfony/process": {
         "version": "v4.4.4"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.4"
     },
     "symfony/property-access": {
         "version": "v4.4.4"
@@ -774,9 +765,6 @@
     },
     "symfony/serializer": {
         "version": "v4.4.4"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.0.4"
     },
     "symfony/service-contracts": {
         "version": "v1.1.8"
