@@ -24,25 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {BaseComponentRegistry} from 'common';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
-import {SidebarWidgetRegistry} from './sidebar-widget.registry';
+import {componentTypeMap} from './sidebar-widget.manifest';
 
-@Component({
-    selector: 'scrm-sidebar-widget',
-    templateUrl: './sidebar-widget.component.html',
-    styles: []
+@Injectable({
+    providedIn: 'root'
 })
-export class SidebarWidgetComponent extends BaseWidgetComponent {
+export class SidebarWidgetRegistry extends BaseComponentRegistry<BaseWidgetComponent> {
 
-    @Input('type') type: string;
-
-    constructor(protected registry: SidebarWidgetRegistry) {
+    constructor() {
         super();
     }
 
-    get componentType(): any {
-        const module = this.context.module ?? 'default';
-        return this.registry.get(module, this.type);
+    protected initDefault(): void {
+
+        Object.keys(componentTypeMap).forEach(key => {
+            this.register('default', key, componentTypeMap[key]);
+        });
     }
 }

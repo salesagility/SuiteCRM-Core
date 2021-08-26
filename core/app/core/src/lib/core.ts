@@ -192,6 +192,7 @@ export * from './containers/sidebar-widget/components/record-thread-sidebar-widg
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.component';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.manifest';
 export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
+export * from './containers/sidebar-widget/components/sidebar-widget/sidebar-widget.registry';
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.component';
 export * from './containers/sidebar-widget/components/statistics-sidebar-widget/statistics-sidebar-widget.module';
 export * from './containers/sidebar-widget/store/history-timeline/history-timeline.store';
