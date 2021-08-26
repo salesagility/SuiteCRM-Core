@@ -289,6 +289,7 @@ export * from './fields/field-logic/field-logic.action';
 export * from './fields/field-logic/field-logic.manager';
 export * from './fields/field-logic/display-type/display-type.action';
 export * from './fields/field-logic/email-primary-select/email-primary-select.action';
+export * from './fields/field-logic/required/required.action';
 export * from './fields/float/templates/detail/float.component';
 export * from './fields/float/templates/detail/float.module';
 export * from './fields/fullname/templates/detail/fullname.component';

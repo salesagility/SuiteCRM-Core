@@ -30,17 +30,22 @@ import {FieldLogicActionData} from './field-logic.action';
 import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'common';
 import {DisplayTypeAction} from './display-type/display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
+import {RequiredAction} from './required/required.action';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
-    constructor(displayType: DisplayTypeAction,
-                emailPrimarySelectAction: EmailPrimarySelectAction) {
+    constructor(
+        displayType: DisplayTypeAction,
+        emailPrimarySelectAction: EmailPrimarySelectAction,
+        required: RequiredAction
+    ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
         emailPrimarySelectAction.modes.forEach(mode => this.actions[mode][emailPrimarySelectAction.key] = emailPrimarySelectAction);
+        required.modes.forEach(mode => this.actions[mode][required.key] = required);
     }
 
     /**
