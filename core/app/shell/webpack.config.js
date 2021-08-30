@@ -26,6 +26,11 @@ module.exports = {
           requiredVersion: '^12.0.0'
         },
 
+        "@swimlane/ngx-charts": {
+          singleton: true,
+          requiredVersion: '^17.0.0'
+        },
+
         "common": {
           singleton: true,
           import: "dist/common",

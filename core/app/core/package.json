@@ -13,7 +13,8 @@
     "bn-ng-idle": "^1.0.1",
     "@angular-architects/module-federation": "^1.1.0",
     "lodash-es": "^4.17.20",
-    "ng-dynamic-component": "^8.0.1"
+    "ng-dynamic-component": "^8.0.1",
+    "@swimlane/ngx-charts": "^17.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
