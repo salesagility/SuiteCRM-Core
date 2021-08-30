@@ -744,7 +744,7 @@ class SugarBeanTest extends SuitePHPUnitFrameworkTestCase
         // test
         $GLOBALS['log']->reset();
         SugarBean::createRelationshipMeta('User', null, null, array(), 'Contacts');
-        self::assertCount(6, $GLOBALS['log']->calls['fatal']);
+        self::assertCount(8, $GLOBALS['log']->calls['fatal']);
 
         // test
         $GLOBALS['log']->reset();
@@ -759,7 +759,7 @@ class SugarBeanTest extends SuitePHPUnitFrameworkTestCase
         // test
         $GLOBALS['log']->reset();
         SugarBean::createRelationshipMeta('User', null, null, array(), 'Contacts');
-        self::assertCount(6, $GLOBALS['log']->calls['fatal']);
+        self::assertCount(8, $GLOBALS['log']->calls['fatal']);
     }
 
     /**
@@ -926,14 +926,6 @@ class SugarBeanTest extends SuitePHPUnitFrameworkTestCase
 
         // test
         global $sugar_config;
-
-        $query = "SELECT * FROM aod_index";
-        $resource = DBManagerFactory::getInstance()->query($query);
-        $rows = [];
-        while ($row = $resource->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        $tableAodIndex = $rows;
 
         // test
         $bean = BeanFactory::newBean('Contacts');
@@ -1242,17 +1234,6 @@ class SugarBeanTest extends SuitePHPUnitFrameworkTestCase
         // cleanup
         DBManagerFactory::getInstance()->query("DELETE FROM sugarfeed WHERE related_id LIKE 'test_contact%'");
         DBManagerFactory::getInstance()->query("DELETE FROM contacts_cstm WHERE id_c LIKE 'test_contact%'");
-
-        DBManagerFactory::getInstance()->query("DELETE FROM aod_index");
-        foreach ($tableAodIndex as $row) {
-            $query = "INSERT aod_index INTO (";
-            $query .= (implode(',', array_keys($row)) . ') VALUES (');
-            foreach ($row as $value) {
-                $quoteds[] = "'$value'";
-            }
-            $query .= (implode(', ', $quoteds)) . ')';
-            DBManagerFactory::getInstance()->query($query);
-        }
     }
 
     /**
@@ -2448,6 +2429,7 @@ class SugarBeanTest extends SuitePHPUnitFrameworkTestCase
         $bean = BeanFactory::getBean('Contacts');
         $bean->id = 'testBean_1+!';
         $bean->modified_by_name = 'testing';
+        $bean->createdAuditRecords = false;
         $bean->field_defs = array_merge($bean->field_defs, $bean->field_defs = array(
             'email_addresses' => array(
                 'type' => 'link',

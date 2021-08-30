@@ -98,15 +98,10 @@ class SearchConfigurator
         }
 
         $searchController = 'UnifiedSearch';
-        $enableAod = false;
 
         switch ($engine) {
             case 'BasicSearchEngine':
                 // Only basic search
-                break;
-            case 'BasicAndAodEngine':
-                // Basic search and AOD
-                $enableAod = true;
                 break;
             default:
                 // SearchWrapper with a specific engine
@@ -115,7 +110,6 @@ class SearchConfigurator
 
         $this->configurator->config['search']['controller'] = $searchController;
         $this->configurator->config['search']['defaultEngine'] = $engine;
-        $this->configurator->config['aod']['enable_aod'] = $enableAod;
 
         return $this;
     }

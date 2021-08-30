@@ -275,15 +275,6 @@ ul.subpanelTablist li {
   max-height: 375px;
 }
 
-.sugarFeedDashlet::-webkit-scrollbar-track {
-  background: $dashboard-scrollbar-bg; /* color of the tracking area */
-}
-
-.sugarFeedDashlet::-webkit-scrollbar-thumb {
-  background-color: $dashboard-scroll;    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
-}
-
 .sugarFeedDashlet td.list th {
   display: none;
 }
@@ -749,6 +740,9 @@ table #dashletPanel {
   }
   input[type=submit] {
     background: #a99ac9;
+    &:hover {
+      background: $thick-blue;
+    }
   }
 }
 
@@ -838,11 +832,14 @@ table #dashletPanel {
         line-height: 9px;
         font-size: 13px;
         letter-spacing: 1px;
+        &:hover {
+          background: $action-btn-hover-bg-color;
+        }
       }
     }
     li.active {
       a {
-        background: $dashboard-active-tab-bg;
+        background: $dashboard-active-tab-bg;        
       }
     }
   }
@@ -851,7 +848,7 @@ table #dashletPanel {
       .button {
         background: $dashboard-toolbar-bg;
         &:hover {
-          background: none;
+          background: $action-btn-hover-bg-color;
         }
       }
     }
@@ -870,6 +867,9 @@ table #dashletPanel {
 #dashboard #tab-actions > a.dropdown-toggle {
   background: $dashboard-toolbar-bg;
   padding-bottom: 6px;
+  &:hover {
+    background: $action-btn-hover-bg-color;
+  }
 }
 
 .dashboard-title {
@@ -880,3 +880,13 @@ table #dashletPanel {
 .dashboard-title > span {
   margin-left: 0.7em;
 }
+
+.dashletcontainer {
+  .dashletPanel {
+    .bd {
+      overflow-x: auto;
+    }    
+  }
+}
+
+  

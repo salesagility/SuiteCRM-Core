@@ -1,0 +1,5 @@
+:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem $border-focus-color;
+    border-color: $border-focus-color;
+}

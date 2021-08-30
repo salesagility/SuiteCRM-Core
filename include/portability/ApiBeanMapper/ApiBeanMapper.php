@@ -25,13 +25,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-/* @noinspection PhpIncludeInspection */
-require_once 'include/portability/ApiBeanMapper/FieldMappers/AssignedUserMapper.php';
-require_once 'include/portability/ApiBeanMapper/TypeMappers/FullNameMapper.php';
-require_once 'include/portability/ApiBeanMapper/TypeMappers/DateMapper.php';
-require_once 'include/portability/ApiBeanMapper/TypeMappers/DateTimeMapper.php';
-require_once 'include/portability/ApiBeanMapper/TypeMappers/MultiEnumMapper.php';
-require_once 'include/portability/ApiBeanMapper/TypeMappers/BooleanMapper.php';
+require_once __DIR__ . '/FieldMappers/AssignedUserMapper.php';
+require_once __DIR__ . '/LinkMappers/LinkMapperInterface.php';
+require_once __DIR__ . '/LinkMappers/EmailAddressLinkMapper.php';
+require_once __DIR__ . '/TypeMappers/FullNameMapper.php';
+require_once __DIR__ . '/TypeMappers/DateMapper.php';
+require_once __DIR__ . '/TypeMappers/DateTimeMapper.php';
+require_once __DIR__ . '/TypeMappers/DateTimeComboMapper.php';
+require_once __DIR__ . '/TypeMappers/MultiEnumMapper.php';
+require_once __DIR__ . '/TypeMappers/BooleanMapper.php';
+require_once __DIR__ . '/ApiBeanModuleMappers.php';
+require_once __DIR__ . '/ModuleMappers/SavedSearch/SavedSearchMappers.php';
+require_once __DIR__ . '/ModuleMappers/AOP_Case_Updates/CaseUpdatesMappers.php';
 
 class ApiBeanMapper
 {
@@ -46,6 +51,16 @@ class ApiBeanMapper
      */
     protected $typeMappers = [];
 
+    /**
+     * @var LinkMapperInterface[][]
+     */
+    protected $linkMappers = [];
+
+    /**
+     * @var ApiBeanModuleMappers[]
+     */
+    protected $moduleMappers = [];
+
     public function __construct()
     {
         $this->fieldMappers[AssignedUserMapper::getField()] = new AssignedUserMapper();
@@ -55,13 +70,18 @@ class ApiBeanMapper
         $this->typeMappers[MultiEnumMapper::getType()] = new MultiEnumMapper();
         $this->typeMappers[BooleanMapper::getType()] = new BooleanMapper();
         $this->typeMappers['boolean'] = $this->typeMappers[BooleanMapper::getType()];
+        $this->moduleMappers[SavedSearchMappers::getModule()] = new SavedSearchMappers();
+        $this->typeMappers[DateTimeComboMapper::getType()] = new DateTimeMapper();
+        $this->linkMappers[EmailAddressLinkMapper::getRelateModule()] = [];
+        $this->linkMappers[EmailAddressLinkMapper::getRelateModule()]['all'] = new EmailAddressLinkMapper();
+        $this->moduleMappers[CaseUpdatesMappers::getModule()] = new CaseUpdatesMappers();
     }
 
     /**
      * @param SugarBean $bean
      * @return array
      */
-    public function toArray(SugarBean $bean): array
+    public function toApi(SugarBean $bean): array
     {
         $arr = [];
 
@@ -69,7 +89,6 @@ class ApiBeanMapper
         $arr['object_name'] = $bean->object_name ?? '';
 
         foreach ($bean->field_defs as $field => $definition) {
-
             if ($this->isSensitiveField($definition)) {
                 continue;
             }
@@ -79,6 +98,12 @@ class ApiBeanMapper
             }
 
             if ($this->isLinkField($definition)) {
+                if (!$this->hasLinkMapper($bean->module_name, $definition)) {
+                    continue;
+                }
+
+                $this->mapLinkFieldToApi($bean, $arr, $definition);
+
                 continue;
             }
 
@@ -91,6 +116,58 @@ class ApiBeanMapper
         }
 
         return $arr;
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $values
+     * @return void
+     */
+    public function toBean(SugarBean $bean, array $values): void
+    {
+        require_once __DIR__ . '/../../../include/SugarFields/SugarFieldHandler.php';
+
+        foreach ($bean->field_defs as $field => $properties) {
+            if (!isset($values[$field])) {
+                continue;
+            }
+
+            $this->toBeanMap($bean, $values, $properties, $field);
+
+            if ($this->isLinkField($properties)) {
+                if (!$this->hasLinkMapper($bean->module_name, $properties)) {
+                    continue;
+                }
+
+                $this->mapLinkFieldToBean($bean, $values, $properties);
+            }
+
+            $bean->$field = $values[$field];
+        }
+
+        foreach ($bean->relationship_fields as $field => $link) {
+            if (!empty($values[$field])) {
+                $bean->$field = $values[$field];
+            }
+        }
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $values
+     * @return void
+     */
+    public function toBeanAttributes(SugarBean $bean, array &$values): void
+    {
+        require_once __DIR__ . '/../../../include/SugarFields/SugarFieldHandler.php';
+
+        foreach ($bean->field_defs as $field => $properties) {
+            if (!isset($values[$field])) {
+                continue;
+            }
+
+            $this->toBeanMap($bean, $values, $properties, $field);
+        }
     }
 
     /**
@@ -110,6 +187,7 @@ class ApiBeanMapper
     {
         return isset($definition['type']) && $definition['type'] === 'link';
     }
+
 
     /**
      * @param $fieldDefinition
@@ -236,29 +314,186 @@ class ApiBeanMapper
         array &$arr,
         array $definition,
         string $alternativeName = ''
-    ): void
-    {
+    ): void {
         $name = $field;
 
         if (!empty($alternativeName)) {
             $name = $alternativeName;
         }
 
-        $fieldMapper = $this->fieldMappers[$field] ?? null;
-        if ($fieldMapper !== null) {
-            $fieldMapper->run($bean, $arr, $name);
+        $fieldMapper = $this->getFieldMapper($bean->module_name, $field);
+        if (null !== $fieldMapper) {
+            $fieldMapper->toApi($bean, $arr, $name);
 
             return;
         }
 
         $type = $definition['type'] ?? '';
-        $typeMapper = $this->typeMappers[$type] ?? null;
-        if ($typeMapper !== null) {
-            $typeMapper->run($bean, $arr, $field, $name);
+        $typeMapper = $this->getTypeMappers($bean->module_name, $type);
+        if (null !== $typeMapper) {
+            $typeMapper->toApi($bean, $arr, $field, $name);
 
             return;
         }
 
         $arr[$name] = html_entity_decode($bean->$field ?? '', ENT_QUOTES);
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $container
+     * @param array $definition
+     */
+    protected function mapLinkFieldToApi(SugarBean $bean, array &$container, array $definition): void
+    {
+        $module = $bean->module_name ?? '';
+        $relateModule = $definition['module'] ?? '';
+        $name = $definition['name'] ?? '';
+
+        $linkMapper = $this->getLinkMapper($module, $relateModule, $name);
+
+        if ($linkMapper === null) {
+            return;
+        }
+
+        $linkMapper->toApi($bean, $container, $name);
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $container
+     * @param array $definition
+     */
+    protected function mapLinkFieldToBean(SugarBean $bean, array &$container, array $definition): void
+    {
+        $module = $bean->module_name ?? '';
+        $relateModule = $definition['module'] ?? '';
+        $name = $definition['name'] ?? '';
+
+        $linkMapper = $this->getLinkMapper($module, $relateModule, $name);
+
+        if ($linkMapper === null) {
+            return;
+        }
+
+        $linkMapper->toBean($bean, $container, $name);
+    }
+
+    /**
+     * @param string $module
+     * @param string $field
+     * @return FieldMapperInterface
+     */
+    protected function getFieldMapper(string $module, string $field): ?FieldMapperInterface
+    {
+        $moduleMappers = $this->moduleMappers[$module] ?? null;
+
+        if ($moduleMappers !== null && $moduleMappers->hasFieldMapper($field)) {
+            return $moduleMappers->getFieldMappers()[$field];
+        }
+
+        return $this->fieldMappers[$field] ?? null;
+    }
+
+    /**
+     * @param string $module
+     * @param string $relateModule
+     * @param string $field
+     * @return LinkMapperInterface
+     */
+    protected function getLinkMapper(string $module, string $relateModule, string $field): ?LinkMapperInterface
+    {
+        if ($module === '' || $relateModule === '' || $field === '') {
+            return null;
+        }
+
+        $moduleMappers = $this->moduleMappers[$module] ?? null;
+
+        if ($moduleMappers !== null && $moduleMappers->hasLinkMapper($relateModule, $field)) {
+            return $moduleMappers->getLinkMapper($relateModule, $field);
+        }
+
+        $moduleLinkMappers = $this->linkMappers[$relateModule] ?? [];
+
+        return $moduleLinkMappers[$field] ?? $moduleLinkMappers['all'] ?? null;
+    }
+
+    /**
+     * @param $definition
+     * @return bool
+     */
+    protected function hasLinkMapper($module, $definition): bool
+    {
+        $relateModule = $definition['module'] ?? '';
+        $name = $definition['name'] ?? '';
+
+        if ($relateModule === '' || $name === '') {
+            return false;
+        }
+
+        return $this->getLinkMapper($module, $relateModule, $name) !== null;
+    }
+
+    /**
+     * @param string $module
+     * @param string $type
+     * @return TypeMapperInterface
+     */
+    protected function getTypeMappers(string $module, string $type): ?TypeMapperInterface
+    {
+        $moduleMappers = $this->moduleMappers[$module] ?? null;
+
+        if ($moduleMappers !== null && $moduleMappers->hasTypeMapper($type)) {
+            return $moduleMappers->getTypeMappers()[$type];
+        }
+
+        return $this->typeMappers[$type] ?? null;
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array $values
+     * @param $properties
+     * @param $field
+     */
+    protected function toBeanMap(SugarBean $bean, array &$values, $properties, $field): void
+    {
+        $type = $properties['type'] ?? '';
+
+        if ($type === 'relate' && isset($bean->field_defs[$field])) {
+            $idName = $bean->field_defs[$field]['id_name'] ?? '';
+
+            if ($idName !== $field) {
+
+                $idValue = $values[$field]['id'] ?? '';
+                if (empty($values[$idName]) && !empty($idValue)) {
+                    $values[$idName] = $idValue;
+                }
+
+                $rName = $bean->field_defs[$field]['rname'] ?? '';
+                $value = $values[$field][$rName] ?? '';
+                $values[$field] = $value;
+
+
+            }
+        }
+
+        if (!empty($properties['isMultiSelect']) || $type === 'multienum') {
+            $multiSelectValue = $values[$field];
+            if (!is_array($values[$field])) {
+                $multiSelectValue = [];
+            }
+            $values[$field] = encodeMultienumValue($multiSelectValue);
+        }
+
+        $fieldMapper = $this->getFieldMapper($bean->module_name, $field);
+        if (null !== $fieldMapper) {
+            $fieldMapper->toBean($bean, $values, $field);
+        }
+
+        $typeMapper = $this->getTypeMappers($bean->module_name, $type);
+        if (null !== $typeMapper) {
+            $typeMapper->toBean($bean, $values, $field, $field);
+        }
     }
 }

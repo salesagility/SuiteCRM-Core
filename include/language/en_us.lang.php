@@ -627,6 +627,7 @@ $app_list_strings = array(
         'Radio' => 'Radio',
         'Television' => 'Television',
         'NewsLetter' => 'Newsletter',
+        'Survey' => 'Survey',
     ),
 
     'newsletter_frequency_dom' => array(
@@ -1423,6 +1424,8 @@ $app_strings = array(
     'ERR_INVALID_FILE_REFERENCE' => 'Invalid File Reference',
     'ERR_NO_HEADER_ID' => 'This feature is unavailable in this theme.',
     'ERR_NOT_ADMIN' => 'Unauthorized access to administration.',
+    'ERR_UNAUTHORIZED_PAGE_ACCESS' => 'You are not authorized to view this page. Please contact your system administrator.',
+    'ERR_UNAUTHORIZED_PAGE_ACCESS_TO_HOME_PAGE' => 'You are not authorized to view this page. Redirecting to Home Page...',
     'ERR_MISSING_REQUIRED_FIELDS' => 'Missing required field:',
     'ERR_INVALID_REQUIRED_FIELDS' => 'Invalid required field:',
     'ERR_INVALID_VALUE' => 'Invalid Value:',
@@ -1592,7 +1595,6 @@ $app_strings = array(
     'LBL_NEW_BUTTON_KEY' => 'N',
     'LBL_NEW_BUTTON_LABEL' => 'Create',
     'LBL_NEW_BUTTON_TITLE' => 'Create',
-    'LBL_NEW' => 'New',
     'LBL_EDIT' => 'Edit',
     'LBL_NEXT_BUTTON_LABEL' => 'Next',
     'LBL_NONE' => '--None--',
@@ -1782,6 +1784,7 @@ $app_strings = array(
     'LNK_REMOVE' => 'Remove',
     'LNK_RESUME' => 'Resume',
     'LNK_VIEW_CHANGE_LOG' => 'View Change Log',
+    'LBL_CHANGE_LOG' => 'Change Log',
 
     'NTC_CLICK_BACK' => 'Please click the browser back button and fix the error.',
     'NTC_DATE_FORMAT' => '(yyyy-mm-dd)',
@@ -2100,12 +2103,20 @@ $app_strings = array(
     'LBL_BULK_ACTION_BUTTON_LABEL_MOBILE' => 'ACTION',
     'LBL_TOO_FEW_SELECTED' => 'Invalid number of records selected. You must select a minimum of {min} records.',
     'LBL_TOO_MANY_SELECTED' => 'Invalid number of records selected. You must select a maximum of {max} records.',
+    'LBL_SELECT_ALL_NOT_ALLOWED' => 'Selecting all records is not available for this action. Please select individual records.',
     'LBL_MISSING_HANDLER_DATA' => 'Unexpected error. Missing bulk action handler data from response',
     'LBL_MISSING_HANDLER' => 'Unexpected error. No handler defined for the select bulk action',
     'LBL_MISSING_HANDLER_DATA_ROUTE' => 'Unexpected error. Missing bulk action route',
     'LBL_ACTION_ERROR' => 'Unexpected error when calling action',
     'LBL_BULK_ACTION_ERROR' => 'Unexpected error when calling Bulk Action',
     'LBL_BULK_ACTION_DELETE_SUCCESS' => 'Record(s) deleted successfully',
+    'LBL_BULK_ACTION_MASS_UPDATE_CONFIRMATION' => 'Are you sure you want to update the selected record(s)?',
+    'LBL_BULK_ACTION_MASS_UPDATE_SUCCESS' => 'All Record(s) updated successfully',
+    'LBL_BULK_ACTION_MASS_UPDATE_PARTIAL_SUCCESS' => 'Partial success. Some records were not updated. please check log',
+    'LBL_BULK_ACTION_MASS_UPDATE_NO_FIELDS' => 'No fields to update',
+    'LBL_BULK_ACTION_MASS_UPDATE_NO_RECORDS' => 'No records to update',
+    'LBL_BULK_ACTION_MASS_UPDATE_NO_ACLS' => 'Insufficient Privilege, Save action not allowed',
+    'LBL_UNEXPECTED_ERROR' => 'Unexpected error. No able to perform action.',
     'LBL_RECORD_DELETE_SUCCESS' => 'Record deleted successfully',
     'LBL_ERROR_SAVING' => 'Error occurred while saving record',
     'LBL_SAVE_BUTTON_KEY' => 'a',
@@ -2197,6 +2208,14 @@ $app_strings = array(
     'LBL_CONTACT_HAS_NO_PRIMARY_EMAIL' => 'Confirm Opt In Email sending is not possible because the Contact has not Primary Email Address',
     'LBL_CONFIRM_EMAIL_SENDING_FAILED' => 'Confirm Opt In Email sending failed',
     'LBL_CONFIRM_EMAIL_SENT' => 'Confirm Opt In Email sent successfully',
+
+    //List View Column Selector Modal
+    'LBL_COLUMN_SELECTOR_DISPLAYED_COLS' => 'DISPLAYED',
+    'LBL_COLUMN_SELECTOR_HIDDEN_COLS' => 'HIDDEN',
+    'LBL_COLUMN_SELECTOR_CLOSE_BUTTON' => 'Close',
+    'LBL_COLUMN_SELECTOR_SAVE_BUTTON' => 'Save Changes',
+    'LBL_COLUMN_SELECTOR_MODAL_TITLE' => 'Choose Columns'
+
 );
 
 $app_list_strings['moduleList']['Library'] = 'Library';
@@ -2951,14 +2970,9 @@ $app_strings['LBL_LISTVIEW_OPTION_CURRENT'] = 'Select This Page';
 $app_strings['LBL_LISTVIEW_OPTION_ENTIRE'] = 'Select All';
 $app_strings['LBL_LISTVIEW_NONE'] = 'Deselect All';
 
-//aod
-$app_list_strings['moduleList']['AOD_IndexEvent'] = 'Index Event';
-$app_list_strings['moduleList']['AOD_Index'] = 'Index';
-
 $app_list_strings['moduleList']['AOP_Case_Events'] = 'Case Events';
 $app_list_strings['moduleList']['AOP_Case_Updates'] = 'Case Updates';
 $app_strings['LBL_AOP_EMAIL_REPLY_DELIMITER'] = '========== Please reply above this line ==========';
-
 
 //aop
 $app_list_strings['case_state_default_key'] = 'Open';
@@ -3729,6 +3743,10 @@ $app_strings['LBL_GOOGLE_SYNC_ERR'] = 'SuiteCRM Google Sync - ERROR';
 $app_strings['LBL_THERE_WAS_AN_ERR'] = 'There was an error: ';
 $app_strings['LBL_CLICK_HERE'] = 'Click here';
 $app_strings['LBL_TO_CONTINUE'] = ' to continue.';
+$app_strings['LBL_OPT_OUT'] = 'Opt Out';
+$app_strings['LBL_INVALID_EMAIL'] = 'Invalid';
+$app_strings['LBL_PRIMARY'] = 'Primary';
+$app_strings['LBL_EMAIL_ADDRESS'] = 'Email Address';
 
 $app_strings['IMAP_HANDLER_ERROR'] = 'ERROR: {error}; key was: "{key}".';
 $app_strings['IMAP_HANDLER_SUCCESS'] = 'OK: test settings changed to "{key}"';
@@ -3788,6 +3806,9 @@ $app_strings['LBL_VALIDATION_ERROR_EMAIL_FORMAT'] = "Invalid email format. Expec
 $app_strings['LBL_VALIDATION_ERROR_PHONE_FORMAT'] = "Invalid phone format.";
 $app_strings['LBL_VALIDATION_ERROR_MIN'] = "Invalid value. Value must greater or equal to '{{context.min}}'";
 $app_strings['LBL_VALIDATION_ERROR_MAX'] = "Invalid value. Value must smaller or equal to '{{context.max}}'";
+$app_strings['LBL_MULTIPLE_PRIMARY_EMAIL_VALIDATION_ERROR'] = "Only one email address can be marked as primary";
+$app_strings['LBL_DUPLICATE_EMAIL_VALIDATION_ERROR'] = "Duplicate email addresses are not allowed";
+$app_strings['LBL_NO_PRIMARY_EMAIL_VALIDATION_ERROR'] = "One email address should be marked as primary";
 $app_strings['LBL_VALIDATION_ERRORS'] = 'There are validation errors, unable to perform action.';
 $app_strings['LBL_TYPE_TO_SEARCH'] = 'Type to search...';
 $app_strings['LBL_SEARCHING'] = 'searching...';
@@ -3824,7 +3845,50 @@ $app_strings['AOS_Quotes'] = 'Quotes';
 $app_strings['AOS_Invoices'] = 'Invoices';
 $app_strings['LBL_PHOTO'] = 'Photo';
 $app_strings['LBL_CASE_UPDATES'] = 'Case Updates';
+$app_strings['LBL_CASE_UPDATE_SUBMITTED'] = 'Case Update Submitted';
 $app_strings['LBL_SUMMARY_DEFAULT'] = "{{fields.name.value}}";
+$app_strings['LBL_CREATE'] = 'Create';
+$app_strings['LBL_SAVED_FILTER_SAVED'] = 'Filter successfully saved';
+$app_strings['LBL_FILTER_ID_NOT_DEFINED'] = 'Filter id not defined';
+$app_strings['LBL_GENERIC_CONFIRMATION'] = 'Do you want to proceed with action?';
+$app_strings['LBL_SHOW_MORE'] = 'Show more';
+$app_strings['LBL_SHOW_LESS'] = 'Show less';
+$app_strings['LBL_LOAD_MORE'] = 'Load more';
+$app_strings['LBL_EMPTY'] = '-- Empty -- ';
+$app_strings['LBL_OPERATOR'] = 'Operator';
+$app_strings['LBL_START'] = 'Start';
+$app_strings['LBL_END'] = 'End';
+$app_strings['LBL_LINE_ITEMS_FIELD_CONFIG'] = 'Bad config';
+
+
+$app_strings['LBL_ACTION_SUCCESS'] = 'Action successful';
+
+$app_strings['LBL_YES'] = 'Yes';
+$app_strings['LBL_NO'] = 'No';
+
+$app_list_strings['sort_order'] = [];
+$app_list_strings['sort_order']['asc'] = 'Ascending';
+$app_list_strings['sort_order']['desc'] = 'Descending';
+
+// Labels used by subpanel unlink relationship process
+$app_strings['LBL_LINK'] = 'Link';
+$app_strings['LBL_UNLINK_RECORD'] = 'Unlink Record';
+$app_strings['LBL_UNLINK_RELATIONSHIP_CONFIRM'] = 'Are you sure you want to unlink this record? Only the relationship will be unlinked. The record will not be deleted.';
+$app_strings['LBL_UNLINK_RELATIONSHIP_SUCCESS'] = 'Record unlinked successfully.';
+$app_strings['LBL_UNLINK_RELATIONSHIP_FAILED'] = 'There was an error unlinking this record.';
+$app_strings['LBL_LINK_RELATIONSHIP_SUCCESS'] = 'Relationship linked successfully.';
+$app_strings['LBL_LINK_RELATIONSHIP_FAILED'] = 'There was an error linking this Relationship.';
+$app_strings['LBL_MODULE_NOT_FOUND'] = 'Module not found.';
+$app_strings['LBL_RECORD_NOT_FOUND'] = 'Unable to load record';
+$app_strings['LBL_RELATIONSHIP_LOAD_ERROR'] = 'Unable to load relationship';
+$app_strings['LBL_NOT_LINKED'] = 'Unable to unlink. Records are not linked';
+$app_strings['LBL_ACCESS_DENIED'] = 'Access Denied';
+$app_strings['LBL_ADD_RECORDS_TO_TARGET_LIST_SUCCESS'] = 'Records added to target list successfully.';
+$app_strings['LBL_ADD_RECORDS_TO_TARGET_LIST_FAILED'] = 'There was an error adding records to target list.';
+$app_strings['LBL_ADD_CONTACTS_TO_TARGET_LIST_SUCCESS'] = 'Contacts added to target list successfully.';
+$app_strings['LBL_ADD_CONTACTS_TO_TARGET_LIST_FAILED'] = 'There was an error adding contacts to target list.';
+$app_strings['LBL_CHANGED_TO_TEXT'] = 'changed to';
+$app_strings['LBL_RECORD_CHANGED'] = 'Record Updated';
 $app_strings['LBL_CREATE'] = "Create";
 $app_strings['LBL_USE_ADVANCED_SEARCH'] = 'Use Advanced Search';
 $app_strings['LBL_USE_BASIC_SEARCH'] = 'Use Basic Search';

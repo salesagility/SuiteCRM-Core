@@ -1,0 +1,12 @@
+@media (max-width: 750px) {
+    .dashletcontainer {
+      float: left;
+    }
+    .dashletPanel {
+      overflow: auto;
+    }
+    .dashboardTabList {
+      display: none;
+    }    
+  }
+  

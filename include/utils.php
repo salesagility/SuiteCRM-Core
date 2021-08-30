@@ -1030,20 +1030,6 @@ function clean($string, $maxLength)
 }
 
 /**
- * @param $string
- * @return string
- */
-function cleanCSV($string)
-{
-    $check = '/^[=@]/';
-    if (!is_numeric($string)) {
-        $check = '/^[=@+-]/';
-    }
-
-    return preg_replace($check, "", $string);
-}
-
-/**
  * Copy the specified request variable to the member variable of the specified object.
  * Do no copy if the member variable is already set.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
@@ -1302,6 +1288,38 @@ function return_application_language($language)
     sugar_cache_put($cache_key, $return_value);
 
     return $return_value;
+}
+
+/**
+ * load install languages
+ * @param string $language
+ * @return array
+ */
+function load_install_language(string $language): array
+{
+    global $current_language;
+    $default_lang = 'en_us';
+
+    $current_language = $language ?? $default_lang;
+    $mod_strings = [];
+
+    if (file_exists(__DIR__ . "/../install/language/{$current_language}.lang.php")) {
+        include(__DIR__ . "/../install/language/{$current_language}.lang.php");
+    } else {
+        include(__DIR__ . "/../install/language/{$default_lang}.lang.php");
+    }
+
+    if ($current_language !== 'en_us') {
+        $my_mod_strings = $mod_strings;
+        include(__DIR__ . '/../install/language/en_us.lang.php');
+        $mod_strings = sugarLangArrayMerge($mod_strings, $my_mod_strings);
+    }
+
+    if(empty($mod_strings) || !is_array($mod_strings)){
+        return [];
+    }
+
+    return $mod_strings;
 }
 
 /**

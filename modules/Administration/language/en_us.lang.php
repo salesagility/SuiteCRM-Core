@@ -744,8 +744,8 @@ $mod_strings = array(
     'LBL_SAML_TITLE' => 'SAML Authentication',
     'LBL_SAML_CERT' => 'X509 Certificate',
     'LBL_SAML_CERT_DESC' => 'Enter X509 Certificate',
-    'LBL_SAML_LOGIN_URL' => 'Login URL',
-    'LBL_SAML_LOGOUT_URL' => 'SLO URL',
+    'LBL_SAML_LOGIN_URL' => 'Login URL', //SAML Authentication
+    'LBL_SAML_LOGOUT_URL' => 'SLO URL', //SAML Single Log-out
     'LBL_SAML_LOGIN_URL_DESC' => 'Enter Login URL',
     'LBL_SAML_LOGOUT_URL_DESC' => 'Enter Logout URL',
 
@@ -874,7 +874,6 @@ $mod_strings = array(
     'LBL_AOS_PRODUCTS' => 'AOS Products',
     'LBL_AOS_DAYS' => 'days',
     'LBL_CHANGE_SETTINGS' => 'Change settings for Advanced OpenSales',
-    'LBL_CHANGE_SETTINGS_AOD' => 'Change settings for Advanced OpenDiscovery',
     'LBL_CHANGE_SETTINGS_AOP' => 'Change settings for Advanced OpenPortal',
 
     'LBL_MANAGE_SECURITYGROUPS_TITLE' => 'Security Suite Group Management',
@@ -965,7 +964,6 @@ $mod_strings = array(
     // Search Engines Translations
     'LBL_SEARCH_WRAPPER_ENGINES' => 'Search Engines',
     'LBL_BASIC_SEARCH_ENGINE' => 'Basic Search',
-    'LBL_BASIC_AND_AOD_ENGINE' => 'Basic + Advanced Search',
     'LBL_ELASTIC_SEARCH_ENGINE' => 'Elasticsearch Engine',
     'LBL_SIMPLE_SQL_SEARCH_ENGINE' => 'Simple SQL Search Engine',
 

@@ -126,12 +126,9 @@ div#searchResults {
   border-left: 4px solid $scheduler-end-color ;
 }
 
-
-
 #scheduler .schedulerDiv table tr.schedulerAttendeeRow td.schedulerSlotCellEndTime.busy {
   border-left: 4px solid $scheduler-end-color ;
 }
-
 
 #scheduler .schedulerDiv table tr.schedulerAttendeeRow td.schedulerAttendeeDeleteCell {
   background: transparent;
@@ -250,7 +247,6 @@ div#searchResults {
   color: $main-font-color;
 }
 
-
 #ygddfdiv {
   background: $info;
   padding: 8px;
@@ -273,7 +269,6 @@ div.noBullet li,
   padding: 1em 1.6em 0 1.6em;
   width: 100%;
 }
-
 
 
 @media (max-width: 750px) {
@@ -327,7 +322,7 @@ a#powered_by:hover {
 
 .footer_right a {
   font-size: 12px;
-  color: #4D4D4D;
+  color: $text-color;
   padding-right: 20px;
   letter-spacing: 1px;
   vertical-align: middle;
@@ -716,22 +711,6 @@ slot {
   color: $main-font-color;
 }
 
-//.col-sm-6 .edit-view-field input[type="text"] {
-//  border-color: $main-font-color;
-//}
-//
-//.edit textarea {
-//  border-color: $main-font-color;
-//}
-//
-//.col-sm-12 .col-sm-8.edit-view-field textarea {
-//  border-color: $main-font-color;
-//}
-//
-//.col-sm-12 .col-sm-8.edit-view-field input.sqsEnabled {
-//  border-color: $main-font-color;
-//}
-
 select {
   font-weight: normal;
   color: $main-font-color;
@@ -839,9 +818,6 @@ option[selected] {
     }
   }
   .edit-view-row-item {
-    .yui-ac {
-      bottom: 8px;
-    }
     .edit-view-field {
       width: 100%;
       padding: 0;
@@ -877,8 +853,6 @@ option[selected] {
     }
   }
 }
-
-
 
 fieldset {
   margin-top: 32px;
@@ -1374,7 +1348,6 @@ table.dateTime {
 
 input.sqsEnabled {
   display: inline-block;
-  margin-top: 8px;
   margin-right: 8px;
   clear: both;
 }
@@ -1727,12 +1700,12 @@ div.confirmTable {
 
 .moduleTitle h2 {
   display: block;
-  font-size: 26px;
+  font-size: 1.8em;
   font-weight: 300;
-  color: $main-header-font-color;
+  color: $module-title-color;
   margin: 0 0 $detail-view-module-title-space 0;
   float: left;
-  letter-spacing: 2px;
+  letter-spacing: 0.1em;
   text-transform: capitalize;
   .module-title-text-breadcrumbs {
     display: none;
@@ -2036,7 +2009,6 @@ a.tabFormAdvLink:visited {
   filter: alpha(opacity=80);
   opacity: .8;
   z-index: 20;
-
 }
 
 .detail508 tr td[scope="col"] {
@@ -2072,7 +2044,6 @@ ul.clickMenu {
   vertical-align: bottom;
   list-style: none;
 }
-
 
 ul.clickMenu form {
   display: block;
@@ -2239,7 +2210,6 @@ ul#detailViewActions.clickMenu {
   width: 19px;
   height: 17px;
 }
-
 
 .selectActionsDisabled span.ab {
   padding-left: 5px;
@@ -2823,7 +2793,6 @@ input#btn_ActionLine.button[type="button"] {
   font-size: 10px;
 }
 
-
 [field=line_items] {
   float: none;
   width: 100%;
@@ -2917,17 +2886,17 @@ table#lineItems tr td table tfoot tr td span {
 }
 
 #lineItems .group > thead {
-  background-color: $main-bg;
+  background-color: $white;
   min-height: 52px;
 }
 
 #lineItems .group > thead > tr {
-  background-color: $main-bg;
+  background-color: $white;
   min-height: 52px;
 }
 
 #lineItems .group > thead > tr > td {
-  background-color: $main-bg;
+  background-color: $white;
   min-height: 52px;
 }
 
@@ -2950,6 +2919,9 @@ table#lineItems tr td table tfoot tr td span {
   line-height: 0;
   width: 32px;
   height: 32px;
+  background: transparent;
+  border: none;
+  color: grey;
 }
 
 /*Labels Next to Fields*/
@@ -2961,7 +2933,6 @@ table#lineItems tr td table tfoot tr td span {
 /*Product Lines*/
 #lineItems #product_head td {
   padding: 0;
-  border-bottom: 1px solid #F5F5F5;
 }
 
 #lineItems .product_group {
@@ -2990,7 +2961,6 @@ table#lineItems tr td table tfoot tr td span {
 
 #lineItems .product_group > tbody > tr:nth-of-type(2) > td {
   padding-bottom: 32px;
-  border-bottom: 1px solid #F5F5F5;
 }
 
 #lineItems .product_qty {
@@ -3070,12 +3040,10 @@ table#lineItems tr td table tfoot tr td span {
 /*Service Lines*/
 #lineItems #service_head td {
   padding: 0;
-  border-bottom: 1px solid #F5F5F5;
 }
 
 #lineItems .service_group > tbody > tr > td {
   padding-bottom: 32px;
-  border-bottom: 1px solid #F5F5F5;
 }
 
 #lineItems .service_group {
@@ -3265,7 +3233,6 @@ table#lineItems tr td table tfoot tr td span {
   height: 14px;
 }
 
-
 .hr {
   background: $main-alternate-bg;
   color: $navbar-menu-separator;
@@ -3288,95 +3255,6 @@ table#lineItems tr td table tfoot tr td span {
 
 .modal {
   z-index: 1100;
-}
-
-/**** Scrollbars ****/
-div::-webkit-scrollbar { /* 1 */
-  width: 12px;
-  height: 12px;
-}
-
-select::-webkit-scrollbar { /* 1 */
-  width: 12px;
-  height: 12px;
-}
-
-input::-webkit-scrollbar { /* 1 */
-  width: 12px;
-  height: 12px;
-}
-
-textarea::-webkit-scrollbar { /* 1 */
-  width: 12px;
-  height: 12px;
-}
-
-ul::-webkit-scrollbar { /* 1 */
-  width: 12px;
-  height: 12px;
-}
-
-
-div::-webkit-scrollbar-track { /* 3 */
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-select::-webkit-scrollbar-track { /* 3 */
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-input::-webkit-scrollbar-track { /* 3 */
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-textarea::-webkit-scrollbar-track { /* 3 */
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-ul::-webkit-scrollbar-track { /* 3 */
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-
-div::-webkit-scrollbar-thumb { /* 5 */
-  background: $scroll-bar-thumb-color;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-select::-webkit-scrollbar-thumb { /* 5 */
-  background: $scroll-bar-thumb-color;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-input::-webkit-scrollbar-thumb { /* 5 */
-  background: $scroll-bar-thumb-color;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-textarea::-webkit-scrollbar-thumb { /* 5 */
-  background: $scroll-bar-thumb-color;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-ul::-webkit-scrollbar-thumb { /* 5 */
-  background: $scroll-bar-thumb-color;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-.sidebar::-webkit-scrollbar-thumb { /* 5 */
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
 #tab-actions .dropdown-menu::-webkit-scrollbar-thumb {
@@ -4194,7 +4072,6 @@ select#sales_stage_advanced {
   border: 1px solid #778591;
   border-radius: $border-radius-base;
   height: 30px;
-
 }
 
 hr {
@@ -4277,7 +4154,7 @@ hr {
 }
 
 #copyright_data a {
-  color: #000000;
+  color: $text-color;
   margin: 0 5px 0 5px;
 }
 
@@ -4336,7 +4213,7 @@ tr:hover img.info {
 
 #EditView div.action_buttons .button:hover,
 #save_and_continue.button:hover {
-  background-color: $danger-btn-bg-hover;
+  background-color: $btn-hover-bg-color;
 }
 
 .paginationWrapper {
@@ -4463,6 +4340,20 @@ td.inlineEditActive {
   width: 98%;
   .dateTime {
     display: flex;
+  }
+  .dateTimeSection {
+    margin-left: 5em;
+  }
+}
+
+.inline-datecalendar {
+  .btn {
+    background: $white;
+    border: none;
+    box-shadow: none;
+    opacity: 0.2;
+    position: relative;
+    bottom: 0.2em;
   }
 }
 
@@ -5132,7 +5023,6 @@ object {
     width: auto;
     min-width: 200px;
   }
-
   /*help*/
 
 }
@@ -5577,8 +5467,9 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td {
 }
 
 div.content div.pagecontent form#EditView div.edit.view table tbody tr td span {
-  display: block;
+  display: inline;
   float: none;
+  text-transform: uppercase;
 }
 
 div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"] {
