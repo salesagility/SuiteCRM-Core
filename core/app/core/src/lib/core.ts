@@ -12,6 +12,7 @@ export * from './components/button/button.utils';
 export * from './components/button-group/button-group.component';
 export * from './components/button-group/button-group.module';
 export * from './components/chart/components/base-chart/base-chart.component';
+export * from './components/chart/components/base-chart/base-chart.module';
 export * from './components/chart/components/chart/chart.component';
 export * from './components/chart/components/chart/chart.manifest';
 export * from './components/chart/components/chart/chart.module';

@@ -24,23 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ChartComponent} from './chart.component';
-import {DynamicModule} from 'ng-dynamic-component';
-import {ChartMessageAreaModule} from '../chart-message-area/chart-message-area.module';
-import {chartModules} from './chart.manifest';
+import {BaseChartComponent} from './base-chart.component';
 
 @NgModule({
-    declarations: [ChartComponent],
-    exports: [ChartComponent],
-    imports: [
-        CommonModule,
-        ...chartModules,
-        DynamicModule,
-        ChartMessageAreaModule,
+    exports: [
+        BaseChartComponent,
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    declarations: [
+        BaseChartComponent,
+    ],
+    imports: [
+        CommonModule
+    ]
 })
-export class ChartModule {
+export class BaseChartModule {
 }

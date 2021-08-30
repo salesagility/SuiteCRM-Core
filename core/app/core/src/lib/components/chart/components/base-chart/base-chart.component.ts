@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Input, Directive, ElementRef} from '@angular/core';
+import {Component, ElementRef, Input} from '@angular/core';
 import {ChartDataSource} from 'common';
 
-@Directive()
+@Component({template: ''})
 export class BaseChartComponent {
     @Input() dataSource: ChartDataSource;
 
