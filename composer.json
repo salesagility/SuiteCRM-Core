@@ -15,10 +15,7 @@
       "php": "7.3.0"
     },
     "optimize-autoloader": true,
-    "sort-packages": true,
-    "preferred-install": {
-      "elasticsearch/elasticsearch": "dist"
-    }
+    "sort-packages": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -32,7 +29,7 @@
     "doctrine/doctrine-migrations-bundle": "3.0.*",
     "doctrine/migrations": "3.0.*",
     "doctrine/orm": "^2.9",
-    "elasticsearch/elasticsearch": "^5.3",
+    "elasticsearch/elasticsearch": "^7.13",
     "ezyang/htmlpurifier": "^4.10",
     "google/apiclient": "^2.0",
     "google/recaptcha": "^1.1",
@@ -157,7 +154,6 @@
     },
     "post-install-cmd": [
       "@auto-scripts",
-      "rm -Rf vendor/elasticsearch/elasticsearch/tests/Elasticsearch/Tests",
       "Google\\Task\\Composer::cleanup"
     ],
     "post-update-cmd": [
