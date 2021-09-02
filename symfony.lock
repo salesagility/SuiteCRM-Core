@@ -296,12 +296,6 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
-    "guzzlehttp/ringphp": {
-        "version": "1.1.1"
-    },
-    "guzzlehttp/streams": {
-        "version": "3.0.0"
-    },
     "gymadarasz/ace": {
         "version": "v1.2.3.stable"
     },
