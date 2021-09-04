@@ -145,7 +145,7 @@
     },
     "post-install-cmd": [
       "@auto-scripts",
-      "rm -Rf vendor/elasticsearch/elasticsearch/tests/Elasticsearch/Tests",
+      "rm -rf vendor/elasticsearch/elasticsearch/tests/Elasticsearch/Tests",
       "Google\\Task\\Composer::cleanup"
     ],
     "post-update-cmd": [
