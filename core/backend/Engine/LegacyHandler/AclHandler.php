@@ -76,7 +76,7 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
     /**
      * @inheritDoc
      */
-    public function checkAccess(string $module, string $action, bool $isOwner = false): bool
+    public function checkAccess(string $module, string $action, bool $isOwner = false, $type = 'module', $in_group = false): bool
     {
         $this->init();
 
@@ -84,7 +84,7 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
 
         $legacyName = $this->moduleNameMapper->toLegacy($module);
 
-        $hasAccess = ACLController::checkAccess($legacyName, $action, $isOwner);
+        $hasAccess = ACLController::checkAccess($legacyName, $action, $isOwner, $type, $in_group);
 
         $this->close();
 

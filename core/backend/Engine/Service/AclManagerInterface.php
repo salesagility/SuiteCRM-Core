@@ -37,7 +37,9 @@ interface AclManagerInterface
      * @param string $module
      * @param string $action
      * @param bool $isOwner
+     * @param string $type
+     * @param bool $in_group
      * @return bool
      */
-    public function checkAccess(string $module, string $action, bool $isOwner = false): bool;
+    public function checkAccess(string $module, string $action, bool $isOwner = false, $type = 'module', $in_group = false): bool;
 }

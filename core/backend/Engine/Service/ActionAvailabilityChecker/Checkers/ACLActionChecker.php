@@ -81,7 +81,7 @@ class ACLActionChecker implements ActionAvailabilityCheckerInterface
         }
 
         foreach ($aclList as $acl) {
-            if ($aclManager->checkAccess($module, $acl, true) === false) {
+            if ($aclManager->checkAccess($module, $acl, true, 'module', true) === false) {
                 return false;
             }
         }
