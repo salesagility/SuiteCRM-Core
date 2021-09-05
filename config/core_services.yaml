@@ -25,6 +25,7 @@ services:
       $datetimeFormatMap: '%legacy.datetime_format_map%'
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
+      $baseActions: '%module.base_actions%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewLineActions: '%module.listview.line_action%'
       $listViewLineActionsLimits: '%module.listview.line_actions_limits%'
@@ -38,6 +39,7 @@ services:
       $recordViewTopWidgets: '%module.recordview.top_widgets%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $legacyToFrontEndFieldsMap: '%record.fields.legacy_to_frontend_fields_map%'
+      $legacyActionResolverMap: '%legacy.action_resolver%'
       $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
       $extensions: '%extensions%'
@@ -208,6 +210,8 @@ services:
       - !tagged { tag: 'massupdate.definition.mapper' }
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
+  App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'
+  App\Process\Service\LegacyModuleNameResolverInterface: '@App\Process\Service\LegacyModuleNameResolver'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
   App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'

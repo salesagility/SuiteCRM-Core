@@ -1,61 +1,49 @@
 parameters:
-  module.recordview.actions:
+  module.base_actions:
     default:
       actions:
+        index: &index
+          key: index
+          labelKey: LBL_LISTVIEW
+          acl:
+            - list
+        list: *index
+        view: &view
+          key: view
+          labelKey: LBL_DETAILVIEW
+          acl:
+            - view
+        record: *view
         create:
           key: create
           labelKey: LBL_NEW
-          params:
-            expanded: true
-          modes:
-            - detail
           acl:
             - edit
         edit:
           key: edit
           labelKey: LBL_EDIT
-          params:
-            expanded: true
-          modes:
-            - detail
           acl:
             - edit
         save:
           key: save
           labelKey: LBL_SAVE_BUTTON_LABEL
-          params:
-            expanded: true
-          modes:
-            - edit
           acl:
             - edit
         saveNew:
           key: saveNew
           labelKey: LBL_SAVE_BUTTON_LABEL
-          params:
-            expanded: true
-          modes:
-            - create
           acl:
             - edit
         delete:
           key: delete
           labelKey: LBL_DELETE
           asyncProcess: true
-          params:
-            displayConfirmation: true
-            confirmationLabel: NTC_DELETE_CONFIRMATION
-          modes:
-            - detail
           acl:
             - delete
         duplicate:
           key: duplicate
           labelKey: LBL_DUPLICATE_BUTTON
           asyncProcess: true
-          params:
-          modes:
-            - detail
           acl:
             - export
             - edit
@@ -63,28 +51,29 @@ parameters:
           key: audit
           labelKey: LNK_VIEW_CHANGE_LOG
           asyncProcess: true
-          params:
-          modes:
-            - detail
-            - edit
           availability:
             - audited
             - acls
-        duplicate-merge:
-          key: duplicate-merge
+        merge-records:
+          key: merge-records
           labelKey: LBL_DUP_MERGE
           asyncProcess: true
-          params:
-          modes:
-            - detail
-            - edit
           availability:
             - duplicate-merge
             - acls
           acl:
             - edit
             - delete
-    modules:
-      employees:
-        exclude:
-          - delete
+        export:
+          key: export
+          labelKey: LBL_EXPORT
+          acl:
+            - export
+        massupdate:
+          key: massupdate
+          labelKey: LBL_MASS_UPDATE
+          availability:
+            - acls
+            - massupdate
+          acl:
+            - massupdate
