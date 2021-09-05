@@ -1,0 +1,6 @@
+parameters:
+  legacy.action_resolver:
+    merge-records:
+      index: action_module
+      Step1: action_module
+    import: import_module
