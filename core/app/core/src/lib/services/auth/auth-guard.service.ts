@@ -25,7 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
+import {
+    ActivatedRouteSnapshot,
+    CanActivate,
+    Router,
+    UrlTree
+} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
@@ -90,7 +95,7 @@ export class AuthGuard implements CanActivate {
     protected authorizeUserACL(activatedRoute: ActivatedRouteSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute);
+        const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute.url);
 
         const routeURL: string = this.appState.getRouteUrl() ?? '';
 
@@ -99,7 +104,7 @@ export class AuthGuard implements CanActivate {
         }
 
         const homeUrl = '';
-        const tree: UrlTree = this.router.parseUrl(homeUrl);
+        const homeUrlTree: UrlTree = this.router.parseUrl(homeUrl);
 
         const actionName = 'user-acl';
 
@@ -108,29 +113,34 @@ export class AuthGuard implements CanActivate {
             module: routeInfo.module,
             payload: {
                 routeAction: routeInfo.action,
-                routeURL
+                routeURL,
+                queryParams: activatedRoute?.queryParams ?? []
             }
         } as AsyncActionInput;
-
-        //this.message.removeMessages();
 
         return this.asyncActionService.run(actionName, asyncData)
             .pipe(take(1),
                 map((process: Process) => {
+
                     if (process.data && process.data.result === true) {
                         return true;
                     }
+
                     if (isEmptyString(routeURL)) {
                         // Re-direct to home
-                        return tree;
+                        return homeUrlTree;
                     }
+
+                    const currentUrlTree: UrlTree = this.router.parseUrl(this.router.url);
+
+                    if(this.routeConverter.isClassicViewRoute(currentUrlTree)){
+                        return currentUrlTree;
+                    }
+
+                    return false;
                 }),
-                catchError(() => of(tree)),
-                tap((result: boolean | UrlTree) => {
-                    if (result === true) {
-                        return true;
-                    }
-                })
+                catchError(() => of(homeUrlTree)),
+                tap((result: boolean | UrlTree) => result)
             );
     }
 
@@ -148,7 +158,7 @@ export class AuthGuard implements CanActivate {
         }
 
         const loginUrl = 'Login';
-        const tree: UrlTree = this.router.parseUrl(loginUrl);
+        const loginUrlTree: UrlTree = this.router.parseUrl(loginUrl);
 
         return this.authService.fetchSessionStatus()
             .pipe(
@@ -161,18 +171,17 @@ export class AuthGuard implements CanActivate {
                     }
 
                     if (user && user.active === true) {
-                        this.message.removeMessages();
                         this.authService.setCurrentUser(user);
                         return true;
                     }
                     this.authService.logout('LBL_SESSION_EXPIRED', false);
                     this.authService.isUserLoggedIn.next(false);
                     // Re-direct to login
-                    return tree;
+                    return loginUrlTree;
                 }),
                 catchError(() => {
                     this.authService.logout('LBL_SESSION_EXPIRED', false);
-                    return of(tree);
+                    return of(loginUrlTree);
                 }),
                 tap((result: boolean | UrlTree) => {
                     if (result === true) {
@@ -182,3 +191,5 @@ export class AuthGuard implements CanActivate {
             );
     }
 }
+
+

@@ -27,5 +27,6 @@
 import {RouteConverter} from './route-converter.service';
 import {moduleNameMapperMock} from '../module-name-mapper/module-name-mapper.service.spec.mock';
 import {actionNameMapperMock} from '../action-name-mapper/action-name-mapper.service.spec.mock';
+import {systemConfigStoreMock} from '../../../store/system-config/system-config.store.spec.mock';
 
-export const routeConverterMock = new RouteConverter(moduleNameMapperMock, actionNameMapperMock);
+export const routeConverterMock = new RouteConverter(moduleNameMapperMock, actionNameMapperMock, systemConfigStoreMock);

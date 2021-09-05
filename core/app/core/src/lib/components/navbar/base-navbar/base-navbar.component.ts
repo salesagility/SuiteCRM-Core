@@ -74,7 +74,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     submenu: any = [];
     moduleNameMapper = new ModuleNameMapper(this.systemConfigStore);
     actionNameMapper = new ActionNameMapper(this.systemConfigStore);
-    routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper);
+    routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper, this.systemConfigStore);
     navbar: NavbarModel = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
     maxTabs = 8;
     screen: ScreenSize = ScreenSize.Medium;

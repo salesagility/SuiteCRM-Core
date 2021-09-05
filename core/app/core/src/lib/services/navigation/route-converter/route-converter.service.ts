@@ -25,10 +25,17 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, DefaultUrlSerializer, Params, UrlTree} from '@angular/router';
+import {
+    ActivatedRoute,
+    DefaultUrlSerializer,
+    Params, PRIMARY_OUTLET,
+    UrlSegment, UrlSegmentGroup,
+    UrlTree
+} from '@angular/router';
 import {HttpParams} from '@angular/common/http';
 import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
+import {SystemConfigStore} from '../../../store/system-config/system-config.store';
 
 const ROUTE_PREFIX = './#';
 
@@ -44,7 +51,8 @@ export class RouteConverter {
 
     constructor(
         private moduleNameMapper: ModuleNameMapper,
-        private actionNameMapper: ActionNameMapper
+        private actionNameMapper: ActionNameMapper,
+        private systemConfigStore: SystemConfigStore
     ) {
     }
 
@@ -158,17 +166,49 @@ export class RouteConverter {
     /**
      * Map route url to RouteInfo
      *
-     * @param {ActivatedRouteSnapshot} routeSnapshot contains the requested Route Information
      * @returns {object} RouteInfo of the current URL
      * @description Parses route information from ActivatedRouteSnapshot to RouteInfo object
+     * @param {UrlSegment[]} urlSegment from the Router object
      */
-    public parseRouteURL(routeSnapshot: ActivatedRouteSnapshot): RouteInfo {
+    public parseRouteURL(urlSegment: UrlSegment[]): RouteInfo {
 
         return {
-            module: routeSnapshot?.url[0]?.path ?? '',
-            action: routeSnapshot?.url[1]?.path ?? 'index',
-            record: routeSnapshot?.url[2]?.path ?? ''
+            module: urlSegment[0]?.path ?? '',
+            action: urlSegment[1]?.path ?? 'index',
+            record: urlSegment[2]?.path ?? ''
         } as RouteInfo;
+    }
+
+    /**
+     * check if the current route is a classic view route
+     *
+     * @returns {object} RouteInfo
+     * @description if the current url is a classic view url; so redirect back to the same view
+     * @param {UrlTree} urlTree of current route
+     */
+    public parseRouteInfoFromUrlTree(urlTree: UrlTree): RouteInfo {
+        const urlSegmentGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
+        const urlSegment: UrlSegment[] = urlSegmentGroup.segments;
+        return this.parseRouteURL(urlSegment);
+    }
+
+    /**
+     * check if the current route is a classic view route
+     *
+     * @returns {boolean} true/false
+     * @param {UrlTree} urlTree of the route
+     * @description if the current url is a classic view url; so redirect back to the same view
+     */
+    public isClassicViewRoute(urlTree: UrlTree): boolean {
+
+        const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
+
+        const currentRouteInfo = this.parseRouteInfoFromUrlTree(urlTree);
+
+        const module = currentRouteInfo.module;
+        const action = currentRouteInfo.action;
+
+        return !configRoutes[module] || !configRoutes[module][action];
     }
 
     /**
@@ -253,7 +293,7 @@ export class RouteConverter {
      * Build query string
      *
      * @param {object} queryParams query parameters
-     * @param {string[]} exclude paramenters to exclude
+     * @param {string[]} exclude parameters to exclude
      * @returns {string} query string
      */
     protected buildQueryString(queryParams: Params, exclude: string[] = []): string {

@@ -31,7 +31,10 @@ use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Module\Service\ModuleRegistryInterface;
 use App\Process\Entity\Process;
+use App\Process\Service\BaseActionDefinitionProviderInterface;
+use App\Process\Service\LegacyActionResolverInterface;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -54,6 +57,16 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
     private $moduleNameMapper;
 
     /**
+     * @var BaseActionDefinitionProviderInterface
+     */
+    private $baseActionDefinitionProvider;
+
+    /**
+     * @var LegacyActionResolverInterface
+     */
+    private $legacyActionResolver;
+
+    /**
      * UserACLHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -62,6 +75,8 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      * @param LegacyScopeState $legacyScopeState
      * @param SessionInterface $session
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param BaseActionDefinitionProviderInterface $baseActionDefinitionProvider
+     * @param LegacyActionResolverInterface $legacyActionResolver
      */
     public function __construct(
         string $projectDir,
@@ -70,7 +85,9 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        BaseActionDefinitionProviderInterface $baseActionDefinitionProvider,
+        LegacyActionResolverInterface $legacyActionResolver
     )
     {
         parent::__construct(
@@ -82,6 +99,8 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
             $session
         );
         $this->moduleNameMapper = $moduleNameMapper;
+        $this->baseActionDefinitionProvider = $baseActionDefinitionProvider;
+        $this->legacyActionResolver = $legacyActionResolver;
     }
 
     /**
@@ -160,11 +179,30 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
             'payload' => $payload
         ] = $options;
 
-        $module = $this->moduleNameMapper->toLegacy($module);
+        $routeAction = $payload['routeAction'] ?? 'index';
+        $queryParams = $payload['queryParams'];
+
+        $actionKey = $routeAction;
+
+        $resolvedLegacyModule = $this->getResolvedLegacyModule($module, $actionKey, $queryParams);
+        if (!empty($resolvedLegacyModule)) {
+            $actionKey = $module;
+            $module = $resolvedLegacyModule;
+        }
+
+        $legacyModuleName = $this->moduleNameMapper->toLegacy($module);
+        $frontEndModuleName = $this->moduleNameMapper->toFrontEnd($module);
+
+        $hasAccess = false;
+        if ($this->moduleNameMapper->isValidModule($legacyModuleName)
+            && (!$this->baseActionDefinitionProvider->isActionDefined($actionKey)
+                || $this->isActionAccessible($frontEndModuleName, $actionKey))
+        ) {
+            $hasAccess = true;
+        }
 
         $service = new UserACLService();
-
-        $result = $service->run($module, $payload['routeURL'], $this->parserRoutAction($payload['routeAction']));
+        $result = $service->run($legacyModuleName, $payload['routeURL'], $hasAccess);
 
         $process->setStatus('success');
 
@@ -185,32 +223,62 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
     }
 
     /**
+     * Get list of modules the user has access to
+     * @param string $module
+     * @param string $actionKey
+     * @return bool
+     */
+    protected function isActionAccessible(string $module, string $actionKey): bool
+    {
+        $actions = $this->baseActionDefinitionProvider->getActions($module);
+
+        return !(empty($actions) || !array_key_exists($actionKey, $actions));
+    }
+
+    /**
+     * Get list of modules the user has access to
+     * @param string $primaryAction
+     * @param string $secondaryAction
+     * @return string
+     * @description Special case, when action is treated as module name by legacy
+     * e.g. merge-records is an action but treated as a module by legacy
+     * we need to identify the actual module(parent) name and the applicable acls in this case
+     */
+    protected function entryExistsInLegacyActionMapper(string $primaryAction, string $secondaryAction): string
+    {
+
+        $actionModuleIdentifierKey = $this->legacyActionResolver->get($primaryAction, $secondaryAction);
+
+        if (empty($actionModuleIdentifierKey)) {
+            return '';
+        }
+        return $actionModuleIdentifierKey;
+    }
+
+    /**
+     * Get list of modules the user has access to
+     * @param string $primaryAction
+     * @param string $secondaryAction
+     * @param array $queryParams
+     * @return string
+     */
+    protected function getResolvedLegacyModule(string $primaryAction, string $secondaryAction, array $queryParams): string
+    {
+        $actionModuleIdentifierKey = $this->entryExistsInLegacyActionMapper($primaryAction, $secondaryAction);
+
+        if (empty($actionModuleIdentifierKey)) {
+            return '';
+        }
+
+        return $queryParams[$actionModuleIdentifierKey] ?? '';
+    }
+
+    /**
      * @inheritDoc
      */
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
-    }
-
-    public function parserRoutAction($routeAction): string
-    {
-        if (in_array($routeAction,
-            [
-                'index',
-                'list',
-                'create',
-                'edit',
-                'delete'
-            ], true)) {
-
-            if ($routeAction === 'index') {
-                $routeAction = 'list';
-            }
-
-            return $routeAction;
-        }
-
-        return 'view';
     }
 
 }

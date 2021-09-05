@@ -111,7 +111,7 @@ class MergeDuplicateAction implements ProcessHandlerInterface
         $recordId = $options['id'];
 
         //called module
-        $module = 'MergeRecords';
+        $module = 'merge-records';
         $action = 'Step1';
 
         $responseData = [
@@ -119,6 +119,7 @@ class MergeDuplicateAction implements ProcessHandlerInterface
             'params' => [
                 'route' => $module . '/'. $action. '/' . $recordId,
                 'queryParams' => [
+                    'action_module' => $legacyModuleName,
                     'return_action' => 'DetailView',
                     'return_module' => $legacyModuleName,
                     'return_id' => $recordId
