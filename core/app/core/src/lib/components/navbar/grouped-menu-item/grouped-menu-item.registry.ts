@@ -24,24 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {MenuItemLink} from 'common';
-import {MenuItemLinkRegistry} from './menu-item-link.registry';
+import {Injectable} from '@angular/core';
+import {BaseComponentRegistry} from 'common';
+import {BaseGroupedMenuItemComponent} from './base-grouped-menu-item.component';
 
-@Component({
-    selector: 'scrm-menu-item-link',
-    templateUrl: './menu-item-link.component.html',
-    styleUrls: []
+@Injectable({
+    providedIn: 'root'
 })
-export class MenuItemLinkComponent {
-    @Input() link: MenuItemLink;
-    @Input() icon: string;
-    @Input() class: string;
+export class GroupedMenuItemRegistry extends BaseComponentRegistry<BaseGroupedMenuItemComponent> {
 
-    constructor(protected registry: MenuItemLinkRegistry) {
+    constructor() {
+        super();
     }
 
-    get getType(): any {
-        return this.registry.get('default', 'default');
+    protected initDefault(): void {
+
+        this.register('default', 'default', BaseGroupedMenuItemComponent);
     }
 }

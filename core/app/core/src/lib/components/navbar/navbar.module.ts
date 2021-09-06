@@ -40,23 +40,50 @@ import {MenuRecentlyViewedComponent} from './menu-recently-viewed/menu-recently-
 import {HomeMenuItemComponent} from './home-menu-item/home-menu-item.component';
 import {MenuItemComponent} from './menu-item/menu-item.component';
 import {ImageModule} from '../image/image.module';
+import {BaseNavbarComponent} from './base-navbar/base-navbar.component';
+import {DynamicModule} from 'ng-dynamic-component';
+import {BaseMenuItemLinkComponent} from './menu-item-link/base-menu-item-link.component';
+import {BaseMenuItemComponent} from './menu-item/base-menu-item.component';
+import {BaseGroupedMenuItemComponent} from './grouped-menu-item/base-grouped-menu-item.component';
+import {BaseHomeMenuItemComponent} from './home-menu-item/base-home-menu-item.component';
+import {BaseMenuRecentlyViewedComponent} from './menu-recently-viewed/base-menu-recently-viewed.component';
+import {BaseMenuItemsListComponent} from './menu-items-list/base-menu-items-list.component';
+import {LogoutUiComponent} from '../logout/logout.component';
 
 
 @NgModule({
     declarations: [
         NavbarUiComponent,
         MenuItemComponent,
+        BaseMenuItemComponent,
         MenuRecentlyViewedComponent,
+        BaseMenuRecentlyViewedComponent,
         HomeMenuItemComponent,
         MenuItemLinkComponent,
+        BaseHomeMenuItemComponent,
+        BaseMenuItemLinkComponent,
         GroupedMenuItemComponent,
-        MenuItemsListComponent
+        BaseGroupedMenuItemComponent,
+        MenuItemsListComponent,
+        BaseMenuItemsListComponent,
+        BaseNavbarComponent
     ],
     exports: [
         NavbarUiComponent,
         MenuItemComponent,
+        BaseMenuItemComponent,
         MenuRecentlyViewedComponent,
-        HomeMenuItemComponent
+        BaseMenuRecentlyViewedComponent,
+        HomeMenuItemComponent,
+        MenuItemLinkComponent,
+        BaseHomeMenuItemComponent,
+        BaseMenuItemLinkComponent,
+        GroupedMenuItemComponent,
+        BaseGroupedMenuItemComponent,
+        MenuItemsListComponent,
+        BaseMenuItemsListComponent,
+        BaseNavbarComponent,
+        LogoutUiComponent
     ],
     imports: [
         CommonModule,
@@ -65,7 +92,8 @@ import {ImageModule} from '../image/image.module';
         ActionBarUiModule,
         NgbModule,
         RouterModule,
-        ImageModule
+        ImageModule,
+        DynamicModule
     ]
 })
 export class NavbarUiModule {

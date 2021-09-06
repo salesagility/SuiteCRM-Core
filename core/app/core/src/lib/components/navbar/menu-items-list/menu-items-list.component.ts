@@ -26,6 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {MenuItem} from 'common';
+import {MenuItemsListRegistry} from './menu-items-list-registry';
 
 @Component({
     selector: 'scrm-menu-items-list',
@@ -36,6 +37,10 @@ export class MenuItemsListComponent {
     @Input() items: MenuItem[];
     @Input() label: string;
 
-    constructor() {
+    constructor(protected registry: MenuItemsListRegistry) {
+    }
+
+    get getType(): any {
+        return this.registry.get('default', 'default');
     }
 }

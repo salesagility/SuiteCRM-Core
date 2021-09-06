@@ -25,10 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ul class="navbar-nav home-nav">
-    <li class="nav-item" [class.active]="active">
-        <a class="home-nav-link" [routerLink]="route">
-            <scrm-image class="home-icon" image="home"></scrm-image>
-        </a>
-    </li>
-</ul>
+<ndc-dynamic *ngIf="getType"
+             [ndcDynamicComponent]="getType"
+             [ndcDynamicInputs]="{'route': route, 'active': active}">
+</ndc-dynamic>

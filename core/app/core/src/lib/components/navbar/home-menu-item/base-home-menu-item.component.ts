@@ -25,23 +25,17 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuItemLink} from 'common';
-import {MenuItemLinkRegistry} from './menu-item-link.registry';
 
 @Component({
-    selector: 'scrm-menu-item-link',
-    templateUrl: './menu-item-link.component.html',
+    selector: 'scrm-base-home-menu-item',
+    templateUrl: './base-home-menu-item.component.html',
     styleUrls: []
 })
-export class MenuItemLinkComponent {
-    @Input() link: MenuItemLink;
-    @Input() icon: string;
-    @Input() class: string;
+export class BaseHomeMenuItemComponent {
+    @Input() route: string;
+    @Input() active: boolean;
 
-    constructor(protected registry: MenuItemLinkRegistry) {
+    constructor() {
     }
 
-    get getType(): any {
-        return this.registry.get('default', 'default');
-    }
 }

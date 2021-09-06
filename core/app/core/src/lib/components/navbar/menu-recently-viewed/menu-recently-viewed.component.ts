@@ -27,6 +27,7 @@
 import {Component, Input} from '@angular/core';
 import {RecentRecordsMenuItem} from 'common';
 import {LanguageStrings} from '../../../store/language/language.store';
+import {MenuRecentlyViewedRegistry} from './menu-recently-viewed-registry';
 
 @Component({
     selector: 'scrm-menu-recently-viewed',
@@ -37,6 +38,10 @@ export class MenuRecentlyViewedComponent {
     @Input() records: RecentRecordsMenuItem[];
     @Input() languages: LanguageStrings;
 
-    constructor() {
+    constructor(protected registry: MenuRecentlyViewedRegistry) {
+    }
+
+    get getType(): any {
+        return this.registry.get('default', 'default');
     }
 }

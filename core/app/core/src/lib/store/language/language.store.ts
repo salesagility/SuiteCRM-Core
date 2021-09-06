@@ -146,8 +146,8 @@ export class LanguageStore implements StateStore {
     };
 
     constructor(
-        private recordGQL: EntityGQL,
-        private appStateStore: AppStateStore,
+        protected recordGQL: EntityGQL,
+        protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService
     ) {
 

@@ -25,33 +25,8 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container>
-    <span data-toggle="collapse" data-target=".navbar-collapse">
 
-        <scrm-menu-item-link
-                [class]="{
-                    'top-nav-link': true,
-                    'nav-link-nongrouped': true,
-                    'dropdown-toggle': item.submenu.length
-                }"
-                [link]="item.link">
-        </scrm-menu-item-link>
-
-    </span>
-    <div *ngIf="item.submenu.length"
-         aria-labelledby="navbarDropdownMenuLink"
-         class="dropdown-menu submenu">
-
-        <div class="nav-item" *ngFor="let sub of item.submenu">
-
-            <scrm-menu-item-link
-                    [class]="'sub-nav-link nav-link action-link'"
-                    [link]="sub.link"
-                    [icon]="sub.icon">
-            </scrm-menu-item-link>
-
-        </div>
-
-        <scrm-menu-recently-viewed [languages]="languages" [records]="item.recentRecords"></scrm-menu-recently-viewed>
-    </div>
-</ng-container>
+<ndc-dynamic *ngIf="getType"
+             [ndcDynamicComponent]="getType"
+             [ndcDynamicInputs]="{'item': item, 'languages': languages}">
+</ndc-dynamic>

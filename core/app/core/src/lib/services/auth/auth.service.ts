@@ -60,15 +60,15 @@ export class AuthService {
     isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     defaultTimeout = '3600';
     protected timerSet = false;
-    private currentUserSubject = new BehaviorSubject<User>({} as User);
+    protected currentUserSubject = new BehaviorSubject<User>({} as User);
 
     constructor(
-        private http: HttpClient,
+        protected http: HttpClient,
         protected router: Router,
         protected message: MessageService,
         protected stateManager: StateManager,
         protected languageStore: LanguageStore,
-        private bnIdle: BnNgIdleService,
+        protected bnIdle: BnNgIdleService,
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService
     ) {

@@ -25,7 +25,10 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ndc-dynamic *ngIf="getType"
-             [ndcDynamicComponent]="getType"
-             [ndcDynamicInputs]="{'records': records, 'languages': languages}">
-</ndc-dynamic>
+<ul class="navbar-nav home-nav">
+    <li [class.active]="active" class="nav-item">
+        <a [routerLink]="route" class="home-nav-link">
+            <scrm-image class="home-icon" image="home"></scrm-image>
+        </a>
+    </li>
+</ul>

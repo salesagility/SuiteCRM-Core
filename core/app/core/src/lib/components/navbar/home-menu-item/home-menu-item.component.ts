@@ -25,6 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
+import {HomeMenuItemRegistry} from './home-menu-item.registry';
 
 @Component({
     selector: 'scrm-home-menu-item',
@@ -35,7 +36,11 @@ export class HomeMenuItemComponent {
     @Input() route: string;
     @Input() active: boolean;
 
-    constructor() {
+    constructor(protected registry: HomeMenuItemRegistry) {
+    }
+
+    get getType(): any {
+        return this.registry.get('default', 'default');
     }
 
 }

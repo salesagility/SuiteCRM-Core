@@ -27,6 +27,7 @@
 import {Component, Input} from '@angular/core';
 import {MenuItem} from 'common';
 import {LanguageStrings} from '../../../store/language/language.store';
+import {MenuItemRegistry} from './menu-item.registry';
 
 @Component({
     selector: 'scrm-menu-item',
@@ -37,6 +38,10 @@ export class MenuItemComponent {
     @Input() item: MenuItem;
     @Input() languages: LanguageStrings;
 
-    constructor() {
+    constructor(protected registry: MenuItemRegistry) {
+    }
+
+    get getType(): any {
+        return this.registry.get('default', 'default');
     }
 }

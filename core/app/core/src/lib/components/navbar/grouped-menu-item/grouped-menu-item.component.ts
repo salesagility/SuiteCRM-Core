@@ -27,6 +27,7 @@
 import {Component, Input} from '@angular/core';
 import {MenuItem} from 'common';
 import {LanguageStrings} from '../../../store/language/language.store';
+import {GroupedMenuItemRegistry} from './grouped-menu-item.registry';
 
 @Component({
     selector: 'scrm-grouped-menu-item',
@@ -38,6 +39,10 @@ export class GroupedMenuItemComponent {
     @Input() languages: LanguageStrings;
     @Input() subNavCollapse: boolean;
 
-    constructor() {
+    constructor(protected registry: GroupedMenuItemRegistry) {
+    }
+
+    get getType(): any {
+        return this.registry.get('default', 'default');
     }
 }
