@@ -1,0 +1,6 @@
+parameters:
+  module.recordview.sidebar_widgets:
+    default:
+      widgets: []
+    modules:
+

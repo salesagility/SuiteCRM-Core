@@ -33,7 +33,8 @@ interface RecordActionDefinitionProviderInterface
     /**
      * Get list of record actions for module
      * @param string $module
+     * @param array $moduleDefaults
      * @return array
      */
-    public function getActions(string $module): array;
+    public function getActions(string $module, array $moduleDefaults = []): array;
 }
