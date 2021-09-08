@@ -28,14 +28,13 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
-
-use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Process\Service\BulkActionDefinitionProviderInterface;
+use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Filters\Service\FilterDefinitionProviderInterface;
+use App\Process\Service\BulkActionDefinitionProviderInterface;
 use App\Process\Service\LineActionDefinitionProviderInterface;
-use App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProviderInterface;
+use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use Exception;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
@@ -72,9 +71,9 @@ class ListViewDefinitionHandler extends LegacyHandler
     private $bulkActionDefinitionProvider;
 
     /**
-     * @var ListViewSidebarWidgetDefinitionProviderInterface
+     * @var WidgetDefinitionProviderInterface
      */
-    private $sidebarWidgetDefinitionProvider;
+    private $widgetDefinitionProvider;
 
     /**
      * @var LineActionDefinitionProviderInterface
@@ -84,6 +83,10 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @var FilterDefinitionProviderInterface
      */
     private $filterDefinitionProvider;
+    /**
+     * @var array
+     */
+    private $listViewSidebarWidgets;
 
     /**
      * RecordViewDefinitionHandler constructor.
@@ -94,9 +97,11 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param LegacyScopeState $legacyScopeState
      * @param LoggerInterface $logger
      * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
-     * @param ListViewSidebarWidgetDefinitionProviderInterface $sidebarWidgetDefinitionProvider
+     * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
+     * @param SessionInterface $session
+     * @param array $listViewSidebarWidgets
      */
     public function __construct(
         string $projectDir,
@@ -106,17 +111,26 @@ class ListViewDefinitionHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         LoggerInterface $logger,
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
-        ListViewSidebarWidgetDefinitionProviderInterface $sidebarWidgetDefinitionProvider,
+        WidgetDefinitionProviderInterface $widgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
         FilterDefinitionProviderInterface $filterDefinitionProvider,
-        SessionInterface $session
+        SessionInterface $session,
+        array $listViewSidebarWidgets
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->logger = $logger;
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
-        $this->sidebarWidgetDefinitionProvider = $sidebarWidgetDefinitionProvider;
+        $this->widgetDefinitionProvider = $widgetDefinitionProvider;
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
+        $this->listViewSidebarWidgets = $listViewSidebarWidgets;
     }
 
     /**
@@ -140,7 +154,6 @@ class ListViewDefinitionHandler extends LegacyHandler
         string $legacyModuleName,
         FieldDefinition $fieldDefinition
     ): array {
-
         $this->init();
 
         $metadata = $this->fetch($module, $legacyModuleName, $fieldDefinition);
@@ -179,7 +192,6 @@ class ListViewDefinitionHandler extends LegacyHandler
         $displayColumns = ListViewFacade::getAllColumns($legacyModuleName);
         $data = [];
         foreach ($displayColumns as $key => $column) {
-
             if (!isset($vardefs[strtolower($key)])) {
                 $this->logger->warning("ListViewDefinitions: '$key' not set on vardefs. Ignoring.");
                 continue;
@@ -188,10 +200,21 @@ class ListViewDefinitionHandler extends LegacyHandler
             $data[] = $this->buildListViewColumn($column, $key, $vardefs);
         }
 
+        $listMeta = ListViewFacade::getMetadata($legacyModuleName);
+
         $metadata['columns'] = $data;
-        $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions($module);
+        $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions(
+            $module,
+            $listMeta['bulkActions'] ?? []
+        );
+
         $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module);
-        $metadata['sidebarWidgets'] = $this->sidebarWidgetDefinitionProvider->getSidebarWidgets($module);
+        $metadata['sidebarWidgets'] = $this->widgetDefinitionProvider->getSidebarWidgets(
+            $this->listViewSidebarWidgets,
+            $module,
+            ['widgets' => $listMeta['sidebarWidgets'] ?? []]
+        );
+
         $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module);
 
         return $metadata;
@@ -242,5 +265,4 @@ class ListViewDefinitionHandler extends LegacyHandler
 
         return $field;
     }
-
 }

@@ -210,7 +210,7 @@ services:
   App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'
   App\Process\Service\LineActionDefinitionProviderInterface: '@App\Process\Service\LineActionDefinitionProvider'
-  App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProviderInterface: '@App\ViewDefinitions\Service\ListViewSidebarWidgetDefinitionProvider'
+  App\ViewDefinitions\Service\WidgetDefinitionProviderInterface: '@App\ViewDefinitions\Service\WidgetDefinitionProvider'
   App\Module\Service\ModuleNameMapperInterface: '@App\Module\LegacyHandler\ModuleNameMapperHandler'
   App\Module\Service\ModuleRegistryInterface: '@App\Module\LegacyHandler\ModuleRegistryHandler'
   App\Routes\Service\NavigationProviderInterface: '@App\Navbar\LegacyHandler\NavbarHandler'

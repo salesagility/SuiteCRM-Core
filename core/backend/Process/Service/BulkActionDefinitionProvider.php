@@ -51,8 +51,18 @@ class BulkActionDefinitionProvider extends ActionDefinitionProvider implements B
     /**
      * @inheritDoc
      */
-    public function getBulkActions(string $module): array
+    public function getBulkActions(string $module, array $moduleDefaults = []): array
     {
-        return $this->filterActions($module, $this->listViewBulkActions);
+        $config = $this->listViewBulkActions;
+        $config['modules'][$module] = $config['modules'][$module] ?? [];
+        $config['modules'][$module]['actions'] = $config['modules'][$module]['actions'] ?? [];
+        $config['modules'][$module]['exclude'] = $config['modules'][$module]['exclude'] ?? [];
+
+        $config['modules'][$module]['actions'] = array_merge($moduleDefaults['actions'] ?? [],
+            $config['modules'][$module]['actions']);
+        $config['modules'][$module]['exclude'] = array_merge($moduleDefaults['exclude'] ?? [],
+            $config['modules'][$module]['exclude']);
+
+        return $this->filterActions($module, $config);
     }
 }

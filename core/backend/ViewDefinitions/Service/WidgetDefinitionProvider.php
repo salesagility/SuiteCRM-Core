@@ -32,10 +32,10 @@ use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 use App\Engine\Service\DefinitionEntryHandlingTrait;
 
 /**
- * Class ListViewSidebarWidgetDefinitionProvider
+ * Class SidebarWidgetDefinitionProvider
  * @package App\Service
  */
-class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDefinitionProviderInterface
+class WidgetDefinitionProvider implements WidgetDefinitionProviderInterface
 {
     use DefinitionEntryHandlingTrait;
 
@@ -43,28 +43,56 @@ class ListViewSidebarWidgetDefinitionProvider implements ListViewSidebarWidgetDe
      * @var ActionAvailabilityChecker
      */
     protected $actionChecker;
-    /**
-     * @var array
-     */
-    private $widgets;
 
     /**
-     * ListViewSidebarWidgetDefinitionProvider constructor.
-     * @param array $listViewSidebarWidgets
+     * SidebarWidgetDefinitionProvider constructor.
      * @param ActionAvailabilityChecker $actionChecker
      */
-    public function __construct(array $listViewSidebarWidgets, ActionAvailabilityChecker $actionChecker)
+    public function __construct(ActionAvailabilityChecker $actionChecker)
     {
-        $this->widgets = $listViewSidebarWidgets;
         $this->actionChecker = $actionChecker;
     }
 
     /**
      * @inheritDoc
      */
-    public function getSidebarWidgets(string $module): array
+    public function getTopWidgets(array $config, string $module, array $moduleDefaults = []): array
     {
-        $widgets = $this->filterDefinitionEntries($module, 'widgets', $this->widgets, $this->actionChecker);
+        $widget = $config['modules'][$module]['widget'] ?? $moduleDefaults['widget'] ?? $config['default']['widget'] ?? [];
+        $widget['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
+
+        return $widget;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSidebarWidgets(array $config, string $module, array $moduleDefaults = []): array
+    {
+        return $this->parseEntries($config, $module, $moduleDefaults);
+    }
+
+    /**
+     * @param array $config
+     * @param string $module
+     * @param array $moduleDefaults
+     * @return array
+     */
+    protected function parseEntries(array $config, string $module, array $moduleDefaults): array
+    {
+        $config['modules'][$module] = $config['modules'][$module] ?? [];
+        $config['modules'][$module]['widgets'] = $config['modules'][$module]['widgets'] ?? [];
+
+        $config['modules'][$module]['widgets'] = array_merge(
+            $moduleDefaults['widgets'] ?? [],
+            $config['modules'][$module]['widgets'] ?? []
+        );
+
+        foreach ($config['modules'][$module]['widgets'] as $index => $widget) {
+            $config['modules'][$module]['widgets'][$index]['availability'] = $widget['availability'] ?? [];
+        }
+
+        $widgets = $this->filterDefinitionEntries($module, 'widgets', $config, $this->actionChecker);
 
         foreach ($widgets as $index => $widget) {
             $widgets[$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';

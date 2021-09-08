@@ -34,7 +34,8 @@ interface BulkActionDefinitionProviderInterface
     /**
      * Get list of bulk actions for module
      * @param string $module
+     * @param array $moduleDefaults
      * @return array
      */
-    public function getBulkActions(string $module): array;
+    public function getBulkActions(string $module, array $moduleDefaults = []): array;
 }

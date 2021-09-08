@@ -29,16 +29,27 @@
 namespace App\ViewDefinitions\Service;
 
 /**
- * Interface ListViewSidebarWidgetDefinitionProviderInterface
+ * Interface SidebarWidgetDefinitionProviderInterface
  * @package App\Service
  */
-interface ListViewSidebarWidgetDefinitionProviderInterface
+interface WidgetDefinitionProviderInterface
 {
 
     /**
-     * Get list of list view sidebar widgets for module
+     * Get list of sidebar widgets for module
+     * @param array $config
      * @param string $module
+     * @param array $moduleDefaults
      * @return array
      */
-    public function getSidebarWidgets(string $module): array;
+    public function getSidebarWidgets(array $config, string $module, array $moduleDefaults = []): array;
+
+    /**
+     * Get list of top widgets for module
+     * @param array $config
+     * @param string $module
+     * @param array $moduleDefaults
+     * @return array
+     */
+    public function getTopWidgets(array $config, string $module, array $moduleDefaults = []): array;
 }
