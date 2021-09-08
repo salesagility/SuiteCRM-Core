@@ -11,8 +11,6 @@ parameters:
 
 imports:
   - { resource: services/**/*.yaml }
-  - { resource: modules/**/*.yaml }
-  - { resource: modules/**/*.php }
   - { resource: ../extensions/*/config/services/*.yaml }
   - { resource: ../extensions/*/config/services/*.php }
   - { resource: ../extensions/*/config/services/**/*.yaml }
