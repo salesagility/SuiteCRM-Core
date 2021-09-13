@@ -3,4 +3,7 @@ parameters:
     merge-records:
       index: action_module
       Step1: action_module
-    import: import_module
+    import:
+      index: import_module
+      step1: import_module
+      Last: import_module
