@@ -31,7 +31,6 @@ use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
-use App\Module\Service\ModuleRegistryInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\BaseActionDefinitionProviderInterface;
 use App\Process\Service\LegacyActionResolverInterface;
@@ -195,8 +194,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
 
         $hasAccess = false;
         if ($this->moduleNameMapper->isValidModule($legacyModuleName)
-            && (!$this->baseActionDefinitionProvider->isActionDefined($actionKey)
-                || $this->isActionAccessible($frontEndModuleName, $actionKey))
+            && ($this->baseActionDefinitionProvider->isActionAccessible($frontEndModuleName, $actionKey))
         ) {
             $hasAccess = true;
         }
@@ -220,19 +218,6 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
 
         $process->setData(['result' => $result['status']]);
 
-    }
-
-    /**
-     * Get list of modules the user has access to
-     * @param string $module
-     * @param string $actionKey
-     * @return bool
-     */
-    protected function isActionAccessible(string $module, string $actionKey): bool
-    {
-        $actions = $this->baseActionDefinitionProvider->getActions($module);
-
-        return !(empty($actions) || !array_key_exists($actionKey, $actions));
     }
 
     /**

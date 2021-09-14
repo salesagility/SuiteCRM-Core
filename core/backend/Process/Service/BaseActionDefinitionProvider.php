@@ -70,4 +70,38 @@ class BaseActionDefinitionProvider extends ActionDefinitionProvider implements B
         return array_key_exists($action, $defaultActions);
     }
 
+    /**
+     * Get list of modules the user has access to
+     * @param string $module
+     * @param string $actionKey
+     * @return bool
+     */
+    public function isActionAvailable(string $module, string $actionKey): bool
+    {
+        $actions = $this->getActions($module);
+
+        return !(empty($actions) || !array_key_exists($actionKey, $actions));
+    }
+
+    /**
+     * Get list of modules the user has access to
+     * @param string $module
+     * @param string $actionKey
+     * @return bool
+     * @description
+     * a) this function also resolves the route actions
+     * like convert-leads, import, merge-record.
+     *
+     * b) And if the action is not resolved by suite8
+     * we just assume that its a legacy action/route and that the classic view is going to handle it.
+     * this is due to the fact that there can be actions not known or not added to base action config,
+     * in such cases users shall not see the ACL unauthorized error
+     * !$this->isActionDefined($actionKey) handles this.
+     */
+    public function isActionAccessible(string $module, string $actionKey): bool
+    {
+        return !$this->isActionDefined($actionKey)
+            || $this->isActionAvailable($module, $actionKey);
+    }
 }
+
