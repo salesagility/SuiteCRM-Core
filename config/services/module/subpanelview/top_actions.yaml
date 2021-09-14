@@ -1,0 +1,23 @@
+parameters:
+  module.subpanel.top_actions:
+    default:
+      actions:
+        create:
+          key: create
+          labelKey: LBL_QUICK_CREATE
+          action: create
+          asyncProcess: true
+          params:
+          modes:
+            - list
+          acl:
+            - edit
+        link:
+          key: select
+          labelKey: LBL_LINK
+          action: select
+          asyncProcess: true
+          params:
+          modes:
+            - list
+          acl:

@@ -45,6 +45,8 @@ services:
       $uiConfigs: '%ui%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
+      $subpanelLineActions: '%module.subpanel.line_actions%'
+      $subpanelTopActions: '%module.subpanel.top_actions%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -233,3 +235,5 @@ services:
   App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
   App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'
   App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'
+  App\Process\Service\SubpanelLineActionDefinitionProviderInterface: '@App\Process\Service\SubpanelLineActionDefinitionProvider'
+  App\Process\Service\SubpanelTopActionDefinitionProviderInterface: '@App\Process\Service\SubpanelTopActionDefinitionProvider'
