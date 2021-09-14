@@ -28,11 +28,12 @@
 
 namespace App\ViewDefinitions\LegacyHandler;
 
-use ACLController;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Service\SubpanelLineActionDefinitionProviderInterface;
+use App\Process\Service\SubpanelTopActionDefinitionProviderInterface;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
@@ -62,6 +63,16 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     private $fieldDefinitionProvider;
 
     /**
+     * @var SubpanelTopActionDefinitionProviderInterface
+     */
+    private $subpanelTopActionDefinitionProvider;
+
+    /**
+     * @var SubpanelLineActionDefinitionProviderInterface
+     */
+    private $subpanelLineActionDefinitionProvider;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -70,6 +81,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
+     * @param SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider
+     * @param SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider
      * @param SessionInterface $session
      */
     public function __construct(
@@ -80,6 +93,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
+        SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider,
+        SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider,
         SessionInterface $session
     )
     {
@@ -87,6 +102,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
+        $this->subpanelTopActionDefinitionProvider = $subpanelTopActionDefinitionProvider;
+        $this->subpanelLineActionDefinitionProvider = $subpanelLineActionDefinitionProvider;
     }
 
     /**
@@ -233,91 +250,19 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      */
     protected function mapButtons(aSubPanel $subpanel, $tab): array
     {
-        $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
-
         $topButtons = [];
 
-        $mapped = [
-            'SubPanelTopCreateTaskButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_TASK',
-                'module' => 'tasks'
-            ],
-            'SubPanelTopScheduleMeetingButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_MEETING',
-                'module' => 'meetings'
-            ],
-            'SubPanelTopScheduleCallButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_CALL',
-                'module' => 'calls'
-            ],
-            'SubPanelTopComposeEmailButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopCreateNoteButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_NOTE',
-                'module' => 'notes'
-            ],
-            'SubPanelTopArchiveEmailButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSummaryButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopFilterButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSelectUsersButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSelectContactsButton' => [
-                'skip' => true,
-            ],
-        ];
+        $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
         foreach ($topButtonDefinitions as $top_button) {
-            if (empty($top_button['widget_class'])) {
-                continue;
-            }
 
-            $mappedButton = $mapped[$top_button['widget_class']] ?? null;
+            $topButton = $this->subpanelTopActionDefinitionProvider->getTopAction(
+                $this->moduleNameMapper->toFrontEnd($tab['module']),
+                $top_button
+            );
 
-            if ($mappedButton !== null && !empty($mappedButton['skip'])) {
-                continue;
-            }
-
-            if ($mappedButton !== null) {
-                $mappedButton['additionalFields'] = $top_button['additionalFields'] ?? [];
-                $mappedButton['extraParams'] = $top_button['extraParams'] ?? [];
-                $mappedButton['widget_class'] = $top_button['widget_class'] ?? [];
-                $topButtons[] = $mappedButton;
-                continue;
-            }
-
-            if (strpos($top_button['widget_class'], 'Create') !== false
-                && ACLController::checkAccess($tab['module'], 'edit', true, 'module', true)) {
-                $topButtons[] = [
-                    'key' => 'create',
-                    'labelKey' => 'LBL_QUICK_CREATE',
-                    'widget_class' => $top_button['widget_class'],
-                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
-                    'additionalFields' => $top_button['additionalFields'] ?? [],
-                    'extraParams' => $top_button['extraParams'] ?? []
-                ];
-            }
-
-            if (strpos($top_button['widget_class'], 'Select') !== false) {
-                $topButtons[] = [
-                    'key' => 'select',
-                    'labelKey' => 'LBL_LINK',
-                    'widget_class' => $top_button['widget_class'],
-                    'module' => $this->moduleNameMapper->toFrontEnd($tab['module']),
-                    'additionalFields' => $top_button['additionalFields'] ?? [],
-                    'extraParams' => $top_button['extraParams'] ?? []
-                ];
+            if (!empty($topButton)) {
+                $topButtons[] = $topButton;
             }
         }
 
@@ -524,8 +469,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     public function getSubpanelLineActions(aSubPanel $subpanelDef, string $subpanelModule): array
     {
         $lineActions = [];
-        $unlinkLineAction = [];
-        $subpanelLineActions = ['edit_button', 'close_button', 'remove_button'];
+        $subpanelLineActions = ['edit_button' => 'edit', 'close_button' => 'close', 'remove_button' => 'unlink'];
 
         $thepanel = $subpanelDef->isCollection() ? $subpanelDef->get_header_panel_def() : $subpanelDef;
 
@@ -542,38 +486,17 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                     $list_field['name'] = $field_name;
                 }
 
-                if (false !== stripos($list_field['name'], 'button')
-                    && in_array($list_field['name'], $subpanelLineActions, true)
+                if (array_key_exists($list_field['name'], $subpanelLineActions)
+                    &&
+                    false !== stripos($list_field['name'], 'button')
                 ) {
-                    $lineActions[] = $list_field['name'];
+                    $lineAction = $subpanelLineActions[$list_field['name']];
+                    $moduleName = $this->moduleNameMapper->toFrontEnd($subpanelModule);
+                    $lineActions[] = $this->subpanelLineActionDefinitionProvider->getLineAction($moduleName, $lineAction);
                 }
             }
         }
 
-        if (in_array('remove_button', $lineActions, true)) {
-
-            $unlinkLineAction = [
-                [
-                    'key' => 'unlink',
-                    'action' => 'unlink',
-                    'icon' => 'unlink',
-                    'asyncProcess' => true,
-                    'labelKey' => 'LBL_UNLINK_RECORD',
-                    'module' => $subpanelModule,
-                    'routing' => false,
-                    'params' => [
-                        'linkFieldMapping' => [
-                            'get_emails_by_assign_or_link' => 'emails'
-                        ],
-                        'displayConfirmation' => true,
-                        'confirmationLabel' => 'LBL_UNLINK_RELATIONSHIP_CONFIRM'
-                    ],
-                    'modes' => ['list']
-                ],
-            ];
-        }
-
-        return $unlinkLineAction;
+        return $lineActions;
     }
-
 }

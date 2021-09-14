@@ -135,10 +135,11 @@ class SubpanelButtonTraverser implements ViewDefinitionMapperInterface
         foreach ($buttons as $key => $button) {
 
             $widgetClass = $button['widget_class'] ?? '';
-            $default = $defaults[$button['key']] ?? '';
+            $buttonKey = $button['key'] ?? '';
+            $default = $defaults[$buttonKey] ?? '';
             $mapper = $mappers[$widgetClass] ?? $mappers[$default] ?? null;
 
-            if (!empty($mapper)) {
+            if ($mapper !== null) {
                 $buttons[$key] = $mapper->map($legacyModuleName, $subpanel, $button, $parentVardefs);
             }
         }
