@@ -28,16 +28,21 @@ import {Injectable} from '@angular/core';
 import {StatisticsFetchGQL} from '../statistics/graphql/api.statistics.get';
 import {ChartDataStore} from './chart-data.store';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
+import {SeriesMapper} from '../../services/statistics/series/mapper/series-mapper.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ChartDataStoreFactory {
 
-    constructor(protected fetchGQL: StatisticsFetchGQL, protected formatter: DataTypeFormatter) {
+    constructor(
+        protected fetchGQL: StatisticsFetchGQL,
+        protected formatter: DataTypeFormatter,
+        protected seriesMapper: SeriesMapper
+    ) {
     }
 
     create(): ChartDataStore {
-        return new ChartDataStore(this.fetchGQL, this.formatter);
+        return new ChartDataStore(this.fetchGQL, this.formatter, this.seriesMapper);
     }
 }

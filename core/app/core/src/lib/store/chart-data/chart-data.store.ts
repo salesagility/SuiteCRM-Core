@@ -26,14 +26,21 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {deepClone} from 'common';
-import {SeriesStatistic, Statistic, StatisticsQuery} from 'common';
+import {
+    ChartDataSource,
+    ChartOptionMap,
+    ChartOptions,
+    deepClone,
+    SeriesResult,
+    SeriesStatistic,
+    Statistic,
+    StatisticsQuery
+} from 'common';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
-import {ChartDataSource, ChartOptionMap, SeriesResult} from 'common';
 import {SeriesStatisticsState, SeriesStatisticsStore} from '../series-statistics/series-statistics.store';
 import {StatisticsFetchGQL} from '../statistics/graphql/api.statistics.get';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {ChartOptions} from 'common';
+import {SeriesMapper} from '../../services/statistics/series/mapper/series-mapper.service';
 
 const initialState = {
     module: '',
@@ -61,7 +68,8 @@ export class ChartDataStore extends SeriesStatisticsStore {
 
     constructor(
         protected fetchGQL: StatisticsFetchGQL,
-        protected formatter: DataTypeFormatter
+        protected formatter: DataTypeFormatter,
+        protected seriesMapper: SeriesMapper
     ) {
         super(fetchGQL);
         this.state$ = this.store.asObservable();
@@ -106,10 +114,14 @@ export class ChartDataStore extends SeriesStatisticsStore {
     protected buildCharDataSource(statistic: Statistic): ChartDataSource {
         const dataType = statistic.metadata.dataType || '';
 
-        const digits = (statistic.metadata && statistic.metadata.digits) || 0;
-        const formatOptions = {
-            digits
-        };
+        let formatOptions = null;
+        const digits = (statistic.metadata && statistic.metadata.digits) || null;
+
+        if (digits !== null) {
+            formatOptions = {
+                digits
+            };
+        }
 
         return {
             options: statistic.metadata.chartOptions || {} as ChartOptionMap,
@@ -122,6 +134,8 @@ export class ChartDataStore extends SeriesStatisticsStore {
 
     protected buildSeriesResult(statistic: Statistic): SeriesResult {
 
+        const dataType = statistic.metadata.dataType || '';
+
         const result = {} as SeriesResult;
 
         const singleSeries = statistic.data.singleSeries || null;
@@ -133,6 +147,8 @@ export class ChartDataStore extends SeriesStatisticsStore {
         if (multiSeries) {
             result.multiSeries = multiSeries;
         }
+
+        this.seriesMapper.map(result, 'data-type-unit-converter', {dataType});
 
         return result;
     }

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {isFalse, SingleSeries} from 'common';
 import {Subscription} from 'rxjs';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
@@ -103,9 +103,9 @@ export class VerticalBarChartComponent extends BaseChartComponent implements OnI
     }
 
     formatTooltipValue(value: any): any {
-        if (!this.dataSource || !this.dataSource.options || !this.dataSource.options.tooltipFormatting) {
+        if (!this.dataSource || !this.dataSource.tooltipFormatting) {
             return value;
         }
-        return this.dataSource.options.tooltipFormatting(value);
+        return this.dataSource.tooltipFormatting(value);
     }
 }
