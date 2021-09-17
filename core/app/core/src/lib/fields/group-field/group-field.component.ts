@@ -25,7 +25,7 @@
  */
 
 import {Component} from '@angular/core';
-import {Field, FieldDefinition} from 'common';
+import {Field, FieldDefinition, ViewMode} from 'common';
 import {BaseFieldComponent} from '../base/base-field.component';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
@@ -112,11 +112,20 @@ export class GroupFieldComponent extends BaseFieldComponent {
         const showLabelOptions = definition.showLabel[this.mode] || null;
 
         // showLabel > viewMode not defined || defined without any values e.g. edit:
-        if(!showLabelOptions || typeof(showLabelOptions) === 'undefined'){
+        if (!showLabelOptions || typeof (showLabelOptions) === 'undefined') {
             return false;
         }
 
         return (showLabelOptions.includes('*') || showLabelOptions.includes(fieldName));
+    }
+
+    isModeEnabled(mode: string, groupField: Field) {
+        const modes = groupField.definition.modes;
+        if (!modes || modes.length < 1) {
+            return true;
+        }
+
+        return modes.includes(mode as ViewMode);
     }
 
     /**
