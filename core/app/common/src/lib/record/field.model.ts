@@ -30,6 +30,7 @@ import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/fo
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
+import {ViewMode} from '../views/view.model';
 
 export interface Option {
     value: string;
@@ -89,6 +90,7 @@ export interface FieldDefinition {
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     default?: string;
+    modes?: ViewMode[];
 }
 
 export interface LineItemsMetadata {
@@ -107,6 +109,7 @@ export interface FieldMetadata {
     rows?: number;
     cols?: number;
     digits?: number;
+    isBaseCurrency?: boolean;
     labelDisplay?: string;
     options$?: Observable<Option[]>;
     extraOptions?: Option[];
