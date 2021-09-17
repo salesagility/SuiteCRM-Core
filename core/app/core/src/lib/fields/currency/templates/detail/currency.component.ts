@@ -31,6 +31,7 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {FormatOptions} from '../../../../services/formatters/formatter.model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {CurrencyService} from '../../../../services/currency/currency.service';
 
 @Component({
     selector: 'scrm-currency-detail',
@@ -42,18 +43,35 @@ export class CurrencyDetailFieldComponent extends BaseNumberComponent {
         protected userPreferences: UserPreferenceStore,
         protected systemConfig: SystemConfigStore,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected currencyService: CurrencyService
     ) {
         super(userPreferences, systemConfig, typeFormatter, logic);
     }
 
     getOptions(): FormatOptions {
-        let options = null;
+        let options = {} as FormatOptions;
         if (this.field && this.field.metadata && this.field.metadata.digits !== null && isFinite(this.field.metadata.digits)) {
             options = {
                 digits: this.field.metadata.digits
             };
         }
+
+        const isBase = this.currencyService.isBase(this.field);
+        let currencyId = this.currencyService.getCurrencyId(this.record);
+
+        if (isBase || currencyId === null) {
+            currencyId = this.currencyService.getUserCurrency().id;
+        }
+
+        options.symbol = this.currencyService.getSymbol(currencyId);
+        options.code = this.currencyService.getCode(currencyId);
+
         return options;
     }
+
+    getCurrencyValue(): string {
+        return this.currencyService.getFieldCurrencyValue(this.field, this.record);
+    }
+
 }

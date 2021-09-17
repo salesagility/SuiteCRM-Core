@@ -26,5 +26,5 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    {{field.value | formatCurrency:getOptions()}}
+    {{this.getCurrencyValue() | formatCurrency:getOptions()}}
 </ng-container>
