@@ -1,0 +1,28 @@
+parameters:
+  record.fields.currency_fields_type_map:
+    default:
+      currency:
+        display: 'inline'
+        showLabel:
+          edit: ['{currency}','{currency_id}']
+          filter: ['*']
+        definition:
+          '{currency}':
+            logic:
+              currency:
+                key: 'update-currency'
+                modes: ['edit', 'create', 'massupdate', 'filter']
+                params:
+                  fieldDependencies: ['{currency_id}']
+          '{currency_id}':
+            modes: ['edit', 'create', 'massupdate', 'filter']
+            type: 'enum'
+            options: '__no_options__'
+          '{base_currency}':
+            display: 'none'
+            logic:
+              currency:
+                key: 'update-base-currency'
+                modes: ['edit', 'create', 'massupdate', 'filter']
+                params:
+                  fieldDependencies: ['{currency}']

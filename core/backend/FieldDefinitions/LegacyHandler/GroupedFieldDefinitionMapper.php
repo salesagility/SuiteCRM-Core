@@ -94,7 +94,7 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
             $this->setDisplay($groupedType, $fieldDefinition);
             $this->setShowLabel($groupedType, $fieldDefinition);
 
-            $fieldDefinition['groupFields'] = $this->getGroupedFieldDefinitions($groupedFields, $vardefs);
+            $fieldDefinition['groupFields'] = $this->getGroupedFieldDefinitions($groupedFields, $vardefs, $groupedType);
 
 
             $fieldDefinition['type'] = 'grouped-field';
@@ -227,9 +227,10 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
      *
      * @param array $groupedFields
      * @param array|null $vardefs
+     * @param array $groupedType
      * @return array
      */
-    protected function getGroupedFieldDefinitions(array $groupedFields, ?array $vardefs): array
+    public function getGroupedFieldDefinitions(array $groupedFields, ?array $vardefs, array $groupedType): array
     {
         $definitions = [];
         foreach ($groupedFields as $groupedField) {
@@ -239,9 +240,29 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
                 continue;
             }
 
+            $definition = $this->injectOverrides($groupedType, $groupedField, $definition);
+
             $definitions[$groupedField] = $definition;
         }
 
         return $definitions;
+    }
+
+    /**
+     * Inject definition overrides
+     *
+     * @param array $groupedType
+     * @param $groupedField
+     * @param array $definition
+     * @return array
+     */
+    protected function injectOverrides(array $groupedType, $groupedField, array $definition): array
+    {
+        $definitionOverrides = $groupedType['definition'][$groupedField] ?? [];
+        if (empty($definitionOverrides)) {
+            return $definition;
+        }
+
+        return array_merge($definition, $definitionOverrides);
     }
 }
