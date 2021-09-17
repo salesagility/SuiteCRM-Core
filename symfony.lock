@@ -66,6 +66,9 @@
     "codeception/module-asserts": {
         "version": "1.1.1"
     },
+    "codeception/module-filesystem": {
+        "version": "1.0.3"
+    },
     "codeception/module-phpbrowser": {
         "version": "1.0.0"
     },
@@ -74,6 +77,9 @@
     },
     "codeception/module-symfony": {
         "version": "1.0.0"
+    },
+    "codeception/module-webdriver": {
+        "version": "1.4.0"
     },
     "codeception/phpunit-wrapper": {
         "version": "8.1.1"
@@ -224,8 +230,17 @@
     "elasticsearch/elasticsearch": {
         "version": "v5.5.0"
     },
+    "ezimuel/guzzlestreams": {
+        "version": "3.0.1"
+    },
+    "ezimuel/ringphp": {
+        "version": "1.1.2"
+    },
     "ezyang/htmlpurifier": {
         "version": "v4.13.0"
+    },
+    "fakerphp/faker": {
+        "version": "v1.16.0"
     },
     "fig/link-util": {
         "version": "1.1.0"
@@ -401,6 +416,9 @@
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
+    "php-webdriver/webdriver": {
+        "version": "1.11.1"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -479,6 +497,9 @@
     },
     "robrichards/xmlseclibs": {
         "version": "3.1.1"
+    },
+    "scssphp/scssphp": {
+        "version": "v1.7.0"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
