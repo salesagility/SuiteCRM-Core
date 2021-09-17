@@ -31,6 +31,8 @@ import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'commo
 import {DisplayTypeAction} from './display-type/display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';
+import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
+import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 
 @Injectable({
     providedIn: 'root'
@@ -40,12 +42,16 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
     constructor(
         displayType: DisplayTypeAction,
         emailPrimarySelectAction: EmailPrimarySelectAction,
-        required: RequiredAction
+        required: RequiredAction,
+        updateBaseCurrency: UpdateBaseCurrencyAction,
+        updateCurrency: UpdateCurrencyAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
         emailPrimarySelectAction.modes.forEach(mode => this.actions[mode][emailPrimarySelectAction.key] = emailPrimarySelectAction);
         required.modes.forEach(mode => this.actions[mode][required.key] = required);
+        updateBaseCurrency.modes.forEach(mode => this.actions[mode][updateBaseCurrency.key] = updateBaseCurrency);
+        updateCurrency.modes.forEach(mode => this.actions[mode][updateCurrency.key] = updateCurrency);
     }
 
     /**
