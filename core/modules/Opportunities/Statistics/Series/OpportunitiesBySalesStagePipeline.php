@@ -28,13 +28,13 @@
 namespace App\Module\Opportunities\Statistics\Series;
 
 use App\Data\LegacyHandler\ListDataQueryHandler;
-use App\Statistics\Entity\Statistic;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Statistics\Entity\Statistic;
+use App\Statistics\Model\ChartOptions;
 use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
-use App\Statistics\Model\ChartOptions;
-use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SugarBean;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -125,7 +125,7 @@ class OpportunitiesBySalesStagePipeline extends LegacyHandler implements Statist
         $result = $this->runQuery($query, $bean);
 
         $nameField = 'sales_stage';
-        $valueField = 'amount';
+        $valueField = 'amount_usdollar';
 
         $series = $this->buildSingleSeries($result, $nameField, $valueField);
 
@@ -165,8 +165,8 @@ class OpportunitiesBySalesStagePipeline extends LegacyHandler implements Statist
      */
     protected function generateQuery(array $query): array
     {
-        $query['select'] = 'SELECT opportunities.sales_stage, SUM(opportunities.amount) as amount';
-        $query['where'] .= ' AND opportunities.amount is not null AND opportunities.sales_stage is not null ';
+        $query['select'] = 'SELECT opportunities.sales_stage, SUM(opportunities.amount_usdollar) as amount_usdollar';
+        $query['where'] .= ' AND opportunities.amount_usdollar is not null AND opportunities.sales_stage is not null ';
         $query['order_by'] = '';
         $query['group_by'] = ' GROUP BY opportunities.sales_stage DESC';
 

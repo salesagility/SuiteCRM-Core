@@ -27,11 +27,11 @@
 
 namespace App\Module\Opportunities\Statistics\Series;
 
-use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Statistics\Entity\Statistic;
+use App\Statistics\Model\ChartOptions;
 use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
-use App\Statistics\Model\ChartOptions;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -85,9 +85,9 @@ class PastYearsClosedOpportunityAmounts extends SubpanelDataQueryHandler impleme
         $statuses = implode("' , '", $statusesList);
 
         $parts = $queries[0];
-        $parts['select'] = 'SELECT SUM(opportunities.amount) as amount_by_year, EXTRACT(YEAR FROM opportunities.date_closed) as year, opportunities.sales_stage as sales_stage ';
+        $parts['select'] = 'SELECT SUM(opportunities.amount_usdollar) as amount_by_year, EXTRACT(YEAR FROM opportunities.date_closed) as year, opportunities.sales_stage as sales_stage ';
         $parts['where'] .= ' AND opportunities.date_closed is not null ';
-        $parts['where'] .= ' AND opportunities.amount is not null ';
+        $parts['where'] .= ' AND opportunities.amount_usdollar is not null ';
         $parts['where'] .= ' AND opportunities.sales_stage is not null ';
         $parts['where'] .= " AND opportunities.date_closed >= '$startYearDateString'";
         $parts['where'] .= " AND opportunities.date_closed < '$endYearDateString'";

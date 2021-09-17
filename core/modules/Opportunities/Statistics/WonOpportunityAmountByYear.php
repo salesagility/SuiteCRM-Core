@@ -28,8 +28,8 @@
 
 namespace App\Module\Opportunities\Statistics;
 
-use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Statistics\Entity\Statistic;
 use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 
@@ -65,7 +65,7 @@ class WonOpportunityAmountByYear extends SubpanelDataQueryHandler implements Sta
         $queries = $this->getQueries($module, $id, $subpanel);
 
         $parts = $queries[0];
-        $parts['select'] = 'SELECT SUM(opportunities.amount) as amount_by_year ';
+        $parts['select'] = 'SELECT SUM(opportunities.amount_usdollar) as amount_by_year ';
         $parts['where'] .= ' AND opportunities.date_closed is not null ';
         $parts['where'] .= " AND opportunities.sales_stage = 'Closed Won' ";
         $parts['group_by'] = ' GROUP BY EXTRACT(YEAR FROM opportunities.date_closed) ';

@@ -28,12 +28,12 @@
 
 namespace App\Module\Opportunities\Statistics;
 
-use App\Data\LegacyHandler\SecurityFiltersTrait;
-use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PreparedStatementHandler;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
+use App\Data\LegacyHandler\SecurityFiltersTrait;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Statistics\Entity\Statistic;
 use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 use BeanFactory;
@@ -254,9 +254,9 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
                    WHERE T2.assigned_user_id = T1.assigned_user_id
                    AND T2.deleted = '0' AND T1.deleted = '0'
                      AND (
-                         T2.amount > T1.amount OR
+                         T2.amount_usdollar > T1.amount_usdollar OR
                          (
-                             T2.amount = T1.amount AND
+                             T2.amount_usdollar = T1.amount_usdollar AND
                              T2.date_entered < T1.date_entered
                          )
                      )
@@ -265,7 +265,7 @@ class OpportunitySizeAnalysis extends SubpanelDataQueryHandler implements Statis
             ) + 1 AS value
             FROM opportunities T1
             WHERE T1.id = :id
-            ORDER BY T1.amount DESC;
+            ORDER BY T1.amount_usdollar DESC;
         ";
 
         return $this->queryHandler->fetch(
