@@ -44,7 +44,8 @@
             ],
             "allowedCommonJsDependencies": [
               "graphql-tag",
-              "zen-observable"
+              "zen-observable",
+              "seedrandom"
             ],
             "extraWebpackConfig": "core/app/shell/webpack.config.js"
           },
