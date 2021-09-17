@@ -27,12 +27,14 @@
 
 namespace App\Engine\LegacyHandler;
 
+use BeanFactory;
 use ControllerFactory;
 use RuntimeException;
 use SugarApplication;
 use SugarController;
 use SugarThemeRegistry;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use User;
 
 /**
  * Class LegacyHandler
@@ -233,6 +235,17 @@ abstract class LegacyHandler
         $app->setupResourceManagement($module);
 
         $this->state->setLegacyStarted(true);
+    }
+
+    /**
+     * Load legacy system user
+     */
+    protected function loadSystemUser(): void
+    {
+        /** @var User $current_user */
+        $currentUser = BeanFactory::newBean('Users');
+        $currentUser = $currentUser->getSystemUser();
+        $GLOBALS['current_user'] = $currentUser;
     }
 
     /**

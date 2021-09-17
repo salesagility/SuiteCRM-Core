@@ -15,6 +15,7 @@ parameters:
     datef: true
     timef: true
     currency: true
+    currencies: true
     list_max_entries_per_page: true
     list_max_entries_per_subpanel: true
     cache_reset_actions: true

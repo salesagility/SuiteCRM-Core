@@ -28,12 +28,13 @@
 namespace App\SystemConfig\LegacyHandler;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Engine\LegacyHandler\LegacyScopeState;
-use App\SystemConfig\Entity\SystemConfig;
+use App\Currency\LegacyHandler\CurrencyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
-use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
-use App\Process\Service\ActionNameMapperInterface;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Service\ActionNameMapperInterface;
+use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
+use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -63,6 +64,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     private $systemConfigKeyMap;
 
     /**
+     * @var CurrencyHandler
+     */
+    private $currencyHandler;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -74,6 +80,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ClassicViewRoutingExclusionsHandler $exclusionsManager
      * @param SystemConfigMappers $mappers
+     * @param CurrencyHandler $currencyHandler
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
      * @param array $moduleRouting
@@ -82,6 +89,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $listViewSettingsLimits
      * @param array $listViewActionsLimits
      * @param array $recordViewActionLimits
+     * @param array $listViewLineActionsLimits
      * @param array $uiConfigs
      * @param array $extensions
      * @param SessionInterface $session
@@ -97,6 +105,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         ModuleNameMapperInterface $moduleNameMapper,
         ClassicViewRoutingExclusionsHandler $exclusionsManager,
         SystemConfigMappers $mappers,
+        CurrencyHandler $currencyHandler,
         array $systemConfigKeyMap,
         array $cacheResetActions,
         array $moduleRouting,
@@ -109,9 +118,15 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $uiConfigs,
         array $extensions,
         SessionInterface $session
-    )
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->exposedSystemConfigs = $exposedSystemConfigs;
 
         $this->injectedSystemConfigs['module_name_map'] = $moduleNameMapper->getLegacyToFrontendMap();
@@ -129,6 +144,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['extensions'] = $extensions;
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
+        $this->currencyHandler = $currencyHandler;
     }
 
     /**
@@ -146,6 +162,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     public function getAllSystemConfigs(): array
     {
         $this->init();
+        $this->loadSystemUser();
+        $this->initInjectedConfigs();
 
         $configs = [];
 
@@ -195,13 +213,10 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         }
 
         if (is_array($sugar_config[$configKey])) {
-
             $items = $sugar_config[$configKey];
 
             if (is_array($this->exposedSystemConfigs[$configKey])) {
-
                 $items = $this->filterItems($sugar_config[$configKey], $this->exposedSystemConfigs[$configKey]);
-
             }
 
             $config->setItems($items);
@@ -229,17 +244,14 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         }
 
         foreach ($allItems as $configKey => $configValue) {
-
             if (!isset($exposed[$configKey])) {
                 continue;
             }
 
             if (is_array($allItems[$configKey])) {
-
                 $subItems = $allItems[$configKey];
 
                 if (is_array($exposed[$configKey])) {
-
                     $subItems = $this->filterItems($allItems[$configKey], $exposed[$configKey]);
                 }
 
@@ -293,6 +305,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     public function getSystemConfig(string $configKey): ?SystemConfig
     {
         $this->init();
+        $this->loadSystemUser();
+        $this->initInjectedConfigs();
 
         $config = $this->loadSystemConfig($configKey);
 
@@ -302,5 +316,10 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->close();
 
         return $config;
+    }
+
+    protected function initInjectedConfigs(): void
+    {
+        $this->injectedSystemConfigs['currencies'] = $this->currencyHandler->getCurrencies();
     }
 }

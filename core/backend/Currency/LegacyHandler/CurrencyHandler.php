@@ -65,9 +65,51 @@ class CurrencyHandler extends LegacyHandler
         $info['name'] = $currency->name;
         $info['symbol'] = html_entity_decode($currency->symbol);
         $info['iso4217'] = $currency->iso4217;
+        $info['conversion_rate'] = $currency->conversion_rate;
 
         $this->close();
 
         return $info;
+    }
+
+    /**
+     * Get currencies info array
+     * @return array
+     */
+    public function getCurrencies(): array
+    {
+        $this->init();
+
+        $currencies = [];
+
+        $currency = $this->getCurrency('-99');
+        if (!empty($currency)) {
+            $currencies['-99'] = $currency;
+        }
+
+
+        $bean = BeanFactory::newBean('Currencies');
+
+        if (!$bean) {
+            return $currencies;
+        }
+
+        $list = $bean->get_full_list('name');
+
+        if (!empty($list)) {
+            foreach ($list as $item) {
+                $currencies[$item->id] = [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'symbol' => html_entity_decode($item->symbol),
+                    'iso4217' => $item->iso4217,
+                    'conversion_rate' => $item->conversion_rate
+                ];
+            }
+        }
+
+        $this->close();
+
+        return $currencies;
     }
 }
