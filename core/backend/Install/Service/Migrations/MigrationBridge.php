@@ -28,8 +28,8 @@
 
 namespace App\Install\Service\Migrations;
 
-
 use App\Engine\Model\Feedback;
+use Doctrine\Migrations\DependencyFactory;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -44,12 +44,21 @@ class MigrationBridge
     protected $kernel;
 
     /**
+     * @var DependencyFactory
+     */
+    private $dependencyFactory;
+
+    /**
      * MigrationBridge constructor.
      * @param KernelInterface $kernel
+     * @param DependencyFactory $dependencyFactory
      */
-    public function __construct(KernelInterface $kernel)
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        DependencyFactory $dependencyFactory
+    ) {
         $this->kernel = $kernel;
+        $this->dependencyFactory = $dependencyFactory;
     }
 
     /**
@@ -58,6 +67,16 @@ class MigrationBridge
      */
     public function migrate(): Feedback
     {
+        $statusCalculator = $this->dependencyFactory->getMigrationStatusCalculator();
+        $newMigrations = $statusCalculator->getNewMigrations();
+
+        if ($newMigrations === null || count($newMigrations) < 1) {
+            $feedback = new Feedback();
+            $feedback->setSuccess(true)->setMessages(['No new migrations. Skipping']);
+
+            return $feedback;
+        }
+
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 

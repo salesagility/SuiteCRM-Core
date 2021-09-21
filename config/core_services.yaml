@@ -246,3 +246,5 @@ services:
   App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'
   App\Process\Service\SubpanelLineActionDefinitionProviderInterface: '@App\Process\Service\SubpanelLineActionDefinitionProvider'
   App\Process\Service\SubpanelTopActionDefinitionProviderInterface: '@App\Process\Service\SubpanelTopActionDefinitionProvider'
+  Doctrine\Migrations\DependencyFactory: '@doctrine.migrations.dependency_factory'
+
