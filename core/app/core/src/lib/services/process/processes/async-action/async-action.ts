@@ -103,7 +103,9 @@ export class AsyncActionService {
 
                     if (process.messages) {
                         process.messages.forEach(message => {
-                            this.message[handler](message);
+                            if(!!message) {
+                                this.message[handler](message);
+                            }
                         });
                     }
 

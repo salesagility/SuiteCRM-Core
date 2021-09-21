@@ -201,6 +201,10 @@ export class InstallViewStore implements StateStore {
         this.updateState({...this.internalState, mode});
     }
 
+    getLicenseText(): string {
+        return this.language.getFieldLabel('SUITE8_LICENSE_CONTENT');
+    }
+
     getMetadata(): InstallViewMetadata {
         return {
             actions: [],
@@ -208,6 +212,10 @@ export class InstallViewStore implements StateStore {
                 maxColumns: 2,
                 useTabs: true,
                 tabDefs: {
+                    LBL_LICENSE: {
+                        newTab: true,
+                        panelDefault: 'expanded'
+                    } as TabDefinition,
                     lbl_basic: {
                         newTab: true,
                         panelDefault: 'expanded'
@@ -215,6 +223,45 @@ export class InstallViewStore implements StateStore {
                 } as TabDefinitions
             } as RecordTemplateMetadata,
             panels: [
+                {
+                    key: 'LBL_LICENSE',
+                    rows: [
+                        {
+                            cols: [
+                                {
+                                    name: 'license_check',
+                                    label: 'LBL_LICENSE_I_ACCEPT',
+                                    type: 'boolean',
+                                    required: true,
+                                    fieldDefinition: {
+                                        name: "license_check",
+                                        vname: "LBL_LICENSE_I_ACCEPT",
+                                        type: "boolean",
+                                        required: true,
+                                        value: 'false',
+                                        default: 'false'
+                                    } as FieldDefinition,
+                                } as PanelCell
+                            ] as PanelCell[]
+                        } as PanelRow,
+                        {
+                            cols: [
+                                {
+                                    name: 'site_license',
+                                    label: 'LBL_LICENSE_TITLE_2',
+                                    type: 'html',
+                                    display: 'readonly',
+                                    fieldDefinition: {
+                                        name: "site_license",
+                                        vname: "LBL_LICENSE_TITLE_2",
+                                        type: "html",
+                                        default: this.getLicenseText(),
+                                    } as FieldDefinition,
+                                } as PanelCell
+                            ] as PanelCell[]
+                        } as PanelRow
+                    ] as PanelRow[]
+                } as Panel,
                 {
                     key: 'lbl_basic',
                     rows: [
@@ -325,6 +372,7 @@ export class InstallViewStore implements StateStore {
                                         layout: [
                                             "site_username",
                                             "site_password",
+                                            "sys_check_option",
                                         ],
                                         display: "vertical",
                                         groupFields: {
@@ -343,6 +391,16 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_SITECFG_ADMIN_PASS",
                                                 "showLabel": ["edit"],
                                                 "required": true,
+                                            },
+                                            "sys_check_option": {
+                                                "name": "sys_check_option",
+                                                "type": "boolean",
+                                                "vname": "LBL_SYS_CHECK_WARNING",
+                                                "labelKey": "LBL_SYS_CHECK_WARNING",
+                                                "showLabel": ["edit"],
+                                                "required": false,
+                                                "value": 'false',
+                                                "default": 'false'
                                             },
                                         },
                                         showLabel: {

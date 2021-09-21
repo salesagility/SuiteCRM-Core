@@ -32,6 +32,8 @@ import {MessageService} from '../../../../services/message/message.service';
 import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
 import {Process} from '../../../../services/process/process.service';
 import {Router} from '@angular/router';
+import {InstallErrorModalComponent} from '../../../../components/install-error-modal/install-error-modal.component';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +46,8 @@ export class InstallAction extends InstallViewActionHandler {
     constructor(
         protected message: MessageService,
         protected asyncActionService: AsyncActionService,
-        protected router: Router
+        protected router: Router,
+        protected modalService: NgbModal
     ) {
         super();
     }
@@ -83,10 +86,29 @@ export class InstallAction extends InstallViewActionHandler {
             asyncData
         ).pipe(take(1)).subscribe((process: Process) => {
 
+            if(process.data.statusCode === 3) {
+                // system validation pre-check failed; display errors modal
+                this.openErrorModalDialog(process.data.errors);
+            }
+
             // redirect to /, if request is successful
             if(process.data.statusCode === 0) {
                 this.router.navigate(['/'], {}).then();
             }
         });
     }
+
+    openErrorModalDialog(errors: []): void {
+
+        const modalRef = this.modalService.open(InstallErrorModalComponent, {
+            ariaLabelledBy: 'modal-basic-title',
+            centered: true,
+            size: 'lg',
+            windowClass: 'custom-modal',
+            modalDialogClass: 'custom-modal'
+        });
+
+        modalRef.componentInstance.errors = errors;
+    }
+
 }
