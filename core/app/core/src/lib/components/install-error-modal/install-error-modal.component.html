@@ -1,0 +1,91 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2021 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+
+<scrm-modal
+    [closable]="true"
+    [close]="closeButtonIcon"
+    [title]="getHeaderLabel()"
+    [titleKey]="titleKey"
+    [headerKlass]="'alert-header'"
+    [bodyKlass]="'alert-body'">
+
+    <div modal-body>
+        <ng-container>
+            <div *ngIf="errors['hasValidationError'] && errors['hasValidationError'] === true"
+                 class="alert alert-danger" role="alert">
+
+                <div class="alert-heading">
+                    <strong>{{getColumnLabel('LBL_CHECKSYS_TITLE')}}</strong>
+                </div>
+                <div class="alert-desc">
+                    {{getColumnLabel('ERR_CHECKSYS')}}
+                </div>
+            </div>
+
+            <div>
+                <ul class="list-style-none">
+
+                    <li *ngFor="let item of errors['data'] | keyvalue : returnZero">
+
+                        <div class="alert {{getAlertType(item.value)}}" role="alert">
+
+                            <div>
+                                <span>
+                                    <scrm-image [image]="getAlertIcon(item.value)"></scrm-image>
+                                    <strong style="margin-left: 2px;">
+                                        {{getColumnLabel(item.value.label)}}
+                                    </strong>
+                                </span>
+
+                                <span *ngIf="item.value.info!==''" style="float:right">
+                                    <strong>
+                                        {{getColumnLabel(item.value.info)}}
+                                    </strong>
+                                </span>
+                            </div>
+
+                            <div *ngIf="item.value.error!==''">
+                                {{getColumnLabel(item.value.error)}}
+                            </div>
+                        </div>
+
+                        <div *ngIf="item.value.data.length!==0" class="alert alert-light" role="alert">
+                            <ul>
+                                <li *ngFor="let subItems of item.value.data">
+                                    {{subItems}}
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </ng-container>
+    </div>
+</scrm-modal>
+

@@ -57,6 +57,8 @@ export * from './components/image/image.component';
 export * from './components/image/image.module';
 export * from './components/inline-loading-spinner/inline-loading-spinner.component';
 export * from './components/inline-loading-spinner/inline-loading-spinner.module';
+export * from './components/install-error-modal/install-error-modal.component';
+export * from './components/install-error-modal/install-error-modal.module';
 export * from './components/label/label.component';
 export * from './components/label/label.module';
 export * from './components/line-action-menu/line-action-menu.component';

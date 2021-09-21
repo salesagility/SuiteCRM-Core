@@ -18,8 +18,30 @@
     .field-layout {
       .form-row {
         align-items: start !important;
+
+        .field-html {
+          max-height: 200px;
+          overflow: auto;
+        }
       }
     }
   }
+}
 
+.custom-modal .modal-dialog {
+  max-width: 900px;
+}
+
+.alert-header {
+  color: #721c24;
+}
+
+.alert-body {
+  font-size: 0.85em;
+}
+
+.list-style-none {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
 }
