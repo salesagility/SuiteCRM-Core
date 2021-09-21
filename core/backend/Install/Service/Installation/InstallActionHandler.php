@@ -29,14 +29,10 @@
 namespace App\Install\Service\Installation;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Install\Command\InstallStatus;
+use App\Engine\Model\Feedback;
+use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
-use Exception;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class InstallActionHandler implements ProcessHandlerInterface
 {
@@ -44,13 +40,25 @@ class InstallActionHandler implements ProcessHandlerInterface
     protected const PROCESS_TYPE = 'suitecrm-app-install';
 
     /**
-     * @var KernelInterface
+     * @var InstallStepHandler
      */
-    private $kernel;
+    private $handler;
 
-    public function __construct(KernelInterface $kernel)
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
     {
-        $this->kernel = $kernel;
+        return 'app-install-handler';
+    }
+
+    /**
+     * InstallHandler constructor.
+     * @param InstallStepHandler $handler
+     */
+    public function __construct(InstallStepHandler $handler)
+    {
+        $this->handler = $handler;
     }
 
     /**
@@ -92,21 +100,22 @@ class InstallActionHandler implements ProcessHandlerInterface
         }
 
         $options = $process->getOptions();
-        $payload = $options['payload'];
-        [
-            'site_host' => $site_host,
-            'demoData' => $demoData,
-            'site_username' => $site_username,
-            'site_password' => $site_password,
-            'db_username' => $db_username,
-            'db_password' => $db_password,
-            'db_host' => $db_host,
-            'db_name' => $db_name
-        ] = $payload;
 
-        if (empty($site_host) || empty($demoData) || empty($site_username) || empty($site_password)
-            || empty($db_username) || empty($db_password) || empty($db_host) || empty($db_name)) {
-            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        $validOptions = [
+            'site_host',
+            'demoData',
+            'site_username',
+            'site_password',
+            'db_username',
+            'db_password',
+            'db_host',
+            'db_name'
+        ];
+
+        foreach ($validOptions as $validOption) {
+            if (empty($options['payload'][$validOption])) {
+                throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+            }
         }
     }
 
@@ -116,103 +125,101 @@ class InstallActionHandler implements ProcessHandlerInterface
     public function run(Process $process)
     {
         $options = $process->getOptions();
-        $result = $this->runInstall($options);
 
-        $process->setStatus($result['status']);
-        $process->setMessages([
-            $result['message']
-        ]);
+        $result = $this->runSteps($this->getContext($options['payload'] ?? []));
+
+        $this->setProcessData($process, $result);
+    }
+
+    /**
+     * @param array $context
+     * @return Feedback
+     */
+    protected function runSteps(array $context): Feedback
+    {
+        $position = 0;
+        $success = true;
+
+        do {
+            $result = $this->getHandler()->runPosition($position, $context);
+
+            $success = $success && $result->isSuccess();
+
+            if (!$success) {
+                foreach ($result->getFeedback() as $key => $feedback) {
+
+                    if (!$feedback->isSuccess()) {
+                        return $feedback;
+                    }
+                }
+            }
+
+            $position++;
+
+        } while ($success === true && $this->getHandler()->hasPosition($position));
+
+        return (new Feedback())->setSuccess(true)->setStatusCode(InstallStatus::SUCCESS);
+    }
+
+    /**
+     * @param Process $process
+     * @param Feedback $result
+     */
+    public function setProcessData(Process $process, Feedback $result): void
+    {
+        $process->setStatus($this->mapStatus($result));
+        $process->setMessages($this->mapMessages($result));
         $responseData = [
-            'statusCode' => $result['statusCode'],
+            'statusCode' => $result->getStatusCode(),
+            'errors' => $result->getErrors() ?? []
         ];
 
         $process->setData($responseData);
     }
 
     /**
-     * Run Install Command
-     * @param array $options
-     * @return array with feedback
+     * @inheritDoc
      */
-    public function runInstall(array $options): array
+    protected function getHandler(): ProcessStepExecutorInterface
     {
-        $responseCode = $this->runInstallCommand($options);
-
-        if ($responseCode === InstallStatus::FAILED) {
-            return [
-                'status' => 'error',
-                'message' => 'LBL_SILENT_INSTALL_FAILED',
-                'statusCode' => InstallStatus::FAILED,
-            ];
-        }
-
-        if ($responseCode === InstallStatus::LOCKED) {
-            return [
-                'status' => 'error',
-                'message' => 'LBL_DISABLED_TITLE_2',
-                'statusCode' => InstallStatus::LOCKED,
-            ];
-        }
-
-        if ($responseCode === InstallStatus::SUCCESS) {
-            return [
-                'status' => 'success',
-                'message' => 'LBL_SILENT_INSTALL_SUCCESS',
-                'statusCode' => InstallStatus::SUCCESS,
-            ];
-        }
-
-        return [
-            'status' => 'success',
-            'message' => 'LBL_SILENT_INSTALL_SUCCESS',
-            'statusCode' => InstallStatus::SUCCESS,
-        ];
-
+        return $this->handler;
     }
 
     /**
-     * Link record for relationship link
-     * @param array $options
-     * @return int
+     * @param array $arguments
+     * @return array
      */
-
-    public function runInstallCommand(array $options): int
+    protected function getContext(array $arguments): array
     {
-
-        $payload = $options['payload'];
-        [
-            'site_host' => $site_host,
-            'demoData' => $demoData,
-            'site_username' => $site_username,
-            'site_password' => $site_password,
-            'db_username' => $db_username,
-            'db_password' => $db_password,
-            'db_host' => $db_host,
-            'db_name' => $db_name
-        ] = $payload;
-
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput([
-            'command' => 'suitecrm:app:install',
-            '--db_username' => $db_username,
-            '--db_password' => $db_password,
-            '--db_host' => $db_host,
-            '--db_name' => $db_name,
-            '--site_username' => $site_username,
-            '--site_password' => $site_password,
-            '--site_host' => $site_host,
-            '--demoData' => $demoData
-        ]);
-
-        $output = new NullOutput();
-
-        try {
-            $status = $application->run($input, $output);
-        } catch (Exception $e) {
-            $status = InstallStatus::FAILED;
-        }
-        return $status;
+        return [
+            'inputs' => $arguments
+        ];
     }
+
+    /**
+     * @param Feedback $result
+     * @return string
+     */
+    protected function mapStatus(Feedback $result): string
+    {
+        return $result->isSuccess() ? 'success' : 'error';
+    }
+
+    /**
+     * @param Feedback $result
+     * @return string[]
+     */
+    protected function mapMessages(Feedback $result): array
+    {
+        if ($result->isSuccess()) {
+            return ['LBL_SILENT_INSTALL_SUCCESS'];
+        }
+
+        if (!empty($result->getMessageLabels())) {
+            return [$result->getMessageLabels()[0]];
+        }
+
+        return $result->getMessageLabels();
+    }
+
 }

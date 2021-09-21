@@ -27,29 +27,18 @@
 
 namespace App\Install\Command;
 
+use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\LegacyHandler\InstallHandler;
-use Exception;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
+use App\Install\Service\Installation\InstallStepHandler;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
-
-abstract class InstallStatus
-{
-    public const STARTED = -1;
-    public const SUCCESS = 0;
-    public const FAILED = 1;
-    public const LOCKED = 2;
-    public const INVALID = 3;
-}
 
 /**
  * Class LegacyInstallCommand
  * @package App\Command
  */
-class LegacyInstallCommand extends Command
+class LegacyInstallCommand extends BaseStepExecutorCommand
 {
 
     /**
@@ -66,15 +55,19 @@ class LegacyInstallCommand extends Command
      * @var array
      */
     protected $inputs = [];
+    /**
+     * @var InstallStepHandler
+     */
+    private $handler;
 
     /**
      * LegacyInstallCommand constructor.
      * @param InstallHandler $installHandler
+     * @param InstallStepHandler $handler
      */
-    public function __construct(InstallHandler $installHandler)
+    public function __construct(InstallHandler $installHandler, InstallStepHandler $handler)
     {
-
-        $this->inputs['db_username'] = [
+        $this->inputConfig['db_username'] = [
             'question' => new Question('Please enter the db username: '),
             'argument' => new InputOption(
                 'db_username',
@@ -87,7 +80,7 @@ class LegacyInstallCommand extends Command
         $dbPasswordQuestion = new Question('Please enter the db password: ');
         $dbPasswordQuestion->setHidden(true);
         $dbPasswordQuestion->setHiddenFallback(false);
-        $this->inputs['db_password'] = [
+        $this->inputConfig['db_password'] = [
             'question' => $dbPasswordQuestion,
             'argument' => new InputOption(
                 'db_password',
@@ -97,7 +90,7 @@ class LegacyInstallCommand extends Command
             ),
         ];
 
-        $this->inputs['db_host'] = [
+        $this->inputConfig['db_host'] = [
             'question' => new Question('Please enter the db host: '),
             'argument' => new InputOption(
                 'db_host',
@@ -107,7 +100,7 @@ class LegacyInstallCommand extends Command
             )
         ];
 
-        $this->inputs['db_name'] = [
+        $this->inputConfig['db_name'] = [
             'question' => new Question('Please enter the db name: '),
             'argument' => new InputOption(
                 'db_name',
@@ -117,7 +110,7 @@ class LegacyInstallCommand extends Command
             ),
         ];
 
-        $this->inputs['site_username'] = [
+        $this->inputConfig['site_username'] = [
             'question' => new Question('Please enter the admin username: '),
             'argument' => new InputOption(
                 'site_username',
@@ -130,7 +123,7 @@ class LegacyInstallCommand extends Command
         $adminPasswordQuestion = new Question('Please enter the admin password: ');
         $adminPasswordQuestion->setHidden(true);
         $adminPasswordQuestion->setHiddenFallback(false);
-        $this->inputs['site_password'] = [
+        $this->inputConfig['site_password'] = [
             'question' => $adminPasswordQuestion,
             'argument' => new InputOption(
                 'site_password',
@@ -140,7 +133,7 @@ class LegacyInstallCommand extends Command
             ),
         ];
 
-        $this->inputs['site_host'] = [
+        $this->inputConfig['site_host'] = [
             'question' => new Question('Please enter the suite 8 address (e.g. https://<your_host/): '),
             'argument' => new InputOption(
                 'site_host',
@@ -150,7 +143,7 @@ class LegacyInstallCommand extends Command
             ),
         ];
 
-        $this->inputs['demoData'] = [
+        $this->inputConfig['demoData'] = [
             'question' => new ChoiceQuestion(
                 'Install demo data?: ',
                 ['yes', 'no'],
@@ -164,87 +157,73 @@ class LegacyInstallCommand extends Command
             ),
         ];
 
+        $this->inputConfig['sys_check_option'] = [
+            'question' => new ChoiceQuestion(
+                'Ignore system check warnings?: ',
+                ['true', 'false'],
+                'true'
+            ),
+            'argument' => new InputOption(
+                'sys_check_option',
+                'W',
+                InputOption::VALUE_OPTIONAL,
+                'Ignore "system check warnings" during install system acceptance check'
+            ),
+        ];
+
         parent::__construct();
         $this->installHandler = $installHandler;
+        $this->handler = $handler;
     }
 
     protected function configure(): void
     {
-        $inputs = [];
-
-        foreach ($this->inputs as $key => $item) {
-            $inputs[$key] = $item['argument'];
-        }
+        parent::configure();
 
         $this
             ->setDescription('Install the application')
-            ->setHelp('This command will install the suite 8 and legacy application')
-            ->setDefinition(
-                $inputs
-            );
+            ->setHelp('This command will install the suite 8 and legacy application');
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return bool|int|null
-     * @throws Exception
+     * @param array $arguments
+     * @return array
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    protected function getContext(array $arguments): array
     {
-        $output->writeln([
-            '',
-            'SuiteCRM Silent Install',
-            '============',
-            '',
-        ]);
+        return [
+            'inputs' => $arguments
+        ];
+    }
 
-        if ($this->installHandler->isInstallerLocked() === true) {
-            $output->writeln('Error: Installer Locked, Exiting');
-            return InstallStatus::LOCKED;
+    /**
+     * @return string
+     */
+    protected function getTitle(): string
+    {
+        return 'SuiteCRM Silent Install';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getHandler(): ProcessStepExecutorInterface
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAppStrings(): ?array
+    {
+        $appStringsEntity = $this->appStringsHandler->getInstallAppStrings('en_us');
+        $appStrings = [];
+
+        if ($appStringsEntity) {
+            $appStrings = $appStringsEntity->getItems();
         }
 
-        $inputArray = [];
-
-        $helper = $this->getHelper('question');
-
-        foreach ($this->inputs as $key => $option) {
-            $value = $input->getOption($key);
-            if (empty($value)) {
-                $value = $helper->ask($input, $output, $option['question']);
-            }
-            $inputArray[$key] = $value;
-        }
-
-        $output->writeln([
-            'Checking DB Connection ...'
-        ]);
-        if (!$this->installHandler->checkDBConnection($inputArray)) {
-            $output->writeln('Error: DB Connection Error, Exiting');
-
-            return InstallStatus::FAILED;
-        }
-        $output->writeln(['DB Connection successful, Continuing', '']);
-
-        if (!$this->installHandler->createEnv($inputArray)) {
-            return InstallStatus::FAILED;
-        }
-
-        if (!$this->installHandler->createConfig($inputArray)) {
-            return InstallStatus::FAILED;
-        }
-
-        $output->writeln('Step 1: Config Creation Complete');
-
-        if (!$this->installHandler->installLegacy()) {
-            $output->writeln('Step 2: Legacy Installation Failed');
-
-            return InstallStatus::FAILED;
-        }
-
-        $output->writeln('Step 2: Legacy Installation Complete');
-
-        return InstallStatus::SUCCESS;
-
+        return $appStrings;
     }
 }

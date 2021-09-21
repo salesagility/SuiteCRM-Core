@@ -27,18 +27,16 @@
 
 namespace App\Install\Command;
 
+use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeHandlerInterface;
-use Exception;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
  * Class UpgradeCommand
  * @package App\Install\Command
  */
-class UpgradeCommand extends BaseCommand
+class UpgradeCommand extends BaseStepExecutorCommand
 {
     /**
      * @var string
@@ -73,61 +71,39 @@ class UpgradeCommand extends BaseCommand
         parent::__construct();
     }
 
-    /**
-     * @inheritDoc
-     * @throws Exception
-     */
-    public function executeCommand(InputInterface $input, OutputInterface $output, array $arguments): int
-    {
-        $output->writeln([
-            '',
-            'SuiteCRM Upgrade',
-            '============',
-            '',
-        ]);
-
-        $version = $arguments['target-version'];
-        $context = [
-            'version' => $version
-        ];
-
-        $position = 0;
-        $success = true;
-
-        do {
-            $keys = $this->handler->getPositionKeys($position);
-
-            $output->writeln('Running: ' . implode(' | ', $keys));
-
-            $result = $this->handler->runPosition($position, $context);
-
-            foreach ($result->getFeedback() as $key => $feedback) {
-                $this->writeStepFeedback($key, $output, $feedback);
-            }
-
-            $success = $success && $result->isSuccess();
-
-            $position++;
-
-        } while ($success === true && $this->handler->hasPosition($position));
-
-        $output->writeln([
-            '',
-            '============',
-        ]);
-
-        if ($success === false) {
-            return 1;
-        }
-
-        return 0;
-    }
-
     protected function configure(): void
     {
         parent::configure();
 
         $this->setDescription('Upgrade the application')
             ->setHelp('This command will upgrade suite 8 and legacy application');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getContext(array $arguments): array
+    {
+        $version = $arguments['target-version'];
+
+        return [
+            'version' => $version
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTitle(): string
+    {
+        return 'SuiteCRM Upgrade';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getHandler(): ProcessStepExecutorInterface
+    {
+        return $this->handler;
     }
 }

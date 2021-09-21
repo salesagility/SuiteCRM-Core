@@ -28,6 +28,7 @@
 namespace App\Install\Command;
 
 use App\Engine\Model\Feedback;
+use App\Languages\LegacyHandler\AppStringsHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,6 +62,11 @@ abstract class BaseCommand extends Command
     protected $legacySessionName;
 
     /**
+     * @var AppStringsHandler
+     */
+    protected $appStringsHandler;
+
+    /**
      * @required
      * @param string $defaultSessionName
      */
@@ -85,6 +91,15 @@ abstract class BaseCommand extends Command
     public function setSession(SessionInterface $session): void
     {
         $this->session = $session;
+    }
+
+    /**
+     * @required
+     * @param AppStringsHandler $appStringsHandler
+     */
+    public function setAppStringsHandler(AppStringsHandler $appStringsHandler): void
+    {
+        $this->appStringsHandler = $appStringsHandler;
     }
 
     /**
@@ -166,6 +181,7 @@ abstract class BaseCommand extends Command
         $output->writeln('step: ' . $step . ' | status: ' . $status);
 
         $this->writeFeedbackMessages($output, $feedback);
+        $this->writeFeedbackErrors($output, $feedback);
     }
 
     /**
@@ -178,8 +194,52 @@ abstract class BaseCommand extends Command
         $messages = $feedback->getMessages() ?? [];
 
         foreach ($messages as $message) {
-
             $output->writeln($this->colorMessage($feedback, $message));
+        }
+    }
+
+    /**
+     * Write feedback messages
+     * @param OutputInterface $output
+     * @param Feedback $feedback
+     */
+    protected function writeFeedbackErrors(OutputInterface $output, Feedback $feedback): void
+    {
+        $errors = $feedback->getErrors()['data'] ?? [];
+
+        if (empty($errors)) {
+            return;
+        }
+
+        $appStrings = $this->getAppStrings();
+
+        foreach ($errors as $error) {
+
+            $details = [];
+            $parts = ['label', 'status', 'error', 'info'];
+
+            foreach ($parts as $key) {
+                $part = $error[$key] ?? '';
+                if ($part === '') {
+                    continue;
+                }
+
+                $translation = $appStrings[$part] ?? $part;
+
+                $details[] = $translation;
+            }
+
+            $message = implode(' | ', $details);
+
+            if ($error['status'] === 'error') {
+                $message = '<error>' . $message . '</error>';
+            }
+
+            if ($error['status'] === 'warning') {
+                $message = '<warning>' . $message . '</warning>';
+            }
+
+            $output->writeln($message);
         }
     }
 
@@ -196,5 +256,20 @@ abstract class BaseCommand extends Command
         }
 
         return implode('', ["<$colorTag>", $message, "</$colorTag>"]);
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getAppStrings(): ?array
+    {
+        $appStringsEntity = $this->appStringsHandler->getAppStrings('en_us');
+        $appStrings = [];
+
+        if ($appStringsEntity) {
+            $appStrings = $appStringsEntity->getItems();
+        }
+
+        return $appStrings;
     }
 }

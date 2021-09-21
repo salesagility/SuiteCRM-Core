@@ -104,13 +104,14 @@ trait ProcessStepTrait
         }
 
         if ($feedback->isSuccess() === false) {
-            $this->logger->error('step: ' . $this->getKey() . ' | status: failed');
+            $this->logger->info('step: ' . $this->getKey() . ' | status: failed');
         } else {
             $this->logger->info('step: ' . $this->getKey() . ' | status: done');
         }
 
         $this->logFeedbackMessages($feedback);
         $this->logFeedbackDebug($feedback);
+        $this->logFeedbackErrors($feedback);
     }
 
     /**
@@ -154,6 +155,26 @@ trait ProcessStepTrait
         foreach ($debugInfo as $debug) {
 
             $this->logger->info($debug);
+        }
+    }
+
+    /**
+     * Log feedback errors
+     * @param Feedback $feedback
+     */
+    protected function logFeedbackErrors(Feedback $feedback): void
+    {
+        $errorsInfo = $feedback->getErrors() ?? [];
+
+        if (empty($errorsInfo)) {
+            return;
+        }
+
+        $this->logger->info('step: ' . $this->getKey() . ' | errors:');
+
+        foreach ($errorsInfo as $errorKey => $error) {
+            $this->logger->info('error key: ' . $errorKey);
+            $this->logger->info('error info: ' . json_encode($error, JSON_THROW_ON_ERROR));
         }
     }
 

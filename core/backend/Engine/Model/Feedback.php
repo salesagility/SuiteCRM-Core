@@ -35,6 +35,11 @@ class Feedback
     public $success;
 
     /**
+     * @var int
+     */
+    public $statusCode = -1;
+
+    /**
      * @var string[]
      */
     public $messages = [];
@@ -42,7 +47,22 @@ class Feedback
     /**
      * @var string[]
      */
+    public $messageLabels = [];
+
+    /**
+     * @var string[]
+     */
     public $debug = [];
+
+    /**
+     * @var array
+     */
+    public $data = [];
+
+    /**
+     * @var array
+     */
+    public $errors = [];
 
     /**
      * @return bool
@@ -59,6 +79,25 @@ class Feedback
     public function setSuccess(bool $success): Feedback
     {
         $this->success = $success;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param int $statusCode
+     * @return Feedback
+     */
+    public function setStatusCode(int $statusCode): Feedback
+    {
+        $this->statusCode = $statusCode;
 
         return $this;
     }
@@ -85,6 +124,25 @@ class Feedback
     /**
      * @return string[]
      */
+    public function getMessageLabels(): array
+    {
+        return $this->messageLabels;
+    }
+
+    /**
+     * @param string[] $messageLabels
+     * @return Feedback
+     */
+    public function setMessageLabels(array $messageLabels): Feedback
+    {
+        $this->messageLabels = $messageLabels;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
     public function getDebug(): array
     {
         return $this->debug;
@@ -97,6 +155,44 @@ class Feedback
     public function setDebug(array $debug): Feedback
     {
         $this->debug = $debug;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     * @return Feedback
+     */
+    public function setData(array $data): Feedback
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @param array $errors
+     * @return Feedback
+     */
+    public function setErrors(array $errors): Feedback
+    {
+        $this->errors = $errors;
 
         return $this;
     }

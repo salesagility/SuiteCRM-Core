@@ -25,41 +25,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+namespace App\Install\Service\Installation;
 
-namespace App\Install\Service;
+use App\Engine\Service\ProcessSteps\ProcessStepExecutor;
+use Psr\Log\LoggerInterface;
 
-trait InstallationUtilsTrait
+class InstallStepHandler extends ProcessStepExecutor implements InstallHandlerInterface
 {
     /**
-     * Check if is app is installed
-     * @param $legacyDir
-     * @return bool is locked
+     * InstallStepHandler constructor.
+     * @param iterable $handlers
+     * @param LoggerInterface $installLogger
      */
-    public function isAppInstalled($legacyDir): bool
-    {
-        $sugarConfigFile = $legacyDir . '/config.php';
-        if (!file_exists($sugarConfigFile)) {
-            return false;
-        }
-        return true;
+    public function __construct(
+        iterable $handlers,
+        LoggerInterface $installLogger
+    ) {
+        $this->logger = $installLogger;
+        $this->initSteps($handlers, $this->logger);
     }
 
-    /**
-     * Check if is installer locked
-     * @param $legacyDir
-     * @return bool is locked
-     */
-    public function isAppInstallerLocked($legacyDir): bool
-    {
-        $installerLocked = false;
-        $sugarConfigFile = $legacyDir . '/config.php';
-
-        if (is_file($sugarConfigFile)) {
-            $sugar_config = [];
-            include $sugarConfigFile;
-            $installerLocked = $sugar_config['installer_locked'];
-        }
-
-        return $installerLocked;
-    }
 }

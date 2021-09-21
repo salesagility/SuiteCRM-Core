@@ -29,7 +29,10 @@ namespace App\Languages\LegacyHandler;
 
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Install\LegacyHandler\InstallHandler;
 use App\Languages\Entity\AppStrings;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AppStringsHandler extends LegacyHandler
 {
@@ -55,6 +58,41 @@ class AppStringsHandler extends LegacyHandler
             'LBL_LOGOUT_SUCCESS'
         ]
     ];
+    /**
+     * @var InstallHandler
+     */
+    private $installHandler;
+
+    /**
+     * LegacyHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param InstallHandler $installHandler
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        InstallHandler $installHandler
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
+
+        $this->installHandler = $installHandler;
+    }
 
     /**
      * @inheritDoc
@@ -102,6 +140,34 @@ class AppStringsHandler extends LegacyHandler
         $appStrings->setItems($appStringsArray);
 
         $this->close();
+
+        return $appStrings;
+    }
+
+    /**
+     * Get install app strings for given $language
+     * @param $language
+     * @return AppStrings|null
+     */
+    public function getInstallAppStrings(string $language): ?AppStrings
+    {
+        if (empty($language)) {
+            return null;
+        }
+
+        $this->installHandler->initLegacy();
+
+        require_once 'include/utils.php';
+
+        $appStringsArray = load_install_language($language) ?? [];
+
+        $appStringsArray = $this->removeEndingColon($appStringsArray);
+
+        $appStrings = new AppStrings();
+        $appStrings->setId($language);
+        $appStrings->setItems($appStringsArray);
+
+        $this->installHandler->closeLegacy();
 
         return $appStrings;
     }

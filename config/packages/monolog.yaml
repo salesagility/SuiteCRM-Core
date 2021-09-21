@@ -1,8 +1,13 @@
 monolog:
-  channels: ['upgrade']
+  channels: ['upgrade',  'install']
   handlers:
     upgrade:
       type: stream
       path: "%kernel.project_dir%/logs/upgrade.log"
       level: debug
       channels: ["upgrade"]
+    install:
+      type: stream
+      path: "%kernel.project_dir%/logs/install.log"
+      level: debug
+      channels: ["install"]

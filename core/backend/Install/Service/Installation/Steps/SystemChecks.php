@@ -25,41 +25,69 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+namespace App\Install\Service\Installation\Steps;
 
-namespace App\Install\Service;
+use App\Engine\Model\Feedback;
+use App\Engine\Model\ProcessStepTrait;
+use App\Install\LegacyHandler\InstallHandler;
+use App\Install\Service\Installation\InstallStepInterface;
 
-trait InstallationUtilsTrait
+/**
+ * Class SystemChecks
+ * @package App\Install\Service\Installation\Steps;
+ */
+class SystemChecks implements InstallStepInterface
 {
+    use ProcessStepTrait;
+
+    public const HANDLER_KEY = 'install-system-checks';
+    public const POSITION = 300;
+
     /**
-     * Check if is app is installed
-     * @param $legacyDir
-     * @return bool is locked
+     * @var InstallHandler
      */
-    public function isAppInstalled($legacyDir): bool
+    private $handler;
+
+    /**
+     * SystemChecks constructor.
+     * @param InstallHandler $handler
+     */
+    public function __construct(InstallHandler $handler)
     {
-        $sugarConfigFile = $legacyDir . '/config.php';
-        if (!file_exists($sugarConfigFile)) {
-            return false;
-        }
-        return true;
+        $this->handler = $handler;
     }
 
     /**
-     * Check if is installer locked
-     * @param $legacyDir
-     * @return bool is locked
+     * @inheritDoc
      */
-    public function isAppInstallerLocked($legacyDir): bool
+    public function getKey(): string
     {
-        $installerLocked = false;
-        $sugarConfigFile = $legacyDir . '/config.php';
+        return self::HANDLER_KEY;
+    }
 
-        if (is_file($sugarConfigFile)) {
-            $sugar_config = [];
-            include $sugarConfigFile;
-            $installerLocked = $sugar_config['installer_locked'];
-        }
+    /**
+     * @inheritDoc
+     */
+    public function getOrder(): int
+    {
+        return self::POSITION;
+    }
 
-        return $installerLocked;
+    /**
+     * @inheritDoc
+     */
+    public function execute(array &$context): Feedback
+    {
+        return $this->runSystemCheck($context);
+    }
+
+    /**
+     * Run system check
+     * @param array $context
+     * @return Feedback
+     */
+    public function runSystemCheck(array &$context): Feedback
+    {
+        return $this->handler->runSystemCheck($context);
     }
 }

@@ -29,6 +29,8 @@ namespace App\Install\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Engine\Model\Feedback;
+use App\Install\Service\Installation\InstallStatus;
 use App\Install\Service\InstallationUtilsTrait;
 use PDO;
 use PDOException;
@@ -83,8 +85,7 @@ class InstallHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         LoggerInterface $logger
-    )
-    {
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -98,9 +99,27 @@ class InstallHandler extends LegacyHandler
     }
 
     /**
-     * @return bool
+     * Init legacy
      */
-    public function installLegacy(): bool
+    public function initLegacy(): void
+    {
+        $this->switchSession($this->legacySessionName);
+        chdir($this->legacyDir);
+    }
+
+    /**
+     * Close legacy
+     */
+    public function closeLegacy(): void
+    {
+        chdir($this->projectDir);
+        $this->switchSession($this->defaultSessionName);
+    }
+
+    /**
+     * @return Feedback
+     */
+    public function installLegacy(): Feedback
     {
         $this->switchSession($this->legacySessionName);
         chdir($this->legacyDir);
@@ -108,35 +127,27 @@ class InstallHandler extends LegacyHandler
         $errorLevelStored = error_reporting();
         error_reporting(0);
 
-        if (PHP_SAPI === 'cli') {
-            $this->logger->info('Install Script is running via CLI.');
-
-        } else {
-            $this->logger->info('Install Script is running via Web Server.');
-        }
+        $feedback = new Feedback();
 
         if (!is_file('config_si.php')) {
             $this->logger->error('config_si.php is required for CLI Install.');
 
-            return false;
+            return $feedback->setSuccess(false)->setMessages(['config_si.php is required for CLI Install.']);
         }
 
         $_REQUEST['goto'] = 'SilentInstall';
         $_REQUEST['cli'] = 'true';
 
-        $this->echoCLI('Running SuiteCRM CLi Installation ...' . PHP_EOL);
-
+        ob_start();
         ob_start();
         include_once 'install.php';
         ob_end_clean();
+        ob_end_clean();
 
         if (is_file('config.php')) {
-            $this->echoCLI('SuiteCRM CLi Installation Completed' . PHP_EOL);
-            $status = true;
+            $feedback->setSuccess(true)->setMessages(['SuiteCRM Installation Completed']);
         } else {
-            $this->echoCLI('SuiteCRM CLi Installation Failed' . PHP_EOL);
-            $this->logger->error('SuiteCRM CLi Install Failed');
-            $status = false;
+            $feedback->setSuccess(false)->setMessages(['SuiteCRM Installation Failed']);
         }
 
         chdir($this->projectDir);
@@ -144,7 +155,43 @@ class InstallHandler extends LegacyHandler
 
         error_reporting($errorLevelStored);
 
-        return $status;
+        return $feedback;
+    }
+
+    /**
+     * @param array $context
+     * @return Feedback
+     */
+    public function runSystemCheck(array &$context): Feedback
+    {
+        $this->switchSession($this->legacySessionName);
+        chdir($this->legacyDir);
+
+        $errorLevelStored = error_reporting();
+        error_reporting(0);
+
+        require_once 'include/portability/InstallValidation/InstallValidation.php';
+
+        $validator = (new \InstallValidation())->validate($context);
+        $result = $validator->result();
+
+        $feedback = new Feedback();
+        $feedback->setSuccess(true);
+
+        $hasErrors = $result['hasValidationError'] ?? false;
+
+        if ($hasErrors === true) {
+            $feedback->setSuccess(false);
+            $feedback->setStatusCode(InstallStatus::VALIDATION_FAILED);
+            $feedback->setErrors($result);
+        }
+
+        chdir($this->projectDir);
+        $this->switchSession($this->defaultSessionName);
+
+        error_reporting($errorLevelStored);
+
+        return $feedback;
     }
 
     /**
@@ -194,6 +241,7 @@ class InstallHandler extends LegacyHandler
             return true;
         } catch (IOExceptionInterface $exception) {
             $this->logger->error('An error occurred while creating your silent install config at ' . $exception->getPath());
+
             return false;
         }
     }
@@ -206,9 +254,14 @@ class InstallHandler extends LegacyHandler
     public function checkDBConnection(array $inputArray): bool
     {
         try {
-            new PDO("mysql:host=" . $inputArray["db_host"] . ";", $inputArray['db_username'], $inputArray['db_password']);
+            new PDO(
+                "mysql:host=" . $inputArray["db_host"] . ";",
+                $inputArray['db_username'],
+                $inputArray['db_password']
+            );
         } catch (PDOException $e) {
             $this->logger->error('An error occurred while checking the Database Host Connection ' . $e->getMessage());
+
             return false;
         }
 
@@ -222,9 +275,8 @@ class InstallHandler extends LegacyHandler
      */
     public function createEnv(array $inputArray): bool
     {
-
-        $password = $inputArray['db_password'] ?? '';
-        $username = $inputArray['db_username'] ?? '';
+        $password = urlencode($inputArray['db_password'] ?? '');
+        $username = urlencode($inputArray['db_username'] ?? '');
         $dbName = $inputArray['db_name'] ?? '';
         $host = $inputArray['db_host'] ?? '';
         $port = $inputArray['db_port'] ?? '3306';
@@ -241,6 +293,7 @@ class InstallHandler extends LegacyHandler
             return true;
         } catch (IOExceptionInterface $exception) {
             $this->logger->error('An error occurred while creating the Database Env config at ' . $exception->getPath());
+
             return false;
         }
     }
@@ -267,12 +320,4 @@ class InstallHandler extends LegacyHandler
     {
         return $this->isAppInstallerLocked($this->legacyDir);
     }
-
-    public function echoCLI($message): void
-    {
-        if (PHP_SAPI === 'cli') {
-            echo $message;
-        }
-    }
-
 }

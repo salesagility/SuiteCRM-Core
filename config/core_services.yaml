@@ -71,6 +71,8 @@ services:
       shared: false
     App\Install\Service\Upgrade\UpgradeStepInterface:
       tags: [ 'app.upgrade.step' ]
+    App\Install\Service\Installation\InstallStepInterface:
+      tags: [ 'app.install.step' ]
     App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
       tags: [ 'massupdate.definition.mapper' ]
 
@@ -201,6 +203,12 @@ services:
     arguments:
       - !tagged { tag: 'app.upgrade.step' }
       - '@monolog.logger.upgrade'
+
+  App\Install\Service\Installation\InstallStepHandler:
+    # inject all services tagged with app.install.step as first argument
+    arguments:
+      - !tagged { tag: 'app.install.step' }
+      - '@monolog.logger.install'
 
   Doctrine\Migrations\Version\DbalMigrationFactory: ~
   App\Install\Service\Migrations\MigrationFactoryDecorator:
