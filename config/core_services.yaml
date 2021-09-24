@@ -6,6 +6,7 @@ services:
     public: false       # Allows optimizing the container by removing unused services.
     bind:
       $projectDir: '%kernel.project_dir%'
+      $cacheDir: '%kernel.cache_dir%'
       $upgradePackageDir: '%packages.upgrade.dir%'
       $legacyDir: '%legacy.dir%'
       $legacyPath: '%legacy.path%'

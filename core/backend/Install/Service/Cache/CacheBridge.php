@@ -30,9 +30,7 @@ namespace App\Install\Service\Cache;
 
 use App\Engine\Model\Feedback;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -45,14 +43,20 @@ class CacheBridge
      * @var KernelInterface
      */
     protected $kernel;
+    /**
+     * @var string
+     */
+    private $cacheDir;
 
     /**
      * CacheBridge constructor.
      * @param KernelInterface $kernel
+     * @param string $cacheDir
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, string $cacheDir)
     {
         $this->kernel = $kernel;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -61,28 +65,31 @@ class CacheBridge
      */
     public function clear(): Feedback
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput([
-            'command' => 'cache:clear',
-        ]);
-
-        $output = new BufferedOutput();
-        $result = $application->run($input, $output);
-        $content = $output->fetch();
-
         $feedback = new Feedback();
-        $feedback->setDebug([$content]);
+        $feedback->setSuccess(true)->setMessages(['Successfully cleared cache']);
 
-        if ($result === 0) {
-            $feedback->setSuccess(true)->setMessages(['Successfully cleared cache']);
+        try {
+            $fs = new Filesystem();
+            $fs->remove($this->cacheDir);
 
-            return $feedback;
+            $this->clearPhpCache();
+
+        } catch (Exception $e) {
+            $feedback->setSuccess(false)->setMessages(['Error clearing cache']);
         }
 
-        $feedback->setSuccess(false)->setMessages(['Error clearing cache']);
 
         return $feedback;
+    }
+
+    protected function clearPhpCache(): void
+    {
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
+
+        if (function_exists('apcu_clear_cache')) {
+            apcu_clear_cache();
+        }
     }
 }
