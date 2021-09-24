@@ -59,19 +59,19 @@ export class RequiredAction extends FieldLogicActionHandler {
             return;
         }
 
-        let isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+        const isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
 
         let required = false;
         let validators = [...data.field.validators || []];
         if (isActive) {
             required = true;
-            validators = validators.concat(this.requiredValidator.getValidator());
+            validators = validators.concat(this.requiredValidator.getValidator(field));
         }
 
         data.field.definition.required = required;
         data.field.formControl.setValidators(validators);
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
-        record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true})
+        record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
 
     /**
@@ -167,7 +167,7 @@ export class RequiredAction extends FieldLogicActionHandler {
                         isActive = true;
                         return true;
                     }
-                })
+                });
             });
 
             return isActive;
@@ -180,7 +180,7 @@ export class RequiredAction extends FieldLogicActionHandler {
                     isActive = true;
                 }
 
-            })
+            });
         }
 
         return isActive;

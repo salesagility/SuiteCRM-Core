@@ -53,4 +53,7 @@ export class FormControlUtils {
         return this.isEmptyInputValue(this.getTrimmedInputValue(inputValue));
     }
 
+    isEmptyBooleanInputValue(inputValue: any): boolean {
+        return this.isEmptyInputValue(inputValue) || inputValue === 'false' || inputValue === false || inputValue === '';
+    }
 }

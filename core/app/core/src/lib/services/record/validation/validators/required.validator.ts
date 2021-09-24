@@ -53,6 +53,27 @@ export const requiredValidator = (utils: FormControlUtils): StandardValidatorFn 
     }
 );
 
+export const booleanRequiredValidator = (utils: FormControlUtils): StandardValidatorFn => (
+    (control: AbstractControl): StandardValidationErrors | null => {
+
+        if (utils.isEmptyBooleanInputValue(control.value)) {
+            return {
+                required: {
+                    required: true,
+                    message: {
+                        labelKey: 'LBL_VALIDATION_ERROR_REQUIRED',
+                        context: {
+                            value: control.value
+                        }
+                    }
+                }
+            };
+        }
+
+        return null;
+    }
+);
+
 @Injectable({
     providedIn: 'root'
 })
@@ -69,7 +90,12 @@ export class RequiredValidator implements ValidatorInterface {
         return !!viewField.fieldDefinition.required;
     }
 
-    getValidator(): StandardValidatorFn[] {
+    getValidator(viewField: ViewFieldDefinition): StandardValidatorFn[] {
+
+        if(viewField.type === 'boolean'){
+            return [booleanRequiredValidator(this.utils)];
+        }
+
         return [requiredValidator(this.utils)];
     }
 
