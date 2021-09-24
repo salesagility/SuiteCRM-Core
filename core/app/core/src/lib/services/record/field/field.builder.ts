@@ -104,7 +104,7 @@ export class FieldBuilder {
         const source = (definition && definition.source) || '';
         const rname = (definition && definition.rname) || 'name';
         const viewName = viewField.name || '';
-        let value: string;
+        let value: string = null;
         let valueList: string[] = null;
 
         if (!viewName || !record.attributes[viewName]) {
@@ -124,6 +124,12 @@ export class FieldBuilder {
         if (Array.isArray(value)) {
             valueList = value;
             value = null;
+        }
+
+        if (!value && definition.default) {
+            value = definition.default;
+        } else if (value === null) {
+            value = '';
         }
 
         return {value, valueList};
