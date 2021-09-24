@@ -18,6 +18,7 @@ parameters:
       - 'logs'
       - '.env.local'
       - '.env.local.php'
+      - 'tmp'
     toExpand:
       - 'public'
       - 'public/legacy'
