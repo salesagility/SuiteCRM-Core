@@ -31,6 +31,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Currency\LegacyHandler\CurrencyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Install\LegacyHandler\InstallHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\ActionNameMapperInterface;
 use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
@@ -67,6 +68,10 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @var CurrencyHandler
      */
     private $currencyHandler;
+    /**
+     * @var InstallHandler
+     */
+    private $installHandler;
 
     /**
      * SystemConfigHandler constructor.
@@ -81,6 +86,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param ClassicViewRoutingExclusionsHandler $exclusionsManager
      * @param SystemConfigMappers $mappers
      * @param CurrencyHandler $currencyHandler
+     * @param InstallHandler $installHandler
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
      * @param array $moduleRouting
@@ -106,6 +112,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         ClassicViewRoutingExclusionsHandler $exclusionsManager,
         SystemConfigMappers $mappers,
         CurrencyHandler $currencyHandler,
+        InstallHandler $installHandler,
         array $systemConfigKeyMap,
         array $cacheResetActions,
         array $moduleRouting,
@@ -145,6 +152,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
         $this->currencyHandler = $currencyHandler;
+        $this->installHandler = $installHandler;
     }
 
     /**
@@ -161,10 +169,45 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      */
     public function getAllSystemConfigs(): array
     {
+        if (!$this->isInstalled()) {
+            return $this->getAllInstallConfigs();
+        }
+
         $this->init();
         $this->loadSystemUser();
+
         $this->initInjectedConfigs();
 
+        $configs = $this->loadSystemConfigs();
+
+        $this->close();
+
+        return $configs;
+    }
+
+    /**
+     * Get all exposed install system configs
+     * @return array
+     */
+    public function getAllInstallConfigs(): array
+    {
+        $this->installHandler->initLegacy();
+
+        $this->loadInstallConfig();
+
+        $configs = $this->loadSystemConfigs();
+
+        $this->installHandler->closeLegacy();
+
+        return $configs;
+    }
+
+    /**
+     * Load all exposed system configs
+     * @return array
+     */
+    protected function loadSystemConfigs(): array
+    {
         $configs = [];
 
         foreach ($this->exposedSystemConfigs as $configKey => $value) {
@@ -175,8 +218,6 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
                 $configs[] = $config;
             }
         }
-
-        $this->close();
 
         return $configs;
     }
@@ -304,6 +345,10 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      */
     public function getSystemConfig(string $configKey): ?SystemConfig
     {
+        if (!$this->isInstalled()) {
+            return $this->getInstallConfig($configKey);
+        }
+
         $this->init();
         $this->loadSystemUser();
         $this->initInjectedConfigs();
@@ -318,8 +363,63 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         return $config;
     }
 
+    /**
+     * Get system config
+     * @param string $configKey
+     * @return SystemConfig|null
+     */
+    public function getInstallConfig(string $configKey): ?SystemConfig
+    {
+
+        $this->installHandler->initLegacy();
+
+        $this->loadInstallConfig();
+
+        $config = $this->loadSystemConfig($configKey);
+
+        $this->mapConfigValues($config);
+        $this->mapKey($config);
+
+        $this->installHandler->closeLegacy();
+
+        return $config;
+    }
+
+    /**
+     * Load install configs
+     */
+    protected function loadInstallConfig(): void
+    {
+        global $sugar_config;
+
+        // load minimal sugar config required to provide basic data to Suite8 application
+        $sugar_config = array(
+            'cache_dir' => 'cache/',
+            'default_currency_iso4217' => 'USD',
+            'default_currency_symbol' => '$',
+            'default_language' => 'en_us',
+            'default_theme' => 'suite8',
+            'languages' =>
+                array(
+                    'en_us' => 'English (US)'
+                ),
+            'translation_string_prefix' => false,
+        );
+    }
+
+    /**
+     * Init injected configs
+     */
     protected function initInjectedConfigs(): void
     {
         $this->injectedSystemConfigs['currencies'] = $this->currencyHandler->getCurrencies();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isInstalled(): bool
+    {
+        return $this->installHandler->isInstallerLocked();
     }
 }
