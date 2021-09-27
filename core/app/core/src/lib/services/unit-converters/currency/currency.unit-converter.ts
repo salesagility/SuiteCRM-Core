@@ -29,12 +29,6 @@ import {UserPreferenceStore} from '../../../store/user-preference/user-preferenc
 import {UnitConverter, UnitConverterOptions} from '../unit-converter.model';
 import {CurrencyService} from '../../currency/currency.service';
 
-export interface CurrencyFormat {
-    iso4217: string;
-    name: string;
-    symbol: string;
-}
-
 @Injectable({
     providedIn: 'root'
 })
