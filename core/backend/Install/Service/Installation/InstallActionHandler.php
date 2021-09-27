@@ -126,6 +126,9 @@ class InstallActionHandler implements ProcessHandlerInterface
     {
         $options = $process->getOptions();
 
+        global $installing;
+        $installing = true;
+
         $result = $this->runSteps($this->getContext($options['payload'] ?? []));
 
         $this->setProcessData($process, $result);

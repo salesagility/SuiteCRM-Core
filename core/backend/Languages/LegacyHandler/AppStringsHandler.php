@@ -113,6 +113,10 @@ class AppStringsHandler extends LegacyHandler
             return null;
         }
 
+        if (!$this->isInstalled()) {
+            return $this->getInstallAppStrings($language);
+        }
+
         $this->init();
 
         $enabledLanguages = get_languages();
@@ -157,6 +161,7 @@ class AppStringsHandler extends LegacyHandler
 
         $this->installHandler->initLegacy();
 
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/utils.php';
 
         $appStringsArray = load_install_language($language) ?? [];
@@ -192,7 +197,6 @@ class AppStringsHandler extends LegacyHandler
         $moduleLanguage = return_module_language($language, $module, true);
 
         foreach ($languageKeys as $key) {
-
             if (isset($moduleLanguage[$key])) {
                 $appStringsArray[$key] = $moduleLanguage[$key];
             }
@@ -216,5 +220,13 @@ class AppStringsHandler extends LegacyHandler
         }, $appStringsArray);
 
         return $appStringsArray;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isInstalled(): bool
+    {
+        return $this->installHandler->isAppInstalled($this->legacyDir);
     }
 }

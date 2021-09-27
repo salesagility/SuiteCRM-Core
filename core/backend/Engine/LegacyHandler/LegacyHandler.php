@@ -27,6 +27,7 @@
 
 namespace App\Engine\LegacyHandler;
 
+use App\Install\Service\InstallationUtilsTrait;
 use BeanFactory;
 use ControllerFactory;
 use RuntimeException;
@@ -41,6 +42,8 @@ use User;
  */
 abstract class LegacyHandler
 {
+    use InstallationUtilsTrait;
+
     protected const MSG_LEGACY_BOOTSTRAP_FAILED = 'Running legacy entry point failed';
 
     /**
@@ -132,6 +135,11 @@ abstract class LegacyHandler
         // Set up sugarEntry
         if (!defined('sugarEntry')) {
             define('sugarEntry', true);
+        }
+
+        if (!$this->isAppInstalled($this->legacyDir)) {
+            global $installing;
+            $installing = true;
         }
 
         // Load in legacy

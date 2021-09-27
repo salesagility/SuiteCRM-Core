@@ -105,6 +105,9 @@ class InstallHandler extends LegacyHandler
     {
         $this->switchSession($this->legacySessionName);
         chdir($this->legacyDir);
+
+        global $installing;
+        $installing = true;
     }
 
     /**
