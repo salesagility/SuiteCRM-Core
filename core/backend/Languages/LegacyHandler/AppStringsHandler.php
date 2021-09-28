@@ -168,6 +168,8 @@ class AppStringsHandler extends LegacyHandler
 
         $appStringsArray = $this->removeEndingColon($appStringsArray);
 
+        $this->injectLicense($appStringsArray);
+
         $appStrings = new AppStrings();
         $appStrings->setId($language);
         $appStrings->setItems($appStringsArray);
@@ -201,8 +203,6 @@ class AppStringsHandler extends LegacyHandler
                 $appStringsArray[$key] = $moduleLanguage[$key];
             }
         }
-
-        return;
     }
 
     /**
@@ -228,5 +228,19 @@ class AppStringsHandler extends LegacyHandler
     protected function isInstalled(): bool
     {
         return $this->installHandler->isAppInstalled($this->legacyDir);
+    }
+
+    /**
+     * Inject License
+     * @param array $appStringsArray
+     */
+    protected function injectLicense(array &$appStringsArray): void
+    {
+        $licenseFile = $this->projectDir . '/LICENSE.txt';
+        if (file_exists($licenseFile)) {
+            $license = file_get_contents($licenseFile);
+
+            $appStringsArray['SUITE8_LICENSE_CONTENT'] = '<pre>' . $license . '</pre>';
+        }
     }
 }

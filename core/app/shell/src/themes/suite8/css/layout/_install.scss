@@ -26,6 +26,16 @@
         .field-html {
           max-height: 200px;
           overflow: auto;
+
+          pre {
+            font-family: SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+            font-size: 1em;
+            white-space: pre;
+            z-index: 10;
+            background: inherit;
+            border: inherit;
+            color: inherit;
+          }
         }
       }
     }
