@@ -217,7 +217,7 @@ export class InstallViewStore implements StateStore {
                         newTab: true,
                         panelDefault: 'expanded'
                     } as TabDefinition,
-                    lbl_basic: {
+                    LBL_CONFIG: {
                         newTab: true,
                         panelDefault: 'expanded'
                     } as TabDefinition
@@ -229,6 +229,18 @@ export class InstallViewStore implements StateStore {
                     rows: [
                         {
                             cols: [
+                                {
+                                    name: 'site_license',
+                                    label: 'LBL_LICENSE_TITLE_2',
+                                    type: 'html',
+                                    display: 'readonly',
+                                    fieldDefinition: {
+                                        name: "site_license",
+                                        vname: "LBL_LICENSE_TITLE_2",
+                                        type: "html",
+                                        default: this.getLicenseText(),
+                                    } as FieldDefinition,
+                                } as PanelCell,
                                 {
                                     name: 'license_check',
                                     label: 'LBL_LICENSE_I_ACCEPT',
@@ -246,25 +258,12 @@ export class InstallViewStore implements StateStore {
                             ] as PanelCell[]
                         } as PanelRow,
                         {
-                            cols: [
-                                {
-                                    name: 'site_license',
-                                    label: 'LBL_LICENSE_TITLE_2',
-                                    type: 'html',
-                                    display: 'readonly',
-                                    fieldDefinition: {
-                                        name: "site_license",
-                                        vname: "LBL_LICENSE_TITLE_2",
-                                        type: "html",
-                                        default: this.getLicenseText(),
-                                    } as FieldDefinition,
-                                } as PanelCell
-                            ] as PanelCell[]
+                            cols: [] as PanelCell[]
                         } as PanelRow
                     ] as PanelRow[]
                 } as Panel,
                 {
-                    key: 'lbl_basic',
+                    key: 'LBL_CONFIG',
                     rows: [
                         {
                             cols: [
