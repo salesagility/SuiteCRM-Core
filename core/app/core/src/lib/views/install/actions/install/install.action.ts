@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode, Record} from 'common';
+import {Record, ViewMode} from 'common';
 import {take} from 'rxjs/operators';
 import {InstallViewActionData, InstallViewActionHandler} from '../install-view.action';
 import {MessageService} from '../../../../services/message/message.service';
@@ -34,6 +34,8 @@ import {Process} from '../../../../services/process/process.service';
 import {Router} from '@angular/router';
 import {InstallErrorModalComponent} from '../../../../components/install-error-modal/install-error-modal.component';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {StateManager} from '../../../../store/state-manager';
+import {LocalStorageService} from '../../../../services/local-storage/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +49,9 @@ export class InstallAction extends InstallViewActionHandler {
         protected message: MessageService,
         protected asyncActionService: AsyncActionService,
         protected router: Router,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        protected state: StateManager,
+        protected localStorage: LocalStorageService
     ) {
         super();
     }
@@ -93,6 +97,8 @@ export class InstallAction extends InstallViewActionHandler {
 
             // redirect to /, if request is successful
             if(process.data.statusCode === 0) {
+                this.state.clear();
+                this.localStorage.clear();
                 this.router.navigate(['/'], {}).then();
             }
         });
