@@ -30,6 +30,7 @@ import {InstallHeaderComponent} from './install-header.component';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
 import {LabelModule} from '../../../../components/label/label.module';
+import {FieldModule} from '../../../../fields/field.module';
 
 @NgModule({
     declarations: [InstallHeaderComponent],
@@ -38,7 +39,8 @@ import {LabelModule} from '../../../../components/label/label.module';
         CommonModule,
         ModuleTitleModule,
         ActionGroupMenuModule,
-        LabelModule
+        LabelModule,
+        FieldModule
     ]
 })
 export class InstallHeaderModule {

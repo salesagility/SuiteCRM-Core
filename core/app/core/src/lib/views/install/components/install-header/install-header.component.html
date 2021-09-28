@@ -46,15 +46,35 @@
 
                 <div class="row mr-1 ml-1">
 
-                    <div class="w-100">
+                    <div class="w-100 d-flex justify-content-end align-items-center">
 
-                        <scrm-action-group-menu
-                            [actionContext]="getActionContext(vm.record)"
-                            [config]="actionsAdapter"
-                            buttonClass="settings-button"
-                            klass="install-view-actions float-right"
-                        >
-                        </scrm-action-group-menu>
+                        <div class="w-100 install-header-options d-flex justify-content-end align-items-center pr-5">
+                            <div class="label-container pr-2">
+                                <label class="m-0 small">
+                                    <scrm-label
+                                        [labelKey]="store.getIgnoreSystemChecksField().definition.vname"></scrm-label>
+                                </label>:
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-grow-1 text-break">
+                                    <scrm-field [field]="store.getIgnoreSystemChecksField()"
+                                                [mode]="'edit'"
+                                                [record]="vm.record"
+                                                [type]="store.getIgnoreSystemChecksField().type">
+                                    </scrm-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <scrm-action-group-menu
+                                [actionContext]="getActionContext(vm.record)"
+                                [config]="actionsAdapter"
+                                buttonClass="settings-button"
+                                klass="install-view-actions float-right"
+                            >
+                            </scrm-action-group-menu>
+                        </div>
 
                     </div>
 

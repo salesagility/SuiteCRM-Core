@@ -47,7 +47,7 @@ export class InstallHeaderComponent {
 
     constructor(
         public actionsAdapter: InstallActionsAdapter,
-        protected store: InstallViewStore,
+        public store: InstallViewStore,
     ) {
     }
 

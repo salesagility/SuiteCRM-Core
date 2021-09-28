@@ -29,6 +29,7 @@ import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs
 import {
     Action,
     deepClone,
+    Field,
     FieldDefinition,
     FieldMetadata,
     isVoid,
@@ -372,7 +373,6 @@ export class InstallViewStore implements StateStore {
                                         layout: [
                                             "site_username",
                                             "site_password",
-                                            "sys_check_option",
                                         ],
                                         display: "vertical",
                                         groupFields: {
@@ -391,16 +391,6 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_SITECFG_ADMIN_PASS",
                                                 "showLabel": ["edit"],
                                                 "required": true,
-                                            },
-                                            "sys_check_option": {
-                                                "name": "sys_check_option",
-                                                "type": "boolean",
-                                                "vname": "LBL_SYS_CHECK_WARNING",
-                                                "labelKey": "LBL_SYS_CHECK_WARNING",
-                                                "showLabel": ["edit"],
-                                                "required": false,
-                                                "value": 'false',
-                                                "default": 'false'
                                             },
                                         },
                                         showLabel: {
@@ -454,6 +444,10 @@ export class InstallViewStore implements StateStore {
         this.store.next(this.internalState = state);
     }
 
+    getIgnoreSystemChecksField(): Field {
+        return this.recordStore.getStaging().fields['sys_check_option'];
+    }
+
     /**
      * Get view fields observable
      *
@@ -469,6 +463,23 @@ export class InstallViewStore implements StateStore {
                     });
                 });
             });
+
+            fields.push(
+                {
+                    "name": "sys_check_option",
+                    "type": "boolean",
+                    fieldDefinition: {
+                        "name": "sys_check_option",
+                        "type": "boolean",
+                        "vname": "LBL_SYS_CHECK_WARNING",
+                        "labelKey": "LBL_SYS_CHECK_WARNING",
+                        "showLabel": ["edit"],
+                        "required": false,
+                        "value": 'false',
+                        "default": 'false'
+                    }
+                } as ViewFieldDefinition
+            );
 
             return fields;
         }));
