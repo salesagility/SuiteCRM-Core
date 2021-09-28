@@ -143,6 +143,7 @@ class InstallHandler extends LegacyHandler
 
         ob_start();
         ob_start();
+        /* @noinspection PhpIncludeInspection */
         include_once 'install.php';
         ob_end_clean();
         ob_end_clean();
@@ -173,6 +174,7 @@ class InstallHandler extends LegacyHandler
         $errorLevelStored = error_reporting();
         error_reporting(0);
 
+        /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/InstallValidation/InstallValidation.php';
 
         $validator = (new \InstallValidation())->validate($context);
