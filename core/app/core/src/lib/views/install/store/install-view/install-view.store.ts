@@ -202,7 +202,7 @@ export class InstallViewStore implements StateStore {
     }
 
     getLicenseText(): string {
-        return this.language.getFieldLabel('SUITE8_LICENSE_CONTENT');
+        return this.language.getFieldLabel('SUITE8_LICENSE_CONTENT').split("\n").join("<br/>");
     }
 
     getMetadata(): InstallViewMetadata {
