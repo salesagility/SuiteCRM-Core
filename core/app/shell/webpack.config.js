@@ -105,6 +105,16 @@ module.exports = {
           requiredVersion: '^1.0.1'
         },
 
+        'rxjs': {
+          singleton: true,
+          requiredVersion: '^6.6.3'
+        },
+
+        'rxjs/operators': {
+          singleton: true,
+          requiredVersion: '^6.6.3'
+        },
+
         common: {
           singleton: true,
           import: 'dist/common',
