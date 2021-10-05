@@ -137,22 +137,23 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param SessionInterface $session
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        ModuleNameMapperInterface $moduleNameMapper,
-        FieldDefinitionsProviderInterface $fieldDefinitionProvider,
-        RecordViewDefinitionHandler $recordViewDefinitionHandler,
-        SubPanelDefinitionProviderInterface $subPanelDefinitionHandler,
-        ListViewDefinitionHandler $listViewDefinitionsHandler,
+        string                                $projectDir,
+        string                                $legacyDir,
+        string                                $legacySessionName,
+        string                                $defaultSessionName,
+        LegacyScopeState                      $legacyScopeState,
+        ModuleNameMapperInterface             $moduleNameMapper,
+        FieldDefinitionsProviderInterface     $fieldDefinitionProvider,
+        RecordViewDefinitionHandler           $recordViewDefinitionHandler,
+        SubPanelDefinitionProviderInterface   $subPanelDefinitionHandler,
+        ListViewDefinitionHandler             $listViewDefinitionsHandler,
         MassUpdateDefinitionProviderInterface $massUpdateDefinitionProvider,
-        FieldAliasMapper $fieldAliasMapper,
-        LoggerInterface $logger,
-        ViewDefinitionMappers $mappers,
-        SessionInterface $session
-    ) {
+        FieldAliasMapper                      $fieldAliasMapper,
+        LoggerInterface                       $logger,
+        ViewDefinitionMappers                 $mappers,
+        SessionInterface                      $session
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,

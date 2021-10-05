@@ -215,7 +215,7 @@ services:
   Doctrine\Migrations\Version\DbalMigrationFactory: ~
   App\Install\Service\Migrations\MigrationFactoryDecorator:
     decorates: Doctrine\Migrations\Version\DbalMigrationFactory
-    arguments: ['@App\Install\Service\Migrations\MigrationFactoryDecorator.inner', '@service_container']
+    arguments: [ '@App\Install\Service\Migrations\MigrationFactoryDecorator.inner', '@service_container' ]
 
   App\ViewDefinitions\Service\MassUpdateDefinitionMappers:
     # inject all services tagged with massupdate.definition.mapper as first argument
@@ -229,7 +229,7 @@ services:
   App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'
   App\Process\Service\LineActionDefinitionProviderInterface: '@App\Process\Service\LineActionDefinitionProvider'
-  App\ViewDefinitions\Service\WidgetDefinitionProviderInterface: '@App\ViewDefinitions\Service\WidgetDefinitionProvider'
+  App\ViewDefinitions\Service\WidgetDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\WidgetDefinitionProvider'
   App\Module\Service\ModuleNameMapperInterface: '@App\Module\LegacyHandler\ModuleNameMapperHandler'
   App\Module\Service\ModuleRegistryInterface: '@App\Module\LegacyHandler\ModuleRegistryHandler'
   App\Routes\Service\NavigationProviderInterface: '@App\Navbar\LegacyHandler\NavbarHandler'

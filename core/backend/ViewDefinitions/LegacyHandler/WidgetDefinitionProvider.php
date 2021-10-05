@@ -26,18 +26,25 @@
  */
 
 
-namespace App\ViewDefinitions\Service;
+namespace App\ViewDefinitions\LegacyHandler;
 
+use ACLController;
+use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 use App\Engine\Service\DefinitionEntryHandlingTrait;
+use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class SidebarWidgetDefinitionProvider
  * @package App\Service
  */
-class WidgetDefinitionProvider implements WidgetDefinitionProviderInterface
+class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinitionProviderInterface
 {
     use DefinitionEntryHandlingTrait;
+
+    public const HANDLER_KEY = 'widget-definition-provider';
 
     /**
      * @var ActionAvailabilityChecker
@@ -46,11 +53,41 @@ class WidgetDefinitionProvider implements WidgetDefinitionProviderInterface
 
     /**
      * SidebarWidgetDefinitionProvider constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
      * @param ActionAvailabilityChecker $actionChecker
      */
-    public function __construct(ActionAvailabilityChecker $actionChecker)
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        ActionAvailabilityChecker $actionChecker
+    )
     {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->actionChecker = $actionChecker;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHandlerKey(): string
+    {
+        return self::HANDLER_KEY;
     }
 
     /**
@@ -61,7 +98,13 @@ class WidgetDefinitionProvider implements WidgetDefinitionProviderInterface
         $widget = $config['modules'][$module]['widget'] ?? $moduleDefaults['widget'] ?? $config['default']['widget'] ?? [];
         $widget['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
 
-        return $widget;
+        $displayedWidgets = $this->filterAccessibleWidgets([$widget]);
+
+        if (empty($displayedWidgets)) {
+            return [];
+        }
+
+        return ($displayedWidgets[0]);
     }
 
     /**
@@ -90,14 +133,53 @@ class WidgetDefinitionProvider implements WidgetDefinitionProviderInterface
 
         foreach ($config['modules'][$module]['widgets'] as $index => $widget) {
             $config['modules'][$module]['widgets'][$index]['availability'] = $widget['availability'] ?? [];
+            $config['modules'][$module]['widgets'][$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
         }
 
         $widgets = $this->filterDefinitionEntries($module, 'widgets', $config, $this->actionChecker);
 
+        $displayedWidgets = $this->filterAccessibleWidgets($widgets);
+        return array_values($displayedWidgets);
+    }
+
+    protected function filterAccessibleWidgets(array $widgets): array
+    {
+        $accessibleWidgets = [];
+
         foreach ($widgets as $index => $widget) {
-            $widgets[$index]['refreshOn'] = $widget['refreshOn'] ?? 'data-update';
+
+            $access = $this->checkWidgetACLs($widget);
+            if ($access === true) {
+                $accessibleWidgets[] = $widget;
+            }
         }
 
-        return array_values($widgets);
+        return $accessibleWidgets;
+    }
+
+    protected function checkWidgetACLs(array &$widget)
+    {
+        $widgetAcls = $widget['acls'] ?? [];
+
+        if (empty($widgetAcls)) {
+            return true;
+        }
+
+        $this->init();
+
+        $access = true;
+        foreach ($widgetAcls as $widgetModule => $acls) {
+            foreach ($acls as $acl) {
+                if (!ACLController::checkAccess($widgetModule, $acl)) {
+                    $access = false;
+                    break;
+                }
+            }
+        }
+        $widget['access'] = $access;
+
+        $this->close();
+
+        return $access;
     }
 }

@@ -113,20 +113,21 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param array $listViewSidebarWidgets
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        LoggerInterface $logger,
+        string                                $projectDir,
+        string                                $legacyDir,
+        string                                $legacySessionName,
+        string                                $defaultSessionName,
+        LegacyScopeState                      $legacyScopeState,
+        LoggerInterface                       $logger,
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
-        WidgetDefinitionProviderInterface $widgetDefinitionProvider,
+        WidgetDefinitionProviderInterface     $widgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
-        FilterDefinitionProviderInterface $filterDefinitionProvider,
-        FieldAliasMapper $fieldAliasMapper,
-        SessionInterface $session,
-        array $listViewSidebarWidgets
-    ) {
+        FilterDefinitionProviderInterface     $filterDefinitionProvider,
+        FieldAliasMapper                      $fieldAliasMapper,
+        SessionInterface                      $session,
+        array                                 $listViewSidebarWidgets
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -161,10 +162,11 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @throws Exception
      */
     public function get(
-        string $module,
-        string $legacyModuleName,
+        string          $module,
+        string          $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
         $this->init();
 
         $metadata = $this->fetch($module, $legacyModuleName, $fieldDefinition);
@@ -183,10 +185,11 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @throws Exception
      */
     public function fetch(
-        string $module,
-        string $legacyModuleName,
+        string          $module,
+        string          $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
         $metadata = [
             'columns' => [],
             'bulkActions' => [],
