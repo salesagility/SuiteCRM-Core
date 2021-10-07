@@ -28,6 +28,7 @@
 <div class="d-flex">
     <div class="flex-grow-1">
         <tag-input #tag
+                   [onAdding]="onAdding"
                    (onAdd)="onAdd($event)"
                    (onBlur)="resetStatus()"
                    (onRemove)="onRemove($event)"

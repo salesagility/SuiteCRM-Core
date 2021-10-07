@@ -286,8 +286,7 @@ export class SavedFilterRecordStore extends RecordStore {
             definition.fieldDefinition.options = 'dom_int_bool';
         }
 
-        const field = this.fieldManager.addFilterField(record, definition, this.language);
+        this.fieldManager.addFilterField(record, definition, this.language);
 
-        record.criteria.filters[fieldName] = field.criteria;
     }
 }

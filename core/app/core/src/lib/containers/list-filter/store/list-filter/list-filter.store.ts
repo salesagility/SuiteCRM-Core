@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
-import {ButtonInterface, DropdownButtonInterface, Field, isVoid} from 'common';
+import {ButtonInterface, DropdownButtonInterface, emptyObject, Field, isVoid, SearchMetaFieldMap} from 'common';
 import {take, tap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {FilterConfig} from '../../components/list-filter/list-filter.model';
@@ -30,8 +30,10 @@ export class ListFilterStore implements StateStore {
 
     filterStore: SavedFilterStore;
     savedFilters: SavedFilter[] = [];
+    displayFields: Field[];
 
     protected collapse: BehaviorSubject<boolean>;
+    protected searchFields: SearchMetaFieldMap;
     protected subs: Subscription[] = [];
 
     constructor(
@@ -42,8 +44,10 @@ export class ListFilterStore implements StateStore {
     }
 
 
-    init(config: FilterConfig) {
+    init(config: FilterConfig): void {
         this.config = config;
+
+        this.initSearchFields();
 
         this.initConfigUpdatesSubscription();
 
@@ -51,6 +55,7 @@ export class ListFilterStore implements StateStore {
             tap(([savedFilter]) => {
                 this.reset();
                 this.splitCriteriaFields(savedFilter);
+                this.initDisplayFields();
                 this.initGridButtons();
                 this.initHeaderButtons();
                 this.initMyFiltersButton(this.savedFilters);
@@ -175,6 +180,30 @@ export class ListFilterStore implements StateStore {
                 this.fields.push(field);
             }
         });
+    }
+
+    protected initSearchFields(): void {
+        this.subs.push(this.config.searchFields$.subscribe(searchFields => {
+            this.searchFields = searchFields;
+        }));
+    }
+
+    protected initDisplayFields(): void {
+
+        if(!this.searchFields || emptyObject(this.searchFields) || !this.fields){
+            this.displayFields = [];
+        }
+
+        const fields = [];
+        this.fields.forEach(field => {
+            const name = field.name;
+            if(!this.searchFields[name]){
+                return;
+            }
+            fields.push(field);
+        });
+
+        this.displayFields = fields;
     }
 
     /**

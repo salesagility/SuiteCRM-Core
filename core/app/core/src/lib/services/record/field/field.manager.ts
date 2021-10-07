@@ -134,8 +134,6 @@ export class FieldManager {
             this.filterFieldBuilder.addToSavedFilter.bind(this.filterFieldBuilder)
         );
 
-        field.criteria = this.filterFieldBuilder.initFieldFilter(record.criteria, viewField, field);
-
         this.attributeBuilder.addAttributes(
             record,
             record.criteriaFields,

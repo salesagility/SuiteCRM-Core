@@ -65,7 +65,7 @@ export class FilterFieldBuilder extends FieldBuilder {
         const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
         const {validators, asyncValidators} = this.getFilterValidators(savedFilter, viewField);
 
-        return this.setupField(
+        const field = this.setupField(
             savedFilter.searchModule,
             viewField,
             null,
@@ -77,6 +77,8 @@ export class FilterFieldBuilder extends FieldBuilder {
             asyncValidators,
             language
         );
+        field.criteria = this.initFieldFilter(savedFilter.criteria, viewField, field);
+        return field;
     }
 
     /**
@@ -158,6 +160,12 @@ export class FilterFieldBuilder extends FieldBuilder {
         }
 
         savedFilter.criteriaFields[name] = field;
+
+        if (!savedFilter.criteria.filters) {
+            savedFilter.criteria.filters = {};
+        }
+
+        savedFilter.criteria.filters[name] = field.criteria;
 
         if (savedFilter.criteriaFormGroup && field.formControl) {
             savedFilter.criteriaFormGroup.addControl(name, field.formControl);

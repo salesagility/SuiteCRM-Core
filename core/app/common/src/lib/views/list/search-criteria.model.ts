@@ -1,3 +1,5 @@
+import {ObjectMap} from '../../types/object-map';
+
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
  * Copyright (C) 2021 SalesAgility Ltd.
@@ -31,6 +33,7 @@ export interface SearchCriteriaFieldFilter {
     values?: string[];
     start?: string;
     end?: string;
+    valueObjectArray?: ObjectMap[];
 }
 
 export interface SearchCriteriaFilter {

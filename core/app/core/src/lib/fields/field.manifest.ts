@@ -47,6 +47,7 @@ export const viewFieldsMap: FieldComponentMap = {
     'grouped-field.list': GroupFieldComponent,
     'grouped-field.detail': GroupFieldComponent,
     'grouped-field.edit': GroupFieldComponent,
+    'grouped-field.filter': GroupFieldComponent,
     'composite.list': CompositeComponent,
     'composite.detail': CompositeComponent,
     'composite.edit': CompositeComponent,
