@@ -59,32 +59,54 @@ class LegacyGroupedFieldDefinitionMapper implements FieldDefinitionMapperInterfa
             return;
         }
 
+        $defs = [];
         foreach ($vardefs as $fieldName => $fieldDefinition) {
-            $group = $fieldDefinition['group'] ?? '';
+            $mapped = $fieldDefinition;
+            $group = $mapped['group'] ?? '';
+            $type = $mapped['type'] ?? '';
 
-            if (empty($group) || !empty($fieldDefinition['groupFields'])) {
+            if ($type === 'parent') {
+                $defs[$fieldName] = $mapped;
+                continue;
+            }
+
+            if (!empty($mapped['legacyGroup'])) {
+                $defs[$fieldName] = $mapped;
+                continue;
+            }
+
+            if (empty($group) || !empty($mapped['groupFields'])) {
+                $defs[$fieldName] = $mapped;
                 continue;
             }
 
             $groupedDefinition = $vardefs[$group] ?? [];
+            $groupedDefinitionType = $groupedDefinition['type'] ?? '';
             if (empty($groupedDefinition)) {
                 $groupedDefinition['type'] = 'grouped-field';
                 $groupedDefinition['name'] = $group;
             }
             $groupedDefinition['legacyGroup'] = true;
 
-            $definitions = $this->getGroupedFieldDefinitions($group, $vardefs);
-
-            if ($group === $fieldName && count($definitions) === 1) {
+            if ($groupedDefinitionType === 'parent') {
+                $defs[$fieldName] = $mapped;
                 continue;
             }
 
-            $groupedDefinition['groupFields'] = $definitions;
+            $groupFields = $this->getGroupedFieldDefinitions($group, $vardefs);
 
-            $vardefs[$group] = $groupedDefinition;
+            if ($group === $fieldName && count($groupFields) === 1) {
+                $defs[$fieldName] = $mapped;
+                continue;
+            }
+
+            $groupedDefinition['groupFields'] = $groupFields;
+
+            $defs[$fieldName] = $fieldDefinition;
+            $defs[$group] = $groupedDefinition;
         }
 
-        $definition->setVardef($vardefs);
+        $definition->setVardef($defs);
     }
 
     /**
