@@ -33,6 +33,7 @@ import {EmailPrimarySelectAction} from './email-primary-select/email-primary-sel
 import {RequiredAction} from './required/required.action';
 import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
+import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +45,8 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         emailPrimarySelectAction: EmailPrimarySelectAction,
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,
-        updateCurrency: UpdateCurrencyAction
+        updateCurrency: UpdateCurrencyAction,
+        updateFlexRelateModule: UpdateFlexRelateModuleAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -52,6 +54,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         required.modes.forEach(mode => this.actions[mode][required.key] = required);
         updateBaseCurrency.modes.forEach(mode => this.actions[mode][updateBaseCurrency.key] = updateBaseCurrency);
         updateCurrency.modes.forEach(mode => this.actions[mode][updateCurrency.key] = updateCurrency);
+        updateFlexRelateModule.modes.forEach(mode => this.actions[mode][updateFlexRelateModule.key] = updateFlexRelateModule);
     }
 
     /**

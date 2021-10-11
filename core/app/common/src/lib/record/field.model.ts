@@ -67,6 +67,7 @@ export interface FieldDefinition {
     id_name?: string;
     link?: string;
     module?: string;
+    type_name?: string;
     rname?: string;
     table?: string;
     readonly?: boolean;
