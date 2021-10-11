@@ -34,6 +34,7 @@ use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Filters\Service\FilterDefinitionProviderInterface;
 use App\Process\Service\BulkActionDefinitionProviderInterface;
 use App\Process\Service\LineActionDefinitionProviderInterface;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use Exception;
 use ListViewFacade;
@@ -79,14 +80,21 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @var LineActionDefinitionProviderInterface
      */
     private $lineActionDefinitionProvider;
+
     /**
      * @var FilterDefinitionProviderInterface
      */
     private $filterDefinitionProvider;
+
     /**
      * @var array
      */
     private $listViewSidebarWidgets;
+
+    /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
 
     /**
      * RecordViewDefinitionHandler constructor.
@@ -100,6 +108,7 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param SessionInterface $session
      * @param array $listViewSidebarWidgets
      */
@@ -114,6 +123,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         WidgetDefinitionProviderInterface $widgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
         FilterDefinitionProviderInterface $filterDefinitionProvider,
+        FieldAliasMapper $fieldAliasMapper,
         SessionInterface $session,
         array $listViewSidebarWidgets
     ) {
@@ -131,6 +141,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
         $this->listViewSidebarWidgets = $listViewSidebarWidgets;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -259,7 +270,11 @@ class ListViewDefinitionHandler extends LegacyHandler
             return $field;
         }
 
-        $field['fieldDefinition'] = $vardefs[$key];
+        $alias = $this->fieldAliasMapper->map($vardefs[$key]);
+        $aliasDefs = $vardefs[$alias] ?? $vardefs[$key];
+
+        $field['fieldDefinition'] = $aliasDefs;
+        $field['name'] = $aliasDefs['name'] ?? $field['name'];
 
         $field = $this->applyDefaults($field);
 

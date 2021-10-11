@@ -28,12 +28,50 @@
 namespace App\ViewDefinitions\Service\MassUpdate;
 
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface;
 use Configurator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefinitionMapperInterface
 {
     use MassUpdateFieldDefinitionsInjectorTrait;
+
+    /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
+     * EmailOptoutMapper constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param FieldAliasMapper $fieldAliasMapper
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        FieldAliasMapper $fieldAliasMapper
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
+        $this->fieldAliasMapper = $fieldAliasMapper;
+    }
 
     /**
      * @inheritDoc
@@ -66,8 +104,8 @@ abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefi
                     'vname' => 'LBL_OPT_OUT_FLAG_PRIMARY',
                     'type' => 'bool',
                 ]
-            ]
-
+            ],
+            $this->fieldAliasMapper
         );
 
         $configurator = new Configurator();
@@ -83,7 +121,8 @@ abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefi
                     'name' => 'optin_primary',
                     'vname' => 'LBL_OPT_IN_FLAG_PRIMARY',
                     'type' => 'bool',
-                ]
+                ],
+                $this->fieldAliasMapper
             );
         }
 

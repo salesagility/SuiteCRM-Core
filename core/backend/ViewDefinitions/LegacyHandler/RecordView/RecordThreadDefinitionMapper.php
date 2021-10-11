@@ -32,6 +32,7 @@ use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\ViewDefinitions\Entity\ViewDefinition;
 use App\ViewDefinitions\LegacyHandler\FieldDefinitionsInjectorTrait;
 use App\ViewDefinitions\LegacyHandler\ViewDefinitionMapperInterface;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 
 class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
 {
@@ -47,13 +48,21 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
     private $fieldDefinitionProvider;
 
     /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
      * RecordThreadDefinitionMapper constructor.
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      */
     public function __construct(
-        FieldDefinitionsProviderInterface $fieldDefinitionProvider
+        FieldDefinitionsProviderInterface $fieldDefinitionProvider,
+        FieldAliasMapper $fieldAliasMapper
     ) {
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -208,6 +217,12 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
      */
     protected function buildFieldCell($definition, ?array &$vardefs): array
     {
-        return $this->addFieldDefinition($vardefs, $definition['name'], $definition, $this->defaultDefinition);
+        return $this->addFieldDefinition(
+            $vardefs,
+            $definition['name'],
+            $definition,
+            $this->defaultDefinition,
+            $this->fieldAliasMapper
+        );
     }
 }

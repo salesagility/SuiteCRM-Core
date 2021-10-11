@@ -33,6 +33,7 @@ use App\FieldDefinitions\Entity\FieldDefinition;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\ViewDefinitions\Entity\ViewDefinition;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\MassUpdateDefinitionProviderInterface;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
@@ -113,6 +114,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     private $massUpdateDefinitionProvider;
 
     /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
      * ViewDefinitionsHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -125,6 +131,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param SubPanelDefinitionProviderInterface $subPanelDefinitionHandler
      * @param ListViewDefinitionHandler $listViewDefinitionsHandler
      * @param MassUpdateDefinitionProviderInterface $massUpdateDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param LoggerInterface $logger
      * @param ViewDefinitionMappers $mappers
      * @param SessionInterface $session
@@ -141,6 +148,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         SubPanelDefinitionProviderInterface $subPanelDefinitionHandler,
         ListViewDefinitionHandler $listViewDefinitionsHandler,
         MassUpdateDefinitionProviderInterface $massUpdateDefinitionProvider,
+        FieldAliasMapper $fieldAliasMapper,
         LoggerInterface $logger,
         ViewDefinitionMappers $mappers,
         SessionInterface $session
@@ -161,6 +169,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         $this->massUpdateDefinitionProvider = $massUpdateDefinitionProvider;
         $this->logger = $logger;
         $this->mappers = $mappers;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -355,7 +364,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
 
                 if (!empty($vardefs[$fieldName])) {
                     $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
-                    $definition['layout'][$type][$key] = $merged;
+                    $aliasKey = $merged['name'] ?? $key;
+                    $definition['layout'][$type][$aliasKey] = $merged;
                 }
             }
         }
@@ -378,7 +388,11 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             return $field;
         }
 
-        $field['fieldDefinition'] = $vardefs[$key];
+        $alias = $this->fieldAliasMapper->map($vardefs[$key]);
+        $aliasDefs = $vardefs[$alias] ?? $vardefs[$key];
+
+        $field['fieldDefinition'] = $aliasDefs;
+        $field['name'] = $aliasDefs['name'] ?? $field['name'];
 
         $field = $this->applyDefaults($field);
 
