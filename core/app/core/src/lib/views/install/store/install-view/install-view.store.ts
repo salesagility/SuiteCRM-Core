@@ -151,7 +151,7 @@ export class InstallViewStore implements StateStore {
             id: '',
             module: 'install',
             attributes: {}
-        } as Record)
+        } as Record);
     }
 
     /**
@@ -318,7 +318,8 @@ export class InstallViewStore implements StateStore {
                                             "db_username",
                                             "db_password",
                                             "db_host",
-                                            "db_name"
+                                            "db_name",
+                                            "db_port"
                                         ],
                                         display: "vertical",
                                         groupFields: {
@@ -354,6 +355,15 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_DBCONF_DB_NAME",
                                                 "showLabel": ["*"],
                                                 "required": true,
+                                            },
+                                            "db_port": {
+                                                "name": "db_port",
+                                                "type": "varchar",
+                                                "vname": "LBL_DBCONF_DB_PORT",
+                                                "labelKey": "LBL_DBCONF_DB_PORT",
+                                                "showLabel": ["*"],
+                                                "required": false,
+                                                "default": "3306"
                                             }
                                         },
                                         showLabel: {

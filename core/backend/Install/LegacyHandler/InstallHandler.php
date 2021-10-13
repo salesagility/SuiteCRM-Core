@@ -85,7 +85,8 @@ class InstallHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         LoggerInterface $logger
-    ) {
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -222,6 +223,7 @@ class InstallHandler extends LegacyHandler
             'export_delimiter' => ',',
             'setup_db_admin_password' => $inputArray['db_password'],
             'setup_db_admin_user_name' => $inputArray['db_username'],
+            'setup_db_port_num' => $inputArray['db_port'],
             'setup_db_create_database' => 1,
             'setup_db_database_name' => $inputArray['db_name'],
             'setup_db_drop_tables' => 0,
@@ -260,7 +262,7 @@ class InstallHandler extends LegacyHandler
     {
         try {
             new PDO(
-                "mysql:host=" . $inputArray["db_host"] . ";",
+                "mysql:host=" . $inputArray["db_host"] . ":" . $inputArray["db_port"] . ";",
                 $inputArray['db_username'],
                 $inputArray['db_password']
             );

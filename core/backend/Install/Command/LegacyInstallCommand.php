@@ -102,6 +102,18 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
             'required' => false
         ];
 
+        $this->inputConfig['db_port'] = [
+            'question' => new Question('Please enter the db port: ', '3306'),
+            'argument' => new InputOption(
+                'db_port',
+                'Z',
+                InputOption::VALUE_REQUIRED,
+                'database port'
+            ),
+            'default' => '3306',
+            'required' => false
+        ];
+
         $this->inputConfig['db_name'] = [
             'question' => new Question('Please enter the db name: '),
             'argument' => new InputOption(
@@ -165,12 +177,12 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
             'question' => new ChoiceQuestion(
                 'Ignore system check warnings?: ',
                 ['true', 'false'],
-                'true'
+                'false'
             ),
             'argument' => new InputOption(
                 'sys_check_option',
                 'W',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'Ignore "system check warnings" during install system acceptance check'
             ),
             'default' => 'false',

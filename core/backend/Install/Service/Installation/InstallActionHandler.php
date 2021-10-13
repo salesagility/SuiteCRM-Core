@@ -101,6 +101,10 @@ class InstallActionHandler implements ProcessHandlerInterface
 
         $options = $process->getOptions();
 
+        if(empty($options['payload']['db_port'])){
+            $options['payload']['db_port'] = '3306';
+        }
+
         $validOptions = [
             'site_host',
             'demoData',
@@ -109,7 +113,8 @@ class InstallActionHandler implements ProcessHandlerInterface
             'db_username',
             'db_password',
             'db_host',
-            'db_name'
+            'db_name',
+            'db_port'
         ];
 
         foreach ($validOptions as $validOption) {
