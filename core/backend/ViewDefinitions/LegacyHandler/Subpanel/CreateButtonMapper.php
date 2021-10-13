@@ -156,6 +156,20 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
             }
         }
 
+        //Rename keys per vardefs
+        if ($parentModule === 'AOS_Product_Categories') {
+
+            if(array_key_exists('aos_product_categories_id', $additionalFields)){
+                $additionalFields['parent_category_id'] = $additionalFields['aos_product_categories_id'];
+                unset($additionalFields['aos_product_categories_id']);
+            }
+
+            if(array_key_exists('aos_product_categories_name', $additionalFields)){
+                $additionalFields['parent_category_name'] = $additionalFields['aos_product_categories_name'];
+                unset($additionalFields['aos_product_categories_name']);
+            }
+        }
+
         $button['additionalFields'] = $additionalFields;
         $button['extraParams'] = $params;
 
