@@ -1,6 +1,6 @@
 parameters:
   themes.navigation_tab_limits:
-    XSmall: 4
+    XSmall: 5
     Small: 4
     Medium: 6
     Large: 10
