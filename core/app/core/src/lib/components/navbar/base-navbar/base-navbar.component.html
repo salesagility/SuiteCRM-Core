@@ -69,53 +69,23 @@
                     <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
                             class="navbar-toggler"
                             ngbDropdownToggle type="button">
-                        <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
+                        <scrm-image class=" responsive-menu-toggler" image="hamburger"></scrm-image>
                     </button>
                     <div [@mobileNavFade] class="mobile-nav-dropdown w-100" ngbDropdownMenu>
-                        <ng-template [ngIf]="backLink">
-                            <li ngbDropdownItem><a (click)="navBackLink()" class="mobile-back-link">< BACK</a>
-                            </li>
-                        </ng-template>
-                        <ng-template [ngIf]="mainNavLink">
-                            <li (click)="changeSubNav($event, item)" *ngFor="let item of navbar.menu" class=""
-                                ngbDropdownItem>
-                                <a class="mobile-nav-link">{{ item.link.label }}</a>
-                                <scrm-image class="sicon-xs mobile-nav-arrow" image="arrow_right_filled"
-                                ></scrm-image>
-                            </li>
-                        </ng-template>
-                        <ng-template [ngIf]="mobileSubNav">
-                            <li *ngFor="let sub of submenu" class="" ngbDropdownItem>
-                                <a class="mobile-nav-link action-link">
-                                    {{ sub.link.label }}
-                                </a>
-                                <ul *ngIf="sub.submenu.length" class="">
-                                    <li *ngFor="let subitem of sub.submenu" class="nav-item">
-                                        <a class="mobile-nav-link action-link" href="/#{{ subitem.link.route }}">
-                                            {{ subitem.link.label }}
-                                        </a>
-                                    </li>
-                                    <ng-template [ngIf]="sub.recentRecords && sub.recentRecords.length">
-                                        <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
-                                        <li *ngFor="let rec of sub.recentRecords" class="nav-item">
-                                            <a class="mobile-nav-link action-link"
-                                               href="#/{{ rec.moduleName }}/{{ rec.itemId }}">{{ rec.itemSummary }}</a>
-                                        </li>
-                                    </ng-template>
-                                </ul>
-                            </li>
-                        </ng-template>
+                        <ng-container *ngIf="navbar && navbar.menu && navbar.menu.length">
+                            <scrm-mobile-menu [all]="navbar.all.modules"
+                                              [current]="navbar.current"
+                                              [items]="navbar.menu"
+                                              [navigationType]="vm.userPreferences['navigation_paradigm'] || ''"
+                                              [onClose]="getCloseCallBack(myDrop)"
+                            >
+                            </scrm-mobile-menu>
+                        </ng-container>
 
-                        <li>
-                            <a (click)="myDrop.close()" class="mobile-nav-close" href="#">
-                                <scrm-image class="sicon mobile-nav-close" image="cross_bold"></scrm-image>
-                                <span class="nav-close-text">close menu</span>
-                            </a>
-                        </li>
                     </div>
                 </div>
                 <div class="global-links" ngbDropdown>
-                    <li class="global-link-item">
+                    <li (click)="myDrop.close()" class="global-link-item">
                         <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                             <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                             {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}

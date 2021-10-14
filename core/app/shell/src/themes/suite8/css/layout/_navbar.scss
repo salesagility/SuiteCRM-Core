@@ -282,7 +282,7 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 }
 
 .mobile-nav-dropdown {
-  width: 100%;
+  max-width: 20rem;
 }
 
 .mobile-nav-link {
