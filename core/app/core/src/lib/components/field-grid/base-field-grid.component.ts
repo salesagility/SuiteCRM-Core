@@ -145,8 +145,8 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
 
         } else if (this.appendActions === true) {
 
-            let lastRow = grid[grid.length - 1];
-            let place = this.colNumber - 1;
+            const lastRow = grid[grid.length - 1];
+            const place = this.colNumber - 1;
             neededSlots.forEach(type => {
                 lastRow.cols[place][type] = true;
             });
@@ -204,7 +204,6 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(breakpointObserver.observe([
             Breakpoints.TabletPortrait,
-            Breakpoints.HandsetLandscape,
         ]).subscribe((result: BreakpointState) => {
             if (result.matches) {
                 this.currentSize = 'tablet';
