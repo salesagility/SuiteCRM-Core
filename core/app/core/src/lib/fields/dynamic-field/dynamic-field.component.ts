@@ -41,6 +41,7 @@ export class DynamicFieldComponent implements OnInit {
     @Input('type') type: string;
     @Input('field') field: Field;
     @Input('record') record: Record = null;
+    @Input('parent') parent: Record = null;
     @Input('klass') klass: { [key: string]: any } = null;
     @Input('componentType') componentType: Type<any>;
 

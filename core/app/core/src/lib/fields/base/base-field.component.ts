@@ -37,6 +37,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
     @Input() mode: string;
     @Input() field: Field;
     @Input() record: Record;
+    @Input() parent: Record;
     @Input() klass: { [klass: string]: any } = null;
     dependentFields: string[] = [];
     dependentAttributes: AttributeDependency[] = [];

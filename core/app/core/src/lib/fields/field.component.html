@@ -32,13 +32,15 @@
                         [klass]="klass"
                         [mode]="componentMode"
                         [record]="record"
+                        [parent]="record"
                         [type]="type">
     </scrm-dynamic-field>
     <scrm-line-items-field *ngIf="type === 'line-items'"
                            [field]="field"
                            [klass]="klass"
                            [mode]="componentMode"
-                           [record]="record">
+                           [record]="record"
+                           [parent]="record">
     </scrm-line-items-field>
 </ng-container>
 
