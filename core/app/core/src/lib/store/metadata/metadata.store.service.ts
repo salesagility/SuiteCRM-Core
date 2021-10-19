@@ -34,6 +34,7 @@ import {
     deepClone,
     FieldDefinitionMap,
     ListViewMeta,
+    MassUpdateMeta,
     Panel,
     SearchMeta,
     SubPanelMeta,
@@ -79,6 +80,7 @@ export interface Metadata {
     search?: SearchMeta;
     recordView?: RecordViewMetadata;
     subPanel?: SubPanelMeta;
+    massUpdate?: MassUpdateMeta;
 }
 
 const initialState: Metadata = {
@@ -87,7 +89,8 @@ const initialState: Metadata = {
     listView: {} as ListViewMeta,
     search: {} as SearchMeta,
     recordView: {} as RecordViewMetadata,
-    subPanel: {} as SubPanelMeta
+    subPanel: {} as SubPanelMeta,
+    massUpdate: {} as MassUpdateMeta
 };
 
 
@@ -231,7 +234,7 @@ export class MetadataStore implements StateStore {
             });
 
             if (Object.keys(missing).length === 0) {
-                return of(metadataCache.value).pipe(shareReplay(1));
+                return of(metadataCache.value).pipe(shareReplay());
             }
         } else {
             cache[module] = new BehaviorSubject({} as Metadata);
@@ -248,7 +251,7 @@ export class MetadataStore implements StateStore {
 
                 return value;
             }),
-            shareReplay(1),
+            shareReplay(),
             tap((value: Metadata) => {
                 cache[module].next(value);
             })
@@ -293,6 +296,7 @@ export class MetadataStore implements StateStore {
                     this.parseSearchMetadata(data, metadata);
                     this.parseRecordViewMetadata(data, metadata);
                     this.parseSubPanelMetadata(data, metadata);
+                    this.parseMassUpdateMetadata(data, metadata);
 
                     return metadata;
                 })
@@ -342,6 +346,12 @@ export class MetadataStore implements StateStore {
     protected parseSubPanelMetadata(data, metadata: Metadata): void {
         if (data && data.viewDefinition.subPanel) {
             metadata.subPanel = data.viewDefinition.subPanel;
+        }
+    }
+
+    protected parseMassUpdateMetadata(data, metadata: Metadata): void {
+        if (data && data.viewDefinition.massUpdate) {
+            metadata.massUpdate = data.viewDefinition.massUpdate;
         }
     }
 
