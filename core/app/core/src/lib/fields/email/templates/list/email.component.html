@@ -26,5 +26,7 @@
 */
 -->
 <div class="mailto-field">
-    <a href="mailto:{{ this.field.value }}">{{ this.field.value }}</a>
+    <a *ngIf="linkType === 'mailto'" href="mailto:{{ this.field.value }}">{{ this.field.value }}</a>
+
+    <a *ngIf="linkType === 'sugar'" class="clickable field-link" (click)="openEmail()">{{ this.field.value }}</a>
 </div>
