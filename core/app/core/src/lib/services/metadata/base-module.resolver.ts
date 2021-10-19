@@ -38,6 +38,7 @@ import {forkJoin} from 'rxjs';
 import {MetadataStore} from '../../store/metadata/metadata.store.service';
 import {MessageService} from '../message/message.service';
 import {tap} from 'rxjs/operators';
+import {RouteConverter} from "../navigation/route-converter/route-converter.service";
 
 @Injectable({providedIn: 'root'})
 export class BaseModuleResolver extends BaseMetadataResolver {
@@ -52,6 +53,7 @@ export class BaseModuleResolver extends BaseMetadataResolver {
         protected appStateStore: AppStateStore,
         protected metadataStore: MetadataStore,
         protected messageService: MessageService,
+        protected routeConverter: RouteConverter,
     ) {
         super(
             systemConfigStore,
@@ -84,10 +86,9 @@ export class BaseModuleResolver extends BaseMetadataResolver {
 
                         this.appStateStore.setModule(module);
                     }
-
-                    if (route.params.action) {
-                        this.appStateStore.setView(route.params.action);
-                    }
+                    const info = this.routeConverter.parseRouteURL(route.url);
+                    const action = info.action ?? 'index';
+                    this.appStateStore.setView(action);
                 },
                 () => {
                     this.addMetadataLoadErrorMessage();
