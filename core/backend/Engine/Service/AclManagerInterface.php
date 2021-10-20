@@ -28,6 +28,8 @@
 
 namespace App\Engine\Service;
 
+use SugarBean;
+
 interface AclManagerInterface
 {
 
@@ -41,5 +43,29 @@ interface AclManagerInterface
      * @param bool $in_group
      * @return bool
      */
-    public function checkAccess(string $module, string $action, bool $isOwner = false, $type = 'module', $in_group = false): bool;
+    public function checkAccess(
+        string $module,
+        string $action,
+        bool $isOwner = false,
+        $type = 'module',
+        $in_group = false
+    ): bool;
+
+    /**
+     * Check record access
+     *
+     * @param string $module
+     * @param string $action
+     * @param string $record
+     * @return bool
+     */
+    public function checkRecordAccess(string $module, string $action, string $record): bool;
+
+    /**
+     * Get list of record acls
+     *
+     * @param SugarBean $bean
+     * @return array
+     */
+    public function getRecordAcls(SugarBean $bean): array;
 }
