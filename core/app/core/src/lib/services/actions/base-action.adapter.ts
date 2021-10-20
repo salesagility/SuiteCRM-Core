@@ -31,7 +31,8 @@ import {
     ActionDataSource,
     ActionHandler,
     ActionManager,
-    ModeActions, Record,
+    ModeActions,
+    Record,
     ViewMode
 } from 'common';
 import {Observable} from 'rxjs';
@@ -188,7 +189,9 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
 
         availableActions[mode].forEach(action => {
 
-            if (!action.asyncProcess) {
+            const actionHandler = this.actionManager.getHandler(action, mode);
+
+            if (actionHandler) {
                 const actionHandler = this.actionManager.getHandler(action, mode);
                 const data: D = this.buildActionData(action, context);
 
