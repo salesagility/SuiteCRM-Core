@@ -36,6 +36,7 @@ export interface Record {
     type?: string;
     module: string;
     attributes: AttributeMap;
+    acls?: string[];
     fields?: FieldMap;
     formGroup?: FormGroup;
 }
