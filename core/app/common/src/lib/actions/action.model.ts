@@ -28,9 +28,12 @@ import {Observable} from 'rxjs';
 import {ViewMode} from '../views/view.model';
 import {Record} from '../record/record.model';
 import {SearchCriteria} from '../views/list/search-criteria.model';
+import {StringMap} from '../types/string-map';
 
 export interface ActionData {
     [key: string]: any;
+
+    action?: Action;
 }
 
 export interface ActionHandlerMap<D extends ActionData> {
@@ -49,6 +52,23 @@ export abstract class ActionHandler<D extends ActionData> {
     }
 
     abstract shouldDisplay(data: D): boolean;
+
+    protected checkAccess(action: Action, acls: string[], defaultAcls?: string[]) {
+        let requiredAcls = defaultAcls || [];
+
+        if (action && action.acl) {
+            requiredAcls = action.acl
+        }
+
+        if (!requiredAcls || !requiredAcls.length) {
+            return true;
+        }
+
+        const aclsMap = {} as StringMap;
+        acls.forEach(value => aclsMap[value] = value);
+
+        return requiredAcls.every(value => aclsMap[value]);
+    }
 }
 
 export interface ModeActions {
@@ -65,7 +85,10 @@ export interface Action {
     modes?: string[];
     asyncProcess?: boolean;
     params?: { [key: string]: any };
+    extraParams?: { [key: string]: any };
     acl?: string[];
+
+    [key: string]: any;
 }
 
 export interface ActionDataSource {
