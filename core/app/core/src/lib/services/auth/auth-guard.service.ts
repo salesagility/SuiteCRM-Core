@@ -25,12 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    Router,
-    UrlTree
-} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
@@ -113,6 +108,7 @@ export class AuthGuard implements CanActivate {
             module: routeInfo.module,
             payload: {
                 routeAction: routeInfo.action,
+                record: routeInfo.record,
                 routeURL,
                 queryParams: activatedRoute?.queryParams ?? []
             }

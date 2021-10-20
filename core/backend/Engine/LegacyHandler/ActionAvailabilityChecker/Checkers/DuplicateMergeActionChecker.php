@@ -60,9 +60,9 @@ class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailab
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         ModuleNameMapperInterface $moduleNameMapper
-    )
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+    ) {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $session);
         $this->moduleNameMapper = $moduleNameMapper;
     }
 
@@ -89,9 +89,10 @@ class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailab
      *
      * @param string $module - the active module
      * @param array|null $entry
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, ?array $entry = []): bool
+    public function checkAvailability(string $module, ?array $entry = [], ?array $context = []): bool
     {
         $this->init();
         $bean = BeanFactory::newBean($this->moduleNameMapper->toLegacy($module));
@@ -104,5 +105,4 @@ class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailab
 
         return $result;
     }
-
 }

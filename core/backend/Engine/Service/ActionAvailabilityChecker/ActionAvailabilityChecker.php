@@ -47,10 +47,6 @@ class ActionAvailabilityChecker
         /**
          * @var ActionAvailabilityCheckerInterface[]
          */
-        if (!empty($handlers)) {
-            $handlers = iterator_to_array($handlers);
-        }
-
         foreach ($handlers as $handler) {
             $type = $handler->getType();
             $this->registry[$type] = $handler;
@@ -92,13 +88,15 @@ class ActionAvailabilityChecker
      * - availability
      *  - audited
      *  - acls
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, array $entry, string $type): bool
+    public function checkAvailability(string $module, array $entry, string $type, ?array $context = []): bool
     {
         if ($this->hasChecker($type)) {
-            return $this->get($type)->checkAvailability($module, $entry);
+            return $this->get($type)->checkAvailability($module, $entry, $context);
         }
+
         return true;
     }
 

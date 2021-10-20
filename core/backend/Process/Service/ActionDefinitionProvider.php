@@ -53,10 +53,11 @@ class ActionDefinitionProvider
     /**
      * @param string $module
      * @param array $config
+     * @param array|null $context
      * @return array
      */
-    public function filterActions(string $module, array &$config): array
+    public function filterActions(string $module, array &$config, ?array $context = []): array
     {
-        return $this->filterDefinitionEntries($module, 'actions', $config, $this->actionChecker);
+        return $this->filterDefinitionEntries($module, 'actions', $config, $this->actionChecker, $context);
     }
 }
