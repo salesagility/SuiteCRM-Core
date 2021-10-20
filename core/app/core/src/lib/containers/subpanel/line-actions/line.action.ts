@@ -25,8 +25,8 @@
  */
 
 import {Action, ActionHandler, Record} from 'common';
-import {LineActionData} from '../../../components/table/line-actions/line.action';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
+import {LineActionData} from '../../../components/table/line-actions/line.action';
 
 export interface SubpanelLineActionData extends LineActionData {
     record: Record;
@@ -38,4 +38,18 @@ export abstract class SubpanelLineActionHandler extends ActionHandler<SubpanelLi
     abstract run(data: SubpanelLineActionData, action?: Action): void;
 
     abstract shouldDisplay(data: SubpanelLineActionData): boolean;
+
+    checkRecordAccess(data: SubpanelLineActionData, defaultAcls: string[] = []): boolean {
+
+        const record = data.record ?? {} as Record;
+        const acls = record.acls ?? [];
+
+        if (!acls || !acls.length) {
+            return false;
+        }
+
+        const action = data.action ?? null;
+
+        return this.checkAccess(action, acls, defaultAcls);
+    }
 }

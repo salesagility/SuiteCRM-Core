@@ -25,19 +25,30 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
-import {SubpanelLineActionData} from './line.action';
-import {AsyncProcessSubpanelLineAction} from './async-process/async-process.action';
+import {ALL_VIEW_MODES} from 'common';
+import {SubpanelLineActionData, SubpanelLineActionHandler} from '../line.action';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
-export class SubpanelLineActionManager extends BaseActionManager<SubpanelLineActionData> {
+export class AsyncProcessSubpanelLineAction extends SubpanelLineActionHandler {
 
-    constructor(
-        protected async: AsyncProcessSubpanelLineAction,
-    ) {
+    key = 'async-process';
+    modes = ALL_VIEW_MODES;
+
+    constructor() {
         super();
-        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+    }
+
+    run(data: SubpanelLineActionData): void {
+    }
+
+    shouldDisplay(data: SubpanelLineActionData): boolean {
+        const defaultAcls = data?.action?.acl ?? [];
+        if (!defaultAcls.length) {
+            return true;
+        }
+
+        return this.checkRecordAccess(data, defaultAcls);
     }
 }
