@@ -106,7 +106,7 @@ export class RecordSaveNewAction extends RecordActionHandler {
         });
     }
 
-    shouldDisplay(): boolean {
+    shouldDisplay(data: RecordActionData): boolean {
         return true;
     }
 }

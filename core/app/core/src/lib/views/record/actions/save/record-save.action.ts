@@ -53,7 +53,7 @@ export class RecordSaveAction extends RecordActionHandler {
         });
     }
 
-    shouldDisplay(): boolean {
+    shouldDisplay(data: RecordActionData): boolean {
         return true;
     }
 }

@@ -24,11 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler} from 'common';
+import {Action, ActionData, ActionHandler} from 'common';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 
 export interface RecordActionData extends ActionData {
     store: RecordViewStore;
+    action?: Action;
 }
 
 export abstract class RecordActionHandler extends ActionHandler<RecordActionData> {
@@ -36,4 +37,18 @@ export abstract class RecordActionHandler extends ActionHandler<RecordActionData
     abstract run(data: RecordActionData): void;
 
     abstract shouldDisplay(data: RecordActionData): boolean;
+
+    checkRecordAccess(data: RecordActionData, defaultAcls: string[] = []): boolean {
+
+        const record = data.store.recordStore.getBaseRecord();
+        const acls = record.acls ?? [];
+
+        if (!acls || !acls.length) {
+            return false;
+        }
+
+        const action = data.action ?? null;
+
+        return this.checkAccess(action, acls, defaultAcls);
+    }
 }

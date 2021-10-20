@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="(vm$ | async) as vm">
+<ng-container>
     <div class="record-view-header">
         <ng-container *ngIf="displayResponsiveTable">
             <div class="d-flex flex-nowrap">
@@ -39,8 +39,8 @@
                         <div class="order-2">
                             <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
                             <div class="record-view-name">
-                                <scrm-dynamic-label *ngIf="vm.record && vm.record.fields"
-                                                    [fields]="vm.record.fields"
+                                <scrm-dynamic-label *ngIf="record && record.fields"
+                                                    [fields]="record.fields"
                                                     [labelKey]="getSummaryTemplate()">
                                 </scrm-dynamic-label>
                             </div>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="w-100"></div>
                     <div class="col">
-                        <div class="order-1">
+                        <div *ngIf="record" class="order-1">
                             <scrm-action-group-menu
                                 [config]="actionsAdapter"
                                 klass="record-view-actions float-right">
@@ -63,8 +63,8 @@
                 <div class="col-md-4">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
                     <div class="record-view-name">
-                        <scrm-dynamic-label *ngIf="vm.record && vm.record.fields"
-                                            [fields]="vm.record.fields"
+                        <scrm-dynamic-label *ngIf="record && record.fields"
+                                            [fields]="record.fields"
                                             [labelKey]="getSummaryTemplate()">
                         </scrm-dynamic-label>
                     </div>
@@ -73,10 +73,10 @@
                     <div class="row mr-1 ml-1">
                         <div class="w-100">
                         </div>
-                        <div class="w-100">
+                        <div *ngIf="record" class="w-100">
                             <scrm-action-group-menu
                                 [config]="actionsAdapter"
-                                [actionContext]="getActionContext(vm.record)"
+                                [actionContext]="getActionContext(record)"
                                 klass="record-view-actions float-right"
                                 buttonClass="settings-button"
                             >
