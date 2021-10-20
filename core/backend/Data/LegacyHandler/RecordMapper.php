@@ -53,23 +53,29 @@ class RecordMapper
 
     /**
      * @param array $listData
+     * @param array|null $pageData
      * @return Record[]
      */
-    public function mapRecords(array $listData): array
+    public function mapRecords(array $listData, ?array $pageData = []): array
     {
+
         $records = [];
         foreach ($listData as $key => $data) {
 
             $moduleName = $data['module_name'] ?? '';
+            $id = $data['id'] ?? '';
             if (!empty($moduleName)) {
                 $moduleName = $this->moduleNameMapper->toFrontEnd($moduleName);
             }
 
+            $acls = $pageData['acls'][$id] ?? [];
+
             $record = new Record();
             $record->setType($data['object_name'] ?? '');
             $record->setModule($moduleName);
-            $record->setId($data['id'] ?? '');
+            $record->setId($id);
             $record->setAttributes($data);
+            $record->setAcls($acls);
             $records[] = $record;
         }
 

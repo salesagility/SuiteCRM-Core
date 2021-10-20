@@ -64,7 +64,7 @@ class ListDataHandler extends BaseListDataHandler implements ListDataHandlerInte
     protected function buildListData(array $resultData): ListData
     {
         $listData = new ListData();
-        $records = $this->recordMapper->mapRecords($resultData['data'] ?? []);
+        $records = $this->recordMapper->mapRecords($resultData['data'] ?? [], $resultData['pageData'] ?? []);
         $listData->setRecords($records);
         $listData->setOrdering($resultData['pageData']['ordering'] ?? []);
         $listData->setOffsets($resultData['pageData']['offsets'] ?? []);
