@@ -37,4 +37,10 @@ interface NavigationProviderInterface
      * @return Navbar
      */
     public function getNavbar(): Navbar;
+
+    /**
+     * Get module routing
+     * @return array
+     */
+    public function getModuleRouting(): array;
 }

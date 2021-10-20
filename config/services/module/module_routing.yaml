@@ -1,5 +1,9 @@
 parameters:
   legacy.module_routing:
+    home:
+      index: false
+      list: false
+      record: false
     saved-search:
       index: true
       list: true

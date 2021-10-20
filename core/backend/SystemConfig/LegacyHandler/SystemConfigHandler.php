@@ -35,6 +35,7 @@ use App\Install\LegacyHandler\InstallHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\ActionNameMapperInterface;
 use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
+use App\Routes\Service\NavigationProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -89,7 +90,6 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param InstallHandler $installHandler
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
-     * @param array $moduleRouting
      * @param array $navigationTabLimits
      * @param array $listViewColumnLimits
      * @param array $listViewSettingsLimits
@@ -99,6 +99,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $uiConfigs
      * @param array $extensions
      * @param SessionInterface $session
+     * @param NavigationProviderInterface $navigation
      */
     public function __construct(
         string $projectDir,
@@ -115,7 +116,6 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         InstallHandler $installHandler,
         array $systemConfigKeyMap,
         array $cacheResetActions,
-        array $moduleRouting,
         array $navigationTabLimits,
         array $listViewColumnLimits,
         array $listViewSettingsLimits,
@@ -124,7 +124,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewLineActionsLimits,
         array $uiConfigs,
         array $extensions,
-        SessionInterface $session
+        SessionInterface $session,
+        NavigationProviderInterface $navigation
     ) {
         parent::__construct(
             $projectDir,
@@ -140,7 +141,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['action_name_map'] = $actionNameMapper->getMap();
         $this->injectedSystemConfigs['classicview_routing_exclusions'] = $exclusionsManager->get();
         $this->injectedSystemConfigs['cache_reset_actions'] = $cacheResetActions;
-        $this->injectedSystemConfigs['module_routing'] = $moduleRouting;
+        $this->injectedSystemConfigs['module_routing'] = $navigation->getModuleRouting();
         $this->injectedSystemConfigs['navigation_tab_limits'] = $navigationTabLimits;
         $this->injectedSystemConfigs['listview_column_limits'] = $listViewColumnLimits;
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;

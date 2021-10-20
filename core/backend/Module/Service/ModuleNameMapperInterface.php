@@ -38,6 +38,12 @@ interface ModuleNameMapperInterface
     public function isValidModule(string $module): bool;
 
     /**
+     * Get list of all modules
+     * @return array
+     */
+    public function getVisibleModules(): array;
+
+    /**
      * Map legacy module name to frontend name
      * @param string $module
      * @return string
