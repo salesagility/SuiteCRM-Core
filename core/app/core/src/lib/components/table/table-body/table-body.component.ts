@@ -28,7 +28,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
-    Action,
     ColumnDefinition,
     Field,
     Record,
@@ -43,7 +42,6 @@ import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
 
 interface TableViewModel {
     columns: ColumnDefinition[];
-    lineActions: Action[];
     selection: RecordSelection;
     selected: { [key: string]: string };
     selectionStatus: SelectionStatus;
@@ -69,11 +67,9 @@ export class TableBodyComponent implements OnInit {
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         const loading$ = this.config.loading$ || of(false).pipe(shareReplay(1));
-        const lineActions$ = (this.config.lineActions && this.config.lineActions.getActions()) || of([]).pipe(shareReplay(1));
 
         this.vm$ = combineLatest([
             this.config.columns,
-            lineActions$,
             selection$,
             this.config.maxColumns$,
             this.config.dataSource.connect(null),
@@ -82,7 +78,6 @@ export class TableBodyComponent implements OnInit {
             map((
                 [
                     columns,
-                    lineActions,
                     selection,
                     maxColumns,
                     records,
@@ -100,16 +95,13 @@ export class TableBodyComponent implements OnInit {
                 const columnsDefs = this.buildDisplayColumns(columns);
                 displayedColumns.push(...columnsDefs);
 
-                if (lineActions && lineActions.length) {
                     displayedColumns.push('line-actions');
-                }
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
 
                 return {
                     columns,
-                    lineActions,
                     selection,
                     selected,
                     selectionStatus,

@@ -72,12 +72,12 @@
 
             </ng-container>
 
-            <ng-container cdkColumnDef="line-actions" *ngIf="vm.lineActions && vm.lineActions.length">
+            <ng-container cdkColumnDef="line-actions">
 
                 <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
 
                 <td cdk-cell *cdkCellDef="let record">
-                    <scrm-line-action-menu *ngIf="record && config.lineActions && config.lineActions.getActions()"
+                    <scrm-line-action-menu *ngIf="record && config.lineActions"
                                            [config]="config.lineActions"
                                            [record]="record">
                     </scrm-line-action-menu>

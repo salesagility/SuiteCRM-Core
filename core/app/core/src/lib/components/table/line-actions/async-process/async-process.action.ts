@@ -24,30 +24,31 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler, Record} from 'common';
+import {Injectable} from '@angular/core';
+import {ALL_VIEW_MODES} from 'common';
+import {LineActionActionHandler, LineActionData} from '../line.action';
 
-export interface LineActionData extends ActionData {
-    record: Record;
-}
+@Injectable({
+    providedIn: 'root'
+})
+export class AsyncProcessLineAction extends LineActionActionHandler {
 
-export abstract class LineActionActionHandler extends ActionHandler<LineActionData> {
+    key = 'async-process';
+    modes = ALL_VIEW_MODES;
 
-    abstract run(data: LineActionData): void;
+    constructor() {
+        super();
+    }
 
-    abstract shouldDisplay(data: LineActionData): boolean;
+    run(data: LineActionData): void {
+    }
 
-    checkRecordAccess(data: LineActionData, defaultAcls: string[] = []): boolean {
-
-        const record = data.record ?? {} as Record;
-        const acls = record.acls ?? [];
-
-        if (!acls || !acls.length) {
-            return false;
+    shouldDisplay(data: LineActionData): boolean {
+        const defaultAcls = data?.action?.acl ?? [];
+        if (!defaultAcls.length) {
+            return true;
         }
 
-        const action = data.action ?? null;
-
-        return this.checkAccess(action, acls, defaultAcls);
+        return this.checkRecordAccess(data, defaultAcls);
     }
 }
-
