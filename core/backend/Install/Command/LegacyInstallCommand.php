@@ -97,7 +97,9 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
                 'H',
                 InputOption::VALUE_REQUIRED,
                 'database host'
-            )
+            ),
+            'default' => '3306',
+            'required' => false
         ];
 
         $this->inputConfig['db_name'] = [
@@ -155,6 +157,8 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
                 InputOption::VALUE_OPTIONAL,
                 'Install "demo data" during install process'
             ),
+            'default' => 'no',
+            'required' => false
         ];
 
         $this->inputConfig['sys_check_option'] = [
@@ -169,6 +173,8 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
                 InputOption::VALUE_OPTIONAL,
                 'Ignore "system check warnings" during install system acceptance check'
             ),
+            'default' => 'false',
+            'required' => false
         ];
 
         parent::__construct();
