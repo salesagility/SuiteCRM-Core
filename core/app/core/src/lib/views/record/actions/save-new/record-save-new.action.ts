@@ -85,7 +85,8 @@ export class RecordSaveNewAction extends RecordActionHandler {
                         }
 
                         if (returnModule === store.getModuleName() && returnAction === 'record') {
-                            route = '/' + store.getModuleName() + '/record/' + record.id;
+                            const rid = !returnId ? record.id : returnId;
+                            route = '/' + store.getModuleName() + '/record/' + rid;
                         }
 
                         if (!route && record && record.id) {
