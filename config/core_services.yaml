@@ -127,6 +127,9 @@ services:
   App\Security\LegacySessionSecurityStage:
     decorates: 'api_platform.graphql.resolver.stage.security'
 
+  App\Engine\Service\Extensions\ExtensionAssetCacheWarmupDecorator:
+    decorates: 'cache_warmer'
+
   App\Security\LegacySessionLogoutHandler:
     tags:
       - name: 'kernel.event_listener'
@@ -253,5 +256,6 @@ services:
   App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'
   App\Process\Service\SubpanelLineActionDefinitionProviderInterface: '@App\Process\Service\SubpanelLineActionDefinitionProvider'
   App\Process\Service\SubpanelTopActionDefinitionProviderInterface: '@App\Process\Service\SubpanelTopActionDefinitionProvider'
+  App\Engine\Service\Extensions\ExtensionAssetCopyInterface: '@App\Engine\Service\Extensions\ExtensionAssetCopy'
   Doctrine\Migrations\DependencyFactory: '@doctrine.migrations.dependency_factory'
 

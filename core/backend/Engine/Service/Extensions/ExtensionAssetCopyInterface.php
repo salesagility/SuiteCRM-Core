@@ -25,59 +25,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Command;
 
-use App\Engine\Service\Extensions\ExtensionAssetCopy;
-use App\Engine\Service\Extensions\ExtensionAssetCopyInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+namespace App\Engine\Service\Extensions;
 
-class InstallExtensionAssets extends Command
+interface ExtensionAssetCopyInterface
 {
-    protected static $defaultName = 'scrm:extension-asset-install';
-
     /**
-     * @var string
+     * Copy extension assets
      */
-    private $projectDir;
-
-    /**
-     * @var ExtensionAssetCopy
-     */
-    protected $copy;
-
-    /**
-     * InstallExtensionAssets constructor.
-     * @param string|null $name
-     * @param ExtensionAssetCopyInterface $copy
-     */
-    public function __construct(string $name = null, ExtensionAssetCopyInterface $copy)
-    {
-        parent::__construct($name);
-        $this->copy = $copy;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProjectDir(): string
-    {
-        return $this->projectDir;
-    }
-
-    protected function configure(): void
-    {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $this->copy->copyAssets();
-
-        return 0;
-    }
-
+    public function copyAssets(): void;
 }

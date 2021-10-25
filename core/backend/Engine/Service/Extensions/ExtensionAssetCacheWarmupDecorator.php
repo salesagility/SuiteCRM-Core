@@ -25,59 +25,66 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Command;
 
-use App\Engine\Service\Extensions\ExtensionAssetCopy;
-use App\Engine\Service\Extensions\ExtensionAssetCopyInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+namespace App\Engine\Service\Extensions;
 
-class InstallExtensionAssets extends Command
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
+
+class ExtensionAssetCacheWarmupDecorator extends CacheWarmerAggregate
 {
-    protected static $defaultName = 'scrm:extension-asset-install';
+    /**
+     * @var CacheWarmerInterface
+     */
+    protected $decorated;
 
     /**
-     * @var string
+     * @var ExtensionAssetCopyInterface
      */
-    private $projectDir;
+    protected $assetCopy;
 
     /**
-     * @var ExtensionAssetCopy
+     * ExtensionAssetCacheWarmupDecorator constructor.
+     * @param CacheWarmerAggregate $decorated
+     * @param ExtensionAssetCopyInterface $assetCopy
      */
-    protected $copy;
-
-    /**
-     * InstallExtensionAssets constructor.
-     * @param string|null $name
-     * @param ExtensionAssetCopyInterface $copy
-     */
-    public function __construct(string $name = null, ExtensionAssetCopyInterface $copy)
+    public function __construct(CacheWarmerAggregate $decorated, ExtensionAssetCopyInterface $assetCopy)
     {
-        parent::__construct($name);
-        $this->copy = $copy;
+        $this->decorated = $decorated;
+        $this->assetCopy = $assetCopy;
+        parent::__construct();
     }
 
     /**
-     * @return string
+     * Enable optional warmers
      */
-    public function getProjectDir(): string
+    public function enableOptionalWarmers(): void
     {
-        return $this->projectDir;
+        $this->decorated->enableOptionalWarmers();
     }
 
-    protected function configure(): void
+    /**
+     * Enable only optional warmers
+     */
+    public function enableOnlyOptionalWarmers(): void
     {
+        $this->decorated->enableOnlyOptionalWarmers();
     }
 
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function isOptional(): bool
     {
-        $this->copy->copyAssets();
-
-        return 0;
+        return $this->decorated->isOptional();
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function warmUp(string $cacheDir)
+    {
+        $this->decorated->warmUp($cacheDir);
+        $this->assetCopy->copyAssets();
+    }
 }

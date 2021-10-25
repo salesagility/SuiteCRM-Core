@@ -25,59 +25,77 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Command;
 
-use App\Engine\Service\Extensions\ExtensionAssetCopy;
-use App\Engine\Service\Extensions\ExtensionAssetCopyInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+namespace App\Engine\Service\Extensions;
 
-class InstallExtensionAssets extends Command
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+
+class ExtensionAssetCopy implements ExtensionAssetCopyInterface
 {
-    protected static $defaultName = 'scrm:extension-asset-install';
-
     /**
      * @var string
      */
-    private $projectDir;
-
-    /**
-     * @var ExtensionAssetCopy
-     */
-    protected $copy;
+    protected $projectDir;
 
     /**
      * InstallExtensionAssets constructor.
-     * @param string|null $name
-     * @param ExtensionAssetCopyInterface $copy
+     * @param string $projectDir
      */
-    public function __construct(string $name = null, ExtensionAssetCopyInterface $copy)
+    public function __construct(string $projectDir)
     {
-        parent::__construct($name);
-        $this->copy = $copy;
+        $this->projectDir = $projectDir;
     }
 
-    /**
-     * @return string
-     */
-    public function getProjectDir(): string
-    {
-        return $this->projectDir;
-    }
-
-    protected function configure(): void
-    {
-    }
 
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function copyAssets(): void
     {
-        $this->copy->copyAssets();
+        $filesystem = new Filesystem();
 
-        return 0;
+        $publicPath = $this->projectDir . '/public/';
+        $extensionsPath = $this->projectDir . '/extensions/';
+
+        try {
+            $it = $this->find($extensionsPath);
+        } catch (DirectoryNotFoundException $e) {
+            $it = null;
+        }
+
+        if (empty($it)) {
+            return;
+        }
+
+        foreach ($it as $file) {
+            $path = $file->getPathname();
+
+            $name = str_replace(array($extensionsPath, '/Resources/public'), '', $path);
+            $filesystem->copy($path, "$publicPath/extensions/$name");
+        }
     }
 
+    /**
+     * Get list of assets
+     * @param $fullPath
+     * @return SplFileInfo[]
+     */
+    protected function find($fullPath): iterable
+    {
+        if (!is_dir($fullPath)) {
+            return [];
+        }
+
+
+        $finder = new Finder();
+        $finder->files();
+
+
+        $finder->in($fullPath . '*/Resources/public');
+
+        return $finder->getIterator();
+    }
 }
