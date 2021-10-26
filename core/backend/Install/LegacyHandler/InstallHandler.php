@@ -340,4 +340,13 @@ class InstallHandler extends LegacyHandler
     {
         return $this->isAppInstallerLocked($this->legacyDir);
     }
+
+    /**
+     * Load legacy config
+     * @return array|null is locked
+     */
+    public function loadLegacyConfig(): ?array
+    {
+        return $this->getLegacyConfig($this->legacyDir);
+    }
 }

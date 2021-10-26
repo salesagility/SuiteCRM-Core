@@ -31,6 +31,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Currency\LegacyHandler\CurrencyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Engine\Model\Feedback;
 use App\Install\LegacyHandler\InstallHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\ActionNameMapperInterface;
@@ -38,6 +39,7 @@ use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
 use App\Routes\Service\NavigationProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
@@ -162,6 +164,40 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     public function getHandlerKey(): string
     {
         return self::HANDLER_KEY;
+    }
+
+    /**
+     * Get system config
+     * @param array $config
+     * @return Feedback
+     */
+    public function updateSystemConfig(array $config): Feedback
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/System/Config/ConfigHandler.php';
+
+        $feedback = new Feedback();
+
+        $handler = new \ConfigHandler();
+
+        $feedback->setSuccess(true);
+        $feedback->setMessages(['Updated system config']);
+
+        try {
+            $handler->updateConfig($config);
+
+        } catch (Exception $exception) {
+            $feedback->setSuccess(false);
+            $feedback->setMessages(['Unable to update config']);
+            $feedback->setDebug([$exception->getMessage(), $exception->getTraceAsString()]);
+        }
+
+
+        $this->close();
+
+        return $feedback;
     }
 
     /**
