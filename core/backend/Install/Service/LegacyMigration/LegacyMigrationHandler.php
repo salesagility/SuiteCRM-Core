@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,60 +25,30 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+namespace App\Install\Service\LegacyMigration;
 
-namespace App\Install\Service;
+use App\Engine\Service\ProcessSteps\ProcessStepExecutor;
+use Psr\Log\LoggerInterface;
 
-trait InstallationUtilsTrait
+class LegacyMigrationHandler extends ProcessStepExecutor implements LegacyMigrationHandlerInterface
 {
     /**
-     * Check if is app is installed
-     * @param $legacyDir
-     * @return bool is locked
+     * LegacyMigrationHandler constructor.
+     * @param iterable $legacyMigrationHandlers
+     * @param LoggerInterface $upgradeLogger
      */
-    public function isAppInstalled($legacyDir): bool
-    {
-        $sugarConfigFile = $legacyDir . '/config.php';
-        if (!file_exists($sugarConfigFile)) {
-            return false;
-        }
-        return true;
-    }
+    public function __construct(
+        iterable $legacyMigrationHandlers,
+        LoggerInterface $upgradeLogger
+    ) {
+        $this->logger = $upgradeLogger;
+        $handlers = [];
 
-    /**
-     * Check if is installer locked
-     * @param $legacyDir
-     * @return bool is locked
-     */
-    public function isAppInstallerLocked($legacyDir): bool
-    {
-        $installerLocked = false;
-        $sugarConfigFile = $legacyDir . '/config.php';
-
-        if (is_file($sugarConfigFile)) {
-            $sugar_config = [];
-            include $sugarConfigFile;
-            $installerLocked = $sugar_config['installer_locked'];
+        foreach ($legacyMigrationHandlers as $legacyMigrationHandler) {
+            $handlers[] = $legacyMigrationHandler;
         }
 
-        return $installerLocked;
+        $this->initSteps($handlers, $this->logger);
     }
 
-    /**
-     * Get Legacy Config
-     * @param $legacyDir
-     * @return array|null is locked
-     */
-    public function getLegacyConfig($legacyDir): ?array
-    {
-        $sugarConfigFile = $legacyDir . '/config.php';
-
-        if (is_file($sugarConfigFile)) {
-            $sugar_config = [];
-            include $sugarConfigFile;
-
-            return $sugar_config;
-        }
-
-        return null;
-    }
 }

@@ -79,6 +79,8 @@ services:
       shared: false
     App\Install\Service\Upgrade\UpgradeStepInterface:
       tags: [ 'app.upgrade.step' ]
+    App\Install\Service\LegacyMigration\LegacyMigrationStepInterface:
+      tags: [ 'app.legacy.migration.step' ]
     App\Install\Service\Installation\InstallStepInterface:
       tags: [ 'app.install.step' ]
     App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
@@ -213,6 +215,12 @@ services:
     # inject all services tagged with app.upgrade.step as first argument
     arguments:
       - !tagged { tag: 'app.upgrade.step' }
+      - '@monolog.logger.upgrade'
+
+  App\Install\Service\LegacyMigration\LegacyMigrationHandler:
+    # inject all services tagged with app.legacy.migration.step as first argument
+    arguments:
+      - !tagged { tag: 'app.legacy.migration.step' }
       - '@monolog.logger.upgrade'
 
   App\Install\Service\Installation\InstallStepHandler:
