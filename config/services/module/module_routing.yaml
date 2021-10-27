@@ -236,3 +236,11 @@ parameters:
       index: false
       list: false
       record: false
+    emails:
+      index: false
+      list: false
+      record: false
+    calendar:
+      index: false
+      list: false
+      record: false
