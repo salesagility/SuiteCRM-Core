@@ -86,11 +86,11 @@
                 </div>
                 <div class="global-links" ngbDropdown>
                     <li (click)="myDrop.close()" class="global-link-item">
-                        <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
+                        <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                             <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                             {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
                         </a>
-                        <div aria-labelledby="navbarDropdownMenuLink"
+                        <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth" aria-labelledby="navbarDropdownMenuLink"
                              class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
                             <ng-template [ngIf]="navbar.globalActions">
                                 <a *ngFor="let globalAction of navbar.globalActions"
@@ -180,11 +180,11 @@
                 <div class="global-links" ngbDropdown>
                     <ul class="navbar-nav">
                         <li class="global-link-item">
-                            <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
+                            <a #globalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                                 {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
                             </a>
-                            <div aria-labelledby="navbarDropdownMenuLink"
+                            <div [style.min-width.px]="globalLinkTitle.offsetWidth" aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
                                 <ng-container *ngIf="navbar.globalActions">
                                     <a *ngFor="let globalAction of navbar.globalActions"

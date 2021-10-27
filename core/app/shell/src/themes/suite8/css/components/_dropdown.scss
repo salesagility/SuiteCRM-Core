@@ -237,6 +237,9 @@ ul.main li a,
 .primary-global-link {
   height: 3.1em;
   line-height: 3.1em;
+  &:hover {
+    background: $dusky-blue;
+  }
 }
 
 .global-link-item .nav-link {
