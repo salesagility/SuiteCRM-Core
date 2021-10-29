@@ -421,6 +421,6 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      */
     protected function isInstalled(): bool
     {
-        return $this->installHandler->isInstallerLocked();
+        return $this->installHandler->isLegacyInstalled();
     }
 }

@@ -318,6 +318,14 @@ class InstallHandler extends LegacyHandler
         return $filesystem->exists('.env.local');
     }
 
+    /**
+     * Check if is legacy app is installed
+     * @return bool is installed
+     */
+    public function isLegacyInstalled(): bool
+    {
+        return $this->isAppInstalled($this->legacyDir);
+    }
 
     /**
      * Check if is installer locked
