@@ -13,8 +13,10 @@ if ($_SERVER['APP_DEBUG']) {
 }
 
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
-    Request::setTrustedProxies(explode(',', $trustedProxies),
-        Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+    Request::setTrustedProxies(
+        explode(',', $trustedProxies),
+        Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST
+    );
 }
 
 if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
@@ -26,6 +28,25 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
-$response = $kernel->handle($request);
-$response->send();
-$kernel->terminate($request, $response);
+
+global $legacyRoute;
+
+$legacyRoute = $kernel->getLegacyRoute($request);
+
+if (!empty($legacyRoute)) {
+
+    $path = './legacy';
+    if (!empty($legacyRoute['dir'])) {
+        $path .= '/' . $legacyRoute['dir'];
+    }
+
+    chdir($path);
+
+    /* @noinspection PhpIncludeInspection */
+    require $legacyRoute['file'];
+
+} else {
+    $response = $kernel->handle($request);
+    $response->send();
+    $kernel->terminate($request, $response);
+}

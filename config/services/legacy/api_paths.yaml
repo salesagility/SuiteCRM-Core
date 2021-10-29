@@ -4,3 +4,33 @@ parameters:
     Api/V8: Api/index.php/V8
     Api: Api/index.php
     service/v4_1: service/v4_1
+
+  legacy.api_path_files:
+    Api/access_token:
+      file: index.php
+      dir: Api
+    Api/V8:
+      file: index.php
+      dir: Api
+    Api:
+      file: index.php
+      dir: Api
+    service/v4_1/rest.php:
+      file: rest.php
+      dir: service/v4_1
+    service/v4_1/soap.php:
+      file: soap.php
+      dir: service/v4_1
+    service/v4_1:
+      file: rest.php
+      dir: service/v4_1
+    service/v4/rest.php:
+      file: rest.php
+      dir: service/v4
+    service/v4/soap.php:
+      file: soap.php
+      dir: service/v4
+    service/v4:
+      file: rest.php
+      dir: service/v4
+

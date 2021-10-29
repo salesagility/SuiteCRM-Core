@@ -19,6 +19,7 @@ services:
       $legacyAssetPaths: '%legacy.asset_paths%'
       $copyLegacyAssetPaths: '%legacy.copy_asset_paths%'
       $legacyApiPaths: '%legacy.api_paths%'
+      $legacyApiPathFiles: '%legacy.api_path_files%'
       $exposedUserPreferences: '%legacy.exposed_user_preferences%'
       $userPreferencesKeyMap: '%legacy.user_preferences_key_map%'
       $themeImagePaths: '%themes.image_paths%'
@@ -222,6 +223,10 @@ services:
     # inject all services tagged with massupdate.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'massupdate.definition.mapper' }
+
+  legacy.route.handler:
+    alias: App\Routes\Service\LegacyRouteHandler
+    public: true
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'

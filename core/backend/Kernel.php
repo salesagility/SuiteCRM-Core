@@ -34,6 +34,7 @@ use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use function dirname;
@@ -111,5 +112,21 @@ class Kernel extends BaseKernel
         $routes->import($confDir . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getLegacyRoute(Request $request): array
+    {
+        $this->initializeBundles();
+        $this->initializeContainer();
+
+        if ($this->container->has('legacy.route.handler')) {
+            return $this->container->get('legacy.route.handler')->getLegacyRoute($request);
+        }
+
+        return [];
     }
 }

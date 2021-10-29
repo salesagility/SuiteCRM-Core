@@ -83,4 +83,21 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
 
         return !($isRegistered === true);
     }
+
+    /**
+     * Check if is legacy entry point
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function isLegacyEntryPoint(Request $request): bool
+    {
+        $isEntryPoint = false;
+
+        if (strpos($request->getUri(), 'entryPoint=') !== false) {
+            $isEntryPoint = true;
+        }
+
+        return $isEntryPoint;
+    }
 }
