@@ -28,7 +28,7 @@ import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
-import {MenuItem, ready} from 'common';
+import {MenuItem, ready, User} from 'common';
 import {LanguageStringMap, LanguageStrings} from '../../store/language/language.store';
 import {
     GroupedTab,
@@ -79,6 +79,7 @@ export class NavbarAbstract implements NavbarModel {
         this.all.modules = [];
         this.all.extra = [];
         this.current = null;
+        this.currentUser = {} as User;
     }
 
     /**
