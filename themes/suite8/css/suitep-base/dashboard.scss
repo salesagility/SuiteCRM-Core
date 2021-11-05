@@ -30,7 +30,7 @@
 }
 
 .dashletcontainer.col-33 {
-  width: 33.333%;
+  width: 100%;
 }
 
 .dashletcontainer {
@@ -320,7 +320,10 @@ ul.subpanelTablist li {
 .sugarFeedDashlet {
   blockquote {
     input[type=submit] {
-      background: #a99ac9;
+      background: $light-purple;
+      &:hover {
+        background: $thick-blue;
+      }
     }
     form {
       table tr td:nth-child(2) {
@@ -589,18 +592,6 @@ table #dashletPanel {
   }
 }
 
-@media (max-width: 750px) {
-  .dashletcontainer {
-    float: left;
-  }
-  .dashletPanel {
-    overflow: auto;
-  }
-  .dashboardTabList {
-    display: none;
-  }
-}
-
 .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel {
   top: initial;
   left: 0;
@@ -713,7 +704,7 @@ table #dashletPanel {
   .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .bd form table.edit tr td[valign=top] {
     float: left;
     width: 25%;
-
+    padding-top: 0.7em;
   }
   .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .bd form table.edit tr:last-child{
     clear: both;
@@ -739,7 +730,7 @@ table #dashletPanel {
     border: 1px solid $base-border-light-color;
   }
   input[type=submit] {
-    background: #a99ac9;
+    background: $light-purple;
     &:hover {
       background: $thick-blue;
     }
@@ -786,6 +777,24 @@ table #dashletPanel {
   }
 }
 
+@media (min-width:750px) and (max-width:755px) {
+  p.error {
+    margin-top: 5em!important;
+  }  
+}
+
+@media (max-width:1024px) {
+  ul.nav-dashboard {
+    li.active {
+      a.first-tab-xs {
+        .suitepicon {
+          font-size: 8px;          
+        }
+      }
+    }
+  } 
+}
+
 @media (max-width: 1024px) {
   .dashletcontainer.col-50 {
     width: 100%;
@@ -824,7 +833,6 @@ table #dashletPanel {
     li {
       display: inline-block;
       margin-right: 5px;
-      margin-bottom: 5px;
       a {
         border-radius: 4px;
         background: $dashboard-toolbar-bg;
@@ -839,7 +847,13 @@ table #dashletPanel {
     }
     li.active {
       a {
-        background: $dashboard-active-tab-bg;        
+        @media (max-width: 1200px) { 
+          background: $dashboard-dropdown-btn; 
+        }
+        background: $dashboard-active-tab-bg;   
+        &:hover {
+          background: $action-btn-hover-bg-color;
+        }     
       }
     }
   }
@@ -887,6 +901,4 @@ table #dashletPanel {
       overflow-x: auto;
     }    
   }
-}
-
-  
+}  

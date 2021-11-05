@@ -2059,7 +2059,6 @@ ul.clickMenu.SugarActionMenu li.sugar_action_button ul.subnav.ddopen li form a {
 }
 
 ul.clickMenu li ul.subnav li a:hover {
-  background-color: $list-view-action-menu-link-bg;
   text-align: left;
   width: 100%;
 }
@@ -4561,12 +4560,6 @@ object {
   width: 100%;
 }
 
-#detailpanel_fields,
-#detailpanel_conditions,
-#detailpanel_charts {
-  border-top: 1px solid lightgray;
-}
-
 #detailpanel_fields_select {
   margin-right: 20px;
   float: left;
@@ -4611,6 +4604,7 @@ object {
   display: block;
   padding: 0 4px;
   float: left;
+  margin-bottom: 0;
 }
 
 #report-editview-footer .tab-toggler.active .button {

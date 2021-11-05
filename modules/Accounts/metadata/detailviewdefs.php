@@ -114,6 +114,10 @@ array(
                   ],
 
               ],
+          ],
+          'acls' => [
+              'Accounts' => ['view', 'list'],
+              'Opportunities' => ['view', 'list']
           ]
       ],
       'sidebarWidgets' => [
@@ -131,12 +135,37 @@ array(
                           'chartOptions' => []
                       ]
                   ]
+              ],
+              'acls' => [
+                  'Accounts' => ['view', 'list'],
+                  'Opportunities' => ['view', 'list']
               ]
           ],
-          ['type' => 'history-timeline'],
+          [
+              'type' => 'history-timeline',
+              'acls' => [
+                  'Accounts' => ['view', 'list']
+              ]
+          ],
       ],
-      'panels' =>
-          array(
+      'recordActions' => [
+          'actions' => [
+              'print-as-pdf' => [
+                  'key' => 'print-as-pdf',
+                  'labelKey' => 'LBL_PRINT_AS_PDF',
+                  'asyncProcess' => true,
+                  'modes' => ['detail'],
+                  'acl' => ['view'],
+                  'aclModule' => 'AOS_PDF_Templates',
+                  'params' => [
+                      'selectModal' => [
+                          'module' => 'AOS_PDF_Templates'
+                      ]
+                  ]
+              ]
+          ]
+      ],
+      'panels' => array(
               'lbl_account_information' =>
                   array(
                       0 =>

@@ -434,22 +434,28 @@
                         <nobr>{$MOD.LBL_YOUR_PUBLISH_URL|strip_semicolon}:</nobr>
                     </slot>
                 </td>
-                <td colspan=2><span class="calendar_publish_ok">{$CALENDAR_PUBLISH_URL}</span><span
-                            class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span></td>
+                <td colspan=2 class='urltext' style='white-space:normal;'>
+                    <span class="calendar_publish_ok">{$CALENDAR_PUBLISH_URL}</span>
+                    <span class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span>
+                </td>
             </tr>
             <tr>
                 <td width="17%" scope="row">
                     <slot>{$MOD.LBL_SEARCH_URL|strip_semicolon}:</slot>
                 </td>
-                <td colspan=2><span class="calendar_publish_ok">{$CALENDAR_SEARCH_URL}</span><span
-                            class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span></td>
+                <td colspan=2 class='urltext' style='white-space:normal;'>
+                    <span class="calendar_publish_ok">{$CALENDAR_SEARCH_URL}</span>
+                    <span class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span>
+                </td>
             </tr>
             <tr>
                 <td width="15%" scope="row">
                     <slot>{$MOD.LBL_ICAL_PUB_URL|strip_semicolon}: {sugar_help text=$MOD.LBL_ICAL_PUB_URL_HELP}</slot>
                 </td>
-                <td colspan=2><span class="calendar_publish_ok">{$CALENDAR_ICAL_URL}</span><span
-                            class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span></td>
+                <td colspan=2 class='urltext' style='white-space:normal;'>
+                    <span class="calendar_publish_ok">{$CALENDAR_ICAL_URL}</span>
+                    <span class="calendar_publish_none" style="display: none">{$MOD.LBL_NO_KEY}</span>
+                </td>
             </tr>
             <tr>
                 <td width="17%" scope="row">
@@ -525,7 +531,7 @@
                     <td colspan="4">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td class="subtheme_layout" scope="row" align="left" style="width:100%;padding-bottom: 2em;">{$TAB_CHOOSER}</td>
+                                <td class="subtheme_layout" scope="row" align="left" style="width:100%;padding-bottom: 2em;padding-left:0;">{$TAB_CHOOSER}</td>
                                 <td width="90%" valign="top"><BR>&nbsp;</td>
                             </tr>
                         </table>

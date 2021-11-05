@@ -66,11 +66,33 @@ class ModuleNameMapper
      */
     public function isValidModule(string $module): bool
     {
-        if (empty($this->map[$module])) {
-            return false;
+        global $moduleList;
+        global $modInvisList;
+
+        if (in_array($module, $moduleList, true)) {
+            return true;
         }
 
-        return true;
+        if (in_array($module, $modInvisList, true)) {
+            return true;
+        }
+
+        if (in_array($module, ['History', 'Activities'], true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get visible modules
+     * @return array
+     */
+    public function getVisibleModules(): array
+    {
+        global $moduleList;
+
+        return $moduleList;
     }
 
     /**
@@ -143,5 +165,4 @@ class ModuleNameMapper
 
         return $this->map[$module][$type];
     }
-
 }
