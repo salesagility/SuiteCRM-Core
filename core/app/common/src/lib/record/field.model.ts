@@ -92,6 +92,14 @@ export interface FieldDefinition {
     metadata?: FieldMetadata;
     default?: string;
     modes?: ViewMode[];
+    relationship?: string;
+    relationshipMetadata?: RelationshipMetadata
+}
+
+export interface RelationshipMetadata {
+    side: string;
+    related_id?: string;
+    type: string;
 }
 
 export interface LineItemsMetadata {
