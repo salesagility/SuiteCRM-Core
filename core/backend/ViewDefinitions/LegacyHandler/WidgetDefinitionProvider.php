@@ -69,8 +69,7 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         ActionAvailabilityChecker $actionChecker
-    )
-    {
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -139,9 +138,16 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
         $widgets = $this->filterDefinitionEntries($module, 'widgets', $config, $this->actionChecker);
 
         $displayedWidgets = $this->filterAccessibleWidgets($widgets);
+
         return array_values($displayedWidgets);
     }
 
+    /**
+     * Filter to get list of accessible widgets
+     *
+     * @param array $widgets
+     * @return array
+     */
     protected function filterAccessibleWidgets(array $widgets): array
     {
         $accessibleWidgets = [];
@@ -157,7 +163,13 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
         return $accessibleWidgets;
     }
 
-    protected function checkWidgetACLs(array &$widget)
+    /**
+     * Check acls for widgets
+     *
+     * @param array $widget
+     * @return bool
+     */
+    protected function checkWidgetACLs(array &$widget): bool
     {
         $widgetAcls = $widget['acls'] ?? [];
 
@@ -166,14 +178,19 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
         }
 
         $this->init();
+        $this->startLegacyApp();
 
         $access = true;
         foreach ($widgetAcls as $widgetModule => $acls) {
             foreach ($acls as $acl) {
-                if (!ACLController::checkAccess($widgetModule, $acl)) {
+                if (!ACLController::checkAccess($widgetModule, $acl, true, 'module', true)) {
                     $access = false;
                     break;
                 }
+            }
+
+            if ($access === false) {
+                break;
             }
         }
         $widget['access'] = $access;
