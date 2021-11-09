@@ -67,6 +67,7 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
     messageLabelKey = 'LBL_CHART_NOT_FOUND';
     selectedChart = '';
     chartType = '';
+    dataSource: ChartDataSource;
     vm$: Observable<ChartSidebarWidgetState>;
     loading$: Observable<boolean>;
     appStrings$: Observable<LanguageStringMap>;
@@ -134,13 +135,6 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
         }
 
         return this.charts[stat.query.key].labelKey;
-    }
-
-    getDataSource(statistics: CharDataMap): ChartDataSource {
-        if (!statistics[this.selectedChart]) {
-            return null;
-        }
-        return statistics[this.selectedChart].dataSource;
     }
 
     getKey(chart: ChartMetadata): string {
@@ -232,31 +226,10 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
         this.title = this.language.getFieldLabel(this.titleLabelKey);
     }
 
-    protected setupLoading(): void {
-
-        const loadings$: Observable<boolean>[] = [];
-
-        Object.keys(this.charts).forEach(key => loadings$.push(this.charts[key].store.loading$));
-
-        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
-
-            if (!loadings || loadings.length < 1) {
-                this.loading = false;
-                return false;
-            }
-
-            let loading = true;
-
-            loadings.forEach(value => {
-                loading = loading && value;
-            });
-
-            this.loading = loading;
-
-            return loading;
-        }));
-
-        this.subs.push(this.loading$.subscribe());
+    onChartSelect(): void {
+        this.dataSource = null;
+        this.chartType = this.charts[this.selectedChart].chartType;
+        this.reloadSelectedChart(false);
     }
 
     protected setupVM(): void {
@@ -315,15 +288,45 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
 
     }
 
-    protected reloadSelectedChart(): void {
+    protected setupLoading(): void {
+
+        const loadings$: Observable<boolean>[] = [];
+
+        Object.keys(this.charts).forEach(key => loadings$.push(this.charts[key].store.loading$));
+
+        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
+
+            if (!loadings || loadings.length < 1) {
+                this.loading = false;
+                return false;
+            }
+
+            let loading = false;
+
+            loadings.forEach(value => {
+                loading = loading || value;
+            });
+
+            this.loading = loading;
+
+            return loading;
+        }));
+
+        this.subs.push(this.loading$.subscribe());
+    }
+
+    protected reloadSelectedChart(useCache = false): void {
 
         if (!this.charts || !this.charts[this.selectedChart] || !this.charts[this.selectedChart].store) {
             return;
         }
 
-        this.charts[this.selectedChart].store.load(false).pipe(
+        useCache = useCache && !this.charts[this.selectedChart].reload;
+
+        this.charts[this.selectedChart].store.load(useCache).pipe(
             take(1),
             tap(() => {
+                this.dataSource = this.charts[this.selectedChart]?.store?.getDataSource() ?? null;
                 this.charts[this.selectedChart].reload = false;
             })
         ).subscribe();
