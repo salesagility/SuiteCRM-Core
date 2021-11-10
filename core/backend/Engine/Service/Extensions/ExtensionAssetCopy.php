@@ -59,6 +59,9 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
 
         $publicPath = $this->projectDir . '/public/';
         $extensionsPath = $this->projectDir . '/extensions/';
+        $publicExtensionsPath = $this->projectDir . '/public/extensions';
+
+        $this->cleanPublicExtensions($filesystem, $publicExtensionsPath);
 
         try {
             $it = $this->find($extensionsPath);
@@ -74,7 +77,7 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
             $path = $file->getPathname();
 
             $name = str_replace(array($extensionsPath, '/Resources/public'), '', $path);
-            $filesystem->copy($path, "$publicPath/extensions/$name");
+            $filesystem->copy($path, $publicExtensionsPath . '/' . $name);
         }
     }
 
@@ -97,5 +100,15 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
         $finder->in($fullPath . '*/Resources/public');
 
         return $finder->getIterator();
+    }
+
+    /**
+     * @param Filesystem $filesystem
+     * @param string $publicExtensionsPath
+     */
+    protected function cleanPublicExtensions(Filesystem $filesystem, string $publicExtensionsPath): void
+    {
+        $filesystem->remove($publicExtensionsPath);
+        $filesystem->mkdir($publicExtensionsPath);
     }
 }
