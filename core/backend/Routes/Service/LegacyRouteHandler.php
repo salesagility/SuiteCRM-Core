@@ -41,18 +41,25 @@ class LegacyRouteHandler
      * @var LegacyNonViewActionRedirectHandler
      */
     private $legacyNonViewActionRedirectHandler;
+    /**
+     * @var LegacyAssetRedirectHandler
+     */
+    private $legacyAssetRedirectHandler;
 
     /**
      * LegacyRedirectListener constructor.
      * @param LegacyApiRedirectHandler $legacyApiRedirectHandler
      * @param LegacyNonViewActionRedirectHandler $legacyNonViewActionRedirectHandler
+     * @param LegacyAssetRedirectHandler $legacyAssetRedirectHandler
      */
     public function __construct(
         LegacyApiRedirectHandler $legacyApiRedirectHandler,
-        LegacyNonViewActionRedirectHandler $legacyNonViewActionRedirectHandler
+        LegacyNonViewActionRedirectHandler $legacyNonViewActionRedirectHandler,
+        LegacyAssetRedirectHandler $legacyAssetRedirectHandler
     ) {
         $this->legacyApiRedirectHandler = $legacyApiRedirectHandler;
         $this->legacyNonViewActionRedirectHandler = $legacyNonViewActionRedirectHandler;
+        $this->legacyAssetRedirectHandler = $legacyAssetRedirectHandler;
     }
 
     /**
@@ -62,6 +69,11 @@ class LegacyRouteHandler
      */
     public function getLegacyRoute(Request $request): array
     {
+        if ($this->isRedirectLoop($request)) {
+            return [
+                'access' => true
+            ];
+        }
 
         if ($this->isLegacyEntryPoint($request)) {
             return $this->legacyNonViewActionRedirectHandler->getIncludeFile($request);
@@ -71,12 +83,40 @@ class LegacyRouteHandler
             return $this->legacyApiRedirectHandler->getIncludeFile($request);
         }
 
+        if ($this->isLegacyEntryPointFile($request)) {
+            return $this->legacyNonViewActionRedirectHandler->getEntrypointIncludeFile($request);
+        }
+
+        if ($this->isAssetRequest($request)) {
+            return [];
+        }
 
         if ($this->isLegacyNonViewActionRoute($request)) {
             return $this->legacyNonViewActionRedirectHandler->getIncludeFile($request);
         }
 
+
         return [];
+    }
+
+    /**
+     * Check if it is legacy entry point
+     * @param Request $request
+     * @return bool
+     */
+    protected function isRedirectLoop(Request $request): bool
+    {
+        return strpos($request->getPathInfo(), 'legacy/legacy') !== false;
+    }
+
+    /**
+     * Check if it is legacy entry point
+     * @param Request $request
+     * @return bool
+     */
+    protected function isAssetRequest(Request $request): bool
+    {
+        return $this->legacyAssetRedirectHandler->isAssetRequest($request);
     }
 
     /**
@@ -87,6 +127,16 @@ class LegacyRouteHandler
     protected function isLegacyEntryPoint(Request $request): bool
     {
         return $this->legacyNonViewActionRedirectHandler->isLegacyEntryPoint($request);
+    }
+
+    /**
+     * Check if it is legacy entry point
+     * @param Request $request
+     * @return bool
+     */
+    protected function isLegacyEntryPointFile(Request $request): bool
+    {
+        return $this->legacyNonViewActionRedirectHandler->isLegacyEntryPointFile($request);
     }
 
     /**

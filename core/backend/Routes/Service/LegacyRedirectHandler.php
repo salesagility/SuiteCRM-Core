@@ -94,7 +94,8 @@ class LegacyRedirectHandler
 
         return [
             'dir' => '',
-            'file' => $baseUrl
+            'file' => $baseUrl,
+            'access' => true
         ];
     }
 

@@ -42,8 +42,21 @@ if (!empty($legacyRoute)) {
 
     chdir($path);
 
-    /* @noinspection PhpIncludeInspection */
-    require $legacyRoute['file'];
+    $access = $legacyRoute['access'] ?? false;
+    if ($access === false) {
+        http_response_code(404);
+        exit;
+    }
+
+    if (file_exists($legacyRoute['file'])) {
+
+        /* @noinspection PhpIncludeInspection */
+        require $legacyRoute['file'];
+    } else {
+
+        http_response_code(404);
+        exit;
+    }
 
 } else {
     $response = $kernel->handle($request);

@@ -44,18 +44,28 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var array
+     */
+    private $legacyEntrypointFiles;
 
     /**
      * LegacyNonViewActionRedirectHandler constructor.
      * @param RouteConverterInterface $routeConverter
      * @param RouterInterface $router
      * @param String $legacyPath
+     * @param array $legacyEntrypointFiles
      */
-    public function __construct(RouteConverterInterface $routeConverter, RouterInterface $router, string $legacyPath)
-    {
+    public function __construct(
+        RouteConverterInterface $routeConverter,
+        RouterInterface $router,
+        string $legacyPath,
+        array $legacyEntrypointFiles
+    ) {
         parent::__construct($legacyPath);
         $this->routeConverter = $routeConverter;
         $this->router = $router;
+        $this->legacyEntrypointFiles = $legacyEntrypointFiles;
     }
 
     /**
@@ -85,6 +95,49 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
     }
 
     /**
+     * Check if is legacy entry point file
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function isLegacyEntryPointFile(Request $request): bool
+    {
+
+        if (strpos($request->getPathInfo(), 'index.php') !== false) {
+            return false;
+        }
+
+        if (preg_match('/^\\[^\\^\/]*\.php/', $request->getPathInfo())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get include file
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getEntrypointIncludeFile(Request $request): array
+    {
+        $includeFile = [
+            'access' => false
+        ];
+
+        foreach ($this->legacyEntrypointFiles as $key => $config) {
+            if (strpos($request->getPathInfo(), '/' . $key) !== false) {
+                $includeFile = $config;
+                $includeFile['access'] = true;
+                break;
+            }
+        }
+
+        return $includeFile;
+    }
+
+    /**
      * Check if is legacy entry point
      *
      * @param Request $request
@@ -94,7 +147,9 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
     {
         $isEntryPoint = false;
 
-        if (strpos($request->getUri(), 'entryPoint=') !== false) {
+        if (strpos($request->getPathInfo(), '/index.php') !== false &&
+            strpos($request->getUri(), 'entryPoint=') !== false
+        ) {
             $isEntryPoint = true;
         }
 

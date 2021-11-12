@@ -20,6 +20,7 @@ services:
       $copyLegacyAssetPaths: '%legacy.copy_asset_paths%'
       $legacyApiPaths: '%legacy.api_paths%'
       $legacyApiPathFiles: '%legacy.api_path_files%'
+      $legacyEntrypointFiles: '%legacy.entrypoint_files%'
       $exposedUserPreferences: '%legacy.exposed_user_preferences%'
       $userPreferencesKeyMap: '%legacy.user_preferences_key_map%'
       $themeImagePaths: '%themes.image_paths%'

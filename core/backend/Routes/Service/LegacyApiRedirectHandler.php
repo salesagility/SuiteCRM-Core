@@ -104,6 +104,7 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
 
                 $info['script-name'] = $scriptName;
                 $info['request-uri'] = $requestUri;
+                $info['access'] = true;
 
                 return $info;
             }
@@ -111,7 +112,8 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
 
         return [
             'dir' => '',
-            'file' => 'index.php'
+            'file' => 'index.php',
+            'access' => true
         ];
     }
 }
