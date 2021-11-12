@@ -206,7 +206,7 @@ class InstallHandler extends LegacyHandler
      */
     public function createConfig(array $inputArray): bool
     {
-        $siteURL = $inputArray['site_host'] . '/legacy';
+        $siteURL = $inputArray['site_host'];
         $configArray = [
             'dbUSRData' => 'same',
             'default_currency_iso4217' => 'USD',
