@@ -97,9 +97,7 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
                 'H',
                 InputOption::VALUE_REQUIRED,
                 'database host'
-            ),
-            'default' => '3306',
-            'required' => false
+            )
         ];
 
         $this->inputConfig['db_port'] = [
