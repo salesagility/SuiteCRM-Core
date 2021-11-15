@@ -3,5 +3,8 @@ parameters:
     - cache
     - include
     - themes
+    - custom
+    - vendor/tinymce
+    - modules
   legacy.copy_asset_paths:
     vendor/tinymce/tinymce/tinymce.min.js: 'vendor/tinymce/tinymce/tinymce.min.js'
