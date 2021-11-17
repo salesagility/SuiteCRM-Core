@@ -76,6 +76,10 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
+        global $mod_strings, $current_language;
+
+        $mod_strings = return_module_language($current_language, 'Users');
+
         $authController = $this->getAuthenticationController();
 
         $PARAMS = [
