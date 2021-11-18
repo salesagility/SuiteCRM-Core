@@ -102,7 +102,6 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
      */
     public function isLegacyEntryPointFile(Request $request): bool
     {
-
         if (strpos($request->getPathInfo(), 'index.php') !== false) {
             return false;
         }
@@ -147,7 +146,7 @@ class LegacyNonViewActionRedirectHandler extends LegacyRedirectHandler
     {
         $isEntryPoint = false;
 
-        if (strpos($request->getPathInfo(), '/index.php') !== false &&
+        if (strpos($request->getUri(), '/index.php') !== false &&
             strpos($request->getUri(), 'entryPoint=') !== false
         ) {
             $isEntryPoint = true;
