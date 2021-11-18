@@ -100,7 +100,12 @@ class CopyLegacyAssets extends Command
         foreach ($this->copyLegacyAssetPaths as $path => $legacyPath) {
             $copyPath = $this->legacyDir . '/' . $legacyPath;
             $originPath = $this->getProjectDir() . '/' . $path;
-            $filesystem->copy($originPath, $copyPath);
+
+            if (is_dir($originPath)) {
+                $filesystem->mirror($originPath, $copyPath, null, ['override' => true, 'delete' => true]);
+            } elseif (is_file($originPath)) {
+                $filesystem->copy($originPath, $copyPath);
+            }
         }
     }
 
