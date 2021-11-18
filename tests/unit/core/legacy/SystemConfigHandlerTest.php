@@ -330,11 +330,6 @@ class SystemConfigHandlerTest extends Unit
                 'list' => true,
                 'record' => true
             ],
-            'spots' => [
-                'index' => true,
-                'list' => true,
-                'record' => true
-            ],
             'roles' => [
                 'index' => true,
                 'list' => true,

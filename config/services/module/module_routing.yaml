@@ -84,10 +84,6 @@ parameters:
       index: true
       list: true
       record: false
-    spots:
-      index: true
-      list: true
-      record: false
     roles:
       index: true
       list: true
