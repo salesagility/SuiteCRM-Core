@@ -84,9 +84,13 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
     {
         $this->init();
 
-        global $modInvisList;
+        global $modInvisList, $current_user;
 
-        $modules = $this->getFilterVisibleModules();
+        if ($current_user->isAdmin()) {
+            $modules = $this->getAllModules();
+        } else {
+            $modules = $this->getFilterAccessibleModules();
+        }
 
         if (empty($modules)) {
             return [];
@@ -114,21 +118,40 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
     }
 
     /**
-     * Get of list of modules. Apply acl filter
+     * Get of list of all modules.
      *
      * @return array
      */
-    protected function getFilterVisibleModules(): array
+    protected function getAllModules(): array
     {
-        global $current_user;
+        global $app_list_strings;
 
-        $modules = query_module_access_list($current_user);
+        $modules = $app_list_strings['moduleList'];
 
         if (empty($modules)) {
             return [];
         }
 
-        ACLController::filterModuleList($modules, false);
+        return $modules;
+    }
+
+    /**
+     * Get of list of modules. Apply acl filter
+     *
+     * @return array
+     */
+    protected function getFilterAccessibleModules(): array
+    {
+        /* @noinspection PhpIncludeInspection */
+        require_once("modules/MySettings/TabController.php");
+        $controller = new \TabController();
+        $tabs = $controller->get_tabs_system();
+
+        $modules = array_merge($tabs[0], $tabs[1]);
+
+        if (empty($modules)) {
+            return [];
+        }
 
         return $modules;
     }
