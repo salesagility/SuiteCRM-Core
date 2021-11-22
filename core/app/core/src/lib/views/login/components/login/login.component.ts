@@ -145,13 +145,17 @@ export class LoginUiComponent {
             );
     }
 
-    onLoginSuccess(): void {
+    onLoginSuccess(result: any): void {
         this.loading = false;
         this.message.log('Login success');
         this.message.removeMessages();
 
-        const defaultModule = this.systemConfigStore.getHomePage();
-        this.router.navigate(['/' + defaultModule]).then();
+        if (result && result.redirect) {
+            this.router.navigate([result.redirect]).then();
+        } else {
+            const defaultModule = this.systemConfigStore.getHomePage();
+            this.router.navigate(['/' + defaultModule]).then();
+        }
 
         return;
     }
