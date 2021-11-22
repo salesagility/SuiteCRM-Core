@@ -87,7 +87,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
         global $modInvisList, $current_user;
 
         if ($current_user->isAdmin()) {
-            $modules = $this->getAllModules();
+            $modules = array_merge($this->getFilterAccessibleModules(), $this->getAllModules());
         } else {
             $modules = $this->getFilterAccessibleModules();
         }
