@@ -4,7 +4,10 @@ parameters:
     - include
     - themes
     - custom
-    - vendor/tinymce
+    - vendor
     - modules
+    - public
+    - upload
   legacy.copy_asset_paths:
     vendor/tinymce/tinymce: 'vendor/tinymce/tinymce'
+    vendor/gymadarasz: 'vendor/gymadarasz'
