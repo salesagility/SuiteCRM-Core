@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {viewFieldsMap} from './field.manifest';
 import {Field, Record} from 'common';
 import {FieldRegistry} from './field.registry';
@@ -34,17 +34,22 @@ import {FieldRegistry} from './field.registry';
     templateUrl: './field.component.html',
     styleUrls: []
 })
-export class FieldComponent {
+export class FieldComponent implements OnInit {
     @Input('mode') mode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
     @Input('record') record: Record = null;
     @Input('klass') klass: { [key: string]: any } = null;
+    @HostBinding('class') class = 'field';
 
     map = viewFieldsMap;
 
     constructor(protected registry: FieldRegistry) {
 
+    }
+
+    ngOnInit(): void {
+        this.setHostClass();
     }
 
     get componentMode(): string {
@@ -67,5 +72,24 @@ export class FieldComponent {
         const displayType = (this.field.definition && this.field.definition.displayType) || '';
 
         return this.registry.getDisplayType(module, this.type, displayType, this.componentMode);
+    }
+
+    public setHostClass() {
+        const classes = [];
+        classes.push('field');
+
+        if (this.mode) {
+            classes.push('field-mode-' + this.mode)
+        }
+
+        if (this.type) {
+            classes.push('field-type-' + this.type)
+        }
+
+        if (this.field && this.field.name) {
+            classes.push('field-name-' + this.field.name)
+        }
+
+        this.class = classes.join(' ');
     }
 }

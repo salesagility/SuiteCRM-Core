@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit, Type} from '@angular/core';
+import {Component, HostBinding, Input, OnInit, Type} from '@angular/core';
 import {Field, Record, StringMap} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -44,6 +44,8 @@ export class DynamicFieldComponent implements OnInit {
     @Input('parent') parent: Record = null;
     @Input('klass') klass: { [key: string]: any } = null;
     @Input('componentType') componentType: Type<any>;
+
+    @HostBinding('class') class = 'dynamic-field';
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -66,6 +68,7 @@ export class DynamicFieldComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.setHostClass();
     }
 
     isLink(): boolean {
@@ -119,6 +122,25 @@ export class DynamicFieldComponent implements OnInit {
 
         this.router.navigateByUrl(this.getLink()).then();
         return false;
+    }
+
+    public setHostClass() {
+        const classes = [];
+        classes.push('dynamic-field');
+
+        if (this.mode) {
+            classes.push('dynamic-field-mode-' + this.mode)
+        }
+
+        if (this.type) {
+            classes.push('dynamic-field-type-' + this.type)
+        }
+
+        if (this.field && this.field.name) {
+            classes.push('dynamic-field-name-' + this.field.name)
+        }
+
+        this.class = classes.join(' ');
     }
 
 }
