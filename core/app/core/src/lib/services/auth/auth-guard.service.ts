@@ -162,7 +162,6 @@ export class AuthGuard implements CanActivate {
                 map((user: SessionStatus) => {
 
                     if (user && user.appStatus.installed === false) {
-                        this.message.addDangerMessageByKey('LBL_APP_NOT_INSTALLED');
                         return this.router.parseUrl('install');
                     }
 
