@@ -28,9 +28,11 @@
 namespace App\Authentication\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Install\Service\InstallationUtilsTrait;
 use AuthenticationController;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class Authentication
@@ -41,6 +43,40 @@ class Authentication extends LegacyHandler
 
     public const HANDLER_KEY = 'authentication';
     protected $config;
+    /**
+     * @var array
+     */
+    private $systemSettings;
+
+    /**
+     * LegacyHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param array $systemSettings
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        array $systemSettings
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
+        $this->systemSettings = $systemSettings;
+    }
 
     /**
      * @inheritDoc
@@ -61,6 +97,30 @@ class Authentication extends LegacyHandler
         $this->config = $config;
 
         return $this;
+    }
+
+    /**
+     * Is current user admin
+     *
+     * @return string
+     */
+    public function needsRedirect(): string
+    {
+        $this->init();
+
+        global $current_user;
+
+        $timezone = $current_user->getPreference('timezone');
+        $ut = $current_user->getPreference('ut');
+        if (empty($ut) || empty($timezone)) {
+            $this->close();
+
+            return $this->systemSettings['setup_wizard_route'] ?? 'users/set-timezone';
+        }
+
+        $this->close();
+
+        return '';
     }
 
     /**

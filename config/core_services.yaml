@@ -48,6 +48,7 @@ services:
       $legacyActionResolverMap: '%legacy.action_resolver%'
       $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
+      $systemSettings: '%system.settings%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
       $subpanelLineActions: '%module.subpanel.line_actions%'
