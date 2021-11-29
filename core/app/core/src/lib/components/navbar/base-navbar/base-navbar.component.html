@@ -182,7 +182,7 @@
                         <li class="global-link-item">
                             <a #globalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
+                                <span class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>
                             </a>
                             <div [style.min-width.px]="globalLinkTitle.offsetWidth" aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>

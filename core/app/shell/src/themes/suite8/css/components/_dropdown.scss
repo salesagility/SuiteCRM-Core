@@ -469,3 +469,15 @@ ul.main li a,
   background-color: $vacant-orange;
   cursor: pointer;
 }
+
+.global-links {
+  .global-link-item {
+    .global-user-name {
+      overflow: hidden;
+      max-width: 200px;
+      text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
