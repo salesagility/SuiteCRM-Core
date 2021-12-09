@@ -53,6 +53,7 @@ services:
       $upgradeConfig: '%upgrades%'
       $subpanelLineActions: '%module.subpanel.line_actions%'
       $subpanelTopActions: '%module.subpanel.top_actions%'
+      $subpanelTopButtons: '%module.subpanel.top_buttons%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]

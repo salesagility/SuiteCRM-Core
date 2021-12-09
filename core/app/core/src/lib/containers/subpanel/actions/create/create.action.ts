@@ -49,8 +49,9 @@ export class SubpanelCreateAction extends SubpanelActionHandler {
     run(data: SubpanelActionData): void {
 
         const moduleName = data.module;
+        const moduleAction = data?.action?.moduleAction ?? 'edit';
 
-        const route = `/${moduleName}/edit`;
+        const route = `/${moduleName}/${moduleAction}`;
 
         const queryParams = {
             // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
