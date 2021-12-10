@@ -362,8 +362,7 @@ export class InstallViewStore implements StateStore {
                                                 "vname": "LBL_DBCONF_DB_PORT",
                                                 "labelKey": "LBL_DBCONF_DB_PORT",
                                                 "showLabel": ["*"],
-                                                "required": false,
-                                                "default": "3306"
+                                                "required": false
                                             }
                                         },
                                         showLabel: {

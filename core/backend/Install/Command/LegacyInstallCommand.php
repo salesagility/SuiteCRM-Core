@@ -101,14 +101,14 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
         ];
 
         $this->inputConfig['db_port'] = [
-            'question' => new Question('Please enter the db port: ', '3306'),
+            'question' => new Question('Please enter the db port: '),
             'argument' => new InputOption(
                 'db_port',
                 'Z',
                 InputOption::VALUE_REQUIRED,
                 'database port'
             ),
-            'default' => '3306',
+            'default' => '',
             'required' => false
         ];
 

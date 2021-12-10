@@ -260,9 +260,13 @@ class InstallHandler extends LegacyHandler
      */
     public function checkDBConnection(array $inputArray): bool
     {
+        $dbHost = $inputArray["db_host"];
+        $dbPort = $inputArray["db_port"];
+        $hostString = !empty($dbPort) ? $dbHost . ':' . $dbPort : $dbHost;
+
         try {
             new PDO(
-                "mysql:host=" . $inputArray["db_host"] . ":" . $inputArray["db_port"] . ";",
+                "mysql:host=" . $hostString . ";",
                 $inputArray['db_username'],
                 $inputArray['db_password']
             );
@@ -286,9 +290,10 @@ class InstallHandler extends LegacyHandler
         $username = urlencode($inputArray['db_username'] ?? '');
         $dbName = $inputArray['db_name'] ?? '';
         $host = $inputArray['db_host'] ?? '';
-        $port = $inputArray['db_port'] ?? '3306';
+        $port = $inputArray['db_port'] ?? '';
+        $hostString = !empty($port) ? $host . ':' . $port : $host;
 
-        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$host:$port/$dbName\"";
+        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$hostString/$dbName\"";
         $filesystem = new Filesystem();
         try {
             chdir($this->projectDir);
