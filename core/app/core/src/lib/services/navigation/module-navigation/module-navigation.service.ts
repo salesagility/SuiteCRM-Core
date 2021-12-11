@@ -28,6 +28,9 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModuleAction, NavbarModule, Navigation} from '../../../store/navigation/navigation.store';
 import {LanguageListStringMap, LanguageStrings} from '../../../store/language/language.store';
+import {Record} from 'common';
+import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
+import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
 
 export interface NavigationRoute {
     route: string;
@@ -40,7 +43,11 @@ const ROUTE_PREFIX = './#';
 @Injectable({providedIn: 'root'})
 export class ModuleNavigation {
 
-    constructor(protected router: Router) {
+    constructor(
+        protected router: Router,
+        protected moduleNameMapper: ModuleNameMapper,
+        protected actionNameMapper: ActionNameMapper
+    ) {
     }
 
     /**
@@ -180,5 +187,85 @@ export class ModuleNavigation {
     public getRecordRouterLink(module: string, id: string): string {
 
         return `/${module}/record/${id}`;
+    }
+
+    /**
+     * Navigate back using return params
+     * @param record
+     * @param moduleName
+     * @param params
+     */
+    public navigateBack(
+        record: Record,
+        moduleName: string,
+        params: { [key: string]: string }
+    ) {
+
+        let returnModule = this.getReturnModule(params);
+        let returnAction = this.getReturnAction(params);
+        const returnId = this.getReturnId(params);
+
+        let route = '';
+        if (returnModule) {
+            route += '/' + returnModule;
+        }
+
+        if (returnAction) {
+            route += '/' + returnAction;
+        }
+
+        if (returnId) {
+            route += '/' + returnId;
+        }
+
+        if (returnModule === moduleName && returnAction === 'record') {
+            const rid = !returnId ? record.id : returnId;
+            route = '/' + moduleName + '/record/' + rid;
+        }
+
+        if (!route && record && record.id) {
+            route = '/' + moduleName + '/record/' + record.id;
+        }
+
+        if (!route && record && record.id) {
+            route = '/' + moduleName;
+        }
+
+        this.router.navigate([route]).then();
+    }
+
+    /**
+     * Extract return id
+     * @param params
+     */
+    public getReturnId(params: { [p: string]: string }) {
+        return params.return_id || '';
+    }
+
+    /**
+     * Extract and map return action
+     * @param params
+     */
+    public getReturnAction(params: { [p: string]: string }) {
+        let returnAction = '';
+
+        if (params.return_action) {
+            returnAction = this.actionNameMapper.toFrontend(params.return_action);
+        }
+        return returnAction;
+    }
+
+    /**
+     * Extract and map return action
+     * @param params
+     */
+    public getReturnModule(params: { [p: string]: string }) {
+        let returnModule = '';
+
+        if (params.return_module) {
+            returnModule = this.moduleNameMapper.toFrontend(params.return_module);
+        }
+
+        return returnModule;
     }
 }

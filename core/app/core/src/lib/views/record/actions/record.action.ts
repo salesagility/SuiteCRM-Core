@@ -24,8 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ActionData, ActionHandler} from 'common';
+import {Action, ActionData, ActionHandler, Record} from 'common';
 import {RecordViewStore} from '../store/record-view/record-view.store';
+import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 
 export interface RecordActionData extends ActionData {
     store: RecordViewStore;
@@ -51,4 +52,42 @@ export abstract class RecordActionHandler extends ActionHandler<RecordActionData
 
         return this.checkAccess(action, acls, defaultAcls);
     }
+
+    /**
+     * Navigate back
+     * @param navigation
+     * @param params
+     * @param id
+     * @param moduleName
+     * @param record
+     */
+    protected navigateBack(
+        navigation: ModuleNavigation,
+        params: { [p: string]: string },
+        id: string,
+        moduleName: string,
+        record: Record
+    ) {
+        let returnModule = navigation.getReturnModule(params);
+        let returnAction = navigation.getReturnAction(params);
+        let returnId = navigation.getReturnId(params);
+
+        if (id === returnId) {
+            return;
+        }
+
+        if (returnModule === moduleName &&
+            returnAction === 'record' &&
+            returnId !== id
+        ) {
+            return;
+        }
+
+        if (!returnModule || !returnAction) {
+            return;
+        }
+
+        navigation.navigateBack(record, moduleName, params);
+    }
+
 }

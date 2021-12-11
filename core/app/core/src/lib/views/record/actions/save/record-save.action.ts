@@ -25,10 +25,11 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
+import {Record, ViewMode} from 'common';
 import {take} from 'rxjs/operators';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
+import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 
 @Injectable({
     providedIn: 'root'
@@ -38,14 +39,19 @@ export class RecordSaveAction extends RecordActionHandler {
     key = 'save';
     modes = ['edit' as ViewMode];
 
-    constructor(protected message: MessageService) {
+    constructor(protected message: MessageService, protected navigation: ModuleNavigation) {
         super();
     }
 
     run(data: RecordActionData): void {
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
             if (valid) {
-                data.store.save().pipe(take(1)).subscribe();
+                data.store.save().pipe(take(1)).subscribe(record => {
+                    const params = data.store.params;
+                    const moduleName = data.store.getModuleName();
+                    const id = record.id;
+                    this.navigateBack(this.navigation, params, id, moduleName, record);
+                });
                 return;
             }
 
