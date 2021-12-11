@@ -102,12 +102,38 @@ export class RecordManager {
 
             if (!isVoid(definition)) {
                 const type = definition.type || '';
-                const idName = definition.id_name || '';
+                let idName = definition.id_name || '';
                 const name = definition.name || '';
-                const rname = definition.rname || '';
+                let rname = definition.rname || '';
 
                 if (type === 'relate' && idName === name) {
                     record.attributes[paramKey] = params[paramKey];
+                    return;
+                }
+
+                if (type === 'parent') {
+                    const relate = {} as any;
+
+                    let rname = 'name';
+                    let idName = 'parent_id';
+                    const groupFieldKey = paramKey + '-group';
+                    const groupField = vardefs[groupFieldKey] ?? {};
+                    const parentName = groupField.groupFields[paramKey];
+
+                    if(parentName  && parentName.rname) {
+                        rname = parentName.rname;
+                    }
+
+                    if (rname) {
+                        relate[rname] = params[paramKey];
+                    }
+
+                    if (idName && params[idName]) {
+                        relate.id = params[idName];
+                    }
+
+                    record.attributes[paramKey] = relate;
+
                     return;
                 }
 
