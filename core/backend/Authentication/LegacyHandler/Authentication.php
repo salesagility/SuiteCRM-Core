@@ -115,7 +115,7 @@ class Authentication extends LegacyHandler
         if (empty($ut) || empty($timezone)) {
             $this->close();
 
-            return $this->systemSettings['setup_wizard_route'] ?? 'users/set-timezone';
+            return $this->systemSettings['setup_wizard_route'] ?? 'users/wizard';
         }
 
         $this->close();
