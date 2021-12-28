@@ -59,6 +59,7 @@ class aCase extends Basic
     public $status;
     public $priority;
     public $state;
+    public $type;
     public $update_text;
     public $internal;
     public $send_closure_email;
@@ -329,7 +330,7 @@ class aCase extends Basic
     public function set_notification_body($xtpl, $case)
     {
         global $app_list_strings;
-        
+
         $xtpl->assign('CASE_NUMBER', $case->case_number);
         $xtpl->assign('CASE_SUBJECT', $case->name);
         $xtpl->assign(
