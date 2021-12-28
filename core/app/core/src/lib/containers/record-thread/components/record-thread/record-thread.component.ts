@@ -112,10 +112,16 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     buildItem(item: RecordThreadItemStore, itemRef: any): RecordThreadItemConfig {
+        let klass = 'record-thread-list-item';
+
+        if (this.config.itemConfig.klass) {
+            klass += ' ' + this.config.itemConfig.klass
+        }
+
         return {
             ...this.config.itemConfig,
             store: item,
-            klass: 'record-thread-list-item',
+            klass: klass,
             expanded: (): void => {
                 this.scrollToItem(itemRef);
             },

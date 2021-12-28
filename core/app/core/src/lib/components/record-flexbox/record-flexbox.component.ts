@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {
     ContentAlign,
     ContentJustify,
@@ -38,9 +38,8 @@ import {
     ViewFieldDefinition,
     ViewMode
 } from 'common';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {FieldFlexboxCol, RecordFlexboxConfig, RecordFlexboxViewModel} from './record-flexbox.model';
+import {Subscription} from 'rxjs';
+import {FieldFlexbox, FieldFlexboxCol, RecordFlexboxConfig} from './record-flexbox.model';
 import {LabelDisplay} from '../field-grid/field-grid.model';
 
 @Component({
@@ -48,11 +47,14 @@ import {LabelDisplay} from '../field-grid/field-grid.model';
     templateUrl: './record-flexbox.component.html',
     styles: []
 })
-export class RecordFlexboxComponent {
+export class RecordFlexboxComponent implements OnInit, OnDestroy {
 
     @Input() config: RecordFlexboxConfig;
 
     mode: ViewMode = 'detail';
+    record: Record;
+    layout: FieldFlexbox;
+
     maxColumns: number = 4;
     sizeMap: ScreenSizeMap = {
         handset: 1,
@@ -61,7 +63,7 @@ export class RecordFlexboxComponent {
         wide: 4
     };
 
-    vm$: Observable<RecordFlexboxViewModel>;
+    protected subs: Subscription[] = [];
 
     constructor() {
     }
@@ -72,18 +74,27 @@ export class RecordFlexboxComponent {
         }
         const config = this.config;
 
-        this.vm$ = combineLatest(
-            [
-                config.record$,
-                config.mode$,
-                config.layout$,
-            ]
-        ).pipe(
-            map(([record, mode, layout]) => {
-                this.mode = mode;
-                return {record, mode, layout};
-            })
-        );
+        if (config.record$) {
+            this.subs.push(config.record$.subscribe(record => {
+                this.record = record ?? null;
+            }));
+        }
+
+        if (config.mode$) {
+            this.subs.push(config.mode$.subscribe(mode => {
+                this.mode = mode ?? 'detail';
+            }));
+        }
+
+        if (config.layout$) {
+            this.subs.push(config.layout$.subscribe(layout => {
+                this.layout = layout ?? null;
+            }));
+        }
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
 
@@ -175,7 +186,12 @@ export class RecordFlexboxComponent {
         return klasses.join(' ');
     }
 
-    getLabelDisplay(col: FieldFlexboxCol): LabelDisplay {
+    getLabelDisplay(col: FieldFlexboxCol, mode: ViewMode): LabelDisplay {
+        const displayInMode = this.shouldLabelDisplayInMode(col, mode);
+        if (!displayInMode){
+            return 'none';
+        }
+
         return col.labelDisplay || (this.config && this.config.labelDisplay) || 'inline';
     }
 
@@ -207,7 +223,14 @@ export class RecordFlexboxComponent {
         return klasses;
     }
 
-    shouldDisplay(col: FieldFlexboxCol, field: Field) {
+    shouldDisplay(col: FieldFlexboxCol, field: Field, mode: ViewMode) {
+
+        const displayInMode = this.shouldFieldDisplayInMode(col, mode);
+
+        if (!displayInMode){
+            return false;
+        }
+
         if (!col.hideIfEmpty) {
             return true;
         }
@@ -218,6 +241,20 @@ export class RecordFlexboxComponent {
         hasValue = hasValue || !!(field.valueObject && Object.keys(field.valueObject).length);
 
         return hasValue;
+    }
+
+    shouldColDisplayInMode(col: FieldFlexboxCol, mode: ViewMode): boolean {
+        return this.shouldFieldDisplayInMode(col, mode) || this.shouldLabelDisplayInMode(col, mode);
+    }
+
+    shouldFieldDisplayInMode(col: FieldFlexboxCol, mode: ViewMode): boolean {
+        const modes = col?.modes ?? null;
+        return !(modes && modes.length && !modes.includes(mode));
+    }
+
+    shouldLabelDisplayInMode(col: FieldFlexboxCol, mode: ViewMode): boolean {
+        const modes = col?.labelModes ?? null;
+        return !(modes && modes.length && !modes.includes(mode));
     }
 
     getDisplay(col: FieldFlexboxCol): string {

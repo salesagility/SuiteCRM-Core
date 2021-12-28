@@ -377,3 +377,10 @@ button.settings-button.dropdown-toggle::after {
 .select-button:hover {
   fill: $white;
 }
+
+.btn-xs {
+  padding: 0.25rem 0.5rem;
+  font-size: 65%;
+  border-radius: 0.25rem;
+  line-height: 1.5;
+}

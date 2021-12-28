@@ -54,3 +54,45 @@ ul li::marker {
 .text-danger {
   color: $btn-danger;
 }
+
+.fill-white {
+  fill: $white;
+}
+
+.stroke-white {
+  stroke: $white;
+}
+
+
+.fill-main {
+  fill: $main;
+}
+
+.stroke-main {
+  stroke: $main;
+}
+
+.fill-hover-main:hover {
+  fill: $main;
+}
+
+.stroke-hover-main:hover {
+  stroke: $main;
+}
+
+.fill-primary {
+  fill: $primary;
+}
+
+.stroke-primary {
+  stroke: $primary;
+}
+
+.fill-secondary {
+  fill: $secondary;
+}
+
+.stroke-secondary {
+  stroke: $secondary;
+}
+

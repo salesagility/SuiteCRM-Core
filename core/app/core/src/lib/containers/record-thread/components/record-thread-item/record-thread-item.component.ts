@@ -164,4 +164,11 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
 
         }))
     }
+
+    /**
+     * Get body class
+     */
+    getBodyClass(): string {
+        return this.config?.metadata?.bodyLayout?.class ?? ''
+    }
 }

@@ -26,75 +26,80 @@
 */
 -->
 
-<div *ngIf="(vm$| async) as vm" class="d-flex flex-column {{(config && config.klass) || ''}}">
+<div *ngIf="config" class="d-flex flex-column {{(config && config.klass) || ''}}">
+    <ng-container *ngIf="layout && layout.rows">
+        <ng-container *ngFor="let item of layout.rows">
 
-    <ng-container *ngFor="let item of vm.layout.rows">
+            <div [ngClass]="config.rowClass ?? null"
+                 class="d-flex record-flexbox-row {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getLayoutRowClass(item)}}">
 
-        <div [ngClass]="getRowClass()"
-             class="d-flex record-flexbox-row {{getJustify(item.justify)}} {{getAlign(item.align)}} {{getLayoutRowClass(item)}}">
+                <ng-container *ngFor="let col of item.cols">
 
-            <div *ngFor="let col of item.cols"
-                 [ngClass]="getColClass()"
-                 class="record-flexbox-col {{getClass(col)}}">
+                <div *ngIf="col.display !== 'hidden' && shouldColDisplayInMode(col, mode)"
+                     [ngClass]="config.colClass ?? null"
+                     class="record-flexbox-col {{getClass(col)}}">
 
-                <ng-container *ngIf="col.display !== 'hidden'">
+                    <ng-container *ngIf="col.display !== 'hidden' && shouldColDisplayInMode(col, mode)">
 
-                    <div [class.align-items-center]="getLabelDisplay(col) === 'inline'"
-                         [class.flex-column]="getLabelDisplay(col) === 'top'"
-                         [class.flex-row]="getLabelDisplay(col) === 'inline'"
-                         [class.justify-content-end]="!col.field"
-                         class="d-flex"
-                    >
-                        <ng-container *ngIf="getField(vm.record, col.field) as field">
+                        <div [class.align-items-center]="getLabelDisplay(col, mode) === 'inline'"
+                             [class.flex-column]="getLabelDisplay(col, mode) === 'top'"
+                             [class.flex-row]="getLabelDisplay(col, mode) === 'inline'"
+                             [class.justify-content-end]="!col.field"
+                             class="d-flex"
+                        >
+                            <ng-container *ngIf="record">
+                                <ng-container *ngIf="getField(record, col.field) as field">
 
-                            <ng-container *ngIf="shouldDisplay(col, field)">
-                                <ng-container *ngIf="getLabelDisplay(col) !== 'none'">
+                                    <ng-container *ngIf="shouldDisplay(col, field, mode)">
+                                        <ng-container *ngIf="getLabelDisplay(col, mode) !== 'none'">
 
-                                    <div [class.pr-3]="getLabelDisplay(col) === 'inline' && getDisplay(col) !== 'none'">
+                                            <div
+                                                [class.pr-3]="getLabelDisplay(col, mode) === 'inline' && getDisplay(col) !== 'none'">
 
-                                        <label *ngIf="field.label" [ngClass]="getLabelClass(col)">
-                                            {{field.label}}
-                                        </label>
+                                                <label *ngIf="field.label" [ngClass]="getLabelClass(col)">
+                                                    {{field.label}}
+                                                </label>
 
-                                        <scrm-label *ngIf="!field.label && field.labelKey"
-                                                    [labelKey]="field.labelKey"
-                                                    [ngClass]="getLabelClass(col)">
-                                        </scrm-label>
-                                    </div>
+                                                <scrm-label *ngIf="!field.label && field.labelKey"
+                                                            [labelKey]="field.labelKey"
+                                                            [ngClass]="getLabelClass(col)">
+                                                </scrm-label>
+                                            </div>
+
+                                        </ng-container>
+
+                                        <ng-container *ngIf="getDisplay(col) !== 'none'">
+
+                                            <div [class.flex-grow-1]="getLabelDisplay(col, mode) === 'inline'">
+
+                                                <scrm-field [field]="field"
+                                                            [klass]="getFieldClass(col)"
+                                                            [mode]="mode"
+                                                            [type]="field.type">
+                                                </scrm-field>
+
+                                            </div>
+
+                                        </ng-container>
+
+
+                                    </ng-container>
 
                                 </ng-container>
-
-                                <ng-container *ngIf="getDisplay(col) !== 'none'">
-
-                                    <div [class.flex-grow-1]="getLabelDisplay(col) === 'inline'">
-
-                                        <scrm-field [field]="field"
-                                                    [klass]="getFieldClass(col)"
-                                                    [mode]="vm.mode"
-                                                    [type]="field.type">
-                                        </scrm-field>
-
-                                    </div>
-
-                                </ng-container>
-
-
                             </ng-container>
 
-                        </ng-container>
+                            <ng-container *ngIf="col.actionSlot && this.config.actions">
+                                <scrm-action-group-menu [buttonClass]="config.buttonClass"
+                                                        [config]="config.actions">
+                                </scrm-action-group-menu>
+                            </ng-container>
 
+                        </div>
+                    </ng-container>
 
-                        <ng-container *ngIf="col.actionSlot && this.config.actions">
-                            <scrm-action-group-menu [buttonClass]="config.buttonClass"
-                                                    [config]="config.actions">
-                            </scrm-action-group-menu>
-                        </ng-container>
-
-                    </div>
+                </div>
                 </ng-container>
-
             </div>
-
-        </div>
+        </ng-container>
     </ng-container>
 </div>

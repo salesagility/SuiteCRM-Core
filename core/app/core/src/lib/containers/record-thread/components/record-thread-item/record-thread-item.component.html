@@ -39,7 +39,7 @@
     <div #body
          [class.collapsed]="collapsible && collapsed"
          [class.expanded]="collapsible && !collapsed"
-         class="record-thread-item-body flex-grow-1">
+         class="record-thread-item-body flex-grow-1 {{getBodyClass()}}">
 
         <ng-container *ngIf="config.metadata && config.metadata.bodyLayout">
             <scrm-record-flexbox [config]="buildConfig(config.metadata.bodyLayout)"></scrm-record-flexbox>

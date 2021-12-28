@@ -39,6 +39,7 @@ import {LabelDisplay} from '../field-grid/field-grid.model';
 
 
 export interface FieldFlexbox {
+    class?: string;
     rows: FieldFlexboxRow[];
 }
 
@@ -64,6 +65,8 @@ export interface FieldFlexboxCol {
     inputClass?: string;
     actionSlot?: boolean;
     specialSlot?: boolean;
+    modes?: ViewMode[];
+    labelModes?: ViewMode[];
 }
 
 
