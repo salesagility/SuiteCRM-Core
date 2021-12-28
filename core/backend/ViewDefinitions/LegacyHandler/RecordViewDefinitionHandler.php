@@ -76,6 +76,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
     /**
      * @var array
      */
+    private $recordViewBottomWidgets;
+
+    /**
+     * @var array
+     */
     private $recordViewTopWidgets;
 
     /**
@@ -95,6 +100,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
      * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
      * @param FieldAliasMapper $fieldAliasMapper
      * @param array $recordViewSidebarWidgets
+     * @param array $recordViewBottomWidgets
      * @param array $recordViewTopWidgets
      * @param SessionInterface $session
      */
@@ -109,6 +115,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         WidgetDefinitionProviderInterface $widgetDefinitionProvider,
         FieldAliasMapper $fieldAliasMapper,
         array $recordViewSidebarWidgets,
+        array $recordViewBottomWidgets,
         array $recordViewTopWidgets,
         SessionInterface $session
     ) {
@@ -124,6 +131,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->actionDefinitionProvider = $actionDefinitionProvider;
         $this->widgetDefinitionProvider = $widgetDefinitionProvider;
         $this->recordViewSidebarWidgets = $recordViewSidebarWidgets;
+        $this->recordViewBottomWidgets = $recordViewBottomWidgets;
         $this->recordViewTopWidgets = $recordViewTopWidgets;
         $this->fieldAliasMapper = $fieldAliasMapper;
     }
@@ -177,6 +185,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
             'templateMeta' => [],
             'topWidget' => [],
             'sidebarWidgets' => [],
+            'bottomWidgets' => [],
             'actions' => [],
             'panels' => [],
             'summaryTemplates' => [],
@@ -186,6 +195,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->addTemplateMeta($detailViewDefs, $metadata);
         $this->addTopWidgetConfig($module, $detailViewDefs, $metadata);
         $this->addSidebarWidgetConfig($module, $detailViewDefs, $metadata);
+        $this->addBottomWidgetConfig($module, $detailViewDefs, $metadata);
         $this->addPanelDefinitions($detailViewDefs, $editViewDefs, $vardefs, $metadata);
         $this->addActionConfig($module, $detailViewDefs, $metadata);
         $this->addSummaryTemplates($detailViewDefs, $metadata);
@@ -344,6 +354,20 @@ class RecordViewDefinitionHandler extends LegacyHandler
             $this->recordViewSidebarWidgets,
             $module,
             ['widgets' => $viewDefs['sidebarWidgets'] ?? []]
+        );
+    }
+
+    /**
+     * @param string $module
+     * @param array $viewDefs
+     * @param array $metadata
+     */
+    protected function addBottomWidgetConfig(string $module, array $viewDefs, array &$metadata): void
+    {
+        $metadata['bottomWidgets'] = $this->widgetDefinitionProvider->getBottomWidgets(
+            $this->recordViewBottomWidgets,
+            $module,
+            ['widgets' => $viewDefs['bottomWidgets'] ?? []]
         );
     }
 

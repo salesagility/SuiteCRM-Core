@@ -40,6 +40,7 @@ services:
       $recordViewActions: '%module.recordview.actions%'
       $recordViewActionLimits: '%module.recordview.actions_limits%'
       $recordViewSidebarWidgets: '%module.recordview.sidebar_widgets%'
+      $recordViewBottomWidgets: '%module.recordview.bottom_widgets%'
       $recordViewTopWidgets: '%module.recordview.top_widgets%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $currencyFieldsTypeMap: '%record.fields.currency_fields_type_map%'

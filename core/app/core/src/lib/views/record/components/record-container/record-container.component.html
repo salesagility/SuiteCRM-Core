@@ -65,6 +65,19 @@
                     </div>
                 </div>
 
+                <div *ngIf="vm.bottomWidgetConfig.show && vm.bottomWidgetConfig.widgets"
+                     class="row no-gutters mt-4">
+                    <div class="col">
+                        <div *ngFor="let widget of vm.bottomWidgetConfig.widgets" class="mb-3">
+                            <scrm-sidebar-widget [config]="widget"
+                                                 [context$]="getViewContext$()"
+                                                 [context]="getViewContext()"
+                                                 [type]="widget.type">
+                            </scrm-sidebar-widget>
+                        </div>
+                    </div>
+                </div>
+
                 <div *ngIf="vm.showSubpanels"
                      class="row no-gutters pt-1 pb-4">
                     <div class="col">

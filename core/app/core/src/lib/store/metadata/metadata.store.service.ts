@@ -52,6 +52,7 @@ export interface SummaryTemplates {
 export interface RecordViewMetadata {
     topWidget?: WidgetMetadata;
     sidebarWidgets?: WidgetMetadata[];
+    bottomWidgets?: WidgetMetadata[];
     actions?: Action[];
     templateMeta?: RecordTemplateMetadata;
     panels?: Panel[];
@@ -450,6 +451,7 @@ export class MetadataStore implements StateStore {
             panels: 'panels',
             topWidget: 'topWidget',
             sidebarWidgets: 'sidebarWidgets',
+            bottomWidgets: 'bottomWidgets',
             summaryTemplates: 'summaryTemplates',
             vardefs: 'vardefs'
         };

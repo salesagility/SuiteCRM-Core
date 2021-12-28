@@ -1,4 +1,3 @@
-<?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
  * Copyright (C) 2021 SalesAgility Ltd.
@@ -25,40 +24,43 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {Injectable} from '@angular/core';
+import {combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {RecordViewStore} from '../store/record-view/record-view.store';
 
-namespace App\ViewDefinitions\Service;
+@Injectable()
+export class BottomWidgetAdapter {
 
-/**
- * Interface SidebarWidgetDefinitionProviderInterface
- * @package App\Service
- */
-interface WidgetDefinitionProviderInterface
-{
+    config$ = combineLatest([
+        this.metadata.recordViewMetadata$, this.store.widgets$
+    ]).pipe(
+        map(([metadata, show]) => {
 
-    /**
-     * Get list of sidebar widgets for module
-     * @param array $config
-     * @param string $module
-     * @param array $moduleDefaults
-     * @return array
-     */
-    public function getSidebarWidgets(array $config, string $module, array $moduleDefaults = []): array;
+            if (metadata.bottomWidgets && metadata.bottomWidgets.length) {
+                metadata.bottomWidgets.forEach(widget => {
+                    if (widget && widget.refreshOn === 'data-update') {
+                        widget.reload$ = this.store.record$.pipe(map(() => true));
+                    }
 
-    /**
-     * Get list of bottom widgets for module.
-     * @param array $config
-     * @param string $module
-     * @param array $moduleDefaults
-     * @return array
-     */
-    public function getBottomWidgets(array $config, string $module, array $moduleDefaults = []): array;
+                    if (widget) {
+                        widget.subpanelReload$ = this.store.subpanelReload$;
+                    }
+                });
+            }
 
-    /**
-     * Get list of top widgets for module
-     * @param array $config
-     * @param string $module
-     * @param array $moduleDefaults
-     * @return array
-     */
-    public function getTopWidgets(array $config, string $module, array $moduleDefaults = []): array;
+            return {
+                widgets: metadata.bottomWidgets || [],
+                show
+            };
+        })
+    );
+
+    constructor(
+        protected store: RecordViewStore,
+        protected metadata: MetadataStore
+    ) {
+    }
+
 }

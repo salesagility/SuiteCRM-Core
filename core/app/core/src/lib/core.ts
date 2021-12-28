@@ -563,6 +563,7 @@ export * from './views/record/actions/save/record-save.action';
 export * from './views/record/actions/save-new/record-save-new.action';
 export * from './views/record/actions/toggle-widgets/record-widget-action.service';
 export * from './views/record/adapters/actions.adapter';
+export * from './views/record/adapters/bottom-widget.adapter';
 export * from './views/record/adapters/record-content.adapter';
 export * from './views/record/adapters/sidebar-widget.adapter';
 export * from './views/record/adapters/top-widget.adapter';

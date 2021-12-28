@@ -54,8 +54,6 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
 
     /**
      * RecordThreadDefinitionMapper constructor.
-     * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
-     * @param FieldAliasMapper $fieldAliasMapper
      */
     public function __construct(
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
@@ -66,7 +64,7 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getKey(): string
     {
@@ -74,7 +72,7 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getModule(): string
     {
@@ -82,60 +80,21 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function map(ViewDefinition $definition, FieldDefinition $fieldDefinition): void
     {
         $recordView = $definition->getRecordView() ?? [];
-        $sidebarWidgets = $recordView['sidebarWidgets'] ?? [];
 
-        if (empty($recordView) || empty($sidebarWidgets)) {
-            return;
-        }
-
-        foreach ($sidebarWidgets as $widgetKey => $widget) {
-            $type = $widget['type'] ?? '';
-
-            if ($type !== 'record-thread') {
-                continue;
-            }
-
-            $options = $widget['options']['recordThread'] ?? [];
-
-            if (empty($options) || empty($options['module'])) {
-                continue;
-            }
-
-            $vardefs = $this->fieldDefinitionProvider->getVardef($options['module'])->getVardef();
-
-            if (empty($vardefs)) {
-                continue;
-            }
-
-            $this->addFieldDefinitions('item', 'header', $options, $vardefs);
-
-            $this->addFieldDefinitions('item', 'body', $options, $vardefs);
-
-            $this->addFieldDefinitions('create', 'header', $options, $vardefs);
-
-            $this->addFieldDefinitions('create', 'body', $options, $vardefs);
-
-            $widget['options']['recordThread'] = $options;
-
-            $recordView['sidebarWidgets'][$widgetKey] = $widget;
-        }
+        $this->mapWidgets($recordView, 'sidebarWidgets', $options, $vardefs);
+        $this->mapWidgets($recordView, 'bottomWidgets', $options, $vardefs);
 
         $definition->setRecordView($recordView);
     }
 
 
     /**
-     * Add field definitions
-     * @param string $entryKey
-     * @param string $type
-     * @param array $options
-     * @param array $vardefs
-     * @return void
+     * Add field definitions.
      */
     protected function addFieldDefinitions(string $entryKey, string $type, array &$options, array &$vardefs): void
     {
@@ -156,7 +115,6 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
                 } else {
                     $cellDefinition = $col['field'];
                 }
-
 
                 if (!empty($col['displayParams'])) {
                     $cellDefinition['displayParams'] = $col['displayParams'];
@@ -183,9 +141,9 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
         return $definition;
     }
 
-
     /**
      * @param $definition
+     *
      * @return mixed
      */
     protected function mergeDisplayParams($definition)
@@ -194,12 +152,12 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
         $toMerge = [
             'required',
             'readOnly',
-            'type'
+            'type',
         ];
 
         foreach ($toMerge as $key) {
             $attribute = $definition['displayParams'][$key] ?? null;
-            if ($attribute !== null) {
+            if (null !== $attribute) {
                 $fieldDefinitions[$key] = $attribute;
             }
         }
@@ -210,9 +168,9 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
     }
 
     /**
-     * Build list view column
+     * Build list view column.
+     *
      * @param $definition
-     * @param array|null $vardefs
      * @return array
      */
     protected function buildFieldCell($definition, ?array &$vardefs): array
@@ -224,5 +182,52 @@ class RecordThreadDefinitionMapper implements ViewDefinitionMapperInterface
             $this->defaultDefinition,
             $this->fieldAliasMapper
         );
+    }
+
+    /**
+     * @param array|null $recordView
+     * @param string $widgetType
+     * @param $options
+     * @param $vardefs
+     */
+    protected function mapWidgets(?array &$recordView, string $widgetType, &$options, &$vardefs): void
+    {
+        $widgets = $recordView[$widgetType] ?? [];
+
+        if (empty($recordView) || empty($widgets)) {
+            return;
+        }
+
+        foreach ($widgets as $widgetKey => $widget) {
+            $type = $widget['type'] ?? '';
+
+            if ('record-thread' !== $type) {
+                continue;
+            }
+
+            $options = $widget['options']['recordThread'] ?? [];
+
+            if (empty($options) || empty($options['module'])) {
+                continue;
+            }
+
+            $vardefs = $this->fieldDefinitionProvider->getVardef($options['module'])->getVardef();
+
+            if (empty($vardefs)) {
+                continue;
+            }
+
+            $this->addFieldDefinitions('item', 'header', $options, $vardefs);
+
+            $this->addFieldDefinitions('item', 'body', $options, $vardefs);
+
+            $this->addFieldDefinitions('create', 'header', $options, $vardefs);
+
+            $this->addFieldDefinitions('create', 'body', $options, $vardefs);
+
+            $widget['options']['recordThread'] = $options;
+
+            $recordView[$widgetType][$widgetKey] = $widget;
+        }
     }
 }

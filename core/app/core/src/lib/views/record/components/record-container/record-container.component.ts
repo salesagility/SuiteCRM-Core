@@ -38,11 +38,12 @@ import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {RecordContentAdapter} from '../../adapters/record-content.adapter';
 import {RecordContentDataSource} from '../../../../components/record-content/record-content.model';
 import {TopWidgetAdapter} from '../../adapters/top-widget.adapter';
+import {BottomWidgetAdapter} from '../../adapters/bottom-widget.adapter';
 
 @Component({
     selector: 'scrm-record-container',
     templateUrl: 'record-container.component.html',
-    providers: [RecordContentAdapter, TopWidgetAdapter, SidebarWidgetAdapter]
+    providers: [RecordContentAdapter, TopWidgetAdapter, SidebarWidgetAdapter, BottomWidgetAdapter]
 })
 export class RecordContainerComponent implements OnInit, OnDestroy {
 
@@ -50,13 +51,24 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
     language$: Observable<LanguageStrings> = this.language.vm$;
 
     vm$ = combineLatest([
-        this.language$, this.sidebarWidgetAdapter.config$, this.topWidgetAdapter.config$, this.recordViewStore.showSubpanels$
+        this.language$,
+        this.sidebarWidgetAdapter.config$,
+        this.bottomWidgetAdapter.config$,
+        this.topWidgetAdapter.config$,
+        this.recordViewStore.showSubpanels$
     ]).pipe(
         map((
-            [language, sidebarWidgetConfig, topWidgetConfig, showSubpanels]
+            [
+                language,
+                sidebarWidgetConfig,
+                bottomWidgetConfig,
+                topWidgetConfig,
+                showSubpanels
+            ]
         ) => ({
             language,
             sidebarWidgetConfig,
+            bottomWidgetConfig,
             topWidgetConfig,
             showSubpanels
         }))
@@ -70,7 +82,8 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         protected metadata: MetadataStore,
         protected contentAdapter: RecordContentAdapter,
         protected topWidgetAdapter: TopWidgetAdapter,
-        protected sidebarWidgetAdapter: SidebarWidgetAdapter
+        protected sidebarWidgetAdapter: SidebarWidgetAdapter,
+        protected bottomWidgetAdapter: BottomWidgetAdapter
     ) {
     }
 
