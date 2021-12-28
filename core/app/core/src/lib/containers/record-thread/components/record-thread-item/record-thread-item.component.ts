@@ -59,14 +59,16 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
             return;
         }
 
-        const collapseLimit = this.config.collapseLimit || this.collapseLimit;
+        setTimeout(() => {
+            const collapseLimit = this.config.collapseLimit || this.collapseLimit;
 
-        let height = this.bodyEl.nativeElement.offsetHeight;
+            let height = this.bodyEl.nativeElement.offsetHeight || this.bodyEl.nativeElement.height;
 
-        if (height > collapseLimit) {
-            this.collapsible = true;
-            this.collapsed = true;
-        }
+            if (height > collapseLimit) {
+                this.collapsible = true;
+                this.collapsed = true;
+            }
+        }, 2000);
     }
 
     /**
