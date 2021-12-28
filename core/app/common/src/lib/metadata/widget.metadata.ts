@@ -35,6 +35,7 @@ export interface WidgetMetadata {
     reload$?: Observable<boolean>;
     subpanelReload$?: Observable<BooleanMap>;
     refreshOn?: string;
+    allowCollapse?: boolean;
 }
 
 export interface WidgetOptionMap {

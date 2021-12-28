@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<scrm-widget-panel [title]="getHeaderLabel()">
+<scrm-widget-panel [mode]="panelMode" [title]="getHeaderLabel()">
     <div class="record-thread-sidebar-widget" widget-body>
 
         <ng-container *ngIf="!options">

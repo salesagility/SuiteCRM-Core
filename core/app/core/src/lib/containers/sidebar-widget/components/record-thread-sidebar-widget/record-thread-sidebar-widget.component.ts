@@ -25,7 +25,17 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AttributeMap, deepClone, Record, SearchCriteria, SearchCriteriaFilter, StringMap, ViewContext} from 'common';
+import {
+    AttributeMap,
+    deepClone,
+    isFalse,
+    isTrue,
+    Record,
+    SearchCriteria,
+    SearchCriteriaFilter,
+    StringMap,
+    ViewContext
+} from 'common';
 import {Observable, of, Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
@@ -33,6 +43,7 @@ import {distinctUntilChanged, filter, map, shareReplay} from 'rxjs/operators';
 import {RecordThreadConfig} from '../../../record-thread/components/record-thread/record-thread.model';
 import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
 import {RecordThreadItemMetadata} from '../../../record-thread/store/record-thread/record-thread-item.store.model';
+import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 
 interface ThreadItemMetadataConfig {
     header?: FieldFlexbox;
@@ -46,7 +57,7 @@ interface ThreadItemMetadataConfig {
 })
 export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent implements OnInit, OnDestroy {
 
-
+    panelMode: 'collapsible' | 'closable' | 'none' = 'none';
     options: {
         module: string;
         class?: string;
@@ -79,7 +90,9 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
     presetFields$: Observable<AttributeMap>;
     protected subs: Subscription[] = [];
 
-    constructor(protected language: LanguageStore
+    constructor(
+        protected language: LanguageStore,
+        protected sytemConfig: SystemConfigStore
     ) {
         super();
     }
@@ -93,6 +106,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             return;
         }
 
+        this.initPanelMode();
         this.initFilters$();
         this.initPresetFields$();
 
@@ -157,6 +171,34 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
         if (config && config.body) {
             metadata.bodyLayout = deepClone(config.body);
         }
+    }
+
+
+    protected initPanelMode(): void {
+
+        const ui = this.sytemConfig.getConfigValue('ui');
+        const systemDefault = ui?.widget?.allowCollapse ?? null;
+        const allowCollapse = this?.config?.allowCollapse ?? null;
+
+        let mode: 'collapsible' | 'closable' | 'none' = 'none';
+
+        if (systemDefault !== null) {
+            if (isTrue(systemDefault)) {
+                mode = 'collapsible';
+            } else if (isFalse(systemDefault)) {
+                mode = 'none'
+            }
+        }
+
+        if (allowCollapse !== null) {
+            if (isTrue(allowCollapse)) {
+                mode = 'collapsible';
+            } else if (isFalse(allowCollapse)) {
+                mode = 'none'
+            }
+        }
+
+        this.panelMode = mode;
     }
 
     protected initFilters$() {

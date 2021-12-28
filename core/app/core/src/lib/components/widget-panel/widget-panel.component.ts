@@ -57,6 +57,7 @@ import {LanguageStore} from '../../store/language/language.store';
 
 export class WidgetPanelComponent implements OnInit {
     @Input() title = '';
+    @Input() mode: 'collapsible' | 'closable' | 'none' = 'none';
 
     displayContent = true;
 

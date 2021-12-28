@@ -36,6 +36,16 @@
   background-color: $cool-blue;
 }
 
+.widget-panel {
+  .minimise-button.btn-outline-light {
+    fill: $midnight-grey;
+  }
+
+  .minimise-button.btn-outline-light:hover {
+    fill: $secondary;
+  }
+}
+
 .widget-header {
   background-color: $midnight-blue;
   -webkit-border-top-left-radius: 0.3em;
