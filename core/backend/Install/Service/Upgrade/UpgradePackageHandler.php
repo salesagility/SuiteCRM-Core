@@ -84,6 +84,7 @@ class UpgradePackageHandler extends PackageHandler
         $this->compare = $compare;
 
         $this->compare->setToKeep($upgradeConfig['toKeep']);
+        $this->compare->setToKeepIgnore($upgradeConfig['toKeepIgnore']);
         $this->compare->setPathsToExpand($upgradeConfig['toExpand']);
         $this->upgradeLogger = $upgradeLogger;
     }
