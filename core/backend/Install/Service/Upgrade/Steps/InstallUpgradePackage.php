@@ -42,6 +42,7 @@ class InstallUpgradePackage implements UpgradeStepInterface
 
     public const HANDLER_KEY = 'install-upgrade-package';
     public const POSITION = 600;
+    public const STAGE = 'upgrade-install';
 
     /**
      * @var UpgradePackageHandler
@@ -71,6 +72,14 @@ class InstallUpgradePackage implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

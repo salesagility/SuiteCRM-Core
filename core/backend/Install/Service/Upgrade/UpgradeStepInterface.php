@@ -37,4 +37,10 @@ use App\Engine\Model\ProcessStepInterface;
 interface UpgradeStepInterface extends ProcessStepInterface
 {
 
+    /**
+     * Get stage
+     * @return string
+     */
+    public function getStage(): string;
+
 }

@@ -42,7 +42,8 @@ class RunMigrations implements UpgradeStepInterface
     use ProcessStepTrait;
 
     public const HANDLER_KEY = 'run-migrations';
-    public const POSITION = 700;
+    public const POSITION = 900;
+    public const STAGE = 'upgrade-finalize';
 
     /**
      * @var MigrationBridge
@@ -72,6 +73,14 @@ class RunMigrations implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

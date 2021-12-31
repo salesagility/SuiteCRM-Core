@@ -42,6 +42,7 @@ class ExtractPackage implements UpgradeStepInterface
 
     public const HANDLER_KEY = 'extract-package';
     public const POSITION = 400;
+    public const STAGE = 'upgrade-install';
 
     /**
      * @var UpgradePackageHandler
@@ -71,6 +72,14 @@ class ExtractPackage implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

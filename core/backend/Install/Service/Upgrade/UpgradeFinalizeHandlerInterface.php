@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,68 +25,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Service\Upgrade\Steps;
+namespace App\Install\Service\Upgrade;
 
-use App\Engine\Model\Feedback;
-use App\Engine\Model\ProcessStepTrait;
-use App\Install\LegacyHandler\Upgrade\PostUpgradeHandler;
-use App\Install\Service\Upgrade\UpgradeStepInterface;
+use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 
 /**
- * Class LegacyPostUpgrade
- * @package App\Install\Service\Upgrade\Steps;
+ * Interface UpgradeFinalizeHandlerInterface
+ * Used to allow extensibility
+ * @package App\Install\Service\Upgrade
  */
-class LegacyPostUpgrade implements UpgradeStepInterface
+interface UpgradeFinalizeHandlerInterface extends ProcessStepExecutorInterface
 {
-    use ProcessStepTrait;
-
-    public const HANDLER_KEY = 'legacy-post-upgrade';
-    public const POSITION = 700;
-    public const STAGE = 'upgrade-finalize';
-
-    /**
-     * @var PostUpgradeHandler
-     */
-    private $handler;
-
-    /**
-     * LegacyPostUpgrade constructor.
-     * @param PostUpgradeHandler $handler
-     */
-    public function __construct(PostUpgradeHandler $handler)
-    {
-        $this->handler = $handler;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getKey(): string
-    {
-        return self::HANDLER_KEY;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getOrder(): int
-    {
-        return self::POSITION;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getStage(): string
-    {
-        return self::STAGE;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function execute(array &$context): Feedback
-    {
-        return $this->handler->run();
-    }
 }

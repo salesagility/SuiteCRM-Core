@@ -42,7 +42,17 @@ class UpgradeHandler extends ProcessStepExecutor implements UpgradeHandlerInterf
         LoggerInterface $upgradeLogger
     ) {
         $this->logger = $upgradeLogger;
-        $this->initSteps($handlers, $this->logger);
+
+        $upgradeInstallHandlers = [];
+
+        /**@var $handlers UpgradeStepInterface[] */
+        foreach ($handlers as $handler) {
+            if ($handler->getStage() === 'upgrade-install') {
+                $upgradeInstallHandlers[] = $handler;
+            }
+        }
+
+        $this->initSteps($upgradeInstallHandlers, $this->logger);
     }
 
 }

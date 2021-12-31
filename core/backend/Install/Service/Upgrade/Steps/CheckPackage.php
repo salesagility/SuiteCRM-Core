@@ -42,6 +42,7 @@ class CheckPackage implements UpgradeStepInterface
 
     public const HANDLER_KEY = 'check-package';
     public const POSITION = 300;
+    public const STAGE = 'upgrade-install';
 
     /**
      * @var UpgradePackageHandler
@@ -71,6 +72,14 @@ class CheckPackage implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

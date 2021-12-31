@@ -42,6 +42,7 @@ class CheckPermissions implements UpgradeStepInterface
 
     public const HANDLER_KEY = 'check-permissions';
     public const POSITION = 500;
+    public const STAGE = 'upgrade-install';
 
     /**
      * @var UpgradePackageHandler
@@ -71,6 +72,14 @@ class CheckPermissions implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**
