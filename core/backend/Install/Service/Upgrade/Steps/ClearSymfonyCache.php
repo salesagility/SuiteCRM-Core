@@ -42,7 +42,8 @@ class ClearSymfonyCache implements UpgradeStepInterface
     use ProcessStepTrait;
 
     public const HANDLER_KEY = 'clear-symfony-cache';
-    public const POSITION = 900;
+    public const POSITION = 800;
+    public const STAGE = 'upgrade-install';
 
     /**
      * @var CacheBridge
@@ -72,6 +73,14 @@ class ClearSymfonyCache implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

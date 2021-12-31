@@ -217,6 +217,12 @@ services:
       - !tagged { tag: 'app.upgrade.step' }
       - '@monolog.logger.upgrade'
 
+  App\Install\Service\Upgrade\UpgradeFinalizeHandler:
+    # inject all services tagged with app.upgrade.step as first argument
+    arguments:
+      - !tagged { tag: 'app.upgrade.step' }
+      - '@monolog.logger.upgrade'
+
   App\Install\Service\LegacyMigration\LegacyMigrationHandler:
     # inject all services tagged with app.legacy.migration.step as first argument
     arguments:

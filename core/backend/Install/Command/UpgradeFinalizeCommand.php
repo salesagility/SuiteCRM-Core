@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,68 +25,69 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Service\Upgrade\Steps;
+namespace App\Install\Command;
 
-use App\Engine\Model\Feedback;
-use App\Engine\Model\ProcessStepTrait;
-use App\Install\LegacyHandler\Upgrade\PostUpgradeHandler;
-use App\Install\Service\Upgrade\UpgradeStepInterface;
+use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
+use App\Install\Service\Upgrade\UpgradeFinalizeHandlerInterface;
 
 /**
- * Class LegacyPostUpgrade
- * @package App\Install\Service\Upgrade\Steps;
+ * Class UpgradeFinalizeCommand
+ * @package App\Install\Command
  */
-class LegacyPostUpgrade implements UpgradeStepInterface
+class UpgradeFinalizeCommand extends BaseStepExecutorCommand
 {
-    use ProcessStepTrait;
-
-    public const HANDLER_KEY = 'legacy-post-upgrade';
-    public const POSITION = 700;
-    public const STAGE = 'upgrade-finalize';
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'suitecrm:app:upgrade-finalize';
 
     /**
-     * @var PostUpgradeHandler
+     * @var UpgradeFinalizeHandlerInterface
      */
-    private $handler;
+    protected $handler;
 
     /**
-     * LegacyPostUpgrade constructor.
-     * @param PostUpgradeHandler $handler
+     * UpgradeFinalizeCommand constructor.
+     * @param UpgradeFinalizeHandlerInterface $handler
      */
-    public function __construct(PostUpgradeHandler $handler)
+    public function __construct(UpgradeFinalizeHandlerInterface $handler)
     {
         $this->handler = $handler;
+
+        $this->initSession = true;
+
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this->setDescription('Finalize the application upgrade')
+            ->setHelp('This command will finalize the upgrade of the SuiteCRM 8 and legacy application');
     }
 
     /**
      * @inheritDoc
      */
-    public function getKey(): string
+    protected function getContext(array $arguments): array
     {
-        return self::HANDLER_KEY;
+        return [];
     }
 
     /**
      * @inheritDoc
      */
-    public function getOrder(): int
+    protected function getTitle(): string
     {
-        return self::POSITION;
+        return 'SuiteCRM Finalize Upgrade ';
     }
 
     /**
      * @inheritDoc
      */
-    public function getStage(): string
+    protected function getHandler(): ProcessStepExecutorInterface
     {
-        return self::STAGE;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function execute(array &$context): Feedback
-    {
-        return $this->handler->run();
+        return $this->handler;
     }
 }
