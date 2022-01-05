@@ -141,7 +141,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             presetFields$: this.presetFields$,
             module: this.options.module,
             klass: this.options.class || '',
-            maxListHeight: this.options.maxListHeight || 350,
+            maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
             create: !!this.options.create,
             itemConfig: {

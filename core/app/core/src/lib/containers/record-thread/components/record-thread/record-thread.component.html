@@ -39,7 +39,7 @@
 
     <div #list
          *ngIf="records && records.length"
-         [ngStyle]="{'max-height.px': maxHeight, 'overflow-y': 'auto'}"
+         [ngStyle]="getMaxHeight()"
          class="record-thread-list">
 
         <div *ngIf="direction === 'asc' && !allLoaded()"
