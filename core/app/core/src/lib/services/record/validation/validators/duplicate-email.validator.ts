@@ -104,8 +104,9 @@ export class DuplicateEmailValidator implements ValidatorInterface {
         }
 
         const type = viewField.type || viewField.fieldDefinition.type || '';
+        const name = viewField.name || viewField.fieldDefinition.name || '';
 
-        return type === 'line-items';
+        return type === 'line-items' && name === 'email_addresses';
     }
 
     getValidator(viewField: ViewFieldDefinition, record: Record): StandardValidatorFn[] {
