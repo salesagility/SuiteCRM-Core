@@ -38,13 +38,12 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 *}
-<div id="popupDiv_ara"
-     style="display:none;position:fixed;top: 39%; left: 41%;opacity:1;z-index:9999;background:#FFFFFF;">
+<div id="popupDiv_ara" class="pdf-templates-modal">
     <form id="popupForm" action="index.php?entryPoint=generatePdf" method="post">
-        <table style="border: #000 solid 2px; padding-left:40px; padding-right:40px; padding-top:10px; padding-bottom:10px; font-size:110%;">
+        <table style="font-size:110%;">
             <tr height="20">
-                <td colspan="2">
-                    <b>{$APP.LBL_SELECT_TEMPLATE}:-</b>
+                <td colspan="2" style="padding-bottom: 0.5em;">
+                    <b>{$APP.LBL_SELECT_TEMPLATE}:</b>
                 </td>
             </tr>
             {foreach name=template from=$TEMPLATES key=templateKey item=template}
@@ -55,12 +54,12 @@
                     <tr height="20">
                         <td width="17" valign="center"><a href="#" onclick="{$on_click_js}">
                             <a href="#" onclick="{$on_click_js}">
-                                <img src="themes/default/images/txt_image_inline.gif" width="16" height="16"/>
+                                {sugar_image name="PDF_Templates" width="20" height="20"}                                                                
                             </a>
                         </td>
-                        <td>
+                        <td style="padding-top: 0.2em;">
                             <a href="#" onclick="{$on_click_js}">
-                                <b>{$APP_LIST_STRINGS.template_ddown_c_list.$template}</b>
+                                <b style="margin-left: 0.2em;">{$APP_LIST_STRINGS.template_ddown_c_list.$template}</b>
                             </a>
                         </td>
                     </tr>
@@ -82,7 +81,7 @@
     </tr>
     </table>
 </div>
-<div id="popupDivBack_ara" onclick="this.style.display='none';document.getElementById('popupDiv_ara').style.display='none';" style="top:0px;left:0px;position:fixed;height:100%;width:100%;background:#000000;opacity:0.5;display:none;vertical-align:middle;text-align:center;z-index:9998;">
+<div id="popupDivBack_ara" onclick="this.style.display='none';document.getElementById('popupDiv_ara').style.display='none';" style="top:0px;left:0px;position:fixed;height:100%;width:100%;background-color:#E9E9E9;opacity:0.7;display:none;vertical-align:middle;text-align:center;z-index:9998;">
 </div>
 <script>
   {literal}

@@ -1,0 +1,37 @@
+.pdf-templates-modal {
+    display: none;
+    position: fixed;
+    top: 20%; 
+    left: 41%;
+    opacity: 1;
+    z-index: 9999;
+    background:#FFFFFF;
+    padding: 1.5em;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+    a {
+        vertical-align: middle;
+    }
+    svg {
+        fill:#F08377;
+        height: 20px;
+        vertical-align: middle;
+    }
+    button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin: 0.4em 0.2em 0 0;
+        color: $white;
+        border: none;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+}
