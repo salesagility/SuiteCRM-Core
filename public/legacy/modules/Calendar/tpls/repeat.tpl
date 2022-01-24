@@ -51,28 +51,28 @@
 <input type="hidden" name="repeat_parent_id">
 <table class="edit view" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td width="12.5%" valign="top" scope="row">{$MOD.LBL_REPEAT_TYPE}:</td>
-		<td width="37.5%" valign="top">
+		<td width="5%" valign="top" scope="row">{$MOD.LBL_REPEAT_TYPE}:</td>
+		<td width="45%" valign="top">
 			<select name="repeat_type" onchange="toggle_repeat_type();">{html_options options=$APPLIST.repeat_type_dom}</select>
 		</td>
 	</tr>
 	
 	<tr id="repeat_interval_row" style="display: none;">
-		<td width="12.5%" valign="top" scope="row">{$MOD.LBL_REPEAT_INTERVAL}:</td>
-		<td width="37.5%" valign="top">
+		<td width="5%" valign="top" scope="row">{$MOD.LBL_REPEAT_INTERVAL}:</td>
+		<td width="45%" valign="top">
 			<select name="repeat_interval">{html_options options=$repeat_intervals selected="1"}</select> <span id="repeat-interval-text"></span>
 		</td>
 	</tr>
 	
 	<tr id="repeat_end_row" style="display: none;">
-		<td width="12.5%" valign="top" scope="row">{$MOD.LBL_REPEAT_END}:</td>
-		<td width="37.5%" valign="top">
-			<div>
-				<input type="radio" name="repeat_end_type" value="number" id="repeat_count_radio" checked onclick="toggle_repeat_end();" style="position: relative; top: -5px;"> {$MOD.LBL_REPEAT_END_AFTER} 
+		<td width="5%" valign="top" scope="row">{$MOD.LBL_REPEAT_END}:</td>
+		<td width="45%" valign="top">
+			<div class="repeat-after">
+				<input type="radio" name="repeat_end_type" value="number" id="repeat_count_radio" checked onclick="toggle_repeat_end();" style="position: relative;"> {$MOD.LBL_REPEAT_END_AFTER} 
 				<input type="input" size="3" name="repeat_count" value="10"> {$MOD.LBL_REPEAT_OCCURRENCES}
 			</div>
-			<div>					
-				<input type="radio" name="repeat_end_type" id="repeat_until_radio" value="date" onclick="toggle_repeat_end();" style="position: relative; top: -5px;"> {$MOD.LBL_REPEAT_END_BY}
+			<div class="repeat-by">					
+				<input type="radio" name="repeat_end_type" id="repeat_until_radio" value="date" onclick="toggle_repeat_end();" style="position: relative;"> {$MOD.LBL_REPEAT_END_BY}
 				<input type="input" size="11" maxlength="10" id="repeat_until_input" name="repeat_until" value="" disabled>
 				<span class="suitepicon suitepicon-module-calendar" id="repeat_until_trigger"></span>
 							
@@ -94,8 +94,8 @@
 	</tr>
 	
 	<tr id="repeat_dow_row" style="display: none;">
-		<td width="12.5%" valign="top" scope="row">{$MOD.LBL_REPEAT_DOW}:</td>
-		<td width="37.5%" valign="top">
+		<td width="5%" valign="top" scope="row">{$MOD.LBL_REPEAT_DOW}:</td>
+		<td width="45%" valign="top">
 			{foreach name=dow from=$dow key=i item=d}
 				{$d.label} <input type="checkbox" id="repeat_dow_{$d.index}" name="repeat_dow[]" style="margin-right: 10px;"> 	
 			{/foreach}
