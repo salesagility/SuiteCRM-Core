@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -38,48 +39,47 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*
- * Created on May 29, 2007
- *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- */
-$module_name = 'Spots';
-$searchdefs[$module_name] = array(
-    'templateMeta' => array(
-        'maxColumns' => '3',
-        'maxColumnsBasic' => '4',
-        'widths' => array(
-            'label' => '10',
-            'field' => '30'
-        ),
-    ),
-    'layout' => array(
-        'basic_search' => array(
-            'name' => array(
-                'name' => 'current_user_only',
-                'label' => 'LBL_CURRENT_USER_FILTER',
-                'type' => 'bool'
-            ),
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-            'favorites_only' =>  array(
-                'name' => 'favorites_only',
-                'label' => 'LBL_FAVORITES_FILTER',
-                'type' => 'bool',
-            ),
-        ),
-        'advanced_search' => array(
-            'name' => array(
-                'name' => 'assigned_user_id',
-                'label' => 'LBL_ASSIGNED_TO',
-                'type' => 'enum',
-                'function' => array(
-                    'name' => 'get_user_array',
-                    'params' => array(
-                        false
-                    )
-                )
-            ),
-        ),
-    ),
-);
+require_once __DIR__ .'/../../SugarQueue/SugarJobQueue.php';
+require_once __DIR__ .'/../../../modules/SchedulersJobs/SchedulersJob.php';
+require_once __DIR__ .'/NormalizeRecords.php';
+
+
+class NormalizeRecordsSchedulerJob extends SchedulersJob
+{
+
+    public $name = 'Repair field encoding';
+    public $target = 'class::NormalizeRecords';
+
+    /**
+     * @param array $data
+     */
+    public static function scheduleJob(array $data): void
+    {
+        NormalizeRecords::getRepairStatus();
+
+        $job = new self();
+
+        $job->name = 'repair utf encoding';
+        $job->data = json_encode(array_merge(['partial' => true], $data), JSON_THROW_ON_ERROR);
+        $job->assigned_user_id = 1;
+
+        $queue = new SugarJobQueue();
+        /** @noinspection PhpParamsInspection */
+        $queue->submitJob($job);
+
+        NormalizeRecords::setRepairStatus(NormalizeRecords::REPAIR_STATUS_IN_PROGRESS);
+    }
+
+    /**
+     * Get Scheduler job bean
+     * @return SugarBean
+     */
+    public static function getJob(): SugarBean
+    {
+        return BeanFactory::getBean('SchedulersJobs', 'repair-utf-encoding');
+    }
+}

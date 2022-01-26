@@ -171,6 +171,10 @@ $viewdefs ['Contacts'] =
                                     ),
                             ),
                     ),
+                'summaryTemplates' => [
+                    'edit' => 'LBL_SUMMARY_PERSON',
+                    'detail' => 'LBL_SUMMARY_PERSON',
+                ],
                 'topWidget' => [
                     'type' => 'statistics',
                     'options' => [
@@ -218,16 +222,10 @@ $viewdefs ['Contacts'] =
                                     array(
                                         0 =>
                                             array(
-                                                'name' => 'first_name',
-                                                'comment' => 'First name of the contact',
-                                                'label' => 'LBL_FIRST_NAME',
+                                                'name' => 'full_name',
+                                                'label' => 'LBL_NAME',
                                             ),
-                                        1 =>
-                                            array(
-                                                'name' => 'last_name',
-                                                'comment' => 'Last name of the contact',
-                                                'label' => 'LBL_LAST_NAME',
-                                            ),
+                                        1 => '',
                                     ),
                                 1 =>
                                     array(

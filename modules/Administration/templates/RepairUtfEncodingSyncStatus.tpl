@@ -1,5 +1,4 @@
-<?php
-
+{*
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -38,17 +37,40 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-$module_name = 'Spots';
-$object_name = 'Spots';
-$_module_name = 'Spots';
-$popupMeta = array('moduleMain' => $module_name,
-                        'varName' => $object_name,
-                        'orderBy' => $_module_name.'.name',
-                        'whereClauses' => array('name' => $_module_name.'.name',
-                                ),
-                            'searchInputs' => array($_module_name.'_number', 'name', 'priority', 'status'),
+*}
 
-                        );
+<div class="view" >
+    <h2 class="pt-0">{$MOD.LBL_REPAIR_UTF_ENCODING}</h2>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                <strong>{$MOD.LBL_EXECUTION_STATUS}</strong>
+            </div>
+            <div class="col-sm-1">
+                <span class="label label-warning">{$MOD.LBL_IN_PROGRESS}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <strong>{$MOD.LBL_EXECUTION_MODE}</strong>
+            </div>
+            <div class="col-sm-1">
+                <span class="label label-warning">{$MOD.LBL_SYNCHRONOUS}</span>
+            </div>
+        </div>
+    </div>
+
+    {if $mode eq 'sync'}
+        <hr/>
+        <div class="alert alert-warning sm" role="alert">
+            <h4 class="alert-heading">{$MOD.LBL_WARNING}</h4>
+            <p>{$MOD.LBL_SYNC_LONG_EXECUTION_WARNING}</p>
+            <p>{$MOD.LBL_SYNC_RUNNING_INFORMATION_OUTPUT}</p>
+            <p>{$MOD.LBL_SYNC_RUNNING_INFORMATION_LOGS}</p>
+        </div>
+
+    {/if}
+</div>
+<h3 class="pt-0">{$MOD.LBL_OUTPUT}</h3>
+
