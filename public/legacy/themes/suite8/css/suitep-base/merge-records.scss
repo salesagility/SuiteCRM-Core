@@ -1,0 +1,153 @@
+.view-module-MergeRecords.view-action-Step1 {
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-bottom: 1em;
+        margin-right: 0.5em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    input[type=submit].button:hover {
+        background: $pale-blue;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+    }
+    input[type=text],input[type=password],input[type=email],input[type=number],textarea{
+        background-color: $white;
+        border: 1px solid $form-border-color;
+        height: 26px;
+    }
+    #filter_def {
+        table {
+            tr {
+                td:nth-child(2) {
+                    width: 19.7%;
+                }
+            }
+        }
+    }
+}
+
+.view-module-MergeRecords.view-action-Step2 {
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-top: 1em;
+        margin-right: 0.5em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    input[type=submit].button:hover {
+        background: $pale-blue;
+    }
+    #selectLinkTop>.sugar_action_button>.subnav a {
+        padding-left: 0.7em;
+    }
+    #selectLinkBottom>.sugar_action_button>.subnav a {
+        padding-left: 0.7em;
+    }
+    #selectLinkTop>.sugar_action_button>ul.subnav {
+        top: 2.2em;
+    }
+}
+
+.view-module-MergeRecords.view-action-Step3 {
+    .moduleTitle {
+        border-bottom: 1px solid lightgrey;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+        margin-bottom: 1em;
+    }
+    input,input[type=text],input[type=password],input[type=email],input[type=number],textarea{
+        background-color: $white;
+        border: 1px solid $form-border-color;
+        margin-bottom: 1em;
+    }
+    .action-buttons {
+        position: absolute;
+        right: 0;
+        margin-top: -3.3em;
+    }
+    .button-footer {
+        display: none;
+    }    
+}
+
+.view-module-MergeRecords.view-action-index {
+    .moduleTitle {
+        border-bottom: 1px solid lightgrey;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+        margin-bottom: 1em;
+    }
+    input,input[type=text],input[type=password],input[type=email],input[type=number],textarea{
+        background-color: $white;
+        border: 1px solid $form-border-color;
+        margin-bottom: 1em;
+    }
+    .action-buttons {
+        position: absolute;
+        right: 0;
+        margin-top: -3.3em;
+    }
+}
+
+.view-action-ShowDuplicates {
+    .moduleTitle {
+        border-bottom: 1px solid lightgrey;
+    }
+    .button {
+        margin: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1.1em;
+        background-color: rgb(147, 164, 179);
+        text-transform: capitalize;
+        border-radius: 0.2em;
+        padding: 0.3em 1em;
+        letter-spacing: 0.05em;        
+    }
+    .list tr th {
+        background: #93a4b3;
+        color: $white;
+    }
+    table.view {
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    .list .pagination td table td:first-child {
+        border-bottom-left-radius: 0;
+    }
+    .list .pagination td table td:last-child {
+        border-bottom-right-radius: 0;
+    }
+    input[type=submit].button:hover {
+        background: $btn-hover-bg-color;
+    }
+}

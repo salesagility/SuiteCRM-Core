@@ -58,7 +58,7 @@
 
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td align="left" style="padding-bottom: 2px;"><input title="{MOD.LBL_SAVE_MERGED_RECORD_BUTTON_TITLE}" class="button" onclick="return merge_verify();" type="submit" name="button" value="  {MOD.LBL_SAVE_MERGED_RECORD_BUTTON_LABEL}  " id="save_merged_record_button" >&nbsp;
+		<td class="action-buttons" align="left" style="padding-bottom: 2px;"><input title="{MOD.LBL_SAVE_MERGED_RECORD_BUTTON_TITLE}" class="button" onclick="return merge_verify();" type="submit" name="button" value="  {MOD.LBL_SAVE_MERGED_RECORD_BUTTON_LABEL}  " id="save_merged_record_button" >&nbsp;
 		<input title="{APP.LBL_CANCEL_BUTTON_TITLE}"
 			   accessKey="{APP.LBL_CANCEL_BUTTON_KEY}"
 			   class="button" onclick="window.location.href='index.php?module={RETURN_MODULE}&action={RETURN_ACTION}&record={RETURN_ID}';"
@@ -87,10 +87,10 @@
 </tr>
 </table>
 <br/>
-	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" class="button-footer" style="display: none;">
 	<tr>
 		<td align="left" style="padding-bottom: 2px;"><input title="{MOD.LBL_SAVE_MERGED_RECORD_BUTTON_TITLE}" class="button" onclick="return merge_verify();" type="submit" name="button" value="  {MOD.LBL_SAVE_MERGED_RECORD_BUTTON_LABEL}  " >&nbsp;
-		<input title="{APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="window.location.href='index.php?module={RETURN_MODULE}&action={RETURN_ACTION}&record={RETURN_ID}';" name="button" value="  {APP.LBL_CANCEL_BUTTON_LABEL}  "></td>
+		<input title="{APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="window.location.href='index.php?module={RETURN_MODULE}&action={RETURN_ACTION}&record={RETURN_ID}';" name="button" value="  {APP.LBL_CANCEL_BUTTON_LABEL}"></td>
 	</tr>
 	</table>
 </form>

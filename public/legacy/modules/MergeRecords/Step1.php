@@ -189,7 +189,7 @@ function addFieldRow($colName, $colLabel, $colValue)
     <span id=filter_{$colName} style='visibility:visible' value="{$colLabel}" valueId="{$colName}">
         <table width='100%' border='0' cellpadding='0'>
             <tr>
-                <td width='2%'><a class="listViewTdToolsS1" href="javascript:remove_filter('filter_{$colName}')"><!--not_in_theme!--><img src='{$deleteInlineImage}' align='absmiddle' alt='{$LBL_REMOVE}' border='0' height='12' width='12'>&nbsp;</a></td>
+                <td width='2%'><a class="listViewTdToolsS1" href="javascript:remove_filter('filter_{$colName}')"><!--not_in_theme!--><img src='{$deleteInlineImage}' align='absmiddle' alt='{$LBL_REMOVE}' border='0' height='12' width='12'></a></td>
                 <td width='20%'>{$colLabel}:&nbsp;</td>
                 <td width='10%'><select name='{$colName}SearchType'>{$operator_options}</select></td>
                 <td width='68%'><input value="{$colValue}" id="{$colName}SearchField" name="{$colName}SearchField" type="text"></td>                  
