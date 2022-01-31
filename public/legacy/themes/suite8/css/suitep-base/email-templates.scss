@@ -1,0 +1,124 @@
+/* Email Templates */
+
+.view-module-EmailTemplates {
+    .moduleTitle {
+        border-bottom: 1px solid lightgrey;
+    }
+    .action-buttons {
+        position: absolute;
+        right: 0;
+        margin-top: -3.3em;
+    }
+    .mandatory-txt {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    input[type=text],input[type=password],input[type=email],input[type=number],textarea{
+        background-color: $transparent-color;
+        border: 1px solid $form-border-color;
+        margin-bottom: 1em;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+        margin-bottom: 1em;
+    }
+    .view-space {
+        padding-top: 1em;
+        padding-left: 1em;
+        .button-group {
+            display: inline;
+        }
+    }
+    .edit tr td[scope=row] {
+        width: 3%;
+    }
+    table.edit {
+        border-radius: 10px;
+    }
+    #upload_div {
+        margin-top: 1em;
+    }
+    #add_doc {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-top: 1em;
+        margin-right: 0.5em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    input[type=button] {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-top: 0.3em;
+        margin-bottom: 0.9em !important;
+        margin-left:0 !important;        
+    }
+    #detail_header_action_menu {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        .sugar_action_button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            letter-spacing: 0.05em;
+            padding: 0.3em 1em;
+            text-transform: capitalize;
+            span.suitepicon {
+                top: 0;
+            }
+        }
+        li.sugar_action_button {
+            ul.subnav {
+                width: auto;
+                top: auto;
+                background: $nepal-grey;
+                li {
+                    background: $transparent-color;
+                    &:hover {
+                        background: $pale-blue;
+                    }
+                }
+                a {
+                    background: $transparent-color;
+                }
+            }
+        }
+    }
+    #html_div {
+        iframe#html_frame {
+            border: 1px solid lightgrey;
+        }
+    }
+    .detail.view {
+        border: 1px solid lightgrey;
+        padding-top:1em;
+        padding-right: 13em;
+        table {
+            border: none;
+        }
+    }
+    .selectcrossbtn {
+        button {
+            &:hover {
+                background: none;
+            }
+        }
+    }
+}

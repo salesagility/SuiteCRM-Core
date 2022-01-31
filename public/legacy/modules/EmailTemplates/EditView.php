@@ -171,8 +171,8 @@ if (!empty($focus->assigned_user_name)) {
     $xtpl->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
 }
 
-$xtpl->assign("assign_user_select", '<span class="suitepicon suitepicon-action-select"></span>');
-$xtpl->assign("assign_user_clear", '<span class="suitepicon suitepicon-action-clear"></span>');
+$xtpl->assign("assign_user_select", SugarThemeRegistry::current()->getImage('cursor.svg'));
+$xtpl->assign("assign_user_clear", SugarThemeRegistry::current()->getImage('cross.svg'));
 //Assign qsd script
 require_once('include/QuickSearchDefaults.php');
 $qsd = QuickSearchDefaults::getQuickSearchDefaults();
