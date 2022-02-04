@@ -44,3 +44,59 @@
         border: 1px solid $form-border-color;       
     }
 }
+
+/* campaign detailview */
+
+.view-module-Campaigns {
+    .moduleTitle {
+        border-bottom: 1px solid lightgrey;
+    }
+    .buttons {
+      position: absolute;
+      right: 0;
+      margin-top: -6em;
+      padding-right: 0;
+    }
+    .track-delete {
+        position: absolute;
+        top: 3.6em;
+        right: 26.4em;
+    }
+    #deleteTestEntriesButtonId {
+        position: absolute;
+        top: 3.6em;
+        right: 27.8em;
+    }
+    .action-buttons-wizard {
+        position: absolute;
+        right: 0;
+        top: 3em;
+        padding-right: 0;
+    }
+    li#tab-actions {
+      bottom: 5.8em !important;
+    }
+    .button {
+      background-color: $nepal-grey;
+      border-radius: 0.2em;
+      font-weight: bold;
+      height: 2.2em;
+      line-height: 1em;
+      letter-spacing: 0.05em;
+      padding: 0.3em 1em;
+      text-transform: capitalize;
+      &:hover {
+          background: $pale-blue;
+      }
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+    }
+    .actionsContainer {
+        position: relative;
+        left: 0.5em;
+    }
+  }
+  

@@ -60,16 +60,14 @@
 			<input type="hidden" name="return_id" >
 			<input type="hidden" name="campaign_id" value="{$ID}">
 			<input type="hidden" name="mode" value="">
-			
-			{$TRACK_DELETE_BUTTON}
+			<div class="track-delete">{$TRACK_DELETE_BUTTON}</div>			
 	</td>
 		<td align='right'></td>
-	<td align='right'>		    
+	<td align='right' class="action-buttons-wizard">		    
 		<input type="button" class="button" id="launch_wizard_button" onclick="javascript:window.location='index.php?module=Campaigns&action=WizardHome&record={$ID}';" value="{$MOD.LBL_TO_WIZARD_TITLE}" />
 		<input type="button" class="button" id="view_details_button" onclick="javascript:window.location='index.php?module=Campaigns&action=DetailView&record={$ID}';" value="{$MOD.LBL_TODETAIL_BUTTON_LABEL}" />
-		<span style="{$DISABLE_LINK}"><input type="button" class="button" id="view_roi_button" onclick="javascript:window.location='index.php?module=Campaigns&action=RoiDetailView&record={$ID}';" value="{$MOD.LBL_TRACK_ROI_BUTTON_LABEL}" /></SPAN>{$ADMIN_EDIT}
+		<span style="{$DISABLE_LINK}"><input style="margin-right:0;" type="button" class="button" id="view_roi_button" onclick="javascript:window.location='index.php?module=Campaigns&action=RoiDetailView&record={$ID}';" value="{$MOD.LBL_TRACK_ROI_BUTTON_LABEL}" /></SPAN>{$ADMIN_EDIT}
 	</td>
-
 	<td align='right'>{$ADMIN_EDIT}</td>
 </tr>
 </table>
