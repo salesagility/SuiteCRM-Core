@@ -26,89 +26,39 @@
  */
 
 
-namespace App\Languages\Entity;
+namespace App\Authentication\LegacyHandler;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use App\Engine\LegacyHandler\LegacyHandler;
+use SugarBean;
 
 /**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get"
- *     },
- *     collectionOperations={
- *     },
- *     graphql={
- *         "item_query",
- *     },
- * )
+ * Class UserHandler
+ * @package App\Authentication\LegacyHandler
  */
-class ModStrings
+class UserHandler extends LegacyHandler
 {
-    /**
-     * @ApiProperty(identifier=true)
-     * @var string|null
-     */
-    protected $id;
+    public const HANDLER_KEY = 'user-handler';
 
     /**
-     * @ApiProperty
-     * @var array|null
+     * @inheritDoc
      */
-    protected $items;
-
-    /**
-     * Get Id
-     * @return string|null
-     */
-    public function getId(): ?string
+    public function getHandlerKey(): string
     {
-        return $this->id;
+        return self::HANDLER_KEY;
     }
 
     /**
-     * Set Id
-     * @param string|null $id
-     * @return ModStrings
+     * @inheritDoc
      */
-    public function setId(?string $id): ModStrings
+    public function getCurrentUser(): ?SugarBean
     {
-        $this->id = $id;
+        $this->init();
+        $this->startLegacyApp();
 
-        return $this;
-    }
+        global $current_user;
 
-    /**
-     * Get items
-     * @return array|null
-     */
-    public function getItems(): ?array
-    {
-        return $this->items;
-    }
+        $this->close();
 
-    /**
-     * Set Items
-     * @param array|null $items
-     * @return ModStrings
-     */
-    public function setItems(?array $items): ModStrings
-    {
-        $this->items = $items;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            '_id' => $this->getId(),
-            'items' => $this->getItems() ?? []
-        ];
+        return $current_user;
     }
 }

@@ -128,4 +128,17 @@ class SystemConfig
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            '_id' => $this->getId(),
+            'items' => $this->getItems() ?? [],
+            'value' => $this->getValue()
+        ];
+    }
 }
