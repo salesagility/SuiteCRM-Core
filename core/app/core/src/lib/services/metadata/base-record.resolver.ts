@@ -39,6 +39,9 @@ import {BaseModuleResolver} from './base-module.resolver';
 import {forkJoin, Observable} from 'rxjs';
 import {MessageService} from '../message/message.service';
 import {RouteConverter} from "../navigation/route-converter/route-converter.service";
+import {AppMetadataStore} from '../../store/app-metadata/app-metadata.store.service';
+import {concatMap} from 'rxjs/operators';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseRecordResolver extends BaseModuleResolver {
@@ -55,7 +58,9 @@ export class BaseRecordResolver extends BaseModuleResolver {
         protected appStateStore: AppStateStore,
         protected messageService: MessageService,
         protected routeConverter: RouteConverter,
-        protected router: Router
+        protected router: Router,
+        protected appMetadata: AppMetadataStore,
+        protected auth: AuthService,
     ) {
         super(
             systemConfigStore,
@@ -68,6 +73,8 @@ export class BaseRecordResolver extends BaseModuleResolver {
             metadataStore,
             messageService,
             routeConverter,
+            appMetadata,
+            auth
         );
     }
 
@@ -78,9 +85,12 @@ export class BaseRecordResolver extends BaseModuleResolver {
             routeModule = route.data.module;
         }
 
-        return forkJoin({
-            base: super.resolve(route),
-            metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
-        });
+        return super.resolve(route).pipe(
+            concatMap(() => {
+                return forkJoin({
+                    metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
+                });
+            })
+        );
     }
 }

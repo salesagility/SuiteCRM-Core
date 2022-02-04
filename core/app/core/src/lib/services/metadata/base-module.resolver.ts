@@ -37,8 +37,10 @@ import {AppStateStore} from '../../store/app-state/app-state.store';
 import {forkJoin} from 'rxjs';
 import {MetadataStore} from '../../store/metadata/metadata.store.service';
 import {MessageService} from '../message/message.service';
-import {tap} from 'rxjs/operators';
+import {concatMap, map, tap} from 'rxjs/operators';
 import {RouteConverter} from "../navigation/route-converter/route-converter.service";
+import {AppMetadataStore} from '../../store/app-metadata/app-metadata.store.service';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseModuleResolver extends BaseMetadataResolver {
@@ -54,6 +56,8 @@ export class BaseModuleResolver extends BaseMetadataResolver {
         protected metadataStore: MetadataStore,
         protected messageService: MessageService,
         protected routeConverter: RouteConverter,
+        protected appMetadata: AppMetadataStore,
+        protected auth: AuthService
     ) {
         super(
             systemConfigStore,
@@ -63,7 +67,9 @@ export class BaseModuleResolver extends BaseMetadataResolver {
             themeImagesStore,
             appStateStore,
             moduleNameMapper,
-            messageService
+            messageService,
+            appMetadata,
+            auth
         );
     }
 
@@ -74,11 +80,20 @@ export class BaseModuleResolver extends BaseMetadataResolver {
             routeModule = route.data.module;
         }
 
-        return forkJoin({
-            base: super.resolve(route),
-            metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
-            savedSearchMeta: this.metadataStore.getMetadata('saved-search', ['recordView'])
-        }).pipe(
+        return super.resolve(route).pipe(
+            concatMap(() => {
+                return forkJoin({
+                    metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
+                    savedSearchMeta: this.metadataStore.getMetadata('saved-search', ['recordView']),
+                });
+            }),
+            map(value => {
+                return {
+                    base: value[0] ?? {},
+                    metadata: value[1] ?? {},
+                    savedSearchMeta: value[2] ?? {},
+                }
+            }),
             tap(
                 () => {
                     if (routeModule) {

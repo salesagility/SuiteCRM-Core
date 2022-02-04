@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '../../services/api/graphql-api/api.collection.get';
@@ -123,6 +123,20 @@ export class UserPreferenceStore implements StateStore {
         );
     }
 
+    /**
+     * Check if loaded
+     */
+    public isCached(): boolean {
+        return cache$ !== null;
+    }
+
+    /**
+     * Set pre-loaded preferences and cache
+     */
+    public set(userPreferences: UserPreferenceMap): void {
+        cache$ = of(userPreferences).pipe(shareReplay(1));
+        this.updateState({...internalState, userPreferences, loading: false});
+    }
 
     /**
      * Internal API

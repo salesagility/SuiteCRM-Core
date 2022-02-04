@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {concatAll, map, tap, toArray} from 'rxjs/operators';
+import {concatAll, map, take, tap, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
@@ -37,6 +37,8 @@ import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {MessageService} from '../message/message.service';
 import {ModuleNameMapper} from '../navigation/module-name-mapper/module-name-mapper.service';
+import {AppMetadataStore} from '../../store/app-metadata/app-metadata.store.service';
+import {AuthService} from '../auth/auth.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -51,10 +53,28 @@ export class BaseMetadataResolver implements Resolve<any> {
         protected appState: AppStateStore,
         protected moduleNameMapper: ModuleNameMapper,
         protected messageService: MessageService,
+        protected appMetadata: AppMetadataStore,
+        protected auth: AuthService
     ) {
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        const module = this.calculateActiveModule(route);
+        return this.appMetadata.load(module).pipe(
+            tap(() => {
+                if (this.auth.isLoggedIn()) {
+                    setTimeout(() => {
+                        this.appMetadata.loadModuleMetadata(module).pipe(take(1)).subscribe();
+                    }, 0)
+                }
+            })
+        );
+    }
+
+    /**
+     * @param route
+     */
+    protected sequentialLoad(route: ActivatedRouteSnapshot) {
         const streams$: { [key: string]: Observable<any> } = {};
 
         if (this.isToLoadNavigation(route)) {
@@ -234,6 +254,11 @@ export class BaseMetadataResolver implements Resolve<any> {
 
         if (!module) {
             module = route.data.module;
+        }
+
+        const rootPath = route?.url[0]?.path ?? '';
+        if (!module && rootPath !== '') {
+            module = rootPath;
         }
 
         const parentModuleParam = this.getParentModuleMap()[module] || '';

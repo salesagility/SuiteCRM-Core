@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
@@ -38,6 +38,7 @@ export interface ThemeImage {
     path: string;
     name: string;
     type: string;
+    content?: string;
 }
 
 export interface ThemeImages {
@@ -146,6 +147,25 @@ export class ThemeImagesStore implements StateStore {
         );
     }
 
+    /**
+     * Check if loaded
+     */
+    public isCached(): boolean {
+        return cache$ !== null;
+    }
+
+    /**
+     * Set pre-loaded theme images and cache
+     */
+    public set(theme: string, images: ThemeImageMap): void {
+
+        cachedTheme = theme;
+        this.registerSvgs(images);
+
+        cache$ = of(images).pipe(shareReplay(1));
+        this.updateState({...internalState, images});
+    }
+
 
     /**
      * Internal API
@@ -178,6 +198,20 @@ export class ThemeImagesStore implements StateStore {
         return cache$;
     }
 
+    protected registerSvgs(images: ThemeImageMap) {
+        Object.keys(images).forEach(key => {
+            const image = images[key];
+            const content = image['content'] ?? '';
+            const name = image['name'] ?? '';
+
+            if (content === '' || name === '') {
+                return;
+            }
+
+            this.iconRegistry.addSvg(name, content);
+        });
+    }
+
     /**
      * Fetch the theme images from the backend
      *
@@ -197,17 +231,15 @@ export class ThemeImagesStore implements StateStore {
                     }
 
                     if (!emptyObject(images)) {
+                        const parsedImages = {};
+                        this.registerSvgs(images);
+
                         Object.keys(images).forEach(key => {
-                            const image = images[key];
-                            const content = image['content'] ?? '';
-                            const name = image['name'] ?? '';
-
-                            if (content === '' || name === '') {
-                                return;
-                            }
-
-                            this.iconRegistry.addSvg(name, content);
+                            const {content, ...image} = images[key] ?? {};
+                            parsedImages[key] = image;
                         });
+
+                        return parsedImages;
                     }
 
                     return images;

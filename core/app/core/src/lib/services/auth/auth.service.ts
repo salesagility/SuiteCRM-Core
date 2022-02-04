@@ -29,14 +29,13 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
-import {User} from 'common';
+import {isEmptyString, User} from 'common';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
-import {isEmptyString} from 'common';
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -73,6 +72,10 @@ export class AuthService {
         protected localStorage: LocalStorageService
     ) {
         this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
+    }
+
+    isLoggedIn(): boolean {
+        return this.isUserLoggedIn.value;
     }
 
     getCurrentUser(): User {
@@ -170,13 +173,13 @@ export class AuthService {
                     }
 
                     this.message.log('Logout success');
-                    if(!isEmptyString(messageKey)) {
+                    if (!isEmptyString(messageKey)) {
                         this.message.addSuccessMessageByKey(messageKey);
                     }
                 },
                 () => {
                     this.message.log('Error on logout');
-                    if(!isEmptyString(messageKey)) {
+                    if (!isEmptyString(messageKey)) {
                         this.message.addSuccessMessageByKey(messageKey);
                     }
                 }

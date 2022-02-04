@@ -37,6 +37,8 @@ import {RouteConverter} from '../../../services/navigation/route-converter/route
 import {LanguageStore} from '../../../store/language/language.store';
 import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
 import {MessageService} from '../../../services/message/message.service';
+import {AppMetadataStore} from '../../../store/app-metadata/app-metadata.store.service';
+import {AuthService} from '../../../services/auth/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class ClassicViewResolver extends BaseMetadataResolver {
@@ -51,6 +53,8 @@ export class ClassicViewResolver extends BaseMetadataResolver {
         protected routeConverter: RouteConverter,
         protected messageService: MessageService,
         protected appStateStore: AppStateStore,
+        protected appMetadata: AppMetadataStore,
+        protected auth: AuthService
     ) {
         super(
             systemConfigStore,
@@ -60,7 +64,9 @@ export class ClassicViewResolver extends BaseMetadataResolver {
             themeImagesStore,
             appStateStore,
             moduleNameMapper,
-            messageService
+            messageService,
+            appMetadata,
+            auth
         );
     }
 

@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
@@ -190,6 +190,28 @@ export class NavigationStore implements StateStore {
     }
 
     /**
+     * Check if loaded
+     */
+    public isCached(): boolean {
+        return cache$ !== null;
+    }
+
+    /**
+     * Set pre-loaded navigation and cache
+     */
+    public set(navigation: Navigation): void {
+        cache$ = of(navigation).pipe(shareReplay(1));
+        this.updateState({
+            ...internalState,
+            tabs: navigation.tabs,
+            groupedTabs: navigation.groupedTabs,
+            userActionMenu: navigation.userActionMenu,
+            modules: navigation.modules,
+            maxTabs: navigation.maxTabs
+        });
+    }
+
+    /**
      * Internal API
      */
 
@@ -211,7 +233,7 @@ export class NavigationStore implements StateStore {
 
         const user = '1';
 
-        if (cache$ == null) {
+        if (cache$ === null) {
             cache$ = this.fetch(user).pipe(
                 shareReplay(1)
             );

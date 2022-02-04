@@ -26,11 +26,11 @@
 
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, combineLatest, forkJoin, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '../app-state/app-state.store';
-import {deepClone} from 'common';
+import {deepClone, emptyObject} from 'common';
 import {StateStore} from '../state';
 import {LocalStorageService} from '../../services/local-storage/local-storage.service';
 
@@ -400,6 +400,46 @@ export class LanguageStore implements StateStore {
                 this.updateState(stateUpdate);
             })
         );
+    }
+
+    /**
+     * Check if loaded
+     */
+    public areAllCached(): boolean {
+        let isCached = true;
+        isCached = isCached && !emptyObject(cache?.appStrings ?? {});
+        isCached = isCached && !emptyObject(cache?.appListStrings ?? {});
+        isCached = isCached && !emptyObject(cache?.modStrings ?? {});
+
+        return isCached;
+    }
+
+    /**
+     * Set pre-loaded strings and cache
+     */
+    public set(languageKey: string, languageStrings: LanguageStrings): void {
+
+        const stateUpdate = {...internalState, languageKey};
+
+        if (languageStrings.appStrings && !emptyObject(languageStrings.appStrings)) {
+            cache['appStrings'][languageKey] = of(languageStrings.appStrings).pipe(shareReplay(1));
+            stateUpdate['appStrings'] = languageStrings.appStrings;
+            loadedLanguages['appStrings'] = true;
+        }
+
+        if (languageStrings.appListStrings && !emptyObject(languageStrings.appListStrings)) {
+            cache['appListStrings'][languageKey] = of(languageStrings.appListStrings).pipe(shareReplay(1));
+            stateUpdate['appListStrings'] = languageStrings.appListStrings;
+            loadedLanguages['appListStrings'] = true;
+        }
+
+        if (languageStrings.modStrings && !emptyObject(languageStrings.modStrings)) {
+            cache['modStrings'][languageKey] = of(languageStrings.modStrings).pipe(shareReplay(1));
+            stateUpdate['modStrings'] = languageStrings.modStrings;
+            loadedLanguages['modStrings'] = true;
+        }
+
+        this.updateState(stateUpdate);
     }
 
 

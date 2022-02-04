@@ -15,6 +15,7 @@ export * from './metadata/metadata.model';
 export * from './metadata/subpanel.metadata.model';
 export * from './metadata/widget.metadata';
 export * from './record/field.model';
+export * from './record/recently-viewed.model';
 export * from './record/record.model';
 export * from './record/record-mappers/record-mapper.model';
 export * from './record/record-mappers/record-mapper.registry';

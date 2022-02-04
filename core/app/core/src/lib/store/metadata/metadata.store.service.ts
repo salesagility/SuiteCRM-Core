@@ -36,6 +36,7 @@ import {
     ListViewMeta,
     MassUpdateMeta,
     Panel,
+    RecentlyViewed,
     SearchMeta,
     SubPanelMeta,
     WidgetMetadata
@@ -72,8 +73,8 @@ export interface TabDefinition {
     panelDefault: 'expanded' | 'collapsed';
 }
 
-
 export interface Metadata {
+    module?: string;
     detailView?: any;
     editView?: any;
     listView?: ListViewMeta;
@@ -81,24 +82,34 @@ export interface Metadata {
     recordView?: RecordViewMetadata;
     subPanel?: SubPanelMeta;
     massUpdate?: MassUpdateMeta;
+    recentlyViewed?: RecentlyViewed[];
+}
+
+export interface MetadataMap {
+    [key: string]: Metadata;
 }
 
 const initialState: Metadata = {
+    module: '',
     detailView: {},
     editView: {},
     listView: {} as ListViewMeta,
     search: {} as SearchMeta,
     recordView: {} as RecordViewMetadata,
     subPanel: {} as SubPanelMeta,
-    massUpdate: {} as MassUpdateMeta
+    massUpdate: {} as MassUpdateMeta,
+    recentlyViewed: []
 };
+
+const initialModuleMetadataState: MetadataMap = {};
 
 
 let internalState: Metadata = deepClone(initialState);
+let allModulesState: MetadataMap = deepClone(initialModuleMetadataState);
 
 
 export interface MetadataCache {
-    [key: string]: BehaviorSubject<Metadata>;
+    [key: string]: Observable<Metadata>;
 }
 
 const initialCache: MetadataCache = {} as MetadataCache;
@@ -119,11 +130,14 @@ export class MetadataStore implements StateStore {
     searchMetadata$: Observable<SearchMeta>;
     recordViewMetadata$: Observable<RecordViewMetadata>;
     metadata$: Observable<Metadata>;
+    allModuleMetadata$: Observable<MetadataMap>;
     subPanelMetadata$: Observable<SubPanelMeta>;
 
     protected store = new BehaviorSubject<Metadata>(internalState);
     protected state$ = this.store.asObservable();
-    protected resourceName = 'viewDefinition';
+    protected allModuleStore = new BehaviorSubject<MetadataMap>(allModulesState);
+    protected allModulesState$ = this.allModuleStore.asObservable();
+    protected resourceName = 'moduleMetadata';
     protected fieldsMetadata = {
         fields: [
             'id',
@@ -135,7 +149,8 @@ export class MetadataStore implements StateStore {
         'search',
         'recordView',
         'subPanel',
-        'massUpdate'
+        'massUpdate',
+        'recentlyViewed'
     ];
 
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
@@ -146,17 +161,16 @@ export class MetadataStore implements StateStore {
         this.recordViewMetadata$ = this.state$.pipe(map(state => state.recordView), distinctUntilChanged());
         this.subPanelMetadata$ = this.state$.pipe(map(state => state.subPanel), distinctUntilChanged());
         this.metadata$ = this.state$;
+        this.allModuleMetadata$ = this.allModulesState$;
     }
 
     /**
      * Clear state
      */
     public clear(): void {
-        Object.keys(cache).forEach(key => {
-            cache[key].unsubscribe();
-        });
         cache = deepClone(initialCache);
-        this.updateState(deepClone(initialState));
+        allModulesState = deepClone(initialModuleMetadataState);
+        this.updateState('', deepClone(initialState));
     }
 
     public clearAuthBased(): void {
@@ -172,8 +186,22 @@ export class MetadataStore implements StateStore {
         return this.types;
     }
 
+    public getModule(): string {
+        return internalState.module;
+    }
+
     public get(): Metadata {
         return internalState;
+    }
+
+    public getModuleMeta(module: string): Metadata {
+        const meta = allModulesState[module] ?? {};
+        return {...meta};
+    }
+
+    public setModuleMetadata(module: string, metadata: Metadata): void {
+        cache[module] = of(metadata).pipe(shareReplay(1));
+        this.updateAllModulesState(module, metadata);
     }
 
     /**
@@ -191,9 +219,31 @@ export class MetadataStore implements StateStore {
 
         return this.getMetadata(moduleID, types).pipe(
             tap((metadata: Metadata) => {
-                this.updateState(metadata);
+                this.updateState(moduleID, metadata);
             })
         );
+    }
+
+    /**
+     * Check if loaded
+     */
+    public isCached(module: string): boolean {
+        return (cache[module] ?? null) !== null;
+    }
+
+    /**
+     * Get empty Metadata
+     */
+    public getEmpty(): Metadata {
+        return deepClone(initialState);
+    }
+
+    /**
+     * Set pre-loaded navigation and cache
+     */
+    public set(module: string, metadata: Metadata): void {
+        cache[module] = of(metadata).pipe(shareReplay(1));
+        this.updateState(module, metadata);
     }
 
     /**
@@ -205,70 +255,60 @@ export class MetadataStore implements StateStore {
      */
     public getMetadata(module: string, types: string[] = null): Observable<Metadata> {
 
-        if (types === null) {
-            types = this.getMetadataTypes();
+        if (cache[module] == null) {
+            cache[module] = this.fetchMetadata(module, types).pipe(
+                shareReplay(1)
+            );
         }
 
-        let metadataCache: BehaviorSubject<Metadata> = null;
-        // check for currently missing and
-        const missing = {};
-        const loadedTypes = {};
-
-        if (cache[module]) {
-            metadataCache = cache[module];
-
-            types.forEach(type => {
-
-                const cached = metadataCache.value;
-
-                if (!cached[type]) {
-                    missing[type] = type;
-                    return;
-                }
-
-                if (Object.keys(cached[type]).length === 0) {
-                    missing[type] = type;
-                } else {
-                    loadedTypes[type] = cached[type];
-                }
-            });
-
-            if (Object.keys(missing).length === 0) {
-                return of(metadataCache.value).pipe(shareReplay());
-            }
-        } else {
-            cache[module] = new BehaviorSubject({} as Metadata);
-        }
-
-        return this.fetchMetadata(module, types).pipe(
-            map((value: Metadata) => {
-
-                Object.keys(loadedTypes).forEach((type) => {
-                    if (!value[type] && loadedTypes[type]) {
-                        value[type] = loadedTypes[type];
-                    }
-                });
-
-                return value;
-            }),
-            shareReplay(),
-            tap((value: Metadata) => {
-                cache[module].next(value);
-            })
-        );
+        return cache[module];
     }
 
     /**
      * Internal API
      */
 
+    public mapMetadata(data): Metadata {
+        const metadata: Metadata = {} as Metadata;
+        this.parseListViewMetadata(data, metadata);
+        this.parseSearchMetadata(data, metadata);
+        this.parseRecordViewMetadata(data, metadata);
+        this.parseSubPanelMetadata(data, metadata);
+        this.parseMassUpdateMetadata(data, metadata);
+        this.parseRecentlyViewedMetadata(data, metadata);
+        return metadata;
+    }
+
     /**
      * Update the state
      *
+     * @param {string} module
      * @param {object} state to set
      */
-    protected updateState(state: Metadata): void {
-        this.store.next(internalState = state);
+    protected updateState(module: string, state: Metadata): void {
+
+        this.updateAllModulesState(module, state);
+
+        this.store.next(internalState = {...state, module});
+    }
+
+    /**
+     * Update the state
+     *
+     * @param {string} module
+     * @param {object} state to set
+     */
+    protected updateAllModulesState(module: string, state: Metadata): void {
+
+        if (module !== '') {
+            const newState = {
+                ...allModulesState
+            };
+            newState[module] = {...state};
+
+            this.allModuleStore.next(allModulesState = newState);
+        }
+
     }
 
     /**
@@ -283,29 +323,21 @@ export class MetadataStore implements StateStore {
         const fieldsToRetrieve = {
             fields: [
                 ...this.fieldsMetadata.fields,
-                ...types
+                ...(types ?? this.types)
             ]
         };
 
-        return this.recordGQL.fetch(this.resourceName, `/api/metadata/view-definitions/${module}`, fieldsToRetrieve)
+        return this.recordGQL.fetch(this.resourceName, `/api/module-metadata/${module}`, fieldsToRetrieve)
             .pipe(
                 map(({data}) => {
-
-                    const metadata: Metadata = {} as Metadata;
-                    this.parseListViewMetadata(data, metadata);
-                    this.parseSearchMetadata(data, metadata);
-                    this.parseRecordViewMetadata(data, metadata);
-                    this.parseSubPanelMetadata(data, metadata);
-                    this.parseMassUpdateMetadata(data, metadata);
-
-                    return metadata;
+                    return this.mapMetadata(data.moduleMetadata);
                 })
             );
     }
 
     protected parseListViewMetadata(data, metadata: Metadata): void {
 
-        if (!data || !data.viewDefinition.listView) {
+        if (!data || !data.listView) {
             return;
         }
 
@@ -317,8 +349,8 @@ export class MetadataStore implements StateStore {
             filters: []
         };
 
-        if (data.viewDefinition.listView.columns) {
-            data.viewDefinition.listView.columns.forEach((field: ColumnDefinition) => {
+        if (data.listView.columns) {
+            data.listView.columns.forEach((field: ColumnDefinition) => {
                 listViewMeta.fields.push(
                     field
                 );
@@ -332,31 +364,31 @@ export class MetadataStore implements StateStore {
             availableFilters: 'filters'
         };
 
-        this.addDefinedMeta(listViewMeta, data.viewDefinition.listView, entries);
+        this.addDefinedMeta(listViewMeta, data.listView, entries);
 
         metadata.listView = listViewMeta;
     }
 
     protected parseSearchMetadata(data, metadata: Metadata): void {
-        if (data && data.viewDefinition.search) {
-            metadata.search = data.viewDefinition.search;
+        if (data && data.search) {
+            metadata.search = data.search;
         }
     }
 
     protected parseSubPanelMetadata(data, metadata: Metadata): void {
-        if (data && data.viewDefinition.subPanel) {
-            metadata.subPanel = data.viewDefinition.subPanel;
+        if (data && data.subPanel) {
+            metadata.subPanel = data.subPanel;
         }
     }
 
     protected parseMassUpdateMetadata(data, metadata: Metadata): void {
-        if (data && data.viewDefinition.massUpdate) {
-            metadata.massUpdate = data.viewDefinition.massUpdate;
+        if (data && data.massUpdate) {
+            metadata.massUpdate = data.massUpdate;
         }
     }
 
     protected parseRecordViewMetadata(data, metadata: Metadata): void {
-        if (!data || !data.viewDefinition.recordView) {
+        if (!data || !data.recordView) {
             return;
         }
 
@@ -366,7 +398,7 @@ export class MetadataStore implements StateStore {
             panels: []
         };
 
-        const receivedMeta = data.viewDefinition.recordView;
+        const receivedMeta = data.recordView;
         const entries = {
             templateMeta: 'templateMeta',
             actions: 'actions',
@@ -380,6 +412,12 @@ export class MetadataStore implements StateStore {
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
 
         metadata.recordView = recordViewMeta;
+    }
+
+    protected parseRecentlyViewedMetadata(data, metadata: Metadata): void {
+        if (data && data.recentlyViewed) {
+            metadata.recentlyViewed = data.recentlyViewed;
+        }
     }
 
     protected addDefinedMeta(

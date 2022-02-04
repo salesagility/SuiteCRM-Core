@@ -151,7 +151,7 @@ export class AppStateStore implements StateStore {
      * @returns {string} current view
      */
     public getModule(): string {
-        return internalState.module;
+        return internalState?.module ?? '';
     }
 
     /**

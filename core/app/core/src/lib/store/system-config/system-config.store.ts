@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {CollectionGQL} from '../../services/api/graphql-api/api.collection.get';
@@ -142,6 +142,21 @@ export class SystemConfigStore implements StateStore {
                 this.updateState({...internalState, configs, loading: false});
             })
         );
+    }
+
+    /**
+     * Check if loaded
+     */
+    public isCached(): boolean {
+        return cache$ !== null;
+    }
+
+    /**
+     * Set pre-loaded configs and cache
+     */
+    public set(configs: SystemConfigMap): void {
+        cache$ = of(configs).pipe(shareReplay(1));
+        this.updateState({...internalState, configs, loading: false});
     }
 
     /**

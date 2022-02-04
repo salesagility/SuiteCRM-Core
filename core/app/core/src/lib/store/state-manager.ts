@@ -33,6 +33,7 @@ import {ThemeImagesStore} from './theme-images/theme-images.store';
 import {UserPreferenceStore} from './user-preference/user-preference.store';
 import {StateStore, StateStoreMap, StateStoreMapEntry} from './state';
 import {MetadataStore} from './metadata/metadata.store.service';
+import {AppMetadataStore} from './app-metadata/app-metadata.store.service';
 
 @Injectable({
     providedIn: 'root',
@@ -48,6 +49,7 @@ export class StateManager {
         protected systemConfigStore: SystemConfigStore,
         protected themeImagesStore: ThemeImagesStore,
         protected userPreferenceStore: UserPreferenceStore,
+        protected appMetadataStore: AppMetadataStore,
     ) {
         this.stateStores.appStore = this.buildMapEntry(appStore, false);
         this.stateStores.navigationStore = this.buildMapEntry(navigationStore, true);
@@ -56,6 +58,7 @@ export class StateManager {
         this.stateStores.systemConfigStore = this.buildMapEntry(systemConfigStore, false);
         this.stateStores.themeImagesStore = this.buildMapEntry(themeImagesStore, false);
         this.stateStores.userPreferenceStore = this.buildMapEntry(userPreferenceStore, true);
+        this.stateStores.appMetadataStore = this.buildMapEntry(appMetadataStore, true);
     }
 
     /**
