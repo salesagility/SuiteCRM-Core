@@ -142,6 +142,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $navbar->userActionMenu = $this->fetchUserActionMenu();
         $navbar->maxTabs = $this->getMaxTabs();
 
+        $navbar->type = $this->getNavigationType();
+
         $this->close();
 
         return $navbar;
@@ -424,6 +426,25 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         }
 
         return $maxTabs;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNavigationType(): string {
+        global $current_user;
+        $navigationType = $current_user->getPreference('navigation_paradigm');
+
+        if (empty($navigationType)) {
+            global $sugar_config;
+            $navigationType = $sugar_config['default_navigation_paradigm'] ?? 'm';
+        }
+
+        if (empty($navigationType)){
+            $navigationType = 'm';
+        }
+
+        return $navigationType;
     }
 
     /**

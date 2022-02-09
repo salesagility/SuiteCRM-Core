@@ -80,4 +80,28 @@ final class Navbar
      * @ApiProperty
      */
     public $maxTabs;
+
+    /**
+     * @var string
+     * @ApiProperty
+     */
+    public $type;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->userID,
+            '_id' => $this->userID,
+            'userID' => $this->userID,
+            'tabs' => $this->tabs,
+            'groupedTabs' => $this->groupedTabs,
+            'userActionMenu' => $this->userActionMenu,
+            'modules' => $this->modules,
+            'maxTabs' => $this->maxTabs,
+            'type' => $this->type,
+        ];
+    }
 }
