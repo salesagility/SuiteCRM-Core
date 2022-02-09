@@ -40,8 +40,9 @@ import {forkJoin, Observable} from 'rxjs';
 import {MessageService} from '../message/message.service';
 import {RouteConverter} from "../navigation/route-converter/route-converter.service";
 import {AppMetadataStore} from '../../store/app-metadata/app-metadata.store.service';
-import {concatMap} from 'rxjs/operators';
+import {concatMap, tap} from 'rxjs/operators';
 import {AuthService} from '../auth/auth.service';
+import {RecentlyViewedService} from '../navigation/recently-viewed/recently-viewed.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseRecordResolver extends BaseModuleResolver {
@@ -61,6 +62,7 @@ export class BaseRecordResolver extends BaseModuleResolver {
         protected router: Router,
         protected appMetadata: AppMetadataStore,
         protected auth: AuthService,
+        protected recentlyViewed: RecentlyViewedService
     ) {
         super(
             systemConfigStore,
@@ -90,6 +92,11 @@ export class BaseRecordResolver extends BaseModuleResolver {
                 return forkJoin({
                     metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
                 });
+            }),
+            tap(() => {
+                if (this.auth.isLoggedIn()) {
+                    this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
+                }
             })
         );
     }

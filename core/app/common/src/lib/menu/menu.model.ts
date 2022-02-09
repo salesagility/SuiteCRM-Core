@@ -24,10 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-export interface RecentRecordsMenuItem {
-    summary: string;
-    url: string;
-}
+import {RecentlyViewed} from '../record/recently-viewed.model';
 
 export interface MenuItemLink {
     label: string;
@@ -40,5 +37,6 @@ export interface MenuItem {
     link: MenuItemLink;
     icon: string;
     submenu: MenuItem[];
-    recentRecords?: RecentRecordsMenuItem[];
+    module?: string;
+    recentRecords?: RecentlyViewed[];
 }

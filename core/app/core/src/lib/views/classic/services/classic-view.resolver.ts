@@ -39,6 +39,7 @@ import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
 import {MessageService} from '../../../services/message/message.service';
 import {AppMetadataStore} from '../../../store/app-metadata/app-metadata.store.service';
 import {AuthService} from '../../../services/auth/auth.service';
+import {RecentlyViewedService} from '../../../services/navigation/recently-viewed/recently-viewed.service';
 
 @Injectable({providedIn: 'root'})
 export class ClassicViewResolver extends BaseMetadataResolver {
@@ -54,7 +55,8 @@ export class ClassicViewResolver extends BaseMetadataResolver {
         protected messageService: MessageService,
         protected appStateStore: AppStateStore,
         protected appMetadata: AppMetadataStore,
-        protected auth: AuthService
+        protected auth: AuthService,
+        protected recentlyViewed: RecentlyViewedService
     ) {
         super(
             systemConfigStore,
@@ -84,6 +86,8 @@ export class ClassicViewResolver extends BaseMetadataResolver {
                     const info = this.routeConverter.parseRouteURL(route.url);
                     const action = info.action ?? 'index';
                     this.appStateStore.setView(action);
+
+                    this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
                 },
                 () => {
                     this.addMetadataLoadErrorMessage();

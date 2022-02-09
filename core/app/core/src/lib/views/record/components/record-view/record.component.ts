@@ -43,7 +43,11 @@ export class RecordComponent implements OnInit, OnDestroy {
     vm$: Observable<RecordViewModel> = null;
     showStatusBar = false;
 
-    constructor(protected appState: AppStateStore, protected recordStore: RecordViewStore, private route: ActivatedRoute) {
+    constructor(
+        protected appState: AppStateStore,
+        protected recordStore: RecordViewStore,
+        private route: ActivatedRoute
+    ) {
     }
 
     ngOnInit(): void {

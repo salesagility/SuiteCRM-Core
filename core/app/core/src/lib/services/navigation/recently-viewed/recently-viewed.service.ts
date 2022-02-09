@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {deepClone, RecentlyViewed} from 'common';
+import {deepClone, RecentlyViewed, ViewMode} from 'common';
 import {ProcessService} from '../../process/process.service';
 import {take} from 'rxjs/operators';
+import {ActivatedRouteSnapshot} from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class RecentlyViewedService {
@@ -16,6 +17,28 @@ export class RecentlyViewedService {
     /**
      * Public Api
      */
+
+    /**
+     * On navigation add
+     * @param module
+     * @param route
+     */
+    public onNavigationAdd(module: string, route: ActivatedRouteSnapshot) {
+
+        let mode = 'detail' as ViewMode;
+        const data = (route && route.data) || {};
+
+        if (data.mode) {
+            mode = data.mode;
+        }
+
+        const recordId = route?.params?.record ?? null;
+
+        if (recordId && mode !== 'create') {
+            const recentlyViewed = this.buildRecentlyViewed(module, recordId);
+            this.addRecentlyViewed(module, recentlyViewed)
+        }
+    }
 
     /**
      * Build new recently viewed
@@ -34,7 +57,6 @@ export class RecentlyViewedService {
             },
         } as RecentlyViewed);
     }
-
 
     /**
      * Add recently viewed
