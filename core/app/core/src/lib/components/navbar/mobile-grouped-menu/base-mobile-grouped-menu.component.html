@@ -61,14 +61,11 @@
                             [link]="subitem.link"></scrm-menu-item-link>
                     </li>
 
-                    <ng-template
-                        [ngIf]="item.recentRecords && item.recentRecords.length">
-                        <h4 class="recently-viewed-header">RECENTLY VIEWED</h4>
-                        <li *ngFor="let rec of item.recentRecords" class="nav-item">
-                            <a class="mobile-nav-link action-link"
-                               href="#/{{ rec.showSelectModalmoduleName }}/{{ rec.itemId }}">{{ rec.itemSummary }}</a>
+                    <ng-container *ngIf="item && item.module">
+                        <li (click)="onClose && onClose()">
+                            <scrm-menu-recently-viewed [module]="item.module"></scrm-menu-recently-viewed>
                         </li>
-                    </ng-template>
+                    </ng-container>
 
                 </ng-template>
             </ngb-panel>

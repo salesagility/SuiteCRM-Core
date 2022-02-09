@@ -25,8 +25,6 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {RecentRecordsMenuItem} from 'common';
-import {LanguageStrings} from '../../../store/language/language.store';
 import {MenuRecentlyViewedRegistry} from './menu-recently-viewed-registry';
 
 @Component({
@@ -35,8 +33,7 @@ import {MenuRecentlyViewedRegistry} from './menu-recently-viewed-registry';
     styleUrls: []
 })
 export class MenuRecentlyViewedComponent {
-    @Input() records: RecentRecordsMenuItem[];
-    @Input() languages: LanguageStrings;
+    @Input() module: string;
 
     constructor(protected registry: MenuRecentlyViewedRegistry) {
     }

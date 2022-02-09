@@ -26,7 +26,6 @@
 
 import {Component, Input} from '@angular/core';
 import {MenuItem} from 'common';
-import {LanguageStrings} from '../../../store/language/language.store';
 
 @Component({
     selector: 'scrm-base-menu-item',
@@ -35,7 +34,6 @@ import {LanguageStrings} from '../../../store/language/language.store';
 })
 export class BaseMenuItemComponent {
     @Input() item: MenuItem;
-    @Input() languages: LanguageStrings;
 
     constructor() {
     }

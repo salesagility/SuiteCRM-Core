@@ -54,7 +54,7 @@ const recentRecords = [
 
 @Component({
     selector: 'menu-recently-viewed-test-host-component',
-    template: '<scrm-menu-recently-viewed [records]="records" [languages]="languages"></scrm-menu-recently-viewed>'
+    template: '<scrm-menu-recently-viewed [records]="records"></scrm-menu-recently-viewed>'
 })
 class MenuRecentlyViewedTestHostComponent {
     records = recentRecords;

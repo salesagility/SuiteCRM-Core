@@ -24,19 +24,90 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {RecentRecordsMenuItem} from 'common';
-import {LanguageStrings} from '../../../store/language/language.store';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {RecentlyViewed} from 'common';
+import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
+import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
+import {SystemConfigStore} from '../../../store/system-config/system-config.store';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {map} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'scrm-base-menu-recently-viewed',
     templateUrl: './base-menu-recently-viewed.component.html',
     styleUrls: []
 })
-export class BaseMenuRecentlyViewedComponent {
-    @Input() records: RecentRecordsMenuItem[];
-    @Input() languages: LanguageStrings;
+export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
+    @Input() module: string;
+    maxDisplayed: number = 5;
+    records: RecentlyViewed[];
+    protected subs: Subscription[] = [];
 
-    constructor() {
+
+    constructor(
+        protected navigation: ModuleNavigation,
+        protected nameMapper: ModuleNameMapper,
+        protected configs: SystemConfigStore,
+        protected metadata: MetadataStore
+    ) {
     }
+
+    ngOnInit(): void {
+        const ui = this.configs.getConfigValue('ui') ?? {};
+        this.maxDisplayed = parseInt(ui.navigation_max_module_recently_viewed) ?? 5;
+        this.initMetadata$();
+    }
+
+    ngOnDestroy(): void {
+        this.clear();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const moduleChanges = changes?.module ?? null;
+
+        if (moduleChanges === null) {
+            return;
+        }
+
+        const previousModule = changes?.module?.previousValue ?? '';
+        const currentModule = changes?.module?.currentValue ?? '';
+        if (previousModule !== currentModule) {
+            this.clear();
+            this.initMetadata$();
+        }
+    }
+
+    /**
+     * Build route from recently viewed item
+     * @param item
+     */
+    buildRoute(item: RecentlyViewed): string {
+        const legacyName = item.attributes.module_name ?? '';
+        const module = this.nameMapper.toFrontend(legacyName) ?? '';
+        const id = item.attributes.item_id ?? '';
+        return this.navigation.getRecordRouterLink(module, id);
+    }
+
+    /**
+     * Init metadata subscription
+     * @protected
+     */
+    protected initMetadata$(): void {
+        const moduleMeta$ = this.metadata.allModuleMetadata$.pipe(map(value => value[this.module] ?? null));
+
+        this.subs.push(moduleMeta$.subscribe(meta => {
+            this.records = meta?.recentlyViewed ?? null;
+        }));
+    }
+
+    /**
+     * Clear subscription and data
+     * @protected
+     */
+    protected clear() {
+        this.records = null;
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
 }

@@ -34,7 +34,7 @@ import {MenuItem} from 'common';
 })
 export class BaseMenuItemsListComponent {
     @Input() items: MenuItem[];
-    @Input() label: string;
+    @Input() labelKey: string;
 
     constructor() {
     }

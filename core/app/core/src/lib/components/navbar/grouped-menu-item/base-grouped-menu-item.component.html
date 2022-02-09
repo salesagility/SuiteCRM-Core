@@ -58,9 +58,8 @@
                                          [link]="subitem.link">
                     </scrm-menu-item-link>
                 </li>
-                <li>
-                    <scrm-menu-recently-viewed [languages]="languages"
-                                               [records]="sub.recentRecords"></scrm-menu-recently-viewed>
+                <li *ngIf="sub.module">
+                    <scrm-menu-recently-viewed [module]="sub.module"></scrm-menu-recently-viewed>
                 </li>
             </ul>
         </li>

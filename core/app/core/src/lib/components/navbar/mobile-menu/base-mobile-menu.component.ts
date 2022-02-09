@@ -41,6 +41,7 @@ export class BaseMobileMenuComponent implements OnInit {
 
     mainItems: MenuItem[];
     submenu: MenuItem[] = [];
+    subNavItem: MenuItem;
 
     subNavigationType = 'mm';
     backLink = false;
@@ -64,11 +65,13 @@ export class BaseMobileMenuComponent implements OnInit {
      * @param {object} event triggered
      * @param {object} items
      * @param navigationType
+     * @param item
      */
-    public changeSubNav(event: Event, items: MenuItem[], navigationType: string): void {
+    public changeSubNav(event: Event, items: MenuItem[], navigationType: string, item: MenuItem): void {
         this.mobileSubNav = !this.mobileSubNav;
         this.backLink = !this.backLink;
         this.mainNavLink = !this.mainNavLink;
+        this.subNavItem = item;
         this.submenu = items;
         this.subNavigationType = navigationType;
     }

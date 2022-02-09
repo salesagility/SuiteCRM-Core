@@ -128,13 +128,12 @@
                         <ul class="navbar-nav grouped">
 
                             <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
-                                <scrm-menu-item [item]="navbar.current" [languages]="vm.languages"></scrm-menu-item>
+                                <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                             </li>
 
                             <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown main-grouped">
                                 <scrm-grouped-menu-item
                                     [item]="item"
-                                    [languages]="vm.languages"
                                     [subNavCollapse]="subNavCollapse"
                                 >
                                 </scrm-grouped-menu-item>
@@ -143,7 +142,7 @@
                         </ul>
 
                         <scrm-menu-items-list [items]="navbar.all.modules"
-                                              [label]="vm.languages.appStrings['LBL_TABGROUP_ALL'] || ''">
+                                              labelKey="LBL_TABGROUP_ALL">
                         </scrm-menu-items-list>
 
                     </ng-container>
@@ -157,15 +156,15 @@
 
                         <ul class="navbar-nav">
                             <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
-                                <scrm-menu-item [item]="navbar.current" [languages]="vm.languages"></scrm-menu-item>
+                                <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                             </li>
                             <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown non-grouped">
-                                <scrm-menu-item [item]="item" [languages]="vm.languages"></scrm-menu-item>
+                                <scrm-menu-item [item]="item"></scrm-menu-item>
                             </li>
                         </ul>
 
                         <scrm-menu-items-list [items]="navbar.all.modules"
-                                              [label]="vm.languages.appStrings['LBL_MORE'] || ''">
+                                              labelKey="LBL_MORE">
                         </scrm-menu-items-list>
 
                     </ng-container>

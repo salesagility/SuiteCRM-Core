@@ -42,7 +42,7 @@
     <ng-container *ngIf="mainNavLink">
         <div class="mobile-menu-items">
 
-            <li (click)="changeSubNav($event, item.submenu, navigationType)" *ngFor="let item of mainItems"
+            <li (click)="changeSubNav($event, item.submenu, navigationType, item)" *ngFor="let item of mainItems"
                 class=" d-flex align-items-center">
                 <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">{{ item.link.label }}</a>
                 <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled"
@@ -50,7 +50,7 @@
             </li>
 
             <ng-container>
-                <li (click)="changeSubNav($event, all, 'gm')"
+                <li (click)="changeSubNav($event, all, 'gm', null)"
                     class=" d-flex align-items-center">
                     <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">
                         <scrm-label labelKey="LBL_MORE"></scrm-label>
@@ -68,6 +68,14 @@
 
             <scrm-mobile-module-menu [items]="submenu" [onClose]="onClose"></scrm-mobile-module-menu>
 
+            <ng-container *ngIf="subNavItem && subNavItem.module">
+                <div class="mobile-menu-items">
+                    <li (click)="onClose && onClose()" class="">
+                        <scrm-menu-recently-viewed [module]="subNavItem.module"></scrm-menu-recently-viewed>
+                    </li>
+                </div>
+
+            </ng-container>
         </ng-container>
 
         <ng-container *ngIf="subNavigationType === 'gm'">

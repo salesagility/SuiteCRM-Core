@@ -29,7 +29,9 @@
 
     <li class="top-nav nav-item dropdown non-grouped">
 
-        <a class="nav-link-nongrouped dropdown-toggle">{{label}}</a>
+        <a class="nav-link-nongrouped dropdown-toggle">
+            <scrm-label [labelKey]="labelKey"></scrm-label>
+        </a>
 
         <div aria-labelledby="navbarDropdownMenuLink"
              class="dropdown-menu more-menu submenu"

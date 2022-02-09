@@ -26,8 +26,13 @@
 */
 -->
 <ng-container *ngIf="records && records.length">
-    <h4 class="recently-viewed-header">{{languages.appStrings['LBL_LAST_VIEWED'] || ''}}</h4>
-    <div *ngFor="let recentRecord of records" class="nav-item">
-        <a [href]="recentRecord.url" class="nav-link action-link">{{ recentRecord.summary }}</a>
+    <h4 class="recently-viewed-header mt-0 pb-1 pl-2 pr-2">
+        <scrm-label labelKey="LBL_LAST_VIEWED"></scrm-label>
+    </h4>
+    <div *ngFor="let recentRecord of records | slice:0:maxDisplayed" class="nav-item">
+        <a [routerLink]="this.buildRoute(recentRecord)"
+           class="nav-link action-link pb-2 pt-2">
+            {{ recentRecord.attributes.item_summary }}
+        </a>
     </div>
 </ng-container>

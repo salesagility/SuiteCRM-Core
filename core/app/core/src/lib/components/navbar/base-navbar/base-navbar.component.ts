@@ -45,7 +45,7 @@ import {ModuleNavigation} from '../../../services/navigation/module-navigation/m
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
-import {MenuItem} from 'common';
+import {MenuItem, ready} from 'common';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -76,7 +76,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     moduleNameMapper = new ModuleNameMapper(this.systemConfigStore);
     actionNameMapper = new ActionNameMapper(this.systemConfigStore);
     routeConverter = new RouteConverter(this.moduleNameMapper, this.actionNameMapper, this.systemConfigStore);
-    navbar: NavbarModel = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
+    navbar: NavbarModel;
     maxTabs = 8;
     screen: ScreenSize = ScreenSize.Medium;
 
@@ -88,13 +88,13 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
     vm$ = combineLatest([
         this.navigation$,
-        this.languages$,
         this.userPreferences$,
         this.currentUser$,
         this.appState$,
-        this.screenSize.screenSize$
+        this.screenSize.screenSize$,
+        this.languages$,
     ]).pipe(
-        map(([navigation, languages, userPreferences, currentUser, appState, screenSize]) => {
+        map(([navigation, userPreferences, currentUser, appState, screenSize, language]) => {
 
             if (screenSize) {
                 this.screen = screenSize;
@@ -102,49 +102,36 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.calculateMaxTabs(navigation);
 
-            this.navbar.build(
-                navigation,
-                languages,
-                userPreferences,
-                currentUser,
-                appState,
-                this.maxTabs
-            );
+            this.navbar.resetMenu();
+            if (ready([language.appStrings, language.modStrings, language.appListStrings, userPreferences, currentUser])) {
+                this.navbar.build(
+                    navigation,
+                    currentUser,
+                    this.maxTabs,
+                );
+            }
 
             return {
-                navigation, languages, userPreferences, appState
+                navigation, userPreferences, appState
             };
         })
     );
 
-    constructor(protected navigationStore: NavigationStore,
-                protected languageStore: LanguageStore,
-                protected userPreferenceStore: UserPreferenceStore,
-                protected systemConfigStore: SystemConfigStore,
-                protected appState: AppStateStore,
-                protected authService: AuthService,
-                protected moduleNavigation: ModuleNavigation,
-                protected screenSize: ScreenSizeObserverService
+    constructor(
+        protected navigationStore: NavigationStore,
+        protected languageStore: LanguageStore,
+        protected userPreferenceStore: UserPreferenceStore,
+        protected systemConfigStore: SystemConfigStore,
+        protected appState: AppStateStore,
+        protected authService: AuthService,
+        protected moduleNavigation: ModuleNavigation,
+        protected screenSize: ScreenSizeObserverService,
     ) {
-        const navbar = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
-        this.setNavbar(navbar);
-
-        BaseNavbarComponent.instances.push(this);
     }
 
     /**
      * Public API
      */
-
-    /**
-     * Reset component instance
-     */
-    static reset(): void {
-        BaseNavbarComponent.instances.forEach((navbarComponent: BaseNavbarComponent) => {
-            navbarComponent.loaded = false;
-            navbarComponent.navbar = new NavbarAbstract(navbarComponent.routeConverter, navbarComponent.moduleNavigation);
-        });
-    }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
@@ -153,8 +140,15 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const navbar = new NavbarAbstract(this.routeConverter, this.moduleNavigation);
+        const navbar = new NavbarAbstract(
+            this.routeConverter,
+            this.moduleNavigation,
+            this.userPreferenceStore,
+            this.languageStore,
+            this.appState
+        );
         this.setNavbar(navbar);
+
         this.authService.isUserLoggedIn.subscribe(value => {
             this.isUserLoggedIn = value;
         });
@@ -197,6 +191,10 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         return this.systemConfigStore.getHomePage();
     }
 
+    public getCloseCallBack(myDrop): Function {
+        return () => myDrop.close();
+    }
+
     /**
      * Internal API
      */
@@ -204,7 +202,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     /**
      * Set navbar model
      *
-     * @param {{}} navbar model
+     * @param {object} navbar model
      */
     protected setNavbar(navbar: NavbarModel): void {
         this.navbar = navbar;
@@ -231,9 +229,5 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.maxTabs = maxTabs;
         }
-    }
-
-    getCloseCallBack(myDrop): Function {
-        return () => myDrop.close();
     }
 }

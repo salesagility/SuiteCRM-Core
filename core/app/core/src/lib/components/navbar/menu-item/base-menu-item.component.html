@@ -52,6 +52,8 @@
 
         </div>
 
-        <scrm-menu-recently-viewed [languages]="languages" [records]="item.recentRecords"></scrm-menu-recently-viewed>
+        <ng-container *ngIf="item && item.module">
+            <scrm-menu-recently-viewed [module]="item.module"></scrm-menu-recently-viewed>
+        </ng-container>
     </div>
 </ng-container>

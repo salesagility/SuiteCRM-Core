@@ -29,7 +29,7 @@ import {LogoAbstract} from '../logo/logo-abstract';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
 import {MenuItem, ready, User} from 'common';
-import {LanguageStringMap, LanguageStrings} from '../../store/language/language.store';
+import {LanguageStore} from '../../store/language/language.store';
 import {
     GroupedTab,
     NavbarModule,
@@ -39,9 +39,9 @@ import {
 } from '../../store/navigation/navigation.store';
 import {LinkTarget} from './link-target';
 import {RouteConverter} from '../../services/navigation/route-converter/route-converter.service';
-import {UserPreferenceMap} from '../../store/user-preference/user-preference.store';
+import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
-import {AppState} from '../../store/app-state/app-state.store';
+import {AppStateStore} from '../../store/app-state/app-state.store';
 
 export class NavbarAbstract implements NavbarModel {
     authenticated = true;
@@ -66,7 +66,10 @@ export class NavbarAbstract implements NavbarModel {
 
     constructor(
         private routeConverter: RouteConverter,
-        protected moduleNavigation: ModuleNavigation
+        protected moduleNavigation: ModuleNavigation,
+        protected preferences: UserPreferenceStore,
+        protected language: LanguageStore,
+        protected appState: AppStateStore,
     ) {
     }
 
@@ -85,12 +88,10 @@ export class NavbarAbstract implements NavbarModel {
     /**
      * Build user action menu
      *
-     * @param {object} appStrings map
      * @param {[]} userActionMenu info
      * @param {object} currentUser info
      */
     public buildUserActionMenu(
-        appStrings: LanguageStringMap,
         userActionMenu: UserActionMenu[],
         currentUser: CurrentUserModel
     ): void {
@@ -115,7 +116,7 @@ export class NavbarAbstract implements NavbarModel {
                     url = this.routeConverter.toFrontEndLink(url);
                 }
 
-                const label = appStrings[subMenu.labelKey];
+                const label = this.language.getAppString(subMenu.labelKey) ?? '';
 
                 this.globalActions.push({
                     link: {
@@ -133,39 +134,27 @@ export class NavbarAbstract implements NavbarModel {
      * Build navbar
      *
      * @param {object} navigation info
-     * @param {object} language map
-     * @param {object} userPreferences info
      * @param {object} currentUser info
-     * @param {object} appState info
      * @param {number} maxTabs to display
      */
     public build(
         navigation: Navigation,
-        language: LanguageStrings,
-        userPreferences: UserPreferenceMap,
         currentUser: CurrentUserModel,
-        appState: AppState,
-        maxTabs: number
+        maxTabs: number,
     ): void {
 
-        this.resetMenu();
+        this.buildUserActionMenu(navigation.userActionMenu, currentUser);
 
-        if (!ready([language.appStrings, language.modStrings, language.appListStrings, userPreferences, currentUser])) {
-            return;
-        }
-
-        this.buildUserActionMenu(language.appStrings, navigation.userActionMenu, currentUser);
-
-        const navigationParadigm = userPreferences.navigation_paradigm.toString();
-        const sort = userPreferences.sort_modules_by_name.toString() === 'on';
+        const navigationParadigm = this.preferences.getUserPreference('navigation_paradigm');
+        const sort = this.preferences.getUserPreference('sort_modules_by_name') === 'on';
 
         if (navigationParadigm === 'm') {
-            this.buildModuleNavigation(navigation, language, appState, maxTabs, sort);
+            this.buildModuleNavigation(navigation, maxTabs, sort);
             return;
         }
 
         if (navigationParadigm === 'gm') {
-            this.buildGroupedNavigation(navigation, language, appState, maxTabs, sort);
+            this.buildGroupedNavigation(navigation, maxTabs, sort);
             return;
         }
     }
@@ -175,7 +164,6 @@ export class NavbarAbstract implements NavbarModel {
      *
      * @param {[]} items list
      * @param {object} modules info
-     * @param {object} languages map
      * @param {number} threshold limit
      * @param {object} groupedTabs info
      * @param {boolean} sort flag
@@ -183,7 +171,6 @@ export class NavbarAbstract implements NavbarModel {
     public buildGroupTabMenu(
         items: string[],
         modules: NavbarModuleMap,
-        languages: LanguageStrings,
         threshold: number,
         groupedTabs: GroupedTab[],
         sort: boolean
@@ -194,7 +181,7 @@ export class NavbarAbstract implements NavbarModel {
 
         if (items && items.length > 0) {
             items.forEach((module) => {
-                moreItems.push(this.buildTabMenuItem(module, modules[module], languages));
+                moreItems.push(this.buildTabMenuItem(module, modules[module]));
             });
 
             if (sort) {
@@ -210,7 +197,6 @@ export class NavbarAbstract implements NavbarModel {
                     groupedTab.labelKey,
                     groupedTab.modules,
                     modules,
-                    languages,
                     sort
                 ));
             }
@@ -232,71 +218,63 @@ export class NavbarAbstract implements NavbarModel {
      * Build module navigation
      *
      * @param {object} navigation info
-     * @param {object} languages map
-     * @param {object} appState info
      * @param {number} maxTabs to use
      * @param {boolean} sort flag
      */
     protected buildModuleNavigation(
         navigation: Navigation,
-        languages: LanguageStrings,
-        appState: AppState,
         maxTabs: number,
-        sort: boolean
+        sort: boolean,
     ): void {
 
         if (!ready([navigation.tabs, navigation.modules])) {
             return;
         }
 
-        this.buildTabMenu(navigation.tabs, navigation.modules, languages, maxTabs, appState, sort);
-        this.buildSelectedModule(navigation, languages, appState);
+        this.buildTabMenu(navigation.tabs, navigation.modules, maxTabs, sort);
+        this.buildSelectedModule(navigation);
     }
 
     /**
      * Build grouped navigation
      *
      * @param {object} navigation info
-     * @param {object} languages map
-     * @param {object} appState info
      * @param {number} maxTabs to use
      * @param {boolean} sort flag
      */
     protected buildGroupedNavigation(
         navigation: Navigation,
-        languages: LanguageStrings,
-        appState: AppState,
         maxTabs: number,
-        sort: boolean
+        sort: boolean,
     ): void {
 
         if (!ready([navigation.tabs, navigation.modules, navigation.groupedTabs])) {
             return;
         }
 
-        this.buildGroupTabMenu(navigation.tabs, navigation.modules, languages, maxTabs, navigation.groupedTabs, sort);
-        this.buildSelectedModule(navigation, languages, appState);
+        this.buildGroupTabMenu(navigation.tabs, navigation.modules, maxTabs, navigation.groupedTabs, sort);
+        this.buildSelectedModule(navigation);
     }
 
     /**
      * Build selected module
      *
      * @param {object} navigation info
-     * @param {object} languages map
-     * @param {object} appState info
      */
-    protected buildSelectedModule(navigation: Navigation, languages: LanguageStrings, appState: AppState): void {
-        if (!appState || !appState.module || appState.module === 'home') {
+    protected buildSelectedModule(
+        navigation: Navigation,
+    ): void {
+        const module = this.appState.getModule() ?? '';
+
+        if (module === '' || module === 'home') {
             return;
         }
-
-        const module = appState.module;
 
         if (!navigation.modules[module]) {
             return;
         }
 
-        this.current = this.buildTabMenuItem(module, navigation.modules[module], languages);
+        this.current = this.buildTabMenuItem(module, navigation.modules[module]);
     }
 
     /**
@@ -304,18 +282,14 @@ export class NavbarAbstract implements NavbarModel {
      *
      * @param {[]} items list
      * @param {object} modules info
-     * @param {object} languages map
      * @param {number} threshold limit
-     * @param {object} appState info
      * @param {boolean} sort flag
      */
     protected buildTabMenu(
         items: string[],
         modules: NavbarModuleMap,
-        languages: LanguageStrings,
         threshold: number,
-        appState: AppState,
-        sort: boolean
+        sort: boolean,
     ): void {
 
         const navItems = [];
@@ -330,9 +304,9 @@ export class NavbarAbstract implements NavbarModel {
         let count = 0;
         items.forEach((module: string) => {
 
-            const item = this.buildTabMenuItem(module, modules[module], languages);
+            const item = this.buildTabMenuItem(module, modules[module]);
 
-            if (module === 'home' || appState.module === module || count >= threshold) {
+            if (module === 'home' || this.appState.getModule() === module || count >= threshold) {
                 moreItems.push(item);
             } else {
                 navItems.push(item);
@@ -357,7 +331,6 @@ export class NavbarAbstract implements NavbarModel {
      * @param {string} moduleLabel to display
      * @param {object} groupedModules list
      * @param {object} modules list
-     * @param {object} languages map
      * @param {boolean} sort flag
      *
      * @returns {object} group tab menu item
@@ -366,19 +339,18 @@ export class NavbarAbstract implements NavbarModel {
         moduleLabel: string,
         groupedModules: any[],
         modules: NavbarModuleMap,
-        languages: LanguageStrings,
         sort: boolean
     ): any {
 
         return {
             link: {
-                label: (languages.appStrings && languages.appStrings[moduleLabel]) || moduleLabel,
+                label: this.language.getAppString(moduleLabel) || moduleLabel,
                 url: '',
                 route: null,
                 params: null
             },
             icon: '',
-            submenu: this.buildGroupedMenu(groupedModules, modules, languages, sort)
+            submenu: this.buildGroupedMenu(groupedModules, modules, sort)
         };
     }
 
@@ -387,7 +359,6 @@ export class NavbarAbstract implements NavbarModel {
      *
      * @param {object} groupedModules info
      * @param {object} modules map
-     * @param {object} languages maps
      * @param {boolean} sort flag
      *
      * @returns {[]} menu item array
@@ -395,7 +366,6 @@ export class NavbarAbstract implements NavbarModel {
     protected buildGroupedMenu(
         groupedModules: any[],
         modules: NavbarModuleMap,
-        languages: LanguageStrings,
         sort: boolean
     ): MenuItem[] {
 
@@ -410,7 +380,7 @@ export class NavbarAbstract implements NavbarModel {
                 return;
             }
 
-            const moduleMenuItem = this.buildTabMenuItem(groupedModule, module, languages);
+            const moduleMenuItem = this.buildTabMenuItem(groupedModule, module);
 
             if (groupedModule === 'home') {
                 homeMenuItem = moduleMenuItem;
@@ -436,27 +406,26 @@ export class NavbarAbstract implements NavbarModel {
      *
      * @param {string} module name
      * @param {object} moduleInfo info
-     * @param {object} languages object
      *
      * @returns {object} menuItem
      */
     protected buildTabMenuItem(
         module: string,
         moduleInfo: NavbarModule,
-        languages: LanguageStrings,
     ): MenuItem {
 
         const moduleRoute = this.moduleNavigation.getModuleRoute(moduleInfo);
 
         const menuItem = {
             link: {
-                label: this.moduleNavigation.getModuleLabel(moduleInfo, languages.appListStrings),
+                label: this.moduleNavigation.getModuleLabel(moduleInfo, this.language.getLanguageStrings()?.appListStrings ?? {}),
                 url: moduleRoute.url,
                 route: moduleRoute.route,
                 params: null
             },
             icon: (module === 'home') ? 'home' : '',
-            submenu: []
+            submenu: [],
+            module: module ?? null
         };
 
         if (moduleInfo) {
@@ -466,7 +435,7 @@ export class NavbarAbstract implements NavbarModel {
 
                 menuItem.submenu.push({
                     link: {
-                        label: this.moduleNavigation.getActionLabel(module, subMenu, languages),
+                        label: this.moduleNavigation.getActionLabel(module, subMenu, this.language.getLanguageStrings()),
                         url: moduleActionRoute.url,
                         route: moduleActionRoute.route,
                         params: moduleActionRoute.params

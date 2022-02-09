@@ -67,7 +67,7 @@ const mockMenuItems = [
 
 @Component({
     selector: 'menu-item-list-test-host-component',
-    template: '<scrm-menu-items-list [items]="items" [label]="label"></scrm-menu-items-list>'
+    template: '<scrm-menu-items-list [items]="items" [labelKey]="label"></scrm-menu-items-list>'
 })
 class MenuItemListTestHostComponent {
     items = mockMenuItems;

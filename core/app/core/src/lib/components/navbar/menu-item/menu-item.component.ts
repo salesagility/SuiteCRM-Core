@@ -26,7 +26,6 @@
 
 import {Component, Input} from '@angular/core';
 import {MenuItem} from 'common';
-import {LanguageStrings} from '../../../store/language/language.store';
 import {MenuItemRegistry} from './menu-item.registry';
 
 @Component({
@@ -36,7 +35,6 @@ import {MenuItemRegistry} from './menu-item.registry';
 })
 export class MenuItemComponent {
     @Input() item: MenuItem;
-    @Input() languages: LanguageStrings;
 
     constructor(protected registry: MenuItemRegistry) {
     }

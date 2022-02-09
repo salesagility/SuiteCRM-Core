@@ -95,7 +95,7 @@ const groupedMockMenuItem = {
 
 @Component({
     selector: 'grouped-menu-item-test-host-component',
-    template: '<scrm-grouped-menu-item [item]="item" [languages]="languages" [subNavCollapse]="subNavCollapse"></scrm-grouped-menu-item>'
+    template: '<scrm-grouped-menu-item [item]="item" [subNavCollapse]="subNavCollapse"></scrm-grouped-menu-item>'
 })
 class GroupedMenuItemTestHostComponent {
     item: MenuItem = groupedMockMenuItem;
