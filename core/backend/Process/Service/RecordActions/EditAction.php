@@ -28,8 +28,8 @@
 namespace App\Process\Service\RecordActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Process\Entity\Process;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 
 class EditAction implements ProcessHandlerInterface
@@ -97,6 +97,18 @@ class EditAction implements ProcessHandlerInterface
         if (empty($options['id'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
+
+        if (empty($options['payload']['linkField'])) {
+            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        }
+
+        if (empty($options['payload']['baseModule'])) {
+            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        }
+
+        if (empty($options['payload']['baseRecordId'])) {
+            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        }
     }
 
     /**
@@ -106,23 +118,24 @@ class EditAction implements ProcessHandlerInterface
     {
         $options = $process->getOptions();
 
-        //calling module
-        $legacyModuleName = $this->moduleNameMapper->toLegacy($options['module']);
-        $recordId = $options['id'];
+        //parent module
+        $baseModule = $this->moduleNameMapper->toLegacy($options['payload']['baseModule']);
+        $baseRecordId = $options['payload']['baseRecordId'];
 
-        //called module
-        $frontEndModuleName = $options['module'];
-        $action = 'edit';
+        //linked(subpanel) module
+        $linkedModule = $options['payload']['linkField'];
+        $linkedRecordId = $options['id'];
+        $linkedAction = 'edit';
 
         $responseData = [
             'handler' => 'redirect',
             'params' => [
-                'route' => $frontEndModuleName . '/'. $action. '/' . $recordId,
+                'route' => $linkedModule . '/' . $linkedAction . '/' . $linkedRecordId,
                 'queryParams' => [
-                    'action_module' => $legacyModuleName,
+                    'action_module' => $linkedModule,
                     'return_action' => 'DetailView',
-                    'return_module' => $legacyModuleName,
-                    'return_id' => $recordId
+                    'return_module' => $baseModule,
+                    'return_id' => $baseRecordId
                 ]
             ]
         ];

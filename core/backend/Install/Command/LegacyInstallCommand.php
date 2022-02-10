@@ -100,6 +100,18 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
             )
         ];
 
+        $this->inputConfig['db_port'] = [
+            'question' => new Question('Please enter the db port: '),
+            'argument' => new InputOption(
+                'db_port',
+                'Z',
+                InputOption::VALUE_REQUIRED,
+                'database port'
+            ),
+            'default' => '',
+            'required' => false
+        ];
+
         $this->inputConfig['db_name'] = [
             'question' => new Question('Please enter the db name: '),
             'argument' => new InputOption(
@@ -155,20 +167,24 @@ class LegacyInstallCommand extends BaseStepExecutorCommand
                 InputOption::VALUE_OPTIONAL,
                 'Install "demo data" during install process'
             ),
+            'default' => 'no',
+            'required' => false
         ];
 
         $this->inputConfig['sys_check_option'] = [
             'question' => new ChoiceQuestion(
                 'Ignore system check warnings?: ',
                 ['true', 'false'],
-                'true'
+                'false'
             ),
             'argument' => new InputOption(
                 'sys_check_option',
                 'W',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'Ignore "system check warnings" during install system acceptance check'
             ),
+            'default' => 'false',
+            'required' => false
         ];
 
         parent::__construct();

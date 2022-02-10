@@ -205,6 +205,9 @@ array(
                           ],
                       ]
                   ]
+              ],
+              'acls' => [
+                  'Cases' => ['view', 'list']
               ]
           ],
           [
@@ -248,6 +251,10 @@ array(
                           ],
                       ]
                   ]
+              ],
+              'acls' => [
+                  'Cases' => ['view', 'list'],
+                  'Accounts' => ['view', 'list']
               ]
           ],
       ],

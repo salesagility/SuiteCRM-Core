@@ -28,7 +28,7 @@ import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
-import {MenuItem, ready} from 'common';
+import {MenuItem, ready, User} from 'common';
 import {LanguageStringMap, LanguageStrings} from '../../store/language/language.store';
 import {
     GroupedTab,
@@ -79,6 +79,7 @@ export class NavbarAbstract implements NavbarModel {
         this.all.modules = [];
         this.all.extra = [];
         this.current = null;
+        this.currentUser = {} as User;
     }
 
     /**
@@ -329,13 +330,9 @@ export class NavbarAbstract implements NavbarModel {
         let count = 0;
         items.forEach((module: string) => {
 
-            if (module === 'home') {
-                return;
-            }
-
             const item = this.buildTabMenuItem(module, modules[module], languages);
 
-            if (appState.module === module || count >= threshold) {
+            if (module === 'home' || appState.module === module || count >= threshold) {
                 moreItems.push(item);
             } else {
                 navItems.push(item);
@@ -458,7 +455,7 @@ export class NavbarAbstract implements NavbarModel {
                 route: moduleRoute.route,
                 params: null
             },
-            icon: '',
+            icon: (module === 'home') ? 'home' : '',
             submenu: []
         };
 

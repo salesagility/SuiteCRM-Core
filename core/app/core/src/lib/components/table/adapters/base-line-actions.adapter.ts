@@ -51,7 +51,8 @@ export abstract class BaseLineActionsAdapter extends BaseRecordActionsAdapter<Li
 
     protected buildActionData(action: Action, context?: ActionContext): LineActionData {
         return {
-            record: (context && context.record) || null
+            record: (context && context.record) || null,
+            action: action
         } as LineActionData;
     }
 }

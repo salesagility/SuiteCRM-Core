@@ -83,7 +83,6 @@ class LegacyToFrontendViewDefinitionMapper implements ViewDefinitionMapperInterf
         }
 
         foreach ($legacyToFrontEndFieldsMap as $mapKey => $mapDefinition) {
-
             $legacyFieldsMap = $mapDefinition['from'] ?? [];
             $frontendFieldsMap = $mapDefinition['to'] ?? [];
 
@@ -95,7 +94,6 @@ class LegacyToFrontendViewDefinitionMapper implements ViewDefinitionMapperInterf
             $this->mapListView($viewDefinition, $legacyFieldsMap, $frontendFieldsMap);
             $this->mapSearchView($viewDefinition, $legacyFieldsMap, $frontendFieldsMap);
             $this->mapSubpanelView($viewDefinition, $legacyFieldsMap, $frontendFieldsMap);
-
         }
     }
 
@@ -165,8 +163,24 @@ class LegacyToFrontendViewDefinitionMapper implements ViewDefinitionMapperInterf
             return;
         }
 
+        $parsed = [];
+
+        foreach ($vardefs as $key => $vardef) {
+            if (is_array($vardef)) {
+                $parsed[$key] = $vardef;
+                continue;
+            }
+
+            if (is_string($vardef)) {
+                $parsed[$vardef] = ['name' => $vardef];
+                continue;
+            }
+
+            $parsed[$key] = $vardef;
+        }
+
         $service = new LegacyToFrontendDefinitionMapper();
-        $transformedVardefs = $service->getTransformedVardefs($vardefs, $legacyMap, $frontendMap);
+        $transformedVardefs = $service->getTransformedVardefs($parsed, $legacyMap, $frontendMap);
 
         $searchView['layout']['advanced'] = $transformedVardefs;
         $viewDefinition->setSearch($searchView);
@@ -189,8 +203,7 @@ class LegacyToFrontendViewDefinitionMapper implements ViewDefinitionMapperInterf
 
         $service = new LegacyToFrontendDefinitionMapper();
 
-        foreach($subpanelView as $subpanelModule => $subPanelColumns) {
-
+        foreach ($subpanelView as $subpanelModule => $subPanelColumns) {
             $vardefs = $subPanelColumns['columns'] ?? [];
 
             if (empty($vardefs)) {

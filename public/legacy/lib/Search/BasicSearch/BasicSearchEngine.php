@@ -47,19 +47,20 @@ use DBManagerFactory;
 use JsonSchema\Exception\RuntimeException;
 use ListViewData;
 use LoggerManager;
+use SugarBean;
 use SuiteCRM\Exception\Exception;
 use SuiteCRM\Search\SearchEngine;
+use SuiteCRM\Search\SearchModules;
 use SuiteCRM\Search\SearchQuery;
 use SuiteCRM\Search\SearchResults;
 use VardefManager;
-use SuiteCRM\Search\SearchModules;
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
 /**
- * Class BasicAndAodEngine
+ * Class BasicSearchEngine
  */
 class BasicSearchEngine extends SearchEngine
 {
@@ -88,8 +89,13 @@ class BasicSearchEngine extends SearchEngine
 
         $end = microtime(true);
         $elapsed = $end - $start;
+        $totalHits = 0;
 
-        return new SearchResults($results['modules'], true, $elapsed, count($results['hits']));
+        foreach ($results['modules'] as $moduleHit) {
+            $totalHits += count($moduleHit);
+        }
+
+        return new SearchResults($results['modules'], true, $elapsed, $totalHits);
     }
 
     /**
@@ -229,7 +235,9 @@ class BasicSearchEngine extends SearchEngine
                     $where = '';
                 }
 
-                $listData = $listViewData->getListViewData($seed, $where, 0, -1, [], $params);
+                $filter_fields = $this->buildFilterFields($seed);
+
+                $listData = $listViewData->getListViewData($seed, $where, 0, -1, $filter_fields, $params);
 
                 $moduleCounts[$moduleName] = $listData['pageData']['offsets']['total'];
 
@@ -243,5 +251,39 @@ class BasicSearchEngine extends SearchEngine
             'hits' => $moduleCounts,
             'modules' => $moduleResults
         ];
+    }
+
+    /**
+     * Build filter fields for list view data search
+     * @param SugarBean $bean
+     * @return array
+     */
+    protected function buildFilterFields(SugarBean $bean): array
+    {
+        $parsedFilterFields = array();
+        $excludedRelationshipFields = array();
+
+        foreach ($bean->field_defs as $fieldName => $fieldDefinition) {
+            $type = $fieldDefinition['type'] ?? '';
+            $listShow = $fieldDefinition['list-show'] ?? true;
+            if ($type === 'link' || $listShow === false) {
+                continue;
+            }
+
+            $linkType = $fieldDefinition['link_type'] ?? '';
+            if ($linkType === 'relationship_info') {
+                $excludedRelationshipFields[] = $fieldName;
+                $relationshipFields = $fieldDefinition['relationship_fields'] ?? [];
+                if (!empty($relationshipFields)) {
+                    foreach ($relationshipFields as $relationshipField) {
+                        $excludedRelationshipFields[] = $relationshipField;
+                    }
+                }
+            }
+
+            $parsedFilterFields[] = $fieldName;
+        }
+
+        return array_diff($parsedFilterFields, $excludedRelationshipFields);
     }
 }

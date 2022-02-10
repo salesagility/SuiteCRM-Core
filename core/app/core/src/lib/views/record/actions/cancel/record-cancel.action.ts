@@ -29,6 +29,7 @@ import {ModalButtonInterface, ViewMode} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageModalComponent} from '../../../../components/modal/components/message-modal/message-modal.component';
+import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +39,7 @@ export class RecordCancelAction extends RecordActionHandler {
     key = 'cancel';
     modes = ['edit' as ViewMode, 'detail' as ViewMode];
 
-    constructor(private modalService: NgbModal) {
+    constructor(private modalService: NgbModal, protected navigation: ModuleNavigation) {
         super();
     }
 
@@ -57,6 +58,14 @@ export class RecordCancelAction extends RecordActionHandler {
     }
 
     protected cancel(data: RecordActionData): void {
+
+        const params = data.store.params;
+        const moduleName = data.store.getModuleName();
+        const id = data.store.getRecordId();
+        const record = data.store.getBaseRecord();
+
+        this.navigateBack(this.navigation, params, id, moduleName, record);
+
         data.store.recordStore.resetStaging();
         data.store.setMode('detail' as ViewMode);
     }

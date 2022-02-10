@@ -39,7 +39,8 @@ import {FieldLogicManager} from '../field-logic/field-logic.manager';
 export class BaseRelateComponent extends BaseFieldComponent implements OnInit, OnDestroy {
     selectedValues: AttributeMap[] = [];
 
-    status: '' | 'searching' | 'not-found' | 'error' | 'found' = '';
+    status: '' | 'searching' | 'not-found' | 'error' | 'found' | 'no-module' = '';
+    initModule = '';
 
     constructor(
         protected languages: LanguageStore,
@@ -63,13 +64,38 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
 
         super.ngOnInit();
 
-        if (this.relateService) {
-            this.relateService.init(this.getRelatedModule());
-        }
+        this.init();
+
+        this.subs.push(this.field.valueChanges$.subscribe(() => {
+            this.onModuleChange();
+        }));
     }
+
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    onModuleChange(): void {
+
+        const currentModule = this.initModule;
+        const newModule = this?.field?.definition?.module ?? '';
+
+        if (currentModule === newModule) {
+            return;
+        }
+
+        this.initModule = newModule;
+
+        if (currentModule === '' && currentModule !== newModule) {
+            this.init();
+        }
+
+        if (newModule === '') {
+            this.status = 'no-module';
+        } else {
+            this.status = '';
+        }
     }
 
     search = (text: string): Observable<any> => {
@@ -126,7 +152,7 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
             'not-found': 'LBL_NOT_FOUND',
             error: 'LBL_SEARCH_ERROR',
             found: 'LBL_FOUND',
-            'no-module': 'LBL_FOUND'
+            'no-module': 'LBL_NO_MODULE_SELECTED'
         };
 
         if (messages[this.status]) {
@@ -158,6 +184,15 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
 
     getPlaceholderLabel(): string {
         return this.languages.getAppString('LBL_TYPE_TO_SEARCH') || '';
+    }
+
+    protected init(): void {
+
+        this.initModule = this?.field?.definition?.module ?? '';
+
+        if (this.relateService) {
+            this.relateService.init(this.getRelatedModule());
+        }
     }
 
     protected buildRelate(id: string, relateValue: string): any {

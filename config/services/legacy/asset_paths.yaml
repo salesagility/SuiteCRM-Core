@@ -3,3 +3,11 @@ parameters:
     - cache
     - include
     - themes
+    - custom
+    - vendor
+    - modules
+    - public
+    - upload
+  legacy.copy_asset_paths:
+    vendor/tinymce/tinymce: 'vendor/tinymce/tinymce'
+    vendor/gymadarasz: 'vendor/gymadarasz'

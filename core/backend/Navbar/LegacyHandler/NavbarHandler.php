@@ -27,11 +27,11 @@
 
 namespace App\Navbar\LegacyHandler;
 
-use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Navbar\Entity\Navbar;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Module\Service\ModuleRegistryInterface;
+use App\Navbar\Entity\Navbar;
 use App\Routes\Service\NavigationProviderInterface;
 use App\Routes\Service\RouteConverterInterface;
 use GroupedTabStructure;
@@ -44,25 +44,31 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 {
     public const HANDLER_KEY = 'navbar-handler';
+
     /**
      * @var ModuleNameMapperInterface
      */
-    private $moduleNameMapper;
+    protected $moduleNameMapper;
 
     /**
      * @var RouteConverterInterface
      */
-    private $routeConverter;
+    protected $routeConverter;
 
     /**
      * @var array
      */
-    private $menuItemMap;
+    protected $menuItemMap;
 
     /**
      * @var ModuleRegistryInterface
      */
-    private $moduleRegistry;
+    protected $moduleRegistry;
+
+    /**
+     * @var array
+     */
+    protected $moduleRouting;
 
     /**
      * SystemConfigHandler constructor.
@@ -76,6 +82,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      * @param RouteConverterInterface $routeConverter
      * @param ModuleRegistryInterface $moduleRegistry
      * @param SessionInterface $session
+     * @param array $moduleRouting
      */
     public function __construct(
         string $projectDir,
@@ -87,13 +94,16 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         ModuleNameMapperInterface $moduleNameMapper,
         RouteConverterInterface $routeConverter,
         ModuleRegistryInterface $moduleRegistry,
-        SessionInterface $session
+        SessionInterface $session,
+        array $moduleRouting
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->routeConverter = $routeConverter;
         $this->menuItemMap = $menuItemMap;
         $this->moduleRegistry = $moduleRegistry;
+        $this->moduleRouting = $moduleRouting;
     }
 
     /**
@@ -414,5 +424,34 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         }
 
         return $maxTabs;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getModuleRouting(): array
+    {
+        $this->init();
+
+        $visibleModules = $this->moduleNameMapper->getVisibleModules();
+        $routes = $this->moduleRouting;
+
+        foreach ($visibleModules as $visibleModule) {
+            $frontendName = $this->moduleNameMapper->toFrontEnd($visibleModule);
+
+            $name = $frontendName ?? $visibleModule;
+
+            if (empty($routes[$name])) {
+                $routes[$name] = [
+                    'index' => true,
+                    'list' => true,
+                    'record' => true
+                ];
+            }
+        }
+
+        $this->close();
+
+        return $routes;
     }
 }

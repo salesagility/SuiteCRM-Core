@@ -34,6 +34,7 @@ use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\SubpanelLineActionDefinitionProviderInterface;
 use App\Process\Service\SubpanelTopActionDefinitionProviderInterface;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use SubPanelDefinitions;
@@ -71,6 +72,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @var SubpanelLineActionDefinitionProviderInterface
      */
     private $subpanelLineActionDefinitionProvider;
+    /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
 
     /**
      * ViewDefinitionsHandler constructor.
@@ -83,6 +88,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
      * @param SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider
      * @param SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param SessionInterface $session
      */
     public function __construct(
@@ -95,15 +101,22 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider,
         SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider,
+        FieldAliasMapper $fieldAliasMapper,
         SessionInterface $session
-    )
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
-            $session);
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->subpanelTopActionDefinitionProvider = $subpanelTopActionDefinitionProvider;
         $this->subpanelLineActionDefinitionProvider = $subpanelLineActionDefinitionProvider;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -255,7 +268,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
         foreach ($topButtonDefinitions as $top_button) {
-
             $topButton = $this->subpanelTopActionDefinitionProvider->getTopAction(
                 $this->moduleNameMapper->toFrontEnd($tab['module']),
                 $top_button
@@ -331,7 +343,13 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $column['link'] = true;
         }
 
-        return $this->addFieldDefinition($vardefs, strtolower($key), $column, $this->defaultDefinition);
+        return $this->addFieldDefinition(
+            $vardefs,
+            strtolower($key),
+            $column,
+            $this->defaultDefinition,
+            $this->fieldAliasMapper
+        );
     }
 
     /**
@@ -474,7 +492,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $thepanel = $subpanelDef->isCollection() ? $subpanelDef->get_header_panel_def() : $subpanelDef;
 
         foreach ($thepanel->get_list_fields() as $field_name => $list_field) {
-
             $usage = empty($list_field['usage']) ? '' : $list_field['usage'];
 
             if ($usage !== 'query_only') {

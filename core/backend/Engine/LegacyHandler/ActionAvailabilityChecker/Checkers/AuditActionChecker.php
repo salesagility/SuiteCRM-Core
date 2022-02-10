@@ -89,9 +89,10 @@ class AuditActionChecker extends LegacyHandler implements ActionAvailabilityChec
      *
      * @param string $module - the active module
      * @param array|null $entry
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, ?array $entry = []): bool
+    public function checkAvailability(string $module, ?array $entry = [], ?array $context = []): bool
     {
         $this->init();
         $bean = BeanFactory::newBean($this->moduleNameMapper->toLegacy($module));

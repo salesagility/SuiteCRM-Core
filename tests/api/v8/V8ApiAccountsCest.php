@@ -48,7 +48,6 @@ class V8ApiAccountsCest
     /**
      * Test account record creation
      * @param ApiTester $I
-     * @skip Requires API assertions fix
      */
     public function create(ApiTester $I): void
     {

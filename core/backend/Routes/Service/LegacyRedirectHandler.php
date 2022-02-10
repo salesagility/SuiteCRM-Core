@@ -77,6 +77,29 @@ class LegacyRedirectHandler
     }
 
     /**
+     * Convert given $request route
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getIncludeFile(Request $request): array
+    {
+        $baseUrl = $request->getPathInfo();
+
+        $baseUrl = substr($baseUrl, 1);
+
+        if (strpos($baseUrl, '.php') === false) {
+            $baseUrl .= 'index.php';
+        }
+
+        return [
+            'dir' => '',
+            'file' => $baseUrl,
+            'access' => true
+        ];
+    }
+
+    /**
      * Check if given request falls into one of the given $paths
      *
      * @param Request $request

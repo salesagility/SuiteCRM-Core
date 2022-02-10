@@ -42,7 +42,8 @@ import {LabelModule} from '../../../../components/label/label.module';
         LabelModule,
         FormsModule,
         InlineLoadingSpinnerModule,
-        ButtonModule
+        ButtonModule,
+        TagInputModule
     ]
 })
 export class RelateFilterFieldModule {

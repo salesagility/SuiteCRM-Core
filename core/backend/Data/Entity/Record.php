@@ -86,6 +86,12 @@ class Record
     protected $attributes;
 
     /**
+     * @ApiProperty
+     * @var array|null
+     */
+    protected $acls;
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -94,7 +100,8 @@ class Record
             'id' => $this->getId(),
             'module' => $this->getModule(),
             'type' => $this->getType(),
-            'attributes' => $this->getAttributes()
+            'attributes' => $this->getAttributes(),
+            'acls' => $this->getAcls()
         ];
     }
 
@@ -169,4 +176,24 @@ class Record
     {
         $this->attributes = $attributes;
     }
+
+    /**
+     * @return array|null
+     */
+    public function getAcls(): ?array
+    {
+        return $this->acls;
+    }
+
+    /**
+     * @param array|null $acls
+     * @return Record
+     */
+    public function setAcls(?array $acls): Record
+    {
+        $this->acls = $acls;
+
+        return $this;
+    }
+
 }

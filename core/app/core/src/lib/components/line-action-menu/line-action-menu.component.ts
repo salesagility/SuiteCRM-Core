@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface, Record} from 'common';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
@@ -46,7 +46,7 @@ export interface LineActionMenuViewModel {
     selector: 'scrm-line-action-menu',
     templateUrl: 'line-action-menu.component.html'
 })
-export class LineActionMenuComponent implements OnInit {
+export class LineActionMenuComponent implements OnInit, OnDestroy {
 
     @Input() klass = '';
     @Input() record: Record;
@@ -54,17 +54,17 @@ export class LineActionMenuComponent implements OnInit {
     @Input() limitConfigKey = 'listview_line_actions_limits';
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
+    actions: Action[];
 
     vm$: Observable<LineActionMenuViewModel>;
 
     protected buttonClass = 'line-action-item line-action';
     protected buttonGroupClass = 'float-right';
 
-    protected subs: Subscription[];
+    protected subs: Subscription[] = [];
     protected screen: ScreenSize = ScreenSize.Medium;
     protected defaultBreakpoint = 3;
     protected breakpoint: number;
-
 
     constructor(
         protected languageStore: LanguageStore,
@@ -76,8 +76,8 @@ export class LineActionMenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.vm$ = combineLatest([
-            this.config.getActions(this.record),
+        this.subs.push(combineLatest([
+            this.config.getActions({record: this.record}),
             this.screenSize.screenSize$,
             this.languages.vm$
         ]).pipe(
@@ -87,9 +87,13 @@ export class LineActionMenuComponent implements OnInit {
                 }
                 this.configState.next(this.getButtonGroupConfig(actions));
 
-                return {actions, screenSize, languages};
+                this.actions = actions;
             })
-        );
+        ).subscribe())
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {

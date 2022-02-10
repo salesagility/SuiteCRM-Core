@@ -651,18 +651,9 @@ class AOR_Report extends Basic
                 $total_rows = $assoc['c'];
             }
         }
-
-        // Fix #5427
-        $report_style = '';
-        $thead_style = '';
-        if ((isset($_REQUEST['action']) ? $_REQUEST['action'] : null) == 'DownloadPDF') {
-            $report_style = 'margin-top: 0px;';
-            $thead_style = 'background: #919798; color: #fff';
-        }
-        $html = '<div class="list-view-rounded-corners" style="' . $report_style . '">';
-        //End
-
-        $html.='<table id="report_table_'.$tableIdentifier.$group_value.'" cellpadding="0" cellspacing="0" width="100%" border="0" class="list view table-responsive aor_reports">';
+        
+        $html = '<div class="list-view-rounded-corners">';
+        $html.='<table id="report_table_'.$tableIdentifier.$group_value.'" width="100%" border="0" class="list view table-responsive aor_reports">';
 
         $sql = "SELECT id FROM aor_fields WHERE aor_report_id = '" . $this->id . "' AND deleted = 0 ORDER BY field_order ASC";
         $result = $this->db->query($sql);
@@ -706,7 +697,7 @@ class AOR_Report extends Basic
 
             if ($fields[$label]['display']) {
                 // Fix #5427
-                $html .= "<th scope='col' style='{$thead_style}'>";
+                $html .= "<th scope='col'>";
                 // End
                 $html .= "<div>";
                 $html .= $field->label;
@@ -745,17 +736,17 @@ class AOR_Report extends Basic
             $html .= '<td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">';
             if ($offset == 0) {
                 $html .= "<button type='button' id='listViewStartButton_top' name='listViewStartButton' title='Start' class='list-view-pagination-button' disabled='disabled'>
-                    <span class='suitepicon suitepicon-action-first'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_first')."
                 </button>
                 <button type='button' id='listViewPrevButton_top' name='listViewPrevButton' class='list-view-pagination-button' title='Previous' disabled='disabled'>
-                    <span class='suitepicon suitepicon-action-left'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_previous')."
                 </button>";
             } else {
                 $html .= "<button type='button' id='listViewStartButton_top' name='listViewStartButton' title='Start' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",0,"' . $group_value . '","' . $tableIdentifier . "\")'>
-                    <span class='suitepicon suitepicon-action-first'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_first')."
                 </button>
                 <button type='button' id='listViewPrevButton_top' name='listViewPrevButton' class='list-view-pagination-button' title='Previous' onclick='changeReportPage(\"" . $this->id . '",' . $previous_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                    <span class='suitepicon suitepicon-action-left'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_previous')."
                 </button>";
             }
             $html .= '</td><td style="vertical-align:middle" nowrap="nowrap" width="1%" class="paginationActionButtons">';
@@ -763,17 +754,17 @@ class AOR_Report extends Basic
             $html .= '</td><td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">';
             if ($next_offset < $total_rows) {
                 $html .= "<button type='button' id='listViewNextButton_top' name='listViewNextButton' title='Next' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",' . $next_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                       <span class='suitepicon suitepicon-action-right'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_next')."
                     </button>
                      <button type='button' id='listViewEndButton_top' name='listViewEndButton' title='End' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",' . $last_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                        <span class='suitepicon suitepicon-action-last'></span>
+                     ".SugarThemeRegistry::current()->getImage('paginate_last')."
                     </button>";
             } else {
                 $html .= "<button type='button' id='listViewNextButton_top' name='listViewNextButton' title='Next' class='list-view-pagination-button'  disabled='disabled'>
-                        <span class='suitepicon suitepicon-action-right'></span>
+                ".SugarThemeRegistry::current()->getImage('paginate_next')."
                     </button>
                      <button type='button' id='listViewEndButton_top' name='listViewEndButton' title='End' class='list-view-pagination-button'  disabled='disabled'>
-                       <span class='suitepicon suitepicon-action-last'></span>
+                     ".SugarThemeRegistry::current()->getImage('paginate_last')."
                     </button>";
             }
 
@@ -820,7 +811,7 @@ class AOR_Report extends Basic
                         } else {
                             $params = [];
                         }
-                        $html .= getModuleField(
+                        $html .= trim(getModuleField(
                             $att['module'],
                             $att['field'],
                             $att['field'],
@@ -829,7 +820,7 @@ class AOR_Report extends Basic
                             '',
                             $currency_id,
                             $params
-                        );
+                        ));
                     }
 
                     if ($att['total']) {
@@ -855,7 +846,8 @@ class AOR_Report extends Basic
 
         $currentTheme = SugarThemeRegistry::current();
 
-        $html .= "    <script type=\"text/javascript\">
+        if (empty($_REQUEST['action']) || $_REQUEST['action'] !== 'DownloadPDF') {
+            $html .= "    <script type=\"text/javascript\">
                             groupedReportToggler = {
 
                                 toggleList: function(elem) {
@@ -874,6 +866,7 @@ class AOR_Report extends Basic
 
                             };
                         </script>";
+        }
 
         return $html;
     }

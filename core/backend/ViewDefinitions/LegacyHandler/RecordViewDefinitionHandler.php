@@ -32,6 +32,7 @@ use App\Data\Service\RecordActionDefinitionProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use BeanFactory;
 use DetailView2;
@@ -78,6 +79,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
     private $recordViewTopWidgets;
 
     /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
      * RecordViewDefinitionHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -87,6 +93,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
      * @param LoggerInterface $logger
      * @param RecordActionDefinitionProviderInterface $actionDefinitionProvider
      * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param array $recordViewSidebarWidgets
      * @param array $recordViewTopWidgets
      * @param SessionInterface $session
@@ -100,6 +107,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         LoggerInterface $logger,
         RecordActionDefinitionProviderInterface $actionDefinitionProvider,
         WidgetDefinitionProviderInterface $widgetDefinitionProvider,
+        FieldAliasMapper $fieldAliasMapper,
         array $recordViewSidebarWidgets,
         array $recordViewTopWidgets,
         SessionInterface $session
@@ -117,6 +125,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->widgetDefinitionProvider = $widgetDefinitionProvider;
         $this->recordViewSidebarWidgets = $recordViewSidebarWidgets;
         $this->recordViewTopWidgets = $recordViewTopWidgets;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -507,7 +516,13 @@ class RecordViewDefinitionHandler extends LegacyHandler
      */
     protected function buildFieldCell($definition, ?array &$vardefs): array
     {
-        return $this->addFieldDefinition($vardefs, $definition['name'], $definition, $this->defaultDefinition);
+        return $this->addFieldDefinition(
+            $vardefs,
+            $definition['name'],
+            $definition,
+            $this->defaultDefinition,
+            $this->fieldAliasMapper
+        );
     }
 
     /**

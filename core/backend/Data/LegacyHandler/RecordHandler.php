@@ -32,6 +32,7 @@ use App\Data\Entity\Record;
 use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
@@ -53,6 +54,11 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     private $moduleNameMapper;
 
     /**
+     * @var AclManagerInterface
+     */
+    private $acl;
+
+    /**
      * RecordViewHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -61,6 +67,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SessionInterface $session
+     * @param AclManagerInterface $aclHandler
      */
     public function __construct(
         string $projectDir,
@@ -69,10 +76,19 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        SessionInterface $session,
+        AclManagerInterface $aclHandler
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
+        $this->acl = $aclHandler;
     }
 
     /**
@@ -184,6 +200,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $record->setModule($module);
         $record->setType($bean->object_name);
         $record->setAttributes($mappedBean);
+        $record->setAcls($this->acl->getRecordAcls($bean));
 
         return $record;
     }

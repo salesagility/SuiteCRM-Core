@@ -28,6 +28,7 @@ import {Injectable} from '@angular/core';
 import {LineActionData} from './line.action';
 import {CreateRelatedLineAction} from './create-related/create-related.action';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
+import {AsyncProcessLineAction} from './async-process/async-process.action';
 
 @Injectable({
     providedIn: 'root',
@@ -36,8 +37,10 @@ export class LineActionActionManager extends BaseActionManager<LineActionData> {
 
     constructor(
         protected createRelated: CreateRelatedLineAction,
+        protected async: AsyncProcessLineAction,
     ) {
         super();
         createRelated.modes.forEach(mode => this.actions[mode][createRelated.key] = createRelated);
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
     }
 }

@@ -1,0 +1,14 @@
+parameters:
+  legacy.entrypoint_files:
+    'campaign_tracker.php':
+      file: campaign_tracker.php
+      dir: ''
+    'ical_server.php':
+      file: ical_server.php
+      dir: ''
+    'soap.php':
+      file: soap.php
+      dir: ''
+    'vcal_server.php':
+      file: vcal_server.php
+      dir: ''

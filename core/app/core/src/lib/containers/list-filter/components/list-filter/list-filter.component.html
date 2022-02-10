@@ -38,10 +38,11 @@
 
     <div class="p-3 filter-body" panel-body>
 
-        <scrm-field-grid [actions]="true"
+        <scrm-field-grid *ngIf="store.displayFields && store.displayFields.length"
+                         [actions]="true"
                          [appendActions]="false"
                          [fieldMode]="store.mode"
-                         [fields]="store.fields"
+                         [fields]="store.displayFields"
                          [record]="vm"
                          [special]="store.special.length > 0"
         >

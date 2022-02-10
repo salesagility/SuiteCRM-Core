@@ -45,6 +45,7 @@ import {ModuleNavigation} from '../../../services/navigation/module-navigation/m
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
+import {MenuItem} from 'common';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -168,14 +169,14 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     /**
      * Change subnavigation
      *
-     * @param {{}} event triggered
-     * @param {{}} parentNavItem parent
+     * @param {object} event triggered
+     * @param {object} items
      */
-    public changeSubNav(event: Event, parentNavItem): void {
+    public changeSubNav(event: Event, items: MenuItem[]): void {
         this.mobileSubNav = !this.mobileSubNav;
         this.backLink = !this.backLink;
         this.mainNavLink = !this.mainNavLink;
-        this.submenu = parentNavItem.submenu;
+        this.submenu = items;
     }
 
     /**
@@ -230,5 +231,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.maxTabs = maxTabs;
         }
+    }
+
+    getCloseCallBack(myDrop): Function {
+        return () => myDrop.close();
     }
 }

@@ -24,9 +24,30 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, Record} from 'common';
+import {ActionData, ActionHandler, Record} from 'common';
 
 export interface LineActionData extends ActionData {
     record: Record;
+}
+
+export abstract class LineActionActionHandler extends ActionHandler<LineActionData> {
+
+    abstract run(data: LineActionData): void;
+
+    abstract shouldDisplay(data: LineActionData): boolean;
+
+    checkRecordAccess(data: LineActionData, defaultAcls: string[] = []): boolean {
+
+        const record = data.record ?? {} as Record;
+        const acls = record.acls ?? [];
+
+        if (!acls || !acls.length) {
+            return false;
+        }
+
+        const action = data.action ?? null;
+
+        return this.checkAccess(action, acls, defaultAcls);
+    }
 }
 

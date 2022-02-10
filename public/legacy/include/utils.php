@@ -114,6 +114,9 @@ function make_sugar_config(&$sugar_config)
         'calculate_response_time' => empty($calculate_response_time) ? true : $calculate_response_time,
         'create_default_user' => empty($create_default_user) ? false : $create_default_user,
         'chartEngine' => 'Jit',
+        'pdf' => [
+            'defaultEngine' => 'TCPDFEngine'
+        ],
         'date_formats' => empty($dateFormats) ? array(
             'Y-m-d' => '2010-12-23',
             'd-m-Y' => '23-12-2010',
@@ -213,6 +216,13 @@ function make_sugar_config(&$sugar_config)
             'html',
             'htm',
         ) : $upload_badext,
+        'valid_image_ext' => [
+            'gif',
+            'png',
+            'jpg',
+            'jpeg',
+            'svg'
+        ],
         'upload_dir' => $upload_dir, // this must be set!!
         'upload_maxsize' => empty($upload_maxsize) ? 30000000 : $upload_maxsize,
         'allowed_preview' => [
@@ -280,6 +290,26 @@ function get_sugar_config_defaults(): array
     $sugar_config_defaults = [
         'disableAjaxUI' => true,
         'admin_export_only' => false,
+        'anti_malware_scanners' => [
+            'SuiteCRM\Utility\AntiMalware\Providers\ClamTCP' => [
+                'name' => 'ClamAntiVirus TCP',
+                'support_page' => 'https://www.clamav.net/',
+                'enabled' => false,
+                'path' => null,
+                'options' => [
+                    'ip' => '127.0.0.1',
+                    'port' => 3310,
+                    'type' => 'local'
+                ],
+            ],
+            'SuiteCRM\Utility\AntiMalware\Providers\Sophos' => [
+                'name' => 'Sophos Anti Virus (Linux)',
+                'support_page' => 'https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx',
+                'enabled' => false,
+                'path' => '/opt/sophos-av/bin/savscan',
+                'options' => '-ss'
+            ]
+        ],
         'export_delimiter' => ',',
         'export_excel_compatible' => false,
         'cache_dir' => 'cache/',
@@ -403,6 +433,9 @@ function get_sugar_config_defaults(): array
         'log_memory_usage' => false,
         'oauth2_encryption_key' => base64_encode(random_bytes(32)),
         'portal_view' => 'single_user',
+        'pdf' => [
+            'defaultEngine' => 'TCPDFEngine'
+        ],
         'resource_management' => [
             'special_query_limit' => 50000,
             'special_query_modules' => ['AOR_Reports', 'Export', 'Import', 'Administration', 'Sync'],
@@ -444,6 +477,13 @@ function get_sugar_config_defaults(): array
             'html',
             'htm',
             'phtml',
+        ],
+        'valid_image_ext' => [
+            'gif',
+            'png',
+            'jpg',
+            'jpeg',
+            'svg'
         ],
         'upload_maxsize' => 30000000,
         'import_max_execution_time' => 3600,
@@ -513,9 +553,7 @@ function get_sugar_config_defaults(): array
     if (!is_object($locale)) {
         $locale = new Localization();
     }
-
-    $sugar_config_defaults['default_currencies'] = $locale->getDefaultCurrencies();
-
+    
     $sugar_config_defaults = sugarArrayMerge($locale->getLocaleConfigDefaults(), $sugar_config_defaults);
 
     return $sugar_config_defaults;
@@ -5959,4 +5997,67 @@ function set_session_name(){
     if (session_status() === PHP_SESSION_NONE) {
         session_name($sessionName);
     }
+}
+
+/**
+ * Check if has valid image extension
+ * @param string $fieldName
+ * @param string $value
+ * @return bool
+ */
+function has_valid_image_extension($fieldName, $name)
+{
+    global $sugar_config;
+
+    $validExtensions = [
+        'gif',
+        'png',
+        'jpg',
+        'jpeg',
+        'svg'
+    ];
+
+    if (isset($sugar_config['valid_image_ext']) && is_array($sugar_config['valid_image_ext'])){
+        $validExtensions = $sugar_config['valid_image_ext'];
+    }
+
+    return has_valid_extension($fieldName, $name, $validExtensions);
+}
+
+/**
+ * Check if has valid extension
+ * @param string $fieldName
+ * @param string $name
+ * @param array $validExtensions
+ * @return bool
+ */
+function has_valid_extension($fieldName, $name, $validExtensions)
+{
+
+    if ($name === '.' || empty($name)) {
+        LoggerManager::getLogger()->security("Invalid ext  $fieldName : '$name'.");
+
+        return false;
+    }
+
+    $validExtensions = array_map('strtolower', $validExtensions);
+
+    $parts = explode('.', $name);
+
+    if (empty($parts)) {
+        LoggerManager::getLogger()->security("Invalid ext  $fieldName : '$name'.");
+
+        return false;
+    }
+
+    $ext = array_pop($parts);
+    $trimmedValue = preg_replace('/.*\.([^\.]+)$/', '\1', $ext);
+
+    if (!in_array(strtolower($trimmedValue), $validExtensions, true)) {
+        LoggerManager::getLogger()->security("Invalid $fieldName: '$name'.");
+
+        return false;
+    }
+
+    return true;
 }

@@ -30,6 +30,8 @@ namespace App\Engine\LegacyHandler;
 use ACLController;
 use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
+use BeanFactory;
+use SugarBean;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AclHandler extends LegacyHandler implements AclManagerInterface
@@ -59,9 +61,16 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         SessionInterface $session
-    ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
-            $session);
+    )
+    {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
     }
 
@@ -76,8 +85,13 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
     /**
      * @inheritDoc
      */
-    public function checkAccess(string $module, string $action, bool $isOwner = false, $type = 'module', $in_group = false): bool
-    {
+    public function checkAccess(
+        string $module,
+        string $action,
+        bool $isOwner = false,
+        $type = 'module',
+        $in_group = false
+    ): bool {
         $this->init();
 
         $this->startLegacyApp();
@@ -85,6 +99,49 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
         $legacyName = $this->moduleNameMapper->toLegacy($module);
 
         $hasAccess = ACLController::checkAccess($legacyName, $action, $isOwner, $type, $in_group);
+
+        $this->close();
+
+        return $hasAccess;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRecordAcls(SugarBean $bean): array
+    {
+        $acls = [];
+
+        $actions = ['list', 'edit', 'view', 'delete', 'export', 'import'];
+
+        foreach ($actions as $action) {
+            $hasAccess = $bean->ACLAccess($action) ?? false;
+
+            if ($hasAccess === true) {
+                $acls[] = $action;
+            }
+        }
+
+        return $acls;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function checkRecordAccess(string $module, string $action, string $record): bool
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        $legacyName = $this->moduleNameMapper->toLegacy($module);
+
+        $bean = BeanFactory::getBean($legacyName, $record);
+
+        if (!$bean) {
+            return false;
+        }
+
+        $hasAccess = $bean->ACLAccess($action);
 
         $this->close();
 

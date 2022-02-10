@@ -40,17 +40,19 @@ class SubpanelTopActionDefinitionProvider extends ActionDefinitionProvider imple
     /**
      * @var array
      */
-    private $topButtonsMap = ['Create' => 'create', 'Select' => 'link'];
+    private $subpanelTopButtons;
 
     /**
      * SubpanelTopActionDefinitionProvider constructor.
      * @param array $subpanelTopActions
+     * @param array $subpanelTopButtons
      * @param ActionAvailabilityChecker $actionChecker
      */
-    public function __construct(array $subpanelTopActions, ActionAvailabilityChecker $actionChecker)
+    public function __construct(array $subpanelTopActions, array $subpanelTopButtons, ActionAvailabilityChecker $actionChecker)
     {
         parent::__construct($actionChecker);
         $this->subpanelTopActions = $subpanelTopActions;
+        $this->subpanelTopButtons = $subpanelTopButtons;
     }
 
     /**
@@ -109,86 +111,45 @@ class SubpanelTopActionDefinitionProvider extends ActionDefinitionProvider imple
     public function getTopAction(string $module, array $topButton): array
     {
 
-        $mapped = [
-            'SubPanelTopCreateTaskButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_TASK',
-                'module' => 'tasks'
-            ],
-            'SubPanelTopScheduleMeetingButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_MEETING',
-                'module' => 'meetings'
-            ],
-            'SubPanelTopScheduleCallButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_CALL',
-                'module' => 'calls'
-            ],
-            'SubPanelTopComposeEmailButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopCreateNoteButton' => [
-                'key' => 'create',
-                'labelKey' => 'LNK_NEW_NOTE',
-                'module' => 'notes'
-            ],
-            'SubPanelTopArchiveEmailButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSummaryButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopFilterButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSelectUsersButton' => [
-                'skip' => true,
-            ],
-            'SubPanelTopSelectContactsButton' => [
-                'skip' => true,
-            ],
-        ];
-
-        foreach ($this->topButtonsMap as $key => $actionKey) {
-
-            if (empty($topButton['widget_class']) || !strpos($topButton['widget_class'], $key)) {
-                continue;
-            }
-
-            if (!$this->isActionAccessible($module, $actionKey)) {
-                continue;
-            }
-
-            $mappedButton = $mapped[$topButton['widget_class']] ?? null;
-
-            if ($mappedButton !== null && !empty($mappedButton['skip'])) {
-                continue;
-            }
-
-            if ($mappedButton !== null) {
-                $mappedButton['additionalFields'] = $topButton['additionalFields'] ?? [];
-                $mappedButton['extraParams'] = $topButton['extraParams'] ?? [];
-                $mappedButton['widget_class'] = $topButton['widget_class'] ?? [];
-                $topButtons[] = $mappedButton;
-                continue;
-            }
-
-            $actions = $this->getActions($module);
-
-            return array_merge(
-                $actions[$actionKey],
-                [
-                    'module' => $module,
-                    'widget_class' => $topButton['widget_class'],
-                    'additionalFields' => $topButton['additionalFields'] ?? [],
-                    'extraParams' => $topButton['extraParams'] ?? []
-                ]
-            );
+        if (array_key_exists($topButton['widget_class'], $this->subpanelTopButtons)) {
+            $widgetClass = $topButton['widget_class'];
         }
 
-        return [];
-    }
+        if (empty($widgetClass)) {
+            //check if the button class name contains the create or select string
+            if (stripos($topButton['widget_class'], 'create')) {
+                $widgetClass = 'SubPanelTopCreateButton';
+            }
 
+            if (stripos($topButton['widget_class'], 'select')) {
+                $widgetClass = 'SubPanelTopSelectButton';
+            }
+
+        }
+
+        if (empty($widgetClass)) {
+            return [];
+        }
+
+        $mappedButton = $this->subpanelTopButtons[$widgetClass];
+        if (empty($mappedButton)) {
+            return [];
+        }
+
+        $mappedModule = $mappedButton['module'] ?? $module;
+        $mappedAcls = $mappedButton['acl'] ?? [];
+
+        foreach ($mappedAcls as $aclKey) {
+            if (!$this->isActionAccessible($mappedModule, $aclKey)) {
+                return [];
+            }
+        }
+
+        $mappedButton['additionalFields'] = $topButton['additionalFields'] ?? [];
+        $mappedButton['extraParams'] = $topButton['extraParams'] ?? [];
+        $mappedButton['widget_class'] = $topButton['widget_class'] ?? [];
+
+        return $mappedButton;
+    }
 }
 

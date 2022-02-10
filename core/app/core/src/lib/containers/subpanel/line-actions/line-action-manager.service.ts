@@ -27,13 +27,17 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
 import {SubpanelLineActionData} from './line.action';
+import {AsyncProcessSubpanelLineAction} from './async-process/async-process.action';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SubpanelLineActionManager extends BaseActionManager<SubpanelLineActionData> {
 
-    constructor() {
+    constructor(
+        protected async: AsyncProcessSubpanelLineAction,
+    ) {
         super();
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
     }
 }

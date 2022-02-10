@@ -28,7 +28,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {Observable, Subscription} from 'rxjs';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {RecordViewModel} from '../../store/record-view/record-view.store.model';
 import {ViewMode} from 'common';
 
@@ -54,7 +54,9 @@ export class RecordComponent implements OnInit, OnDestroy {
             mode = data.mode;
         }
 
-        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record, mode).subscribe();
+        const params = (this.route.snapshot && this.route.snapshot.queryParams) || {} as Params;
+
+        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record, mode, params).subscribe();
         this.vm$ = this.recordStore.vm$;
     }
 

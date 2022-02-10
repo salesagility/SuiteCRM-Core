@@ -26,9 +26,10 @@
  */
 
 
-
 namespace App\ViewDefinitions\LegacyHandler;
 
+
+use App\ViewDefinitions\Service\FieldAliasMapper;
 
 trait FieldDefinitionsInjectorTrait
 {
@@ -43,10 +44,16 @@ trait FieldDefinitionsInjectorTrait
      * @param $name
      * @param $field
      * @param array $baseViewFieldDefinition
+     * @param FieldAliasMapper $fieldAliasMapper
      * @return array
      */
-    protected function addFieldDefinition(array &$vardefs, $name, $field, array $baseViewFieldDefinition): array
-    {
+    protected function addFieldDefinition(
+        array &$vardefs,
+        $name,
+        $field,
+        array $baseViewFieldDefinition,
+        FieldAliasMapper $fieldAliasMapper
+    ): array {
         $baseField = $this->getField($field);
 
         $field = array_merge($baseViewFieldDefinition, $baseField);
@@ -55,7 +62,11 @@ trait FieldDefinitionsInjectorTrait
             return $field;
         }
 
-        $field['fieldDefinition'] = $vardefs[$name];
+        $alias = $fieldAliasMapper->map($vardefs[$name]);
+        $aliasDefs = $vardefs[$alias] ?? $vardefs[$name];
+
+        $field['fieldDefinition'] = $aliasDefs;
+        $field['name'] = $aliasDefs['name'] ?? $field['name'];
 
         $field = $this->applyDefaults($field);
 

@@ -24,4 +24,35 @@ parameters:
       showLabel:
         edit: ['*']
         filter: ['*']
-
+    parent:
+      name: '{name}-group'
+      display: inline
+      groupFields:
+        - '{name}'
+        - '{type_name}'
+        - '{id_name}'
+      layout:
+        - '{name}'
+        - '{type_name}'
+      showLabel:
+        edit: ['*']
+        filter: ['*']
+      replaceAttributes:
+        - name
+        - type_name
+        - id_name
+      definition:
+        '{name}':
+          type: 'relate'
+          rname: 'name'
+          module: 'Accounts'
+          link: 'flex'
+          logic:
+            parent:
+              key: 'update-flex-relate-module'
+              modes: ['edit', 'create', 'massupdate', 'filter']
+              params:
+                fieldDependencies: ['{type_name}']
+        '{type_name}':
+          type: 'enum'
+          modes: ['edit', 'create', 'massupdate', 'filter', 'detail']

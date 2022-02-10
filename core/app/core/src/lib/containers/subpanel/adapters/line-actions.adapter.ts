@@ -74,7 +74,8 @@ export class SubpanelLineActionsAdapter extends BaseRecordActionsAdapter<Subpane
     protected buildActionData(action: Action, context?: ActionContext): SubpanelLineActionData {
         return {
             record: (context && context.record) || null,
-            store: this.store
+            store: this.store,
+            action: action
         } as SubpanelLineActionData;
     }
 

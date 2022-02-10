@@ -127,6 +127,10 @@ array(
         ),
       ),
     ),
+    'summaryTemplates' => [
+      'edit' => 'LBL_SUMMARY_PERSON',
+      'detail' => 'LBL_SUMMARY_PERSON',
+    ],
     'panels' =>
     array(
       'lbl_prospect_information' =>
@@ -210,13 +214,13 @@ array(
         array(
           0 =>
           array(
-            'name' => 'modified_by_name',
+            'name' => 'date_modified',
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}&nbsp;',
             'label' => 'LBL_DATE_MODIFIED',
           ),
           1 =>
           array(
-            'name' => 'created_by_name',
+            'name' => 'date_entered',
             'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}&nbsp;',
             'label' => 'LBL_DATE_ENTERED',
           ),

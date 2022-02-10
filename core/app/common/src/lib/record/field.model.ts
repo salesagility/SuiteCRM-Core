@@ -67,6 +67,7 @@ export interface FieldDefinition {
     id_name?: string;
     link?: string;
     module?: string;
+    type_name?: string;
     rname?: string;
     table?: string;
     readonly?: boolean;
@@ -91,6 +92,14 @@ export interface FieldDefinition {
     metadata?: FieldMetadata;
     default?: string;
     modes?: ViewMode[];
+    relationship?: string;
+    relationshipMetadata?: RelationshipMetadata
+}
+
+export interface RelationshipMetadata {
+    side: string;
+    related_id?: string;
+    type: string;
 }
 
 export interface LineItemsMetadata {

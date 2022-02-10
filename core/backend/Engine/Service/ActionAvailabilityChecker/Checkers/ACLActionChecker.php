@@ -59,11 +59,12 @@ class ACLActionChecker implements ActionAvailabilityCheckerInterface
      *
      * @param string $module
      * @param array|null $entry
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, ?array $entry = []): bool
+    public function checkAvailability(string $module, ?array $entry = [], ?array $context = []): bool
     {
-        return $this->checkAccess($module, $entry['acl'] ?? [], $this->aclManager);
+        return $this->checkAccess($module, $entry['acl'] ?? [], $context);
     }
 
     /**
@@ -71,17 +72,30 @@ class ACLActionChecker implements ActionAvailabilityCheckerInterface
      *
      * @param string $module - module to be queried
      * @param array $aclList - list of the actions against which the accessibility to be checked e.g. delete, edit
-     * @param AclManagerInterface $aclManager
+     * @param array|null $context
      * @return bool
      */
-    public function checkAccess(string $module, array $aclList, AclManagerInterface $aclManager): bool
+    public function checkAccess(string $module, array $aclList, ?array $context = []): bool
     {
         if (empty($aclList)) {
             return true;
         }
 
+        $record = $context['record'] ?? '';
+
+        if ($record !== '') {
+            foreach ($aclList as $acl) {
+                if ($this->aclManager->checkRecordAccess($module, $acl, $record) === false) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         foreach ($aclList as $acl) {
-            if ($aclManager->checkAccess($module, $acl, true, 'module', true) === false) {
+
+            if ($this->aclManager->checkAccess($module, $acl, true, 'module', true) === false) {
                 return false;
             }
         }

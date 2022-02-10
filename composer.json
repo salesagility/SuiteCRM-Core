@@ -19,10 +19,16 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "suggest": {
+    "ext-imap": "Needed for emails module"
+  },
   "require": {
+    "ext-curl": "*",
+    "ext-gd": "*",
     "ext-json": "*",
-    "ext-zip": "*",
+    "ext-openssl": "*",
     "ext-pdo": "*",
+    "ext-zip": "*",
     "api-platform/core": "^2.6",
     "composer/package-versions-deprecated": "1.11.99.3",
     "doctrine/annotations": "^1.0",
@@ -70,6 +76,7 @@
     "symfony/twig-bundle": "5.2.*",
     "symfony/validator": "5.2.*",
     "symfony/yaml": "5.2.*",
+    "tecnickcom/tcpdf": "^6.4",
     "tedivm/jshrink": "^1.3",
     "tinymce/tinymce": "^4.9.11",
     "tuupola/slim-jwt-auth": "^2.0",
@@ -81,8 +88,7 @@
     "zf1/zend-gdata": "^1.12",
     "zf1/zend-loader": "^1.12",
     "zf1/zend-oauth": "^1.12",
-    "zf1/zend-registry": "^1.12",
-    "zf1/zend-search-lucene": "^1.12"
+    "zf1/zend-registry": "^1.12"
   },
   "require-dev": {
     "api-platform/schema-generator": "^2.2",
@@ -95,7 +101,7 @@
     "codeception/module-rest": "^1.3",
     "codeception/module-symfony": "^1.0",
     "codeception/module-webdriver": "^1.2",
-    "consolidation/robo": "^2.0",
+    "consolidation/robo": "^2.2.2",
     "dama/doctrine-test-bundle": "^6.2",
     "doctrine/doctrine-fixtures-bundle": "~3.2",
     "fakerphp/faker": "^1.14",
@@ -151,7 +157,7 @@
       "cache:clear": "symfony-cmd",
       "cache:warmup": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd",
-      "scrm:extension-asset-install %PUBLIC_DIR%": "symfony-cmd"
+      "scrm:copy-legacy-assets": "symfony-cmd"
     },
     "post-install-cmd": [
       "@auto-scripts",

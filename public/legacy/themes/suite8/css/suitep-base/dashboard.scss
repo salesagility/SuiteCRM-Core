@@ -320,7 +320,10 @@ ul.subpanelTablist li {
 .sugarFeedDashlet {
   blockquote {
     input[type=submit] {
-      background: #a99ac9;
+      background: $light-purple;
+      &:hover {
+        background: $thick-blue;
+      }
     }
     form {
       table tr td:nth-child(2) {
@@ -701,7 +704,7 @@ table #dashletPanel {
   .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .bd form table.edit tr td[valign=top] {
     float: left;
     width: 25%;
-
+    padding-top: 0.7em;
   }
   .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .bd form table.edit tr:last-child{
     clear: both;
@@ -727,7 +730,7 @@ table #dashletPanel {
     border: 1px solid $base-border-light-color;
   }
   input[type=submit] {
-    background: #a99ac9;
+    background: $light-purple;
     &:hover {
       background: $thick-blue;
     }
@@ -740,6 +743,15 @@ table #dashletPanel {
 
 .dashletNonTable tr td:nth-child(2) {
   width: 100%;
+}
+
+.post_txt_username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 30em;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: bold;
 }
 
 .dashletNonTable tr td:nth-child(3) {
@@ -864,6 +876,9 @@ table #dashletPanel {
       }
     }
   }
+  .list tr th {
+    color: $midnight-blue;
+  }
 }
 
 #dashboard #tab-actions ul.dropdown-menu li {
@@ -896,6 +911,17 @@ table #dashletPanel {
   .dashletPanel {
     .bd {
       overflow-x: auto;
-    }    
+    }   
+    .header-title {
+      color: $white;
+      white-space: nowrap;
+      width: 100%;
+    } 
   }
 }  
+
+.view-module-Home {
+  textarea {
+    background: $transparent-color;
+  }
+}

@@ -102,12 +102,38 @@ export class RecordManager {
 
             if (!isVoid(definition)) {
                 const type = definition.type || '';
-                const idName = definition.id_name || '';
+                let idName = definition.id_name || '';
                 const name = definition.name || '';
-                const rname = definition.rname || '';
+                let rname = definition.rname || '';
 
                 if (type === 'relate' && idName === name) {
                     record.attributes[paramKey] = params[paramKey];
+                    return;
+                }
+
+                if (type === 'parent') {
+                    const relate = {} as any;
+
+                    let rname = 'name';
+                    let idName = 'parent_id';
+                    const groupFieldKey = paramKey + '-group';
+                    const groupField = vardefs[groupFieldKey] ?? {};
+                    const parentName = groupField.groupFields[paramKey];
+
+                    if(parentName  && parentName.rname) {
+                        rname = parentName.rname;
+                    }
+
+                    if (rname) {
+                        relate[rname] = params[paramKey];
+                    }
+
+                    if (idName && params[idName]) {
+                        relate.id = params[idName];
+                    }
+
+                    record.attributes[paramKey] = relate;
+
                     return;
                 }
 
@@ -132,6 +158,69 @@ export class RecordManager {
                 return;
             }
 
+            this.handleLinkTypeRelationship(paramKey, params, vardefs, record);
         });
+    }
+
+    protected handleLinkTypeRelationship(paramKey: string, params: Params, vardefs: FieldDefinitionMap, record: Record): void {
+        if (paramKey === 'return_relationship') {
+
+            const returnRelationship = params.return_relationship;
+            if (!returnRelationship) {
+                return;
+            }
+
+            // check, on vardefs, if there is a field of type = link
+            // with relationship equal to the value of return_relationship param
+            Object.keys(vardefs).forEach(key => {
+
+                const vardef = vardefs[key];
+                const type = vardef.type || '';
+                if (type !== 'link') {
+                    return;
+                }
+
+                const relationship = vardef.relationship || '';
+                if (!relationship) {
+                    return;
+                }
+
+                if (relationship === returnRelationship) {
+
+                    const linkFieldName = vardef.name;
+                    const module = vardef.module ?? params.return_module ?? '';
+                    if (!module) {
+                        return;
+                    }
+
+                    const parentName = params.parent_name;
+                    if (!parentName) {
+                        return;
+                    }
+
+                    // name of the related parent field e.g. contact_id as injected
+                    // in to field definition from its metadata definition
+                    const relateId = vardef?.relationshipMetadata?.related_id;
+                    const parentId = params[relateId] ?? '';
+                    if (!parentId) {
+                        return;
+                    }
+
+                    // add link type fields as line items to base record
+                    record.attributes[linkFieldName] = [
+                        {
+                            id: parentId,
+                            module,
+                            attributes: {
+                                id: parentId,
+                                name: parentName
+                            }
+                        } as Record
+                    ];
+
+                    return;
+                }
+            });
+        }
     }
 }

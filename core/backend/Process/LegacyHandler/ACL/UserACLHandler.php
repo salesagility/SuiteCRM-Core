@@ -30,6 +30,7 @@ namespace App\Process\LegacyHandler\ACL;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\BaseActionDefinitionProviderInterface;
@@ -64,6 +65,10 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      * @var LegacyActionResolverInterface
      */
     private $legacyActionResolver;
+    /**
+     * @var AclManagerInterface
+     */
+    private $acl;
 
     /**
      * UserACLHandler constructor.
@@ -76,6 +81,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param BaseActionDefinitionProviderInterface $baseActionDefinitionProvider
      * @param LegacyActionResolverInterface $legacyActionResolver
+     * @param AclManagerInterface $acl
      */
     public function __construct(
         string $projectDir,
@@ -86,9 +92,9 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         SessionInterface $session,
         ModuleNameMapperInterface $moduleNameMapper,
         BaseActionDefinitionProviderInterface $baseActionDefinitionProvider,
-        LegacyActionResolverInterface $legacyActionResolver
-    )
-    {
+        LegacyActionResolverInterface $legacyActionResolver,
+        AclManagerInterface $acl
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -100,6 +106,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         $this->moduleNameMapper = $moduleNameMapper;
         $this->baseActionDefinitionProvider = $baseActionDefinitionProvider;
         $this->legacyActionResolver = $legacyActionResolver;
+        $this->acl = $acl;
     }
 
     /**
@@ -131,8 +138,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      */
     public function configure(
         Process $process
-    ): void
-    {
+    ): void {
         //This process is synchronous
         //We aren't going to store a record on db
         //thus we will use process type as the id
@@ -145,8 +151,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      */
     public function validate(
         Process $process
-    ): void
-    {
+    ): void {
         if (empty($process->getOptions())) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
@@ -179,7 +184,12 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         ] = $options;
 
         $routeAction = $payload['routeAction'] ?? 'index';
+        $routeRecord = $payload['record'] ?? '';
         $queryParams = $payload['queryParams'];
+
+        $context = [
+            'record' => $routeRecord
+        ];
 
         $actionKey = $routeAction;
 
@@ -194,7 +204,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
 
         $hasAccess = false;
         if ($this->moduleNameMapper->isValidModule($legacyModuleName)
-            && ($this->baseActionDefinitionProvider->isActionAccessible($frontEndModuleName, $actionKey))
+            && ($this->baseActionDefinitionProvider->isActionAccessible($frontEndModuleName, $actionKey, $context))
         ) {
             $hasAccess = true;
         }
@@ -217,7 +227,6 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         $this->close();
 
         $process->setData(['result' => $result['status']]);
-
     }
 
     /**
@@ -231,7 +240,6 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      */
     protected function entryExistsInLegacyActionMapper(string $primaryAction, string $secondaryAction): string
     {
-
         $actionModuleIdentifierKey = $this->legacyActionResolver->get($primaryAction, $secondaryAction);
 
         if (empty($actionModuleIdentifierKey)) {
@@ -265,5 +273,4 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
     {
         $this->logger = $logger;
     }
-
 }

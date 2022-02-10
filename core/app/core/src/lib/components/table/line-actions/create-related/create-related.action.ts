@@ -26,14 +26,14 @@
 
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Action, ActionHandler, ViewMode} from 'common';
+import {Action, ViewMode} from 'common';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
-import {LineActionData} from '../line.action';
+import {LineActionActionHandler, LineActionData} from '../line.action';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CreateRelatedLineAction extends ActionHandler<LineActionData> {
+export class CreateRelatedLineAction extends LineActionActionHandler {
     key = 'create';
     modes = ['list' as ViewMode];
 

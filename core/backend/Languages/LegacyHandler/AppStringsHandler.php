@@ -135,9 +135,10 @@ class AppStringsHandler extends LegacyHandler
             $this->injectModuleLanguage($language, $module, $languageKeys, $appStringsArray);
         }
 
-        $appStringsArray = array_merge(load_install_language($language), $appStringsArray);
-
         $appStringsArray = $this->removeEndingColon($appStringsArray);
+
+        //append install strings array
+        $appStringsArray = array_merge($this->retrieveInstallAppStrings($language)->getItems(), $appStringsArray);
 
         $appStrings = new AppStrings();
         $appStrings->setId($language);
@@ -164,6 +165,24 @@ class AppStringsHandler extends LegacyHandler
         /* @noinspection PhpIncludeInspection */
         require_once 'include/utils.php';
 
+        $appStrings = $this->retrieveInstallAppStrings($language);
+
+        $this->installHandler->closeLegacy();
+
+        return $appStrings;
+    }
+
+    /**
+     * Retrieve install app strings for given $language
+     * @param $language
+     * @return AppStrings|null
+     */
+    public function retrieveInstallAppStrings(string $language): ?AppStrings
+    {
+        if (empty($language)) {
+            return null;
+        }
+
         $appStringsArray = load_install_language($language) ?? [];
 
         $appStringsArray = $this->removeEndingColon($appStringsArray);
@@ -173,8 +192,6 @@ class AppStringsHandler extends LegacyHandler
         $appStrings = new AppStrings();
         $appStrings->setId($language);
         $appStrings->setItems($appStringsArray);
-
-        $this->installHandler->closeLegacy();
 
         return $appStrings;
     }
@@ -227,7 +244,15 @@ class AppStringsHandler extends LegacyHandler
      */
     protected function isInstalled(): bool
     {
-        return $this->installHandler->isAppInstalled($this->legacyDir);
+        return $this->installHandler->isLegacyInstalled();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isInstallerLocked(): bool
+    {
+        return $this->installHandler->isInstallerLocked();
     }
 
     /**

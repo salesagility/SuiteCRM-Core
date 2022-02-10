@@ -21,3 +21,13 @@ parameters:
           modes:
             - list
           acl:
+        edit:
+          key: edit
+          labelKey: LBL_EDIT
+          action: edit
+          asyncProcess: true
+          params:
+          modes:
+            - list
+          acl:
+            - edit

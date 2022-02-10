@@ -3593,20 +3593,6 @@ $app_list_strings['moduleList']['TemplateEditor'] = 'Template Part Editor';
 $app_strings['LBL_CONFIRM_CANCEL_INLINE_EDITING'] = "You have clicked away from the field you were editing without saving it. Click ok if you're happy to lose your change, or cancel if you would like to continue editing";
 $app_strings['LBL_LOADING_ERROR_INLINE_EDITING'] = "There was an error loading the field. Your session may have timed out. Please log in again to fix this";
 
-//SuiteSpots
-$app_list_strings['spots_areas'] = array(
-    'getSalesSpotsData' => 'Sales',
-    'getAccountsSpotsData' => 'Accounts',
-    'getLeadsSpotsData' => 'Leads',
-    'getServiceSpotsData' => 'Service',
-    'getMarketingSpotsData' => 'Marketing',
-    'getMarketingActivitySpotsData' => 'Marketing Activity',
-    'getActivitiesSpotsData' => 'Activities',
-    'getQuotesSpotsData' => 'Quotes'
-);
-
-$app_list_strings['moduleList']['Spots'] = 'Spots';
-
 $app_list_strings['moduleList']['AOBH_BusinessHours'] = 'Business Hours';
 $app_list_strings['business_hours_list']['0'] = '12am';
 $app_list_strings['business_hours_list']['1'] = '1am';
@@ -3848,6 +3834,7 @@ $app_strings['LBL_PHOTO'] = 'Photo';
 $app_strings['LBL_CASE_UPDATES'] = 'Case Updates';
 $app_strings['LBL_CASE_UPDATE_SUBMITTED'] = 'Case Update Submitted';
 $app_strings['LBL_SUMMARY_DEFAULT'] = "{{fields.name.value}}";
+$app_strings['LBL_SUMMARY_PERSON'] = "{{fields.salutation.value}} {{fields.first_name.value}} {{fields.last_name.value}}";
 $app_strings['LBL_CREATE'] = 'Create';
 $app_strings['LBL_SAVED_FILTER_SAVED'] = 'Filter successfully saved';
 $app_strings['LBL_FILTER_ID_NOT_DEFINED'] = 'Filter id not defined';
@@ -3894,3 +3881,15 @@ $app_strings['LBL_RECORD_CHANGED'] = 'Record Updated';
 $app_strings['LBL_CREATE'] = "Create";
 $app_strings['LBL_USE_ADVANCED_SEARCH'] = 'Use Advanced Search';
 $app_strings['LBL_USE_BASIC_SEARCH'] = 'Use Basic Search';
+$app_strings['LBL_NO_MODULE_SELECTED'] = 'No module selected';
+$app_strings['LBL_CLOSE_MENU'] = 'Close Menu';
+
+// PDF Engines
+$app_strings['LBL_LEGACY_MPDF_ENGINE'] = 'Legacy MPDF Engine';
+$app_strings['LBL_TCPDF_ENGINE'] = 'TCPDF Engine';
+
+
+$app_strings['ERR_INVALID_FILE_NAME'] = 'Invalid file name:';
+$app_strings['LBL_LOGGER_VALID_FILENAME_CHARACTERS'] = 'This can only be alphanumeric characters, plus \'.\' , \'-\' and \'_\'';
+$app_strings['LBL_LOGGER_INVALID_FILENAME'] = 'Invalid import file name';
+

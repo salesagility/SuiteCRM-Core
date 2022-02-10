@@ -1473,7 +1473,7 @@ EOQ;
                 $query = "SELECT reports_to_id FROM users WHERE id='" . $this->db->quote($check_user) . "'";
                 $result = $this->db->query($query, true, "Error checking for reporting-loop");
                 $row = $this->db->fetchByAssoc($result);
-                echo("fetched: " . $row['reports_to_id'] . " from " . $check_user . "<br>");
+                LoggerManager::getLogger()->info("fetched: " . $row['reports_to_id'] . " from " . $check_user . "<br>");
                 $check_user = $row['reports_to_id'];
             }
 
@@ -2013,6 +2013,16 @@ EOQ;
         }
 
         return $myModules;
+    }
+
+    /**
+     * Is user enabled
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return ($this->status !== 'Inactive') && ($this->employee_status === 'Active');
     }
 
     /**

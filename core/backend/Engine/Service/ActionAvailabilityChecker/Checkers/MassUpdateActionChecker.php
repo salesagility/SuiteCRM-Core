@@ -59,9 +59,10 @@ class MassUpdateActionChecker implements ActionAvailabilityCheckerInterface
      *
      * @param string $module
      * @param array|null $entry
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, ?array $entry = []): bool
+    public function checkAvailability(string $module, ?array $entry = [], ?array $context = []): bool
     {
         $definitions = $this->massUpdateDefinitions->getDefinitions($module);
 

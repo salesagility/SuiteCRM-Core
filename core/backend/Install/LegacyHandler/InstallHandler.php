@@ -85,7 +85,8 @@ class InstallHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         LoggerInterface $logger
-    ) {
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -205,7 +206,7 @@ class InstallHandler extends LegacyHandler
      */
     public function createConfig(array $inputArray): bool
     {
-        $siteURL = $inputArray['site_host'] . '/legacy';
+        $siteURL = $inputArray['site_host'];
         $configArray = [
             'dbUSRData' => 'same',
             'default_currency_iso4217' => 'USD',
@@ -222,6 +223,7 @@ class InstallHandler extends LegacyHandler
             'export_delimiter' => ',',
             'setup_db_admin_password' => $inputArray['db_password'],
             'setup_db_admin_user_name' => $inputArray['db_username'],
+            'setup_db_port_num' => $inputArray['db_port'],
             'setup_db_create_database' => 1,
             'setup_db_database_name' => $inputArray['db_name'],
             'setup_db_drop_tables' => 0,
@@ -258,9 +260,13 @@ class InstallHandler extends LegacyHandler
      */
     public function checkDBConnection(array $inputArray): bool
     {
+        $dbHost = $inputArray["db_host"];
+        $dbPort = $inputArray["db_port"];
+        $hostString = !empty($dbPort) ? $dbHost . ':' . $dbPort : $dbHost;
+
         try {
             new PDO(
-                "mysql:host=" . $inputArray["db_host"] . ";",
+                "mysql:host=" . $hostString . ";",
                 $inputArray['db_username'],
                 $inputArray['db_password']
             );
@@ -284,9 +290,10 @@ class InstallHandler extends LegacyHandler
         $username = urlencode($inputArray['db_username'] ?? '');
         $dbName = $inputArray['db_name'] ?? '';
         $host = $inputArray['db_host'] ?? '';
-        $port = $inputArray['db_port'] ?? '3306';
+        $port = $inputArray['db_port'] ?? '';
+        $hostString = !empty($port) ? $host . ':' . $port : $host;
 
-        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$host:$port/$dbName\"";
+        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$hostString/$dbName\"";
         $filesystem = new Filesystem();
         try {
             chdir($this->projectDir);
@@ -316,6 +323,14 @@ class InstallHandler extends LegacyHandler
         return $filesystem->exists('.env.local');
     }
 
+    /**
+     * Check if is legacy app is installed
+     * @return bool is installed
+     */
+    public function isLegacyInstalled(): bool
+    {
+        return $this->isAppInstalled($this->legacyDir);
+    }
 
     /**
      * Check if is installer locked

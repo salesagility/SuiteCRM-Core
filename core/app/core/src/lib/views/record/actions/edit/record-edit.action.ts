@@ -44,7 +44,7 @@ export class RecordEditAction extends RecordActionHandler {
         data.store.setMode('edit' as ViewMode);
     }
 
-    shouldDisplay(): boolean {
-        return true;
+    shouldDisplay(data: RecordActionData): boolean {
+        return this.checkRecordAccess(data, ['edit']);
     }
 }

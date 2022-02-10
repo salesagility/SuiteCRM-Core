@@ -24,19 +24,67 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {ModuleNavigation} from "../../../../services/navigation/module-navigation/module-navigation.service";
+import {ModuleNameMapper} from "../../../../services/navigation/module-name-mapper/module-name-mapper.service";
+import {Router} from "@angular/router";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AppStateStore} from "../../../../store/app-state/app-state.store";
+import {ActionNameMapper} from "../../../../services/navigation/action-name-mapper/action-name-mapper.service";
 
 @Component({
     selector: 'scrm-email-list',
     templateUrl: './email.component.html',
     styleUrls: []
 })
-export class EmailListFieldsComponent extends BaseFieldComponent {
+export class EmailListFieldsComponent extends BaseFieldComponent implements OnInit {
+    linkType: string;
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected preferences: UserPreferenceStore,
+        protected navigation: ModuleNavigation,
+        protected moduleNameMapper: ModuleNameMapper,
+        protected actionNameMapper: ActionNameMapper,
+        protected appState: AppStateStore,
+        protected modalService: NgbModal,
+        protected router: Router
+    ) {
         super(typeFormatter, logic);
+    }
+
+    ngOnInit(): void {
+        this.linkType = this.preferences.getUserPreference('email_link_type') || 'mailto';
+    }
+
+    openEmail() {
+
+        const view = this.actionNameMapper.toLegacy(this.appState.getView());
+        const module = this.moduleNameMapper.toLegacy(this.parent.module);
+        const parent_id = this.parent.id;
+        const parent_name = this.parent.attributes.name;
+        const email = this.field.value;
+
+        let return_id;
+        if (view !== 'ListView' && view !== 'index') {
+            return_id = parent_id;
+        }
+
+        this.router.navigate(['emails', 'compose'], {
+            queryParams: {
+                return_module: module,
+                return_action: view,
+                return_id,
+                to_addrs_names: email,
+                parent_type: module,
+                parent_name,
+                parent_id,
+            }
+        })
     }
 }

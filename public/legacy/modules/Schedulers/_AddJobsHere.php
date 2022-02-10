@@ -45,6 +45,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+require_once 'include/Services/NormalizeRecords/NormalizeRecords.php';
+
 /**
  * Set up an array of Jobs with the appropriate metadata
  * 'jobName' => array (
@@ -615,8 +617,14 @@ function pollMonitoredInboxesAOP()
                     $isGroupFolderExists = false;
                     $users = array();
                     if ($groupFolderId != null && $groupFolderId != "") {
+                        // FIX #6994 - Unable to retrieve Sugar Folder due to incorrect groupFolderId
                         $sugarFolder->retrieve($groupFolderId);
-                        $isGroupFolderExists = true;
+                        if (empty($sugarFolder->id)) {
+                            $sugarFolder->retrieve($aopInboundEmailX->id);
+                        }
+                        if (!empty($sugarFolder->id)) {
+                            $isGroupFolderExists = true;
+                        }
                     } // if
                     $messagesToDelete = array();
                     if ($aopInboundEmailX->isMailBoxTypeCreateCase()) {

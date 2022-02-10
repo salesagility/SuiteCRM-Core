@@ -51,9 +51,9 @@ class BaseActionDefinitionProvider extends ActionDefinitionProvider implements B
     /**
      * @inheritDoc
      */
-    public function getActions(string $module): array
+    public function getActions(string $module, ?array $context = []): array
     {
-        return $this->filterActions($module, $this->baseActions);
+        return $this->filterActions($module, $this->baseActions, $context);
     }
 
     /**
@@ -74,11 +74,12 @@ class BaseActionDefinitionProvider extends ActionDefinitionProvider implements B
      * Get list of modules the user has access to
      * @param string $module
      * @param string $actionKey
+     * @param array|null $context
      * @return bool
      */
-    public function isActionAvailable(string $module, string $actionKey): bool
+    public function isActionAvailable(string $module, string $actionKey, ?array $context = []): bool
     {
-        $actions = $this->getActions($module);
+        $actions = $this->getActions($module, $context);
 
         return !(empty($actions) || !array_key_exists($actionKey, $actions));
     }
@@ -87,6 +88,7 @@ class BaseActionDefinitionProvider extends ActionDefinitionProvider implements B
      * Get list of modules the user has access to
      * @param string $module
      * @param string $actionKey
+     * @param array|null $context
      * @return bool
      * @description
      * a) this function also resolves the route actions
@@ -98,10 +100,10 @@ class BaseActionDefinitionProvider extends ActionDefinitionProvider implements B
      * in such cases users shall not see the ACL unauthorized error
      * !$this->isActionDefined($actionKey) handles this.
      */
-    public function isActionAccessible(string $module, string $actionKey): bool
+    public function isActionAccessible(string $module, string $actionKey, ?array $context = []): bool
     {
         return !$this->isActionDefined($actionKey)
-            || $this->isActionAvailable($module, $actionKey);
+            || $this->isActionAvailable($module, $actionKey, $context);
     }
 }
 

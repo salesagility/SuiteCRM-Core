@@ -38,14 +38,21 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
     private $legacyApiPaths;
 
     /**
+     * @var array
+     */
+    private $legacyApiPathFiles;
+
+    /**
      * LegacyApiRedirectHandler constructor.
      * @param array $legacyApiPaths
      * @param String $legacyPath
+     * @param array $legacyApiPathFiles
      */
-    public function __construct(array $legacyApiPaths, string $legacyPath)
+    public function __construct(array $legacyApiPaths, string $legacyPath, array $legacyApiPathFiles)
     {
         parent::__construct($legacyPath);
         $this->legacyApiPaths = $legacyApiPaths;
+        $this->legacyApiPathFiles = $legacyApiPathFiles;
     }
 
     /**
@@ -76,5 +83,37 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
         }
 
         return $legacyPath;
+    }
+
+    /**
+     * Convert given $request route
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getIncludeFile(Request $request): array
+    {
+
+        foreach ($this->legacyApiPathFiles as $path => $info) {
+            if ($this->inPath($request, $path)) {
+
+                $base = $_SERVER['BASE'] ?? $_SERVER['REDIRECT_BASE'] ?? '';
+
+                $scriptName = $base . '/legacy/' . $info['dir'] . '/' . $info['file'];
+                $requestUri = str_replace($base, $base . '/legacy', $_SERVER['REQUEST_URI']);
+
+                $info['script-name'] = $scriptName;
+                $info['request-uri'] = $requestUri;
+                $info['access'] = true;
+
+                return $info;
+            }
+        }
+
+        return [
+            'dir' => '',
+            'file' => 'index.php',
+            'access' => true
+        ];
     }
 }

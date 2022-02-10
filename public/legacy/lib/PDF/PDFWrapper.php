@@ -40,7 +40,8 @@
 namespace SuiteCRM\PDF;
 
 use SuiteCRM\PDF\Exceptions\PDFEngineNotFoundException;
-use SuiteCRM\PDF\MPDF\MPDFEngine;
+use SuiteCRM\PDF\LegacyMPDF\LegacyMPDFEngine;
+use SuiteCRM\PDF\TCPDF\TCPDFEngine;
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
@@ -56,15 +57,19 @@ class PDFWrapper
      * @var array stores an associative array matching the PDF engine class name with the file it is stored in.
      */
     private static $engines = [
-        'MPDFEngine' => [
-            'name' => 'MPDFEngine',
-            'FQN' => MPDFEngine::class,
-            'filepath' => 'lib/PDF/MPDF/MPDFEngine.php'
+        'TCPDFEngine' => [
+            'name' => 'TCPDFEngine',
+            'lbl' => 'LBL_TCPDF_ENGINE',
+            'FQN' => TCPDFEngine::class,
+            'filepath' => 'lib/PDF/TCPDF/TCPDFEngine.php'
+        ],
+        'LegacyMPDFEngine' => [
+            'name' => 'LegacyMPDFEngine',
+            'lbl' => 'LBL_LEGACY_MPDF_ENGINE',
+            'FQN' => LegacyMPDFEngine::class,
+            'filepath' => 'lib/PDF/LegacyMPDF/LegacyMPDFEngine.php'
         ],
     ];
-
-    /** @var string Path to the folder where to load custom engines from */
-    private static $customEnginePath = __DIR__ . '/../../custom/Extension/PDFEngines/';
 
     /**
      * @param string $engineName
@@ -82,10 +87,20 @@ class PDFWrapper
 
     /**
      * @return PDFEngine
+     * @noinspection PhpIncludeInspection
      */
     public static function getPDFEngine(): PDFEngine
     {
+        $pdfs = [];
         $defaultEngine = self::getDefaultEngine();
+
+        if (file_exists('custom/application/Ext/PDF/pdfs.ext.php')) {
+            include('custom/application/Ext/PDF/pdfs.ext.php');
+        }
+
+        foreach ($pdfs as $pdf) {
+            self::$engines[$pdf['name']] = $pdf;
+        }
 
         return self::fetchEngine($defaultEngine);
     }
@@ -94,17 +109,24 @@ class PDFWrapper
      * Retrieves the available PDF engine class names.
      *
      * @return string[]
+     * @noinspection PhpIncludeInspection
      */
     public static function getEngines(): array
     {
+        $pdfs = [];
         $default = array_keys(self::$engines);
-        $custom = [];
-        foreach (glob(self::$customEnginePath . '*.php', GLOB_NOSORT) as $file) {
-            $file = pathinfo($file);
-            $custom[] = $file['filename'];
+
+        $MPDF = __DIR__ . '/../../modules/AOS_PDF_Templates/PDF_Lib/mpdf.php';
+        if (($key = array_search('LegacyMPDFEngine', $default, true)) !== false
+            && (!file_exists($MPDF) || version_compare(PHP_VERSION, '8.0.0') >= 0)) {
+            unset($default[$key]);
         }
 
-        return array_merge($default, $custom);
+        if (file_exists('custom/application/Ext/PDF/pdfs.ext.php')) {
+            include('custom/application/Ext/PDF/pdfs.ext.php');
+        }
+
+        return array_merge(array_keys($pdfs), $default);
     }
 
     /**
@@ -128,12 +150,7 @@ class PDFWrapper
             return $engineName;
         }
 
-        $customEnginePath = self::$customEnginePath . $engineName . '.php';
-
         if (isset(self::$engines[$engineName])) {
-            $engine = self::$engines[$engineName];
-        } elseif (isset($customEnginePath)) {
-            self::addEngine($engineName, $customEnginePath, $engineName);
             $engine = self::$engines[$engineName];
         } else {
             throw new PDFEngineNotFoundException(
@@ -150,7 +167,7 @@ class PDFWrapper
         }
 
         /** @noinspection PhpIncludeInspection */
-        require_once $filename;
+        require_once __DIR__ . '/../../' . $filename;
 
         if (!is_subclass_of($engine['FQN'], PDFEngine::class)) {
             throw new PDFEngineNotFoundException(

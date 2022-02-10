@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ModuleNameMapper} from '../navigation/module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
@@ -38,6 +38,7 @@ import {MetadataStore} from '../../store/metadata/metadata.store.service';
 import {BaseModuleResolver} from './base-module.resolver';
 import {forkJoin, Observable} from 'rxjs';
 import {MessageService} from '../message/message.service';
+import {RouteConverter} from "../navigation/route-converter/route-converter.service";
 
 @Injectable({providedIn: 'root'})
 export class BaseRecordResolver extends BaseModuleResolver {
@@ -52,7 +53,9 @@ export class BaseRecordResolver extends BaseModuleResolver {
         protected moduleNameMapper: ModuleNameMapper,
         protected actionNameMapper: ActionNameMapper,
         protected appStateStore: AppStateStore,
-        protected messageService: MessageService
+        protected messageService: MessageService,
+        protected routeConverter: RouteConverter,
+        protected router: Router
     ) {
         super(
             systemConfigStore,
@@ -63,7 +66,8 @@ export class BaseRecordResolver extends BaseModuleResolver {
             moduleNameMapper,
             appStateStore,
             metadataStore,
-            messageService
+            messageService,
+            routeConverter,
         );
     }
 

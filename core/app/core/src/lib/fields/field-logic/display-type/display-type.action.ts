@@ -81,7 +81,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
             }
 
             if (data.field.value) {
-                data.field.value = ''
+                data.field.value = '';
             }
         }
 

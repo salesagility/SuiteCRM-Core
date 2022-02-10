@@ -50,11 +50,17 @@ export class BaseActionManager<D extends ActionData> implements ActionManager<D>
     }
 
     getHandler(action: Action, mode: ViewMode): ActionHandler<D> {
-        if (!this.actions || !this.actions[mode] || !this.actions[mode][action.key]) {
+        let handlerKey = action.key;
+
+        if (action && action.asyncProcess) {
+            handlerKey = 'async-process';
+        }
+
+        if (!this.actions || !this.actions[mode] || !this.actions[mode][handlerKey]) {
             return null;
         }
 
-        return this.actions[mode][action.key];
+        return this.actions[mode][handlerKey];
     }
 
     addHandler(action: Action, mode: ViewMode, handler: ActionHandler<D>) {

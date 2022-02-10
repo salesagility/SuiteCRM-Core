@@ -38,7 +38,11 @@
   .suitepicon {
     font-size: 26px;
     position: relative;
-    top: 10px;
+    top: 2px;
+  }
+
+  .suitepicon:before {
+    vertical-align: baseline;
   }
 }
 
@@ -345,4 +349,11 @@ div[aria-describedby*='dialogHelpPopup'] .ui-dialog-titlebar .ui-dialog-titlebar
 
 .inlineHelpTip {
   cursor: pointer;
+}
+
+.view-module-Administration {
+  table.view {
+      border-radius: 10px;
+      overflow: hidden;
+  }
 }

@@ -113,9 +113,16 @@ abstract class BaseCommand extends Command
 
         foreach ($this->inputConfig as $key => $option) {
             $value = $input->getOption($key);
-            if (empty($value)) {
+
+            $default = $option['default'] ?? '';
+            $required = $option['required'] ?? true;
+
+            if (empty($value) && $required === false && isset($option['default'])) {
+                $value = $default;
+            } elseif (empty($value)) {
                 $value = $helper->ask($input, $output, $option['question']);
             }
+
             $arguments[$key] = $value;
         }
 

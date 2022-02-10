@@ -77,3 +77,8 @@ export interface SearchMeta {
     };
 }
 
+export interface MassUpdateMeta {
+    fields?: ColumnDefinition[];
+}
+
+

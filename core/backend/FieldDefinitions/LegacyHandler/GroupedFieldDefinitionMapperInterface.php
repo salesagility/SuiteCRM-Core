@@ -78,7 +78,7 @@ interface GroupedFieldDefinitionMapperInterface
      * @param string $type
      * @return array
      */
-    public function getGroupFields(array &$fieldDefinition, array $groupedType, string $type): array;
+    public function getGroupFields(array $fieldDefinition, array $groupedType, string $type): array;
 
     /**
      * Map keys
@@ -88,4 +88,11 @@ interface GroupedFieldDefinitionMapperInterface
      * @return array
      */
     public function getGroupKeyFields(array $groupedFields, string $type, string $groupedKey): array;
+
+    /**
+     * Replace Dynamic fields
+     * @param array $groupedType
+     * @param array $field
+     */
+    public function replaceDynamicFields(array &$groupedType, array $field): void;
 }

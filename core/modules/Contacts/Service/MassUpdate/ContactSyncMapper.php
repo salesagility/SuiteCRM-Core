@@ -27,12 +27,27 @@
 
 namespace App\Module\Contacts\Service\MassUpdate;
 
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\MassUpdate\MassUpdateFieldDefinitionsInjectorTrait;
 use App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface;
 
 class ContactSyncMapper implements MassUpdateDefinitionMapperInterface
 {
     use MassUpdateFieldDefinitionsInjectorTrait;
+
+    /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
+     * ContactSyncMapper constructor.
+     * @param FieldAliasMapper $fieldAliasMapper
+     */
+    public function __construct(FieldAliasMapper $fieldAliasMapper)
+    {
+        $this->fieldAliasMapper = $fieldAliasMapper;
+    }
 
     /**
      * @inheritDoc
@@ -68,8 +83,8 @@ class ContactSyncMapper implements MassUpdateDefinitionMapperInterface
                     'vname' => 'LBL_SYNC_CONTACT',
                     'type' => 'bool',
                 ]
-            ]
-
+            ],
+            $this->fieldAliasMapper
         );
     }
 

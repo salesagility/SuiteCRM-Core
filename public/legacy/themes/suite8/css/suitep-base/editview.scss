@@ -64,7 +64,7 @@ div#searchResults {
 #scheduler .schedulerDiv {
   background-color: $panel-bg;
   color: $main-font-color;
-  padding: 20px 20px 10px 20px;
+  padding: 20px 20px 20px 20px;
   border: 1px solid $panel-border-bg;
   border-radius: $border-radius-base;
   text-align: left;
@@ -121,7 +121,6 @@ div#searchResults {
   border-left: 4px solid $scheduler-end-color ;
 }
 
-
 #scheduler .schedulerDiv table tr.schedulerAttendeeRow td.schedulerSlotCellEndTime.free {
   border-left: 4px solid $scheduler-end-color ;
 }
@@ -173,30 +172,21 @@ div#searchResults {
   border-collapse: collapse;
 }
 
-#create_invitee_as_lead {
-  font-size: $page-font-size;
-  background-color: $danger-btn-bg;
-  color: $default-btn-color;
-  padding: 0 10px;
-  margin: 4px;
-  border: 1px solid transparent;
-  border-radius: $border-radius-base;
-  line-height: $button-line-height;
-  height: $button-line-height;
-  text-transform: uppercase;
-}
-
-#create_invitee_as_contact {
-  font-size: $page-font-size;
-  background-color: $danger-btn-bg;
-  color: $default-btn-color;
-  padding: 0 10px;
-  margin: 4px;
-  border: 1px solid transparent;
-  border-radius: $border-radius-base;
-  line-height: $button-line-height;
-  height: $button-line-height;
-  text-transform: uppercase;
+#create_invitee_as_lead, #create_invitee_as_contact {
+  margin: 0.2em;
+  font-weight: bold;
+  height: 2.2em;
+  line-height: 1.1em;
+  background-color: rgb(147, 164, 179);
+  text-transform: capitalize;
+  border-radius: 0.2em;
+  padding: 0.3em 1em;
+  letter-spacing: 0.05em;
+  border: none;
+  color: $white;
+  &:hover {
+      background: $btn-hover-bg-color;
+  }
 }
 
 #create-invitee-edit td {
@@ -205,16 +195,20 @@ div#searchResults {
 }
 
 #create-invitee-edit button {
-  font-size: $page-font-size;
-  background-color: $danger-btn-bg;
-  color: $default-btn-color;
-  padding: 0 10px;
-  margin: 4px;
-  border: 1px solid transparent;
-  border-radius: $border-radius-base;
-  line-height: $button-line-height;
-  height: $button-line-height;
-  text-transform: uppercase;
+  margin: 0.2em;
+  font-weight: bold;
+  height: 2.2em;
+  line-height: 1.1em;
+  background-color: rgb(147, 164, 179);
+  text-transform: capitalize;
+  border-radius: 0.2em;
+  padding: 0.3em 1em;
+  letter-spacing: 0.05em;
+  border: none;
+  color: $white;
+  &:hover {
+      background: $btn-hover-bg-color;
+  }
 }
 
 /** add invitees search **/
@@ -234,8 +228,8 @@ div#searchResults {
 #list_div_win {
   background-color: $panel-bg;
   color: $main-font-color;
-  padding: 20px 20px 10px 20px;
-  margin-top: 5px;
+  padding: 20px;
+  margin-top: 0;
   border: 1px solid $panel-border-bg;
   border-radius: $border-radius-base;
   text-align: left;
@@ -510,13 +504,6 @@ textarea {
 }
 
 .view{
-  padding: 20px 16px 22px 30px;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  width: 100%;
-}
-
-table.view {
   padding: 20px 16px 22px 30px;
   margin-top: 3px;
   margin-bottom: 3px;
@@ -1611,7 +1598,7 @@ div.confirmTable {
   position: relative;
   margin-bottom: 20px;
   overflow: auto;
-  width: 1056px;
+  width: 100%;
 }
 
 #html_div p {
@@ -1707,6 +1694,7 @@ div.confirmTable {
   float: left;
   letter-spacing: 0.1em;
   text-transform: capitalize;
+  word-break: break-all;
   .module-title-text-breadcrumbs {
     display: none;
   }
@@ -2059,7 +2047,6 @@ ul.clickMenu.SugarActionMenu li.sugar_action_button ul.subnav.ddopen li form a {
 }
 
 ul.clickMenu li ul.subnav li a:hover {
-  background-color: $list-view-action-menu-link-bg;
   text-align: left;
   width: 100%;
 }
@@ -2290,6 +2277,7 @@ table.view {
   background: $main-alternate-bg;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .evenListRowS1 {
@@ -4561,12 +4549,6 @@ object {
   width: 100%;
 }
 
-#detailpanel_fields,
-#detailpanel_conditions,
-#detailpanel_charts {
-  border-top: 1px solid lightgray;
-}
-
 #detailpanel_fields_select {
   margin-right: 20px;
   float: left;
@@ -4611,6 +4593,7 @@ object {
   display: block;
   padding: 0 4px;
   float: left;
+  margin-bottom: 0;
 }
 
 #report-editview-footer .tab-toggler.active .button {
@@ -5204,9 +5187,54 @@ object {
 @media (min-width: 980px) {
   #dialog1_c {
     z-index: 5;
-    margin-top: 100px;
-    margin-left: 40%;
+    position: absolute;
+    top: 30%!important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    padding: 0;
+    .container-close {
+      color: $white;
+    }
+    .yui-module {
+      border-radius: 4px;
+    }
+    .yui-panel .bd {
+      padding: 8px;
+    }
+    input[type=textbox] {
+      background-color:$transparent-color;
+      border: 1px solid $form-border-color;
+      line-height: 26px;
+      border-radius: 0.3em;
+    }
+    select {
+      background: url($select-edit-background-url) no-repeat right;
+      background-size: 25px 11px;
+      border-color: $bright-grey;
   }
+  button {
+    margin: 0.2em;
+    font-weight: bold;
+    height: 2.2em;
+    line-height: 1.1em;
+    background-color: rgb(147, 164, 179);
+    text-transform: capitalize;
+    border-radius: 0.2em;
+    padding: 0.3em 1em;
+    letter-spacing: 0.05em;
+    border: none;
+    color: $white;
+    &:hover {
+        background: $btn-hover-bg-color;
+    }
+  }
+  #date_start_trigger {
+    line-height: 2;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+    cursor: pointer;
+  }
+}
 
   #dlg {
     left: 40%;
@@ -5215,7 +5243,6 @@ object {
   #dlg_c {
     left: 50%;
   }
-
 }
 
 @media (max-width: 1023px) {
@@ -5226,7 +5253,6 @@ object {
 }
 
 @media (min-width: 1024px) {
-
   form[name="wizform"] div.wizard-unique-elem {
     width: 1000px;
   }
@@ -5236,7 +5262,6 @@ object {
   #cal-edit {
     margin: 0 0 0 200px;
   }
-
 }
 
 @media (max-width: 1360px) {

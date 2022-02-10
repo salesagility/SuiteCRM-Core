@@ -128,6 +128,15 @@ class ImportViewStep3 extends ImportView
             return;
         }
 
+
+        if (isset($uploadFileName) && !hasValidFileName('import_upload_file_name', str_replace('upload://', '', $uploadFileName))) {
+            echo $app_strings['LBL_LOGGER_INVALID_FILENAME'];
+            echo $uploadFileName;
+            LoggerManager::getLogger()->fatal('Invalid import file name');
+            return;
+        }
+
+
         if (strpos($uploadFileName, 'phar://') !== false) {
             return;
         }
@@ -527,7 +536,7 @@ class ImportViewStep3 extends ImportView
                     background: transparent url('index.php?entryPoint=getImage&themeName=Sugar&themeName=Sugar&imageName=sugar-yui-sprites.png') no-repeat 0 -90px;
                     padding-left: 10px;
                     cursor: pointer;
-		    display: inline; 
+		    display: inline;
                 }
 
                 span.expand{
@@ -544,8 +553,7 @@ class ImportViewStep3 extends ImportView
 
                 #importNotes ul{
                 	margin: 0px;
-                	margin-top: 10px;
-                	padding-left: 20px;
+                	margin-bottom: 10px;
                 }
 
             </style>

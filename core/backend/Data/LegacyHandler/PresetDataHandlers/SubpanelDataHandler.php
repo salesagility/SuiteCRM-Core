@@ -73,7 +73,14 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         RecordMapper $recordMapper,
         SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->recordMapper = $recordMapper;
     }
@@ -104,7 +111,6 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         int $limit = -1,
         array $sort = []
     ): ListData {
-
         $subpanel = $criteria['preset']['params']['subpanel'] ?? '';
         $parentModule = $criteria['preset']['params']['parentModule'] ?? '';
         $parentId = $criteria['preset']['params']['parentId'] ?? '';
@@ -132,7 +138,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         $listData = new ListData();
         $listData->setOffsets($data['offsets'] ?? []);
         $listData->setOrdering($data['ordering'] ?? []);
-        $listData->setRecords($this->recordMapper->mapRecords($data['data'] ?? []));
+        $listData->setRecords($this->recordMapper->mapRecords($data['data'] ?? [], $data['pageData'] ?? []));
 
         return $listData;
     }

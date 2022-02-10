@@ -1,5 +1,9 @@
 parameters:
   legacy.module_routing:
+    home:
+      index: false
+      list: false
+      record: false
     saved-search:
       index: true
       list: true
@@ -80,10 +84,6 @@ parameters:
       index: true
       list: true
       record: false
-    spots:
-      index: true
-      list: true
-      record: false
     roles:
       index: true
       list: true
@@ -135,7 +135,7 @@ parameters:
     knowledge-base:
       index: true
       list: true
-      record: true
+      record: false
     events:
       index: true
       list: true
@@ -229,6 +229,14 @@ parameters:
       list: false
       record: false
     outbound-email-accounts:
+      index: false
+      list: false
+      record: false
+    emails:
+      index: false
+      list: false
+      record: false
+    calendar:
       index: false
       list: false
       record: false

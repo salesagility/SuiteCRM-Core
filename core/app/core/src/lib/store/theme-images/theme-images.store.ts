@@ -31,7 +31,8 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '../app-state/app-state.store';
 import {StateStore} from '../state';
-import {deepClone} from 'common';
+import {deepClone, emptyObject} from 'common';
+import {SvgIconRegistryService} from 'angular-svg-icon';
 
 export interface ThemeImage {
     path: string;
@@ -80,7 +81,11 @@ export class ThemeImagesStore implements StateStore {
         ]
     };
 
-    constructor(protected recordGQL: EntityGQL, protected appStateStore: AppStateStore) {
+    constructor(
+        protected recordGQL: EntityGQL,
+        protected appStateStore: AppStateStore,
+        protected iconRegistry: SvgIconRegistryService
+    ) {
         this.images$ = this.state$.pipe(map(state => state.images), distinctUntilChanged());
     }
 
@@ -189,6 +194,20 @@ export class ThemeImagesStore implements StateStore {
 
                     if (data && data.themeImages) {
                         images = data.themeImages.items;
+                    }
+
+                    if (!emptyObject(images)) {
+                        Object.keys(images).forEach(key => {
+                            const image = images[key];
+                            const content = image['content'] ?? '';
+                            const name = image['name'] ?? '';
+
+                            if (content === '' || name === '') {
+                                return;
+                            }
+
+                            this.iconRegistry.addSvg(name, content);
+                        });
                     }
 
                     return images;

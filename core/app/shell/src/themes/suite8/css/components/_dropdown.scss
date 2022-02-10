@@ -237,6 +237,9 @@ ul.main li a,
 .primary-global-link {
   height: 3.1em;
   line-height: 3.1em;
+  &:hover {
+    background: $dusky-blue;
+  }
 }
 
 .global-link-item .nav-link {
@@ -359,7 +362,8 @@ ul.main li a,
   min-width: 10em;
   border: 0;
   margin: 0;
-
+  padding-bottom: 0.1em;
+  padding-top: 0;
   .dropdown-item {
     padding: .25em .8em;
   }
@@ -450,7 +454,6 @@ ul.main li a,
 
 .mobile-nav-dropdown li, .mobile-nav-dropdown li:hover {
   color: $off-white;
-  padding: 0.5em 1.5em;
   margin: 0;
   border-top: 0.05em solid $off-white;
 }
@@ -466,4 +469,16 @@ ul.main li a,
 .mobile-nav-dropdown .dropdown-item:hover {
   background-color: $vacant-orange;
   cursor: pointer;
+}
+
+.global-links {
+  .global-link-item {
+    .global-user-name {
+      overflow: hidden;
+      max-width: 200px;
+      text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
 }

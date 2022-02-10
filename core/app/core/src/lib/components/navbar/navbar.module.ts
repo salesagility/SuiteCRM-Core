@@ -49,6 +49,13 @@ import {BaseHomeMenuItemComponent} from './home-menu-item/base-home-menu-item.co
 import {BaseMenuRecentlyViewedComponent} from './menu-recently-viewed/base-menu-recently-viewed.component';
 import {BaseMenuItemsListComponent} from './menu-items-list/base-menu-items-list.component';
 import {LogoutUiComponent} from '../logout/logout.component';
+import {LabelModule} from '../label/label.module';
+import {MobileMenuComponent} from './mobile-menu/mobile-menu.component';
+import {BaseMobileMenuComponent} from './mobile-menu/base-mobile-menu.component';
+import {MobileGroupedMenuComponent} from './mobile-grouped-menu/mobile-grouped-menu.component';
+import {BaseMobileGroupedMenuComponent} from './mobile-grouped-menu/base-mobile-grouped-menu.component';
+import {MobileModuleMenuComponent} from './mobile-module-menu/mobile-module-menu.component';
+import {BaseMobileModuleMenuComponent} from './mobile-module-menu/base-mobile-module-menu.component';
 
 
 @NgModule({
@@ -66,7 +73,13 @@ import {LogoutUiComponent} from '../logout/logout.component';
         BaseGroupedMenuItemComponent,
         MenuItemsListComponent,
         BaseMenuItemsListComponent,
-        BaseNavbarComponent
+        BaseNavbarComponent,
+        MobileMenuComponent,
+        BaseMobileMenuComponent,
+        MobileGroupedMenuComponent,
+        BaseMobileGroupedMenuComponent,
+        MobileModuleMenuComponent,
+        BaseMobileModuleMenuComponent
     ],
     exports: [
         NavbarUiComponent,
@@ -83,7 +96,13 @@ import {LogoutUiComponent} from '../logout/logout.component';
         MenuItemsListComponent,
         BaseMenuItemsListComponent,
         BaseNavbarComponent,
-        LogoutUiComponent
+        LogoutUiComponent,
+        MobileMenuComponent,
+        BaseMobileMenuComponent,
+        MobileGroupedMenuComponent,
+        BaseMobileGroupedMenuComponent,
+        MobileModuleMenuComponent,
+        BaseMobileModuleMenuComponent
     ],
     imports: [
         CommonModule,
@@ -93,7 +112,8 @@ import {LogoutUiComponent} from '../logout/logout.component';
         NgbModule,
         RouterModule,
         ImageModule,
-        DynamicModule
+        DynamicModule,
+        LabelModule
     ]
 })
 export class NavbarUiModule {

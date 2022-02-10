@@ -3,6 +3,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$suitecrm_version = '8.0.0-rc';
-$suitecrm_legacy = '7.11.22';
-$suitecrm_timestamp = '2021-09-24 17:00:00';
+$suitecrm_version = '8.0.3';
+$suitecrm_legacy = '7.12.3';
+$suitecrm_timestamp = '2022-01-28 12:00:00';

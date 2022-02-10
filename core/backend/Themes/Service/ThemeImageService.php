@@ -114,7 +114,8 @@ class ThemeImageService
     {
 
         $path = $this->buildPath($imagePath, $theme);
-        $fullPath = $this->projectDir . '/public/' . $path;
+        $basePath = $this->projectDir . '/public/';
+        $fullPath = $basePath . $path;
 
         $it = $this->themeImageFinder->find($fullPath);
 
@@ -134,10 +135,16 @@ class ThemeImageService
                 continue;
             }
 
+            $content = '';
+            if ($extension === 'svg' && file_exists($file->getRealPath())) {
+                $content = file_get_contents($file->getRealPath());
+            }
+
             $images[$name] = [
                 'path' => $filePath,
                 'name' => $name,
-                'type' => $extension
+                'type' => $extension,
+                'content' => $content
             ];
         }
 

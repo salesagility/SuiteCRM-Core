@@ -33,7 +33,8 @@ interface BaseActionDefinitionProviderInterface
     /**
      * Get list of base actions for module
      * @param string $module
+     * @param array|null $context
      * @return array
      */
-    public function getActions(string $module): array;
+    public function getActions(string $module, ?array $context = []): array;
 }

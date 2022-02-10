@@ -4,3 +4,6 @@ parameters:
       - edit
     administration:
       - repair
+      - UpgradeWizard
+      - ConfigureTabs
+

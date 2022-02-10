@@ -81,6 +81,10 @@ export class ChartDataStore extends SeriesStatisticsStore {
         this.defaultOptions = chartOptions;
     }
 
+    public getDataSource(): ChartDataSource {
+        return this.internalState.dataSource;
+    }
+
     protected addNewState(statistic: Statistic): void {
 
         if (!statistic.metadata || !statistic.metadata.dataType) {

@@ -37,16 +37,16 @@ trait DefinitionEntryHandlingTrait
      * @param string $entryName
      * @param array $config
      * @param ActionAvailabilityChecker $actionAvailabilityChecker
+     * @param array|null $context
      * @return array
      */
     public function filterDefinitionEntries(
         string $module,
         string $entryName,
         array &$config,
-        ActionAvailabilityChecker $actionAvailabilityChecker
-    ): array
-    {
-
+        ActionAvailabilityChecker $actionAvailabilityChecker,
+        ?array $context = []
+    ): array {
         $defaults = $config['default'] ?? [];
         $defaultEntries = $defaults[$entryName] ?? [];
         $modulesConfig = $config['modules'] ?? [];
@@ -57,14 +57,13 @@ trait DefinitionEntryHandlingTrait
         $entries = array_merge($defaultEntries, $moduleEntries);
         $filteredEntries = [];
         foreach ($entries as $entryKey => $entry) {
-
             if (in_array($entryKey, $exclude, true)) {
                 continue;
             }
 
             $aclModule = $entry['aclModule'] ?? $module;
 
-            if ($this->checkAvailability($aclModule, $entry, $actionAvailabilityChecker) === false) {
+            if ($this->checkAvailability($aclModule, $entry, $actionAvailabilityChecker, $context) === false) {
                 continue;
             }
 
@@ -79,10 +78,15 @@ trait DefinitionEntryHandlingTrait
      * @param string $module - module to be queried
      * @param array $entry
      * @param ActionAvailabilityChecker $actionAvailabilityChecker
+     * @param array|null $context
      * @return bool
      */
-    public function checkAvailability(string $module, array $entry, ActionAvailabilityChecker $actionAvailabilityChecker): bool
-    {
+    public function checkAvailability(
+        string $module,
+        array $entry,
+        ActionAvailabilityChecker $actionAvailabilityChecker,
+        ?array $context = []
+    ): bool {
         $availabilityCheckerKeys = $entry['availability'] ?? ['acls'];
 
         if (empty($availabilityCheckerKeys)) {
@@ -90,12 +94,12 @@ trait DefinitionEntryHandlingTrait
         }
 
         foreach ($availabilityCheckerKeys as $availabilityCheckerKey) {
-            if ($actionAvailabilityChecker->checkAvailability($module, $entry, $availabilityCheckerKey) === false) {
+            if ($actionAvailabilityChecker->checkAvailability($module, $entry, $availabilityCheckerKey,
+                    $context) === false) {
                 return false;
             }
         }
 
         return true;
     }
-
 }

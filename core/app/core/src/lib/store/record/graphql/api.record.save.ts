@@ -74,6 +74,7 @@ export class RecordSaveGQL {
                             id
                             _id
                             module
+                            acls
                         }
                     }
                 }
@@ -94,9 +95,10 @@ export class RecordSaveGQL {
         return {
             // eslint-disable-next-line no-underscore-dangle
             id: response.data.saveRecord.record._id,
-            type: response.data.saveRecord.record.type || '',
-            module: response.data.saveRecord.record.module || '',
-            attributes: response.data.saveRecord.record.attributes || '',
+            type: response?.data?.saveRecord?.record?.type ?? '',
+            module: response?.data?.saveRecord?.record?.module ?? '',
+            attributes: response?.data?.saveRecord?.record?.attributes ?? [],
+            acls: response?.data?.saveRecord?.record?.acls ?? [],
         } as Record;
     }
 }

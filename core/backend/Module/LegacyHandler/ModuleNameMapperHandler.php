@@ -150,4 +150,20 @@ class ModuleNameMapperHandler extends LegacyHandler implements ModuleNameMapperI
 
         return $result;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVisibleModules(): array
+    {
+        $this->init();
+
+        $mapper = $this->getMapper();
+
+        $result = $mapper->getVisibleModules();
+
+        $this->close();
+
+        return $result;
+    }
 }

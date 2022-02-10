@@ -34,6 +34,7 @@ use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Filters\Service\FilterDefinitionProviderInterface;
 use App\Process\Service\BulkActionDefinitionProviderInterface;
 use App\Process\Service\LineActionDefinitionProviderInterface;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use Exception;
 use ListViewFacade;
@@ -79,14 +80,21 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @var LineActionDefinitionProviderInterface
      */
     private $lineActionDefinitionProvider;
+
     /**
      * @var FilterDefinitionProviderInterface
      */
     private $filterDefinitionProvider;
+
     /**
      * @var array
      */
     private $listViewSidebarWidgets;
+
+    /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
 
     /**
      * RecordViewDefinitionHandler constructor.
@@ -100,23 +108,26 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param SessionInterface $session
      * @param array $listViewSidebarWidgets
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        LoggerInterface $logger,
+        string                                $projectDir,
+        string                                $legacyDir,
+        string                                $legacySessionName,
+        string                                $defaultSessionName,
+        LegacyScopeState                      $legacyScopeState,
+        LoggerInterface                       $logger,
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
-        WidgetDefinitionProviderInterface $widgetDefinitionProvider,
+        WidgetDefinitionProviderInterface     $widgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
-        FilterDefinitionProviderInterface $filterDefinitionProvider,
-        SessionInterface $session,
-        array $listViewSidebarWidgets
-    ) {
+        FilterDefinitionProviderInterface     $filterDefinitionProvider,
+        FieldAliasMapper                      $fieldAliasMapper,
+        SessionInterface                      $session,
+        array                                 $listViewSidebarWidgets
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -131,6 +142,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
         $this->listViewSidebarWidgets = $listViewSidebarWidgets;
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -150,10 +162,11 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @throws Exception
      */
     public function get(
-        string $module,
-        string $legacyModuleName,
+        string          $module,
+        string          $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
         $this->init();
 
         $metadata = $this->fetch($module, $legacyModuleName, $fieldDefinition);
@@ -172,10 +185,11 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @throws Exception
      */
     public function fetch(
-        string $module,
-        string $legacyModuleName,
+        string          $module,
+        string          $legacyModuleName,
         FieldDefinition $fieldDefinition
-    ): array {
+    ): array
+    {
         $metadata = [
             'columns' => [],
             'bulkActions' => [],
@@ -259,7 +273,11 @@ class ListViewDefinitionHandler extends LegacyHandler
             return $field;
         }
 
-        $field['fieldDefinition'] = $vardefs[$key];
+        $alias = $this->fieldAliasMapper->map($vardefs[$key]);
+        $aliasDefs = $vardefs[$alias] ?? $vardefs[$key];
+
+        $field['fieldDefinition'] = $aliasDefs;
+        $field['name'] = $aliasDefs['name'] ?? $field['name'];
 
         $field = $this->applyDefaults($field);
 

@@ -29,6 +29,7 @@
 namespace App\ViewDefinitions\Service\MassUpdate;
 
 use App\ViewDefinitions\LegacyHandler\FieldDefinitionsInjectorTrait;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 
 trait MassUpdateFieldDefinitionsInjectorTrait
 {
@@ -44,16 +45,23 @@ trait MassUpdateFieldDefinitionsInjectorTrait
      * @param $field
      * @param $key
      * @param array|null $vardefs
+     * @param FieldAliasMapper $fieldAliasMapper
      * @return array
      */
-    protected function buildField($field, $key, ?array $vardefs): array
+    protected function buildField($field, $key, ?array $vardefs, FieldAliasMapper $fieldAliasMapper): array
     {
         if (!empty($field)) {
             $field['label'] = $field['vname'] ?? '';
             $field['name'] = $field['name'] ?? $key;
         }
 
-        $definition = $this->addFieldDefinition($vardefs, $key, $field, $this->defaultDefinition);
+        $definition = $this->addFieldDefinition(
+            $vardefs,
+            $key,
+            $field,
+            $this->defaultDefinition,
+            $fieldAliasMapper
+        );
 
         $type = $definition['type'] ?? '';
         $this->addExtraEnumOptions($type, $definition);

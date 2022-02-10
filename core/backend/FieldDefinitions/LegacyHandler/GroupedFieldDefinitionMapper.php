@@ -67,7 +67,6 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
      */
     public function map(FieldDefinition $definition): void
     {
-
         $vardefs = $definition->getVardef();
 
         if (empty($vardefs)) {
@@ -76,33 +75,51 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
 
         $typesConfig = $this->getGroupTypesConfig();
 
+        $defs = [];
         foreach ($vardefs as $fieldName => $fieldDefinition) {
-            $type = $fieldDefinition['type'] ?? '';
+            $mappedDefinition = $fieldDefinition;
+            $type = $mappedDefinition['type'] ?? '';
             $groupedType = $typesConfig[$type] ?? [];
 
-            if (isset($fieldDefinition['legacyGroup']) && $fieldDefinition['legacyGroup'] === true) {
+            $this->replaceDynamicFields($groupedType, $mappedDefinition);
+
+            if (isset($mappedDefinition['legacyGroup']) && $mappedDefinition['legacyGroup'] === true) {
+                $defs[$fieldName] = $mappedDefinition;
                 continue;
             }
 
-            $groupedFields = $this->getGroupFields($fieldDefinition, $groupedType, $type);
+            $groupedFields = $this->getGroupFields($mappedDefinition, $groupedType, $type);
 
             if (empty($groupedFields)) {
+                $defs[$fieldName] = $mappedDefinition;
                 continue;
             }
 
-            $this->setLayout($groupedType, $fieldDefinition, $groupedFields, $type, $vardefs);
-            $this->setDisplay($groupedType, $fieldDefinition);
-            $this->setShowLabel($groupedType, $fieldDefinition);
+            $this->setLayout($groupedType, $mappedDefinition, $groupedFields, $type, $vardefs);
+            $this->setDisplay($groupedType, $mappedDefinition);
+            $this->setShowLabel($groupedType, $mappedDefinition);
 
-            $fieldDefinition['groupFields'] = $this->getGroupedFieldDefinitions($groupedFields, $vardefs, $groupedType);
+            $mappedDefinition['groupFields'] = $this->getGroupedFieldDefinitions(
+                $groupedFields,
+                $vardefs,
+                $groupedType
+            );
 
+            $mappedDefinition['type'] = 'grouped-field';
 
-            $fieldDefinition['type'] = 'grouped-field';
+            if (!empty($groupedType['name'])) {
+                $mappedDefinition['name'] = $groupedType['name'];
+                $defs[$groupedType['name']] = $mappedDefinition;
 
-            $vardefs[$fieldName] = $fieldDefinition;
+                $defs[$fieldName] = $fieldDefinition;
+
+                continue;
+            }
+
+            $defs[$fieldName] = $mappedDefinition;
         }
 
-        $definition->setVardef($vardefs);
+        $definition->setVardef($defs);
     }
 
     /**
@@ -189,7 +206,7 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
     /**
      * @inheritDoc
      */
-    public function getGroupFields(array &$fieldDefinition, array $groupedType, string $type): array
+    public function getGroupFields(array $fieldDefinition, array $groupedType, string $type): array
     {
         $groupedKey = $fieldDefinition['groupKey'] ?? '';
         $groupedFields = [];
@@ -240,9 +257,9 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
                 continue;
             }
 
-            $definition = $this->injectOverrides($groupedType, $groupedField, $definition);
+            $mappedDef = $this->injectOverrides($groupedType, $groupedField, $definition);
 
-            $definitions[$groupedField] = $definition;
+            $definitions[$groupedField] = $mappedDef;
         }
 
         return $definitions;
@@ -264,5 +281,227 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
         }
 
         return array_merge($definition, $definitionOverrides);
+    }
+
+    /**
+     * @param array $groupedType
+     * @param array $field
+     */
+    public function replaceDynamicFields(
+        array &$groupedType,
+        array $field
+    ): void {
+        if (empty($groupedType) || empty($groupedType['replaceAttributes']) || empty($field)) {
+            return;
+        }
+
+        if (!empty($groupedType['name'])) {
+            $groupedType['name'] = $this->replaceInString(
+                $field,
+                $groupedType,
+                $groupedType['name']
+            );
+        }
+
+        if (!empty($groupedType['groupFields'])) {
+            $this->replaceInArray(
+                $field,
+                $groupedType,
+                $groupedType['groupFields']
+            );
+        }
+
+
+        if (!empty($groupedType['layout'])) {
+            $this->replaceInArray(
+                $field,
+                $groupedType,
+                $groupedType['layout']
+            );
+        }
+
+
+        if (!empty($groupedType['showLabel'])) {
+            $groupedType['showLabel'] = $this->replaceMap(
+                $field,
+                $groupedType,
+                $groupedType['showLabel']
+            );
+        }
+
+        if (!empty($groupedType['definition'])) {
+            $groupedType['definition'] = $this->replaceDefinitions(
+                $field,
+                $groupedType,
+                $groupedType['definition']
+            );
+        }
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $groupedType
+     * @param array|null $values
+     */
+    protected function replaceInArray(
+        array $baseFieldDefinition,
+        array $groupedType,
+        ?array &$values
+    ): void {
+        if (empty($values) || empty($groupedType['replaceAttributes'])) {
+            return;
+        }
+
+        [$search, $replace] = $this->getReplacements($baseFieldDefinition, $groupedType['replaceAttributes']);
+
+        foreach ($values as $key => $item) {
+            $values[$key] = str_replace(
+                $search,
+                $replace,
+                $item
+            );
+        }
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $groupedType
+     * @param string $value
+     * @return string
+     */
+    protected function replaceInString(
+        array $baseFieldDefinition,
+        array $groupedType,
+        ?string $value
+    ): string {
+        if (empty($value) || empty($groupedType['replaceAttributes'])) {
+            return $value;
+        }
+
+        [$search, $replace] = $this->getReplacements($baseFieldDefinition, $groupedType['replaceAttributes']);
+
+        return str_replace(
+            $search,
+            $replace,
+            $value
+        );
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $groupedType
+     * @param array|null $map
+     * @return array
+     */
+    protected function replaceMap(
+        array $baseFieldDefinition,
+        array &$groupedType,
+        ?array &$map
+    ): array {
+        if (empty($map) || empty($groupedType['replaceAttributes'])) {
+            return [];
+        }
+
+        [$search, $replace] = $this->getReplacements($baseFieldDefinition, $groupedType['replaceAttributes']);
+
+        $defs = [];
+        foreach ($map as $key => $entry) {
+            $this->replaceInArray(
+                $baseFieldDefinition,
+                $groupedType,
+                $map[$key]
+            );
+
+            $key = str_replace(
+                $search,
+                $replace,
+                $key
+            );
+
+            $defs[$key] = $map[$key];
+        }
+
+        return $defs;
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $groupedType
+     * @param array|null $definitions
+     * @return array
+     */
+    protected function replaceDefinitions(
+        array $baseFieldDefinition,
+        array &$groupedType,
+        ?array &$definitions
+    ): array {
+        if (empty($definitions) || empty($groupedType['replaceAttributes'])) {
+            return [];
+        }
+
+        [$search, $replace] = $this->getReplacements($baseFieldDefinition, $groupedType['replaceAttributes']);
+
+        $defs = [];
+        foreach ($definitions as $definitionKey => $definition) {
+            if (!empty($definitions[$definitionKey]['logic'])) {
+                $this->replaceLogic($baseFieldDefinition, $groupedType, $definitions[$definitionKey]['logic']);
+            }
+
+
+            $key = str_replace(
+                $search,
+                $replace,
+                $definitionKey
+            );
+
+            $defs[$key] = $definitions[$definitionKey];
+        }
+
+        return $defs;
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $groupedType
+     * @param array|null $logic
+     */
+    protected function replaceLogic(
+        array $baseFieldDefinition,
+        array $groupedType,
+        ?array &$logic
+    ): void {
+        if (empty($logic)) {
+            return;
+        }
+
+        foreach ($logic as $logicKey => $logicEntry) {
+            $this->replaceInArray(
+                $baseFieldDefinition,
+                $groupedType,
+                $logic[$logicKey]['params']['fieldDependencies']
+            );
+        }
+    }
+
+    /**
+     * @param array $baseFieldDefinition
+     * @param array $replaceAttributes
+     * @return array
+     */
+    protected function getReplacements(array $baseFieldDefinition, array $replaceAttributes): array
+    {
+        $search = [];
+        $replace = [];
+
+        foreach ($replaceAttributes as $attribute) {
+            if (!isset($baseFieldDefinition[$attribute])) {
+                continue;
+            }
+
+            $search[] = '{' . $attribute . '}';
+            $replace[] = $baseFieldDefinition[$attribute];
+        }
+
+        return [$search, $replace];
     }
 }

@@ -26,7 +26,7 @@
 
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
-import {ButtonInterface, Record} from 'common';
+import {ButtonInterface, Field, Record, deepClone} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -35,8 +35,10 @@ import {BaseRelateComponent} from '../../../base/base-relate.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
-import {TagModel} from "ngx-chips/core/accessor";
+import {TagModel} from 'ngx-chips/core/accessor';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
+import {EMPTY, Observable, of} from 'rxjs';
 
 @Component({
     selector: 'scrm-relate-filter',
@@ -47,7 +49,8 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 export class RelateFilterFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
     selectButton: ButtonInterface;
-    selectedTags: string[];
+    selectedTags: string[] | TagModel[];
+    idField: Field;
 
     /**
      * Constructor
@@ -82,14 +85,39 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
      * On init handler
      */
     ngOnInit(): void {
+        const filter = this.record as SavedFilter;
+
         this.field.valueList = [];
+
+        this.field.valueObjectArray = [];
+
         const values = (this.field && this.field.criteria && this.field.criteria.values) || [];
 
         if (values.length > 0) {
             this.field.valueList = values;
             this.selectedTags = values;
         }
+
+        const valueObjectArray = (this.field && this.field.criteria && this.field.criteria.valueObjectArray) || [];
+
+        if (valueObjectArray.length > 0) {
+            this.field.valueObjectArray = deepClone(valueObjectArray);
+            this.selectedTags = deepClone(valueObjectArray);
+        }
+
         super.ngOnInit();
+
+        const idFieldName = this.getRelateIdField();
+
+        if (idFieldName && filter && filter.criteriaFields && filter.criteriaFields[idFieldName]) {
+            this.idField = filter.criteriaFields[idFieldName];
+            this.idField.valueList = [];
+            const idValues = (this.idField && this.idField.criteria && this.idField.criteria.values) || [];
+
+            if (idValues.length > 0) {
+                this.idField.valueList = deepClone(idValues);
+            }
+        }
     }
 
     /**
@@ -100,10 +128,29 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
     onAdd(item): void {
 
         if (item) {
-            const relateName = this.getRelateFieldName();
-            this.setValue(item.id, item[relateName]);
+
+            this.setValue(item);
             return;
         }
+    }
+
+    onAdding(item): Observable<TagModel> {
+
+        if (!item) {
+            return EMPTY;
+        }
+
+        if(this.idField && this.idField.valueList.includes(item.id)){
+            return EMPTY;
+        }
+
+        const relateName = this.getRelateFieldName();
+
+        if(!this.idField && this.field.valueList.includes(item[relateName])){
+            return EMPTY;
+        }
+
+        return of(item);
     }
 
     /**
@@ -111,43 +158,84 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
      */
     onRemove(item): void {
 
-        let itemValue: string = '';
-        //if: handle the case, when the chips are rendered from the saved criteria as a String Array
-        //elseif: handle the case, when the chips are rendered from the search observable as a relate Objects
-        if (typeof item === 'string' && item !== '') {
-            itemValue = item;
-        } else if (typeof item === 'object' && item !== null) {
-            itemValue = item.name;
-        }
+        const id = item.id ?? '';
+        const value = item.name ?? '';
+        this.field.valueList = this.field.valueList.filter(element => element !== value);
 
-        this.field.valueList = this.field.valueList.filter(element => element !== itemValue);
-        this.updateSearchCriteria();
+        this.field.valueObjectArray = this.field.valueObjectArray.filter(element => element.id !== id);
+
+        this.updateSearchCriteria(this.field);
+
+        this.field.criteria.valueObjectArray = deepClone(this.field.valueObjectArray);
+
+        if(this.idField && id){
+            this.idField.valueList = this.idField.valueList.filter(element => element !== id);
+            this.updateSearchCriteria(this.idField);
+        }
 
         setTimeout(() => {
             this.tag.focus(true, true);
         }, 200);
     }
 
+    selectFirstElement(): void {
+        const filteredElements: TagModel = this.tag.dropdown.items;
+        if (filteredElements.length !== 0) {
+            const firstElement = filteredElements[0];
+            this.tag.appendTag(firstElement);
+            this.onAdd(firstElement);
+            this.tag.dropdown.hide();
+        }
+    }
+
     /**
      * Set value on field
      *
-     * @param {string} id to set
-     * @param {string} relateValue to set
+     * @param item: any
      */
-    protected setValue(id: string, relateValue: string): void {
+    protected setValue(item: any): void {
+
+        const relateName = this.getRelateFieldName();
+        const id = item.id;
+        const relateValue = item[relateName];
+
+        if(this.idField && this.idField.valueList.includes(id)){
+            return;
+        }
+
+        if(!this.idField && this.field.valueList.includes(relateValue)){
+            return;
+        }
+
+        const valueObject = {} as any;
+        valueObject.id = id;
+        valueObject[relateName] = relateValue;
+
+        this.field.valueObjectArray.push(valueObject);
         this.field.valueList.push(relateValue);
 
-        this.updateSearchCriteria();
+        if (this.idField){
+            this.idField.valueList.push(id);
+            this.updateSearchCriteria(this.idField);
+        }
+
+        this.updateSearchCriteria(this.field);
+
+        if(!this.field.criteria.valueObjectArray){
+            this.field.criteria.valueObjectArray = [];
+        }
+
+        this.field.criteria.valueObjectArray.push(valueObject);
     }
 
     /**
      * Set value on field criteria and form
      */
-    protected updateSearchCriteria(): void {
-        this.field.criteria.operator = '=';
-        this.field.criteria.values = this.field.valueList;
-        this.field.formControl.setValue(this.field.valueList);
-        this.field.formControl.markAsDirty();
+    protected updateSearchCriteria(field: Field): void {
+        field.criteria.operator = '=';
+        field.criteria.values = field.valueList;
+        field.formControl.setValue(field.valueList);
+        field.formControl.markAsDirty();
     }
 
     /**
@@ -165,6 +253,13 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
             }
 
             const record = this.getSelectedRecord(data);
+
+            const found = this.field.valueObjectArray.find(element => element.id === record.id);
+
+            if (found) {
+                return;
+            }
+
             this.setItem(record);
         });
     }
@@ -202,16 +297,6 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
     protected setItem(record: Record): void {
         this.tag.appendTag(record.attributes);
         this.onAdd(record.attributes);
-    }
-
-    public selectFirstElement(): void {
-        const filteredElements: TagModel = this.tag.dropdown.items;
-        if (filteredElements.length !== 0) {
-            const firstElement = filteredElements[0];
-            this.tag.appendTag(firstElement);
-            this.onAdd(firstElement);
-            this.tag.dropdown.hide();
-        }
     }
 
 }

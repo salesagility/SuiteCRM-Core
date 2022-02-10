@@ -75,9 +75,9 @@ export class ClassicViewResolver extends BaseMetadataResolver {
 
                         this.appStateStore.setModule(module);
                     }
-                    if (route.params.action) {
-                        this.appStateStore.setView(route.params.action);
-                    }
+                    const info = this.routeConverter.parseRouteURL(route.url);
+                    const action = info.action ?? 'index';
+                    this.appStateStore.setView(action);
                 },
                 () => {
                     this.addMetadataLoadErrorMessage();

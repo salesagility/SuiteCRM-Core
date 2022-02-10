@@ -29,6 +29,7 @@
 namespace App\ViewDefinitions\LegacyHandler;
 
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
+use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\MassUpdate\MassUpdateFieldDefinitionsInjectorTrait;
 use App\ViewDefinitions\Service\MassUpdateDefinitionMappers;
 use App\ViewDefinitions\Service\MassUpdateDefinitionProviderInterface;
@@ -75,14 +76,21 @@ class MassUpdateDefinitionHandler implements MassUpdateDefinitionProviderInterfa
     private $mappers;
 
     /**
+     * @var FieldAliasMapper
+     */
+    private $fieldAliasMapper;
+
+    /**
      * MassUpdateDefinitionHandler constructor.
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
      * @param MassUpdateDefinitionMappers $mappers
+     * @param FieldAliasMapper $fieldAliasMapper
      * @param array $massupdate
      */
     public function __construct(
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         MassUpdateDefinitionMappers $mappers,
+        FieldAliasMapper $fieldAliasMapper,
         array $massupdate
     ) {
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
@@ -114,6 +122,7 @@ class MassUpdateDefinitionHandler implements MassUpdateDefinitionProviderInterfa
         foreach ($activeByDefaultTypes as $activeByDefaultType) {
             $this->activeByDefaultTypes[$activeByDefaultType] = true;
         }
+        $this->fieldAliasMapper = $fieldAliasMapper;
     }
 
     /**
@@ -141,10 +150,15 @@ class MassUpdateDefinitionHandler implements MassUpdateDefinitionProviderInterfa
                 continue;
             }
 
-            $fields[] = $this->buildField([
-                'name' => $vardef['name'] ?? $key,
-                'label' => $vardef['vname'] ?? ''
-            ], $key, $vardefs);
+            $fields[] = $this->buildField(
+                [
+                    'name' => $vardef['name'] ?? $key,
+                    'label' => $vardef['vname'] ?? ''
+                ],
+                $key,
+                $vardefs,
+                $this->fieldAliasMapper
+            );
         }
 
         $mappers = $this->mappers->get($module) ?? [];

@@ -131,7 +131,8 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
 
     protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
         return {
-            store: this.store
+            store: this.store,
+            action: action
         } as RecordActionData;
     }
 

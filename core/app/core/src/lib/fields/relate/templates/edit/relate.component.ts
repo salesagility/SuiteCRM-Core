@@ -82,8 +82,17 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * On init handler
      */
     ngOnInit(): void {
-        this.initValue();
+
         super.ngOnInit();
+        this.init();
+    }
+
+    protected init(): void {
+
+        super.init();
+
+        this.initValue();
+
         const idFieldName = this.getRelateIdField();
         if (idFieldName && this.record && this.record.fields && this.record.fields[idFieldName]) {
             this.idField = this.record.fields[idFieldName];
@@ -92,10 +101,12 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
 
     protected initValue(): void {
         if (!this.field.valueObject) {
+            this.selectedValues = [];
             return;
         }
 
         if (!this.field.valueObject.id) {
+            this.selectedValues = [];
             return;
         }
 
@@ -147,7 +158,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.field.formControl.setValue(relateValue);
         this.field.formControl.markAsDirty();
 
-        if (this.idField){
+        if (this.idField) {
             this.idField.value = id;
             this.idField.formControl.setValue(id);
             this.idField.formControl.markAsDirty();

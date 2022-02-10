@@ -36,7 +36,8 @@ const initialState = {
     id: '',
     type: '',
     module: '',
-    attributes: {}
+    attributes: {},
+    acls: []
 } as Record;
 
 export class RecordStore {
@@ -57,6 +58,7 @@ export class RecordStore {
             'attributes',
             'module',
             'type',
+            'acls'
         ]
     };
 
@@ -159,7 +161,8 @@ export class RecordStore {
             id: this.internalState.id,
             type: this.internalState.type,
             module: this.internalState.module,
-            attributes: this.internalState.attributes
+            attributes: this.internalState.attributes,
+            acls: this.internalState.acls
         } as Record;
 
         return deepClone(baseRecord);
@@ -181,7 +184,8 @@ export class RecordStore {
             id: this.stagingState.id,
             type: this.stagingState.type,
             module: this.stagingState.module,
-            attributes: this.stagingState.attributes
+            attributes: this.stagingState.attributes,
+            acls: this.stagingState.acls
         } as Record;
 
         return deepClone(baseRecord);
@@ -298,7 +302,8 @@ export class RecordStore {
                     const record: Record = {
                         type: '',
                         module: '',
-                        attributes: {}
+                        attributes: {},
+                        acls: []
                     } as Record;
 
                     if (!data) {
@@ -315,6 +320,7 @@ export class RecordStore {
                     record.module = module;
                     record.type = data.getRecord.attributes && data.getRecord.attributes.object_name;
                     record.attributes = data.getRecord.attributes;
+                    record.acls = data.getRecord.acls;
 
                     return record;
                 }),

@@ -70,10 +70,11 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
      */
     public function map(
         string $parentModule,
-        array $subpanel,
-        array $button,
-        array $parentVardefs
-    ): array {
+        array  $subpanel,
+        array  $button,
+        array  $parentVardefs
+    ): array
+    {
 
         $params = [];
         $additionalFields = [];
@@ -85,7 +86,6 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
 
         $this->addRelateFields($button, $subpanelModuleVardefs, $relationshipName, $additionalFields);
 
-
         $params['target_module'] = $subpanel['module'];
 
         $bean = BeanFactory::newBean($parentModule);
@@ -95,6 +95,11 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
             $parentNameField = $parentBeanName . '_name';
             $parentIdField = $parentBeanName . '_id';
             $additionalFields[$parentIdField] = 'id';
+
+            // include duplicate value for the parent id having a different param key derived from the meta relationship
+            // find more description with function definition
+            $subpanelModule = $subpanelModuleFieldDefs->getId();
+            $this->includeParentIdFieldName($additionalFields, $subpanelModule, $parentVardefs);
 
             if (isset($parentVardefs['name'])) {
                 $additionalFields[$parentNameField] = 'name';
@@ -156,6 +161,20 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
             }
         }
 
+        //Rename keys per vardefs
+        if ($parentModule === 'AOS_Product_Categories') {
+
+            if (array_key_exists('aos_product_categories_id', $additionalFields)) {
+                $additionalFields['parent_category_id'] = $additionalFields['aos_product_categories_id'];
+                unset($additionalFields['aos_product_categories_id']);
+            }
+
+            if (array_key_exists('aos_product_categories_name', $additionalFields)) {
+                $additionalFields['parent_category_name'] = $additionalFields['aos_product_categories_name'];
+                unset($additionalFields['aos_product_categories_name']);
+            }
+        }
+
         $button['additionalFields'] = $additionalFields;
         $button['extraParams'] = $params;
 
@@ -190,11 +209,12 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
      * @return array
      */
     protected function addRelateFields(
-        array &$button,
+        array  &$button,
         ?array $subpanelModuleVardefs,
         string $relationshipName,
-        array &$additionalFields
-    ): void {
+        array  &$additionalFields
+    ): void
+    {
         $relateFields = $this->getRelateFields($subpanelModuleVardefs, $relationshipName);
         $button['relateFields'] = $relateFields;
 
@@ -263,5 +283,48 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
         return $link;
     }
 
+    /**
+     * Get Relationship name
+     * @param array $additionalFields
+     * @param string $subpanelModule
+     * @param array $parentVardefs
+     * @return void
+     * @desc
+     * inject parent id field from metadata relationship
+     * the existing derivation of parent id gives wrong value sometimes e.g. for target list as a parent module,
+     * it derives targetlist_id
+     * but the right one is target_list-id(available in relationship metadata)
+     * the existing code is kept as it is for now, to avoid any regression issue
+     *
+     * Sample Relationship Metadata for accounts subpanel
+     * please note that the below relationship definition is injected on vardefs by a mapper
+     * called LinkFieldDefinitionMapper and not available by default on vardefs
+     *
+     * Array
+     * (
+     * [side] => rhs
+     * [related_id] => related_id
+     * [type] => many-to-many
+     * [parent_id] => prospect_list_id
+     * )
+     */
+    private function includeParentIdFieldName(array &$additionalFields, string $subpanelModule, array $parentVardefs): void
+    {
+
+        if (empty($parentVardefs[$subpanelModule])) {
+            return;
+        }
+
+        if (empty($parentVardefs[$subpanelModule]['relationshipMetadata'])) {
+            return;
+        }
+
+        if (empty($parentVardefs[$subpanelModule]['relationshipMetadata']['parent_id'])) {
+            return;
+        }
+
+        $parentIdField = $parentVardefs[$subpanelModule]['relationshipMetadata']['parent_id'];
+        $additionalFields[$parentIdField] = 'id';
+    }
 
 }

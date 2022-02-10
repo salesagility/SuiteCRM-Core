@@ -60,7 +60,7 @@ export class RecordCreateAction extends RecordActionHandler {
         }).then();
     }
 
-    shouldDisplay(): boolean {
-        return true;
+    shouldDisplay(data: RecordActionData): boolean {
+        return this.checkRecordAccess(data, ['edit']);
     }
 }

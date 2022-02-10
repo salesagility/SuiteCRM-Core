@@ -71,11 +71,12 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
         }
 
         foreach ($advanced as $fieldKey => $field) {
-            if ($field['type'] !== 'date' && $field['type'] !== 'datetime') {
+            $type = $field['type'] ?? '';
+
+            if ($type !== 'date' && $type !== 'datetime') {
                 continue;
             }
 
-            $type = $field['type'];
             $field['type'] = 'composite';
             $field['fieldDefinition']['layout'] = ['operator', 'target', 'start', 'end'];
             $field['fieldDefinition']['display'] = 'inline';

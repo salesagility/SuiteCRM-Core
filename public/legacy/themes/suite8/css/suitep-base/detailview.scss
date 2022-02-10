@@ -54,6 +54,7 @@ p.msg {
   line-height: 36px;
   margin-bottom: 0.2em;
   color: $module-title-text-color;
+  word-break: break-all;
 }
 
 .nav-tabs > li.tab-inline-pagination {
@@ -154,8 +155,9 @@ p.msg {
 
   .moduleTitle {
     display: inline-block;
-    text-align:center;
-    width:100%;
+    width: 66%;
+    text-align: left;
+    align-items: flex-end;
   }
 
   .favorite {
@@ -166,6 +168,7 @@ p.msg {
     height: 32px;
     padding: 0 0;
     width: 32px;
+    font-size: 20px;
   }
 
   .nav-tabs > li.tab-inline-pagination {
@@ -578,6 +581,7 @@ div.detail-view-row {
   display: inline-block;
   vertical-align: middle;
   flex-grow: 1;
+  word-break: break-all;
 }
 
 .detail-view-field a {

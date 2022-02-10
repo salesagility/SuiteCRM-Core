@@ -64,6 +64,16 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
      */
     private $fieldDefinitionProvider;
 
+    /**
+     * HistoryTimelineDataHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param SessionInterface $session
+     */
     public function __construct(
         string $projectDir,
         string $legacyDir,
@@ -74,9 +84,9 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         SessionInterface $session,
         RecordMapper $recordMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider
-    )
-    {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $moduleNameMapper, $session);
+    ) {
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $moduleNameMapper, $session);
         $this->recordMapper = $recordMapper;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
     }
@@ -106,9 +116,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         int $offset = -1,
         int $limit = -1,
         array $sort = []
-    ): ListData
-    {
-
+    ): ListData {
         $this->init();
         $this->startLegacyApp();
         global $current_language, $app_strings;
@@ -282,9 +290,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $mod_strings = return_module_language($current_language, $legacyParentModule);
 
         foreach ($listData as $key => $record) {
-
             if ($listData[$key]['panel_name'] === 'audit') {
-
                 $auditFields = explode(',', $record['name'] ?? '');
                 $auditFieldValues = explode(',', $record['status'] ?? '');
                 $auditDescription = '';
@@ -292,7 +298,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
                 foreach ($auditFields as $index => $field) {
                     //translated field name
                     $auditFieldDefinition = $vardefs[$field] ?? [];
-                    $auditedFieldLabelKey = $mod_strings[$auditFieldDefinition['vname']] ?? '';
+                    $auditedFieldLabelKey = $mod_strings[$auditFieldDefinition['vname'] ?? ''] ?? '';
 
                     //present field value
                     $auditFieldValue = $auditFieldValues[$index] ?? '';
@@ -327,11 +333,12 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
 
     /**
      * get audit data grouped by date created and created by
+     * @param SugarBean $bean
+     * @return string
      */
     protected function queryAuditInfo(
         SugarBean $bean
-    ): string
-    {
+    ): string {
         $parts = [];
 
         $parts['select'] = "SELECT max(id),
@@ -363,5 +370,4 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
     {
         $this->logger = $logger;
     }
-
 }
