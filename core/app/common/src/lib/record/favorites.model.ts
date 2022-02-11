@@ -23,21 +23,35 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
+import {Field} from './field.model';
+import {Record} from './record.model';
 
-import {FieldMap} from './field.model';
-import {FormGroup} from '@angular/forms';
+export interface FavoriteAttributeMap {
+    id?: string;
+    name?: string;
+    assigned_user_id?: string;
+    parent_id?: string;
+    parent_name?: string;
+    parent_type?: string;
+    date_modified?: string;
 
-export interface AttributeMap {
     [key: string]: any;
 }
 
-export interface Record {
-    id?: string;
-    type?: string;
-    module: string;
-    favorite?: boolean;
-    attributes: AttributeMap;
-    acls?: string[];
-    fields?: FieldMap;
-    formGroup?: FormGroup;
+
+export interface FavoriteFieldMap {
+    id?: Field;
+    name?: Field;
+    assigned_user_id?: Field;
+    parent_id?: Field;
+    parent_name?: Field;
+    parent_type?: Field;
+    date_modified?: Field;
+
+    [key: string]: Field;
+}
+
+export interface Favorite extends Record {
+    attributes: FavoriteAttributeMap;
+    fields?: FavoriteFieldMap;
 }

@@ -24,20 +24,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldMap} from './field.model';
-import {FormGroup} from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FavoriteToggleComponent} from './favorite-toggle.component';
+import {ButtonModule} from '../../../../components/button/button.module';
 
-export interface AttributeMap {
-    [key: string]: any;
-}
-
-export interface Record {
-    id?: string;
-    type?: string;
-    module: string;
-    favorite?: boolean;
-    attributes: AttributeMap;
-    acls?: string[];
-    fields?: FieldMap;
-    formGroup?: FormGroup;
+@NgModule({
+    declarations: [
+        FavoriteToggleComponent
+    ],
+    exports: [
+        FavoriteToggleComponent
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule
+    ]
+})
+export class FavoriteToggleModule {
 }

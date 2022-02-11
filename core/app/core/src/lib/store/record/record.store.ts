@@ -58,7 +58,8 @@ export class RecordStore {
             'attributes',
             'module',
             'type',
-            'acls'
+            'acls',
+            'favorite'
         ]
     };
 
@@ -321,6 +322,7 @@ export class RecordStore {
                     record.type = data.getRecord.attributes && data.getRecord.attributes.object_name;
                     record.attributes = data.getRecord.attributes;
                     record.acls = data.getRecord.acls;
+                    record.favorite = data?.getRecord?.favorite ?? false;
 
                     return record;
                 }),

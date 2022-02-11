@@ -14,6 +14,7 @@ export * from './metadata/list.metadata.model';
 export * from './metadata/metadata.model';
 export * from './metadata/subpanel.metadata.model';
 export * from './metadata/widget.metadata';
+export * from './record/favorites.model';
 export * from './record/field.model';
 export * from './record/recently-viewed.model';
 export * from './record/record.model';

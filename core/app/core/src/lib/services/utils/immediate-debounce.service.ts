@@ -24,20 +24,45 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldMap} from './field.model';
-import {FormGroup} from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
-export interface AttributeMap {
-    [key: string]: any;
-}
+@Injectable()
+export class ImmediateDebounce {
+    protected buffer = new Subject<boolean>();
+    protected buffer$: Observable<boolean> = this.buffer.asObservable();
+    protected enabled = true;
+    protected subs: Subscription[] = [];
+    protected debounceTime: number = 1000;
 
-export interface Record {
-    id?: string;
-    type?: string;
-    module: string;
-    favorite?: boolean;
-    attributes: AttributeMap;
-    acls?: string[];
-    fields?: FieldMap;
-    formGroup?: FormGroup;
+    constructor() {
+    }
+
+    init(time: number = 1000): void {
+        this.debounceTime = time;
+        this.subs.push(this.buffer$.pipe(debounceTime(this.debounceTime)).subscribe(() => {
+            this.enabled = true;
+        }));
+    }
+
+    destroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    debounce(callBack: Function): void {
+
+        if (!callBack) {
+            return;
+        }
+
+        if (!this.enabled) {
+            return;
+        }
+
+        this.enabled = false;
+        callBack();
+        this.buffer.next(true);
+    }
+
 }

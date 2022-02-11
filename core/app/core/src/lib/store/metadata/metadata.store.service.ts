@@ -32,6 +32,7 @@ import {
     Action,
     ColumnDefinition,
     deepClone,
+    Favorite,
     FieldDefinitionMap,
     ListViewMeta,
     MassUpdateMeta,
@@ -83,6 +84,7 @@ export interface Metadata {
     subPanel?: SubPanelMeta;
     massUpdate?: MassUpdateMeta;
     recentlyViewed?: RecentlyViewed[];
+    favorites?: Favorite[];
 }
 
 export interface MetadataMap {
@@ -98,7 +100,8 @@ const initialState: Metadata = {
     recordView: {} as RecordViewMetadata,
     subPanel: {} as SubPanelMeta,
     massUpdate: {} as MassUpdateMeta,
-    recentlyViewed: []
+    recentlyViewed: [],
+    favorites: []
 };
 
 const initialModuleMetadataState: MetadataMap = {};

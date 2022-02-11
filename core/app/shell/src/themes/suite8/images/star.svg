@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-     y="0px"
-     viewBox="0 0 17.4 16.6" style="enable-background:new 0 0 17.4 16.6;" xml:space="preserve">
-    <title>Star Icon</title>
-  <g>
-	<g>
-		<path d="M8.3,0.3L6.4,5.9H0.4C0.2,5.9,0.1,6,0,6.2C0,6.3,0,6.5,0.2,6.6l4.9,3.6l-1.9,5.9
+<svg id="Layer_1" viewBox="-1 -1 19 18.5" x="0px"
+     xmlns="http://www.w3.org/2000/svg" y="0px">
+    <g>
+        <g>
+            <path d="M8.3,0.3L6.4,5.9H0.4C0.2,5.9,0.1,6,0,6.2C0,6.3,0,6.5,0.2,6.6l4.9,3.6l-1.9,5.9
 			c-0.1,0.2,0,0.3,0.1,0.4c0.1,0.1,0.3,0.1,0.4,0l4.9-3.6l4.9,3.6c0.1,0.1,0.3,0.1,0.4,0c0.1-0.1,0.2-0.3,0.1-0.4l-1.9-5.9l4.9-3.6
 			c0.1-0.1,0.2-0.3,0.1-0.4c0-0.2-0.2-0.3-0.4-0.3h-6.1L9,0.3C9,0.1,8.8,0,8.7,0C8.5,0,8.4,0.1,8.3,0.3z"/>
-	</g>
-</g>
+        </g>
+    </g>
 </svg>

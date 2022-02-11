@@ -30,6 +30,9 @@ import {RecordHeaderComponent} from './record-header.component';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {DynamicLabelModule} from '../../../../components/dynamic-label/dynamic-label.module';
 import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
+import {
+    FavoriteToggleModule
+} from '../../../../containers/favorite-toggle/components/favorite-toggle/favorite-toggle.module';
 
 @NgModule({
     declarations: [RecordHeaderComponent],
@@ -38,7 +41,8 @@ import {ActionGroupMenuModule} from '../../../../components/action-group-menu/ac
         CommonModule,
         ModuleTitleModule,
         DynamicLabelModule,
-        ActionGroupMenuModule
+        ActionGroupMenuModule,
+        FavoriteToggleModule
     ]
 })
 export class RecordHeaderModule {

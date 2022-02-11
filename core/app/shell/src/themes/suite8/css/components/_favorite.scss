@@ -24,20 +24,30 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldMap} from './field.model';
-import {FormGroup} from '@angular/forms';
+scrm-favorite-toggle {
+  font-size: 1.3rem;
 
-export interface AttributeMap {
-    [key: string]: any;
+  scrm-button {
+    font-size: 1.3rem;
+  }
 }
 
-export interface Record {
-    id?: string;
-    type?: string;
-    module: string;
-    favorite?: boolean;
-    attributes: AttributeMap;
-    acls?: string[];
-    fields?: FieldMap;
-    formGroup?: FormGroup;
+.favorite-star {
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  padding: 0;
+  margin: 0;
+  border-color: transparent;
+  background-color: transparent;
+  color: transparent;
+}
+
+.favorite-on {
+  fill: $bright-orange;
+  stroke: $bright-orange;
+}
+
+.favorite-off {
+  fill: none;
+  stroke: $bright-orange;
 }
