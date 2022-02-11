@@ -33,6 +33,7 @@ use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\AclManagerInterface;
+use App\Module\Service\FavoriteProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
@@ -59,6 +60,11 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     private $acl;
 
     /**
+     * @var FavoriteProviderInterface
+     */
+    private $favorites;
+
+    /**
      * RecordViewHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -68,6 +74,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SessionInterface $session
      * @param AclManagerInterface $aclHandler
+     * @param FavoriteProviderInterface $favorites
      */
     public function __construct(
         string $projectDir,
@@ -77,7 +84,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         SessionInterface $session,
-        AclManagerInterface $aclHandler
+        AclManagerInterface $aclHandler,
+        FavoriteProviderInterface $favorites
     ) {
         parent::__construct(
             $projectDir,
@@ -89,6 +97,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->acl = $aclHandler;
+        $this->favorites = $favorites;
     }
 
     /**
@@ -181,7 +190,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param SugarBean $bean
      * @return Record
      */
-    protected function buildRecord(string $id, string $module, SugarBean $bean): Record
+    public function buildRecord(string $id, string $module, SugarBean $bean): Record
     {
         $record = new Record();
         /* @noinspection PhpIncludeInspection */
@@ -201,6 +210,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $record->setType($bean->object_name);
         $record->setAttributes($mappedBean);
         $record->setAcls($this->acl->getRecordAcls($bean));
+        $record->setFavorite($this->favorites->isFavorite($module, $id));
 
         return $record;
     }

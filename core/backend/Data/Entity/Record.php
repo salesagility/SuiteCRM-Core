@@ -92,6 +92,12 @@ class Record
     protected $acls;
 
     /**
+     * @ApiProperty
+     * @var bool|null
+     */
+    protected $favorite;
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -192,6 +198,25 @@ class Record
     public function setAcls(?array $acls): Record
     {
         $this->acls = $acls;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getFavorite(): ?bool
+    {
+        return $this->favorite;
+    }
+
+    /**
+     * @param bool|null $favorite
+     * @return Record
+     */
+    public function setFavorite(?bool $favorite): Record
+    {
+        $this->favorite = $favorite;
 
         return $this;
     }
