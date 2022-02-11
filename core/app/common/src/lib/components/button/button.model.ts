@@ -29,6 +29,8 @@ export declare type ButtonCallback = (...args) => void;
 export interface ButtonInterface {
     klass?: string | string[] | Set<string> | { [key: string]: any };
     onClick?: ButtonCallback;
+    debounceClick?: boolean;
+    clickDebounceTime?: number;
     label?: string;
     labelKey?: string;
     titleKey?: string;

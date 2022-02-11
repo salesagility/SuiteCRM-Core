@@ -24,17 +24,69 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {ButtonInterface} from 'common';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ButtonCallback, ButtonInterface} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
     selector: 'scrm-button',
     templateUrl: 'button.component.html'
 })
-export class ButtonComponent {
+export class ButtonComponent implements OnInit, OnDestroy {
     @Input() config: ButtonInterface;
+    clickCallBack: ButtonCallback;
+    protected clickBuffer = new Subject<any>();
+    protected clickBuffer$: Observable<any> = this.clickBuffer.asObservable();
+    protected subs: Subscription[] = [];
 
     constructor(public language: LanguageStore) {
+    }
+
+    ngOnInit(): void {
+        const isToDebounce = this.config?.debounceClick ?? null;
+        this.clickCallBack = this.config?.onClick ?? null;
+        const clickDebounceTime = this.getDebounceTime();
+
+        if (isToDebounce && this.clickCallBack) {
+            this.subs.push(this.clickBuffer$.pipe(debounceTime(clickDebounceTime)).subscribe(value => {
+                const input = value ?? null;
+                this.clickCallBack(input);
+            }));
+        }
+    }
+
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    runClick(input?: any): void {
+        const isToDebounce = this.config?.debounceClick ?? null;
+
+        if (!this.clickCallBack) {
+            return;
+        }
+
+        if (isToDebounce && this.clickCallBack) {
+            this.clickBuffer.next(input ?? null);
+            return;
+        }
+
+        this.clickCallBack(input ?? null);
+    }
+
+    /**
+     * Get debounce time
+     * @return number
+     * @protected
+     */
+    protected getDebounceTime(): number {
+        let clickDebounceTime = this.config?.clickDebounceTime ?? 1000;
+        if (!isFinite(clickDebounceTime)) {
+            clickDebounceTime = 1000;
+        }
+        return clickDebounceTime;
     }
 }
