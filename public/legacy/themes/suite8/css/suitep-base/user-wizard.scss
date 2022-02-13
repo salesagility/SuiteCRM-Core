@@ -126,7 +126,7 @@
         .button {
             background: $modal-btn-hover;
         }
-    }
+    }    
     .wizard-finish {        
         .wizard-finish-lbl {
             border-bottom: 1px solid $bright-grey;
@@ -148,11 +148,39 @@
             margin: 0;
         }        
         tr th {
-            border-bottom: none;
+            border-bottom: none !important;
         }
         h2 {
             margin-bottom: 0;
         }        
+    }
+    .personal {
+        .container-personal {
+            padding: 2em 5em 2em 5em;
+            text-align: left;
+            .header-title {
+                border-bottom: 1px solid lightgrey;
+                margin-bottom: 1em;
+                padding-bottom: 0.2em;
+            }
+        }
+        .row {
+            display: flex;  
+            flex-wrap: wrap;  
+            margin-top: 3em;        
+            .col {
+                flex:50%;
+                padding-bottom: 1.5em;
+                display: flex;
+            }
+            .left-side {
+                width: 25%;
+                @media (max-width: $xs-breakpoint) {
+                    width: 100%;
+                    padding-bottom: 0.3em;
+                }   
+            }
+        }
     }
     .img-desc {
         line-height: 10px;

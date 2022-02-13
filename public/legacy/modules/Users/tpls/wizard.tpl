@@ -80,7 +80,12 @@
             <div class="col panel">
                 <h1>{$MOD.LBL_WIZARD_WELCOME_TITLE}</h1>
                 <div class="open-crm-txt"> Open Source CRM For The World </div>
-                <div class="wizard-mainlbl">Maintained by <img src=include/images/sa_logo.svg style="height:60px;"></div>
+                <div class="wizard-mainlbl">
+                <div class="sub-mainlbl">Maintained by </div>
+                <div>
+                    <img src=include/images/sa_logo.svg style="height:60px;">
+                </div>
+                </div>
                 <div class="wizard-lbl">{$MOD.LBL_WIZARD_WELCOME_NOSMTP}</div>
                 <div class="wizard-btn">
                     <input title="{$MOD.LBL_WIZARD_NEXT_BUTTON}"
@@ -92,95 +97,54 @@
     </div>
 </div>
 
-<div id="personalinfo" class="screen">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
-                <div class="edit view">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <th align="left" scope="row" colspan="4">
-                                <h2><span>{$MOD.LBL_WIZARD_PERSONALINFO}</span></h2>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td align="left" scope="row" colspan="4"><i>{$MOD.LBL_WIZARD_PERSONALINFO_DESC}</i></td>
-                        </tr>
-                        <tr>
-                            <td width="10%" scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_FIRST_NAME}:</span>
-                            </td>
-                            <td width="40%">
-                                <span><input id='first_name' name='first_name' tabindex='1' size='25' maxlength='25' type="text" value="{$FIRST_NAME}"></span>
-                            </td>
-                            <td width="10%" scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_ADDRESS_STREET}:</span>
-                            </td>
-                            <td width="40%">
-                                <span><input name='address_street' tabindex='8' value="{$ADDRESS_STREET}"/></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row" width="17%">
-                                <span>{$MOD.LBL_LAST_NAME}: <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span></span>
-                            </td>
-                            <td width="33%">
-                                <span><input id='last_name' name='last_name' tabindex='2' size='25' maxlength='25' type="text" value="{$LAST_NAME}"></span>
-                            </td>
-                            <td scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_CITY}:</span>
-                            </td>
-                            <td>
-                                <span><input name='address_city' tabindex='8' size='15' maxlength='100' value='{$ADDRESS_CITY}'></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="17%" scope="row" nowrap="nowrap">
-                                {$MOD.LBL_EMAIL}: {if $REQUIRED_EMAIL_ADDRESS}<span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>{/if}
-                            </td>
-                            <td width="33%" >
-                                <span><input name='email1' tabindex='3' size='30' maxlength='100' value='{$EMAIL1}' id='email1' /></span>
-                            </td>
-                            <td scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_POSTAL_CODE}:</span>
-                            </td>
-                            <td>
-                                <span><input name='address_postalcode' tabindex='9' size='10' maxlength='20' value='{$ADDRESS_POSTALCODE}'></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <span>{$MOD.LBL_OFFICE_PHONE}:</span>
-                            </td>
-                            <td>
-                                <span><input name='phone_work' type="text" tabindex='4' size='20' maxlength='25' value='{$PHONE_WORK}'></span>
-                            </td>
-                            <td scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_STATE}:</span>
-                            </td>
-                            <td>
-                                <span><input name='address_state' tabindex='9' size='15' maxlength='100' value='{$ADDRESS_STATE}'></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="17%" scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_MOBILE_PHONE}:</span>
-                            </td>
-                            <td width="33%" >
-                                <span><input name='phone_mobile' type="text" tabindex='6' size='20' maxlength='25' value='{$PHONE_MOBILE}'></span>
-                            </td>
-                            <td scope="row" nowrap="nowrap">
-                                <span>{$MOD.LBL_COUNTRY}:</span>
-                            </td>
-                            <td>
-                                <span><input name='address_country' tabindex='10' size='10' maxlength='20' value='{$ADDRESS_COUNTRY}'></span>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        </tr>
-    </table>
+<div id="personalinfo" class="screen personal">
+    <div class="container-personal">
+        <h2 class="header-title">
+            {$MOD.LBL_WIZARD_PERSONALINFO}
+        </h2>
+        <div class="row">
+            <div class="col mobile-order">
+                <div class="left-side">{$MOD.LBL_FIRST_NAME}:</div>
+                <div><input id='first_name' name='first_name' tabindex='1' size='25' maxlength='25' type="text" value="{$FIRST_NAME}"></div>
+            </div>
+            <div class="col">
+                <div class="left-side">{$MOD.LBL_ADDRESS_STREET}:</div>
+                <div><input name='address_street' tabindex='8' value="{$ADDRESS_STREET}"/></div>
+            </div>
+            <div class="col mobile-order">
+                <div class="left-side"><span>{$MOD.LBL_LAST_NAME}: <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span></span></div>
+                <div><span><input id='last_name' name='last_name' tabindex='2' size='25' maxlength='25' type="text" value="{$LAST_NAME}"></span></div>
+            </div>
+            <div class="col">
+                <div class="left-side"><span>{$MOD.LBL_CITY}:</span></div>
+               <div><span><input name='address_city' tabindex='8' size='15' maxlength='100' value='{$ADDRESS_CITY}'></span></div>
+            </div>
+            <div class="col mobile-order">
+                <div class="left-side">{$MOD.LBL_EMAIL}: {if $REQUIRED_EMAIL_ADDRESS}<span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span>{/if}</div>
+                <div><span><input name='email1' tabindex='3' size='30' maxlength='100' value='{$EMAIL1}' id='email1' /></span></div>
+            </div>
+            <div class="col">
+                <div class="left-side"> <span>{$MOD.LBL_POSTAL_CODE}:</span></div>
+                <div><span><input name='address_postalcode' tabindex='9' size='10' maxlength='20' value='{$ADDRESS_POSTALCODE}'></span></div>
+            </div>
+            <div class="col mobile-order">
+                <div class="left-side"><span>{$MOD.LBL_OFFICE_PHONE}:</span></div>
+                <div><span><input name='phone_work' type="text" tabindex='4' size='20' maxlength='25' value='{$PHONE_WORK}'></span></div>
+            </div>
+            <div class="col">
+                <div class="left-side"><span>{$MOD.LBL_STATE}:</span></div>
+                <div><span><input name='address_state' tabindex='9' size='15' maxlength='100' value='{$ADDRESS_STATE}'></span></div>
+            </div>
+            <div class="col mobile-order">
+                <div class="left-side"><span>{$MOD.LBL_MOBILE_PHONE}:</span></div>
+                <div><span><input name='phone_mobile' type="text" tabindex='6' size='20' maxlength='25' value='{$PHONE_MOBILE}'></span></div>
+            </div>
+            <div class="col">
+                <div class="left-side"><span>{$MOD.LBL_COUNTRY}:</span></div>
+                <div><span><input name='address_country' tabindex='10' size='10' maxlength='20' value='{$ADDRESS_COUNTRY}'></span></div>
+            </div>            
+        </div>
+    </div>
     <div class="nav-buttons">
         {if $SKIP_WELCOME}
             <input title="{$MOD.LBL_BACK}"
@@ -208,10 +172,10 @@
                                 <h2><span>{$MOD.LBL_WIZARD_LOCALE}</span></h2></th>
                         </tr>
                         <tr>
-                            <td align="left" scope="row" colspan="4"><i>{$MOD.LBL_WIZARD_LOCALE_DESC}</i></td>
+                            <td align="left" scope="row" colspan="4" class="firstrow"><i>{$MOD.LBL_WIZARD_LOCALE_DESC}</i></td>
                         </tr>
                         <tr>
-                            <td scope="row" nowrap="nowrap"><span>{$MOD.LBL_TIMEZONE}:</span>&nbsp;{sugar_help text=$MOD.LBL_TIMEZONE_TEXT }</td>
+                            <td scope="row" nowrap="nowrap" style="line-height:4.3em;margin-top:0.5em;"><span>{$MOD.LBL_TIMEZONE}:</span>&nbsp;{sugar_help text=$MOD.LBL_TIMEZONE_TEXT }</td>
                             <td colspan="3"><span><select tabindex='14' name='timezone'>{html_options options=$TIMEZONEOPTIONS selected=$TIMEZONE_CURRENT}</select></span></td>
                         </tr>
                         <tr>
@@ -229,7 +193,7 @@
                                     <select tabindex='14' id='currency_select' name='currency' onchange='setSymbolValue(this.selectedIndex);setSigDigits();'>{$CURRENCY}</select>
                                     <input type="hidden" id="symbol" value="">
                                 </span></td>
-                            <td width="17%" scope="row" nowrap="nowrap"></td>
+                            <td width="17%" scope="row" nowrap="nowrap" class="mobile-hide"></td>
                             <td></td>
                         </tr>
                         <tr>
@@ -291,7 +255,7 @@
                             <th align="left" scope="row" colspan="4"><h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2></th>
                         </tr>
                         <tr>
-                            <td scope="row">
+                            <td scope="row" style="height: auto;">
                                 <h3 class="wizard-finish-lbl">{$MOD.LBL_WIZARD_FINISH1}</h3>
                                 <table cellpadding=0 cellspacing=0><input id='whatnext' name='whatnext' type="hidden" value='finish' />
                                     {if $IS_ADMIN}
@@ -333,7 +297,6 @@
 </div>
 
 </div>
-
 </div>
 
 {literal}
