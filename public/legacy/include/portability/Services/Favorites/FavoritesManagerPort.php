@@ -27,6 +27,7 @@
 
 /* @noinspection PhpIncludeInspection */
 require_once 'modules/Favorites/Favorites.php';
+require_once 'include/portability/ApiBeanMapper/ApiBeanMapper.php';
 
 /**
  * Class Favorites
@@ -36,14 +37,36 @@ class FavoritesManagerPort
 {
 
     /**
+     * @var ApiBeanMapper
+     */
+    protected $apiBeanMapper;
+
+    public function __construct()
+    {
+        $this->apiBeanMapper = new ApiBeanMapper();
+    }
+
+
+    /**
      * Add favourite
      * @param string $module
      * @param string $id
-     * @return SugarBean
+     * @return array
      */
-    public function add(string $module, string $id): SugarBean
+    public function add(string $module, string $id): array
     {
         global $current_user;
+
+        if (empty($module) || empty($id)) {
+            return [];
+        }
+
+        $bean = BeanFactory::getBean($module, $id);
+        if (empty($bean)) {
+            return [];
+        }
+
+        $mapped = $this->apiBeanMapper->toApi($bean);
 
         $favorite = BeanFactory::newBean('Favorites');
         $favorite->name = $module . ' ' . $id . ' ' . $current_user->id;
@@ -51,6 +74,16 @@ class FavoritesManagerPort
         $favorite->parent_id = $id;
         $favorite->assigned_user_id = $current_user->id;
         $favorite->save();
+
+        $mappedFavorite = $this->apiBeanMapper->toApi($favorite);
+
+        $favorite = [
+            'id' => $mappedFavorite['id'] ?? '',
+            'module' => 'Favorites',
+            'type' => 'Favorite',
+            'attributes' => $mappedFavorite
+        ];
+        $favorite['attributes']['parent_name'] = $mapped['name'] ?? '';
 
         return $favorite;
     }
@@ -85,6 +118,72 @@ class FavoritesManagerPort
         $favoriteId = $this->getFavoriteId($module, $id);
 
         return !empty($favoriteId);
+    }
+
+    /**
+     * @param string $module
+     * @return array
+     */
+    public function getModuleFavorites(string $module): array
+    {
+        global $current_user;
+        $db = DBManagerFactory::getInstance();
+        $userId = $current_user->id ?? null;
+
+        if (empty($db) || empty($userId) || empty($module)) {
+            return [];
+        }
+
+        $bean = BeanFactory::newBean($module);
+
+        if (empty($bean)) {
+            return [];
+        }
+
+        $query = "SELECT favorites.*
+                  FROM favorites
+                  JOIN " . $bean->table_name . " ON ( " . $bean->table_name . ".id = favorites.parent_id )
+                  WHERE favorites.assigned_user_id = '" . $db->quote($userId) . "'
+                    AND favorites.parent_type = '" . $db->quote($module) . "'
+                    AND favorites.deleted = 0
+                    AND " . $bean->table_name . ".deleted = 0
+                  ORDER BY favorites.date_entered DESC";
+
+        $result = $db->limitQuery($query, 0, 10);
+
+        $row = $db->fetchByAssoc($result);
+        $favorites = [];
+        while ($row) {
+
+            if (empty($row['parent_id'])) {
+                continue;
+            }
+
+            $bean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
+            if (empty($bean) || $bean->deleted) {
+                continue;
+            }
+
+            $mapped = $this->apiBeanMapper->toApi($bean);
+
+            $favoriteBean = BeanFactory::newBean('Favorites');
+            $favoriteBean->fromArray($row);
+            $mappedFavorite = $this->apiBeanMapper->toApi($favoriteBean);
+
+            $favorite = [
+                'id' => $row['id'] ?? '',
+                'module' => 'Favorites',
+                'type' => 'Favorite',
+                'attributes' => $mappedFavorite
+            ];
+            $favorite['attributes']['parent_name'] = $mapped['name'] ?? '';
+
+            $favorites[] = $favorite;
+
+            $row = $db->fetchByAssoc($result);
+        }
+
+        return $favorites;
     }
 
     /**
