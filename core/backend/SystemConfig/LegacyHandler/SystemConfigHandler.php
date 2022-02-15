@@ -175,12 +175,15 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         }
 
         $this->init();
+        $user = $GLOBALS['current_user'] ?? null;
         $this->loadSystemUser();
 
         $this->initInjectedConfigs();
 
         $configs = $this->loadSystemConfigs();
-
+        if ($user !== null) {
+            $GLOBALS['current_user'] = $user;
+        }
         $this->close();
 
         return $configs;
@@ -351,6 +354,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         }
 
         $this->init();
+        $user = $GLOBALS['current_user'] ?? null;
         $this->loadSystemUser();
         $this->initInjectedConfigs();
 
@@ -359,6 +363,9 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->mapConfigValues($config);
         $this->mapKey($config);
 
+        if ($user !== null) {
+            $GLOBALS['current_user'] = $user;
+        }
         $this->close();
 
         return $config;
