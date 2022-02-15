@@ -153,7 +153,13 @@ export class MetadataStore implements StateStore {
         'recordView',
         'subPanel',
         'massUpdate',
-        'recentlyViewed'
+        'recentlyViewed',
+        'favorites'
+    ];
+    protected baseTypes = [
+        'listView',
+        'search',
+        'recordView',
     ];
 
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
@@ -279,6 +285,7 @@ export class MetadataStore implements StateStore {
         this.parseSubPanelMetadata(data, metadata);
         this.parseMassUpdateMetadata(data, metadata);
         this.parseRecentlyViewedMetadata(data, metadata);
+        this.parseFavoritesMetadata(data, metadata);
         return metadata;
     }
 
@@ -326,7 +333,7 @@ export class MetadataStore implements StateStore {
         const fieldsToRetrieve = {
             fields: [
                 ...this.fieldsMetadata.fields,
-                ...(types ?? this.types)
+                ...(types ?? this.baseTypes)
             ]
         };
 
@@ -420,6 +427,12 @@ export class MetadataStore implements StateStore {
     protected parseRecentlyViewedMetadata(data, metadata: Metadata): void {
         if (data && data.recentlyViewed) {
             metadata.recentlyViewed = data.recentlyViewed;
+        }
+    }
+
+    protected parseFavoritesMetadata(data, metadata: Metadata): void {
+        if (data && data.favorites) {
+            metadata.favorites = data.favorites;
         }
     }
 
