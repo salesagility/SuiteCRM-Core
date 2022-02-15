@@ -28,6 +28,7 @@
 namespace App\Metadata\Service;
 
 use App\Metadata\Entity\ModuleMetadata;
+use App\Module\LegacyHandler\Favorites\FavoritesHandler;
 use App\Module\LegacyHandler\RecentlyViewed\RecentlyViewedHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
@@ -51,22 +52,30 @@ class ModuleMetadataProvider implements ModuleMetadataProviderInterface
     /**
      * @var RecentlyViewedHandler
      */
-    private $recentlyViewed;
+    protected $recentlyViewed;
+
+    /**
+     * @var FavoritesHandler
+     */
+    protected $favorites;
 
     /**
      * ModuleMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ViewDefinitionsProviderInterface $viewDefinitions
      * @param RecentlyViewedHandler $recentlyViewed
+     * @param FavoritesHandler $favorites
      */
     public function __construct(
         ModuleNameMapperInterface $moduleNameMapper,
         ViewDefinitionsProviderInterface $viewDefinitions,
-        RecentlyViewedHandler $recentlyViewed
+        RecentlyViewedHandler $recentlyViewed,
+        FavoritesHandler $favorites
     ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->viewDefinitions = $viewDefinitions;
         $this->recentlyViewed = $recentlyViewed;
+        $this->favorites = $favorites;
     }
 
     /**
@@ -86,6 +95,7 @@ class ModuleMetadataProvider implements ModuleMetadataProviderInterface
         $metadata->setSubPanel($viewDefinitions->getSubPanel() ?? []);
         $metadata->setRecordView($viewDefinitions->getRecordView() ?? []);
         $metadata->setRecentlyViewed($this->recentlyViewed->getModuleTrackers($moduleName));
+        $metadata->setFavorites($this->favorites->getModuleFavorites($moduleName));
 
         return $metadata;
     }

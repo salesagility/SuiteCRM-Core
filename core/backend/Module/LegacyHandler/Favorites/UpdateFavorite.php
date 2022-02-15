@@ -28,7 +28,6 @@
 namespace App\Module\LegacyHandler\Favorites;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Data\LegacyHandler\RecordHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
@@ -42,10 +41,7 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
 {
     protected const MSG_OPTIONS_NOT_FOUND = 'Process options is not defined';
     protected const PROCESS_TYPE = 'update-favorite';
-    /**
-     * @var RecordHandler
-     */
-    protected $recordHandler;
+
     /**
      * @var ModuleNameMapperInterface
      */
@@ -60,7 +56,6 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
      * @param LegacyScopeState $legacyScopeState
      * @param SessionInterface $session
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param RecordHandler $recordHandler
      */
     public function __construct(
         string $projectDir,
@@ -69,8 +64,7 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
-        ModuleNameMapperInterface $moduleNameMapper,
-        RecordHandler $recordHandler
+        ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct(
             $projectDir,
@@ -81,7 +75,6 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
             $session
         );
         $this->moduleNameMapper = $moduleNameMapper;
-        $this->recordHandler = $recordHandler;
     }
 
     /**
@@ -163,9 +156,8 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
 
         if ($action === 'add') {
             $savedFavorite = $favoritesManager->add($legacyName, $id);
-            $favoriteRecord = $this->recordHandler->buildRecord($id, $module, $savedFavorite);
             $process->setData([
-                'favorite' => $favoriteRecord->toArray()
+                'favorite' => $savedFavorite
             ]);
         }
 

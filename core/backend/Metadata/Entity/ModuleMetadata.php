@@ -154,6 +154,22 @@ class ModuleMetadata
     public $recentlyViewed;
 
     /**
+     * Favorites
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The favorite records",
+     *         },
+     *     }
+     * )
+     */
+    public $favorites;
+
+    /**
      * The module
      *
      * @var string
@@ -204,6 +220,7 @@ class ModuleMetadata
             'subPanel' => $this->getSubPanel() ?? [],
             'massUpdate' => $this->getMassUpdate() ?? [],
             'recentlyViewed' => $this->getRecentlyViewed() ?? [],
+            'favorites' => $this->getFavorites() ?? [],
         ];
     }
 
@@ -339,6 +356,26 @@ class ModuleMetadata
     public function setRecentlyViewed(?array $recentlyViewed): ModuleMetadata
     {
         $this->recentlyViewed = $recentlyViewed;
+
+        return $this;
+    }
+
+    /**
+     * Get favorite records
+     * @return array|null
+     */
+    public function getFavorites(): ?array
+    {
+        return $this->favorites;
+    }
+
+    /**
+     * @param array|null $favorites
+     * @return ModuleMetadata
+     */
+    public function setFavorites(?array $favorites): ModuleMetadata
+    {
+        $this->favorites = $favorites;
 
         return $this;
     }

@@ -82,4 +82,26 @@ class FavoritesHandler extends LegacyHandler implements FavoriteProviderInterfac
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getModuleFavorites(string $module): ?array
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        $legacyModule = $this->moduleNameMapper->toLegacy($module);
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/Favorites/FavoritesManagerPort.php';
+
+        $favoritesManager = new FavoritesManagerPort();
+
+        $result = $favoritesManager->getModuleFavorites($legacyModule);
+
+        $this->close();
+
+        return $result;
+    }
+
 }
