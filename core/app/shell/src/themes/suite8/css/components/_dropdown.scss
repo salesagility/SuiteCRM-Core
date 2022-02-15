@@ -33,9 +33,7 @@
 }
 
 .dropdown-menu.submenu {
-  -webkit-border-radius: 0 0 0.25em 0.25em;
-  -moz-border-radius: 0 0 0.25em 0.25em;
-  border-radius: 0 0 0.25em 0.25em;
+  border-radius: 0;
 }
 
 ngb-datepicker.dropdown-menu {
@@ -166,18 +164,37 @@ a.close-navmenu:hover {
 .dropdown-submenu a::after {
   transform: rotate(-90deg);
   position: absolute;
-  right: 1.5em;
+  right: 5%;
   top: 40%;
 }
 
 .dropdown-submenu:hover .dropdown-menu,
-.dropdown-submenu:focus .dropdown-menu {
+.dropdown-submenu:focus .dropdown-menu,
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu:hover .dropdown-menu.submenu,
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu:focus .dropdown-menu.submenu,
+.dropdown-submenu.submenu .dropdown-submenu.submenu.submenu-extra:hover .dropdown-menu.submenu {
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-top: -2.2em;
+  top: 0;
   left: 100%;
 }
+
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu .dropdown-menu.submenu,
+.dropdown-submenu.submenu .dropdown-submenu.submenu.submenu-extra .dropdown-menu.submenu {
+  display: none;
+}
+
+.dropdown-submenu:hover .dropdown-menu a,
+.dropdown-submenu:focus .dropdown-menu a,
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu:hover .dropdown-menu.submenu a,
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu:focus .dropdown-menu.submenu a {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .nav-link-grouped:hover, .nav-link-nongrouped:hover {
   color: $light-grey;

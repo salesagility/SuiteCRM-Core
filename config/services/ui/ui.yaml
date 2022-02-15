@@ -3,3 +3,4 @@ parameters:
     alert_timeout: 3
     modal_buttons_collapse_breakpoint: 4
     navigation_max_module_recently_viewed: 5
+    navigation_max_module_favorites: 5

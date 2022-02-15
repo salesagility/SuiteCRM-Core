@@ -25,36 +25,28 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container>
-    <span data-target=".navbar-collapse" data-toggle="collapse">
+<ng-container *ngIf="records && records.length">
+    <li class="nav-item dropdown-submenu submenu submenu-extra">
 
-        <scrm-menu-item-link
-            [class]="{
-                    'top-nav-link': true,
-                    'nav-link-nongrouped': true,
-                    'dropdown-toggle': item.submenu.length
-                }"
-            [link]="item.link">
-        </scrm-menu-item-link>
+        <a class="sub-nav-link nav-link action-link dropdown-item dropdown-toggle pr-4">
+            <scrm-image image="star"></scrm-image>
+            <scrm-label labelKey="LBL_FAVORITES"></scrm-label>
+        </a>
 
-    </span>
-    <div *ngIf="item.submenu.length"
-         aria-labelledby="navbarDropdownMenuLink"
-         class="dropdown-menu submenu">
-
-        <div *ngFor="let sub of item.submenu" class="nav-item">
-
-            <scrm-menu-item-link
-                [class]="'sub-nav-link nav-link action-link'"
-                [icon]="sub.icon"
-                [link]="sub.link">
-            </scrm-menu-item-link>
-
-        </div>
-
-        <ng-container *ngIf="item && item.module">
-            <scrm-sub-menu-recently-viewed [module]="item.module"></scrm-sub-menu-recently-viewed>
-            <scrm-sub-menu-favorites [module]="item.module"></scrm-sub-menu-favorites>
-        </ng-container>
-    </div>
+        <ul class="dropdown-menu submenu"
+        >
+            <li *ngFor="let favorite of records | slice:0:maxDisplayed" class="nav-item">
+                <scrm-menu-item-link [class]="'submenu-nav-link nav-link action-link'"
+                                     [link]="{
+                                                label: favorite.attributes.parent_name,
+                                                url: buildRoute(favorite),
+                                                route: buildRoute(favorite)
+                                             }">
+                </scrm-menu-item-link>
+            </li>
+        </ul>
+    </li>
 </ng-container>
+
+
+

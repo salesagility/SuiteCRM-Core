@@ -56,6 +56,10 @@ import {MobileGroupedMenuComponent} from './mobile-grouped-menu/mobile-grouped-m
 import {BaseMobileGroupedMenuComponent} from './mobile-grouped-menu/base-mobile-grouped-menu.component';
 import {MobileModuleMenuComponent} from './mobile-module-menu/mobile-module-menu.component';
 import {BaseMobileModuleMenuComponent} from './mobile-module-menu/base-mobile-module-menu.component';
+import {SubMenuRecentlyViewedComponent} from './sub-menu-recently-viewed/sub-menu-recently-viewed.component';
+import {BaseSubMenuRecentlyViewedComponent} from './sub-menu-recently-viewed/base-sub-menu-recently-viewed.component';
+import {BaseSubMenuFavoritesComponent} from './sub-menu-favorites/base-sub-menu-favorites.component';
+import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites.component';
 
 
 @NgModule({
@@ -65,6 +69,10 @@ import {BaseMobileModuleMenuComponent} from './mobile-module-menu/base-mobile-mo
         BaseMenuItemComponent,
         MenuRecentlyViewedComponent,
         BaseMenuRecentlyViewedComponent,
+        SubMenuRecentlyViewedComponent,
+        BaseSubMenuRecentlyViewedComponent,
+        SubMenuFavoritesComponent,
+        BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,
         MenuItemLinkComponent,
         BaseHomeMenuItemComponent,
@@ -87,6 +95,10 @@ import {BaseMobileModuleMenuComponent} from './mobile-module-menu/base-mobile-mo
         BaseMenuItemComponent,
         MenuRecentlyViewedComponent,
         BaseMenuRecentlyViewedComponent,
+        SubMenuRecentlyViewedComponent,
+        BaseSubMenuRecentlyViewedComponent,
+        SubMenuFavoritesComponent,
+        BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,
         MenuItemLinkComponent,
         BaseHomeMenuItemComponent,
