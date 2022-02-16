@@ -105,6 +105,10 @@ export * from './components/navbar/grouped-menu-item/grouped-menu-item.registry'
 export * from './components/navbar/home-menu-item/base-home-menu-item.component';
 export * from './components/navbar/home-menu-item/home-menu-item.component';
 export * from './components/navbar/home-menu-item/home-menu-item.registry';
+export * from './components/navbar/menu-favorites/base-favorites.component';
+export * from './components/navbar/menu-favorites/base-menu-favorites.component';
+export * from './components/navbar/menu-favorites/menu-favorites-registry';
+export * from './components/navbar/menu-favorites/menu-favorites.component';
 export * from './components/navbar/menu-item/base-menu-item.component';
 export * from './components/navbar/menu-item/menu-item.component';
 export * from './components/navbar/menu-item/menu-item.registry';

@@ -24,29 +24,23 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {RecentlyViewed} from 'common';
+import {Component, Input} from '@angular/core';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {map} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
+import {BaseFavoritesComponent} from './base-favorites.component';
 
 @Component({
-    selector: 'scrm-base-menu-recently-viewed',
-    templateUrl: './base-menu-recently-viewed.component.html',
+    selector: 'scrm-base-menu-favorites',
+    templateUrl: './base-menu-favorites.component.html',
     styleUrls: []
 })
-export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
-    @Input() module: string;
+export class BaseMenuFavoritesComponent extends BaseFavoritesComponent {
+
     @Input() onClick: Function;
     @Input() collapsible = false;
-    maxDisplayed: number = 5;
-    records: RecentlyViewed[];
     collapsed = false;
-    protected subs: Subscription[] = [];
-
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -54,43 +48,12 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
         protected configs: SystemConfigStore,
         protected metadata: MetadataStore
     ) {
+        super(navigation, nameMapper, configs, metadata)
     }
 
     ngOnInit(): void {
-        const ui = this.configs.getConfigValue('ui') ?? {};
-        this.maxDisplayed = parseInt(ui.navigation_max_module_recently_viewed) ?? 5;
-        this.initMetadata$();
+        super.ngOnInit();
         this.collapsed = !!this.collapsible;
-    }
-
-    ngOnDestroy(): void {
-        this.clear();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        const moduleChanges = changes?.module ?? null;
-
-        if (moduleChanges === null) {
-            return;
-        }
-
-        const previousModule = changes?.module?.previousValue ?? '';
-        const currentModule = changes?.module?.currentValue ?? '';
-        if (previousModule !== currentModule) {
-            this.clear();
-            this.initMetadata$();
-        }
-    }
-
-    /**
-     * Build route from recently viewed item
-     * @param item
-     */
-    buildRoute(item: RecentlyViewed): string {
-        const legacyName = item.attributes.module_name ?? '';
-        const module = this.nameMapper.toFrontend(legacyName) ?? '';
-        const id = item.attributes.item_id ?? '';
-        return this.navigation.getRecordRouterLink(module, id);
     }
 
     /**
@@ -103,27 +66,4 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
 
         this.collapsed = !this.collapsed;
     }
-
-    /**
-     * Init metadata subscription
-     * @protected
-     */
-    protected initMetadata$(): void {
-        const moduleMeta$ = this.metadata.allModuleMetadata$.pipe(map(value => value[this.module] ?? null));
-
-        this.subs.push(moduleMeta$.subscribe(meta => {
-            this.records = meta?.recentlyViewed ?? null;
-        }));
-    }
-
-    /**
-     * Clear subscription and data
-     * @protected
-     */
-    protected clear() {
-        this.records = null;
-        this.subs.forEach(sub => sub.unsubscribe());
-    }
-
-
 }

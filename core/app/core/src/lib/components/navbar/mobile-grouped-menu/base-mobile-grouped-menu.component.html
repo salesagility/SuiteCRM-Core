@@ -62,8 +62,17 @@
                     </li>
 
                     <ng-container *ngIf="item && item.module">
-                        <li (click)="onClose && onClose()">
-                            <scrm-menu-recently-viewed [module]="item.module"></scrm-menu-recently-viewed>
+                        <li>
+                            <scrm-menu-recently-viewed [collapsible]="true"
+                                                       [module]="item.module"
+                                                       [onClick]="onClose">
+                            </scrm-menu-recently-viewed>
+                        </li>
+                        <li>
+                            <scrm-menu-favorites [collapsible]="true"
+                                                 [module]="item.module"
+                                                 [onClick]="onClose">
+                            </scrm-menu-favorites>
                         </li>
                     </ng-container>
 

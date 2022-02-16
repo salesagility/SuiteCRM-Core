@@ -24,26 +24,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {Favorite} from 'common';
+import {Component} from '@angular/core';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {map} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
+import {BaseFavoritesComponent} from '../menu-favorites/base-favorites.component';
 
 @Component({
     selector: 'scrm-base-sub-menu-favorites',
     templateUrl: './base-sub-menu-favorites.component.html',
     styleUrls: []
 })
-export class BaseSubMenuFavoritesComponent implements OnInit, OnDestroy, OnChanges {
-    @Input() module: string;
-    maxDisplayed: number = 5;
-    records: Favorite[];
-    protected subs: Subscription[] = [];
-
+export class BaseSubMenuFavoritesComponent extends BaseFavoritesComponent {
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -51,63 +44,7 @@ export class BaseSubMenuFavoritesComponent implements OnInit, OnDestroy, OnChang
         protected configs: SystemConfigStore,
         protected metadata: MetadataStore
     ) {
-    }
-
-    ngOnInit(): void {
-        const ui = this.configs.getConfigValue('ui') ?? {};
-        this.maxDisplayed = parseInt(ui.navigation_max_module_favorites) ?? 5;
-        this.initMetadata$();
-    }
-
-    ngOnDestroy(): void {
-        this.clear();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        const moduleChanges = changes?.module ?? null;
-
-        if (moduleChanges === null) {
-            return;
-        }
-
-        const previousModule = changes?.module?.previousValue ?? '';
-        const currentModule = changes?.module?.currentValue ?? '';
-        if (previousModule !== currentModule) {
-            this.clear();
-            this.initMetadata$();
-        }
-    }
-
-    /**
-     * Build route from recently viewed item
-     * @param item
-     */
-    buildRoute(item: Favorite): string {
-        const legacyName = item.attributes.parent_type ?? '';
-        const module = this.nameMapper.toFrontend(legacyName) ?? '';
-        const id = item.attributes.parent_id ?? '';
-        return this.navigation.getRecordRouterLink(module, id);
-    }
-
-    /**
-     * Init metadata subscription
-     * @protected
-     */
-    protected initMetadata$(): void {
-        const moduleMeta$ = this.metadata.allModuleMetadata$.pipe(map(value => value[this.module] ?? null));
-
-        this.subs.push(moduleMeta$.subscribe(meta => {
-            this.records = meta?.favorites ?? null;
-        }));
-    }
-
-    /**
-     * Clear subscription and data
-     * @protected
-     */
-    protected clear() {
-        this.records = null;
-        this.subs.forEach(sub => sub.unsubscribe());
+        super(navigation, nameMapper, configs, metadata)
     }
 
 }

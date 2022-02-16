@@ -70,8 +70,17 @@
 
             <ng-container *ngIf="subNavItem && subNavItem.module">
                 <div class="mobile-menu-items">
-                    <li (click)="onClose && onClose()" class="">
-                        <scrm-menu-recently-viewed [module]="subNavItem.module"></scrm-menu-recently-viewed>
+                    <li class="">
+                        <scrm-menu-recently-viewed [collapsible]="true"
+                                                   [module]="subNavItem.module"
+                                                   [onClick]="onClose">
+                        </scrm-menu-recently-viewed>
+                    </li>
+                    <li class="">
+                        <scrm-menu-favorites [collapsible]="true"
+                                             [module]="subNavItem.module"
+                                             [onClick]="onClose">
+                        </scrm-menu-favorites>
                     </li>
                 </div>
 

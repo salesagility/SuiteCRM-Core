@@ -60,6 +60,9 @@ import {SubMenuRecentlyViewedComponent} from './sub-menu-recently-viewed/sub-men
 import {BaseSubMenuRecentlyViewedComponent} from './sub-menu-recently-viewed/base-sub-menu-recently-viewed.component';
 import {BaseSubMenuFavoritesComponent} from './sub-menu-favorites/base-sub-menu-favorites.component';
 import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites.component';
+import {MenuFavoritesComponent} from './menu-favorites/menu-favorites.component';
+import {BaseMenuFavoritesComponent} from './menu-favorites/base-menu-favorites.component';
+import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component';
 
 
 @NgModule({
@@ -71,6 +74,9 @@ import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites
         BaseMenuRecentlyViewedComponent,
         SubMenuRecentlyViewedComponent,
         BaseSubMenuRecentlyViewedComponent,
+        BaseFavoritesComponent,
+        MenuFavoritesComponent,
+        BaseMenuFavoritesComponent,
         SubMenuFavoritesComponent,
         BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,
@@ -97,6 +103,9 @@ import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites
         BaseMenuRecentlyViewedComponent,
         SubMenuRecentlyViewedComponent,
         BaseSubMenuRecentlyViewedComponent,
+        BaseFavoritesComponent,
+        MenuFavoritesComponent,
+        BaseMenuFavoritesComponent,
         SubMenuFavoritesComponent,
         BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,

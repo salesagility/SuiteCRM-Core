@@ -140,7 +140,8 @@ a.home-nav-link {
   height: 1.2em;
 }
 
-h4.recently-viewed-header {
+h4.recently-viewed-header,
+h4.favorite-header {
   border-top: 0.05em solid darken($light-grey, 20%);
   color: darken($light-grey, 20%);
   font-weight: bold;

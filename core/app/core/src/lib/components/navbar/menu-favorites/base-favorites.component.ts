@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {RecentlyViewed} from 'common';
+import {Favorite} from 'common';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
@@ -33,20 +33,12 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 
-@Component({
-    selector: 'scrm-base-menu-recently-viewed',
-    templateUrl: './base-menu-recently-viewed.component.html',
-    styleUrls: []
-})
-export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
+@Component({template: ''})
+export class BaseFavoritesComponent implements OnInit, OnDestroy, OnChanges {
     @Input() module: string;
-    @Input() onClick: Function;
-    @Input() collapsible = false;
     maxDisplayed: number = 5;
-    records: RecentlyViewed[];
-    collapsed = false;
+    records: Favorite[];
     protected subs: Subscription[] = [];
-
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -58,9 +50,8 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
 
     ngOnInit(): void {
         const ui = this.configs.getConfigValue('ui') ?? {};
-        this.maxDisplayed = parseInt(ui.navigation_max_module_recently_viewed) ?? 5;
+        this.maxDisplayed = parseInt(ui.navigation_max_module_favorites) ?? 5;
         this.initMetadata$();
-        this.collapsed = !!this.collapsible;
     }
 
     ngOnDestroy(): void {
@@ -86,22 +77,11 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
      * Build route from recently viewed item
      * @param item
      */
-    buildRoute(item: RecentlyViewed): string {
-        const legacyName = item.attributes.module_name ?? '';
+    buildRoute(item: Favorite): string {
+        const legacyName = item.attributes.parent_type ?? '';
         const module = this.nameMapper.toFrontend(legacyName) ?? '';
-        const id = item.attributes.item_id ?? '';
+        const id = item.attributes.parent_id ?? '';
         return this.navigation.getRecordRouterLink(module, id);
-    }
-
-    /**
-     * toggle collapse
-     */
-    toggleCollapse() {
-        if (!this.collapsible) {
-            return;
-        }
-
-        this.collapsed = !this.collapsed;
     }
 
     /**
@@ -112,7 +92,7 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
         const moduleMeta$ = this.metadata.allModuleMetadata$.pipe(map(value => value[this.module] ?? null));
 
         this.subs.push(moduleMeta$.subscribe(meta => {
-            this.records = meta?.recentlyViewed ?? null;
+            this.records = meta?.favorites ?? null;
         }));
     }
 
@@ -124,6 +104,4 @@ export class BaseMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnCha
         this.records = null;
         this.subs.forEach(sub => sub.unsubscribe());
     }
-
-
 }

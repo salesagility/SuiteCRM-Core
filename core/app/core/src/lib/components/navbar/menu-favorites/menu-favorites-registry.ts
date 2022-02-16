@@ -24,23 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {MenuRecentlyViewedRegistry} from './menu-recently-viewed-registry';
+import {Injectable} from '@angular/core';
+import {BaseComponentRegistry} from 'common';
+import {BaseMenuFavoritesComponent} from './base-menu-favorites.component';
 
-@Component({
-    selector: 'scrm-menu-recently-viewed',
-    templateUrl: './menu-recently-viewed.component.html',
-    styleUrls: []
+@Injectable({
+    providedIn: 'root'
 })
-export class MenuRecentlyViewedComponent {
-    @Input() module: string;
-    @Input() onClick: Function;
-    @Input() collapsible = false;
+export class MenuFavoritesRegistry extends BaseComponentRegistry<BaseMenuFavoritesComponent> {
 
-    constructor(protected registry: MenuRecentlyViewedRegistry) {
+    constructor() {
+        super();
     }
 
-    get getType(): any {
-        return this.registry.get('default', 'default');
+    protected initDefault(): void {
+
+        this.register('default', 'default', BaseMenuFavoritesComponent);
     }
 }

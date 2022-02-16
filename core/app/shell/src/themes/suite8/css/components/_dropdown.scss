@@ -195,6 +195,19 @@ a.close-navmenu:hover {
   text-overflow: ellipsis;
 }
 
+.navbar-nav .dropdown-menu .nav-item:hover .action-link:hover svg,
+.navbar-nav .dropdown-menu .nav-item:hover .action-link:hover svg path,
+.navbar-nav .dropdown-menu .nav-item:hover .action-link:hover svg polygon,
+.navbar-nav .dropdown-menu .nav-item:hover .action-link svg,
+.navbar-nav .dropdown-menu .nav-item:hover .action-link svg path,
+.navbar-nav .dropdown-menu .nav-item:hover .action-link svg polygon {
+  fill: $white;
+}
+
+.navbar-nav .dropdown-menu .nav-item:hover a.action-link:hover,
+.navbar-nav .dropdown-menu .nav-item:hover a.action-link {
+  color: $white;
+}
 
 .nav-link-grouped:hover, .nav-link-nongrouped:hover {
   color: $light-grey;
@@ -218,7 +231,7 @@ ul.main li.nav-item,
   border: 0;
 }
 
-.dropdown-menu .nav-item:hover, .dropdown-menu .nav-item .action-link:hover  {
+.dropdown-menu .nav-item:hover, .dropdown-menu .nav-item .action-link:hover {
   background-color: $dull-orange;
 }
 

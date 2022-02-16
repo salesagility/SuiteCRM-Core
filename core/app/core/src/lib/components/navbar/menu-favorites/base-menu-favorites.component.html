@@ -27,18 +27,19 @@
 -->
 <ng-container *ngIf="records && records.length">
     <h4 (click)="toggleCollapse()"
-        class="recently-viewed-header mt-0 pb-1 pl-2 pr-2">
-        <scrm-label labelKey="LBL_LAST_VIEWED"></scrm-label>
+        class="favorite-header mt-0 pb-1 pl-2 pr-2">
+        <scrm-label labelKey="LBL_FAVORITES"></scrm-label>
     </h4>
     <ng-container *ngIf="!collapsed">
         <div (click)="onClick && onClick()"
-             *ngFor="let recentRecord of records | slice:0:maxDisplayed"
+             *ngFor="let favorite of records | slice:0:maxDisplayed"
              class="nav-item"
         >
-            <a [routerLink]="this.buildRoute(recentRecord)"
+            <a [routerLink]="this.buildRoute(favorite)"
                class="nav-link action-link pb-2 pt-2">
-                {{ recentRecord.attributes.item_summary }}
+                {{ favorite.attributes.parent_name }}
             </a>
         </div>
     </ng-container>
+
 </ng-container>

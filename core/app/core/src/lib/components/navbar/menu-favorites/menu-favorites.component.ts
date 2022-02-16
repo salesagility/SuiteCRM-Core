@@ -25,19 +25,19 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuRecentlyViewedRegistry} from './menu-recently-viewed-registry';
+import {MenuFavoritesRegistry} from './menu-favorites-registry';
 
 @Component({
-    selector: 'scrm-menu-recently-viewed',
-    templateUrl: './menu-recently-viewed.component.html',
+    selector: 'scrm-menu-favorites',
+    templateUrl: './menu-favorites.component.html',
     styleUrls: []
 })
-export class MenuRecentlyViewedComponent {
+export class MenuFavoritesComponent {
     @Input() module: string;
     @Input() onClick: Function;
     @Input() collapsible = false;
 
-    constructor(protected registry: MenuRecentlyViewedRegistry) {
+    constructor(protected registry: MenuFavoritesRegistry) {
     }
 
     get getType(): any {
