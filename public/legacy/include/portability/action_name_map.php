@@ -43,7 +43,6 @@ $action_name_map = [
     'ComposeView' => 'compose',
     'SetTimezone' => 'set-timezone',
     'WizardHome' => 'wizard-home',
-    'Wizard' => 'wizard',
     'WizardEmailSetup' => 'wizard-email-setup',
     'CampaignDiagnostic' => 'diagnostic',
     'WebToLeadCreation' => 'web-to-lead',
