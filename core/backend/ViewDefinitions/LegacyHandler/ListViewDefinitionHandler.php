@@ -203,7 +203,12 @@ class ListViewDefinitionHandler extends LegacyHandler
 
         $vardefs = $fieldDefinition->getVardef();
 
-        $displayColumns = ListViewFacade::getAllColumns($legacyModuleName);
+        try {
+            $displayColumns = ListViewFacade::getAllColumns($legacyModuleName);
+        } catch (Exception $e) {
+            $displayColumns = [];
+        }
+
         $data = [];
         foreach ($displayColumns as $key => $column) {
             if (!isset($vardefs[strtolower($key)])) {
@@ -214,22 +219,26 @@ class ListViewDefinitionHandler extends LegacyHandler
             $data[] = $this->buildListViewColumn($column, $key, $vardefs);
         }
 
-        $listMeta = ListViewFacade::getMetadata($legacyModuleName);
+        try {
+            $listMeta = ListViewFacade::getMetadata($legacyModuleName);
+        } catch (Exception $e) {
+            $listMeta = [];
+        }
 
         $metadata['columns'] = $data;
         $metadata['bulkActions'] = $this->bulkActionDefinitionProvider->getBulkActions(
-            $module,
-            $listMeta['bulkActions'] ?? []
-        );
+                $module,
+                $listMeta['bulkActions'] ?? []
+            ) ?? [];
 
-        $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module);
+        $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module) ?? [];
         $metadata['sidebarWidgets'] = $this->widgetDefinitionProvider->getSidebarWidgets(
-            $this->listViewSidebarWidgets,
-            $module,
-            ['widgets' => $listMeta['sidebarWidgets'] ?? []]
-        );
+                $this->listViewSidebarWidgets,
+                $module,
+                ['widgets' => $listMeta['sidebarWidgets'] ?? []]
+            ) ?? [];
 
-        $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module);
+        $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module) ?? [];
 
         return $metadata;
     }

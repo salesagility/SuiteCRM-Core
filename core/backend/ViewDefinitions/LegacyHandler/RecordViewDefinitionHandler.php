@@ -37,9 +37,9 @@ use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use BeanFactory;
 use DetailView2;
 use EditView;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use UnexpectedValueException;
 use ViewDetail;
 use ViewEdit;
 use ViewFactory;
@@ -226,6 +226,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
         /* @noinspection PhpIncludeInspection */
         require_once 'include/DetailView/DetailView2.php';
         $metadataFile = $view->getMetaDataFile();
+
+        if (empty($metadataFile)) {
+            return;
+        }
+
         $view->dv = new DetailView2();
         $view->dv->ss =& $view->ss;
 
@@ -236,7 +241,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
                 $metadataFile,
                 get_custom_file_if_exists('include/DetailView/DetailView.tpl')
             );
-        } catch (UnexpectedValueException $exception) {
+        } catch (Exception $exception) {
             // Detail View metadata definition[file] is not available & couldn't be derived by the system
             $view->dv->defs = [];
         }
@@ -275,12 +280,17 @@ class RecordViewDefinitionHandler extends LegacyHandler
         /* @noinspection PhpIncludeInspection */
         require_once 'include/EditView/EditView2.php';
         $metadataFile = $view->getMetaDataFile();
+
+        if (empty($metadataFile)) {
+            return;
+        }
+
         $view->ev = new EditView();
         $view->ev->ss =& $view->ss;
 
         try {
             $view->ev->setup($view->module, $view->bean, $metadataFile);
-        } catch (UnexpectedValueException $exception) {
+        } catch (Exception $exception) {
             // Edit View metadata definition[file] is not available & couldn't be derived by the system
             $view->ev->defs = [];
         }

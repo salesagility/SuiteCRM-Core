@@ -37,6 +37,7 @@ use App\Process\Service\SubpanelTopActionDefinitionProviderInterface;
 use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
+use Exception;
 use SubPanelDefinitions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -151,7 +152,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         require_once 'include/SubPanel/SubPanelDefinitions.php';
 
         global $beanList, $beanFiles;
-        if (!isset($beanList[$module])) {
+        if (empty($beanList[$module]) || empty($beanFiles[$beanList[$module]])) {
             return [];
         }
 
@@ -165,7 +166,11 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         // subpanels available after filtering the hidden subpanels
         // via [Admin => Modules and Subpanels] and [User > ACL Roles] settings
-        $availableTabs = $spd->get_available_tabs() ?? [];
+        try {
+            $availableTabs = $spd->get_available_tabs() ?? [];
+        } catch (Exception $e) {
+            return [];
+        }
 
         //filtered tabs
         $tabs = array_filter(
@@ -179,9 +184,13 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $resultingTabs = [];
 
         foreach ($tabs as $key => $tab) {
+            try {
+                /** @var aSubPanel $subpanel */
+                $subpanel = $spd->load_subpanel($key);
+            } catch (Exception $e) {
+                continue;
+            }
 
-            /** @var aSubPanel $subpanel */
-            $subpanel = $spd->load_subpanel($key);
 
             if ($subpanel === false) {
                 continue;
@@ -509,7 +518,8 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 ) {
                     $lineAction = $subpanelLineActions[$list_field['name']];
                     $moduleName = $this->moduleNameMapper->toFrontEnd($subpanelModule);
-                    $lineActions[] = $this->subpanelLineActionDefinitionProvider->getLineAction($moduleName, $lineAction);
+                    $lineActions[] = $this->subpanelLineActionDefinitionProvider->getLineAction($moduleName,
+                        $lineAction);
                 }
             }
         }

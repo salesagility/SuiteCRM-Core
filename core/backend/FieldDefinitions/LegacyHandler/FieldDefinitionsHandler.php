@@ -27,9 +27,9 @@
 
 namespace App\FieldDefinitions\LegacyHandler;
 
+use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
-use App\Engine\LegacyHandler\LegacyHandler;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use Exception;
@@ -122,8 +122,12 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
      */
     protected function getDefinitions(string $legacyModuleName)
     {
-        $sugarView = new SugarView();
-        $data = $sugarView->getVardefsData($legacyModuleName);
+        try {
+            $sugarView = new SugarView();
+            $data = $sugarView->getVardefsData($legacyModuleName);
+        } catch (Exception $e) {
+            return [];
+        }
 
         return $data[0][$legacyModuleName] ?? [];
     }
