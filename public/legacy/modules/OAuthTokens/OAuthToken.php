@@ -304,9 +304,22 @@ class OAuthToken extends SugarBean
 function displayDateFromTs($focus, $field, $value, $view='ListView')
 {
     $field = strtoupper($field);
-    if (!isset($focus[$field])) {
+
+    $fieldValue = '';
+
+    if (is_array($focus) && isset($focus[$field])) {
+        $fieldValue = $focus[$field];
+    }
+
+    if (is_object($focus) && !empty($focus->$field)) {
+        $fieldValue = $focus->$field;
+    }
+
+    if (empty($fieldValue)) {
         return '';
     }
+
     global $timedate;
-    return $timedate->asUser($timedate->fromTimestamp($focus[$field]));
+
+    return $timedate->asUser($timedate->fromTimestamp($fieldValue));
 }

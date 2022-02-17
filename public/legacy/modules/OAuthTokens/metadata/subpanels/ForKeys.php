@@ -64,7 +64,6 @@ $subpanel_layout = array(
             'name'=>'token_ts',
             'width' => '10%',
             'vname' => 'LBL_TS',
-            'function' => 'testfunc',
         ),
         'assigned_user_name' => array(
             'name' => 'assigned_user_name',
