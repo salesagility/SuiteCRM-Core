@@ -30,10 +30,9 @@ namespace App\Process\Service\BulkActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Data\Service\RecordDeletionServiceInterface;
-use App\Process\Entity\Process;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
-
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -125,6 +124,8 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
         $responseData = [
             'reload' => true,
             'dataUpdated' => true,
+            'reloadRecentlyViewed' => true,
+            'reloadFavorites' => true
         ];
 
         $process->setStatus('success');

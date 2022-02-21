@@ -29,10 +29,10 @@
 namespace App\Process\Service\RecordActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Process\Entity\Process;
-use App\Module\Service\ModuleNameMapperInterface;
-use App\Process\Service\ProcessHandlerInterface;
 use App\Data\Service\RecordDeletionServiceInterface;
+use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Entity\Process;
+use App\Process\Service\ProcessHandlerInterface;
 
 class DeleteRecordAction implements ProcessHandlerInterface
 {
@@ -130,7 +130,9 @@ class DeleteRecordAction implements ProcessHandlerInterface
             'params' => [
                 'route' => $options['module'],
                 'queryParams' => []
-            ]
+            ],
+            'reloadRecentlyViewed' => true,
+            'reloadFavorites' => true
         ];
 
         $process->setData($responseData);
