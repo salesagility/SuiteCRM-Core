@@ -34,7 +34,7 @@ import {Process} from '../../../services/process/process.service';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BulkActionDataSource} from '../../../components/bulk-action-menu/bulk-action-menu.component';
-import {Metadata} from '../../../store/metadata/metadata.store.service';
+import {Metadata, MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 
 @Injectable()
@@ -46,6 +46,7 @@ export class BulkActionsAdapter implements BulkActionDataSource {
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
         protected asyncAction: AsyncActionService,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -203,5 +204,46 @@ export class BulkActionsAdapter implements BulkActionDataSource {
         if (process.data && process.data.dataUpdated) {
             this.store.triggerDataUpdate();
         }
+
+        this.reloadMetadata(this.store.getModuleName(), process);
+    }
+
+
+    /**
+     * Reload the metadata for the module
+     * @param moduleName
+     * @param process
+     * @protected
+     */
+    protected reloadMetadata(moduleName: string, process: Process): void {
+        const typesToLoad = [];
+
+        if (this.shouldReloadRecentlyViewed(process)) {
+            typesToLoad.push(this.metadata.typeKeys.recentlyViewed);
+        }
+
+        if (this.shouldReloadFavorites(process)) {
+            typesToLoad.push(this.metadata.typeKeys.favorites);
+        }
+
+        if (typesToLoad && typesToLoad.length) {
+            this.metadata.reloadModuleMetadata(moduleName, typesToLoad, false).pipe(take(1)).subscribe();
+        }
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadRecentlyViewed(process: Process): boolean {
+        return !!(process.data && process.data.reloadRecentlyViewed);
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadFavorites(process: Process): boolean {
+        return !!(process.data && process.data.reloadFavorites);
     }
 }

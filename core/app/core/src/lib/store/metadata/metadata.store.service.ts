@@ -136,6 +136,16 @@ export class MetadataStore implements StateStore {
     allModuleMetadata$: Observable<MetadataMap>;
     subPanelMetadata$: Observable<SubPanelMeta>;
 
+    public typeKeys = {
+        listView: 'listView',
+        search: 'search',
+        recordView: 'recordView',
+        subPanel: 'subPanel',
+        massUpdate: 'massUpdate',
+        recentlyViewed: 'recentlyViewed',
+        favorites: 'favorites'
+    };
+
     protected store = new BehaviorSubject<Metadata>(internalState);
     protected state$ = this.store.asObservable();
     protected allModuleStore = new BehaviorSubject<MetadataMap>(allModulesState);
@@ -160,6 +170,7 @@ export class MetadataStore implements StateStore {
         'listView',
         'search',
         'recordView',
+        'favorites'
     ];
 
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
@@ -218,15 +229,37 @@ export class MetadataStore implements StateStore {
      *
      * @param {string} moduleID to fetch
      * @param {string[]} types to fetch
+     * @param useCache
      * @returns any data
      */
-    public load(moduleID: string, types: string[]): any {
+    public reloadModuleMetadata(moduleID: string, types: string[], useCache: boolean = true): any {
 
         if (!types) {
             types = this.getMetadataTypes();
         }
 
-        return this.getMetadata(moduleID, types).pipe(
+        return this.getMetadata(moduleID, types, useCache).pipe(
+            tap((metadata: Metadata) => {
+                this.updateAllModulesState(moduleID, metadata);
+            })
+        );
+    }
+
+    /**
+     * Initial ListViewMeta load if not cached and update state.
+     *
+     * @param {string} moduleID to fetch
+     * @param {string[]} types to fetch
+     * @param useCache
+     * @returns any data
+     */
+    public load(moduleID: string, types: string[], useCache: boolean = true): any {
+
+        if (!types) {
+            types = this.getMetadataTypes();
+        }
+
+        return this.getMetadata(moduleID, types, useCache).pipe(
             tap((metadata: Metadata) => {
                 this.updateState(moduleID, metadata);
             })
@@ -260,11 +293,12 @@ export class MetadataStore implements StateStore {
      *
      * @param {string} module to fetch
      * @param {string[]} types to retrieve
+     * @param useCache
      * @returns {object} Observable<any>
      */
-    public getMetadata(module: string, types: string[] = null): Observable<Metadata> {
+    public getMetadata(module: string, types: string[] = null, useCache: boolean = true): Observable<Metadata> {
 
-        if (cache[module] == null) {
+        if (cache[module] == null || useCache === false) {
             cache[module] = this.fetchMetadata(module, types).pipe(
                 shareReplay(1)
             );
@@ -277,8 +311,9 @@ export class MetadataStore implements StateStore {
      * Internal API
      */
 
-    public mapMetadata(data): Metadata {
-        const metadata: Metadata = {} as Metadata;
+    public mapMetadata(module: string, data: any): Metadata {
+        const moduleMetadata: Metadata = allModulesState[module] ?? {};
+        const metadata: Metadata = {...moduleMetadata};
         this.parseListViewMetadata(data, metadata);
         this.parseSearchMetadata(data, metadata);
         this.parseRecordViewMetadata(data, metadata);
@@ -340,7 +375,7 @@ export class MetadataStore implements StateStore {
         return this.recordGQL.fetch(this.resourceName, `/api/module-metadata/${module}`, fieldsToRetrieve)
             .pipe(
                 map(({data}) => {
-                    return this.mapMetadata(data.moduleMetadata);
+                    return this.mapMetadata(module, data.moduleMetadata);
                 })
             );
     }

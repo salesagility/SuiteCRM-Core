@@ -31,6 +31,7 @@ import {asyncActionServiceMock} from '../../../services/process/processes/async-
 import {confirmationModalServiceMock} from '../../../services/modals/confirmation-modal.spec.mock';
 import {messageServiceMock} from '../../../services/message/message.service.spec.mock';
 import {selectModalServiceMock} from '../../../services/modals/select-modal.spec.mock';
+import {metadataStoreMock} from '../../../store/metadata/metadata.store.spec.mock';
 
 export const savedFilterActionAdapterFactoryMock = new SavedFilterActionAdapterFactory(
     languageStoreMock,
@@ -38,5 +39,6 @@ export const savedFilterActionAdapterFactoryMock = new SavedFilterActionAdapterF
     asyncActionServiceMock,
     messageServiceMock,
     confirmationModalServiceMock,
-    selectModalServiceMock
+    selectModalServiceMock,
+    metadataStoreMock
 );

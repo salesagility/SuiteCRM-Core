@@ -31,6 +31,7 @@ import {ListViewStore} from '../store/list-view/list-view.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {BulkActionsAdapter} from './bulk-actions.adapter';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 
 @Injectable({
     providedIn: 'root',
@@ -42,6 +43,7 @@ export class BulkActionsAdapterFactory {
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
         protected asyncAction: AsyncActionService,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -52,6 +54,7 @@ export class BulkActionsAdapterFactory {
             this.confirmation,
             this.selectModalService,
             this.asyncAction,
+            this.metadata
         );
     }
 }

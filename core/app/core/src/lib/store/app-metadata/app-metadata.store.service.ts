@@ -306,7 +306,7 @@ export class AppMetadataStore implements StateStore {
                 const meta = moduleMetadata[module] ?? {} as Metadata;
                 if (!emptyObject(meta)) {
 
-                    const parsedMeta = this.metadata.mapMetadata(moduleMetadata[module]);
+                    const parsedMeta = this.metadata.mapMetadata(module, moduleMetadata[module]);
 
                     if (this.metadata.getModule() !== module) {
                         this.metadata.setModuleMetadata(module, parsedMeta);

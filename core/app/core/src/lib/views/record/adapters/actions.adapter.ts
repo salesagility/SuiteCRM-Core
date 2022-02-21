@@ -100,7 +100,8 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
             message,
             confirmation,
             language,
-            selectModalService
+            selectModalService,
+            metadata
         );
     }
 

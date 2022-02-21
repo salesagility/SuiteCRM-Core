@@ -34,6 +34,7 @@ import {ListFilterStore} from '../store/list-filter/list-filter.store';
 import {SavedFilterStore} from '../store/saved-filter/saved-filter.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 
 @Injectable({
     providedIn: 'root',
@@ -46,7 +47,8 @@ export class SavedFilterActionAdapterFactory {
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confimation: ConfirmationModalService,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -59,7 +61,8 @@ export class SavedFilterActionAdapterFactory {
             this.asyncActionService,
             this.message,
             this.confimation,
-            this.selectModalService
+            this.selectModalService,
+            this.metadata
         );
     }
 }

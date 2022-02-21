@@ -33,6 +33,7 @@ import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapter} from './line-actions.adapter';
 import {SubpanelLineActionManager} from '../line-actions/line-action-manager.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 
 
 @Injectable({
@@ -46,7 +47,8 @@ export class SubpanelLineActionsAdapterFactory {
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -58,7 +60,8 @@ export class SubpanelLineActionsAdapterFactory {
             this.message,
             this.confirmation,
             this.language,
-            this.selectModalService
+            this.selectModalService,
+            this.metadata
         );
     }
 }

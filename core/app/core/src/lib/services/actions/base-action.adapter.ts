@@ -43,6 +43,7 @@ import {Process} from '../process/process.service';
 import {ConfirmationModalService} from '../modals/confirmation-modal.service';
 import {LanguageStore} from '../../store/language/language.store';
 import {SelectModalService} from '../modals/select-modal.service';
+import {MetadataStore} from '../../store/metadata/metadata.store.service';
 
 export abstract class BaseActionsAdapter<D extends ActionData> implements ActionDataSource {
 
@@ -60,7 +61,8 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -244,10 +246,73 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         const asyncData = this.buildActionInput(action, actionName, moduleName, context);
 
         this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe((process: Process) => {
-            if (this.shouldReload(process)) {
-                this.reload(action, process, context);
-            }
+            this.afterAsyncAction(actionName, moduleName, asyncData, process, action, context);
         });
+    }
+
+    /**
+     * Run after async action handlers
+     * @param actionName
+     * @param moduleName
+     * @param asyncData
+     * @param process
+     * @param action
+     * @param context
+     * @protected
+     */
+    protected afterAsyncAction(
+        actionName: string,
+        moduleName: string,
+        asyncData: AsyncActionInput,
+        process: Process,
+        action: Action,
+        context: ActionContext
+    ) {
+        if (this.shouldReload(process)) {
+            this.reload(action, process, context);
+        }
+
+        this.reloadMetadata(moduleName, action, process, context);
+    }
+
+    /**
+     * Reload the metadata for the module
+     * @param moduleName
+     * @param action
+     * @param process
+     * @param context
+     * @protected
+     */
+    protected reloadMetadata(moduleName: string, action: Action, process: Process, context?: ActionContext): void {
+        const typesToLoad = [];
+
+        if (this.shouldReloadRecentlyViewed(process)) {
+            typesToLoad.push(this.metadata.typeKeys.recentlyViewed);
+        }
+
+        if (this.shouldReloadFavorites(process)) {
+            typesToLoad.push(this.metadata.typeKeys.favorites);
+        }
+
+        if (typesToLoad && typesToLoad.length) {
+            this.metadata.reloadModuleMetadata(moduleName, typesToLoad, false).pipe(take(1)).subscribe();
+        }
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadRecentlyViewed(process: Process): boolean {
+        return !!(process.data && process.data.reloadRecentlyViewed);
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadFavorites(process: Process): boolean {
+        return !!(process.data && process.data.reloadFavorites);
     }
 
     /**

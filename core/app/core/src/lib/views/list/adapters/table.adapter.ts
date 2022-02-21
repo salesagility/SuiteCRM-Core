@@ -94,7 +94,8 @@ export class TableAdapter {
             this.message,
             this.confirmation,
             this.language,
-            this.selectModalService
+            this.selectModalService,
+            this.metadata
         );
     }
 

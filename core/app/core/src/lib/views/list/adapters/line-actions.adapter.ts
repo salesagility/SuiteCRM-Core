@@ -37,6 +37,7 @@ import {BaseLineActionsAdapter} from '../../../components/table/adapters/base-li
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {LanguageStore} from '../../../store/language/language.store';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 
 @Injectable()
 export class LineActionsAdapter extends BaseLineActionsAdapter {
@@ -48,7 +49,8 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected metadata: MetadataStore
     ) {
         super(
             actionManager,
@@ -56,7 +58,8 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
             message,
             confirmation,
             language,
-            selectModalService
+            selectModalService,
+            metadata
         );
     }
 

@@ -74,7 +74,8 @@ export class InstallActionsAdapter extends BaseRecordActionsAdapter<InstallViewA
             message,
             confirmation,
             language,
-            selectModalService
+            selectModalService,
+            metadata
         )
     }
 

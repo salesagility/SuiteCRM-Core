@@ -32,6 +32,7 @@ import {ConfirmationModalService} from '../modals/confirmation-modal.service';
 import {BaseActionsAdapter} from './base-action.adapter';
 import {LanguageStore} from '../../store/language/language.store';
 import {SelectModalService} from '../modals/select-modal.service';
+import {MetadataStore} from '../../store/metadata/metadata.store.service';
 
 @Injectable()
 export abstract class BaseRecordActionsAdapter<D> extends BaseActionsAdapter<D> {
@@ -43,7 +44,8 @@ export abstract class BaseRecordActionsAdapter<D> extends BaseActionsAdapter<D> 
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected metadata: MetadataStore
     ) {
         super(
             actionManager,
@@ -51,7 +53,8 @@ export abstract class BaseRecordActionsAdapter<D> extends BaseActionsAdapter<D> 
             message,
             confirmation,
             language,
-            selectModalService
+            selectModalService,
+            metadata
         )
     }
 
