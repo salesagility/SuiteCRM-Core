@@ -4427,7 +4427,10 @@ object {
 
 @media (min-width: 751px) {
   .favorite .suitepicon {
-    font-size: 26px;
+    font-size: 20px;
+    position: relative;
+    top: 8px;
+    left: -3px;
   }
 }
 
