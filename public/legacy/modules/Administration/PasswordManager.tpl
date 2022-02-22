@@ -274,7 +274,7 @@
 									        <td  scope="row" width="35%">{$MOD.LBL_PASSWORD_GENERATE_TEMPLATE_MSG}: </td>
 									        <td>
 										        <span class="action-btn-create-edit">
-									        		<select tabindex='251' id="generatepasswordtmpl" name="passwordsetting_generatepasswordtmpl" {$IE_DISABLED}>{$TMPL_DRPDWN_GENERATE}</select>													
+									        		<select tabindex='251' id="generatepasswordtmpl" name="passwordsetting_generatepasswordtmpl" {$IE_DISABLED}>{$TMPL_DRPDWN_GENERATE}</select>
 													<input type="button" class="button" onclick="javascript:open_email_template_form('generatepasswordtmpl')" value="{$MOD.LBL_PASSWORD_CREATE_TEMPLATE}" {$IE_DISABLED}>
 													<input type="button" value="{$MOD.LBL_PASSWORD_EDIT_TEMPLATE}" class="button" onclick="javascript:edit_email_template_form('generatepasswordtmpl')" name='edit_generatepasswordtmpl' id='edit_generatepasswordtmpl' style="{$EDIT_TEMPLATE}">
 												</span>
@@ -315,206 +315,6 @@
 								<td ></td>
 							</tr>
 						</table>
-
-
-							{if !empty($settings.system_ldap_enabled)}
-									{assign var='system_ldap_enabled_checked' value='CHECKED'}
-									{assign var='ldap_display' value='inline'}
-								{else}
-									{assign var='system_ldap_enabled_checked' value=''}
-									{assign var='ldap_display' value='none'}
-							{/if}
-							<table id='ldap_table' width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
-								<tr>
-									<td>
-										<table width="100%" border="0" cellspacing="0" cellpadding="0">
-											<tr>
-												<th align="left" scope="row" colspan='3'><h4>{$MOD.LBL_LDAP_TITLE}</h4></th>
-											</tr>
-											<tr>
-												<td width="25%" scope="row" valign='middle'>
-													{$MOD.LBL_LDAP_ENABLE}{sugar_help text=$MOD.LBL_LDAP_HELP_TXT}
-												</td>
-												<td width="75%" valign='middle'>
-													<input name="system_ldap_enabled" id="system_ldap_enabled" class="checkbox"  type="checkbox" {$system_ldap_enabled_checked} onclick='toggleDisplay("ldap_display");enableDisablePasswordTable("system_ldap_enabled");'>
-												</td>
-											</tr>
-											<tr>
-												<td colspan='2'>
-													<table  cellspacing='0' cellpadding='1' id='ldap_display' style='display:{$ldap_display}' width='100%'>
-														<tr>
-															<td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_SERVER_HOSTNAME} {sugar_help text=$MOD.LBL_LDAP_SERVER_HOSTNAME_DESC}</td>{$settings.proxy_host}
-															<td width='25%' align="left"  valign='top'><input name="ldap_hostname" size='25' type="text" value="{$settings.ldap_hostname}"></td>
-															<td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_SERVER_PORT} {sugar_help text=$MOD.LBL_LDAP_SERVER_PORT_DESC}</td>{$settings.proxy_port}
-															<td width='25%' align="left"  valign='top' ><input name="ldap_port" size='6' type="text" value="{$settings.ldap_port}"></td>
-														</tr>
-														<tr>
-															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_USER_DN} {sugar_help text=$MOD.LBL_LDAP_USER_DN_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_base_dn" size='35' type="text" value="{$settings.ldap_base_dn}"></td>
-															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_USER_FILTER} {sugar_help text=$MOD.LBL_LDAP_USER_FILTER_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_login_filter" size='25' type="text" value="{$settings.ldap_login_filter}"></td>
-														</tr>
-														<tr>
-															<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_BIND_ATTRIBUTE} {sugar_help text=$MOD.LBL_LDAP_BIND_ATTRIBUTE_DESC}</td>
-															<td align="left"  valign='top'><input name="ldap_bind_attr" size='25' type="text" value="{$settings.ldap_bind_attr}"> </td>
-															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_LOGIN_ATTRIBUTE} {sugar_help text=$MOD.LBL_LDAP_LOGIN_ATTRIBUTE_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_login_attr" size='25' type="text" value="{$settings.ldap_login_attr}"></td>
-														</tr>
-														<tr>
-															<td scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_GROUP_MEMBERSHIP} {sugar_help text=$MOD.LBL_LDAP_GROUP_MEMBERSHIP_DESC}</td>
-															<td align="left"  valign='top'>
-															{if !empty($settings.ldap_group)}
-																{assign var='ldap_group_checked' value='CHECKED'}
-																{assign var='ldap_group_display' value=''}
-															{else}
-																{assign var='ldap_group_checked' value=''}
-																{assign var='ldap_group_display' value='none'}
-															{/if}
-																<input name="ldap_group_checkbox" class="checkbox" type="checkbox" {$ldap_group_checked} onclick='toggleDisplay("ldap_group")'>
-															</td>
-															<td valign='middle' nowrap></td>
-															<td align="left"  valign='middle'></td>
-														</tr>
-														<tr>
-															<td></td>
-															<td colspan='3'>
-																<span id='ldap_group' style='display:{$ldap_group_display}'>
-																	<table width='100%'>
-																		<tr>
-																			<td  width='25%' scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_GROUP_DN} {sugar_help text=$MOD.LBL_LDAP_GROUP_DN_DESC}</td>
-																			<td  width='25%' align="left"  valign='top'><input name="ldap_group_dn" size='20' type="text"  value="{$settings.ldap_group_dn}"></td>
-																			<td  width='25%' scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_GROUP_NAME} {sugar_help text=$MOD.LBL_LDAP_GROUP_NAME_DESC}</td>
-																			<td  width='25%' align="left"  valign='top'><input name="ldap_group_name" size='20' type="text"  value="{$settings.ldap_group_name}"></td>
-																		</tr>
-																		<tr>
-																			<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_GROUP_USER_ATTR} {sugar_help text=$MOD.LBL_LDAP_GROUP_USER_ATTR_DESC}</td>
-																			<td align="left"  valign='top'><input name="ldap_group_user_attr" size='20' type="text" value="{$settings.ldap_group_user_attr}"> </td>
-																			<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_GROUP_ATTR} {sugar_help text=$MOD.LBL_LDAP_GROUP_ATTR_DESC}</td>
-																			<td align="left"  valign='top'><input name="ldap_group_attr" size='20' type="text" value="{$settings.ldap_group_attr}"> </td>
-																		</tr>
-																		<tr>
-																			<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_GROUP_ATTR_REQ_DN} {sugar_help text=$MOD.LBL_LDAP_GROUP_ATTR_REQ_DN_DESC}</td>
-																			<td align="left" valign='top'>
-																			{if !empty($settings.ldap_group_attr_req_dn)}
-																				{assign var='ldap_group_attr_req_dn' value='CHECKED'}
-																			{else}
-																				{assign var='ldap_group_attr_req_dn' value='none'}
-																			{/if}
-																			<input name="ldap_group_attr_req_dn" class="checkbox" type="checkbox" {$ldap_group_attr_req_dn}> </td>
-																		</tr>
-																	</table>
-																 <br>
-																</span>
-															</td>
-														</tr>
-														<tr>
-															<td scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_AUTHENTICATION} {sugar_help text=$MOD.LBL_LDAP_AUTHENTICATION_DESC}</td>
-															<td align="left"  valign='top' >
-															{if !empty($settings.ldap_authentication)}
-																{assign var='ldap_authentication_checked' value='CHECKED'}
-																{assign var='ldap_authentication_display' value=''}
-															{else}
-																{assign var='ldap_authentication_checked' value=''}
-																{assign var='ldap_authentication_display' value='none'}
-															{/if}
-															<input name="ldap_authentication_checkbox" class="checkbox"  type="checkbox" {$ldap_authentication_checked} onclick='toggleDisplay("ldap_authentication")'>
-															</td>
-															<td valign='middle' nowrap></td>
-															<td align="left"  valign='middle'></td>
-														</tr>
-														<tr>
-															<td></td>
-															<td colspan='3'>
-															<span id='ldap_authentication' style='display:{$ldap_authentication_display}'>
-																<table width='100%' >
-																	<tr>
-																		<td width='25%' scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_ADMIN_USER} {sugar_help text=$MOD.LBL_LDAP_ADMIN_USER_DESC}</td>
-																		<td width='25%' align="left"  valign='top'><input name="ldap_admin_user" size='20' type="text" value="{$settings.ldap_admin_user}"></td>
-																		<td width='25%' scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_ADMIN_PASSWORD}</td>
-																		<td width='25%' align="left"  valign='middle'><input name="ldap_admin_password" size='20' type="password" value="{$settings.ldap_admin_password}"> </td>
-																	</tr>
-																</table>
-																<br>
-															</span>
-															</td>
-														</tr>
-														<tr>
-															<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_AUTO_CREATE_USERS} {sugar_help text=$MOD.LBL_LDAP_AUTO_CREATE_USERS_DESC}</td>
-															{if !empty($settings.ldap_auto_create_users)}
-																{assign var='ldap_auto_create_users_checked' value='CHECKED'}
-															{else}
-																{assign var='ldap_auto_create_users_checked' value=''}
-															{/if}
-															<td align="left"  valign='top'><input type='hidden' name='ldap_auto_create_users' value='0'><input name="ldap_auto_create_users" value="1" class="checkbox" type="checkbox" {$ldap_auto_create_users_checked}></td>
-															<td valign='middle' nowrap></td>
-															<td align="left"  valign='middle'></td>
-														</tr>
-														<tr>
-															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_ENC_KEY} {sugar_help text=$LDAP_ENC_KEY_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_enc_key" size='35' type="password" value="{$settings.ldap_enc_key}" {$LDAP_ENC_KEY_READONLY}> </td>
-															<td valign='middle' nowrap></td>
-															<td align="left"  valign='middle'></td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-
-						             <!-- start SAML -->
-                            {if !empty($config.authenticationClass)
-                                && ($config.authenticationClass == 'SAMLAuthenticate'
-                                || $config.authenticationClass == 'SAML2Authenticate')}
-                           {assign var='saml_enabled_checked' value='CHECKED'}
-                           {assign var='saml_display' value='inline'}
-                        {else}
-                           {assign var='saml_enabled_checked' value=''}
-                           {assign var='saml_display' value='none'}
-                     {/if}
-
-                     <table id = 'saml_table' width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
-                        <tr>
-                           <td>
-                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                 <tr>
-                                    <th align="left" scope="row" colspan='3'><h4>{$MOD.LBL_SAML_TITLE}</h4></th>
-                                 </tr>
-                                 <tr>
-                                    <td width="25%" scope="row" valign='middle'>
-                                       {$MOD.LBL_SAML_ENABLE}{sugar_help text=$MOD.LBL_SAML_HELP_TXT}
-                                    </td>
-									<td width="75%" valign='middle'>
-
-                                    <input name="authenticationClass" id="system_saml_enabled" class="checkbox"
-                                       value="SAML2Authenticate" type="checkbox"
-                                       {if $saml_enabled_checked}checked="1"{/if}
-                                       onclick='toggleDisplay("saml_display");enableDisablePasswordTable("system_saml_enabled");'>
-                                    </td></tr>
-                                 <tr>
-                                    <td colspan='2' style='padding-bottom:2em;'>
-                                       <table  cellspacing='0' cellpadding='1' id='saml_display' style='display:{$saml_display}' width='100%'>
-                                            <tr>
-                                             	<td width="25%" scope="row" valign='middle' nowrap>{$MOD.LBL_SAML_LOGIN_URL} {sugar_help text=$MOD.LBL_SAML_LOGIN_URL_DESC}</td>
-                                             	<td width="75%" align="left"  valign='middle'><input name="SAML_loginurl" size='35' type="text" value="{$config.SAML_loginurl}"></td>
-                                          </tr>
-										   <tr>
-											   <td scope="row" valign='middle' nowrap>{$MOD.LBL_SAML_LOGOUT_URL} {sugar_help text=$MOD.LBL_SAML_LOGOUT_URL_DESC}</td>
-											   <td align="left"  valign='middle'><input name="SAML_logouturl" size='35' type="text" value="{$config.SAML_logouturl}"></td>
-										   </tr>
-                                          <tr>
-                                             <td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_SAML_CERT} {sugar_help text=$MOD.LBL_SAML_CERT_DESC}</td>{$settings.proxy_host}
-                                             <td width='25%' align="left"  valign='top'><textarea style='height:100px;' name="SAML_X509Cert" >{$config.SAML_X509Cert}</textarea></td>
-                                          </tr>
-                     </table>
-               </td>
-            </tr>
-         </table>
-         <!-- end SAML -->
-					</td>
-				</tr>
-			</table>
 			<div class="action-button">
                 <input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" id="btn_save" type="submit" onclick="addcheck(form);return check_form('ConfigurePasswordSettings');" name="save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" />
                 &nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}"  onclick="document.location.href='index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" />
@@ -651,7 +451,7 @@ function refresh_email_template_list(template_id, template_name) {
 		newElement.value=template_id;
 		field.options.add(newElement);
 	} // else
-        
+
 }
 
 function testregex(customregex)
@@ -721,8 +521,6 @@ var syst_generated_pwd_select=table_fields.getElementsByTagName('select');
 }
 forgot_password_enable(document.getElementById('forgotpassword_checkbox'));
 enable_syst_generated_pwd(document.getElementById('SystemGeneratedPassword_checkbox'));
-if(document.getElementById('system_saml_enabled').checked)enableDisablePasswordTable('system_saml_enabled');
-if(document.getElementById('system_ldap_enabled').checked)enableDisablePasswordTable('system_ldap_enabled');
 
 </script>
 
