@@ -48,6 +48,7 @@
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
     "@nrwl/workspace": "^12.4.0",
     "@swimlane/ngx-charts": "^17.0.0",
+    "@tinymce/tinymce-angular": "^4.2.4",
     "@types/object-hash": "^1.3.4",
     "ajv": "~6.9.1",
     "angular-svg-icon": "^12.0.0",
@@ -67,6 +68,7 @@
     "nyc": "~14.1.1",
     "object-hash": "^2.1.1",
     "rxjs": "^6.6.3",
+    "tinymce": "^5.10.2",
     "tslib": "^2.3.0",
     "webpack": "^5.4.0",
     "zone.js": "~0.11.4"
