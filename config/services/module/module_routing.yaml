@@ -135,7 +135,7 @@ parameters:
     knowledge-base:
       index: true
       list: true
-      record: false
+      record: true
     events:
       index: true
       list: true
