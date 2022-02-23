@@ -55,7 +55,7 @@ array(
           3 => 'FIND_DUPLICATES',
         ),
       ),
-      'maxColumns' => '2',
+      'maxColumns' => '1',
       'widths' =>
       array(
         0 =>
@@ -108,7 +108,7 @@ array(
           array(
             'name' => 'description',
             'label' => 'LBL_DESCRIPTION',
-            'customCode' => '{$fields.description.value}',
+            'type' => 'html',
           ),
         ),
         3 =>
