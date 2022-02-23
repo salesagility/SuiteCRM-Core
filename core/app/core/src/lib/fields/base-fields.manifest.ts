@@ -97,6 +97,10 @@ import {PasswordDetailFieldModule} from './password/templates/detail/password.mo
 import {PasswordEditFieldModule} from './password/templates/edit/password.module';
 import {PasswordDetailFieldComponent} from './password/templates/detail/password.component';
 import {PasswordEditFieldComponent} from './password/templates/edit/password.component';
+import {TinymceDetailFieldModule} from './tinymce/templates/detail/tinymce.module';
+import {TinymceEditFieldModule} from './tinymce/templates/edit/tinymce.module';
+import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.component';
+import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -134,7 +138,9 @@ export const baseFieldModules = [
     BooleanDetailFieldModule,
     BooleanEditFieldModule,
     BooleanFilterFieldModule,
-    HtmlDetailFieldModule
+    HtmlDetailFieldModule,
+    TinymceDetailFieldModule,
+    TinymceEditFieldModule
 ];
 export const baseFieldComponents = [
     VarcharDetailFieldComponent,
@@ -172,7 +178,9 @@ export const baseFieldComponents = [
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent,
     BooleanFilterFieldComponent,
-    HtmlDetailFieldComponent
+    HtmlDetailFieldComponent,
+    TinymceDetailFieldComponent,
+    TinymceEditFieldComponent
 ];
 
 export const baseViewFieldsMap: FieldComponentMap = {
@@ -244,5 +252,6 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.detail': BooleanDetailFieldComponent,
     'bool.edit': BooleanEditFieldComponent,
     'bool.filter': BooleanFilterFieldComponent,
-    'html.detail': HtmlDetailFieldComponent
+    'html.detail': TinymceDetailFieldComponent,
+    'html.edit': TinymceEditFieldComponent
 };

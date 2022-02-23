@@ -123,6 +123,7 @@ export interface FieldMetadata {
     options$?: Observable<Option[]>;
     extraOptions?: Option[];
     onClick?: FieldClickCallback;
+    tinymce?: any;
 }
 
 export interface FieldAttributeMap {

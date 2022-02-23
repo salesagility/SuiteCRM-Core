@@ -5,5 +5,31 @@ parameters:
     loading_display_delay: 900
     table_loading_display_delay: 800
     modal_buttons_collapse_breakpoint: 4
+    tinymce:
+      edit:
+        base_url: './dist/tinymce'
+        suffix: '.min'
+        modelEvents: 'change'
+        ignoreEvents: "onKeyDown,onKeyPress,onKeyUp,onSelectionChange"
+        height: 500
+        deprecation_warnings: false
+        menubar: false
+        plugins:
+          - 'advlist autolink lists link image charmap print preview anchor'
+          - 'searchreplace visualblocks code fullscreen'
+          - 'insertdatetime media table paste code help wordcount'
+        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | help'
+        toolbar_mode: 'floating'
+        mobile:
+          theme: 'mobile'
+      detail:
+        base_url: './dist/tinymce'
+        suffix: '.min'
+        deprecation_warnings: false
+        readonly: true
+        toolbar: false
+        menubar: false
+        statusbar: false
+        inline: true
     navigation_max_module_recently_viewed: 5
     navigation_max_module_favorites: 5
