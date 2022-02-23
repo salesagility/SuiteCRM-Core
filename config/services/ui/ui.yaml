@@ -1,6 +1,7 @@
 parameters:
   ui:
     alert_timeout: 3
+    user_preferences_save_delay: 5000
     modal_buttons_collapse_breakpoint: 4
     navigation_max_module_recently_viewed: 5
     navigation_max_module_favorites: 5
