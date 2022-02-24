@@ -68,6 +68,7 @@ export class TableAdapter {
             selection$: this.store.selection$,
             sort$: this.store.sort$,
             maxColumns$: of(4),
+            loading$: this.store.recordList.loading$,
 
             dataSource: this.store.recordList,
             selection: this.store.recordList,

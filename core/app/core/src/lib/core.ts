@@ -458,6 +458,8 @@ export * from './services/record/validation/validators/required.validator';
 export * from './services/statistics/series/mapper/series-mapper.service';
 export * from './services/statistics/series/mapper/series-traverser.service';
 export * from './services/statistics/series/mapper/data-type-mapper/data-type.series-mapper';
+export * from './services/ui/loading-buffer/loading-buffer.factory';
+export * from './services/ui/loading-buffer/loading-buffer.service';
 export * from './services/ui/max-columns-calculator/max-columns-calculator.service';
 export * from './services/ui/screen-size-observer/screen-size-observer.service';
 export * from './services/unit-converters/data-type.unit-converter.service';

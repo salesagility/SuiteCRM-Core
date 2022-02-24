@@ -25,13 +25,16 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone} from 'common';
 import {StateStore} from '../state';
+import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
+import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
 
 export interface AppState {
     loading?: boolean;
+    initialAppLoading?: boolean;
     module?: string;
     view?: string;
     loaded?: boolean;
@@ -40,6 +43,7 @@ export interface AppState {
 
 const initialState: AppState = {
     loading: false,
+    initialAppLoading: true,
     module: null,
     view: null,
     loaded: false,
@@ -59,6 +63,7 @@ export class AppStateStore implements StateStore {
     loading$: Observable<boolean>;
     module$: Observable<string>;
     view$: Observable<string>;
+    initialAppLoading$: Observable<boolean>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -68,18 +73,25 @@ export class AppStateStore implements StateStore {
     protected store = new BehaviorSubject<AppState>(internalState);
     protected state$ = this.store.asObservable();
     protected loadingQueue = {};
+    protected loadingBuffer: LoadingBuffer;
+    protected subs: Subscription[] = [];
 
-    constructor() {
+    constructor(protected loadingBufferFactory: LoadingBufferFactory) {
 
         this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
         this.module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
         this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
+        this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
 
-        this.vm$ = combineLatest([this.loading$, this.module$, this.view$]).pipe(
-            map(([loading, module, view]) => ({loading, module, view, loaded: internalState.loaded}))
+        this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
+            map(([loading, module, view, initialAppLoading]) => ({
+                loading,
+                module,
+                view,
+                loaded: internalState.loaded,
+                initialAppLoading
+            }))
         );
-
-        this.updateState({...internalState, loading: false});
     }
 
     /**
@@ -92,30 +104,53 @@ export class AppStateStore implements StateStore {
     public clear(): void {
         this.loadingQueue = {};
         this.updateState(deepClone(initialState));
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     public clearAuthBased(): void {
+    }
+
+    public init(): void {
+        this.initLoadingBuffer();
     }
 
     /**
      * Update loading status for given key
      *
      * @param {string} key to update
-     * @param {string} loading status to set
+     * @param {boolean} loading status to set
+     * @param {boolean} delay
      */
-    public updateLoading(key: string, loading: boolean): void {
+    public updateLoading(key: string, loading: boolean, delay = true): void {
+
+        this.initLoadingBuffer();
 
         if (loading === true) {
             this.addToLoadingQueue(key);
-            this.updateState({...internalState, loading});
+
+            this.loadingBuffer.updateLoading(loading);
+            if (!delay) {
+                this.updateState({...internalState, loading});
+            }
+
             return;
         }
 
         this.removeFromLoadingQueue(key);
 
         if (this.hasActiveLoading()) {
+            this.loadingBuffer.updateLoading(loading);
             this.updateState({...internalState, loading});
         }
+    }
+
+    /**
+     * Update loading status for given key
+     *
+     * @param {boolean} initialAppLoading status to set
+     */
+    public updateInitialAppLoading(initialAppLoading: boolean): void {
+        this.updateState({...internalState, initialAppLoading});
     }
 
     /**
@@ -193,6 +228,19 @@ export class AppStateStore implements StateStore {
     /**
      * Internal API
      */
+
+    /**
+     * Init loading buffer
+     * @protected
+     */
+    protected initLoadingBuffer(): void {
+        if (!this.loadingBuffer) {
+            this.loadingBuffer = this.loadingBufferFactory.create();
+            this.subs.push(this.loadingBuffer.loading$.subscribe((loading) => {
+                this.updateState({...internalState, loading});
+            }));
+        }
+    }
 
     /**
      *  Check if there are still active loadings

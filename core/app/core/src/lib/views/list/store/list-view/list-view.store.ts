@@ -212,15 +212,6 @@ export class ListViewStore extends ViewStore implements StateStore {
                 return this.vm;
             }));
 
-        this.subs.push(this.recordList.loading$.subscribe(
-            (loading: boolean) => {
-                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, loading);
-            },
-            () => {
-                this.appStateStore.updateLoading(`${this.internalState.module}-list-fetch`, false);
-            }
-        ));
-
         this.columns = new BehaviorSubject<ColumnDefinition[]>([]);
         this.columns$ = this.columns.asObservable();
 

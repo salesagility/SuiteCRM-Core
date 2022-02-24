@@ -66,6 +66,7 @@ export class AppComponent {
             routerEvent instanceof NavigationCancel ||
             routerEvent instanceof NavigationError) {
             this.appStateStore.updateLoading('router-navigation', false);
+            this.appStateStore.updateInitialAppLoading(false);
         }
     }
 

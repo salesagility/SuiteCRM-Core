@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {combineLatest, Observable, of} from 'rxjs';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
     ColumnDefinition,
@@ -39,6 +39,8 @@ import {
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
+import {LoadingBufferFactory} from '../../../services/ui/loading-buffer/loading-buffer.factory';
+import {LoadingBuffer} from '../../../services/ui/loading-buffer/loading-buffer.service';
 
 interface TableViewModel {
     columns: ColumnDefinition[];
@@ -54,19 +56,23 @@ interface TableViewModel {
     selector: 'scrm-table-body',
     templateUrl: 'table-body.component.html',
 })
-export class TableBodyComponent implements OnInit {
+export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
+    protected loadingBuffer: LoadingBuffer;
+    protected subs: Subscription[] = [];
 
     constructor(
-        protected fieldManager: FieldManager
+        protected fieldManager: FieldManager,
+        protected loadingBufferFactory: LoadingBufferFactory
     ) {
+        this.loadingBuffer = this.loadingBufferFactory.create('table_loading_display_delay');
     }
 
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
-        const loading$ = this.config.loading$ || of(false).pipe(shareReplay(1));
+        let loading$ = this.initLoading();
 
         this.vm$ = combineLatest([
             this.config.columns,
@@ -95,7 +101,7 @@ export class TableBodyComponent implements OnInit {
                 const columnsDefs = this.buildDisplayColumns(columns);
                 displayedColumns.push(...columnsDefs);
 
-                    displayedColumns.push('line-actions');
+                displayedColumns.push('line-actions');
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
@@ -111,6 +117,10 @@ export class TableBodyComponent implements OnInit {
                 };
             })
         );
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     toggleSelection(id: string): void {
@@ -174,6 +184,19 @@ export class TableBodyComponent implements OnInit {
         }
 
         return this.fieldManager.addField(record, column);
+    }
+
+    protected initLoading(): Observable<boolean> {
+        let loading$ = of(false).pipe(shareReplay(1));
+
+        if (this.config.loading$) {
+            this.subs.push(this.config.loading$.subscribe(loading => {
+                this.loadingBuffer.updateLoading(loading);
+            }));
+
+            loading$ = this.loadingBuffer.loading$;
+        }
+        return loading$;
     }
 }
 

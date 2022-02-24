@@ -141,7 +141,7 @@ export class AuthService {
      * @param {boolean} redirect to home
      */
     public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
-        this.appStateStore.updateLoading('logout', true);
+        this.appStateStore.updateLoading('logout', true, false);
 
         const logoutUrl = 'logout';
         const body = new HttpParams();
@@ -158,7 +158,7 @@ export class AuthService {
                     return throwError(err);
                 }),
                 finalize(() => {
-                    this.appStateStore.updateLoading('logout', false);
+                    this.appStateStore.updateLoading('logout', false, false);
                     if (redirect === true) {
                         this.router.navigate(['/Login']).finally();
                     }

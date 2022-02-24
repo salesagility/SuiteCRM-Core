@@ -27,6 +27,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 import {
+    AppStateStore,
     AuthGuard,
     BaseMetadataResolver,
     BaseModuleResolver,
@@ -35,10 +36,10 @@ import {
     ClassicViewUiComponent,
     CreateRecordComponent,
     ExtensionLoader,
+    InstallAuthGuard,
     InstallViewComponent,
     ListComponent,
     LoginAuthGuard,
-    InstallAuthGuard,
     LoginUiComponent,
     RecordComponent,
     SystemConfigStore
@@ -52,6 +53,7 @@ export class AppInit {
     constructor(
         private router: Router,
         protected systemConfigStore: SystemConfigStore,
+        protected appStore: AppStateStore,
         protected injector: Injector,
         protected extensionLoader: ExtensionLoader
     ) {
@@ -62,6 +64,7 @@ export class AppInit {
         // eslint-disable-next-line compat/compat
         return new Promise<void>((resolve) => {
             this.systemConfigStore.load().subscribe(() => {
+                this.appStore.init();
 
                 this.extensionLoader.load(this.injector).pipe(take(1)).subscribe(() => {
                     const routes = this.router.config;

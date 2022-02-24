@@ -1,7 +1,9 @@
 parameters:
   ui:
     alert_timeout: 3
-    user_preferences_save_delay: 5000
+    user_preferences_save_delay: 500
+    loading_display_delay: 900
+    table_loading_display_delay: 800
     modal_buttons_collapse_breakpoint: 4
     navigation_max_module_recently_viewed: 5
     navigation_max_module_favorites: 5

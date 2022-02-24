@@ -25,44 +25,21 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
-import {Process, ProcessService} from '../../process.service';
-import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {SystemConfigStore} from '../../../store/system-config/system-config.store';
+import {LoadingBuffer} from './loading-buffer.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RecoverPasswordService {
+export class LoadingBufferFactory {
 
-    protected processType = 'recover-password';
-
-    constructor(private processService: ProcessService, private appStateStore: AppStateStore) {
+    constructor(protected config: SystemConfigStore) {
     }
 
-    /**
-     * Send recover password request
-     *
-     * @param {string} userName to check
-     * @param {string} email to check
-     * @returns {{}} Observable<Process>
-     */
-    public run(userName: string, email: string): Observable<Process> {
-        const options = {
-            username: userName,
-            useremail: email
-        };
-
-        this.appStateStore.updateLoading('recover-password', true, false);
-
-        return this.processService
-            .submit(this.processType, options)
-            .pipe(
-                tap(() => this.appStateStore.updateLoading('recover-password', false, false)),
-                catchError(err => {
-                    this.appStateStore.updateLoading('recover-password', false, false);
-                    throw err;
-                }),
-            );
+    create(delayConfigKey: string = 'loading_display_delay'): LoadingBuffer {
+        return new LoadingBuffer(
+            this.config,
+            delayConfigKey
+        );
     }
 }

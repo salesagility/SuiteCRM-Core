@@ -27,7 +27,7 @@
 -->
 <div class="app-shell">
     <ng-container *ngIf="(appState$ | async) as appState">
-        <app-full-page-spinner *ngIf="appState.loading"></app-full-page-spinner>
+        <app-full-page-spinner *ngIf="appState.loading || appState.initialAppLoading"></app-full-page-spinner>
     </ng-container>
     <scrm-navbar-ui></scrm-navbar-ui>
     <scrm-message-ui></scrm-message-ui>
