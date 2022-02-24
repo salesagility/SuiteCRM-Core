@@ -110,6 +110,10 @@ class FilterMapper
                     $values = [$value];
                 }
 
+                if (is_array($value)) {
+                    $values = $value;
+                }
+
                 $filter['values'] = $values;
                 $filter['fieldType'] = $contents["field_type_${fieldKey}"] ?? '';
                 $filters[$fieldKey] = $filter;
