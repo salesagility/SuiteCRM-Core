@@ -28,6 +28,7 @@ import {Observable} from 'rxjs';
 import {SubpanelStoreMap} from '../../store/subpanel/subpanel.store';
 
 export interface SubpanelContainerConfig {
+    parentModule?: string;
     subpanels$: Observable<SubpanelStoreMap>;
     sidebarActive$: Observable<boolean>;
 }

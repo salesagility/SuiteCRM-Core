@@ -28,6 +28,7 @@ import {Injectable} from '@angular/core';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelTableAdapter} from './table.adapter';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
+import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 
 
 @Injectable({
@@ -35,13 +36,17 @@ import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory'
 })
 export class SubpanelTableAdapterFactory {
 
-    constructor(protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory) {
+    constructor(
+        protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory,
+        protected preferences: UserPreferenceStore
+    ) {
     }
 
     create(store: SubpanelStore): SubpanelTableAdapter {
         return new SubpanelTableAdapter(
             store,
-            this.lineActionsAdapterFactory
+            this.lineActionsAdapterFactory,
+            this.preferences
         );
     }
 }

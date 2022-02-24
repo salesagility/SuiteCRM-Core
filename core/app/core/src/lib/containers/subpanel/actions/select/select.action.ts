@@ -27,7 +27,9 @@
 import {Injectable} from '@angular/core';
 import {Record, ViewMode} from 'common';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
-import {RecordListModalComponent} from "../../../record-list-modal/components/record-list-modal/record-list-modal.component";
+import {
+    RecordListModalComponent
+} from "../../../record-list-modal/components/record-list-modal/record-list-modal.component";
 import {RecordListModalResult} from "../../../record-list-modal/components/record-list-modal/record-list-modal.model";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {take} from 'rxjs/operators';
@@ -68,6 +70,7 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
         const modal = this.modalService.open(RecordListModalComponent, {size: 'xl', scrollable: true});
 
         modal.componentInstance.module = data.module;
+        modal.componentInstance.parentModule = data?.parentModule ?? '';
 
         modal.result.then((result: RecordListModalResult) => {
 

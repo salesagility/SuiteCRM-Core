@@ -26,18 +26,20 @@
 
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ActionDataSource, ColumnDefinition, SortDirection} from 'common';
+import {ActionDataSource, ColumnDefinition, SortDirection, SortingSelection} from 'common';
 import {map} from 'rxjs/operators';
 import {TableConfig} from '../../../components/table/table.model';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
+import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 
 @Injectable()
 export class SubpanelTableAdapter {
 
     constructor(
         protected store: SubpanelStore,
-        protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory
+        protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory,
+        protected preferences: UserPreferenceStore
     ) {
     }
 
@@ -63,6 +65,13 @@ export class SubpanelTableAdapter {
 
             updateSorting: (orderBy: string, sortOrder: SortDirection): void => {
                 this.store.recordList.updateSorting(orderBy, sortOrder);
+
+                const parentModule = this.store.parentModule;
+                const module = this.store.recordList.getModule();
+                const sort = {orderBy, sortOrder} as SortingSelection;
+
+                this.preferences.setUi(parentModule, module + '-subpanel-sort', sort);
+
             },
         } as TableConfig;
     }

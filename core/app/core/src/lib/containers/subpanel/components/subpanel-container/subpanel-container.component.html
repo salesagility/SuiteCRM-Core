@@ -58,15 +58,16 @@
     </ngb-accordion>
 
     <div id="sub-panels">
-        <ng-container *ngFor="let item of vm.subpanels | keyvalue">
-
-            <scrm-subpanel class="sub-panel"
-                           [store]="item.value"
-                           [maxColumns$]="maxColumns$"
-                           *ngIf="item.value.show">
-            </scrm-subpanel>
-
+        <ng-container *ngFor="let subpanelKey of this.openSubpanels">
+            <ng-container *ngIf="(vm.subpanels[subpanelKey]) as item">
+                <scrm-subpanel *ngIf="item.show"
+                               [maxColumns$]="maxColumns$"
+                               [store]="item"
+                               class="sub-panel">
+                </scrm-subpanel>
+            </ng-container>
         </ng-container>
+
     </div>
 
 </ng-container>

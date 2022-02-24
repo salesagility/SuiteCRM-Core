@@ -31,9 +31,10 @@ import {SubpanelContainerConfig} from './subpanel-container.model';
 import {LanguageStore, LanguageStrings} from '../../../../store/language/language.store';
 import {SubpanelStore, SubpanelStoreMap} from '../../store/subpanel/subpanel.store';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
-import {ViewContext, WidgetMetadata} from 'common';
+import {isTrue, ViewContext, WidgetMetadata} from 'common';
 import {GridWidgetConfig, StatisticsQueryArgs} from '../../../../components/grid-widget/grid-widget.component';
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 @Component({
     selector: 'scrm-subpanel-container',
@@ -51,16 +52,22 @@ export class SubpanelContainerComponent implements OnInit {
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
 
     vm$: Observable<{ subpanels: SubpanelStoreMap }>;
-    private localStorageKey: string = 'subpanel-state';
+    openSubpanels: string[] = [];
 
     constructor(
         protected languageStore: LanguageStore,
         protected maxColumnCalculator: MaxColumnsCalculator,
-        protected localStorage: LocalStorageService
+        protected localStorage: LocalStorageService,
+        protected preferences: UserPreferenceStore
     ) {
     }
 
     ngOnInit(): void {
+        const module = this?.config?.parentModule ?? 'default';
+        this.isCollapsed = isTrue(this.preferences.getUi(module, 'subpanel-container-collapse') ?? false);
+
+        this.openSubpanels = this.preferences.getUi(module, 'subpanel-container-open-subpanels') ?? [];
+
         this.vm$ = this.config.subpanels$.pipe(
             map((subpanelsMap) => ({
                 subpanels: subpanelsMap
@@ -70,31 +77,22 @@ export class SubpanelContainerComponent implements OnInit {
                     return;
                 }
 
-                Object.keys(subpanelsMap.subpanels).forEach(subpanelKey => {
+                if (!this.openSubpanels || this.openSubpanels.length < 1) {
+                    return;
+                }
 
+                this.openSubpanels.forEach(subpanelKey => {
                     const subpanel = subpanelsMap.subpanels[subpanelKey];
 
-                    if (subpanel.show) {
+                    if (!subpanel || subpanel.show) {
                         return;
                     }
 
-                    // check the subpanel state on local storage
-                    let storedSubpanelState: boolean = false;
-                    const storage = this.localStorage.get(this.localStorageKey);
-                    const storageModule = storage && storage[subpanel.parentModule];
+                    subpanel.show = true;
+                    subpanel.load().pipe(take(1)).subscribe();
 
-                    if (storageModule
-                        && Object.keys(storageModule).length
-                        && (subpanelKey in storageModule)) {
-                        storedSubpanelState = storageModule[subpanelKey];
-                    }
+                });
 
-                    // if present on local storage
-                    if (storedSubpanelState) {
-                        subpanel.show = true;
-                        subpanel.load().pipe(take(1)).subscribe();
-                    }
-                })
             }));
 
         this.maxColumns$ = this.getMaxColumns();
@@ -107,39 +105,22 @@ export class SubpanelContainerComponent implements OnInit {
     toggleSubPanels(): void {
         this.isCollapsed = !this.isCollapsed;
         this.toggleIcon = (this.isCollapsed) ? 'arrow_up_filled' : 'arrow_down_filled';
-    }
-
-    /**
-     * Store the data in local storage
-     *
-     * @param {string} module to store in
-     * @param {string} storageKey to store in
-     * @param {object} data object to be stored
-     */
-    protected storageSave(module: string, storageKey: string, data: any): void {
-        let storage = this.localStorage.get(storageKey);
-
-        if (!storage) {
-            storage = {};
-        }
-
-        storage[module] = {...storage[module], ...data};
-
-        this.localStorage.set(storageKey, storage);
+        const module = this?.config?.parentModule ?? 'default';
+        this.preferences.setUi(module, 'subpanel-container-collapse', this.isCollapsed);
     }
 
     showSubpanel(key: string, item: SubpanelStore): void {
         item.show = !item.show;
 
-        // store in local storage by module and subpanel key
-
-        const subpanel: { [key: string]: boolean } = {};
-        subpanel[key] = item.show;
-        this.storageSave(item.parentModule, this.localStorageKey, subpanel);
-
         if (item.show) {
+            this.openSubpanels.push(key);
             item.load().pipe(take(1)).subscribe();
+        } else {
+            this.openSubpanels = this.openSubpanels.filter(subpanelKey => subpanelKey != key);
         }
+
+        const module = this?.config?.parentModule ?? 'default';
+        this.preferences.setUi(module, 'subpanel-container-open-subpanels', this.openSubpanels);
     }
 
     getGridConfig(vm: SubpanelStore): GridWidgetConfig {
@@ -172,7 +153,6 @@ export class SubpanelContainerComponent implements OnInit {
             });
 
         });
-
 
         return {
             rowClass: 'statistics-sidebar-widget-row',

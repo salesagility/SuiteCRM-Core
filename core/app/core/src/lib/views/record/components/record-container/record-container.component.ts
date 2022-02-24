@@ -30,7 +30,9 @@ import {map} from 'rxjs/operators';
 import {ViewContext, WidgetMetadata} from 'common';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStrings} from '../../../../store/language/language.store';
-import {SubpanelContainerConfig} from '../../../../containers/subpanel/components/subpanel-container/subpanel-container.model';
+import {
+    SubpanelContainerConfig
+} from '../../../../containers/subpanel/components/subpanel-container/subpanel-container.model';
 import {SidebarWidgetAdapter} from '../../adapters/sidebar-widget.adapter';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {RecordContentAdapter} from '../../adapters/record-content.adapter';
@@ -77,6 +79,7 @@ export class RecordContainerComponent implements OnInit {
 
     getSubpanelsConfig(): SubpanelContainerConfig {
         return {
+            parentModule: this.recordViewStore.getModuleName(),
             subpanels$: this.recordViewStore.subpanels$,
             sidebarActive$: this.recordViewStore.widgets$
         } as SubpanelContainerConfig;

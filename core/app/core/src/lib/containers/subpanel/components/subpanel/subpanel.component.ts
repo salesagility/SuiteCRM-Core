@@ -34,6 +34,7 @@ import {LanguageStore} from '../../../../store/language/language.store';
 import {SubpanelStore} from '../../store/subpanel/subpanel.store';
 import {SubpanelActionManager} from './action-manager.service';
 import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 @Component({
     selector: 'scrm-subpanel',
@@ -54,7 +55,8 @@ export class SubpanelComponent implements OnInit {
     constructor(
         protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
-        protected tableAdapterFactory: SubpanelTableAdapterFactory
+        protected tableAdapterFactory: SubpanelTableAdapterFactory,
+        protected preferences: UserPreferenceStore
     ) {
     }
 
@@ -63,6 +65,15 @@ export class SubpanelComponent implements OnInit {
         this.tableConfig = this.adapter.getTable();
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
+        }
+
+        const parentModule = this.store.parentModule;
+        const module = this.store.recordList.getModule();
+
+        const sort = this.preferences.getUi(parentModule, module + '-subpanel-sort');
+
+        if (sort) {
+            this.store.recordList.updateSorting(sort.orderBy, sort.sortOrder);
         }
 
         this.config$ = of(this.getButtonGroupConfig(this.buildAction())).pipe(shareReplay(1));
