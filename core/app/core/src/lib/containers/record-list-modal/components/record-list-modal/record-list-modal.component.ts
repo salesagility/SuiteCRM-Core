@@ -58,6 +58,7 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
 
     @Input() titleKey = '';
     @Input() module: string;
+    @Input() parentModule: string;
     @Input() adapter: RecordListModalTableAdapterInterface = null;
     @Input() filterAdapter: ModalRecordFilterAdapter = null;
 
@@ -128,7 +129,7 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     }
 
     protected initStore(): void {
-        this.store.init(this.module);
+        this.store.init(this.module, this.parentModule ?? '');
         this.loading$ = this.store.metadataLoading$;
 
         this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged(), skip(1)).subscribe(selection => {

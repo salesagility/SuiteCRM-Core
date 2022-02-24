@@ -26,16 +26,19 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {ColumnDefinition, RecordListMeta, SearchMeta} from 'common';
+import {ColumnDefinition, emptyObject, RecordListMeta, SearchMeta} from 'common';
 import {map, take, tap} from 'rxjs/operators';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {StateStore} from '../../../../store/state';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 @Injectable()
 export class RecordListModalStore implements StateStore {
 
+    module: string = '';
+    parentModule: string = '';
     recordList: RecordListStore;
     listMetadata$: Observable<RecordListMeta>;
     searchMetadata$: Observable<SearchMeta>;
@@ -48,6 +51,7 @@ export class RecordListModalStore implements StateStore {
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
         protected meta: MetadataStore,
+        protected preferences: UserPreferenceStore
     ) {
         this.recordList = listStoreFactory.create();
         this.loading$ = this.recordList.loading$;
@@ -70,8 +74,13 @@ export class RecordListModalStore implements StateStore {
      * Returns observable to be used in resolver if needed
      *
      * @param {string} module name
+     * @param {string} parentModule
      */
-    public init(module: string): void {
+    public init(module: string, parentModule: string = ''): void {
+        this.module = module;
+        this.parentModule = parentModule;
+
+        this.loadCurrentSort();
 
         this.metadataLoadingState.next(true);
         const meta$ = this.meta.getMetadata(module).pipe(
@@ -98,5 +107,62 @@ export class RecordListModalStore implements StateStore {
     public load(useCache = true): Observable<RecordList> {
 
         return this.recordList.load(useCache);
+    }
+
+    /**
+     * Load current sorting
+     */
+    public loadCurrentSort(): void {
+        if (!this.parentModule) {
+            return;
+        }
+
+        const currentSort = this.loadPreference(this.parentModule, 'current-sort');
+        if (!currentSort || emptyObject(currentSort)) {
+            return;
+        }
+
+        this.recordList.sort = currentSort;
+    }
+
+    /**
+     * Load current sorting
+     */
+    public saveCurrentSort(): void {
+        if (!this.parentModule) {
+            return;
+        }
+
+        this.savePreference(this.parentModule, 'current-sort', this.recordList.sort);
+    }
+
+    /**
+     * Build ui user preference key
+     * @param storageKey
+     * @protected
+     */
+    protected getPreferenceKey(storageKey: string): string {
+        return this.module + '-record-list-modal-' + storageKey;
+    }
+
+    /**
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @protected
+     */
+    protected savePreference(module: string, storageKey: string, value: any): void {
+        this.preferences.setUi(module, this.getPreferenceKey(storageKey), value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param parentModule
+     * @param storageKey
+     * @protected
+     */
+    protected loadPreference(parentModule: string, storageKey: string): any {
+        return this.preferences.getUi(parentModule, this.getPreferenceKey(storageKey));
     }
 }

@@ -60,6 +60,7 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
 
             updateSorting: (orderBy: string, sortOrder: SortDirection): void => {
                 store.recordList.updateSorting(orderBy, sortOrder);
+                store.saveCurrentSort();
             },
         } as TableConfig;
     }

@@ -28,6 +28,7 @@ import {Injectable} from '@angular/core';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {RecordListModalStore} from './record-list-modal.store';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 @Injectable({
     providedIn: 'root',
@@ -37,10 +38,11 @@ export class RecordListModalStoreFactory {
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
         protected metadataStore: MetadataStore,
+        protected preferences: UserPreferenceStore
     ) {
     }
 
     create(): RecordListModalStore {
-        return new RecordListModalStore(this.listStoreFactory, this.metadataStore);
+        return new RecordListModalStore(this.listStoreFactory, this.metadataStore, this.preferences);
     }
 }
