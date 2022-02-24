@@ -80,7 +80,7 @@ export class TableAdapter {
 
             updateSorting: (orderBy: string, sortOrder: SortDirection): void => {
                 this.store.recordList.updateSorting(orderBy, sortOrder);
-                this.store.updateLocalStorage();
+                this.store.updateSortLocalStorage();
             },
         } as TableConfig;
     }

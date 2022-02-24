@@ -28,12 +28,14 @@ import {
     Action,
     ColumnDefinition,
     deepClone,
+    emptyObject,
     ListViewMeta,
     Pagination,
     Record,
     RecordSelection,
     SearchCriteria,
     SelectionStatus,
+    SortDirection,
     SortingSelection,
     ViewContext
 } from 'common';
@@ -58,6 +60,8 @@ import {FilterListStore} from '../../../../store/saved-filters/filter-list.store
 import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-list.store.factory';
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {isArray} from 'lodash-es';
 
 export interface ListViewData {
     records: Record[];
@@ -167,6 +171,7 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected modalService: NgbModal,
         protected filterListStoreFactory: FilterListStoreFactory,
         protected confirmation: ConfirmationModalService,
+        protected preferences: UserPreferenceStore,
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -216,12 +221,7 @@ export class ListViewStore extends ViewStore implements StateStore {
             }
         ));
 
-        let listViewColumns: ColumnDefinition[] = [];
-        this.subs.push(metadataStore.listViewColumns$.subscribe(cols => {
-            listViewColumns = cols;
-        }));
-
-        this.columns = new BehaviorSubject<ColumnDefinition[]>(listViewColumns);
+        this.columns = new BehaviorSubject<ColumnDefinition[]>([]);
         this.columns$ = this.columns.asObservable();
 
         this.initDataUpdateState();
@@ -262,6 +262,7 @@ export class ListViewStore extends ViewStore implements StateStore {
     }
 
     set showSidebarWidgets(show: boolean) {
+        this.savePreference(this.getModuleName(), 'show-sidebar-widgets', show);
         this.updateState({
             ...this.internalState,
             showSidebarWidgets: show
@@ -356,8 +357,14 @@ export class ListViewStore extends ViewStore implements StateStore {
 
         this.calculateShowWidgets();
 
-        this.storageLoad(module, 'active-filters', (storage) => this.setFilters(storage, false));
-        this.storageLoad(module, 'sort-selection', (storage) => this.recordList.sort = storage);
+        this.recordList.sort = {
+            orderBy: this?.metadata?.listView?.orderBy ?? '',
+            sortOrder: this?.metadata?.listView?.sortOrder ?? 'NONE' as SortDirection
+        } as SortingSelection;
+
+        this.loadCurrentFilter(module);
+        this.loadCurrentSort(module);
+        this.loadCurrentDisplayedColumns();
 
         return this.load();
     }
@@ -390,7 +397,6 @@ export class ListViewStore extends ViewStore implements StateStore {
             let direction = this.recordList.mapSortOrder(sortOrder);
 
             this.recordList.updateSorting(orderBy, direction, false);
-            this.updateLocalStorage();
         }
 
         this.updateSearchCriteria(reload)
@@ -466,15 +472,44 @@ export class ListViewStore extends ViewStore implements StateStore {
         const filter = filters[filterKey];
 
         this.recordList.updateSearchCriteria(filter.criteria, reload);
-        if (reload) {
-            this.updateLocalStorage();
-        }
+        this.updateFilterLocalStorage();
     }
 
-    public updateLocalStorage(): void {
-        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
-        this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
+    public updateFilterLocalStorage(): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-filters', this.internalState.activeFilters);
     }
+
+    public updateSortLocalStorage(): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-sort', this.recordList.sort);
+    }
+
+    /**
+     * Updated displayed columns' ui user preference
+     * @param display
+     */
+    public updateDisplayedColumnsPreference(display: string[]): void {
+        const module = this.internalState.module;
+        this.savePreference(module, 'displayed-columns', display);
+    }
+
+    /**
+     * Get displayed columns' ui user preference
+     */
+    public getDisplayedColumnsPreference(): string[] {
+        const module = this.internalState.module;
+        const displayedColumns = this.loadPreference(module, 'displayed-columns');
+
+        if (!isArray(displayedColumns) || !displayedColumns || !displayedColumns.length) {
+            return null;
+        }
+
+        return (displayedColumns as string[]);
+    }
+
 
     public triggerDataUpdate(): void {
         this.dataUpdateState.next(true);
@@ -487,9 +522,10 @@ export class ListViewStore extends ViewStore implements StateStore {
      * @returns {object} Observable<ListViewState>
      */
     public load(useCache = true): Observable<RecordList> {
+        const module = this.internalState.module;
 
-        this.storageSave(this.internalState.module, 'active-filters', this.internalState.activeFilters);
-        this.storageSave(this.internalState.module, 'sort-selection', this.recordList.sort);
+        this.savePreference(module, 'current-filters', this.internalState.activeFilters);
+        this.savePreference(module, 'current-sort', this.recordList.sort);
 
         return this.recordList.load(useCache);
     }
@@ -508,59 +544,8 @@ export class ListViewStore extends ViewStore implements StateStore {
     }
 
     /**
-     * Calculate if widgets are to display
+     * Open columns chooser modal
      */
-    protected calculateShowWidgets(): void {
-        let show = false;
-
-        const meta = this.metadataStore.get() || {};
-        const listViewMeta = meta.listView || {} as ListViewMeta;
-        const sidebarWidgetsConfig = listViewMeta.sidebarWidgets || [];
-
-        if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0) {
-            show = true;
-        }
-
-        this.showSidebarWidgets = show;
-        this.widgets = show;
-    }
-
-    /**
-     * Store the data in local storage
-     *
-     * @param {string} module to store in
-     * @param {string} storageKey to store in
-     * @param {} data to store
-     */
-    protected storageSave(module: string, storageKey: string, data: any): void {
-        let storage = this.localStorage.get(storageKey);
-
-        if (!storage) {
-            storage = {};
-        }
-
-        storage[module] = data;
-
-        this.localStorage.set(storageKey, storage);
-    }
-
-    /**
-     * Store the key in local storage
-     *
-     * @param {string} module to load from
-     * @param {string} storageKey from load from
-     * @param {Function} loader to store in
-     */
-    protected storageLoad(module: string, storageKey: string, loader: Function): void {
-        const storage = this.localStorage.get(storageKey);
-
-        if (!storage || !storage[module]) {
-            return;
-        }
-
-        loader(storage[module]);
-    }
-
     openColumnChooserDialog(): void {
 
         const modalRef = this.modalService.open(ColumnChooserComponent, {
@@ -583,6 +568,9 @@ export class ListViewStore extends ViewStore implements StateStore {
         modalRef.componentInstance.hidden = hiddenColumns;
 
         modalRef.result.then((result) => {
+            if (!result.displayed || !result.hidden) {
+                return;
+            }
 
             let allColumns: ColumnDefinition[] = [];
             const selectedDisplayColumns: ColumnDefinition[] = result.displayed;
@@ -596,7 +584,130 @@ export class ListViewStore extends ViewStore implements StateStore {
             });
             allColumns.push(...selectedDisplayColumns, ...selectedHideColumns);
             this.columns.next(allColumns);
+
+            const displayedCols = selectedDisplayColumns.map(col => col.name);
+            this.updateDisplayedColumnsPreference(displayedCols);
         });
+    }
+
+    /**
+     * Calculate if widgets are to display
+     */
+    protected calculateShowWidgets(): void {
+        let show = false;
+
+        const meta = this.metadataStore.get() || {};
+        const listViewMeta = meta.listView || {} as ListViewMeta;
+        const sidebarWidgetsConfig = listViewMeta.sidebarWidgets || [];
+
+        if (sidebarWidgetsConfig && sidebarWidgetsConfig.length > 0) {
+            show = true;
+        }
+
+        const showSidebarWidgets = this.loadPreference(this.getModuleName(), 'show-sidebar-widgets') ?? null;
+
+        if (showSidebarWidgets !== null) {
+            this.showSidebarWidgets = showSidebarWidgets;
+        } else {
+            this.showSidebarWidgets = show;
+        }
+
+        this.widgets = show;
+    }
+
+    /**
+     * Build ui user preference key
+     * @param storageKey
+     * @protected
+     */
+    protected getPreferenceKey(storageKey: string): string {
+        return 'listview-' + storageKey;
+    }
+
+    /**
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @protected
+     */
+    protected savePreference(module: string, storageKey: string, value: any): void {
+        this.preferences.setUi(module, this.getPreferenceKey(storageKey), value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param module
+     * @param storageKey
+     * @protected
+     */
+    protected loadPreference(module: string, storageKey: string): any {
+        return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
+    }
+
+    /**
+     * Load current filter
+     * @param module
+     * @protected
+     */
+    protected loadCurrentFilter(module: string): void {
+
+        const activeFiltersPref = this.loadPreference(module, 'current-filters') ?? {} as SavedFilterMap;
+        if (!activeFiltersPref || emptyObject(activeFiltersPref)) {
+            return;
+        }
+
+        this.setFilters(activeFiltersPref, false);
+    }
+
+    /**
+     * Load current sorting
+     * @param module
+     * @protected
+     */
+    protected loadCurrentSort(module: string): void {
+        const currentSort = this.loadPreference(module, 'current-sort');
+        if (!currentSort || emptyObject(currentSort)) {
+            return;
+        }
+
+        this.recordList.sort = currentSort;
+    }
+
+    /**
+     * Load current displayed columns
+     * @protected
+     */
+    protected loadCurrentDisplayedColumns(): void {
+        this.metadataStore.listViewColumns$.pipe(take(1)).subscribe(cols => {
+            const displayedColumns = this.getDisplayedColumnsPreference();
+
+            if (!displayedColumns || !cols) {
+                this.columns.next(cols);
+                return;
+            }
+
+            const colMap = {} as { [key: string]: boolean };
+            displayedColumns.forEach(displayedColumn => {
+                colMap[displayedColumn] = true;
+            })
+
+            const displayedMap = {} as { [key: string]: ColumnDefinition };
+
+            const hidden = [] as ColumnDefinition[];
+            cols.forEach(col => {
+                col.default = colMap[col.name] ?? false;
+                if (col.default) {
+                    displayedMap[col.name] = col;
+                } else {
+                    hidden.push(col);
+                }
+            });
+
+            const displayed = displayedColumns.filter(col => !!displayedMap[col]).map(col => displayedMap[col]);
+
+            this.columns.next([...displayed, ...hidden]);
+        })
     }
 
 

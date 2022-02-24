@@ -41,6 +41,8 @@ export interface RecordListMeta {
 export interface ListViewMeta extends RecordListMeta {
     chartTypes: ChartTypesMap;
     sidebarWidgets?: WidgetMetadata[];
+    orderBy?: string;
+    sortOrder?: string;
 }
 
 export interface Filter {
