@@ -64,6 +64,7 @@ import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
 import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
+import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 const initialState: RecordViewState = {
     module: '',
@@ -132,7 +133,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected subpanelFactory: SubpanelStoreFactory,
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
-        protected recordStoreFactory: RecordStoreFactory
+        protected recordStoreFactory: RecordStoreFactory,
+        protected preferences: UserPreferenceStore
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -189,6 +191,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     set showSidebarWidgets(show: boolean) {
+        this.savePreference(this.getModuleName(), 'show-sidebar-widgets', show);
         this.updateState({
             ...this.internalState,
             showSidebarWidgets: show
@@ -533,7 +536,14 @@ export class RecordViewStore extends ViewStore implements StateStore {
             show = true;
         }
 
-        this.showSidebarWidgets = show;
+        const showSidebarWidgets = this.loadPreference(this.getModuleName(), 'show-sidebar-widgets') ?? null;
+
+        if (showSidebarWidgets !== null) {
+            this.showSidebarWidgets = showSidebarWidgets;
+        } else {
+            this.showSidebarWidgets = show;
+        }
+
         this.widgets = show;
     }
 
@@ -575,5 +585,35 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
             return fields;
         }));
+    }
+
+    /**
+     * Build ui user preference key
+     * @param storageKey
+     * @protected
+     */
+    protected getPreferenceKey(storageKey: string): string {
+        return 'recordview-' + storageKey;
+    }
+
+    /**
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @protected
+     */
+    protected savePreference(module: string, storageKey: string, value: any): void {
+        this.preferences.setUi(module, this.getPreferenceKey(storageKey), value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param module
+     * @param storageKey
+     * @protected
+     */
+    protected loadPreference(module: string, storageKey: string): any {
+        return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
     }
 }
