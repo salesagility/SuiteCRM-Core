@@ -25,7 +25,13 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {ButtonGroupInterface, ButtonInterface, DropdownButtonInterface, SearchCriteriaFilter} from 'common';
+import {
+    ButtonGroupInterface,
+    ButtonInterface,
+    DropdownButtonInterface,
+    SearchCriteria,
+    SearchCriteriaFilter
+} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -102,7 +108,7 @@ export class SettingsMenuComponent implements OnInit {
             },
             {button: this.getFilterButton()},
             {
-                show: (): boolean => !Object.keys(this.getFilters()).every(key => this.getFilters()[key].operator === ''),
+                show: (): boolean => this.isAnyFilterApplied(),
                 button: this.getClearButton(),
             },
             {button: this.getColumnChooserButton()},
@@ -138,7 +144,39 @@ export class SettingsMenuComponent implements OnInit {
     }
 
     getFilters(): SearchCriteriaFilter {
-        return this.listStore.recordList.criteria.filters;
+        return this?.listStore?.recordList?.criteria?.filters ?? {};
+    }
+
+    getCurrentCriteria(): SearchCriteria {
+        return this?.listStore?.recordList?.criteria ?? {};
+    }
+
+    hasActiveFilter(): boolean {
+        const activeFilters = this.listStore.activeFilters;
+        if (!activeFilters) {
+            return false;
+        }
+
+        const filterKeys = Object.keys(activeFilters) ?? [];
+        if (!filterKeys || !filterKeys.length) {
+            return false;
+        }
+
+        if (filterKeys.length > 1) {
+            return true;
+        }
+
+        const currentFilter = activeFilters[filterKeys[0]];
+
+        return currentFilter.key && currentFilter.key !== '' && currentFilter.key !== 'default'
+    }
+
+    areAllCurrentCriteriaFilterEmpty(): boolean {
+        return Object.keys(this.getFilters() ?? {}).every(key => this.getFilters()[key].operator === '')
+    }
+
+    isAnyFilterApplied(): boolean {
+        return this.hasActiveFilter() || !this.areAllCurrentCriteriaFilterEmpty();
     }
 
     getBreakpoint(): number {
@@ -160,17 +198,22 @@ export class SettingsMenuComponent implements OnInit {
 
     getFilterButton(): DropdownButtonInterface {
 
-        return {
+        const filterButton = {
             label: this.listStore.appStrings.LBL_FILTER || '',
             klass: {
                 'filter-settings-button': true,
-                active: this.listStore.showFilters
+                active: this.isAnyFilterApplied()
             },
-            icon: 'filter',
             onClick: (): void => {
                 this.listStore.showFilters = !this.listStore.showFilters;
             }
         } as ButtonInterface;
+
+        if (this.isAnyFilterApplied()) {
+            filterButton.icon = 'filter';
+        }
+
+        return filterButton;
     }
 
     getMyFiltersButton(): DropdownButtonInterface {
@@ -185,9 +228,11 @@ export class SettingsMenuComponent implements OnInit {
 
         const activeFilters = this.listStore.activeFilters;
 
+        let anyActive = false;
         filters.forEach((filter: SavedFilter) => {
 
             const isActive = Object.keys(activeFilters).some(key => key === filter.key);
+            anyActive = anyActive || isActive;
 
             const button = {
                 label: filter.attributes.name,
@@ -217,13 +262,16 @@ export class SettingsMenuComponent implements OnInit {
             dropdownConfig.items.push(button);
         });
 
+        if (anyActive) {
+            dropdownConfig.klass = ['dropdown-toggle', 'active'];
+        }
+
         return dropdownConfig;
     }
 
     getClearButton(): ButtonInterface {
         return {
-            label: this.listStore.appStrings.LBL_CLEAR_BUTTON_LABEL || '',
-            icon: 'filter',
+            label: this.listStore.appStrings.LBL_CLEAR_FILTER || '',
             onClick: (): void => {
                 this.listStore.showFilters = false;
                 this.listStore.resetFilters();
