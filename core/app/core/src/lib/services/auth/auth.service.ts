@@ -107,6 +107,7 @@ export class AuthService {
             },
             {headers}
         ).subscribe((response: any) => {
+            this.appStateStore.updateInitialAppLoading(true);
             onSuccess(response);
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
@@ -158,6 +159,7 @@ export class AuthService {
                     return throwError(err);
                 }),
                 finalize(() => {
+                    this.appStateStore.updateInitialAppLoading(true);
                     this.appStateStore.updateLoading('logout', false, false);
                     if (redirect === true) {
                         this.router.navigate(['/Login']).finally();
