@@ -42,6 +42,7 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
     record: Record;
     displayResponsiveTable = false;
     mode: ViewMode = 'detail';
+    loading: boolean = true;
 
     protected subs: Subscription[] = [];
 
@@ -60,6 +61,10 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
         this.subs.push(this.recordViewStore.record$.subscribe(record => {
             this.record = record;
         }));
+
+        this.subs.push(this.recordViewStore.loading$.subscribe(loading => {
+            this.loading = loading;
+        }))
     }
 
     ngOnDestroy(): void {

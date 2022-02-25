@@ -63,7 +63,13 @@
             </div>
         </ng-container>
         <ng-template [ngIf]="!displayResponsiveTable">
-            <div class="row mr-0">
+            <div *ngIf="loading" class="row mr-0">
+                <div class="col-md-4">
+                    <scrm-module-title [title]="moduleTitle" class="record-view-title"></scrm-module-title>
+                    <div class="record-view-name pt-3 pb-3"></div>
+                </div>
+            </div>
+            <div *ngIf="!loading" class="row mr-0">
                 <div class="col-md-4">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
                     <div class="record-view-name d-flex">

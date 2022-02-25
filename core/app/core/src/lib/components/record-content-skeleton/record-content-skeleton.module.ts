@@ -26,34 +26,20 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RecordContainerComponent} from './record-container.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {WidgetPanelModule} from '../../../../components/widget-panel/widget-panel.module';
-import {
-    SubpanelContainerModule
-} from '../../../../containers/subpanel/components/subpanel-container/subpanel-container.module';
-import {
-    SidebarWidgetModule
-} from '../../../../containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
-import {TopWidgetModule} from '../../../../containers/top-widget/components/top-widget/top-widget.module';
-import {RecordContentModule} from '../../../../components/record-content/record-content.module';
-import {
-    RecordContentSkeletonModule
-} from '../../../../components/record-content-skeleton/record-content-skeleton.module';
+import {RecordContentSkeletonComponent} from './record-content-skeleton.component';
+import {ImageModule} from '../image/image.module';
 
 @NgModule({
-    declarations: [RecordContainerComponent],
-    exports: [RecordContainerComponent],
+    declarations: [
+        RecordContentSkeletonComponent
+    ],
+    exports: [
+        RecordContentSkeletonComponent
+    ],
     imports: [
         CommonModule,
-        WidgetPanelModule,
-        AngularSvgIconModule,
-        SubpanelContainerModule,
-        RecordContentModule,
-        TopWidgetModule,
-        SidebarWidgetModule,
-        RecordContentSkeletonModule
+        ImageModule
     ]
 })
-export class RecordContainerModule {
+export class RecordContentSkeletonModule {
 }

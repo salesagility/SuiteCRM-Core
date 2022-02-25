@@ -331,6 +331,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
     save(): Observable<Record> {
         this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, true);
 
+        this.updateState({
+            ...this.internalState,
+            loading: true
+        });
+
         return this.recordStore.save().pipe(
             catchError(() => {
                 this.message.addDangerMessageByKey('LBL_ERROR_SAVING');
@@ -339,6 +344,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
             finalize(() => {
                 this.setMode('detail' as ViewMode);
                 this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, false);
+                this.updateState({
+                    ...this.internalState,
+                    loading: false
+                });
             })
         );
     }
@@ -350,7 +359,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
      * @returns {object} Observable<RecordViewState>
      */
     public load(useCache = true): Observable<Record> {
-        this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, true);
+
+        this.updateState({
+            ...this.internalState,
+            loading: true
+        });
 
         return this.recordStore.retrieveRecord(
             this.internalState.module,
@@ -358,12 +371,12 @@ export class RecordViewStore extends ViewStore implements StateStore {
             useCache
         ).pipe(
             tap((data: Record) => {
-                this.appStateStore.updateLoading(`${this.internalState.module}-record-fetch`, false);
 
                 this.updateState({
                     ...this.internalState,
                     recordID: data.id,
                     module: data.module,
+                    loading: false
                 });
             })
         );

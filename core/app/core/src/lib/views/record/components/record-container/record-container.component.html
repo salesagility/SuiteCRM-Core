@@ -33,20 +33,35 @@
         <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !vm.sidebarWidgetConfig.show }">
 
             <div class="container-fluid pl-0 pr-0">
-
-                <div class="row no-gutters"
-                     *ngIf="vm.topWidgetConfig.show && hasTopWidgetMetadata(vm.topWidgetConfig.widget)">
+                <div *ngIf="loading" class="row no-gutters">
                     <div class="col pb-3">
-                        <scrm-top-widget [type]="vm.topWidgetConfig.widget.type"
-                                         [context]="getViewContext()"
-                                         [config]="vm.topWidgetConfig.widget">
-                        </scrm-top-widget>
+                        <div class="d-flex justify-content-center widget-bar rounded  pb-1 pt-3 box-loading">
+                            <div class="d-flex justify-content-center align-items-baseline widget-bar-entry p-2">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <ng-container *ngIf="!loading">
+                    <div *ngIf="vm.topWidgetConfig.show && hasTopWidgetMetadata(vm.topWidgetConfig.widget)"
+                         class="row no-gutters">
+                        <div class="col pb-3">
+                            <scrm-top-widget [config]="vm.topWidgetConfig.widget"
+                                             [context]="getViewContext()"
+                                             [type]="vm.topWidgetConfig.widget.type">
+                            </scrm-top-widget>
+                        </div>
+                    </div>
+                </ng-container>
+
 
                 <div class="row no-gutters">
                     <div class="col">
-                        <scrm-record-content [dataSource]="getContentAdapter()"></scrm-record-content>
+                        <ng-container *ngIf="loading">
+                            <scrm-record-content-skeleton></scrm-record-content-skeleton>
+                        </ng-container>
+                        <ng-container *ngIf="!loading">
+                            <scrm-record-content [dataSource]="getContentAdapter()"></scrm-record-content>
+                        </ng-container>
                     </div>
                 </div>
 

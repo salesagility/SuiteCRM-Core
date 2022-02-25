@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ViewContext, WidgetMetadata} from 'common';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
@@ -44,7 +44,9 @@ import {TopWidgetAdapter} from '../../adapters/top-widget.adapter';
     templateUrl: 'record-container.component.html',
     providers: [RecordContentAdapter, TopWidgetAdapter, SidebarWidgetAdapter]
 })
-export class RecordContainerComponent implements OnInit {
+export class RecordContainerComponent implements OnInit, OnDestroy {
+
+    loading: boolean = true;
     language$: Observable<LanguageStrings> = this.language.vm$;
 
     vm$ = combineLatest([
@@ -60,6 +62,8 @@ export class RecordContainerComponent implements OnInit {
         }))
     );
 
+    protected subs: Subscription[] = [];
+
     constructor(
         public recordViewStore: RecordViewStore,
         protected language: LanguageStore,
@@ -71,6 +75,13 @@ export class RecordContainerComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.subs.push(this.recordViewStore.loading$.subscribe(loading => {
+            this.loading = loading;
+        }))
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     getContentAdapter(): RecordContentDataSource {

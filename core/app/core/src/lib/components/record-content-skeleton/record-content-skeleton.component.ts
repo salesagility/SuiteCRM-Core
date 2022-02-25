@@ -24,36 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RecordContainerComponent} from './record-container.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {WidgetPanelModule} from '../../../../components/widget-panel/widget-panel.module';
-import {
-    SubpanelContainerModule
-} from '../../../../containers/subpanel/components/subpanel-container/subpanel-container.module';
-import {
-    SidebarWidgetModule
-} from '../../../../containers/sidebar-widget/components/sidebar-widget/sidebar-widget.module';
-import {TopWidgetModule} from '../../../../containers/top-widget/components/top-widget/top-widget.module';
-import {RecordContentModule} from '../../../../components/record-content/record-content.module';
-import {
-    RecordContentSkeletonModule
-} from '../../../../components/record-content-skeleton/record-content-skeleton.module';
+import {Component, OnInit} from '@angular/core';
 
-@NgModule({
-    declarations: [RecordContainerComponent],
-    exports: [RecordContainerComponent],
-    imports: [
-        CommonModule,
-        WidgetPanelModule,
-        AngularSvgIconModule,
-        SubpanelContainerModule,
-        RecordContentModule,
-        TopWidgetModule,
-        SidebarWidgetModule,
-        RecordContentSkeletonModule
-    ]
+@Component({
+    selector: 'scrm-record-content-skeleton',
+    templateUrl: './record-content-skeleton.component.html',
+    styleUrls: []
 })
-export class RecordContainerModule {
+export class RecordContentSkeletonComponent implements OnInit {
+
+    constructor() {
+    }
+
+    ngOnInit(): void {
+    }
 }

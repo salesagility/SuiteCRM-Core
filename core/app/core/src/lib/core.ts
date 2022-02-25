@@ -143,6 +143,8 @@ export * from './components/panel/panel.module';
 export * from './components/record-content/record-content.component';
 export * from './components/record-content/record-content.model';
 export * from './components/record-content/record-content.module';
+export * from './components/record-content-skeleton/record-content-skeleton.component';
+export * from './components/record-content-skeleton/record-content-skeleton.module';
 export * from './components/record-flexbox/record-flexbox.component';
 export * from './components/record-flexbox/record-flexbox.model';
 export * from './components/record-flexbox/record-flexbox.module';
