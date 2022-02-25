@@ -38,8 +38,9 @@
         </scrm-menu-item-link>
 
     </span>
-    <div *ngIf="item.submenu.length"
+    <div (click)="hideDropdown()"
          aria-labelledby="navbarDropdownMenuLink"
+         *ngIf="item.submenu.length && showDropdown"
          class="dropdown-menu submenu">
 
         <div *ngFor="let sub of item.submenu" class="nav-item">

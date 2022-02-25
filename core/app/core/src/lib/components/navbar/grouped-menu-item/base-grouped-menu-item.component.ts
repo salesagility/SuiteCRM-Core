@@ -35,7 +35,13 @@ import {MenuItem} from 'common';
 export class BaseGroupedMenuItemComponent {
     @Input() item: MenuItem;
     @Input() subNavCollapse: boolean;
+    showDropdown: boolean = true;
 
     constructor() {
+    }
+
+    hideDropdown() {
+        this.showDropdown = false;
+        setTimeout(() => this.showDropdown = true, 0)
     }
 }

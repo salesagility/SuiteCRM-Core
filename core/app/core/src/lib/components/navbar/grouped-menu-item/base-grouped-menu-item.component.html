@@ -33,7 +33,9 @@
     </span>
 
     <ul [ngbCollapse]="subNavCollapse"
+        (click)="hideDropdown()"
         aria-labelledby="navbarDropdownMenuLink"
+        *ngIf="showDropdown"
         class="dropdown-menu main"
     >
         <li *ngFor="let sub of item.submenu" class="nav-item dropdown-submenu submenu">

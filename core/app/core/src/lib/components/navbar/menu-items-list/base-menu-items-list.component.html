@@ -34,7 +34,9 @@
         </a>
 
         <div aria-labelledby="navbarDropdownMenuLink"
+             (click)="hideDropdown()"
              class="dropdown-menu more-menu submenu"
+             *ngIf="showDropdown"
         >
             <div *ngFor="let item of items" class="nav-item">
                 <scrm-menu-item-link [class]="'nav-link action-link'" [link]="item.link">
