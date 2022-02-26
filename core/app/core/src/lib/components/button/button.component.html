@@ -29,7 +29,10 @@
         [ngClass]="config.klass"
         (click)="runClick()"
         [ngbTooltip]="language.getFieldLabel(config.titleKey) || ''">
-    <scrm-image *ngIf="config.icon" [image]="config.icon" [klass]="config.iconKlass || ''"></scrm-image>
+    <scrm-image *ngIf="config.icon"
+                [image]="config.icon"
+                [klass]="config.iconKlass || ''"
+                [title]="language.getFieldLabel(config.titleKey || '')"></scrm-image>
     {{ config.label || '' }}
     <scrm-label *ngIf="config.labelKey" [labelKey]="config.labelKey"></scrm-label>
     <ng-content></ng-content>

@@ -78,6 +78,7 @@ export interface ModeActions {
 export interface Action {
     key: string;
     labelKey?: string;
+    titleKey?: string;
     label?: string;
     icon?: string;
     klass?: string[];

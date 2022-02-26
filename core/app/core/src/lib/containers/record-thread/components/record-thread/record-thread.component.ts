@@ -123,6 +123,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         return {
             ...this.config.itemConfig,
             store: item,
+            threadStore: this.store,
             klass: klass,
             expanded: (): void => {
                 this.scrollToItem(itemRef);

@@ -26,6 +26,7 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
+    Action,
     AttributeMap,
     deepClone,
     isFalse,
@@ -48,6 +49,7 @@ import {SystemConfigStore} from '../../../../store/system-config/system-config.s
 interface ThreadItemMetadataConfig {
     header?: FieldFlexbox;
     body?: FieldFlexbox;
+    actions?: Action[];
 }
 
 @Component({
@@ -170,6 +172,10 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
 
         if (config && config.body) {
             metadata.bodyLayout = deepClone(config.body);
+        }
+
+        if (config && config.actions) {
+            metadata.actions = deepClone(config.actions);
         }
     }
 

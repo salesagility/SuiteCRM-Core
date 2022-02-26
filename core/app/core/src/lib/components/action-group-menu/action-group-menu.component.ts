@@ -146,6 +146,7 @@ export class ActionGroupMenuComponent implements OnInit {
         const button = {
             label: action.label || '',
             klass: this.buttonClass,
+            titleKey: action.titleKey || '',
             onClick: (): void => {
                 this.config.runAction(action, this.actionContext);
             }

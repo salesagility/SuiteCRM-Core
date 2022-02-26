@@ -24,28 +24,29 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
-import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
-import {ViewMode} from 'common';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {Injectable} from '@angular/core';
+import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
+import {AsyncProcessRecordThreadItemAction} from './async-process/async-process.service';
+import {RecordThreadItemActionData} from './record-thread-item.action';
+import {RecordThreadItemCancelAction} from './cancel/record-cancel.action';
+import {RecordThreadItemEditAction} from './edit/record-edit.action';
+import {RecordThreadItemSaveAction} from './save/record-save.action';
 
+@Injectable({
+    providedIn: 'root',
+})
+export class RecordThreadItemActionManager extends BaseActionManager<RecordThreadItemActionData> {
 
-export interface RecordThreadItemConfig {
-    klass?: string;
-    dynamicClass?: string[];
-    collapsible?: boolean;
-    collapseLimit?: number;
-    metadata: RecordThreadItemMetadata;
-    store?: RecordThreadItemStore;
-    threadStore?: RecordThreadStore;
-    initialMode?: ViewMode;
-    buttonClass?: string;
-    labelClass?: { [klass: string]: any };
-    inputClass?: { [klass: string]: any };
-    rowClass?: { [klass: string]: any };
-    colClass?: { [klass: string]: any };
-
-    collapsed(): void;
-
-    expanded(): void;
+    constructor(
+        protected async: AsyncProcessRecordThreadItemAction,
+        protected cancel: RecordThreadItemCancelAction,
+        protected edit: RecordThreadItemEditAction,
+        protected save: RecordThreadItemSaveAction,
+    ) {
+        super();
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+        edit.modes.forEach(mode => this.actions[mode][edit.key] = edit);
+        save.modes.forEach(mode => this.actions[mode][save.key] = save);
+        cancel.modes.forEach(mode => this.actions[mode][cancel.key] = cancel);
+    }
 }

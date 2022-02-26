@@ -25,8 +25,10 @@
  */
 
 import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
+import {Action} from 'common';
 
 export interface RecordThreadItemMetadata {
     headerLayout?: FieldFlexbox;
     bodyLayout?: FieldFlexbox;
+    actions?: Action[];
 }

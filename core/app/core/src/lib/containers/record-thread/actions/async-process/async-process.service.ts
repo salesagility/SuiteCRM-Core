@@ -24,28 +24,31 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
-import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
-import {ViewMode} from 'common';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {Injectable} from '@angular/core';
+import {ALL_VIEW_MODES} from 'common';
+import {RecordThreadItemActionData, RecordThreadItemActionHandler} from '../record-thread-item.action';
 
+@Injectable({
+    providedIn: 'root'
+})
+export class AsyncProcessRecordThreadItemAction extends RecordThreadItemActionHandler {
 
-export interface RecordThreadItemConfig {
-    klass?: string;
-    dynamicClass?: string[];
-    collapsible?: boolean;
-    collapseLimit?: number;
-    metadata: RecordThreadItemMetadata;
-    store?: RecordThreadItemStore;
-    threadStore?: RecordThreadStore;
-    initialMode?: ViewMode;
-    buttonClass?: string;
-    labelClass?: { [klass: string]: any };
-    inputClass?: { [klass: string]: any };
-    rowClass?: { [klass: string]: any };
-    colClass?: { [klass: string]: any };
+    key = 'async-process';
+    modes = ALL_VIEW_MODES;
 
-    collapsed(): void;
+    constructor() {
+        super();
+    }
 
-    expanded(): void;
+    run(data: RecordThreadItemActionData): void {
+    }
+
+    shouldDisplay(data: RecordThreadItemActionData): boolean {
+        const defaultAcls = data?.action?.acl ?? [];
+        if (!defaultAcls.length) {
+            return true;
+        }
+
+        return this.checkRecordAccess(data, defaultAcls);
+    }
 }

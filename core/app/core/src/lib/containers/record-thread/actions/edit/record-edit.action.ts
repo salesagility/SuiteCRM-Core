@@ -24,28 +24,27 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
-import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
+import {Injectable} from '@angular/core';
 import {ViewMode} from 'common';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {RecordThreadItemActionData, RecordThreadItemActionHandler} from '../record-thread-item.action';
 
+@Injectable({
+    providedIn: 'root'
+})
+export class RecordThreadItemEditAction extends RecordThreadItemActionHandler {
 
-export interface RecordThreadItemConfig {
-    klass?: string;
-    dynamicClass?: string[];
-    collapsible?: boolean;
-    collapseLimit?: number;
-    metadata: RecordThreadItemMetadata;
-    store?: RecordThreadItemStore;
-    threadStore?: RecordThreadStore;
-    initialMode?: ViewMode;
-    buttonClass?: string;
-    labelClass?: { [klass: string]: any };
-    inputClass?: { [klass: string]: any };
-    rowClass?: { [klass: string]: any };
-    colClass?: { [klass: string]: any };
+    key = 'edit';
+    modes = ['detail' as ViewMode];
 
-    collapsed(): void;
+    constructor() {
+        super();
+    }
 
-    expanded(): void;
+    run(data: RecordThreadItemActionData): void {
+        data.itemStore.setMode('edit' as ViewMode);
+    }
+
+    shouldDisplay(data: RecordThreadItemActionData): boolean {
+        return this.checkRecordAccess(data, ['edit']);
+    }
 }

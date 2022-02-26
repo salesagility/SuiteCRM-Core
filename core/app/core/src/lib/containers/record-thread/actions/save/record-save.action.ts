@@ -24,28 +24,39 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
-import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
+import {Injectable} from '@angular/core';
 import {ViewMode} from 'common';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {take} from 'rxjs/operators';
+import {MessageService} from '../../../../services/message/message.service';
+import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {RecordThreadItemActionData, RecordThreadItemActionHandler} from '../record-thread-item.action';
 
+@Injectable({
+    providedIn: 'root'
+})
+export class RecordThreadItemSaveAction extends RecordThreadItemActionHandler {
 
-export interface RecordThreadItemConfig {
-    klass?: string;
-    dynamicClass?: string[];
-    collapsible?: boolean;
-    collapseLimit?: number;
-    metadata: RecordThreadItemMetadata;
-    store?: RecordThreadItemStore;
-    threadStore?: RecordThreadStore;
-    initialMode?: ViewMode;
-    buttonClass?: string;
-    labelClass?: { [klass: string]: any };
-    inputClass?: { [klass: string]: any };
-    rowClass?: { [klass: string]: any };
-    colClass?: { [klass: string]: any };
+    key = 'save';
+    modes = ['edit' as ViewMode];
 
-    collapsed(): void;
+    constructor(protected message: MessageService, protected navigation: ModuleNavigation) {
+        super();
+    }
 
-    expanded(): void;
+    run(data: RecordThreadItemActionData): void {
+        data.itemStore.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            if (valid) {
+                data.itemStore.save().pipe(take(1)).subscribe(record => {
+                    data.itemStore.setMode('detail' as ViewMode);
+                });
+                return;
+            }
+
+            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+        });
+    }
+
+    shouldDisplay(data: RecordThreadItemActionData): boolean {
+        return true;
+    }
 }
