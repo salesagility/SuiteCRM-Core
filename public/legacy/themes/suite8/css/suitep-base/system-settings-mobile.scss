@@ -1,0 +1,169 @@
+@media (max-width: 750px)  {
+    .system-settings {
+        .edit tr {
+            border-bottom: none;
+            th {
+                border-bottom: 1px solid lightgrey;
+            }
+        }
+        input[type=text],input[type=password],input[type=email] {
+            width: 97%;
+        }
+        input:not([type]) {
+            width: 97%;
+        }
+        td.action-button-top {
+            position: relative !important;
+            border-bottom: 1px solid $border-bottom-lightgrey;
+            padding-bottom: 0.5em;
+            display: flex;
+            justify-content: flex-end;
+            margin-top:0 !important;
+            margin-bottom: 1em;
+        }
+        .table-system-settings {
+            h4 {
+                background : none;
+                border-bottom : none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        table.table-system-settings {
+            tr td:nth-child(1) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(2) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(3) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(4) {
+                width: 100%;
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            }
+        }
+        table.logger {
+            h4 {
+                background : none;
+                border-bottom : none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+            tr td:nth-child(1) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(2) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(3) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(4) {
+                width: 100%;
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            } 
+            tr td {
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            }
+        }
+        .edit img#company_logo_image {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+        }
+    }
+}
+
+@media (min-width:750px) and (max-width: 767px) {
+    .system-settings {
+        td.action-button-top {
+            position: relative !important;
+            border-bottom: 1px solid $border-bottom-lightgrey;
+            padding-bottom: 0.5em;
+            display: flex;
+            justify-content: flex-end;
+            margin-top:0 !important;
+            margin-bottom: 1em;
+        }
+        input[type=text],input[type=password],input[type=email] {
+            width: 97%;
+        }
+        input:not([type]) {
+            width: 97%;
+        }
+        .table-system-settings {
+            h4 {
+                background : none;
+                border-bottom : none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        table.table-system-settings {
+            tr td:nth-child(1) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(2) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(3) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(4) {
+                width: 100%;
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            }
+        }
+        table.logger {
+            h4 {
+                background : none;
+                border-bottom : none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+            tr td:nth-child(1) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(2) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(3) {
+                width: 100%;
+                padding-left: 0.8em;
+            }
+            tr td:nth-child(4) {
+                width: 100%;
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            } 
+            tr td {
+                padding-left: 0.8em;
+                margin-bottom: 0.5em;
+            }
+        }
+        .edit img#company_logo_image {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+        }
+    }
+}

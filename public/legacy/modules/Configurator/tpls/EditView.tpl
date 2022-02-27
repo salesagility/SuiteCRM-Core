@@ -47,7 +47,7 @@
 
 <table width="100%" cellpadding="0" cellspacing="1" border="0" class="actionsContainer">
 <tr>
-	<td>
+	<td class="action-button-top">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" id="ConfigureSettings_save_button" type="submit"  name="save" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " >
 		&nbsp;<input title="{$MOD.LBL_SAVE_BUTTON_TITLE}"  id="ConfigureSettings_restore_button"  class="button"  type="submit" name="restore" value="  {$MOD.LBL_RESTORE_BUTTON_LABEL}  " >
 		&nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}" id="ConfigureSettings_cancel_button"   onclick="document.location.href='index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " > </td>
@@ -92,7 +92,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td scope="row" nowrap>{$MOD.MAX_DASHLETS}: </td>
+		<td scope="row" nowrap style="white-space: nowrap;">{$MOD.MAX_DASHLETS}: </td>
 		<td>
 			<input type='text' size='4' name='max_dashlets_homepage' value='{$config.max_dashlets_homepage}'>
 		</td>
