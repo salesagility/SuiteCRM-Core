@@ -83,6 +83,10 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
             buttonClasses = buttonClasses.concat(this.internalConfig.buttonKlass);
         }
 
+        if (this?.internalConfig?.dropdownOptions?.klass) {
+            buttonClasses = buttonClasses.concat(this.internalConfig.dropdownOptions.klass);
+        }
+
         let wrapperClasses = ['button-group-dropdown'];
 
         const dropdownOptions = this.internalConfig.dropdownOptions;
@@ -101,6 +105,10 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
         if (this.internalConfig.dropdownOptions && this.internalConfig.dropdownOptions.placement) {
             this.dropdownConfig.placement = this.internalConfig.dropdownOptions.placement;
+        }
+
+        if (this.internalConfig.dropdownOptions && this.internalConfig.dropdownOptions.icon) {
+            this.dropdownConfig.icon = this.internalConfig.dropdownOptions.icon;
         }
     }
 

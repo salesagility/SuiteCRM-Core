@@ -30,6 +30,8 @@ import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 export interface DropdownOptions {
     placement?: PlacementArray;
     wrapperKlass?: string[];
+    klass?: string[];
+    icon?: string;
 }
 
 export interface ButtonGroupInterface {
