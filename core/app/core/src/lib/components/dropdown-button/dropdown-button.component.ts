@@ -29,6 +29,7 @@ import {DropdownButtonInterface} from 'common';
 import {ButtonInterface} from 'common';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import {LanguageStore} from '../../store/language/language.store';
 
 @Component({
     selector: 'scrm-dropdown-button',
@@ -40,7 +41,7 @@ export class DropdownButtonComponent implements OnInit {
     @Input() disabled = false;
     @Input() autoClose: boolean | 'outside' | 'inside' = true;
 
-    constructor() {
+    constructor(public language: LanguageStore) {
     }
 
     isDropdown(item: ButtonInterface): boolean {

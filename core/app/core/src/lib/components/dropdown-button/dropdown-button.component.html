@@ -31,7 +31,14 @@
      #dropDown="ngbDropdown"
      class="d-inline-block dropdown-button"
      [ngClass]="config.wrapperKlass">
-    <button [disabled]="disabled" [ngClass]="config.klass" ngbDropdownToggle>
+    <button [disabled]="disabled"
+            [ngClass]="config.klass"
+            [ngbTooltip]="language.getFieldLabel(config.titleKey) || ''"
+            ngbDropdownToggle>
+
+        <scrm-image *ngIf="config.icon"
+                    [image]="config.icon"
+                    [klass]="config.iconKlass || ''"></scrm-image>
 
         <ng-container *ngIf="config.label">
             {{ config.label }}

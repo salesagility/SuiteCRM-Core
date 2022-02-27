@@ -29,7 +29,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {DropdownButtonComponent} from './dropdown-button.component';
 import {Component} from '@angular/core';
 import {DropdownButtonInterface} from 'common';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from '../button/button.module';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';
@@ -77,7 +77,8 @@ describe('DropdownButtonComponent', () => {
             ],
             imports: [
                 ButtonModule,
-                NgbDropdownModule
+                NgbDropdownModule,
+                NgbTooltipModule
             ],
             providers: [
                 {provide: LanguageStore, useValue: languageStoreMock}

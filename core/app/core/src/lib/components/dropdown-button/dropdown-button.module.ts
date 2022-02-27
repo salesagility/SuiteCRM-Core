@@ -27,7 +27,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DropdownButtonComponent} from './dropdown-button.component';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownSubmenuModule} from '../dropdown-submenu/dropdown-submenu.module';
 import {ImageModule} from '../image/image.module';
 import {LabelModule} from '../label/label.module';
@@ -42,7 +42,8 @@ import {LabelModule} from '../label/label.module';
         NgbDropdownModule,
         ImageModule,
         DropdownSubmenuModule,
-        LabelModule
+        LabelModule,
+        NgbTooltipModule
     ]
 })
 export class DropdownButtonModule {
