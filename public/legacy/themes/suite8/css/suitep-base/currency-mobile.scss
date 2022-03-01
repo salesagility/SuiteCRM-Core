@@ -1,0 +1,14 @@
+.currency-view {
+    .currency-header-mobile {
+        overflow-x: auto;
+    }
+    .edit tr {
+        border-bottom: none;
+    }
+    input[type=text],input[type=password],input[type=email] { 
+        width: 94%;
+    }
+    .view tr {
+        padding: 0;
+    }
+}
