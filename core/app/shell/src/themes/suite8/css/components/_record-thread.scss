@@ -77,5 +77,5 @@
   height: 2.6em;
   background: linear-gradient(rgba(255, 255, 255, 0) 0%, $very-light-green 100%);
   position: absolute;
-  width: 95%;
+  width: calc(100% - 1rem);
 }

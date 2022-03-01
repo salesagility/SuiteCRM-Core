@@ -25,6 +25,7 @@
 
   &.source-contact {
     margin-right: auto;
+    margin-left: 0;
 
     .record-thread-item-body {
       background-color: $light-yellow;
@@ -48,6 +49,7 @@
 
   &.source-external {
     margin-right: auto;
+    margin-left: 0;
 
     .record-thread-item-body {
       background-color: $light-purple;
