@@ -1,0 +1,39 @@
+.view-action-PDFSettings {
+    h1 {
+        font-size: 1.8em;
+        color: $shell-grey;
+        letter-spacing: 0.1em;
+        margin-bottom: 0;
+        margin-top: 10px;
+        border-bottom: 1px solid lightgrey;
+        padding-bottom: 0.5em;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+    }
+    .form-control:focus {
+        border-color: $bright-grey;
+    }
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-top: 1em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    .settings-buttons {
+        position: absolute;
+        top: 2em;
+        right: 0;
+    }
+}
