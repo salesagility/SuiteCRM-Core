@@ -45,16 +45,23 @@ class LegacyToFrontendDefinitionMapper
      * @param array $vardefs
      * @param array $legacyMap
      * @param array $frontendMap
+     * @param bool $unset
+     * @param bool $matchAll
      * @return array return transformed vardefs
      */
-    public function getTransformedVardefs(array $vardefs, array $legacyMap, array $frontendMap): array
-    {
+    public function getTransformedVardefs(
+        array $vardefs,
+        array $legacyMap,
+        array $frontendMap,
+        bool $unset = false,
+        bool $matchAll = true
+    ): array {
         if (empty($vardefs)) {
             return [];
         }
 
         foreach ($vardefs as $name => $vardef) {
-            $vardefs[$name] = $this->transformVardef($vardef, $legacyMap, $frontendMap);
+            $vardefs[$name] = $this->transformVardef($vardef, $legacyMap, $frontendMap, $unset, $matchAll);
         }
 
         return $vardefs;
@@ -64,18 +71,31 @@ class LegacyToFrontendDefinitionMapper
      * @param array $vardef
      * @param array $legacyMap
      * @param array $frontendMap
+     * @param bool $unset
+     * @param bool $matchAll
      * @return array return transformed vardef
      */
-    public function transformVardef(array $vardef, array $legacyMap, array $frontendMap): array
-    {
+    public function transformVardef(
+        array $vardef,
+        array $legacyMap,
+        array $frontendMap,
+        bool $unset = false,
+        bool $matchAll = true
+    ): array {
         $matches = array_uintersect_uassoc($vardef, $legacyMap, "strcasecmp", "strcasecmp");
 
         if (empty($matches)) {
             return $vardef;
         }
 
-        foreach (array_keys($matches) as $matchKey) {
-            unset($vardef[$matchKey]);
+        if ($matchAll && count(array_keys($matches)) !== count(array_keys($legacyMap))) {
+            return $vardef;
+        }
+
+        if ($unset === true) {
+            foreach (array_keys($matches) as $matchKey) {
+                unset($vardef[$matchKey]);
+            }
         }
 
         return array_merge($vardef, $frontendMap);

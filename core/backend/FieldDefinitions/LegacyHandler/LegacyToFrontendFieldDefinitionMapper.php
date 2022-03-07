@@ -87,12 +87,14 @@ class LegacyToFrontendFieldDefinitionMapper implements FieldDefinitionMapperInte
 
             $legacyFieldsMap = $mapDefinition['from'] ?? [];
             $toProperties = $mapDefinition['to'] ?? [];
+            $unset = $mapDefinition['unset'] ?? false;
+            $matchAll = $mapDefinition['matchAll'] ?? true;
 
             if (empty($mapDefinition) || empty($legacyFieldsMap) || empty($toProperties)) {
                 continue;
             }
 
-            $this->mapFieldDefinitions($fieldDefinition, $legacyFieldsMap, $toProperties);
+            $this->mapFieldDefinitions($fieldDefinition, $legacyFieldsMap, $toProperties, $unset, $matchAll);
         }
     }
 
@@ -100,15 +102,22 @@ class LegacyToFrontendFieldDefinitionMapper implements FieldDefinitionMapperInte
      * @param FieldDefinition $fieldDefinition
      * @param array $legacyMap
      * @param array $frontendMap
+     * @param bool $unset
+     * @param bool $matchAll
      * @return void
      * @desc maps legacy to front-end field format for Record Vardefs
      */
-    public function mapFieldDefinitions(FieldDefinition $fieldDefinition, array $legacyMap, array $frontendMap): void
-    {
+    public function mapFieldDefinitions(
+        FieldDefinition $fieldDefinition,
+        array $legacyMap,
+        array $frontendMap,
+        bool $unset = false,
+        bool $matchAll = true
+    ): void {
         $vardefs = $fieldDefinition->getVardef() ?? [];
 
         $service = new LegacyToFrontendDefinitionMapper();
-        $transformedVardefs = $service->getTransformedVardefs($vardefs, $legacyMap, $frontendMap);
+        $transformedVardefs = $service->getTransformedVardefs($vardefs, $legacyMap, $frontendMap, $unset, $matchAll);
 
         $fieldDefinition->setVardef($transformedVardefs);
     }
