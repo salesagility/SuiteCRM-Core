@@ -51,8 +51,16 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
         'm-0': true,
         'pl-3': true,
         'pb-2': true,
-        'pr-3': true
-    };
+        'pr-3': true,
+        'd-flex': true,
+        'flex-column': true,
+        'justify-content-between': true
+    } as { [key:string]: boolean };
+
+    baseRowClass = {
+        'form-row': true,
+        'align-items-stretch': true
+    } as { [key:string]: boolean };
 
     constructor(protected breakpointObserver: BreakpointObserver) {
         super(breakpointObserver);

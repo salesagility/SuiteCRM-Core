@@ -57,12 +57,12 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
         col: true,
         'form-group': true,
         'm-1': true
-    };
+    } as { [key:string]: boolean };
 
     baseRowClass = {
         'form-row': true,
         'align-items-center': true
-    };
+    } as { [key:string]: boolean };
 
     baseLabelClass = {
         'col-form-label-sm': true,
