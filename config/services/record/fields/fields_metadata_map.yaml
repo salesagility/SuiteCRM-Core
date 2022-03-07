@@ -11,5 +11,18 @@ parameters:
 #    todo: to be enabled in future
 #        - to be aligned/tested for all the readonly cases. e.g. customCode & displayParams
 #    readonly_map:
+#      unset: true
+#      matchAll: false
 #      from: { type: readonly, readonly: true }
 #      to: { display: readonly }
+    wysiwyg_map:
+      from: { type: wysiwyg }
+      to: { type: html }
+    html_readonly_map:
+      matchAll: true
+      from: { type: html, source: non-db }
+      to: { display: readonly }
+    textblock_readonly_map:
+      matchAll: true
+      from: { type: textblock}
+      to: { type: html, display: readonly }
