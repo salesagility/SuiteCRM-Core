@@ -58,6 +58,7 @@ require_once('modules/DynamicFields/templates/Fields/TemplateRelatedTextField.ph
 require_once('modules/DynamicFields/templates/Fields/TemplateURL.php');
 require_once('modules/DynamicFields/templates/Fields/TemplateIFrame.php');
 require_once('modules/DynamicFields/templates/Fields/TemplateHTML.php');
+require_once('modules/DynamicFields/templates/Fields/TemplateTextblock.php');
 require_once('modules/DynamicFields/templates/Fields/TemplatePhone.php');
 require_once('modules/DynamicFields/templates/Fields/TemplateCurrency.php');
 require_once('modules/DynamicFields/templates/Fields/TemplateParent.php');
@@ -107,6 +108,8 @@ function get_widget($type)
                         $local_temp = new TemplateIFrame(); break;
             case 'html':
                         $local_temp = new TemplateHTML(); break;
+            case 'textblock':
+                        $local_temp = new TemplateTextblock(); break;
             case 'phone':
                         $local_temp = new TemplatePhone(); break;
             case 'currency':
