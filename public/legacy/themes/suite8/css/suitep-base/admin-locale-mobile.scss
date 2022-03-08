@@ -1,0 +1,69 @@
+@media (max-width: 750px)  {
+    .admin-locale {
+        .moduleTitle {
+            width: 100%;
+        }
+        .edit tr {
+            th {
+                border-bottom: 1px solid lightgrey;
+            }
+            border-bottom: none;
+        }
+        table.view {
+            margin-bottom: 1em;
+            tr td {
+                width: 100%;
+                padding-left: 1em;
+                &:first-child {
+                    padding-left: 1em !important;
+                }
+            }
+            h4 {
+                background: none;
+                border: none;
+                margin: 0 0.5em 0 0.5em !important;
+            }
+        }
+        input[type=text],input[type=password],input[type=email],input[type=number]{
+            width: 97%;
+        }
+        select {
+            min-width: 97%;
+        }
+    }    
+}
+
+@media (min-width:750px) and (max-width: 767px) {
+    .admin-locale {
+        .moduleTitle {
+            width: 100%;
+        }
+        .edit tr {
+            th {
+                border-bottom: 1px solid lightgrey;
+            }
+            border-bottom: none;
+        }
+        table.view {
+            margin-bottom: 1em;
+            tr td {
+                width: 100%;
+                padding-left: 1em;
+                &:first-child {
+                    padding-left: 1em !important;
+                }
+            }
+            h4 {
+                background: none;
+                border: none;
+                margin: 0 0.5em 0 0.5em !important;
+            }
+        }
+        input[type=text],input[type=password],input[type=email],input[type=number]{
+            width: 97%;
+        }
+        select {
+            min-width: 97%;
+        }
+    }
+}
