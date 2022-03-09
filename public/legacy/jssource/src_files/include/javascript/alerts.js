@@ -193,8 +193,6 @@ Alerts.prototype.addToManager = function (AlertObj) {
     }
   }).fail(function (data) {
     console.error(data);
-  }).always(function () {
-    Alerts.prototype.updateManager();
   });
 };
 
@@ -278,18 +276,3 @@ Alerts.prototype.markAsRead = function (id) {
     Alerts.prototype.updateManager();
   });
 };
-
-/**
- * Runs timer to update alerts
- */
-$(document).ready(function () {
-  Alerts.prototype.replaceMessages = [
-    {search: SUGAR.language.translate("app", "MSG_JS_ALERT_MTG_REMINDER_CALL_MSG"), replace: ""},
-    {search: SUGAR.language.translate("app", "MSG_JS_ALERT_MTG_REMINDER_MEETING_MSG"), replace: ""}
-  ];
-  var updateMissed = function () {
-    Alerts.prototype.updateManager();
-    setTimeout(updateMissed, 60000);
-  };
-  setTimeout(updateMissed, 2000);
-});
