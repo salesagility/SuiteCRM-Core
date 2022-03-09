@@ -35,7 +35,7 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  *}
-<h1>{sugar_translate label="LBL_SEARCH_HEADER"}</h1>
+<h2>{sugar_translate label="LBL_SEARCH_HEADER"}</h2>
 
 <form id="SearchSettings"
       name="ConfigureSettings"
@@ -49,6 +49,9 @@
     <input type='hidden' name='enabled_modules' value=''>
 
     <div class="row">
+    <div class="settings-buttons">
+        {$BUTTONS}
+    </div>
         <div class="panel panel-primary">
             <div class="panel-heading">{$MOD.LBL_SEARCH_INTERFACE}</div>
             <div class="panel-body tab-content text-center">
@@ -81,9 +84,6 @@
     {include file='modules/Administration/Search/GlobalSearchSettings.tpl'}
 
     {$JAVASCRIPT}
-
-    <div class="settings-buttons">
-        {$BUTTONS}
-    </div>
+    
 </form>
 
