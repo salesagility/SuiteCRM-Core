@@ -15,14 +15,12 @@ check_favorite();
 $(favorite_icon_outline).on('click', function () {
     create_record();
     show_star(favorite_icon_fill,favorite_icon_outline);
-    get_sidebar_elements();
 });
 
 /*handles a user clicking on the filled star to add a favorite*/
 $(favorite_icon_fill).on('click', function () {
     remove_record();
     show_star(favorite_icon_outline,favorite_icon_fill);
-    remove_favorite_sidebar();
 });
 
 

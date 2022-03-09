@@ -560,11 +560,6 @@ class SugarView
                 $current_user->full_name == '' || !showFullName() ? $current_user->user_name : $current_user->full_name
             );
             $ss->assign("CURRENT_USER_ID", $current_user->id);
-
-            // get the last viewed records
-            $favorites = BeanFactory::getBean('Favorites');
-            $favorite_records = $favorites->getCurrentUserSidebarFavorites();
-            $ss->assign("favoriteRecords", $favorite_records);
         }
 
         $bakModStrings = $mod_strings;
