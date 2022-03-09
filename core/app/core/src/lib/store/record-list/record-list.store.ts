@@ -427,6 +427,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         });
     }
 
+    clearSort(): void {
+        this.updateState({
+            ...this.internalState,
+            sort: deepClone(initialListSort)
+        });
+    }
+
     selectAll(): void {
         const total = this.internalState.pagination.total;
         this.updateState({

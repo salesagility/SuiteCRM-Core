@@ -159,13 +159,18 @@ export class SavedFilterRecordStore extends RecordStore {
             return null;
         }
 
+        let criteria = record.criteria ?? {};
+        if (Array.isArray(criteria) && !criteria.length) {
+            criteria = {};
+        }
+
         return deepClone({
             id: record.id,
             type: record.type,
             module: record.module,
             key: record.key,
             searchModule: record.searchModule,
-            criteria: record.criteria,
+            criteria: criteria,
             attributes: record.attributes,
         } as SavedFilter);
     }
@@ -179,7 +184,14 @@ export class SavedFilterRecordStore extends RecordStore {
 
         record.attributes = record.attributes || {} as SavedFilterAttributeMap;
         record.attributes.search_module = record.searchModule;
+        const filters = record?.attributes?.contents?.filters ?? {};
         record.attributes.contents = record.attributes.contents || {filters: {}} as SearchCriteria;
+
+        if (Array.isArray(filters) && !filters.length) {
+            record.attributes.contents.filters = {};
+        } else {
+            record.attributes.contents.filters = filters;
+        }
 
         record.criteria = this.getCriteria(record);
 
@@ -233,6 +245,10 @@ export class SavedFilterRecordStore extends RecordStore {
         }
 
         if (!filter.criteria.filters) {
+            return {...filter.criteria, filters: {}};
+        }
+
+        if (Array.isArray(filter.criteria.filters) && !filter.criteria.filters.length) {
             return {...filter.criteria, filters: {}};
         }
 

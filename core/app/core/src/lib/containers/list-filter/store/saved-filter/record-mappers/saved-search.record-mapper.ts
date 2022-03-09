@@ -14,8 +14,9 @@ export class SavedSearchRecordMapper implements RecordMapper {
     map(record: Record): void {
         const savedFilter: SavedFilter = record;
         if (savedFilter.criteria) {
-            const contents = savedFilter.attributes.contents ?? {};
-            contents.filters = deepClone(savedFilter.criteria.filters) ?? {};
+            const contents = savedFilter?.attributes?.contents ?? {};
+            const filters = savedFilter?.criteria?.filters ?? {};
+            contents.filters = deepClone(filters);
 
             if (record.fields.name) {
                 contents.name = record.fields.name.value;

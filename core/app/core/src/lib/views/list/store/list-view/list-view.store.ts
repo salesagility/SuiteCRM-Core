@@ -383,8 +383,9 @@ export class ListViewStore extends ViewStore implements StateStore {
      *
      * @param {object} filters to set
      * @param {boolean} reload flag
+     * @param sort
      */
-    public setFilters(filters: SavedFilterMap, reload = true): void {
+    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null): void {
 
         const filterKey = Object.keys(filters).shift();
         const filter = filters[filterKey];
@@ -392,11 +393,17 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
 
         if (filter.criteria) {
-            const orderBy = filter.criteria.orderBy ?? '';
+            let orderBy = filter.criteria.orderBy ?? '';
             const sortOrder = filter.criteria.sortOrder ?? '';
             let direction = this.recordList.mapSortOrder(sortOrder);
 
+            if (sort !== null) {
+                orderBy = sort.orderBy;
+                direction = sort.sortOrder;
+            }
+
             this.recordList.updateSorting(orderBy, direction, false);
+            this.updateSortLocalStorage();
         }
 
         this.updateSearchCriteria(reload)
@@ -454,8 +461,11 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.updateState({
             ...this.internalState,
             activeFilters: deepClone(initialFilters),
-            openFilter: deepClone(initialFilter)
+            openFilter: deepClone(initialFilter),
         });
+
+        this.recordList.clearSort();
+        this.updateSortLocalStorage();
 
         this.updateSearchCriteria(reload)
     }
@@ -657,7 +667,12 @@ export class ListViewStore extends ViewStore implements StateStore {
             return;
         }
 
-        this.setFilters(activeFiltersPref, false);
+        let currentSort = this.loadPreference(module, 'current-sort') as SortingSelection;
+        if (!currentSort && emptyObject(currentSort)) {
+            currentSort = null;
+        }
+
+        this.setFilters(activeFiltersPref, false, currentSort);
     }
 
     /**
