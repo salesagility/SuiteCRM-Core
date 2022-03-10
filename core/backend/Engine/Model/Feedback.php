@@ -160,6 +160,19 @@ class Feedback
     }
 
     /**
+     * @param string $message
+     * @return Feedback
+     */
+    public function appendDebug(string $message): Feedback
+    {
+        $debug = $this->debug ?? [];
+        $debug[] = $message;
+        $this->debug = $debug;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getData(): array
