@@ -28,6 +28,7 @@
 
 namespace App\SystemConfig\Service;
 
+use App\Engine\Model\Feedback;
 use App\SystemConfig\Entity\SystemConfig;
 
 interface SystemConfigProviderInterface
@@ -45,4 +46,23 @@ interface SystemConfigProviderInterface
      * @return SystemConfig|null
      */
     public function getSystemConfig(string $configKey): ?SystemConfig;
+
+    /**
+     * Get legacy config array
+     * @return array|null
+     */
+    public function getConfigs(): ?array;
+
+    /**
+     * Get legacy config defaults
+     * @return array|null
+     */
+    public function getConfigDefaults(): ?array;
+
+    /**
+     * Get system config
+     * @param array $config
+     * @return Feedback
+     */
+    public function updateSystemConfig(array $config): Feedback;
 }

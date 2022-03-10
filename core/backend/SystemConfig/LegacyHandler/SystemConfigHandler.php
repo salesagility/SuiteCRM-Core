@@ -167,6 +167,38 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getConfigs(): ?array
+    {
+        $this->init();
+
+        $config = $this->getLegacyConfig($this->legacyDir);
+
+        $this->close();
+
+        return $config;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfigDefaults(): ?array
+    {
+        $this->init();
+
+        try {
+            $defaults = get_sugar_config_defaults();
+        } catch (Exception $exception) {
+            return null;
+        }
+
+        $this->close();
+
+        return $defaults;
+    }
+
+    /**
      * Get system config
      * @param array $config
      * @return Feedback
