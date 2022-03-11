@@ -35,10 +35,8 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  *}
-<h1>{$MOD.LBL_ELASTIC_SEARCH_SETTINGS}</h1>
+<h2>{$MOD.LBL_ELASTIC_SEARCH_SETTINGS}</h2>
 <p class="text-muted">{$MOD.LBL_ELASTIC_SEARCH_SETTINGS_HELP}</p>
-
-<br/>
 
 <form id="ConfigureSettings"
       name="ConfigureSettings"
@@ -48,15 +46,18 @@
       action="?module=Administration&action=ElasticSearchSettings&do=SaveConfig">
 
     <div class="row">
+     <div class="settings-buttons">
+        {$BUTTONS}
+    </div>
         <div class="panel panel-primary">
             <div class="panel-heading">{$MOD.LBL_ELASTIC_SEARCH_GENERAL}</div>
             <div class="panel-body tab-content text-center">
                 <div class="col-md-6">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input"
-                               id="es-enabled" name="enabled"
-                               {if $config.enabled}checked='checked'{/if}>
-                        <label class="form-check-label" for="es-enabled">{$MOD.LBL_ELASTIC_SEARCH_ENABLE}</label>
+                    <label class="form-check-label" for="es-enabled">{$MOD.LBL_ELASTIC_SEARCH_ENABLE}</label>
+                    <input type="checkbox" class="form-check-input"
+                            id="es-enabled" name="enabled"
+                            {if $config.enabled}checked='checked'{/if}>                        
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -141,11 +142,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        {$BUTTONS}
-    </div>
+    </div>  
 
     {$JAVASCRIPT}
 

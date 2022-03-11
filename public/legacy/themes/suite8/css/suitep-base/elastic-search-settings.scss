@@ -1,0 +1,55 @@
+.view-action-ElasticSearchSettings {
+    h2 {
+        font-size: 1.8em;
+        color: $shell-grey;
+        text-transform: capitalize;
+        letter-spacing: 0.1em;
+        border-bottom: 1px solid lightgrey;
+        padding-bottom: 0.5em;
+    }
+    #es-test-connection {
+        margin-bottom: 0;
+    }
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    .form-check {
+        margin-top: 0.5em;
+        .form-check-input {
+            position: relative;
+            top:1px;
+        }
+        .form-check-label {
+            margin-left: 0.5em;
+            vertical-align: text-top;
+            margin-right: 0.5em;
+        }
+    }
+    .detail-view .tab-content {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1rem;
+    }
+    input[type=submit].button:hover {
+        background: $pale-blue;
+    }
+    .settings-buttons {
+        position: absolute;
+        right: 0;
+        margin-top: -5.5em;
+    }
+    input[type=text],input[type=password],input[type=email],input[type=number],textarea{
+        background-color: $transparent-color;
+        border: 1px solid $form-border-color;
+    }
+}
