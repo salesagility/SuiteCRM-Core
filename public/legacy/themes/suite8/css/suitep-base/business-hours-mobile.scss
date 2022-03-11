@@ -1,0 +1,74 @@
+@media (max-width: 750px)  {
+    .business-hours {
+        .moduleTitle {
+            width: 100%;
+            padding-bottom: 3em;
+        }
+        .edit tr {            
+            border-bottom: 1px solid lightgrey;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        table.actionsContainer {
+            .action-button {
+                top: 3em;
+            }
+        }
+        table.view {
+            h4 {
+                background: none;
+                border: none;
+                margin: 0 0.5em 0 0.5em !important;
+            }
+        }
+        label {
+            margin-right: 0.8em;
+        }
+        select {
+            margin-left: 0.5em;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .business-hours {
+        table.view {
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (min-width:750px) and (max-width: 767px) {
+    .business-hours {
+        .edit tr {            
+            border-bottom: 1px solid lightgrey;
+            &:last-child {
+                border-bottom: none;
+            }
+        } 
+        table.view {
+            h4 {
+                background: none;
+                border: none;
+                margin: 0.5em 0.5em 0 0.5em !important;
+            }
+        }
+    }
+}
+
+@media (min-width:767px) and (max-width: 1200px) {
+    .business-open {
+        display: inherit;
+    }
+    .business-lbl {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    .business-from {
+        margin-left: 1em;
+    }
+    .business-to {
+        margin-left: 1em;
+    }
+}
