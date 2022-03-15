@@ -6,4 +6,6 @@ parameters:
       - repair
       - UpgradeWizard
       - ConfigureTabs
+    module-builder:
+      - index
 
