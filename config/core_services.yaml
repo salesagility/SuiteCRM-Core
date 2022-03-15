@@ -251,7 +251,6 @@ services:
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'
-  App\Process\Service\LegacyModuleNameResolverInterface: '@App\Process\Service\LegacyModuleNameResolver'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
   App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'
@@ -266,9 +265,13 @@ services:
   App\Data\Service\RecordListProviderInterface: '@App\Data\LegacyHandler\RecordListHandler'
   App\Data\Service\RecordProviderInterface: '@App\Data\LegacyHandler\RecordHandler'
   App\Routes\Service\RouteConverterInterface: '@App\Routes\LegacyHandler\RouteConverterHandler'
-  App\Statistics\SubpanelDefault: '@App\Statistics\LegacyHandler\SubpanelDefault'
   App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\SubPanelDefinitionHandler'
+
   App\SystemConfig\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
+  app.system-configs:
+    alias:  App\SystemConfig\Service\SystemConfigProviderInterface
+    public: true
+
   App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
   App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'
   App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'
