@@ -33,7 +33,7 @@
      [ngClass]="config.wrapperKlass">
     <button [disabled]="disabled"
             [ngClass]="config.klass"
-            [ngbTooltip]="language.getFieldLabel(config.titleKey) || ''"
+            [title]="language.getFieldLabel(config.titleKey) || ''"
             ngbDropdownToggle>
 
         <scrm-image *ngIf="config.icon"
