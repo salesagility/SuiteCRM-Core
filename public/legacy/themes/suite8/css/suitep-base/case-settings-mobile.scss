@@ -1,0 +1,97 @@
+@media (max-width: 750px)  {
+    .aop-settings {
+        .moduleTitle {
+            width: 100%;
+            padding-bottom: 3em;
+        }
+        .edit tr { 
+            &:last-child {
+                padding-bottom: 1em;
+            }          
+            th {
+                border-bottom: 1px solid lightgrey;
+            }
+            border-bottom: none;
+        }
+        table.view {
+            tr {
+                &:last-child {
+                    padding-bottom: 1em;
+                }
+            }
+            margin-bottom: 1em;
+            tr td {
+                width: 100%;
+                padding-left: 1em;      
+                height: auto;          
+            }
+            h4 {
+                background: none;
+                border: none;
+                margin: 0 0.5em 0 0.5em !important;
+            }
+        }
+        table.actionsContainer {
+            .action-button {
+                top: 3em;
+            }
+        }
+        select {
+            width: 100%;
+        }
+        #email_settings td a {
+            margin-left: 0;
+            top: 0.3em;
+        }
+        .removeStatusButton {
+            margin-top: 0.6em;
+        }
+    }
+}
+
+@media (min-width:768px) and (max-width:1024px) { 
+    .aop-settings {
+        #email_settings {
+            tr td {
+                width: 19%;
+                white-space: normal;
+            }
+            select {
+                max-width: 60%;
+            }
+        }
+        #portal-seetings {
+            tr td {
+                white-space: nowrap;
+            }
+        }
+        #case_status_settings {
+            tr td {
+                white-space: nowrap;
+            }
+            select {
+                max-width: 100%;
+            }
+            #addStatusButton {
+                margin-bottom: 1em;
+            }
+        }
+    }
+}
+
+@media (min-width: 750px) and (max-width:767px) {
+    .aop-settings {
+        #case_status_settings {
+            tr {
+                td {
+                    &:first-child {
+                        width: 100%;
+                    }
+                    &:nth-child(3) {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

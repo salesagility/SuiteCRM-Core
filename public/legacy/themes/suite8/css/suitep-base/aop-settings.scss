@@ -3,6 +3,11 @@
     .moduleTitle {
         border-bottom: 1px solid lightgrey;
     }
+    #portal-seetings {
+        tr td {
+            white-space: nowrap;
+        }
+    }
     .hide-btn {
         display: none;
     }
@@ -55,9 +60,15 @@
             tr td {
                 &:first-child {
                     width: 10%;
+                    @media (max-width: 750px) {
+                        width: 100%;
+                    }
                 }
                 &:nth-child(3) {
                     width: 15%;
+                    @media (max-width: 750px) {
+                        width: 100%;
+                    }
                 }
                 button {
                     background-color: $nepal-grey;
@@ -90,6 +101,8 @@
                     border: none;
                     color: $white;
                     margin-left: 0.5em;
+                    position: relative;
+                    top: -1px;
                     &:hover {
                         background: $pale-blue;
                     }
