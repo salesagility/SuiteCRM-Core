@@ -1,0 +1,116 @@
+@media (max-width: 750px) {
+    .language {
+        .moduleTitle {
+            width: 100%;
+            margin-top: -0.2em;
+            padding-bottom: 0.5em;
+            .module-title-text {
+                font-size: 1.2em;
+            } 
+        }
+        .edit tr th {
+            padding: 0;
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+        tr.yui-dt-even {
+            height: 33px;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+        tr.yui-dt-odd {
+            height: 33px;
+            margin: 0;
+            padding: 0;     
+        }
+        .yui-dt-hd {
+            background: $white !important;
+        }
+        .yui-dt th .yui-dt-liner {
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 100%;
+            color: #666;
+        }
+        table.view {
+            display: block;
+            overflow: auto;
+        }
+        .add-table-mobile {
+            display: flex;
+            overflow-x: auto;
+            width: 32.7em;
+            @media (min-width:450px) and (max-width: 767px) {
+                width: 100%;
+            }
+        }
+            
+        .mobile-enabled {
+            @media (min-width:450px) and (max-width: 767px) {
+                width: 100%;
+            }
+            #enabled_div {
+                width: 100% !important;
+            }
+            .yui-dt-data {
+                .yui-dt-liner {
+                    background: $off-violet;
+                    border-radius: 0.3em;
+                    line-height: 25px;
+                    max-width: 100%;
+                    margin-left: 4px;
+                    padding-left: 1em;
+                }
+            }            
+        }
+        .mobile-disabled {
+            @media (min-width:450px) and (max-width: 767px) {
+                width: 100%;
+            }  
+            #disabled_div {
+                width: 100% !important;
+            }
+            .yui-dt-data {
+                .yui-dt-liner {
+                    background: $very-light-orange;
+                    border-radius: 0.3em;
+                    line-height: 25px;
+                    max-width: 100%;
+                    margin-left: 4px;
+                    padding-left: 1em;
+                }
+            }      
+        }
+        .yui-dt-scrollable .yui-dt-bd {
+            overflow-y: hidden;
+            background: $off-white;
+            margin: 5px;
+            padding: 5px;
+        }
+        div.add_table {
+            width: 37rem;
+            margin-top: 1.5em;
+            @media (min-width:450px) and (max-width: 767px) {
+                width: 100%;
+            }
+        }    
+        }
+    }
+    
+    @media (min-width:750px) and (max-width: 767px) {
+        .language {
+            .add-table-mobile {
+                display: flex;
+                overflow-x: auto; 
+                .desktop-enabled {
+                    width: 50%;
+                } 
+                .desktop-disabled {
+                    width: 50%;
+                }         
+            }
+        }
+    }

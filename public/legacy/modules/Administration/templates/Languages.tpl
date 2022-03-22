@@ -45,9 +45,10 @@
 <div class="language">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr><td colspan='100'><h2>{$title}</h2></td></tr>
-<tr><td colspan='100'>
+<div class="description">
 {$MOD.LBL_CONFIG_LANGS_DESC}
-</td></tr><tr><td><br></td></tr><tr><td colspan='100'>
+</div>
+<tr><td><br></td></tr><tr><td colspan='100'>
 
 <form name="ConfigureLangs" method="POST"  method="POST" action="index.php">
 	<input type="hidden" name="module" value="Administration">
@@ -66,14 +67,14 @@
 		</tr>
 	</table>
 
-	<div class='add_table' style='margin-bottom:5px'>
+	<div class='add_table'>
 		<table id="ConfigureLangs" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<td width='1%' class="desktop-enabled">
+			<tr class="add-table-mobile">
+				<td width='1%' class="desktop-enabled mobile-enabled">
 					<div id="enabled_div" class="enabled_tab_workarea">
 					</div>
 				</td>
-				<td class="desktop-disabled">
+				<td class="desktop-disabled mobile-disabled">
 					<div id="disabled_div" class="disabled_tab_workarea">
 					</div>
 				</td>

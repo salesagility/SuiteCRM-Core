@@ -3,6 +3,13 @@
     .hide-btn {
         display: none;
     }
+    .add_table {
+        margin-top: 1em;
+    }
+    .description {
+        position: absolute;
+        top: 4em;
+    }
     h2 {
         font-size: 1.4em;
         margin: 0;
@@ -53,11 +60,7 @@
         width: 100%;
         color: #666;
         margin-left: 2.5em;
-    }
-    .add-table-mobile {
-        display: flex;
-        overflow-x: auto;
-    }
+    }    
     .desktop-enabled {
         width: auto;
         #enabled_div {
