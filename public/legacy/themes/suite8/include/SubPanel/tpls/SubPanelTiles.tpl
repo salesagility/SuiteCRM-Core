@@ -20,7 +20,7 @@
                        onclick="showSubPanel('{$subpanel_tab}'); toggleSubpanelCookie('{$subpanel_tab}');">
             {/if}
                     <div class="col-xs-10 col-sm-11 col-md-11">
-                        <div>
+                        <div style="display: inline;">
                             <span class="suitepicon suitepicon-module-{$subpanel_tabs_properties.$i.module_name|lower|replace:'_':'-'} subpanel-icon"></span>
                             {$subpanel_tabs_properties.$i.title}
                         </div>
