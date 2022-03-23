@@ -1,0 +1,49 @@
+@media (max-width: 750px) {
+    .view-module-Connectors {
+        .moduleTitle {
+            width: 100%;
+            display: inline-grid;
+            margin-bottom: 1em;
+            border-bottom: 1px solid $border-bottom-lightgrey;
+            h2.module-title-text {
+                font-size: 1.8em;                
+                color: $shell-grey;
+            }
+        }
+        .mobile-hide {
+            display: none;
+        }
+        .edit tr {
+            border: none;
+        }
+        .border {
+            border-bottom: 1px solid $border-bottom-lightgrey;
+        }
+        .small tr td table {
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+        }       
+    }
+}
+
+@media (min-width:750px) and (max-width: 767px) {
+    .view-module-Connectors {
+        .border {
+            border-bottom: 1px solid $border-bottom-lightgrey;
+        }  
+        .mobile-hide {
+            display: none;
+        }      
+    }    
+}
+
+@media (min-width:768px) and (max-width:1024px) {
+    .view-module-Connectors {
+        .connector-leftside {
+            width: 40%;
+        }
+        .connector-rightside {
+            width: 60%;
+        }
+    }
+}
