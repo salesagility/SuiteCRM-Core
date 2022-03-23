@@ -58,7 +58,7 @@ class ListViewMerge extends EditViewMerge
 {
     protected $varName = 'listViewDefs';
     protected $viewDefs = 'ListView';
-    
+
     /**
     	 * Loads the meta data of the original, new, and custom file into the variables originalData, newData, and customData respectively it then transforms them into a structure that EditView Merge would understand
     	 *
@@ -69,12 +69,65 @@ class ListViewMerge extends EditViewMerge
     	 */
     protected function loadData($module, $original_file, $new_file, $custom_file)
     {
-        parent::loadData($module, $original_file, $new_file, $custom_file);
-        $this->originalData = array($module=>array( $this->viewDefs=>array($this->panelName=>array('DEFAULT'=>$this->originalData[$module]))));
-        $this->customData = array($module=>array( $this->viewDefs=>array($this->panelName=>array('DEFAULT'=>$this->customData[$module]))));
-        $this->newData = array($module=>array( $this->viewDefs=>array($this->panelName=>array('DEFAULT'=>$this->newData[$module]))));
+        $this->module = $module;
+
+        $this->originalData = $this->loadListData($original_file);
+        $this->newData = $this->loadListData($new_file);
+
+        if (file_exists($custom_file)) {
+            $this->customData = $this->loadListData($custom_file);
+        } else {
+            $this->customData = $this->originalData;
+        }
     }
-    
+
+    /**
+     * @param $file
+     * @return array
+     */
+    protected function loadListData($file): array {
+        $varName = 'viewdefs';
+        $subVarName = $this->varName;
+
+        require($file);
+
+        $data = $$varName ?? [];
+        $varInfo = $$subVarName ?? [];
+
+        $listData = [
+            $this->module => [
+                $this->viewDefs => [
+                    $this->panelName => [
+                        'DEFAULT' => $varInfo[$this->module] ?? []
+                    ]
+                ]
+            ]
+        ];
+
+        return array_merge_recursive($data, $listData);
+    }
+
+    /**
+     * Parses out the fields for each files meta data and then calls on mergeFields and setPanels
+     *
+     */
+    protected function mergeMetaData(): void
+    {
+        parent::mergeMetaData();
+        $this->mergeBulkActions();
+    }
+
+    /**
+     * Merge Bulk Actions
+     * @return void
+     */
+    protected function mergeBulkActions(): void
+    {
+        $key = 'bulkActions';
+        $sources = $this->getViewDefsSources();
+        $this->newData[$this->module][$this->viewDefs][$key] = $this->mergeMetadataArrayEntry($key, $sources);
+    }
+
     /**
      * This takes in a  list of panels and returns an associative array of field names to the meta-data of the field as well as the locations of that field
      * Since ListViews don't have the concept of rows and columns it takes the panel and the row to be the field name
@@ -88,7 +141,7 @@ class ListViewMerge extends EditViewMerge
         if (!$multiple) {
             $panels = array($panels);
         }
-        
+
         foreach ($panels as $panel_id=>$panel) {
             foreach ($panel as $col_id=>$col) {
                 $field_name = $col_id;
@@ -97,7 +150,7 @@ class ListViewMerge extends EditViewMerge
         }
         return $fields;
     }
-        
+
     /**
      * This builds the array of fields from the merged fields in the appropriate order
      * when building the panels for a list view the most important thing is order
@@ -124,16 +177,16 @@ class ListViewMerge extends EditViewMerge
         }
         return $panels;
     }
-    
+
     /**
      * Since all the meta-data is just a list of fields the panel section should be all the meta data
      *
      */
     protected function setPanels()
     {
-        $this->newData = $this->buildPanels();
+        $this->newData[$this->module][$this->viewDefs][$this->panelName]['DEFAULT'] = $this->buildPanels();
     }
-    
+
     /**
      * This will save the merged data to a file
      *
@@ -142,10 +195,19 @@ class ListViewMerge extends EditViewMerge
      */
     public function save($to)
     {
-        return write_array_to_file("$this->varName['$this->module']", $this->newData, $to);
+        $viewDefs = array_filter($this->newData[$this->module][$this->viewDefs] ?? [], static function($v, $k) {
+            return $k !== 'panels' && !empty($v);
+        }, ARRAY_FILTER_USE_BOTH);
+
+        $result = write_array_to_file("viewdefs['$this->module']['$this->viewDefs']", $viewDefs, $to);
+        $contents = file_get_contents($to);
+        $contents .= "\n\n";
+
+        $panel = $this->newData[$this->module][$this->viewDefs][$this->panelName]['DEFAULT'];
+        return write_array_to_file("$this->varName['$this->module']", $panel , $to, 'w', $contents) && $result;
     }
-    
-    
+
+
     /**
      * Merges the fields together and stores them in $this->mergedFields
      *
@@ -176,8 +238,8 @@ class ListViewMerge extends EditViewMerge
                 $this->mergedFields[$field] = array(
                     'data'=>$this->mergeField($this->originalFields[$field]['data'], $this->newFields[$field]['data'], $this->customFields[$field]['data']),
                     'loc'=>$loc);
-                
-                
+
+
             //if it's not set in the new fields then it was a custom field or an original field so we take the custom fields data and set the location source to custom
             } else {
                 if (!isset($this->newFields[$field])) {
@@ -188,19 +250,19 @@ class ListViewMerge extends EditViewMerge
                     $this->mergedFields[$field] = array(
                     'data'=>$this->mergeField('', $this->newFields[$field]['data'], $this->customFields[$field]['data']),
                     'loc'=>$this->customFields[$field]['loc']);
-                
+
                     $this->mergedFields[$field]['loc']['source'] = 'custom';
                     //echo var_export($this->mergedFields[$field], true);
                 }
             }
-            
+
             //then we clear out the field from
             unset($this->originalFields[$field]);
             unset($this->customFields[$field]);
             unset($this->newFields[$field]);
         }
-        
-        
+
+
         /**
          * These are fields that were removed by the customer
          */
@@ -208,7 +270,7 @@ class ListViewMerge extends EditViewMerge
             unset($this->originalFields[$field]);
             unset($this->newFields[$field]);
         }
-            
+
         foreach ($this->newFields as $field=>$data) {
             $data['loc']['source']= 'new';
             $this->mergedFields[$field] = array(
@@ -217,15 +279,15 @@ class ListViewMerge extends EditViewMerge
             unset($this->newFields[$field]);
         }
     }
-        
-    
+
+
     /**
      * Merges the meta data of a single field
      *
      * @param ARRAY $orig - the original meta-data for this field
      * @param ARRAY $new - the new meta-data for this field
      * @param ARRAY $custom - the custom meta-data for this field
-     * @return ARRAY $merged - the merged meta-data
+     * @return mixed $merged - the merged meta-data
      */
     protected function mergeField($orig, $new, $custom)
     {
@@ -256,7 +318,7 @@ class ListViewMerge extends EditViewMerge
             $this->log($custom);
             return $custom;
         }
-        
+
         if (is_array($custom)) {
             //if both new and custom are arrays then at this point new != custom and orig != custom and orig != new  so let's merge the custom and the new and return that
             if (is_array($new)) {
@@ -270,7 +332,7 @@ class ListViewMerge extends EditViewMerge
                 return $custom;
             }
         }
-        
+
         //default to returning the New version of the field
         $new['default'] = isset($custom['default']) ? $custom['default'] : false;
         return $new;

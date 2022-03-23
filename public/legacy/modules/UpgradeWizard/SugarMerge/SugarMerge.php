@@ -100,9 +100,10 @@ class SugarMerge
      * @param BOOLEAN|ARRAY $merge - do we wish to perform the merge if false it will just return a list of files that can be merged.  If an array is passed, only those modules present in the array will be merged.
      * @param BOOLEAN $save - do we wish to save the merged files to true - $merge must be true for this to apply - otherwise it will simulate merging so you can view the log files of the merge
      * @param BOOLEAN $logHistory - do we wish to create history entries for any of the merges
+     * @param string $mergeMode - do we wish to create history entries for any of the merges
      * @return ARRAY - an associative array of module names to files that were either merged or have the potential to be merged depeneding if $merge and $save  are set to true
      */
-    public function mergeAll($merge=true, $save=true, $logHistory=true)
+    public function mergeAll($merge=true, $save=true, $logHistory=true, $mergeMode = 'merge')
     {
         $this->merged = array();
         $searchDirectory = $this->custom_path;
@@ -130,13 +131,13 @@ class SugarMerge
 
                         if (is_array($merge)) {
                             if (in_array($e, $merge)) {
-                                $this->merged[$e] = $this->mergeModule($e, true, $save, $logHistory);
+                                $this->merged[$e] = $this->mergeModule($e, true, $save, $logHistory, $mergeMode);
                             } else {
                                 $GLOBALS['log']->debug("SugarMerge is skipping $e module as filter array passed in but module not specified for merge.");
                                 continue;
                             }
                         } else {
-                            $this->merged[$e] = $this->mergeModule($e, $merge, $save, $logHistory);
+                            $this->merged[$e] = $this->mergeModule($e, $merge, $save, $logHistory, $mergeMode);
                         }
                     }
                 }
@@ -157,9 +158,10 @@ class SugarMerge
      * @param BOOLEAN $merge - do we wish to perform the merge if false it will just return a list of files that can be merged
      * @param BOOLEAN $save - do we wish to save the merged files to true - $merge must be true for this to apply - otherwise it will simulate merging so you can view the log files of the merge
      * @param BOOLEAN $logHistory - do we wish to create history entries for any of the merges
+     * @param string $mergeMode - 'merge', 'merge-dry-run', 'keep', 'override
      * @return ARRAY - an associative array of files that were either merged or have the potential to be merged depeneding if $merge and $save  are set to true
      */
-    public function mergeModule($module, $merge = true, $save=true, $logHistory=true)
+    public function mergeModule($module, $merge = true, $save=true, $logHistory=true, $mergeMode = 'merge')
     {
         $merged = array();
         $path = $this->original_path . 'modules/' . $module . '/metadata/';
@@ -168,7 +170,21 @@ class SugarMerge
         foreach ($this->mergeMapping as $file=>&$object) {
             if (file_exists("{$custom_path}{$file}") && file_exists("{$new_path}{$file}")) {
                 if ($merge) {
-                    $merged[$file] = $this->mergeFile($module, $file, $save, $logHistory);
+                    if ($mergeMode === 'keep'){
+                        continue;
+                    }
+
+                    if ($mergeMode === 'override'){
+                        unlink("{$custom_path}{$file}");
+                        continue;
+                    }
+
+                    $dryRun = false;
+                    if ($mergeMode === 'merge-dry-run') {
+                        $dryRun = true;
+                    }
+
+                    $merged[$file] = $this->mergeFile($module, $file, $save, $logHistory, $dryRun);
                 } else {
                     $merged[$file] = true;
                 }
@@ -184,9 +200,11 @@ class SugarMerge
      * @param STRING $module - name of the module
      * @param STRING $file - name of the file
      * @param STRING $save - should the merged file be saved to the custom directory
+     * @param boolean $logHistory
+     * @param boolean $dryRun
      * @return BOOLEAN - success or failure of the merge
      */
-    public function mergeFile($module, $file, $save=true, $logHistory=true)
+    public function mergeFile($module, $file, $save=true, $logHistory=true, $dryRun = false)
     {
         $path = $this->original_path . 'modules/' . $module . '/metadata/';
         $custom_path = $this->custom_path . 'modules/' . $module . '/metadata/';
@@ -200,7 +218,7 @@ class SugarMerge
                 $this->createHistoryLog($module, "{$custom_path}{$file}", $file);
             }
             $this->mergeMapping[$file]->sugarMerge = $this;
-            return $this->mergeMapping[$file]->merge($module, "{$path}{$file}", "{$new_path}{$file}", "{$custom_path}{$file}", $save);
+            return $this->mergeMapping[$file]->merge($module, "{$path}{$file}", "{$new_path}{$file}", "{$custom_path}{$file}", $save, $dryRun);
         }
         return false;
     }
