@@ -77,12 +77,12 @@
 				    &nbsp;{sugar_help text=$MOD.LBL_CONFIG_TABS_ALLOW_USERS_HIDE_TABS_HELP}
 				</td>
 			</tr>
-			<tr class="enabled-tab">
-				<td width='1%'>
+			<tr class="enabled-tab mobile-tab-table">
+				<td width='1%' class="mobile-enabled">
 					<div id="enabled_div" class="enabled_tab_workarea">
 					</div>
 				</td>
-				<td>
+				<td class="mobile-disabled">
 					<div id="disabled_div" class="disabled_tab_workarea">
 					</div>
 				</td>
@@ -92,11 +92,11 @@
 	
 	<div class='add_subpanels' style='margin-bottom:5px'>
 		<table id="ConfigureSubPanels" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
-			<tr class="enabled-tab">
-				<td width='1%'>
+			<tr class="enabled-tab mobile-tab-subpanel">
+				<td width='1%' class="mobile-enabled">
 					<div id="enabled_subpanels_div"></div>	
 				</td>
-				<td>
+				<td class="mobile-disabled">
 					<div id="disabled_subpanels_div"></div>
 				</td>
 			</tr>
