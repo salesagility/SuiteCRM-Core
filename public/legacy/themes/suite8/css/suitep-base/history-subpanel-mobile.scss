@@ -1,0 +1,37 @@
+@media (max-width: 750px) {
+    .history-subpanel-config {
+        .mobile-checkbox {
+            padding-left: 1em;
+        }
+        .edit tr {
+            border: none;
+        }
+        .border-label {
+            border-bottom: 1px solid $border-bottom-lightgrey;
+        }
+        .view {
+            tr td[scope=row] {
+                white-space: normal;
+                line-height: 1;
+                padding-top: 0.5em;
+            } 
+        }
+        .action-buttons {
+            margin-top: -3.3em;
+        }
+    } 
+}
+
+@media (min-width:750px) and (max-width: 767px) {
+    .history-subpanel-config {
+        .mobile-checkbox {
+            padding-left: 1em;
+        }
+        .edit tr {
+            border: none;
+        }
+        .border-label {
+            border-bottom: 1px solid $border-bottom-lightgrey;
+        }
+    } 
+}
