@@ -1,0 +1,39 @@
+@media (max-width: 750px) {
+    .activity-stream {
+        .moduleTitle {
+            width: 100%;
+            padding-bottom: 2.5em;
+        }
+        .action-button {
+            margin-top: 2.5em;
+        }
+        table.view {
+            tr td {
+                display: inline;
+            }
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+    }
+}
+
+@media (min-width: 750px) and (max-width: 767px) {
+    .activity-stream {
+        .moduleTitle {
+            width: 100%;
+            padding-bottom: 2.5em;
+        }
+        .action-button {
+            margin-top: 2.5em;
+        }
+        table.view {
+            tr td {
+                display: inline;
+            }
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+    }
+}
