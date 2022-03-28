@@ -32,6 +32,7 @@ use App\Engine\Service\FolderSync\FolderComparatorInterface;
 use App\Engine\Service\FolderSync\FolderSync;
 use App\Install\Service\Package\PackageHandler;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UpgradePackageHandler extends PackageHandler
 {
@@ -44,6 +45,11 @@ class UpgradePackageHandler extends PackageHandler
      * @var string
      */
     protected $upgradePackageDir;
+
+    /**
+     * @var string
+     */
+    private $legacyDir;
 
     /**
      * @var FolderSync
@@ -64,6 +70,7 @@ class UpgradePackageHandler extends PackageHandler
      * UpgradeHandler constructor.
      * @param string $projectDir
      * @param string $upgradePackageDir
+     * @param string $legacyDir
      * @param FolderSync $sync
      * @param FolderComparatorInterface $compare
      * @param LoggerInterface $upgradeLogger
@@ -72,6 +79,7 @@ class UpgradePackageHandler extends PackageHandler
     public function __construct(
         string $projectDir,
         string $upgradePackageDir,
+        string $legacyDir,
         FolderSync $sync,
         FolderComparatorInterface $compare,
         LoggerInterface $upgradeLogger,
@@ -80,6 +88,7 @@ class UpgradePackageHandler extends PackageHandler
         parent::__construct();
         $this->projectDir = $projectDir;
         $this->upgradePackageDir = $upgradePackageDir;
+        $this->legacyDir = $legacyDir;
         $this->sync = $sync;
         $this->compare = $compare;
 
@@ -214,6 +223,33 @@ class UpgradePackageHandler extends PackageHandler
     }
 
     /**
+     * Run compare and install package
+     * @param string $version
+     * @return Feedback
+     */
+    public function backup(string $version): Feedback
+    {
+        $backupPath = $this->getBackupPath($version);
+
+        $feedback = new Feedback();
+
+        $filesystem = new Filesystem();
+        $filesystem->remove($backupPath);
+        $filesystem->mkdir($backupPath);
+
+        $moduleBackupPath = $backupPath . '/modules';
+        $originalModulesPath = $this->legacyDir . '/modules';
+
+        $filesystem->mirror($originalModulesPath, $moduleBackupPath, null,
+            ['override' => true, 'delete' => true, 'copy_on_windows' => true]);
+
+
+        $feedback->setSuccess(true)->setMessages(['Successfully backed up files']);
+
+        return $feedback;
+    }
+
+    /**
      * @param string $extractPath
      * @return array
      */
@@ -237,8 +273,19 @@ class UpgradePackageHandler extends PackageHandler
      * @param string $version
      * @return string
      */
-    protected function getPackageExtractPath(string $version): string
+    public function getPackageExtractPath(string $version): string
     {
         return $this->upgradePackageDir . '/' . $version . '-extracted';
+    }
+
+
+    /**
+     * Get package extract output path
+     * @param string $version
+     * @return string
+     */
+    public function getBackupPath(string $version): string
+    {
+        return $this->upgradePackageDir . '/' . $version . '-backup';
     }
 }
