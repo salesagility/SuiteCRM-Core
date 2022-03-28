@@ -68,23 +68,6 @@ class UpgradeCommand extends BaseStepExecutorCommand
             )
         ];
 
-        $this->inputConfig['metadata-merge'] = [
-            'question' => new ChoiceQuestion(
-                'Please enter the merge strategy to use: ',
-                ['keep', 'override', 'merge'],
-                'keep'
-            ),
-            'argument' => new InputOption(
-                'metadata-merge',
-                'm',
-                InputOption::VALUE_OPTIONAL,
-                'Merge strategy to use, options [\'keep\', \'override\', \'merge\']',
-                'keep'
-            ),
-            'default' => 'keep',
-            'required' => false
-        ];
-
         $this->initSession = true;
 
         parent::__construct();
@@ -104,11 +87,9 @@ class UpgradeCommand extends BaseStepExecutorCommand
     protected function getContext(array $arguments): array
     {
         $version = $arguments['target-version'];
-        $mergeStrategy = $arguments['metadata-merge'];
 
         return [
             'version' => $version,
-            'metadata-merge' => $mergeStrategy,
         ];
     }
 

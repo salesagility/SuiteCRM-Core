@@ -29,6 +29,9 @@ namespace App\Install\Command;
 
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeFinalizeHandlerInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * Class UpgradeFinalizeCommand
@@ -56,6 +59,33 @@ class UpgradeFinalizeCommand extends BaseStepExecutorCommand
 
         $this->initSession = true;
 
+        $this->inputConfig['target-version'] = [
+            'question' => new Question('Please enter the version to move to: '),
+            'argument' => new InputOption(
+                'target-version',
+                't',
+                InputOption::VALUE_REQUIRED,
+                'Target Version'
+            )
+        ];
+
+        $this->inputConfig['metadata-merge'] = [
+            'question' => new ChoiceQuestion(
+                'Please enter the merge strategy to use: ',
+                ['keep', 'override', 'merge'],
+                'keep'
+            ),
+            'argument' => new InputOption(
+                'metadata-merge',
+                'm',
+                InputOption::VALUE_OPTIONAL,
+                'Merge strategy to use, options [\'keep\', \'override\', \'merge\']',
+                'keep'
+            ),
+            'default' => 'keep',
+            'required' => false
+        ];
+
         parent::__construct();
     }
 
@@ -72,7 +102,13 @@ class UpgradeFinalizeCommand extends BaseStepExecutorCommand
      */
     protected function getContext(array $arguments): array
     {
-        return [];
+        $mergeStrategy = $arguments['metadata-merge'];
+        $version = $arguments['target-version'];
+
+        return [
+            'version' => $version,
+            'metadata-merge' => $mergeStrategy,
+        ];
     }
 
     /**
