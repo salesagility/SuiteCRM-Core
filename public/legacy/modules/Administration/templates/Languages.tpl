@@ -69,11 +69,11 @@
 	<div class='add_table' style='margin-bottom:5px'>
 		<table id="ConfigureLangs" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width='1%'>
+				<td width='1%' class="desktop-enabled">
 					<div id="enabled_div" class="enabled_tab_workarea">
 					</div>
 				</td>
-				<td>
+				<td class="desktop-disabled">
 					<div id="disabled_div" class="disabled_tab_workarea">
 					</div>
 				</td>
