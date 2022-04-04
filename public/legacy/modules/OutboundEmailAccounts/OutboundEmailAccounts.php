@@ -93,7 +93,7 @@ var passwordToggle = function(elem, sel) {
 <div id="password_toggle" style="display:none;">
 	<input type="password" id="mail_smtppass" name="mail_smtppass" />
 </div>
-<a href="javascript:;" onclick="passwordToggle(this, '#password_toggle');">{$mod_strings['LBL_CHANGE_PASSWORD']}</a>
+<a class="pwd-btn" href="javascript:;" onclick="passwordToggle(this, '#password_toggle');">{$mod_strings['LBL_CHANGE_PASSWORD']}</a>
 
 HTML;
         return $html;

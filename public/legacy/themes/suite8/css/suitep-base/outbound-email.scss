@@ -1,0 +1,64 @@
+.view-module-OutboundEmailAccounts {
+    .action-buttons {
+        top: 0;
+        margin-top: -3.5em;
+    }
+    #save_and_continue.button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        margin-top: 0.2em;
+        margin-right: 0.2em;
+        margin-left: 0.2em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
+    #gmail-button,#yahoomail-button,#exchange-button,#other-button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        text-transform: capitalize;
+        border: none;
+        color: $white;
+        &:hover {
+            background: $pale-blue;
+        }
+    }   
+    .pwd-btn {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        text-transform: capitalize;
+        border: none;
+        color: $white;
+        padding: 0.5em 0.9em;
+        &:hover {
+            background: $pale-blue;
+        }
+    }    
+    .panel-content {
+        .panel-body {
+            .edit-view-row {
+                input[type=text],input[type=password],input[type=email],input[type=number]{
+                    background-color: $transparent-color !important;
+                    border: 1px solid $form-border-color !important;
+                    position: relative;
+                    top: -1;
+                    height: 2.1em;
+                }
+            }
+        }
+    }
+}
