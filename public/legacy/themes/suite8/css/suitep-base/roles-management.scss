@@ -63,4 +63,9 @@
         border-radius: 10px;
         overflow: hidden;
     }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+    }
 }
