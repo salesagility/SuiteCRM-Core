@@ -1,0 +1,26 @@
+#testOutboundDialog {
+    #testOutbound {
+        .button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.3em 1em;
+            text-transform: capitalize;
+            margin-top: 1em;
+            border: none;
+            &:hover {
+                background: $pale-blue;
+                font-size: 13px;
+            }
+        }
+        .edit tr td[scope=row] {
+            height: auto;
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+    }
+}

@@ -48,6 +48,11 @@
             background: $pale-blue;
         }
     }    
+    input.button[type=button] {
+        &:hover {
+            font-size: 13px;
+        }        
+    }
     .panel-content {
         .panel-body {
             .edit-view-row {

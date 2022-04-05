@@ -359,8 +359,7 @@ form.userprofile {
 }
 
 
-.view-module-Users {  
-    
+.view-module-Users {
     .urltext {
         width:27em;
         word-wrap:break-word;
@@ -371,11 +370,9 @@ form.userprofile {
     }
 
     form.userprofile .user-tab-content .edit tr td {
-
       .urltext {
         text-transform: none;
       }
-
     }
 
     .footer {
@@ -426,5 +423,10 @@ form.userprofile {
         #settingsButton {
             margin-top: 1em;
         }       
-    }        
+    }      
+    input[type=button] {
+        &:hover {
+            font-size: 13px;
+        }
+    } 
 }
