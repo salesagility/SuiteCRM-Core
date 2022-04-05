@@ -46,6 +46,7 @@ import {UserPreferenceStore} from '../../../../store/user-preference/user-prefer
 export class SubpanelComponent implements OnInit {
     @Input() store: SubpanelStore;
     @Input() maxColumns$: Observable<number>;
+    @Input() onClose: Function;
 
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
@@ -80,7 +81,7 @@ export class SubpanelComponent implements OnInit {
 
         this.closeButton = {
             onClick: (): void => {
-                this.store.show = false;
+                this.onClose && this.onClose();
             }
         } as ButtonInterface;
     }
