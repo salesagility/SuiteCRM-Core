@@ -38,7 +38,7 @@ class Jjwg_MapsViewQuick_Radius extends SugarView
         </td>
     </tr>
     <tr>
-        <td>
+        <td style="padding-right: 1em;">
             <strong><?php echo $GLOBALS['mod_strings']['LBL_MODULE_TYPE'].' '; ?> </strong>
         </td>
         <td>
