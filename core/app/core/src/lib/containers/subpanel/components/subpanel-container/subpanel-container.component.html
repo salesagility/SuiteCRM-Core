@@ -63,6 +63,7 @@
                 <scrm-subpanel *ngIf="item.show"
                                [maxColumns$]="maxColumns$"
                                [store]="item"
+                               [onClose]="getCloseCallBack(subpanelKey, item)"
                                class="sub-panel">
                 </scrm-subpanel>
             </ng-container>

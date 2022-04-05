@@ -113,7 +113,9 @@ export class SubpanelContainerComponent implements OnInit {
         item.show = !item.show;
 
         if (item.show) {
-            this.openSubpanels.push(key);
+            if (!this.openSubpanels.includes(key)) {
+                this.openSubpanels.push(key);
+            }
             item.load().pipe(take(1)).subscribe();
         } else {
             this.openSubpanels = this.openSubpanels.filter(subpanelKey => subpanelKey != key);
@@ -121,6 +123,10 @@ export class SubpanelContainerComponent implements OnInit {
 
         const module = this?.config?.parentModule ?? 'default';
         this.preferences.setUi(module, 'subpanel-container-open-subpanels', this.openSubpanels);
+    }
+
+    getCloseCallBack(key: string, item: SubpanelStore): Function {
+        return () => this.showSubpanel(key, item);
     }
 
     getGridConfig(vm: SubpanelStore): GridWidgetConfig {
