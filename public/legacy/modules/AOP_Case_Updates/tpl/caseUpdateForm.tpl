@@ -38,7 +38,7 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 *}
-<button id="addFileButton" class="button primary" type="button">{$MOD.LBL_ADD_CASE_FILE}</button>
+<button id="addFileButton" class="button primary case-addbutton" type="button">{$MOD.LBL_ADD_CASE_FILE}</button>
 {literal}
 <script>
     $(document).ready(function(){
@@ -98,8 +98,8 @@
             <input type="text" name="case_document_name" class="sqsEnabled" tabindex="0" id="case_document_name" size="" value="" title='' autocomplete="off">
             <input type="hidden" name="case_document_id" id="case_document_id" value="">
 
-            <span class="id-ff multiple">
-                <button type="button" name="btn_case_document_name" id="btn_case_document_name" tabindex="0" title="{$MOD.LBL_SELECT_CASE_DOCUMENT}" class="button firstChild" value="{$MOD.LBL_SELECT_CASE_DOCUMENT}"
+            <span class="id-ff multiple selectcrossbtn">
+                <button type="button" name="btn_case_document_name" id="btn_case_document_name" tabindex="0" title="{$MOD.LBL_SELECT_CASE_DOCUMENT}" class="firstChild" value="{$MOD.LBL_SELECT_CASE_DOCUMENT}"
                         {literal}
                         onclick='open_popup(
                                 "Documents",
@@ -113,14 +113,16 @@
                                 true
                                 );' >
                         {/literal}
-                <span class="suitepicon suitepicon-action-select"></span></button>
+                        {sugar_getimage name="cursor" attr='border="0"'}                
+                </button>
                 <button type="button" name="btn_clr_case_document_name"
-                        id="btn_clr_case_document_name" tabindex="0" title="{$MOD.LBL_CLEAR_CASE_DOCUMENT}"  class="button lastChild"
-                        onclick="SUGAR.clearRelateField(this.form, 'case_document_name', 'case_document_id');"  value="{$MOD.LBL_CLEAR_CASE_DOCUMENT}" ><span class="suitepicon suitepicon-action-clear"></span></button>
+                        id="btn_clr_case_document_name" tabindex="0" title="{$MOD.LBL_CLEAR_CASE_DOCUMENT}"  class="lastChild"
+                        onclick="SUGAR.clearRelateField(this.form, 'case_document_name', 'case_document_id');"  value="{$MOD.LBL_CLEAR_CASE_DOCUMENT}" >
+                        {sugar_getimage name="cross" attr='border="0"'}
+                </button>
             </span>
         </span>
 
-<button class="removeFileButton" type="button">{$MOD.LBL_REMOVE_CASE_FILE}</button><br>
-    </span>
-
+<button class="removeFileButton case-removebutton" type="button">{$MOD.LBL_REMOVE_CASE_FILE}</button><br>
+</span>
 </script>

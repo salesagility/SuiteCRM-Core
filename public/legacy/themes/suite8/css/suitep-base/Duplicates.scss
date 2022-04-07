@@ -1,0 +1,87 @@
+.view-module-Accounts,.view-module-Contacts,.view-module-Leads,.view-module-Prospects,.view-action-editview {
+    input[type=text],input[type=password],input[type=email] {
+        background-color:$transparent-color !important;
+        border: 1px solid $form-border-color !important;
+    }        
+    .email-address-line-container {
+        padding: 0;
+        .email-address-options-container {
+            margin-top: -1.2em;
+        }
+    }
+    .col-xs-12 .email-address-lines-container {
+        padding: 0;
+    }
+    span.input-group-btn {
+        bottom: 5px;
+    }
+    .email-address-add-button {
+        background: none;
+        color: $medium-grey;
+        width: 28px;
+        height: 28px;
+        margin-bottom: 1em;
+        .suitepicon-action-plus {
+            font-size: 24px;
+            @-moz-document url-prefix() {
+                position: relative;
+                top: 2.5px;
+                left: 1px;
+            }
+        }
+        @media (max-width: 750px) {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        &:focus {
+            outline: none;
+            background: $white;
+            color: $medium-grey;
+            border: none;
+            box-shadow: none;
+        }
+        &:hover {
+            background: $nepal-grey;
+            color: $white;
+            line-height: 0;  
+            @-moz-document url-prefix() {
+                line-height: 1.4;
+            }          
+        }
+    }
+    .email-address-remove-button {
+        background: transparent;
+        color: $medium-grey;
+        padding: 0.3em;
+        height: 28px;
+        margin-top: 8px;
+        border: none;
+        .suitepicon-action-minus {
+            font-size: 17px;
+            @-moz-document url-prefix() {
+                position: relative;
+                top: 3px;
+            }
+        }
+        &:focus {
+            outline: none;
+            background: $white;
+            color: $medium-grey;
+        }
+        &:hover {
+            background: $nepal-grey;
+            color: $white;
+            line-height: 0;  
+            @-moz-document url-prefix() {
+                line-height: inherit;
+            }          
+        }
+        @media (max-width: 750px) {
+            margin-left: 0.8em;
+        }
+    }
+    button:disabled {
+        width: 28px;
+        margin-left: 0.8em;
+    }
+}

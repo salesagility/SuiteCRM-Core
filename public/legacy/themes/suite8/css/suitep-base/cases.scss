@@ -104,3 +104,32 @@
 #lessmargin {
   margin: 0 50px 0 0;
 }
+
+.view-module-Cases {
+  .selectcrossbtn { 
+    button {
+        &:hover {
+            background: none;
+        }
+    }
+  }
+  .case-addbutton,.case-removebutton {
+    background-color: $nepal-grey;
+    border-radius: 0.2em;
+    font-weight: bold;
+    height: 2.2em;
+    line-height: 1em;
+    letter-spacing: 0.05em;
+    padding: 0.3em 1em;
+    text-transform: capitalize;
+    &:hover {
+        background: $pale-blue;
+    }
+  }
+  .caseDocumentWrapper {
+    input[type="file"] {
+      display: inline;
+      width: 12%;
+    }
+  }
+}
