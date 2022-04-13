@@ -76,13 +76,15 @@
             } 
             tr td {
                 padding-left: 0.8em;
-                margin-bottom: 0.5em;
             }
         }
         .edit img#company_logo_image {
             margin-top: 0;
             margin-bottom: 0.5em;
         }
+    }
+    .mobile-hide {
+        display: none !important;
     }
 }
 

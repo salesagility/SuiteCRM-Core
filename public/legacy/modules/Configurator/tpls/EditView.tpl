@@ -170,7 +170,7 @@
             <input type='hidden' name='disable_convert_lead' value='false'>
             <input name='disable_convert_lead'  type="checkbox" value="true" {$disable_convert_lead}>
         </td>
-        <td colspan="2">&nbsp;</td>
+        <td colspan="2" class="mobile-hide">&nbsp;</td>
     </tr>
 
     <tr>
@@ -184,7 +184,7 @@
             <input type='hidden' name='enable_action_menu' value='false'>
             <input name='enable_action_menu'  type="checkbox" value="true" {$enable_action_menu}>
         </td>
-        <td colspan="2">&nbsp;</td>
+        <td colspan="2" class="mobile-hide">&nbsp;</td>
     </tr>
 
     <tr>
