@@ -1,0 +1,133 @@
+@media (max-width: 768px) {
+    .view-module-InboundEmail {
+        .header-inbound-title {
+            margin-bottom: 2.5em;
+        }
+        .inbound-emailbtn {
+            .mandatory {
+                position: absolute;
+                top: -2.5em;
+                right: 6em;
+                font-size: 12px;
+            }            
+        }        
+        .inboundemail {
+            th {
+                h4 {
+                    border-bottom: 1px solid $border-bottom-lightgrey !important;
+                    padding-bottom: 0.8em;
+                }
+            }
+            input:not([type]) {
+                width: 100%;
+            }
+            input[name="email_num_autoreplies_24_hours"] {
+                width: 100% !important;
+            }
+            input[type="text"] {
+                width: 100% !important;
+            }
+            input[type="password"] {
+                width: 100% !important;
+            }
+            input[name="reply_to_name"],input[name="reply_to_addr"],
+            input[name="from_addr"],input[name="from_name"] {
+                width: 100% !important;
+            }
+            slot {
+                line-height: normal;
+            }
+            table {
+                padding-bottom: 1.5em;
+                tr {
+                    td {
+                        span {
+                            input[type="text"] {
+                                width: 100%;
+                            }
+                            width: 100% !important;
+                        }
+                        select {
+                            min-width: 99%;
+                        }
+                    }
+                }
+            }
+            h4 {
+                margin-top: 0;
+                padding-left: 0;
+                padding-bottom: 0;
+            }
+            #subscribeFolderButton,#trashFolderButton,#sentFolderButton {
+                margin-top: 1em;
+                margin-left: 0;
+            }
+            #create_case_template_id {
+                margin-bottom: 0.8em;
+            }
+            #template_id {
+                margin-bottom: 0.8em;
+            }            
+        }
+        .mobile-hide {
+            display: none;
+        }        
+    }
+    div.content div.pagecontent form#EditView div.edit.view.inboundemail table tbody tr td {
+        padding: 0.3em 0.8em 0.5em 0.5em;
+        border: none;
+        line-height: 2em;
+        clear: both;
+        height: initial;
+        width: 100%;
+    }
+    div.content div.pagecontent form#EditView div.edit.view table tbody tr td span {
+        float: none;
+        display: inline;
+    }    
+}   
+
+@media (min-width:767px) and (max-width:1070px) {
+    .view-module-InboundEmail {
+        .mobile-hide {
+            display: none !important; 
+        }
+        input[name="reply_to_name"],input[name="reply_to_addr"],
+        input[name="from_addr"],input[name="from_name"] {
+            width: 99% !important;
+        }
+        input[name="filter_domain"] {
+            width: 99%;
+        }
+        input[name="email_num_autoreplies_24_hours"] {
+            width: 99% !important;
+        }
+        input[name="email_password"] {
+            width: 99%;
+        }
+        input[name="mailbox"],input[name="trashFolder"],input[name="sentFolder"] {
+            width: 99% !important;
+            margin-bottom: 0.5em;
+        }
+        .checkboxmar {
+            margin-top:0;
+        }
+        input[name="port"] {
+            width: 99%;
+        }
+        select {
+            min-width: 99%;
+        }
+    }
+}
+
+@media (max-width: 750px) {
+    .view-module-InboundEmail {
+        div.inboundemail .checkboxmar {
+            margin-top: -2em;
+        }
+        .view {
+            overflow: hidden;
+        }
+    }    
+}

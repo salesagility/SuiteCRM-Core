@@ -2,10 +2,23 @@
 
 div.content div.pagecontent form#EditView div.edit.view.inboundemail table tbody tr td {
     padding: 0.3em 0.8em 1em 2em;
+    @media (min-width:767px) and (max-width:1070px) {
+      display: block;
+      width: 100%;
+      border-right: none;
+      .view-module-InboundEmail {
+        .mobile-hide {
+          display: none;
+        }
+      }
+    }   
+    input[type="text"] {
+      width: 99%;
+    } 
 }
 
 div.content div.pagecontent form#EditView div.edit.view.inboundemail table tbody tr td select {
-    border: 1px solid $bright-grey;
+  border: 1px solid $bright-grey;
 }
 
 div.inboundemail {
@@ -42,19 +55,22 @@ div.inboundemail {
   
   .header-inbound-title {
     margin-bottom: 0.5em;
+    font-size: 1.8em;
+    text-transform: capitalize;
+    border-bottom: 1px solid $border-bottom-lightgrey;
   }
   
   .inbound-emailbtn {
     margin-bottom: 1em;
     position: absolute;
     right: 0;
-    top: 6.2rem;
+    margin-top: -4em;
     display: flex;
   }
 
 /* Inbound List View table */
 
-div#inboundlistview {
+div#inboundlistview {  
   border-top: 1px solid lightgrey;
   padding-top: 1em;
   #selectLink > li > label {
@@ -65,7 +81,7 @@ div#inboundlistview {
       margin-left: 0.5em;
     }
   }
-  .inbound-email {
+  .inbound-email {    
     tr td.inline-email-td {
       svg {
         vertical-align: middle;
@@ -137,3 +153,8 @@ table.inboundmacro {
   }
 }
 
+.view-module-InboundEmail {
+  #distrib_method {
+    margin-bottom: 1em;    
+  }    
+}
