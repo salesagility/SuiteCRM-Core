@@ -100,7 +100,7 @@ export class LoginUiComponent {
     }
 
     doLanguageChange(language: string): void {
-        this.languageStore.changeLanguage(language);
+        this.languageStore.changeLanguage(language, true);
     }
 
     doGetCurrentLanguage(): string {
