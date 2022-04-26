@@ -1,0 +1,73 @@
+.view-module-Surveys {
+    .surveys-questions {
+        #newQuestionButton {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.3em 1em;
+            text-transform: capitalize;
+            &:hover {
+                background: $pale-blue;
+            }
+        }
+        .button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.3em 1em;
+            text-transform: capitalize;
+            margin: 0.2em;
+            &:hover {
+                background: $pale-blue;
+            }
+        }
+        table#questionTable {
+            .questionBody {
+                input.surveyQuestionName {
+                    width: 100%;
+                }
+                @media (max-width:1024px) {
+                    ul.optionList {
+                        li {
+                            display: flex;
+                        }
+                    }
+                }                
+            }
+        }
+        .survey_question_options {
+            margin-bottom: 0.5em;
+            margin-right: 0.4em;
+            @media (max-width: 1024px) {
+                width: auto !important;
+                display: flex;
+            }
+        }
+    }
+}
+
+@media (max-width: 750px) {
+    .view-module-Surveys {
+        .edit-border-bottom {
+            border-top: none;
+        }
+        #EditView .buttons, .action_buttons {
+            position: static;
+            display: flex !important;
+            justify-content: flex-end;
+            border-bottom: 1px solid $border-bottom-lightgrey;
+            padding-bottom: 0.5em;
+            flex-wrap: wrap;
+        }
+        .buttons .button {
+            width: auto;
+            font-size: 13px;
+        }
+    }
+}

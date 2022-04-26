@@ -1,4 +1,4 @@
-<div>
+<div class="surveys-questions">
     <input type="hidden" name="survey_questions_supplied" value="1">
     <table id="questionTable" class="table table-bordered">
         <tr>
@@ -108,7 +108,6 @@
     }
 
     function createQuestion(data, existing) {
-
       var table = $('#questionTable');
       var newRow = "<tbody class='questionBody'><tr data-question-index='" + createQuestion.questionCount + "'>";
       newRow += "<td class='nameCell'><span class='nameSpan'>Q" + (createQuestion.questionCount + 1) + "</span>"
@@ -122,7 +121,6 @@
 
       newRow += "<button type='button' class='button moveQuestionUp'><span class='suitepicon suitepicon-action-move-up'></span></button>";
       newRow += "<button type='button' class='button moveQuestionDown'><span class='suitepicon suitepicon-action-move-down'></span></button>";
-      newRow += "&nbsp;&nbsp;&nbsp;";
       newRow += "<button type='button' class='button deleteQuestion'><span class='suitepicon suitepicon-action-clear'></span></button>";
       newRow += "</td>";
       newRow += "</tr>";
