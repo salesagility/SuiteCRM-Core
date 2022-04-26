@@ -104,9 +104,6 @@ class ModStringsHandler extends LegacyHandler
 
         $this->init();
 
-        //change legacy language
-        set_current_language($language);
-
         $enabledLanguages = get_languages();
 
         if (empty($enabledLanguages) || !array_key_exists($language, $enabledLanguages)) {

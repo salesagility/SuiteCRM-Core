@@ -49,6 +49,11 @@ class Authentication extends LegacyHandler
     private $systemSettings;
 
     /**
+     * @var UserHandler
+     */
+    private $userHandler;
+
+    /**
      * LegacyHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -57,6 +62,7 @@ class Authentication extends LegacyHandler
      * @param LegacyScopeState $legacyScopeState
      * @param SessionInterface $session
      * @param array $systemSettings
+     * @param UserHandler $userHandler
      */
     public function __construct(
         string $projectDir,
@@ -65,7 +71,8 @@ class Authentication extends LegacyHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
-        array $systemSettings
+        array $systemSettings,
+        UserHandler $userHandler
     ) {
         parent::__construct(
             $projectDir,
@@ -76,6 +83,7 @@ class Authentication extends LegacyHandler
             $session
         );
         $this->systemSettings = $systemSettings;
+        $this->userHandler = $userHandler;
     }
 
     /**
@@ -136,9 +144,15 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
-        global $mod_strings, $current_language;
+        $language = $this->userHandler->getSessionLanguage();
+        if (empty($language)) {
+            $language = $this->userHandler->getSystemLanguage();
+        }
 
-        $mod_strings = return_module_language($current_language, 'Users');
+
+        global $mod_strings;
+
+        $mod_strings = return_module_language($language, 'Users');
 
         $authController = $this->getAuthenticationController();
 
@@ -149,6 +163,8 @@ class Authentication extends LegacyHandler
         $result = $authController->login($username, $password, $PARAMS);
 
         $this->close();
+
+        $this->userHandler->setSessionLanguage($language);
 
         return $result;
     }

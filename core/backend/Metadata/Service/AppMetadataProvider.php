@@ -27,6 +27,7 @@
 
 namespace App\Metadata\Service;
 
+use App\Authentication\LegacyHandler\UserHandler;
 use App\Languages\LegacyHandler\AppListStringsHandler;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use App\Languages\LegacyHandler\ModStringsHandler;
@@ -98,6 +99,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $security;
 
     /**
+     * @var UserHandler
+     */
+    protected $userHandler;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -109,6 +115,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param ThemeImageService $themeImageService
      * @param ModuleMetadataProviderInterface $moduleMetadata
      * @param Security $security
+     * @param UserHandler $userHandler
      */
     public function __construct(
         ModuleNameMapperInterface $moduleNameMapper,
@@ -120,7 +127,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         ModStringsHandler $modStringsHandler,
         ThemeImageService $themeImageService,
         ModuleMetadataProviderInterface $moduleMetadata,
-        Security $security
+        Security $security,
+        UserHandler $userHandler
     ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->systemConfigProvider = $systemConfigProvider;
@@ -132,6 +140,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->themeImageService = $themeImageService;
         $this->moduleMetadata = $moduleMetadata;
         $this->security = $security;
+        $this->userHandler = $userHandler;
     }
 
     /**
@@ -204,12 +213,14 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     {
         $language = $this->getDefaultLanguage();
 
-        $languagePreference = $this->userPreferenceService->getUserPreference('global');
-        if ($languagePreference !== null && !empty($languagePreference->getItems())) {
-            $prefLanguage = $languagePreference->getItems()['user_language'] ?? '';
-            if ($prefLanguage !== '') {
-                $language = $prefLanguage;
-            }
+        $prefLanguage = $this->userHandler->getUserPreferencesLanguage();
+        if ($prefLanguage !== '') {
+            $language = $prefLanguage;
+        }
+
+        $sessionLanguage = $this->userHandler->getSessionLanguage();
+        if (!empty($sessionLanguage)) {
+            $language = $sessionLanguage;
         }
 
         return $language;
@@ -222,12 +233,23 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     {
         $language = 'en_us';
 
-        $languageConfig = $this->systemConfigProvider->getSystemConfig('default_language');
-        if ($languageConfig !== null) {
-            $configLanguage = $languageConfig->getValue() ?? '';
-            if ($configLanguage !== '') {
-                $language = $configLanguage;
-            }
+        $configLanguage = $this->userHandler->getSystemLanguage();
+        if ($configLanguage !== '') {
+            $language = $configLanguage;
+        }
+
+        return $language;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getDefaultMetadataLanguage(): ?string
+    {
+        $language = $this->getDefaultLanguage();
+        $sessionLanguage = $this->userHandler->getSessionLanguage();
+        if (!empty($sessionLanguage)) {
+            $language = $sessionLanguage;
         }
 
         return $language;
@@ -439,7 +461,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setModuleMetadata([]);
         $metadata->setNavigation([]);
 
-        $language = $this->getDefaultLanguage();
+        $language = $this->getDefaultMetadataLanguage();
+
         $theme = $this->getDefaultTheme();
 
         $metadata->setSystemConfig([]);
