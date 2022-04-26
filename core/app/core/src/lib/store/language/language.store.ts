@@ -205,8 +205,9 @@ export class LanguageStore implements StateStore {
      * Update the language strings toe the given language
      *
      * @param {string} languageKey language key
+     * @param {boolean} reload
      */
-    public changeLanguage(languageKey: string): void {
+    public changeLanguage(languageKey: string, reload = false): void {
         const types = [];
 
         Object.keys(loadedLanguages).forEach(type => loadedLanguages[type] && types.push(type));
@@ -215,7 +216,7 @@ export class LanguageStore implements StateStore {
 
         this.appStateStore.updateLoading('change-language', true);
 
-        this.load(languageKey, types).pipe(
+        this.load(languageKey, types, reload).pipe(
             tap(() => {
                 this.localStorage.set('selected_language', languageKey);
                 this.appStateStore.updateLoading('change-language', false);
@@ -369,7 +370,7 @@ export class LanguageStore implements StateStore {
             return storedLanguage;
         }
 
-        return internalState.languageKey;
+        return internalState.languageKey ?? 'en_us';
     }
 
 
@@ -379,13 +380,14 @@ export class LanguageStore implements StateStore {
      *
      * @param {string} languageKey to load
      * @param {string[]} types to load
-     * @returns {{}} Observable
+     * @param {boolean} reload
+     * @returns {object} Observable
      */
-    public load(languageKey: string, types: string[]): Observable<any> {
+    public load(languageKey: string, types: string[], reload = false): Observable<any> {
 
         const streams$ = {};
 
-        types.forEach(type => streams$[type] = this.getStrings(languageKey, type));
+        types.forEach(type => streams$[type] = this.getStrings(languageKey, type, reload));
 
         return forkJoin(streams$).pipe(
             first(),
@@ -462,14 +464,15 @@ export class LanguageStore implements StateStore {
      *
      * @param {string} language to load
      * @param {string} type load
-     * @returns {{}} Observable<any>
+     * @param {boolean} reload
+     * @returns {object} Observable<any>
      */
-    protected getStrings(language: string, type: string): Observable<{}> {
+    protected getStrings(language: string, type: string, reload = false): Observable<{}> {
 
         const stringsCache = cache[type];
         const fetchMethod = this.config[type].fetch;
 
-        if (stringsCache[language]) {
+        if (stringsCache[language] && reload === false) {
             return stringsCache[language];
         }
 
