@@ -29,7 +29,11 @@
 namespace App\Authentication\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
+use App\SystemConfig\Service\SystemConfigProviderInterface;
+use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use SugarBean;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class UserHandler
@@ -38,6 +42,49 @@ use SugarBean;
 class UserHandler extends LegacyHandler
 {
     public const HANDLER_KEY = 'user-handler';
+
+    /**
+     * @var SystemConfigProviderInterface
+     */
+    private $systemConfigProvider;
+
+    /**
+     * @var UserPreferencesProviderInterface
+     */
+    private $userPreferenceService;
+
+    /**
+     * LegacyHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param SystemConfigProviderInterface $systemConfigProvider
+     * @param UserPreferencesProviderInterface $userPreferenceService
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        SystemConfigProviderInterface $systemConfigProvider,
+        UserPreferencesProviderInterface $userPreferenceService
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session,
+        );
+        $this->systemConfigProvider = $systemConfigProvider;
+        $this->userPreferenceService = $userPreferenceService;
+    }
 
     /**
      * @inheritDoc
@@ -60,5 +107,60 @@ class UserHandler extends LegacyHandler
         $this->close();
 
         return $current_user;
+    }
+
+    /**
+     * Get current session language
+     * @return string
+     */
+    public function getSessionLanguage(): string
+    {
+        return $this->session->get('ui_language', '');
+    }
+
+    /**
+     * Set current session language
+     */
+    public function setSessionLanguage(string $language): void
+    {
+        $this->init();
+        set_current_language($language);
+        $this->close();
+
+        $this->session->set('ui_language', $language);
+    }
+
+    /**
+     * Get system default language
+     * @return string
+     */
+    public function getSystemLanguage(): string
+    {
+        $language = 'en_us';
+
+        $languageConfig = $this->systemConfigProvider->getSystemConfig('default_language');
+        if ($languageConfig !== null) {
+            $configLanguage = $languageConfig->getValue() ?? '';
+            if ($configLanguage !== '') {
+                $language = $configLanguage;
+            }
+        }
+
+        return $language ?? 'en_us';
+    }
+
+    /**
+     * Get user preferences language
+     * @return string
+     */
+    public function getUserPreferencesLanguage(): string
+    {
+        $language = '';
+        $languagePreference = $this->userPreferenceService->getUserPreference('global');
+        if ($languagePreference !== null && !empty($languagePreference->getItems())) {
+            $language = $languagePreference->getItems()['user_language'] ?? '';
+        }
+
+        return $language ?? '';
     }
 }

@@ -74,7 +74,7 @@ abstract class LegacyHandler
     /**
      * @var SessionInterface
      */
-    private $session;
+    protected $session;
 
     /**
      * LegacyHandler constructor.
