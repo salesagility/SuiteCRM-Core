@@ -50,31 +50,31 @@ $filter_operator_map = [
         ],
         'last_7_days' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'next_7_days' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'last_30_days' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'next_30_days' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'last_month' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
@@ -86,25 +86,25 @@ $filter_operator_map = [
         ],
         'next_month' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'last_year' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'this_year' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
         'next_year' => [
             '{field}_{type}_range_choice' => '{operator}',
-            'range_{field}_{type}' => '',
+            'range_{field}_{type}' => '[{operator}]',
             'start_range_{field}_{type}' => '',
             'end_range_{field}_{type}' => ''
         ],
@@ -114,12 +114,12 @@ $filter_operator_map = [
             '{field}_{type}_range_choice' => '{operator}',
             'range_{field}_{type}' => '{target}'
         ],
-        'datetime' => [
-            '=' => [
-                '{field}_{type}_range_choice' => '{operator}',
-                'range_{field}_{type}' => '{target}'
-            ],
-        ]
+    ],
+    'datetime' => [
+        '=' => [
+            '{field}_{type}_range_choice' => '{operator}',
+            'range_{field}_{type}' => '{target}'
+        ],
     ]
 ];
 
