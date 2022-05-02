@@ -26,8 +26,8 @@
 
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {combineLatest, Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {RecoverPasswordService} from '../../../../services/process/processes/recover-password/recover-password';
@@ -150,12 +150,16 @@ export class LoginUiComponent {
         this.message.log('Login success');
         this.message.removeMessages();
 
-        if (result && result.redirect) {
-            this.router.navigate([result.redirect]).then();
-        } else {
-            const defaultModule = this.systemConfigStore.getHomePage();
-            this.router.navigate(['/' + defaultModule]).then();
-        }
+        this.languageStore.setSessionLanguage()
+            .pipe(catchError(() => of({})))
+            .subscribe(() => {
+                if (result && result.redirect) {
+                    this.router.navigate([result.redirect]).then();
+                } else {
+                    const defaultModule = this.systemConfigStore.getHomePage();
+                    this.router.navigate(['/' + defaultModule]).then();
+                }
+            });
 
         return;
     }
