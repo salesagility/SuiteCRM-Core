@@ -27,12 +27,13 @@
 import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
-import {distinctUntilChanged, first, map, shareReplay, tap} from 'rxjs/operators';
+import {distinctUntilChanged, first, map, shareReplay, take, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '../app-state/app-state.store';
 import {deepClone, emptyObject} from 'common';
 import {StateStore} from '../state';
 import {LocalStorageService} from '../../services/local-storage/local-storage.service';
+import {Process, ProcessService} from '../../services/process/process.service';
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -148,7 +149,8 @@ export class LanguageStore implements StateStore {
     constructor(
         protected recordGQL: EntityGQL,
         protected appStateStore: AppStateStore,
-        protected localStorage: LocalStorageService
+        protected localStorage: LocalStorageService,
+        protected processService: ProcessService
     ) {
 
         this.appStrings$ = this.state$.pipe(map(state => state.appStrings), distinctUntilChanged());
@@ -442,6 +444,20 @@ export class LanguageStore implements StateStore {
         }
 
         this.updateState(stateUpdate);
+    }
+
+    /**
+     * Set session language
+     */
+    public setSessionLanguage(): Observable<Process> {
+
+        const processType = 'set-session-language';
+
+        const options = {
+            language: internalState.languageKey
+        };
+
+        return this.processService.submit(processType, options).pipe(take(1));
     }
 
 
