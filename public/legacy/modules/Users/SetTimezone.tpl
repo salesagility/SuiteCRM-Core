@@ -43,7 +43,7 @@
  */
 -->
 <!-- BEGIN: main -->
-<div class="dashletPanelMenu">
+<div class="dashletPanelMenu setTimeZone">
 <div class="hd"><div class="tl"></div><div class="hd-center"></div><div class="tr"></div></div>
 <div class="bd">
 <div class="ml"></div>
