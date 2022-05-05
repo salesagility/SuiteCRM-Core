@@ -77,6 +77,10 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
                 continue;
             }
 
+            if ($type === 'datetime') {
+                $type = 'date';
+            }
+
             $field['type'] = 'composite';
             $field['fieldDefinition']['layout'] = ['operator', 'target', 'start', 'end'];
             $field['fieldDefinition']['display'] = 'inline';
@@ -110,7 +114,7 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
                     'name' => 'operator',
                     'type' => 'enum',
                     'vname' => 'LBL_OPERATOR',
-                    'options' => 'date_range_search_dom',
+                    'options' => $field['options'] ?? 'date_range_search_dom',
                     'default' => 'less_than'
                 ],
                 'target' => [
