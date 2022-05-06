@@ -125,6 +125,7 @@ export class SystemConfigStore implements StateStore {
     }
 
     public clearAuthBased(): void {
+        this.clear();
     }
 
     /**

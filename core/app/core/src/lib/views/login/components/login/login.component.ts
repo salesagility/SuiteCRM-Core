@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {combineLatest, Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
@@ -50,7 +50,7 @@ import {Process} from '../../../../services/process/process.service';
         ])
     ]
 })
-export class LoginUiComponent {
+export class LoginUiComponent implements OnInit {
     hidden = true;
     loading = false;
     error = '';
@@ -60,8 +60,10 @@ export class LoginUiComponent {
 
     cardState = 'front';
 
-    systemConfigs$: Observable<SystemConfigMap> = this.systemConfigStore.configs$;
+    systemConfigs$: Observable<SystemConfigMap> = this.configs.configs$;
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
+
+    language: string = null;
 
     vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
         map(([systemConfigs, appStrings]) => {
@@ -77,7 +79,6 @@ export class LoginUiComponent {
                 showForgotPassword = [true, '1', 'true'].includes(forgotPasswordProperty);
             }
 
-
             return {
                 systemConfigs,
                 appStrings,
@@ -91,15 +92,32 @@ export class LoginUiComponent {
         protected router: Router,
         protected auth: AuthService,
         protected message: MessageService,
-        protected systemConfigStore: SystemConfigStore,
+        protected configs: SystemConfigStore,
         protected languageStore: LanguageStore,
         protected recoverPasswordService: RecoverPasswordService
     ) {
         this.loading = false;
         this.hidden = false;
+        this.language = null;
     }
 
-    doLanguageChange(language: string): void {
+    ngOnInit() {
+        this.setCurrentLanguage();
+    }
+
+    onLanguageSelect(language: string): void {
+        if (!language) {
+            return;
+        }
+
+        if (language === this.language) {
+            return;
+        }
+        this.changeLanguage(language);
+    }
+
+    changeLanguage(language: string): void {
+        this.language = language;
         this.languageStore.changeLanguage(language, true);
     }
 
@@ -156,7 +174,7 @@ export class LoginUiComponent {
                 if (result && result.redirect) {
                     this.router.navigate([result.redirect]).then();
                 } else {
-                    const defaultModule = this.systemConfigStore.getHomePage();
+                    const defaultModule = this.configs.getHomePage();
                     this.router.navigate(['/' + defaultModule]).then();
                 }
             });
@@ -168,5 +186,34 @@ export class LoginUiComponent {
         this.loading = false;
         this.message.log('Login failed');
         this.message.addDangerMessage('Login credentials incorrect, please try again.');
+    }
+
+    protected setCurrentLanguage(): void {
+        let currentLanguage = this.languageStore.getSelectedLanguage() ?? '';
+        if (this.language && currentLanguage === this.language) {
+            return;
+        }
+
+        const activeLanguage = this.languageStore.getActiveLanguage();
+        if (activeLanguage && activeLanguage === currentLanguage) {
+            this.language = activeLanguage;
+            return;
+        }
+
+        const languages = this.configs.getConfigValue('languages') ?? {};
+        const defaultLanguage = this.configs.getConfigValue('default_language') ?? 'en_us';
+
+        if (!currentLanguage) {
+            currentLanguage = defaultLanguage;
+        }
+
+        const languageKeys = Object.keys(languages);
+
+        if (languageKeys.length && !languageKeys.includes(currentLanguage)) {
+            currentLanguage = languageKeys.sort()[0];
+        }
+
+        this.language = currentLanguage;
+        this.changeLanguage(currentLanguage);
     }
 }
