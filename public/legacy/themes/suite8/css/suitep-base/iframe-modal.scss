@@ -38,6 +38,10 @@ body.popupBody {
                 margin-left: 0;
             }
         }
+        li.sugar_action_button {
+            background: $transparent-color;
+            border: 1px solid $form-border-color;
+        }
     }
     .button {
         background-color: $nepal-grey;
@@ -60,6 +64,8 @@ body.popupBody {
     }   
     .list .pagination td table td span.pageNumbers {
         vertical-align: super;
+        position: relative;
+        top: -2px;
     }
     .sortsvg {
         svg {
@@ -89,10 +95,119 @@ body.popupBody {
     } 
     .h3Row {
         margin-left: 1.3em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
     }
     .row {
         margin-left: 0 !important;
         margin-right: 0 !important;
+    }
+    #selectLink.clickMenu {
+        position: relative;
+        top: -1em;
+    }
+    #selectLink.clickMenu #massall {
+        position: relative;
+        top: 3px;
+        left: 4px;
+    }
+    .popupBody .list tbody>tr>td a:hover {
+        color: #000;
+        text-decoration: none;
+        border-bottom: none;
+    }
+    #delete_button {
+        padding: 1em;
+        line-height: 0;
+        border: 1px solid $form-border-color;
+        position: relative;
+        top: 1px;
+    }
+    .view {
+        margin-left: 1em;
+        width: 98%;
+    }
+    .list tr td[scope=col] a {
+        color: $black;
+        font-size: 13px;
+        border-bottom: none;
+        text-decoration: none;
+    }
+    .list tr td[scope=col] {
+        font-weight: bold;
+    }
+    table.document-table {
+        tbody {
+            tr {
+                td {
+                    padding: 0;
+                }
+                td.listviewlink {
+                    a {
+                        position: relative;
+                        left: 1em;  
+                        color: $white;
+                    }
+                    svg {
+                        position: relative;
+                        top: 0.3em;
+                        left: 0.2em;
+                    }
+                }
+            }
+            tr.oddListRowS1 {
+                td {
+                    line-height: 3em;
+                    a {
+                        position: relative;
+                        left: 1em;
+                    }
+                }
+            }
+            tr.evenListRowS1 {
+                td {
+                    line-height: 3em;
+                    a {
+                        position: relative;
+                        left: 1em;
+                    }
+                }
+            }
+        }
+        .pagination {
+            td {
+                table {
+                    td {
+                        &:first-child {
+                            border-top-left-radius: 3px;
+                            border-bottom-left-radius: 0;
+                        }
+                        &:last-child {
+                            border-top-right-radius: 3px;
+                            border-bottom-right-radius: 0;
+                        }
+                        a {
+                            &:link {
+                                border-bottom: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .document-header {
+        position: relative;
+        td.action-button {
+            display: flex;
+            justify-content: flex-end;
+            top: -3.62em;
+            position: absolute;
+            right: 9em;
+        }
+    }
+    .list.view .pagination .button {
+        background: $transparent-color;
     }
 }
 

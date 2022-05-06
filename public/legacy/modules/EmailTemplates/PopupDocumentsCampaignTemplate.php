@@ -127,6 +127,29 @@ $form->assign("SUB_CATEGORY_OPTIONS", get_select_options_with_id($app_list_strin
 $form->assign("IS_TEMPLATE_OPTIONS", get_select_options_with_id($app_list_strings['checkbox_dom'], $is_template));
 $form->assign("TEMPLATE_TYPE_OPTIONS", get_select_options_with_id($app_list_strings['document_template_type_dom'], $template_type));
 
+$currentSortingDirection = '';
+if (!empty($_REQUEST['EmailTemplates_DOCUMENT_order_by_direction'])) {
+    $currentSortingDirection = $_REQUEST['EmailTemplates_DOCUMENT_order_by_direction'];
+}
+
+$currentSortingField = '';
+if (!empty($_REQUEST['EmailTemplates_DOCUMENT_ORDER_BY'])) {
+    $currentSortingField = $_REQUEST['EmailTemplates_DOCUMENT_ORDER_BY'];
+}
+
+$sortImageSuffix = '';
+if($currentSortingField === 'document_name') {
+
+    if ($currentSortingDirection === 'asc') {
+        $sortImageSuffix = '_ascend';
+    }
+    if ($currentSortingDirection === 'desc') {
+        $sortImageSuffix = '_descend';
+    }
+}
+
+$sortImage = SugarThemeRegistry::current()->getImage('sort' . $sortImageSuffix . '.svg');
+$form->assign("DOCUMENT_SORT_ICON", $sortImage);
 
 ob_start();
 insert_popup_header($theme);

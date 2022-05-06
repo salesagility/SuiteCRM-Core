@@ -3,7 +3,7 @@
     {assign var=form_title value="$other_text $form_title"}
 {/if}
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" class="formHeader h3Row">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="formHeader h3Row document-header">
     <tr>
         <td nowrap>
             <h3><span>{$form_title}</span></h3>
