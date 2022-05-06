@@ -375,6 +375,25 @@ export class LanguageStore implements StateStore {
         return internalState.languageKey ?? 'en_us';
     }
 
+    /**
+     * Returns the active language
+     *
+     * @returns {string} active language key
+     */
+    public getActiveLanguage(): string {
+
+        return internalState.languageKey ?? '';
+    }
+
+    /**
+     * Returns the selected language
+     *
+     * @returns {string} selected language key
+     */
+    public getSelectedLanguage(): string {
+        return this.localStorage.get('selected_language') ?? '';
+    }
+
 
     /**
      * Initial Language Strings Load for given language and types if not cached and update state.

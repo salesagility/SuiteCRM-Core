@@ -161,6 +161,7 @@ export class AuthService {
                 finalize(() => {
                     this.appStateStore.updateInitialAppLoading(true);
                     this.appStateStore.updateLoading('logout', false, false);
+                    this.stateManager.clearAuthBased();
                     if (redirect === true) {
                         this.router.navigate(['/Login']).finally();
                     }
