@@ -130,6 +130,13 @@ export class AsyncActionService {
 
                 }),
                 catchError(err => {
+                    const errorMessage = err?.message ?? ''
+
+                    if (errorMessage === 'Access Denied.') {
+                        this.appStateStore.updateLoading(actionName, false);
+                        throw err;
+                    }
+
                     this.message.addDangerMessageByKey('LBL_ACTION_ERROR');
                     this.appStateStore.updateLoading(actionName, false);
                     throw err;
