@@ -25,8 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map, shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {catchError, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {deepClone, emptyObject} from 'common';
 import {StateStore} from '../state';
@@ -37,6 +37,7 @@ import {ThemeImagesStore} from '../theme-images/theme-images.store';
 import {UserPreferenceMap, UserPreferenceStore} from '../user-preference/user-preference.store';
 import {NavigationStore} from '../navigation/navigation.store';
 import {Metadata, MetadataMap, MetadataStore} from '../metadata/metadata.store.service';
+import {ApolloQueryResult} from '@apollo/client/core';
 
 export interface AppMetadata {
     loaded?: boolean;
@@ -269,6 +270,9 @@ export class AppMetadataStore implements StateStore {
 
         return this.recordGQL.fetch(this.resourceName, `/api/app-metadata/${module}`, fieldsToRetrieve)
             .pipe(
+                catchError(() => {
+                    return of({} as ApolloQueryResult<any>);
+                }),
                 map(({data}) => {
 
                     const result = data?.appMetadata as AppMetadata;

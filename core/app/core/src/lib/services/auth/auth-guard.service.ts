@@ -169,8 +169,7 @@ export class AuthGuard implements CanActivate {
                         this.authService.setCurrentUser(user);
                         return true;
                     }
-                    this.authService.logout('LBL_SESSION_EXPIRED', false);
-                    this.authService.isUserLoggedIn.next(false);
+                    this.authService.resetState();
                     // Re-direct to login
                     return loginUrlTree;
                 }),
