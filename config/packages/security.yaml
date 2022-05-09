@@ -27,6 +27,7 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/session-status$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/graphql, roles: IS_AUTHENTICATED_ANONYMOUSLY }

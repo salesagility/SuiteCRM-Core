@@ -61,6 +61,6 @@ class LegacySessionLogoutHandler
     public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $logoutEvent): void
     {
         $this->authentication->logout();
-        $logoutEvent->getRequest()->getSession()->invalidate();
+        $this->authentication->initNewLegacySession();
     }
 }

@@ -177,6 +177,17 @@ class Authentication extends LegacyHandler
     }
 
     /**
+     * Init new legacy session cookie
+     * @return void
+     */
+    public function initNewLegacySession(): void
+    {
+        $this->init();
+        $this->loadSystemUser();
+        $this->close();
+    }
+
+    /**
      * Check if legacy suite session is active
      * @return bool
      */
