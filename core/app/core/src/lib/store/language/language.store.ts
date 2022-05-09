@@ -220,7 +220,7 @@ export class LanguageStore implements StateStore {
 
         this.load(languageKey, types, reload).pipe(
             tap(() => {
-                this.localStorage.set('selected_language', languageKey);
+                this.localStorage.set('selected_language', languageKey, true);
                 this.appStateStore.updateLoading('change-language', false);
             })
         ).subscribe();
