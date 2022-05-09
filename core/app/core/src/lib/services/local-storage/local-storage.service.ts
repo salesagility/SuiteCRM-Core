@@ -32,16 +32,30 @@ import {Injectable} from '@angular/core';
 export class LocalStorageService {
 
     protected storageKey = 'scrm-session-storage';
+    protected stickyStorageKey = 'scrm-sticky-session-storage';
 
     constructor() {
     }
 
     clear(): void {
         this.getLocalStorage().removeItem(this.storageKey);
+        const sticky = this.getLocalStorage().getItem(this.stickyStorageKey);
+
+        if (sticky) {
+            this.getLocalStorage().setItem(this.storageKey, sticky);
+        }
     }
 
-    set(key: string, data: any): void {
-        const storeJson = this.getLocalStorage().getItem(this.storageKey);
+    set(key: string, data: any, sticky = false): void {
+        this.store(this.storageKey, key, data);
+
+        if (sticky) {
+            this.store(this.stickyStorageKey, key, data);
+        }
+    }
+
+    protected store(storageKey: string, key: string, data: any) {
+        const storeJson = this.getLocalStorage().getItem(storageKey);
         let store = {};
 
         if (storeJson) {
@@ -50,7 +64,7 @@ export class LocalStorageService {
 
         store[key] = data;
 
-        this.getLocalStorage().setItem(this.storageKey, JSON.stringify(store));
+        this.getLocalStorage().setItem(storageKey, JSON.stringify(store));
     }
 
     get(key: string): any {
