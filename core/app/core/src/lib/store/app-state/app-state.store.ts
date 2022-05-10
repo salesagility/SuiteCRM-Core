@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {deepClone} from 'common';
+import {deepClone, isVoid} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
@@ -39,6 +39,7 @@ export interface AppState {
     view?: string;
     loaded?: boolean;
     routeUrl?: string;
+    activeRequests?: number;
 }
 
 const initialState: AppState = {
@@ -47,7 +48,8 @@ const initialState: AppState = {
     module: null,
     view: null,
     loaded: false,
-    routeUrl: null
+    routeUrl: null,
+    activeRequests: 0
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -64,6 +66,7 @@ export class AppStateStore implements StateStore {
     module$: Observable<string>;
     view$: Observable<string>;
     initialAppLoading$: Observable<boolean>;
+    activeRequests$: Observable<number>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -82,6 +85,7 @@ export class AppStateStore implements StateStore {
         this.module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
         this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
+        this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
 
         this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
             map(([loading, module, view, initialAppLoading]) => ({
@@ -112,6 +116,44 @@ export class AppStateStore implements StateStore {
 
     public init(): void {
         this.initLoadingBuffer();
+    }
+
+    /**
+     * Get number of active requests
+     */
+    public getActiveRequests(): number {
+        return internalState.activeRequests;
+    }
+
+    /**
+     * Add active request to counter
+     */
+    public addActiveRequest(): void {
+        let activeRequests = internalState.activeRequests;
+        if (isVoid(activeRequests)) {
+            activeRequests = 0;
+        }
+        activeRequests++;
+
+        this.updateState({...internalState, activeRequests});
+    }
+
+    /**
+     * Remove active request to counter
+     */
+    public removeActiveRequest(): void {
+        let activeRequests = internalState.activeRequests;
+        if (isVoid(activeRequests)) {
+            activeRequests = 0;
+        } else {
+            activeRequests--;
+        }
+
+        if (activeRequests < 0) {
+            activeRequests = 0;
+        }
+
+        this.updateState({...internalState, activeRequests});
     }
 
     /**
