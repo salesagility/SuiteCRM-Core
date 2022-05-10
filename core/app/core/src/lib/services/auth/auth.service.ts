@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
-import {catchError, distinctUntilChanged, finalize, take} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, filter, finalize, take} from 'rxjs/operators';
 import {isEmptyString, User} from 'common';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
@@ -149,8 +149,31 @@ export class AuthService {
 
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-        this.resetState();
+        if (this.appStateStore.getActiveRequests() < 1) {
+            this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+        } else {
+            this.appStateStore.activeRequests$.pipe(
+                filter(value => value < 1),
+                take(1)
+            ).subscribe(
+                () => {
+                    this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+                }
+            )
+        }
+    }
 
+    /**
+     * Call logout
+     * @param logoutUrl
+     * @param body
+     * @param headers
+     * @param redirect
+     * @param messageKey
+     * @protected
+     */
+    protected callLogout(logoutUrl: string, body: HttpParams, headers: HttpHeaders, redirect: boolean, messageKey: string) {
+        this.resetState();
         this.http.post(logoutUrl, body.toString(), {headers, responseType: 'text'})
             .pipe(
                 take(1),
