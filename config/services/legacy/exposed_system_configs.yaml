@@ -4,6 +4,7 @@ parameters:
     passwordsetting:
       forgotpasswordON: true
     languages: true
+    disabled_languages: true
     default_module: true
     default_theme: true
     module_name_map: true

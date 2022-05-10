@@ -44,9 +44,11 @@
                 <div class="inner-addon left-addon">
                     <select #languageSelect id="languages"
                             (change)="onLanguageSelect(languageSelect.value)">
-                        <option [value]="item.key"
-                                *ngFor="let item of vm.systemConfigs['languages'].items | keyvalue"
-                                [selected]="(language ?? 'en_us') === item.key">{{item.value}}</option>
+                        <option *ngFor="let item of getEnabledLanguagesKeys()"
+                                [selected]="(language ?? 'en_us') === item"
+                                [value]="item">
+                            {{getEnabledLanguages()[item]}}
+                        </option>
                     </select>
                 </div>
             </div>

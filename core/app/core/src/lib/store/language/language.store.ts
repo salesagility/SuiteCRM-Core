@@ -30,10 +30,12 @@ import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, take, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '../app-state/app-state.store';
-import {deepClone, emptyObject} from 'common';
+import {deepClone, emptyObject, StringMap} from 'common';
 import {StateStore} from '../state';
 import {LocalStorageService} from '../../services/local-storage/local-storage.service';
 import {Process, ProcessService} from '../../services/process/process.service';
+import {SystemConfigStore} from '../system-config/system-config.store';
+import {isString} from 'lodash-es';
 
 export interface LanguageStringMap {
     [key: string]: string;
@@ -150,7 +152,8 @@ export class LanguageStore implements StateStore {
         protected recordGQL: EntityGQL,
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
-        protected processService: ProcessService
+        protected processService: ProcessService,
+        protected configs: SystemConfigStore
     ) {
 
         this.appStrings$ = this.state$.pipe(map(state => state.appStrings), distinctUntilChanged());
@@ -392,6 +395,62 @@ export class LanguageStore implements StateStore {
      */
     public getSelectedLanguage(): string {
         return this.localStorage.get('selected_language') ?? '';
+    }
+
+    /**
+     * Check if language is enabled
+     * @param currentLanguage
+     */
+    public isLanguageEnabled(currentLanguage: string): boolean {
+        if (!currentLanguage) {
+            return false;
+        }
+        const languages = this.configs.getConfigValue('languages') ?? {};
+        const disabled = this.getDisabledLanguages();
+        const languageKeys = Object.keys(languages);
+
+        if (!languageKeys.length) {
+            return false;
+        }
+
+        return languageKeys.includes(currentLanguage) && !disabled.includes(currentLanguage);
+    }
+
+    /**
+     * Get disabled languages
+     */
+    public getDisabledLanguages(): string[] {
+        const disabledConfig = this.configs.getConfigValue('disabled_languages') ?? '';
+        if (!isString(disabledConfig) || disabledConfig === '') {
+            return [];
+        }
+        return disabledConfig.replace(' ', '').split(',');
+    }
+
+    /**
+     * Get enabled languages
+     */
+    public getEnabledLanguages(): StringMap {
+        const languages = this.configs.getConfigValue('languages') ?? {};
+        const disabled = this.getDisabledLanguages();
+
+        const enabled = {};
+        const enabledKeys = Object.keys(languages).filter(value => !disabled.includes(value));
+        enabledKeys.forEach(key => {
+            enabled[key] = languages[key];
+        });
+
+        return enabled;
+    }
+
+    /**
+     * Get fist language in list
+     * @private
+     */
+    public getFirstLanguage(): string {
+        const languages = this.configs.getConfigValue('languages') ?? {};
+        const languageKeys = Object.keys(languages);
+        return languageKeys.sort()[0] ?? '';
     }
 
 
