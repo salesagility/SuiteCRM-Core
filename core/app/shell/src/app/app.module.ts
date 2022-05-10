@@ -30,7 +30,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {Apollo} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
-import {InMemoryCache} from '@apollo/client/core';
+import {ApolloLink, InMemoryCache} from '@apollo/client/core';
 import {onError} from '@apollo/link-error';
 import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
 
@@ -38,6 +38,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 import {
+    AppStateStore,
     AuthService,
     ClassicViewUiModule,
     ColumnChooserModule,
@@ -118,7 +119,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     bootstrap: [AppComponent]
 })
 export class AppModule {
-    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService) {
+    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore) {
 
         const defaultOptions = {
             watchQuery: {
@@ -144,9 +145,21 @@ export class AppModule {
             }
         });
 
+        const middleware = new ApolloLink((operation, forward) => {
+            appStore.addActiveRequest();
+            return forward(operation);
+        });
+
+        const afterware = new ApolloLink((operation, forward) => {
+            return forward(operation).map(response => {
+                appStore.removeActiveRequest();
+                return response;
+            });
+        });
+
         apollo.create({
             defaultOptions,
-            link: logoutLink.concat(http),
+            link: ApolloLink.from([middleware, afterware, logoutLink.concat(http)]),
             cache: new InMemoryCache()
         });
     }
