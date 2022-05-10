@@ -36,6 +36,7 @@ import {LanguageStore} from '../../store/language/language.store';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -69,7 +70,8 @@ export class AuthService {
         protected languageStore: LanguageStore,
         protected bnIdle: BnNgIdleService,
         protected appStateStore: AppStateStore,
-        protected localStorage: LocalStorageService
+        protected localStorage: LocalStorageService,
+        protected configs: SystemConfigStore
     ) {
         this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     }
@@ -162,6 +164,7 @@ export class AuthService {
                     this.appStateStore.updateInitialAppLoading(true);
                     this.appStateStore.updateLoading('logout', false, false);
                     this.stateManager.clearAuthBased();
+                    this.configs.clear();
                     if (redirect === true) {
                         this.router.navigate(['/Login']).finally();
                     }
