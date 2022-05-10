@@ -36,6 +36,7 @@ import {AuthService} from '../../../../services/auth/auth.service';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
 import {MessageService} from '../../../../services/message/message.service';
 import {Process} from '../../../../services/process/process.service';
+import {StringMap} from 'common';
 
 
 @Component({
@@ -121,8 +122,12 @@ export class LoginUiComponent implements OnInit {
         this.languageStore.changeLanguage(language, true);
     }
 
-    doGetCurrentLanguage(): string {
-        return this.languageStore.getCurrentLanguage();
+    getEnabledLanguages(): StringMap {
+        return this.languageStore.getEnabledLanguages();
+    }
+
+    getEnabledLanguagesKeys(): string[] {
+        return Object.keys(this.languageStore.getEnabledLanguages() ?? {}) ?? [];
     }
 
     flipCard(): void {
@@ -190,27 +195,28 @@ export class LoginUiComponent implements OnInit {
 
     protected setCurrentLanguage(): void {
         let currentLanguage = this.languageStore.getSelectedLanguage() ?? '';
+        const activeLanguage = this.languageStore.getActiveLanguage();
+
+        if (!currentLanguage) {
+            currentLanguage = activeLanguage;
+        }
+
+        if (!this.languageStore.isLanguageEnabled(currentLanguage)) {
+            currentLanguage = '';
+        }
+
         if (this.language && currentLanguage === this.language) {
             return;
         }
 
-        const activeLanguage = this.languageStore.getActiveLanguage();
-        if (activeLanguage && activeLanguage === currentLanguage) {
-            this.language = activeLanguage;
-            return;
-        }
-
-        const languages = this.configs.getConfigValue('languages') ?? {};
         const defaultLanguage = this.configs.getConfigValue('default_language') ?? 'en_us';
 
         if (!currentLanguage) {
             currentLanguage = defaultLanguage;
         }
 
-        const languageKeys = Object.keys(languages);
-
-        if (languageKeys.length && !languageKeys.includes(currentLanguage)) {
-            currentLanguage = languageKeys.sort()[0];
+        if (!this.languageStore.isLanguageEnabled(currentLanguage)) {
+            currentLanguage = this.languageStore.getFirstLanguage();
         }
 
         this.language = currentLanguage;
