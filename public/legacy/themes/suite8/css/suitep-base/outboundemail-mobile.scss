@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+    .view-module-OutboundEmailAccounts {
+        select {
+            min-width: 99%;
+        }
+        .edit-dotted-border {
+            background-image: none !important;
+        }
+    }
+}
