@@ -73,4 +73,9 @@
         border-color: $bright-grey;
         margin-bottom: 0.5em;
     }
+    li#tab-actions {
+        input[type=submit] {
+            padding-left: 1em;
+        }
+    }
 }
