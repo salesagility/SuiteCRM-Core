@@ -110,6 +110,20 @@ class UserHandler extends LegacyHandler
     }
 
     /**
+     * Get current language
+     * @return string
+     */
+    public function getCurrentLanguage(): string
+    {
+        $language = $this->getSessionLanguage();
+        if (empty($language)) {
+            $language = $this->getSystemLanguage();
+        }
+
+        return $language ?? 'en_us';
+    }
+
+    /**
      * Get current session language
      * @return string
      */

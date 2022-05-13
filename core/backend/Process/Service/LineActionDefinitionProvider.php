@@ -28,9 +28,10 @@
 
 namespace App\Process\Service;
 
+use App\Authentication\LegacyHandler\UserHandler;
+use App\Engine\Service\AclManagerInterface;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Languages\LegacyHandler\AppListStringsProviderInterface;
-use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 
 class LineActionDefinitionProvider implements LineActionDefinitionProviderInterface
@@ -59,6 +60,10 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
      * @var FieldDefinitionsProviderInterface
      */
     private $fieldDefinitionProvider;
+    /**
+     * @var UserHandler
+     */
+    private $userHandler;
 
     /**
      * LineActionDefinitionProvider constructor.
@@ -67,19 +72,22 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
      * @param FieldDefinitionsProviderInterface $fieldDefinitionProvider
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param AppListStringsProviderInterface $appListStringProvider
+     * @param UserHandler $userHandler
      */
     public function __construct(
         array $listViewLineActions,
         AclManagerInterface $aclManager,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider,
         ModuleNameMapperInterface $moduleNameMapper,
-        AppListStringsProviderInterface $appListStringProvider
+        AppListStringsProviderInterface $appListStringProvider,
+        UserHandler $userHandler
     ) {
         $this->listViewLineActions = $listViewLineActions;
         $this->aclManager = $aclManager;
         $this->fieldDefinitionProvider = $fieldDefinitionProvider;
         $this->moduleNameMapper = $moduleNameMapper;
         $this->appListStringProvider = $appListStringProvider;
+        $this->userHandler = $userHandler;
     }
 
     /**
@@ -87,7 +95,9 @@ class LineActionDefinitionProvider implements LineActionDefinitionProviderInterf
      */
     public function getLineActions(string $module): array
     {
-        $appListStringsObject = $this->appListStringProvider->getAppListStrings('en_us');
+        $language = $this->userHandler->getCurrentLanguage();
+
+        $appListStringsObject = $this->appListStringProvider->getAppListStrings($language);
         if ($appListStringsObject !== null) {
             $this->appListStrings = $appListStringsObject->getItems();
         }
