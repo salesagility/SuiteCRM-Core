@@ -215,6 +215,8 @@ function make_sugar_config(&$sugar_config)
             'vbs',
             'html',
             'htm',
+            'phtml',
+            'phar',
         ) : $upload_badext,
         'valid_image_ext' => [
             'gif',
@@ -477,6 +479,7 @@ function get_sugar_config_defaults(): array
             'html',
             'htm',
             'phtml',
+            'phar',
         ],
         'valid_image_ext' => [
             'gif',
@@ -484,6 +487,13 @@ function get_sugar_config_defaults(): array
             'jpg',
             'jpeg',
             'svg'
+        ],
+        'allowed_preview' => [
+            'pdf',
+            'gif',
+            'png',
+            'jpeg',
+            'jpg'
         ],
         'upload_maxsize' => 30000000,
         'import_max_execution_time' => 3600,
@@ -548,6 +558,12 @@ function get_sugar_config_defaults(): array
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ],
         'strict_id_validation' => false,
+        'id_validation_pattern' => '/^[a-zA-Z0-9_-]*$/i',
+        'session_gc' => [
+            'enable' => true,
+            'gc_probability' => 1,
+            'gc_divisor' => 100,
+        ]
     ];
 
     if (!is_object($locale)) {
@@ -6060,4 +6076,37 @@ function has_valid_extension($fieldName, $name, $validExtensions)
     }
 
     return true;
+}
+
+/**
+ * Check if value is one of the accepted true representations
+ * @param $value
+ * @return bool
+ */
+function isTrue($value): bool {
+    return $value === true || $value === 'true' || $value === 1;
+}
+
+/**
+ * Check if value is one of the accepted false representations
+ * @param $value
+ * @return bool
+ */
+function isFalse($value): bool {
+    return $value === false || $value === 'false' || $value === 0;
+}
+
+/**
+ * Get validation pattern
+ * @return string
+ */
+function get_id_validation_pattern(): string {
+    global $sugar_config;
+
+    $pattern = '/^[a-zA-Z0-9_-]*$/i';
+    if (!empty($sugar_config['id_validation_pattern'])){
+        $pattern = $sugar_config['id_validation_pattern'];
+    }
+
+    return $pattern;
 }
