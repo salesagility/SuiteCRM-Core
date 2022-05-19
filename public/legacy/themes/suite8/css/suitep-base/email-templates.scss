@@ -18,6 +18,10 @@
         border: 1px solid $form-border-color;
         margin-bottom: 1em;
     }
+    #subjectfield {
+      background: transparent;
+      border: 1px solid $form-border-color;
+    }
     select {
         background: url($select-edit-background-url) no-repeat right;
         background-size: 25px 11px;
@@ -67,7 +71,7 @@
         text-transform: capitalize;
         margin-top: 0.3em;
         margin-bottom: 0.9em !important;
-        margin-left:0 !important;        
+        margin-left:0 !important;
     }
     #detail_header_action_menu {
         margin-top: 1em;
