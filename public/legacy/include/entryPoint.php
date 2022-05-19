@@ -181,7 +181,7 @@ if (empty($GLOBALS['installing']) && !empty($sugar_config['dbconfig']['db_name']
     }
 
     $sessionGCConfig = $sugar_config['session_gc'] ?? [];
-    if (!isset($sessionGCConfig['enable']) || isTrue($sessionGCConfig['enable'])) {
+    if (session_status() !== PHP_SESSION_ACTIVE && (!isset($sessionGCConfig['enable']) || isTrue($sessionGCConfig['enable']))) {
         $gcProbability = $sessionGCConfig['gc_probability'] ?? 1;
         $gcDivisor = $sessionGCConfig['gc_divisor'] ?? 100;
 
