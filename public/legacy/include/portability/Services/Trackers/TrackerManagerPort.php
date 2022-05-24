@@ -51,8 +51,8 @@ class TrackerManagerPort
     public function getModule(array $modules): array
     {
         global $current_user;
-
-        $userId = $current_user->id;
+        $db = DBManagerFactory::getInstance();
+        $userId = $db->quote($current_user->id);
         $tracker = BeanFactory::newBean('Trackers');
 
         if (!empty($modules)) {
@@ -62,7 +62,14 @@ class TrackerManagerPort
         }
 
         $table = $tracker->table_name;
-        $moduleList = "'" . implode("','", $modules) . "'";
+
+        if (!empty($modules)) {
+            $quotedModules = [];
+            foreach ($modules as $module) {
+                $quotedModules[] = $db->quote($module);
+            }
+            $moduleList = "'" . implode("','", $quotedModules) . "'";
+        }
 
         $query = "SELECT *
                   FROM $table

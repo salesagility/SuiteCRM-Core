@@ -155,11 +155,14 @@ class UnlinkService
         if ($beanName !== 'Campaign' || $linkField !== 'prospectlists') {
             return;
         }
+        $db = DBManagerFactory::getInstance();
 
+        $quotedRecord = $db->quote($record);
+        $quotedLinkedId = $db->quote($linkedId);
         $query = "SELECT email_marketing_prospect_lists.id from email_marketing_prospect_lists ";
         $query .= " left join email_marketing on email_marketing.id=email_marketing_prospect_lists.email_marketing_id";
-        $query .= " where email_marketing.campaign_id='$record'";
-        $query .= " and email_marketing_prospect_lists.prospect_list_id='$linkedId'";
+        $query .= " where email_marketing.campaign_id='$quotedRecord'";
+        $query .= " and email_marketing_prospect_lists.prospect_list_id='$quotedLinkedId'";
 
         $result = $bean->db->query($query);
         while (($row = $bean->db->fetchByAssoc($result)) != null) {

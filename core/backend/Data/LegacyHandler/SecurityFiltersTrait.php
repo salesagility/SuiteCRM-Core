@@ -29,6 +29,7 @@
 namespace App\Data\LegacyHandler;
 
 use ACLController;
+use DBManagerFactory;
 use SecurityGroup;
 use SugarBean;
 
@@ -96,11 +97,12 @@ trait SecurityFiltersTrait
      */
     public function getOwnerWhere(string $table, string $user_id): string
     {
+        $db = DBManagerFactory::getInstance();
         if (isset($this->field_defs['assigned_user_id'])) {
-            return " $table.assigned_user_id ='$user_id' ";
+            return " $table.assigned_user_id ='" . $db->quote($user_id) . "' ";
         }
         if (isset($this->field_defs['created_by'])) {
-            return " $table.created_by ='$user_id' ";
+            return " $table.created_by ='" . $db->quote($user_id) . "' ";
         }
 
         return '';

@@ -32,6 +32,7 @@ use App\Statistics\DateTimeStatisticsHandlingTrait;
 use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Statistics\Service\StatisticsProviderInterface;
+use DBManagerFactory;
 
 
 /**
@@ -167,8 +168,9 @@ class SubPanelHistoryLastDate extends SubpanelDataQueryHandler implements Statis
             }
 
             if ($tableName === 'meetings' || $tableName === 'calls') {
+                $db = DBManagerFactory::getInstance();
                 $parts['select'] = "SELECT " . $tableName . ".`date_end` AS `" . $tableName . "_date_end`";
-                $where = "" . $tableName . ".`date_end` <= '$dateNow' AND " . $tableName . ".parent_id = '$id' ";
+                $where = "" . $tableName . ".`date_end` <= '$dateNow' AND " . $tableName . ".parent_id = '" . $db->quote($id). "' ";
                 if (!empty($parts['where'])) {
                     $where = " AND " . $where;
                 }

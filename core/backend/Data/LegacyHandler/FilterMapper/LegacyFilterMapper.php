@@ -28,6 +28,7 @@
 namespace App\Data\LegacyHandler\FilterMapper;
 
 use App\Engine\LegacyHandler\LegacyHandler;
+use DBManagerFactory;
 use FilterMapper;
 
 class LegacyFilterMapper extends LegacyHandler
@@ -71,7 +72,13 @@ class LegacyFilterMapper extends LegacyHandler
      */
     public function getOrderBy(array $sort): string
     {
-        return $sort['orderBy'] ?? 'date_entered';
+        $this->init();
+
+        $db = DBManagerFactory::getInstance();
+        $result = $db->quote($sort['orderBy'] ?? 'date_entered');
+
+        $this->close();
+        return $result;
     }
 
     /**
@@ -81,6 +88,12 @@ class LegacyFilterMapper extends LegacyHandler
      */
     public function getSortOrder(array $sort): string
     {
-        return $sort['sortOrder'] ?? 'DESC';
+        $result = $sort['sortOrder'] ?? 'DESC';
+
+        if (in_array(strtolower($result), ['asc', 'desc'])) {
+            return $result;
+        }
+
+        return 'DESC';
     }
 }

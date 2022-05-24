@@ -39,6 +39,7 @@ require_once __DIR__ . '/TypeMappers/BooleanMapper.php';
 require_once __DIR__ . '/ApiBeanModuleMappers.php';
 require_once __DIR__ . '/ModuleMappers/SavedSearch/SavedSearchMappers.php';
 require_once __DIR__ . '/ModuleMappers/AOP_Case_Updates/CaseUpdatesMappers.php';
+require_once __DIR__ . '/../Bean/Field/Validation/FieldValidatorRegistry.php';
 
 class ApiBeanMapper
 {
@@ -164,6 +165,8 @@ class ApiBeanMapper
                 $this->mapLinkFieldToBean($bean, $values, $properties);
                 continue;
             }
+
+            $this->validate($bean->module_name, $field, $properties, $values[$field] ?? null, $idFields);
 
             $bean->$field = $values[$field];
         }
@@ -690,5 +693,36 @@ class ApiBeanMapper
     protected function isIdField($idFields, $field): bool
     {
         return isset($idFields[$field]);
+    }
+
+    /**
+     * Validate field
+     * @param string $module
+     * @param string $field
+     * @param array $definition
+     * @param mixed $value
+     * @param array $idFields
+     * @return void
+     */
+    private function validate(string $module, string $field, array $definition, $value, array $idFields): void
+    {
+        $type = $definition['type'];
+
+        if ($this->isIdField($idFields, $field)) {
+            $type = 'id';
+        }
+
+        if ($field === 'id') {
+            $type = 'id';
+        }
+
+        $registry = FieldValidatorRegistry::getInstance();
+
+        $errors = $registry->validate($field, $type, $definition, $value, $module);
+
+        if (!empty($errors)) {
+            $registry->logErrors($errors, 'ApiBeanMapper field validation');
+            throw new InvalidArgumentException("Invalid $field field value ");
+        }
     }
 }

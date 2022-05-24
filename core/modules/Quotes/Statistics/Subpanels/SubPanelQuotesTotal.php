@@ -32,6 +32,7 @@ use App\Statistics\Entity\Statistic;
 use App\Data\LegacyHandler\PresetDataHandlers\SubpanelDataQueryHandler;
 use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
+use DBManagerFactory;
 
 class SubPanelQuotesTotal extends SubpanelDataQueryHandler implements StatisticsProviderInterface
 {
@@ -71,11 +72,14 @@ class SubPanelQuotesTotal extends SubpanelDataQueryHandler implements Statistics
         $dateNow = date("Y-m-d");
         global $app_strings;
 
+        $db = DBManagerFactory::getInstance();
+        $relateId = $db->quote($id);
+
         $queries = $this->getQueries($module, $id, $subpanel);
         $parts = $queries[0];
         $parts['select'] = 'SELECT q.`expiration`';
         $parts['from'] = ' FROM aos_quotes as q ';
-        $parts['where'] = " WHERE q.`expiration` >= '$dateNow'AND q.deleted = 0  AND (q.billing_account_id = '$id' OR q.billing_contact_id = '$id') ";
+        $parts['where'] = " WHERE q.`expiration` >= '$dateNow' AND q.deleted = 0  AND (q.billing_account_id = '$relateId' OR q.billing_contact_id = '$relateId') ";
         $parts['order_by'] = ' ORDER BY q.expiration ASC LIMIT 1 ';
         $innerQuery = $this->joinQueryParts($parts);
         $result = $this->fetchRow($innerQuery);
