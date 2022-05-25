@@ -114,7 +114,7 @@ class ChangeRewriteBase implements LegacyMigrationStepInterface
             return $feedback;
         }
 
-        $replacement = preg_replace("/RewriteBase\s*(\/)?(.*)(\/)?/", "RewriteBase /$2/public/legacy", $match);
+        $replacement = preg_replace("/RewriteBase\s*(\/)?(.*)(\/)?$/", "RewriteBase /$2/public/legacy", $match);
         $replacement = str_replace('//', '/', $replacement);
 
         $contents = preg_replace("/RewriteBase\s*(.*)/", $replacement, $contents);
