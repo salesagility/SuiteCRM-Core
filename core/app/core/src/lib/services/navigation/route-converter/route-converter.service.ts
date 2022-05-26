@@ -67,7 +67,7 @@ export class RouteConverter {
      * @returns {string} frontend path
      */
     public toFrontEndLink(legacyLink: string): string {
-        return ROUTE_PREFIX + this.toFrontEndRoute(legacyLink);
+        return '#/' + this.toFrontEndRoute(legacyLink);
     }
 
     /**

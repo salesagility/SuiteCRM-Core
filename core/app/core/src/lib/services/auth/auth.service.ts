@@ -37,6 +37,7 @@ import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {BaseRouteService} from "../base-route/base-route.service";
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -71,7 +72,8 @@ export class AuthService {
         protected bnIdle: BnNgIdleService,
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
-        protected configs: SystemConfigStore
+        protected configs: SystemConfigStore,
+        protected baseRoute: BaseRouteService
     ) {
         this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     }
@@ -95,8 +97,8 @@ export class AuthService {
         onSuccess: (response: string) => void,
         onError: (error: HttpErrorResponse) => void
     ): Subscription {
-        const loginUrl = 'login';
-
+        let loginUrl = 'login';
+        loginUrl = this.baseRoute.calculateRoute(loginUrl);
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
@@ -146,7 +148,8 @@ export class AuthService {
     public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
         this.appStateStore.updateLoading('logout', true, false);
 
-        const logoutUrl = 'logout';
+        let logoutUrl = 'logout';
+        logoutUrl = this.baseRoute.calculateRoute(logoutUrl);
         const body = new HttpParams();
 
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
@@ -231,9 +234,10 @@ export class AuthService {
      */
     public fetchSessionStatus(): Observable<SessionStatus> {
 
-        const Url = 'session-status';
+        let url = 'session-status';
+        url = this.baseRoute.calculateRoute(url);
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-        return this.http.get(Url, {headers});
+        return this.http.get(url, {headers});
     }
 }

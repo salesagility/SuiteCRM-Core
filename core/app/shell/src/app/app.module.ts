@@ -59,6 +59,7 @@ import {
     RecordListModalModule,
     RecordModule,
     TableModule,
+    BaseRouteService
 } from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -120,7 +121,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     bootstrap: [AppComponent]
 })
 export class AppModule {
-    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore) {
+    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore, protected baseRoute: BaseRouteService) {
 
         const defaultOptions = {
             watchQuery: {
@@ -131,8 +132,10 @@ export class AppModule {
             },
         };
 
+        let fullPath = environment.graphqlApiUrl;
+        fullPath = this.baseRoute.calculateRoute(fullPath);
         const http = httpLink.create({
-            uri: environment.graphqlApiUrl,
+            uri: fullPath,
             withCredentials: true
         });
 
