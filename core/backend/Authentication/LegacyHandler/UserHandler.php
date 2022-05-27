@@ -80,7 +80,7 @@ class UserHandler extends LegacyHandler
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session,
+            $session
         );
         $this->systemConfigProvider = $systemConfigProvider;
         $this->userPreferenceService = $userPreferenceService;
