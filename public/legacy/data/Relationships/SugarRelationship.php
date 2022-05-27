@@ -42,6 +42,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
+global $dictionary;
+
 //Load all relationship metadata
 include_once 'modules/TableDictionary.php';
 require_once 'data/BeanFactory.php';
