@@ -52,7 +52,13 @@ hr.spacer {
   }
 /* Projects Resource Panel Edit View */
 
-.view-module-Project {    
+.view-module-Project {  
+    #EditView {
+        .buttons {
+            position: absolute;
+            top: -0.8em;
+        }
+    }   
     #scheduler .schedulerDiv {
         padding-top: 0; 
         margin-top: 1em;
@@ -124,3 +130,11 @@ hr.spacer {
 }
 
 /* Projects Resource Panel Edit View Ends here */
+
+.view-module-AM_ProjectTemplates {
+    #EditView {
+      .buttons {
+          top: -0.8em;
+      }
+    }   
+  }

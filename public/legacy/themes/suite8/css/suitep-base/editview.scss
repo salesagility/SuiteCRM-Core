@@ -786,6 +786,7 @@ option[selected] {
   position: absolute;
   bottom: 0.2em;
   right: 0;
+  height: min-content;
 }
 
 .actionbutton-footer {
@@ -881,12 +882,12 @@ fieldset label {
   border-radius: $border-radius-base;
 }
 
-table#tabFormPagination td{
+table#tabFormPagination td {
   margin-bottom: 0;
   border-bottom: none;
 }
 
-#tabFormPagination{
+#tabFormPagination {
   margin-bottom: 0;
   border-bottom: none;
 }

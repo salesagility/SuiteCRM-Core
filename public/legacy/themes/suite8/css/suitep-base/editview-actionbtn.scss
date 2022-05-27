@@ -1,0 +1,18 @@
+.view-action-EditView {
+    .action-buttons {
+      top: -3.5em;
+    }
+    #save_and_continue.button {
+      background-color: $nepal-grey;
+      font-size: 13px;
+      font-weight: 700;
+      height: 2.2em;
+      line-height: 16px;
+      padding: .3em 1em;
+      text-transform: capitalize;
+      margin: .2em;
+      &:hover {
+          background: $pale-blue;
+      }
+    }
+  }

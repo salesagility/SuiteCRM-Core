@@ -3624,3 +3624,32 @@ ul.clickMenu > li > span.searchAppliedAlert {
     display: inline-block;
   }
 }
+
+//Legacy Listview Bottom Buttons Styling - Global fix
+.view-action-index {
+  .listViewButtons {
+    .button {
+      background-color: $nepal-grey;
+      font-size: 13px;
+      font-weight: 700;
+      height: 2.2em;
+      line-height: 16px;
+      padding: .3em 1em;
+      text-transform: capitalize;
+      margin: .2em;
+      &:hover {
+          background: $pale-blue;
+      }
+    }
+  }
+}
+
+//Legacy Listview Bottom dropdown styling- Global fix
+#mass_update_table {
+  select {
+    background: url($select-edit-background-url) no-repeat right;
+    background-size: 25px 11px;
+    border-color: $bright-grey;
+    max-width: 100%;
+  }
+}
