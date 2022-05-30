@@ -213,10 +213,6 @@ export class InstallViewStore implements StateStore {
                 maxColumns: 2,
                 useTabs: true,
                 tabDefs: {
-                    LBL_LICENSE: {
-                        newTab: true,
-                        panelDefault: 'expanded'
-                    } as TabDefinition,
                     LBL_CONFIG: {
                         newTab: true,
                         panelDefault: 'expanded'
@@ -224,44 +220,6 @@ export class InstallViewStore implements StateStore {
                 } as TabDefinitions
             } as RecordTemplateMetadata,
             panels: [
-                {
-                    key: 'LBL_LICENSE',
-                    rows: [
-                        {
-                            cols: [
-                                {
-                                    name: 'site_license',
-                                    label: 'LBL_LICENSE_TITLE_2',
-                                    type: 'html',
-                                    display: 'readonly',
-                                    fieldDefinition: {
-                                        name: "site_license",
-                                        vname: "LBL_LICENSE_TITLE_2",
-                                        type: "html",
-                                        default: this.getLicenseText(),
-                                    } as FieldDefinition,
-                                } as PanelCell,
-                                {
-                                    name: 'license_check',
-                                    label: 'LBL_LICENSE_I_ACCEPT',
-                                    type: 'boolean',
-                                    required: true,
-                                    fieldDefinition: {
-                                        name: "license_check",
-                                        vname: "LBL_LICENSE_I_ACCEPT",
-                                        type: "boolean",
-                                        required: true,
-                                        value: 'false',
-                                        default: 'false'
-                                    } as FieldDefinition,
-                                } as PanelCell
-                            ] as PanelCell[]
-                        } as PanelRow,
-                        {
-                            cols: [] as PanelCell[]
-                        } as PanelRow
-                    ] as PanelRow[]
-                } as Panel,
                 {
                     key: 'LBL_CONFIG',
                     rows: [
