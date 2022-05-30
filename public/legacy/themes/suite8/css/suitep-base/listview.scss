@@ -91,7 +91,7 @@ tr#pagination {
 
 .list #pagination td .paginationTable .paginationChangeButtons {
   background-color: $list-view-toolbar-bg;
-  padding: 0.4em 0 0;
+  padding: 0.35em 0 0;
 }
 
 .list #pagination td .paginationTable .pageNumbers {
@@ -99,7 +99,7 @@ tr#pagination {
   font-weight: bold;
   color: $list-view-pagination-color;
   padding: 0 8px 0 8px;
-  margin: 0 0 0 0;
+  margin: -4px 0 0 0;
 }
 
 #listViewStartButton_top {
@@ -3040,7 +3040,7 @@ table.subpanel-table li.sugar_action_button {
 
 @-moz-document url-prefix() {
   #selectLinkTop li.sugar_action_button {
-    padding-left: 7px;
+    padding-left: 0;
   }
 }
 
@@ -3053,7 +3053,7 @@ table.subpanel-table li.sugar_action_button {
 
 @-moz-document url-prefix() {
   #selectLinkBottom li.sugar_action_button {
-    padding-left: 7px;
+    padding-left: 0;
   }
 }
 

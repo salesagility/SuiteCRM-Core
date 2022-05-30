@@ -64,12 +64,13 @@
     <div id="chooserTemplate" class="hidden">
         <div class="chooserContent">
             <h1>{$APP.LBL_DISPLAYED}</h1>
-            <ul class="chooserList green"></ul>
-            <div id="error-displayed-columns" class="error"></div>
-            <h1>{$APP.LBL_HIDDEN}</h1>
+            <ul class="chooserList green"></ul>            
+            <h1 class="hidden-title">{$APP.LBL_HIDDEN}</h1>
             <ul class="chooserList red"></ul>
+            <div id="error-displayed-columns" class="error"></div>
         </div>
     </div>
+
 {literal}
     <script>
 

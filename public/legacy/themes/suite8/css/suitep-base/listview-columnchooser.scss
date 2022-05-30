@@ -1,0 +1,91 @@
+.view-action-index {
+    ul.chooserList>li {
+        padding: 5px;
+        margin-bottom: 4px;
+    }
+    ul.chooserList.green.ui-sortable {
+        margin-bottom: 30px;
+        background: $very-light-grey;
+        padding: 1em;
+        border-radius: 0.25em;
+        margin-right: 2em;
+        width: 45%;
+        float: left;
+    }
+    ul.chooserList.red.ui-sortable {
+        margin-bottom: 30px;
+        background: $very-light-grey;
+        padding: 1em;
+        border-radius: 0.25em;
+        float: right;
+        width:43%;
+    }
+    ul.chooserList.green.ui-sortable>li {
+        background: $off-violet;
+        border-radius: .25em;
+    }
+    #columnsFilterDialog {
+        .modal-dialog {
+            .modal-content {
+                .modal-header {
+                    padding: 10px;
+                    text-align: center;
+                    h4 {
+                        text-transform: inherit;
+                        letter-spacing: 0;
+                    }
+                    .close {
+                        margin-top: 2px;
+                    }
+                }
+                .modal-footer {
+                    padding: 10px;
+                    .purple {
+                        background:$nepal-grey;
+                        text-transform: capitalize;
+                        font-weight: 700;
+                        &:hover {
+                            background: $modal-btn-hover !important;
+                            border: none;
+                        }
+                    }
+                   .red {
+                       background: #534d64;
+                       text-transform: capitalize;
+                       font-weight: 700;
+                       &:hover {
+                            background: $modal-btn-hover !important;
+                            border: none;
+                       }
+                   } 
+                   clear: both;
+                }
+               #columnsFilterList {
+                   padding: 20px;
+                   padding-bottom: 0;
+                   .chooserContent {
+                        width: 100%;
+                        position: relative;
+                    h1 {
+                        margin: 0;
+                        font-size: 15px;
+                        margin-bottom: 0.5em;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                    }
+                    h1.hidden-title {
+                        position: absolute;
+                        top: 0em;
+                        right: 7em;
+                    }
+                    .left-column,.right-column {
+                        width: 15em;
+                        max-width: 100%;
+                        margin: 0 0.75em 1.5em;                        
+                    }                    
+                }
+            } 
+        }
+    }
+}
+}

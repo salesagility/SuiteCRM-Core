@@ -1,0 +1,108 @@
+.view-action-index,.view-action-default {    
+    #searchDialog {
+        input.button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.3em 1em;
+            text-transform: capitalize;
+            &:hover {
+                background: $pale-blue;
+            }
+        }
+        select {
+            background: url($select-edit-background-url) no-repeat right;
+            background-size: 25px 11px;
+            border-color: $bright-grey;
+            border-width: 1px;
+        }  
+        input[type=text] {
+            background-color:$transparent-color;
+            border: 1px solid $form-border-color;
+        }
+        a#basic_search_link {
+            background-color: #93a4b3;
+            background-size: 8px;
+            position: relative;
+            top: 2px;
+            line-height: 32px;
+            height: auto;
+            background-position: 120px 6px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        .datecalendar {
+            .btn {
+                &:hover,&:focus {
+                    background: none;
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+        .modal-body {
+            #Emailsadvanced_searchSearchForm,#EmailTemplatesadvanced_searchSearchForm {
+                textarea {
+                    background: $transparent-color;
+                    border: 1px solid $form-border-color;
+                }
+            }
+            .search_form {
+                .view {
+                    select#saved_search_select {
+                        border: 1px solid $form-border-color;
+                    }
+                }
+                .saved-search {
+                    margin-top: 1em;
+                }
+            }
+        }
+
+    }
+    .listViewBody {
+        #selectLinkTop {
+            .subnav.ddopen {
+                li {
+                    a#button_deselect_top {
+                        margin-left: 1.8em;
+                    }
+                }
+            }
+        }
+        #actionLinkTop {
+            .subnav.ddopen {
+                left: 0;
+                top: 2em;
+                li {
+                    a {
+                        white-space: normal;
+                    }
+                }
+            }
+        }
+    }
+    .moduleTitle {
+        border-bottom: 1px solid $form-border-color;
+        .module-title-text {
+            text-transform: uppercase;
+            color: #777;
+        }
+    }    
+}
+
+.view-action-index {
+    #selectLinkTop {
+        .subnav {
+            margin-top: 0.4em;
+        }
+        li.sugar_action_button {
+            label {
+                color: $white;
+            }
+        }
+    }    
+}
