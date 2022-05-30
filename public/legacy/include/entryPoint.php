@@ -189,7 +189,7 @@ if (empty($GLOBALS['installing']) && !empty($sugar_config['dbconfig']['db_name']
         ini_set('session.gc_divisor', $gcDivisor);
     }
 
-    if (!empty($sugar_config['session_dir'])) {
+    if (!empty($sugar_config['session_dir']) && session_status() !== PHP_SESSION_ACTIVE) {
         session_save_path($sugar_config['session_dir']);
     }
 
