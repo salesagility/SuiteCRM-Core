@@ -30,6 +30,7 @@ namespace App\Install\Command;
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeHandlerInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -76,7 +77,7 @@ class UpgradeCommand extends BaseStepExecutorCommand
         parent::configure();
 
         $this->setDescription('Upgrade the application')
-            ->setHelp('This command will upgrade suite 8 and legacy application');
+            ->setHelp('This command will upgrade SuiteCRM 8 and legacy application');
     }
 
     /**
@@ -105,5 +106,20 @@ class UpgradeCommand extends BaseStepExecutorCommand
     protected function getHandler(): ProcessStepExecutorInterface
     {
         return $this->handler;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param array $context
+     * @return bool
+     */
+    protected function runSteps(OutputInterface $output, array $context): bool
+    {
+        $result = parent::runSteps($output, $context);
+        $status = $result ? 0 : 1;
+
+        // Force exit to avoid errors
+        // Avoid having Symfony use the kernel while in the same process
+        exit($status);
     }
 }
