@@ -386,6 +386,7 @@ class PostUpgrade
     protected function injectLanguageStrings(): void
     {
         global $mod_strings, $app_list_strings;
+        $mod_strings = $mod_strings ?? [];
         $UWstrings = return_module_language('en_us', 'UpgradeWizard', true);
         $adminStrings = return_module_language('en_us', 'Administration', true);
         $app_list_strings = return_app_list_strings_language('en_us');
