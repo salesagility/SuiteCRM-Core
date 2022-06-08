@@ -27,6 +27,7 @@
 
 namespace App\Engine\Model;
 
+use App\Engine\Service\ProcessSteps\ProcessStepAlert;
 use Psr\Log\LoggerInterface;
 
 trait ProcessStepTrait
@@ -35,6 +36,15 @@ trait ProcessStepTrait
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * Get Alert
+     * @param array $context
+     * @return ProcessStepAlert|null
+     */
+    public function getAlert(array &$context): ?ProcessStepAlert {
+        return null;
+    }
 
     /**
      * Run step
@@ -177,5 +187,6 @@ trait ProcessStepTrait
             $this->logger->info('error info: ' . json_encode($error, JSON_THROW_ON_ERROR));
         }
     }
+
 
 }

@@ -54,6 +54,14 @@ interface ProcessStepExecutorInterface
     public function hasPosition(int $position): bool;
 
     /**
+     * Get Alerts
+     * @param int $position
+     * @param array $context
+     * @return ProcessStepAlert[]
+     */
+    public function getAlerts(int $position, array $context): array;
+
+    /**
      * Run position
      * @param int $position
      * @param array $context
