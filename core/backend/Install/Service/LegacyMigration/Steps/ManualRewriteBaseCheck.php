@@ -29,33 +29,35 @@ namespace App\Install\Service\LegacyMigration\Steps;
 
 use App\Engine\Model\Feedback;
 use App\Engine\Model\ProcessStepTrait;
+use App\Engine\Service\ProcessSteps\ProcessStepAlert;
+use App\Install\LegacyHandler\InstallHandler;
 use App\Install\Service\Installation\InstallStepTrait;
 use App\Install\Service\LegacyMigration\LegacyMigrationStepInterface;
 
 /**
- * Class ChangeRewriteBase
+ * Class ManualRewriteBaseCheck
  * @package App\Install\Service\LegacyMigration\Steps;
  */
-class ChangeRewriteBase implements LegacyMigrationStepInterface
+class ManualRewriteBaseCheck implements LegacyMigrationStepInterface
 {
     use ProcessStepTrait;
     use InstallStepTrait;
 
-    public const HANDLER_KEY = 'change-rewrite-base';
-    public const POSITION = 400;
+    public const HANDLER_KEY = 'manual-rewrite-base-check';
+    public const POSITION = 450;
 
     /**
-     * @var string
+     * @var InstallHandler
      */
-    private $legacyDir;
+    private $handler;
 
     /**
-     * ChangeRewriteBase constructor.
-     * @param string $legacyDir
+     * ManualRewriteBaseCheck constructor.
+     * @param InstallHandler $handler
      */
-    public function __construct(string $legacyDir)
+    public function __construct(InstallHandler $handler)
     {
-        $this->legacyDir = $legacyDir;
+        $this->handler = $handler;
     }
 
     /**
@@ -75,55 +77,46 @@ class ChangeRewriteBase implements LegacyMigrationStepInterface
     }
 
     /**
+     * Get Alert
+     * @param array $context
+     * @return ProcessStepAlert
+     */
+    public function getAlert(array &$context): ProcessStepAlert
+    {
+
+        $alert = new ProcessStepAlert();
+        $alert->setTile('Manually Check legacy htaccess');
+        $messages = [
+            'Please check RewriteBase in \'public/legacy/.htaccess\' and update manually',
+            'Check SuiteCRM 8 Migration documentation for information on how to configure'
+        ];
+
+        $config = $this->handler->loadLegacyConfig();
+        $siteURL = $config['site_url'] ?? '';
+
+        if (!empty($siteURL)) {
+            $urlParts = parse_url($siteURL) ?? [];
+            $path = rtrim($urlParts['path'] ?? '', " \t\n\r\0\x0B/");
+
+            $messages[] = "- Based on your site url '" . $siteURL . "'.";
+            $messages[] = "- The RewriteBase should be something like '" . $path . '/legacy' . "'.";
+        }
+
+        $alert->setMessages($messages);
+
+        return $alert;
+    }
+
+    /**
      * @inheritDoc
      */
     public function execute(array &$context): Feedback
     {
-        $htAccessPath = $this->legacyDir . '/.htaccess';
-        if (!file_exists($htAccessPath)) {
-            $feedback = new Feedback();
-            $feedback->setSuccess(true);
-            $feedback->setMessages(['WARNING: No htaccess file. Skipping htaccess update']);
-
-            return $feedback;
-        }
-
-        if (!is_writable($htAccessPath)) {
-            $feedback = new Feedback();
-            $feedback->setSuccess(true);
-            $feedback->setMessages(['WARNING:  Not able to write to htaccess. Skipping htaccess update']);
-
-            return $feedback;
-        }
-
-        $contents = file_get_contents($htAccessPath);
-
-        $matches = [];
-        $matchFound = preg_match("/RewriteBase\s*(\/)?(.*)(\/)?/", $contents, $matches);
-
-        $match = $matches[0] ?? '';
-
-        if (!$matchFound || empty($match)) {
-            $feedback = new Feedback();
-            $feedback->setSuccess(true);
-            $feedback->setMessages([
-                'WARNING: No RewriteBase configuration or not according to expected pattern. Skipping htaccess update',
-            ]);
-
-            return $feedback;
-        }
-
-        $replacement = preg_replace("/RewriteBase\s*(\/)?(.*)(\/)?$/", "RewriteBase /$2/public/legacy", $match);
-        $replacement = str_replace('//', '/', $replacement);
-
-        $contents = preg_replace("/RewriteBase\s*(.*)/", $replacement, $contents);
-
-        file_put_contents($htAccessPath, $contents);
 
         $feedback = new Feedback();
         $feedback->setSuccess(true);
         $feedback->setMessages([
-            'Updated htaccess RewriteBase',
+            'Manual RewriteBase check done',
         ]);
 
         return $feedback;
