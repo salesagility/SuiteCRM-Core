@@ -31,6 +31,7 @@ use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class BaseStepExecutorCommand extends BaseCommand
 {
@@ -50,7 +51,7 @@ abstract class BaseStepExecutorCommand extends BaseCommand
 
         $context = $this->getContext($arguments);
 
-        $success = $this->runSteps($output, $context);
+        $success = $this->runSteps($input, $output, $context);
 
         $output->writeln([
             '',
@@ -76,11 +77,12 @@ abstract class BaseStepExecutorCommand extends BaseCommand
     abstract protected function getContext(array $arguments): array;
 
     /**
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @param array $context
      * @return bool
      */
-    protected function runSteps(OutputInterface $output, array $context): bool
+    protected function runSteps(InputInterface $input, OutputInterface $output, array $context): bool
     {
         $position = 0;
         $success = true;
@@ -89,6 +91,25 @@ abstract class BaseStepExecutorCommand extends BaseCommand
             $keys = $this->getHandler()->getPositionKeys($position);
 
             $output->writeln('Running: ' . implode(' | ', $keys));
+
+            $alerts = $this->getHandler()->getAlerts($position, $context);
+
+            foreach ($alerts as $alert) {
+                $title = $alert->getTile() ?? 'Alert';
+                $output->writeln($this->colorMessage('comment', $title));
+
+                $messages = $alert->getMessages();
+                $messages[] = $this->colorMessage('comment','Once completed, press y and enter to continue.');
+                $questionMessage = implode("\n", $messages);
+
+                $helper = $this->getHelper('question');
+                $question = new ConfirmationQuestion($questionMessage, true);
+
+                $answer = false;
+                while ($answer === false) {
+                    $answer = $helper->ask($input, $output, $question);
+                }
+            }
 
             $result = $this->getHandler()->runPosition($position, $context);
 

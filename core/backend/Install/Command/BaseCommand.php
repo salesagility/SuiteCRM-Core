@@ -201,7 +201,7 @@ abstract class BaseCommand extends Command
         $messages = $feedback->getMessages() ?? [];
 
         foreach ($messages as $message) {
-            $output->writeln($this->colorMessage($feedback, $message));
+            $output->writeln($this->colorFeedbackMessage($feedback, $message));
         }
     }
 
@@ -255,7 +255,7 @@ abstract class BaseCommand extends Command
      * @param string $message
      * @return string
      */
-    protected function colorMessage(Feedback $feedback, string $message): string
+    protected function colorFeedbackMessage(Feedback $feedback, string $message): string
     {
         $colorTag = 'info';
         if ($feedback->isSuccess() === false) {
@@ -263,6 +263,16 @@ abstract class BaseCommand extends Command
         }
 
         return implode('', ["<$colorTag>", $message, "</$colorTag>"]);
+    }
+
+    /**
+     * @param string $type
+     * @param string $message
+     * @return string
+     */
+    protected function colorMessage(string $type, string $message): string
+    {
+        return implode('', ["<$type>", $message, "</$type>"]);
     }
 
     /**

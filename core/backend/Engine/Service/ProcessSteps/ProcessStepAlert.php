@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,53 +25,56 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Engine\Model;
+namespace App\Engine\Service\ProcessSteps;
 
-use App\Engine\Service\ProcessSteps\ProcessStepAlert;
-use Psr\Log\LoggerInterface;
-
-interface ProcessStepInterface
+class ProcessStepAlert
 {
     /**
-     * Get step key
+     * @var string[]
+     */
+    public $messages = [];
+
+    /**
+     * @var string
+     */
+    public $tile = '';
+
+    /**
+     * @return string[]
+     */
+    public function getMessages(): array
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param string[] $messages
+     * @return ProcessStepAlert
+     */
+    public function setMessages(array $messages): ProcessStepAlert
+    {
+        $this->messages = $messages;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public function getKey(): string;
+    public function getTile(): string
+    {
+        return $this->tile;
+    }
 
     /**
-     * Get execution order
-     * @return int
+     * @param string $tile
+     * @return ProcessStepAlert
      */
-    public function getOrder(): int;
+    public function setTile(string $tile): ProcessStepAlert
+    {
+        $this->tile = $tile;
 
-    /**
-     * Execute step
-     * @param array $context
-     * @return Feedback
-     */
-    public function execute(array &$context): Feedback;
+        return $this;
+    }
 
-    /**
-     * Run step
-     * @param array $context
-     * @return Feedback
-     */
-    public function run(array &$context): Feedback;
-
-    /**
-     * Get Alert
-     * @param array $context
-     * @return ProcessStepAlert|null
-     */
-    public function getAlert(array &$context): ?ProcessStepAlert;
-
-    /**
-     * @return LoggerInterface|null
-     */
-    public function getLogger(): ?LoggerInterface;
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger): void;
 }

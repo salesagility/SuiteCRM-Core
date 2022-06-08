@@ -117,6 +117,31 @@ abstract class ProcessStepExecutor implements ProcessStepExecutorInterface
     }
 
     /**
+     * Get Alerts
+     * @param int $position
+     * @param array $context
+     * @return ProcessStepAlert[]
+     */
+    public function getAlerts(int $position, array $context): array
+    {
+        $positionSteps = $this->orderedSteps[$position] ?? [];
+        if (empty($positionSteps)) {
+            return [];
+        }
+
+        $alerts = [];
+
+        foreach ($positionSteps as $step) {
+            $alert = $step->getAlert($context);
+            if ($alert !== null) {
+                $alerts[] = $alert;
+            }
+        }
+
+        return $alerts;
+    }
+
+    /**
      * Run next
      * @param int $position
      * @param array $context

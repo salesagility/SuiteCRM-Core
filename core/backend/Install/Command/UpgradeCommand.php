@@ -29,6 +29,7 @@ namespace App\Install\Command;
 
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeHandlerInterface;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -110,13 +111,14 @@ class UpgradeCommand extends BaseStepExecutorCommand
     }
 
     /**
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @param array $context
      * @return bool
      */
-    protected function runSteps(OutputInterface $output, array $context): bool
+    protected function runSteps(InputInterface $input, OutputInterface $output, array $context): bool
     {
-        $result = parent::runSteps($output, $context);
+        $result = parent::runSteps($input, $output, $context);
         $status = $result ? 0 : 1;
 
         // Force exit to avoid errors
