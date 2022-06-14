@@ -630,7 +630,7 @@ class ConnectorUtils
         return false;
     }
 
-    public function setHoverField(
+    public static function setHoverField(
         &$viewdefs,
         $module,
         $hover_field,

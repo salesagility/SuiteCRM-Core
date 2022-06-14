@@ -236,11 +236,11 @@ abstract class source
         if (file_exists("custom/modules/Connectors/connectors/sources/{$dir}/config.php")) {
             require("custom/modules/Connectors/connectors/sources/{$dir}/config.php");
         }
-        $this->_config = $config;
+        $this->_config = $config ?? [];
 
         //If there are no required config fields specified, we will default them to all be required
         if (empty($this->_required_config_fields)) {
-            foreach ($this->_config['properties'] as $id=>$value) {
+            foreach ($this->_config['properties'] ?? [] as $id=>$value) {
                 $this->_required_config_fields[] = $id;
             }
         }
