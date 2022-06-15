@@ -35,6 +35,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class BaseStepExecutorCommand extends BaseCommand
 {
+    /**
+     * @var bool
+     */
+    protected $suppressWarnings = false;
 
     /**
      * @inheritDoc
@@ -42,6 +46,14 @@ abstract class BaseStepExecutorCommand extends BaseCommand
      */
     public function executeCommand(InputInterface $input, OutputInterface $output, array $arguments): int
     {
+        if ($this->suppressWarnings === true) {
+            error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE & ~E_WARNING);
+        }
+
+        if ($output->isDebug()) {
+            error_reporting(E_ALL);
+        }
+
         $output->writeln([
             '',
             $this->getTitle(),
@@ -99,7 +111,7 @@ abstract class BaseStepExecutorCommand extends BaseCommand
                 $output->writeln($this->colorMessage('comment', $title));
 
                 $messages = $alert->getMessages();
-                $messages[] = $this->colorMessage('comment','Once completed, press y and enter to continue.');
+                $messages[] = $this->colorMessage('comment', 'Once completed, press y and enter to continue.');
                 $questionMessage = implode("\n", $messages);
 
                 $helper = $this->getHelper('question');

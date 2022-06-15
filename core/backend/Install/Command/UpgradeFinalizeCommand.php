@@ -45,6 +45,11 @@ class UpgradeFinalizeCommand extends BaseStepExecutorCommand
     protected static $defaultName = 'suitecrm:app:upgrade-finalize';
 
     /**
+     * @inheritdoc
+     */
+    protected $suppressWarnings = true;
+
+    /**
      * @var UpgradeFinalizeHandlerInterface
      */
     protected $handler;
