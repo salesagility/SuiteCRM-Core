@@ -47,6 +47,11 @@ class SetupLegacyMigrationCommand extends BaseStepExecutorCommand
     protected $handler;
 
     /**
+     * @inheritdoc
+     */
+    protected $suppressWarnings = true;
+
+    /**
      * SetupLegacyMigrationCommand constructor.
      * @param LegacyMigrationHandlerInterface $handler
      */
