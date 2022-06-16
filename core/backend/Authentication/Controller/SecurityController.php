@@ -121,7 +121,7 @@ class SecurityController extends AbstractController
             $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
-            $this->authentication->initNewLegacySession();
+            $this->authentication->initLegacySystemSession();
 
             return $response;
         }
