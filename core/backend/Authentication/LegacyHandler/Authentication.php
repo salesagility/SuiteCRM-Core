@@ -31,8 +31,8 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Install\Service\InstallationUtilsTrait;
 use AuthenticationController;
-use Exception;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class Authentication
@@ -110,37 +110,44 @@ class Authentication extends LegacyHandler
     /**
      * Is current user admin
      *
+     * @param UserInterface $user
      * @return string
      */
-    public function needsRedirect(): string
+    public function needsRedirect(UserInterface $user): string
     {
         $this->init();
 
+        /** @var \User $current_user */
         global $current_user;
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'modules/Users/password_utils.php';
+
+        if (hasPasswordExpired($user->getUsername())) {
+            $this->close();
+            return 'users/ChangePassword?record=' . $current_user->id;
+        }
 
         $timezone = $current_user->getPreference('timezone');
         $ut = $current_user->getPreference('ut');
-        if (empty($ut) || empty($timezone)) {
-            $this->close();
-
-            return $this->systemSettings['setup_wizard_route'] ?? 'users/wizard';
-        }
 
         $this->close();
+
+        if (empty($ut) || empty($timezone)) {
+            return $this->systemSettings['setup_wizard_route'] ?? 'users/wizard';
+        }
 
         return '';
     }
 
     /**
-     * Legacy login
+     * Init legacy user session
      *
      * @param $username
-     * @param $password
      *
      * @return bool
-     * @throws Exception
      */
-    public function login($username, $password): bool
+    public function initLegacyUserSession($username): bool
     {
         $this->init();
 
@@ -149,18 +156,13 @@ class Authentication extends LegacyHandler
             $language = $this->userHandler->getSystemLanguage();
         }
 
-
         global $mod_strings;
 
         $mod_strings = return_module_language($language, 'Users');
 
         $authController = $this->getAuthenticationController();
 
-        $PARAMS = [
-            'ignoreTimeZoneRedirect' => true,
-        ];
-
-        $result = $authController->login($username, $password, $PARAMS);
+        $result = $authController->initUserSession($username);
 
         $this->close();
 
@@ -213,7 +215,6 @@ class Authentication extends LegacyHandler
 
         $authController = $this->getAuthenticationController();
 
-        /** @var bool $result */
         $result = $authController->sessionAuthenticate();
 
         $this->close();
@@ -229,7 +230,6 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
-        /** @var bool $result */
         $result = $this->isAppInstalled($this->legacyDir);
 
         $this->close();
@@ -245,11 +245,42 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
-        /** @var bool $result */
         $result = $this->isAppInstallerLocked($this->legacyDir);
 
         $this->close();
 
         return $result;
+    }
+
+    /**
+     * @param string $module
+     * @param string $key
+     * @return void
+     */
+    public function callLegacyHooks(string $module, string $key): void
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        \LogicHook::initialize()->call_custom_logic($module, $key);
+
+        $this->close();
+    }
+
+    /**
+     * @param string $key
+     * @return void
+     */
+    public function callLegacyUserHooks(string $key): void
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        //call business logic hook
+        if (isset($GLOBALS['current_user'])) {
+             $GLOBALS['current_user']->call_custom_logic($key);
+        }
+
+        $this->close();
     }
 }

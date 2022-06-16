@@ -29,18 +29,13 @@ namespace App\Security;
 
 use App\Authentication\LegacyHandler\Authentication;
 use App\Security\Exception\UserNotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -48,11 +43,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class LoginFormAuthenticator extends AbstractGuardAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
@@ -84,10 +79,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     /**
      * LoginFormAuthenticator constructor.
      * @param Authentication $authentication
-     * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      * @param CsrfTokenManagerInterface $csrfTokenManager
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param SessionInterface $session
      * @param Security $security
      */
@@ -148,11 +141,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if (!$user) {
             throw new UserNotFoundException('Authentication: Unknown user');
         }
-        try {
-            $result = $this->authentication->login($credentials['username'], $credentials['password']);
-        } catch (Exception $e) {
-            throw new BadCredentialsException('Authentication: ', $e->getMessage());
-        }
+
+        $result = $this->authentication->initLegacyUserSession($credentials['username']);
 
         if ($result === false) {
             throw new CustomUserMessageAuthenticationException('Authentication: Invalid login credentials');
@@ -186,7 +176,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param string $userHash DB hash
      * @return bool Match or not?
      */
-    public static function checkPasswordMD5($passwordMd5, $userHash): bool
+    public static function checkPasswordMD5(string $passwordMd5, string $userHash): bool
     {
         if (empty($userHash)) {
             return false;
@@ -214,9 +204,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param Request $request
      * @param TokenInterface $token
      * @param string $providerKey
-     * @return JsonResponse|RedirectResponse
+     * @return JsonResponse
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): JsonResponse
     {
         $userData = $this->getAuthedUserInfo();
         $metadata = [
@@ -251,7 +241,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             'userName' => $userName
         ];
 
-        $needsRedirect = $this->authentication->needsRedirect();
+        $needsRedirect = $this->authentication->needsRedirect($user);
         if (!empty($needsRedirect)) {
             $info['redirect'] = $needsRedirect;
         }
@@ -271,12 +261,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     /**
      * @param Request $request
      * @param AuthenticationException $exception
-     * @return JsonResponse|RedirectResponse
+     * @return JsonResponse
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * Called when authentication is needed, but it's not sent
+     */
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+        $data = [
+            // you might translate this message
+            'message' => 'Authentication Required'
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
@@ -288,13 +291,5 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function supportsRememberMe(): bool
     {
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getLoginUrl(): string
-    {
-        return $this->router->generate('app_login');
     }
 }
