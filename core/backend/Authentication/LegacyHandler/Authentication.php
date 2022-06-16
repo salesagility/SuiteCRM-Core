@@ -196,7 +196,7 @@ class Authentication extends LegacyHandler
      * Init new legacy session cookie
      * @return void
      */
-    public function initNewLegacySession(): void
+    public function initLegacySystemSession(): void
     {
         $this->init();
         $this->loadSystemUser();
