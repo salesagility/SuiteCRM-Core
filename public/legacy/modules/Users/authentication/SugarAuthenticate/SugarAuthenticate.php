@@ -141,13 +141,49 @@ class SugarAuthenticate
     }
 
     /**
+     * Initialize user session post authentication
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function initUserSession(string $username): bool
+    {
+        global $mod_strings;
+
+        unset($_SESSION['login_error']);
+
+        /** @var User $user */
+        $user = BeanFactory::newBean('Users');
+        $userId= $user->retrieve_user_id($username);
+        $user->retrieve($userId);
+
+        $_SESSION['login_error']='';
+        $_SESSION['waiting_error']='';
+        $_SESSION['hasExpiredPassword']='0';
+
+        $isLoaded = $this->userAuthenticate->loadUserOnSession($userId);
+
+        if ($isLoaded === false) {
+            return false;
+        }
+
+        // now that user is authenticated, reset loginfailed
+        if ($user->getPreference('loginfailed') !== '' && $user->getPreference('loginfailed') !== 0) {
+            $user->setPreference('loginfailed', '0');
+            $user->savePreferencesToDB();
+        }
+
+        return $this->postLoginAuthenticate();
+    }
+
+    /**
      * Once a user is authenticated on login this function will be called. Populate the session with what is needed and log anything that needs to be logged
      *
      */
     public function postLoginAuthenticate()
     {
         global $reset_language_on_default_user, $sugar_config;
-        
+
         //just do a little house cleaning here
         unset($_SESSION['login_password']);
         unset($_SESSION['login_error']);
@@ -218,9 +254,6 @@ class SugarAuthenticate
         }
         return $authenticated;
     }
-
-
-
 
     /**
      * Called after a session is authenticated - if this returns false the sessionAuthenticate will return false and destroy the session

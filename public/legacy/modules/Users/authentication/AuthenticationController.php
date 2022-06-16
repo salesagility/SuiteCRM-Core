@@ -200,10 +200,61 @@ class AuthenticationController
     }
 
     /**
+     * Init user session
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function initUserSession(string $username): bool
+    {
+        LogicHook::initialize()->call_custom_logic('Users', 'before_user_session_init');
+
+        $sugarAuthenticate = new SugarAuthenticate();
+
+        $this->loginSuccess = $sugarAuthenticate->initUserSession($username);
+        $this->loggedIn = true;
+
+        if (!$this->loginSuccess) {
+            $this->loggedIn = false;
+            unset($_SESSION['authenticated_user_id']);
+
+            LogicHook::initialize();
+            $GLOBALS['logic_hook']->call_custom_logic('Users', 'user_session_init_failed');
+
+            $this->logUserSessionInitFailure($username);
+
+            return $this->loginSuccess;
+        }
+
+        //call business logic hook
+        if (isset($GLOBALS['current_user'])) {
+            $GLOBALS['current_user']->call_custom_logic('after_user_session_init');
+        }
+
+        return $this->loginSuccess;
+    }
+
+    /**
+     * @param string $username
+     * @return void
+     */
+    protected function logUserSessionInitFailure(string $username): void
+    {
+        if (!empty($GLOBALS['login_error'])) {
+            $GLOBALS['log']->fatal('FAILED LOGIN: potential hack attempt:' . $GLOBALS['login_error']);
+        }
+
+        $GLOBALS['log']->fatal(
+            'FAILED LOGIN:attempts[' . $_SESSION['loginAttempts'] . '], ' .
+            'ip[' . query_client_ip() . '], username[' . $username . ']'
+        );
+    }
+
+    /**
      * This is called on every page hit.
      * It returns true if the current session is authenticated or false otherwise
      *
-     * @return booelan
+     * @return bool
      */
     public function sessionAuthenticate()
     {
