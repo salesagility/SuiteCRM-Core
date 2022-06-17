@@ -273,6 +273,30 @@ class AuthenticationController
     }
 
     /**
+     * This is called on every page hit.
+     * It returns true if the current session is authenticated or false otherwise
+     *
+     * @return bool
+     */
+    public function checkSession()
+    {
+        if (!$this->authenticated) {
+            $sugarAuthenticate = new SugarAuthenticate();
+            $this->loginSuccess = $sugarAuthenticate->checkSession();
+            $this->authenticated = $this->loginSuccess;
+        }
+        if ($this->authenticated) {
+            if (!isset($_SESSION['userStats']['pages'])) {
+                $_SESSION['userStats']['loginTime'] = time();
+                $_SESSION['userStats']['pages'] = 0;
+            }
+            $_SESSION['userStats']['lastTime'] = time();
+            $_SESSION['userStats']['pages']++;
+        }
+        return $this->authenticated;
+    }
+
+    /**
      * Called when a user requests to logout. Should invalidate the session and redirect
      * to the login page.
      * @param bool $redirect
