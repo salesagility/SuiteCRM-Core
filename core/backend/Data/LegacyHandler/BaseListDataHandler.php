@@ -260,10 +260,56 @@ abstract class BaseListDataHandler
                 }
             }
 
+            if ($type === 'relate' && !$this->isValidRelate($fieldDefinition)) {
+                continue;
+            }
+
             $parsedFilterFields[] = $fieldName;
         }
 
         return array_diff($parsedFilterFields, $excludedRelationshipFields);
     }
 
+    /**
+     * @param $fieldDefinition
+     * @return void
+     */
+    protected function isNonDbField($fieldDefinition): bool
+    {
+        $relateBean = BeanFactory::newBean($fieldDefinition['module']);
+
+        if (empty($relateBean)) {
+            return true;
+        }
+
+        $relateFieldDef = $relateBean->field_defs[$fieldDefinition['rname']] ?? [];
+        $relateFieldSource = $relateFieldDef['source'] ?? '';
+
+        return empty($relateFieldDef) || $relateFieldSource === 'non-db';
+    }
+
+    /**
+     * @param $fieldDefinition
+     * @return bool
+     */
+    protected function isValidRelate($fieldDefinition): bool
+    {
+        if (isset($fieldDefinition['table']) && $fieldDefinition['table'] === '') {
+            return false;
+        }
+
+        if (isset($fieldDefinition['join_name']) && $fieldDefinition['join_name'] === '') {
+            return false;
+        }
+
+        if (!empty($fieldDefinition['module']) && !empty($fieldDefinition['rname'])) {
+            $isNonDb = $this->isNonDbField($fieldDefinition);
+
+            if ($isNonDb === true) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
