@@ -26,7 +26,7 @@
 
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 
 import {Apollo} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
@@ -81,6 +81,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     imports: [
         BrowserModule,
         HttpClientModule,
+        HttpClientXsrfModule,
         AppRoutingModule,
         FooterUiModule,
         NavbarUiModule,
