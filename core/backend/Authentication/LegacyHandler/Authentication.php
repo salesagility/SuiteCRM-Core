@@ -215,7 +215,7 @@ class Authentication extends LegacyHandler
 
         $authController = $this->getAuthenticationController();
 
-        $result = $authController->sessionAuthenticate();
+        $result = $authController->checkSession();
 
         $this->close();
 
