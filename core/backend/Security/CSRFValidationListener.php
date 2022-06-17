@@ -27,6 +27,7 @@
 
 namespace App\Security;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -83,6 +84,8 @@ class CSRFValidationListener
     {
         if (
             HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType() ||
+            Request::METHOD_GET === $event->getRequest()->getMethod() ||
+            Request::METHOD_HEAD === $event->getRequest()->getMethod() ||
             !$this->routeMatcher->match($event->getRequest(), $this->routes)
         ) {
             return;

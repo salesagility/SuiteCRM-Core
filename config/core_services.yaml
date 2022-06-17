@@ -163,7 +163,7 @@ services:
   App\Security\CSRFValidationListener:
     tags: [ { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 12 } ]
     arguments:
-      $routes: [ ]
+      $routes: [ '/api' ]
       $headerName: 'X-XSRF-TOKEN'
 
   App\Engine\Service\FolderSync\FolderComparator:
