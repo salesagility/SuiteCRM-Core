@@ -187,10 +187,10 @@ export class FieldBuilder {
 
         if (field.type === 'line-items') {
             field.valueObjectArray = record.attributes[field.name];
-            field.itemFormArray = new FormArray([], validators, asyncValidators);
+            field.itemFormArray = new FormArray([]);
             field.formControl = new FormControl(formattedValue);
         } else {
-            field.formControl = new FormControl(formattedValue, validators, asyncValidators);
+            field.formControl = new FormControl(formattedValue);
         }
 
         field.attributes = {};

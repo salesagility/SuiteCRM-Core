@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostBinding, Input, OnInit, Type} from '@angular/core';
+import {Component, HostBinding, Input, OnInit, Type, OnChanges, SimpleChanges} from '@angular/core';
 import {Field, Record, StringMap} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -35,7 +35,7 @@ import {ModuleNavigation} from '../../services/navigation/module-navigation/modu
     templateUrl: './dynamic-field.component.html',
     styleUrls: []
 })
-export class DynamicFieldComponent implements OnInit {
+export class DynamicFieldComponent implements OnInit, OnChanges {
 
     @Input('mode') mode: string;
     @Input('type') type: string;
@@ -69,6 +69,47 @@ export class DynamicFieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+
+        if (!changes.mode) {
+            return;
+        }
+
+        if (this.isEdit()) {
+            this.initValidators();
+        } else {
+            this.resetValidators();
+        }
+
+    }
+
+    protected initValidators(): void {
+
+        const formControl = this.field?.formControl ?? null;
+
+        if (!formControl) {
+            return;
+        }
+
+        this.resetValidators();
+
+        const validators = this.field?.validators ?? [];
+        const asyncValidators = this.field?.asyncValidators ?? [];
+
+        if (validators.length) {
+            this.field?.formControl?.setValidators(validators);
+        }
+        if (asyncValidators.length) {
+            this.field?.formControl?.setAsyncValidators(asyncValidators);
+        }
+
+    }
+
+    resetValidators() {
+        this.field?.formControl?.clearValidators();
+        this.field?.formControl?.clearAsyncValidators();
     }
 
     isLink(): boolean {
