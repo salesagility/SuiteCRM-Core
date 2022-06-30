@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12cbe555d7fc3e05c87d05268ad8ef04",
+    "content-hash": "f3852f88e18bd87be06c138608c5136c",
     "packages": [
         {
             "name": "api-platform/core",
@@ -6574,6 +6574,78 @@
                 }
             ],
             "time": "2021-07-29T06:52:15+00:00"
+        },
+        {
+            "name": "symfony/ldap",
+            "version": "v5.2.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ldap.git",
+                "reference": "7d947f93b1c6d59902c8e2db49ff9a1ea68c0fdf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ldap/zipball/7d947f93b1c6d59902c8e2db49ff9a1ea68c0fdf",
+                "reference": "7d947f93b1c6d59902c8e2db49ff9a1ea68c0fdf",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ldap": "*",
+                "php": ">=7.2.5",
+                "symfony/options-resolver": "^4.4|^5.0",
+                "symfony/polyfill-php80": "^1.15"
+            },
+            "conflict": {
+                "symfony/options-resolver": "<4.4",
+                "symfony/security-core": "<5"
+            },
+            "require-dev": {
+                "symfony/security-core": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Ldap\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Charles Sarrazin",
+                    "email": "charles@sarraz.in"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides a LDAP client for PHP on top of PHP's ldap extension",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "active directory",
+                "ldap"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-23T15:54:19+00:00"
         },
         {
             "name": "symfony/monolog-bridge",

@@ -672,6 +672,9 @@
     "symfony/http-kernel": {
         "version": "v4.4.4"
     },
+    "symfony/ldap": {
+        "version": "v5.2.12"
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
