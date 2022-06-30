@@ -8,6 +8,22 @@ parameters:
   legacy.path: '/legacy'
   legacy.session_name: 'LEGACYSESSID'
   default_session_name: 'PHPSESSID'
+  auth_type: '%env(AUTH_TYPE)%'
+
+services:
+  Symfony\Component\Ldap\Ldap:
+    arguments: [ '@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter' ]
+    tags:
+      - ldap
+  Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+    arguments:
+      - host: '%env(LDAP_HOST)%'
+        port: '%env(LDAP_PORT)%'
+        encryption: '%env(LDAP_ENCRYPTION)%'
+        options:
+          protocol_version: '%env(LDAP_PROTOCOL_VERSION)%'
+          referrals: '%env(LDAP_REFERRALS)%'
+
 
 imports:
   - { resource: services/**/*.yaml }
