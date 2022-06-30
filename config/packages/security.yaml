@@ -1,7 +1,11 @@
 security:
+  enable_authenticator_manager: true
+
   encoders:
+    app_encoder:
+      id: App\Security\LegacyPasswordEncoder
     App\Module\Users\Entity\User:
-      algorithm: auto
+      id: App\Security\LegacyPasswordEncoder
 
   providers:
     app_user_provider:
@@ -27,6 +31,7 @@ security:
 
   # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/session-status$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

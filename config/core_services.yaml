@@ -136,6 +136,17 @@ services:
   App\Engine\Service\Extensions\ExtensionAssetCacheWarmupDecorator:
     decorates: 'cache_warmer'
 
+  security.authenticator.json_login:
+    class: App\Security\AppJsonLoginAuthenticator
+    abstract: true
+    arguments:
+      - '@security.http_utils'
+      - !abstract user provider
+      - !abstract authentication success handler
+      - !abstract authentication failure handler
+      - !abstract options
+      - '@?property_accessor'
+
   App\Security\LegacySessionLogoutHandler:
     tags:
       - name: 'kernel.event_listener'
