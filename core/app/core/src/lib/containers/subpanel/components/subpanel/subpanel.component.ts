@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {Action, AnyButtonInterface, ButtonGroupInterface, ButtonInterface} from 'common';
+import {Action, AnyButtonInterface, ButtonGroupInterface, ButtonInterface, isFalse} from 'common';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {TableConfig} from '../../../../components/table/table.model';
@@ -134,7 +134,7 @@ export class SubpanelComponent implements OnInit {
     }
 
     protected buildButton(action: Action): AnyButtonInterface {
-        return {
+        const button = {
             label: action.label || '',
             klass: 'btn btn-sm btn-outline-light',
             onClick: (): void => {
@@ -148,5 +148,15 @@ export class SubpanelComponent implements OnInit {
                 });
             }
         } as AnyButtonInterface;
+
+        const debounceClick = action?.params?.debounceClick ?? null;
+
+        button.debounceClick = true;
+
+        if (isFalse(debounceClick)) {
+            button.debounceClick = false;
+        }
+
+        return button;
     }
 }

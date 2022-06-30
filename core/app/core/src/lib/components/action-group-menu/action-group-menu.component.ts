@@ -25,6 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
+import {isFalse} from 'common';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
@@ -151,6 +152,14 @@ export class ActionGroupMenuComponent implements OnInit {
                 this.config.runAction(action, this.actionContext);
             }
         } as ButtonInterface;
+
+        const debounceClick = action?.params?.debounceClick ?? null;
+
+        button.debounceClick = true;
+
+        if (isFalse(debounceClick)) {
+            button.debounceClick = false;
+        }
 
         if (action.icon) {
             button.icon = action.icon;
