@@ -83,9 +83,9 @@ export class ButtonComponent implements OnInit, OnDestroy {
      * @protected
      */
     protected getDebounceTime(): number {
-        let clickDebounceTime = this.config?.clickDebounceTime ?? 1000;
+        let clickDebounceTime = this.config?.clickDebounceTime ?? 625;
         if (!isFinite(clickDebounceTime)) {
-            clickDebounceTime = 1000;
+            clickDebounceTime = 625;
         }
         return clickDebounceTime;
     }
