@@ -59,6 +59,8 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     @Input() titleKey = '';
     @Input() module: string;
     @Input() parentModule: string;
+    @Input() multiSelect: boolean = false;
+    @Input() multiSelectButtonLabel = 'LBL_SAVE';
     @Input() adapter: RecordListModalTableAdapterInterface = null;
     @Input() filterAdapter: ModalRecordFilterAdapter = null;
 
@@ -111,12 +113,30 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         return this.maxColumnCalculator.getMaxColumns(of(true));
     }
 
+    linkSelectedRecords(): void {
+        this.activeModal.close({
+            selection: this.store.recordList.selection,
+            records: this.store.recordList.records
+        } as RecordListModalResult);
+    }
+
+    buildSelectButton(): ButtonInterface {
+        return {
+            klass: ['btn', 'btn-primary', 'btn-sm'],
+            onClick: () => {
+                this.linkSelectedRecords();
+            },
+            labelKey: this.multiSelectButtonLabel
+        } as ButtonInterface;
+    }
+
+
     protected initTableAdapter(): void {
         if (this.adapter === null) {
             this.adapter = new ModalRecordListTableAdapter();
         }
 
-        this.tableConfig = this.adapter.getTable(this.store);
+        this.tableConfig = this.adapter.getTable(this.store, this.multiSelect);
         this.tableConfig.maxColumns$ = this.getMaxColumns();
     }
 
@@ -132,16 +152,13 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         this.store.init(this.module, this.parentModule ?? '');
         this.loading$ = this.store.metadataLoading$;
 
-        this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged(), skip(1)).subscribe(selection => {
-
-            if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
+        this.subs.push(this.store.linkClicked$.pipe(distinctUntilChanged(), skip(1)).subscribe(clicked => {
+            if (!clicked){
                 return;
             }
 
-            this.activeModal.close({
-                selection,
-                records: this.store.recordList.records
-            } as RecordListModalResult);
+            this.linkSelectedRecords();
+
         }));
     }
 }

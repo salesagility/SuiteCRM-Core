@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {of} from 'rxjs';
-import {ColumnDefinition, Field, Record, SortDirection} from 'common';
+import {Observable, of} from 'rxjs';
+import {ColumnDefinition, Field, Record, SelectionStatus, SortDirection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordListModalTableAdapterInterface} from './adapter.model';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
@@ -37,10 +37,11 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
      * Get table config
      *
      * @param {object} store to use
+     * @param {boolean} multiSelect
      * @returns {object} TableConfig
      */
-    getTable(store: RecordListModalStore): TableConfig {
-        return {
+    getTable(store: RecordListModalStore, multiSelect: boolean = false): TableConfig {
+        const config = {
             showHeader: true,
             showFooter: true,
             klass: 'light-table',
@@ -63,6 +64,15 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
                 store.saveCurrentSort();
             },
         } as TableConfig;
+
+
+        if (multiSelect){
+            config.selection$ = store.recordList.selection$;
+            config.selectedCount$ = store.recordList.selectedCount$;
+            config.selectedStatus$ = store.recordList.selectedStatus$;
+        }
+
+        return config;
     }
 
     /**
@@ -114,7 +124,9 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
         }
 
         definition.metadata.onClick = (field: Field, record: Record): void => {
+            store.recordList.clearSelection();
             store.recordList.toggleSelection(record.id);
+            store.emitLinkClicked();
         };
     }
 }

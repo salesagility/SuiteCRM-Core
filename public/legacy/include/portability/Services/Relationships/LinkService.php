@@ -39,16 +39,16 @@ class LinkService
      * @param string $module
      * @param string $record
      * @param string $linkField
-     * @param string $linkedId
+     * @param array $linkedIds
      * @return array with feedback
      */
-    public function run(string $module, string $record, string $linkField, string $linkedId): array
+    public function run(string $module, string $record, string $linkField, array $linkedIds): array
     {
         global $beanList;
 
         //TODO handle special scenarios that are handled by Save2.php for Campaigns, target lists, documents etc
 
-        if (empty($record) || empty($linkField) || empty($linkedId)) {
+        if (empty($record) || empty($linkField) || empty($linkedIds)) {
             return [
                 'success' => false,
                 'message' => 'LBL_RECORD_NOT_FOUND'
@@ -88,7 +88,7 @@ class LinkService
             ];
         }
 
-        $result = $this->link($bean, $linkField, $linkedId);
+        $result = $this->link($bean, $linkField, $linkedIds);
 
         if ($result === false) {
             return [
@@ -107,12 +107,12 @@ class LinkService
      * Link record for relationship link
      * @param SugarBean|null $bean
      * @param string $linkField
-     * @param $linkedId
+     * @param array $linkedIds
      * @return bool
      */
-    protected function link(SugarBean $bean, string $linkField, string $linkedId): bool
+    protected function link(SugarBean $bean, string $linkField, array $linkedIds): bool
     {
-        $result = $bean->$linkField->add($linkedId);
+        $result = $bean->$linkField->add($linkedIds);
         $bean->save();
 
         return $result === true;

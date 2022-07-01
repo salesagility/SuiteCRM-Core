@@ -33,6 +33,7 @@ import {
     Record,
     RecordSelection,
     SelectionDataSource,
+    SelectionStatus,
     SortDirection,
     SortingSelection
 } from 'common';
@@ -48,10 +49,13 @@ export interface TableConfig {
     maxColumns$: Observable<number>;
     lineActions?: ActionDataSource;
     selection$?: Observable<RecordSelection>;
+    selectedCount$?: Observable<number>;
+    selectedStatus$?: Observable<SelectionStatus>;
     sort$?: Observable<SortingSelection>;
     loading$?: Observable<boolean>;
 
     selection?: SelectionDataSource;
+
     bulkActions?: BulkActionDataSource;
     pagination?: PaginationDataSource;
 

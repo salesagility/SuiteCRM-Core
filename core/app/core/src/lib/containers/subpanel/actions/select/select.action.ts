@@ -71,6 +71,8 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
 
         modal.componentInstance.module = data.module;
         modal.componentInstance.parentModule = data?.parentModule ?? '';
+        modal.componentInstance.multiSelect = true;
+        modal.componentInstance.multiSelectButtonLabel = 'LBL_LINK';
 
         modal.result.then((result: RecordListModalResult) => {
 
@@ -78,17 +80,16 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
                 return;
             }
 
-            const record = this.getSelectedRecord(result);
+            const recordIds = this.getSelectedIds(result);
 
             let linkField: string = data.subpanelMeta.get_subpanel_data;
 
-            const module = record.module || '';
-            const collectionList = data.subpanelMeta.collection_list || null;
+            const module = modal.componentInstance.module;
+            const collectionList = data.subpanelMeta?.collection_list ?? null;
 
-            if (collectionList && collectionList[module] && collectionList[module].get_subpanel_data) {
+            if (collectionList && collectionList?.[module]?.get_subpanel_data) {
                 linkField = collectionList[module].get_subpanel_data;
             }
-
             const input = {
                 action: 'record-select',
                 module: data.store.parentModule,
@@ -97,10 +98,10 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
                     baseModule: data.parentModule,
                     baseRecordId: data.parentId,
                     linkField,
-                    relateModule: record.module,
-                    relateRecordId: record.id
-                }
-            } as AsyncActionInput;
+                    relateModule: module,
+                    relateRecordIds: recordIds
+                },
+            } as AsyncActionInput
 
             this.runAsyncAction(input, data);
         });
@@ -112,30 +113,23 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
      *
      * @param {object} data RecordListModalResult
      * @returns {object} Record
-     */
-    protected getSelectedRecord(data: RecordListModalResult): Record {
-        let id = '';
-        Object.keys(data.selection.selected).some(selected => {
-            id = selected;
-            return true;
-        });
-
-        let record: Record = null;
-
-        data.records.some(rec => {
-            if (rec && rec.id === id) {
-                record = rec;
-                return true;
+     **/
+    protected getSelectedIds(data: RecordListModalResult): Record[] {
+        const ids = [];
+        Object.keys(data.selection.selected).forEach((selected) => {
+            if (selected) {
+                ids.push(selected);
             }
         });
 
-        return record;
+        return ids;
     }
 
     protected runAsyncAction(asyncData: AsyncActionInput, data: SubpanelActionData): void {
         const actionName = 'record-select';
 
         this.message.removeMessages();
+
 
         this.asyncActionService.run(actionName, asyncData).pipe(take(1)).subscribe(() => {
             data.store.load(false).pipe(take(1)).subscribe();
