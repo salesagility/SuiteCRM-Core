@@ -49,7 +49,8 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <scrm-table [config]="tableConfig"></scrm-table>
+                            <scrm-table [config]="tableConfig">
+                            </scrm-table>
                         </div>
                     </div>
                 </div>
@@ -58,8 +59,9 @@
                     <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
                 </ng-container>
             </div>
-
+            <ng-container *ngIf="multiSelect">
+                    <scrm-button [config]="buildSelectButton()"></scrm-button>
+            </ng-container>
         </ng-container>
     </div>
-
 </scrm-modal>

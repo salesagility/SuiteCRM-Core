@@ -34,9 +34,10 @@ export interface RecordListModalTableAdapterInterface {
      * Get table config
      *
      * @param {object} store to use
+     * @param multiSelect
      * @returns {object} TableConfig
      */
-    getTable(store: RecordListModalStore): TableConfig;
+    getTable(store: RecordListModalStore, multiSelect: boolean): TableConfig;
 }
 
 export interface RecordListModalFilterAdapterInterface {

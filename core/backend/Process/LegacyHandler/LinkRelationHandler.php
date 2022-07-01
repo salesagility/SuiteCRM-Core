@@ -140,10 +140,10 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
             'baseModule' => $baseModule,
             'baseRecordId' => $baseRecordId,
             'linkField' => $linkField,
-            'relateRecordId' => $relateRecordId
+            'relateRecordIds' => $relateRecordIds
         ] = $payload;
 
-        if (empty($payload) || empty($baseModule) || empty($baseRecordId) || empty($linkField) || empty($relateRecordId)) {
+        if (empty($payload) || empty($baseModule) || empty($baseRecordId) || empty($linkField) || empty($relateRecordIds)) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -163,13 +163,13 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
             'baseModule' => $baseModule,
             'baseRecordId' => $baseRecordId,
             'linkField' => $linkField,
-            'relateRecordId' => $relateRecordId
+            'relateRecordIds' => $relateRecordIds
         ] = $payload;
         $baseModule = $this->moduleNameMapper->toLegacy($baseModule);
 
         $service = new LinkService();
 
-        $result = $service->run($baseModule, $baseRecordId, $linkField, $relateRecordId);
+        $result = $service->run($baseModule, $baseRecordId, $linkField, $relateRecordIds);
 
         $process->setStatus('success');
         if ($result['success'] !== true) {

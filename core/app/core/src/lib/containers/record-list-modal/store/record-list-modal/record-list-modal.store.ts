@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {ColumnDefinition, emptyObject, RecordListMeta, SearchMeta} from 'common';
+import {ColumnDefinition, emptyObject, RecordListMeta, RecordSelection, SearchMeta, SelectionStatus} from 'common';
 import {map, take, tap} from 'rxjs/operators';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
@@ -42,11 +42,16 @@ export class RecordListModalStore implements StateStore {
     recordList: RecordListStore;
     listMetadata$: Observable<RecordListMeta>;
     searchMetadata$: Observable<SearchMeta>;
+    selection$: Observable<RecordSelection>;
+    selectedCount$: Observable<number>;
+    selectedStatus$: Observable<SelectionStatus>;
     columns$: Observable<ColumnDefinition[]>;
     listMetadata: RecordListMeta;
+    linkClicked$: Observable<boolean>;
     loading$: Observable<boolean>;
     metadataLoading$: Observable<boolean>;
     protected metadataLoadingState: BehaviorSubject<boolean>;
+    protected linkClickedState: BehaviorSubject<boolean>;
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
@@ -57,7 +62,12 @@ export class RecordListModalStore implements StateStore {
         this.loading$ = this.recordList.loading$;
 
         this.metadataLoadingState = new BehaviorSubject(false);
+        this.linkClickedState = new BehaviorSubject(false);
+        this.linkClicked$ = this.linkClickedState.asObservable();
         this.metadataLoading$ = this.metadataLoadingState.asObservable();
+        this.selection$ = this.recordList.selection$;
+        this.selectedCount$ = this.recordList.selectedCount$;
+        this.selectedStatus$ = this.recordList.selectedStatus$;
     }
 
     clear(): void {
@@ -134,6 +144,13 @@ export class RecordListModalStore implements StateStore {
         }
 
         this.savePreference(this.parentModule, 'current-sort', this.recordList.sort);
+    }
+
+    /**
+     * Emit Clicked Event
+     */
+    public emitLinkClicked(): void {
+        this.linkClickedState.next(true);
     }
 
     /**
