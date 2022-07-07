@@ -41,6 +41,8 @@ return static function (ContainerConfigurator $containerConfig) {
     $env = $_ENV ?? [];
     $authType = $env['AUTH_TYPE'] ?? 'native';
 
+    $maxAttempts = (int) ($env['LOGIN_THROTTLING_MAX_ATTEMPTS'] ?? 3);
+
     $baseFirewall = [
         'dev' => [
             'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
@@ -49,6 +51,9 @@ return static function (ContainerConfigurator $containerConfig) {
         ],
         'main' => [
             'lazy' => true,
+            'login_throttling' => [
+                'max_attempts' => $maxAttempts
+            ],
             'logout' => [
                 'path' => 'app_logout'
             ]
