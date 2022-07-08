@@ -37,6 +37,7 @@ import {LanguageStore, LanguageStringMap} from '../../../../store/language/langu
 import {MessageService} from '../../../../services/message/message.service';
 import {Process} from '../../../../services/process/process.service';
 import {StringMap} from 'common';
+import {AppStateStore} from "../../../../store/app-state/app-state.store";
 
 
 @Component({
@@ -95,7 +96,8 @@ export class LoginUiComponent implements OnInit {
         protected message: MessageService,
         protected configs: SystemConfigStore,
         protected languageStore: LanguageStore,
-        protected recoverPasswordService: RecoverPasswordService
+        protected recoverPasswordService: RecoverPasswordService,
+        protected appState: AppStateStore
     ) {
         this.loading = false;
         this.hidden = false;
@@ -178,10 +180,18 @@ export class LoginUiComponent implements OnInit {
             .subscribe(() => {
                 if (result && result.redirect) {
                     this.router.navigate([result.redirect]).then();
-                } else {
-                    const defaultModule = this.configs.getHomePage();
-                    this.router.navigate(['/' + defaultModule]).then();
+                    return;
                 }
+
+                if (this.appState.getPreLoginUrl()) {
+                    this.router.navigateByUrl(this.appState.getPreLoginUrl()).then(() => {
+                        this.appState.setPreLoginUrl('');
+                    });
+                    return;
+                }
+
+                const defaultModule = this.configs.getHomePage();
+                this.router.navigate(['/' + defaultModule]).then();
             });
 
         return;

@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
@@ -52,9 +52,9 @@ export class AuthGuard implements CanActivate {
     ) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot):
+    canActivate(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.authorizeUser(route);
+        return this.authorizeUser(route, snapshot);
     }
 
     /**
@@ -62,11 +62,12 @@ export class AuthGuard implements CanActivate {
      *
      * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
      * @param {ActivatedRouteSnapshot} route information about the current route
+     * @param snapshot
      */
-    protected authorizeUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    protected authorizeUser(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // Note: this session and acl are not always booleans
         return forkJoin({
-            session: this.authorizeUserSession(route),
+            session: this.authorizeUserSession(route, snapshot),
             acl: this.authorizeUserACL(route)
         }).pipe(map(({session, acl}) => {
 
@@ -145,8 +146,9 @@ export class AuthGuard implements CanActivate {
      *
      * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
      * @param {ActivatedRouteSnapshot} route information about the current route
+     * @param snapshot
      */
-    protected authorizeUserSession(route: ActivatedRouteSnapshot):
+    protected authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
@@ -169,6 +171,7 @@ export class AuthGuard implements CanActivate {
                         this.authService.setCurrentUser(user);
                         return true;
                     }
+                    this.appState.setPreLoginUrl(snapshot.url);
                     this.authService.resetState();
                     // Re-direct to login
                     return loginUrlTree;

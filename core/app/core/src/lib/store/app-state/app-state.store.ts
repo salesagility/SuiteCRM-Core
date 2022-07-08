@@ -39,6 +39,7 @@ export interface AppState {
     view?: string;
     loaded?: boolean;
     routeUrl?: string;
+    preLoginUrl?: string;
     activeRequests?: number;
 }
 
@@ -49,6 +50,7 @@ const initialState: AppState = {
     view: null,
     loaded: false,
     routeUrl: null,
+    preLoginUrl: null,
     activeRequests: 0
 };
 
@@ -265,6 +267,24 @@ export class AppStateStore implements StateStore {
      */
     public getRouteUrl(): string {
         return internalState.routeUrl;
+    }
+
+    /**
+     * set pre login url
+     *
+     * @param preLoginUrl
+     */
+    public setPreLoginUrl(preLoginUrl: string): void {
+        this.updateState({...internalState, preLoginUrl});
+    }
+
+    /**
+     * get pre login url
+     *
+     * @returns string
+     */
+    public getPreLoginUrl(): string {
+        return internalState.preLoginUrl ?? '';
     }
 
     /**
