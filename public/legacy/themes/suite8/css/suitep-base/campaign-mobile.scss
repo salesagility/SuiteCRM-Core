@@ -1,0 +1,34 @@
+@media (max-width:768px) {
+    .campaign-email {
+        .moduleTitle {
+            width: 100%;
+            padding-bottom: 0.5em;
+            .module-title-text {
+                font-size: 1.8em;
+                width: 50vw;
+                word-break: break-word;
+            }
+        }
+        h4 {
+            margin: 0;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+        .edit tr th {
+            border-bottom: 1px solid lightgrey;
+        }
+        .edit tr td[scope=row] {
+            line-height: 15px;
+        }
+        .mobile-hide {
+            display: none;
+        }
+        input[type=text] {
+            width: 96%;            
+        }
+    }
+}

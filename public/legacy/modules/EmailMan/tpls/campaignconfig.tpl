@@ -102,7 +102,7 @@ function change_state(radiobutton)
 						{$MOD.LBL_DEFAULT_LOCATION}&nbsp;<input type='radio' {$userdefined_checked} onclick="change_state(this);" name='massemailer_tracking_entities_location_type' value="2">{$MOD.LBL_CUSTOM_LOCATION} 
 				</tr>
 				<tr>
-					<td scope="row">
+					<td scope="row" class="mobile-hide">
 					</td>
 					<td >
 						<input name='massemailer_tracking_entities_location' {$TRACKING_ENTRIES_LOCATION_STATE} maxlength='128' type="text" value="{$TRACKING_ENTRIES_LOCATION}">
