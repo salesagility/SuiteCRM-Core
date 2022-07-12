@@ -56,7 +56,9 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     {
         return $this->createQueryBuilder('u')
             ->where('u.user_name = :user_name')
+            ->andWhere('u.deleted = :deleted')
             ->setParameter('user_name', $username)
+            ->setParameter('deleted', 0)
             ->getQuery()
             ->getOneOrNullResult();
     }
