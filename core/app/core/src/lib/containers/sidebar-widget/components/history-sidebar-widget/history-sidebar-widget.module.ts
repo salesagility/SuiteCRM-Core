@@ -34,6 +34,7 @@ import {ImageModule} from '../../../../components/image/image.module';
 import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loading-spinner.module';
 import {LabelModule} from '../../../../components/label/label.module';
 import {ChartMessageAreaModule} from '../../../../components/chart/components/chart-message-area/chart-message-area.module';
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     declarations: [HistorySidebarWidgetComponent],
@@ -48,7 +49,8 @@ import {ChartMessageAreaModule} from '../../../../components/chart/components/ch
         WidgetPanelModule,
         LoadingSpinnerModule,
         LabelModule,
-        ChartMessageAreaModule
+        ChartMessageAreaModule,
+        RouterModule,
     ]
 })
 export class HistorySidebarWidgetModule {

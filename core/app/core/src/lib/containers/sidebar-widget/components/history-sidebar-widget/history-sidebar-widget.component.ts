@@ -33,6 +33,7 @@ import {combineLatest, Subscription, timer} from 'rxjs';
 import {debounce, map} from 'rxjs/operators';
 import {floor} from 'lodash-es';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {ModuleNavigation} from "../../../../services/navigation/module-navigation/module-navigation.service";
 
 @Component({
     selector: 'scrm-history-timeline-widget',
@@ -48,7 +49,8 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
 
     constructor(
         protected historyTimelineAdapterFactory: HistoryTimelineAdapterFactory,
-        protected languageStore: LanguageStore) {
+        protected languageStore: LanguageStore,
+        protected navigation: ModuleNavigation) {
         super();
     }
 
@@ -118,6 +120,13 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
         if (floor(scrollOffset) === 0) {
             this.adapter.fetchTimelineEntries(false);
         }
+    }
+
+    redirectLink(module: string, id: string) {
+        if (module === 'audit') {
+            return;
+        }
+        return this.navigation.getRecordRouterLink(module, id)
     }
 
 }
