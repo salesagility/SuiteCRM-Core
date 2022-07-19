@@ -1,5 +1,98 @@
-.view-module-EmailMan {
-    .view {
-        border-radius: 10px;
+.view-module-EmailMan.view-action-index,
+.view-module-EmailMan.view-action-default
+{
+    .moduleTitle {
+        border-bottom: 1px solid $header-bottom-border;
+        width: 100%;
+        .module-title-text {
+            color: $shell-grey;
+        }
     }
+    #searchDialog {
+        .modal-dialog {
+            .nav-tabs {
+                margin-bottom: 0;
+            }
+            a#basic_search_link {
+                background-color: #93a4b3;
+                background-size: 8px;
+                position: relative;
+                top: 2px;
+                line-height: 32px;
+                height: auto;
+                background-position: 120px 6px;
+                font-weight: 600;
+                text-transform: capitalize;
+                @media (max-width: 768px) {
+                    margin-bottom: 1em;
+                }                
+            }
+            .modal-content {
+                #EmailManbasic_searchSearchForm,#EmailManadvanced_searchSearchForm {
+                    padding-left: 1em;
+                    .moduleTitle {
+                        border-bottom: none;
+                    }
+                }
+                #EmailManadvanced_searchSearchForm {
+                    .moduleTitle {
+                        margin-bottom: 1em;
+                    }
+                    @media (max-width:600px) {
+                        input[value^="Save"] {
+                            margin-top: 0.5em;
+                        }
+                    }
+                }
+                .quick-filter {
+                    display: flex;
+                }
+                .saved-search {
+                    margin-left: 1em;
+                    @media (max-width: 768px) {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        border: none;
+        &:hover {
+            background: $pale-blue !important;
+        }
+    }
+    input[type=text] {
+        background-color:$transparent-color !important;
+        border: 1px solid $form-border-color;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        border: 1px solid $form-border-color !important;
+    }  
+    .list .SugarActionMenu .sugar_action_button>.subnav li:last-of-type a:last-of-type {
+        padding: 5px 20px;
+    }
+}   
+
+@media (max-width: 768px) {
+    .view-module-EmailMan.view-action-index {
+        .modal-dialog {
+            width: 90vw;
+            margin: 80px 30px auto;
+        }
+        .buttons input.button[type=submit]:hover, input.button[type=button]:hover, input.button[type=reset]:hover {
+            font-size: 13px;
+        }
+    }    
 }

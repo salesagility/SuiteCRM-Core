@@ -164,18 +164,23 @@
                            onclick='open_popup("Documents", 600, 400, "&caller=Documents", true, false, "");'/>
                 {/if}
                 {if $searchFormInPopup}
-                <div>
-                    {/if}
+                <div class="quick-filter">
+                    <div>
+                        {/if}
                     <a id="basic_search_link" href="javascript:void(0)"
                        accesskey="{$APP.LBL_ADV_SEARCH_LNK_KEY}">{$APP.LNK_BASIC_FILTER}</a>
-        <span class='white-space'>
-            &nbsp;&nbsp;&nbsp;{if $SAVED_SEARCHES_OPTIONS}|&nbsp;&nbsp;&nbsp;<b>{$APP.LBL_SAVED_FILTER_SHORTCUT}</b>&nbsp;
+                    </div>                    
+        <div class='saved-search'>           
+            {if $SAVED_SEARCHES_OPTIONS} <span class='mobile-hide'> | </span>
+            <b>{$APP.LBL_SAVED_FILTER_SHORTCUT}</b>
             {$SAVED_SEARCHES_OPTIONS} {/if}
-            <span id='go_btn_span' style='display:none'><input tabindex='2' title='go_select' id='go_select'
+            <span id='go_btn_span' style='display:none'>
+            <input tabindex='2' title='go_select' id='go_select'
                                                                onclick='SUGAR.searchForm.clear_form(this.form);'
                                                                class='button' type='button' name='go_select'
-                                                               value=' {$APP.LBL_GO_BUTTON_LABEL} '/></span>
-        </span>
+                                                               value=' {$APP.LBL_GO_BUTTON_LABEL} '/>
+                                                            </span>
+        </div>
                     {if $searchFormInPopup}
                 </div>
                 {/if}

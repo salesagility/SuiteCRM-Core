@@ -1,0 +1,23 @@
+@media (max-width:768px){
+    .view-module-EmailMan {
+        #searchDialog {
+            .modal-dialog {
+                margin-top: 8em;
+                .modal-header {
+                    padding-bottom: 0;
+                }
+                .modal-body {
+                    .modal-content .search_form .view select#saved_search_select {
+                        border: 1px solid $form-border-color;
+                    }
+                    .quick-filter {
+                        display:block !important;
+                    }
+                    .submitButtonsAdvanced {
+                        float: left;
+                    }
+                }
+            }
+        }
+    }
+}
