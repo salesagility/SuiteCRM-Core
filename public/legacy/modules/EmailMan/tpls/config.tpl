@@ -104,8 +104,8 @@ function change_state(radiobutton) {
 							<td width="30%">
 								<select id="mail_sendtype" name="mail_sendtype" onChange="notify_setrequired(document.ConfigureSettings); SUGAR.user.showHideGmailDefaultLink(this);" tabindex="1">{$mail_sendtype_options}</select>
 							</td>
-							<td scope="row">&nbsp;</td>
-							<td >&nbsp;</td>
+							<td scope="row" class="mobile-hide">&nbsp;</td>
+							<td class="mobile-hide">&nbsp;</td>
 						</tr>
 						<tr>
 							<td width="20%" scope="row">{$MOD.LBL_NOTIFY_FROMNAME} <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span></td>
@@ -176,8 +176,8 @@ function change_state(radiobutton) {
 										<tr id="smtp_auth1">
 											<td width="20%" scope="row"><span id="mail_smtpuser_label">{$MOD.LBL_MAIL_SMTPUSER}</span> <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span></td>
 											<td width="30%" ><input type="text" id="mail_smtpuser" name="mail_smtpuser" size="25" maxlength="255" value="{$mail_smtpuser}" tabindex='1' ></td>
-											<td width="20%">&nbsp;</td>
-											<td width="30%">&nbsp;</td>
+											<td width="20%" class="mobile-hide">&nbsp;</td>
+											<td width="30%" class="mobile-hide">&nbsp;</td>
 										</tr>
 										<tr id="smtp_auth2">
 											<td width="20%" scope="row"><span id="mail_smtppass_label">{$MOD.LBL_MAIL_SMTPPASS}</span> <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span></td>
@@ -185,8 +185,8 @@ function change_state(radiobutton) {
 												<input type="password" id="mail_smtppass" name="mail_smtppass" size="25" maxlength="255" tabindex='1'>
 												<a href="javascript:void(0)" id='mail_smtppass_link' onClick="SUGAR.util.setEmailPasswordEdit('mail_smtppass')" style="display: none">{$APP.LBL_CHANGE_PASSWORD}</a>
 											</td>
-											<td width="20%">&nbsp;</td>
-											<td width="30%">&nbsp;</td>
+											<td width="20%" class="mobile-hide">&nbsp;</td>
+											<td width="30%" class="mobile-hide">&nbsp;</td>
 										</tr>
 										<tr id="mail_allow_user">
 											<td width="25%" scope="row">
@@ -217,12 +217,12 @@ function change_state(radiobutton) {
 								</div>
 							</td>
 						</tr>
-						<tr><td colspan="4">&nbsp;</tr>
+						<tr><td colspan="4" class="mobile-hide">&nbsp;</tr>
 						<tr>
 							<td width="15%"><input type="button" class="btn btn-info" value="{$APP.LBL_EMAIL_TEST_OUTBOUND_SETTINGS}" onclick="testOutboundSettings();">&nbsp;</td>
-							<td width="15%">&nbsp;</td>
-							<td width="40%">&nbsp;</td>
-							<td width="40%">&nbsp;</td>
+							<td width="15%" class="mobile-hide">&nbsp;</td>
+							<td width="40%" class="mobile-hide">&nbsp;</td>
+							<td width="40%" class="mobile-hide">&nbsp;</td>
 						</tr>
 					</table>
 				</div>
@@ -309,20 +309,14 @@ function change_state(radiobutton) {
 					</div>
 				</a>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body applet-content">
 				<div class="tab-content">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
-						<tr>
-							<td align="left" scope="row" colspan="4">
-								{$MOD.LBL_SECURITY_DESC}
-							</td>
-						</tr>
-						<tr>
-							<td valign="middle" valign="top" scope="row" colspan="3">
-								{$MOD.LBL_SECURITY_OUTLOOK_DEFAULTS}
-							</td>
-							<td width="10%" NOWRAP valign="top" >
-								<input type="checkbox" value="1" name="set_outlook_defaults" id="set_outlook_defaults" onclick="setOutlookDefaults();">&nbsp;
+					<div>{$MOD.LBL_SECURITY_DESC}</div> 
+					
+					<div class="flex"> 
+						<div>{$MOD.LBL_SECURITY_OUTLOOK_DEFAULTS}</div>
+						<div style="margin-left: 3em;">
+							<input type="checkbox" value="1" name="set_outlook_defaults" id="set_outlook_defaults" onclick="setOutlookDefaults();">&nbsp;
 								{literal}
 									<script type="text/javascript" language="Javascript">
 									  <!--
@@ -369,111 +363,110 @@ function change_state(radiobutton) {
 									  -->
 									</script>
 								{/literal}
-							</td>
-						</tr>
-						<tr>
-							<td valign="middle" valign="top" scope="row" colspan="3">
-								{$MOD.LBL_SECURITY_TOGGLE_ALL}
-							</td>
-							<td width="10%" NOWRAP valign="top" >
-								<input type="checkbox" value="1" name="toggle_all" id="toggle_all" onclick="toggleAllSecurityOptions();">&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_APPLET}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="applet" id="applet" {$appletChecked}>&nbsp; &lt;applet&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_BASE}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="base" id="base" {$baseChecked}>&nbsp; &lt;base&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_EMBED}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="embed" id="embed" {$embedChecked}>&nbsp; &lt;embed&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_FORM}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="form" id="form" {$formChecked}>&nbsp; &lt;form&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_FRAME}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="frame" id="frame" {$frameChecked}>&nbsp; &lt;frame&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_FRAMESET}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="frameset" id="frameset" {$framesetChecked}>&nbsp; &lt;frameset&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_IFRAME}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="iframe" id="iframe" {$iframeChecked}>&nbsp; &lt;iframe&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_IMPORT}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="import" id="import" {$importChecked}>&nbsp; &lt;import&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_LAYER}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="layer" id="layer" {$layerChecked}>&nbsp; &lt;layer&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_LINK}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="link" id="link" {$linkChecked}>&nbsp; &lt;link&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_OBJECT}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="object" id="object" {$objectChecked}>&nbsp; &lt;object&gt;
-							</td>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_STYLE}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="style" id="style" {if isset($styleChecked)}{$styleChecked}{else}{log msg="styleChecked is not set"}{/if}>&nbsp; &lt;style&gt;
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" valign="middle" scope="row">
-								{$MOD.LBL_SECURITY_XMP}
-							</td>
-							<td width="40%" NOWRAP valign="middle" >
-								<input type="checkbox" value="1" name="xmp" id="xmp" {$xmpChecked}>&nbsp; &lt;xmp&gt;
-							</td>
-							<td scope="row">&nbsp;</td>
-							<td>&nbsp;</td>
-						</tr>
-					</table>
+						</div>
+					</div>
+
+					<div class="flex">
+						<div>{$MOD.LBL_SECURITY_TOGGLE_ALL}</div>
+						<div style="margin-left: 3em;">
+							<input type="checkbox" value="1" name="toggle_all" id="toggle_all" onclick="toggleAllSecurityOptions();">&nbsp;
+						</div>
+					</div>
+
+					<div class="applet-container">
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_APPLET}</div>
+								<div><input type="checkbox" value="1" name="applet" id="applet" {$appletChecked}></div>
+								<div>&nbsp; &lt;applet&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_BASE}</div>
+								<div><input type="checkbox" value="1" name="base" id="base" {$baseChecked}></div>
+								<div>&nbsp; &lt;base&gt</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_EMBED}</div>
+								<div><input type="checkbox" value="1" name="embed" id="embed" {$embedChecked}></div>
+								<div>&nbsp; &lt;embed&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_FORM}</div>
+								<div><input type="checkbox" value="1" name="form" id="form" {$formChecked}></div>
+								<div>&nbsp; &lt;form&gt;</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_FRAME}</div>
+								<div><input type="checkbox" value="1" name="frame" id="frame" {$frameChecked}></div>
+								<div>&nbsp; &lt;frame&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_FRAMESET}</div>
+								<div><input type="checkbox" value="1" name="frameset" id="frameset" {$framesetChecked}></div>
+								<div>&nbsp; &lt;frameset&gt;</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_IFRAME}</div>
+								<div><input type="checkbox" value="1" name="iframe" id="iframe" {$iframeChecked}></div>
+								<div>&nbsp; &lt;iframe&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_IMPORT}</div>
+								<div><input type="checkbox" value="1" name="import" id="import" {$importChecked}></div>
+								<div>&nbsp; &lt;import&gt;</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_LAYER}</div>
+								<div><input type="checkbox" value="1" name="layer" id="layer" {$layerChecked}></div>
+								<div>&nbsp; &lt;layer&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_LINK}</div>
+								<div><input type="checkbox" value="1" name="link" id="link" {$linkChecked}></div>
+								<div>&nbsp; &lt;link&gt;</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_OBJECT}</div>
+								<div><input type="checkbox" value="1" name="object" id="object" {$objectChecked}></div>
+								<div>&nbsp; &lt;object&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_STYLE}</div>
+								<div><input type="checkbox" value="1" name="style" id="style" {if isset($styleChecked)}{$styleChecked}{else}{log msg="styleChecked is not set"}{/if}></div>
+								<div>&nbsp; &lt;style&gt;</div>								
+							</div>
+						</div>
+
+						<div class="flex-container">
+							<div class="flex-child">
+								<div class="lbl-space">{$MOD.LBL_SECURITY_XMP}</div>
+								<div><input type="checkbox" value="1" name="xmp" id="xmp" {$xmpChecked}></div>
+								<div>&nbsp; &lt;xmp&gt;</div>								
+							</div>
+							<div class="flex-child">
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+							</div>
+						</div>
+
+						
+					</div>
 				</div>
 			</div>
 		</div>
@@ -501,14 +494,13 @@ function change_state(radiobutton) {
 					<input type="button" class="button" value="   {$APP.LBL_CANCEL_BUTTON_LABEL}   " onclick="javascript:EmailMan.testOutboundDialog.hide();">&nbsp;
 				</td>
 			</tr>
-
 		</table>
 	</div>
 </div>
 
 <div class="btn-hide">
-			<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" onclick="this.form.action.value='Save';return verify_data(this);" type="submit" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} ">
-			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" class="button" onclick="this.form.action.value='{$RETURN_ACTION}'; this.form.module.value='{$RETURN_MODULE}';" type="submit" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
+	<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" onclick="this.form.action.value='Save';return verify_data(this);" type="submit" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} ">
+	<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" class="button" onclick="this.form.action.value='{$RETURN_ACTION}'; this.form.module.value='{$RETURN_MODULE}';" type="submit" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
 </div>
 
 	</form>

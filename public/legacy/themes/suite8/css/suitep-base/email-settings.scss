@@ -20,11 +20,12 @@
     .action-btn-top {
         position: absolute;
         right: 0;
-        bottom: 2%;
+        margin-top: -4.2em;
     }
     .required-text {
         position:absolute;
         right: 0;
+        top: -5px;
     }
     .panel-heading a:before {
         display: none;
@@ -49,3 +50,110 @@
         }
     }
 }
+
+/*Email Settings Starts Here */
+
+.view-module-EmailMan.view-action-config {
+    .email-settings {
+        .applet-content {
+            .tab-content {
+                line-height: 3em;
+                font-weight: 700;
+                color: #534D64;
+            }
+            .flex {
+                display: flex;
+            }
+            .flex-container {
+                display: flex;
+                line-height: 3em;
+                @media (max-width: 750px) {
+                    display: block;
+                }
+            }
+            .flex-child {
+                display: flex;
+                width: 50%;
+                @media (max-width: 750px) {
+                    width: 100%;
+                }
+                .label-descrp {
+                    width: 20%;
+                }
+                span {
+                    margin-left: 1em;
+                }
+                .lbl-space {
+                    margin-right: 2em;
+                    width: 12%;
+                    @media (min-width: 500px) and (max-width: 1200px){
+                        width: 18%;
+                        white-space: nowrap;
+                    }
+                    @media (max-width: 500px) {
+                        width: 30%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width:769px) and (max-width:800px) {
+    .view-module-EmailMan.view-action-config {
+        .edit tr td[scope="row"] {
+            height: auto;
+            line-height: 2em;            
+        }
+    } 
+}
+
+@media (max-width: 768px) {
+    .view-module-EmailMan.view-action-config {
+        .moduleTitle {
+            width: 100%;
+        }
+        .edit tr {
+            border-bottom: none;
+        }
+        .edit tr td[scope="row"] {
+            height: auto;
+            line-height: 2em;            
+        }
+        .mobile-hide {
+            display: none;
+        }
+        .applet-content {
+            table {
+                tr {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+        #EditView {
+            #EditView_tabs {
+                input[type="text"]#notify_fromname {
+                    width: 100%;
+                }
+                input[type="text"]#notify_fromaddress {
+                    width: 100%;
+                }
+                input[type="text"]#mail_smtpserver {
+                    width: 100%;
+                }
+                input[type="text"]#mail_smtpport {
+                    width: 100%;
+                }
+                input[type="text"]#mail_smtpuser {
+                    width: 100%;
+                }
+                input[type="password"]#mail_smtppass {
+                    width: 100%;
+                }
+            }
+        }
+    }    
+}
+
+/*Email Settings Ends here */
