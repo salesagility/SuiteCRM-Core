@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {catchError, finalize, shareReplay} from 'rxjs/operators';
+import {catchError, finalize, shareReplay, tap} from 'rxjs/operators';
 import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordViewStore} from '../../../record/store/record-view/record-view.store';
@@ -103,7 +103,12 @@ export class CreateViewStore extends RecordViewStore {
         this.showTopWidget = false;
         this.showSubpanels = false;
 
-        this.initRecord(params);
+        const isDuplicate = this.params.isDuplicate ?? false;
+        const isOriginalDuplicate = this.params.originalDuplicateId ?? false;
+
+        if (!isDuplicate && !isOriginalDuplicate) {
+            this.initRecord(params);
+        }
 
         return this.load();
     }
@@ -156,6 +161,31 @@ export class CreateViewStore extends RecordViewStore {
      * @returns {object} Observable<RecordViewState>
      */
     public load(): Observable<Record> {
+        if ((this.params.isDuplicate ?? false) && (this.params.originalDuplicateId ?? false)) {
+            this.updateState({
+                ...this.internalState,
+                loading: true
+            });
+
+            return this.recordStore.retrieveRecord(
+                this.internalState.module,
+                this.params.originalDuplicateId,
+                false
+            ).pipe(
+                tap((data: Record) => {
+                    data.id = '';
+                    data.attributes.id = '';
+                    data.attributes.date_entered = '';
+                    this.recordManager.injectParamFields(this.params, data, this.getVardefs());
+                    this.recordStore.setRecord(data);
+                    this.updateState({
+                        ...this.internalState,
+                        module: data.module,
+                        loading: false
+                    });
+                })
+            );
+        }
         return of(this.recordStore.getBaseRecord()).pipe(shareReplay());
     }
 

@@ -113,9 +113,6 @@ class DuplicateRecordAction implements ProcessHandlerInterface
                 'route' => $options['module'] . '/duplicate/' . $options['id'],
                 'queryParams' => [
                     'isDuplicate' => true,
-                    'return_module' => $this->moduleNameMapper->toLegacy($options['module']),
-                    'return_action' => 'DetailView',
-                    'return_id' => $options['id'],
                 ]
             ]
         ];

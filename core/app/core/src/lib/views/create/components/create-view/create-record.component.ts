@@ -61,9 +61,18 @@ export class CreateRecordComponent implements OnInit, OnDestroy {
             mode = data.mode;
         }
 
-        const params = (this.route.snapshot && this.route.snapshot.queryParams) || {} as Params;
+        let params = (this.route.snapshot && this.route.snapshot.queryParams) || {} as Params;
 
-        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record, mode, params).subscribe();
+        params = {...params};
+
+        let recordId = this.route.snapshot.params.record;
+
+        if (data.duplicate === true) {
+            params.originalDuplicateId = recordId;
+            params.isDuplicate = true;
+            recordId = '';
+        }
+        this.recordSub = this.recordStore.init(this.appState.getModule(), recordId, mode, params).subscribe();
         this.vm$ = this.recordStore.vm$;
     }
 

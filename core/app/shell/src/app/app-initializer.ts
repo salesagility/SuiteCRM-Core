@@ -190,6 +190,26 @@ export class AppInit {
                                     mode: 'create'
                                 }
                             });
+
+                            if (!isFalse(configRoutes[routeName].duplicate)) {
+                                routes.push({
+                                    path: routeName + '/duplicate/:record',
+                                    component: CreateRecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName,
+                                        mode: 'create',
+                                        duplicate: true
+                                    }
+                                });
+                            }
                         }
 
                         if (configRoutes[routeName].record) {
