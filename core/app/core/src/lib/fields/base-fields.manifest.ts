@@ -101,6 +101,8 @@ import {TinymceDetailFieldModule} from './tinymce/templates/detail/tinymce.modul
 import {TinymceEditFieldModule} from './tinymce/templates/edit/tinymce.module';
 import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.component';
 import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
+import {IconListFieldModule} from "./icon/templates/detail/icon.module";
+import {IconDetailFieldComponent} from "./icon/templates/detail/icon.component";
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -109,6 +111,7 @@ export const baseFieldModules = [
     PasswordDetailFieldModule,
     PasswordEditFieldModule,
     IntDetailFieldModule,
+    IconListFieldModule,
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
     DateDetailFieldModule,
@@ -158,6 +161,7 @@ export const baseFieldComponents = [
     DateTimeEditFieldComponent,
     DateTimeFilterFieldComponent,
     UrlDetailFieldComponent,
+    IconDetailFieldComponent,
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
@@ -209,6 +213,9 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'datetime.filter': DateFilterFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
+    'icon.detail': IconDetailFieldComponent,
+    'icon.edit': IconDetailFieldComponent,
+    'icon.list': IconDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,
     'link.detail': UrlDetailFieldComponent,
     'currency.list': CurrencyDetailFieldComponent,

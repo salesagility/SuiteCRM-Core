@@ -221,7 +221,16 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
             $resultingTabs[$key] = $tabs[$key];
 
-            $resultingTabs[$key]['columns'] = $this->mapColumns($columnSubpanel, $vardefs);
+            $mapColumns = $this->mapColumns($columnSubpanel, $vardefs);
+
+            if (!empty($tab['collection_list'])) {
+                $iconColumn = $this->buildIconColumn($tab['module']);
+                array_unshift($mapColumns, $iconColumn);
+            }
+
+
+            $resultingTabs[$key]['columns'] = $mapColumns;
+
         }
 
         return $resultingTabs;
@@ -359,6 +368,27 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $this->defaultDefinition,
             $this->fieldAliasMapper
         );
+    }
+
+    /**
+     * @param $module
+     * @return array
+     */
+    protected function buildIconColumn($module): array {
+        return $iconColumn = [
+            "name" => "module_name",
+            "label" => "",
+            "sortable" => false,
+            "vname" => "",
+            "fieldDefinition" => [
+                "name" => "module_name",
+                "vname" => "",
+                "type" => "icon",
+                "default" => $module,
+                "required" => false
+            ],
+            "type" => "icon"
+        ];
     }
 
     /**
