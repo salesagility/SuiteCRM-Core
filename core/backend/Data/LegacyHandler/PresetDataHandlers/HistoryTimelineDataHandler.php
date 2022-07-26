@@ -277,7 +277,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         $auditUnionQuery = $this->queryAuditInfo($parentBean);
         $combinedQuery = $historyUnionQuery .
             ' UNION ALL ' . $activitiesUnionQuery .
-            ' UNION ALL ' . $auditUnionQuery .
+            ' UNION ALL (' . $auditUnionQuery . ')' .
             ' ORDER BY ' . $sort['orderBy'] . ' ' . $sort['sortOrder'] . ' Limit ' . $selectOffset . ', ' . $selectLimit;
 
         $listData = $this->fetchAll($combinedQuery);
