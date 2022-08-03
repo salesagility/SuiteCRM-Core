@@ -896,7 +896,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * @inheritDoc
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->getUserHash();
     }

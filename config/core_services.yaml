@@ -55,6 +55,7 @@ services:
       $subpanelLineActions: '%module.subpanel.line_actions%'
       $subpanelTopActions: '%module.subpanel.top_actions%'
       $subpanelTopButtons: '%module.subpanel.top_buttons%'
+      $ldapAutoCreateExtraFieldsMap: '%ldap.autocreate.extra_fields_map%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -263,6 +264,10 @@ services:
     # inject all services tagged with massupdate.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'massupdate.definition.mapper' }
+
+  App\Security\Ldap\AppLdapUserProviderProxy:
+    $ldapUserProvider: '@security.user.provider.concrete.ldap_users'
+    $entityUserProvider: '@security.user.provider.concrete.app_user_provider'
 
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
