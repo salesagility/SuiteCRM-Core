@@ -27,6 +27,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use App\Module\Users\Entity\User;
+use App\Security\Ldap\AppLdapUserProvider;
 use App\Security\UserChecker;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Ldap\Ldap;
@@ -75,17 +77,77 @@ return static function (ContainerConfigurator $containerConfig) {
     }
 
     if ($authType === 'ldap') {
+
+        $baseLdapConfig = [
+            'check_path' => 'app_login',
+            'service' => Ldap::class,
+            'provider' => 'app_user_provider'
+        ];
+
+        $baseLdapConfigEntries = [
+            'dn_string' => 'LDAP_DN_STRING',
+            'query_string' => 'LDAP_QUERY_STRING',
+            'search_dn' => 'LDAP_SEARCH_DN',
+            'search_password' => 'LDAP_SEARCH_PASSWORD',
+        ];
+
+        foreach ($baseLdapConfigEntries as $configKey => $envKey) {
+            if (!empty($env[$envKey])) {
+                $baseLdapConfig[$configKey] = "%env($envKey)%";
+            }
+        }
+
+        $ldapAutoCreate = $env['LDAP_AUTO_CREATE'] ?? 'disabled';
+
+        if ($ldapAutoCreate === 'enabled') {
+
+            $baseLdapConfig['provider'] = 'ldap_auto_create_provider';
+
+            $ldapUsersConfig = [
+                'service' => Ldap::class,
+                'default_roles' => '%env(LDAP_PROVIDER_DEFAULT_ROLES)%',
+                'extra_fields' => '%ldap.extra_fields%',
+            ];
+
+            $autoCreateEnvEntries = [
+                'base_dn' => 'LDAP_PROVIDER_BASE_DN',
+                'search_dn' => 'LDAP_PROVIDER_SEARCH_DN',
+                'search_password' => 'LDAP_PROVIDER_SEARCH_PASSWORD',
+                'uid_key' => 'LDAP_PROVIDER_UID_KEY',
+                'filter' => 'LDAP_PROVIDER_FILTER'
+            ];
+
+            foreach ($autoCreateEnvEntries as $configKey => $envKey) {
+                if (!empty($env[$envKey])) {
+                    $ldapUsersConfig[$configKey] = "%env($envKey)%";
+                }
+            }
+
+            $autoCreateConfig = [
+                'providers' => [
+                    'app_user_provider' => [
+                        'entity' => [
+                            'class' => User::class
+                        ]
+                    ],
+                    'ldap_auto_create_provider' => [
+                        'id' => AppLdapUserProvider::class
+                    ],
+
+                    'ldap_users' => [
+                        'ldap' => $ldapUsersConfig
+                    ],
+                ],
+            ];
+
+            $containerConfig->extension('security', $autoCreateConfig);
+        }
+
         $containerConfig->extension('security', [
             'firewalls' => array_merge_recursive($baseFirewall, [
                 'main' => [
-                    'json_login_ldap' => [
-                        'check_path' => 'app_login',
-                        'service' => Ldap::class,
-                        'dn_string' => '%env(LDAP_DN_STRING)%',
-                        'query_string' => '%env(LDAP_QUERY_STRING)%',
-                        'search_dn' => '%env(LDAP_SEARCH_DN)%',
-                        'search_password' => '%env(LDAP_SEARCH_PASSWORD)%',
-                    ],
+                    'json_login_ldap' => $baseLdapConfig,
+                    'provider' =>  $baseLdapConfig['provider'],
                 ],
             ])
         ]);
