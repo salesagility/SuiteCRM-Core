@@ -177,4 +177,67 @@ class UserHandler extends LegacyHandler
 
         return $language ?? '';
     }
+
+    /**
+     * Create user
+     * @param string $name
+     * @param array $fields
+     * @return SugarBean|null
+     */
+    public function createUser(string $name, array $fields): ?SugarBean
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $user = $service->create($name, $fields);
+
+        $this->close();
+
+        return $user;
+    }
+
+    /**
+     * Create external auth user
+     * @param string $name
+     * @param array $fields
+     * @return SugarBean|null
+     */
+    public function createExternalAuthUser(string $name, array $fields): ?SugarBean
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $user = $service->createExternalAuthUser($name, $fields);
+
+        $this->close();
+
+        return $user;
+    }
+
+    /**
+     * Check if user exists
+     * @param string $name
+     * @return bool
+     */
+    public function userExists(string $name): bool
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $exists = $service->userExists($name);
+
+        $this->close();
+
+        return $exists;
+    }
 }
