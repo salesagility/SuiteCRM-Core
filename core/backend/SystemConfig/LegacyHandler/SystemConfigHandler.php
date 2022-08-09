@@ -100,6 +100,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $listViewLineActionsLimits
      * @param array $uiConfigs
      * @param array $extensions
+     * @param array $logoutConfig
      * @param SessionInterface $session
      * @param NavigationProviderInterface $navigation
      */
@@ -126,6 +127,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewLineActionsLimits,
         array $uiConfigs,
         array $extensions,
+        array $logoutConfig,
         SessionInterface $session,
         NavigationProviderInterface $navigation
     ) {
@@ -152,6 +154,10 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
         $this->injectedSystemConfigs['ui'] = $uiConfigs;
         $this->injectedSystemConfigs['extensions'] = $extensions;
+
+        $logoutConfig = $logoutConfig ?? [];
+        $this->injectedSystemConfigs['logout'] = $logoutConfig;
+
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
         $this->currencyHandler = $currencyHandler;

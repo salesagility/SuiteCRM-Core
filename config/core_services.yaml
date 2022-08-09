@@ -56,6 +56,7 @@ services:
       $subpanelTopActions: '%module.subpanel.top_actions%'
       $subpanelTopButtons: '%module.subpanel.top_buttons%'
       $ldapAutoCreateExtraFieldsMap: '%ldap.autocreate.extra_fields_map%'
+      $logoutConfig: '%auth.logout%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -295,6 +296,8 @@ services:
   app.system-configs:
     alias:  App\SystemConfig\Service\SystemConfigProviderInterface
     public: true
+
+  Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
 
   App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
   App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'

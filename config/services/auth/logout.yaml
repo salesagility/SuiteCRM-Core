@@ -1,0 +1,4 @@
+parameters:
+  auth.logout:
+    path: "%auth.logout.path%"
+    redirect: "%auth.logout.redirect%"

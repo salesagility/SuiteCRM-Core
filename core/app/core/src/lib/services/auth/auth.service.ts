@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, finalize, take} from 'rxjs/operators';
-import {isEmptyString, User} from 'common';
+import {isEmptyString, isTrue, User} from 'common';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';
@@ -148,21 +148,23 @@ export class AuthService {
     public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
         this.appStateStore.updateLoading('logout', true, false);
 
-        let logoutUrl = 'logout';
+        const logoutConfig = this.configs.getConfigValue('logout') ?? [];
+        let logoutUrl = (logoutConfig?.path ?? 'logout') as string;
+        const redirectLogout = isTrue(logoutConfig?.redirect ?? false);
         logoutUrl = this.baseRoute.calculateRoute(logoutUrl);
         const body = new HttpParams();
 
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
         if (this.appStateStore.getActiveRequests() < 1) {
-            this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+            this.callLogout(logoutUrl, body, headers, redirect, messageKey, redirectLogout);
         } else {
             this.appStateStore.activeRequests$.pipe(
                 filter(value => value < 1),
                 take(1)
             ).subscribe(
                 () => {
-                    this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+                    this.callLogout(logoutUrl, body, headers, redirect, messageKey, redirectLogout);
                 }
             )
         }
@@ -175,10 +177,23 @@ export class AuthService {
      * @param headers
      * @param redirect
      * @param messageKey
+     * @param redirectLogout
      * @protected
      */
-    protected callLogout(logoutUrl: string, body: HttpParams, headers: HttpHeaders, redirect: boolean, messageKey: string) {
+    protected callLogout(
+        logoutUrl: string,
+        body: HttpParams,
+        headers: HttpHeaders,
+        redirect: boolean,
+        messageKey: string,
+        redirectLogout: boolean
+    ) {
         this.resetState();
+
+        if (redirectLogout) {
+            window.location.href = logoutUrl;
+            return;
+        }
         this.http.post(logoutUrl, body.toString(), {headers, responseType: 'text'})
             .pipe(
                 take(1),
