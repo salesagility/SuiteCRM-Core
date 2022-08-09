@@ -100,7 +100,7 @@ class SecurityController extends AbstractController
     {
         $isAppInstalled = $this->authentication->getAppInstallStatus();
         $isAppInstallerLocked = $this->authentication->getAppInstallerLockStatus();
-        $appStatus =  [
+        $appStatus = [
             'installed' => $isAppInstalled,
             'locked' => $isAppInstallerLocked
         ];
@@ -128,7 +128,7 @@ class SecurityController extends AbstractController
 
         $user = $security->getUser();
         if ($user === null) {
-            $response = new JsonResponse(['active' => false , 'appStatus' => $appStatus], Response::HTTP_OK);
+            $response = new JsonResponse(['active' => false, 'appStatus' => $appStatus], Response::HTTP_OK);
             $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
@@ -151,5 +151,34 @@ class SecurityController extends AbstractController
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/auth/login", name="native_auth_login", methods={"GET", "POST"})
+     * @param AuthenticationUtils $authenticationUtils
+     * @return JsonResponse
+     */
+    public function nativeAuthLogin(AuthenticationUtils $authenticationUtils): JsonResponse
+    {
+        return $this->login($authenticationUtils);
+    }
+
+    /**
+     * @Route("/auth/logout", name="native_auth_logout", methods={"GET", "POST"})
+     * @throws Exception
+     */
+    public function nativeAuthLogout(): void
+    {
+        $this->logout();
+    }
+
+    /**
+     * @Route("/auth/session-status", name="native_auth_session_status", methods={"GET"})
+     * @param Security $security
+     * @return JsonResponse
+     */
+    public function nativeAuthSessionStatus(Security $security): JsonResponse
+    {
+        return $this->sessionStatus($security);
     }
 }

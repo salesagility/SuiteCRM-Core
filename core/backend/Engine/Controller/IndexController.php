@@ -99,4 +99,27 @@ class IndexController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/auth", name="nativeAuth", methods={"GET"})
+     * @param Security $security
+     * @return Response
+     */
+    public function nativeAuth(Security $security): Response
+    {
+        $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
+
+        if (!is_file($indexHtmlPath)) {
+            throw new RuntimeException('Please run ng build from terminal');
+        }
+
+        $response = new Response(file_get_contents($indexHtmlPath));
+
+        $user = $security->getUser();
+        if ($user === null) {
+            $response->headers->clearCookie('XSRF-TOKEN');
+        }
+
+        return $response;
+    }
 }
