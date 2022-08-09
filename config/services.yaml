@@ -31,6 +31,14 @@ imports:
   - { resource: ../extensions/*/config/services/*.php }
   - { resource: ../extensions/*/config/services/**/*.yaml }
   - { resource: ../extensions/*/config/services/**/*.php }
+  - { resource: ../extensions/*/config/packages/*.yaml }
+  - { resource: ../extensions/*/config/packages/*.php }
+  - { resource: ../extensions/*/config/packages/**/*.yaml }
+  - { resource: ../extensions/*/config/packages/**/*.php }
+  - { resource: ../extensions/*/config/routes/*.yaml }
+  - { resource: ../extensions/*/config/routes/*.php }
+  - { resource: ../extensions/*/config/routes/**/*.yaml }
+  - { resource: ../extensions/*/config/routes/**/*.php }
   - { resource: ../extensions/*/config/modules/*.yaml }
   - { resource: ../extensions/*/config/modules/*.php }
   - { resource: ../extensions/*/config/modules/**/*.yaml }
