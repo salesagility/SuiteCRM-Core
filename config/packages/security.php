@@ -53,14 +53,23 @@ return static function (ContainerConfigurator $containerConfig) {
         ],
         'main' => [
             'lazy' => true,
-            'login_throttling' => [
-                'max_attempts' => $maxAttempts
-            ],
-            'logout' => [
-                'path' => 'app_logout'
-            ]
         ]
     ];
+
+    //Note: Only the *first* access control that matches will be used
+    $baseAccessControl = [
+        ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/api/graphql/graphiql*', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
+    ];
+
+    $containerConfig->parameters()->set('auth.logout.redirect', false);
+    $containerConfig->parameters()->set('auth.logout.path', 'logout');
 
     if ($authType === 'native') {
         $containerConfig->extension('security', [
@@ -69,8 +78,15 @@ return static function (ContainerConfigurator $containerConfig) {
                     'json_login' => [
                         'check_path' => 'app_login',
                     ],
+                    'login_throttling' => [
+                        'max_attempts' => $maxAttempts
+                    ],
+                    'logout' => [
+                        'path' => 'app_logout'
+                    ],
                 ],
-            ])
+            ]),
+            'access_control' => $baseAccessControl
         ]);
 
         return;
@@ -148,9 +164,71 @@ return static function (ContainerConfigurator $containerConfig) {
                 'main' => [
                     'json_login_ldap' => $baseLdapConfig,
                     'provider' =>  $baseLdapConfig['provider'],
+                    'login_throttling' => [
+                        'max_attempts' => $maxAttempts
+                    ],
+                    'logout' => [
+                        'path' => 'app_logout'
+                    ]
                 ],
-            ])
+            ]),
+            'access_control' => $baseAccessControl
         ]);
+    }
+
+    if ($authType === 'saml') {
+
+        $containerConfig->extension('security', [
+            'providers' => [
+                'app_user_provider' => [
+                    'entity' => [
+                        'class' => User::class
+                    ]
+                ],
+                'saml_provider' => [
+                    'saml' => [
+                        'user_class' => User::class,
+                        'default_roles' => ['ROLE_USER']
+                    ]
+                ],
+            ],
+            'firewalls' => array_merge_recursive($baseFirewall, [
+                'main' => [
+                    'pattern' => '^/',
+                    'saml' => [
+                        'provider' => 'app_user_provider',
+                        // Match SAML attribute 'uid' with username.
+                        // Uses getNameId() method by default.
+                        'username_attribute' => '%env(SAML_USERNAME_ATTRIBUTE)%',
+                        'use_attribute_friendly_name' => '%env(bool:SAML_USE_ATTRIBUTE_FRIENDLY_NAME)%',
+                        // Use the attribute's friendlyName instead of the name
+                        'check_path' => 'saml_acs',
+                        'login_path' => 'saml_login',
+                    ],
+                    'logout' => [
+                        'path' => 'saml_logout'
+                    ]
+                ],
+            ]),
+            'access_control' => [
+                ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/saml/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/saml/metadata', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
+                ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
+                ['path' => '^/$', 'roles' => 'ROLE_USER'],
+                ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/api/graphql/graphiql*', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+                ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
+            ]
+        ]);
+
+
+        $containerConfig->parameters()->set('auth.logout.redirect', true);
+        $containerConfig->parameters()->set('auth.logout.path', 'saml/logout');
     }
 
 };
