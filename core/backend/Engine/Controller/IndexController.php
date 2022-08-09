@@ -28,6 +28,8 @@
 
 namespace App\Engine\Controller;
 
+use App\Authentication\LegacyHandler\Authentication;
+use App\Authentication\LegacyHandler\UserHandler;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +50,27 @@ class IndexController extends AbstractController
     protected $projectDir;
 
     /**
+     * @var UserHandler
+     */
+    protected $userHandler;
+
+    /**
+     * @var Authentication
+     */
+    protected $authentication;
+
+    /**
      * IndexController constructor.
      * @param string $projectDir
+     * @param UserHandler $userHandler
+     * @param Authentication $authentication
      */
-    public function __construct(string $projectDir)
+    public function __construct(string $projectDir, UserHandler $userHandler, Authentication $authentication)
     {
         $this->projectDir = $projectDir;
+
+        $this->userHandler = $userHandler;
+        $this->authentication = $authentication;
     }
 
     /**
@@ -74,6 +91,10 @@ class IndexController extends AbstractController
         $user = $security->getUser();
         if ($user === null) {
             $response->headers->clearCookie('XSRF-TOKEN');
+        }
+
+        if ($security->isGranted('ROLE_USER') && !$this->authentication->checkSession() && !empty($user->getUsername())) {
+            $this->authentication->initLegacyUserSession($user->getUsername());
         }
 
         return $response;
