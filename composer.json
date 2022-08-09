@@ -42,6 +42,7 @@
     "google/recaptcha": "^1.1",
     "gymadarasz/ace": "^1.2",
     "gymadarasz/imagesloaded": "^4.1",
+    "hslavich/oneloginsaml-bundle": "^2.2",
     "jeroendesloovere/vcard": "^1.7",
     "justinrainbow/json-schema": "^5.2",
     "lcobucci/jwt": "3.3.3",

@@ -323,6 +323,9 @@
     "hamcrest/hamcrest-php": {
         "version": "v2.0.1"
     },
+    "hslavich/oneloginsaml-bundle": {
+        "version": "v2.2.1"
+    },
     "jakubledl/dissect": {
         "version": "v1.0.1"
     },

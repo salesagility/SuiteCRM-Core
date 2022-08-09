@@ -40,4 +40,5 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Shivas\VersioningBundle\ShivasVersioningBundle::class => ['all' => true],
+    Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
 ];

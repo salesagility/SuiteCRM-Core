@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61e45baa712a70bca1963c9652c25a57",
+    "content-hash": "fe47d13c51809917fd9675d20538ce5e",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2674,6 +2674,61 @@
             ],
             "description": "imagesloaded jquery plugin fork",
             "time": "2016-01-29T19:34:06+00:00"
+        },
+        {
+            "name": "hslavich/oneloginsaml-bundle",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hslavich/OneloginSamlBundle.git",
+                "reference": "7091b23aa800a675911d8693742bf14f99621bee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hslavich/OneloginSamlBundle/zipball/7091b23aa800a675911d8693742bf14f99621bee",
+                "reference": "7091b23aa800a675911d8693742bf14f99621bee",
+                "shasum": ""
+            },
+            "require": {
+                "onelogin/php-saml": "^3.0",
+                "symfony/dependency-injection": "^5.2",
+                "symfony/deprecation-contracts": "^2.1",
+                "symfony/framework-bundle": "^5.2",
+                "symfony/security-bundle": "^5.2"
+            },
+            "require-dev": {
+                "dms/phpunit-arraysubset-asserts": "^0.2.0",
+                "doctrine/orm": "~2.3",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^9.0",
+                "symfony/phpunit-bridge": "^5.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Hslavich\\OneloginSamlBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "hslavich",
+                    "email": "hernan.slavich@gmail.com"
+                }
+            ],
+            "description": "OneLogin SAML Bundle for Symfony",
+            "keywords": [
+                "SSO",
+                "onelogin",
+                "saml"
+            ],
+            "time": "2020-11-30T20:24:00+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
