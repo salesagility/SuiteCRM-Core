@@ -41,9 +41,41 @@ export class BaseRouteService {
      */
     public calculateRoute(url): string {
         const path = window.location.pathname;
+
         if (path.includes('index.php')) {
             url = `${path}/${url}`;
         }
         return url;
+    }
+
+    /**
+     * Append auth path
+     * @param url
+     */
+    public appendNativeAuth(url: string): string {
+        const path = window.location.pathname;
+
+        if (path.includes('auth')) {
+            url = `auth/${url}`
+        }
+
+        return url;
+    }
+
+    /**
+     * Is native auth
+     */
+    public isNativeAuth(): boolean {
+        const path = window.location.pathname;
+
+        return path.includes('auth');
+    }
+
+    /**
+     * Get native auth logout url
+     */
+    public getNativeOutLogoutUrl(): string {
+
+        return `auth/logout`;
     }
 }

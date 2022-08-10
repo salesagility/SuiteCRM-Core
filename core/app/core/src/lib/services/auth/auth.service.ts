@@ -98,6 +98,7 @@ export class AuthService {
         onError: (error: HttpErrorResponse) => void
     ): Subscription {
         let loginUrl = 'login';
+        loginUrl = this.baseRoute.appendNativeAuth(loginUrl);
         loginUrl = this.baseRoute.calculateRoute(loginUrl);
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
@@ -151,6 +152,11 @@ export class AuthService {
         const logoutConfig = this.configs.getConfigValue('logout') ?? [];
         let logoutUrl = (logoutConfig?.path ?? 'logout') as string;
         const redirectLogout = isTrue(logoutConfig?.redirect ?? false);
+
+        if (this.baseRoute.isNativeAuth()) {
+            logoutUrl = this.baseRoute.getNativeOutLogoutUrl();
+        }
+
         logoutUrl = this.baseRoute.calculateRoute(logoutUrl);
         const body = new HttpParams();
 
@@ -250,6 +256,7 @@ export class AuthService {
     public fetchSessionStatus(): Observable<SessionStatus> {
 
         let url = 'session-status';
+        url = this.baseRoute.appendNativeAuth(url);
         url = this.baseRoute.calculateRoute(url);
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
