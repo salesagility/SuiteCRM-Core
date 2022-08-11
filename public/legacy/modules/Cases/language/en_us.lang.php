@@ -55,8 +55,6 @@ $mod_strings = array(
     'LBL_SUGGESTION_BOX_STATUS' => 'Status',
     'LBL_SUGGESTION_BOX_TITLE' => 'Title',
     'LBL_SUGGESTION_BOX_REL' => 'Relevance',
-    'LBL_TOTAL_CASES_FOR_THIS_ACCOUNT' => ' Total Cases For This Account: ',
-
 
     'LBL_ACCOUNT_ID' => 'Account ID',
     'LBL_ACCOUNT_NAME' => 'Account Name:',
@@ -129,6 +127,5 @@ $mod_strings = array(
     'LBL_CONTACT_CREATED_BY_NAME' => 'Created by contact',
     'LBL_CONTACT_CREATED_BY' => 'Created by',
     'LBL_CASE_UPDATE_FORM' => 'Updates - Attachment form', //Form for attachments on case updates
-    'LBL_SINCE' => 'Since: ',
-    'LBL_OPEN_CASES' => 'Cases Open',
+    'LBL_UNKNOWN_CONTACT' => 'Unknown Contact',
 );
