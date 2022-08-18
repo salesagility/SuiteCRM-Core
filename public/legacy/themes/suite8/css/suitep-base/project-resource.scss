@@ -1,5 +1,12 @@
 table#header_table_chart {
     margin-top: 0.5em;  
+    background: $white;
+    display: flex;
+    align-items: center;
+    padding-left: 2em;
+    padding-top: 1.5em;
+    padding-bottom: 1em;
+    border-radius: 10px;
     td[scope="row_label"] {
         text-transform: uppercase;
         padding: 5px 30px 5px 0px !important;
