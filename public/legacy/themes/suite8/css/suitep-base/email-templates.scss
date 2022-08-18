@@ -43,6 +43,22 @@
     }
     #upload_div {
         margin-top: 1em;
+        .button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.5em 1em;
+            text-transform: capitalize;
+            margin-top: 1em;
+            margin-right: 0.5em;
+            display: inline;
+            &:hover {
+                background: $pale-blue;
+            }
+        }
     }
     #add_doc {
         background-color: $nepal-grey;
