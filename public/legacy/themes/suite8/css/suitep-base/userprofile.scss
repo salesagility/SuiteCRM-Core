@@ -429,4 +429,16 @@ form.userprofile {
             font-size: 13px;
         }
     } 
+    .detail-view {
+        .nav-tabs {
+            li {
+                top: 1.32em;
+            }
+        }
+        .panel-content {
+            .panel-default {
+                margin-top: 0;
+            }
+        }
+    }
 }
