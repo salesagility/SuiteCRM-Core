@@ -131,7 +131,8 @@ array(
                   [
                       'labelKey' => 'LBL_DAYS_UNTIL_DUE_TASK',
                       'type' => 'days-until-due-task',
-                      'endLabelKey' => 'LBL_STAT_DAYS'
+                      'endLabelKey' => 'LBL_STAT_DAYS',
+                      'hideValueIfEmpty' => true
                   ],
               ],
           ]

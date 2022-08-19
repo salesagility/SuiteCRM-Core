@@ -181,7 +181,8 @@ $viewdefs ['Contacts'] =
                         'statistics' => [
                             [
                                 'labelKey' => '',
-                                'type' => 'contact-last-touchpoint'
+                                'type' => 'contact-last-touchpoint',
+                                'hideValueIfEmpty' => true
                             ],
                         ],
                     ],

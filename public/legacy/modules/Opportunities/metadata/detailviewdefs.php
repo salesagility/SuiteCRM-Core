@@ -90,7 +90,8 @@ array(
                   [
                       'labelKey' => 'LBL_DAYS_IN_SALE_STAGE',
                       'type' => 'opportunity-sales-stage-time-span',
-                      'endLabelKey' => 'LBL_STAT_DAYS'
+                      'endLabelKey' => 'LBL_STAT_DAYS',
+                      'hideValueIfEmpty' => true
                   ],
               ],
           ],

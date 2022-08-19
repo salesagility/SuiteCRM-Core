@@ -147,7 +147,8 @@ $viewdefs ['Leads'] =
                         'statistics' => [
                             [
                                 'labelKey' => 'LBL_DAYS_OPEN',
-                                'type' => 'lead-days-open'
+                                'type' => 'lead-days-open',
+                                'hideValueIfEmpty' => true
                             ],
                         ],
                     ],

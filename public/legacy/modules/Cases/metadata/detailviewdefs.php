@@ -85,7 +85,8 @@ array(
                   [
                       'labelKey' => '',
                       'type' => 'case-days-open',
-                      'endLabelKey' => 'LBL_STAT_DAYS'
+                      'endLabelKey' => 'LBL_STAT_DAYS',
+                      'hideValueIfEmpty' => true
                   ],
               ],
           ]
