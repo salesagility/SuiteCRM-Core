@@ -52,7 +52,7 @@ $module_menu = array(
 global $current_language;
 $sg_mod_strings = return_module_language($current_language, 'SecurityGroups');
 $module_menu[] = array("index.php?module=SecurityGroups&action=EditView&return_module=SecurityGroups&return_action=DetailView", $sg_mod_strings['LNK_NEW_RECORD'], "Create");
-$module_menu[] = array("index.php?module=SecurityGroups&action=ListView&return_module=SecurityGroups&return_action=ListView", $sg_mod_strings['LBL_LIST_FORM_TITLE'], "Security_Groups");
+$module_menu[] = array("index.php?module=SecurityGroups&action=ListView&return_module=SecurityGroups&return_action=ListView", $sg_mod_strings['LNK_NEW_RECORD'], "Create_Security_Group");
 
 global $current_user;
 if (is_admin($current_user)) {
