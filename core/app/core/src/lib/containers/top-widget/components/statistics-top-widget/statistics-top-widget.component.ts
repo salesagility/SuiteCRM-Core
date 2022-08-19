@@ -43,6 +43,7 @@ interface StatisticsTopWidgetState {
 interface StatisticsEntry {
     labelKey: string;
     endLabelKey?: string;
+    hideValueIfEmpty: boolean;
     type: string;
     store: SingleValueStatisticsStore;
 }
@@ -106,6 +107,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             this.statistics[statistic.type] = {
                 labelKey: statistic.labelKey || '',
                 endLabelKey: statistic.endLabelKey || '',
+                hideValueIfEmpty: statistic.hideValueIfEmpty || false,
                 type: statistic.type,
                 store: this.factory.create()
             };
@@ -186,6 +188,11 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+
+    isValueEmpty(stats: SingleValueStatisticsState) {
+        return stats.statistic.metadata.emptyValueString === stats.field.value;
     }
 
     getMetadataEntry(stat: SingleValueStatisticsState, name: string): string {

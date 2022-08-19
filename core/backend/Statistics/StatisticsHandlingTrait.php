@@ -62,11 +62,13 @@ trait StatisticsHandlingTrait
      */
     protected function getEmptyResponse(string $key): Statistic
     {
+        $emptyValueString = '-';
         $statistic = new Statistic();
         $statistic->setId($key);
-        $statistic->setData(['value' => '-']);
+        $statistic->setData(['value' => $emptyValueString]);
         $statistic->setMetadata([
             'type' => 'single-value-statistic',
+            'emptyValueString' => $emptyValueString,
             'dataType' => 'varchar',
         ]);
 

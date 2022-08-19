@@ -34,6 +34,7 @@
 
         <div class="d-flex justify-content-center align-items-baseline widget-bar-entry p-2">
 
+
             <div class="pr-1 widget-bar-entry-label" *ngIf="item.value.labelKey && getLabel(item.value.labelKey)">
                 {{getLabel(item.value.labelKey) | uppercase}}:
             </div>
@@ -42,8 +43,12 @@
 
                 <div class="pl-1 pr-1 widget-bar-entry-value"
                      *ngIf="!vm.statistics[item.key].loading && vm.statistics[item.key].field">
-                    <scrm-field [type]="vm.statistics[item.key].field.type" [field]="vm.statistics[item.key].field"
-                                mode="list"></scrm-field>
+                    <ng-container
+                        *ngIf="!isValueEmpty(vm.statistics[item.key]) || item.value.hideValueIfEmpty !== true">
+                        <scrm-field [type]="vm.statistics[item.key].field.type" [field]="vm.statistics[item.key].field"
+                                    mode="list"></scrm-field>
+
+                    </ng-container>
                 </div>
 
             </ng-container>
