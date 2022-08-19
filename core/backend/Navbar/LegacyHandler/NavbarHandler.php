@@ -288,6 +288,10 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 $subMenuItem['module'] = $this->moduleNameMapper->toFrontEnd($routeInfo['module']);
             }
 
+            if ($subMenuItem['module'] === 'security-groups' && $subMenuItem['actionLabelKey']){
+                $subMenuItem['labelKey'] = $subMenuItem['actionLabelKey'];
+            }
+
             $subMenu[] = $subMenuItem;
         }
 

@@ -89,6 +89,12 @@ parameters:
         acl-roles:
             Role_Management:
                 icon: view
+            Security_Groups:
+                icon: view
+                actionLabelKey: LBL_SECURITYGROUPS
+            List_By_User:
+                icon: view
+                actionLabelKey: LIST_ROLES_BY_USER
         connectors:
             icon_Connectors:
                 icon: view
@@ -140,6 +146,7 @@ parameters:
                 icon: plus
             Security_Groups:
                 icon: view
+                actionLabelKey: LBL_SECURITYGROUPS
             Role_Management:
                 icon: view
             Security_Suite_Settings:
