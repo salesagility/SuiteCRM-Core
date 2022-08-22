@@ -9,6 +9,7 @@ parameters:
     default_theme: true
     module_name_map: true
     action_name_map: true
+    system_name: true
     classicview_routing_exclusions: true
     default_decimal_seperator: true
     default_number_grouping_seperator: true

@@ -42,7 +42,8 @@ import {
     LoginAuthGuard,
     LoginUiComponent,
     RecordComponent,
-    SystemConfigStore
+    SystemConfigStore,
+    SystemNameService
 } from 'core';
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
@@ -55,7 +56,8 @@ export class AppInit {
         protected systemConfigStore: SystemConfigStore,
         protected appStore: AppStateStore,
         protected injector: Injector,
-        protected extensionLoader: ExtensionLoader
+        protected extensionLoader: ExtensionLoader,
+        protected systemNameService: SystemNameService
     ) {
     }
 
@@ -65,7 +67,8 @@ export class AppInit {
         return new Promise<void>((resolve) => {
             this.systemConfigStore.load().subscribe(() => {
                 this.appStore.init();
-
+                const systemName = this.systemConfigStore.getConfigValue('system_name');
+                this.systemNameService.setSystemName(systemName);
                 this.extensionLoader.load(this.injector).pipe(take(1)).subscribe(() => {
                     const routes = this.router.config;
                     const configRoutes = this.systemConfigStore.getConfigValue('module_routing');

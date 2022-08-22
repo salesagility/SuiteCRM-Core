@@ -475,6 +475,7 @@ export * from './services/record/validation/validators/required.validator';
 export * from './services/statistics/series/mapper/series-mapper.service';
 export * from './services/statistics/series/mapper/series-traverser.service';
 export * from './services/statistics/series/mapper/data-type-mapper/data-type.series-mapper';
+export * from './services/system-name/system-name.service';
 export * from './services/ui/loading-buffer/loading-buffer.factory';
 export * from './services/ui/loading-buffer/loading-buffer.service';
 export * from './services/ui/max-columns-calculator/max-columns-calculator.service';
