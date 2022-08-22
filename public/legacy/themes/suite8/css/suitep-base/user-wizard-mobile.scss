@@ -29,7 +29,7 @@
                padding-right: 1.5em;               
            } 
            .img-desc {
-                line-height: 16px;
+                line-height: 16px;               
             } 
         }   
         .personal {
@@ -80,5 +80,78 @@
         input:not([type]) {
             width: 100%;
         }
+    }
+}
+
+@media (min-width:750px) and (max-width:768px) {
+    .user-wizard {
+        .welcome {
+            background-size: cover;
+            .panel {
+                margin-top: 9em;
+            }
+        }
+        .personal {
+            .container-personal {
+               margin-top: 4em;
+            }
+        }
+        #locale {
+           margin-top: 3em;
+        }
+        .wizard-finish {
+           margin-top: 3em; 
+        }
+        .img-desc {
+            line-height: 15px;
+        }
+    }
+}
+
+
+
+@media (min-width:768px) and (max-width:768px) {
+    .user-wizard {
+        .welcome {
+            background-size: cover;
+            .panel {
+                margin-top: 5em;
+            }
+        }
+        .personal {
+            .container-personal {
+               margin-top: 0em;
+            }
+        }
+        #locale {
+           margin-top: 0em;
+        }
+        .wizard-finish {
+           margin-top: 0em; 
+        }
+        .img-desc {
+            line-height: 20px;
+        }
+    }
+}
+
+@media (max-width:750px) {
+    .user-wizard {
+        .welcome {
+            .panel {
+                margin-top: 5em;
+            }
+        }
+        .personal {
+            .container-personal {
+               margin-top: 0em;
+            }
+        }
+        #locale {
+            margin-top: 0em;
+         }
+         .wizard-finish {
+            margin-top: 0em; 
+         }
     }
 }
