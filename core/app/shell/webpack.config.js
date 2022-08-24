@@ -79,7 +79,7 @@ module.exports = {
         },
         luxon: {
           singleton: true,
-          requiredVersion: '^1.25.0'
+          requiredVersion: '3.0.0'
         },
         'ng-animate': {
           singleton: true,
