@@ -157,7 +157,7 @@
     </tr>
 </table>
 
-<div style='width:100%'>
+<div style='width:100%' class="importPaginationtable">
     <div id="pageNumIW_0_div">{$RESULTS_TABLE}</div>
     <div id="pageNumIW_1_div" style="display:none;" ><br/>
         {if $dupeCount > 0}

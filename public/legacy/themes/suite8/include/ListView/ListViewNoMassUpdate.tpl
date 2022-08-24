@@ -44,8 +44,8 @@
 {assign var="link_select_id" value="selectLinkTop"}
 {assign var="link_action_id" value="actionLinkTop"}
 {include file='include/ListView/ListViewPagination.tpl'}
-    <thead>
-	<tr height='20'>
+    <tbody>
+		<tr height='20'>
 	    {if !empty($quickViewLinks)}
 		<th scope='col' width='1%'>&nbsp;</th>
 		{/if}
@@ -80,7 +80,7 @@
 			{counter name="colCounter"}
 		{/foreach}
 	</tr>
-</thead>
+	</tbody>
 	{foreach name=rowIteration from=$data key=id item=rowData}
 		{if $smarty.foreach.rowIteration.iteration is odd}
 			{assign var='_rowColor' value=$rowColor[0]}
