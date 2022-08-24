@@ -30,9 +30,10 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {DateTime} from 'luxon';
+import {DateTime, IANAZone} from 'luxon';
 import {FormatOptions, Formatter} from '../formatter.model';
 import {FormControlUtils} from '../../record/field/form-control.utils';
+import {DateTimeOptions} from "luxon/src/datetime";
 
 export interface DatetimeFormats {
     date: string;
@@ -122,38 +123,74 @@ export class DatetimeFormatter implements Formatter {
         return this.getDateTimeFormat();
     }
 
+    toUserTimezoneFormat(dateString: string, options?: FormatOptions): string {
+        const fromFormat = (options && options.fromFormat) || this.getInternalFormat();
+        if (dateString) {
+            return this.formatDateTime(dateString, this.getUserFormat(), fromFormat, this.locale, this.userTimeZone());
+        }
+        return '';
+    }
+
+    /**
+     * Format Internal Date to User. It assumes internal date is in GMT/UTC
+     *
+     * @param dateString
+     * @param options
+     */
     toUserFormat(dateString: string, options?: FormatOptions): string {
-        const fromFormat = (options && options.fromFormat) || '';
-        return dateString ? this.formatDateTime(dateString, this.getUserFormat(), fromFormat) : '';
+        const fromFormat = (options && options.fromFormat) || this.getInternalFormat();
+        if (dateString) {
+            const dateTime = this.toDateTime(dateString, fromFormat,  {
+                zone: 'GMT'
+            });
+
+            dateTime.setZone(this.preferences.getUserPreference('timezone'));
+
+            if (!dateTime.isValid) {
+                return dateString;
+            }
+            return formatDate(dateTime.toJSDate(),  this.getUserFormat(), this.locale, this.userTimeZone());
+        }
+        return '';
     }
 
     toInternalFormat(dateString: string, options?: FormatOptions): string {
-        const fromFormat = (options && options.fromFormat) || '';
-        return dateString ? this.formatDateTime(dateString, this.getInternalFormat(), fromFormat) : '';
+        const fromFormat = (options && options.fromFormat) || this.getUserFormat();
+        if (dateString) {
+
+            let date = this.toDateTime(dateString, fromFormat, {
+                zone: this.preferences.getUserPreference('timezone')
+            });
+
+            date.setZone('GMT');
+
+            return formatDate(date.toJSDate(), this.getInternalFormat(), this.locale, 'GMT');
+        }
+        return '';
     }
 
-    formatDateTime(dateString: string, format: string, fromFormat = ''): string {
+    formatDateTime(dateString: string, format: string, fromFormat = '', locale = this.locale, timezone = ''): string {
         const dateTime = this.toDateTime(dateString, fromFormat);
 
         if (!dateTime.isValid) {
             return dateString;
         }
-        return formatDate(dateTime.toJSDate(), format, this.locale);
+        return formatDate(dateTime.toJSDate(), format, locale, timezone);
     }
 
-    toDateTime(datetimeString: string, fromFormat = ''): DateTime {
+    toDateTime(datetimeString: string, fromFormat = '', options?: DateTimeOptions): DateTime {
         if (!datetimeString) {
             return DateTime.invalid('empty');
         }
 
         if (fromFormat) {
-            return DateTime.fromFormat(datetimeString, fromFormat);
+            return DateTime.fromFormat(datetimeString, fromFormat, options);
         }
 
-        let dateTime = this.fromUserFormat(datetimeString);
+        let dateTime = this.fromUserFormat(datetimeString, options);
 
         if (!dateTime.isValid) {
-            dateTime = this.fromInternalFormat(datetimeString);
+            dateTime = this.fromInternalFormat(datetimeString, options);
         }
 
         return dateTime;
@@ -164,7 +201,9 @@ export class DatetimeFormatter implements Formatter {
             return null;
         }
 
-        const dateTime = this.toDateTime(datetime);
+        const dateTime = this.toDateTime(datetime, '',  {
+            zone: this.preferences.getUserPreference('timezone')
+        });
 
         if (!dateTime.isValid) {
             return null;
@@ -189,7 +228,9 @@ export class DatetimeFormatter implements Formatter {
             return null;
         }
 
-        const dateTime = this.toDateTime(datetime);
+        const dateTime = this.toDateTime(datetime, '',{
+            zone: this.preferences.getUserPreference('timezone')
+        });
 
         if (!dateTime.isValid) {
             return null;
@@ -207,7 +248,9 @@ export class DatetimeFormatter implements Formatter {
             return null;
         }
 
-        const dateTime = this.toDateTime(datetime);
+        const dateTime = this.toDateTime(datetime, '',{
+            zone: this.preferences.getUserPreference('timezone')
+        });
 
         if (!dateTime.isValid) {
             return null;
@@ -220,7 +263,7 @@ export class DatetimeFormatter implements Formatter {
         } as NgbTimeStruct;
     }
 
-    fromUserFormat(datetime: string): DateTime {
+    fromUserFormat(datetime: string, options?: DateTimeOptions): DateTime {
         datetime = datetime.toString();
         datetime = datetime.replace('a', 'A');
         datetime = datetime.replace('p', 'P');
@@ -228,12 +271,12 @@ export class DatetimeFormatter implements Formatter {
 
         let format = this.getUserFormat();
         format = format.replace('aaaaa\'m\'', 'a');
-        return DateTime.fromFormat(datetime, format);
+        return DateTime.fromFormat(datetime, format, options);
     }
 
-    fromInternalFormat(datetime: string): DateTime {
+    fromInternalFormat(datetime: string, options?: DateTimeOptions): DateTime {
         const format = this.getInternalFormat();
-        return DateTime.fromFormat(datetime.toString(), format);
+        return DateTime.fromFormat(datetime.toString(), format, options);
     }
 
     validateUserFormat(inputValue: any): boolean {
@@ -245,5 +288,12 @@ export class DatetimeFormatter implements Formatter {
         const dateTime = this.fromUserFormat(trimmedInputValue);
         return !dateTime.isValid;
     }
+
+    userTimeZone(): string {
+        const userTZ = this.preferences.getUserPreference('timezone');
+        const milliseconds = DateTime.now().setZone(userTZ).toMillis();
+        return IANAZone.create(userTZ).formatOffset(milliseconds, 'techie');
+    }
+
 
 }

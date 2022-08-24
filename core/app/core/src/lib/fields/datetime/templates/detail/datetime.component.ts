@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component,} from '@angular/core';
+import {Component} from '@angular/core';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
@@ -35,7 +35,8 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
     templateUrl: './datetime.component.html',
     styleUrls: []
 })
-export class DateTimeDetailFieldComponent extends BaseDateTimeComponent {
+export class DateTimeDetailFieldComponent extends BaseDateTimeComponent{
+
 
     constructor(
         protected formatter: DatetimeFormatter,
@@ -45,4 +46,13 @@ export class DateTimeDetailFieldComponent extends BaseDateTimeComponent {
         super(formatter, typeFormatter, logic);
     }
 
+    getUserTimeZone(): string {
+        return this.formatter.userTimeZone();
+    }
+
+    toDateTime(dateString: string): Date {
+        return this.formatter.toDateTime(dateString, this.formatter.getInternalFormat(), {
+            zone: 'GMT'
+        }).toJSDate();
+    }
 }

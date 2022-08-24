@@ -28,7 +28,7 @@ import {ViewMode} from 'common';
 
 export interface FormatOptions {
     [key: string]: any;
-
+    fromFormat?: string;
     mode?: ViewMode;
 }
 

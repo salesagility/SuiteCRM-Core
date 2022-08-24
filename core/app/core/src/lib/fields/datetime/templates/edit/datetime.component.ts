@@ -93,7 +93,6 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
     }
 
     protected setFormValues(dateTimeString: string) {
-        this.field.value = dateTimeString;
         this.field.formControl.setValue(dateTimeString);
         this.field.formControl.markAsDirty();
     }
