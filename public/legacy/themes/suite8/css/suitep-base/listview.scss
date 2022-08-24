@@ -86,7 +86,7 @@ tr#pagination {
 
 .list #pagination td .paginationTable .paginationActionButtons {
   background-color: $list-view-toolbar-bg;
-  padding: 0.4em 0 0;
+  padding: 0.35em 0 0;
 }
 
 .list #pagination td .paginationTable .paginationChangeButtons {
@@ -99,7 +99,7 @@ tr#pagination {
   font-weight: bold;
   color: $list-view-pagination-color;
   padding: 0 8px 0 8px;
-  margin: -4px 0 0 0;
+  margin: -2px 0 0 0;
 }
 
 #listViewStartButton_top {
@@ -177,6 +177,7 @@ tr#pagination {
 
 #listViewEndButton_top {
   margin-left: 2px;
+  margin-right: 0.2em;
 }
 
 #listViewEndButton_bottom {
@@ -1590,10 +1591,8 @@ div#search_form > .advanced input.button:hover {
 .paginationTable .list-view-pagination-button {
   background-color: $transparent-color;
   color: $list-view-button-color;
-  margin: 0 2px 0 2px;
+  margin: 0 0 0 2px;
   padding: 0;
-  line-height: 26px;
-  height: 26px;
   width: 24px;
   border-color: $transparent-color;
 }
