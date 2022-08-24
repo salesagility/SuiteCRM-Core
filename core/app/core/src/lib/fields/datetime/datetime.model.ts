@@ -18,6 +18,7 @@ export class DateTimeModel {
             return null;
         }
         const dateTimeStruct = formatter.userDateTimeFormatToStruct(dateString);
+
         if (!dateTimeStruct) {
             return null;
         }
@@ -36,8 +37,10 @@ export class DateTimeModel {
         const timeString = [this.time.hour, this.time.minute, this.time.second].join(':');
         const datetimeString = [dateString, timeString].join(' ');
 
+        const internalDateTimeString = formatter.toInternalFormat(datetimeString, {fromFormat: 'yyyy-M-d H:m:s'});
+
         //convert from yyyy-M-d H:m:s format to user format
-        return formatter.toUserFormat(datetimeString, {fromFormat: 'yyyy-M-d H:m:s'});
+        return formatter.toUserFormat(internalDateTimeString, {fromFormat: 'yyyy-M-d H:m:s'});
 
     }
 }
