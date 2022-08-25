@@ -644,3 +644,9 @@ table.subpanel-table .pagination li.single > a {
   margin-bottom: 0;
   border-top: 1px solid $header-bottom-border;
 }
+
+.view-action-DetailView {
+  .list .SugarActionMenu .sugar_action_button>.subnav li:last-of-type a:last-of-type {
+    padding: 5px 20px;
+  }
+}
