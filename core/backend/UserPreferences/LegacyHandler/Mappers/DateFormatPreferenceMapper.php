@@ -25,16 +25,27 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\UserPreferences\LegacyHandler;
+namespace App\UserPreferences\LegacyHandler\Mappers;
 
-class UiPreferenceMapper implements UserPreferencesMapperInterface
+use App\DateTime\LegacyHandler\DateTimeHandler;
+use App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface;
+
+class DateFormatPreferenceMapper implements UserPreferencesMapperInterface
 {
 
     /**
-     * UiPreferenceMapper constructor.
+     * @var DateTimeHandler
      */
-    public function __construct()
+    private $dateTimeHandler;
+
+    /**
+     * DateFormatPreferenceMapper constructor.
+     * @param DateTimeHandler $dateTimeHandler
+     */
+    public function __construct(DateTimeHandler $dateTimeHandler)
     {
+
+        $this->dateTimeHandler = $dateTimeHandler;
     }
 
     /**
@@ -42,7 +53,7 @@ class UiPreferenceMapper implements UserPreferencesMapperInterface
      */
     public function getKey(): string
     {
-        return 'ui';
+        return 'datef';
     }
 
     /**
@@ -51,9 +62,9 @@ class UiPreferenceMapper implements UserPreferencesMapperInterface
     public function map($value)
     {
         if (empty($value)) {
-            return ['noop' => 'noop'];
+            return $value;
         }
 
-        return json_decode($value, true);
+        return $this->dateTimeHandler->mapFormat($value);
     }
 }

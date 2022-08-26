@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,34 +25,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\UserPreferences\LegacyHandler;
+namespace App\UserPreferences\LegacyHandler\Mappers;
 
-use App\DateTime\LegacyHandler\DateTimeHandler;
+use App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface;
 
-class TimeFormatPreferenceMapper implements UserPreferencesMapperInterface
+class TimezonePreferenceMapper implements UserPreferencesMapperInterface
 {
-
-    /**
-     * @var DateTimeHandler
-     */
-    private $dateTimeHandler;
-
-    /**
-     * TimeFormatPreferenceMapper constructor.
-     * @param DateTimeHandler $dateTimeHandler
-     */
-    public function __construct(DateTimeHandler $dateTimeHandler)
-    {
-
-        $this->dateTimeHandler = $dateTimeHandler;
-    }
 
     /**
      * @inheritDoc
      */
     public function getKey(): string
     {
-        return 'timef';
+        return 'timezone';
     }
 
     /**
@@ -61,9 +46,9 @@ class TimeFormatPreferenceMapper implements UserPreferencesMapperInterface
     public function map($value)
     {
         if (empty($value)) {
-            return $value;
+            return 'GMT';
         }
 
-        return $this->dateTimeHandler->mapFormat($value);
+        return $value;
     }
 }

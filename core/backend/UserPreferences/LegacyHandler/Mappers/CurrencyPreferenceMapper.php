@@ -25,26 +25,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\UserPreferences\LegacyHandler;
+namespace App\UserPreferences\LegacyHandler\Mappers;
 
-use App\DateTime\LegacyHandler\DateTimeHandler;
+use App\Currency\LegacyHandler\CurrencyHandler;
+use App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface;
 
-class DateFormatPreferenceMapper implements UserPreferencesMapperInterface
+class CurrencyPreferenceMapper implements UserPreferencesMapperInterface
 {
+    /**
+     * @var CurrencyHandler
+     */
+    private $currencyHandler;
 
     /**
-     * @var DateTimeHandler
+     * CurrencyPreferenceMapper constructor.
+     * @param CurrencyHandler $currencyHandler
      */
-    private $dateTimeHandler;
-
-    /**
-     * DateFormatPreferenceMapper constructor.
-     * @param DateTimeHandler $dateTimeHandler
-     */
-    public function __construct(DateTimeHandler $dateTimeHandler)
+    public function __construct(CurrencyHandler $currencyHandler)
     {
-
-        $this->dateTimeHandler = $dateTimeHandler;
+        $this->currencyHandler = $currencyHandler;
     }
 
     /**
@@ -52,7 +51,7 @@ class DateFormatPreferenceMapper implements UserPreferencesMapperInterface
      */
     public function getKey(): string
     {
-        return 'datef';
+        return 'currency';
     }
 
     /**
@@ -60,10 +59,6 @@ class DateFormatPreferenceMapper implements UserPreferencesMapperInterface
      */
     public function map($value)
     {
-        if (empty($value)) {
-            return $value;
-        }
-
-        return $this->dateTimeHandler->mapFormat($value);
+        return $this->currencyHandler->getCurrency($value);
     }
 }
