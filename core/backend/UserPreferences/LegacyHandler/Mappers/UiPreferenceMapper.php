@@ -25,24 +25,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\UserPreferences\LegacyHandler;
+namespace App\UserPreferences\LegacyHandler\Mappers;
 
-use App\Currency\LegacyHandler\CurrencyHandler;
+use App\UserPreferences\LegacyHandler\UserPreferencesMapperInterface;
 
-class CurrencyPreferenceMapper implements UserPreferencesMapperInterface
+class UiPreferenceMapper implements UserPreferencesMapperInterface
 {
-    /**
-     * @var CurrencyHandler
-     */
-    private $currencyHandler;
 
     /**
-     * CurrencyPreferenceMapper constructor.
-     * @param CurrencyHandler $currencyHandler
+     * UiPreferenceMapper constructor.
      */
-    public function __construct(CurrencyHandler $currencyHandler)
+    public function __construct()
     {
-        $this->currencyHandler = $currencyHandler;
     }
 
     /**
@@ -50,7 +44,7 @@ class CurrencyPreferenceMapper implements UserPreferencesMapperInterface
      */
     public function getKey(): string
     {
-        return 'currency';
+        return 'ui';
     }
 
     /**
@@ -58,6 +52,10 @@ class CurrencyPreferenceMapper implements UserPreferencesMapperInterface
      */
     public function map($value)
     {
-        return $this->currencyHandler->getCurrency($value);
+        if (empty($value)) {
+            return ['noop' => 'noop'];
+        }
+
+        return json_decode($value, true);
     }
 }
