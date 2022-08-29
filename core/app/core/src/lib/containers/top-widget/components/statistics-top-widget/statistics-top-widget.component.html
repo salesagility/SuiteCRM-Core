@@ -36,7 +36,12 @@
 
 
             <div class="pr-1 widget-bar-entry-label" *ngIf="item.value.labelKey && getLabel(item.value.labelKey)">
-                {{getLabel(item.value.labelKey) | uppercase}}:
+                <ng-container *ngIf="!isValueEmpty(vm.statistics[item.key]) || item.value.hideValueIfEmpty !== true; else empty">
+                    {{getLabel(item.value.labelKey) | uppercase}}:
+                </ng-container>
+                <ng-template #empty>
+                    {{getLabel(item.value.labelKey) | uppercase}}
+                </ng-template>
             </div>
 
             <ng-container *ngIf="item.key && vm.statistics[item.key]">

@@ -107,11 +107,11 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
         [$module, $id] = $this->extractContext($query);
         $subpanel = 'history';
         if (empty($module) || empty($id)) {
-            return $this->getEmptyResponse(self::KEY);
+            return $this->buildNoInteractionResponse();
         }
         $legacyModuleName = $this->moduleNameMapper->toLegacy($module);
         if ($legacyModuleName !== 'Contacts') {
-            return $this->getEmptyResponse(self::KEY);
+            return $this->buildNoInteractionResponse();
         }
         $this->init();
         $this->startLegacyApp();
@@ -167,10 +167,7 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
             $positions[$date[$i]] = 'emails_date_sent';
         }
         if (empty($date)) {
-            $statistic = $this->getEmptyResponse(self::KEY);
-            $this->close();
-
-            return $statistic;
+            return $this->buildNoInteractionResponse();
         }
         $max = max($date);
 
@@ -187,11 +184,17 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
             $statistic = $this->buildSingleValueResponse(self::KEY, 'datetime', ["value" => $max]);
             $this->addMetadata($statistic, ['labelKey' => 'LBL_LAST_EMAIL']);
         } else {
-            return $this->getEmptyResponse(self::KEY);
+            return $this->buildNoInteractionResponse();
         }
 
         $this->close();
 
+        return $statistic;
+    }
+
+    public function buildNoInteractionResponse(): Statistic {
+        $statistic = $this->getEmptyResponse(self::KEY);
+        $this->addMetadata($statistic, ['labelKey' => 'LBL_NO_INTERACTION']);
         return $statistic;
     }
 
