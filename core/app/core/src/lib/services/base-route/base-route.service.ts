@@ -63,6 +63,21 @@ export class BaseRouteService {
     }
 
     /**
+     * Remove native auth from path name
+     */
+    public removeNativeAuth(): string {
+        let url = window.location.pathname;
+
+        if (url.includes('/auth')) {
+            url = url.replace('/auth', '/');
+        }
+
+        url = url.replace('//', '/');
+
+        return url;
+    }
+
+    /**
      * Is native auth
      */
     public isNativeAuth(): boolean {

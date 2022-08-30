@@ -112,6 +112,11 @@ export class AuthService {
             },
             {headers}
         ).subscribe((response: any) => {
+
+            if (this.baseRoute.isNativeAuth()) {
+                window.location.href = this.baseRoute.removeNativeAuth();
+            }
+
             this.appStateStore.updateInitialAppLoading(true);
             onSuccess(response);
             this.isUserLoggedIn.next(true);
