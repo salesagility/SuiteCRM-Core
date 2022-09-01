@@ -318,6 +318,7 @@ function get_sugar_config_defaults(): array
         'calculate_response_time' => true,
         'create_default_user' => false,
         'chartEngine' => 'Jit',
+        'system_name' => 'SuiteCRM',
         'date_formats' => [
             'Y-m-d' => '2010-12-23',
             'm-d-Y' => '12-23-2010',
@@ -576,7 +577,7 @@ function get_sugar_config_defaults(): array
     if (!is_object($locale)) {
         $locale = new Localization();
     }
-    
+
     $sugar_config_defaults = sugarArrayMerge($locale->getLocaleConfigDefaults(), $sugar_config_defaults);
 
     return $sugar_config_defaults;
