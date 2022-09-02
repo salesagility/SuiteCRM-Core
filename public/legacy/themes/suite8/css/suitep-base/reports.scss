@@ -1,4 +1,9 @@
 .view-module-AOR_Reports {
+    @media (max-width: 750px) {
+        #EditView_tabs {
+            clear: both;
+        }
+    }  
     #EditView {
         .buttons {
             top: -0.8em;

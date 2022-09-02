@@ -73,4 +73,9 @@
             padding-left: 1em;
         }
     }
+    @media (min-width: 751px) and (max-width:1200px) {
+        .module-title-text {
+            margin-bottom: 2em;
+        }
+    }
 }
