@@ -205,6 +205,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         // Use the attribute's friendlyName instead of the name
                         'check_path' => 'saml_acs',
                         'login_path' => 'saml_login',
+                        'always_use_default_target_path' => true
                     ],
                     'logout' => [
                         'path' => 'saml_logout'
