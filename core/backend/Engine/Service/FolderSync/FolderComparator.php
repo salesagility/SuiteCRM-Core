@@ -145,6 +145,7 @@ class FolderComparator implements FolderComparatorInterface
     protected function newFinder(string $filePath): Finder
     {
         $finder = new Finder();
+        $finder->ignoreDotFiles(false);
         $finder->depth('== 0')->in($filePath);
 
         return $finder;
