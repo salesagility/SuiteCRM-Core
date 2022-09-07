@@ -38,32 +38,19 @@ class InstallExtensionAssets extends Command
     protected static $defaultName = 'scrm:extension-asset-install';
 
     /**
-     * @var string
-     */
-    private $projectDir;
-
-    /**
      * @var ExtensionAssetCopy
      */
     protected $copy;
 
     /**
      * InstallExtensionAssets constructor.
-     * @param string|null $name
      * @param ExtensionAssetCopyInterface $copy
+     * @param string|null $name
      */
-    public function __construct(string $name = null, ExtensionAssetCopyInterface $copy)
+    public function __construct(ExtensionAssetCopyInterface $copy, string $name = null)
     {
         parent::__construct($name);
         $this->copy = $copy;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProjectDir(): string
-    {
-        return $this->projectDir;
     }
 
     protected function configure(): void
