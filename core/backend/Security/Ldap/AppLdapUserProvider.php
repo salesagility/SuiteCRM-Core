@@ -29,6 +29,7 @@ namespace App\Security\Ldap;
 
 use App\Authentication\LegacyHandler\UserHandler;
 use Symfony\Component\Ldap\Security\LdapUser;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -97,7 +98,7 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
         $ldapUser = null;
         try {
             $ldapUser = $this->proxy->getLdapUserProvider()->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
+        } catch (UsernameNotFoundException|InvalidArgumentException $e) {
             if ($existsUser === false) {
                 throw $e;
             }
