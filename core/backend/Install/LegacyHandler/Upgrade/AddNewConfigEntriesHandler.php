@@ -106,6 +106,8 @@ class AddNewConfigEntriesHandler extends LegacyHandler
 
         $newEntries = $this->getNewEntries($defaults, $sugar_config, $feedback);
 
+        $updateFeedback = null;
+
         if (empty($newEntries)) {
 
             $feedback->setSuccess(true);
@@ -121,7 +123,12 @@ class AddNewConfigEntriesHandler extends LegacyHandler
             }
         }
 
-        $feedback->setDebug(array_merge($feedback->getDebug() ?? [], $updateFeedback->getDebug() ?? []));
+        $updateDebugMessages = [];
+        if ($updateFeedback !== null) {
+            $updateDebugMessages = $updateFeedback->getDebug() ?? [];
+        }
+
+        $feedback->setDebug(array_merge($feedback->getDebug() ?? [], $updateDebugMessages));
 
         $this->close();
 
