@@ -296,7 +296,11 @@ services:
 
   App\SystemConfig\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
   app.system-configs:
-    alias:  App\SystemConfig\Service\SystemConfigProviderInterface
+    alias: App\SystemConfig\Service\SystemConfigProviderInterface
+    public: true
+
+  app.version.provider:
+    alias: 'shivas_versioning.provider.version'
     public: true
 
   Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
