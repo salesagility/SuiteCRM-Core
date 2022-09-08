@@ -1,8 +1,7 @@
 <?php
-
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -26,75 +25,70 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Install\Service\Cache;
+namespace App\Install\Service\Upgrade\Steps;
 
 use App\Engine\Model\Feedback;
+use App\Engine\Model\ProcessStepTrait;
+use App\Install\Service\Cache\CacheBridge;
+use App\Install\Service\Upgrade\UpgradeStepInterface;
 use Exception;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Class CacheBridge
- * @package App\Install\Service\Cache
+ * Class FinalizeClearSymfonyCache
+ * @package App\Install\Service\Upgrade\Steps;
  */
-class CacheBridge
+class FinalizeClearSymfonyCache implements UpgradeStepInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-    /**
-     * @var string
-     */
-    private $cacheDir;
+    use ProcessStepTrait;
+
+    public const HANDLER_KEY = 'finalize-clear-symfony-cache';
+    public const POSITION = 950;
+    public const STAGE = 'upgrade-finalize';
 
     /**
-     * CacheBridge constructor.
-     * @param KernelInterface $kernel
-     * @param string $cacheDir
+     * @var CacheBridge
      */
-    public function __construct(KernelInterface $kernel, string $cacheDir)
+    private $bridge;
+
+    /**
+     * RunMigrations constructor.
+     * @param CacheBridge $bridge
+     */
+    public function __construct(CacheBridge $bridge)
     {
-        $this->kernel = $kernel;
-        $this->cacheDir = $cacheDir;
+        $this->bridge = $bridge;
     }
 
     /**
-     * @return Feedback
+     * @inheritDoc
+     */
+    public function getKey(): string
+    {
+        return self::HANDLER_KEY;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOrder(): int
+    {
+        return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
+    }
+
+    /**
+     * @inheritDoc
      * @throws Exception
      */
-    public function clear(): Feedback
+    public function execute(array &$context): Feedback
     {
-        $feedback = new Feedback();
-        $feedback->setSuccess(true)->setMessages(['Successfully cleared cache']);
-
-        try {
-            $fs = new Filesystem();
-            $fs->remove($this->cacheDir);
-
-            $this->clearPhpCache();
-
-        } catch (Exception $e) {
-            $feedback->setSuccess(false)->setMessages(['Error clearing cache']);
-        }
-
-
-        return $feedback;
+        return $this->bridge->clear();
     }
-
-    /**
-     * Clear php cache
-     * @return void
-     */
-    protected function clearPhpCache(): void
-    {
-        if (function_exists('opcache_reset')) {
-            opcache_reset();
-        }
-
-        if (function_exists('apcu_clear_cache')) {
-            apcu_clear_cache();
-        }
-    }
-
 }

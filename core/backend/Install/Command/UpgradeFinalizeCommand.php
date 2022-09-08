@@ -29,7 +29,9 @@ namespace App\Install\Command;
 
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeFinalizeHandlerInterface;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
@@ -130,5 +132,21 @@ class UpgradeFinalizeCommand extends BaseStepExecutorCommand
     protected function getHandler(): ProcessStepExecutorInterface
     {
         return $this->handler;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param array $context
+     * @return bool
+     */
+    protected function runSteps(InputInterface $input, OutputInterface $output, array $context): bool
+    {
+        $result = parent::runSteps($input, $output, $context);
+        $status = $result ? 0 : 1;
+
+        // Force exit to avoid errors
+        // Avoid having Symfony use the kernel while in the same process
+        exit($status);
     }
 }
