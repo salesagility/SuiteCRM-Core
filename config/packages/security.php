@@ -178,6 +178,31 @@ return static function (ContainerConfigurator $containerConfig) {
 
     if ($authType === 'saml') {
 
+        $samlAutoCreate = $env['SAML_AUTO_CREATE'] ?? 'disabled';
+
+        $samlMainFirewallConfig = [
+            'context' => 'app_context',
+            'pattern' => '^/(?!auth)',
+            'saml' => [
+                'provider' => 'app_user_provider',
+                // Match SAML attribute 'uid' with username.
+                // Uses getNameId() method by default.
+                'username_attribute' => '%env(SAML_USERNAME_ATTRIBUTE)%',
+                'use_attribute_friendly_name' => '%env(bool:SAML_USE_ATTRIBUTE_FRIENDLY_NAME)%',
+                // Use the attribute's friendlyName instead of the name
+                'check_path' => 'saml_acs',
+                'login_path' => 'saml_login',
+                'always_use_default_target_path' => true
+            ],
+            'logout' => [
+                'path' => 'saml_logout'
+            ]
+        ];
+
+        if ($samlAutoCreate === 'enabled') {
+            $samlMainFirewallConfig['saml']['user_factory'] = 'saml_user_factory';
+        }
+
         $containerConfig->extension('security', [
             'providers' => [
                 'app_user_provider' => [
@@ -193,24 +218,7 @@ return static function (ContainerConfigurator $containerConfig) {
                 ],
             ],
             'firewalls' => array_merge_recursive($baseFirewall, [
-                'main' => [
-                    'context' => 'app_context',
-                    'pattern' => '^/(?!auth)',
-                    'saml' => [
-                        'provider' => 'app_user_provider',
-                        // Match SAML attribute 'uid' with username.
-                        // Uses getNameId() method by default.
-                        'username_attribute' => '%env(SAML_USERNAME_ATTRIBUTE)%',
-                        'use_attribute_friendly_name' => '%env(bool:SAML_USE_ATTRIBUTE_FRIENDLY_NAME)%',
-                        // Use the attribute's friendlyName instead of the name
-                        'check_path' => 'saml_acs',
-                        'login_path' => 'saml_login',
-                        'always_use_default_target_path' => true
-                    ],
-                    'logout' => [
-                        'path' => 'saml_logout'
-                    ]
-                ],
+                'main' => $samlMainFirewallConfig,
                 'auth' => [
                     'context' => 'app_context',
                     'pattern' => '^/auth',

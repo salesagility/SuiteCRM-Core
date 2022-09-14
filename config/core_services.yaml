@@ -56,6 +56,7 @@ services:
       $subpanelTopActions: '%module.subpanel.top_actions%'
       $subpanelTopButtons: '%module.subpanel.top_buttons%'
       $ldapAutoCreateExtraFieldsMap: '%ldap.autocreate.extra_fields_map%'
+      $samlAutoCreateAttributesMap: '%saml.autocreate.attributes_map%'
       $logoutConfig: '%auth.logout%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
@@ -271,6 +272,10 @@ services:
   App\Security\Ldap\AppLdapUserProviderProxy:
     $ldapUserProvider: '@security.user.provider.concrete.ldap_users'
     $entityUserProvider: '@security.user.provider.concrete.app_user_provider'
+
+  saml_user_factory:
+    alias: App\Security\Saml\AppSamlUserFactory
+    public: true
 
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
