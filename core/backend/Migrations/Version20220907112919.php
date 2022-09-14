@@ -67,7 +67,7 @@ final class Version20220907112919 extends BaseMigration implements ContainerAwar
         $envContents = file_get_contents($envFile);
 
         if (strpos($envContents, 'LOCK_DSN')) {
-            $this->upgradeLogger->info('.env already contains LOCK_DSN. Skipping update.');
+            $this->log('.env already contains LOCK_DSN. Skipping update.');
 
             return;
         }
