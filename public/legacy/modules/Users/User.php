@@ -110,6 +110,12 @@ class User extends Person implements EmailInterface
     );
     public $emailAddress;
     public $new_schema = true;
+    public $system_generated_password;
+    public $pwd_last_changed;
+    public $authenticate_id;
+    public $sugar_login;
+    public $external_auth_only;
+    public $show_on_employees;
 
     /**
      * @var bool
