@@ -401,6 +401,14 @@ class User implements UserInterface, EquatableInterface
         return $this->id;
     }
 
+    /**
+     * @param string|null $id
+     */
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getSystemGeneratedPassword(): ?bool
     {
         return $this->systemGeneratedPassword;
