@@ -2,11 +2,14 @@
     input[type=text],input[type=password],input[type=email] {
         background-color:$transparent-color !important;
         border: 1px solid $form-border-color !important;
-    }        
+    }
     .email-address-line-container {
         padding: 0;
         .email-address-options-container {
             margin-top: -1.2em;
+            @media (max-width: 768px) {
+                margin-top: 0.2em;
+            }
         }
     }
     .col-xs-12 .email-address-lines-container {
@@ -14,6 +17,9 @@
     }
     span.input-group-btn {
         bottom: 5px;
+        @media (max-width: 768px) {
+            left: 8px;
+        }
     }
     .email-address-add-button {
         background: none;
@@ -82,5 +88,16 @@
     }
     button:disabled {
         width: 28px;
+    }
+    @media (max-width: 768px) {
+        .email-address-input-group {
+            background: $transparent-color;
+            border: none;
+            margin-top: 1em;
+            input {
+                border-top-right-radius: 4px !important;
+                border-bottom-right-radius: 4px !important;
+            }
+        }
     }
 }
