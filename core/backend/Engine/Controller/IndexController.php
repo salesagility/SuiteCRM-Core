@@ -33,6 +33,7 @@ use App\Authentication\LegacyHandler\UserHandler;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
@@ -119,6 +120,30 @@ class IndexController extends AbstractController
         if ($user === null) {
             $response->headers->clearCookie('XSRF-TOKEN');
         }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/logged-out", name="logged-out", methods={"GET"})
+     * @param Session $session
+     * @return Response
+     */
+    public function loggedOut(Session $session): Response
+    {
+        $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
+
+        if (!is_file($indexHtmlPath)) {
+            throw new RuntimeException('Please run ng build from terminal');
+        }
+
+        $response = new Response(file_get_contents($indexHtmlPath));
+
+        $this->get('security.token_storage')->setToken(null);
+        $session->clear();
+        $response->headers->clearCookie('XSRF-TOKEN');
+
+        $this->authentication->logout();
 
         return $response;
     }

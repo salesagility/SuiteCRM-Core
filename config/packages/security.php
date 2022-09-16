@@ -61,6 +61,7 @@ return static function (ContainerConfigurator $containerConfig) {
         ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+        ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
@@ -182,7 +183,7 @@ return static function (ContainerConfigurator $containerConfig) {
 
         $samlMainFirewallConfig = [
             'context' => 'app_context',
-            'pattern' => '^/(?!auth)',
+            'pattern' => '^/(?!auth|logged-out)',
             'saml' => [
                 'provider' => 'app_user_provider',
                 // Match SAML attribute 'uid' with username.
@@ -235,6 +236,22 @@ return static function (ContainerConfigurator $containerConfig) {
                         'path' => 'native_auth_logout'
                     ]
                 ],
+                'logged-out' => [
+                    'context' => 'app_context',
+                    'pattern' => '^/logged-out',
+                    'lazy' => true,
+                    'provider' => 'app_user_provider',
+                    'json_login' => [
+                        'provider' => 'app_user_provider',
+                        'check_path' => 'native_auth_login',
+                    ],
+                    'login_throttling' => [
+                        'max_attempts' => $maxAttempts,
+                    ],
+                    'logout' => [
+                        'path' => 'native_auth_logout'
+                    ]
+                ],
             ]),
             'access_control' => [
                 ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
@@ -244,6 +261,7 @@ return static function (ContainerConfigurator $containerConfig) {
                 ['path' => '^/saml/metadata', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
                 ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
                 ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
+                ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
                 ['path' => '^/auth', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
                 ['path' => '^/auth/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
                 ['path' => '^/auth/session-status', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
