@@ -568,6 +568,8 @@ export * from './views/list/store/list-view/list-view.store';
 export * from './views/login/components/login/login.component';
 export * from './views/login/components/login/login.module';
 export * from './views/login/components/login/login.routes';
+export * from './views/logout/components/logout/logout.component';
+export * from './views/logout/components/logout/logout.module';
 export * from './views/record/actions/record-action-manager.service';
 export * from './views/record/actions/record.action';
 export * from './views/record/actions/async-process/async-process.service';

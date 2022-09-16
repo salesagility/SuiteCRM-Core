@@ -31,3 +31,4 @@ parameters:
     ui: true
     extensions: true
     logout: true
+    site_url: true

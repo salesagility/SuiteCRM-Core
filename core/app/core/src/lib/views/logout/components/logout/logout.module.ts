@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,58 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-/* --------- FORM SECTION ---------- */
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {LogoutComponent} from './logout.component';
+import {LabelModule} from '../../../../components/label/label.module';
+import {LogoUiModule} from '../../../../components/logo/logo.module';
 
-.login-form {
-  @media all and (min-width: $breakpoint-xsmall) {
-    text-align: center;
-    width: 25em;
-    margin: auto auto;
-
-    .logo img {
-      max-width: 95%;
-    }
-  }
-
-  @media all and (max-width: $breakpoint-medium) {
-    .logo img {
-      max-width: 75%;
-    }
-  }
-
-  @media all and (max-width: $breakpoint-xsmall) {
-    text-align: center;
-    margin: 5% auto;
-    position: absolute;
-    width: 95%;
-    top: 25%;
-
-    .logo img {
-      max-width: 80%;
-    }
-  }
-
-  .forgotten-password {
-    text-align: center;
-    margin: 0.2em 0 0 0;
-  }
-
-  .forgotten-password-link {
-    clear: both;
-    color: $coral-pink;
-  }
-
-  .forgotten-password-link:hover {
-    color: $light-orange;
-  }
-
-  .forgotten-password-link .disabled {
-    opacity: 40%;
-  }
-}
-
-.login-view {
-  .login-form {
-    padding-top: 4rem;
-  }
+@NgModule({
+    declarations: [
+        LogoutComponent
+    ],
+    exports: [
+        LogoutComponent
+    ],
+    imports: [
+        CommonModule,
+        LabelModule,
+        LogoUiModule,
+    ]
+})
+export class LogoutModule {
 }

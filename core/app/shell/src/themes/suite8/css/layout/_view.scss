@@ -28,6 +28,91 @@
   padding-left: 1.6em;
   padding-right: 1.6em;
 }
+
 .small-font {
   font-size: 0.85em;
+}
+
+.full-height-view {
+  min-height: calc(100vh - 3.2em);
+
+  .full-height-view-row {
+
+    @media all and (min-width: $breakpoint-xsmall) {
+      max-width: 24em;
+
+      .logo img {
+        max-width: 22em;
+      }
+    }
+
+    @media all and (max-width: $breakpoint-medium) {
+      .logo img {
+        max-width: 20em;
+      }
+    }
+
+    @media all and (max-width: $breakpoint-xsmall) {
+      .logo img {
+        max-width: 20em;
+      }
+    }
+
+    img {
+      text-align: center;
+      max-width: 22em;
+    }
+  }
+}
+
+.page-title {
+  color: $shell-grey;
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin: 1em 0.7em;
+  letter-spacing: .1em;
+  text-align: center;
+
+  @media all and (min-width: $breakpoint-xsmall) {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media all and (max-width: $breakpoint-medium) {
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media all and (max-width: $breakpoint-xsmall) {
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+
+}
+
+.page-subtitle {
+  color: $shell-grey;
+  text-align: center;
+
+  @media all and (min-width: $breakpoint-xsmall) {
+    h5 {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media all and (max-width: $breakpoint-medium) {
+    h5 {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media all and (max-width: $breakpoint-xsmall) {
+    h5 {
+      font-size: 1.1rem;
+    }
+  }
+
 }

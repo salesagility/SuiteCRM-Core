@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,58 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-/* --------- FORM SECTION ---------- */
+import {Component} from '@angular/core';
+import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 
-.login-form {
-  @media all and (min-width: $breakpoint-xsmall) {
-    text-align: center;
-    width: 25em;
-    margin: auto auto;
 
-    .logo img {
-      max-width: 95%;
+@Component({
+    selector: 'scrm-logout',
+    templateUrl: './logout.component.html',
+    styleUrls: [],
+})
+export class LogoutComponent {
+
+    constructor(protected configs: SystemConfigStore) {
     }
-  }
 
-  @media all and (max-width: $breakpoint-medium) {
-    .logo img {
-      max-width: 75%;
+    getLoginURL(): string {
+        return './';
     }
-  }
-
-  @media all and (max-width: $breakpoint-xsmall) {
-    text-align: center;
-    margin: 5% auto;
-    position: absolute;
-    width: 95%;
-    top: 25%;
-
-    .logo img {
-      max-width: 80%;
-    }
-  }
-
-  .forgotten-password {
-    text-align: center;
-    margin: 0.2em 0 0 0;
-  }
-
-  .forgotten-password-link {
-    clear: both;
-    color: $coral-pink;
-  }
-
-  .forgotten-password-link:hover {
-    color: $light-orange;
-  }
-
-  .forgotten-password-link .disabled {
-    opacity: 40%;
-  }
-}
-
-.login-view {
-  .login-form {
-    padding-top: 4rem;
-  }
 }
