@@ -93,4 +93,13 @@ export class BaseRouteService {
 
         return `auth/logout`;
     }
+
+    /**
+     * Is logged out page
+     */
+    public isLoggedOutPath(): boolean {
+        const path = window.location.pathname;
+
+        return path.includes('logged-out');
+    }
 }

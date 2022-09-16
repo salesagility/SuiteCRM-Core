@@ -25,7 +25,7 @@
  */
 
 import {Injectable, Injector} from '@angular/core';
-import {Router} from '@angular/router';
+import {Route, Router} from '@angular/router';
 import {
     AppStateStore,
     AuthGuard,
@@ -43,7 +43,9 @@ import {
     LoginUiComponent,
     RecordComponent,
     SystemConfigStore,
-    SystemNameService
+    SystemNameService,
+    BaseRouteService,
+    LogoutComponent
 } from 'core';
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
@@ -57,7 +59,8 @@ export class AppInit {
         protected appStore: AppStateStore,
         protected injector: Injector,
         protected extensionLoader: ExtensionLoader,
-        protected systemNameService: SystemNameService
+        protected systemNameService: SystemNameService,
+        protected baseRoute: BaseRouteService
     ) {
     }
 
@@ -72,6 +75,35 @@ export class AppInit {
                 this.extensionLoader.load(this.injector).pipe(take(1)).subscribe(() => {
                     const routes = this.router.config;
                     const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
+
+                    let loggedOutConfig = {
+                        path: 'logged-out',
+                        component: LogoutComponent,
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
+                        }
+                    } as Route;
+
+                    if (this.baseRoute.isLoggedOutPath()) {
+                        loggedOutConfig.path = '';
+                        routes.push(loggedOutConfig);
+                        routes.push({
+                            path: '**',
+                            redirectTo: ''
+                        });
+                        this.router.resetConfig(routes);
+                        resolve();
+                        return;
+                    }
 
                     routes.push({
                         path: 'Login',
@@ -109,6 +141,8 @@ export class AppInit {
                             }
                         }
                     });
+
+                    routes.push(loggedOutConfig);
 
                     Object.keys(configRoutes).forEach(routeName => {
                         if (configRoutes[routeName].index) {
