@@ -267,4 +267,44 @@ export class AuthService {
 
         return this.http.get(url, {headers});
     }
+
+    /**
+     * Get route for session expired handling
+     * @return string
+     */
+    public getSessionExpiredRoute(): string {
+        const sessionExpiredConfig = this.configs.getConfigValue('session-expired') ?? [];
+        return (sessionExpiredConfig?.path ?? 'Login') as string;
+    }
+
+    /**
+     * Handle invalid session on request
+     * @return boolean
+     */
+    public handleInvalidSession(message: string): void {
+        const redirect = this.sessionExpiredRedirect()
+
+        if (redirect) {
+            this.handleSessionExpiredRedirect();
+            return;
+        }
+
+        this.logout(message);
+    }
+
+    /**
+     * Redirect to route configured for session expiry
+     */
+    public handleSessionExpiredRedirect(): void {
+        window.location.href = this.getSessionExpiredRoute();
+    }
+
+    /**
+     * Is to re-direct on session expiry
+     * @return boolean
+     */
+    public sessionExpiredRedirect(): boolean {
+        const sessionExpiredConfig = this.configs.getConfigValue('session-expired') ?? [];
+        return isTrue(sessionExpiredConfig?.redirect ?? false);
+    }
 }

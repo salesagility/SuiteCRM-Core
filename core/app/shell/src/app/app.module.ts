@@ -40,6 +40,7 @@ import {AppComponent} from './app.component';
 import {
     AppStateStore,
     AuthService,
+    BaseRouteService,
     ClassicViewUiModule,
     ColumnChooserModule,
     CreateRecordModule,
@@ -58,8 +59,7 @@ import {
     NavbarUiModule,
     RecordListModalModule,
     RecordModule,
-    TableModule,
-    BaseRouteService
+    TableModule
 } from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -140,10 +140,16 @@ export class AppModule {
         });
 
         const logoutLink = onError((err) => {
+
+            const networkError = (err.networkError ?? null) as any
+            if (networkError !== null && networkError.status === 403 && networkError.error.detail === 'Invalid CSRF token') {
+                auth.handleInvalidSession('LBL_SESSION_EXPIRED');
+            }
+
             if (err.graphQLErrors && err.graphQLErrors.length > 0) {
                 err.graphQLErrors.forEach((value: GraphQLError) => {
                     if (this.auth.isUserLoggedIn.value === true && value.message.includes('Access Denied')) {
-                        auth.logout('LBL_SESSION_EXPIRED');
+                        auth.handleInvalidSession('LBL_SESSION_EXPIRED');
                     }
                 });
             }
