@@ -281,6 +281,9 @@ return static function (ContainerConfigurator $containerConfig) {
 
         $containerConfig->parameters()->set('auth.logout.redirect', true);
         $containerConfig->parameters()->set('auth.logout.path', 'saml/logout');
+
+        $containerConfig->parameters()->set('auth.session-expired.redirect', true);
+        $containerConfig->parameters()->set('auth.session-expired.path', 'logged-out');
     }
 
 };
