@@ -11,3 +11,29 @@
         }       
     }
 }
+
+.message-box {
+    .modal-dialog {
+        .modal-content {
+            .modal-body {
+                #ComposeView {
+                    .panel {
+                        .col-sm-8 {
+                            width: 99%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.view-module-Emails {
+    #ComposeView {
+        .panel {
+            .col-sm-8 {
+                width: 99%;
+            }
+        }
+    }
+}
