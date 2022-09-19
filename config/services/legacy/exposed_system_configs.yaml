@@ -31,4 +31,5 @@ parameters:
     ui: true
     extensions: true
     logout: true
+    session-expired: true
     site_url: true

@@ -58,6 +58,7 @@ services:
       $ldapAutoCreateExtraFieldsMap: '%ldap.autocreate.extra_fields_map%'
       $samlAutoCreateAttributesMap: '%saml.autocreate.attributes_map%'
       $logoutConfig: '%auth.logout%'
+      $sessionExpiredConfig: '%auth.session-expired%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]

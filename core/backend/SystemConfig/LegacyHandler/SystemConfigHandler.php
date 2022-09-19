@@ -101,6 +101,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $uiConfigs
      * @param array $extensions
      * @param array $logoutConfig
+     * @param array $sessionExpiredConfig
      * @param SessionInterface $session
      * @param NavigationProviderInterface $navigation
      */
@@ -128,6 +129,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $uiConfigs,
         array $extensions,
         array $logoutConfig,
+        array $sessionExpiredConfig,
         SessionInterface $session,
         NavigationProviderInterface $navigation
     ) {
@@ -157,6 +159,9 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
 
         $logoutConfig = $logoutConfig ?? [];
         $this->injectedSystemConfigs['logout'] = $logoutConfig;
+
+        $sessionExpiredConfig = $sessionExpiredConfig ?? [];
+        $this->injectedSystemConfigs['session-expired'] = $sessionExpiredConfig;
 
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;

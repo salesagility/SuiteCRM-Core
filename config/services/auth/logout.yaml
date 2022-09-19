@@ -2,3 +2,6 @@ parameters:
   auth.logout:
     path: "%auth.logout.path%"
     redirect: "%auth.logout.redirect%"
+  auth.session-expired:
+    path: "%auth.session-expired.path%"
+    redirect: "%auth.session-expired.redirect%"

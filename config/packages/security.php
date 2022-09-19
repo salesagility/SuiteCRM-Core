@@ -72,6 +72,9 @@ return static function (ContainerConfigurator $containerConfig) {
     $containerConfig->parameters()->set('auth.logout.redirect', false);
     $containerConfig->parameters()->set('auth.logout.path', 'logout');
 
+    $containerConfig->parameters()->set('auth.session-expired.redirect', false);
+    $containerConfig->parameters()->set('auth.session-expired.path', 'Login');
+
     if ($authType === 'native') {
         $containerConfig->extension('security', [
             'firewalls' => array_merge_recursive($baseFirewall, [
