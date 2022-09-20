@@ -271,6 +271,8 @@ $mod_strings = array(
     'LBL_LICENSE' => 'License',
 
     'LBL_LDAP_TITLE' => 'LDAP Support',
+    'LBL_LDAP_LEGACY_WARNING' => 'LDAP Warning',
+    'LBL_LDAP_LEGACY_WARNING_MORE' => 'This LDAP configuration will only be used for v4 API authentication. To configure SuiteCRM login to use LDAP, add the needed configurations to the .env.local file. See LDAP configuration docs for more information.',
     'LBL_LDAP_ENABLE' => 'Enable LDAP Authentication',
     'LBL_LDAP_HELP_TXT' => 'When LDAP authentication is enabled, passwords can only be handled through LDAP. None of the SuiteCRM Password Management feature settings will apply.',
     'LBL_LDAP_SERVER_HOSTNAME' => 'Server:',
