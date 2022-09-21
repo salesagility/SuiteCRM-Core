@@ -271,7 +271,7 @@
 							</tr>
 
 										<tr>
-									        <td  scope="row" width="35%">{$MOD.LBL_PASSWORD_GENERATE_TEMPLATE_MSG}: </td>
+									        <td  scope="row" width="25%">{$MOD.LBL_PASSWORD_GENERATE_TEMPLATE_MSG}: </td>
 									        <td>
 										        <span class="action-btn-create-edit">
 									        		<select tabindex='251' id="generatepasswordtmpl" name="passwordsetting_generatepasswordtmpl" {$IE_DISABLED}>{$TMPL_DRPDWN_GENERATE}</select>													
@@ -319,7 +319,7 @@
 
 							{if !empty($settings.system_ldap_enabled)}
 									{assign var='system_ldap_enabled_checked' value='CHECKED'}
-									{assign var='ldap_display' value='inline'}
+									{assign var='ldap_display' value='table'}
 								{else}
 									{assign var='system_ldap_enabled_checked' value=''}
 									{assign var='ldap_display' value='none'}
@@ -357,21 +357,21 @@
 													<table  cellspacing='0' cellpadding='1' id='ldap_display' style='display:{$ldap_display}' width='100%'>
 														<tr>
 															<td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_SERVER_HOSTNAME} {sugar_help text=$MOD.LBL_LDAP_SERVER_HOSTNAME_DESC}</td>{$settings.proxy_host}
-															<td width='25%' align="left"  valign='top'><input name="ldap_hostname" size='25' type="text" value="{$settings.ldap_hostname}"></td>
+															<td width='25%' align="left"  valign='top'><input name="ldap_hostname" size='35' type="text" value="{$settings.ldap_hostname}"></td>
 															<td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_SERVER_PORT} {sugar_help text=$MOD.LBL_LDAP_SERVER_PORT_DESC}</td>{$settings.proxy_port}
-															<td width='25%' align="left"  valign='top' ><input name="ldap_port" size='6' type="text" value="{$settings.ldap_port}"></td>
+															<td width='25%' align="left"  valign='top' ><input name="ldap_port" size='35' type="text" value="{$settings.ldap_port}"></td>
 														</tr>
 														<tr>
 															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_USER_DN} {sugar_help text=$MOD.LBL_LDAP_USER_DN_DESC}</td>
 															<td align="left"  valign='middle'><input name="ldap_base_dn" size='35' type="text" value="{$settings.ldap_base_dn}"></td>
 															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_USER_FILTER} {sugar_help text=$MOD.LBL_LDAP_USER_FILTER_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_login_filter" size='25' type="text" value="{$settings.ldap_login_filter}"></td>
+															<td align="left"  valign='middle'><input name="ldap_login_filter" size='35' type="text" value="{$settings.ldap_login_filter}"></td>
 														</tr>
 														<tr>
 															<td scope="row" valign='top' nowrap>{$MOD.LBL_LDAP_BIND_ATTRIBUTE} {sugar_help text=$MOD.LBL_LDAP_BIND_ATTRIBUTE_DESC}</td>
-															<td align="left"  valign='top'><input name="ldap_bind_attr" size='25' type="text" value="{$settings.ldap_bind_attr}"> </td>
+															<td align="left"  valign='top'><input name="ldap_bind_attr" size='35' type="text" value="{$settings.ldap_bind_attr}"> </td>
 															<td scope="row" valign='middle' nowrap>{$MOD.LBL_LDAP_LOGIN_ATTRIBUTE} {sugar_help text=$MOD.LBL_LDAP_LOGIN_ATTRIBUTE_DESC}</td>
-															<td align="left"  valign='middle'><input name="ldap_login_attr" size='25' type="text" value="{$settings.ldap_login_attr}"></td>
+															<td align="left"  valign='middle'><input name="ldap_login_attr" size='35' type="text" value="{$settings.ldap_login_attr}"></td>
 														</tr>
 														<tr>
 															<td scope="row" valign='top'nowrap>{$MOD.LBL_LDAP_GROUP_MEMBERSHIP} {sugar_help text=$MOD.LBL_LDAP_GROUP_MEMBERSHIP_DESC}</td>
