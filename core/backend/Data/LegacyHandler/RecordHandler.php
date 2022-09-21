@@ -142,8 +142,14 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
         BeanFactory::unregisterBean($moduleName, $id);
 
+        global $disable_date_format;
+        $disableOriginal = $disable_date_format;
+        $disable_date_format = true;
+
         /** @var SugarBean $bean */
         $bean = BeanFactory::getBean($moduleName, $id, ['encode' => false]);
+
+        $disable_date_format = $disableOriginal;
 
         if (!$bean) {
             $bean = $this->newBeanSafe($moduleName);
