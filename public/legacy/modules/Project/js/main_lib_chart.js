@@ -32,17 +32,18 @@ $(function () {
   gen_chart('0');
 
   //message for ajax loading screen
-  var msg = '<div><br />' +
-    '<h1><img align="absmiddle" src="themes/default/images/img_loading.gif"> ' + loading + '</h1>' + '</div>';
+  var msg = '<div>' +
+    '<h1 style="margin-top:0;margin-bottom:0;padding: 1em;"><img align="absmiddle" src="themes/default/images/img_loading.gif"> ' + loading + '</h1>' + '</div>';
   //on button click re-generate the chart
     $(document.body).on('click','#create_link', function(e) {
         $(".qtip").remove(); //Clear all tooltips before re-generating the chart
 
         $.blockUI({//ajax loading screen
+           
             message:msg,
             css: {
-                height: '50px',
-                width: '240px',
+                height: '150px',
+                width: '350px',
                // top:  ($(window).height() - 50) /2 + 'px',
                 left: ($(window).width() - 240) /2 + 'px'//centre box
             }
@@ -57,8 +58,8 @@ $(function () {
         $.blockUI({//ajax loading screen
             message:msg,
             css: {
-                height: '50px',
-                width: '240px',
+                height: '150px',
+                width: '350px',
                 // top:  ($(window).height() - 50) /2 + 'px',
                 left: ($(window).width() - 240) /2 + 'px'//centre box
             }
@@ -73,8 +74,8 @@ $(function () {
         $.blockUI({//ajax loading screen
             message:msg,
             css: {
-                height: '50px',
-                width: '240px',
+                height: '150px',
+                width: '350px',
                 // top:  ($(window).height() - 50) /2 + 'px',
                 left: ($(window).width() - 240) /2 + 'px'//centre box
             }

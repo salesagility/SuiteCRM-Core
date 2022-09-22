@@ -94,3 +94,37 @@
         background: $nepal-grey;
     }
 }
+
+.view-action-ResourceList {
+    .main_table {
+        line-height: 30px;
+        td.top_row {
+            a#prev_month {
+                margin-left: 1em;
+                img {
+                    position: relative;
+                    top: 0.5px;
+                }
+            }
+        }
+        td.top_row {
+            a#next_month {
+                margin-right: 1em;
+                img {
+                    position: relative;
+                    top: 0.5px;
+                }
+            }
+        }
+    }
+    @-moz-document url-prefix() {
+        #date_start_trigger {
+            position: relative;
+            top: 3.8px;
+        }
+    }
+}
+
+.blockPage {
+    border-radius: 5px;
+}
