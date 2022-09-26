@@ -75,7 +75,7 @@ export class DateTimeFilterFieldComponent extends BaseDateTimeComponent implemen
             this.dateTimeModel.time = {hour: 0, minute: 0, second: 0} as NgbTimeStruct;
             this.field.formControl.setValue(null);
         } else {
-            this.dateTimeModel = DateTimeModel.toDateTimeStruct(this.formatter, criteria);
+            this.dateTimeModel = DateTimeModel.internalToDateTimeStruct(this.formatter, criteria);
             if (this.dateTimeModel === null) {
                 this.field.formControl.setValue(null);
                 return;

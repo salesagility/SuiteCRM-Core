@@ -25,12 +25,7 @@
  */
 
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {
-    NgbCalendar,
-    NgbDateStruct,
-    NgbPopover, NgbPopoverConfig,
-    NgbTimeStruct
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateStruct, NgbPopover, NgbPopoverConfig, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonInterface, isEmptyString} from 'common';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -72,7 +67,7 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
             this.dateTimeModel.time = {hour: 0, minute: 0, second: 0} as NgbTimeStruct;
             this.field.formControl.setValue(null);
         } else {
-            this.dateTimeModel = DateTimeModel.toDateTimeStruct(this.formatter, this.field.value);
+            this.dateTimeModel = DateTimeModel.internalToDateTimeStruct(this.formatter, this.field.value);
             if (this.dateTimeModel === null) {
                 this.field.formControl.setValue(null);
                 return;

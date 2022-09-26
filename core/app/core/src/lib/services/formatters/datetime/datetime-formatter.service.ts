@@ -123,14 +123,6 @@ export class DatetimeFormatter implements Formatter {
         return this.getDateTimeFormat();
     }
 
-    toUserTimezoneFormat(dateString: string, options?: FormatOptions): string {
-        const fromFormat = (options && options.fromFormat) || this.getInternalFormat();
-        if (dateString) {
-            return this.formatDateTime(dateString, this.getUserFormat(), fromFormat, this.locale, this.userTimeZone());
-        }
-        return '';
-    }
-
     /**
      * Format Internal Date to User. It assumes internal date is in GMT/UTC
      *
@@ -144,16 +136,20 @@ export class DatetimeFormatter implements Formatter {
                 zone: 'GMT'
             });
 
-            dateTime.setZone(this.preferences.getUserPreference('timezone'));
-
             if (!dateTime.isValid) {
                 return dateString;
             }
-            return formatDate(dateTime.toJSDate(),  this.getUserFormat(), this.locale, this.userTimeZone());
+            return formatDate(dateTime.toJSDate(), this.getUserFormat(), this.locale, this.userTimeZone());
         }
         return '';
     }
 
+    /**
+     * Format User Date to Internal format. It assumes the date is in the user timezone
+     *
+     * @param dateString
+     * @param options
+     */
     toInternalFormat(dateString: string, options?: FormatOptions): string {
         const fromFormat = (options && options.fromFormat) || this.getUserFormat();
         if (dateString) {
@@ -161,8 +157,6 @@ export class DatetimeFormatter implements Formatter {
             let date = this.toDateTime(dateString, fromFormat, {
                 zone: this.preferences.getUserPreference('timezone')
             });
-
-            date.setZone('GMT');
 
             return formatDate(date.toJSDate(), this.getInternalFormat(), this.locale, 'GMT');
         }
@@ -223,12 +217,41 @@ export class DatetimeFormatter implements Formatter {
         };
     }
 
+    internalDateTimeFormatToStruct(datetime: string): { date: NgbDateStruct; time: NgbTimeStruct } {
+        if (!datetime) {
+            return null;
+        }
+
+        const dateTime = this.toDateTime(datetime, this.getInternalDateTimeFormat(), {
+            zone: 'GMT'
+        });
+
+        const rezoned = dateTime.setZone(this.preferences.getUserPreference('timezone'));
+
+        if (!dateTime.isValid) {
+            return null;
+        }
+
+        return {
+            date: {
+                day: rezoned.day,
+                month: rezoned.month,
+                year: rezoned.year
+            } as NgbDateStruct,
+            time: {
+                hour: rezoned.hour,
+                minute: rezoned.minute,
+                second: rezoned.second,
+            } as NgbTimeStruct
+        };
+    }
+
     userDateFormatToStruct(datetime: string): NgbDateStruct {
         if (!datetime) {
             return null;
         }
 
-        const dateTime = this.toDateTime(datetime, '',{
+        const dateTime = this.toDateTime(datetime, '', {
             zone: this.preferences.getUserPreference('timezone')
         });
 
