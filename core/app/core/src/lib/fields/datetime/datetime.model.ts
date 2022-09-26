@@ -1,4 +1,4 @@
-import {NgbTimeStruct, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DatetimeFormatter} from "../../services/formatters/datetime/datetime-formatter.service";
 
 export class DateTimeModel {
@@ -18,6 +18,23 @@ export class DateTimeModel {
             return null;
         }
         const dateTimeStruct = formatter.userDateTimeFormatToStruct(dateString);
+
+        if (!dateTimeStruct) {
+            return null;
+        }
+        const {date, time} = dateTimeStruct;
+        return new DateTimeModel({
+            date: date,
+            time: time
+        });
+
+    }
+
+    public static internalToDateTimeStruct(formatter, dateString: string): DateTimeModel | null {
+        if (!dateString) {
+            return null;
+        }
+        const dateTimeStruct = formatter.internalDateTimeFormatToStruct(dateString);
 
         if (!dateTimeStruct) {
             return null;
