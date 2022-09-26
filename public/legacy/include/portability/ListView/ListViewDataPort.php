@@ -142,6 +142,10 @@ class ListViewDataPort extends ListViewData
             [$rows] = $this->runSecondaryQueries($ret_array, $id_list, $idIndex, $rows);
             $this->fillParentFields($seed, $filter_fields, $id, $idIndex, $rows);
 
+            global $disable_date_format;
+            $disableOriginal = $disable_date_format;
+            $disable_date_format = true;
+
             foreach ($rows as $row) {
                 $temp = clone $seed;
                 $dataIndex = count($data);
@@ -155,6 +159,8 @@ class ListViewDataPort extends ListViewData
 
                 $this->addACLInfo($temp, $pageData, $dataIndex);
             }
+
+            $disable_date_format = $disableOriginal;
         }
 
         $this->addPaginationInfo($offset, $limit, $count, $totalCounted, $main_query, $order, $pageData);
