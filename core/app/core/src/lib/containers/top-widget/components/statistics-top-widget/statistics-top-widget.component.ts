@@ -31,9 +31,7 @@ import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-
 import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {StatisticsQuery} from 'common';
-import {ViewContext} from 'common';
-import {SingleValueStatisticsState} from 'common';
+import {SingleValueStatisticsState, StatisticsQuery, ViewContext} from 'common';
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };
@@ -192,7 +190,18 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
 
     isValueEmpty(stats: SingleValueStatisticsState) {
-        return stats.statistic.metadata.emptyValueString === stats.field.value;
+        const emptyValue = stats?.statistic?.metadata?.emptyValueString ?? null;
+        if (emptyValue) {
+            return false;
+        }
+
+        const value = stats?.field?.value ?? null;
+
+        if (value) {
+            return true;
+        }
+
+        return emptyValue === value;
     }
 
     getMetadataEntry(stat: SingleValueStatisticsState, name: string): string {
