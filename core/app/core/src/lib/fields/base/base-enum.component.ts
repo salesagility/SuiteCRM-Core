@@ -283,7 +283,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         const mappedOptions: { [key: string]: Option[] } = {};
         Object.keys(parentOptions).forEach(key => {
             mappedOptions[key] = childOptions.filter(
-                option => String(option.value).startsWith(parentOptions[key])
+                option => String(option.value).startsWith(key)
             );
         });
         return mappedOptions;
