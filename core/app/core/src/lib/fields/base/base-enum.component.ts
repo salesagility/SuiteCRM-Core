@@ -283,7 +283,8 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         const mappedOptions: { [key: string]: Option[] } = {};
         Object.keys(parentOptions).forEach(key => {
             mappedOptions[key] = childOptions.filter(
-                option => String(option.value).startsWith(parentOptions[key])
+                //Fixed #155 - Dynamic Dropdown in Suitecrm 8 using parent enum Labels instead of values
+                option => String(option.value).startsWith(key)
             );
         });
         return mappedOptions;
