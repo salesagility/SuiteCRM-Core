@@ -87,7 +87,7 @@
             var mbox = data.selected[0];
             // reload with different inbox
             $('[name=folders_id]').val(mbox);
-            top.location = 'index.php?module=Emails&action=index&folders_id=' + mbox;
+            window.location = 'index.php?module=Emails&action=index&folders_id=' + mbox;
           }
         });
 
