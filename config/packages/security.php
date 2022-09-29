@@ -29,6 +29,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Module\Users\Entity\User;
 use App\Security\Ldap\AppLdapUserProvider;
+use App\Security\Saml\AppSamlAuthenticator;
 use App\Security\UserChecker;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Ldap\Ldap;
@@ -43,7 +44,7 @@ return static function (ContainerConfigurator $containerConfig) {
     $env = $_ENV ?? [];
     $authType = $env['AUTH_TYPE'] ?? 'native';
 
-    $maxAttempts = (int) ($env['LOGIN_THROTTLING_MAX_ATTEMPTS'] ?? 3);
+    $maxAttempts = (int)($env['LOGIN_THROTTLING_MAX_ATTEMPTS'] ?? 3);
 
     $baseFirewall = [
         'dev' => [
@@ -167,7 +168,7 @@ return static function (ContainerConfigurator $containerConfig) {
             'firewalls' => array_merge_recursive($baseFirewall, [
                 'main' => [
                     'json_login_ldap' => $baseLdapConfig,
-                    'provider' =>  $baseLdapConfig['provider'],
+                    'provider' => $baseLdapConfig['provider'],
                     'login_throttling' => [
                         'max_attempts' => $maxAttempts
                     ],
@@ -187,6 +188,10 @@ return static function (ContainerConfigurator $containerConfig) {
         $samlMainFirewallConfig = [
             'context' => 'app_context',
             'pattern' => '^/(?!auth|logged-out)',
+            'custom_authenticators' => [
+                'app.saml.authenticator',
+            ],
+            'entry_point' => 'app.saml.authenticator',
             'saml' => [
                 'provider' => 'app_user_provider',
                 // Match SAML attribute 'uid' with username.
@@ -284,6 +289,12 @@ return static function (ContainerConfigurator $containerConfig) {
 
         $containerConfig->parameters()->set('auth.session-expired.redirect', true);
         $containerConfig->parameters()->set('auth.session-expired.path', 'logged-out');
+
+        $services = $containerConfig->services();
+
+        $services->set('app.saml.authenticator')
+            ->class(AppSamlAuthenticator::class)
+            ->parent('security.authenticator.saml.main');
     }
 
 };
