@@ -9,7 +9,7 @@
                 padding-bottom: 1em;
             }          
             th {
-                border-bottom: 1px solid lightgrey;
+                border-bottom: 1px solid $mid-light-grey;
             }
             border-bottom: none;
         }
@@ -79,7 +79,7 @@
     }
 }
 
-@media (min-width: 750px) and (max-width:767px) {
+@media (min-width: 750px) and (max-width:768px) {
     .aop-settings {
         #case_status_settings {
             tr {
@@ -90,8 +90,25 @@
                     &:nth-child(3) {
                         width: 100%;
                     }
+                    white-space: nowrap;
                 }
+            }
+        }
+        #email_settings {
+            tr td {
+                width: auto;
             }
         }
     }
 }
+
+@media (max-width:1200px) {
+    .aop-settings {  
+        #case_status_settings {
+            tr td {
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
