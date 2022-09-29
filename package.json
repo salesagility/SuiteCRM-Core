@@ -1,6 +1,6 @@
 {
   "name": "suitecrm",
-  "version": "8.2.0-beta.2",
+  "version": "8.2.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run start:shell",
