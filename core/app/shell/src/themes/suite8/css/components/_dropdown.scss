@@ -270,6 +270,9 @@ ul.main li a,
   &:hover {
     background: $dusky-blue;
   }
+  &::after {
+    margin-top: -5px;
+  }
 }
 
 .global-link-item .nav-link {
@@ -509,6 +512,8 @@ ul.main li a,
       text-overflow: ellipsis;
       display: inline-block;
       vertical-align: middle;
+      position: relative;
+      top: -2px;     
     }
   }
 }
