@@ -34,17 +34,21 @@
 
         <div class="d-flex justify-content-center align-items-baseline widget-bar-entry p-2">
 
+            <ng-container *ngIf="!shouldHide(vm.statistics[item.key], item.value)">
 
-            <div class="pr-1 widget-bar-entry-label" *ngIf="item.value.labelKey && getLabel(item.value.labelKey)">
-                <ng-container *ngIf="!isValueEmpty(vm.statistics[item.key]) || item.value.hideValueIfEmpty !== true; else empty">
-                    {{getLabel(item.value.labelKey) | uppercase}}:
-                </ng-container>
-                <ng-template #empty>
-                    {{getLabel(item.value.labelKey) | uppercase}}
-                </ng-template>
-            </div>
+                <div *ngIf="item.value.labelKey && getLabel(item.value.labelKey)" class="pr-1 widget-bar-entry-label">
+                    <ng-container *ngIf="!isValueEmpty(vm.statistics[item.key])">
+                        {{getLabel(item.value.labelKey) | uppercase}}:
+                    </ng-container>
+                    <ng-container *ngIf="isValueEmpty(vm.statistics[item.key])">
+                        {{getLabel(item.value.labelKey) | uppercase}}
+                    </ng-container>
+                </div>
 
-            <ng-container *ngIf="item.key && vm.statistics[item.key]">
+            </ng-container>
+
+            <ng-container
+                *ngIf="item.key && vm.statistics[item.key] && !shouldHide(vm.statistics[item.key], item.value)">
 
                 <div class="pl-1 pr-1 widget-bar-entry-value"
                      *ngIf="!vm.statistics[item.key].loading && vm.statistics[item.key].field">
@@ -58,7 +62,6 @@
 
             </ng-container>
 
-
             <div class="pl-1 pr-1 widget-bar-entry-loading" *ngIf="(item.value.store.loading$ | async) as loading">
                 <scrm-inline-loading-spinner></scrm-inline-loading-spinner>
 
@@ -67,10 +70,14 @@
                 </ng-container>
             </div>
 
-            <div class="pl-1 widget-bar-entry-end-label"
-                 *ngIf="item.value.endLabelKey && getLabel(item.value.endLabelKey)">
-                {{getLabel(item.value.endLabelKey) | uppercase}}
-            </div>
+            <ng-container *ngIf="!shouldHide(vm.statistics[item.key], item.value)">
+
+                <div *ngIf="item.value.endLabelKey && getLabel(item.value.endLabelKey)"
+                     class="pl-1 widget-bar-entry-end-label">
+                    {{getLabel(item.value.endLabelKey) | uppercase}}
+                </div>
+
+            </ng-container>
 
         </div>
 
