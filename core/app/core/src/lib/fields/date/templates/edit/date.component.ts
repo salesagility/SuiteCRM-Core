@@ -65,7 +65,7 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
             this.field.formControl.setValue(null);
         }
 
-        this.setModel(this.field.value);
+        this.dateModel = this.formatter.dateFormatToStruct(this.field.value, this.formatter.getInternalFormat());
         this.subscribeValueChanges();
     }
 
@@ -73,8 +73,9 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
         this.unsubscribeAll();
     }
 
-    setModel($event: any): void {
-        this.dateModel = this.formatter.userDateFormatToStruct($event);
+    setModel(value: any): void {
+        this.field.value = this.formatter.toInternalFormat(value);
+        this.dateModel = this.formatter.dateFormatToStruct(value, this.formatter.getUserFormat());
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {

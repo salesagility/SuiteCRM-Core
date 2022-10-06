@@ -41,7 +41,7 @@ export class DateAdapter extends NgbDateAdapter<string> {
         if (!value) {
             return null;
         }
-        return this.formatter.userDateFormatToStruct(value);
+        return this.formatter.dateFormatToStruct(value);
     }
 
     toModel(date: NgbDateStruct | null): string | null {

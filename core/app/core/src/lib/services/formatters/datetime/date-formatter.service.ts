@@ -26,6 +26,8 @@
 
 import {Injectable} from '@angular/core';
 import {DatetimeFormatter} from './datetime-formatter.service';
+import {FormatOptions} from '../formatter.model';
+import {formatDate} from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -38,6 +40,46 @@ export class DateFormatter extends DatetimeFormatter {
 
     getUserFormat(): string {
         return this.getDateFormat();
+    }
+
+    /**
+     * Format User Date to Internal format. It assumes the date is always in GMT
+     *
+     * @param dateString
+     * @param options
+     */
+    toInternalFormat(dateString: string, options?: FormatOptions): string {
+        const fromFormat = (options && options.fromFormat) || this.getUserFormat();
+        if (dateString) {
+
+            let date = this.toDateTime(dateString, fromFormat);
+
+            if (!date || !date.isValid) {
+                date = this.toDateTime(dateString);
+            }
+
+            return formatDate(date.toJSDate(), this.getInternalFormat(), this.locale);
+        }
+        return '';
+    }
+
+    /**
+     * Format Internal Date to User. It assumes internal date is in GMT/UTC
+     *
+     * @param dateString
+     * @param options
+     */
+    toUserFormat(dateString: string, options?: FormatOptions): string {
+        const fromFormat = (options && options.fromFormat) || this.getInternalFormat();
+        if (dateString) {
+            const dateTime = this.toDateTime(dateString, fromFormat);
+
+            if (!dateTime.isValid) {
+                return dateString;
+            }
+            return formatDate(dateTime.toJSDate(), this.getUserFormat(), this.locale);
+        }
+        return '';
     }
 
 }

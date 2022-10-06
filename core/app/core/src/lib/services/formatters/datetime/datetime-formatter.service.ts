@@ -266,12 +266,30 @@ export class DatetimeFormatter implements Formatter {
         } as NgbDateStruct;
     }
 
+    dateFormatToStruct(datetime: string, fromFormat = ''): NgbDateStruct {
+        if (!datetime) {
+            return null;
+        }
+
+        const dateTime = this.toDateTime(datetime, fromFormat);
+
+        if (!dateTime.isValid) {
+            return null;
+        }
+
+        return {
+            day: dateTime.day,
+            month: dateTime.month,
+            year: dateTime.year
+        } as NgbDateStruct;
+    }
+
     userTimeFormatToStruct(datetime: string): NgbTimeStruct {
         if (!datetime) {
             return null;
         }
 
-        const dateTime = this.toDateTime(datetime, '',{
+        const dateTime = this.toDateTime(datetime, '', {
             zone: this.preferences.getUserPreference('timezone')
         });
 

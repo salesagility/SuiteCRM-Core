@@ -83,8 +83,10 @@ export class DateFilterFieldComponent extends BaseDateTimeComponent implements O
         this.unsubscribeAll();
     }
 
-    setModel($event: any): void {
-        this.dateModel = this.formatter.userDateFormatToStruct($event);
+    setModel(value: any): void {
+        this.field.formControl.setValue(value);
+        this.field.value = this.formatter.toInternalFormat(value);
+        this.dateModel = this.formatter.dateFormatToStruct(value, this.formatter.getUserFormat());
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
