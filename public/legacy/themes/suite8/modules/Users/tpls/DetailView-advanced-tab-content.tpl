@@ -29,12 +29,12 @@
 advanced tab content goes here
 *}
 
-<div id="settings_suitep" >
+<div id="settings_suitep" class="users-advanced-settings">
     <div class="row detail-view-row">
         <h4>{$MOD.LBL_USER_SETTINGS}</h4>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -48,6 +48,7 @@ advanced tab content goes here
                 <input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox" value="12" {$RECEIVE_NOTIFICATIONS} disabled>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -63,10 +64,11 @@ advanced tab content goes here
                 <input tabindex='3' name='mailmerge_on' disabled class="checkbox" type="checkbox" {$MAILMERGE_ON} disabled>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-12 detail-view-row-item">
+        <div class="col-xs-12 col-sm-12 detail-view-row-item border-line" style="width: 50%;">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-2 label col-1-label">
@@ -80,10 +82,11 @@ advanced tab content goes here
                 {$SETTINGS_URL}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -97,6 +100,7 @@ advanced tab content goes here
                 {$EXPORT_DELIMITER}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -112,11 +116,12 @@ advanced tab content goes here
                 {$EXPORT_CHARSET_DISPLAY}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     {if $DISPLAY_EXTERNAL_AUTH}
         <div class="row detail-view-row">
-            <div class="col-xs-12 col-sm-12 detail-view-row-item">
+            <div class="col-xs-12 col-sm-12 detail-view-row-item border-line">
                 <!-- [hide!!] -->
                 <!-- DIV inside - colspan != 3 -->
                 <div class="col-xs-12 col-sm-2 label col-1-label">
@@ -125,16 +130,17 @@ advanced tab content goes here
                 </div>
                 <!-- /DIV inside  -->
                 <!-- phone (version 1) -->
-                <div class="col-xs-12 col-sm-10 detail-view-field " type="name" field="name">
+                <div class="col-xs-12 col-sm-10 detail-view-field" type="name" field="name">
                     <!-- simple hidden start -->
                     <input id="external_auth_only" name="external_auth_only" type="checkbox" class="checkbox" {$EXTERNAL_AUTH_ONLY_CHECKED} disabled>
                     <!-- simple hidden finish -->
-                </div>
-            </div>
-        </div>
+                </div>  
+                <div class="edit-dotted-border"></div>  
+            </div>              
+        </div>         
     {/if}
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -147,7 +153,7 @@ advanced tab content goes here
                 <!-- simple hidden start -->
                 {include file="modules/Reminders/tpls/remindersDefaults.tpl"}
                 <!-- simple hidden finish -->
-            </div>
+            </div>            
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -163,15 +169,16 @@ advanced tab content goes here
                 <input tabindex='3' name='use_real_names' disabled class="checkbox" type="checkbox" {$USE_REAL_NAMES} disabled>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
 </div>
-<div id='locale_suitep'>
+<div id='locale_suitep' class="users-locale-settings">
     <div class="row detail-view-row">
         <h4>{$MOD.LBL_USER_LOCALE}</h4>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -185,6 +192,7 @@ advanced tab content goes here
                 {$DATEFORMAT}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -200,10 +208,11 @@ advanced tab content goes here
                 {$TIMEFORMAT}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -217,6 +226,7 @@ advanced tab content goes here
                 {$TIMEZONE}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -232,10 +242,11 @@ advanced tab content goes here
                 {$CURRENCY_DISPLAY}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -249,6 +260,7 @@ advanced tab content goes here
                 {$CURRENCY_SIG_DIGITS}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -264,10 +276,11 @@ advanced tab content goes here
                 {$NUM_GRP_SEP}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -281,6 +294,7 @@ advanced tab content goes here
                 {$NUM_GRP_SEP}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -296,10 +310,11 @@ advanced tab content goes here
                 {$MOD.LBL_DECIMAL_SEP_TEXT}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-12 detail-view-row-item">
+        <div class="col-xs-12 col-sm-12 detail-view-row-item border-line" style="width: 50%;">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-2 label col-1-label">
@@ -313,7 +328,9 @@ advanced tab content goes here
                 {$NAME_FORMAT}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
+        
     </div>
 </div>
 <div id='calendar_options_suitep'>
@@ -336,7 +353,7 @@ advanced tab content goes here
                 <!-- simple hidden finish -->
             </div>
         </div>
-
+    <div class="edit-dotted-border"></div>
     </div>
     <div class="row detail-view-row">
         <div class="col-xs-12 col-sm-12 detail-view-row-item">
@@ -353,6 +370,7 @@ advanced tab content goes here
                 {if $CALENDAR_PUBLISH_KEY}{$CALENDAR_PUBLISH_URL}{else}{$MOD.LBL_NO_KEY}{/if}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
@@ -370,6 +388,7 @@ advanced tab content goes here
                 {if $CALENDAR_PUBLISH_KEY}{$CALENDAR_SEARCH_URL}{else}{$MOD.LBL_NO_KEY}{/if}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
@@ -387,6 +406,7 @@ advanced tab content goes here
                 {if $CALENDAR_PUBLISH_KEY}{$CALENDAR_ICAL_URL}{else}{$MOD.LBL_NO_KEY}{/if}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
@@ -404,10 +424,11 @@ advanced tab content goes here
                 {$FDOWDISPLAY}
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
 </div>
-<div id='google_options_suitep style="display:{$HIDE_IF_GAUTH_UNCONFIGURED}"'>
+<div id='google_options_suitep' style="display:{$HIDE_IF_GAUTH_UNCONFIGURED}"'>
     <div class="row detail-view-row">
         <h4>{$MOD.LBL_GOOGLE_API_SETTINGS}</h4>
     </div>
@@ -426,6 +447,7 @@ advanced tab content goes here
                 Current API Token is: <span style="color:{$GOOGLE_API_TOKEN_COLOR}">{$GOOGLE_API_TOKEN}</span>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
     <div class="row detail-view-row">
@@ -443,15 +465,16 @@ advanced tab content goes here
                 <input class="checkbox" type="checkbox" disabled {$GSYNC_CAL}>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
 </div>
-<div id="layout_suitep">
+<div id="layout_suitep" class="user-layout-settings">
     <div class="row detail-view-row">
         <h4>{$MOD.LBL_LAYOUT_OPTIONS}</h4>
     </div>
     <div class="row detail-view-row">
-        <div class="col-xs-12 col-sm-6 detail-view-row-item">
+        <div class="col-xs-12 col-sm-6 detail-view-row-item border-line">
             <!-- [hide!!] -->
             <!-- DIV inside - colspan != 3 -->
             <div class="col-xs-12 col-sm-4 label col-1-label">
@@ -465,6 +488,7 @@ advanced tab content goes here
                 <input name="use_group_tabs" type="hidden" value="m"><input id="use_group_tabs" type="checkbox" name="use_group_tabs" {$USE_GROUP_TABS} tabindex='12' value="gm" disabled>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
         <div class="col-xs-12 col-sm-6 detail-view-row-item">
             <!-- [hide!!] -->
@@ -480,6 +504,7 @@ advanced tab content goes here
                 <input tabindex='3' name='mailmerge_on' disabled class="checkbox" type="checkbox" {$MAILMERGE_ON} disabled>
                 <!-- simple hidden finish -->
             </div>
+            <div class="edit-dotted-border"></div>
         </div>
     </div>
 </div>

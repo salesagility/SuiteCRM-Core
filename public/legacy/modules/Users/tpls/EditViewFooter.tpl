@@ -238,17 +238,74 @@
                         <slot>{$MOD.LBL_RECEIVE_NOTIFICATIONS}:</slot>&nbsp;{sugar_help text=$MOD.LBL_RECEIVE_NOTIFICATIONS_TEXT}
                     </div>
                     <div class="row-bottom">
-                        <slot>
-                            <input type='hidden' value='0' name='receive_notifications'>
+                        <slot style="line-height: 2.3">
                             <input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox"
-                                   value="12" {$RECEIVE_NOTIFICATIONS}>
+                            value="12" {$RECEIVE_NOTIFICATIONS} style="margin-top: -1em;">
                         </slot>
                     </div>
                     <div class="bottom-dotted-border"></div>
                 </div>
             </div>
-            <!--First row ends here-->
-            <!--Second row-->
+        <!--First row ends here-->
+        <!--Second row-->
+        <div class="row-container">
+            <div class="left-col">
+                <div class="row-label"><slot>{$MOD.LBL_EXPORT_CHARSET}:</slot>&nbsp;{sugar_help text=$MOD.LBL_EXPORT_CHARSET_DESC }</div>
+                <div class="row-bottom"><slot><select tabindex='12' name="default_export_charset">{$EXPORT_CHARSET}</select></slot></div>
+                <div class="bottom-dotted-border"></div>
+            </div>
+            <div class="right-col">
+                <div class="row-label"><slot>{$MOD.LBL_REMINDER}:</slot>&nbsp;{sugar_help text=$MOD.LBL_REMINDER_TEXT }</div>
+                <div class="row-bottom"><slot>{include file="modules/Reminders/tpls/remindersDefaults.tpl"}</slot></div>
+                
+            </div>
+        </div>
+        <!--Second row ends here-->
+        <div class="row-container">
+            <div class="left-col"></div>
+            <div class="right-col">
+                <button type="button" class="btn btn-primary btn-sm" onClick="Alerts.prototype.enable()">
+                    {$MOD.LBL_ENABLE_NOTIFICATIONS}
+                </button>
+                <div class="bottom-dotted-border"></div>
+            </div>            
+        </div>
+        <div class="row-container">
+            <div class="left-col">
+                <div class="row-label"><slot>{$MOD.LBL_USE_REAL_NAMES}:</slot>&nbsp;{sugar_help text=$MOD.LBL_USE_REAL_NAMES_DESC }</div>
+                <div class="row-bottom"><slot style="line-height: 2.3"><input style="margin-top: -1em;" tabindex='12' type="checkbox" name="use_real_names" {$USE_REAL_NAMES}></slot></div>
+                <div class="bottom-dotted-border"></div>
+            </div>
+            <div class="right-col">
+                <div class="row-label"><slot>{$MOD.LBL_MAILMERGE}:</slot>&nbsp;{sugar_help text=$MOD.LBL_MAILMERGE_TEXT }</div>
+                <div class="row-bottom">
+                <slot style="line-height: 1"><input style="margin-top: -1em;" tabindex='12' name='mailmerge_on' class="checkbox" type="checkbox" {$MAILMERGE_ON}>
+                </slot>
+                </div>
+                <div class="bottom-dotted-border"></div>
+            </div>
+        </div>
+        <!--{if !empty($EXTERNAL_AUTH_CLASS) && !empty($IS_ADMIN)}-->
+        <div class="row-container">
+            <div>{capture name=SMARTY_LBL_EXTERNAL_AUTH_ONLY}&nbsp;{$MOD.LBL_EXTERNAL_AUTH_ONLY} {$EXTERNAL_AUTH_CLASS_1}{/capture}</div>
+            <div class="left-col">
+                <div class="row-label"><slot>{$EXTERNAL_AUTH_CLASS} {$MOD.LBL_ONLY}:
+                    </slot>&nbsp;{sugar_help text=$smarty.capture.SMARTY_LBL_EXTERNAL_AUTH_ONLY}</div>
+                <div class="row-bottom"> <input type='hidden' value='0' name='external_auth_only'><input type='checkbox' value='1'
+                                                                                    name='external_auth_only' {$EXTERNAL_AUTH_ONLY_CHECKED}></div>
+                <div class="bottom-dotted-border"></div>
+            </div>
+        </div>
+        <!--{/if}-->
+        </div><!--row user-->
+    </div>
+    <!-- User Settings Ends here -->
+
+    <div id="locale" style="display:{$HIDE_FOR_GROUP_AND_PORTAL}">
+         <div>
+            <h4><slot>{$MOD.LBL_USER_LOCALE}</slot></h4>
+       </div>
+       <div class="row-user">
             <div class="row-container">
                 <div class="left-col">
                     <div class="row-label">
