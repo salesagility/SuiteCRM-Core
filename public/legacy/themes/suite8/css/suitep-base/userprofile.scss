@@ -602,7 +602,16 @@ form.userprofile {
     .detail-view {
         .nav-tabs {
             li {
-                top: 1.32em;
+                &:first-child.hidden-xs {
+                    top: 1.32em;
+                }                
+            }
+            #tab-actions {
+                a.dropdown-toggle {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                }
             }
         }
         .panel-content {
@@ -611,4 +620,54 @@ form.userprofile {
             }
         }
     }
+    .tab-content {
+        .edit-dotted-border {
+          height: 0.08rem;
+          color: $dark-grey-line;
+          background-image: linear-gradient(to right, grey 10%, rgba(255, 255, 255, 0) 0%);
+          background-position: top;
+          background-size: 0.875rem 1.1875px;
+          background-repeat: repeat-x;
+          margin-right: 1rem;
+          margin-left: 0.2em;
+          clear: both;
+        }
+        .users-advanced-settings {
+          h4 {
+            padding: 0;
+            line-height: 40px;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 1.5em;
+            border-bottom: 1px solid $mid-light-grey;
+            width: 100%;
+          }
+          .border-line {
+              border-right: 1px solid $nepal-grey;
+          }
+        }
+        .users-locale-settings {
+            .border-line {
+                border-right: 1px solid $nepal-grey;
+            }
+        }
+        .user-layout-settings {
+            .border-line {
+                border-right: 1px solid $nepal-grey;
+            }
+        }
+        #locale_suitep,#calendar_options_suitep,#google_options_suitep,#layout_suitep  {
+          h4 {
+            padding: 0;
+            line-height: 40px;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 1.5em;
+            border-bottom: 1px solid $mid-light-grey;
+            width: 100%;
+          }
+        }
+      }
 }
