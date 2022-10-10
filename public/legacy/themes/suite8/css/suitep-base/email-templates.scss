@@ -1,6 +1,11 @@
 /* Email Templates */
 
 .view-module-EmailTemplates {
+    @-moz-document url-prefix() {        
+        label.button {
+            padding: 0.54em 1em!important;
+        }             
+    }
     .moduleTitle {
         border-bottom: 1px solid lightgrey;
     }
@@ -40,7 +45,7 @@
     }
     table.edit {
         border-radius: 10px;
-    }
+    }    
     #upload_div {
         margin-top: 1em;
         .button {
@@ -50,15 +55,15 @@
             height: 2.2em;
             line-height: 1em;
             letter-spacing: 0.05em;
-            padding: 0.5em 1em;
+            padding: 0.54em 1em;
             text-transform: capitalize;
             margin-top: 1em;
             margin-right: 0.5em;
             display: inline;
             &:hover {
                 background: $pale-blue;
-            }
-        }
+            }           
+        }       
     }
     #add_doc {
         background-color: $nepal-grey;
