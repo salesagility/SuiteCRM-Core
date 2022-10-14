@@ -336,7 +336,8 @@ class RenameModules
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_UNDO'],'actionScript'=>"onclick='jstransaction.undo()'" );
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_REDO'],'actionScript'=>"onclick='jstransaction.redo()'" );
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_SAVE'],'actionScript'=>"onclick='if(check_form(\"editdropdown\")){document.editdropdown.submit();}'");
-        $buttonTxt = StudioParser::buildImageButtons($buttons);
+        //Fix 166 Cannot open rename modules in php 8.0
+        $buttonTxt = (new StudioParser)->buildImageButtons($buttons);
         $smarty->assign('buttons', $buttonTxt);
         $smarty->assign('dropdown_lang', $selected_lang);
 
