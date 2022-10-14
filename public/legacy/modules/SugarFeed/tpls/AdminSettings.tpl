@@ -46,7 +46,6 @@
 <input type="hidden" name="action" value="AdminSettings">
 <input type="hidden" name="module" value="SugarFeed">
 <input type="hidden" name="process" value="">
-
 <table width="100%" cellpadding="0" cellspacing="0" border="0" class="actionsContainer">
 <tr>
 <td width="100%" colspan="2" class="action-button">
@@ -56,42 +55,40 @@
 </td>
 </tr>
 </table>
-
-<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view">
-<tr>
-<td scope="row" align="right" nowrap>{$mod.LBL_ENABLE_FEED}:</td>
-<td align="left" width="25%" colspan='4'>
-<input type="hidden" id="feed_enable_hidden" name="feed_enable" value="0">
-<input type="checkbox" id="feed_enable" name="feed_enable" value="1" {$enabled_checkbox} onClick="SugarFeedDisableCheckboxes()">
-</td>
-</tr>
-<tr>
-<td scope="row" align="right" valign="top" nowrap>{$mod.LBL_ENABLE_MODULE_LIST}:</td>
-<td colspan="4" width="95%">
-<table id="sugarfeed_modulelist" cellspacing=3 border=0>
-{foreach name=feedModuleList from=$module_list key=i item=entry}
-{if ($i % 2)==0}<tr>{/if}
-<td scope="row" align="right">{$entry.label}:</td>
-<td>
-<input type="hidden" name="modules[module_{$entry.module}]" value="0">
-<input type="checkbox" id="modules[module_{$entry.module}]" name="modules[module_{$entry.module}]" value="1" {if $entry.enabled==1}CHECKED{/if}>
-</td>
-{if ($i % 2)==1}</tr>{/if}
-{/foreach}
-</table>
-</td></tr>
-<tr>
-<td scope="row" align="right" nowrap>{$mod.LBL_ENABLE_USER_FEED}:</td>
-<td align="left" width="25%">
-<input type="hidden" id="modules[module_UserFeed]" name="modules[module_UserFeed]" value="0">
-<input type="checkbox" id="modules[module_UserFeed]" name="modules[module_UserFeed]" value="1" {if $user_feed_enabled==1}CHECKED{/if}>
-</td>
-<td colspan="3" width="70%">&nbsp;</td>
-</tr>
-</table>
+<div class="activity-stream-container">
+   <div class="activity-box-enable">
+      <div class="activity-left-label-enable">{$mod.LBL_ENABLE_FEED}:</div>
+      <div class="activity-right-label-enable">
+         <input type="hidden" id="feed_enable_hidden" name="feed_enable" value="0">
+         <input type="checkbox" id="feed_enable" name="feed_enable" value="1" {$enabled_checkbox} onClick="SugarFeedDisableCheckboxes()">
+      </div>
+   </div>
+   <div class="activity-box">
+      <div class="activity-left-label">{$mod.LBL_ENABLE_MODULE_LIST}:</div>
+      <div class="activity-right-label">
+         <div id="sugarfeed_modulelist" cellspacing=3 border=0>
+         {foreach name=feedModuleList from=$module_list key=i item=entry}
+         {if ($i % 2)==0}<div class="activate-feed">{/if}
+         <span scope="row" align="right" style="padding-right: 3em;">{$entry.label}:</span>
+         <span style="padding-right: 4em;
+    padding-left: 4em;">
+         <input type="hidden" name="modules[module_{$entry.module}]" value="0">
+         <input type="checkbox" id="modules[module_{$entry.module}]" name="modules[module_{$entry.module}]" value="1" {if $entry.enabled==1}CHECKED{/if}>
+         </span>
+         {if ($i % 2)==1}</div>{/if}
+         {/foreach}
+         </div>
+      </div>
+   </div>
+   <div class="activity-box-feed">
+      <div class="activity-left-label-feed">{$mod.LBL_ENABLE_USER_FEED}:</div>
+      <div class="activity-right-label-feed">
+         <input type="hidden" id="modules[module_UserFeed]" name="modules[module_UserFeed]" value="0">
+         <input type="checkbox" id="modules[module_UserFeed]" name="modules[module_UserFeed]" value="1" {if $user_feed_enabled==1}CHECKED{/if}>
+      </div>
+   </div>
+</div>
 </form>
-
-
 <script type="text/javascript">
 var SugarFeedCheckboxList = new Object();
 SugarFeedCheckboxList['module_UserFeed'] = 'modules[module_UserFeed]';

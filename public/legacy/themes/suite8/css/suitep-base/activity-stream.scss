@@ -3,6 +3,7 @@
     .moduleTitle {
         border-bottom: 1px solid lightgrey;
         margin-bottom: 1em;
+        max-width: 100%;
     }
     .actionsContainer {
         position: absolute;
@@ -24,13 +25,71 @@
                 background: $pale-blue;
             }
         }
-    }
-    table.view {
+    }  
+    .activity-stream-container {
+        line-height: 3em;
+        background: $white;
         border-radius: 10px;
-        tr td {  
-            padding-left: 1em;
-            padding-top: 0.5em;
-            vertical-align: middle;
+        padding: 1em;
+        .activity-box-enable { 
+            display: flex;
+            .activity-left-label-enable {
+                width: 22.3%;
+                @media (min-width: 768px) and (max-width: 1024px) {
+                    width: 36%;
+                }                
+                @media (min-width: 320px) and (max-width: 480px) { //for mobile 
+                    min-width: 17em;
+                }
+                @media (min-width: 480px) and (max-width: 767px) { 
+                    width: 100%;
+                }
+            }
+            .activity-right-label-enable {
+                width: 82%;
+            }
+        } 
+        .activity-box {            
+            @media (max-width: 750px) {
+                display: block;
+            }
+            .activity-left-label {
+            @media (max-width: 750px) {
+                white-space: nowrap;
+            }
+            }
+            .activity-right-label {
+                width: 82%;
+                @media (min-width: 320px) and (max-width: 480px) {
+                    margin-left: 1em;
+                }
+                @media (min-width: 480px) and (max-width: 767px) {
+                    margin-left: 1em;
+                }
+            }
+        }
+        .activity-box-feed {
+            display: flex;
+            .activity-left-label-feed {
+                width: 22.3%;
+                @media (min-width: 320px) and (max-width: 480px) {
+                    min-width: 17em;
+                }
+                @media (min-width: 480px) and (max-width: 767px) {
+                    width: 100%;
+                }
+            }
+            .activity-right-label-feed {
+                width: 82%;
+            }
+        }
+        span[scope="row"] {
+            width: 7%;
+            display: inline-block;
+            text-align: left;   
+            @media (min-width: 320px) and (max-width: 480px) {
+                width: 50%;
+            }        
         }
     }
 }
