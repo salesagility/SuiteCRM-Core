@@ -806,14 +806,16 @@ class RenameModules
     {
         $GLOBALS['log']->debug('Begining to save app string entries');
         //Save changes to the moduleList app string entry
-        DropDownHelper::saveDropDown($_REQUEST);
+        //Fix 166 Cannot open rename modules in php 8.0
+        (new DropDownHelper)->saveDropDown($_REQUEST);
 
         //Save changes to the moduleListSingular app string entry
         $newParams = array();
         $newParams['dropdown_name'] = 'moduleListSingular';
         $newParams['dropdown_lang'] = isset($_REQUEST['dropdown_lang']) ? $_REQUEST['dropdown_lang'] : '';
         $newParams['use_push'] = true;
-        DropDownHelper::saveDropDown($this->createModuleListSingularPackage($newParams, $this->changedModules));
+        //Fix 166 Cannot open rename modules in php 8.0
+        (new DropDownHelper)->saveDropDown($this->createModuleListSingularPackage($newParams, $this->changedModules));
 
         //Save changes to the "*type_display*" app_list_strings entry.
         global $app_list_strings;
@@ -824,7 +826,8 @@ class RenameModules
             foreach ($typeDisplayList as $typeDisplay) {
                 if (isset($app_list_strings[$typeDisplay]) && isset($app_list_strings[$typeDisplay][$moduleName])) {
                     $newParams['dropdown_name'] = $typeDisplay;
-                    DropDownHelper::saveDropDown($this->createModuleListSingularPackage($newParams, array($moduleName => $this->changedModules[$moduleName])));
+                    //Fix 166 Cannot open rename modules in php 8.0
+                    (new DropDownHelper)->saveDropDown($this->createModuleListSingularPackage($newParams, array($moduleName => $this->changedModules[$moduleName])));
                 }
             }
         }
