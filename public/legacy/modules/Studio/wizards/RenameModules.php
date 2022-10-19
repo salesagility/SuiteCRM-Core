@@ -336,7 +336,6 @@ class RenameModules
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_UNDO'],'actionScript'=>"onclick='jstransaction.undo()'" );
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_REDO'],'actionScript'=>"onclick='jstransaction.redo()'" );
         $buttons[] = array('text'=>$mod_strings['LBL_BTN_SAVE'],'actionScript'=>"onclick='if(check_form(\"editdropdown\")){document.editdropdown.submit();}'");
-        //Fix 166 Cannot open rename modules in php 8.0
         $buttonTxt = (new StudioParser)->buildImageButtons($buttons);
         $smarty->assign('buttons', $buttonTxt);
         $smarty->assign('dropdown_lang', $selected_lang);
@@ -806,7 +805,6 @@ class RenameModules
     {
         $GLOBALS['log']->debug('Begining to save app string entries');
         //Save changes to the moduleList app string entry
-        //Fix 166 Cannot open rename modules in php 8.0
         (new DropDownHelper)->saveDropDown($_REQUEST);
 
         //Save changes to the moduleListSingular app string entry
@@ -814,7 +812,6 @@ class RenameModules
         $newParams['dropdown_name'] = 'moduleListSingular';
         $newParams['dropdown_lang'] = isset($_REQUEST['dropdown_lang']) ? $_REQUEST['dropdown_lang'] : '';
         $newParams['use_push'] = true;
-        //Fix 166 Cannot open rename modules in php 8.0
         (new DropDownHelper)->saveDropDown($this->createModuleListSingularPackage($newParams, $this->changedModules));
 
         //Save changes to the "*type_display*" app_list_strings entry.
@@ -826,7 +823,6 @@ class RenameModules
             foreach ($typeDisplayList as $typeDisplay) {
                 if (isset($app_list_strings[$typeDisplay]) && isset($app_list_strings[$typeDisplay][$moduleName])) {
                     $newParams['dropdown_name'] = $typeDisplay;
-                    //Fix 166 Cannot open rename modules in php 8.0
                     (new DropDownHelper)->saveDropDown($this->createModuleListSingularPackage($newParams, array($moduleName => $this->changedModules[$moduleName])));
                 }
             }
