@@ -35,8 +35,11 @@
     .list #pagination td .paginationTable .paginationChangeButtons {
         button {
             background-color: $transparent-color; 
-            margin-right: 0.3em;
+            margin:0;
             padding: 0;
+            line-height: 26px;
+            height: 26px;
+            margin-right: 0.3em;
         }        
     }
     .paginationTable button[disabled] {
@@ -128,13 +131,20 @@
         }     
         .list #pagination td .paginationTable .paginationActionButtons {
             button {
-                margin-right: 0.1em;
+                margin: 0;
+                padding:0;
+                line-height: 26px;
+                height: 26px;
+                margin-right: 0.3em;
             }
             .sugar_action_button {
                 display: none;
             }
             background: $medium-grey;
-        }        
+        } 
+        .list #pagination td .paginationTable .pageNumbers {
+            margin: -4px 4px 0 0;
+        }       
         table.View {
             tbody:nth-child(2) {
                 background: $nepal-grey;
