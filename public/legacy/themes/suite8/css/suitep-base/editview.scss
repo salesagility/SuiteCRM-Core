@@ -702,11 +702,13 @@ select {
   font-weight: normal;
   color: $main-font-color;
   max-width: 90%;
+  background-color: $white !important;
 }
 
-option[selected] {
+option:checked {
   font-weight: normal;
-  color: $main-font-color;
+  color: $main-font-color;  
+  background-color: $light-green !important;
 }
 
 .sqsEnabled {
