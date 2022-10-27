@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable, of} from 'rxjs';
-import {ColumnDefinition, Field, Record, SelectionStatus, SortDirection} from 'common';
+import {of} from 'rxjs';
+import {ColumnDefinition, Field, Record, SortDirection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordListModalTableAdapterInterface} from './adapter.model';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
@@ -63,6 +63,7 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
                 store.recordList.updateSorting(orderBy, sortOrder);
                 store.saveCurrentSort();
             },
+
         } as TableConfig;
 
 

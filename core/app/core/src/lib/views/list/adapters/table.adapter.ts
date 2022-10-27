@@ -75,6 +75,8 @@ export class TableAdapter {
             bulkActions: this.getBulkActionsDataSource(this.store),
             pagination: this.store.recordList,
 
+            paginationType: 'pagination',
+
             toggleRecordSelection: (id: string): void => {
                 this.store.recordList.toggleSelection(id);
             },
@@ -83,6 +85,7 @@ export class TableAdapter {
                 this.store.recordList.updateSorting(orderBy, sortOrder);
                 this.store.updateSortLocalStorage();
             },
+
         } as TableConfig;
     }
 

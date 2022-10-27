@@ -48,6 +48,11 @@
   font-size: 1.6em;
 }
 
+.load-more-div {
+  max-height: 620px;
+  overflow: auto;
+}
+
 .sub-panel .subpanel-icon svg {
   font-size: x-large;
   fill: $white;

@@ -35,6 +35,7 @@ import {LoadingSpinnerModule} from '../../loading-spinner/loading-spinner.module
 import {SortButtonModule} from '../../sort-button/sort-button.module';
 import {LabelModule} from '../../label/label.module';
 import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
+import {ButtonModule} from "../../button/button.module";
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -47,7 +48,8 @@ import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
         SortButtonModule,
         LineActionModule,
         LoadingSpinnerModule,
-        LabelModule
+        LabelModule,
+        ButtonModule
     ]
 })
 export class TableBodyModule {

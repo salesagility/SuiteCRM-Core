@@ -59,6 +59,12 @@ export interface TableConfig {
     bulkActions?: BulkActionDataSource;
     pagination?: PaginationDataSource;
 
+    paginationType?: string;
+
+    loadMore?(jump: number): void;
+
+    allLoaded?(): boolean;
+
     module?: string;
 
     toggleRecordSelection(id: string): void;

@@ -35,6 +35,7 @@
       </scrm-bulk-action-menu>
       <div class="col mx-0 pl-0 table-pagination-wrapper">
           <scrm-pagination *ngIf="pagination"
+                           [allowPagination]="isPaginationEnabled()"
                            [state]="pagination">
           </scrm-pagination>
       </div>

@@ -41,6 +41,7 @@ export interface PaginationViewModel {
 })
 export class PaginationComponent implements OnInit {
 
+    @Input() allowPagination = true;
     @Input() state: PaginationDataSource;
     displayResponsiveTable: any;
 
