@@ -102,47 +102,43 @@
                                 </th>
                             </tr>
                         </table>
+
                         <!-- hide field if user is admin that is not editing themselves -->
                         <div id='generate_password_old_password' {if ($IS_ADMIN && !$ADMIN_EDIT_SELF)} style='display:none' {/if}>
-
-                            <table width='100%' cellspacing='0' cellpadding='0' border='0'>
-                                <tr>
-                                    <td width='13%' scope="row">
-                                        {$MOD.LBL_OLD_PASSWORD}
-                                    </td>
-                                    <td>
-                                        <input name='old_password' id='old_password' type='password' tabindex='2'
+                            <div class="old-password">
+                                <div class="label-txt">
+                                    {$MOD.LBL_OLD_PASSWORD}
+                                </div>
+                                <div>
+                                    <input name='old_password' id='old_password' type='password' tabindex='2'
                                                onkeyup="password_confirmation();" autocomplete="new-password">
-                                    </td>
-                                    <td width='40%'>
-                                    </td>
-                                </tr>
-                            </table>
+                                </div>
+                                <div class="edit-dotted-border"></div>
+                            </div>   
                         </div>
-                        <table width='100%' cellspacing='0' cellpadding='0' border='0'>
-                            <tr>
-                                <td width='13%' scope="row" snowrap>
+
+                         <div class="password-row">
+                         <!--left-col-->
+                            <div class="left-col label-txt">
+                                <div>
                                     {$MOD.LBL_NEW_PASSWORD}
                                     <span class="required"
-                                          id="mandatory_pwd">{if ($REQUIRED_PASSWORD)}{$APP.LBL_REQUIRED_SYMBOL}{/if}</span>
-                                </td>
-                                <td class='dataField'>
-
+                                    id="mandatory_pwd">{if ($REQUIRED_PASSWORD)}{$APP.LBL_REQUIRED_SYMBOL}{/if}</span>
+                                </div>
+                                <div class='dataField'>
                                     <input name='new_password' id="new_password" type='password' tabindex='2'
-                                           onkeyup="password_confirmation();newrules('{$PWDSETTINGS.minpwdlength}','{$PWDSETTINGS.maxpwdlength}','{$REGEX}');"/>
-                                </td>
-                                <td width='40%'>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td scope="row" width='13%'>
-                                    {$MOD.LBL_CONFIRM_PASSWORD}
-                                </td>
-                                <td class='dataField'>
+                                            onkeyup="password_confirmation();newrules('{$PWDSETTINGS.minpwdlength}','{$PWDSETTINGS.maxpwdlength}','{$REGEX}');"/>
+                                </div>
+                                <div class="edit-dotted-border"></div>
+                            </div>
+                            <!-- right col -->
+                            <div class="right-col label-txt">
+                                <div>{$MOD.LBL_CONFIRM_PASSWORD}</div>
+                                <div>
                                     <input name='confirm_new_password' id='confirm_pwd' style='' type='password'
                                            tabindex='2' onkeyup="password_confirmation();">
-                                </td>
-                                <td width='40%'>
+                                </div>
+                                <div>
                                     <div id="comfirm_pwd_match" class="error"
                                          style="display: none;">{$MOD.ERR_PASSWORD_MISMATCH}</div>
                                     {*<span id="ext-gen63" class="x-panel-header-text">
@@ -151,14 +147,15 @@
                                            <img src="themes/default/images/help.gif"/>
                                        </span>
                                    </span>*}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class='dataLabel'></td>
-                                <td class='dataField'></td>
-                                </td>
-                        </table>
-
+                                </div>
+                                <div class="edit-dotted-border"></div>
+                            </div>
+                            <!--extra div -->
+                            <div>
+                                <div class="dataLabel"></div>
+                                <div class="dataLabel"></div>
+                            </div>
+                        </div>
                         <table width='17%' cellspacing='0' cellpadding='1' border='0'>
                             <tr>
                                 <td width='50%'>
