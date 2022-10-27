@@ -35,6 +35,7 @@ import {SubpanelStore} from '../../store/subpanel/subpanel.store';
 import {SubpanelActionManager} from './action-manager.service';
 import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-subpanel',
@@ -48,6 +49,8 @@ export class SubpanelComponent implements OnInit {
     @Input() maxColumns$: Observable<number>;
     @Input() onClose: Function;
 
+    jump: number;
+    paginationType: string;
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
@@ -57,16 +60,20 @@ export class SubpanelComponent implements OnInit {
         protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
         protected tableAdapterFactory: SubpanelTableAdapterFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore
     ) {
     }
 
     ngOnInit(): void {
         this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
+        this.jump = this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
+        this.paginationType = this.tableConfig.paginationType;
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
         }
+
 
         const parentModule = this.store.parentModule;
         const module = this.store.recordList.getModule();
@@ -159,4 +166,15 @@ export class SubpanelComponent implements OnInit {
 
         return button;
     }
+
+    getLoadMoreButton(): ButtonInterface {
+        return {
+            klass: 'load-more-button btn btn-link btn-sm',
+            labelKey: 'LBL_LOAD_MORE',
+            onClick: () => {
+                this.tableConfig.loadMore(this.jump);
+            }
+        } as ButtonInterface;
+    }
+
 }

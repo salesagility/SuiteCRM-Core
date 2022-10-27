@@ -36,4 +36,10 @@ export class TableHeaderComponent {
     @Input() selection: SelectionDataSource;
     @Input() bulkActions: BulkActionDataSource;
     @Input() pagination: PaginationDataSource;
+    @Input() paginationType: string;
+
+
+    isPaginationEnabled(): boolean {
+        return this.paginationType === 'pagination' || this.paginationType === 'combined';
+    }
 }

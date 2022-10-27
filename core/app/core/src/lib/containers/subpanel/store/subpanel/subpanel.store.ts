@@ -30,13 +30,18 @@ import {RecordList, RecordListStore} from '../../../../store/record-list/record-
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {SubPanelDefinition} from 'common';
-import {Statistic, StatisticsMap, StatisticsQuery, StatisticsQueryMap} from 'common';
+import {
+    deepClone,
+    Record,
+    Statistic,
+    StatisticsMap,
+    StatisticsQuery,
+    StatisticsQueryMap,
+    StatisticWidgetOptions,
+    SubPanelDefinition
+} from 'common';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
 import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
-import {deepClone} from 'common';
-import {StatisticWidgetOptions} from 'common';
-import {Record} from 'common';
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -374,4 +379,5 @@ export class SubpanelStore implements StateStore {
             false
         );
     }
+
 }

@@ -27,15 +27,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {
-    ColumnDefinition,
-    Field,
-    Record,
-    RecordSelection,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection
-} from 'common';
+import {ButtonInterface, ColumnDefinition, Field, Record, RecordSelection, SelectionStatus, SortDirection, SortingSelection} from 'common';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
@@ -60,6 +52,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
+    jump: number;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
 
@@ -73,6 +66,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
+
 
         this.vm$ = combineLatest([
             this.config.columns,
@@ -131,12 +125,16 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return status === SelectionStatus.ALL;
     }
 
+    getPaginationType() {
+        return this.config.paginationType;
+    }
+
     buildDisplayColumns(metaFields: ColumnDefinition[]): string[] {
         let i = 0;
         let hasLinkField = false;
         const returnArray = [];
 
-        const fields = metaFields.filter(function (field) {
+        const fields = metaFields.filter(function(field) {
             return !field.hasOwnProperty('default')
                 || (field.hasOwnProperty('default') && field.default === true);
         });
@@ -156,6 +154,16 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             }
         }
         return returnArray;
+    }
+
+    getLoadMoreButton(): ButtonInterface {
+        return {
+            klass: 'load-more-button btn btn-link btn-sm',
+            labelKey: 'LBL_LOAD_MORE',
+            onClick: () => {
+                this.config.loadMore(10);
+            }
+        } as ButtonInterface;
     }
 
     getFieldSort(field: ColumnDefinition): SortDirectionDataSource {
@@ -186,6 +194,14 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return this.fieldManager.addField(record, column);
     }
 
+    allLoaded(): boolean {
+        return this.config.allLoaded();
+    }
+
+    showLoadMore() {
+        return this.getPaginationType() === 'load-more' || this.getPaginationType() === 'combined'
+    }
+
     protected initLoading(): Observable<boolean> {
         let loading$ = of(false).pipe(shareReplay(1));
 
@@ -198,5 +214,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         }
         return loading$;
     }
+
 }
 

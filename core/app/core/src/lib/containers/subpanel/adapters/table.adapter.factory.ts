@@ -29,6 +29,7 @@ import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelTableAdapter} from './table.adapter';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 
 @Injectable({
@@ -38,7 +39,8 @@ export class SubpanelTableAdapterFactory {
 
     constructor(
         protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore
     ) {
     }
 
@@ -46,7 +48,8 @@ export class SubpanelTableAdapterFactory {
         return new SubpanelTableAdapter(
             store,
             this.lineActionsAdapterFactory,
-            this.preferences
+            this.preferences,
+            this.systemConfigs
         );
     }
 }
