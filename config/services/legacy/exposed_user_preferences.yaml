@@ -5,6 +5,7 @@ parameters:
             navigation_paradigm: true
             swap_shortcuts: true
             subpanel_tabs: true
+            subpanel_pagination_type: true
             count_collapsed_subpanels: true
             user_theme: true
             module_favicon: true
