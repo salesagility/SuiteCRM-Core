@@ -33,6 +33,7 @@ import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {SystemConfigStore} from "../../../store/system-config/system-config.store";
+import {RecordListModalStore} from "../../record-list-modal/store/record-list-modal/record-list-modal.store";
 
 @Injectable()
 export class SubpanelTableAdapter {
@@ -72,18 +73,21 @@ export class SubpanelTableAdapter {
                 const module = this.store.recordList.getModule();
                 const sort = {orderBy, sortOrder} as SortingSelection;
 
-                this.preferences.setUi(parentModule, module + '-subpanel-sort', sort);
-                const jump = 10;
+                const jump = this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
                 this.store.recordList.setPageSize(jump);
                 this.store.recordList.updatePagination(0);
+                this.preferences.setUi(parentModule, module + '-subpanel-sort', sort);
             },
+
+            jump: this.systemConfigs.getConfigValue('list_max_entries_per_subpanel'),
 
             paginationType: this.systemConfigs.getConfigValue('subpanel_pagination_type'),
 
-            loadMore: (jump: number = 10): void => {
+            loadMore: (jump: number): void => {
                 const pagination = this.store.recordList.getPagination();
                 const currentPageSize = pagination.pageSize || 0;
-                const newPageSize = currentPageSize + jump;
+                const newPageSize = Number(currentPageSize) + Number(jump);
+
 
                 this.store.recordList.setPageSize(newPageSize);
                 this.store.recordList.updatePagination(0);

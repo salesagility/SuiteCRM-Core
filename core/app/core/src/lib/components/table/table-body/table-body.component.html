@@ -26,7 +26,7 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div [ngClass]="{'load-more-div' : showLoadMore()}" class="position-relative d-flex flex-column">
+    <div [ngClass]="{'load-more-table-container' : showLoadMore()}" class="position-relative d-flex flex-column">
         <table cdk-table [dataSource]="config.dataSource"
                aria-describedby="table-body"
                class="list-view-table striped-table table">

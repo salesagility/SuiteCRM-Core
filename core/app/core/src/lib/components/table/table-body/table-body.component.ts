@@ -52,7 +52,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
-    jump: number;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
 
@@ -161,7 +160,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             klass: 'load-more-button btn btn-link btn-sm',
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
-                this.config.loadMore(10);
+                this.config.loadMore(this.config.jump ?? 10);
             }
         } as ButtonInterface;
     }

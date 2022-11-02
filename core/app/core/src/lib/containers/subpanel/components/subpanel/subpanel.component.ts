@@ -68,7 +68,6 @@ export class SubpanelComponent implements OnInit {
     ngOnInit(): void {
         this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
-        this.jump = this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
         this.paginationType = this.tableConfig.paginationType;
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
@@ -165,16 +164,6 @@ export class SubpanelComponent implements OnInit {
         }
 
         return button;
-    }
-
-    getLoadMoreButton(): ButtonInterface {
-        return {
-            klass: 'load-more-button btn btn-link btn-sm',
-            labelKey: 'LBL_LOAD_MORE',
-            onClick: () => {
-                this.tableConfig.loadMore(this.jump);
-            }
-        } as ButtonInterface;
     }
 
 }

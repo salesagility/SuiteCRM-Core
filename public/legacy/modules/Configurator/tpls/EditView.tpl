@@ -60,17 +60,23 @@
 		<th align="left" scope="row" colspan="4"><h4>{$MOD.DEFAULT_SYSTEM_SETTINGS}</h4></th>
 	</tr>
 	<tr>
-		<td  scope="row">{$MOD.LIST_ENTRIES_PER_LISTVIEW}: </td>
+		<td scope="row">{$MOD.LIST_ENTRIES_PER_LISTVIEW}:</td>
 		<td>
-			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_page' name='list_max_entries_per_page' value='{$config.list_max_entries_per_page}'>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_page'
+				   name='list_max_entries_per_page' value='{$config.list_max_entries_per_page}'>
 		</td>
-		<td  scope="row">{$MOD.LIST_ENTRIES_PER_SUBPANEL}: </td>
+		<td scope="row">{$MOD.LIST_ENTRIES_PER_SUBPANEL}:</td>
 		<td>
-			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_subpanel' name='list_max_entries_per_subpanel' value='{$config.list_max_entries_per_subpanel}'>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_subpanel'
+				   name='list_max_entries_per_subpanel' value='{$config.list_max_entries_per_subpanel}'>
 		</td>
 	</tr>
 	<tr>
-		<td scope="row">{$MOD.LOCK_HOMEPAGE}: </td>
+		<td scope="row">{$MOD.LBL_SET_PAGINATION_TYPE}:</td>
+		<td><select name="subpanel_pagination_type">{$subpanel_pagination_type}</select></td>
+	</tr>
+	<tr>
+		<td scope="row">{$MOD.LOCK_HOMEPAGE}:</td>
 		<td>
 			{if !empty($config.lock_homepage)}
 				{assign var='lock_homepage_checked' value='CHECKED'}
@@ -219,19 +225,20 @@
 		{/if}
 		<td>
 			<input type='hidden' name='hide_subpanels' value='false'>
-			<input name='hide_subpanels'  type="checkbox" value="true" {$hide_subpanels}>
+			<input name='hide_subpanels' type="checkbox" value="true" {$hide_subpanels}>
 		</td>
 	</tr>
 
 </table>
 
-<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view table-system-settings">
+	<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view table-system-settings">
 
-	<tr>
-		<th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_PROXY_TITLE}</h4></th>
-	</tr>
-	<tr>
-	<td width="25%" scope="row" valign='middle'>{$MOD.LBL_PROXY_ON}&nbsp{sugar_help text=$MOD.LBL_PROXY_ON_DESC}</td>
+		<tr>
+			<th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_PROXY_TITLE}</h4></th>
+		</tr>
+		<tr>
+			<td width="25%" scope="row" valign='middle'>{$MOD.LBL_PROXY_ON}
+				&nbsp{sugar_help text=$MOD.LBL_PROXY_ON_DESC}</td>
 		{if !empty($settings.proxy_on)}
 		{assign var='proxy_on_checked' value='CHECKED'}
 	{else}
