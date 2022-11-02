@@ -33,7 +33,6 @@ import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {SystemConfigStore} from "../../../store/system-config/system-config.store";
-import {RecordListModalStore} from "../../record-list-modal/store/record-list-modal/record-list-modal.store";
 
 @Injectable()
 export class SubpanelTableAdapter {
@@ -81,7 +80,7 @@ export class SubpanelTableAdapter {
 
             jump: this.systemConfigs.getConfigValue('list_max_entries_per_subpanel'),
 
-            paginationType: this.systemConfigs.getConfigValue('subpanel_pagination_type'),
+            paginationType: this.preferences.getUserPreference('subpanel_pagination_type') ? this.preferences.getUserPreference('subpanel_pagination_type') : this.systemConfigs.getConfigValue('subpanel_pagination_type'),
 
             loadMore: (jump: number): void => {
                 const pagination = this.store.recordList.getPagination();
