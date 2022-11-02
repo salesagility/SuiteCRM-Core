@@ -59,6 +59,8 @@ export interface TableConfig {
     bulkActions?: BulkActionDataSource;
     pagination?: PaginationDataSource;
 
+    jump?: number;
+
     paginationType?: string;
 
     loadMore?(jump: number): void;

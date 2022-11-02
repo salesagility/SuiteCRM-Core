@@ -46,6 +46,8 @@ require_once __DIR__ . '/../php_version.php';
 require_once __DIR__ . '/../include/SugarObjects/SugarConfig.php';
 require_once __DIR__ . '/../include/utils/security_utils.php';
 
+use SuiteCRM\ErrorMessage;
+use SuiteCRM\Utility\SuiteValidator;
 use voku\helper\AntiXSS;
 
 /**
@@ -147,6 +149,7 @@ function make_sugar_config(&$sugar_config)
             'chown' => '',
             'chgrp' => '',
         ),
+        'subpanel_pagination_type' => 'pagination',
         'default_theme' => empty($default_theme) ? 'SuiteP' : $default_theme,
         'default_time_format' => empty($defaultTimeFormat) ? 'h:ia' : $defaultTimeFormat,
         'default_user_is_admin' => empty($default_user_is_admin) ? false : $default_user_is_admin,
@@ -489,6 +492,7 @@ function get_sugar_config_defaults(): array
             'phtml',
             'phar',
         ],
+        'subpanel_pagination_type' => 'pagination',
         'valid_image_ext' => [
             'gif',
             'png',
@@ -2087,7 +2091,7 @@ function sugar_die($error_message, $exit_code = 1)
     global $focus;
     sugar_cleanup();
     echo $error_message;
-    throw new \Exception($error_message, $exit_code);
+    throw new Exception($error_message, $exit_code);
 }
 
 /**
@@ -3943,7 +3947,7 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
     $error_msg = '<b>[' . $type . ']</b> ' . $error_msg;
     echo $error_msg;
     $trace = display_stack_trace();
-    \SuiteCRM\ErrorMessage::log("Catch an error: $error_msg \nTrace info:\n" . $trace);
+    ErrorMessage::log("Catch an error: $error_msg \nTrace info:\n" . $trace);
     if ($halt_script) {
         exit(1);
     }
@@ -6027,7 +6031,7 @@ function isValidId($id)
     } else {
         trigger_error($deprecatedMessage, E_USER_DEPRECATED);
     }
-    $isValidator = new \SuiteCRM\Utility\SuiteValidator();
+    $isValidator = new SuiteValidator();
     $result = $isValidator->isValidId($id);
     return $result;
 }
@@ -6043,7 +6047,7 @@ function isValidEmailAddress($email, $message = 'Invalid email address given', $
     if ($logInvalid) {
         $trace = debug_backtrace();
         $where = "Called at {$trace[1]['file']}:{$trace[1]['line']} from function {$trace[1]['function']}.";
-        \SuiteCRM\ErrorMessage::log("$message: [$email] $where", $logInvalid);
+        ErrorMessage::log("$message: [$email] $where", $logInvalid);
     }
     return false;
 }

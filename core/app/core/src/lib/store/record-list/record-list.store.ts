@@ -551,7 +551,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      *
      * @param {string} pageSizeConfigKey key
      */
-    protected watchPageSize(pageSizeConfigKey: string): void {
+     public watchPageSize(pageSizeConfigKey: string): void {
 
         const pageSizePreference = this.preferencesStore.getUserPreference(pageSizeConfigKey);
         const pageSizeConfig = this.configStore.getConfigValue(pageSizeConfigKey);
@@ -576,7 +576,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {} pageSizePreference to use
      * @param {string} pageSizeConfig to use
      */
-    protected determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
+    public determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
         let size = 0;
 
         if (pageSizePreference) {
