@@ -196,6 +196,7 @@ class ListViewDefinitionHandler extends LegacyHandler
             'lineActions' => [],
             'availableFilters' => [],
             'sidebarWidgets' => [],
+            'paginationType' => '',
         ];
 
         /* @noinspection PhpIncludeInspection */
@@ -239,6 +240,8 @@ class ListViewDefinitionHandler extends LegacyHandler
             ) ?? [];
 
         $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module) ?? [];
+
+        $metadata['paginationType'] = $listMeta['paginationType'] ?? null;
 
         return $metadata;
     }

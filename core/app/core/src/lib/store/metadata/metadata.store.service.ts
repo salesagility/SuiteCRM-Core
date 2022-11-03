@@ -407,7 +407,8 @@ export class MetadataStore implements StateStore {
             bulkActions: 'bulkActions',
             lineActions: 'lineActions',
             sidebarWidgets: 'sidebarWidgets',
-            availableFilters: 'filters'
+            availableFilters: 'filters',
+            paginationType: 'paginationType'
         };
 
         this.addDefinedMeta(listViewMeta, data.listView, entries);

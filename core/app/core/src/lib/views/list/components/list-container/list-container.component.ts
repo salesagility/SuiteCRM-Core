@@ -77,6 +77,7 @@ export class ListContainerComponent implements OnInit {
     ngOnInit(): void {
         this.tableConfig = this.adapter.getTable();
         this.tableConfig.maxColumns$ = this.getMaxColumns();
+        this.tableConfig.paginationType = this?.store?.metadata?.listView?.paginationType ?? this.tableConfig.paginationType;
     }
 
     getMaxColumns(): Observable<number> {
