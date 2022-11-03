@@ -39,6 +39,8 @@ import {LanguageStore} from '../../../store/language/language.store';
 import {BulkActionsAdapterFactory} from './bulk-actions.adapter.factory';
 import {BulkActionsAdapter} from './bulk-actions.adapter';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
+import {UserPreferenceStore} from "../../../store/user-preference/user-preference.store";
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Injectable()
 export class TableAdapter {
@@ -52,7 +54,9 @@ export class TableAdapter {
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
         protected bulkActionsAdapterFactory: BulkActionsAdapterFactory,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore
     ) {
     }
 
@@ -75,7 +79,7 @@ export class TableAdapter {
             bulkActions: this.getBulkActionsDataSource(this.store),
             pagination: this.store.recordList,
 
-            paginationType: 'pagination',
+            paginationType: this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigs.getConfigValue('listview_paginatgion_type'),
 
             toggleRecordSelection: (id: string): void => {
                 this.store.recordList.toggleSelection(id);
@@ -85,6 +89,26 @@ export class TableAdapter {
                 this.store.recordList.updateSorting(orderBy, sortOrder);
                 this.store.updateSortLocalStorage();
             },
+
+            loadMore: (jump: number = 20): void => {
+                const pagination = this.store.recordList.getPagination();
+                const currentPageSize = pagination.pageSize || 0;
+                const newPageSize = currentPageSize + jump;
+
+                this.store.recordList.setPageSize(newPageSize);
+                this.store.recordList.updatePagination(0);
+            },
+
+            allLoaded: (): boolean => {
+                const pagination = this.store.recordList.getPagination();
+                if (!pagination) {
+                    return false;
+                }
+                if (pagination.pageLast >= pagination.total) {
+                    return true;
+                }
+                return pagination.pageSize >= pagination.total;
+            }
 
         } as TableConfig;
     }

@@ -61,6 +61,7 @@ export interface TableConfig {
 
     jump?: number;
 
+    view?: string;
     paginationType?: string;
 
     loadMore?(jump: number): void;
