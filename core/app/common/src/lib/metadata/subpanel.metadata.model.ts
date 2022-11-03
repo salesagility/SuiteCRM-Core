@@ -58,6 +58,7 @@ export interface SubPanelDefinition {
     sort_order?: string;
     sort_by?: string;
     title_key?: string;
+    pagination_type: string;
     type?: string;
     name: string;
     subpanel_name?: string;

@@ -43,6 +43,7 @@ export interface ListViewMeta extends RecordListMeta {
     sidebarWidgets?: WidgetMetadata[];
     orderBy?: string;
     sortOrder?: string;
+    paginationType?: string;
 }
 
 export interface Filter {

@@ -68,11 +68,12 @@ export class SubpanelComponent implements OnInit {
     ngOnInit(): void {
         this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
-        this.paginationType = this.tableConfig.paginationType;
+        this.jump = this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
         }
 
+        this.tableConfig.paginationType = this?.store?.metadata?.pagination_type ?? this.tableConfig.paginationType;
 
         const parentModule = this.store.parentModule;
         const module = this.store.recordList.getModule();
