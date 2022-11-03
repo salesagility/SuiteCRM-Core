@@ -79,8 +79,7 @@ export class SubpanelTableAdapter {
             },
 
             jump: this.systemConfigs.getConfigValue('list_max_entries_per_subpanel'),
-
-            paginationType: this.preferences.getUserPreference('subpanel_pagination_type') ? this.preferences.getUserPreference('subpanel_pagination_type') : this.systemConfigs.getConfigValue('subpanel_pagination_type'),
+            paginationType: this.preferences.getUserPreference('subpanel_pagination_type') ?? this.systemConfigs.getConfigValue('subpanel_pagination_type'),
 
             loadMore: (jump: number): void => {
                 const pagination = this.store.recordList.getPagination();

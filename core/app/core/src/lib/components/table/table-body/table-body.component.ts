@@ -194,11 +194,15 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     }
 
     allLoaded(): boolean {
-        return this.config.allLoaded();
+        return this.config?.allLoaded();
     }
 
     showLoadMore() {
-        return this.getPaginationType() === 'load-more' || this.getPaginationType() === 'combined'
+        return this.getPaginationType() === 'load-more' || this.getPaginationType() === 'combined';
+    }
+
+    getView() {
+        return this.config?.view === 'subpanel';
     }
 
     protected initLoading(): Observable<boolean> {

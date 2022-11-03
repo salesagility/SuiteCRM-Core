@@ -26,82 +26,84 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div [ngClass]="{'load-more-table-container' : showLoadMore()}" class="position-relative d-flex flex-column">
+    <div [ngClass]="{'small-load-more-table-container' : showLoadMore() && getView()}" class="position-relative d-flex flex-column">
+        <div [ngClass]="{'load-more-table-container' : showLoadMore() && !getView()}">
         <table cdk-table [dataSource]="config.dataSource"
                aria-describedby="table-body"
                class="list-view-table striped-table table">
 
-            <ng-container cdkColumnDef="checkbox" *ngIf="vm.selection">
+                <ng-container *ngIf="vm.selection" cdkColumnDef="checkbox">
 
-                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+                    <th *cdkHeaderCellDef cdk-header-cell class="primary-table-header" scope="col"></th>
 
-                <td cdk-cell *cdkCellDef="let record">
-                    <label class="checkbox-container">
-                        <input type="checkbox"
-                               [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
-                               (change)="toggleSelection(record['id'])"
-                               [disabled]="allSelected(vm.selectionStatus)"
-                               aria-hidden="true">
-                        <span class="checkmark"></span>
-                    </label>
-                </td>
+                    <td *cdkCellDef="let record" cdk-cell>
+                        <label class="checkbox-container">
+                            <input (change)="toggleSelection(record['id'])"
+                                   [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
+                                   [disabled]="allSelected(vm.selectionStatus)"
+                                   aria-hidden="true"
+                                   type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
 
-            </ng-container>
+                </ng-container>
 
-            <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
+                <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
 
-                <th cdk-header-cell
-                    *cdkHeaderCellDef
-                    scope="col"
-                    class="primary-table-header">
+                    <th *cdkHeaderCellDef
+                        cdk-header-cell
+                        class="primary-table-header"
+                        scope="col">
 
-                    <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
-                    <scrm-sort-button *ngIf="config.sort$ && column.sortable"
-                                      [state]="getFieldSort(column)">
-                    </scrm-sort-button>
+                        <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
+                        <scrm-sort-button *ngIf="config.sort$ && column.sortable"
+                                          [state]="getFieldSort(column)">
+                        </scrm-sort-button>
 
-                </th>
+                    </th>
 
-                <td cdk-cell *cdkCellDef="let record">
-                    <scrm-field [mode]="'list'"
-                                [type]="column.type"
-                                [field]="getField(column, record)"
-                                [record]="record">
-                    </scrm-field>
-                </td>
+                    <td *cdkCellDef="let record" cdk-cell>
+                        <scrm-field [field]="getField(column, record)"
+                                    [mode]="'list'"
+                                    [record]="record"
+                                    [type]="column.type">
+                        </scrm-field>
+                    </td>
 
-            </ng-container>
+                </ng-container>
 
-            <ng-container cdkColumnDef="line-actions">
+                <ng-container cdkColumnDef="line-actions">
 
-                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header"></th>
+                    <th *cdkHeaderCellDef cdk-header-cell class="primary-table-header" scope="col"></th>
 
-                <td cdk-cell *cdkCellDef="let record">
-                    <scrm-line-action-menu *ngIf="record && config.lineActions"
-                                           [config]="config.lineActions"
-                                           [record]="record">
-                    </scrm-line-action-menu>
-                </td>
+                    <td *cdkCellDef="let record" cdk-cell>
+                        <scrm-line-action-menu *ngIf="record && config.lineActions"
+                                               [config]="config.lineActions"
+                                               [record]="record">
+                        </scrm-line-action-menu>
+                    </td>
 
-            </ng-container>
+                </ng-container>
 
-            <tr cdk-header-row *cdkHeaderRowDef="vm.displayedColumns"></tr>
-            <tr cdk-row *cdkRowDef="let row; columns: vm.displayedColumns;"></tr>
+                <tr *cdkHeaderRowDef="vm.displayedColumns" cdk-header-row></tr>
+                <tr *cdkRowDef="let row; columns: vm.displayedColumns;" cdk-row></tr>
 
-        </table>
+            </table>
 
-        <div *ngIf="showLoadMore() && !allLoaded()"
-             class="d-flex justify-content-center flex-grow-1">
-            <scrm-button [config]="getLoadMoreButton()"></scrm-button>
-        </div>
+            <div *ngIf="showLoadMore() && !allLoaded()"
+                 class="d-flex justify-content-center flex-grow-1">
+                <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+            </div>
 
-        <div *ngIf="!vm.loading && vm.records.length === 0">
-            <p class="lead text-center pt-3">
-                <scrm-label labelKey="MSG_LIST_VIEW_NO_RESULTS_BASIC"></scrm-label>
-            </p>
-        </div>
-        <div *ngIf="vm.loading" [class.m-5]="!vm.records || vm.records.length === 0">
-            <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+            <div *ngIf="!vm.loading && vm.records.length === 0">
+                <p class="lead text-center pt-3">
+                    <scrm-label labelKey="MSG_LIST_VIEW_NO_RESULTS_BASIC"></scrm-label>
+                </p>
+            </div>
+            <div *ngIf="vm.loading" [class.m-5]="!vm.records || vm.records.length === 0">
+                <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+            </div>
         </div>
     </div>
 </ng-container>

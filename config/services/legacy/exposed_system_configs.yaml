@@ -11,6 +11,7 @@ parameters:
     action_name_map: true
     system_name: true
     subpanel_pagination_type: true
+    listview_pagination_type: true
     classicview_routing_exclusions: true
     default_decimal_seperator: true
     default_number_grouping_seperator: true
