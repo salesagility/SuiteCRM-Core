@@ -400,8 +400,9 @@ class SecurityGroup extends SecurityGroup_sugar
                 if ((!isset($def['type']) || ($def['type'] == 'relate' && isset($def['id_name'])))
                     && isset($def['module']) && strtolower($def['module']) != 'users'
                 ) {
-                    if (isset($_REQUEST[$def['id_name']])) {
-                        $relate_parent_id = $_REQUEST[$def['id_name']];
+                    $id_name=$def['id_name'];
+                    if (isset($_REQUEST[$id_name])) {
+                        $relate_parent_id = $_REQUEST[$id_name];
                         $relate_parent_type = $def['module'];
 
                         self::inherit_parentQuery(
@@ -411,8 +412,21 @@ class SecurityGroup extends SecurityGroup_sugar
                             $focus_id,
                             $focus_module_dir
                         );
-                    } elseif (isset($_SESSION['portal_id']) && isset($_SESSION[$def['id_name']])) { //soap account
-                        $relate_parent_id = $_SESSION[$def['id_name']];
+                    }
+                    elseif (isset($focus->$id_name)) {
+                        $relate_parent_id = $focus->$id_name;
+                        $relate_parent_type = $def['module'];
+
+                        self::inherit_parentQuery(
+                            $focus,
+                            $relate_parent_type,
+                            $relate_parent_id,
+                            $focus_id,
+                            $focus_module_dir
+                        );
+                    }
+                    elseif (isset($_SESSION['portal_id']) && isset($_SESSION[$id_name])) { //soap account
+                        $relate_parent_id = $_SESSION[$id_name];
                         $relate_parent_type = $def['module'];
 
                         self::inherit_parentQuery(
