@@ -229,13 +229,15 @@ $app_list_strings = array(
     ),
     'subpanel_pagination_type' => [
         'pagination' => 'Pagination',
-        'load-more' => 'Load More',
-        'combined' => 'Combined'
+        'load-more' => 'Load More'
     ],
     'listview_pagination_type' => [
         'pagination' => 'Pagination',
-        'load-more' => 'Load More',
-        'combined' => 'Combined'
+        'load-more' => 'Load More'
+    ],
+    'record_modal_pagination_type' => [
+        'pagination' => 'Pagination',
+        'load-more' => 'Load More'
     ],
     //Note:  do not translate opportunity_relationship_type_default_key
 //       it is the key for the default opportunity_relationship_type_dom value
