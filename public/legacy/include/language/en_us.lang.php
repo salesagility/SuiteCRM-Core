@@ -232,6 +232,11 @@ $app_list_strings = array(
         'load-more' => 'Load More',
         'combined' => 'Combined'
     ],
+    'listview_pagination_type' => [
+        'pagination' => 'Pagination',
+        'load-more' => 'Load More',
+        'combined' => 'Combined'
+    ],
     //Note:  do not translate opportunity_relationship_type_default_key
 //       it is the key for the default opportunity_relationship_type_dom value
     'opportunity_relationship_type_default_key' => 'Primary Decision Maker',

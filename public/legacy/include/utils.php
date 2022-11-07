@@ -150,6 +150,7 @@ function make_sugar_config(&$sugar_config)
             'chgrp' => '',
         ),
         'subpanel_pagination_type' => 'pagination',
+        'listview_pagination_type' => 'pagination',
         'default_theme' => empty($default_theme) ? 'SuiteP' : $default_theme,
         'default_time_format' => empty($defaultTimeFormat) ? 'h:ia' : $defaultTimeFormat,
         'default_user_is_admin' => empty($default_user_is_admin) ? false : $default_user_is_admin,
@@ -493,6 +494,7 @@ function get_sugar_config_defaults(): array
             'phar',
         ],
         'subpanel_pagination_type' => 'pagination',
+        'listview_pagination_type' => 'pagination',
         'valid_image_ext' => [
             'gif',
             'png',

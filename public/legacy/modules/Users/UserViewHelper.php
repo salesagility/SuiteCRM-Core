@@ -592,6 +592,14 @@ class UserViewHelper
             $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $sugar_config['subpanel_pagination_type']));
         }
 
+        $listview_pagination_type = $this->bean->getPreference('listview_pagination_type');
+
+        if (!empty($listview_pagination_type)) {
+            $this->ss->assign('listview_pagination_type', get_select_options_with_id($app_list_strings['listview_pagination_type'], $subpanel_paginationType));
+        } else {
+            $this->ss->assign('listview_pagination_type', get_select_options_with_id($app_list_strings['listview_pagination_type'], $sugar_config['listview_pagination_type']));
+        }
+
         if ($this->bean->getPreference('count_collapsed_subpanels')) {
             $this->ss->assign("COUNT_COLLAPSED_SUBPANELS", 'checked');
         }
