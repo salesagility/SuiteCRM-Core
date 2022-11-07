@@ -291,6 +291,7 @@ $mod_strings = array(
     'LBL_STATE' => 'State',
     'LBL_STATUS' => 'Status',
     'LBL_SUBPANEL_TABS' => 'Subpanel Tabs',
+    'LBL_SET_PAGINATION_TYPE' => 'Set Pagination Type',
     'LBL_SUBPANEL_TABS_DESCRIPTION' => 'In Detail Views, group Subpanels into tabs and display one tab at a time.',
     'LBL_SORT_MODULES' => 'Sort modules alphabetically',
     'LBL_SORT_MODULES_DESCRIPTION' => 'Order modules by name in the navigation drop down.',
