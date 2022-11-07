@@ -40,6 +40,8 @@ import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculat
 import {FilterConfig} from '../../../list-filter/components/list-filter/list-filter.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RecordListModalResult} from './record-list-modal.model';
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-record-list-modal',
@@ -70,6 +72,7 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     tableConfig: TableConfig;
     filterConfig: FilterConfig;
     store: RecordListModalStore;
+    maxHeight:number;
 
     protected subs: Subscription[] = [];
 
@@ -77,7 +80,9 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         public activeModal: NgbActiveModal,
         protected storeFactory: RecordListModalStoreFactory,
         protected languages: LanguageStore,
-        protected maxColumnCalculator: MaxColumnsCalculator
+        protected maxColumnCalculator: MaxColumnsCalculator,
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore
     ) {
         this.store = this.storeFactory.create();
     }
@@ -130,10 +135,18 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         } as ButtonInterface;
     }
 
-
     protected initTableAdapter(): void {
         if (this.adapter === null) {
-            this.adapter = new ModalRecordListTableAdapter();
+            this.adapter = new ModalRecordListTableAdapter(this.systemConfigs, this.preferences);
+        }
+
+        if (this.store?.listMetadata?.maxHeight){
+            this.tableConfig.maxListHeight = this.store.listMetadata.maxHeight;
+        }
+
+        if (!this.tableConfig?.maxListHeight) {
+            const ui = this.systemConfigs.getConfigValue('ui') ?? {};
+            this.tableConfig.maxListHeight = ui.record_modal_max_height;
         }
 
         this.tableConfig = this.adapter.getTable(this.store, this.multiSelect);
