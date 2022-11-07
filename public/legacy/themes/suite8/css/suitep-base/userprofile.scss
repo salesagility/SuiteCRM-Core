@@ -5,11 +5,11 @@ form.userprofile {
         @media only screen and (max-width: 750px) {
             white-space: normal;
         }
-        margin: 0;   
-        border-bottom: none; 
+        margin: 0;
+        border-bottom: none;
         li.selected {
             background: none;
-        }   
+        }
           .selected {
             a {
                 em {
@@ -17,8 +17,8 @@ form.userprofile {
                     color: #ffffff;
                     border-color: $midnight-blue;
                 }
-            }            
-        } 
+            }
+        }
     li {
         a {
             height: auto;
@@ -32,13 +32,13 @@ form.userprofile {
                 padding-left: 1em;
                 padding-right: 1em;
                 border-top-left-radius: 5px;
-                border-top-right-radius: 5px;  
+                border-top-right-radius: 5px;
                 top: 0;
                 margin-right: 0.1em;
                 font-weight: normal;
             }
         }
-    }   
+    }
    }
    .edit-view-row {
     .edit-view-row-item {
@@ -140,8 +140,8 @@ form.userprofile {
                 }
             }
         }
-    }     
-    
+    }
+
     #EditView_tabs.yui-navset.yui-navset-top {
         padding: 0;
     }
@@ -150,7 +150,7 @@ form.userprofile {
     }
     .panel-heading  {
         height: 3.3rem;
-    } 
+    }
     .email-address-line-container {
         margin: 0;
         padding: 0;
@@ -171,11 +171,11 @@ form.userprofile {
         }
         .email-address-options-container {
             position: relative;
-            bottom: 1em; 
+            bottom: 1em;
             margin-left: 3em;
             input[type="checkbox"] {
                 margin: 0;
-            }       
+            }
         }
     }
     #email_options {
@@ -220,7 +220,7 @@ form.userprofile {
               width: 28px;
               margin-left: 0.8em;
           }
-    }  
+    }
     input[type=text],input[type=password],input[type=email] {
         background-color:$transparent-color;
         border: 1px solid $form-border-color;
@@ -229,17 +229,17 @@ form.userprofile {
         background: url($select-edit-background-url) no-repeat right;
         background-size: 25px 11px;
         border-color: $bright-grey;
-    }           
+    }
    .action_buttons {
         bottom: 2.1em;
    }
-   
+
    .yui-navset .yui-content {
         padding: 0.2em 1em;
         position: relative;
     }
     .userprofile-email {
-        margin-top: 0.4em; 
+        margin-top: 0.4em;
     }
     h4 {
         padding: 0;
@@ -253,7 +253,7 @@ form.userprofile {
             line-height: 0;
         }
         border-bottom: 1px solid lightgrey;
-    }     
+    }
     .button {
         padding: 0 10px;
         margin: 4px;
@@ -266,8 +266,8 @@ form.userprofile {
         text-transform: capitalize;
     }
     #settings {
-        table tr td {            
-            white-space: nowrap;            
+        table tr td {
+            white-space: nowrap;
         }
         table tr td:nth-child(1){
             width: 20%;
@@ -296,7 +296,7 @@ form.userprofile {
         }
     }
     #locale {
-        table tr td {            
+        table tr td {
             white-space: nowrap;
         }
         table tr td:nth-child(1){
@@ -314,20 +314,20 @@ form.userprofile {
         }
     }
     #calendar_options {
-        table tr td {            
-            white-space: nowrap;           
-        } 
+        table tr td {
+            white-space: nowrap;
+        }
         table tr td:nth-child(1){
             width: 20%;
         }
     }
     #subthemes {
-        table tr td {           
+        table tr td {
             white-space: nowrap;
             @media (max-width: 750px) {
                 display: contents !important;
             }
-        }  
+        }
     }
     .subthemeslayout {
         tr td table {
@@ -344,7 +344,7 @@ form.userprofile {
             tr td:nth-child(4){
                 width: 5%;
             }
-        }        
+        }
     }
     #settings > .edit [type="button"] {
         padding: 0 10px;
@@ -365,10 +365,10 @@ form.userprofile {
         padding-left: 0.6em;
         text-transform: capitalize;
         font-weight: normal !important;
-    }    
+    }
     .email-address-reply-to-flag {
         margin-top: 8px !important;
-    }    
+    }
     .subpanel-table {
         margin-top: 2.5em;
         margin-bottom: 2em;
@@ -377,7 +377,7 @@ form.userprofile {
             top: 6em;
             right: 1em;
             #EAPM_create_button {
-                background-color: #93a4b3; 
+                background-color: #93a4b3;
                 font-weight: bold;
                 height: 2.2em;
                 line-height: 1.4em;
@@ -404,7 +404,7 @@ form.userprofile {
     }
     input#sigDigitsExample {
         background: lightgrey;
-    }    
+    }
     .user-tab-content {
         slot {
             font-weight: inherit;
@@ -431,16 +431,19 @@ form.userprofile {
             }
         }
     }
+  div.load-more div{
+    margin-top: 10px;
+  }
     .row-user {
         .row-container {
             select {
                 height: inherit;
-            }  
+            }
             display: flex;
             .left-col {
-                width: 50%;     
+                width: 50%;
                 margin-right: 1em;
-                border-right: $nepal-grey solid 0.0625rem ;     
+                border-right: $nepal-grey solid 0.0625rem ;
                 slot {
                     line-height: 2;
                 }
@@ -457,7 +460,7 @@ form.userprofile {
                 .row-bottom {
                     margin-bottom: 0.5em;
                 }
-                
+
             }
             .row-left {
                 slot {
@@ -515,7 +518,7 @@ form.userprofile {
                 margin-right: 1rem;
                 clear: both;
             }
-        }          
+        }
     }
 }
 
@@ -589,13 +592,13 @@ form.userprofile {
         }
         #settingsButton {
             margin-top: 1em;
-        }       
-    }      
+        }
+    }
     input[type=button] {
         &:hover {
             font-size: 13px;
         }
-    } 
+    }
     .detail-view {
         .nav-tabs {
             li {

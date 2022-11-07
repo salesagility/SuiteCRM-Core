@@ -105,6 +105,8 @@ function make_sugar_config(&$sugar_config)
     global $import_max_execution_time;
     global $list_max_entries_per_subpanel;
     global $list_max_entries_per_modal;
+    global $subpanel_max_height;
+    global $listview_max_height;
     global $passwordsetting;
 
     // assumes the following variables must be set:
@@ -151,7 +153,9 @@ function make_sugar_config(&$sugar_config)
             'chgrp' => '',
         ),
         'subpanel_pagination_type' => 'pagination',
+        'subpanel_max_height' => empty($subpanel_max_height) ? 620 : $subpanel_max_height,
         'listview_pagination_type' => 'pagination',
+        'listview_max_height' => empty($listview_max_height) ? 1270 : $listview_max_height,
         'default_theme' => empty($default_theme) ? 'SuiteP' : $default_theme,
         'default_time_format' => empty($defaultTimeFormat) ? 'h:ia' : $defaultTimeFormat,
         'default_user_is_admin' => empty($default_user_is_admin) ? false : $default_user_is_admin,
@@ -444,6 +448,8 @@ function get_sugar_config_defaults(): array
         'record_modal_pagination_type' => 'pagination',
         'list_max_entries_per_subpanel' => 10,
         'list_max_entries_per_modal' => 10,
+        'listview_max_height' => 1270,
+        'subpanel_max_height' => 620,
         'lock_default_user_name' => false,
         'log_memory_usage' => false,
         'oauth2_encryption_key' => base64_encode(random_bytes(32)),
