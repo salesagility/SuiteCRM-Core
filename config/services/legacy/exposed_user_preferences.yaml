@@ -45,6 +45,7 @@ parameters:
             email_editor_option: true
             default_email_charset: true
             calendar_publish_key: true
+            record_modal_pagination_type: true
             subtheme: true
             syncGCal: true
             list_max_entries_per_page: true
