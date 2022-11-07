@@ -386,6 +386,14 @@ td {
   color: $white;
 }
 
+.load-more-button {
+  font-size: .775rem;
+  color: $burnt-red;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
 @media all and (max-width: $breakpoint-medium) {
   .select-action-group {
     margin: 0 0 0 1em;
@@ -409,6 +417,13 @@ td {
   font-weight: bold;
   position: relative;
   bottom: 0.1em;
+}
+
+.centre-pagination {
+  margin: 0 0.7em;
+  font-weight: bold;
+  position: relative;
+  top: 0.2em;
 }
 
 .list-view .col-lg-12, .list-view .col-lg-9, .list-view .col-lg-3 {

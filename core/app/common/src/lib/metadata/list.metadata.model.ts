@@ -36,6 +36,7 @@ export interface RecordListMeta {
     bulkActions: BulkActionsMap;
     lineActions: Action[];
     filters: Filter[];
+    maxHeight?: number;
 }
 
 export interface ListViewMeta extends RecordListMeta {
@@ -44,6 +45,7 @@ export interface ListViewMeta extends RecordListMeta {
     orderBy?: string;
     sortOrder?: string;
     paginationType?: string;
+    maxHeight?: number;
 }
 
 export interface Filter {

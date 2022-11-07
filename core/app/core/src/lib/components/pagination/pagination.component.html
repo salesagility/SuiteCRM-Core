@@ -40,7 +40,7 @@
     </button>
     <span class="pagination-count"
           [ngClass]="{
-            'hide-pagination-count': displayResponsiveTable
+            'hide-pagination-count': displayResponsiveTable, 'centre-pagination': !allowPagination
           }"
     >
       ({{vm.pageCount.pageFirst}}

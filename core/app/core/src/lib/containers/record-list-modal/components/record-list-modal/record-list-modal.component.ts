@@ -140,16 +140,18 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
             this.adapter = new ModalRecordListTableAdapter(this.systemConfigs, this.preferences);
         }
 
+        this.tableConfig = this.adapter.getTable(this.store, this.multiSelect);
+
         if (this.store?.listMetadata?.maxHeight){
             this.tableConfig.maxListHeight = this.store.listMetadata.maxHeight;
-        }
 
+        }
         if (!this.tableConfig?.maxListHeight) {
             const ui = this.systemConfigs.getConfigValue('ui') ?? {};
-            this.tableConfig.maxListHeight = ui.record_modal_max_height;
-        }
+            const configModalHeight = this.systemConfigs.getConfigValue('record_modal_max_height') ?? '';
+            this.tableConfig.maxListHeight = ui.record_modal_max_height ?? configModalHeight;
 
-        this.tableConfig = this.adapter.getTable(this.store, this.multiSelect);
+        }
         this.tableConfig.maxColumns$ = this.getMaxColumns();
     }
 

@@ -33,3 +33,6 @@ parameters:
         inline: true
     navigation_max_module_recently_viewed: 5
     navigation_max_module_favorites: 5
+    subpanel_max_height: 620
+    listview_max_height: 1270
+    record_modal_max_height: 620

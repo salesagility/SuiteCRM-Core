@@ -48,6 +48,9 @@ parameters:
             record_modal_pagination_type: true
             subtheme: true
             syncGCal: true
+            listview_max_height: true
             list_max_entries_per_page: true
+            subpanel_max_height: true
             list_max_entries_per_subpanel: true
+            record_modal_max_height: true
             ui: true

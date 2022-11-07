@@ -49,8 +49,6 @@ export class SubpanelComponent implements OnInit {
     @Input() maxColumns$: Observable<number>;
     @Input() onClose: Function;
 
-    jump: number;
-    paginationType: string;
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
@@ -68,9 +66,17 @@ export class SubpanelComponent implements OnInit {
     ngOnInit(): void {
         this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
-        this.jump = this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
+        }
+
+        if (this.store?.metadata?.max_height) {
+            this.tableConfig.maxListHeight = this.store.metadata.max_height;
+        }
+
+        if (!this.tableConfig?.maxListHeight) {
+            const ui = this.systemConfigs.getConfigValue('ui') ?? {};
+            this.tableConfig.maxListHeight = ui.subpanel_max_height;
         }
 
         this.tableConfig.paginationType = this?.store?.metadata?.pagination_type ?? this.tableConfig.paginationType;

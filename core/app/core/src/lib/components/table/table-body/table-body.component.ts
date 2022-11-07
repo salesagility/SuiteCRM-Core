@@ -27,7 +27,16 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {ButtonInterface, ColumnDefinition, Field, Record, RecordSelection, SelectionStatus, SortDirection, SortingSelection} from 'common';
+import {
+    ButtonInterface,
+    ColumnDefinition,
+    Field,
+    Record,
+    RecordSelection,
+    SelectionStatus,
+    SortDirection,
+    SortingSelection
+} from 'common';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
@@ -51,6 +60,7 @@ interface TableViewModel {
 export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
+    maxHeight: number;
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
@@ -66,6 +76,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
 
+        this.maxHeight = this.config.maxListHeight;
 
         this.vm$ = combineLatest([
             this.config.columns,
@@ -125,7 +136,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     }
 
     getPaginationType() {
-        return this.config.paginationType;
+        return this.config?.paginationType ?? 'pagination';
     }
 
     buildDisplayColumns(metaFields: ColumnDefinition[]): string[] {
@@ -160,7 +171,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             klass: 'load-more-button btn btn-link btn-sm',
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
-                this.config.loadMore(this.config.jump ?? 10);
+                this.config.loadMore();
             }
         } as ButtonInterface;
     }
@@ -198,11 +209,15 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     }
 
     showLoadMore() {
-        return this.getPaginationType() === 'load-more' || this.getPaginationType() === 'combined';
+        return this.getPaginationType() === 'load-more';
     }
 
-    getView() {
-        return this.config?.view === 'subpanel';
+    getMaxHeight(): { [klass: string]: any; } | null {
+        if (this.maxHeight == 0) {
+            return null;
+        }
+
+        return {'max-height.px': this.maxHeight, 'overflow-y': 'auto'}
     }
 
     protected initLoading(): Observable<boolean> {
