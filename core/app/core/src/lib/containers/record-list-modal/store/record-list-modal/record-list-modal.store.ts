@@ -103,7 +103,7 @@ export class RecordListModalStore implements StateStore {
         );
         this.listMetadata$ = meta$.pipe(map(meta => meta.listView));
         this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
-        this.recordList.init(module, false, 'list_max_entries_per_subpanel');
+        this.recordList.init(module, false, 'list_max_entries_per_modal');
         this.columns$ = this.listMetadata$.pipe(map(metadata => metadata.fields));
     }
 
