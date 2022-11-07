@@ -104,6 +104,7 @@ function make_sugar_config(&$sugar_config)
     global $upload_maxsize;
     global $import_max_execution_time;
     global $list_max_entries_per_subpanel;
+    global $list_max_entries_per_modal;
     global $passwordsetting;
 
     // assumes the following variables must be set:
@@ -168,6 +169,7 @@ function make_sugar_config(&$sugar_config)
         'languages' => empty($languages) ? array('en_us' => 'English (US)') : $languages,
         'list_max_entries_per_page' => empty($list_max_entries_per_page) ? 20 : $list_max_entries_per_page,
         'list_max_entries_per_subpanel' => empty($list_max_entries_per_subpanel) ? 10 : $list_max_entries_per_subpanel,
+        'list_max_entries_per_modal' => empty($list_max_entries_per_modal) ? 10 : $list_max_entries_per_modal,
         'lock_default_user_name' => empty($lock_default_user_name) ? false : $lock_default_user_name,
         'log_memory_usage' => empty($log_memory_usage) ? false : $log_memory_usage,
         'name_formats' => empty($nameFormats) ? array(
@@ -440,6 +442,7 @@ function get_sugar_config_defaults(): array
         'large_scale_test' => false,
         'list_max_entries_per_page' => 20,
         'list_max_entries_per_subpanel' => 10,
+        'list_max_entries_per_modal' => 10,
         'lock_default_user_name' => false,
         'log_memory_usage' => false,
         'oauth2_encryption_key' => base64_encode(random_bytes(32)),

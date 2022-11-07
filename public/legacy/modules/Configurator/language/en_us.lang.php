@@ -165,6 +165,7 @@ $mod_strings = array(
     'LBL_LDAP_ENC_KEY' => 'Encryption Key:',
     'DEVELOPER_MODE' => 'Developer Mode',
     'LBL_SET_PAGINATION_TYPE' => 'Set Pagination Type',
+    'LBL_LIST_ENTRIES_PER_MODAL' => 'Records Per Modal Page',
 
     'SHOW_DOWNLOADS_TAB' => 'Display Downloads Tab',
     'SHOW_DOWNLOADS_TAB_HELP' => 'When selected, the Download tab will appear in the User settings and provide users with access to SuiteCRM plug-ins and other available files',

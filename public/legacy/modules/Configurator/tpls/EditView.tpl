@@ -80,7 +80,12 @@
 		<td><select name="pagination_type">{$listview_pagination_type}</select></td>
 	</tr>
 	<tr>
-		<td scope="row">{$MOD.LOCK_HOMEPAGE}:</td>
+		<td width="17%" scope="row"><span>{$MOD.LBL_LIST_ENTRIES_PER_MODAL}</td>
+		<td width="83%" colspan="3">
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_modal' name='list_max_entries_per_modal' value='{$config.list_max_entries_per_modal}'></td>
+	</tr>
+	<tr>
+		<td scope="row">{$MOD.LOCK_HOMEPAGE}: </td>
 		<td>
 			{if !empty($config.lock_homepage)}
 				{assign var='lock_homepage_checked' value='CHECKED'}
