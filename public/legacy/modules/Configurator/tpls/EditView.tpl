@@ -73,7 +73,11 @@
 	</tr>
 	<tr>
 		<td scope="row">{$MOD.LBL_SET_PAGINATION_TYPE}:</td>
-		<td><select name="subpanel_pagination_type">{$subpanel_pagination_type}</select></td>
+		<td><select name="pagination_type">{$subpanel_pagination_type}</select></td>
+	</tr>
+	<tr>
+		<td scope="row">{$MOD.LBL_SET_PAGINATION_TYPE}:</td>
+		<td><select name="pagination_type">{$listview_pagination_type}</select></td>
 	</tr>
 	<tr>
 		<td scope="row">{$MOD.LOCK_HOMEPAGE}:</td>

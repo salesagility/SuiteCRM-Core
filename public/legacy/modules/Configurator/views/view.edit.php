@@ -157,7 +157,10 @@ class ConfiguratorViewEdit extends ViewEdit
             $this->ss->assign('lead_conv_activities', get_select_options_with_id(Lead::getActivitiesOptions(), ''));
         }
         if (!empty($configurator->config['subpanel_pagination_type'])) {
-            $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $configurator->config['subpanel_pagination_type']));
+            $this->ss->assign('pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $configurator->config['subpanel_pagination_type']));
+        }
+        if (!empty($configurator->config['listview_pagination_type'])) {
+            $this->ss->assign('pagination_type', get_select_options_with_id($app_list_strings['listview_pagination_type'], $configurator->config['listview_pagination_type']));
         }
         if (!empty($configurator->config['logger']['file']['suffix'])) {
             $this->ss->assign('filename_suffix', get_select_options_with_id(SugarLogger::$filename_suffix, $configurator->config['logger']['file']['suffix']));

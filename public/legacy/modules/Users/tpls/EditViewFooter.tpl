@@ -563,6 +563,15 @@
                     <div class="bottom-dotted-border"></div>
                 </div>
             </div>
+                        <div class="row-container">
+                <div class="left-col">
+                    <div class="row-label">{$MOD.LBL_SET_SUBPANEL_PAGINATION_TYPE}
+                    <select name="subpanel_pagination_type">{$subpanel_pagination_type}</select>
+                    </div>
+                    <div class="row-label">{$MOD.LBL_SET_LISTVIEW_PAGINATION_TYPE}
+                    <select name="listview_pagination_type">{$listview_pagination_type}</select>
+                </div>
+            </div>
         </div>
     </div>
 </div>
