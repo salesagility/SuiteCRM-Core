@@ -15,7 +15,11 @@
       "php": "7.3.0"
     },
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "symfony/flex": true,
+      "wikimedia/composer-merge-plugin": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

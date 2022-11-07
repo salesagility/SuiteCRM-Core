@@ -26,18 +26,17 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div [ngClass]="{'small-load-more-table-container' : showLoadMore() && getView()}" class="position-relative d-flex flex-column">
-        <div [ngClass]="{'load-more-table-container' : showLoadMore() && !getView()}">
+    <div [ngStyle]="getMaxHeight()" class="position-relative d-flex flex-column">
         <table cdk-table [dataSource]="config.dataSource"
                aria-describedby="table-body"
                class="list-view-table striped-table table">
 
-                <ng-container *ngIf="vm.selection" cdkColumnDef="checkbox">
+            <ng-container *ngIf="vm.selection" cdkColumnDef="checkbox">
 
-                    <th *cdkHeaderCellDef cdk-header-cell class="primary-table-header" scope="col"></th>
+                <th *cdkHeaderCellDef cdk-header-cell class="primary-table-header" scope="col"></th>
 
-                    <td *cdkCellDef="let record" cdk-cell>
-                        <label class="checkbox-container">
+                <td *cdkCellDef="let record" cdk-cell>
+                    <label class="checkbox-container">
                             <input (change)="toggleSelection(record['id'])"
                                    [checked]="(record['id'] && vm.selected[record['id']]) || allSelected(vm.selectionStatus) "
                                    [disabled]="allSelected(vm.selectionStatus)"
@@ -105,5 +104,4 @@
                 <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
             </div>
         </div>
-    </div>
 </ng-container>

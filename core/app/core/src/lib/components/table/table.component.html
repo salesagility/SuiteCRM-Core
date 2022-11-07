@@ -28,7 +28,7 @@
 <div class="{{ (config && config.klass) || ''}}">
     <scrm-table-header *ngIf="showHeader()"
                        [bulkActions]="config.bulkActions"
-                       [paginationType]="config.paginationType"
+                       [paginationType]="getPaginationType()"
                        [pagination]="config.pagination"
                        [selection]="config.selection"
     >
@@ -40,7 +40,7 @@
 
     <scrm-table-footer *ngIf="showFooter()"
                        [bulkActions]="config.bulkActions"
-                       [paginationType]="config.paginationType"
+                       [paginationType]="getPaginationType()"
                        [pagination]="config.pagination"
                        [selection]="config.selection"
     >

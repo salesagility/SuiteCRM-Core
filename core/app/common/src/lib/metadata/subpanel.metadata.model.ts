@@ -62,6 +62,7 @@ export interface SubPanelDefinition {
     type?: string;
     name: string;
     subpanel_name?: string;
+    max_height?: number;
     header_definition_from_subpanel?: string;
     module?: string;
     legacyModule?: string;

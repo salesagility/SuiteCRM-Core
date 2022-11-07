@@ -35,6 +35,20 @@ import {TableConfig} from './table.model';
 export class TableComponent {
     @Input() config: TableConfig;
 
+    getPaginationType(){
+
+        if (!this.config?.loadMore) {
+            return 'pagination';
+        }
+
+        if (this.config?.paginationType !== 'load-more'){
+            return 'pagination';
+        }
+
+        return this.config.paginationType;
+
+    }
+
     showHeader(): boolean {
         return this.config.showHeader;
     }

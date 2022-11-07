@@ -79,7 +79,7 @@ export class TableAdapter {
             bulkActions: this.getBulkActionsDataSource(this.store),
             pagination: this.store.recordList,
 
-            paginationType: this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigs.getConfigValue('listview_paginatgion_type'),
+            paginationType: this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigs.getConfigValue('listview_pagination_type'),
 
             toggleRecordSelection: (id: string): void => {
                 this.store.recordList.toggleSelection(id);
@@ -90,24 +90,30 @@ export class TableAdapter {
                 this.store.updateSortLocalStorage();
             },
 
-            loadMore: (jump: number = 20): void => {
+            maxListHeight: this.preferences.getUserPreference('listview_max_height') ?? this.systemConfigs.getConfigValue('listview_max_height'),
+
+            loadMore: (): void => {
+                const jump = this.preferences.getUserPreference('list_max_entries_per_page') ?? this.systemConfigs.getConfigValue('list_max_entries_per_page');
                 const pagination = this.store.recordList.getPagination();
                 const currentPageSize = pagination.pageSize || 0;
-                const newPageSize = currentPageSize + jump;
+                const newPageSize = Number(currentPageSize) + Number(jump);
 
                 this.store.recordList.setPageSize(newPageSize);
-                this.store.recordList.updatePagination(0);
+                this.store.recordList.updatePagination(pagination.current)
             },
 
             allLoaded: (): boolean => {
                 const pagination = this.store.recordList.getPagination();
+
                 if (!pagination) {
                     return false;
                 }
-                if (pagination.pageLast >= pagination.total) {
+
+                if (Number(pagination.pageLast) >= Number(pagination.total)) {
                     return true;
                 }
-                return pagination.pageSize >= pagination.total;
+
+                return Number(pagination.pageSize) >= Number(pagination.total);
             }
 
         } as TableConfig;

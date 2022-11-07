@@ -40,7 +40,7 @@ export class TableFooterComponent {
 
 
     isPaginationEnabled(): boolean {
-        return this.paginationType === 'pagination' || this.paginationType === 'combined';
+        return this.paginationType === 'pagination';
     }
 
 }

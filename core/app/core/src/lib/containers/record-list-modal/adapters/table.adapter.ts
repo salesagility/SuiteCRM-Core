@@ -89,13 +89,15 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
 
             allLoaded: (): boolean => {
                 const pagination = store.recordList.getPagination();
+
                 if (!pagination) {
                     return false;
                 }
-                if (pagination.pageLast >= pagination.total) {
+
+                if (Number(pagination.pageLast) >= Number(pagination.total)) {
                     return true;
                 }
-                return pagination.pageSize >= pagination.total;
+                return Number(pagination.pageSize) >= Number(pagination.total);
             }
 
         } as TableConfig;
