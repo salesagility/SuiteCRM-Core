@@ -293,6 +293,7 @@ $mod_strings = array(
     'LBL_SUBPANEL_TABS' => 'Subpanel Tabs',
     'LBL_SET_SUBPANEL_PAGINATION_TYPE' => 'Set Subpanel Pagination Type',
     'LBL_SET_LISTVIEW_PAGINATION_TYPE' => 'Set Listview Pagination Type',
+    'LBL_SET_RECORD_MODAL_PAGINATION_TYPE' => 'Set Record Modal Pagination Type',
     'LBL_SUBPANEL_TABS_DESCRIPTION' => 'In Detail Views, group Subpanels into tabs and display one tab at a time.',
     'LBL_SORT_MODULES' => 'Sort modules alphabetically',
     'LBL_SORT_MODULES_DESCRIPTION' => 'Order modules by name in the navigation drop down.',

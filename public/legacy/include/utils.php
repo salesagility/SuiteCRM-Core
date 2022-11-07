@@ -441,6 +441,7 @@ function get_sugar_config_defaults(): array
         'languages' => ['en_us' => 'English (US)'],
         'large_scale_test' => false,
         'list_max_entries_per_page' => 20,
+        'record_modal_pagination_type' => 'pagination',
         'list_max_entries_per_subpanel' => 10,
         'list_max_entries_per_modal' => 10,
         'lock_default_user_name' => false,

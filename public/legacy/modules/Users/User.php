@@ -772,7 +772,11 @@ class User extends Person implements EmailInterface
             }
 
             if (isset($_POST['listview_pagination_type'])) {
-                $this->setPreference('listview_pagination_type', $_POST['subpanel_pagination_type'], 0, 'global');
+                $this->setPreference('listview_pagination_type', $_POST['listview_pagination_type'], 0, 'global');
+            }
+
+            if (isset($_POST['record_modal_pagination_type'])) {
+                $this->setPreference('record_modal_pagination_type', $_POST['record_modal_pagination_type'], 0, 'global');
             }
 
             if (isset($_POST['user_swap_last_viewed'])) {

@@ -72,12 +72,16 @@
 		</td>
 	</tr>
 	<tr>
-		<td scope="row">{$MOD.LBL_SET_PAGINATION_TYPE}:</td>
-		<td><select name="pagination_type">{$subpanel_pagination_type}</select></td>
+		<td scope="row">{$MOD.LBL_SET_SUBPANEL_PAGINATION_TYPE}:</td>
+		<td><select name="subpanel_pagination_type">{$subpanel_pagination_type}</select></td>
 	</tr>
 	<tr>
-		<td scope="row">{$MOD.LBL_SET_PAGINATION_TYPE}:</td>
-		<td><select name="pagination_type">{$listview_pagination_type}</select></td>
+		<td scope="row">{$MOD.LBL_SET_LISTVIEW_PAGINATION_TYPE}:</td>
+		<td><select name="listview_pagination_type">{$listview_pagination_type}</select></td>
+	</tr>
+	<tr>
+		<td scope="row">{$MOD.LBL_SET_RECORD_MODAL_PAGINATION_TYPE}:</td>
+		<td><select name="record_modal_pagination_type">{$record_modal_pagination_type}</select></td>
 	</tr>
 	<tr>
 		<td width="17%" scope="row"><span>{$MOD.LBL_LIST_ENTRIES_PER_MODAL}</td>

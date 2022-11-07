@@ -570,6 +570,8 @@
                     </div>
                     <div class="row-label">{$MOD.LBL_SET_LISTVIEW_PAGINATION_TYPE}
                     <select name="listview_pagination_type">{$listview_pagination_type}</select>
+                                        <div class="row-label">{$MOD.LBL_SET_RECORD_MODAL_PAGINATION_TYPE}
+                    <select name="record_modal_pagination_type">{$record_modal_pagination_type}</select>
                 </div>
             </div>
         </div>
