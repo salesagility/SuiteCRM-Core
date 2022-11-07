@@ -72,6 +72,11 @@
 		</td>
 	</tr>
 	<tr>
+		<td scope="row"><span>{$MOD.LBL_LIST_ENTRIES_PER_MODAL}</td>
+		<td>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_modal' name='list_max_entries_per_modal' value='{$config.list_max_entries_per_modal}'></td>
+	</tr>
+	<tr>
 		<td scope="row">{$MOD.LBL_SET_SUBPANEL_PAGINATION_TYPE}:</td>
 		<td><select name="subpanel_pagination_type">{$subpanel_pagination_type}</select></td>
 	</tr>
@@ -82,11 +87,6 @@
 	<tr>
 		<td scope="row">{$MOD.LBL_SET_RECORD_MODAL_PAGINATION_TYPE}:</td>
 		<td><select name="record_modal_pagination_type">{$record_modal_pagination_type}</select></td>
-	</tr>
-	<tr>
-		<td width="17%" scope="row"><span>{$MOD.LBL_LIST_ENTRIES_PER_MODAL}</td>
-		<td width="83%" colspan="3">
-			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_modal' name='list_max_entries_per_modal' value='{$config.list_max_entries_per_modal}'></td>
 	</tr>
 	<tr>
 		<td scope="row">{$MOD.LOCK_HOMEPAGE}: </td>
