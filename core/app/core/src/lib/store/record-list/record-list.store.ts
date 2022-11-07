@@ -228,7 +228,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {string} pageSizeConfigKey string
      * @returns {object} Observable<any>
      */
-    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page'): Observable<RecordList> {
+    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_modal'): Observable<RecordList> {
         this.internalState.module = module;
 
         this.watchPageSize(pageSizeConfigKey);
@@ -551,7 +551,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      *
      * @param {string} pageSizeConfigKey key
      */
-     public watchPageSize(pageSizeConfigKey: string): void {
+    protected watchPageSize(pageSizeConfigKey: string): void {
 
         const pageSizePreference = this.preferencesStore.getUserPreference(pageSizeConfigKey);
         const pageSizeConfig = this.configStore.getConfigValue(pageSizeConfigKey);
@@ -576,7 +576,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {} pageSizePreference to use
      * @param {string} pageSizeConfig to use
      */
-    public determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
+    protected determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
         let size = 0;
 
         if (pageSizePreference) {

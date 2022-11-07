@@ -22,6 +22,7 @@ parameters:
     currencies: true
     list_max_entries_per_page: true
     list_max_entries_per_subpanel: true
+    list_max_entries_per_modal: true
     cache_reset_actions: true
     navigation_tab_limits: true
     listview_column_limits: true
