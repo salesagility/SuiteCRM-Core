@@ -207,7 +207,7 @@ class User extends Person implements EmailInterface
     /**
      * @param bool $useRequestedRecord
      * @return array
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getSignaturesArray($useRequestedRecord = false)
     {
@@ -239,7 +239,7 @@ class User extends Person implements EmailInterface
      * @param string $elementId
      * @param bool $useRequestedRecord
      * @return string
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getSignatures(
         $live = false,
@@ -275,7 +275,7 @@ class User extends Person implements EmailInterface
      * @param string $elementId
      * @param bool $useRequestedRecord
      * @return string
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getEmailAccountSignatures(
         $live = false,
@@ -492,7 +492,7 @@ class User extends Person implements EmailInterface
 
     /**
      * @return bool|SugarBean
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getRequestedUserRecord()
     {
@@ -765,6 +765,10 @@ class User extends Person implements EmailInterface
                 $this->setPreference('mailmerge_on', 'on', 0, 'global');
             } else {
                 $this->setPreference('mailmerge_on', 'off', 0, 'global');
+            }
+
+            if (isset($_POST['subpanel_pagination_type'])) {
+                $this->setPreference('subpanel_pagination_type', $_POST['subpanel_pagination_type'], 0, 'global');
             }
 
             if (isset($_POST['user_swap_last_viewed'])) {

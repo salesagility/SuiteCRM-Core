@@ -561,7 +561,7 @@ class UserViewHelper
 
     protected function setupAdvancedTabNavSettings()
     {
-        global $app_list_strings;
+        global $app_list_strings, $sugar_config;
 
         // Grouped tabs?
         $useGroupTabs = $this->bean->getPreference('navigation_paradigm');
@@ -582,6 +582,14 @@ class UserViewHelper
             $this->ss->assign("SUBPANEL_TABS", $user_subpanel_tabs ? 'checked' : '');
         } else {
             $this->ss->assign("SUBPANEL_TABS", $GLOBALS['sugar_config']['default_subpanel_tabs'] ? 'checked' : '');
+        }
+
+        $subpanel_paginationType = $this->bean->getPreference('subpanel_pagination_type');
+
+        if (!empty($subpanel_paginationType)) {
+            $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $subpanel_paginationType));
+        } else {
+            $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $sugar_config['subpanel_pagination_type']));
         }
 
         if ($this->bean->getPreference('count_collapsed_subpanels')) {
