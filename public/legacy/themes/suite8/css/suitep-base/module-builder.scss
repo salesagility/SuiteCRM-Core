@@ -33,4 +33,19 @@
             background: $pale-blue;
         }
     }
+    input[type=submit].button:hover {
+        background: $pale-blue;
+    }
+    .export-customization {
+        .export-field {
+            display: flex;
+            line-height: 30px;
+            padding: 0;
+            .export-label {
+                width: 10em;
+                padding: 0;
+                font-weight: bold;
+            }
+        }
+    }
 }
