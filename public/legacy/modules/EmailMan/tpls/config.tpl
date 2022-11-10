@@ -72,7 +72,7 @@ function change_state(radiobutton) {
 		<td class="action-btn-top">
 			<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="this.form.action.value='Save';return verify_data(this);" type="submit" name="button" id="btn_save" value=" {$APP.LBL_SAVE_BUTTON_LABEL} ">
 			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="this.form.action.value='{$RETURN_ACTION}'; this.form.module.value='{$RETURN_MODULE}';" type="submit" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
-		</td>		
+		</td>
 	</tr>
 	<tr>
 		<td nowrap class="required-text">
@@ -96,7 +96,7 @@ function change_state(radiobutton) {
 					<table width="100%" border="1" cellspacing="0" cellpadding="0" class="edit view">
 						<tr>
 							<td align="left" scope="row" colspan="4">
-								{$MOD.LBL_OUTGOING_SECTION_HELP}								
+								{$MOD.LBL_OUTGOING_SECTION_HELP}
 							</td>
 						</tr>
 						<tr class="{$OUTBOUND_TYPE_CLASS}">
@@ -188,6 +188,8 @@ function change_state(radiobutton) {
 											<td width="20%" class="mobile-hide">&nbsp;</td>
 											<td width="30%" class="mobile-hide">&nbsp;</td>
 										</tr>
+									</table>
+									<table width="100%" cellpadding="0" cellspacing="0">
 										<tr id="mail_allow_user">
 											<td width="25%" scope="row">
 												{$MOD.LBL_ALLOW_DEFAULT_SELECTION}&nbsp;
@@ -198,11 +200,8 @@ function change_state(radiobutton) {
 												<input id="notify_allow_default_outbound" name='notify_allow_default_outbound' value="2" tabindex='1' class="checkbox" type="checkbox" {$notify_allow_default_outbound_on}>
 											</td>
 										</tr>
-									</table>
-                                                                                        
-									<table width="100%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="25%" scope="row">
+											<td width="20%" scope="row">
 												{$MOD.LBL_ALLOW_SEND_AS_USER}&nbsp;
 												<img border="0" class="inlineHelpTip" onclick="return SUGAR.util.showHelpTips(this,'{$MOD.LBL_ALLOW_SEND_AS_USER_DESC}','','','dialogHelpPopup')" src="index.php?entryPoint=getImage&themeName={$THEME}&imageName=helpInline.gif">
 											</td>
@@ -653,15 +652,11 @@ function notify_setrequired(f) {
 	document.getElementById("smtp_auth1").style.visibility = (document.getElementById('mail_smtpauth_req').checked) ? "visible" : "hidden";
 	document.getElementById("smtp_auth2").style.display = (document.getElementById('mail_smtpauth_req').checked) ? "" : "none";
 	document.getElementById("smtp_auth2").style.visibility = (document.getElementById('mail_smtpauth_req').checked) ? "visible" : "hidden";
-	if( document.getElementById('mail_smtpauth_req').checked)
-	   YAHOO.util.Dom.removeClass('mail_allow_user', "yui-hidden");
-	else
-	   YAHOO.util.Dom.addClass("mail_allow_user", "yui-hidden");
 
 	return true;
 }
 
-function setDefaultSMTPPort() 
+function setDefaultSMTPPort()
 {
     if (!first_load)
     {
