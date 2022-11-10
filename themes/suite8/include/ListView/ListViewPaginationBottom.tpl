@@ -72,7 +72,7 @@
 						{if $prerow}
 
                         {sugar_action_menu id=$link_select_id params=$selectLink}
-					
+
 						{/if}
 
 						{sugar_action_menu id=$link_action_id params=$actionsLink}
@@ -113,20 +113,20 @@
 					<td nowrap='nowrap' align="right" class='paginationActionButtons' width="1%">
 						{if $pageData.urls.nextPage}
 							<button type='button' id='listViewNextButton_{$action_menu_location}' name='listViewNextButton' title='{$navStrings.next}' class='list-view-pagination-button' {if $prerow}onclick='return sListView.save_checks({$pageData.offsets.next}, "{$moduleString}")' {else} onClick='location.href="{$pageData.urls.nextPage}"'{/if}>
-								<span>{sugar_getimage name="paginate_next"}</span>	
+								<span>{sugar_getimage name="paginate_next"}</span>
 							</button>
 						{else}
 							<button type='button' id='listViewNextButton_{$action_menu_location}' name='listViewNextButton' class='list-view-pagination-button' title='{$navStrings.next}' disabled='disabled'>
-								<span>{sugar_getimage name="paginate_next"}</span>	
+								<span>{sugar_getimage name="paginate_next"}</span>
 							</button>
 						{/if}
 						{if $pageData.urls.endPage  && $pageData.offsets.total != $pageData.offsets.lastOffsetOnPage}
 							<button type='button' id='listViewEndButton_{$action_menu_location}' name='listViewEndButton' title='{$navStrings.end}' class='list-view-pagination-button' {if $prerow}onclick='return sListView.save_checks("end", "{$moduleString}")' {else} onClick='location.href="{$pageData.urls.endPage}"'{/if}>
-								<span>{sugar_getimage name="paginate_last"}</span>	
+								<span>{sugar_getimage name="paginate_last"}</span>
 							</button>
 						{elseif !$pageData.offsets.totalCounted || $pageData.offsets.total == $pageData.offsets.lastOffsetOnPage}
 							<button type='button' id='listViewEndButton_{$action_menu_location}' name='listViewEndButton' title='{$navStrings.end}' class='list-view-pagination-button' disabled='disabled'>
-								<span>{sugar_getimage name="paginate_last"}</span>	
+								<span>{sugar_getimage name="paginate_last"}</span>
 							</button>
 						{/if}
 					</td>

@@ -47,10 +47,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <!-- Bootstrap -->
-    <link href="themes/suite8/css/normalize.css" rel="stylesheet" type="text/css"/>
-    <link href="themes/suite8/css/grid.css" rel="stylesheet" type="text/css"/>
-    <link href="themes/suite8/css/footable.core.css" rel="stylesheet" type="text/css"/>
-    <title>{$APP.LBL_BROWSER_TITLE}</title>
+    <link href="themes/SuiteP/css/normalize.css" rel="stylesheet" type="text/css"/>
+    <link href='themes/SuiteP/css/fonts.css' rel='stylesheet' type='text/css'>
+    <link href="themes/SuiteP/css/grid.css" rel="stylesheet" type="text/css"/>
+    <link href="themes/SuiteP/css/footable.core.css" rel="stylesheet" type="text/css"/>
+    <title>{if $BROWSER_TITLE}{$BROWSER_TITLE}{else}{$APP.LBL_BROWSER_TITLE}{/if}</title>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -67,7 +68,7 @@
         SUGAR.themes.hide_image = '{/literal}{sugar_getimagepath file="hide.gif"}{literal}';
         SUGAR.themes.show_image = '{/literal}{sugar_getimagepath file="show.gif"}{literal}';
         SUGAR.themes.loading_image = '{/literal}{sugar_getimagepath file="img_loading.gif"}{literal}';
-        
+
         if (YAHOO.env.ua)
             UA = YAHOO.env.ua;
         -->
