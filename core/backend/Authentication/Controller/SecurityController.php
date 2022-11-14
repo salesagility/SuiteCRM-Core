@@ -34,6 +34,7 @@ use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -69,9 +70,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login", methods={"GET", "POST"})
      * @param AuthenticationUtils $authenticationUtils
+     *  @param Security $security
      * @return JsonResponse
      */
-    public function login(AuthenticationUtils $authenticationUtils): JsonResponse
+    public function login(AuthenticationUtils $authenticationUtils, Security $security): JsonResponse
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -79,7 +81,35 @@ class SecurityController extends AbstractController
             return new JsonResponse('Login Failed', Response::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse('Login Success', Response::HTTP_OK);
+        $user = $security->getUser();
+        if ($user === null) {
+            return new JsonResponse('Login Failed', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $UserNeedFactorAuthentication = $this->authentication->isUserNeedFactorAuthentication();
+        $UserFactorAuthenticated = $this->authentication->isUserFactorAuthenticated();
+
+        if ($UserNeedFactorAuthentication and !$this->authentication->isFactorTokenSent()){
+            $this->authentication->sendFactorTokenToUser();
+        }
+
+        $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $userName = $user->getUsername();
+
+        // TODO implement 'duration' and 'redirect', are present in ui
+        $data = [
+            'active' => true,
+            'id' => $id,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'userName' => $userName,
+            'userNeedFactorAuthentication' => $UserNeedFactorAuthentication,
+            'userFactorAuthenticated' => $UserFactorAuthenticated,
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
     /**
@@ -140,6 +170,12 @@ class SecurityController extends AbstractController
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
         $userName = $user->getUsername();
+        $UserNeedFactorAuthentication = $this->authentication->isUserNeedFactorAuthentication();
+        $UserFactorAuthenticated = $this->authentication->isUserFactorAuthenticated();
+
+        if ($UserNeedFactorAuthentication and !$this->authentication->isFactorTokenSent()){
+            $this->authentication->sendFactorTokenToUser();
+        }
 
         $data = [
             'appStatus' => $appStatus,
@@ -147,10 +183,44 @@ class SecurityController extends AbstractController
             'id' => $id,
             'firstName' => $firstName,
             'lastName' => $lastName,
-            'userName' => $userName
+            'userName' => $userName,
+            'userNeedFactorAuthentication' => $UserNeedFactorAuthentication,
+            'userFactorAuthenticated' => $UserFactorAuthenticated,
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/mfa-auth", name="app_mfa_auth", methods={"GET", "POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function mfaAuth(Request $request): JsonResponse
+    {
+        $mfa_authenticated = $this->authentication->factorAuthenticateCheck($request->getContent());
+        if ($mfa_authenticated){
+            return new JsonResponse(['mfa_authenticated' => $mfa_authenticated], Response::HTTP_OK);
+        }
+        else{
+            return new JsonResponse(['mfa_authenticated' => $mfa_authenticated], Response::HTTP_FORBIDDEN);
+        }
+    }
+
+    /**
+     * @Route("/mfa-send", name="app_mfa_send", methods={"GET", "POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function mfaSend(Request $request, Security $security): JsonResponse
+    {
+        $mfa_send = $this->authentication->sendFactorTokenToUser();
+        if ($mfa_send){
+            return new JsonResponse(['mfa_send' => $mfa_send], Response::HTTP_OK);
+        }
+        else{
+            return new JsonResponse(['mfa_send' => $mfa_send], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

@@ -36,7 +36,7 @@ import {MessageService} from '../message/message.service';
 @Injectable({
     providedIn: 'root'
 })
-export class LoginAuthGuard implements CanActivate {
+export class MfaAuthGuard implements CanActivate {
     constructor(
         protected router: Router,
         private authService: AuthService,
@@ -51,7 +51,7 @@ export class LoginAuthGuard implements CanActivate {
         const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
-        if (this.authService.isUserLoggedIn.value) {
+        if (this.authService.isUserLoggedIn.value){
             return homePageUrlTree;
         }
 
@@ -64,19 +64,13 @@ export class LoginAuthGuard implements CanActivate {
                         return this.router.parseUrl('install');
                     }
 
-                    if (user && user.userNeedFactorAuthentication === true && user.userFactorAuthenticated === false) {
+                    if (user && user.active === true && user.userNeedFactorAuthentication === true && user.userFactorAuthenticated === true) {
                         this.authService.setUserNeedFactorAuthentication(user.userNeedFactorAuthentication);
                         this.authService.setUserFactorAuthenticated(user.userFactorAuthenticated);
-                        return this.router.parseUrl('Mfa');
-                    }
-
-                    if (user && user.active === true) {
-                        // Session is active, go to home page
-                        this.authService.setCurrentUser(user);
                         return homePageUrlTree;
                     }
 
-                    // Stay on login
+                    // Stay on mfa form
                     return true;
                 }),
                 catchError(() => of(true))

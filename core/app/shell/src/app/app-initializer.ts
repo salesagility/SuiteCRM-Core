@@ -41,6 +41,8 @@ import {
     ListComponent,
     LoginAuthGuard,
     LoginUiComponent,
+    MfaAuthGuard,
+    MfaUiComponent,
     RecordComponent,
     SystemConfigStore,
     SystemNameService,
@@ -109,6 +111,24 @@ export class AppInit {
                         path: 'Login',
                         component: LoginUiComponent,
                         canActivate: [LoginAuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
+                        }
+                    });
+
+                    routes.push({
+                        path: 'Mfa',
+                        component: MfaUiComponent,
+                        canActivate: [MfaAuthGuard],
                         runGuardsAndResolvers: 'always',
                         resolve: {
                             metadata: BaseMetadataResolver

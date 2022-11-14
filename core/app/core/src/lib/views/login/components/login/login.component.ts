@@ -191,8 +191,15 @@ export class LoginUiComponent implements OnInit {
                     return;
                 }
 
-                const defaultModule = this.configs.getHomePage();
-                this.router.navigate(['/' + defaultModule]).then();
+                this.auth.setUserNeedFactorAuthentication(result.userNeedFactorAuthentication);
+                this.auth.setUserFactorAuthenticated(result.userFactorAuthenticated);
+                if (result.userNeedFactorAuthentication === true && result.userFactorAuthenticated === false){
+                    this.router.navigate(['/Mfa']).then();
+                }
+                else{
+                    const defaultModule = this.configs.getHomePage();
+                    this.router.navigate(['/' + defaultModule]).then();
+                }
             });
 
         return;

@@ -29,4 +29,7 @@ export class User {
     firstName: string;
     lastName: string;
     userName: string;
+    userNeedFactorAuthentication?: boolean;
+    userFactorAuthenticated?: boolean;
+    redirect?: string;
 }

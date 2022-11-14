@@ -223,6 +223,111 @@ class Authentication extends LegacyHandler
     }
 
     /**
+     * Check if legacy suite session need Factor Authentication
+     * @return bool
+     */
+    public function isUserNeedFactorAuthentication(): bool
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        $result = $authController->authController->userAuthenticate->isUserNeedFactorAuthentication();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
+     * Check if legacy suite session is Factor Authenticated
+     * @return bool
+     */
+    public function isUserFactorAuthenticated(): bool
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        $result = $authController->authController->userAuthenticate->isUserFactorAuthenticated();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
+     * Legacy suite session is Factor Authentication
+     * @param string $content
+     * @return bool
+     */
+    public function factorAuthenticateCheck(string $content): bool
+    {
+        $this->init();
+
+        $p = json_decode($content, true);
+
+        if (!isset($p['otp']) or !strlen($p['otp'])){
+            return false;
+        }
+
+        if (!isset($_SESSION['factor_token'])){
+            return false;
+        }
+
+        if (
+            (isset($_SESSION['user_factor_authenticated']) and $_SESSION['user_factor_authenticated']) or
+            $p['otp'] == $_SESSION['factor_token']
+        ) {
+            $_SESSION['user_factor_authenticated'] = true;
+        } else {
+            $_SESSION['user_factor_authenticated'] = false;
+        }
+
+        $r = $_SESSION['user_factor_authenticated'];
+
+        $this->close();
+
+        return $r;
+    }
+
+    /**
+     * Check if legacy suite session Factor Authentication is Sent
+     * @return bool
+     */
+    public function isFactorTokenSent(): bool
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        $result = $authController->authController->userAuthenticate->isFactorTokenSent();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
+     * Send legacy suite session Factor Authentication
+     * @return bool
+     */
+    public function sendFactorTokenToUser(): bool
+    {
+        $this->init();
+
+        $this->loadSystemUser();
+
+        $authController = $this->getAuthenticationController();
+
+        $result = $authController->authController->userAuthenticate->sendFactorTokenToUser();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
      * Check if suite app is installed
      * @return bool
      */

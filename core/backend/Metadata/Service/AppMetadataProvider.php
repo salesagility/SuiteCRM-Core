@@ -388,6 +388,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $toExclude = [
             'login' => true,
             'Login' => true,
+            'Mfa' => true,
             'home' => true,
             'calendar' => true,
         ];
@@ -442,6 +443,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $toExclude = [
             'login' => true,
             'Login' => true,
+            'Mfa' => true,
             'home' => true,
             'calendar' => true,
         ];

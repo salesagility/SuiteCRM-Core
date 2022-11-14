@@ -281,6 +281,11 @@ class SugarAuthenticate
             sugar_cleanup(true);
         }
 
+        // Disable MFA on 8.x request
+        if ($_SERVER['REQUEST_URI'] == '/session-status' or $_SERVER['REQUEST_URI'] == '/api/graphql'){
+            return true;
+        }
+
         $GLOBALS['log']->debug('FACTOR AUTH: -------------------------------------------------------------');
         $GLOBALS['log']->debug('FACTOR AUTH: --------------------- CHECK FACTOR AUtH ---------------------');
         $GLOBALS['log']->debug('FACTOR AUTH: -------------------------------------------------------------');
