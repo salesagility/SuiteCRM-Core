@@ -69,7 +69,8 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
     protected showSelectModal(data: SubpanelActionData): void {
         const modal = this.modalService.open(RecordListModalComponent, {size: 'xl', scrollable: true});
 
-        modal.componentInstance.module = data.module;
+        const module = data.module
+        modal.componentInstance.module = module;
         modal.componentInstance.parentModule = data?.parentModule ?? '';
         modal.componentInstance.multiSelect = true;
         modal.componentInstance.multiSelectButtonLabel = 'LBL_LINK';
@@ -84,7 +85,6 @@ export class SubpanelSelectAction extends SubpanelActionHandler {
 
             let linkField: string = data.subpanelMeta.get_subpanel_data;
 
-            const module = modal.componentInstance.module;
             const collectionList = data.subpanelMeta?.collection_list ?? null;
 
             if (collectionList && collectionList?.[module]?.get_subpanel_data) {
