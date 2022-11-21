@@ -530,11 +530,11 @@
             </div>
         </div>
         <div class="row-user">
-            <div class="row-container">
+            <div class="row-container" style="display: block;">
                 <div>{$TAB_CHOOSER}</div>
             </div>
             <div class="row-container">
-                <div class="left-col">
+                <div class="left-col" style="margin-right: 0;">
                     <div class="row-label">
                         {$MOD.LBL_SORT_MODULES}
                         {sugar_help text=$MOD.LBL_SORT_MODULES_DESCRIPTION }
@@ -542,7 +542,7 @@
                     <div class="row-bottom"><input class="subthemelayout_options_checkbox" type="checkbox" name="sort_modules_by_name" {$SORT_MODULES_BY_NAME} tabindex='13'></div>
                     <div class="bottom-dotted-border"></div>
                 </div>
-                <div class="right-col">
+                <div class="right-col" style="padding-left: 1em;">
                     <div class="row-label">
                         {$MOD.LBL_SUBPANEL_TABS}
                         {sugar_help text=$MOD.LBL_SUBPANEL_TABS_DESCRIPTION }
