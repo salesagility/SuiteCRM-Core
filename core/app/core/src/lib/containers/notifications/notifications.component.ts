@@ -27,22 +27,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
     Action,
-    AttributeMap, ContentAlign, ContentJustify,
-    deepClone, FieldDefinition,
-    isFalse,
-    isTrue,
-    Record,
+    AttributeMap,
+    deepClone,
     SearchCriteria,
     SearchCriteriaFilter,
-    StringMap,
-    ViewContext
+    StringMap
 } from 'common';
 import {Observable, of, Subscription} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
-import {BaseWidgetComponent} from '../widgets/base-widget.model';
-import {distinctUntilChanged, filter, map, shareReplay} from 'rxjs/operators';
 import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
-import {FieldFlexbox, FieldFlexboxCol, FieldFlexboxRow} from '../../components/record-flexbox/record-flexbox.model';
+import {FieldFlexbox} from '../../components/record-flexbox/record-flexbox.model';
 import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 
@@ -57,7 +51,7 @@ interface ThreadItemMetadataConfig {
     templateUrl: './notifications.component.html',
     styles: []
 })
-export class NotificationsComponent extends BaseWidgetComponent implements OnInit, OnDestroy {
+export class NotificationsComponent implements OnInit, OnDestroy {
 
     panelMode: 'collapsible' | 'closable' | 'none' = 'none';
 
@@ -171,36 +165,14 @@ export class NotificationsComponent extends BaseWidgetComponent implements OnIni
     constructor(
         protected language: LanguageStore,
         protected sytemConfig: SystemConfigStore
-    ) {
-        super();
-    }
+    ) {}
 
     ngOnInit(): void {
-        //const options = this.config.options || {};
-        //this.options = options.recordThread || null;
-        //if (!this.options) {
-          //  return;
-        //}
-        //this.initPanelMode();
-        //this.initFilters$();
-        //this.initPresetFields$();
-
         this.recordThreadConfig = this.getConfig();
     }
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
-    }
-
-    getHeaderLabel(): string {
-        return this.getLabel(this.config.labelKey) || '';
-    }
-
-    getLabel(key: string): string {
-        const context = this.context || {} as ViewContext;
-        const module = context.module || '';
-
-        return this.language.getFieldLabel(key, module);
     }
 
     getConfig(): RecordThreadConfig {
@@ -243,143 +215,5 @@ export class NotificationsComponent extends BaseWidgetComponent implements OnIni
         }
     }
 
-
-    protected initPanelMode(): void {
-        const ui = this.sytemConfig.getConfigValue('ui');
-        const systemDefault = ui?.widget?.allowCollapse ?? null;
-        const allowCollapse = this?.config?.allowCollapse ?? null;
-
-        let mode: 'collapsible' | 'closable' | 'none' = 'none';
-
-        if (systemDefault !== null) {
-            if (isTrue(systemDefault)) {
-                mode = 'collapsible';
-            } else if (isFalse(systemDefault)) {
-                mode = 'none'
-            }
-        }
-
-        if (allowCollapse !== null) {
-            if (isTrue(allowCollapse)) {
-                mode = 'collapsible';
-            } else if (isFalse(allowCollapse)) {
-                mode = 'none'
-            }
-        }
-
-        this.panelMode = mode;
-    }
-
-    protected initFilters$() {
-        if (!this.options || !this.options.filters || !this.context$) {
-            return;
-        }
-
-        const parentFilters = this.options.filters.parentFilters || {} as StringMap;
-
-        let context$ = of({}).pipe(shareReplay());
-
-        if (Object.keys(parentFilters).length > 0) {
-            context$ = this.context$.pipe(
-                filter(context => {
-                    const record = (context && context.record) || {} as Record;
-                    return !!(record.attributes && Object.keys(record.attributes).length);
-                })
-            );
-        }
-
-        this.filters$ = context$.pipe(
-            map(context => {
-                const filters = {filters: {} as SearchCriteriaFilter} as SearchCriteria;
-
-                this.initParentFilters(context, filters);
-
-                const staticFilters = this.options.filters.static || {} as SearchCriteriaFilter;
-
-                filters.filters = {
-                    ...filters.filters,
-                    ...staticFilters
-                };
-
-                if (this.options.filters.orderBy) {
-                    filters.orderBy = this.options.filters.orderBy;
-                }
-
-                if (this.options.filters.sortOrder) {
-                    filters.sortOrder = this.options.filters.sortOrder;
-                }
-
-                return filters;
-            }),
-            distinctUntilChanged()
-        );
-    }
-
-    protected initPresetFields$() {
-        if (!this.options || !this.options?.create || !this.options?.create?.presetFields || !this.context$) {
-            return;
-        }
-
-
-        this.presetFields$ = this.context$.pipe(
-            map(context => {
-
-                const parentValues = this.initParentValues(context);
-
-                const staticValues = this.options?.create?.presetFields?.static ?? {} as AttributeMap;
-                return {
-                    ...parentValues,
-                    ...staticValues
-                };
-            }),
-            distinctUntilChanged()
-        );
-    }
-
-    protected initParentFilters(context, filters) {
-
-        const parentFilters = this.options.filters.parentFilters || {} as StringMap;
-        if (!context || !context.record || !parentFilters) {
-            return;
-        }
-
-        Object.keys(parentFilters).forEach(parentField => {
-            const field = parentFilters[parentField];
-            const value = context.record.attributes[parentField] || '';
-
-            if (!value) {
-                return;
-            }
-
-            filters.filters[field] = {
-                field: parentFilters,
-                operator: '=',
-                values: [value],
-            }
-        });
-    }
-
-    protected initParentValues(context: ViewContext): AttributeMap {
-
-        const parentValues = this.options?.create?.presetFields?.parentValues ?? {} as StringMap;
-        if (!context || !context?.record || !parentValues) {
-            return;
-        }
-
-        const attributes = {} as AttributeMap;
-
-        Object.keys(parentValues).forEach(parentField => {
-            const field = parentValues[parentField];
-            const value = context.record.attributes[parentField] || '';
-
-            if (!value) {
-                return;
-            }
-
-            attributes[field] = value;
-        });
-
-        return attributes;
-    }
 
 }
