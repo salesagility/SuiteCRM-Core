@@ -33,6 +33,7 @@ export interface RecordThreadConfig {
     module: string;
     klass?: string;
     maxListHeight?: number;
+    autoRefreshFrequency?:number,
     create?: boolean;
     direction?: 'asc' | 'desc';
     itemConfig: RecordThreadItemConfig;

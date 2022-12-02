@@ -25,7 +25,7 @@
  */
 
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {combineLatest, Subscription} from 'rxjs';
+import {combineLatest, Subscription, interval } from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
@@ -98,7 +98,15 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.store.load(false).subscribe();
         }
 
+        const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
+        if(autoRefreshFrequency && this.store) {
+            this.subs.push(interval(autoRefreshFrequency).subscribe(() => {
+                this.store.load(false).subscribe();
+            }));
+        }
+
         this.initLoading();
+
     }
 
     ngAfterViewInit() {

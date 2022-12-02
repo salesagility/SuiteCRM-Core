@@ -60,6 +60,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         class?: string;
         maxListHeight?: number;
         direction?: 'asc' | 'desc';
+        autoRefreshFrequency?: number;
         item: {
             dynamicClass?: string[];
             itemClass?: string;
@@ -89,6 +90,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             class: 'notifications',
             maxListHeight:  350,
             direction: 'asc',
+            autoRefreshFrequency: 600_000, //10 minutes
             create:null,
             item: {
                 collapsible: false,
@@ -172,7 +174,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subs.forEach(sub => sub.unsubscribe());
+        //this.subs.forEach(sub => sub.unsubscribe());
     }
 
     getConfig(): RecordThreadConfig {
@@ -184,6 +186,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             klass: this.options.class || '',
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
+            autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
             create: false,
             itemConfig: {
                 collapsible: this.options.item.collapsible || false,
