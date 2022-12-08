@@ -2,6 +2,11 @@
   .dropdown-menu {
     padding: 0;
   }
+  .badge-position {
+    position: absolute;
+    top: -5px;
+    right: 45px;
+  }
 }
 .notifications {
   .notifications-item {
@@ -15,7 +20,7 @@
     padding: 0;
 
     .record-thread-item-body {
-      background-color: $bright-grey;
+      background-color: white;
       box-shadow: none;
       margin-bottom: 0;
       &:hover {
