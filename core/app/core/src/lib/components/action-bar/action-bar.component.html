@@ -52,10 +52,10 @@
     <div class="col justify-content-right">
         <div class="action-group">
             <div class="action-alert dropdown">
-                <button class="alerts-button dropdown-toggle" type="button" aria-label="Toggle Alerts">
+                <button class="alerts-button dropdown-toggle" type="button" aria-label="Toggle Alerts" (mouseenter)="setRead()">
                     <scrm-image class="action-btn-icon" image="alert"></scrm-image>
                 </button>
-
+                <span class="badge badge-position rounded-pill bg-danger text-white">9</span>
                  <div class="dropdown-menu dropdown-menu-right">
                     <scrm-notifications></scrm-notifications>
                 </div>

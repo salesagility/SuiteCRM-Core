@@ -94,4 +94,11 @@ export class ActionBarUiComponent {
     clearSearchTerm(): void {
         this.searchTerm = '';
     }
+
+    setRead() {
+        let notifTotal = 9;
+        if(notifTotal > 0) {
+            //Logic here
+        }
+    }
 }
