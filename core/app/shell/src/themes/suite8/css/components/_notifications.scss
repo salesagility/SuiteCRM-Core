@@ -9,11 +9,15 @@
   }
 }
 .notifications {
+
   .notifications-item {
     border-bottom:1px dashed #b2a5a7;
+
+    .itemContentClass {
+      background-color: $bright-grey!important;
+    }
+
   }
-
-
 
   .record-thread-item.record-thread-list-item {
     width: 100%;
