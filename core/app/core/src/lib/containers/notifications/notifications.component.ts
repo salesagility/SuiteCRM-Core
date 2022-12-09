@@ -152,8 +152,47 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
                                 ]
                             },
+                            {
+                                class:'d-flex flex-column',
+                                align: 'start',
+                                justify:'start',
+                                cols: [
+                                    {
+                                        actionSlot: true,
+                                        class: 'w-50'
+                                    }
+                                ]
+                            },
                         ]
-                    }
+                    },
+                    actions:[
+                        {
+                            key:'delete',
+                            icon: 'cross',
+                            titleKey:'LBL_DISMISS',
+                            asyncProcess:true,
+                            params: {
+                                displayConfirmation:true,
+                                confirmationLabel : 'NTC_DELETE_CONFIRMATION'
+                            },
+                            klass: ['btn btn-outline-light fill-primary  border-0 btn-xs p-0'],
+                            modes: ['detail', 'edit'],
+                            acl:[]
+                        },
+                        {
+                            key:'snooze',
+                            icon: 'clock',
+                            titleKey:'LBL_SNOOZE',
+                            asyncProcess:true,
+                            params: {
+                                displayConfirmation:true,
+                                confirmationLabel : 'NTC_DELETE_CONFIRMATION'
+                            },
+                            klass: ['btn btn-outline-light fill-primary border-0  btn-xs  p-0'],
+                            modes: ['detail', 'edit'],
+                            acl:[]
+                        }
+                    ]
                 }
             }
 
