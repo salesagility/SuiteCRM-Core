@@ -53,7 +53,7 @@ export interface FieldFlexboxRow {
 }
 
 export interface FieldFlexboxCol {
-    field: ViewFieldDefinition;
+    field?: ViewFieldDefinition;
     iconClass?: string;
     icon?: string;
     labelDisplay?: LabelDisplay;
