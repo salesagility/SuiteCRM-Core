@@ -28,7 +28,7 @@ import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChil
 import {RecordThreadItemConfig} from './record-thread-item.model';
 import {of, Subscription} from 'rxjs';
 import {FieldFlexbox, RecordFlexboxConfig} from '../../../../components/record-flexbox/record-flexbox.model';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, map, tap} from 'rxjs/operators';
 import {ButtonInterface} from 'common';
 import {RecordThreadItemActionsAdapter} from '../../adapters/record-thread-item-actions.adapter';
 import {RecordThreadItemActionsAdapterFactory} from '../../adapters/record-thread-item-actions.adapter.factory';
@@ -55,6 +55,7 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngOnInit(): void {
+        console.log("record-item config", this.config)
         this.actionAdapter = this.actionAdapterFactory.create(this.config.store, this.config.threadStore);
         this.initDynamicClass();
     }
@@ -183,6 +184,16 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
      * Get body class
      */
     getBodyClass(): string {
-        return this.config?.metadata?.bodyLayout?.class ?? ''
+
+        let bodyClass = '';
+        this.subs.push(this.config.store.record$.pipe(
+             tap(obj => {
+                 if(!obj.attributes.is_read) {
+                     bodyClass = this.config?.metadata?.bodyLayout?.class ;
+                 }
+             })
+        ).subscribe());
+        return bodyClass;
+        //return this.config?.metadata?.bodyLayout?.class ?? ''
     }
 }

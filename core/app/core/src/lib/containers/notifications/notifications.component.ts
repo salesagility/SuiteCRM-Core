@@ -89,7 +89,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             module: 'alerts',
             class: 'notifications',
             maxListHeight:  350,
-            direction: 'asc',
+            direction: 'desc',
             autoRefreshFrequency: 600_000, //10 minutes
             create:null,
             item: {
