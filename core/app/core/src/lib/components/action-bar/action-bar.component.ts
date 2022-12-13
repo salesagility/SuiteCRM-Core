@@ -30,6 +30,7 @@ import {map} from 'rxjs/operators';
 import {ActionBarModel} from './action-bar-model';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
+import {AppStateStore} from "../../store/app-state/app-state.store";
 
 @Component({
     selector: 'scrm-action-bar-ui',
@@ -82,7 +83,9 @@ export class ActionBarUiComponent {
         )
     );
 
-    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch) {
+    notificationCount$ = this.appStateStore.notificationsUnread$;
+
+    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch, protected appStateStore: AppStateStore,) {
     }
 
     search(): void {
@@ -95,10 +98,7 @@ export class ActionBarUiComponent {
         this.searchTerm = '';
     }
 
-    setRead() {
-        let notifTotal = 9;
-        if(notifTotal > 0) {
-            //Logic here
-        }
+    markAsRead() {
+        this.appStateStore.markNotificationsAsRead();
     }
 }

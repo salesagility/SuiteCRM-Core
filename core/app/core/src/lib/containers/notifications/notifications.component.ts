@@ -91,6 +91,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             maxListHeight:  350,
             direction: 'desc',
             autoRefreshFrequency: 600_000, //10 minutes
+            //autoRefreshFrequency: 15000,
             create:null,
             item: {
                 collapsible: false,
