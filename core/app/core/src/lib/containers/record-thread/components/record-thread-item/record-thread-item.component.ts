@@ -26,12 +26,13 @@
 
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RecordThreadItemConfig} from './record-thread-item.model';
-import {of, Subscription} from 'rxjs';
+import {of, Subscription, } from 'rxjs';
 import {FieldFlexbox, RecordFlexboxConfig} from '../../../../components/record-flexbox/record-flexbox.model';
-import {shareReplay, map, tap} from 'rxjs/operators';
+import {shareReplay, tap, combineLatest} from 'rxjs/operators';
 import {ButtonInterface} from 'common';
 import {RecordThreadItemActionsAdapter} from '../../adapters/record-thread-item-actions.adapter';
 import {RecordThreadItemActionsAdapterFactory} from '../../adapters/record-thread-item-actions.adapter.factory';
+import {AppStateStore} from "../../../../store/app-state/app-state.store";
 
 @Component({
     selector: 'scrm-record-thread-item',
@@ -50,12 +51,11 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     protected actionAdapter: RecordThreadItemActionsAdapter;
 
     constructor(
-        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory,
+        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory, protected appStateStore: AppStateStore
     ) {
     }
 
     ngOnInit(): void {
-        console.log("record-item config", this.config)
         this.actionAdapter = this.actionAdapterFactory.create(this.config.store, this.config.threadStore);
         this.initDynamicClass();
     }
@@ -186,14 +186,15 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     getBodyClass(): string {
 
         let bodyClass = '';
-        this.subs.push(this.config.store.record$.pipe(
-             tap(obj => {
-                 if(!obj.attributes.is_read) {
-                     bodyClass = this.config?.metadata?.bodyLayout?.class ;
-                 }
-             })
-        ).subscribe());
+
+        this.subs.push(this.config.store.record$.subscribe(record => {
+            this.appStateStore.notificationsUnread$.subscribe(notificationsUnread => {
+                if (notificationsUnread > 0 && !record.attributes.is_read) {
+                    bodyClass = this.config?.metadata?.bodyLayout?.class ;
+                }
+            });
+        }));
+
         return bodyClass;
-        //return this.config?.metadata?.bodyLayout?.class ?? ''
     }
 }

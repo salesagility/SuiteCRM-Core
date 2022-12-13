@@ -25,12 +25,13 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, timer, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone, isVoid} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
+import {MessageService} from "../../services/message/message.service";
 
 export interface AppState {
     loading?: boolean;
@@ -41,6 +42,8 @@ export interface AppState {
     routeUrl?: string;
     preLoginUrl?: string;
     activeRequests?: number;
+    notificationCount?:number;
+    notificationsUnread?:number;
 }
 
 const initialState: AppState = {
@@ -51,7 +54,9 @@ const initialState: AppState = {
     loaded: false,
     routeUrl: null,
     preLoginUrl: null,
-    activeRequests: 0
+    activeRequests: 0,
+    notificationCount:10,
+    notificationsUnread:6
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -69,6 +74,7 @@ export class AppStateStore implements StateStore {
     view$: Observable<string>;
     initialAppLoading$: Observable<boolean>;
     activeRequests$: Observable<number>;
+    notificationsUnread$: Observable<number>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -81,13 +87,14 @@ export class AppStateStore implements StateStore {
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
 
-    constructor(protected loadingBufferFactory: LoadingBufferFactory) {
+    constructor(protected loadingBufferFactory: LoadingBufferFactory, protected messageService: MessageService) {
 
         this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
         this.module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
         this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
+        this.notificationsUnread$ = this.state$.pipe(map(state => state.notificationsUnread), distinctUntilChanged());
 
         this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
             map(([loading, module, view, initialAppLoading]) => ({
@@ -117,7 +124,27 @@ export class AppStateStore implements StateStore {
     }
 
     public init(): void {
+        this.getNotifications(); // This will get the counter of notifications
         this.initLoadingBuffer();
+    }
+
+    public getNotifications() {
+        this.messageService.addSuccessMessage("New Notification!!!! :)");
+    }
+
+    public markNotificationsAsRead(): void {
+        this.subs.push(timer(500).subscribe(() => {
+            this.updateState({...internalState, notificationsUnread:0});
+        }));
+
+    }
+
+    public getNotificationCount() {
+        return internalState.notificationCount;
+    }
+
+    public getNotificationsUnread() {
+        return internalState.notificationsUnread;
     }
 
     /**

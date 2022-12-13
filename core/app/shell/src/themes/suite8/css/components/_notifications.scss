@@ -15,6 +15,7 @@
 
     .itemContentClass {
       background-color: $bright-grey!important;
+      transition: background-color 300ms ease-in-out;
     }
 
   }
@@ -25,6 +26,7 @@
 
     .record-thread-item-body {
       background-color: white;
+      transition: background-color 500ms ease-in-out;
       box-shadow: none;
       margin-bottom: 0;
       &:hover {
