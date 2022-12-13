@@ -282,7 +282,13 @@ class SugarAuthenticate
         }
 
         // Disable MFA on 8.x request
-        if ($_SERVER['REQUEST_URI'] == '/session-status' or $_SERVER['REQUEST_URI'] == '/api/graphql'){
+        // TODO Better method to recognize 8.x request
+        if ($_SERVER['REQUEST_URI'] == '/session-status' or
+            $_SERVER['REQUEST_URI'] == '/api/graphql' or
+            $_SERVER['REQUEST_URI'] == '/login' or
+            $_SERVER['REQUEST_URI'] == '/mfa-auth' or
+            $_SERVER['REQUEST_URI'] == '/mfa-send'
+        ){
             return true;
         }
 
