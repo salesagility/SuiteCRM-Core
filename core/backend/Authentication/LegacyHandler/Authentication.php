@@ -316,7 +316,7 @@ class Authentication extends LegacyHandler
     {
         $this->init();
 
-        $this->loadSystemUser();
+        $this->startLegacyApp();
 
         $authController = $this->getAuthenticationController();
 
