@@ -29,13 +29,14 @@ import {combineLatest, Subscription, interval } from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
-import {take} from 'rxjs/operators';
+import {take, tap, map} from 'rxjs/operators';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {AttributeMap, ButtonInterface, isVoid, Record, ViewMode} from 'common';
 import {RecordThreadItemStoreFactory} from '../../store/record-thread/record-thread-item.store.factory';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {MessageService} from '../../../../services/message/message.service';
+import {AppStateStore} from "../../../../store/app-state/app-state.store";
 
 
 @Component({
@@ -63,7 +64,8 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         protected storeFactory: RecordThreadStoreFactory,
         protected itemFactory: RecordThreadItemStoreFactory,
         protected recordManager: RecordManager,
-        protected message: MessageService
+        protected message: MessageService,
+        protected appStateStore: AppStateStore
     ) {
     }
 
@@ -101,9 +103,22 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
         if(autoRefreshFrequency && this.store) {
             this.subs.push(interval(autoRefreshFrequency).subscribe(() => {
-                this.store.load(false).subscribe();
+                this.store.load(false).pipe(
+                    map(data => data.records),
+                    map(items => items.filter( item => item.attributes.is_read == "").length),
+                    tap(count => {
+                         let appStateCount = this.appStateStore.getNotificationsUnread();
+                         if(count > appStateCount) {
+                             this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
+                        }
+                        //this.appStateStore.setNotificationUnread(count);
+                    })
+                ).subscribe(
+                    count => this.appStateStore.setNotificationUnread(count)
+                )
             }));
         }
+
 
         this.initLoading();
 

@@ -90,8 +90,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             class: 'notifications',
             maxListHeight:  350,
             direction: 'desc',
-            autoRefreshFrequency: 600_000, //10 minutes
-            //autoRefreshFrequency: 15000,
+            //autoRefreshFrequency: 600_000, //10 minutes
+            autoRefreshFrequency: 15000,
             create:null,
             item: {
                 collapsible: false,
@@ -176,7 +176,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
                                 displayConfirmation:true,
                                 confirmationLabel : 'NTC_DELETE_CONFIRMATION'
                             },
-                            klass: ['btn btn-outline-light fill-primary  border-0 btn-xs p-0'],
+                            klass: ['btn fill-primary fill-hover-main  border-0 btn-xs p-0'],
                             modes: ['detail', 'edit'],
                             acl:[]
                         },
