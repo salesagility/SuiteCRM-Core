@@ -51,7 +51,8 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     protected actionAdapter: RecordThreadItemActionsAdapter;
 
     constructor(
-        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory, protected appStateStore: AppStateStore
+        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory,
+        protected appStateStore: AppStateStore
     ) {
     }
 

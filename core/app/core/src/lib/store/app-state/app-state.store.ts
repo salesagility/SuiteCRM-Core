@@ -56,7 +56,7 @@ const initialState: AppState = {
     preLoginUrl: null,
     activeRequests: 0,
     notificationCount:10,
-    notificationsUnread:6
+    notificationsUnread:0
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -129,7 +129,17 @@ export class AppStateStore implements StateStore {
     }
 
     public getNotifications() {
-        this.messageService.addSuccessMessage("New Notification!!!! :)");
+        // Alert a meesage if a new notif appears
+        //Message service
+        //this.messageService.addSuccessMessage("New Notification!!!! :)");
+        //Use settimeout or timer - This will get number or counter of notifications
+        // Return counter and notif badge will look this state
+        //Tüm bunları yaptıktan sonra Clemente ile backendde nasıl istek atılacağını konusacağız.
+
+        //  let appStateCount = this.getNotificationsUnread();
+        //  if(count > appStateCount) {
+        //      this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
+        //  }
     }
 
     public markNotificationsAsRead(): void {
@@ -139,12 +149,16 @@ export class AppStateStore implements StateStore {
 
     }
 
-    public getNotificationCount() {
+    public getNotificationCount(): number {
         return internalState.notificationCount;
     }
 
-    public getNotificationsUnread() {
+    public getNotificationsUnread(): number {
         return internalState.notificationsUnread;
+    }
+
+    public setNotificationUnread(notificationsUnread: number): void {
+        this.updateState({...internalState, notificationsUnread});
     }
 
     /**
