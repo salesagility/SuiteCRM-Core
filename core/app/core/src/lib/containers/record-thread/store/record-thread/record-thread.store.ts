@@ -105,4 +105,8 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
     public reload(): void {
         this.recordList.updatePagination(0);
     }
+
+    public dismissAll(jump: number = 10): void {
+
+    }
 }
