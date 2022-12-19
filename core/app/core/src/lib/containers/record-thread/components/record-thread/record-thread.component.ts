@@ -55,6 +55,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     loading = false;
     maxHeight = 400;
     direction: 'asc' | 'desc' = 'asc';
+    moduleName: string ;
     protected shouldResetScroll = false;
 
     protected subs: Subscription[] = [];
@@ -70,6 +71,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+
         if (!isVoid(this.config.maxListHeight)) {
             this.maxHeight = this.config.maxListHeight;
         }
@@ -83,6 +85,8 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.direction = this.config.direction || this.direction;
+
+        this.moduleName = this.config.module;
 
         this.store.setMetadata(this.config.itemConfig.metadata);
 
@@ -163,6 +167,16 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
                 this.store.loadMore();
+            }
+        } as ButtonInterface;
+    }
+
+    getDismissAllButton(): ButtonInterface {
+        return {
+            klass: 'load-more-button btn btn-link btn-sm',
+            labelKey: 'LBL_DISMISS_ALL',
+            onClick: () => {
+                this.store.dismissAll();
             }
         } as ButtonInterface;
     }

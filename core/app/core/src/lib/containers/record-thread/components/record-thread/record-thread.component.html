@@ -58,6 +58,11 @@
             <scrm-button [config]="getLoadMoreButton()"></scrm-button>
         </div>
 
+        <div *ngIf="moduleName === 'alerts'"
+             class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+            <scrm-button [config]="getDismissAllButton()"></scrm-button>
+        </div>
+
     </div>
 
     <ng-container *ngIf="config.create && createStore">
