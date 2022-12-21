@@ -1,6 +1,6 @@
     <!-- tab_panel_content.tpl -->
-    <div class="row edit-view-row">
-        {{foreach name=rowIteration from=$panel key=row item=rowData}}
+    {{foreach name=rowIteration from=$panel key=row item=rowData}}
+        <div class="row edit-view-row">
             {*row*}
             {{counter name="columnCount" start=0 print=false assign="columnCount"}}
             {{foreach name=colIteration from=$rowData key=col item=colData}}
@@ -146,5 +146,5 @@
             <div class="clear"></div>
             {{/if}}
             {{counter name="columnCount" print=false}}
-        {{/foreach}}
-    </div>
+        </div>
+    {{/foreach}}
