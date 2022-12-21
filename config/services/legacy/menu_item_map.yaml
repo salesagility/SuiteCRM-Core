@@ -80,6 +80,11 @@ parameters:
                 icon: plus
             CreateGroup:
                 icon: plus
+        outbound-email-accounts:
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
         schedulers:
             Schedulers:
                 icon: view
