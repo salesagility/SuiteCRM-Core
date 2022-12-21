@@ -356,6 +356,9 @@
     "league/html-to-markdown": {
         "version": "4.9.1"
     },
+    "league/oauth2-client": {
+        "version": "2.6.1"
+    },
     "league/oauth2-server": {
         "version": "5.1.6"
     },
