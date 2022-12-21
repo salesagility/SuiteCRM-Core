@@ -329,6 +329,9 @@
     "jakubledl/dissect": {
         "version": "v1.0.1"
     },
+    "javanile/php-imap2": {
+        "version": "0.1.10"
+    },
     "jeremykendall/php-domain-parser": {
         "version": "4.0.3-alpha"
     },

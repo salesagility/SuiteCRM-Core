@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe47d13c51809917fd9675d20538ce5e",
+    "content-hash": "1b09803741db8392026876140cbd12f8",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2729,6 +2729,70 @@
                 "saml"
             ],
             "time": "2020-11-30T20:24:00+00:00"
+        },
+        {
+            "name": "javanile/php-imap2",
+            "version": "0.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/javanile/php-imap2.git",
+                "reference": "f96973ecf0d2d5005ee607faa13b0a5f61745ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/javanile/php-imap2/zipball/f96973ecf0d2d5005ee607faa13b0a5f61745ad9",
+                "reference": "f96973ecf0d2d5005ee607faa13b0a5f61745ad9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "zbateson/mail-mime-parser": "^2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "suggest": {
+                "ext-iconv": "For best support/performance",
+                "ext-mbstring": "For best support/performance"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "name": "Roundcube",
+                    "url": "https://github.com/roundcube"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Javanile\\Imap2\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Francesco Bianco",
+                    "homepage": "https://github.com/francescobianco"
+                }
+            ],
+            "description": "PHP IMAP with OAUTH2",
+            "homepage": "https://github.com/javanile/php-imap2",
+            "keywords": [
+                "exchange",
+                "gmail",
+                "google",
+                "imap",
+                "microsoft",
+                "oauth",
+                "oauth2",
+                "outlook"
+            ],
+            "time": "2022-10-25T08:46:34+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
@@ -10469,27 +10533,28 @@
         },
         {
             "name": "zbateson/mail-mime-parser",
-            "version": "1.3.3",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zbateson/mail-mime-parser.git",
-                "reference": "244b70963945293b5225da2553239a06987d1a11"
+                "reference": "295c7f82a8c44af685680d9df6714beb812e90ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zbateson/mail-mime-parser/zipball/244b70963945293b5225da2553239a06987d1a11",
-                "reference": "244b70963945293b5225da2553239a06987d1a11",
+                "url": "https://api.github.com/repos/zbateson/mail-mime-parser/zipball/295c7f82a8c44af685680d9df6714beb812e90ff",
+                "reference": "295c7f82a8c44af685680d9df6714beb812e90ff",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.7.0|^2.0",
                 "php": ">=5.4",
+                "pimple/pimple": "^3.0",
                 "zbateson/mb-wrapper": "^1.0.1",
                 "zbateson/stream-decorators": "^1.0.6"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6.0",
-                "sanmai/phpunit-legacy-adapter": "^6.3 || ^8"
+                "sanmai/phpunit-legacy-adapter": "^6.3 || ^8.2"
             },
             "suggest": {
                 "ext-iconv": "For best support/performance",
@@ -10532,7 +10597,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-06T00:47:49+00:00"
+            "time": "2022-09-28T16:31:49+00:00"
         },
         {
             "name": "zbateson/mb-wrapper",
@@ -14096,6 +14161,7 @@
                 "issues": "https://github.com/PHP-CS-Fixer/diff/issues",
                 "source": "https://github.com/PHP-CS-Fixer/diff/tree/v1.3.1"
             },
+            "abandoned": true,
             "time": "2020-10-14T08:39:05+00:00"
         },
         {
