@@ -4,5 +4,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $suitecrm_version = '8.2.1';
-$suitecrm_legacy = '7.12.8';
-$suitecrm_timestamp = '2022-11-17 12:00:00';
+$suitecrm_legacy = '7.13.0';
+$suitecrm_timestamp = '2022-12-20 12:00:00';

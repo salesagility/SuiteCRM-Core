@@ -114,7 +114,7 @@
                                                onkeyup="password_confirmation();" autocomplete="new-password">
                                 </div>
                                 <div class="edit-dotted-border"></div>
-                            </div>   
+                            </div>
                         </div>
 
                          <div class="password-row">
@@ -233,6 +233,7 @@
                     </div>
                     <div class="row-bottom">
                         <slot>
+                            <input type='hidden' value='0' name='receive_notifications'>
                             <input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox"
                             value="12" {$RECEIVE_NOTIFICATIONS}>
                         </slot>
@@ -287,7 +288,7 @@
                 <div class="bottom-dotted-border"></div>
             </div>
         </div>
-        <!--{/if}-->  
+        <!--{/if}-->
         </div><!--row user-->
     </div>
     <!-- User Settings Ends here -->
@@ -331,7 +332,7 @@
                     </div>
                     <div class="bottom-dotted-border"></div>
                 </div>
-            </div>            
+            </div>
             <div class="row-container">
                 <div class="left-col">
                     <div class="row-label"> <slot>{$MOD.LBL_TIMEZONE}:</slot>&nbsp;{sugar_help text=$MOD.LBL_TIMEZONE_TEXT }</div>
@@ -350,12 +351,12 @@
                      <div class="bottom-dotted-border"></div>
                 </div>
             </div>
-            <div class="row-container">            
+            <div class="row-container">
                 <div class="left-col">
                     {if ($IS_ADMIN)}
-                            <div class="row-label"><slot>{$MOD.LBL_PROMPT_TIMEZONE}:</slot>&nbsp;{sugar_help text=$MOD.LBL_PROMPT_TIMEZONE_TEXT }                    
+                            <div class="row-label"><slot>{$MOD.LBL_PROMPT_TIMEZONE}:</slot>&nbsp;{sugar_help text=$MOD.LBL_PROMPT_TIMEZONE_TEXT }
                             </div>
-                            <div class="row-bottom"><slot><input type="checkbox" tabindex='14' class="checkbox" name="ut" value="0" {$PROMPTTZ}></div>                        
+                            <div class="row-bottom"><slot><input type="checkbox" tabindex='14' class="checkbox" name="ut" value="0" {$PROMPTTZ}></div>
                         {else}
                             <div> <slot></slot></div>
                             </div> <slot></slot></div>
@@ -430,7 +431,7 @@
             <div class="row-container">
                 <div style="width:100%;" class="row-left">
                     <div class="row-label">
-                       <slot>{$MOD.LBL_SEARCH_URL|strip_semicolon}:</slot> 
+                       <slot>{$MOD.LBL_SEARCH_URL|strip_semicolon}:</slot>
                     </div>
                     <div class="row-bottom">
                        <span class="calendar_publish_ok">{$CALENDAR_SEARCH_URL}</span>
@@ -664,7 +665,7 @@
     <tr>
         <td class="actionbutton-footer">
             {sugar_action_menu id="userEditActions" class="clickMenu fancymenu" buttons=$ACTION_BUTTON_FOOTER flat=true}
-        </td>       
+        </td>
         <td align="right" nowrap>
             <span class="required">{$APP.LBL_REQUIRED_SYMBOL}</span> {$APP.NTC_REQUIRED}
         </td>

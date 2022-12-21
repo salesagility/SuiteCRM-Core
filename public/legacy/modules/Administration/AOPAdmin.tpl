@@ -205,6 +205,17 @@
                 <input type="text" name="support_from_name" id="support_from_name" value="{$config.support_from_name}">
             </td>
         </tr>
+        <tr>
+            <td  scope="row" width="200">{$MOD.LBL_CASE_MACRO}: </td>
+            <td  >
+                <input type="text" name="inbound_email_case_macro" id="inbound_email_case_macro" value="{$inbound_email_case_macro}">
+                <span>
+                    {$MOD.LBL_CASE_MACRO_DESC}
+                    <br />
+                    <i>{$MOD.LBL_CASE_MACRO_DESC2}</i>
+                </span>
+            </td>
+        </tr>
         <tr id="user_email_template_row">
             <td scope="row" width="200">{$MOD.LBL_AOP_USER_EMAIL_TEMPLATE}: </td>
             <td>

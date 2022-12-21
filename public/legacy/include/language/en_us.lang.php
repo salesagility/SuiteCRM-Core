@@ -700,6 +700,39 @@ $app_list_strings = array(
         'PM' => 'PM',
     ),
 
+    'dom_inbound_email_account_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+        'bounce' => 'Bounce',
+    ],
+
+    'dom_inbound_email_auth_types' => [
+        'basic' => 'Basic Auth',
+        'oauth' => 'OAuth',
+    ],
+
+    'dom_external_oauth_connection_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+    ],
+
+    'dom_external_oauth_provider_types' => [
+        'personal' => 'Personal',
+        'group' => 'Group',
+    ],
+
+    'dom_outbound_email_account_types' => [
+        'user' => 'Personal',
+        'group' => 'Group',
+        'system' => 'System',
+        'system-override' => 'System Override',
+    ],
+
+    'dom_inbound_email_account_status' => [
+        'Active' => 'Active',
+        'Inactive' => 'Inactive',
+    ],
+
     'dom_email_types' => array(
         'out' => 'Sent',
         'archived' => 'Archived',
@@ -906,6 +939,7 @@ $app_list_strings = array(
         'lead' => 'Leads Created',
         'contact' => 'Contacts Created',
         'blocked' => 'Suppressed by address or domain',
+        'Survey' => 'Survey answered',
     ),
 
     'campainglog_target_type_dom' => array(
@@ -1107,6 +1141,7 @@ $app_strings = array(
     'LBL_EMAIL_ACCOUNTS_SMTPUSER' => 'SMTP Username',
     'LBL_EMAIL_ACCOUNTS_SMTPDEFAULT' => 'Default',
     'LBL_EMAIL_WARNING_MISSING_USER_CREDS' => 'Warning: Missing username and password for outgoing mail account.',
+    'LBL_EMAIL_WARNING_MISSING_CREDS' => 'Warning: Missing credentials',
     'LBL_EMAIL_ACCOUNTS_SUBTITLE' => 'Set up Mail Accounts to view incoming emails from your email accounts.',
     'LBL_EMAIL_ACCOUNTS_OUTBOUND_SUBTITLE' => 'Provide SMTP mail server information to use for outgoing email in Mail Accounts.',
 
@@ -3002,7 +3037,7 @@ $app_list_strings['contact_portal_user_type_dom'] =
         'Account' => 'Account user',
     );
 $app_list_strings['dom_email_distribution_for_auto_create'] = array(
-    'AOPDefault' => 'Use AOP Default',
+    'AOPDefault' => 'System Default',
     'singleUser' => 'Single User',
     'roundRobin' => 'Round-Robin',
     'leastBusy' => 'Least-Busy',
@@ -3563,8 +3598,11 @@ $app_strings['LBL_RESCHEDULE_COUNT'] = 'Call Attempts';
 //SecurityGroups
 $app_list_strings['moduleList']['SecurityGroups'] = 'Security Suite Management';
 $app_strings['LBL_SECURITYGROUP'] = 'Security Group';
+$app_strings['LBL_ROLE'] = 'Role';
 
 $app_list_strings['moduleList']['OutboundEmailAccounts'] = 'Outbound Email Accounts';
+$app_list_strings['moduleList']['ExternalOAuthConnection'] = 'External OAuth Connection';
+$app_list_strings['moduleList']['ExternalOAuthProvider'] = 'External OAuth Provider';
 
 //social
 $app_strings['FACEBOOK_USER_C'] = 'Facebook';
@@ -3903,3 +3941,13 @@ $app_strings['ERR_INVALID_FILE_NAME'] = 'Invalid file name:';
 $app_strings['LBL_LOGGER_VALID_FILENAME_CHARACTERS'] = 'This can only be alphanumeric characters, plus \'.\' , \'-\' and \'_\'';
 $app_strings['LBL_LOGGER_INVALID_FILENAME'] = 'Invalid import file name';
 
+$app_strings['LBL_PASSWORD_SET_NEW_VALUE_TO_RESET'] = 'Password set. Enter value to set new password.';
+$app_strings['LBL_VALUE_SET_PLACEHOLDER'] = 'Value set. Enter new value to override current one.';
+
+$app_strings['ERR_IMAP_OAUTH_CONNECTION_ERROR'] = 'Not able to connect using OAuth login with Inbound Email server. For connection: ';
+$app_strings['WARN_OAUTH_TOKEN_SESSION_EXPIRED'] = 'Your IMAP OAuth session has expired, please login again in the connection: ';
+
+$app_strings['LBL_KEY'] = 'Key';
+$app_strings['LBL_VALUE'] = 'Value';
+$app_strings['LBL_OPTIONAL'] = 'Optional';
+$app_strings['LBL_OPTIONAL_CONNECTION_STRING'] = 'Optional. Set to use a specific connection string';
