@@ -64,3 +64,9 @@ parameters:
         exclude:
           - delete
           - merge
+      inbound-emails:
+        exclude:
+          - merge
+          - massupdate
+          - export
+
