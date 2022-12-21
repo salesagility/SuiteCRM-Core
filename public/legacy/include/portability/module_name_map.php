@@ -210,6 +210,14 @@ $module_name_map = [
         'frontend' => 'outbound-email-accounts',
         'core' => 'OutboundEmailAccounts'
     ],
+    'ExternalOAuthProvider' => [
+        'frontend' => 'external-oauth-provider',
+        'core' => 'ExternalOAuthProvider'
+    ],
+    'ExternalOAuthConnection' => [
+        'frontend' => 'external-oauth-connection',
+        'core' => 'ExternalOAuthConnection'
+    ],
     'TemplateSectionLine' => [
         'frontend' => 'template-section-line',
         'core' => 'TemplateSectionLine'
