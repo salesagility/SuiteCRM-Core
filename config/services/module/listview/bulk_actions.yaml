@@ -69,4 +69,9 @@ parameters:
           - merge
           - massupdate
           - export
+      outbound-email-accounts:
+        exclude:
+          - merge
+          - massupdate
+          - export
 
