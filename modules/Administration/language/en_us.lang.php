@@ -326,6 +326,13 @@ $mod_strings = array(
     'LBL_LOCALE' => 'Set default localization settings for your system',
     'LBL_MAILBOX_DESC' => 'Set up group mail accounts for monitoring inbound email and manage personal inbound mail account information for users',
     'LBL_MAILBOX_OUTBOUND_DESC' => 'Configure outbound email settings',
+
+    'LBL_MANAGE_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
+    'LBL_MANAGE_EXTERNAL_OAUTH_CONNECTIONS_DESC' => 'Setup external OAuth connections',
+
+    'LBL_MANAGE_EXTERNAL_OAUTH_PROVIDERS' => 'External OAuth Providers',
+    'LBL_MANAGE_EXTERNAL_OAUTH_PROVIDERS_DESC' => 'Setup external OAuth providers',
+
     'LBL_MANAGE_CURRENCIES' => 'Currencies',
     'LBL_MANAGE_LANGUAGES' => 'Languages',
     'LBL_MANAGE_LICENSE_TITLE' => 'License Management',
@@ -848,6 +855,10 @@ $mod_strings = array(
     'LBL_AOP_CASE_CREATION_EMAIL_TEMPLATE' => 'Case Created Email Template',
     'LBL_AOP_CASE_CLOSURE_EMAIL_TEMPLATE' => 'Case Closed Email Template',
     'LBL_AOP_JOOMLA_ACCOUNT_CREATION_EMAIL_TEMPLATE' => 'Joomla Support Portal Account Creation Template',
+
+    'LBL_CASE_MACRO' => 'Case Macro',
+    'LBL_CASE_MACRO_DESC' => 'Set the macro which will be parsed and used to link imported email to a Case.',
+    'LBL_CASE_MACRO_DESC2' => 'Set this to any value, but preserve the <b>"%1"</b>.',
 
     'LBL_AOP_BUSINESS_HOURS_SETTINGS' => 'Business Hours',
     'LBL_AOP_BUSINESS_HOURS_DESC' => "Restrict Workflow & Case automations to certain days and times",

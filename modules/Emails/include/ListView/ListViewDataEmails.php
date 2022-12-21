@@ -160,38 +160,6 @@ class ListViewDataEmails extends ListViewData
          */
         $inboundEmail = BeanFactory::getBean('InboundEmail', $inboundEmailID);
 
-        if (!$inboundEmail || !isset($inboundEmail->id) || !$inboundEmail->id) {
-
-            // something went wrong when SugarBean trying to retrieve the inbound email account
-            // maybe there is no IE bean in database or wrong ID stored in user preferences?
-            // look at the active group emails and load from the first one possibility
-
-            $query = "
-              SELECT inbound_email.id FROM inbound_email
-                JOIN folders ON
-                  folders.id = inbound_email.id AND
-                  folders.folder_type = 'inbound' AND
-                  folders.deleted = 0
-
-                WHERE
-                  inbound_email.status = 'Active' AND
-                  inbound_email.mailbox_type not like 'bounce' AND
-                  inbound_email.is_personal = 0 AND
-                  inbound_email.deleted = 0";
-
-            $results = $this->db->query($query);
-
-            $rows = array();
-            while ($row = $this->db->fetchByAssoc($results)) {
-                $rows[] = $row;
-            }
-
-            if ($rows) {
-                $inboundEmailID = $rows[0]['id'];
-                $inboundEmail = BeanFactory::getBean('InboundEmail', $inboundEmailID);
-            }
-        }
-
         if (!$inboundEmail) {
             throw new SuiteException("Error: InboundEmail not loaded (id:{$inboundEmailID})");
         }
@@ -742,7 +710,13 @@ class ListViewDataEmails extends ListViewData
 
         try {
             $folderObj = new Folder();
-            $folderObj->retrieveFromRequest($request);
+
+            $folderObj->loadMailboxFolder($request ?? []);
+
+            if (empty($folderObj->getId())) {
+                LoggerManager::getLogger()->warn('Unable get Inbound Email for List View. Please check your settings and try again.');
+                return false;
+            }
 
             $inboundEmail = $this->getInboundEmail($current_user, $folderObj);
             if (!$inboundEmail || $inboundEmail && !$inboundEmail->id) {

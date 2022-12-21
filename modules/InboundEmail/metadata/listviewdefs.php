@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,9 +38,42 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-
-global $mod_strings;
-echo getClassicModuleTitle('InboundEmail', array($mod_strings['LBL_MODULE_TITLE']), true);
-
-//echo getClassicModuleTitle($mod_strings['LBL_MODULE_TITLE'], array($mod_strings['LBL_MODULE_TITLE'],$mod_strings['LBL_HOME']), true);
-require_once('modules/InboundEmail/ListView.php');
+$module_name = 'InboundEmail';
+$listViewDefs [$module_name] = [
+    'NAME' => [
+        'width' => '32%',
+        'label' => 'LBL_NAME',
+        'default' => true,
+        'link' => true,
+    ],
+    'EMAIL_USER' => [
+        'label' => 'LBL_USERNAME',
+        'width' => '10%',
+        'default' => true,
+    ],
+    'TYPE' => [
+        'label' => 'LBL_TYPE',
+        'width' => '10%',
+        'default' => true,
+    ],
+    'IS_PERSONAL' => [
+        'label' => 'LBL_IS_PERSONAL',
+        'width' => '10%',
+        'default' => true,
+    ],
+    'IS_DEFAULT' => [
+        'label' => 'LBL_IS_DEFAULT',
+        'width' => '10%',
+        'default' => true,
+    ],
+    'STATUS' => [
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+        'default' => true,
+    ],
+    'SERVER_URL' => [
+        'label' => 'LBL_SERVER_ADDRESS',
+        'width' => '10%',
+        'default' => true,
+    ],
+];

@@ -2712,6 +2712,11 @@ class SugarBean
                         default:
                             //do nothing
                     }
+
+
+                    if ($def['type'] !== 'encrypt' && isTrue($def['db_encrypted'] ?? false)) {
+                        $this->$field = $this->encrpyt_before_save($this->$field);
+                    }
                 }
                 if ($reformatted) {
                     $GLOBALS['log']->info('Formatting correction: ' . $this->module_dir . '->' . $field .
@@ -3220,10 +3225,10 @@ class SugarBean
      * function NAME(&$bean, $event, $arguments)
      *        $bean - $this bean passed in by reference.
      *        $event - The string for the current event (i.e. before_save)
-     *        $arguments - An array of arguments that are specific to the event.
+     *        $arguments - An object or array of arguments that are specific to the event.
      *
      * @param string $event
-     * @param array $arguments
+     * @param object|array $arguments
      */
     public function call_custom_logic($event, $arguments = null)
     {
@@ -3585,22 +3590,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-
-        if ($this->bean_implements('ACL') && ACLController::requireOwner($this->module_dir, 'list')) {
-            global $current_user;
-            $owner_where = $this->getOwnerWhere($current_user->id);
-
-            //rrs - because $this->getOwnerWhere() can return '' we need to be sure to check for it and
-            //handle it properly else you could get into a situation where you are create a where stmt like
-            //WHERE .. AND ''
-            if (!empty($owner_where)) {
-                if (empty($where)) {
-                    $where = $owner_where;
-                } else {
-                    $where .= ' AND ' . $owner_where;
-                }
-            }
-        }
+        
         $query = $this->create_new_list_query(
             $order_by,
             $where,
@@ -3630,6 +3620,56 @@ class SugarBean
             return " $this->table_name.created_by ='$user_id' ";
         }
         return '';
+    }
+
+
+    /**
+     * @param string $view
+     * @param User $user
+     * @return string
+     */
+    public function buildAccessWhere($view, $user = null)
+    {
+        global $current_user, $sugar_config;
+
+        $conditions = [];
+        $user = $user === null ? $current_user : $user;
+
+        if ($this->bean_implements('ACL') && ACLController::requireOwner($this->module_dir, $view)) {
+            $ownerWhere = $this->getOwnerWhere($user->id);
+            if (!empty($ownerWhere)) {
+                $conditions['owner'] = $ownerWhere;
+            }
+        }
+
+        /* BEGIN - SECURITY GROUPS */
+        $SecurityGroupFile = BeanFactory::getBeanFile('SecurityGroups');
+        require_once $SecurityGroupFile;
+        if ($view === 'list' && $this->module_dir === 'Users' && !is_admin($user)
+            && isset($sugar_config['securitysuite_filter_user_list'])
+            && $sugar_config['securitysuite_filter_user_list']
+        ) {
+            $groupWhere = SecurityGroup::getGroupUsersWhere($user->id);
+            $conditions['group'] = $groupWhere;
+        } elseif ($this->bean_implements('ACL') && ACLController::requireSecurityGroup($this->module_dir, $view)) {
+            $ownerWhere = $this->getOwnerWhere($user->id);
+            $groupWhere = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $user->id);
+            if (!empty($ownerWhere)) {
+                $conditions['group'] = " (" . $ownerWhere . " or " . $groupWhere . ") ";
+            } else {
+                $conditions['group'] = $groupWhere;
+            }
+        }
+        /* END - SECURITY GROUPS */
+
+        $args = new stdClass();
+        $args->view = $view;
+        $args->user = $user;
+        $args->conditions = $conditions;
+
+        $this->call_custom_logic('before_acl_query', $args);
+
+        return implode(' AND ', $args->conditions);
     }
 
     /**
@@ -3667,45 +3707,12 @@ class SugarBean
         $secondarySelectedFields = array();
         $ret_array = array();
         $distinct = '';
-        if ($this->bean_implements('ACL') && ACLController::requireOwner($this->module_dir, 'list')) {
-            global $current_user;
-            $owner_where = $this->getOwnerWhere($current_user->id);
-            if (empty($where)) {
-                $where = $owner_where;
-            } else {
-                $where .= ' AND ' . $owner_where;
-            }
+
+        $accessWhere = $this->buildAccessWhere('list');
+        if (!empty($accessWhere)) {
+            $where .= empty($where) ? $accessWhere : ' AND ' . $accessWhere;
         }
-        /* BEGIN - SECURITY GROUPS */
-        global $current_user, $sugar_config;
-        if ($this->module_dir == 'Users' && !is_admin($current_user)
-            && isset($sugar_config['securitysuite_filter_user_list'])
-            && $sugar_config['securitysuite_filter_user_list']
-        ) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $group_where = SecurityGroup::getGroupUsersWhere($current_user->id);
-            if (empty($where)) {
-                $where = " (" . $group_where . ") ";
-            } else {
-                $where .= " AND (" . $group_where . ") ";
-            }
-        } elseif ($this->bean_implements('ACL') && ACLController::requireSecurityGroup($this->module_dir, 'list')) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $this->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $current_user->id);
-            if (!empty($owner_where)) {
-                if (empty($where)) {
-                    $where = " (" . $owner_where . " or " . $group_where . ") ";
-                } else {
-                    $where .= " AND (" . $owner_where . " or " . $group_where . ") ";
-                }
-            } else {
-                $where .= ' AND ' . $group_where;
-            }
-        }
-        /* END - SECURITY GROUPS */
+
         if (!empty($params['distinct'])) {
             $distinct = ' DISTINCT ';
         }
@@ -4546,35 +4553,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-
-        if ($this->bean_implements('ACL') && ACLController::requireOwner($this->module_dir, 'list')) {
-            global $current_user;
-            $owner_where = $this->getOwnerWhere($current_user->id);
-
-            if (empty($where)) {
-                $where = $owner_where;
-            } else {
-                $where .= ' AND ' . $owner_where;
-            }
-        }
-
-        /* BEGIN - SECURITY GROUPS */
-        if ($this->bean_implements('ACL') && ACLController::requireSecurityGroup($this->module_dir, 'list')) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $this->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($this->table_name, $this->module_dir, $current_user->id);
-            if (!empty($owner_where)) {
-                if (empty($where)) {
-                    $where = " (" . $owner_where . " or " . $group_where . ") ";
-                } else {
-                    $where .= " AND (" . $owner_where . " or " . $group_where . ") ";
-                }
-            } else {
-                $where .= ' AND ' . $group_where;
-            }
-        }
-        /* END - SECURITY GROUPS */
+        
         $query = $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted, $offset);
 
         return $this->process_detail_query($query, $row_offset, $limit, $max, $where, $offset);
@@ -4937,7 +4916,7 @@ class SugarBean
                                 $this->$field = $timedate->to_display_time($this->$field, true, false);
                             }
                         }
-                    } elseif ($type == 'encrypt' && empty($disable_date_format)) {
+                    } elseif (($type == 'encrypt' && empty($disable_date_format)) || isTrue($fieldDef['db_encrypted'] ?? false)) {
                         $this->$field = $this->decrypt_after_retrieve($this->$field);
                     }
                 }
@@ -6248,7 +6227,28 @@ class SugarBean
             require_once("modules/SecurityGroups/SecurityGroup.php");
             $in_group = SecurityGroup::groupHasAccess($this->module_dir, $this->id, $view);
         }
-        return ACLController::checkAccess($this->module_dir, $view, $is_owner, $this->acltype, $in_group);
+
+        $args = new stdClass();
+        $args->view = $view;
+        $args->is_owner = $is_owner;
+        $args->in_group = $in_group;
+        $args->access = true;
+        $args->override_acl_check = false;
+
+        $this->call_custom_logic('before_acl_check', $args);
+
+        if ($args->override_acl_check) {
+            return $args->access;
+        }
+
+        return $args->access
+            && ACLController::checkAccess(
+                $this->module_dir, 
+                $args->view, 
+                $args->is_owner, 
+                $this->acltype, 
+                $args->in_group
+            );
     }
 
     /**
