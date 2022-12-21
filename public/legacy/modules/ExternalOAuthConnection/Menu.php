@@ -44,9 +44,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $mod_strings;
 $module_menu = array();
-$module_menu[]= array("index.php?module=ExternalOAuthConnection&action=EditView&type=personal", $mod_strings['LNK_LIST_CREATE_NEW_PERSONAL'],"Create");
+$module_menu[]= array("index.php?module=ExternalOAuthConnection&action=EditView&type=personal", $mod_strings['LNK_LIST_CREATE_NEW_PERSONAL'],"CreatePersonal");
 if (is_admin($GLOBALS['current_user'])) {
-    $module_menu[]= array("index.php?module=ExternalOAuthConnection&action=EditView&type=group", $mod_strings['LNK_LIST_CREATE_NEW_GROUP'],"Create");
+    $module_menu[]= array("index.php?module=ExternalOAuthConnection&action=EditView&type=group", $mod_strings['LNK_LIST_CREATE_NEW_GROUP'],"CreateGroup");
 }
 $module_menu[]= array("index.php?module=InboundEmail&action=index", $mod_strings['LNK_LIST_INBOUND_EMAILS'],"List");
 $module_menu[]= array("index.php?module=OutboundEmailAccounts&action=index", $mod_strings['LNK_LIST_OUTBOUND_EMAILS'],"List");
