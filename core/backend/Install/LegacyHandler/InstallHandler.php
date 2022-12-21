@@ -175,6 +175,8 @@ class InstallHandler extends LegacyHandler
         $errorLevelStored = error_reporting();
         error_reporting(0);
 
+        $this->runLegacyEntryPoint();
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/InstallValidation/InstallValidation.php';
 
