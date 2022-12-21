@@ -74,4 +74,9 @@ parameters:
           - merge
           - massupdate
           - export
+      external-oauth-connection:
+        exclude:
+          - merge
+          - massupdate
+          - export
 
