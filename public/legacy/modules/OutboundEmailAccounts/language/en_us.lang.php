@@ -65,8 +65,8 @@ $mod_strings = array(
     'LBL_HOMEPAGE_TITLE' => 'My Outbound Email Accounts',
     'LNK_NEW_RECORD' => 'Create Outbound Email Accounts',
 
-    'LNK_LIST_CREATE_NEW_PERSONAL' => 'New Personal Outbound Email Account',
-    'LNK_LIST_CREATE_NEW_GROUP' => 'New Group Outbound Email Account',
+    'LNK_LIST_CREATE_NEW_PERSONAL' => 'New Personal Account',
+    'LNK_LIST_CREATE_NEW_GROUP' => 'New Group Account',
     'LNK_LIST_CREATE_SYSTEM_OVERRIDE_GROUP' => 'New System Override Outbound Email Account',
 
     'LNK_LIST' => 'Outbound Email Accounts',
