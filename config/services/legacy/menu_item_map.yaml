@@ -64,6 +64,12 @@ parameters:
         inbound-email:
             Setup_Email:
                 icon: email
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
+            CreateBounce:
+                icon: plus
         schedulers:
             Schedulers:
                 icon: view
