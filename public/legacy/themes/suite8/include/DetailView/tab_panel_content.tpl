@@ -59,10 +59,10 @@
 
         {{if $smarty.foreach.colIteration.total > 1 && $colData.colspan != 3}}
             {*<!-- DIV column - colspan != 3 -->*}
-            <div class="col-xs-12 col-sm-6 detail-view-row-item detail-view-bordered">
+            <div class="col-xs-12 col-sm-6 detail-view-row-item detail-view-bordered" data-field="{{$fields[$colData.field.name].name}}">
         {{else}}
             {*<!-- DIV column - colspan = 3 -->*}
-            <div class="col-xs-12 col-sm-12 detail-view-row-item">
+            <div class="col-xs-12 col-sm-12 detail-view-row-item" data-field="{{$fields[$colData.field.name].name}}">
         {{/if}}
 
 
@@ -181,8 +181,8 @@
 
                         {{if $inline_edit && !empty($colData.field.name) && ($fields[$colData.field.name].inline_edit == 1 || !isset($fields[$colData.field.name].inline_edit))}}
                         <div class="inlineEditIcon col-xs-hidden">
-                            {sugar_getimage name="pencil"}                            
-                        </div> 
+                            {sugar_getimage name="pencil"}
+                        </div>
                         {{/if}}
 
                     </div>
