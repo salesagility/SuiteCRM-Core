@@ -65,8 +65,8 @@ if (ACLController::checkAccess('SurveyResponses', 'list', true)) {
     $module_menu[] =
         array(
             "index.php?module=SurveyResponses&action=index&return_module=Surveys&return_action=index",
-            translate('LNK_LIST', 'SurveyResponses'),
+            $mod_strings['LNK_LIST_SURVEY_RESPONSES'],
             "List",
             'SurveyResponses'
         );
-} 
+}
