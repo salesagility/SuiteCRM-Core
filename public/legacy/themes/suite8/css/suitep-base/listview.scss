@@ -1991,9 +1991,9 @@ ul.clickMenu.selectmenu.SugarActionMenu.listViewLinkButton > li.desktopOnly > a.
   ul.clickMenu.selectmenu.SugarActionMenu.listViewLinkButton > li > a.glyphicon-remove {
     background-color: $navbar-alert-count-bg;
     padding: 0;
-    position: absolute;
-    right: -8px;
-    top: -5px;
+    float: right;
+    margin-right: -12px;
+    margin-top: -7px;
   }
 
 }
