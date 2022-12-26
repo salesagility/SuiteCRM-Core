@@ -25,34 +25,24 @@
  */
 
 import {Action, ActionData, ActionHandler, Record} from 'common';
-import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
-import {RecordThreadStore} from '../store/record-thread/record-thread.store';
-import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.store';
+import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 
-export interface RecordThreadItemActionData extends ActionData {
-    itemStore?: RecordThreadItemStore;
+export interface RecordThreadListActionData extends ActionData {
     threadStore?: RecordThreadStore;
     action?: Action;
 }
 
-export abstract class RecordThreadItemActionHandler extends ActionHandler<RecordThreadItemActionData> {
+export abstract class RecordThreadListActionHandler extends ActionHandler<RecordThreadListActionData> {
 
-    abstract run(data: RecordThreadItemActionData): void;
+    abstract run(data: RecordThreadListActionData): void;
 
-    abstract shouldDisplay(data: RecordThreadItemActionData): boolean;
+    abstract shouldDisplay(data: RecordThreadListActionData): boolean;
 
-    checkRecordAccess(data: RecordThreadItemActionData, defaultAcls: string[] = []): boolean {
+    checkRecordAccess(data: RecordThreadListActionData, defaultAcls: string[] = []): boolean {
 
-        const record = data.itemStore.recordStore.getBaseRecord();
-        const acls = record.acls ?? [];
 
-        if (!acls || !acls.length) {
-            return false;
-        }
-
-        const action = data.action ?? null;
-
-        return this.checkAccess(action, acls, defaultAcls);
+        return true;
     }
 
     /**

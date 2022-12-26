@@ -146,6 +146,7 @@ export class ActionGroupMenuComponent implements OnInit {
     protected buildButton(action: Action): ButtonInterface {
         const button = {
             label: action.label || '',
+            labelKey: action.labelKey || '',
             klass: this.buttonClass,
             titleKey: action.titleKey || '',
             onClick: (): void => {

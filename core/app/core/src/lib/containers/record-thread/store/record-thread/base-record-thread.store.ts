@@ -44,6 +44,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
     storesMap$: Observable<RecordStoreMap<T, M>>;
     stores$: Observable<T[]>;
+    module: string;
     protected subs: Subscription[] = [];
     protected recordList: RecordListStore;
     protected stores: T[] = [];
@@ -68,7 +69,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
     clearAuthBased(): void {
     }
 
-    public getMetadata(): M {
+    public getItemMetadata(): M {
         return null;
     }
 
@@ -95,6 +96,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
                 this.initStores(recordList.records);
             })
         ).pipe(take(1)).subscribe();
+        this.module = module;
     }
 
     /**
@@ -142,8 +144,8 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
             newStores[id] = this.recordStoreFactory.create();
 
-            if (this.getMetadata()) {
-                newStores[id].setMetadata(this.getMetadata());
+            if (this.getItemMetadata()) {
+                newStores[id].setMetadata(this.getItemMetadata());
             }
 
             newStores[id].initRecord(record, 'detail', false);
@@ -180,4 +182,19 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
         return map;
     }
+
+    getRecordIds(): string[] {
+        const ids: string[] = [];
+
+        if (!this.stores || !this.stores.length) {
+            return ids;
+        }
+
+        this.stores.forEach(store => {
+            ids.push(store.getRecordId());
+        });
+
+        return ids;
+    }
+
 }

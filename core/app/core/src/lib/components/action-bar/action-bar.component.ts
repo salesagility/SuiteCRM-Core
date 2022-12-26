@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActionBarModel} from './action-bar-model';
@@ -37,7 +37,7 @@ import {AppStateStore} from "../../store/app-state/app-state.store";
     templateUrl: './action-bar.component.html',
     styleUrls: []
 })
-export class ActionBarUiComponent {
+export class ActionBarUiComponent implements OnInit {
 
     searchTerm = '';
     actionBar: ActionBarModel = {
@@ -71,6 +71,7 @@ export class ActionBarUiComponent {
     };
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
+    notificationCount$:Observable<number> ;
 
     vm$ = combineLatest([
         this.languages$,
@@ -83,9 +84,11 @@ export class ActionBarUiComponent {
         )
     );
 
-    notificationCount$ = this.appStateStore.notificationsUnread$;
-
     constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch, protected appStateStore: AppStateStore,) {
+    }
+
+    ngOnInit(): void {
+        this.notificationCount$ = this.appStateStore.notificationsUnread$;
     }
 
     search(): void {

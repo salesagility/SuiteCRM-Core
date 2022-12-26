@@ -29,21 +29,20 @@ import {AsyncActionService} from '../../../services/process/processes/async-acti
 import {MessageService} from '../../../services/message/message.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
-import {RecordThreadItemActionsAdapter} from './record-thread-item-actions.adapter';
 import {RecordThreadStore} from '../store/record-thread/record-thread.store';
-import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.store';
 import {LanguageStore} from '../../../store/language/language.store';
-import {RecordThreadItemActionManager} from '../actions/item-actions/record-thread-item-action-manager.service';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {RecordThreadListActionsAdapter} from "./record-thread-list-actions.adapter";
+import {RecordThreadListActionManager} from "../actions/list-actions/record-thread-list-action-manager.service";
 
 @Injectable({
     providedIn: 'root',
 })
-export class RecordThreadItemActionsAdapterFactory {
+export class RecordThreadListActionsAdapterFactory {
 
     constructor(
         protected language: LanguageStore,
-        protected actionManager: RecordThreadItemActionManager,
+        protected actionManager: RecordThreadListActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
@@ -52,9 +51,8 @@ export class RecordThreadItemActionsAdapterFactory {
     ) {
     }
 
-    create(itemStore: RecordThreadItemStore, threadStore: RecordThreadStore): RecordThreadItemActionsAdapter {
-        return new RecordThreadItemActionsAdapter(
-            itemStore,
+    create(threadStore: RecordThreadStore): RecordThreadListActionsAdapter {
+        return new RecordThreadListActionsAdapter(
             threadStore,
             this.language,
             this.actionManager,

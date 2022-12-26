@@ -24,25 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, AttributeMap, SearchCriteria} from 'common';
-import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
-import {Observable} from 'rxjs';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {Injectable} from '@angular/core';
+import {BaseActionManager} from '../../../../services/actions/base-action-manager.service';
+import {AsyncProcessRecordThreadListAction} from './async-process/async-process.service';
+import {RecordThreadListActionData} from "./record-thread-list.action";
 
-export interface RecordThreadConfig {
+@Injectable({
+    providedIn: 'root',
+})
+export class RecordThreadListActionManager extends BaseActionManager<RecordThreadListActionData> {
 
-    module: string;
-    klass?: string;
-    maxListHeight?: number;
-    autoRefreshFrequency?:number,
-    create?: boolean;
-    direction?: 'asc' | 'desc';
-    itemConfig: RecordThreadItemConfig;
-    listActions?: Action[];
-    listActionsClass?: string;
-    createConfig?: RecordThreadItemConfig;
-    filters$: Observable<SearchCriteria>;
-    presetFields$?: Observable<AttributeMap>;
-    store?: RecordThreadStore;
-
+    constructor(
+        protected async: AsyncProcessRecordThreadListAction,
+    ) {
+        super();
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+    }
 }

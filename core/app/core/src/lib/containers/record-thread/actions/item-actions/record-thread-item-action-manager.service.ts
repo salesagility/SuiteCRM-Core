@@ -25,38 +25,28 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
-import {take} from 'rxjs/operators';
-import {MessageService} from '../../../../services/message/message.service';
-import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
-import {RecordThreadItemActionData, RecordThreadItemActionHandler} from '../record-thread-item.action';
+import {BaseActionManager} from '../../../../services/actions/base-action-manager.service';
+import {AsyncProcessRecordThreadItemAction} from './async-process/async-process.service';
+import {RecordThreadItemActionData} from './record-thread-item.action';
+import {RecordThreadItemCancelAction} from './cancel/record-cancel.action';
+import {RecordThreadItemEditAction} from './edit/record-edit.action';
+import {RecordThreadItemSaveAction} from './save/record-save.action';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class RecordThreadItemSaveAction extends RecordThreadItemActionHandler {
+export class RecordThreadItemActionManager extends BaseActionManager<RecordThreadItemActionData> {
 
-    key = 'save';
-    modes = ['edit' as ViewMode];
-
-    constructor(protected message: MessageService, protected navigation: ModuleNavigation) {
+    constructor(
+        protected async: AsyncProcessRecordThreadItemAction,
+        protected cancel: RecordThreadItemCancelAction,
+        protected edit: RecordThreadItemEditAction,
+        protected save: RecordThreadItemSaveAction,
+    ) {
         super();
-    }
-
-    run(data: RecordThreadItemActionData): void {
-        data.itemStore.recordStore.validate().pipe(take(1)).subscribe(valid => {
-            if (valid) {
-                data.itemStore.save().pipe(take(1)).subscribe(record => {
-                    data.itemStore.setMode('detail' as ViewMode);
-                });
-                return;
-            }
-
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
-        });
-    }
-
-    shouldDisplay(data: RecordThreadItemActionData): boolean {
-        return true;
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+        edit.modes.forEach(mode => this.actions[mode][edit.key] = edit);
+        save.modes.forEach(mode => this.actions[mode][save.key] = save);
+        cancel.modes.forEach(mode => this.actions[mode][cancel.key] = cancel);
     }
 }

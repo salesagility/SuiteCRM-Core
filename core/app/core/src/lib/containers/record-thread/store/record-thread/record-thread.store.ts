@@ -29,16 +29,18 @@ import {Injectable} from '@angular/core';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {RecordStoreList} from './base-record-thread.store';
 import {Observable} from 'rxjs';
-import {Record, SearchCriteria, SortDirection} from 'common';
+import {Action, ActionContext, Record, SearchCriteria, SortDirection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordThreadItemStoreFactory} from './record-thread-item.store.factory';
 import {RecordThreadItemMetadata} from './record-thread-item.store.model';
 import {RecordThreadItemStore} from './record-thread-item.store';
+import {RecordThreadListMetadata} from "./record-thread-list.store.model";
 
 @Injectable()
 export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, RecordThreadItemMetadata> {
 
-    metadata: RecordThreadItemMetadata;
+    itemMetadata: RecordThreadItemMetadata;
+    listMetadata: RecordThreadListMetadata;
     $loading: Observable<boolean>;
 
     constructor(
@@ -76,13 +78,22 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         );
     }
 
-    public getMetadata(): RecordThreadItemMetadata {
-        return this.metadata;
+    public getItemMetadata(): RecordThreadItemMetadata {
+        return this.itemMetadata;
     }
 
-    public setMetadata(meta: RecordThreadItemMetadata) {
-        return this.metadata = meta;
+    public getListMetadata(): RecordThreadListMetadata {
+        return this.listMetadata;
     }
+
+    public setItemMetadata(meta: RecordThreadItemMetadata) {
+        return this.itemMetadata = meta;
+    }
+
+    public setListMetadata(meta: RecordThreadListMetadata) {
+        return this.listMetadata = meta;
+    }
+
 
     public allLoaded(): boolean {
         const pagination = this.recordList.getPagination();
@@ -108,5 +119,13 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
 
     public dismissAll(jump: number = 10): void {
 
+    }
+
+    public getViewContext(): ActionContext {
+
+        return {
+            module: this.module,
+            ids: this.getRecordIds(),
+        } as ActionContext;
     }
 }
