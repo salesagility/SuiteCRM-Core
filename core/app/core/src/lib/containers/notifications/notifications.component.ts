@@ -70,6 +70,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             flexDirection?: string;
             layout?: ThreadItemMetadataConfig;
         },
+        listActions?: Action[],
         create?: {
             presetFields?: {
                 parentValues?: StringMap;
@@ -195,7 +196,22 @@ export class NotificationsComponent implements OnInit, OnDestroy {
                         }
                     ]
                 }
-            }
+            },
+            listActions: [
+                {
+                    key:'delete_all',
+                    label:'LBL_DISMISS_ALL',
+                    labelKey:'LBL_DISMISS_ALL',
+                    asyncProcess:true,
+                    params: {
+                        displayConfirmation:true,
+                        confirmationLabel : 'NTC_DELETE_CONFIRMATION'
+                    },
+                    klass: ['btn fill-primary fill-hover-main  border-0 btn-xs p-0'],
+                    modes: ['detail', 'list'],
+                    acl:[]
+                }
+            ]
 
     }
     recordThreadConfig: RecordThreadConfig
@@ -237,6 +253,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
                 flexDirection: this.options.item.flexDirection || '',
                 metadata: {} as RecordThreadItemMetadata
             },
+            listActions: this.options?.listActions ?? [],
+            listActionsClass: "btn modal-button-save btn-sm"
         } as RecordThreadConfig;
 
         this.setupItemMetadata(config.itemConfig.metadata, this.options.item.layout);

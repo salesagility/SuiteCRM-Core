@@ -25,28 +25,30 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
-import {AsyncProcessRecordThreadItemAction} from './async-process/async-process.service';
-import {RecordThreadItemActionData} from './record-thread-item.action';
-import {RecordThreadItemCancelAction} from './cancel/record-cancel.action';
-import {RecordThreadItemEditAction} from './edit/record-edit.action';
-import {RecordThreadItemSaveAction} from './save/record-save.action';
+import {ALL_VIEW_MODES} from 'common';
+import {RecordThreadListActionData, RecordThreadListActionHandler} from "../record-thread-list.action";
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
-export class RecordThreadItemActionManager extends BaseActionManager<RecordThreadItemActionData> {
+export class AsyncProcessRecordThreadListAction extends RecordThreadListActionHandler {
 
-    constructor(
-        protected async: AsyncProcessRecordThreadItemAction,
-        protected cancel: RecordThreadItemCancelAction,
-        protected edit: RecordThreadItemEditAction,
-        protected save: RecordThreadItemSaveAction,
-    ) {
+    key = 'async-process';
+    modes = ALL_VIEW_MODES;
+
+    constructor() {
         super();
-        async.modes.forEach(mode => this.actions[mode][async.key] = async);
-        edit.modes.forEach(mode => this.actions[mode][edit.key] = edit);
-        save.modes.forEach(mode => this.actions[mode][save.key] = save);
-        cancel.modes.forEach(mode => this.actions[mode][cancel.key] = cancel);
+    }
+
+    run(data: RecordThreadListActionData): void {
+    }
+
+    shouldDisplay(data: RecordThreadListActionData): boolean {
+        const defaultAcls = data?.action?.acl ?? [];
+        if (!defaultAcls.length) {
+            return true;
+        }
+
+        return this.checkRecordAccess(data, defaultAcls);
     }
 }

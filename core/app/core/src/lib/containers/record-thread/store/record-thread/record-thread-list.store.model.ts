@@ -24,25 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, AttributeMap, SearchCriteria} from 'common';
-import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
-import {Observable} from 'rxjs';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
+import {Action} from 'common';
 
-export interface RecordThreadConfig {
-
-    module: string;
-    klass?: string;
-    maxListHeight?: number;
-    autoRefreshFrequency?:number,
-    create?: boolean;
-    direction?: 'asc' | 'desc';
-    itemConfig: RecordThreadItemConfig;
-    listActions?: Action[];
-    listActionsClass?: string;
-    createConfig?: RecordThreadItemConfig;
-    filters$: Observable<SearchCriteria>;
-    presetFields$?: Observable<AttributeMap>;
-    store?: RecordThreadStore;
-
+export interface RecordThreadListMetadata {
+    actions?: Action[];
 }

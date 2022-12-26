@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, isTrue, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, of} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore} from '../../../store/language/language.store';
@@ -35,31 +35,30 @@ import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
-import {RecordThreadItemActionData} from '../actions/item-actions/record-thread-item.action';
-import {RecordThreadItemActionManager} from '../actions/item-actions/record-thread-item-action-manager.service';
-import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.store';
 import {RecordThreadStore} from '../store/record-thread/record-thread.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {RecordThreadListActionData} from "../actions/list-actions/record-thread-list.action";
+import {RecordThreadListActionManager} from "../actions/list-actions/record-thread-list-action-manager.service";
 
 @Injectable()
-export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<RecordThreadItemActionData> {
+export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<RecordThreadListActionData> {
 
     defaultActions: ModeActions = {
         detail: [],
         edit: [],
         create: [],
+        list: []
     };
 
     constructor(
-        protected itemStore: RecordThreadItemStore,
         protected threadStore: RecordThreadStore,
         protected language: LanguageStore,
-        protected actionManager: RecordThreadItemActionManager,
+        protected actionManager: RecordThreadListActionManager,
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
     ) {
         super(
             actionManager,
@@ -73,14 +72,14 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest([this.itemStore.meta$, this.itemStore.mode$]).pipe(
+        return combineLatest([of(this.threadStore.getListMetadata()), of('list' as ViewMode)]).pipe(
             map(([meta, mode]) => {
 
                 if (!mode || !meta) {
                     return [];
                 }
+                return this.parseModeActions(meta.actions, mode, this.threadStore.getViewContext());
 
-                return this.parseModeActions(meta.actions, mode, this.itemStore.getViewContext());
             })
         );
     }
@@ -90,15 +89,14 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
      * @param action
      */
     protected getActionName(action: Action) {
-        return `record-thread-item-${action.key}`;
+        return `record-thread-list-${action.key}`;
     }
 
-    protected buildActionData(action: Action, context?: ActionContext): RecordThreadItemActionData {
+    protected buildActionData(action: Action, context?: ActionContext): RecordThreadListActionData {
         return {
-            itemStore: this.itemStore,
             threadStore: this.threadStore,
             action: action
-        } as RecordThreadItemActionData;
+        } as RecordThreadListActionData;
     }
 
     /**
@@ -110,33 +108,28 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
      * @param context
      */
     protected buildActionInput(action: Action, actionName: string, moduleName: string, context: ActionContext = null): AsyncActionInput {
-        const baseRecord = this.itemStore.getBaseRecord();
 
         this.message.removeMessages();
 
         return {
             action: actionName,
-            module: baseRecord.module,
-            id: baseRecord.id,
+            module: this.threadStore.module,
+            ids: this.threadStore.getRecordIds(),
             params: (action && action.params) || []
         } as AsyncActionInput;
     }
 
     protected getMode(): ViewMode {
-        return this.itemStore.getMode();
+        return 'list';
     }
 
     protected getModuleName(context?: ActionContext): string {
-        return this.itemStore.getModuleName();
+        return this.threadStore.module;
     }
 
     protected reload(action: Action, process: Process, context?: ActionContext): void {
-        const reload = process?.data?.reload ?? false;
-        const reloadThread = process?.data?.reloadThread ?? false;
 
-        if (isTrue(reload)) {
-            this.itemStore.load(false).pipe(take(1)).subscribe();
-        }
+        const reloadThread = process?.data?.reloadThread ?? false;
 
         if (isTrue(reloadThread)) {
             this.threadStore.reload();
@@ -147,8 +140,7 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
      * @inheritDoc
      */
     protected shouldReload(process: Process): boolean {
-        const reload = process?.data?.reload ?? false;
         const reloadThread = process?.data?.reloadThread ?? false;
-        return isTrue(reload) || isTrue(reloadThread);
+        return isTrue(reloadThread);
     }
 }

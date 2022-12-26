@@ -27,8 +27,8 @@
 import {Injectable} from '@angular/core';
 import {ModalButtonInterface, ViewMode} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MessageModalComponent} from '../../../../components/modal/components/message-modal/message-modal.component';
-import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {MessageModalComponent} from '../../../../../components/modal/components/message-modal/message-modal.component';
+import {ModuleNavigation} from '../../../../../services/navigation/module-navigation/module-navigation.service';
 import {RecordThreadItemActionData, RecordThreadItemActionHandler} from '../record-thread-item.action';
 
 @Injectable({

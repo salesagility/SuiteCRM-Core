@@ -181,20 +181,18 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
             });
         }
 
-        availableActions.detail = availableActions.detail.concat(this.defaultActions.detail);
-        availableActions.list = availableActions.list.concat(this.defaultActions.list);
-        availableActions.edit = availableActions.edit.concat(this.defaultActions.edit);
-        availableActions.create = availableActions.create.concat(this.defaultActions.create);
-        availableActions.massupdate = availableActions.massupdate.concat(this.defaultActions.massupdate);
+        availableActions.detail = availableActions.detail.concat(this.defaultActions.detail ?? []);
+        availableActions.list = availableActions.list.concat(this.defaultActions.list ?? []);
+        availableActions.edit = availableActions.edit.concat(this.defaultActions.edit ?? []);
+        availableActions.create = availableActions.create.concat(this.defaultActions.create ?? []);
+        availableActions.massupdate = availableActions.massupdate.concat(this.defaultActions.massupdate ?? []);
 
         const actions = [];
-
         availableActions[mode].forEach(action => {
 
             const actionHandler = this.actionManager.getHandler(action, mode);
 
             if (actionHandler) {
-                const actionHandler = this.actionManager.getHandler(action, mode);
                 const data: D = this.buildActionData(action, context);
 
                 if (!this.shouldDisplay(actionHandler, data)) {

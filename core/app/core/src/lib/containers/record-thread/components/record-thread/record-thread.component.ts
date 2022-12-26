@@ -37,6 +37,8 @@ import {RecordThreadItemStoreFactory} from '../../store/record-thread/record-thr
 import {RecordManager} from '../../../../services/record/record.manager';
 import {MessageService} from '../../../../services/message/message.service';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
+import {RecordThreadListActionsAdapter} from "../../adapters/record-thread-list-actions.adapter";
+import {RecordThreadListActionsAdapterFactory} from "../../adapters/record-thread-list-actions.adapter.factory";
 
 
 @Component({
@@ -56,17 +58,21 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     maxHeight = 400;
     direction: 'asc' | 'desc' = 'asc';
     moduleName: string ;
+    listActionAdapter: RecordThreadListActionsAdapter;
+
     protected shouldResetScroll = false;
 
     protected subs: Subscription[] = [];
     protected presetFieldValues: AttributeMap;
+
 
     constructor(
         protected storeFactory: RecordThreadStoreFactory,
         protected itemFactory: RecordThreadItemStoreFactory,
         protected recordManager: RecordManager,
         protected message: MessageService,
-        protected appStateStore: AppStateStore
+        protected appStateStore: AppStateStore,
+        protected actionAdapterFactory: RecordThreadListActionsAdapterFactory,
     ) {
     }
 
@@ -88,11 +94,14 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.moduleName = this.config.module;
 
-        this.store.setMetadata(this.config.itemConfig.metadata);
+        this.store.setItemMetadata(this.config.itemConfig.metadata);
+
+        this.store.setListMetadata({actions: this.config.listActions});
 
         this.store.init(this.config.module, false);
         this.initCreate();
         this.initDataSubscription();
+
 
         if (this.config.filters$) {
 
@@ -125,6 +134,8 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         this.initLoading();
+
+        this.listActionAdapter = this.actionAdapterFactory.create(this.store);
 
     }
 
@@ -167,16 +178,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
                 this.store.loadMore();
-            }
-        } as ButtonInterface;
-    }
-
-    getDismissAllButton(): ButtonInterface {
-        return {
-            klass: 'load-more-button btn btn-link btn-sm',
-            labelKey: 'LBL_DISMISS_ALL',
-            onClick: () => {
-                this.store.dismissAll();
             }
         } as ButtonInterface;
     }
