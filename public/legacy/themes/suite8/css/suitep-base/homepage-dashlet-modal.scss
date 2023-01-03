@@ -108,3 +108,9 @@
 .modal-add-dashlet, .modal-edit-dashboard {
     z-index: 9999999999;
 }
+
+.modal-add-dashlet {
+    #web_address, #rss_address {
+        margin-right: 0.5em;
+    }
+}
