@@ -155,7 +155,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getCreateButton(): ButtonInterface {
         return {
-            klass: 'create-thread-item-button btn btn-danger btn-sm',
+            klass: 'create-thread-item-button btn btn-main btn-sm',
             labelKey: 'LBL_SUBMIT_BUTTON_LABEL',
             onClick: () => {
                 this.createStore.validate().pipe(take(1)).subscribe(valid => {
