@@ -27,7 +27,15 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {ColumnDefinition, Field, Record, RecordSelection, SelectionStatus, SortDirection, SortingSelection} from 'common';
+import {
+    ColumnDefinition,
+    Field,
+    Record,
+    RecordSelection,
+    SelectionStatus,
+    SortDirection,
+    SortingSelection
+} from 'common';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
@@ -51,7 +59,7 @@ interface TableViewModel {
 export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
-    maxHeight: number;
+    popoverColumns:ColumnDefinition[];
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
@@ -66,8 +74,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
-
-        this.maxHeight = this.config.maxListHeight;
 
         this.vm$ = combineLatest([
             this.config.columns,
@@ -126,16 +132,12 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return status === SelectionStatus.ALL;
     }
 
-    getPaginationType() {
-        return this.config?.paginationType ?? 'pagination';
-    }
-
     buildDisplayColumns(metaFields: ColumnDefinition[]): string[] {
         let i = 0;
         let hasLinkField = false;
         const returnArray = [];
 
-        const fields = metaFields.filter(function(field) {
+        const fields = metaFields.filter(function (field) {
             return !field.hasOwnProperty('default')
                 || (field.hasOwnProperty('default') && field.default === true);
         });
@@ -154,6 +156,17 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                 }
             }
         }
+
+        let missingFields = [];
+
+        for (let i = 0; i < fields.length; i++) {
+            if (returnArray.indexOf(fields[i].name) === -1) {
+                missingFields.push(fields[i].name);
+            }
+        }
+
+        this.popoverColumns =  fields.filter(obj => missingFields.includes(obj.name));
+
         return returnArray;
     }
 
@@ -185,14 +198,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return this.fieldManager.addField(record, column);
     }
 
-    getMaxHeight(): { [klass: string]: any; } | null {
-        if (this.maxHeight == 0) {
-            return null;
-        }
-
-        return {'max-height.px': this.maxHeight, 'overflow-y': 'auto'}
-    }
-
     protected initLoading(): Observable<boolean> {
         let loading$ = of(false).pipe(shareReplay(1));
 
@@ -205,6 +210,5 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         }
         return loading$;
     }
-
 }
 

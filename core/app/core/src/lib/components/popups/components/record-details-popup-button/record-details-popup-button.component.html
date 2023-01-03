@@ -1,0 +1,19 @@
+
+<scrm-popup-button [icon]="'eye'" >
+
+    <div popup-content *ngIf="columns" class="container">
+        <div *ngFor="let column of columns" class="row py-1">
+            <div class="col font-weight-bold text-muted">
+                <scrm-label [labelKey]="column.label" [module]="record.module"></scrm-label>
+            </div>
+            <div class="col">
+                <scrm-field [mode]="'list'"
+                            [field]="getField(column, record)"
+                            [type]="column.type"
+                            [record]="record">
+                </scrm-field>
+            </div>
+        </div>
+
+    </div>
+</scrm-popup-button>

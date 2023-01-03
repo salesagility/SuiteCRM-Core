@@ -24,33 +24,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {ButtonInterface} from "common";
 
-import {TableBodyComponent} from './table-body.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {CdkTableModule} from '@angular/cdk/table';
-import {FieldModule} from '../../../fields/field.module';
-import {LoadingSpinnerModule} from '../../loading-spinner/loading-spinner.module';
-import {SortButtonModule} from '../../sort-button/sort-button.module';
-import {LabelModule} from '../../label/label.module';
-import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
-import {RecordDetailsPopupButtonModule} from "../../popups/components/record-details-popup-button/record-details-popup-button.module";
+@Component({
+    selector: 'scrm-popup-button',
+    templateUrl: 'popup-button.component.html',
 
-@NgModule({
-    declarations: [TableBodyComponent],
-    exports: [TableBodyComponent],
-    imports: [
-        CommonModule,
-        AngularSvgIconModule,
-        CdkTableModule,
-        FieldModule,
-        SortButtonModule,
-        LineActionModule,
-        LoadingSpinnerModule,
-        LabelModule,
-        RecordDetailsPopupButtonModule
-    ]
 })
-export class TableBodyModule {
+export class PopupButtonComponent {
+
+    @Input() icon: string;
+
+    constructor() {}
+
+    getButtonConfig(): ButtonInterface {
+        return {
+            icon:this.icon,
+            klass: 'line-action-item line-action float-right',
+        } as ButtonInterface;
+    }
+
 }

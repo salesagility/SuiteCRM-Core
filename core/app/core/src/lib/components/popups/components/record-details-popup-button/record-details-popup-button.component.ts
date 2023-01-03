@@ -24,33 +24,37 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {
+    ColumnDefinition,
+    Field,
+    Record
+} from 'common';
+import {FieldManager} from "../../../../services/record/field/field.manager";
 
-import {TableBodyComponent} from './table-body.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {CdkTableModule} from '@angular/cdk/table';
-import {FieldModule} from '../../../fields/field.module';
-import {LoadingSpinnerModule} from '../../loading-spinner/loading-spinner.module';
-import {SortButtonModule} from '../../sort-button/sort-button.module';
-import {LabelModule} from '../../label/label.module';
-import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
-import {RecordDetailsPopupButtonModule} from "../../popups/components/record-details-popup-button/record-details-popup-button.module";
-
-@NgModule({
-    declarations: [TableBodyComponent],
-    exports: [TableBodyComponent],
-    imports: [
-        CommonModule,
-        AngularSvgIconModule,
-        CdkTableModule,
-        FieldModule,
-        SortButtonModule,
-        LineActionModule,
-        LoadingSpinnerModule,
-        LabelModule,
-        RecordDetailsPopupButtonModule
-    ]
+@Component({
+    selector: 'scrm-record-details-popup-button',
+    templateUrl: 'record-details-popup-button.component.html',
 })
-export class TableBodyModule {
+
+export class RecordDetailsPopupButtonComponent {
+
+    @Input() record: Record;
+    @Input() columns: ColumnDefinition[];
+
+    constructor(protected fieldManager: FieldManager) { }
+
+    getField(column: ColumnDefinition, record: Record): Field {
+
+        if (!column || !record) {
+            return null;
+        }
+
+        return this.fieldManager.addField(record, column);
+    }
+
+
+
+
+
 }

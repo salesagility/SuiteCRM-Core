@@ -26,31 +26,17 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {TableBodyComponent} from './table-body.component';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {CdkTableModule} from '@angular/cdk/table';
-import {FieldModule} from '../../../fields/field.module';
-import {LoadingSpinnerModule} from '../../loading-spinner/loading-spinner.module';
-import {SortButtonModule} from '../../sort-button/sort-button.module';
-import {LabelModule} from '../../label/label.module';
-import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
-import {RecordDetailsPopupButtonModule} from "../../popups/components/record-details-popup-button/record-details-popup-button.module";
-
+import {PopupButtonComponent} from "./popup-button.component";
+import {ButtonModule} from "../../../button/button.module";
+import {NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
 @NgModule({
-    declarations: [TableBodyComponent],
-    exports: [TableBodyComponent],
+    declarations: [PopupButtonComponent],
+    exports: [PopupButtonComponent],
     imports: [
         CommonModule,
-        AngularSvgIconModule,
-        CdkTableModule,
-        FieldModule,
-        SortButtonModule,
-        LineActionModule,
-        LoadingSpinnerModule,
-        LabelModule,
-        RecordDetailsPopupButtonModule
+        ButtonModule,
+        NgbPopoverModule,
     ]
 })
-export class TableBodyModule {
+export class PopupButtonModule {
 }
