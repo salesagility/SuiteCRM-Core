@@ -57,7 +57,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     loading = false;
     maxHeight = 400;
     direction: 'asc' | 'desc' = 'asc';
-    moduleName: string ;
     listActionAdapter: RecordThreadListActionsAdapter;
 
     protected shouldResetScroll = false;
@@ -92,8 +91,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.direction = this.config.direction || this.direction;
 
-        this.moduleName = this.config.module;
-
         this.store.setItemMetadata(this.config.itemConfig.metadata);
 
         this.store.setListMetadata({actions: this.config.listActions});
@@ -124,7 +121,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
                          if(count > appStateCount) {
                              this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
                         }
-                        //this.appStateStore.setNotificationUnread(count);
                     })
                 ).subscribe(
                     count => this.appStateStore.setNotificationUnread(count)

@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
     Action,
     AttributeMap,
@@ -33,7 +33,7 @@ import {
     SearchCriteriaFilter,
     StringMap
 } from 'common';
-import {Observable, of, Subscription} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
 import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
 import {FieldFlexbox} from '../../components/record-flexbox/record-flexbox.model';
@@ -51,10 +51,10 @@ interface ThreadItemMetadataConfig {
     templateUrl: './notifications.component.html',
     styles: []
 })
-export class NotificationsComponent implements OnInit, OnDestroy {
+export class NotificationsComponent implements OnInit {
 
-    panelMode: 'collapsible' | 'closable' | 'none' = 'none';
-
+    recordThreadConfig: RecordThreadConfig;
+    filters$: Observable<SearchCriteria>;
     options: {
         module: string;
         class?: string;
@@ -85,8 +85,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             sortOrder?: string;
         };
     }= {
-           //filters$: this.filters$,
-           // presetFields$: this.presetFields$,
             module: 'alerts',
             class: 'notifications',
             maxListHeight:  350,
@@ -214,11 +212,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             ]
 
     }
-    recordThreadConfig: RecordThreadConfig
-
-    filters$: Observable<SearchCriteria>;
-    presetFields$: Observable<AttributeMap>;
-    protected subs: Subscription[] = [];
 
     constructor(
         protected language: LanguageStore,
@@ -229,17 +222,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         this.recordThreadConfig = this.getConfig();
     }
 
-    ngOnDestroy(): void {
-        //this.subs.forEach(sub => sub.unsubscribe());
-    }
-
     getConfig(): RecordThreadConfig {
 
         const config = {
             filters$: of({orderBy:'date_entered', sortOrder:'asc'} as SearchCriteria),
-            //presetFields$: this.presetFields$,
             module: this.options.module,
-            klass: this.options.class || '',
+            klass: this.options.class ?? '',
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
@@ -247,10 +235,10 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             itemConfig: {
                 collapsible: this.options.item.collapsible || false,
                 collapseLimit: this.options.item.collapseLimit || null,
-                klass: this.options.item.itemClass || '',
+                klass: this.options.item.itemClass ?? '',
                 dynamicClass: this.options.item.dynamicClass || [],
-                containerClass: this.options.item.containerClass || '',
-                flexDirection: this.options.item.flexDirection || '',
+                containerClass: this.options.item.containerClass ?? '',
+                flexDirection: this.options.item.flexDirection ?? '',
                 metadata: {} as RecordThreadItemMetadata
             },
             listActions: this.options?.listActions ?? [],
@@ -258,11 +246,10 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         } as RecordThreadConfig;
 
         this.setupItemMetadata(config.itemConfig.metadata, this.options.item.layout);
-        //this.setupItemMetadata(config.createConfig.metadata, this.options.create.layout);
         return config;
     }
 
-    protected setupItemMetadata(metadata: RecordThreadItemMetadata, config: ThreadItemMetadataConfig) {
+    protected setupItemMetadata(metadata: RecordThreadItemMetadata, config: ThreadItemMetadataConfig): void {
         if (config && config.header) {
             metadata.headerLayout = deepClone(config.header);
         }
