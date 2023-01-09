@@ -1,7 +1,7 @@
 <! --
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
-* Copyright (C) 2021 SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
 *
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU Affero General Public License version 3 as published by the
@@ -26,16 +26,16 @@
 */
 -->
 
-    <div class="record-thread-sidebar-widget" widget-body>
+<div class="record-thread-sidebar-widget" widget-body>
 
-        <ng-container *ngIf="!options">
-            <div class="p-3 widget-message">
-                <scrm-label labelKey="LBL_BAD_CONFIG"></scrm-label>
-            </div>
-        </ng-container>
+    <ng-container *ngIf="!options">
+        <div class="p-3 widget-message">
+            <scrm-label labelKey="LBL_BAD_CONFIG"></scrm-label>
+        </div>
+    </ng-container>
 
-        <ng-container *ngIf="options">
-            <scrm-record-thread [config]="recordThreadConfig"></scrm-record-thread>
-        </ng-container>
+    <ng-container *ngIf="options">
+        <scrm-record-thread [config]="recordThreadConfig"></scrm-record-thread>
+    </ng-container>
 
-    </div>
+</div>

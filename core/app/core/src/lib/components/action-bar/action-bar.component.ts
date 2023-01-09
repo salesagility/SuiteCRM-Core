@@ -84,7 +84,7 @@ export class ActionBarUiComponent implements OnInit {
         )
     );
 
-    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch, protected appStateStore: AppStateStore,) {
+    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch, protected appStateStore: AppStateStore) {
     }
 
     ngOnInit(): void {
@@ -101,7 +101,7 @@ export class ActionBarUiComponent implements OnInit {
         this.searchTerm = '';
     }
 
-    markAsRead() {
+    markAsRead(): void {
         this.appStateStore.markNotificationsAsRead();
     }
 }
