@@ -118,7 +118,6 @@ class SecurityController extends AbstractController
 
         if ($isActive !== true) {
             $response = new JsonResponse(['active' => false, 'appStatus' => $appStatus], Response::HTTP_OK);
-            $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
             $this->authentication->initLegacySystemSession();
@@ -129,7 +128,6 @@ class SecurityController extends AbstractController
         $user = $security->getUser();
         if ($user === null) {
             $response = new JsonResponse(['active' => false, 'appStatus' => $appStatus], Response::HTTP_OK);
-            $response->headers->clearCookie('XSRF-TOKEN');
             $this->session->invalidate();
             $this->session->start();
 

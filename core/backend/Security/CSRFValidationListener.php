@@ -92,7 +92,7 @@ class CSRFValidationListener
         }
 
         $value = $event->getRequest()->headers->get($this->headerName);
-        if (!$value || !$this->csrfTokenManager->isTokenValid($value)) {
+        if (empty($value) || !$this->csrfTokenManager->isTokenValid($value)) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
     }

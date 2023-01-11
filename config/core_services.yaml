@@ -178,7 +178,8 @@ services:
   App\Security\CSRFCookieListener:
     tags: [ { name: kernel.event_listener, event: kernel.response, method: onKernelResponse } ]
     arguments:
-      $routes: [ '^/' ]
+      $routes:
+        - path: '(/login$|/$|/logout$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
       $cookieName: 'XSRF-TOKEN'
       $cookieExpire: 0
       $cookiePath: /
@@ -190,7 +191,6 @@ services:
     arguments:
       $routes:
         - path: '/api'
-
       $headerName: 'X-XSRF-TOKEN'
 
   App\Engine\Service\FolderSync\FolderComparator:
