@@ -68,7 +68,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-
         if (!isVoid(this.config.maxListHeight)) {
             this.maxHeight = this.config.maxListHeight;
         }
@@ -96,7 +95,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             }));
 
         } else {
-            this.store.load(false);
+            this.store.load(false).subscribe();
         }
 
         this.initLoading();
@@ -119,12 +118,13 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.config.itemConfig.klass) {
             klass += ' ' + this.config.itemConfig.klass
         }
-
         return {
             ...this.config.itemConfig,
             store: item,
             threadStore: this.store,
             klass: klass,
+            containerClass: this.config.itemConfig.containerClass,
+            flexDirection: this.config?.itemConfig?.flexDirection ?? '',
             expanded: (): void => {
                 this.scrollToItem(itemRef);
             },
@@ -192,7 +192,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     protected initRecord() {
         const emptyRecord = this.recordManager.buildEmptyRecord(this.config.module);
         this.addPresetFields(emptyRecord);
-
         let mode = 'edit' as ViewMode;
         if (this.config.createConfig && this.config.createConfig.initialMode) {
             mode = this.config.createConfig.initialMode;
@@ -327,7 +326,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const $loading = combineLatest(loading);
         this.subs.push($loading.subscribe((loadings) => {
-
             if (!loadings || !loadings.length) {
                 this.loading = false;
                 return;
@@ -338,7 +336,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             loadings.forEach(value => {
                 loading = loading || value;
             });
-
             this.loading = loading;
         }));
     }

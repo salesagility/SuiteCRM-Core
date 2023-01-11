@@ -1,0 +1,39 @@
+.action-alert.dropdown {
+  .dropdown-menu {
+    padding: 0;
+  }
+}
+.notifications {
+  .notifications-item {
+    border-bottom:1px dashed #b2a5a7;
+  }
+
+
+
+  .record-thread-item.record-thread-list-item {
+    width: 100%;
+    padding: 0;
+
+    .record-thread-item-body {
+      background-color: $bright-grey;
+      box-shadow: none;
+      margin-bottom: 0;
+      &:hover {
+        background-color: #fbe1e0;
+        cursor: pointer;
+      }
+
+    }
+
+      .field-name-description {
+        display: block;
+        width:200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis!important;
+        margin-right: 3rem;
+      }
+
+
+  }
+}

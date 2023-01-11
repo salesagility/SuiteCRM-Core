@@ -99,7 +99,9 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
             labelClass: this.config.labelClass || {},
             rowClass: this.config.rowClass || {},
             colClass: this.config.colClass || {},
-            actions: this.actionAdapter
+            actions: this.actionAdapter,
+            klass: this.config.containerClass,
+            flexDirection: this.config?.flexDirection || ''
         } as RecordFlexboxConfig;
     }
 

@@ -24,30 +24,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
-import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
-import {ViewMode} from 'common';
-import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FieldModule} from '../../fields/field.module';
+import {WidgetPanelModule} from '../../components/widget-panel/widget-panel.module';
+import {LabelModule} from '../../components/label/label.module';
+import {NotificationsComponent} from './notifications.component';
+import {RecordThreadModule} from '../record-thread/components/record-thread/record-thread.module';
+import {RecordThreadItemModule} from '../record-thread/components/record-thread-item/record-thread-item.module';
 
-
-export interface RecordThreadItemConfig {
-    klass?: string;
-    dynamicClass?: string[];
-    collapsible?: boolean;
-    collapseLimit?: number;
-    flexDirection?: string;
-    metadata: RecordThreadItemMetadata;
-    store?: RecordThreadItemStore;
-    threadStore?: RecordThreadStore;
-    initialMode?: ViewMode;
-    buttonClass?: string;
-    labelClass?: { [klass: string]: any };
-    inputClass?: { [klass: string]: any };
-    rowClass?: { [klass: string]: any };
-    colClass?: { [klass: string]: any };
-    containerClass?: string;
-
-    collapsed(): void;
-
-    expanded(): void;
+@NgModule({
+    declarations: [NotificationsComponent],
+    exports: [
+        NotificationsComponent
+    ],
+    imports: [
+        CommonModule,
+        FieldModule,
+        WidgetPanelModule,
+        LabelModule,
+        RecordThreadModule,
+        RecordThreadItemModule
+    ]
+})
+export class NotificationsModule {
 }
