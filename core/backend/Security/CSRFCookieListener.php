@@ -69,7 +69,13 @@ class CSRFCookieListener
     protected $cookieSecure;
 
     /**
-     * @param CSRFTokenManager $angularCsrfTokenManager ,
+     * @var RouteMatcherInterface
+     */
+    private RouteMatcherInterface $routeMatcher;
+
+    /**
+     * @param RouteMatcherInterface $routeMatcher
+     * @param CSRFTokenManager $angularCsrfTokenManager
      * @param array $routes
      * @param string $cookieName
      * @param int $cookieExpire
@@ -78,15 +84,17 @@ class CSRFCookieListener
      * @param bool $cookieSecure
      */
     public function __construct(
-        CSRFTokenManager $angularCsrfTokenManager,
+        RouteMatcherInterface $routeMatcher,
         array $routes,
         $cookieName,
         $cookieExpire,
         $cookiePath,
         $cookieDomain,
-        $cookieSecure
+        $cookieSecure,
+        CSRFTokenManager $angularCsrfTokenManager
     ) {
         $this->csrfTokenManager = $angularCsrfTokenManager;
+        $this->routeMatcher = $routeMatcher;
         $this->routes = $routes;
         $this->cookieName = $cookieName;
         $this->cookieExpire = $cookieExpire;
@@ -105,6 +113,11 @@ class CSRFCookieListener
         ) {
             return;
         }
+
+        if (!$this->routeMatcher->match($event->getRequest(), $this->routes)) {
+            return;
+        }
+
         $event->getResponse()->headers->setCookie(new Cookie(
             $this->cookieName,
             $this->csrfTokenManager->getToken()->getValue(),
