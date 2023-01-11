@@ -50,10 +50,10 @@
             <scrm-record-thread-item [config]="buildItem(record, item)"></scrm-record-thread-item>
         </div>
 
-        <div [ngClass]="config.listActions ? 'd-flex align-items-center justify-content-between' : 'd-flex flex-column' ">
+        <div [ngClass]="config.listActions ? 'd-flex align-items-center justify-content-between' : '' ">
 
             <div *ngIf="direction === 'desc' && !allLoaded()"
-                 class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+                 class="record-thread-load-more d-flex justify-content-center">
                 <scrm-button [config]="getLoadMoreButton()"></scrm-button>
             </div>
 

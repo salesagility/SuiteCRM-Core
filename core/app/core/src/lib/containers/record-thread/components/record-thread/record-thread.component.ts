@@ -74,7 +74,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-    console.log(this.config)
         if (!isVoid(this.config.maxListHeight)) {
             this.maxHeight = this.config.maxListHeight;
         }
