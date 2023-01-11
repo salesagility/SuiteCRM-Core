@@ -70,7 +70,7 @@
 		<div class="clear"></div>
 
 		<div class="col">
-			<label>{$MOD.LBL_REMINDERS_ACTIONS}</label>&nbsp;
+			<label>{if !empty($MOD.LBL_REMINDERS_ACTIONS)}{$MOD.LBL_REMINDERS_ACTIONS}{/if}</label>&nbsp;
         </div>
 
         <div class="clear"></div>
@@ -122,14 +122,14 @@
 		<div class="clear"></div>
 
 		<div class="col">
-			<span>{$MOD.LBL_REMINDERS_ACTIONS}</span>&nbsp;
+			<span>{if !empty($MOD.LBL_REMINDERS_ACTIONS)}{$MOD.LBL_REMINDERS_ACTIONS}{/if}</span>&nbsp;
         </div>
 
         <div class="clear"></div>
 
         <div class="col">
-			<input type="checkbox" class="popup_chkbox" disabled="disabled"><span>{$MOD.LBL_REMINDERS_POPUP}</span>&nbsp;
-			<!-- <span>{$MOD.LBL_REMINDERS_WHEN}</span> -->
+			<input type="checkbox" class="popup_chkbox" disabled="disabled"><span>{if !empty($MOD.LBL_REMINDERS_POPUP)}{$MOD.LBL_REMINDERS_POPUP}{/if}</span>&nbsp;
+			<!-- <span>{if !empty($MOD.LBL_REMINDERS_WHEN)}{$MOD.LBL_REMINDERS_WHEN}{/if}</span> -->
 			<span type="text" class="reminder_when_value" /></span>
 			<select tabindex="0" class="timer_sel_popup" disabled="disabled" style="-webkit-appearance: none; -webkit-border-radius: 0px; border: none;">
 				{html_options options=$reminder_time_options}
@@ -137,8 +137,8 @@
 		</div>
 
 		<div class="col">
-			<input type="checkbox" class="email_chkbox" disabled="disabled"><span>{$MOD.LBL_REMINDERS_EMAIL}</span>&nbsp;
-			<!-- <span>{$MOD.LBL_REMINDERS_WHEN}</span> -->
+			<input type="checkbox" class="email_chkbox" disabled="disabled"><span>{if !empty($MOD.LBL_REMINDERS_EMAIL)}{$MOD.LBL_REMINDERS_EMAIL}{/if}</span>&nbsp;
+			<!-- <span>{if !empty($MOD.LBL_REMINDERS_WHEN)}{$MOD.LBL_REMINDERS_WHEN}{/if}</span> -->
 			<span type="text" class="reminder_when_value" /></span>
 			<select tabindex="0" class="timer_sel_email" disabled="disabled" style="-webkit-appearance: none; -webkit-border-radius: 0px; border: none;">
 				{html_options options=$reminder_time_options}
