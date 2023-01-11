@@ -38,7 +38,7 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 *}
-<button id="addFileButton" class="button primary case-addbutton" type="button">{$MOD.LBL_ADD_CASE_FILE}</button>
+<button id="addFileButton" class="button primary case-addbutton" type="button">{if !empty($MOD.LBL_ADD_CASE_FILE)}{$MOD.LBL_ADD_CASE_FILE}{/if}</button>
 {literal}
 <script>
     $(document).ready(function(){
@@ -90,8 +90,8 @@
 <script id="updateFileRowTemplate"  type="text/template">
     <span class="caseDocumentWrapper">
         <select class="caseDocumentTypeSelect">
-            <option value="internal">{$MOD.LBL_SELECT_INTERNAL_CASE_DOCUMENT}</option>
-            <option value="external">{$MOD.LBL_SELECT_EXTERNAL_CASE_DOCUMENT}</option>
+            <option value="internal">{if !empty($MOD.LBL_SELECT_INTERNAL_CASE_DOCUMENT)}{$MOD.LBL_SELECT_INTERNAL_CASE_DOCUMENT}{/if}</option>
+            <option value="external">{if !empty($MOD.LBL_SELECT_INTERNAL_CASE_DOCUMENT)}{$MOD.LBL_SELECT_INTERNAL_CASE_DOCUMENT}{/if}</option>
         </select>
         <input type="file" id="case_update_file[]" name="case_update_file[]">
         <span class="internalCaseDocumentWrapper">
@@ -99,7 +99,7 @@
             <input type="hidden" name="case_document_id" id="case_document_id" value="">
 
             <span class="id-ff multiple selectcrossbtn">
-                <button type="button" name="btn_case_document_name" id="btn_case_document_name" tabindex="0" title="{$MOD.LBL_SELECT_CASE_DOCUMENT}" class="firstChild" value="{$MOD.LBL_SELECT_CASE_DOCUMENT}"
+                <button type="button" name="btn_case_document_name" id="btn_case_document_name" tabindex="0" title="{if !empty($MOD.LBL_SELECT_CASE_DOCUMENT)}{$MOD.LBL_SELECT_CASE_DOCUMENT}{/if}" class="firstChild" value="{if !empty($MOD.LBL_SELECT_CASE_DOCUMENT)}{$MOD.LBL_SELECT_CASE_DOCUMENT}{/if}"
                         {literal}
                         onclick='open_popup(
                                 "Documents",
@@ -113,16 +113,16 @@
                                 true
                                 );' >
                         {/literal}
-                        {sugar_getimage name="cursor" attr='border="0"'}                
+                        {sugar_getimage name="cursor" attr='border="0"'}
                 </button>
                 <button type="button" name="btn_clr_case_document_name"
-                        id="btn_clr_case_document_name" tabindex="0" title="{$MOD.LBL_CLEAR_CASE_DOCUMENT}"  class="lastChild"
-                        onclick="SUGAR.clearRelateField(this.form, 'case_document_name', 'case_document_id');"  value="{$MOD.LBL_CLEAR_CASE_DOCUMENT}" >
+                        id="btn_clr_case_document_name" tabindex="0" title="{if !empty($MOD.LBL_CLEAR_CASE_DOCUMENT)}{$MOD.LBL_CLEAR_CASE_DOCUMENT}{/if}"  class="lastChild"
+                        onclick="SUGAR.clearRelateField(this.form, 'case_document_name', 'case_document_id');"  value="{if !empty($MOD.LBL_CLEAR_CASE_DOCUMENT)}{$MOD.LBL_CLEAR_CASE_DOCUMENT}{/if}" >
                         {sugar_getimage name="cross" attr='border="0"'}
                 </button>
             </span>
         </span>
 
-<button class="removeFileButton case-removebutton" type="button">{$MOD.LBL_REMOVE_CASE_FILE}</button><br>
+<button class="removeFileButton case-removebutton" type="button">{if !empty($MOD.LBL_REMOVE_CASE_FILE)}{$MOD.LBL_REMOVE_CASE_FILE}{/if}</button><br>
 </span>
 </script>
