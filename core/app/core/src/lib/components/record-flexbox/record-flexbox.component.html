@@ -26,7 +26,7 @@
 */
 -->
 
-<div *ngIf="config" class="d-flex flex-column {{(config && config.klass) || ''}}">
+<div *ngIf="config" class="d-flex {{(config && config.flexDirection ?? 'flex-column' ) || ''}} {{(config && config.klass) || ''}}"   >
     <ng-container *ngIf="layout && layout.rows">
         <ng-container *ngFor="let item of layout.rows">
 
@@ -71,7 +71,6 @@
                                         <ng-container *ngIf="getDisplay(col) !== 'none'">
 
                                             <div [class.flex-grow-1]="getLabelDisplay(col, mode) === 'inline'">
-
                                                 <scrm-field [field]="field"
                                                             [klass]="getFieldClass(col)"
                                                             [mode]="mode"

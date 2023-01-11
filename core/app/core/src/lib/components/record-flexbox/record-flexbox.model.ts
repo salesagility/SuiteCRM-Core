@@ -38,6 +38,8 @@ import {Observable} from 'rxjs';
 import {LabelDisplay} from '../field-grid/field-grid.model';
 
 
+export type FlexDirection = 'flex-row' | 'flex-column';
+
 export interface FieldFlexbox {
     class?: string;
     rows: FieldFlexboxRow[];
@@ -82,6 +84,7 @@ export interface RecordFlexboxConfig {
     layout$: Observable<FieldFlexbox>;
     actions?: ActionDataSource;
     klass?: string;
+    flexDirection?: FlexDirection;
     buttonClass?: string;
     labelClass?: { [klass: string]: any };
     inputClass?: { [klass: string]: any };
