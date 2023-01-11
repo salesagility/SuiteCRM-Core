@@ -35,6 +35,7 @@ export interface RecordThreadConfig {
     klass?: string;
     maxListHeight?: number;
     autoRefreshFrequency?:number,
+    onAutoRefresh?(): void,
     create?: boolean;
     direction?: 'asc' | 'desc';
     itemConfig: RecordThreadItemConfig;

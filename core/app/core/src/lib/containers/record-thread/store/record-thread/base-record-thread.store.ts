@@ -73,6 +73,10 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
         return null;
     }
 
+    public getRecordList():RecordListStore {
+        return this.recordList;
+    }
+
     /**
      * Initial list records load if not cached and update state.
      * Returns observable to be used in resolver if needed

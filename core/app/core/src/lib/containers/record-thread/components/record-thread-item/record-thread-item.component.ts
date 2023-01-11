@@ -185,17 +185,7 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
      * Get body class
      */
     getBodyClass(): string {
-
-        let bodyClass = '';
-
-        this.subs.push(this.config.store.record$.subscribe(record => {
-            this.appStateStore.notificationsUnread$.subscribe(notificationsUnread => {
-                if (notificationsUnread > 0 && !record.attributes.is_read) {
-                    bodyClass = this.config?.metadata?.bodyLayout?.class ;
-                }
-            });
-        }));
-
-        return bodyClass;
+        return this.config?.metadata?.bodyLayout?.class ?? ''
     }
+
 }

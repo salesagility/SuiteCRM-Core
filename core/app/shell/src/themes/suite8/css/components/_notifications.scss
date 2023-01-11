@@ -1,40 +1,45 @@
 .action-alert.dropdown {
+
   .dropdown-menu {
     padding: 0;
+    svg path {
+      fill: $cool-blue;
+    }
   }
+
   .badge-position {
     position: absolute;
     top: -5px;
     right: 45px;
   }
-}
-.notifications {
 
-  .notifications-item {
-    border-bottom:1px dashed #b2a5a7;
+  .notifications {
 
-    .itemContentClass {
-      background-color: $bright-grey!important;
-      transition: background-color 300ms ease-in-out;
+    .notifications-item {
+      border-bottom:1px dashed #b2a5a7;
     }
 
-  }
-
-  .record-thread-item.record-thread-list-item {
-    width: 100%;
-    padding: 0;
-
-    .record-thread-item-body {
-      background-color: white;
-      transition: background-color 500ms ease-in-out;
-      box-shadow: none;
-      margin-bottom: 0;
-      &:hover {
-        background-color: #fbe1e0;
-        cursor: pointer;
+    .notifications-item.is_read-true {
+      .record-thread-item-body {
+        background-color: white!important;
+        //transition: background-color 300ms ease-in-out;
       }
-
     }
+
+    .record-thread-item.record-thread-list-item {
+      width: 100%;
+      padding: 0;
+
+      .record-thread-item-body {
+        background-color: $bright-grey;
+        transition: background-color 300ms ease-in-out;
+        box-shadow: none;
+        margin-bottom: 0;
+        &:hover {
+          background-color: #fbe1e0!important;
+          cursor: pointer;
+        }
+      }
 
       .field-name-description {
         display: block;
@@ -44,7 +49,7 @@
         text-overflow: ellipsis!important;
         margin-right: 2rem;
       }
-
-
+    }
   }
 }
+
