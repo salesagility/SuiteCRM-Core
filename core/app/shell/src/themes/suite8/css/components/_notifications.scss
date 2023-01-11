@@ -26,10 +26,17 @@
       }
     }
 
+    .line-actions-button {
+      font-size: .775rem;
+      color: $midnight-blue;
+      font-weight: 700;
+      margin: 0;
+      padding: 0;
+    }
+
     .record-thread-item.record-thread-list-item {
       width: 100%;
       padding: 0;
-
       .record-thread-item-body {
         background-color: $bright-grey;
         transition: background-color 300ms ease-in-out;
@@ -40,7 +47,6 @@
           cursor: pointer;
         }
       }
-
       .field-name-description {
         display: block;
         width:200px;
@@ -50,6 +56,8 @@
         margin-right: 2rem;
       }
     }
+
   }
 }
+
 

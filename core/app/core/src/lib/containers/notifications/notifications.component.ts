@@ -204,7 +204,7 @@ export class NotificationsComponent implements OnInit {
             }
 
         },
-        listActionsClass: "load-more-button btn btn-link btn-sm font-weight-bold",
+        listActionsClass: "line-actions-button btn btn-link",
         listActions: [
             {
                 key: 'delete_all',
