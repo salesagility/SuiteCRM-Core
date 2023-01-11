@@ -29,14 +29,13 @@ import {combineLatest, Subscription, interval } from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
-import {take, tap, map} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {AttributeMap, ButtonInterface, isVoid, Record, ViewMode} from 'common';
 import {RecordThreadItemStoreFactory} from '../../store/record-thread/record-thread-item.store.factory';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {MessageService} from '../../../../services/message/message.service';
-import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {RecordThreadListActionsAdapter} from "../../adapters/record-thread-list-actions.adapter";
 import {RecordThreadListActionsAdapterFactory} from "../../adapters/record-thread-list-actions.adapter.factory";
 
@@ -70,35 +69,33 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         protected itemFactory: RecordThreadItemStoreFactory,
         protected recordManager: RecordManager,
         protected message: MessageService,
-        protected appStateStore: AppStateStore,
         protected actionAdapterFactory: RecordThreadListActionsAdapterFactory,
     ) {
     }
 
     ngOnInit(): void {
-
+    console.log(this.config)
         if (!isVoid(this.config.maxListHeight)) {
             this.maxHeight = this.config.maxListHeight;
-        }
-
-        if (!this.config.store) {
-            this.store = this.storeFactory.create();
         }
 
         if (!this.config.module) {
             return;
         }
 
+        if (!this.config.store) {
+            this.store = this.storeFactory.create();
+            this.store.setItemMetadata(this.config.itemConfig.metadata);
+            this.store.setListMetadata({actions: this.config.listActions});
+            this.store.init(this.config.module, false);
+        } else {
+            this.store = this.config.store;
+        }
+
         this.direction = this.config.direction || this.direction;
 
-        this.store.setItemMetadata(this.config.itemConfig.metadata);
-
-        this.store.setListMetadata({actions: this.config.listActions});
-
-        this.store.init(this.config.module, false);
         this.initCreate();
         this.initDataSubscription();
-
 
         if (this.config.filters$) {
 
@@ -113,21 +110,16 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
         if(autoRefreshFrequency && this.store) {
             this.subs.push(interval(autoRefreshFrequency).subscribe(() => {
-                this.store.load(false).pipe(
-                    map(data => data.records),
-                    map(items => items.filter( item => item.attributes.is_read == "").length),
-                    tap(count => {
-                         let appStateCount = this.appStateStore.getNotificationsUnread();
-                         if(count > appStateCount) {
-                             this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
+                this.store.load(false).subscribe(
+                    () => {
+                        if(this.config.onAutoRefresh) {
+                            this.config.onAutoRefresh()
                         }
-                    })
-                ).subscribe(
-                    count => this.appStateStore.setNotificationUnread(count)
+                    }
+
                 )
             }));
         }
-
 
         this.initLoading();
 

@@ -36,7 +36,6 @@
         <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
     </div>
 
-
     <div #list
          *ngIf="records && records.length"
          [ngStyle]="getMaxHeight()"
@@ -47,22 +46,24 @@
             <scrm-button [config]="getLoadMoreButton()"></scrm-button>
         </div>
 
-
         <div #item *ngFor="let record of records">
             <scrm-record-thread-item [config]="buildItem(record, item)"></scrm-record-thread-item>
         </div>
 
+        <div [ngClass]="config.listActions ? 'd-flex align-items-center justify-content-between' : 'd-flex flex-column' ">
 
-        <div *ngIf="direction === 'desc' && !allLoaded()"
-             class="record-thread-load-more d-flex justify-content-center flex-grow-1">
-            <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+            <div *ngIf="direction === 'desc' && !allLoaded()"
+                 class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+                <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+            </div>
+
+            <ng-container *ngIf="config.listActions">
+                <scrm-action-group-menu [buttonClass]="config.listActionsClass"
+                                        [config]="listActionAdapter">
+                </scrm-action-group-menu>
+            </ng-container>
+
         </div>
-
-        <ng-container *ngIf="this.config.listActions">
-            <scrm-action-group-menu [buttonClass]="config.listActionsClass"
-                                    [config]="listActionAdapter">
-            </scrm-action-group-menu>
-        </ng-container>
 
     </div>
 
@@ -82,6 +83,5 @@
         </div>
 
     </ng-container>
-
 
 </div>

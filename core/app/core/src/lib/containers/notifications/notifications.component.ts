@@ -33,12 +33,17 @@ import {
     SearchCriteriaFilter,
     StringMap
 } from 'common';
-import {Observable, of} from 'rxjs';
+import {interval, Observable, of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
 import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
 import {FieldFlexbox} from '../../components/record-flexbox/record-flexbox.model';
 import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {map, tap} from "rxjs/operators";
+import {RecordThreadStoreFactory} from "../record-thread/store/record-thread/record-thread.store.factory";
+import {RecordThreadStore} from "../record-thread/store/record-thread/record-thread.store";
+import {AppStateStore} from "../../store/app-state/app-state.store";
+import {MessageService} from "../../services/message/message.service";
 
 interface ThreadItemMetadataConfig {
     header?: FieldFlexbox;
@@ -55,6 +60,7 @@ export class NotificationsComponent implements OnInit {
 
     recordThreadConfig: RecordThreadConfig;
     filters$: Observable<SearchCriteria>;
+    store: RecordThreadStore;
     options: {
         module: string;
         class?: string;
@@ -64,13 +70,14 @@ export class NotificationsComponent implements OnInit {
         item: {
             dynamicClass?: string[];
             itemClass?: string;
-            containerClass:string;
+            containerClass: string;
             collapsible?: boolean;
             collapseLimit?: number;
             flexDirection?: string;
             layout?: ThreadItemMetadataConfig;
         },
         listActions?: Action[],
+        listActionsClass?: string,
         create?: {
             presetFields?: {
                 parentValues?: StringMap;
@@ -84,139 +91,146 @@ export class NotificationsComponent implements OnInit {
             orderBy?: string;
             sortOrder?: string;
         };
-    }= {
-            module: 'alerts',
-            class: 'notifications',
-            maxListHeight:  350,
-            direction: 'desc',
-            //autoRefreshFrequency: 600_000, //10 minutes
-            autoRefreshFrequency: 15000,
-            create:null,
-            item: {
-                collapsible: false,
-                collapseLimit:  200,
-                itemClass: 'notifications-item ',
-                containerClass: 'flex-row align-items-start py-2 containerClass ',
-                flexDirection:'flex-row',
-                layout: {
-                    body: {
-                        class:'itemContentClass',
-                        rows: [
-                            {
-                                cols: [
-                                    {
-                                        field: {
-                                            name:'target_module',
-                                            type:'icon'
-                                        },
-                                        labelDisplay: 'none',
-                                        hideIfEmpty: false,
-                                        class: 'font-weight-bold'
-                                    }
-                                ]
-                            },
-                            {
-                                class:'d-flex flex-column',
-                                align: 'start',
-                                cols: [
-                                    {
-                                        field: {
-                                            name:'name'
-                                        },
-                                        labelDisplay: 'none',
-                                        labelClass: 'm-0',
-                                        display: 'readonly',
-                                        hideIfEmpty: true,
-                                        class: 'small font-weight-bold text-muted text-uppercase'
-                                    },
-                                    {
-                                        field: {
-                                            name: 'description'
-                                        },
-                                        labelDisplay: 'none',
-                                        labelClass: 'm-0',
-                                        display: 'readonly',
-                                        hideIfEmpty: false,
-                                        class: 'font-weight-bold pb-1',
-                                    },
-                                    {
-                                        field: {
-                                            name: 'date_entered'
-                                        },
-                                        labelDisplay: 'none',
-                                        labelClass: 'm-0',
-                                        display: 'readonly',
-                                        hideIfEmpty: true,
-                                        class: 'small font-weight-light'
-                                    }
-
-                                ]
-                            },
-                            {
-                                class:'d-flex flex-column',
-                                align: 'start',
-                                justify:'start',
-                                cols: [
-                                    {
-                                        actionSlot: true,
-                                        class: 'w-50'
-                                    }
-                                ]
-                            },
-                        ]
-                    },
-                    actions:[
+    } = {
+        module: 'alerts',
+        class: 'notifications',
+        maxListHeight: 350,
+        direction: 'desc',
+        //autoRefreshFrequency: 600_000, //10 minutes
+        autoRefreshFrequency: 20000,
+        create: null,
+        item: {
+            collapsible: false,
+            collapseLimit: 200,
+            itemClass: 'notifications-item ',
+            containerClass: 'flex-row align-items-start py-2 containerClass ',
+            dynamicClass: ['is_read'],
+            flexDirection: 'flex-row',
+            layout: {
+                body: {
+                    class: 'itemContentClass',
+                    rows: [
                         {
-                            key:'delete',
-                            icon: 'cross',
-                            titleKey:'LBL_DISMISS',
-                            asyncProcess:true,
-                            params: {
-                                displayConfirmation:true,
-                                confirmationLabel : 'NTC_DELETE_CONFIRMATION'
-                            },
-                            klass: ['btn fill-primary fill-hover-main  border-0 btn-xs p-0'],
-                            modes: ['detail', 'edit'],
-                            acl:[]
+                            cols: [
+                                {
+                                    field: {
+                                        name: 'target_module',
+                                        type: 'icon'
+                                    },
+                                    labelDisplay: 'none',
+                                    hideIfEmpty: false,
+                                    class: 'font-weight-bold'
+                                }
+                            ]
                         },
                         {
-                            key:'snooze',
-                            icon: 'clock',
-                            titleKey:'LBL_SNOOZE',
-                            asyncProcess:true,
-                            params: {
-                                displayConfirmation:true,
-                                confirmationLabel : 'NTC_DELETE_CONFIRMATION'
-                            },
-                            klass: ['btn btn-outline-light fill-primary border-0  btn-xs  p-0'],
-                            modes: ['detail', 'edit'],
-                            acl:[]
-                        }
+                            class: 'd-flex flex-column',
+                            align: 'start',
+                            cols: [
+                                {
+                                    field: {
+                                        name: 'name'
+                                    },
+                                    labelDisplay: 'none',
+                                    labelClass: 'm-0',
+                                    display: 'readonly',
+                                    hideIfEmpty: true,
+                                    class: 'small font-weight-bold text-muted text-uppercase'
+                                },
+                                {
+                                    field: {
+                                        name: 'description'
+                                    },
+                                    labelDisplay: 'none',
+                                    labelClass: 'm-0',
+                                    display: 'readonly',
+                                    hideIfEmpty: false,
+                                    class: 'font-weight-bold pb-1',
+                                },
+                                {
+                                    field: {
+                                        name: 'date_entered'
+                                    },
+                                    labelDisplay: 'none',
+                                    labelClass: 'm-0',
+                                    display: 'readonly',
+                                    hideIfEmpty: true,
+                                    class: 'small font-weight-light'
+                                }
+
+                            ]
+                        },
+                        {
+                            class: 'd-flex flex-column',
+                            align: 'start',
+                            justify: 'start',
+                            cols: [
+                                {
+                                    actionSlot: true,
+                                    class: 'w-50'
+                                }
+                            ]
+                        },
                     ]
-                }
-            },
-            listActions: [
-                {
-                    key:'delete_all',
-                    label:'LBL_DISMISS_ALL',
-                    labelKey:'LBL_DISMISS_ALL',
-                    asyncProcess:true,
-                    params: {
-                        displayConfirmation:true,
-                        confirmationLabel : 'NTC_DELETE_CONFIRMATION'
+                },
+                actions: [
+                    {
+                        key: 'delete',
+                        icon: 'cross',
+                        titleKey: 'LBL_DISMISS',
+                        asyncProcess: true,
+                        params: {
+                            displayConfirmation: true,
+                            confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+                        },
+                        klass: ['btn fill-primary fill-hover-main border-0 btn-xs p-0'],
+                        modes: ['detail', 'edit'],
+                        acl: []
                     },
-                    klass: ['btn fill-primary fill-hover-main  border-0 btn-xs p-0'],
-                    modes: ['detail', 'list'],
-                    acl:[]
-                }
-            ]
+                    {
+                        key: 'snooze',
+                        icon: 'clock',
+                        titleKey: 'LBL_SNOOZE',
+                        asyncProcess: true,
+                        params: {
+                            displayConfirmation: true,
+                            confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+                        },
+                        klass: ['btn stroke-primary border-0 btn-xs p-0'],
+                        modes: ['detail', 'edit'],
+                        acl: []
+                    }
+                ]
+            }
+
+        },
+        listActionsClass: "load-more-button btn btn-link btn-sm font-weight-bold",
+        listActions: [
+            {
+                key: 'delete_all',
+                label: 'LBL_DISMISS_ALL',
+                labelKey: 'LBL_DISMISS_ALL',
+                asyncProcess: true,
+                params: {
+                    displayConfirmation: true,
+                    confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+                },
+                klass: [''],
+                modes: ['detail', 'list'],
+                acl: []
+            }
+        ]
 
     }
 
     constructor(
         protected language: LanguageStore,
-        protected sytemConfig: SystemConfigStore
-    ) {}
+        protected sytemConfig: SystemConfigStore,
+        protected storeFactory: RecordThreadStoreFactory,
+        protected appStateStore: AppStateStore,
+        protected message: MessageService,
+    ) {
+    }
 
     ngOnInit(): void {
         this.recordThreadConfig = this.getConfig();
@@ -225,12 +239,20 @@ export class NotificationsComponent implements OnInit {
     getConfig(): RecordThreadConfig {
 
         const config = {
-            filters$: of({orderBy:'date_entered', sortOrder:'asc'} as SearchCriteria),
+            filters$: of({orderBy: 'date_entered', sortOrder: 'asc'} as SearchCriteria),
             module: this.options.module,
             klass: this.options.class ?? '',
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
+            onAutoRefresh: () => {
+                const count = this.store.getRecordList().records.filter(item => item.attributes.is_read == "").length;
+                let appStateCount = this.appStateStore.getNotificationsUnread();
+                if (count > appStateCount) {
+                    this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
+                }
+                this.appStateStore.setNotificationUnread(count);
+            },
             create: false,
             itemConfig: {
                 collapsible: this.options.item.collapsible || false,
@@ -242,10 +264,18 @@ export class NotificationsComponent implements OnInit {
                 metadata: {} as RecordThreadItemMetadata
             },
             listActions: this.options?.listActions ?? [],
-            listActionsClass: "btn modal-button-save btn-sm"
+            listActionsClass: this.options?.listActionsClass ?? ''
         } as RecordThreadConfig;
 
         this.setupItemMetadata(config.itemConfig.metadata, this.options.item.layout);
+
+        this.store = this.storeFactory.create();
+        this.store.setItemMetadata(config.itemConfig.metadata);
+        this.store.setListMetadata({actions: config.listActions});
+        this.store.init(config.module, false);
+
+        config.store = this.store;
+
         return config;
     }
 
