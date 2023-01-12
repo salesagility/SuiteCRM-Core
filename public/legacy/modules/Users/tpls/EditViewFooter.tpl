@@ -327,8 +327,12 @@
             </div>
             <!--Second row ends here-->
             <div class="row-container" style="margin-top: 0.5em;">
-                <div class="left-col"></div>
-                <div class="right-col">
+                <div class="left-col">
+                    <div class="row-label"><slot>{$MOD.LBL_SNOOZE_TIMER}:</slot></div>
+                    <div class="row-bottom"><select tabindex='12' name="snooze_alert_timer">{$SNOOZE_ALERT_TIMER}</select></div>
+                    <div class="bottom-dotted-border"></div>
+                </div>
+                <div class="right-col" style="padding-top: 20px">
                     <button type="button" class="btn btn-primary btn-sm" onClick="Alerts.prototype.enable()">
                         {$MOD.LBL_ENABLE_NOTIFICATIONS}
                     </button>

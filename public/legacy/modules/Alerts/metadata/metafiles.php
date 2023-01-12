@@ -47,4 +47,5 @@
 $module_name = 'Alert';
  $metafiles[$module_name] = array(
     'defaultviewdefs'  => 	'modules/' . $module_name . '/metadata/defaultviewdefs.php',
+     'listviewdefs' => 'modules/' . $module_name . '/metadata/listviewdefs.php',
  );

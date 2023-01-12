@@ -171,6 +171,11 @@ class ConfiguratorViewEdit extends ViewEdit
         } else {
             $this->ss->assign('record_modal_pagination_type', get_select_options_with_id($app_list_strings['record_modal_pagination_type'], 'pagination'));
         }
+        if (!empty($configurator->config['snooze_alert_timer'])){
+            $this->ss->assign('snooze_alert_timer', get_select_options_with_id($app_list_strings['snooze_alert_timer'], $configurator->config['snooze_alert_timer']));
+        } else {
+            $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], 300));
+        }
         if (!empty($configurator->config['logger']['file']['suffix'])) {
             $this->ss->assign('filename_suffix', get_select_options_with_id(SugarLogger::$filename_suffix, $configurator->config['logger']['file']['suffix']));
         } else {

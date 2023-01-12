@@ -323,6 +323,20 @@ $app_list_strings = array(
         86400 => '1 day prior',
     ),
 
+    // snooze for alerts
+    'snooze_alert_timer' => array(
+        60 => 'Snooze for 1 minute',
+        300 => 'Snooze for 5 minutes',
+        600 => 'Snooze for 10 minutes',
+        900 => 'Snooze for 15 minutes',
+        1800 => 'Snooze for 30 minutes',
+        3600 => 'Snooze for 1 hour',
+        7200 => 'Snooze for 2 hours',
+        10800 => 'Snooze for 3 hours',
+        18000 => 'Snooze for 5 hours',
+        86400 => 'Snooze for 1 day',
+    ),
+
     'task_priority_default' => 'Medium',
     'task_priority_dom' => array(
         'High' => 'High',
