@@ -188,6 +188,7 @@ $mod_strings = array(
     'LNK_SELECT_ACCOUNTS' => ' <b>OR</b> Select Account',
     'LNK_SELECT_CONTACTS' => ' <b>OR</b> Select Contact',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'NTC_REMOVE_CONFIRMATION' => 'Are you sure you want to remove this lead from this case?',
     'LBL_CAMPAIGN_LIST_SUBPANEL_TITLE' => 'Campaigns',
     'LBL_CAMPAIGN' => 'Campaign:',

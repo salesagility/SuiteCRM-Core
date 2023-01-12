@@ -65,6 +65,7 @@ $mod_strings = array(
     'LBL_ASSIGNED_USER' => 'Assigned to:',
     'LBL_EMAIL_RECIPIENTS' => 'Email Recipients:',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'LBL_LIST_FORM_TITLE' => 'Scheduled Reports List',
     'LBL_MODULE_NAME' => 'Scheduled Reports',
     'LBL_MODULE_TITLE' => 'Scheduled Reports',
