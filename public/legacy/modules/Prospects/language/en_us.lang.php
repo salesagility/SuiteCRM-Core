@@ -122,6 +122,7 @@ $mod_strings = array(
     'LNK_NEW_APPOINTMENT' => 'Create Appointment',
     'LNK_IMPORT_PROSPECTS' => 'Import Targets',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'NTC_REMOVE_CONFIRMATION' => 'Are you sure you want to remove this contact from the case?',
     'ERR_DELETE_RECORD' => 'A record number must be specified to delete the contact.',
     'LBL_SALUTATION' => 'Salutation',

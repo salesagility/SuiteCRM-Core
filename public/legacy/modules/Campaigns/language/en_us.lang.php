@@ -335,6 +335,7 @@ $mod_strings = array(
     'LBL_LEAD_FOOTER' => 'Form Footer:',
     'NTC_NO_LEGENDS' => 'None',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'LBL_DESCRIPTION_LEAD_FORM' => 'Form Description:',
     'LBL_DESCRIPTION_TEXT_LEAD_FORM' => 'Submitting this form will create a lead and link with campaign',
     'LBL_DOWNLOAD_TEXT_WEB_TO_LEAD_FORM' => 'Please download your Web To Lead form',
