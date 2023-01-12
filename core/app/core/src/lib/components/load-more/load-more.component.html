@@ -1,7 +1,7 @@
 <! --
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
-* Copyright (C) 2021 SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
 *
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,26 +25,9 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="{{ (config && config.klass) || ''}}">
-    <scrm-table-header *ngIf="showHeader()"
-                       [bulkActions]="config.bulkActions"
-                       [paginationType]="getPaginationType()"
-                       [pagination]="config.pagination"
-                       [selection]="config.selection"
-    >
-    </scrm-table-header>
-
-
-    <scrm-table-body [config]="config"></scrm-table-body>
-
-
-    <scrm-table-footer *ngIf="showFooter()"
-                       [bulkActions]="config.bulkActions"
-                       [paginationType]="getPaginationType()"
-                       [pagination]="config.pagination"
-                       [selection]="config.selection"
-                       [config]="config"
-    >
-    </scrm-table-footer>
+<div class="float-right">
+    <scrm-button [config]="loadMoreButton" class="">
+        <scrm-image class="small" style="fill: #FFFFFF" image="plus_thin">
+        </scrm-image>
+    </scrm-button>
 </div>
-

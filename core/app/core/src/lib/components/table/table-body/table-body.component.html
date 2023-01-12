@@ -90,11 +90,6 @@
 
             </table>
 
-            <div *ngIf="showLoadMore() && !allLoaded()"
-                 class="d-flex justify-content-center flex-grow-1">
-                <scrm-button [config]="getLoadMoreButton()"></scrm-button>
-            </div>
-
             <div *ngIf="!vm.loading && vm.records.length === 0">
                 <p class="lead text-center pt-3">
                     <scrm-label labelKey="MSG_LIST_VIEW_NO_RESULTS_BASIC"></scrm-label>

@@ -97,6 +97,7 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
                 if (Number(pagination.pageLast) >= Number(pagination.total)) {
                     return true;
                 }
+
                 return Number(pagination.pageSize) >= Number(pagination.total);
             }
 

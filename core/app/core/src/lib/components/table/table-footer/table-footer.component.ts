@@ -25,8 +25,9 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {PaginationDataSource, SelectionDataSource} from 'common';
+import {ButtonInterface, PaginationDataSource, SelectionDataSource} from 'common';
 import {BulkActionDataSource} from '../../bulk-action-menu/bulk-action-menu.component';
+import {TableConfig} from "../table.model";
 
 @Component({
     selector: 'scrm-table-footer',
@@ -37,10 +38,25 @@ export class TableFooterComponent {
     @Input() bulkActions: BulkActionDataSource;
     @Input() pagination: PaginationDataSource;
     @Input() paginationType: string;
+    @Input() config: TableConfig;
 
 
     isPaginationEnabled(): boolean {
         return this.paginationType === 'pagination';
+    }
+
+    getLoadMoreButton(): ButtonInterface {
+        return {
+            klass: 'load-more',
+            labelKey: 'LBL_LOAD_MORE',
+            onClick: () => {
+                this.config.loadMore();
+            }
+        } as ButtonInterface;
+    }
+
+    allLoaded(): boolean {
+        return this.config?.allLoaded();
     }
 
 }
