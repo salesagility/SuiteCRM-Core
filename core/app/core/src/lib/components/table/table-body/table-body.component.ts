@@ -27,16 +27,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {
-    ButtonInterface,
-    ColumnDefinition,
-    Field,
-    Record,
-    RecordSelection,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection
-} from 'common';
+import {ColumnDefinition, Field, Record, RecordSelection, SelectionStatus, SortDirection, SortingSelection} from 'common';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
@@ -166,16 +157,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return returnArray;
     }
 
-    getLoadMoreButton(): ButtonInterface {
-        return {
-            klass: 'load-more-button btn btn-link btn-sm',
-            labelKey: 'LBL_LOAD_MORE',
-            onClick: () => {
-                this.config.loadMore();
-            }
-        } as ButtonInterface;
-    }
-
     getFieldSort(field: ColumnDefinition): SortDirectionDataSource {
         return {
             getSortDirection: (): Observable<SortDirection> => this.config.sort$.pipe(
@@ -202,14 +183,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         }
 
         return this.fieldManager.addField(record, column);
-    }
-
-    allLoaded(): boolean {
-        return this.config?.allLoaded();
-    }
-
-    showLoadMore() {
-        return this.getPaginationType() === 'load-more';
     }
 
     getMaxHeight(): { [klass: string]: any; } | null {

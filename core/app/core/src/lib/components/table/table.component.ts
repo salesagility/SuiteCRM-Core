@@ -49,6 +49,7 @@ export class TableComponent {
 
     }
 
+
     showHeader(): boolean {
         return this.config.showHeader;
     }

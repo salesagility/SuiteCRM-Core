@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -26,24 +26,18 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
-import {TableFooterComponent} from './table-footer.component';
-
-import {PaginationModule} from '../../pagination/pagination.module';
-import {BulkActionMenuModule} from '../../bulk-action-menu/bulk-action-menu.module';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {LoadMoreModule} from "../../load-more/load-more.module";
+import {ImageModule} from '../image/image.module';
+import {LoadMoreComponent} from "./load-more.component";
+import {ButtonModule} from "../button/button.module";
 
 @NgModule({
-    declarations: [TableFooterComponent],
-    exports: [TableFooterComponent],
+    declarations: [LoadMoreComponent],
+    exports: [LoadMoreComponent],
     imports: [
         CommonModule,
-        PaginationModule,
-        BulkActionMenuModule,
-        AngularSvgIconModule,
-        LoadMoreModule
+        ImageModule,
+        ButtonModule
     ]
 })
-export class TableFooterModule {
+export class LoadMoreModule {
 }

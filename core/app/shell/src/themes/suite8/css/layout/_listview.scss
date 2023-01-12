@@ -52,6 +52,10 @@
   text-align: end;
 }
 
+.load-more-style {
+  align-content: center;
+}
+
 .list-view-container {
   font-size: 0.85em;
   margin-bottom: 4em;
@@ -386,12 +390,22 @@ td {
   color: $white;
 }
 
-.load-more-button {
-  font-size: .775rem;
-  color: $burnt-red;
+.load-more {
+  background-color: #76858f;
+  background-repeat: no-repeat;
+  border: 0.09em solid rgb(233, 233, 233);
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-repeat: initial;
+  border-radius: 0.15em;
+  cursor: pointer;
+  overflow: hidden;
+  outline: initial none initial;
+  padding: 0.3em 0.5em;
   font-weight: 700;
-  margin: 0;
-  padding: 0;
+  font-size: .9em;
+  color: #fff;
+  min-width: 11em;
 }
 
 @media all and (max-width: $breakpoint-medium) {
