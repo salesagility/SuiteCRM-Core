@@ -88,6 +88,9 @@ export class NotificationsComponent implements OnInit {
         filters?: {
             parentFilters?: StringMap;
             static?: SearchCriteriaFilter;
+            preset: {
+                type: string;
+            }
             orderBy?: string;
             sortOrder?: string;
         };
@@ -194,7 +197,7 @@ export class NotificationsComponent implements OnInit {
                         asyncProcess: true,
                         params: {
                             displayConfirmation: true,
-                            confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+                            confirmationLabel: 'NTC_SNOOZE_CONFIRMATION'
                         },
                         klass: ['btn stroke-primary border-0 btn-xs p-0'],
                         modes: ['detail', 'edit'],
@@ -239,7 +242,7 @@ export class NotificationsComponent implements OnInit {
     getConfig(): RecordThreadConfig {
 
         const config = {
-            filters$: of({orderBy: 'date_entered', sortOrder: 'asc'} as SearchCriteria),
+            filters$: of({orderBy: 'date_entered', sortOrder: 'asc', preset: {type: 'alerts'}} as SearchCriteria),
             module: this.options.module,
             klass: this.options.class ?? '',
             maxListHeight: this.options.maxListHeight ?? 350,
