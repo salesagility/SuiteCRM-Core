@@ -18,6 +18,7 @@ parameters:
     default_currency_significant_digits: true
     datef: true
     timef: true
+    snooze_alert_timer: true
     currency: true
     currencies: true
     list_max_entries_per_page: true
