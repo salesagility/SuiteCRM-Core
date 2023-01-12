@@ -267,6 +267,7 @@ $mod_strings = array(
     'LBL_REMINDERS_REMOVE_REMINDER' => 'Remove reminder',
     'LBL_REMINDERS_ADD_ALL_INVITEES' => 'Add All Invitees',
     'LBL_REMINDERS_ADD_REMINDER' => 'Add reminder',
+    'LBL_SNOOZE_TIMER' => 'Set Snooze For Notifications',
     'LBL_REPORTS_TO_NAME' => 'Reports to',
     'LBL_REPORTS_TO' => 'Reports to',
     'LBL_REPORTS_TO_ID' => 'Reports to ID:',

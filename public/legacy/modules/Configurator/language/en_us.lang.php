@@ -128,6 +128,7 @@ $mod_strings = array(
     'MAX_DASHLETS' => 'Maximum number of SuiteCRM Dashlets on Homepage',
     'SYSTEM_NAME' => 'System Name:',
     'SYSTEM_NAME_WIZARD' => 'Name:',
+    'LBL_SNOOZE_TIMER' => 'Set Snooze For Notifications',
     'SYSTEM_NAME_HELP' => 'This is the name that displays in the title bar of your browser.',
     'LBL_LDAP_TITLE' => 'LDAP Authentication Support',
     'LBL_LDAP_LEGACY_WARNING' => 'LDAP Warning',
