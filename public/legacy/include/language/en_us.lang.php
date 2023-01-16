@@ -2188,6 +2188,7 @@ $app_strings = array(
     'LBL_BULK_ACTION_MASS_UPDATE_NO_ACLS' => 'Insufficient Privilege, Save action not allowed',
     'LBL_UNEXPECTED_ERROR' => 'Unexpected error. No able to perform action.',
     'LBL_RECORD_DELETE_SUCCESS' => 'Record deleted successfully',
+    'LBL_RECORD_DELETE_ALL_SUCCESS' => 'Records deleted successfully',
     'LBL_RECORD_SNOOZE_SUCCESS' => 'Notification Snoozed',
     'LBL_ERROR_SAVING' => 'Error occurred while saving record',
     'LBL_SAVE_BUTTON_KEY' => 'a',
