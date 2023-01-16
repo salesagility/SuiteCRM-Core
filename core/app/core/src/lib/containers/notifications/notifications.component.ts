@@ -210,7 +210,7 @@ export class NotificationsComponent implements OnInit {
         listActionsClass: "line-actions-button btn btn-link",
         listActions: [
             {
-                key: 'delete_all',
+                key: 'delete-all',
                 label: 'LBL_DISMISS_ALL',
                 labelKey: 'LBL_DISMISS_ALL',
                 asyncProcess: true,
