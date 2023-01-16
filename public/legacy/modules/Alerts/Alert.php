@@ -62,6 +62,7 @@ class Alert extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $is_read;
+    public $snooze;
 
     /**
      * @var string
@@ -73,7 +74,15 @@ class Alert extends Basic
         parent::__construct();
     }
 
+    public function snoozeUntil() {
 
+        global $sugar_config;
+
+        $snoozeTimer = $sugar_config['snooze_alert_timer'];
+        $snoozeUntil = date("Y-m-d H:i:s", strtotime("+ $snoozeTimer sec"));
+
+        return $snoozeUntil;
+    }
 
 
     public function bean_implements($interface)
