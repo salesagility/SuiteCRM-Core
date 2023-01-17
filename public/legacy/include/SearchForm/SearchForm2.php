@@ -799,6 +799,13 @@ class SearchForm
                         $date_value = $timedate->to_db_date($this->searchFields[$name]['value'], false);
                         $this->searchFields[$name]['value'] = $date_value == '' ? $this->searchFields[$name]['value'] : $date_value;
                     }
+
+                    if (!empty($params['is_datetime_field']) && isset($this->searchFields[$name]['value'])) {
+                        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+                        $dateFormat = new DateFormatService();
+                        $dateValue = $dateFormat->toDBDateTime($this->searchFields[$name]['value']);
+                        $this->searchFields[$name]['value'] = $dateValue ?? '';
+                    }
                 }
 
                 if ((empty($array['massupdate']) || $array['massupdate'] == 'false') && $addAllBeanFields) {
