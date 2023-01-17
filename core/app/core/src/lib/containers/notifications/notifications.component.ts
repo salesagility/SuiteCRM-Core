@@ -25,21 +25,13 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {
-    Action,
-    AttributeMap,
-    deepClone,
-    SearchCriteria,
-    SearchCriteriaFilter,
-    StringMap
-} from 'common';
-import {interval, Observable, of} from 'rxjs';
+import {Action, AttributeMap, deepClone, SearchCriteria, SearchCriteriaFilter, StringMap} from 'common';
+import {Observable, of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
 import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
 import {FieldFlexbox} from '../../components/record-flexbox/record-flexbox.model';
 import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
-import {map, tap} from "rxjs/operators";
 import {RecordThreadStoreFactory} from "../record-thread/store/record-thread/record-thread.store.factory";
 import {RecordThreadStore} from "../record-thread/store/record-thread/record-thread.store";
 import {AppStateStore} from "../../store/app-state/app-state.store";
@@ -216,7 +208,8 @@ export class NotificationsComponent implements OnInit {
                 asyncProcess: true,
                 params: {
                     displayConfirmation: true,
-                    confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+                    confirmationLabel: 'NTC_DELETE_CONFIRMATION',
+                    module: 'alerts'
                 },
                 klass: [''],
                 modes: ['detail', 'list'],
