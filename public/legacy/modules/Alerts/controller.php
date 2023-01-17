@@ -65,6 +65,7 @@ class AlertsController extends SugarController
         $target_module = null;
         $reminder_id = '';
         $type = 'info';
+        $snooze = null;
 
 
         if (isset($_POST['name'])) {
@@ -80,6 +81,10 @@ class AlertsController extends SugarController
             $url_redirect = $_POST['url_redirect'];
         } else {
             $url_redirect = null;
+        }
+
+        if (isset($_POST['date_created'])){
+            $snooze = $_POST['date_created'];
         }
 
         if ($url_redirect == null) {
@@ -114,6 +119,7 @@ class AlertsController extends SugarController
                 $bean->assigned_user_id = $assigned_user_id;
                 $bean->type = $type;
                 $bean->reminder_id = $reminder_id;
+                $bean->snooze = $snooze;
                 $bean->save();
 
                 $shouldShowReminderPopup = true;
