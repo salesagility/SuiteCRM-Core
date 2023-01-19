@@ -1147,7 +1147,7 @@ class Imap2Handler implements ImapHandlerInterface
             // Returns an array of msgno's which are sorted and filtered
             $emailSortedHeaders = $this->search(
                 $filterCriteria,
-                SE_UID,
+                SE_UID
             );
 
             if ($emailSortedHeaders === false) {
