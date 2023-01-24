@@ -220,6 +220,7 @@ class file_utilsTest extends SuitePHPUnitFrameworkTestCase
             'SecurityGroups' => 'SecurityGroups',
             'Studio' => 'Studio',
             'SugarFeed' => 'SugarFeed',
+            'ExternalOAuthProvider' => 'ExternalOAuthProvider',
             'SurveyQuestionOptions' => 'SurveyQuestionOptions',
             'SurveyQuestionResponses' => 'SurveyQuestionResponses',
             'SurveyQuestions' => 'SurveyQuestions',

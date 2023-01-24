@@ -206,6 +206,9 @@ function make_sugar_config(&$sugar_config)
             'php3',
             'php4',
             'php5',
+            'php6',
+            'php7',
+            'php8',
             'pl',
             'cgi',
             'py',
@@ -277,6 +280,7 @@ function make_sugar_config(&$sugar_config)
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ),
         'strict_id_validation' => false,
+        'legacy_email_behaviour' => false,
     );
 }
 
@@ -469,6 +473,9 @@ function get_sugar_config_defaults(): array
             'php3',
             'php4',
             'php5',
+            'php6',
+            'php7',
+            'php8',
             'pl',
             'cgi',
             'py',
@@ -486,7 +493,8 @@ function get_sugar_config_defaults(): array
             'png',
             'jpg',
             'jpeg',
-            'svg'
+            'svg',
+            'bmp'
         ],
         'allowed_preview' => [
             'pdf',
@@ -571,6 +579,7 @@ function get_sugar_config_defaults(): array
             'gc_probability' => 1,
             'gc_divisor' => 100,
         ],
+        'legacy_email_behaviour' => false,
     ];
 
     if (!is_object($locale)) {
@@ -1420,7 +1429,7 @@ function return_module_language($language, $module, $refresh = false)
     global $currentModule;
 
     // Jenny - Bug 8119: Need to check if $module is not empty
-    if (empty($module)) {
+    if (empty($module) || !isAllowedModuleName($module)) {
         $GLOBALS['log']->warn('Variable module is not in return_module_language, see more info: debug_backtrace()');
 
         return array();
@@ -1984,8 +1993,8 @@ function get_select_options_with_id_separate_key($label_list, $key_list, $select
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-                ($option_key != '' && $selected_key == $option_key) || (
-                    $option_key == '' && (($selected_key == '' && !$massupdate) || $selected_key == '__SugarMassUpdateClearField__')
+                ($option_key !== '' && $selected_key === $option_key) || (
+                    $option_key === '' && (($selected_key === '' && !$massupdate) || $selected_key === '__SugarMassUpdateClearField__')
                 ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
             $selected_string = 'selected ';
@@ -6186,4 +6195,23 @@ function isSmtp($value): bool {
     }
 
     return strtolower($value)  === 'smtp';
+}
+
+/**
+ * Check if is string is an allowed module name
+ * @param string $value
+ * @return bool
+ */
+function isAllowedModuleName(string $value): bool {
+    if (empty($value)) {
+        return false;
+    }
+
+    $result = preg_match("/^[\w\-\_\.]+$/", $value);
+
+    if (!empty($result)) {
+        return true;
+    }
+
+    return false;
 }
