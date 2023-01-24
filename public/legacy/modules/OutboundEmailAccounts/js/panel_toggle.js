@@ -1,11 +1,10 @@
-{*
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,28 +36,41 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-*}
-{if file_exists('custom/themes/suite8/tpls/_head.tpl')}
-    {include file="custom/themes/suite8/tpls/_head.tpl"}
-{else}
-    {include file="themes/suite8/tpls/_head.tpl"}
-{/if}
-<body onMouseOut="closeMenus();">
 
-{literal}
-<input id='ajaxUI-history-field' type='hidden'>
-<script type='text/javascript'>
-    if (SUGAR.ajaxUI && !SUGAR.ajaxUI.hist_loaded) {
-        YAHOO.util.History.register('ajaxUILoc', "", SUGAR.ajaxUI.go);
-        {/literal}{if isset($smarty.request.module) && $smarty.request.module != "ModuleBuilder"}{* Module builder will init YUI history on its own *}
-        YAHOO.util.History.initialize("ajaxUI-history-field", "ajaxUI-history-iframe");
-        {/if}{literal}
+function togglePanels(type) {
+
+  var panelsPerType = {
+    'personal': {
+      'DEFAULT': true,
+      'LBL_CONNECTION_CONFIGURATION': true,
+      'LBL_OUTBOUND_CONFIGURATION': true,
+    },
+    'group': {
+      'DEFAULT': true,
+      'LBL_CONNECTION_CONFIGURATION': true,
+      'LBL_OUTBOUND_CONFIGURATION': true,
+    },
+    'system-override': {
+      'DEFAULT': true,
+      'LBL_CONNECTION_CONFIGURATION': false,
+      'LBL_OUTBOUND_CONFIGURATION': true,
     }
-</script>
-{/literal}
-<!-- Start of page content -->
-{if $AUTHENTICATED}
-<div id="bootstrap-container">
-    <div id="content" class="content">
-        <div id="pagecontent" class="pagecontent view-module-{$smarty.request.module|default:'default'} view-action-{$smarty.request.action|default:'default'}">
-{/if}
+  };
+
+  var panelDisplay = panelsPerType[type] || panelsPerType.personal;
+
+  Object.keys(panelDisplay).forEach(function (panelKey) {
+    var display = panelDisplay[panelKey];
+    var method = 'show';
+    if(!display) {
+      method = 'hide';
+    }
+    $('[data-id="' + panelKey + '"]').closest('.panel')[method]();
+  });
+}
+
+
+$(document).ready(function () {
+  var type = outboundEmailFields.getValue('type');
+  togglePanels(type);
+});
