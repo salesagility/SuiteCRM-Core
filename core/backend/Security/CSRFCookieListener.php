@@ -71,7 +71,7 @@ class CSRFCookieListener
     /**
      * @var RouteMatcherInterface
      */
-    private RouteMatcherInterface $routeMatcher;
+    private $routeMatcher;
 
     /**
      * @param RouteMatcherInterface $routeMatcher
