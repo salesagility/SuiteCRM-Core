@@ -58,6 +58,41 @@
   margin-top: 0.625rem;
 }
 
+.sub-panel .panel-buttons button.btn-outline-light {
+  scrm-image {
+    display: none;
+  }
+}
+
+.sub-panel .panel-buttons button.button-group-button.btn-outline-light.active {
+  background-color: $midnight-blue;
+  color: $white;
+  border-color: $midnight-blue;
+
+  scrm-image {
+    display: inline;
+  }
+
+  svg {
+    fill: $white;
+  }
+}
+
+.sub-panel .panel-buttons button.button-group-button.btn-outline-light.active:hover {
+  background-color: $white;
+  color: $midnight-blue;
+  border-color: $white;
+  fill: $midnight-blue;
+
+  scrm-image {
+    display: inline;
+
+    svg {
+          fill: $midnight-blue;
+    }
+  }
+}
+
 div.widget-panel .panel-card .card-header {
   background-color: $white;
   color: $midnight-blue;
