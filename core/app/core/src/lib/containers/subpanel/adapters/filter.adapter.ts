@@ -40,9 +40,8 @@ export class SubpanelFilterAdapter {
     getConfig(): FilterConfig {
         return {
             panelMode: 'collapsible',
-            isCollapsed: true,
             collapseOnSearch: true,
-            savedFilterEdit: false,
+            savedFilterEdit: true,
             module: this.store.recordList.getModule(),
             displayHeader: false,
             filter$: this.store.recordList.openFilter$,
@@ -72,20 +71,25 @@ export class SubpanelFilterAdapter {
             },
 
             updateFilter: (filter: SavedFilter, reload = true): void => {
-                this.store.recordList.updateSearchCriteria(filter.criteria, reload);
+                const filters = {} as SavedFilterMap;
+                filters[filter.key] = filter;
+                this.store.setFilters(filters, reload);
             },
 
             resetFilter: (reload?: boolean): void => {
-                this.store.recordList.resetSearchCriteria(reload);
+                this.store.resetFilters(reload);
             },
 
             addSavedFilter: (filter: SavedFilter): void => {
+                this.store.addSavedFilter(filter);
             },
 
             removeSavedFilter: (filter: SavedFilter): void => {
+                this.store.removeSavedFilter(filter);
             },
 
             setOpenFilter: (filter: SavedFilter): void => {
+                this.store.recordList.setOpenFilter(filter);
             },
         } as FilterConfig;
     }

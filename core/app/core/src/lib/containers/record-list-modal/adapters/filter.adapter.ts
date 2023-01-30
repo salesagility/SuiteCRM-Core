@@ -43,6 +43,7 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
             isCollapsed: true,
             collapseOnSearch: true,
             savedFilterEdit: false,
+            displayHeader: true,
             module: store.recordList.getModule(),
             filter$: store.recordList.criteria$.pipe(
                 map(criteria => {
