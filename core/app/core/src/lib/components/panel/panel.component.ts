@@ -45,6 +45,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
     } as ButtonInterface;
+    @Input() showHeader = true;
 
     isCollapsed = false;
     minimiseButton: ButtonInterface;
