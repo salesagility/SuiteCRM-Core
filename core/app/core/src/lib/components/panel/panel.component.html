@@ -27,7 +27,7 @@
 -->
 <div [class.collapsed]="isCollapsed" class="card panel-card {{klass}}">
 
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div *ngIf="showHeader" class="card-header d-flex justify-content-between align-items-center">
 
         <div class="flex-grow-1 align-items-center d-flex">
 

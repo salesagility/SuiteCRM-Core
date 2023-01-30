@@ -25,12 +25,14 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<scrm-panel [titleKey]="'LBL_BASIC_FILTER'"
+<scrm-panel *ngIf="(vm$ | async) as vm"
+            [showHeader]="config.displayHeader"
             [close]="store.closeButton"
             [isCollapsed$]="store.isCollapsed$"
             [mode]="store.panelMode"
             klass="filter-panel {{ (config && config.klass) || ''}}"
-            *ngIf="(vm$ | async) as vm">
+            [titleKey]="'LBL_BASIC_FILTER'"
+>
 
     <div *ngIf="store.myFilterButton" panel-header-button>
         <scrm-dropdown-button [config]="store.myFilterButton"></scrm-dropdown-button>

@@ -45,6 +45,7 @@ export class SubpanelFilterAdapter {
             collapseOnSearch: true,
             savedFilterEdit: false,
             module: this.store.recordList.getModule(),
+            displayHeader: false,
             filter$: this.store.recordList.criteria$.pipe(
                 map(criteria => {
                     return {
@@ -62,7 +63,7 @@ export class SubpanelFilterAdapter {
                     }
 
                     let type = 'advanced';
-                    if (!searchMeta.layout.advanced) {
+                    if (!searchMeta?.layout?.advanced) {
                         type = 'basic';
                     }
 
