@@ -31,10 +31,12 @@
             <scrm-image [image]="store.getIcon()"></scrm-image>
         </span>
         <span panel-header-button>
-            <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+            <scrm-action-group-menu [config]="actionsAdapter"
+                                    buttonClass="btn btn-sm btn-outline-light"
+            ></scrm-action-group-menu>
         </span>
         <div panel-body>
-            <scrm-list-filter [config]="filterConfig"></scrm-list-filter>
+            <scrm-list-filter *ngIf="store.showFilter" [config]="filterConfig"></scrm-list-filter>
             <scrm-table [config]="tableConfig"></scrm-table>
         </div>
     </scrm-panel>

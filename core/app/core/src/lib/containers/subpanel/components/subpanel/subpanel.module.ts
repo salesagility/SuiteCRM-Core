@@ -34,6 +34,7 @@ import {PanelModule} from '../../../../components/panel/panel.module';
 import {ImageModule} from '../../../../components/image/image.module';
 import {TableModule} from '../../../../components/table/table.module';
 import {ListFilterModule} from "../../../list-filter/components/list-filter/list-filter.module";
+import {ActionGroupMenuModule} from "../../../../components/action-group-menu/action-group-menu.module";
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {ListFilterModule} from "../../../list-filter/components/list-filter/list
         ButtonGroupModule,
         TableModule,
         ListFilterModule,
+        ActionGroupMenuModule,
     ]
 })
 export class SubpanelModule {
