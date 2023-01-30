@@ -50,6 +50,8 @@ import {FilterListStore} from "../../../../store/saved-filters/filter-list.store
 import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
 import {map, take, tap} from "rxjs/operators";
 import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {SavedFilter, SavedFilterMap} from "../../../../store/saved-filters/saved-filter.model";
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -79,8 +81,9 @@ export class SubpanelStore implements StateStore {
     filterList: FilterListStore;
     criteria$: Observable<SearchCriteria>;
     showFilter = false;
-    showClearFilter = false;
     filterApplied = false;
+
+    preferenceKey: string;
 
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
@@ -91,7 +94,8 @@ export class SubpanelStore implements StateStore {
         protected languageStore: LanguageStore,
         protected statisticsStoreFactory: SingleValueStatisticsStoreFactory,
         protected filterListStoreFactory: FilterListStoreFactory,
-        protected meta: MetadataStore
+        protected meta: MetadataStore,
+        protected preferences: UserPreferenceStore,
     ) {
         this.recordList = listStoreFactory.create();
         this.filterList = this.filterListStoreFactory.create();
@@ -100,13 +104,6 @@ export class SubpanelStore implements StateStore {
         this.metadataState = new BehaviorSubject<SubPanelDefinition>({} as SubPanelDefinition);
         this.metadata$ = this.metadataState.asObservable();
         this.loading$ = this.recordList.loading$;
-    }
-
-
-    public clearFilter(): void {
-        this.recordList.resetSearchCriteria(true);
-        this.filterApplied = false;
-        this.showFilter = false;
     }
 
     getTitle(): string {
@@ -155,6 +152,7 @@ export class SubpanelStore implements StateStore {
         this.parentId = parentId;
         this.metadata = meta;
         this.metadataState.next(this.metadata);
+        this.preferenceKey = 'subpanel-';
         const meta$ = this.meta.getMetadata(meta.module).pipe(
             tap(() => {
                 this.recordList.load().pipe(
@@ -169,11 +167,27 @@ export class SubpanelStore implements StateStore {
 
         this.initSearchCriteria(parentModule, parentId, meta.name);
 
+        this.recordList.loadCurrentFilter(meta.module, this.preferenceKey);
+
         if (parentRecord$) {
             this.parentRecord$ = parentRecord$;
             this.parentRecord$.subscribe(record => this.parentRecord = record);
         }
 
+    }
+
+    /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public addSavedFilter(filter: SavedFilter): void {
+        this.filterList.addFilter(filter);
+        this.recordList.addSavedFilter(filter);
+    }
+
+    public setFilters(filters: SavedFilterMap, reload = true) {
+        this.recordList.setFilters(filters, reload, null, this.preferenceKey);
     }
 
     /**
@@ -183,7 +197,6 @@ export class SubpanelStore implements StateStore {
      * @returns {object} Observable<RecordList>
      */
     public load(useCache = true): Observable<RecordList> {
-
         return this.recordList.load(useCache);
     }
 
@@ -199,6 +212,49 @@ export class SubpanelStore implements StateStore {
         }
 
         return this.statistics[key];
+    }
+
+    /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public removeSavedFilter(filter: SavedFilter): void {
+        this.filterList.removeFilter(filter);
+        this.recordList.removeSavedFilter(filter);
+    }
+
+    public resetFilters(reload = true): void {
+        const preferenceKey = this.preferenceKey ?? '';
+        this.recordList.resetFilters(reload, preferenceKey);
+    }
+
+    public clearFilter(): void {
+        this.recordList.resetSearchCriteria(true);
+        this.resetFilters();
+        this.filterApplied = false;
+        this.showFilter = false;
+    }
+
+    /**
+     * Init search criteria
+     *
+     * @param {string} parentModule name
+     * @param {string} parentId id
+     * @param {string} subpanel name
+     */
+    initSearchCriteria(parentModule: string, parentId: string, subpanel: string): void {
+
+        this.recordList.criteria = {
+            preset: {
+                type: 'subpanel',
+                params: {
+                    subpanel,
+                    parentModule,
+                    parentId
+                }
+            },
+        };
     }
 
     /**
@@ -357,23 +413,28 @@ export class SubpanelStore implements StateStore {
     }
 
     /**
-     * Init search criteria
-     *
-     * @param {string} parentModule name
-     * @param {string} parentId id
-     * @param {string} subpanel name
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @param preferenceKey
+     * @protected
      */
-    protected initSearchCriteria(parentModule: string, parentId: string, subpanel: string): void {
-        this.recordList.criteria = {
-            preset: {
-                type: 'subpanel',
-                params: {
-                    subpanel,
-                    parentModule,
-                    parentId
-                }
-            }
-        };
+    protected savePreference(module: string, storageKey: string, value: any, preferenceKey: string): void {
+        const key = `${preferenceKey}${storageKey}`;
+        this.preferences.setUi(module, key, value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param module
+     * @param storageKey
+     * @param preferenceKey
+     * @protected
+     */
+    protected loadPreference(module: string, storageKey: string, preferenceKey: string): any {
+        const key = `${preferenceKey}${storageKey}`;
+        return this.preferences.getUi(module, key);
     }
 
     /**

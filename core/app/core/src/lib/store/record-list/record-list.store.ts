@@ -155,6 +155,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     protected state$ = this.store.asObservable();
     protected preferencesSub: Subscription;
 
+    preferenceKey = 'recordlist-';
+
     constructor(
         protected listGQL: ListGQL,
         protected configStore: SystemConfigStore,
@@ -270,6 +272,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         if (pageSizeConfigKey) {
             this.watchPageSize(pageSizeConfigKey);
         }
+        this.loadCurrentFilter(module, this.preferenceKey);
 
         if (load === false) {
             return null;
@@ -278,6 +281,73 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         return this.load();
     }
 
+    /**
+     * Load current filter
+     * @param module
+     * @param preferenceKey
+     * @protected
+     */
+    public loadCurrentFilter(module: string, preferenceKey: string): void {
+
+        const activeFiltersPref = this.loadPreference(module, 'current-filters', preferenceKey) ?? {} as SavedFilterMap;
+
+        if (!activeFiltersPref || emptyObject(activeFiltersPref)) {
+            return;
+        }
+
+        let currentSort = this.loadPreference(module, 'current-sort', preferenceKey) as SortingSelection;
+        if (!currentSort && emptyObject(currentSort)) {
+            currentSort = null;
+        }
+
+        this.setFilters(activeFiltersPref, false, currentSort, preferenceKey);
+    }
+
+    /**
+     * Set active filters
+     *
+     * @param {object} filters to set
+     * @param {boolean} reload flag
+     * @param sort
+     * @param preferenceKey
+     */
+    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null, preferenceKey = this.preferenceKey): void {
+
+        const filterKey = Object.keys(filters).shift();
+        const filter = filters[filterKey];
+
+        this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
+
+        if (filter.criteria) {
+            let orderBy = filter.criteria.orderBy ?? '';
+            const sortOrder = filter.criteria.sortOrder ?? '';
+            let direction = this.mapSortOrder(sortOrder);
+
+            if (sort !== null) {
+                orderBy = sort.orderBy;
+                direction = sort.sortOrder;
+            }
+
+            this.updateSorting(orderBy, direction, false);
+            this.updateSortLocalStorage(preferenceKey);
+
+            this.updateSearchCriteria(filter.criteria, reload);
+        }
+
+        this.updateFilterLocalStorage(preferenceKey);
+    }
+
+    public updateFilterLocalStorage(preferenceKey = this.preferenceKey): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-filters', this.internalState.activeFilters, preferenceKey);
+    }
+
+    public updateSortLocalStorage(preferenceKey = this.preferenceKey): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-sort', this.sort, preferenceKey);
+    }
 
     /**
      * Load / reload records using current pagination and criteria
@@ -315,6 +385,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         pageFirst: 0,
                         pageLast: 0
                     },
+                    openFilter: deepClone(initialFilter),
+                    activeFilters: deepClone(initialFilters),
                     selection: deepClone(initialSelection),
                     meta: {}
                 });
@@ -332,6 +404,44 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                 },
             )
         );
+    }
+
+    /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public addSavedFilter(filter: SavedFilter): void {
+
+        const newState = {...this.internalState};
+        const activeFilters = this.activeFilters;
+
+        if (filter.key && activeFilters[filter.key]) {
+            activeFilters[filter.key] = filter;
+            newState.activeFilters = activeFilters;
+        }
+
+        newState.openFilter = filter;
+
+        this.updateState(newState);
+    }
+
+    /**
+     * Update filters
+     *
+     * @param {object} filter to set
+     */
+    public removeSavedFilter(filter: SavedFilter): void {
+
+        if (!filter || !filter.key) {
+            return;
+        }
+
+        const newState = {...this.internalState};
+
+        if (newState.openFilter && newState.openFilter.key === filter.key) {
+            this.resetFilters(true)
+        }
     }
 
     /**
@@ -409,6 +519,61 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.updateState({...this.internalState, pagination});
 
         this.load(false).pipe(take(1)).subscribe();
+    }
+
+    /**
+     * Set open filters
+     *
+     * @param {object} filter to set
+     */
+    public setOpenFilter(filter: SavedFilter): void {
+        this.updateState({...this.internalState, openFilter: deepClone(filter)});
+    }
+
+    /**
+     * Reset active filters
+     *
+     * @param {boolean} reload flag
+     * @param preferenceKey
+     */
+    public resetFilters(reload = true, preferenceKey = this.preferenceKey): void {
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(initialFilters),
+            openFilter: deepClone(initialFilter),
+        });
+
+        this.clearSort();
+        this.updateSortLocalStorage(preferenceKey);
+        this.updateFilterLocalStorage(preferenceKey);
+
+        this.updateSearchCriteria(deepClone(initialFilters), reload)
+    }
+
+    /**
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @param preferenceKey
+     * @protected
+     */
+    protected savePreference(module: string, storageKey: string, value: any, preferenceKey: string): void {
+        const key = `${preferenceKey}${storageKey}`;
+        this.preferencesStore.setUi(module, key, value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param module
+     * @param storageKey
+     * @param preferenceKey
+     * @protected
+     */
+    protected loadPreference(module: string, storageKey: string, preferenceKey: string): any {
+        const key = `${preferenceKey}${storageKey}`;
+        return this.preferencesStore.getUi(module, key);
     }
 
     /**

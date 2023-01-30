@@ -31,6 +31,7 @@ import {LanguageStore} from '../../../../store/language/language.store';
 import {SubpanelStore} from './subpanel.store';
 import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
 import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 
 @Injectable({
     providedIn: 'root',
@@ -43,10 +44,11 @@ export class SubpanelStoreFactory {
         protected statisticsStoreFactory: SingleValueStatisticsStoreFactory,
         protected filterListStoreFactory: FilterListStoreFactory,
         protected meta: MetadataStore,
+        protected preferences: UserPreferenceStore
     ) {
     }
 
     create(): SubpanelStore {
-        return new SubpanelStore(this.listStoreFactory, this.languageStore, this.statisticsStoreFactory, this.filterListStoreFactory, this.meta);
+        return new SubpanelStore(this.listStoreFactory, this.languageStore, this.statisticsStoreFactory, this.filterListStoreFactory, this.meta, this.preferences);
     }
 }
