@@ -3590,7 +3590,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-        
+
         $query = $this->create_new_list_query(
             $order_by,
             $where,
@@ -4553,7 +4553,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-        
+
         $query = $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted, $offset);
 
         return $this->process_detail_query($query, $row_offset, $limit, $max, $where, $offset);
@@ -6243,10 +6243,10 @@ class SugarBean
 
         return $args->access
             && ACLController::checkAccess(
-                $this->module_dir, 
-                $args->view, 
-                $args->is_owner, 
-                $this->acltype, 
+                $this->module_dir,
+                $args->view,
+                $args->is_owner,
+                $this->acltype,
                 $args->in_group
             );
     }
