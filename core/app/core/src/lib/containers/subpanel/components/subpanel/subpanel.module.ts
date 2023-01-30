@@ -33,6 +33,7 @@ import {ButtonGroupModule} from '../../../../components/button-group/button-grou
 import {PanelModule} from '../../../../components/panel/panel.module';
 import {ImageModule} from '../../../../components/image/image.module';
 import {TableModule} from '../../../../components/table/table.module';
+import {ListFilterModule} from "../../../list-filter/components/list-filter/list-filter.module";
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import {TableModule} from '../../../../components/table/table.module';
         RouterModule,
         ButtonGroupModule,
         TableModule,
+        ListFilterModule,
     ]
 })
 export class SubpanelModule {
