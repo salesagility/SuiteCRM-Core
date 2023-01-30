@@ -102,6 +102,13 @@ export class SubpanelStore implements StateStore {
         this.loading$ = this.recordList.loading$;
     }
 
+
+    public clearFilter(): void {
+        this.recordList.resetSearchCriteria(true);
+        this.filterApplied = false;
+        this.showFilter = false;
+    }
+
     getTitle(): string {
         let label = this.languageStore.getFieldLabel(this.metadata.title_key, this.parentModule);
 
