@@ -285,6 +285,14 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
+        foreach($topButtonDefinitions as $top_button){
+            if (stripos($top_button['widget_class'], 'topfilter')){
+                $topButtonDefinitions[] = [
+                    'widget_class' => 'SubPanelFilterClearButton',
+                ];
+            }
+        }
+
         foreach ($topButtonDefinitions as $top_button) {
             $topButton = $this->subpanelTopActionDefinitionProvider->getTopAction(
                 $this->moduleNameMapper->toFrontEnd($tab['module']),
