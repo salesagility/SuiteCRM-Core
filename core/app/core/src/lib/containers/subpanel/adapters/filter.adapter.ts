@@ -41,7 +41,7 @@ export class SubpanelFilterAdapter {
         return {
             panelMode: 'collapsible',
             collapseOnSearch: true,
-            savedFilterEdit: true,
+            savedFilterEdit: false,
             module: this.store.recordList.getModule(),
             displayHeader: false,
             filter$: this.store.recordList.openFilter$,
