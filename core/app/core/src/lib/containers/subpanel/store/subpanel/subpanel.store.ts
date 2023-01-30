@@ -74,8 +74,13 @@ export class SubpanelStore implements StateStore {
     columns$: Observable<ColumnDefinition[]>;
     metadata: SubPanelDefinition;
     loading$: Observable<boolean>;
+
+    // Filter variables
     filterList: FilterListStore;
     criteria$: Observable<SearchCriteria>;
+    showFilter = false;
+    showClearFilter = false;
+    filterApplied = false;
 
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
@@ -122,6 +127,11 @@ export class SubpanelStore implements StateStore {
 
     clearAuthBased(): void {
         this.recordList.clearAuthBased();
+    }
+
+    searchFilter() {
+        this.filterApplied = true;
+        this.showFilter = false;
     }
 
     /**
@@ -333,6 +343,10 @@ export class SubpanelStore implements StateStore {
         }
 
         return layout;
+    }
+
+    public toggleFilter(): boolean {
+        return this.showFilter = !this.showFilter;
     }
 
     /**

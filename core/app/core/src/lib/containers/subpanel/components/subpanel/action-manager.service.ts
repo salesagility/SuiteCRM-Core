@@ -26,28 +26,27 @@
 
 import {Injectable} from '@angular/core';
 import {SubpanelCreateAction} from '../../actions/create/create.action';
-import {SubpanelActionData, SubpanelActionHandlerMap} from '../../actions/subpanel.action';
+import {SubpanelActionData} from '../../actions/subpanel.action';
 import {SubpanelSelectAction} from "../../actions/select/select.action";
 import {AsyncProcessSubpanelAction} from '../../actions/async-process/async-process.action';
+import {SubpanelShowFilterAction} from "../../actions/show-filter/show-filter.action";
+import {BaseActionManager} from "../../../../services/actions/base-action-manager.service";
 
 @Injectable({
     providedIn: 'root',
 })
-export class SubpanelActionManager {
-
-    actions: SubpanelActionHandlerMap = {};
+export class SubpanelActionManager extends BaseActionManager<SubpanelActionData> {
 
     constructor(
         protected create: SubpanelCreateAction,
         protected select: SubpanelSelectAction,
-        protected async: AsyncProcessSubpanelAction
+        protected async: AsyncProcessSubpanelAction,
+        protected showFilter: SubpanelShowFilterAction
     ) {
-        this.actions[create.key] = create;
-        this.actions[select.key] = select;
-        this.actions[async.key] = async;
-    }
-
-    run(action: string, data: SubpanelActionData): void {
-        this.actions[action].run(data);
+        super();
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+        create.modes.forEach(mode => this.actions[mode][create.key] = create);
+        select.modes.forEach(mode => this.actions[mode][select.key] = select);
+        showFilter.modes.forEach(mode => this.actions[mode][showFilter.key] = showFilter);
     }
 }
