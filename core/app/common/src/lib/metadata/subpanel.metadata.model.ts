@@ -73,6 +73,8 @@ export interface SubPanelDefinition {
     icon?: string;
     lineActions?: Action[];
     get_subpanel_data?: string;
+    showFilter?: boolean;
+    parameters?: { [key: string]: any };
 }
 
 /* eslint-enable camelcase */

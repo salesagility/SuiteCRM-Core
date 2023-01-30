@@ -6,7 +6,6 @@ parameters:
           key: create
           labelKey: LBL_QUICK_CREATE
           action: create
-          asyncProcess: true
           params:
           modes:
             - list
@@ -16,7 +15,6 @@ parameters:
           key: select
           labelKey: LBL_LINK
           action: select
-          asyncProcess: true
           params:
           modes:
             - list
@@ -31,3 +29,14 @@ parameters:
             - list
           acl:
             - edit
+        show-filter:
+          key: show-filter
+          icon: filter
+          labelKey: LBL_FILTERS
+          action: show-filter
+          params:
+            expanded: true
+          modes:
+            - list
+          acl:
+

@@ -76,6 +76,7 @@ export class SubpanelFilterAdapter {
             },
 
             onSearch: (): void => {
+                this.store.searchFilter();
             },
 
             updateFilter: (filter: SavedFilter, reload = true): void => {
