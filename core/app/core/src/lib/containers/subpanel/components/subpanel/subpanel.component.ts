@@ -36,6 +36,7 @@ import {SubpanelActionManager} from './action-manager.service';
 import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {FilterConfig} from "../../../list-filter/components/list-filter/list-filter.model";
 
 @Component({
     selector: 'scrm-subpanel',
@@ -48,6 +49,7 @@ export class SubpanelComponent implements OnInit {
     @Input() store: SubpanelStore;
     @Input() maxColumns$: Observable<number>;
     @Input() onClose: Function;
+    @Input() filterConfig: FilterConfig;
 
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
@@ -172,5 +174,4 @@ export class SubpanelComponent implements OnInit {
 
         return button;
     }
-
 }

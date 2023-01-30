@@ -34,6 +34,7 @@
             <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
         </span>
         <div panel-body>
+            <scrm-list-filter [config]="filterConfig"></scrm-list-filter>
             <scrm-table [config]="tableConfig"></scrm-table>
         </div>
     </scrm-panel>

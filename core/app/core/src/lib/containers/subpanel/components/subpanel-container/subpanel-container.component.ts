@@ -34,6 +34,7 @@ import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculat
 import {isTrue, ViewContext, WidgetMetadata} from 'common';
 import {GridWidgetConfig, StatisticsQueryArgs} from '../../../../components/grid-widget/grid-widget.component';
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
+import {FilterConfig} from "../../../list-filter/components/list-filter/list-filter.model";
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 
 @Component({
@@ -53,6 +54,8 @@ export class SubpanelContainerComponent implements OnInit {
 
     vm$: Observable<{ subpanels: SubpanelStoreMap }>;
     openSubpanels: string[] = [];
+
+    filterConfig: FilterConfig;
 
     constructor(
         protected languageStore: LanguageStore,
