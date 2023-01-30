@@ -28,12 +28,6 @@ import {ColumnDefinition} from './list.metadata.model';
 import {WidgetOptionMap} from './widget.metadata';
 import {Action} from '../actions/action.model';
 
-export interface SubPanelTopButton {
-    key: string;
-    labelKey: string;
-    module: string;
-}
-
 export interface SubPanelCollectionList {
     [key: string]: SubPanelCollectionItem;
 }
@@ -67,7 +61,7 @@ export interface SubPanelDefinition {
     module?: string;
     legacyModule?: string;
     headerModule?: string;
-    top_buttons?: SubPanelTopButton[];
+    top_buttons?: Action[];
     collection_list: SubPanelCollectionList;
     columns: ColumnDefinition[];
     icon?: string;
