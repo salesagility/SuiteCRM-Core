@@ -28,6 +28,7 @@
 
 namespace App\Data\LegacyHandler\PresetDataHandlers;
 
+use App\Data\LegacyHandler\FilterMapper\LegacyFilterMapper;
 use App\Data\LegacyHandler\ListData;
 use App\Data\LegacyHandler\PresetListDataHandlerInterface;
 use App\Data\LegacyHandler\RecordMapper;
@@ -53,6 +54,11 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
     private $recordMapper;
 
     /**
+     * @var LegacyFilterMapper
+     */
+    private $legacyFilterMapper;
+
+    /**
      * ListDataHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -71,8 +77,10 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         RecordMapper $recordMapper,
+        LegacyFilterMapper $legacyFilterMapper,
         SessionInterface $session
-    ) {
+    )
+    {
         parent::__construct(
             $projectDir,
             $legacyDir,
@@ -81,6 +89,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
             $legacyScopeState,
             $session
         );
+        $this->legacyFilterMapper = $legacyFilterMapper;
         $this->moduleNameMapper = $moduleNameMapper;
         $this->recordMapper = $recordMapper;
     }
@@ -114,6 +123,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         $subpanel = $criteria['preset']['params']['subpanel'] ?? '';
         $parentModule = $criteria['preset']['params']['parentModule'] ?? '';
         $parentId = $criteria['preset']['params']['parentId'] ?? '';
+        $type = $criteria['preset']['type'] ?? 'subpanel';
 
         if ($parentModule) {
             $parentModule = $this->moduleNameMapper->toLegacy($parentModule);
@@ -132,7 +142,8 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
             $offset,
             $limit,
             $sort['orderBy'] ?? '',
-            $sort['sortOrder'] ?? ''
+            $sort['sortOrder'] ?? '',
+            $criteria
         );
 
         $listData = new ListData();
