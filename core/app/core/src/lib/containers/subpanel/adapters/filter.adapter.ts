@@ -27,10 +27,9 @@
 import {Injectable} from "@angular/core";
 import {FilterConfig} from "../../list-filter/components/list-filter/list-filter.model";
 import {map} from "rxjs/operators";
-import {SavedFilter} from "../../../store/saved-filters/saved-filter.model";
+import {SavedFilter, SavedFilterMap} from "../../../store/saved-filters/saved-filter.model";
 import {SearchMeta, SearchMetaFieldMap} from "common";
 import {SubpanelStore} from "../store/subpanel/subpanel.store";
-import {of} from "rxjs";
 
 @Injectable()
 export class SubpanelFilterAdapter {
@@ -46,15 +45,8 @@ export class SubpanelFilterAdapter {
             savedFilterEdit: false,
             module: this.store.recordList.getModule(),
             displayHeader: false,
-            filter$: this.store.recordList.criteria$.pipe(
-                map(criteria => {
-                    return {
-                        key: 'default',
-                        criteria
-                    } as SavedFilter
-                })
-            ),
-            savedFilters$: of([]),
+            filter$: this.store.recordList.openFilter$,
+            savedFilters$: this.store.filterList.records$,
             searchFields$: this.store.searchMetadata$.pipe(
                 map((searchMeta: SearchMeta) => {
 

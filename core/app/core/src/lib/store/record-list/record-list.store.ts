@@ -25,7 +25,9 @@
  */
 
 import {
-    deepClone, ObjectMap,
+    deepClone,
+    emptyObject,
+    ObjectMap,
     PageSelection,
     Pagination,
     PaginationCount,
@@ -49,6 +51,23 @@ import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
+import {SavedFilter, SavedFilterMap} from "../saved-filters/saved-filter.model";
+
+const initialFilter: SavedFilter = {
+    key: 'default',
+    module: 'saved-search',
+    attributes: {
+        contents: ''
+    },
+    criteria: {
+        name: 'default',
+        filters: {}
+    }
+};
+
+const initialFilters: SavedFilterMap = {
+    'default': deepClone(initialFilter)
+};
 
 const initialSearchCriteria = {
     filters: {}
@@ -71,6 +90,8 @@ export interface RecordList {
     records: Record[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
+    activeFilters?: SavedFilterMap,
+    openFilter?: SavedFilter;
     sort?: SortingSelection;
     meta?: ObjectMap;
 }
@@ -82,6 +103,8 @@ export interface RecordListState {
     criteria?: SearchCriteria;
     sort?: SortingSelection;
     selection: RecordSelection;
+    activeFilters?: SavedFilterMap,
+    openFilter?: SavedFilter;
     loading: boolean;
     meta?: ObjectMap;
 }
@@ -90,6 +113,7 @@ const initialState: RecordListState = {
     module: '',
     records: [],
     criteria: deepClone(initialSearchCriteria),
+    activeFilters: deepClone(initialFilters),
     sort: deepClone(initialListSort),
     pagination: {
         pageSize: 5,
@@ -102,6 +126,7 @@ const initialState: RecordListState = {
         pageLast: 0
     },
     selection: deepClone(initialSelection),
+    openFilter: deepClone(initialFilter),
     loading: false,
     meta: {}
 };
@@ -119,6 +144,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     selection$: Observable<RecordSelection>;
     selectedCount$: Observable<number>;
     selectedStatus$: Observable<SelectionStatus>;
+    activeFilters$: Observable<SavedFilterMap>;
+    openFilter$: Observable<SavedFilter>;
     loading$: Observable<boolean>;
 
     /** Internal Properties */
@@ -143,6 +170,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.selection$ = this.state$.pipe(map(state => state.selection), distinctUntilChanged());
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
+        this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
+        this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
     }
 
@@ -166,6 +195,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             ...this.internalState,
             criteria
         });
+    }
+
+    get activeFilters(): SavedFilterMap {
+        return deepClone(this.internalState.activeFilters);
     }
 
     get sort(): SortingSelection {
