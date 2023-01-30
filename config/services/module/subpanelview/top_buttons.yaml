@@ -28,6 +28,15 @@ parameters:
       modes:
         - list
       acl:
+    SubPanelFilterClearButton:
+      key: clear-filter
+      labelKey: LBL_CLEAR_FILTER
+      action: clear-filter
+      params:
+        expanded: true
+      modes:
+        - list
+      acl:
     SubPanelTopCreateButton: *createButton
     SubPanelTopCreateTaskButton:
       key: create
