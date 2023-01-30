@@ -37,6 +37,8 @@ import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory'
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {FilterConfig} from "../../../list-filter/components/list-filter/list-filter.model";
+import {SubpanelFilterAdapterFactory} from "../../adapters/filter.adapter.factory";
+import {SubpanelFilterAdapter} from "../../adapters/filter.adapter";
 
 @Component({
     selector: 'scrm-subpanel',
@@ -55,19 +57,23 @@ export class SubpanelComponent implements OnInit {
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
     tableConfig: TableConfig;
+    filterAdapter: SubpanelFilterAdapter;
 
     constructor(
         protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
         protected tableAdapterFactory: SubpanelTableAdapterFactory,
         protected preferences: UserPreferenceStore,
-        protected systemConfigs: SystemConfigStore
+        protected systemConfigs: SystemConfigStore,
+        protected filterAdapterFactory: SubpanelFilterAdapterFactory
     ) {
     }
 
     ngOnInit(): void {
         this.adapter = this.tableAdapterFactory.create(this.store);
         this.tableConfig = this.adapter.getTable();
+        this.filterAdapter = this.filterAdapterFactory.create(this.store);
+        this.filterConfig = this.filterAdapter.getConfig();
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
         }

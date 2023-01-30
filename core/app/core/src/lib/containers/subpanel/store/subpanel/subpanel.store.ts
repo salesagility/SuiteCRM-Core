@@ -31,8 +31,12 @@ import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {
+    ColumnDefinition,
     deepClone,
     Record,
+    RecordListMeta,
+    SearchCriteria,
+    SearchMeta,
     Statistic,
     StatisticsMap,
     StatisticsQuery,
@@ -42,6 +46,10 @@ import {
 } from 'common';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
 import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
+import {FilterListStore} from "../../../../store/saved-filters/filter-list.store";
+import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
+import {map, take, tap} from "rxjs/operators";
+import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -61,8 +69,14 @@ export class SubpanelStore implements StateStore {
     recordList: RecordListStore;
     statistics: SingleValueStatisticsStoreMap;
     metadata$: Observable<SubPanelDefinition>;
+    listMetadata$: Observable<RecordListMeta>;
+    searchMetadata$: Observable<SearchMeta>;
+    columns$: Observable<ColumnDefinition[]>;
     metadata: SubPanelDefinition;
     loading$: Observable<boolean>;
+    filterList: FilterListStore;
+    criteria$: Observable<SearchCriteria>;
+
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
 
@@ -70,9 +84,13 @@ export class SubpanelStore implements StateStore {
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
         protected languageStore: LanguageStore,
-        protected statisticsStoreFactory: SingleValueStatisticsStoreFactory
+        protected statisticsStoreFactory: SingleValueStatisticsStoreFactory,
+        protected filterListStoreFactory: FilterListStoreFactory,
+        protected meta: MetadataStore
     ) {
         this.recordList = listStoreFactory.create();
+        this.filterList = this.filterListStoreFactory.create();
+        this.criteria$ = this.recordList.criteria$;
         this.statistics = {};
         this.metadataState = new BehaviorSubject<SubPanelDefinition>({} as SubPanelDefinition);
         this.metadata$ = this.metadataState.asObservable();
@@ -120,6 +138,14 @@ export class SubpanelStore implements StateStore {
         this.parentId = parentId;
         this.metadata = meta;
         this.metadataState.next(this.metadata);
+        const meta$ = this.meta.getMetadata(meta.module).pipe(
+            tap(() => {
+                this.recordList.load().pipe(
+                    take(1)
+                ).subscribe();
+            })
+        );
+        this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
         this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel');
 
         this.initStatistics(meta, parentModule, parentId);
@@ -379,5 +405,4 @@ export class SubpanelStore implements StateStore {
             false
         );
     }
-
 }

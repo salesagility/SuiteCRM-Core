@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,28 +25,19 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
-import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {SubpanelStore} from './subpanel.store';
-import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
-import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {SubpanelStore} from '../store/subpanel/subpanel.store';
+import {SubpanelFilterAdapter} from "./filter.adapter";
+
 
 @Injectable({
     providedIn: 'root',
 })
-export class SubpanelStoreFactory {
+export class SubpanelFilterAdapterFactory {
 
-    constructor(
-        protected listStoreFactory: RecordListStoreFactory,
-        protected languageStore: LanguageStore,
-        protected statisticsStoreFactory: SingleValueStatisticsStoreFactory,
-        protected filterListStoreFactory: FilterListStoreFactory,
-        protected meta: MetadataStore,
-    ) {
-    }
 
-    create(): SubpanelStore {
-        return new SubpanelStore(this.listStoreFactory, this.languageStore, this.statisticsStoreFactory, this.filterListStoreFactory, this.meta);
+    create(store: SubpanelStore): SubpanelFilterAdapter {
+        return new SubpanelFilterAdapter(
+            store
+        );
     }
 }
