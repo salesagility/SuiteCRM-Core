@@ -31,12 +31,12 @@ interface RecordMarkAsReadServiceInterface
 {
 
     /**
-     * Mark record as read
+     * Mark records as read
      *
      * @param string $moduleName
-     * @param string $id
+     * @param array $ids
      * @return bool
      */
-    public function markRecordAsRead(string $moduleName, string $id): bool;
+    public function markRecordsAsRead(string $moduleName, array $ids = []): bool;
 
 }

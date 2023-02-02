@@ -60,6 +60,7 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
      * @param int $offset
      * @param int $limit
      * @param array $sort
+     * @param string $type
      * @return ListData
      */
     public function fetch(
@@ -88,6 +89,55 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
         return $this->buildListData($resultData);
     }
 
+    /**
+     * Get unread count
+     * @param string $module
+     * @param array $criteria
+     * @param string $type
+     * @return int
+     */
+    public function getUnreadCount(
+        string $module,
+        array $criteria = [],
+        string $type = 'advanced'
+    ): int {
+
+        $criteria = $this->getAlertCriteria($criteria);
+
+        $criteria['filters']['is_read'] = [
+            'field' => 'is_read',
+            'fieldType' => 'bool',
+            'operator' => '=',
+            'values' => ["0", ""]
+        ];
+
+        $bean = $this->getBean($module);
+
+        $legacyCriteria = $this->mapCriteria($criteria, [], $type);
+
+        [$params, $where, $filter_fields] = $this->prepareQueryData($type, $bean, $legacyCriteria);
+
+        $now = date('Y-m-d H:i:s');
+
+        $where .= " AND (alerts.snooze < '$now' OR alerts.snooze IS NULL )";
+
+        $queryParts = $this->getListDataPort()->getQueryParts($bean, $where, $filter_fields, $params);
+        $queryParts['select'] = 'SELECT count(*) as unread';
+
+        $resultData = $this->getListDataPort()->runCustomQuery($bean, $queryParts, -1, -1);
+
+        if (is_numeric($resultData[0]['unread'] ?? '')) {
+            return (int) ($resultData[0]['unread'] ?? 0);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get alert criteria
+     * @param $criteria
+     * @return array
+     */
     public function getAlertCriteria($criteria): array{
 
         global $current_user;
@@ -97,13 +147,6 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
             'fieldType' => 'relate',
             'operator' => '=',
             'values' => [$current_user->id]
-        ];
-
-        $criteria['filters']['is_read'] = [
-            'field' => 'is_read',
-            'fieldType' => 'bool',
-            'operator' => '=',
-            'values' => ["0", ""]
         ];
 
         return $criteria;

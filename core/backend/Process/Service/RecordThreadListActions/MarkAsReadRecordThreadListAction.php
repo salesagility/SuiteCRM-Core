@@ -25,24 +25,23 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Process\Service\RecordThreadItemActions;
+namespace App\Process\Service\RecordThreadListActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use App\Data\LegacyHandler\PresetDataHandlers\AlertsDataHandler;
 use App\Data\Service\RecordMarkAsReadServiceInterface;
+use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class MarkAsReadRecordThreadItemAction implements ProcessHandlerInterface
+class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessHandlerInterface
 {
     protected const MSG_OPTIONS_NOT_FOUND = 'Process options are not defined';
 
-    protected const PROCESS_TYPE = 'record-thread-item-mark-as-read';
-
-    /**
-     * @var ModuleNameMapperInterface
-     */
-    protected $moduleNameMapper;
+    protected const PROCESS_TYPE = 'record-thread-list-mark-as-read';
 
     /**
      * @var RecordMarkAsReadServiceInterface
@@ -50,16 +49,51 @@ class MarkAsReadRecordThreadItemAction implements ProcessHandlerInterface
     protected $recordMarkAsReadService;
 
     /**
-     * DeleteRecordsBulkAction constructor.
+     * @var AlertsDataHandler
+     */
+    protected $alertsDataHandler;
+
+    /**
+     * @var ModuleNameMapperInterface
+     */
+    protected $moduleNameMapper;
+
+    /**
+     * MarkAsReadRecordThreadListAction constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param RecordMarkAsReadServiceInterface $recordMarkAsReadService
+     * @param AlertsDataHandler $alertsDataHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
-        ModuleNameMapperInterface        $moduleNameMapper,
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
         RecordMarkAsReadServiceInterface $recordMarkAsReadService,
+        AlertsDataHandler $alertsDataHandler,
+        ModuleNameMapperInterface $moduleNameMapper
     )
     {
-        $this->moduleNameMapper = $moduleNameMapper;
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->recordMarkAsReadService = $recordMarkAsReadService;
+        $this->alertsDataHandler = $alertsDataHandler;
+        $this->moduleNameMapper = $moduleNameMapper;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHandlerKey(): string
+    {
+        return self::PROCESS_TYPE;
     }
 
     /**
@@ -101,7 +135,7 @@ class MarkAsReadRecordThreadItemAction implements ProcessHandlerInterface
 
         $options = $process->getOptions();
 
-        if (empty($options['module']) || empty($options['action']) || empty($options['id'])) {
+        if (empty($options['module']) || empty($options['action']) || empty($options['ids'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -111,31 +145,36 @@ class MarkAsReadRecordThreadItemAction implements ProcessHandlerInterface
      */
     public function run(Process $process)
     {
-        $result = $this->markAsRead($process);
+        $result = $this->markAllAsRead($process);
 
         $process->setStatus('success');
 
         if (!$result) {
             $process->setStatus('error');
-            $process->setMessages(['LBL_ACTION_ERROR']);
+            $process->setMessages(['ERR_NOTIFICATIONS_MARK_AS_READ']);
 
             return;
         }
 
+        $legacyModuleName = $this->moduleNameMapper->toLegacy($process->getOptions()['module'] ?? '');
+
+        $this->init();
+        $unreadCount = $this->alertsDataHandler->getUnreadCount($legacyModuleName);
+        $this->close();
+
         $responseData = [
             'reloadThread' => true,
+            'unreadCount' => $unreadCount
         ];
 
         $process->setData($responseData);
     }
 
-    protected function markAsRead(Process $process): bool
+    protected function markAllAsRead(Process $process): bool
     {
         $options = $process->getOptions();
 
-        $module = $this->moduleNameMapper->toLegacy($options['module']);
-
-        return $this->recordMarkAsReadService->markRecordAsRead($module, $options['id']);
+        return $this->recordMarkAsReadService->markRecordsAsRead($options['module'], $options['ids'] ?? []);
 
     }
 }
