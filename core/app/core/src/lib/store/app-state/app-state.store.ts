@@ -25,13 +25,16 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, timer, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subscription, timer} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone, isVoid} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
 import {MessageService} from "../../services/message/message.service";
+import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
+import {NotificationsService} from '../../containers/notifications/services/notifications.service';
+import {Process} from '../../services/process/process.service';
 
 export interface AppState {
     loading?: boolean;
@@ -42,8 +45,8 @@ export interface AppState {
     routeUrl?: string;
     preLoginUrl?: string;
     activeRequests?: number;
-    notificationCount?:number;
-    notificationsUnread?:number;
+    notificationCount?: number;
+    notificationsUnread?: number;
 }
 
 const initialState: AppState = {
@@ -55,8 +58,8 @@ const initialState: AppState = {
     routeUrl: null,
     preLoginUrl: null,
     activeRequests: 0,
-    notificationCount:10,
-    notificationsUnread:0
+    notificationCount: 10,
+    notificationsUnread: 0
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -86,8 +89,13 @@ export class AppStateStore implements StateStore {
     protected loadingQueue = {};
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
+    protected notificationStore: RecordThreadStore;
 
-    constructor(protected loadingBufferFactory: LoadingBufferFactory, protected messageService: MessageService) {
+    constructor(
+        protected loadingBufferFactory: LoadingBufferFactory,
+        protected messageService: MessageService,
+        protected notificationService: NotificationsService
+    ) {
 
         this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
         this.module$ = this.state$.pipe(map(state => state.module), distinctUntilChanged());
@@ -124,41 +132,63 @@ export class AppStateStore implements StateStore {
     }
 
     public init(): void {
-        this.getNotifications(); // This will get the counter of notifications
+        this.initNotifications(); // This will get the counter of notifications
         this.initLoadingBuffer();
     }
 
-    public getNotifications() {
-        // Alert a meesage if a new notif appears
-        //Message service
-        //this.messageService.addSuccessMessage("New Notification!!!! :)");
-        //Use settimeout or timer - This will get number or counter of notifications
-        // Return counter and notif badge will look this state
-        //Tüm bunları yaptıktan sonra Clemente ile backendde nasıl istek atılacağını konusacağız.
-
-        //  let appStateCount = this.getNotificationsUnread();
-        //  if(count > appStateCount) {
-        //      this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
-        //  }
+    public initNotifications() {
+        this.notificationStore = this.notificationService.initStore();
     }
 
+    /**
+     * Mark current notifications as read
+     */
     public markNotificationsAsRead(): void {
+
         this.subs.push(timer(500).subscribe(() => {
-            this.updateState({...internalState, notificationsUnread:0});
+            this.notificationService
+                .markNotificationsAsRead(this.notificationStore)
+                .subscribe((process: Process) => {
+                    const unreadCount = process?.data?.unreadCount ?? 0;
+                    this.updateState({...internalState, notificationsUnread: unreadCount});
+                });
         }));
 
     }
 
+    /**
+     * Get notification cout
+     *
+     * @returns number
+     */
     public getNotificationCount(): number {
         return internalState.notificationCount;
     }
 
+    /**
+     * Get unread notification count
+     *
+     * @returns number
+     */
     public getNotificationsUnread(): number {
         return internalState.notificationsUnread;
     }
 
+    /**
+     * Set notification as unread
+     * @param notificationsUnread
+     */
     public setNotificationUnread(notificationsUnread: number): void {
         this.updateState({...internalState, notificationsUnread});
+    }
+
+    /**
+     * Get Notification store
+     *
+     * @returns {object}
+     */
+    public getNotificationStore(): RecordThreadStore {
+        return this.notificationStore;
     }
 
     /**

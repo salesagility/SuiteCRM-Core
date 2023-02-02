@@ -50,7 +50,7 @@
             <scrm-record-thread-item [config]="buildItem(record, item)"></scrm-record-thread-item>
         </div>
 
-        <div [ngClass]="config.listActions ? 'd-flex align-items-center justify-content-between' : '' ">
+        <div [class]="config.listActionsClass ?? ''">
 
             <div *ngIf="direction === 'desc' && !allLoaded()"
                  class="record-thread-load-more d-flex justify-content-center">
@@ -58,12 +58,20 @@
             </div>
 
             <ng-container *ngIf="config.listActions">
-                <scrm-action-group-menu [buttonClass]="config.listActionsClass"
+                <scrm-action-group-menu [buttonClass]="config.listActionsButtonClass ?? ''"
+                                        [buttonGroupClass]="config.listActionsButtonGroupClass ?? ''"
                                         [config]="listActionAdapter">
                 </scrm-action-group-menu>
             </ng-container>
 
         </div>
+
+    </div>
+
+    <div *ngIf="(!records || !records.length) && !loading && config.showNoDataMessage">
+        <h6 class="pt-3 pl-3 pr-3 pb-2">
+            <scrm-label [labelKey]="config.noDataLabel || 'LBL_NO_DATA'"></scrm-label>
+        </h6>
 
     </div>
 

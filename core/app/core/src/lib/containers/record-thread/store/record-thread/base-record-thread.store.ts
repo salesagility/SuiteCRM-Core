@@ -173,7 +173,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
     }
 
 
-    protected getStoreMap(stores: T[]): RecordStoreMap<T, M> {
+    public getStoreMap(stores: T[]): RecordStoreMap<T, M> {
         const map: RecordStoreMap<T, M> = {};
 
         if (!stores || !stores.length) {
@@ -185,6 +185,15 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
         });
 
         return map;
+    }
+
+    public getItemStores(): T[] {
+        const stores = this.stores ?? [];
+        if(stores && stores.length) {
+            return stores;
+        }
+
+        return [];
     }
 
     getRecordIds(): string[] {

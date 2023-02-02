@@ -28,6 +28,7 @@ import {Action, AttributeMap, SearchCriteria} from 'common';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {Observable} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
+import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
 
 export interface RecordThreadConfig {
 
@@ -36,14 +37,25 @@ export interface RecordThreadConfig {
     maxListHeight?: number;
     autoRefreshFrequency?:number,
     onAutoRefresh?(): void,
+    onLoadMore?(): void,
     create?: boolean;
     direction?: 'asc' | 'desc';
     itemConfig: RecordThreadItemConfig;
     listActions?: Action[];
     listActionsClass?: string;
+    listActionsButtonClass?: string;
+    listActionsButtonGroupClass?: string;
     createConfig?: RecordThreadItemConfig;
     filters$: Observable<SearchCriteria>;
     presetFields$?: Observable<AttributeMap>;
     store?: RecordThreadStore;
+    showNoDataMessage?: boolean;
+    noDataLabel?: string;
 
+}
+
+export interface ThreadItemMetadataConfig {
+    header?: FieldFlexbox;
+    body?: FieldFlexbox;
+    actions?: Action[];
 }
