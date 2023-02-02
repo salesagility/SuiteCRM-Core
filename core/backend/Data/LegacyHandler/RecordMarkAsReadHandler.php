@@ -30,6 +30,7 @@ namespace App\Data\LegacyHandler;
 use App\Data\Service\RecordMarkAsReadServiceInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -38,12 +39,19 @@ class RecordMarkAsReadHandler extends LegacyHandler implements RecordMarkAsReadS
     public const HANDLER_KEY = 'mark-as-read-records';
 
     /**
+     * @var ModuleNameMapperInterface
+     */
+    protected $moduleNameMapper;
+
+    /**
      * RecordDeletionHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
         string $projectDir,
@@ -51,10 +59,12 @@ class RecordMarkAsReadHandler extends LegacyHandler implements RecordMarkAsReadS
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session
+        SessionInterface $session,
+        ModuleNameMapperInterface $moduleNameMapper
     )
     {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        $this->moduleNameMapper = $moduleNameMapper;
     }
 
     /**
@@ -66,20 +76,21 @@ class RecordMarkAsReadHandler extends LegacyHandler implements RecordMarkAsReadS
     }
 
     /**
-     * Set record to is_read
-     *
-     * @param string $moduleName
-     * @param string $id
-     * @return bool
+     * @inheritDoc
      */
-    public function markRecordAsRead(string $moduleName, string $id): bool
+    public function markRecordsAsRead(string $moduleName, array $ids = []): bool
     {
         $this->init();
         $this->startLegacyApp();
 
+        $moduleName = $this->moduleNameMapper->toLegacy($moduleName);
+
         $success = true;
-        if (!$this->setIsRead($moduleName, $id)) {
-            $success = false;
+
+        foreach ($ids as $id) {
+            if (!$this->setIsRead($moduleName, $id)) {
+                $success = false;
+            }
         }
 
         $this->close();
