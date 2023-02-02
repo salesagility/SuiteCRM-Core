@@ -779,6 +779,10 @@ class User extends Person implements EmailInterface
                 $this->setPreference('record_modal_pagination_type', $_POST['record_modal_pagination_type'], 0, 'global');
             }
 
+            if (isset($_POST['snooze_alert_timer'])) {
+                $this->setPreference('snooze_alert_timer', $_POST['snooze_alert_timer'], 0, 'global');
+            }
+
             if (isset($_POST['user_swap_last_viewed'])) {
                 $this->setPreference('swap_last_viewed', $_POST['user_swap_last_viewed'], 0, 'global');
             } else {

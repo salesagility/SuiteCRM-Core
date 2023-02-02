@@ -436,7 +436,7 @@ class UserViewHelper
             $email_reminder_time = -1;
         }
 
-        $snooze = $this->bean->getPreference('snooze_alert_timer') ?? $sugar_config['snooze_alert_timer'];
+        $snooze = $this->bean->getPreference('snooze_alert_timer') ?? $sugar_config['snooze_alert_timer'] ?? 600;
         $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], $snooze));
 
         $this->ss->assign("REMINDER_TIME_OPTIONS", $app_list_strings['reminder_time_options']);
