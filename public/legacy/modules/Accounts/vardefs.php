@@ -183,14 +183,6 @@ $dictionary['Account'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_CALLS',
         ),
-        'is_read' =>
-            [
-                'name' => 'is_read',
-                'vname' => 'LBL_IS_READ',
-                'type' => 'bool',
-                'massupdate' => false,
-            ],
-
         'emails' => array(
             'name' => 'emails',
             'type' => 'link',
