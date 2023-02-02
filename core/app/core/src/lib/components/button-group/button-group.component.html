@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div *ngIf="config$">
+<div *ngIf="config$" [class]="klass">
     <ng-container *ngFor="let item of buttons.expanded">
         <scrm-button *ngIf="item && !isDropdown(item)"
                      [config]="item">
