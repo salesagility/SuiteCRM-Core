@@ -2133,6 +2133,7 @@ $app_strings = array(
     //define labels to be used for overriding local values during import/export
 
     'LBL_NOTIFICATIONS_NONE' => 'No Current Notifications',
+    'ERR_NOTIFICATIONS_MARK_AS_READ' => 'Error while trying to mark notifications as read',
     'LBL_ALT_SORT_DESC' => 'Sorted Descending',
     'LBL_ALT_SORT_ASC' => 'Sorted Ascending',
     'LBL_ALT_SORT' => 'Sort',
