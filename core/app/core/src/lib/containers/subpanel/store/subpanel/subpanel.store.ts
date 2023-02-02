@@ -187,7 +187,41 @@ export class SubpanelStore implements StateStore {
     }
 
     public setFilters(filters: SavedFilterMap, reload = true) {
-        this.recordList.setFilters(filters, reload, null, this.preferenceKey);
+        this.recordList.setFilters(filters, reload, null);
+    }
+
+    public isAnyFilterApplied(): boolean {
+        return this.hasActiveFilter() || !this.areAllCurrentCriteriaFilterEmpty();
+    }
+
+    public hasActiveFilter(): boolean {
+        const activeFilters = this.recordList.criteria;
+
+        if (activeFilters) {
+            return false;
+        }
+
+        const filterKeys = Object.keys(activeFilters) ?? [];
+
+        if (!filterKeys || !filterKeys.length) {
+            return false;
+        }
+
+        if (filterKeys.length > 1) {
+            return true;
+        }
+
+        const currentFilter = activeFilters[filterKeys[0]];
+
+        return currentFilter.key && currentFilter.key !== '' && currentFilter.key !== 'default'
+    }
+
+    public areAllCurrentCriteriaFilterEmpty(): boolean {
+        return Object.keys(this.getFilters() ?? {}).every(key => this.getFilters()[key].operator === '');
+    }
+
+    public getFilters(): SearchCriteriaFilter {
+        return this.recordList?.criteria?.filters ?? {};
     }
 
     /**
