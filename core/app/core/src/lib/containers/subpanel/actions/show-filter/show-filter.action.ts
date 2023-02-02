@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {emptyObject, SearchCriteriaFilter, ViewMode} from 'common';
+import {ViewMode} from 'common';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 import {SubpanelStore} from "../../store/subpanel/subpanel.store";
 
@@ -54,36 +54,6 @@ export class SubpanelShowFilterAction extends SubpanelActionHandler {
     }
 
     isAnyFilterApplied(store: SubpanelStore): boolean {
-        return this.hasActiveFilter(store) || !this.areAllCurrentCriteriaFilterEmpty(store);
-    }
-
-    hasActiveFilter(store: SubpanelStore): boolean {
-        const activeFilters = store.recordList.criteria;
-
-        if (emptyObject(activeFilters?.filters)) {
-            return false;
-        }
-
-        const filterKeys = Object.keys(activeFilters) ?? [];
-
-        if (!filterKeys || !filterKeys.length) {
-            return false;
-        }
-
-        if (filterKeys.length > 1) {
-            return true;
-        }
-
-        const currentFilter = activeFilters[filterKeys[0]];
-
-        return currentFilter.key && currentFilter.key !== '' && currentFilter.key !== 'default'
-    }
-
-    areAllCurrentCriteriaFilterEmpty(store: SubpanelStore): boolean {
-        return Object.keys(this.getFilters(store) ?? {}).every(key => this.getFilters(store)[key].operator === '');
-    }
-
-    getFilters(store: SubpanelStore): SearchCriteriaFilter {
-        return store?.recordList?.criteria?.filters ?? {};
+        return store.hasActiveFilter() || !store.areAllCurrentCriteriaFilterEmpty();
     }
 }
