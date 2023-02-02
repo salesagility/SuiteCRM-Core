@@ -99,11 +99,19 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.config.filters$) {
 
             this.subs.push(this.config.filters$.subscribe(filters => {
-                this.store.setFilters(filters).pipe(take(1)).subscribe();
+                this.store.setFilters(filters).pipe(take(1)).subscribe(() => {
+                    if(this.config.onAutoRefresh) {
+                        this.config.onAutoRefresh()
+                    }
+                });
             }));
 
         } else {
-            this.store.load(false).subscribe();
+            this.store.load(false).subscribe(() => {
+                if(this.config.onAutoRefresh) {
+                    this.config.onAutoRefresh()
+                }
+            });
         }
 
         const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
@@ -164,6 +172,9 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             klass: 'load-more-button btn btn-link btn-sm',
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
+                if(this?.config?.onLoadMore) {
+                    this.config.onLoadMore();
+                }
                 this.store.loadMore();
             }
         } as ButtonInterface;

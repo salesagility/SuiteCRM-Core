@@ -25,23 +25,20 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Action, AttributeMap, deepClone, SearchCriteria, SearchCriteriaFilter, StringMap} from 'common';
+import {deepClone, SearchCriteria} from 'common';
 import {Observable, of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
-import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
-import {FieldFlexbox} from '../../components/record-flexbox/record-flexbox.model';
+import {
+    RecordThreadConfig,
+    ThreadItemMetadataConfig
+} from '../record-thread/components/record-thread/record-thread.model';
 import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {RecordThreadStoreFactory} from "../record-thread/store/record-thread/record-thread.store.factory";
 import {RecordThreadStore} from "../record-thread/store/record-thread/record-thread.store";
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {MessageService} from "../../services/message/message.service";
-
-interface ThreadItemMetadataConfig {
-    header?: FieldFlexbox;
-    body?: FieldFlexbox;
-    actions?: Action[];
-}
+import {NotificationsService} from './services/notifications.service';
 
 @Component({
     selector: 'scrm-notifications',
@@ -53,182 +50,20 @@ export class NotificationsComponent implements OnInit {
     recordThreadConfig: RecordThreadConfig;
     filters$: Observable<SearchCriteria>;
     store: RecordThreadStore;
-    options: {
-        module: string;
-        class?: string;
-        maxListHeight?: number;
-        direction?: 'asc' | 'desc';
-        autoRefreshFrequency?: number;
-        item: {
-            dynamicClass?: string[];
-            itemClass?: string;
-            containerClass: string;
-            collapsible?: boolean;
-            collapseLimit?: number;
-            flexDirection?: string;
-            layout?: ThreadItemMetadataConfig;
-        },
-        listActions?: Action[],
-        listActionsClass?: string,
-        create?: {
-            presetFields?: {
-                parentValues?: StringMap;
-                static?: AttributeMap;
-            },
-            layout?: ThreadItemMetadataConfig;
-        },
-        filters?: {
-            parentFilters?: StringMap;
-            static?: SearchCriteriaFilter;
-            preset: {
-                type: string;
-            }
-            orderBy?: string;
-            sortOrder?: string;
-        };
-    } = {
-        module: 'alerts',
-        class: 'notifications',
-        maxListHeight: 350,
-        direction: 'desc',
-        //autoRefreshFrequency: 600_000, //10 minutes
-        autoRefreshFrequency: 20000,
-        create: null,
-        item: {
-            collapsible: false,
-            collapseLimit: 200,
-            itemClass: 'notifications-item ',
-            containerClass: 'flex-row align-items-start py-2 containerClass ',
-            dynamicClass: ['is_read'],
-            flexDirection: 'flex-row',
-            layout: {
-                body: {
-                    class: 'itemContentClass',
-                    rows: [
-                        {
-                            cols: [
-                                {
-                                    field: {
-                                        name: 'target_module',
-                                        type: 'icon'
-                                    },
-                                    labelDisplay: 'none',
-                                    hideIfEmpty: false,
-                                    class: 'font-weight-bold'
-                                }
-                            ]
-                        },
-                        {
-                            class: 'd-flex flex-column',
-                            align: 'start',
-                            cols: [
-                                {
-                                    field: {
-                                        name: 'name'
-                                    },
-                                    labelDisplay: 'none',
-                                    labelClass: 'm-0',
-                                    display: 'readonly',
-                                    hideIfEmpty: true,
-                                    class: 'small font-weight-bold text-muted text-uppercase'
-                                },
-                                {
-                                    field: {
-                                        name: 'description'
-                                    },
-                                    labelDisplay: 'none',
-                                    labelClass: 'm-0',
-                                    display: 'readonly',
-                                    hideIfEmpty: false,
-                                    class: 'font-weight-bold pb-1',
-                                },
-                                {
-                                    field: {
-                                        name: 'date_entered'
-                                    },
-                                    labelDisplay: 'none',
-                                    labelClass: 'm-0',
-                                    display: 'readonly',
-                                    hideIfEmpty: true,
-                                    class: 'small font-weight-light'
-                                }
-
-                            ]
-                        },
-                        {
-                            class: 'd-flex flex-column',
-                            align: 'start',
-                            justify: 'start',
-                            cols: [
-                                {
-                                    actionSlot: true,
-                                    class: 'w-50'
-                                }
-                            ]
-                        },
-                    ]
-                },
-                actions: [
-                    {
-                        key: 'delete',
-                        icon: 'cross',
-                        titleKey: 'LBL_DISMISS',
-                        asyncProcess: true,
-                        params: {
-                            displayConfirmation: true,
-                            confirmationLabel: 'NTC_DELETE_CONFIRMATION'
-                        },
-                        klass: ['btn fill-primary fill-hover-main border-0 btn-xs p-0'],
-                        modes: ['detail', 'edit'],
-                        acl: []
-                    },
-                    {
-                        key: 'snooze',
-                        icon: 'clock',
-                        titleKey: 'LBL_SNOOZE',
-                        asyncProcess: true,
-                        params: {
-                            displayConfirmation: true,
-                            confirmationLabel: 'NTC_SNOOZE_CONFIRMATION'
-                        },
-                        klass: ['btn stroke-primary border-0 btn-xs p-0'],
-                        modes: ['detail', 'edit'],
-                        acl: []
-                    }
-                ]
-            }
-
-        },
-        listActionsClass: "line-actions-button btn btn-link",
-        listActions: [
-            {
-                key: 'delete-all',
-                label: 'LBL_DISMISS_ALL',
-                labelKey: 'LBL_DISMISS_ALL',
-                asyncProcess: true,
-                params: {
-                    displayConfirmation: true,
-                    confirmationLabel: 'NTC_DELETE_CONFIRMATION',
-                    module: 'alerts'
-                },
-                klass: [''],
-                modes: ['detail', 'list'],
-                acl: []
-            }
-        ]
-
-    }
+    options: any;
 
     constructor(
         protected language: LanguageStore,
-        protected sytemConfig: SystemConfigStore,
+        protected systemConfig: SystemConfigStore,
         protected storeFactory: RecordThreadStoreFactory,
         protected appStateStore: AppStateStore,
         protected message: MessageService,
+        protected notificationService: NotificationsService
     ) {
     }
 
     ngOnInit(): void {
+        this.options = this.notificationService.getOptions();
         this.recordThreadConfig = this.getConfig();
     }
 
@@ -249,28 +84,22 @@ export class NotificationsComponent implements OnInit {
                 }
                 this.appStateStore.setNotificationUnread(count);
             },
-            create: false,
-            itemConfig: {
-                collapsible: this.options.item.collapsible || false,
-                collapseLimit: this.options.item.collapseLimit || null,
-                klass: this.options.item.itemClass ?? '',
-                dynamicClass: this.options.item.dynamicClass || [],
-                containerClass: this.options.item.containerClass ?? '',
-                flexDirection: this.options.item.flexDirection ?? '',
-                metadata: {} as RecordThreadItemMetadata
+            onLoadMore:() => {
+                this.appStateStore.markNotificationsAsRead();
             },
-            listActions: this.options?.listActions ?? [],
-            listActionsClass: this.options?.listActionsClass ?? ''
+            create: false,
+            listActionsClass: this.options?.listActionsClass ?? '',
+            listActionsButtonClass: this.options?.listActionsButtonClass ?? '',
+            listActionsButtonGroupClass: this.options?.listActionsButtonGroupClass ?? '',
+            showNoDataMessage: this.options?.showNoDataMessage,
+            noDataLabel: this.options?.noDataLabel,
         } as RecordThreadConfig;
 
-        this.setupItemMetadata(config.itemConfig.metadata, this.options.item.layout);
+        this.notificationService.setupListActions(config, this.options);
+        this.notificationService.setupItemConfig(config, this.options);
 
-        this.store = this.storeFactory.create();
-        this.store.setItemMetadata(config.itemConfig.metadata);
-        this.store.setListMetadata({actions: config.listActions});
-        this.store.init(config.module, false);
-
-        config.store = this.store;
+        config.store = this.appStateStore.getNotificationStore();
+        this.store = this.appStateStore.getNotificationStore();
 
         return config;
     }

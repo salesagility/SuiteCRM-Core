@@ -41,6 +41,7 @@ export interface RecordThreadItemConfig {
     threadStore?: RecordThreadStore;
     initialMode?: ViewMode;
     buttonClass?: string;
+    buttonGroupClass?: string;
     labelClass?: { [klass: string]: any };
     inputClass?: { [klass: string]: any };
     rowClass?: { [klass: string]: any };
