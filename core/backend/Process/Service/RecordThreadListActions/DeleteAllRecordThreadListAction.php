@@ -25,7 +25,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Process\Service\RecordThreadItemActions;
+namespace App\Process\Service\RecordThreadListActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Data\Service\RecordDeletionServiceInterface;
@@ -33,12 +33,11 @@ use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 
-class DeleteAllRecordThreadItemAction implements ProcessHandlerInterface
+class DeleteAllRecordThreadListAction implements ProcessHandlerInterface
 {
     protected const MSG_OPTIONS_NOT_FOUND = 'Process options are not defined';
 
     protected const PROCESS_TYPE = 'record-thread-list-delete-all';
-
 
     /**
      * @var RecordDeletionServiceInterface
@@ -46,7 +45,7 @@ class DeleteAllRecordThreadItemAction implements ProcessHandlerInterface
     protected $recordDeletionProvider;
 
     /**
-     * DeleteRecordsBulkAction constructor.
+     * DeleteAllRecordThreadListAction constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RecordDeletionServiceInterface $recordDeletionProvider
      */
