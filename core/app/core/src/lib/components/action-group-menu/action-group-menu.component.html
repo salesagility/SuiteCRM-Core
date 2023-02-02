@@ -27,6 +27,6 @@
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
     <div class="{{klass}} float-right">
-        <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+        <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="buttonGroupClass"></scrm-button-group>
     </div>
 </ng-container>

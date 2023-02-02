@@ -50,6 +50,7 @@ export class ActionGroupMenuComponent implements OnInit {
 
     @Input() klass = '';
     @Input() buttonClass = 'btn btn-sm';
+    @Input() buttonGroupClass = '';
     @Input() actionContext: ActionContext;
     @Input() config: ActionDataSource;
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
@@ -57,12 +58,13 @@ export class ActionGroupMenuComponent implements OnInit {
 
     vm$: Observable<ActionGroupMenuViewModel>;
 
-    protected buttonGroupClass = 'dropdown-button-secondary';
+    protected buttonGroupDropdownClass = 'dropdown-button-secondary';
 
     protected subs: Subscription[];
     protected screen: ScreenSize = ScreenSize.Medium;
     protected defaultBreakpoint = 3;
     protected breakpoint: number;
+
 
     constructor(
         protected languages: LanguageStore,
@@ -121,7 +123,7 @@ export class ActionGroupMenuComponent implements OnInit {
             breakpoint,
             dropdownOptions: {
                 placement: ['bottom-right'],
-                wrapperKlass: [(this.buttonGroupClass)]
+                wrapperKlass: [(this.buttonGroupDropdownClass)]
             },
             buttons
         } as ButtonGroupInterface;
