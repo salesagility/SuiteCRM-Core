@@ -78,10 +78,15 @@ class Alert extends Basic
 
         global $sugar_config;
 
-        $snoozeTimer = $sugar_config['snooze_alert_timer'];
-        $snoozeUntil = date("Y-m-d H:i:s", strtotime("+ $snoozeTimer sec"));
+        require_once 'modules/Configurator/Configurator.php';
+        $configurator = new Configurator();
+        $snoozeTimer = $configurator->config['snooze_alert_timer'] ?? $sugar_config['snooze_alert_timer'] ?? '';
 
-        return $snoozeUntil;
+        if (empty($snoozeTimer) || !is_numeric($snoozeTimer)) {
+            $snoozeTimer = 600;
+        }
+
+        return date("Y-m-d H:i:s", strtotime("+ $snoozeTimer sec"));
     }
 
 
