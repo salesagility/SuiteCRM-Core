@@ -407,44 +407,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     /**
-     * Update filters
-     *
-     * @param {object} filter to set
-     */
-    public addSavedFilter(filter: SavedFilter): void {
-
-        const newState = {...this.internalState};
-        const activeFilters = this.activeFilters;
-
-        if (filter.key && activeFilters[filter.key]) {
-            activeFilters[filter.key] = filter;
-            newState.activeFilters = activeFilters;
-        }
-
-        newState.openFilter = filter;
-
-        this.updateState(newState);
-    }
-
-    /**
-     * Update filters
-     *
-     * @param {object} filter to set
-     */
-    public removeSavedFilter(filter: SavedFilter): void {
-
-        if (!filter || !filter.key) {
-            return;
-        }
-
-        const newState = {...this.internalState};
-
-        if (newState.openFilter && newState.openFilter.key === filter.key) {
-            this.resetFilters(true)
-        }
-    }
-
-    /**
      * Update the search criteria
      *
      * @param {object} criteria to set

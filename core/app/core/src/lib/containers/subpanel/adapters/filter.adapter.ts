@@ -81,15 +81,12 @@ export class SubpanelFilterAdapter {
             },
 
             addSavedFilter: (filter: SavedFilter): void => {
-                this.store.addSavedFilter(filter);
             },
 
             removeSavedFilter: (filter: SavedFilter): void => {
-                this.store.removeSavedFilter(filter);
             },
 
             setOpenFilter: (filter: SavedFilter): void => {
-                this.store.recordList.setOpenFilter(filter);
             },
         } as FilterConfig;
     }
