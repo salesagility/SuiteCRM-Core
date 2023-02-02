@@ -291,6 +291,7 @@ function make_sugar_config(&$sugar_config)
         ),
         'strict_id_validation' => false,
         'legacy_email_behaviour' => false,
+        'snooze_alert_timer' => 600,
     );
 }
 
@@ -597,6 +598,7 @@ function get_sugar_config_defaults(): array
             'gc_divisor' => 100,
         ],
         'legacy_email_behaviour' => false,
+        'snooze_alert_timer' => 600,
     ];
 
     if (!is_object($locale)) {
