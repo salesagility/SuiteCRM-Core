@@ -88,7 +88,8 @@
                             </ng-container>
 
                             <ng-container *ngIf="col.actionSlot && this.config.actions">
-                                <scrm-action-group-menu [buttonClass]="config.buttonClass"
+                                <scrm-action-group-menu [buttonClass]="config.buttonClass ?? ''"
+                                                        [buttonGroupClass]="config.buttonGroupClass ?? ''"
                                                         [config]="config.actions">
                                 </scrm-action-group-menu>
                             </ng-container>

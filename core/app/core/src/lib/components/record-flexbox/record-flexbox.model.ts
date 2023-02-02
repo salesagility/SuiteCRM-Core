@@ -86,6 +86,7 @@ export interface RecordFlexboxConfig {
     klass?: string;
     flexDirection?: FlexDirection;
     buttonClass?: string;
+    buttonGroupClass?: string;
     labelClass?: { [klass: string]: any };
     inputClass?: { [klass: string]: any };
     rowClass?: { [klass: string]: any };
