@@ -43,6 +43,7 @@ interface SplitButtons {
 export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     @Input() config$: Observable<ButtonGroupInterface>;
+    @Input() klass: string = '';
 
     buttons: SplitButtons = {
         expanded: [],
@@ -53,6 +54,7 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     protected internalConfig: ButtonGroupInterface;
     private sub: Subscription;
+
 
     constructor() {
     }
