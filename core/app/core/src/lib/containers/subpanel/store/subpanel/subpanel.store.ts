@@ -36,6 +36,7 @@ import {
     Record,
     RecordListMeta,
     SearchCriteria,
+    SearchCriteriaFilter,
     SearchMeta,
     Statistic,
     StatisticsMap,
@@ -83,7 +84,7 @@ export class SubpanelStore implements StateStore {
     showFilter = false;
     filterApplied = false;
 
-    preferenceKey: string;
+    preferenceKey = 'subpanel-';
 
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
@@ -152,7 +153,6 @@ export class SubpanelStore implements StateStore {
         this.parentId = parentId;
         this.metadata = meta;
         this.metadataState.next(this.metadata);
-        this.preferenceKey = 'subpanel-';
         const meta$ = this.meta.getMetadata(meta.module).pipe(
             tap(() => {
                 this.recordList.load().pipe(
@@ -160,14 +160,12 @@ export class SubpanelStore implements StateStore {
                 ).subscribe();
             })
         );
+
         this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
-        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel');
+        const filter = this.initSearchCriteria(this.parentModule, this.parentId, meta.name);
+        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel', filter, this.preferenceKey)
 
         this.initStatistics(meta, parentModule, parentId);
-
-        this.initSearchCriteria(parentModule, parentId, meta.name);
-
-        this.recordList.loadCurrentFilter(meta.module, this.preferenceKey);
 
         if (parentRecord$) {
             this.parentRecord$ = parentRecord$;
@@ -239,36 +237,40 @@ export class SubpanelStore implements StateStore {
     }
 
     public resetFilters(reload = true): void {
-        const preferenceKey = this.preferenceKey ?? '';
-        this.recordList.resetFilters(reload, preferenceKey);
+        this.recordList.resetFilters(reload);
     }
 
     public clearFilter(): void {
-        this.recordList.resetSearchCriteria(true);
         this.resetFilters();
         this.filterApplied = false;
         this.showFilter = false;
     }
 
     /**
-     * Init search criteria
+     * add search criteria
      *
      * @param {string} parentModule name
      * @param {string} parentId id
      * @param {string} subpanel name
      */
-    initSearchCriteria(parentModule: string, parentId: string, subpanel: string): void {
-
-        this.recordList.criteria = {
-            preset: {
-                type: 'subpanel',
-                params: {
-                    subpanel,
-                    parentModule,
-                    parentId
+    initSearchCriteria(parentModule: string, parentId: string, subpanel: string) {
+        return {
+            key: 'default',
+            module: 'saved-search',
+            attributes: {contents: ''},
+            criteria: {
+                name: 'default',
+                filters: {},
+                preset: {
+                    type: 'subpanel',
+                    params: {
+                        subpanel,
+                        parentModule,
+                        parentId
+                    }
                 }
-            },
-        };
+            }
+        } as SavedFilter;
     }
 
     /**
@@ -424,31 +426,6 @@ export class SubpanelStore implements StateStore {
 
     public toggleFilter(): boolean {
         return this.showFilter = !this.showFilter;
-    }
-
-    /**
-     * Save ui user preference
-     * @param module
-     * @param storageKey
-     * @param value
-     * @param preferenceKey
-     * @protected
-     */
-    protected savePreference(module: string, storageKey: string, value: any, preferenceKey: string): void {
-        const key = `${preferenceKey}${storageKey}`;
-        this.preferences.setUi(module, key, value);
-    }
-
-    /**
-     * Load ui user preference
-     * @param module
-     * @param storageKey
-     * @param preferenceKey
-     * @protected
-     */
-    protected loadPreference(module: string, storageKey: string, preferenceKey: string): any {
-        const key = `${preferenceKey}${storageKey}`;
-        return this.preferences.getUi(module, key);
     }
 
     /**

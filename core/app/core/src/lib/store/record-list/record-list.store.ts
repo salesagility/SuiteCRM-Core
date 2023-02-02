@@ -53,6 +53,7 @@ import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {SavedFilter, SavedFilterMap} from "../saved-filters/saved-filter.model";
 
+
 const initialFilter: SavedFilter = {
     key: 'default',
     module: 'saved-search',
@@ -155,7 +156,9 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     protected state$ = this.store.asObservable();
     protected preferencesSub: Subscription;
 
-    preferenceKey = 'recordlist-';
+    preferenceKey: string;
+    baseFilter: SavedFilter;
+
 
     constructor(
         protected listGQL: ListGQL,
@@ -264,15 +267,19 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {string} module to use
      * @param {boolean} load if to load
      * @param {string} pageSizeConfigKey string
+     * @param filter
+     * @param preferenceKey
      * @returns {object} Observable<any>
      */
-    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page'): Observable<RecordList> {
+    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page', filter = deepClone(initialFilter), preferenceKey = 'recordlist-'): Observable<RecordList> {
         this.internalState.module = module;
+        this.preferenceKey = preferenceKey;
 
         if (pageSizeConfigKey) {
             this.watchPageSize(pageSizeConfigKey);
         }
-        this.loadCurrentFilter(module, this.preferenceKey);
+        this.setBaseFilter(filter);
+        this.loadCurrentFilter(module);
 
         if (load === false) {
             return null;
@@ -281,26 +288,34 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         return this.load();
     }
 
+    public setBaseFilter(filter) {
+
+        const filters = {'default': deepClone(filter)};
+
+        this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
+
+        this.baseFilter = deepClone(filter);
+    }
+
     /**
      * Load current filter
      * @param module
-     * @param preferenceKey
      * @protected
      */
-    public loadCurrentFilter(module: string, preferenceKey: string): void {
+    public loadCurrentFilter(module: string): void {
 
-        const activeFiltersPref = this.loadPreference(module, 'current-filters', preferenceKey) ?? {} as SavedFilterMap;
+        const activeFiltersPref = this.loadPreference(module, 'current-filters') ?? {} as SavedFilterMap;
 
         if (!activeFiltersPref || emptyObject(activeFiltersPref)) {
             return;
         }
 
-        let currentSort = this.loadPreference(module, 'current-sort', preferenceKey) as SortingSelection;
+        let currentSort = this.loadPreference(module, 'current-sort') as SortingSelection;
         if (!currentSort && emptyObject(currentSort)) {
             currentSort = null;
         }
 
-        this.setFilters(activeFiltersPref, false, currentSort, preferenceKey);
+        this.setFilters(activeFiltersPref, false, currentSort);
     }
 
     /**
@@ -309,9 +324,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {object} filters to set
      * @param {boolean} reload flag
      * @param sort
-     * @param preferenceKey
      */
-    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null, preferenceKey = this.preferenceKey): void {
+    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null): void {
 
         const filterKey = Object.keys(filters).shift();
         const filter = filters[filterKey];
@@ -329,24 +343,24 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             }
 
             this.updateSorting(orderBy, direction, false);
-            this.updateSortLocalStorage(preferenceKey);
+            this.updateSortLocalStorage();
 
             this.updateSearchCriteria(filter.criteria, reload);
         }
 
-        this.updateFilterLocalStorage(preferenceKey);
+        this.updateFilterLocalStorage();
     }
 
-    public updateFilterLocalStorage(preferenceKey = this.preferenceKey): void {
+    public updateFilterLocalStorage(): void {
         const module = this.internalState.module;
 
-        this.savePreference(module, 'current-filters', this.internalState.activeFilters, preferenceKey);
+        this.savePreference(module, 'current-filters', this.internalState.activeFilters);
     }
 
-    public updateSortLocalStorage(preferenceKey = this.preferenceKey): void {
+    public updateSortLocalStorage(): void {
         const module = this.internalState.module;
 
-        this.savePreference(module, 'current-sort', this.sort, preferenceKey);
+        this.savePreference(module, 'current-sort', this.sort);
     }
 
     /**
@@ -385,8 +399,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         pageFirst: 0,
                         pageLast: 0
                     },
-                    openFilter: deepClone(initialFilter),
-                    activeFilters: deepClone(initialFilters),
+                    openFilter: deepClone(this.baseFilter),
+                    activeFilters: deepClone(this.baseFilter),
                     selection: deepClone(initialSelection),
                     meta: {}
                 });
@@ -496,21 +510,20 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * Reset active filters
      *
      * @param {boolean} reload flag
-     * @param preferenceKey
      */
-    public resetFilters(reload = true, preferenceKey = this.preferenceKey): void {
+    public resetFilters(reload = true): void {
 
         this.updateState({
             ...this.internalState,
-            activeFilters: deepClone(initialFilters),
-            openFilter: deepClone(initialFilter),
+            activeFilters: deepClone(this.baseFilter),
+            openFilter: deepClone(this.baseFilter),
         });
 
         this.clearSort();
-        this.updateSortLocalStorage(preferenceKey);
-        this.updateFilterLocalStorage(preferenceKey);
+        this.updateSortLocalStorage();
+        this.updateFilterLocalStorage();
 
-        this.updateSearchCriteria(deepClone(initialFilters), reload)
+        this.updateSearchCriteria(this.baseFilter.criteria, reload)
     }
 
     /**
@@ -518,11 +531,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param module
      * @param storageKey
      * @param value
-     * @param preferenceKey
      * @protected
      */
-    protected savePreference(module: string, storageKey: string, value: any, preferenceKey: string): void {
-        const key = `${preferenceKey}${storageKey}`;
+    protected savePreference(module: string, storageKey: string, value: any): void {
+        const key = `${this.preferenceKey}${storageKey}`;
         this.preferencesStore.setUi(module, key, value);
     }
 
@@ -530,11 +542,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * Load ui user preference
      * @param module
      * @param storageKey
-     * @param preferenceKey
      * @protected
      */
-    protected loadPreference(module: string, storageKey: string, preferenceKey: string): any {
-        const key = `${preferenceKey}${storageKey}`;
+    protected loadPreference(module: string, storageKey: string): any {
+        const key = `${this.preferenceKey}${storageKey}`;
         return this.preferencesStore.getUi(module, key);
     }
 
