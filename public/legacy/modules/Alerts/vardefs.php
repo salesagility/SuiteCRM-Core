@@ -43,47 +43,58 @@ $dictionary['Alert'] = [
     'audited' => false,
     'duplicate_merge' => true,
     'fields' => [
-        'is_read' =>
-            [
-                'name' => 'is_read',
-                'vname' => 'LBL_IS_READ',
-                'type' => 'bool',
-                'massupdate' => false,
-                'studio' => 'false',
-            ],
-        'target_module' =>
-            [
-                'name' => 'target_module',
-                'vname' => 'LBL_TYPE',
-                'type' => 'varchar',
-                'massupdate' => false,
-                'studio' => 'false',
-            ],
-        'type' =>
-            [
-                'name' => 'type',
-                'vname' => 'LBL_TYPE',
-                'type' => 'varchar',
-                'massupdate' => false,
-                'studio' => 'false',
-            ],
-        'url_redirect' =>
-            [
-                'name' => 'url_redirect',
-                'vname' => 'LBL_TYPE',
-                'type' => 'varchar',
-                'massupdate' => false,
-                'studio' => 'false',
-            ],
-        'reminder_id' =>
-            [
-                'name' => 'reminder_id',
-                'type' => 'id',
-                'required' => false,
-                'reportable' => false,
-                'studio' => 'false',
-                'comment' => 'The id of the reminder that created this alert',
-            ],
+        'is_read' => [
+            'name' => 'is_read',
+            'vname' => 'LBL_IS_READ',
+            'type' => 'bool',
+            'massupdate' => false,
+            'studio' => 'false',
+        ],
+        'target_module' => [
+            'name' => 'target_module',
+            'vname' => 'LBL_TYPE',
+            'type' => 'varchar',
+            'massupdate' => false,
+            'studio' => 'false',
+        ],
+        'target_module_type' => [
+            'name' => 'target_module',
+            'vname' => 'LBL_TARGET_MODULE_TYPE',
+            'type' => 'varchar',
+            'massupdate' => false,
+            'studio' => 'false',
+            'source' => 'non-db',
+        ],
+        'target_module_label' => [
+            'name' => 'target_module_label',
+            'vname' => 'LBL_TARGET_MODULE_LABEL',
+            'type' => 'varchar',
+            'massupdate' => false,
+            'studio' => 'false',
+            'source' => 'non-db',
+        ],
+        'type' => [
+            'name' => 'type',
+            'vname' => 'LBL_TYPE',
+            'type' => 'varchar',
+            'massupdate' => false,
+            'studio' => 'false',
+        ],
+        'url_redirect' => [
+            'name' => 'url_redirect',
+            'vname' => 'LBL_TYPE',
+            'type' => 'varchar',
+            'massupdate' => false,
+            'studio' => 'false',
+        ],
+        'reminder_id' => [
+            'name' => 'reminder_id',
+            'type' => 'id',
+            'required' => false,
+            'reportable' => false,
+            'studio' => 'false',
+            'comment' => 'The id of the reminder that created this alert',
+        ],
         'snooze' => [
             'name' => 'snooze',
             'type' => 'datetime',
