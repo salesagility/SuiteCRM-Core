@@ -163,7 +163,7 @@
             <img id="company_logo_image" src='{$company_logo}' alt=$mod_strings.LBL_LOGO>
         </td>
 		<td scope="row">{$MOD.LBL_SNOOZE_TIMER}:</td>
-		<td><select name="snooze_alert_timer">{$snooze_alert_timer}</select></td>
+		<td><select name="snooze_alert_timer">{$SNOOZE_ALERT_TIMER}</select></td>
     </tr>
     <tr>
         <td scope="row" width='12%' nowrap>
