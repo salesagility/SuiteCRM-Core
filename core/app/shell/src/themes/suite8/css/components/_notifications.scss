@@ -2,9 +2,6 @@
 
   .dropdown-menu {
     padding: 0;
-    svg path {
-      fill: $cool-blue;
-    }
   }
 
   .badge-position {
@@ -37,6 +34,7 @@
     .record-thread-item.record-thread-list-item {
       width: 100%;
       padding: 0;
+
       .record-thread-item-body {
         background-color: $bright-grey;
         transition: background-color 300ms ease-in-out;
@@ -47,6 +45,7 @@
           cursor: pointer;
         }
       }
+
       .field-name-description {
         display: block;
         width:200px;
@@ -55,6 +54,25 @@
         text-overflow: ellipsis!important;
         margin-right: 2rem;
       }
+
+      .notifications-actions svg {
+        font-size: 80%;
+      }
+
+      .field-name-target_module.field-type-icon svg {
+        font-size: 140%;
+
+        path {
+          // fill: $danger;
+          //stroke: $danger;
+        }
+      }
+    }
+
+
+
+    .notification-list-actions button {
+      color: $danger;
     }
 
   }

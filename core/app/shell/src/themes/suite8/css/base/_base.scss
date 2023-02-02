@@ -96,3 +96,35 @@ ul li::marker {
   stroke: $secondary;
 }
 
+.fill-danger {
+  fill: $danger;
+}
+
+.stroke-danger {
+  stroke: $danger;
+}
+
+.fill-hover-danger:hover {
+  fill: $danger;
+}
+
+.stroke-hover-danger:hover {
+  stroke: $danger;
+}
+
+.fill-danger-light {
+  fill: $salmon-pink;
+}
+
+.stroke-danger-light {
+  stroke: $salmon-pink;
+}
+
+.fill-hover-danger-light:hover {
+  fill: $salmon-pink;
+}
+
+.stroke-hover-danger-light:hover {
+  stroke: $salmon-pink;
+}
+

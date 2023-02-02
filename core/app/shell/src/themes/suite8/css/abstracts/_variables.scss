@@ -97,9 +97,14 @@ $lighter-green:#f1ffed;
 $thick-orange: #d1c369;
 $very-lighter-orange: #fffbe0;
 
+/* ----Base colors -- */
+
+$danger: #ee8776;
+
 /* ----Buttons -- */
 
-$btn-danger: #ee8776;
+$btn-danger: $danger;
+
 
 /* --------- PREDEFINED STYLES ---------- */
 
