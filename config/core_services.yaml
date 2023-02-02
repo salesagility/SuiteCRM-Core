@@ -49,6 +49,7 @@ services:
       $legacyActionResolverMap: '%legacy.action_resolver%'
       $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
+      $notificationsConfigs: '%notifications%'
       $systemSettings: '%system.settings%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
