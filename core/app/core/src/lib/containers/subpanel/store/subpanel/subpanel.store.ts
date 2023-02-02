@@ -176,16 +176,6 @@ export class SubpanelStore implements StateStore {
 
     }
 
-    /**
-     * Update filters
-     *
-     * @param {object} filter to set
-     */
-    public addSavedFilter(filter: SavedFilter): void {
-        this.filterList.addFilter(filter);
-        this.recordList.addSavedFilter(filter);
-    }
-
     public setFilters(filters: SavedFilterMap, reload = true) {
         this.recordList.setFilters(filters, reload, null);
     }
@@ -246,16 +236,6 @@ export class SubpanelStore implements StateStore {
         }
 
         return this.statistics[key];
-    }
-
-    /**
-     * Update filters
-     *
-     * @param {object} filter to set
-     */
-    public removeSavedFilter(filter: SavedFilter): void {
-        this.filterList.removeFilter(filter);
-        this.recordList.removeSavedFilter(filter);
     }
 
     public resetFilters(reload = true): void {
