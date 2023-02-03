@@ -86,7 +86,10 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         $resultData = $this->getListDataPort()->get($bean, $where, $offset, $limit, $filter_fields, $params);
 
-        return $this->buildListData($resultData);
+        $result =  $this->buildListData($resultData);
+        $unreadCount = $this->getUnreadCount($module);
+        $result['unreadCount'] = $unreadCount ?? '';
+        return $result;
     }
 
     /**
