@@ -4,7 +4,7 @@ parameters:
     class: 'notifications'
     maxListHeight: 350
     direction: 'desc'
-    autoRefreshFrequency: 60000 #1 minutes
+    autoRefreshFrequency: 20000 #20 seconds
     showNoDataMessage: true
     noDataLabel: 'LBL_NOTIFICATIONS_NONE'
     create: null
@@ -28,9 +28,9 @@ parameters:
                     type: 'icon'
                   labelDisplay: 'none'
                   hideIfEmpty: false
-                  class: 'font-weight-bold stroke-danger-light stroke-hover-danger'
+                  class: 'font-weight-bold stroke-danger-light stroke-hover-danger fill-danger-light'
             -
-              class: 'd-flex flex-column flex-grow-1 pl-2 pr-2'
+              class: 'd-flex flex-column flex-grow-1 pl-2 pr-5'
               align: 'start'
               cols:
                 -
@@ -91,7 +91,7 @@ parameters:
             params:
               displayConfirmation: true
               confirmationLabel: 'NTC_SNOOZE_CONFIRMATION'
-            klass: ['btn stroke-danger-light stroke-hover-danger border-0 btn-sm p-0']
+            klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0']
             modes: ['detail', 'edit']
             acl: []
     listActionsClass: "d-flex align-items-center justify-content-end notification-list-actions pr-2 pt-1"

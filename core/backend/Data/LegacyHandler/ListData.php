@@ -49,6 +49,11 @@ class ListData
     protected $ordering;
 
     /**
+     * @var int
+     */
+    protected $unreadCount;
+
+    /**
      * @return Record[]
      */
     public function getRecords(): array
@@ -112,6 +117,25 @@ class ListData
     public function setOrdering(array $ordering): ListData
     {
         $this->ordering = $ordering;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnreadCount(): array
+    {
+        return $this->unreadCount;
+    }
+
+    /**
+     * @param int $unreadCount
+     * @return ListData
+     */
+    public function setUnreadCount(int $unreadCount): ListData
+    {
+        $this->unreadCount = $unreadCount;
 
         return $this;
     }
