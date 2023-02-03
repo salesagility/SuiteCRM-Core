@@ -88,7 +88,7 @@ export class ActionBarUiComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.notificationCount$ = this.appStateStore.notificationsUnread$;
+        this.notificationCount$ = this.appStateStore.notificationsUnreadTotal$;
     }
 
     search(): void {

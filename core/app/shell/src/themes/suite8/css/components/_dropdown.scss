@@ -93,10 +93,6 @@ ngb-datepicker-navigation {
   margin: 0 0.3em 0 0;
 }
 
-.action-alert .dropdown-menu svg path {
-  fill: $burnt-orange;
-}
-
 .action-favourite .dropdown-menu svg path {
   fill: $sandy-yellow;
 }
@@ -513,7 +509,7 @@ ul.main li a,
       display: inline-block;
       vertical-align: middle;
       position: relative;
-      top: -2px;     
+      top: -2px;
     }
   }
 }
