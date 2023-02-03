@@ -51,6 +51,7 @@ export class NotificationsComponent implements OnInit {
     filters$: Observable<SearchCriteria>;
     store: RecordThreadStore;
     options: any;
+    fakeTotal:number = 10;
 
     constructor(
         protected language: LanguageStore,
@@ -78,11 +79,12 @@ export class NotificationsComponent implements OnInit {
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
             onAutoRefresh: () => {
                 const count = this.store.getRecordList().records.filter(item => item.attributes.is_read == "").length;
-                let appStateCount = this.appStateStore.getNotificationsUnread();
+                //const count = 97;
+                let appStateCount = this.appStateStore.getNotificationsUnreadTotal();
                 if (count > appStateCount) {
                     this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
                 }
-                this.appStateStore.setNotificationUnread(count);
+                this.appStateStore.setNotificationsUnreadTotal(count);
             },
             onLoadMore:() => {
                 this.appStateStore.markNotificationsAsRead();
