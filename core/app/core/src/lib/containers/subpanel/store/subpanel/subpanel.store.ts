@@ -46,7 +46,9 @@ import {
     SubPanelDefinition
 } from 'common';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
-import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
+import {
+    SingleValueStatisticsStoreFactory
+} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
 import {FilterListStore} from "../../../../store/saved-filters/filter-list.store";
 import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
 import {map, take, tap} from "rxjs/operators";
@@ -84,7 +86,7 @@ export class SubpanelStore implements StateStore {
     showFilter = false;
     filterApplied = false;
 
-    preferenceKey = 'subpanel-';
+    preferenceKey = null;
 
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
@@ -163,7 +165,7 @@ export class SubpanelStore implements StateStore {
 
         this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
         const filter = this.initSearchCriteria(this.parentModule, this.parentId, meta.name);
-        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel', filter, this.preferenceKey)
+        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel', filter)
 
         this.initStatistics(meta, parentModule, parentId);
 
