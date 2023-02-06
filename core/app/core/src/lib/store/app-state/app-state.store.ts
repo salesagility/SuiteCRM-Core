@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, Subscription, timer} from 'rxjs';
-import {distinctUntilChanged, map, tap} from 'rxjs/operators';
+import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
 import {deepClone, isVoid} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
@@ -58,7 +58,7 @@ const initialState: AppState = {
     routeUrl: null,
     preLoginUrl: null,
     activeRequests: 0,
-    notificationsTotal: 10,
+    notificationsTotal: 0,
     notificationsUnreadTotal: 0
 };
 
@@ -78,6 +78,7 @@ export class AppStateStore implements StateStore {
     initialAppLoading$: Observable<boolean>;
     activeRequests$: Observable<number>;
     notificationsUnreadTotal$: Observable<number>;
+    notificationsTotal$: Observable<number>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -91,6 +92,8 @@ export class AppStateStore implements StateStore {
     protected subs: Subscription[] = [];
     protected notificationStore: RecordThreadStore;
 
+    private notificationPageSize:number = 0;
+
     constructor(
         protected loadingBufferFactory: LoadingBufferFactory,
         protected messageService: MessageService,
@@ -103,6 +106,7 @@ export class AppStateStore implements StateStore {
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
         this.notificationsUnreadTotal$ = this.state$.pipe(map(state => state.notificationsUnreadTotal), distinctUntilChanged());
+        this.notificationsTotal$ = this.state$.pipe(map(state => state.notificationsTotal), distinctUntilChanged());
 
         this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
             map(([loading, module, view, initialAppLoading]) => ({
@@ -134,14 +138,10 @@ export class AppStateStore implements StateStore {
     public init(): void {
         this.initNotifications(); // This will get the counter of notifications
         this.initLoadingBuffer();
-        this.getNotificationsTotal();
     }
 
     public initNotifications() {
         this.notificationStore = this.notificationService.initStore();
-        this.subs.push(this.notificationStore.getRecordList().pagination$.subscribe(
-            pagination => this.setNotificationsTotal(pagination.total)
-        ));
     }
 
     /**
@@ -149,17 +149,24 @@ export class AppStateStore implements StateStore {
      */
     public markNotificationsAsRead(): void {
 
-        this.subs.push(timer(500).subscribe(() => {
-            if(this.getNotificationsUnreadTotal() > 0) {
-                this.notificationService
-                    .markNotificationsAsRead(this.notificationStore)
-                    .subscribe((process: Process) => {
-                        const unreadCount = process?.data?.unreadCount ?? 0;
-                        this.updateState({...internalState, notificationsUnreadTotal: unreadCount});
-                    });
-            }
-        }));
+        this.notificationStore.getRecordList().pagination$.pipe(
+            take(1),
+            tap(data => this.notificationPageSize = data.pageSize),
+            tap(data => this.setNotificationsTotal(data.total)),
+        ).subscribe();
 
+        let readCount = this.getNotificationsTotal() - this.getNotificationsUnreadTotal();
+
+        timer(500).pipe(take(1))
+            .subscribe(() => {
+                if(this.getNotificationsUnreadTotal() > 0 &&  this.notificationPageSize > readCount ) {
+                    this.notificationService.markNotificationsAsRead(this.notificationStore)
+                        .subscribe((process: Process) => {
+                            const unreadCount = process?.data?.unreadCount ?? 0;
+                            this.setNotificationsUnreadTotal(unreadCount);
+                        });
+                }
+            });
     }
 
     /**

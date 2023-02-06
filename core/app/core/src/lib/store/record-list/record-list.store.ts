@@ -25,7 +25,7 @@
  */
 
 import {
-    deepClone,
+    deepClone, ObjectMap,
     PageSelection,
     Pagination,
     PaginationCount,
@@ -72,6 +72,7 @@ export interface RecordList {
     pagination?: Pagination;
     criteria?: SearchCriteria;
     sort?: SortingSelection;
+    meta?: ObjectMap;
 }
 
 export interface RecordListState {
@@ -82,6 +83,7 @@ export interface RecordListState {
     sort?: SortingSelection;
     selection: RecordSelection;
     loading: boolean;
+    meta?: ObjectMap;
 }
 
 const initialState: RecordListState = {
@@ -101,6 +103,7 @@ const initialState: RecordListState = {
     },
     selection: deepClone(initialSelection),
     loading: false,
+    meta: {}
 };
 
 @Injectable()
@@ -278,6 +281,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         pageLast: 0
                     },
                     selection: deepClone(initialSelection),
+                    meta: {}
                 });
             }),
             tap(
@@ -287,7 +291,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         ...this.internalState,
                         records: data.records,
                         pagination: data.pagination,
-                        loading: false
+                        loading: false,
+                        meta: data.meta ?? {}
                     });
                 },
             )
@@ -506,6 +511,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
     getPagination(): Pagination {
         return this.store.value.pagination;
+    }
+
+    getMeta(): ObjectMap {
+        return this.store.value.meta;
     }
 
     changePage(page: PageSelection): void {

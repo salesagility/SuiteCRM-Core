@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {deepClone, SearchCriteria} from 'common';
-import {Observable, of} from 'rxjs';
+import {Observable, of, timer} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
 import {
     RecordThreadConfig,
@@ -39,6 +39,7 @@ import {RecordThreadStore} from "../record-thread/store/record-thread/record-thr
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {MessageService} from "../../services/message/message.service";
 import {NotificationsService} from './services/notifications.service';
+import {take} from "rxjs/operators";
 
 @Component({
     selector: 'scrm-notifications',
@@ -51,7 +52,6 @@ export class NotificationsComponent implements OnInit {
     filters$: Observable<SearchCriteria>;
     store: RecordThreadStore;
     options: any;
-    fakeTotal:number = 10;
 
     constructor(
         protected language: LanguageStore,
@@ -78,8 +78,7 @@ export class NotificationsComponent implements OnInit {
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
             onAutoRefresh: () => {
-                const count = this.store.getRecordList().records.filter(item => item.attributes.is_read == "").length;
-                //const count = 97;
+                const count =  this.store.getRecordList().getMeta().unreadCount as number;
                 let appStateCount = this.appStateStore.getNotificationsUnreadTotal();
                 if (count > appStateCount) {
                     this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
@@ -87,7 +86,10 @@ export class NotificationsComponent implements OnInit {
                 this.appStateStore.setNotificationsUnreadTotal(count);
             },
             onLoadMore:() => {
-                this.appStateStore.markNotificationsAsRead();
+                timer(1500).pipe(take(1))
+                    .subscribe(() => {
+                        this.appStateStore.markNotificationsAsRead();
+                    });
             },
             create: false,
             listActionsClass: this.options?.listActionsClass ?? '',
