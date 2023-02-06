@@ -49,9 +49,25 @@ class ListData
     protected $ordering;
 
     /**
-     * @var int
+     * @var array
      */
-    protected $unreadCount;
+    protected $meta;
+
+    /**
+     * @return array|null
+     */
+    public function getMeta(): ?array
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param array $meta
+     */
+    public function setMeta(array $meta): void
+    {
+        $this->meta = $meta;
+    }
 
     /**
      * @return Record[]
@@ -117,25 +133,6 @@ class ListData
     public function setOrdering(array $ordering): ListData
     {
         $this->ordering = $ordering;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUnreadCount(): array
-    {
-        return $this->unreadCount;
-    }
-
-    /**
-     * @param int $unreadCount
-     * @return ListData
-     */
-    public function setUnreadCount(int $unreadCount): ListData
-    {
-        $this->unreadCount = $unreadCount;
 
         return $this;
     }

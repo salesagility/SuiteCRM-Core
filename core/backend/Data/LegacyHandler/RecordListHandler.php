@@ -129,10 +129,14 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         }
 
         $recordList->setRecords($records);
-        $recordList->setMeta([
+        $recordList->setMeta(
+            array_merge(
+            [
             'offsets' => $listData->getOffsets(),
             'ordering' => $listData->getOrdering()
-        ]);
+            ],
+                $listData->getMeta() ?? []
+            ));
 
         $this->close();
 
