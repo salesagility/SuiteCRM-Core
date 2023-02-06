@@ -272,7 +272,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param preferenceKey
      * @returns {object} Observable<any>
      */
-    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page', filter = deepClone(initialFilter), preferenceKey = 'recordlist-'): Observable<RecordList> {
+    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page', filter = deepClone(initialFilter), preferenceKey = ''): Observable<RecordList> {
         this.internalState.module = module;
         this.preferenceKey = preferenceKey;
 
@@ -536,7 +536,11 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @protected
      */
     protected savePreference(module: string, storageKey: string, value: any): void {
-        const key = `${this.preferenceKey}${storageKey}`;
+        const preferenceKey = this.preferenceKey ?? null;
+        if (!preferenceKey) {
+            return null;
+        }
+        const key = `${preferenceKey}${storageKey}`;
         this.preferencesStore.setUi(module, key, value);
     }
 
@@ -547,7 +551,12 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @protected
      */
     protected loadPreference(module: string, storageKey: string): any {
-        const key = `${this.preferenceKey}${storageKey}`;
+
+        const preferenceKey = this.preferenceKey ?? null;
+        if (!preferenceKey) {
+            return null;
+        }
+        const key = `${preferenceKey}${storageKey}`;
         return this.preferencesStore.getUi(module, key);
     }
 
