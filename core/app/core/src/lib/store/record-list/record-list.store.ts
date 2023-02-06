@@ -158,6 +158,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
     preferenceKey: string;
     baseFilter: SavedFilter;
+    baseFilterMap: SavedFilterMap;
 
 
     constructor(
@@ -290,11 +291,12 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
     public setBaseFilter(filter) {
 
-        const filters = {'default': deepClone(filter)};
-
-        this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
-
+        this.baseFilterMap = {'default': deepClone(filter)};
         this.baseFilter = deepClone(filter);
+
+        this.updateState({...this.internalState, activeFilters: deepClone(this.baseFilterMap), openFilter: deepClone(this.baseFilter)});
+
+
     }
 
     /**
@@ -304,7 +306,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      */
     public loadCurrentFilter(module: string): void {
 
-        const activeFiltersPref = this.loadPreference(module, 'current-filters') ?? {} as SavedFilterMap;
+        const activeFiltersPref = this.loadPreference(module, 'current-filters') ?? this.baseFilterMap;
 
         if (!activeFiltersPref || emptyObject(activeFiltersPref)) {
             return;
@@ -400,7 +402,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         pageLast: 0
                     },
                     openFilter: deepClone(this.baseFilter),
-                    activeFilters: deepClone(this.baseFilter),
+                    activeFilters: deepClone(this.baseFilterMap),
                     selection: deepClone(initialSelection),
                     meta: {}
                 });
@@ -515,7 +517,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
         this.updateState({
             ...this.internalState,
-            activeFilters: deepClone(this.baseFilter),
+            activeFilters: deepClone(this.baseFilterMap),
             openFilter: deepClone(this.baseFilter),
         });
 
