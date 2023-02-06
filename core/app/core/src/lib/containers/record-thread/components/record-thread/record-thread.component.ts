@@ -29,7 +29,7 @@ import {combineLatest, Subscription, interval } from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
-import {take} from 'rxjs/operators';
+import {take, tap} from 'rxjs/operators';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {AttributeMap, ButtonInterface, isVoid, Record, ViewMode} from 'common';
@@ -173,7 +173,10 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
                 if(this?.config?.onLoadMore) {
-                    this.config.onLoadMore();
+                    this.store.getRecordList().records$.pipe(
+                        take(1),
+                        tap(()=> this.config.onLoadMore())
+                    ).subscribe();
                 }
                 this.store.loadMore();
             }
