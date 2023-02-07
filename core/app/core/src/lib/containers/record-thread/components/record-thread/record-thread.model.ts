@@ -36,7 +36,7 @@ export interface RecordThreadConfig {
     klass?: string;
     maxListHeight?: number;
     autoRefreshFrequency?:number,
-    onAutoRefresh?(): void,
+    onRefresh?(): void,
     onLoadMore?(): void,
     create?: boolean;
     direction?: 'asc' | 'desc';

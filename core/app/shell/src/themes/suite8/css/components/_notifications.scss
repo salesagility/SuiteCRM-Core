@@ -13,13 +13,12 @@
   .notifications {
 
     .notifications-item {
-      border-bottom:1px dashed #b2a5a7;
+      border-bottom: 1px dashed #b2a5a7;
     }
 
     .notifications-item.is_read-true {
       .record-thread-item-body {
-        background-color: white!important;
-        //transition: background-color 300ms ease-in-out;
+        background-color: white !important;
       }
     }
 
@@ -40,18 +39,19 @@
         transition: background-color 300ms ease-in-out;
         box-shadow: none;
         margin-bottom: 0;
+
         &:hover {
-          background-color: #fbe1e0!important;
+          background-color: #fbe1e0 !important;
           cursor: pointer;
         }
       }
 
       .field-name-description {
         display: block;
-        width:200px;
+        width: 200px;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis!important;
+        text-overflow: ellipsis !important;
         margin-right: 2rem;
       }
 
@@ -61,15 +61,8 @@
 
       .field-name-target_module.field-type-icon svg {
         font-size: 140%;
-
-        path {
-          // fill: $danger;
-          //stroke: $danger;
-        }
       }
     }
-
-
 
     .notification-list-actions button {
       color: $danger;

@@ -100,16 +100,16 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.subs.push(this.config.filters$.subscribe(filters => {
                 this.store.setFilters(filters).pipe(take(1)).subscribe(() => {
-                    if(this.config.onAutoRefresh) {
-                        this.config.onAutoRefresh()
+                    if(this.config.onRefresh) {
+                        this.config.onRefresh()
                     }
                 });
             }));
 
         } else {
             this.store.load(false).subscribe(() => {
-                if(this.config.onAutoRefresh) {
-                    this.config.onAutoRefresh()
+                if(this.config.onRefresh) {
+                    this.config.onRefresh()
                 }
             });
         }
@@ -119,8 +119,8 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.subs.push(interval(autoRefreshFrequency).subscribe(() => {
                 this.store.load(false).subscribe(
                     () => {
-                        if(this.config.onAutoRefresh) {
-                            this.config.onAutoRefresh()
+                        if(this.config.onRefresh) {
+                            this.config.onRefresh()
                         }
                     }
 
