@@ -60,7 +60,7 @@
                         <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
                     </span>
                 </ng-container>
-                <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right" *ngIf="checkAppstrings(vm.appStrings)">
                     <scrm-notifications></scrm-notifications>
                 </div>
             </div>

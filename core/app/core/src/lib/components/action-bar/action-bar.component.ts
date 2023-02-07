@@ -91,6 +91,10 @@ export class ActionBarUiComponent implements OnInit {
         this.notificationCount$ = this.appStateStore.notificationsUnreadTotal$;
     }
 
+    checkAppstrings(appStrings) : boolean {
+        return appStrings && Object.keys(appStrings).length >0;
+    }
+
     search(): void {
         this.globalSearch.navigateToSearch(this.searchTerm).finally(() => {
             this.clearSearchTerm();
