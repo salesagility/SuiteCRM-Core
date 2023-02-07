@@ -40,6 +40,7 @@ import {AppStateStore} from "../../store/app-state/app-state.store";
 import {MessageService} from "../../services/message/message.service";
 import {NotificationsService} from './services/notifications.service';
 import {take} from "rxjs/operators";
+import {DynamicLabelService} from "../../services/language/dynamic-label.service";
 
 @Component({
     selector: 'scrm-notifications',
@@ -59,7 +60,8 @@ export class NotificationsComponent implements OnInit {
         protected storeFactory: RecordThreadStoreFactory,
         protected appStateStore: AppStateStore,
         protected message: MessageService,
-        protected notificationService: NotificationsService
+        protected notificationService: NotificationsService,
+        protected dynamicLabels: DynamicLabelService
     ) {
     }
 
@@ -81,7 +83,10 @@ export class NotificationsComponent implements OnInit {
                 const count =  this.store.getRecordList().getMeta().unreadCount as number;
                 let appStateCount = this.appStateStore.getNotificationsUnreadTotal();
                 if (count > appStateCount) {
-                    this.message.addSuccessMessage(`You have ${count - appStateCount} new notifications.`);
+                    let unreadCount = (count - appStateCount).toString();
+                    const labelTemplate  = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
+                    const parsedLabel = this.dynamicLabels.parse(labelTemplate, {unread: unreadCount}, {});
+                    this.message.addSuccessMessage(parsedLabel);
                 }
                 this.appStateStore.setNotificationsUnreadTotal(count);
             },

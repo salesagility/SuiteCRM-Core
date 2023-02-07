@@ -52,7 +52,6 @@ export interface ListContainerState {
 })
 
 export class ListContainerComponent implements OnInit {
-    @Input() module;
     screen: ScreenSize = ScreenSize.Medium;
     maxColumns = 5;
     tableConfig: TableConfig;

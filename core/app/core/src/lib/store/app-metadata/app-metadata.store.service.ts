@@ -109,7 +109,6 @@ export class AppMetadataStore implements StateStore {
 
     constructor(
         protected recordGQL: EntityGQL,
-        protected appState: AppStateStore,
         protected metadata: MetadataStore,
         protected language: LanguageStore,
         protected themeImages: ThemeImagesStore,
