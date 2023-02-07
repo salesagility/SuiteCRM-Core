@@ -259,8 +259,14 @@ export * from './containers/sidebar-widget/components/statistics-sidebar-widget/
 export * from './containers/sidebar-widget/store/history-timeline/history-timeline.store';
 export * from './containers/subpanel/actions/subpanel.action';
 export * from './containers/subpanel/actions/async-process/async-process.action';
+export * from './containers/subpanel/actions/clear-filter/clear-filter.action';
 export * from './containers/subpanel/actions/create/create.action';
 export * from './containers/subpanel/actions/select/select.action';
+export * from './containers/subpanel/actions/show-filter/show-filter.action';
+export * from './containers/subpanel/adapters/actions.adapter.factory';
+export * from './containers/subpanel/adapters/actions.adapter';
+export * from './containers/subpanel/adapters/filter.adapter.factory';
+export * from './containers/subpanel/adapters/filter.adapter';
 export * from './containers/subpanel/adapters/line-actions.adapter.factory';
 export * from './containers/subpanel/adapters/line-actions.adapter';
 export * from './containers/subpanel/adapters/table.adapter.factory';
