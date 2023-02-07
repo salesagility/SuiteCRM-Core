@@ -28,6 +28,7 @@
 require_once __DIR__  . '/TargetModuleTypeMapper.php';
 require_once __DIR__  . '/TargetModuleLabelMapper.php';
 require_once __DIR__  . '/AlertNameMapper.php';
+require_once __DIR__  . '/IsReadMapper.php';
 require_once __DIR__  . '/../../ApiBeanModuleMappers.php';
 
 class AlertsMappers extends ApiBeanModuleMappers
@@ -42,6 +43,7 @@ class AlertsMappers extends ApiBeanModuleMappers
         $this->fieldMappers[TargetModuleTypeMapper::getField()] = new TargetModuleTypeMapper();
         $this->fieldMappers[TargetModuleLabelMapper::getField()] = new TargetModuleLabelMapper();
         $this->fieldMappers[AlertNameMapper::getField()] = new AlertNameMapper();
+        $this->fieldMappers[IsReadMapper::getField()] = new IsReadMapper();
     }
 
     /**

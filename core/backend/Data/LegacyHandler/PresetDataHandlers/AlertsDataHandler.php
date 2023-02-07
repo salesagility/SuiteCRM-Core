@@ -88,7 +88,7 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         $result =  $this->buildListData($resultData);
         $unreadCount = $this->getUnreadCount($module);
-        $meta = ['unreadCount' => $unreadCount];
+        $meta = ['unreadCount' => (int) $unreadCount];
         $result->setMeta($meta);
         return $result;
     }
