@@ -94,7 +94,6 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         return this.listMetadata = meta;
     }
 
-
     public allLoaded(): boolean {
         const pagination = this.recordList.getPagination();
         if (!pagination) {
@@ -115,10 +114,6 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
 
     public reload(): void {
         this.recordList.updatePagination(0);
-    }
-
-    public dismissAll(jump: number = 10): void {
-
     }
 
     public getViewContext(): ActionContext {

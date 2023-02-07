@@ -65,6 +65,7 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.dynamicClassFieldSubs.forEach(sub => sub.unsubscribe());
     }
 
     ngAfterViewInit() {

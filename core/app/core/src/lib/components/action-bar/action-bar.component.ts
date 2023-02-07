@@ -71,7 +71,7 @@ export class ActionBarUiComponent implements OnInit {
     };
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
-    notificationCount$:Observable<number> ;
+    notificationCount$: Observable<number>;
 
     vm$ = combineLatest([
         this.languages$,
@@ -91,8 +91,8 @@ export class ActionBarUiComponent implements OnInit {
         this.notificationCount$ = this.appStateStore.notificationsUnreadTotal$;
     }
 
-    checkAppstrings(appStrings) : boolean {
-        return appStrings && Object.keys(appStrings).length >0;
+    checkAppStrings(appStrings): boolean {
+        return appStrings && Object.keys(appStrings).length > 0;
     }
 
     search(): void {

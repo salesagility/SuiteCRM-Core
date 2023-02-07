@@ -92,7 +92,7 @@ export class AppStateStore implements StateStore {
     protected subs: Subscription[] = [];
     protected notificationStore: RecordThreadStore;
 
-    private notificationPageSize:number = 0;
+    private notificationPageSize: number = 0;
 
     constructor(
         protected loadingBufferFactory: LoadingBufferFactory,
@@ -161,7 +161,7 @@ export class AppStateStore implements StateStore {
 
         timer(500).pipe(take(1))
             .subscribe(() => {
-                if(this.getNotificationsUnreadTotal() > 0 &&  (this.notificationPageSize > readCount || unreadCountFromRecords >0) ) {
+                if (this.getNotificationsUnreadTotal() > 0 && (this.notificationPageSize > readCount || unreadCountFromRecords > 0)) {
                     this.notificationService.markNotificationsAsRead(this.notificationStore)
                         .subscribe((process: Process) => {
                             const unreadCount = process?.data?.unreadCount ?? 0;
@@ -184,7 +184,7 @@ export class AppStateStore implements StateStore {
      * Set notification as total
      * @param notificationsTotal
      */
-    public setNotificationsTotal(notificationsTotal:number): void {
+    public setNotificationsTotal(notificationsTotal: number): void {
         this.updateState({...internalState, notificationsTotal});
     }
 

@@ -110,7 +110,7 @@ export class NotificationsService {
     }
 
     /**
-     * Send recover password request
+     * Send notification mark-as-read request
      *
      * @param {object} store to use
      * @returns {object} Observable<Process>

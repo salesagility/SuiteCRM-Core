@@ -79,18 +79,18 @@ export class NotificationsComponent implements OnInit {
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
-            onAutoRefresh: () => {
-                const count =  this.store.getRecordList().getMeta().unreadCount as number;
+            onRefresh: () => {
+                const count = this.store.getRecordList().getMeta().unreadCount as number;
                 let appStateCount = this.appStateStore.getNotificationsUnreadTotal();
                 if (count > appStateCount) {
                     let unreadCount = (count - appStateCount).toString();
-                    const labelTemplate  = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
+                    const labelTemplate = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
                     const parsedLabel = this.dynamicLabels.parse(labelTemplate, {unread: unreadCount}, {});
                     this.message.addSuccessMessage(parsedLabel);
                 }
                 this.appStateStore.setNotificationsUnreadTotal(count);
             },
-            onLoadMore:() => {
+            onLoadMore: () => {
                 timer(1500).pipe(take(1))
                     .subscribe(() => {
                         this.appStateStore.markNotificationsAsRead();
