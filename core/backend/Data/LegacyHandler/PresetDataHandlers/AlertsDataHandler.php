@@ -86,10 +86,11 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         $resultData = $this->getListDataPort()->get($bean, $where, $offset, $limit, $filter_fields, $params);
 
-        $result =  $this->buildListData($resultData);
+        $result = $this->buildListData($resultData);
         $unreadCount = $this->getUnreadCount($module);
-        $meta = ['unreadCount' => (int) $unreadCount];
+        $meta = ['unreadCount' => (int)$unreadCount];
         $result->setMeta($meta);
+
         return $result;
     }
 
@@ -131,7 +132,7 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
         $resultData = $this->getListDataPort()->runCustomQuery($bean, $queryParts, -1, -1);
 
         if (is_numeric($resultData[0]['unread'] ?? '')) {
-            return (int) ($resultData[0]['unread'] ?? 0);
+            return (int)($resultData[0]['unread'] ?? 0);
         }
 
         return 0;
@@ -142,7 +143,8 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
      * @param $criteria
      * @return array
      */
-    public function getAlertCriteria($criteria): array{
+    public function getAlertCriteria($criteria): array
+    {
 
         global $current_user;
 
