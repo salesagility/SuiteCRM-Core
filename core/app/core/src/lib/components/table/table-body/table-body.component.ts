@@ -59,7 +59,7 @@ interface TableViewModel {
 export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
     maxColumns = 4;
-    popoverColumns:ColumnDefinition[];
+    popoverColumns: ColumnDefinition[];
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
@@ -165,7 +165,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.popoverColumns =  fields.filter(obj => missingFields.includes(obj.name));
+        this.popoverColumns = fields.filter(obj => missingFields.includes(obj.name));
 
         return returnArray;
     }

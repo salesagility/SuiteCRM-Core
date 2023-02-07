@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,7 +42,8 @@ export class RecordDetailsPopupButtonComponent {
     @Input() record: Record;
     @Input() columns: ColumnDefinition[];
 
-    constructor(protected fieldManager: FieldManager) { }
+    constructor(protected fieldManager: FieldManager) {
+    }
 
     getField(column: ColumnDefinition, record: Record): Field {
 
@@ -52,9 +53,6 @@ export class RecordDetailsPopupButtonComponent {
 
         return this.fieldManager.addField(record, column);
     }
-
-
-
 
 
 }

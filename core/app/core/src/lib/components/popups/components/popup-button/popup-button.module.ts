@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {PopupButtonComponent} from "./popup-button.component";
 import {ButtonModule} from "../../../button/button.module";
 import {NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
+
 @NgModule({
     declarations: [PopupButtonComponent],
     exports: [PopupButtonComponent],
