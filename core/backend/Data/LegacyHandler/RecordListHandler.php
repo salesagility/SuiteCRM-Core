@@ -80,7 +80,8 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         PresetListDataHandlers $presetHandlers,
         SessionInterface $session
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
+            $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listDataHandler = $listDataHandler;
         $this->presetHandlers = $presetHandlers;
@@ -131,10 +132,10 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         $recordList->setRecords($records);
         $recordList->setMeta(
             array_merge(
-            [
-            'offsets' => $listData->getOffsets(),
-            'ordering' => $listData->getOrdering()
-            ],
+                [
+                    'offsets' => $listData->getOffsets(),
+                    'ordering' => $listData->getOrdering()
+                ],
                 $listData->getMeta() ?? []
             ));
 
