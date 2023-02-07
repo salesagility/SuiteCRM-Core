@@ -76,11 +76,15 @@ class Alert extends Basic
 
     public function snoozeUntil() {
 
-        global $sugar_config;
+        global $current_user;
 
-        require_once 'modules/Configurator/Configurator.php';
-        $configurator = new Configurator();
-        $snoozeTimer = $configurator->config['snooze_alert_timer'] ?? $sugar_config['snooze_alert_timer'] ?? '';
+        $preference = $current_user->getPreference('snooze_alert_timer') ?? null;
+
+        if (empty($preference)){
+            require_once 'modules/Configurator/Configurator.php';
+            $configurator = new Configurator();
+            $snoozeTimer = $configurator->config['snooze_alert_timer'] ?? $sugar_config['snooze_alert_timer'] ?? '';
+        }
 
         if (empty($snoozeTimer) || !is_numeric($snoozeTimer)) {
             $snoozeTimer = 600;
