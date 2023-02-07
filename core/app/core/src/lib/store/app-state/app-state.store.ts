@@ -155,18 +155,29 @@ export class AppStateStore implements StateStore {
             tap(data => this.setNotificationsTotal(data.total)),
         ).subscribe();
 
+        let unreadCountFromRecords = this.notificationStore.getRecordList().records.filter(item => item.attributes.is_read === false).length;
+
         let readCount = this.getNotificationsTotal() - this.getNotificationsUnreadTotal();
 
         timer(500).pipe(take(1))
             .subscribe(() => {
-                if(this.getNotificationsUnreadTotal() > 0 &&  this.notificationPageSize > readCount ) {
+                if(this.getNotificationsUnreadTotal() > 0 &&  (this.notificationPageSize > readCount || unreadCountFromRecords >0) ) {
                     this.notificationService.markNotificationsAsRead(this.notificationStore)
                         .subscribe((process: Process) => {
                             const unreadCount = process?.data?.unreadCount ?? 0;
                             this.setNotificationsUnreadTotal(unreadCount);
+                            this.setRecordAsReadTrue();
                         });
                 }
             });
+    }
+
+    public setRecordAsReadTrue(): void {
+        this.notificationStore.getRecordList().records.forEach(record => {
+            if (!record.attributes.is_read) {
+                record.attributes.is_read = true;
+            }
+        });
     }
 
     /**
