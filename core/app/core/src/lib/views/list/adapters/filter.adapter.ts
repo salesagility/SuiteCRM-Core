@@ -41,6 +41,7 @@ export class FilterAdapter {
     getConfig(): FilterConfig {
         return {
             savedFilterEdit: true,
+            displayHeader: true,
             module: this.store.getModuleName(),
             filter$: this.store.openFilter$,
             savedFilters$: this.store.filterList.records$,
