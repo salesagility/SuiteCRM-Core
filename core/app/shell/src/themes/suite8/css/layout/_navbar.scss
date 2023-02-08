@@ -168,7 +168,7 @@ h4.favorite-header {
 .global-action-icon {
   width: 1.5em;
   height: 1.5em;
-  margin: 0 0.6em 0 0;
+  margin: 0;
 }
 
 @media only screen and (max-width: $breakpoint-medium) {
@@ -269,6 +269,11 @@ a.nav-link-grouped.dropdown-toggle::after,
 a.nav-link-nongrouped.dropdown-toggle::after {
   vertical-align: middle;
 }
+
+a.nav-link.dropdown-toggle::after {
+  display: none;
+}
+
 
 .mobilenavbar {
   background-color: $midnight-blue;
