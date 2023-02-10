@@ -63,6 +63,8 @@ import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites
 import {MenuFavoritesComponent} from './menu-favorites/menu-favorites.component';
 import {BaseMenuFavoritesComponent} from './menu-favorites/base-menu-favorites.component';
 import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component';
+import {FormsModule} from '@angular/forms';
+import {NotificationsModule} from '../../containers/notifications/notifications.module';
 
 
 @NgModule({
@@ -93,7 +95,7 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         MobileGroupedMenuComponent,
         BaseMobileGroupedMenuComponent,
         MobileModuleMenuComponent,
-        BaseMobileModuleMenuComponent
+        BaseMobileModuleMenuComponent,
     ],
     exports: [
         NavbarUiComponent,
@@ -105,7 +107,6 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         BaseSubMenuRecentlyViewedComponent,
         BaseFavoritesComponent,
         MenuFavoritesComponent,
-        BaseMenuFavoritesComponent,
         SubMenuFavoritesComponent,
         BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,
@@ -134,7 +135,9 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         RouterModule,
         ImageModule,
         DynamicModule,
-        LabelModule
+        LabelModule,
+        FormsModule,
+        NotificationsModule
     ]
 })
 export class NavbarUiModule {

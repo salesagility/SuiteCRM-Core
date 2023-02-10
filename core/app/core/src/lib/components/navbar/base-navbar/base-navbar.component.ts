@@ -46,6 +46,8 @@ import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
+import {GlobalSearch} from '../../../services/navigation/global-search/global-search.service';
+import {ActionBarModel} from '../../action-bar/action-bar-model';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -63,8 +65,40 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
     protected static instances: BaseNavbarComponent[] = [];
 
+    actionBar: ActionBarModel = {
+        createLinks: [
+            {
+                label: 'Accounts',
+                route: '/accounts/edit'
+            },
+            {
+                label: 'Contacts',
+                route: '/contacts/edit'
+            },
+            {
+                label: 'Leads',
+                route: '/leads/edit'
+            },
+            {
+                label: 'Opportunities',
+                route: '/opportunities/edit'
+            },
+            {
+                label: 'AOS_Quotes',
+                route: '/quotes/edit'
+            },
+            {
+                label: 'AOS_Contracts',
+                route: '/contracts/edit'
+            },
+        ],
+        favoriteRecords: [],
+    };
+
+    searchTerm = '';
     loaded = true;
     isUserLoggedIn: boolean;
+    isSearchBarVisible: boolean = false;
 
     mainNavCollapse = true;
     subNavCollapse = true;
@@ -85,6 +119,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
     navigation$: Observable<Navigation> = this.navigationStore.vm$;
+
+    notificationCount$: Observable<number>;
 
     vm$ = combineLatest([
         this.navigation$,
@@ -112,7 +148,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             }
 
             return {
-                navigation, userPreferences, appState
+                navigation, userPreferences, appState,
+                appStrings: language.appStrings || {},
+                appListStrings: language.appListStrings || {}
             };
         })
     );
@@ -126,6 +164,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
+        protected globalSearch: GlobalSearch
     ) {
     }
 
@@ -154,10 +193,37 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         });
 
         window.dispatchEvent(new Event('resize'));
+
+        this.notificationCount$ = this.appState.notificationsUnreadTotal$;
     }
 
     ngOnDestroy(): void {
         this.authService.isUserLoggedIn.unsubscribe();
+    }
+
+    /**
+     * Toggle between searchbar and menu items
+     */
+    toggleSearchBar(): void {
+        this.isSearchBarVisible = !this.isSearchBarVisible;
+    }
+
+    search(): void {
+        this.globalSearch.navigateToSearch(this.searchTerm).finally(() => {
+            this.clearSearchTerm();
+        });
+    }
+
+    clearSearchTerm(): void {
+        this.searchTerm = '';
+    }
+
+    checkAppStrings(appStrings): boolean {
+        return appStrings && Object.keys(appStrings).length > 0;
+    }
+
+    markAsRead(): void {
+        this.appState.markNotificationsAsRead();
     }
 
     /**
