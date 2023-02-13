@@ -49,6 +49,10 @@ export class SubpanelFilterAdapter {
             searchFields$: this.store.searchMetadata$.pipe(
                 map((searchMeta: SearchMeta) => {
 
+                    if (this.store.metadata.searchdefs){
+                        return this.store.metadata.searchdefs
+                    }
+
                     if (!searchMeta) {
                         return {} as SearchMetaFieldMap;
                     }
@@ -58,7 +62,7 @@ export class SubpanelFilterAdapter {
                         type = 'basic';
                     }
 
-                    return searchMeta.layout[type];
+                    return searchMeta?.layout[type];
                 })
             ),
             listFields: [],
