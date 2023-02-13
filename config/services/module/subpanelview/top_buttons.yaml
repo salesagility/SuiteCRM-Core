@@ -48,66 +48,65 @@ parameters:
       acl:
         - edit
       module: tasks
-      SubPanelTopScheduleMeetingButton:
-        key: create
-        labelKey: LNK_NEW_MEETING
-        action: create
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: meetings
-      SubPanelTopScheduleCallButton:
-        key: create
-        labelKey: LNK_NEW_CALL
-        action: create
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: calls
-      SubPanelTopComposeEmailButton:
-        key: create
-        labelKey: LNK_NEW_EMAIL
-        action: create
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: emails
-        moduleAction:
-          - composeView
-      SubPanelTopCreateNoteButton:
-        key: create
-        labelKey: LNK_NEW_NOTE
-        action: create
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: notes
-      SubPanelTopArchiveEmailButton:
-        key: create
-        labelKey: LBL_TRACK_EMAIL_BUTTON_LABEL
-        action: create
-        asyncProcess: true
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: emails
-      SubPanelTopCreateLeadNameButton:
-        key: create
-        labelKey: LBL_QUICK_CREATE
-        action: create
-        params:
-        modes:
-          - list
-        acl:
-          - edit
-        module: leads
+    SubPanelTopScheduleMeetingButton:
+      key: create
+      labelKey: LNK_NEW_MEETING
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: meetings
+    SubPanelTopScheduleCallButton:
+      key: create
+      labelKey: LNK_NEW_CALL
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: calls
+    SubPanelTopComposeEmailButton:
+      key: create
+      labelKey: LNK_NEW_EMAIL
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: emails
+      moduleAction:
+        - composeView
+    SubPanelTopCreateNoteButton:
+      key: create
+      labelKey: LNK_NEW_NOTE
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: notes
+    SubPanelTopArchiveEmailButton:
+      key: create
+      labelKey: LBL_TRACK_EMAIL_BUTTON_LABEL
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: emails
+    SubPanelTopCreateLeadNameButton:
+      key: create
+      labelKey: LBL_QUICK_CREATE
+      action: create
+      params:
+      modes:
+        - list
+      acl:
+        - edit
+      module: leads
