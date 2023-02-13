@@ -47,7 +47,7 @@ import {AppState, AppStateStore} from '../../../store/app-state/app-state.store'
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
 import {GlobalSearch} from '../../../services/navigation/global-search/global-search.service';
-import {ActionBarModel} from '../../action-bar/action-bar-model';
+import {ActionBarModel} from './action-bar-model';
 
 @Component({
     selector: 'scrm-base-navbar',

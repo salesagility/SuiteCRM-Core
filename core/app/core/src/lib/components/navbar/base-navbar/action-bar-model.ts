@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {LinkModel} from '../navbar/link-model';
+import {LinkModel} from '../link-model';
 import {FavoriteRecordModel} from './favorite-record-model';
 
 export interface ActionBarModel {

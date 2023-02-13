@@ -27,7 +27,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ActionBarModel} from './action-bar-model';
+import {ActionBarModel} from '../navbar/base-navbar/action-bar-model';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
 import {AppStateStore} from "../../store/app-state/app-state.store";

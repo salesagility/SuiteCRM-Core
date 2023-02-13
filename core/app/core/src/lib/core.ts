@@ -1,7 +1,5 @@
-export * from './components/action-bar/action-bar-model';
 export * from './components/action-bar/action-bar.component';
 export * from './components/action-bar/action-bar.module';
-export * from './components/action-bar/favorite-record-model';
 export * from './components/action-group-menu/action-group-menu.component';
 export * from './components/action-group-menu/action-group-menu.module';
 export * from './components/bulk-action-menu/bulk-action-menu.component';
@@ -100,7 +98,9 @@ export * from './components/navbar/navbar.component';
 export * from './components/navbar/navbar.module';
 export * from './components/navbar/navbar.registry';
 export * from './components/navbar/recent-record-model';
+export * from './components/navbar/base-navbar/action-bar-model';
 export * from './components/navbar/base-navbar/base-navbar.component';
+export * from './components/navbar/base-navbar/favorite-record-model';
 export * from './components/navbar/grouped-menu-item/base-grouped-menu-item.component';
 export * from './components/navbar/grouped-menu-item/grouped-menu-item.component';
 export * from './components/navbar/grouped-menu-item/grouped-menu-item.registry';

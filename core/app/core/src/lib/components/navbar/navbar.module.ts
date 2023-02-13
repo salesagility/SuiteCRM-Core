@@ -30,7 +30,6 @@ import {NavbarUiComponent} from './navbar.component';
 
 import {LogoUiModule} from '../logo/logo.module';
 import {LogoutUiModule} from '../logout/logout.module';
-import {ActionBarUiModule} from '../action-bar/action-bar.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import {MenuItemLinkComponent} from './menu-item-link/menu-item-link.component';
@@ -130,7 +129,6 @@ import {NotificationsModule} from '../../containers/notifications/notifications.
         CommonModule,
         LogoUiModule,
         LogoutUiModule,
-        ActionBarUiModule,
         NgbModule,
         RouterModule,
         ImageModule,
