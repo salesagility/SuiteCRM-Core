@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ColumnDefinition} from './list.metadata.model';
+import {ColumnDefinition, SearchMetaField} from './list.metadata.model';
 import {WidgetOptionMap} from './widget.metadata';
 import {Action} from '../actions/action.model';
 
@@ -55,6 +55,7 @@ export interface SubPanelDefinition {
     pagination_type: string;
     type?: string;
     name: string;
+    searchdefs?: SearchMetaField;
     subpanel_name?: string;
     max_height?: number;
     header_definition_from_subpanel?: string;
