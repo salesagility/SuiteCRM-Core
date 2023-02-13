@@ -1,5 +1,3 @@
-export * from './components/action-bar/action-bar.component';
-export * from './components/action-bar/action-bar.module';
 export * from './components/action-group-menu/action-group-menu.component';
 export * from './components/action-group-menu/action-group-menu.module';
 export * from './components/bulk-action-menu/bulk-action-menu.component';
