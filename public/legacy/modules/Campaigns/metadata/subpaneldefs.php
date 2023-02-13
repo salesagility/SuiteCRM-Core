@@ -95,6 +95,7 @@ $layout_defs['Campaigns'] = array(
                 'name' =>
                     array(
                         'name' => 'name',
+                        'label' => 'LBL_SUBJECT',
                         'default' => true,
                         'width' => '10%',
                     ),
@@ -109,7 +110,8 @@ $layout_defs['Campaigns'] = array(
                 'date_modified' =>
                     array(
                         'name' => 'date_modified',
-                        'default' => true,
+                        'label' => 'LBL_DATE_MODIFIED',
+                        'type' => 'date',
                         'width' => '10%',
                     ),
             ),
