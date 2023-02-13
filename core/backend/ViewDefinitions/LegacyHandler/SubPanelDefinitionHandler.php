@@ -214,6 +214,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['top_buttons'] = $this->mapButtons($subpanel, $tab);
             $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
             $tabs[$key]['lineActions'] = $this->getSubpanelLineActions($subpanel, $tabs[$key]['module']);
+            $tabs[$key]['searchdefs'] = $this->getSearchdefs($subpanel, $module);
 
             if (empty($columnSubpanel)) {
                 continue;
@@ -305,6 +306,27 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         }
 
         return $topButtons;
+    }
+
+    protected function getSearchdefs(aSubPanel $subpanel) {
+        $searchDefs = $subpanel->_instance_properties['searchdefs'] ?? '';
+
+        if (!empty($searchDefs)){
+            foreach ($searchDefs as &$field) {
+                $fieldDefinition = [
+                    'name' => $field['name'],
+                    'type' => $field['type'] ?? 'varchar',
+                    'label' => $field['label'] ?? '',
+                    'options' => $field['options'] ?? [],
+                    'default' => $field['default'] ?? false,
+                    'width' => $field['width'],
+                ];
+                $field['fieldDefinition'] = $fieldDefinition;
+            }
+
+            return $searchDefs;
+        }
+        return null;
     }
 
     /**

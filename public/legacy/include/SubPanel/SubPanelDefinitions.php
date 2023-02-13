@@ -436,13 +436,13 @@ class aSubPanel
     //get value of a property defined at the panel instance level.
     public function get_inst_prop_value($name)
     {
-        return isset($this->_instance_properties[$name]) ? $this->_instance_properties [ $name ] : null;
+        return $this->_instance_properties [$name] ?? null;
     }
     //get value of a property defined at the panel definition level.
     public function get_def_prop_value($name)
     {
-        if (isset($this->panel_definition [ $name ])) {
-            return $this->panel_definition [ $name ] ;
+        if (!empty($this->panel_definition[$name])) {
+            return $this->panel_definition[$name] ;
         } else {
             return null ;
         }
@@ -480,10 +480,10 @@ class aSubPanel
     //returns the where clause for the query.
     public function get_where()
     {
-        if ($this->get_def_prop_value('where') != '' && $this->search_query != '') {
+        if (!empty($this->get_def_prop_value('where')) && $this->search_query !== '') {
             return $this->get_def_prop_value('where').' AND '.$this->search_query;
         } else {
-            if ($this->search_query != '') {
+            if ($this->search_query !== '') {
                 return $this->search_query;
             }
         }
