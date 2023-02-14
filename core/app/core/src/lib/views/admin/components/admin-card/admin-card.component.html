@@ -1,7 +1,7 @@
 <! --
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
-* Copyright (C) 2021 SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
 *
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,13 +25,15 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="(vm$ | async) as vm">
-    <ng-container *ngIf="getImage(vm, image) as img">
 
-        <svg-icon *ngIf="img.type === 'svg'" [svgClass]="klass || ''" [title]="title || ''" class="{{wrapperClass}}"
-                  name="{{img.name}}"></svg-icon>
+<div class="card text-center border-0" >
+    <div class="card-body">
 
-        <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}" class="{{klass}}" [title]="title || ''">
+        <scrm-image image="{{content.icon}}" [wrapperClass]="'sicon-3x'"></scrm-image>
+        <h6 class="card-title font-weight-bold" title="{{content.titleDesc}}">{{content.title}}</h6>
+        <div *ngFor="let link of content.links">
+            <a class="card-link" routerLink="{{link.path}}" title="{{link.titleDesc}}">{{link.title}}</a>
+        </div>
 
-    </ng-container>
-</ng-container>
+    </div>
+</div>

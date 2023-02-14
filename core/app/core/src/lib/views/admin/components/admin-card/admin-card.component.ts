@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,49 +25,17 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import {MenuItem} from 'common';
+
 
 @Component({
-    selector: 'scrm-image',
-    templateUrl: './image.component.html',
-    styleUrls: []
+    selector: 'scrm-admin-card',
+    templateUrl: './admin-card.component.html',
+    styleUrls: [],
 })
-export class ImageComponent {
-    @Input() image: string;
-    @Input() klass = '';
-    @Input() title = '';
-    @Input() wrapperClass = 'sicon';
+export class AdminCardComponent {
+    @Input() content: any;
 
-    images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
+    constructor() {}
 
-    vm$ = combineLatest([this.images$]).pipe(
-        map(([images]) => ({
-            images
-        })));
-
-    constructor(protected themeImagesStore: ThemeImagesStore) {
-    }
-
-    /**
-     * Get image from current view model and log if not existent
-     *
-     * @param vm
-     * @param image name
-     * @returns ThemeImage
-     */
-    getImage(vm: { images: ThemeImageMap }, image: string): ThemeImage {
-        if (!vm || !vm.images || Object.keys(vm.images).length < 1) {
-            return null;
-        }
-
-        const img = vm.images[image];
-
-        if (!img) {
-            console.warn(`Image with name '${image}' not found`);
-        }
-
-        return img;
-    }
 }

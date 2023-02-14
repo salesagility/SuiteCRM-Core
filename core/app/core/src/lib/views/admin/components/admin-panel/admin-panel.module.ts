@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,50 +24,23 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AdminPanelComponent} from './admin-panel.component';
+import {AdminCardModule} from '../admin-card/admin-card.module';
 
-@Component({
-    selector: 'scrm-image',
-    templateUrl: './image.component.html',
-    styleUrls: []
+@NgModule({
+    declarations: [
+        AdminPanelComponent
+    ],
+    exports: [
+        AdminPanelComponent
+    ],
+    imports: [
+        CommonModule,
+        AdminCardModule
+
+    ]
 })
-export class ImageComponent {
-    @Input() image: string;
-    @Input() klass = '';
-    @Input() title = '';
-    @Input() wrapperClass = 'sicon';
-
-    images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
-
-    vm$ = combineLatest([this.images$]).pipe(
-        map(([images]) => ({
-            images
-        })));
-
-    constructor(protected themeImagesStore: ThemeImagesStore) {
-    }
-
-    /**
-     * Get image from current view model and log if not existent
-     *
-     * @param vm
-     * @param image name
-     * @returns ThemeImage
-     */
-    getImage(vm: { images: ThemeImageMap }, image: string): ThemeImage {
-        if (!vm || !vm.images || Object.keys(vm.images).length < 1) {
-            return null;
-        }
-
-        const img = vm.images[image];
-
-        if (!img) {
-            console.warn(`Image with name '${image}' not found`);
-        }
-
-        return img;
-    }
+export class AdminPanelModule {
 }
