@@ -65,7 +65,7 @@ class AOS_Products extends AOS_Products_sugar
         $GLOBALS['log']->debug('UPLOADING PRODUCT IMAGE');
 
         if(!empty($_FILES['uploadimage'])){
-        $imageFileName = $_FILES['uploadimage']['name'] ?? '';
+            $imageFileName = $_FILES['uploadimage']['name'] ?? '';
             if (!has_valid_image_extension('AOS_Products Uploaded image file: ' . $imageFileName , $imageFileName)) {
                 LoggerManager::getLogger()->fatal("AOS_Products save - Invalid image file ext : '$imageFileName'.");
                 throw new RuntimeException('Invalid request');
