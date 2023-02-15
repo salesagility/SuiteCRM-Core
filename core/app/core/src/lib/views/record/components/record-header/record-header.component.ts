@@ -25,7 +25,7 @@
  */
 
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
@@ -43,8 +43,24 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
     displayResponsiveTable = false;
     mode: ViewMode = 'detail';
     loading: boolean = true;
+    isScrolled: boolean = false;
 
     protected subs: Subscription[] = [];
+
+    @HostListener('window:scroll', ['$event']) onScroll() {
+        const scrollPosition = window.pageYOffset;
+        //ScrollThreshold is set to 5em
+        const scrollThreshold = 5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+        if (scrollPosition > scrollThreshold) {
+            //20 is just a random safezone number
+            if (scrollPosition - scrollThreshold <20) return;
+            this.isScrolled = true;
+        } else {
+            if (scrollThreshold - scrollPosition <20) return;
+            this.isScrolled = false;
+        }
+    }
 
     constructor(
         public actionsAdapter: RecordActionsAdapter,

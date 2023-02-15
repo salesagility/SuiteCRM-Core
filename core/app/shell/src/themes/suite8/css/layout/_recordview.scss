@@ -77,10 +77,24 @@
   word-wrap: break-word;
 }
 
+.record-view-name-scrolled {
+  color: $median-grey;
+  font-size: 1em;
+  margin-left: 1.3rem;
+  word-wrap: break-word;
+  text-transform: uppercase;
+}
+
 .record-view-actions {
   margin: 1em 0 0 0;
   text-align: end;
 }
+
+.record-view-actions-scrolled {
+  margin: 0;
+  text-align: end;
+}
+
 @media only screen and (max-width: $breakpoint-medium) {
   .record-view-header {
     padding-bottom: 0.5em;

@@ -70,9 +70,9 @@
                 </div>
             </div>
             <div *ngIf="!loading" class="row mr-0">
-                <div class="col-md-4">
+                <div [ngClass]="isScrolled ? 'col-md-4 d-flex align-items-center' : 'col-md-4'">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                    <div class="record-view-name d-flex">
+                    <div [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex' : 'record-view-name d-flex'">
                         <scrm-dynamic-label *ngIf="record && record.fields"
                                             [fields]="record.fields"
                                             [labelKey]="getSummaryTemplate()">
@@ -90,7 +90,7 @@
                             <scrm-action-group-menu
                                 [config]="actionsAdapter"
                                 [actionContext]="getActionContext(record)"
-                                klass="record-view-actions float-right"
+                                [klass]="isScrolled ?  'record-view-actions-scrolled float-right' : 'record-view-actions float-right'"
                                 buttonClass="settings-button"
                             >
                             </scrm-action-group-menu>
