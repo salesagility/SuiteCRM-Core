@@ -24,7 +24,14 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnDestroy,
+    OnInit
+
+} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
@@ -187,7 +194,6 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             this.appState
         );
         this.setNavbar(navbar);
-
         this.authService.isUserLoggedIn.subscribe(value => {
             this.isUserLoggedIn = value;
         });
@@ -195,6 +201,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         window.dispatchEvent(new Event('resize'));
 
         this.notificationCount$ = this.appState.notificationsUnreadTotal$;
+
+
     }
 
     ngOnDestroy(): void {

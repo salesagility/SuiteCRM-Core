@@ -96,18 +96,20 @@
                             <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle"
                                ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                <!--                            {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}-->
                             </a>
                             <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
                                  aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
+                                <span class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
                                 <ng-template [ngIf]="navbar.globalActions">
-                                    <a *ngFor="let globalAction of navbar.globalActions"
-                                       class="dropdown-item global-links-sublink"
-                                       href="{{ globalAction.link.url }}"
-                                       ngbDropdownItem
-                                       target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
-                                    </a>
+                                    <ng-container *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                        <a class="dropdown-item global-links-sublink"
+                                           href="{{ globalAction.link.url }}"
+                                           ngbDropdownItem
+                                           target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
+                                        </a>
+                                        <hr *ngIf="last === true || first === true" />
+                                    </ng-container>
                                 </ng-template>
                                 <scrm-logout-ui></scrm-logout-ui>
                             </div>
@@ -202,21 +204,24 @@
                 <div class="global-links" ngbDropdown>
                     <ul class="navbar-nav">
                         <li class="global-link-item">
-                            <a #globalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
+                            <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                                 <!--                                <span class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>-->
                             </a>
-                            <div [style.min-width.px]="globalLinkTitle.offsetWidth"
-                                 aria-labelledby="navbarDropdownMenuLink"
+                            <div aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
-                                <ng-container *ngIf="navbar.globalActions">
-                                    <a *ngFor="let globalAction of navbar.globalActions"
-                                       class="dropdown-item global-links-sublink"
-                                       href="{{ globalAction.link.url }}"
-                                       ngbDropdownItem
-                                       target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
-                                    </a>
-                                </ng-container>
+                                    <span class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
+                                    <ng-container *ngIf="navbar.globalActions">
+                                        <ng-container *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                            <a class="dropdown-item global-links-sublink"
+                                                href="{{ globalAction.link.url }}"
+                                                ngbDropdownItem
+                                                target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
+                                            </a>
+                                            <hr *ngIf="last === true || first === true" />
+                                        </ng-container>
+
+                                    </ng-container>
                                 <scrm-logout-ui></scrm-logout-ui>
                             </div>
                         </li>

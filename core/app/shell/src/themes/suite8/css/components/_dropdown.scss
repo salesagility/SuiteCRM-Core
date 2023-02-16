@@ -242,6 +242,7 @@ ul.main li a,
   margin: 0;
   right: 0;
   position: absolute;
+  width: 240px;
   -webkit-border-radius: 0.25em;
   -webkit-border-top-left-radius: 0;
   -webkit-border-top-right-radius: 0;
@@ -252,6 +253,14 @@ ul.main li a,
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-top-width: 0;
+  .global-user-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    padding: 0.4em 0.8em 0 1.8em;
+    font-size: .8em;
+    color: $pale-grey;
+  }
 }
 
 .primary-global-link {
@@ -493,18 +502,4 @@ ul.main li a,
 .mobile-nav-dropdown .dropdown-item:hover {
   background-color: $vacant-orange;
   cursor: pointer;
-}
-
-.global-links {
-  .global-link-item {
-    .global-user-name {
-      overflow: hidden;
-      max-width: 200px;
-      text-overflow: ellipsis;
-      display: inline-block;
-      vertical-align: middle;
-      position: relative;
-      top: -2px;
-    }
-  }
 }
