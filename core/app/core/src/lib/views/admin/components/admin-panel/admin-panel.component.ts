@@ -37,7 +37,7 @@ export class AdminPanelComponent {
 
     mockData:Array<any> = [
         {
-            icon: 'Users',
+            icon: 'icon_users_and_authentication',
             title: 'Users & Authentication',
             titleDesc: 'Create, edit, activate and deactivate users in SuiteCRM.',
             links: [
@@ -79,7 +79,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'Administration',
+            icon: 'icon_system',
             title: 'System',
             titleDesc: 'Configure the system-wide settings according to the specifications of your organization. Users can override some of the default locale settings within their user settings page.',
             links: [
@@ -131,7 +131,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'AOW_Processed',
+            icon: 'icon_module_settings',
             title: 'Module Settings',
             titleDesc: 'Configure Module specifics and settings',
             links: [
@@ -183,7 +183,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'Email_Marketing',
+            icon: 'icon_email',
             title: 'Email',
             titleDesc: 'Manage outbound and inbound emails. The email settings must be configured in order to enable users to send out email and newsletter campaigns.',
             links: [
@@ -220,7 +220,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'ProspectLists',
+            icon: 'icon_admin_tools',
             title: 'Admin Tools',
             titleDesc: 'Repair, backup and run diagnosis on your SuiteCRM instance',
             links: [
@@ -252,7 +252,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'OutboundEmailAccounts',
+            icon: 'icon_developer_tools',
             title: 'Developer Tools',
             titleDesc: 'Create and edit modules and module layouts, manage standard and custom fields and configure tabs.',
             links: [
@@ -284,7 +284,7 @@ export class AdminPanelComponent {
             ]
         },
         {
-            icon: 'Overview',
+            icon: 'icon_google_suite',
             title: 'Google Suite',
             titleDesc: 'Manage your Google Suite Integration.',
             links: [

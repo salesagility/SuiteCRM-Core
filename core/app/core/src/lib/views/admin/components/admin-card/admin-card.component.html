@@ -27,12 +27,11 @@
 -->
 
 <div class="card text-center border-0" >
+    <scrm-image image="{{content.icon}}" [wrapperClass]="'sicon-3x'"></scrm-image>
     <div class="card-body">
-
-        <scrm-image image="{{content.icon}}" [wrapperClass]="'sicon-3x'"></scrm-image>
-        <h6 class="card-title font-weight-bold" title="{{content.titleDesc}}">{{content.title}}</h6>
+        <h6 class="card-title admin-card-title" title="{{content.titleDesc}}">{{content.title}}</h6>
         <div *ngFor="let link of content.links">
-            <a class="card-link" routerLink="{{link.path}}" title="{{link.titleDesc}}">{{link.title}}</a>
+            <a class="card-link admin-card-link" routerLink="{{link.path}}" title="{{link.titleDesc}}">{{link.title}}</a>
         </div>
 
     </div>
