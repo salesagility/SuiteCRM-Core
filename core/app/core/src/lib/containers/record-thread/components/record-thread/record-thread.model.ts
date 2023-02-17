@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, AttributeMap, SearchCriteria} from 'common';
+import {Action, AttributeMap, FieldDefinitionMap, SearchCriteria} from 'common';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {Observable} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
@@ -58,4 +58,5 @@ export interface ThreadItemMetadataConfig {
     header?: FieldFlexbox;
     body?: FieldFlexbox;
     actions?: Action[];
+    fields?: FieldDefinitionMap;
 }
