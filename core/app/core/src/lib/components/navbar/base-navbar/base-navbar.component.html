@@ -100,15 +100,17 @@
                             <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
                                  aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
-                                <span class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
+                                <span
+                                    class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
                                 <ng-template [ngIf]="navbar.globalActions">
-                                    <ng-container *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                    <ng-container
+                                        *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
                                         <a class="dropdown-item global-links-sublink"
                                            href="{{ globalAction.link.url }}"
                                            ngbDropdownItem
                                            target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
                                         </a>
-                                        <hr *ngIf="last === true || first === true" />
+                                        <hr *ngIf="last === true || first === true"/>
                                     </ng-container>
                                 </ng-template>
                                 <scrm-logout-ui></scrm-logout-ui>
@@ -206,22 +208,23 @@
                         <li class="global-link-item">
                             <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                <!--                                <span class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>-->
                             </a>
                             <div aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
-                                    <span class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
-                                    <ng-container *ngIf="navbar.globalActions">
-                                        <ng-container *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
-                                            <a class="dropdown-item global-links-sublink"
-                                                href="{{ globalAction.link.url }}"
-                                                ngbDropdownItem
-                                                target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
-                                            </a>
-                                            <hr *ngIf="last === true || first === true" />
-                                        </ng-container>
-
+                                <span
+                                    class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
+                                <ng-container *ngIf="navbar.globalActions">
+                                    <ng-container
+                                        *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                        <a class="dropdown-item global-links-sublink"
+                                           href="{{ globalAction.link.url }}"
+                                           ngbDropdownItem
+                                           target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
+                                        </a>
+                                        <hr *ngIf="last === true || first === true"/>
                                     </ng-container>
+
+                                </ng-container>
                                 <scrm-logout-ui></scrm-logout-ui>
                             </div>
                         </li>
@@ -238,23 +241,29 @@
     </ng-container>
 
     <ng-template #searchBar>
-        <form name="global-search" class="global-search" *ngIf="isSearchBarVisible">
-            <div class="input-group">
+        <form name="global-search" class="global-search">
+            <div class="d-flex ">
                 <input [(ngModel)]="searchTerm"
                        type="text"
                        name="global-search-term"
-                       class="form-control global-search-term"
+                       class="form-control global-search-term mr-1"
                        placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
                        aria-label="Search"
+                       appAutoFocusDirective
                        required>
-                <div class="input-group-append">
-                    <button class="btn btn-default search-button"
-                            aria-label="Search"
-                            scrm-button-loading
-                            (click)="search()">
-                        <scrm-image class="search-icon sicon" image="search"></scrm-image>
-                    </button>
-                </div>
+                <button class="filter-button btn btn-danger btn-sm"
+                        aria-label="Search"
+                        scrm-button-loading
+                        (click)="search()">
+                        <scrm-label labelKey="LBL_SEARCH"></scrm-label>
+<!--                    <scrm-image class="search-icon sicon" image="search"></scrm-image>-->
+                </button>
+                <button class="filter-button btn btn-danger btn-sm"
+                        aria-label="Cancel Search"
+                        (click)="isSearchBarVisible= false;">
+                    <scrm-label labelKey="LBL_CANCEL"></scrm-label>
+<!--                    <scrm-image class="search-icon sicon" image="cross"></scrm-image>-->
+                </button>
             </div>
         </form>
     </ng-template>
@@ -264,8 +273,9 @@
 
             <a class="action-link primary-global-link" type="button" aria-label="Toggle Search Bar"
                (click)="toggleSearchBar()">
-                <scrm-image class="action-btn-icon" image="search" *ngIf="!isSearchBarVisible"></scrm-image>
-                <scrm-image class="action-btn-icon" image="cross" *ngIf="isSearchBarVisible"></scrm-image>
+                <scrm-image [ngClass]="isSearchBarVisible ? 'action-btn-icon-clicked' : 'action-btn-icon'"
+                            image="search"></scrm-image>
+                <!--                <scrm-image class="action-btn-icon" image="cross" *ngIf="isSearchBarVisible"></scrm-image>-->
             </a>
 
             <div class="action-new dropdown">

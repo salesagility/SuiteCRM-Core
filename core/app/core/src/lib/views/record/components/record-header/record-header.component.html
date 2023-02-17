@@ -26,7 +26,7 @@
 */
 -->
 <ng-container>
-    <div class="record-view-header">
+    <div class="record-view-header" [ngClass]="isScrolled ? 'record-view-header-scrolled shadow-sm': ''">
         <ng-container *ngIf="displayResponsiveTable">
             <div class="d-flex flex-nowrap">
                 <div class="row">
@@ -70,14 +70,14 @@
                 </div>
             </div>
             <div *ngIf="!loading" class="row mr-0">
-                <div [ngClass]="isScrolled ? 'col-md-4 d-flex align-items-baseline' : 'col-md-4'">
+                <div [ngClass]="isScrolled ? 'col-md-4 d-flex align-items-center' : 'col-md-4'">
                     <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                    <div [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-end' : 'record-view-name d-flex'">
+                    <div [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-center' : 'record-view-name d-flex'">
                         <scrm-dynamic-label *ngIf="record && record.fields"
                                             [fields]="record.fields"
                                             [labelKey]="getSummaryTemplate()">
                         </scrm-dynamic-label>
-                        <div *ngIf="record && record.fields && mode !== 'create'" class="pl-1 d-flex align-items-top">
+                        <div *ngIf="record && record.fields && mode !== 'create'" class="pl-1 pb-2 d-flex align-items-top">
                             <scrm-favorite-toggle [record]="record"></scrm-favorite-toggle>
                         </div>
                     </div>

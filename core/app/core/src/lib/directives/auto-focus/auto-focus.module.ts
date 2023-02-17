@@ -24,83 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.record-view {
-  padding-top: 3em;
-  width: 100%;
-  margin: 0;
-}
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AutoFocusDirective} from './auto-focus.directive';
 
-.record-view-position-sticky {
-  position: sticky;
-  top: 3em;
-  z-index: 2;
-}
-
-.record-view-header {
-  background-color: #f5f5f5;
-  border-bottom: 0.03em solid transparent;
-  padding-top: 0.5em;
-}
-
-.record-view-header-scrolled {
-  padding-bottom: 0.3em;
-}
-
-.record-view-hr {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.record-view-hr-container {
-  font-size: 0.85em;
-  padding-top: 0.6em;
-  padding-left: 1.6em;
-  padding-right: 1.6em;
-}
-
-@media all and (min-width: $breakpoint-large) {
-  .record-view-hr-container {
-    font-size: 0.85em;
-    padding: 0.4em 1.6em;
-  }
-}
-
-.record-view-title {
-  color: $shell-grey;
-  font-size: 1em;
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-left: 1.37rem;
-}
-
-.record-view-name {
-  color: $median-grey;
-  font-size: 1.5em;
-  margin-left: 1.3rem;
-  word-wrap: break-word;
-}
-
-.record-view-name-scrolled {
-  color: $median-grey;
-  font-size: 1em;
-  margin-left: 1.3rem;
-  word-wrap: break-word;
-  text-transform: uppercase;
-}
-
-.record-view-actions {
-  margin: 1em 0 0 0;
-  text-align: end;
-}
-
-.record-view-actions-scrolled {
-  margin: 0;
-  text-align: end;
-}
-
-@media only screen and (max-width: $breakpoint-medium) {
-  .record-view-header {
-    padding-bottom: 0.5em;
-  }
+@NgModule({
+    declarations: [
+        AutoFocusDirective
+    ],
+    exports: [
+        AutoFocusDirective
+    ],
+    imports: []
+})
+export class AutoFocusDirectiveModule {
 }

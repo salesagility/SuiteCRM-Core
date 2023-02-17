@@ -150,11 +150,7 @@
   vertical-align: baseline;
 }
 
-.search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon svg path {
+.search-icon, .search-icon svg path {
   fill: $light-grey;
 }
 
@@ -319,6 +315,10 @@
 .action-btn-icon svg path,
 .global-links svg path {
   fill: $white;
+}
+
+.action-btn-icon-clicked svg path{
+  fill: $salmon-pink;
 }
 
 .navbar-toggler:hover svg path {

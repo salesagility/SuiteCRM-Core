@@ -64,6 +64,7 @@ import {BaseMenuFavoritesComponent} from './menu-favorites/base-menu-favorites.c
 import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component';
 import {FormsModule} from '@angular/forms';
 import {NotificationsModule} from '../../containers/notifications/notifications.module';
+import {AutoFocusDirectiveModule} from '../../directives/auto-focus/auto-focus.module';
 
 
 @NgModule({
@@ -135,7 +136,8 @@ import {NotificationsModule} from '../../containers/notifications/notifications.
         DynamicModule,
         LabelModule,
         FormsModule,
-        NotificationsModule
+        NotificationsModule,
+        AutoFocusDirectiveModule
     ]
 })
 export class NavbarUiModule {

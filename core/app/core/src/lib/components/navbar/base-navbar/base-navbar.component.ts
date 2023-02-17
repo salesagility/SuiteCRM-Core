@@ -26,7 +26,6 @@
 
 import {
     Component,
-    ElementRef,
     HostListener,
     OnDestroy,
     OnInit
@@ -201,8 +200,6 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         window.dispatchEvent(new Event('resize'));
 
         this.notificationCount$ = this.appState.notificationsUnreadTotal$;
-
-
     }
 
     ngOnDestroy(): void {
