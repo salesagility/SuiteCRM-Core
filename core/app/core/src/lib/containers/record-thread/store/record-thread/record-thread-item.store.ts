@@ -25,7 +25,7 @@
  */
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Record, ViewFieldDefinition, ViewMode} from 'common';
+import {Record, ViewFieldDefinition, ViewFieldDefinitionMap, ViewMode} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordThreadItemMetadata} from './record-thread-item.store.model';
 import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
@@ -40,11 +40,20 @@ export class RecordThreadItemStore extends BaseRecordContainerStore<RecordThread
      */
     public getViewFields$(): Observable<ViewFieldDefinition[]> {
         return this.meta$.pipe(map((meta: RecordThreadItemMetadata) => {
+            const fieldsMap: ViewFieldDefinitionMap = {} as ViewFieldDefinitionMap;
             const fields: ViewFieldDefinition[] = [];
+
+            const fieldDefinitions = meta.fields ?? {} as ViewFieldDefinitionMap
+            Object.keys(fieldDefinitions).forEach(fieldName => {
+                if (fieldDefinitions[fieldName]) {
+                    fieldsMap[fieldName] = fieldDefinitions[fieldName];
+                }
+            });
+
             meta.headerLayout && meta.headerLayout.rows && meta.headerLayout.rows.forEach(row => {
                 row.cols.forEach(col => {
                     if (col.field) {
-                        fields.push(col.field);
+                        fieldsMap[col.field.name] = col.field;
                     }
                 });
             });
@@ -52,10 +61,14 @@ export class RecordThreadItemStore extends BaseRecordContainerStore<RecordThread
             meta.bodyLayout && meta.bodyLayout.rows && meta.bodyLayout.rows.forEach(row => {
                 row.cols.forEach(col => {
                     if (col.field) {
-                        fields.push(col.field);
+                        fieldsMap[col.field.name] = col.field;
                     }
                 });
             });
+
+            Object.keys(fieldsMap).forEach(fieldName => {
+                fields.push(fieldsMap[fieldName]);
+            })
 
             return fields;
         }));

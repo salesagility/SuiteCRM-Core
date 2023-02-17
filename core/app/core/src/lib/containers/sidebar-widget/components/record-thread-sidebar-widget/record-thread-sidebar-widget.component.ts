@@ -28,6 +28,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
     AttributeMap,
     deepClone,
+    FieldDefinitionMap,
     isFalse,
     isTrue,
     Record,
@@ -66,6 +67,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             collapsible?: boolean;
             collapseLimit?: number;
             layout?: ThreadItemMetadataConfig;
+            fields?: FieldDefinitionMap;
         },
         create: {
             presetFields?: {
@@ -171,6 +173,10 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
 
         if (config && config.actions) {
             metadata.actions = deepClone(config.actions);
+        }
+
+        if (config && config.fields) {
+            metadata.fields = deepClone(config.fields);
         }
     }
 

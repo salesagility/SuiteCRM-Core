@@ -92,20 +92,24 @@ export class NotificationsService {
             metadata: {} as RecordThreadItemMetadata,
         } as RecordThreadItemConfig;
 
-        this.setupItemMetadata(config.itemConfig.metadata, options.item.layout);
+        this.setupItemMetadata(config.itemConfig.metadata, options.item.layout, options);
     }
 
-    setupItemMetadata(metadata: RecordThreadItemMetadata, config: ThreadItemMetadataConfig): void {
-        if (config && config.header) {
-            metadata.headerLayout = deepClone(config.header);
+    setupItemMetadata(metadata: RecordThreadItemMetadata, layout: ThreadItemMetadataConfig, options): void {
+        if (layout && layout.header) {
+            metadata.headerLayout = deepClone(layout.header);
         }
 
-        if (config && config.body) {
-            metadata.bodyLayout = deepClone(config.body);
+        if (layout && layout.body) {
+            metadata.bodyLayout = deepClone(layout.body);
         }
 
-        if (config && config.actions) {
-            metadata.actions = deepClone(config.actions);
+        if (layout && layout.actions) {
+            metadata.actions = deepClone(layout.actions);
+        }
+
+        if (options?.item && options?.item?.fields) {
+            metadata.fields = deepClone(options.item.fields);
         }
     }
 
