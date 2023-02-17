@@ -255,14 +255,24 @@
                         aria-label="Search"
                         scrm-button-loading
                         (click)="search()">
-                        <scrm-label labelKey="LBL_SEARCH"></scrm-label>
-<!--                    <scrm-image class="search-icon sicon" image="search"></scrm-image>-->
+                        <ng-container *ngIf="mobileNavbar">
+                            <scrm-image class="search-icon sicon" image="search"></scrm-image>
+                        </ng-container>
+                        <ng-container *ngIf="!mobileNavbar">
+                            <scrm-label labelKey="LBL_SEARCH"></scrm-label>
+                        </ng-container>
+
+
                 </button>
                 <button class="filter-button btn btn-danger btn-sm"
                         aria-label="Cancel Search"
                         (click)="isSearchBarVisible= false;">
-                    <scrm-label labelKey="LBL_CANCEL"></scrm-label>
-<!--                    <scrm-image class="search-icon sicon" image="cross"></scrm-image>-->
+                    <ng-container *ngIf="mobileNavbar">
+                        <scrm-image class="search-icon sicon" image="cross"></scrm-image>
+                    </ng-container>
+                    <ng-container *ngIf="!mobileNavbar">
+                        <scrm-label labelKey="LBL_CANCEL"></scrm-label>
+                    </ng-container>
                 </button>
             </div>
         </form>
