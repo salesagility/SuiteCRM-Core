@@ -101,6 +101,11 @@ $dictionary['Alert'] = [
             'required' => false,
             'studio' => false,
             'comment' => 'Set Snooze For Notifications',
+        ],
+        'date_start' => [
+            'name' => 'date_start',
+            'vname' => 'LBL_DATE',
+            'type' => 'datetime',
         ]
     ],
     'relationships' => [],
