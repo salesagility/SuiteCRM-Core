@@ -13,7 +13,7 @@
   .notifications {
 
     .notifications-item {
-      border-bottom: 1px dashed #b2a5a7;
+      border-bottom: 1px dotted $danger;
     }
 
     .notifications-item.is_read-true {
@@ -25,7 +25,6 @@
     .line-actions-button {
       font-size: .775rem;
       color: $midnight-blue;
-      font-weight: 700;
       margin: 0;
       padding: 0;
     }
@@ -41,30 +40,53 @@
         margin-bottom: 0;
 
         &:hover {
-          background-color: #fbe1e0 !important;
-          cursor: pointer;
+          background-color: $lighter-salmon-pink !important;
         }
       }
 
-      .field-name-description {
+      .field-name-name {
         display: block;
-        width: 200px;
+        width: 175px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis !important;
-        margin-right: 2rem;
       }
 
       .notifications-actions svg {
-        font-size: 80%;
+        font-size: 75%;
       }
 
-      .field-name-target_module.field-type-icon svg {
-        font-size: 140%;
+      .field-name-name {
+
+        a, a.clickable{
+          color: $black;
+        }
+      }
+
+      .field-name-target_module_type.field-type-icon svg {
+        font-size: 130%;
+        fill: $burnt-orange;
+        stroke: $burnt-orange;
+        margin-top: -0.3rem;
+      }
+
+      .notification-item-buttons {
+        margin-top: -0.2rem;
       }
     }
 
     .notification-list-actions button {
+        color: $danger;
+    }
+
+    .record-thread-load-more .load-more-button {
+      font-weight: 400;
+    }
+
+    .record-thread-load-more::after {
+      content: "|";
+      margin-right: 0.2rem;
+      margin-left: 0.2rem;
       color: $danger;
     }
 
