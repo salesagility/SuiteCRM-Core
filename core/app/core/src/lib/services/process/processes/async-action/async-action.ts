@@ -38,14 +38,17 @@ import {NoopAsyncAction} from './actions/noop/noop.async-action';
 import {ChangelogAsyncAction} from './actions/changelog/changelog.async-action';
 
 export interface AsyncActionInput {
-    action: string;
-    module: string;
+    action?: string;
+    module?: string;
     criteria?: SearchCriteria;
     sort?: SortingSelection;
     ids?: string[];
     id?: string;
     payload?: { [key: string]: any };
     modalRecord?: Record;
+    record?: Record;
+
+    [key: string]: any
 }
 
 @Injectable({
