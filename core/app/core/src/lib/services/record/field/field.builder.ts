@@ -40,6 +40,7 @@ import {
 import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';
+import {merge} from 'lodash-es';
 
 
 @Injectable({
@@ -165,7 +166,7 @@ export class FieldBuilder {
 
         const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
 
-        const metadata = viewField.metadata || definition.metadata || {};
+        const metadata = merge(definition?.metadata ?? {}, viewField?.metadata ?? {});
 
         if (viewField.link) {
             metadata.link = viewField.link;
@@ -181,6 +182,7 @@ export class FieldBuilder {
         field.metadata = metadata;
         field.definition = definition;
         field.labelKey = viewField.label || definition.vname || '';
+        field.dynamicLabelKey = viewField.dynamicLabelKey || definition.dynamicLabelKey || '';
 
         field.validators = validators;
         field.asyncValidators = asyncValidators;
