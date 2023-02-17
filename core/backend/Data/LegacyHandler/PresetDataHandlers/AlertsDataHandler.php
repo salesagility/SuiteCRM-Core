@@ -72,6 +72,8 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
         string $type = 'advanced'
     ): ListData {
 
+        $this->addScheduledAlerts();
+
         $criteria = $this->getAlertCriteria($criteria);
 
         $bean = $this->getBean($module);
@@ -157,5 +159,17 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         return $criteria;
 
+    }
+
+    /**
+     * Add Scheduled Alerts
+     */
+    protected function addScheduledAlerts(): void
+    {
+        /* @noinspection PhpIncludeInspection */
+        require_once 'modules/Alerts/services/AddScheduledAlerts.php';
+
+        $addScheduledAlertsService =  new \AddScheduledAlerts();
+        $addScheduledAlertsService->run();
     }
 }
