@@ -25,10 +25,14 @@
  */
 
 import {Component, HostBinding, Input, OnInit, Type, OnChanges, SimpleChanges} from '@angular/core';
-import {Field, Record, StringMap} from 'common';
+import {EDITABLE_VIEW_MODES, Field, Record, StringMap, ViewMode} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
+import {DynamicLabelService} from '../../services/language/dynamic-label.service';
+import {
+    LinkRouteAsyncActionService
+} from '../../services/navigation/link-route-async-action/link-route-async-action.service';
 
 @Component({
     selector: 'scrm-dynamic-field',
@@ -50,7 +54,9 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     constructor(
         protected navigation: ModuleNavigation,
         protected moduleNameMapper: ModuleNameMapper,
-        protected router: Router
+        protected router: Router,
+        protected dynamicLabelService: DynamicLabelService,
+        protected linkRouteAsyncActionService: LinkRouteAsyncActionService
     ) {
     }
 
@@ -113,7 +119,8 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     }
 
     isLink(): boolean {
-        if (this.mode !== 'detail' && this.mode !== 'list') {
+
+        if (EDITABLE_VIEW_MODES.includes(this.mode as ViewMode)) {
             return false;
         }
 
@@ -121,15 +128,20 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
             return false;
         }
 
-        if (this.type === 'relate' && this.field.metadata && this.field.metadata.link !== false) {
+        if (this.type === 'relate') {
             return true;
         }
 
-        return !!(this.field.metadata && this.field.metadata.link);
+        return !!(this?.field?.metadata && this?.field?.metadata?.link);
     }
 
     hasOnClick(): boolean {
-        return !!(this.field && this.field.metadata && this.field.metadata.onClick);
+
+        const fieldMetadata = this?.field?.metadata ?? {};
+        const linkAsyncAction = fieldMetadata?.linkAsyncAction ?? null;
+        const linkOnClick = fieldMetadata?.onClick ?? null;
+
+        return !!(linkAsyncAction || linkOnClick);
     }
 
     isEdit(): boolean {
@@ -139,6 +151,12 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     getLink(): string {
         if (this.type === 'relate') {
             return this.getRelateLink;
+        }
+
+        const fieldMetadata = this?.field?.metadata ?? null;
+        const linkRoute = fieldMetadata.linkRoute ?? null;
+        if (fieldMetadata && linkRoute) {
+            return this.dynamicLabelService.parse(linkRoute, {}, this.record.fields);
         }
 
         return this.navigation.getRecordRouterLink(this.record.module, this.record.id);
@@ -156,8 +174,16 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     }
 
     onClick(): boolean {
-        if (this.field.metadata.onClick) {
+
+        const fieldMetadata = this?.field?.metadata ?? null;
+        if (fieldMetadata && fieldMetadata.onClick) {
             this.field.metadata.onClick(this.field, this.record);
+            return;
+        }
+
+        const linkAsyncAction = fieldMetadata.linkAsyncAction ?? null;
+        if (fieldMetadata && linkAsyncAction) {
+            this.linkRouteAsyncActionService.run(linkAsyncAction, this.field, this.record);
             return;
         }
 
