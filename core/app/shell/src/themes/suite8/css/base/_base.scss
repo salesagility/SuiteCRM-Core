@@ -51,9 +51,38 @@ ul li::marker {
   color: $midnight-blue;
 }
 
-.text-danger {
-  color: $btn-danger;
+.text-main {
+  color: $main;
 }
+
+.text-primary {
+  color: $primary !important;
+}
+
+.text-secondary {
+  color: $secondary !important;
+}
+
+.text-danger {
+  color: $btn-danger !important;
+}
+
+.text-bigger-1 {
+  font-size: 110%;
+}
+
+.text-bigger-2 {
+  font-size: 120%;
+}
+
+.text-bigger-3 {
+  font-size: 140%;
+}
+
+.text-bigger-4 {
+  font-size: 140%;
+}
+
 
 .fill-white {
   fill: $white;
