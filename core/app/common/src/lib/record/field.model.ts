@@ -56,6 +56,7 @@ export interface FieldDefinition {
     name?: string;
     type?: string; // label key to use
     vname?: string; // original label
+    dynamicLabelKey?: string;
     options?: string;
     reportable?: boolean;
     required?: boolean;
@@ -94,6 +95,8 @@ export interface FieldDefinition {
     modes?: ViewMode[];
     relationship?: string;
     relationshipMetadata?: RelationshipMetadata
+
+    [key: string]: any;
 }
 
 export interface RelationshipMetadata {
@@ -115,6 +118,8 @@ export interface FieldMetadata {
     format?: boolean;
     target?: string;
     link?: boolean;
+    linkRoute?: string;
+    linkAsyncAction?: string;
     rows?: number;
     cols?: number;
     digits?: number;
@@ -124,6 +129,8 @@ export interface FieldMetadata {
     extraOptions?: Option[];
     onClick?: FieldClickCallback;
     tinymce?: any;
+
+    [key: string]: any;
 }
 
 export interface FieldAttributeMap {
@@ -153,6 +160,7 @@ export interface Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    dynamicLabelKey?: string;
     parentKey?: string;
     attributes?: FieldAttributeMap;
     items?: Record[];
@@ -179,6 +187,7 @@ export class BaseField implements Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    dynamicLabelKey?: string;
     display?: string;
     defaultDisplay?: string;
     source?: 'field' | 'attribute';

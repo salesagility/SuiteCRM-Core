@@ -64,6 +64,11 @@
                                                             [labelKey]="field.labelKey"
                                                             [ngClass]="getLabelClass(col)">
                                                 </scrm-label>
+
+                                                <scrm-dynamic-label *ngIf="field.dynamicLabelKey"
+                                                                    [labelKey]="field.dynamicLabelKey"
+                                                                    [fields]="record.fields">
+                                                </scrm-dynamic-label>
                                             </div>
 
                                         </ng-container>
@@ -74,6 +79,7 @@
                                                 <scrm-field [field]="field"
                                                             [klass]="getFieldClass(col)"
                                                             [mode]="mode"
+                                                            [record]="record"
                                                             [type]="field.type">
                                                 </scrm-field>
 
