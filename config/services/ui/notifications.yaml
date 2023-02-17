@@ -2,7 +2,7 @@ parameters:
   notifications:
     module: 'alerts'
     class: 'notifications'
-    maxListHeight: 350
+    maxListHeight: 450
     direction: 'desc'
     autoRefreshFrequency: 180000 #3minutes
     showNoDataMessage: true
@@ -12,10 +12,21 @@ parameters:
       collapsible: false
       collapseLimit: 200
       itemClass: 'notifications-item'
-      buttonGroupClass: 'd-flex flex-column align-items-end notifications-actions'
+      buttonGroupClass: 'd-flex flex-row-reverse align-items-end notifications-actions'
       containerClass: 'flex-row align-items-start py-2 justify-content-start containerClass'
       dynamicClass: [ 'is_read' ]
       flexDirection: 'flex-row'
+      fields:
+        url_redirect:
+          name: 'url_redirect'
+          type: 'varchar'
+        date_start:
+          name: 'date_start'
+          dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE'
+          type: 'datetime'
+        is_read:
+          name: 'is_read'
+          type: 'bool'
       layout:
         body:
           class: 'itemContentClass'
@@ -30,7 +41,7 @@ parameters:
                   hideIfEmpty: false
                   class: 'font-weight-bold stroke-danger-light stroke-hover-danger fill-danger-light'
             -
-              class: 'd-flex flex-column flex-grow-1 pl-2 pr-5'
+              class: 'd-flex flex-column flex-grow-1 pl-2 pr-2'
               align: 'start'
               cols:
                 -
@@ -40,37 +51,46 @@ parameters:
                   labelClass: 'm-0'
                   display: 'readonly'
                   hideIfEmpty: true
-                  class: 'small font-weight-bold text-muted text-uppercase'
+                  class: 'small text-main text-uppercase'
                 -
                   field:
                     name: 'name'
+                    metadata:
+                      link: true
+                      linkRoute: '{{fields.url_redirect.value}}'
                   labelDisplay: 'none'
                   labelClass: 'm-0'
                   display: 'readonly'
                   hideIfEmpty: false
-                  class: 'font-weight-bold pb-1'
+                  class: 'text-bigger-1'
                 -
                   field:
                     name: 'date_entered'
-                  labelDisplay: 'none'
+                    dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE_ENTERED'
+                    type: 'datetime'
                   labelClass: 'm-0'
-                  display: 'readonly'
-                  hideIfEmpty: true
+                  labelDisplay: 'inline'
+                  display: 'none'
+                  hideIfEmpty: false
                   class: 'small'
                 -
                   field:
-                    name: 'is_read'
-                  labelDisplay: 'none'
+                    name: 'date_start'
+                    dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE'
+                    type: 'datetime'
+                  labelClass: 'm-0'
+                  labelDisplay: 'inline'
                   display: 'none'
                   hideIfEmpty: true
+                  class: 'small'
             -
-              class: 'd-flex flex-column'
+              class: 'd-flex'
               align: 'start'
               justify: 'start'
               cols:
                 -
                   actionSlot: 'true'
-                  class: 'haha'
+                  class: 'notification-item-buttons'
         actions:
           -
             key: 'delete'
@@ -80,7 +100,7 @@ parameters:
             params:
               displayConfirmation: true
               confirmationLabel: 'NTC_DELETE_CONFIRMATION'
-            klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0']
+            klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0 m-0']
             modes: ['detail', 'edit']
             acl: []
           -
@@ -91,11 +111,11 @@ parameters:
             params:
               displayConfirmation: true
               confirmationLabel: 'NTC_SNOOZE_CONFIRMATION'
-            klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0']
+            klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0 m-0 pr-2']
             modes: ['detail', 'edit']
             acl: []
     listActionsClass: "d-flex align-items-center justify-content-end notification-list-actions pr-2 pt-1"
-    listActionsButtonClass: "line-actions-button btn btn-link"
+    listActionsButtonClass: "line-actions-button btn btn-link small"
     listActionsButtonGroupClass: 'd-flex justify-content-end'
     listActions:
       -
