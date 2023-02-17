@@ -67,7 +67,27 @@ class Alert extends Basic
     /**
      * @var string
      */
+    public $url_redirect;
+
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string
+     */
+    public $target_module;
+
+    /**
+     * @var string
+     */
     public $reminder_id;
+
+    /**
+     * @var string
+     */
+    public $date_start;
 
     public function __construct()
     {
