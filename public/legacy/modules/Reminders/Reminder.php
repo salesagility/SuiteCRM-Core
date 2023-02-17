@@ -308,7 +308,7 @@ class Reminder extends Basic
         $dateTimeMax = $timedate->getNow(true)->modify("+{$app_list_strings['reminder_max_time']} seconds")->asDb(false);
 
         $dateTimeNow = $timedate->getNow(true)->asDb(false);
-        
+
 
         // Original jsAlert used to a meeting integration.
 
@@ -455,7 +455,7 @@ class Reminder extends Basic
         return 'index.php?action=DetailView&module=' . $module . '&record=' . $record_id;
     }
 
-    private static function unQuoteTime($timestr)
+    public static function unQuoteTime($timestr)
     {
         $ret = '';
         for ($i = 0; $i < strlen($timestr); $i++) {
@@ -468,7 +468,7 @@ class Reminder extends Basic
 
     // --- test for accept status decline is?
 
-    private static function isDecline(SugarBean $event, SugarBean $person)
+    public static function isDecline(SugarBean $event, SugarBean $person)
     {
         return self::testEventPersonAcceptStatus($event, $person, 'decline');
     }
