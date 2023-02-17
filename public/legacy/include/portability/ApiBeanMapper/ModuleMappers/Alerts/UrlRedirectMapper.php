@@ -25,34 +25,72 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-require_once __DIR__ . '/TargetModuleTypeMapper.php';
-require_once __DIR__ . '/TargetModuleLabelMapper.php';
-require_once __DIR__ . '/AlertNameMapper.php';
-require_once __DIR__ . '/UrlRedirectMapper.php';
-require_once __DIR__ . '/IsReadMapper.php';
-require_once __DIR__ . '/../../ApiBeanModuleMappers.php';
+require_once __DIR__ . '/../../../ApiBeanMapper/FieldMappers/FieldMapperInterface.php';
+require_once __DIR__ . '/../../../RouteConverter.php';
 
-class AlertsMappers extends ApiBeanModuleMappers
+class UrlRedirectMapper implements FieldMapperInterface
 {
-    /**
-     * @var string
-     */
-    public const MODULE = 'Alerts';
+    public const FIELD_NAME = 'url_redirect';
 
+    /**
+     * @var RouteConverter
+     */
+    protected $routeConverter;
+
+
+    /**
+     * AlertNameMapper constructor.
+     */
     public function __construct()
     {
-        $this->fieldMappers[TargetModuleTypeMapper::getField()] = new TargetModuleTypeMapper();
-        $this->fieldMappers[TargetModuleLabelMapper::getField()] = new TargetModuleLabelMapper();
-        $this->fieldMappers[AlertNameMapper::getField()] = new AlertNameMapper();
-        $this->fieldMappers[IsReadMapper::getField()] = new IsReadMapper();
-        $this->fieldMappers[UrlRedirectMapper::getField()] = new UrlRedirectMapper();
+        $this->routeConverter = new RouteConverter();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public static function getField(): string
+    {
+        return self::FIELD_NAME;
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public static function getModule(): string
+    public function toApi(SugarBean $bean, array &$container, string $alternativeName = ''): void
     {
-        return self::MODULE;
+        $name = self::FIELD_NAME;
+
+        if (!empty($alternativeName)) {
+            $name = $alternativeName;
+        }
+
+        $value = $bean->url_redirect ?? '';
+        if (empty($value)) {
+            $container[$name] = '';
+
+            return;
+        }
+
+        $path = $this->routeConverter->convertUri(html_entity_decode($value));
+        $container[$name] = str_replace('/#/', '/', $path);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toBean(SugarBean $bean, array &$container, string $alternativeName = ''): void
+    {
+        $name = self::getField();
+        if (!empty($alternativeName)) {
+            $name = $alternativeName;
+        }
+
+        if (empty($container[$name])) {
+            return;
+        }
+
+        $container[self::getField()] = $container[$name];
     }
 }
