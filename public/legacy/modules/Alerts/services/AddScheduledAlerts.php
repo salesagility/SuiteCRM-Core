@@ -52,7 +52,6 @@ class AddScheduledAlerts
      */
     public function run(): void
     {
-        $this->addActivitiesAlertsService->run();
         $this->addScheduledReminderAlerts->run();
     }
 }
