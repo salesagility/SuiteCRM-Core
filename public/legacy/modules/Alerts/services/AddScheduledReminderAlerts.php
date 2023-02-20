@@ -163,8 +163,12 @@ class AddScheduledReminderAlerts
     {
         $popupReminders = BeanFactory::getBean('Reminders')->get_full_list(
             '',
-            "reminders.popup = 1 AND (reminders.date_willexecute = -1 OR reminders.date_willexecute BETWEEN "
-            . $dateTimeNowStamp . " AND " . $dateTimeMaxStamp . ")"
+            "reminders.popup = 1 AND
+                    reminders.popup_viewed = 0 AND
+                    (
+                        reminders.date_willexecute = -1 OR
+                        reminders.date_willexecute BETWEEN " . $dateTimeNowStamp . " AND " . $dateTimeMaxStamp . "
+                    )"
         );
 
         return $popupReminders;
