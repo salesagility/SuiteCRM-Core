@@ -93,13 +93,13 @@ parameters:
                   class: 'notification-item-buttons'
         actions:
           -
-            key: 'delete'
+            key: 'dismiss-alert'
             icon: 'cross'
             titleKey: 'LBL_DISMISS'
             asyncProcess: true
             params:
               displayConfirmation: true
-              confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+              confirmationLabel: 'NTC_DISMISS_CONFIRMATION'
             klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0 m-0']
             modes: ['detail', 'edit']
             acl: []
@@ -119,13 +119,13 @@ parameters:
     listActionsButtonGroupClass: 'd-flex justify-content-end'
     listActions:
       -
-        key: 'delete-all'
+        key: 'dismiss-all-alerts'
         label: 'LBL_DISMISS_ALL'
         labelKey: 'LBL_DISMISS_ALL'
         asyncProcess: true
         params:
           displayConfirmation: true
-          confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+          confirmationLabel: 'NTC_DISMISS_ALL_CONFIRMATION'
           module: 'alerts'
         klass: ['']
         modes: ['detail', 'list']
