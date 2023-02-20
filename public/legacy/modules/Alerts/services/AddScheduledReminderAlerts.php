@@ -89,7 +89,9 @@ class AddScheduledReminderAlerts
                 continue;
             }
 
-            if ($this->isOutsideOfExecutionDateRange($relatedEventStart, $dateTimeNowStamp, $dateTimeMaxStamp)) {
+            $relatedEventStart -= $popupReminder->timer_popup;
+
+            if (!$this->isWithinExecutionDateRange($relatedEventStart, $dateTimeNowStamp, $dateTimeMaxStamp)) {
                 continue;
             }
 
@@ -103,8 +105,6 @@ class AddScheduledReminderAlerts
             if (!$invitees) {
                 continue;
             }
-
-            $relatedEventStart -= $popupReminder->timer_popup;
 
             $url = $this->getURL($popupReminder);
             $instructions = $this->getInstructions($app_strings['MSG_JS_ALERT_MTG_REMINDER_MEETING_MSG']);
@@ -302,10 +302,22 @@ class AddScheduledReminderAlerts
      * @param $dateTimeMaxStamp
      * @return bool
      */
-    protected function isOutsideOfExecutionDateRange($relatedEventStart, $dateTimeNowStamp, $dateTimeMaxStamp): bool
+    protected function isWithinExecutionDateRange($relatedEventStart, $dateTimeNowStamp, $dateTimeMaxStamp): bool
     {
-        return $relatedEventStart
-            && ($relatedEventStart <= $dateTimeNowStamp || $relatedEventStart >= $dateTimeMaxStamp);
+        if (empty($relatedEventStart)) {
+            return false;
+        }
+
+        //increase time by 10 secs to make sure we calculate within the correct minute
+        if (($dateTimeNowStamp + 10) < $relatedEventStart) {
+            return false;
+        }
+
+        if ($relatedEventStart > $dateTimeMaxStamp) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
