@@ -25,7 +25,7 @@
  */
 
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {combineLatest, Subscription, interval } from 'rxjs';
+import {combineLatest, Subscription, timer} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
@@ -100,7 +100,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.subs.push(this.config.filters$.subscribe(filters => {
                 this.store.setFilters(filters).pipe(take(1)).subscribe(() => {
-                    if(this.config.onRefresh) {
+                    if (this.config.onRefresh) {
                         this.config.onRefresh()
                     }
                 });
@@ -108,22 +108,30 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         } else {
             this.store.load(false).subscribe(() => {
-                if(this.config.onRefresh) {
+                if (this.config.onRefresh) {
                     this.config.onRefresh()
                 }
             });
         }
 
         const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
-        if(autoRefreshFrequency && this.store) {
-            this.subs.push(interval(autoRefreshFrequency).subscribe(() => {
+        if (autoRefreshFrequency && this.store) {
+            const currentDate = new Date();
+            const startOfNextMinute = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate(),
+                currentDate.getHours(),
+                currentDate.getMinutes() + 1
+            );
+
+            this.subs.push(timer(startOfNextMinute, autoRefreshFrequency * 60000).subscribe(() => {
                 this.store.load(false).subscribe(
                     () => {
-                        if(this.config.onRefresh) {
+                        if (this.config.onRefresh) {
                             this.config.onRefresh()
                         }
                     }
-
                 )
             }));
         }
@@ -172,10 +180,10 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             klass: 'load-more-button btn btn-link btn-sm',
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
-                if(this?.config?.onLoadMore) {
+                if (this?.config?.onLoadMore) {
                     this.store.getRecordList().records$.pipe(
                         take(1),
-                        tap(()=> this.config.onLoadMore())
+                        tap(() => this.config.onLoadMore())
                     ).subscribe();
                 }
                 this.store.loadMore();

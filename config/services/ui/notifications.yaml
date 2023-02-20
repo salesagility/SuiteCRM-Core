@@ -4,7 +4,7 @@ parameters:
     class: 'notifications'
     maxListHeight: 450
     direction: 'desc'
-    autoRefreshFrequency: 180000 #3minutes
+    autoRefreshFrequency: 1 #minutes
     showNoDataMessage: true
     noDataLabel: 'LBL_NOTIFICATIONS_NONE'
     create: null
