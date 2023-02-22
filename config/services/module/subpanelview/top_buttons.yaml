@@ -4,7 +4,6 @@ parameters:
       key: select
       labelKey: LBL_LINK
       action: select
-      params:
       modes:
         - list
       acl:
@@ -13,7 +12,6 @@ parameters:
       key: create
       labelKey: LBL_QUICK_CREATE
       action: create
-      params:
       modes:
         - list
       acl:
@@ -42,7 +40,6 @@ parameters:
       key: create
       labelKey: LNK_NEW_TASK
       action: create
-      params:
       modes:
         - list
       acl:
@@ -52,7 +49,6 @@ parameters:
       key: create
       labelKey: LNK_NEW_MEETING
       action: create
-      params:
       modes:
         - list
       acl:
@@ -62,7 +58,6 @@ parameters:
       key: create
       labelKey: LNK_NEW_CALL
       action: create
-      params:
       modes:
         - list
       acl:
@@ -72,7 +67,6 @@ parameters:
       key: create
       labelKey: LNK_NEW_EMAIL
       action: create
-      params:
       modes:
         - list
       acl:
@@ -84,7 +78,6 @@ parameters:
       key: create
       labelKey: LNK_NEW_NOTE
       action: create
-      params:
       modes:
         - list
       acl:
@@ -94,7 +87,6 @@ parameters:
       key: create
       labelKey: LBL_TRACK_EMAIL_BUTTON_LABEL
       action: create
-      params:
       modes:
         - list
       acl:
@@ -104,7 +96,6 @@ parameters:
       key: create
       labelKey: LBL_QUICK_CREATE
       action: create
-      params:
       modes:
         - list
       acl:

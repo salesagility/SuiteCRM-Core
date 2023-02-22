@@ -52,6 +52,7 @@ export class ActionGroupMenuComponent implements OnInit {
     @Input() buttonGroupClass = '';
     @Input() actionContext: ActionContext;
     @Input() config: ActionDataSource;
+    @Input() actionLimitConfig: string = 'recordview_actions_limits';
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
@@ -70,8 +71,6 @@ export class ActionGroupMenuComponent implements OnInit {
     protected screen: ScreenSize = ScreenSize.Medium;
     protected defaultBreakpoint = 3;
     protected breakpoint: number;
-
-
 
     constructor(
         protected languages: LanguageStore,
@@ -138,7 +137,7 @@ export class ActionGroupMenuComponent implements OnInit {
 
     getBreakpoint(): number {
 
-        const breakpointMap = this.systemConfigStore.getConfigValue('recordview_actions_limits');
+        const breakpointMap = this.systemConfigStore.getConfigValue(this.actionLimitConfig);
 
         if (this.screen && breakpointMap && breakpointMap[this.screen]) {
             this.breakpoint = breakpointMap[this.screen];
@@ -155,6 +154,7 @@ export class ActionGroupMenuComponent implements OnInit {
     protected buildButton(action: Action): ButtonInterface {
         const button = {
             label: action.label || '',
+            labelModule: this?.actionContext?.module ?? '',
             labelKey: action.labelKey || '',
             klass: this.buttonClass,
             titleKey: action.titleKey || '',
@@ -174,6 +174,10 @@ export class ActionGroupMenuComponent implements OnInit {
                 this.config.runAction(action, this.actionContext);
             }
         } as ButtonInterface;
+
+        if (!button.label){
+            button.labelKey = action.labelKey ?? '';
+        }
 
         const debounceClick = action?.params?.debounceClick ?? null;
 

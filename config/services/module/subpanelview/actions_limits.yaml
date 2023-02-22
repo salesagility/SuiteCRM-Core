@@ -1,0 +1,7 @@
+parameters:
+  module.subpanelview.actions_limits:
+    XSmall: 2
+    Small: 2
+    Medium: 2
+    Large: 2
+    XLarge: 2

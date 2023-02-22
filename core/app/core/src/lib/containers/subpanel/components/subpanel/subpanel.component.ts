@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {ButtonGroupInterface, ButtonInterface} from 'common';
+import {ActionContext, ButtonGroupInterface, ButtonInterface} from 'common';
 import {Observable} from 'rxjs';
 import {TableConfig} from '../../../../components/table/table.model';
 import {SubpanelTableAdapter} from '../../adapters/table.adapter';
@@ -105,6 +105,11 @@ export class SubpanelComponent implements OnInit {
                 this.onClose && this.onClose();
             }
         } as ButtonInterface;
+    }
+
+    getActionContext(): ActionContext {
+        const module = this.store?.metadata?.module ?? '';
+        return {module} as ActionContext;
     }
 
     buildAdapters(): void {

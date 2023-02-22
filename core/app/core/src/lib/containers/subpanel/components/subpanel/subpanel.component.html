@@ -32,6 +32,8 @@
         </span>
         <span panel-header-button>
             <scrm-action-group-menu [config]="actionsAdapter"
+                                    [actionContext]="getActionContext()"
+                                    [actionLimitConfig]="'subpanelview_actions_limits'"
                                     buttonClass="btn btn-sm btn-outline-light"
             ></scrm-action-group-menu>
         </span>
