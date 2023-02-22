@@ -36,6 +36,7 @@ export interface ButtonInterface {
     titleKey?: string;
     icon?: string;
     iconKlass?: string;
+    labelModule?: string;
 }
 
 export class Button implements ButtonInterface {
@@ -46,7 +47,8 @@ export class Button implements ButtonInterface {
         public label: string = null,
         public icon: string = null,
         public labelKey: string = null,
-        public titleKey: string = null
+        public titleKey: string = null,
+        public labelModule: string = null
     ) {
     }
 
@@ -57,7 +59,8 @@ export class Button implements ButtonInterface {
             button.label,
             button.icon,
             button.labelKey,
-            button.titleKey
+            button.titleKey,
+            button.labelModule
         );
     }
 

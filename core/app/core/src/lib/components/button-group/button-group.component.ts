@@ -25,9 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Button, ButtonInterface} from 'common';
-import {DropdownButtonInterface} from 'common';
-import {ButtonGroupInterface} from 'common';
+import {Button, ButtonGroupInterface, ButtonInterface, DropdownButtonInterface} from 'common';
 import {Observable, Subscription} from 'rxjs';
 
 interface SplitButtons {
@@ -116,11 +114,13 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     protected getBreakpoint(): number {
 
-        if (!this.internalConfig.breakpoint) {
+        const breakpoint = this.internalConfig?.breakpoint ?? null;
+
+        if (breakpoint === null) {
             return 4;
         }
 
-        return this.internalConfig.breakpoint;
+        return breakpoint;
     }
 
     protected splitButtons(): void {

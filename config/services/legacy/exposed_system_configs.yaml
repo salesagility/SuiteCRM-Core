@@ -34,6 +34,7 @@ parameters:
     listview_line_actions_limits: true
     module_routing: true
     recordview_actions_limits: true
+    subpanelview_actions_limits: true
     ui: true
     extensions: true
     logout: true
