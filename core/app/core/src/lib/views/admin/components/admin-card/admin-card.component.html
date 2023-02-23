@@ -29,8 +29,8 @@
 <div class="card text-center border-0" *ngIf="content">
     <scrm-image [image]="content.icon" [wrapperClass]="'sicon-3x'"></scrm-image>
     <div class="card-body">
-        <h6 class="card-title admin-card-title" [title]="language.getFieldLabel(content.descriptionLabelKey, 'administration')">
-            <scrm-label [labelKey]="content.titleLabelKey" [module]="'administration'"></scrm-label>
+        <h6 class="card-title admin-card-title" [title]="language.getFieldLabel(content.descriptionLabelKey)">
+            <scrm-label [labelKey]="content.titleLabelKey"></scrm-label>
         </h6>
         <ng-container *ngIf="content.linkGroup">
             <div *ngFor="let item of content.linkGroup">
@@ -38,8 +38,8 @@
                    [routerLink]="item.link"
                    [queryParams]="item?.params"
                    queryParamsHandling="merge"
-                   [title]="language.getFieldLabel(item.descriptionKey, 'administration')">
-                    <scrm-label [labelKey]="item.titleKey" [module]="'administration'"></scrm-label>
+                   [title]="language.getFieldLabel(item.descriptionKey)">
+                    <scrm-label [labelKey]="item.titleKey"></scrm-label>
                 </a>
             </div>
         </ng-container>
