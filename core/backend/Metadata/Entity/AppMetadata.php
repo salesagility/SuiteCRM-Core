@@ -157,6 +157,22 @@ class AppMetadata
     public $minimalModuleMetadata;
 
     /**
+     * Admin Metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="The admin metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $adminMetadata;
+
+    /**
      * The module
      *
      * @var string
@@ -322,6 +338,22 @@ class AppMetadata
         $this->minimalModuleMetadata = $moduleMetadata;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAdminMetadata(): ?array
+    {
+        return $this->adminMetadata;
+    }
+
+    /**
+     * @param array|null $adminMetadata
+     */
+    public function setAdminMetadata(?array $adminMetadata): void
+    {
+        $this->adminMetadata = $adminMetadata;
     }
 
 

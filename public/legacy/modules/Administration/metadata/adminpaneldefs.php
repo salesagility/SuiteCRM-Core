@@ -95,7 +95,7 @@ $admin_option_defs['Administration']['securitygroup_config'] = [
     'security-suite-group-management'
 ];
 
-$admin_group_header[] = ['LBL_USERS_TITLE', '', false, $admin_option_defs, 'LBL_USERS_DESC'];
+$admin_group_header[] = ['LBL_USERS_TITLE', '', false, $admin_option_defs, 'LBL_USERS_DESC', 'users_and_authentication'];
 
 //system.
 $admin_option_defs = [];
@@ -164,7 +164,7 @@ $admin_option_defs['Administration']['theme_settings'] = [
     'themes'
 ];
 
-$admin_group_header[] = ['LBL_ADMINISTRATION_HOME_TITLE', '', false, $admin_option_defs, 'LBL_ADMINISTRATION_HOME_DESC'];
+$admin_group_header[] = ['LBL_ADMINISTRATION_HOME_TITLE', '', false, $admin_option_defs, 'LBL_ADMINISTRATION_HOME_DESC', 'system_admin'];
 
 //Module Settings
 $admin_option_defs = [];
@@ -232,7 +232,7 @@ $admin_option_defs['Administration']['aos'] = [
     'aos-settings'
 ];
 
-$admin_group_header['sagility'] = ['LBL_MODULE_ADMIN', '', false, $admin_option_defs, 'LBL_MODULE_ADMIN_HEADER_DESC'];
+$admin_group_header['sagility'] = ['LBL_MODULE_ADMIN', '', false, $admin_option_defs, 'LBL_MODULE_ADMIN_HEADER_DESC', 'module_settings'];
 
 
 //email manager.
@@ -290,7 +290,7 @@ $admin_option_defs['Campaigns']['mass_Email'] = [
 ];
 
 
-$admin_group_header[] = ['LBL_EMAIL_TITLE', '', false, $admin_option_defs, 'LBL_EMAIL_DESC'];
+$admin_group_header[] = ['LBL_EMAIL_TITLE', '', false, $admin_option_defs, 'LBL_EMAIL_DESC', 'email_admin'];
 
 //admin tools
 $admin_option_defs = [];
@@ -334,7 +334,7 @@ $admin_option_defs['Administration']['module_loader'] = [
     'module-loader'
 ];
 
-$admin_group_header[] = ['LBL_ADMIN_TOOLS_TITLE', '', false, $admin_option_defs, 'LBL_ADMIN_TOOLS_HEADER_DESC'];
+$admin_group_header[] = ['LBL_ADMIN_TOOLS_TITLE', '', false, $admin_option_defs, 'LBL_ADMIN_TOOLS_HEADER_DESC', 'admin_tools'];
 
 //studio.
 $admin_option_defs = [];
@@ -383,7 +383,7 @@ $admin_option_defs['any']['workflow_management'] = [
     'workflow'
 ];
 
-$admin_group_header[] = ['LBL_STUDIO_TITLE', '', false, $admin_option_defs, 'LBL_TOOLS_DESC'];
+$admin_group_header[] = ['LBL_STUDIO_TITLE', '', false, $admin_option_defs, 'LBL_TOOLS_DESC', 'developer_tools'];
 
 //Google Settings
 $admin_option_defs = [];
@@ -436,7 +436,8 @@ $admin_group_header[] = [
     '',
     false,
     $admin_option_defs,
-    'LBL_GOOGLE_SUITE_ADMIN_DESC'
+    'LBL_GOOGLE_SUITE_ADMIN_DESC',
+    'google_suite'
 ];
 
 if (file_exists('custom/modules/Administration/Ext/Administration/administration.ext.php')) {
