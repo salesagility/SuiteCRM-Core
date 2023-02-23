@@ -23,23 +23,28 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
+import {ObjectMap} from 'common';
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AdminPanelComponent} from './admin-panel.component';
-import {AdminCardModule} from '../admin-card/admin-card.module';
+export interface AdminMetadata {
+    adminPanel?: AdminMetadataModel[];
 
-@NgModule({
-    declarations: [
-        AdminPanelComponent
-    ],
-    exports: [
-        AdminPanelComponent
-    ],
-    imports: [
-        CommonModule,
-        AdminCardModule
-    ]
-})
-export class AdminPanelModule {
+    [key: string]: any;
+}
+
+export interface AdminMetadataModel {
+    titleLabelKey: string,
+    descriptionLabelKey: string,
+    linkGroup: AdminLinkGroupModel[],
+    icon: string
+}
+
+export interface AdminLinkGroupModel {
+    [key: string]: any;
+
+    category?: string,
+    descriptionKey?: string,
+    titleKey?: string,
+    icon?: string
+    link?: string,
+    params?: ObjectMap
 }

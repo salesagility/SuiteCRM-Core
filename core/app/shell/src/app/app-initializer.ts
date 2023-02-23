@@ -144,7 +144,7 @@ export class AppInit {
                     });
 
                     routes.push({
-                        path: 'administration/new',
+                        path: 'administration/index',
                         component: AdminPanelComponent,
                         canActivate: [AuthGuard],
                         runGuardsAndResolvers: 'always',

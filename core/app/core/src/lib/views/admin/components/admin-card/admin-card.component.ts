@@ -25,7 +25,8 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuItem} from 'common';
+import {LanguageStore} from '../../../../store/language/language.store';
+import {AdminLinkGroupModel} from '../../../../store/admin-metadata/admin-metadata.model';
 
 
 @Component({
@@ -34,8 +35,8 @@ import {MenuItem} from 'common';
     styleUrls: [],
 })
 export class AdminCardComponent {
-    @Input() content: any;
+    @Input() content: AdminLinkGroupModel;
 
-    constructor() {}
+    constructor(public language: LanguageStore) {}
 
 }

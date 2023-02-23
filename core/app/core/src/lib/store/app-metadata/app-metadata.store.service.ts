@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {deepClone, emptyObject} from 'common';
+import {deepClone, emptyObject, ObjectMap} from 'common';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
 import {LanguageStore, LanguageStrings} from '../language/language.store';
@@ -38,6 +38,9 @@ import {UserPreferenceMap, UserPreferenceStore} from '../user-preference/user-pr
 import {NavigationStore} from '../navigation/navigation.store';
 import {Metadata, MetadataMap, MetadataStore} from '../metadata/metadata.store.service';
 import {ApolloQueryResult} from '@apollo/client/core';
+import {AdminMetadataStore} from '../admin-metadata/admin-metadata.store';
+import {AuthService} from '../../services/auth/auth.service';
+import {AdminMetadata} from '../admin-metadata/admin-metadata.model';
 
 export interface AppMetadata {
     loaded?: boolean;
@@ -49,6 +52,7 @@ export interface AppMetadata {
     navigation?: any;
     moduleMetadata?: MetadataMap;
     minimalModuleMetadata?: MetadataMap;
+    adminMetadata?: AdminMetadata;
 }
 
 export interface AppMetadataFlags {
@@ -61,6 +65,7 @@ export interface AppMetadataFlags {
     navigation?: boolean;
     moduleMetadata?: boolean;
     minimalModuleMetadata?: boolean;
+    adminMetadata?: boolean;
 }
 
 
@@ -72,7 +77,8 @@ const initialState: AppMetadataFlags = {
     modStrings: false,
     themeImages: false,
     navigation: false,
-    moduleMetadata: false
+    moduleMetadata: false,
+    adminMetadata: false
 };
 
 let internalState: AppMetadataFlags = deepClone(initialState);
@@ -105,6 +111,7 @@ export class AppMetadataStore implements StateStore {
         'themeImages',
         'navigation',
         'moduleMetadata',
+        'adminMetadata'
     ];
 
     constructor(
@@ -115,6 +122,8 @@ export class AppMetadataStore implements StateStore {
         protected config: SystemConfigStore,
         protected preferences: UserPreferenceStore,
         protected navigation: NavigationStore,
+        protected adminMetadataStore:AdminMetadataStore,
+        protected auth: AuthService
     ) {
         this.metadata$ = this.state$;
     }
@@ -217,6 +226,10 @@ export class AppMetadataStore implements StateStore {
             types.push('themeImages')
         }
 
+        if (!this.isAdminMetadataLoaded()) {
+            types.push('adminMetadata');
+        }
+
         return types;
     }
 
@@ -240,6 +253,10 @@ export class AppMetadataStore implements StateStore {
         return this.navigation.isCached();
     }
 
+    protected isAdminMetadataLoaded(): boolean {
+        return !!(internalState.adminMetadata ?? false);
+    }
+
     /**
      * Internal API
      */
@@ -259,7 +276,6 @@ export class AppMetadataStore implements StateStore {
      * @returns {object} Observable<{}>
      */
     protected fetch(module: string, types: string[] = []): Observable<AppMetadataFlags> {
-
         const fieldsToRetrieve = {
             fields: [
                 ...this.fieldsMetadata.fields,
@@ -286,7 +302,7 @@ export class AppMetadataStore implements StateStore {
                     this.setNavigation(appMetadata, result);
                     this.setLanguages(appMetadata, result);
                     this.setModuleMetadata(appMetadata, result);
-
+                    this.setAdminMetadata(appMetadata,result);
                     return appMetadata;
                 })
             );
@@ -370,6 +386,14 @@ export class AppMetadataStore implements StateStore {
         if (!emptyObject(configs)) {
             currentMetadata.systemConfig = true;
             this.config.set(configs);
+        }
+    }
+
+    protected setAdminMetadata(currentMetadata: AppMetadataFlags, appMetadata: AppMetadata) {
+        const adminMetadata = appMetadata?.adminMetadata ?? {};
+        if (!emptyObject(adminMetadata)) {
+            currentMetadata.adminMetadata = true;
+            this.adminMetadataStore.set(adminMetadata);
         }
     }
 
