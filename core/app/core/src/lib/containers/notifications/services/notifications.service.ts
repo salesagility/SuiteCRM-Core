@@ -36,10 +36,13 @@ import {
 import {RecordThreadStoreFactory} from '../../record-thread/store/record-thread/record-thread.store.factory';
 import {RecordThreadItemConfig} from '../../record-thread/components/record-thread-item/record-thread-item.model';
 import {Process, ProcessService} from '../../../services/process/process.service';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, take, tap} from 'rxjs/operators';
 import {AsyncActionInput} from '../../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../../services/message/message.service';
-import {Observable} from 'rxjs';
+import {Observable, timer} from 'rxjs';
+import {LanguageStore} from '../../../store/language/language.store';
+import {DynamicLabelService} from '../../../services/language/dynamic-label.service';
+import {AppStateStore} from '../../../store/app-state/app-state.store';
 
 @Injectable({
     providedIn: 'root',
@@ -50,7 +53,9 @@ export class NotificationsService {
         protected systemConfig: SystemConfigStore,
         protected storeFactory: RecordThreadStoreFactory,
         protected processService: ProcessService,
-        protected messages: MessageService
+        protected messages: MessageService,
+        protected language: LanguageStore,
+        protected dynamicLabels: DynamicLabelService
     ) {
     }
 
@@ -156,5 +161,23 @@ export class NotificationsService {
                     throw err;
                 }),
             );
+    }
+
+    onLoadMore(appStateStore: AppStateStore): void {
+        timer(1500).pipe(take(1)).subscribe(() => {
+            appStateStore.markNotificationsAsRead();
+        });
+    }
+
+    onRefresh(store: RecordThreadStore, appStateStore: AppStateStore): void {
+        const count = store.getRecordList().getMeta().unreadCount as number;
+        let appStateCount = appStateStore.getNotificationsUnreadTotal();
+        if (count > appStateCount) {
+            let unreadCount = (count - appStateCount).toString();
+            const labelTemplate = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
+            const parsedLabel = this.dynamicLabels.parse(labelTemplate, {unread: unreadCount}, {});
+            this.messages.addSuccessMessage(parsedLabel);
+        }
+        appStateStore.setNotificationsUnreadTotal(count);
     }
 }
