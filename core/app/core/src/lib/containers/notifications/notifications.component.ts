@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {deepClone, SearchCriteria} from 'common';
-import {Observable, of, timer} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
 import {
     RecordThreadConfig,
@@ -39,7 +39,6 @@ import {RecordThreadStore} from "../record-thread/store/record-thread/record-thr
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {MessageService} from "../../services/message/message.service";
 import {NotificationsService} from './services/notifications.service';
-import {take} from "rxjs/operators";
 import {DynamicLabelService} from "../../services/language/dynamic-label.service";
 
 @Component({
@@ -80,21 +79,10 @@ export class NotificationsComponent implements OnInit {
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
             onRefresh: () => {
-                const count = this.store.getRecordList().getMeta().unreadCount as number;
-                let appStateCount = this.appStateStore.getNotificationsUnreadTotal();
-                if (count > appStateCount) {
-                    let unreadCount = (count - appStateCount).toString();
-                    const labelTemplate = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
-                    const parsedLabel = this.dynamicLabels.parse(labelTemplate, {unread: unreadCount}, {});
-                    this.message.addSuccessMessage(parsedLabel);
-                }
-                this.appStateStore.setNotificationsUnreadTotal(count);
+                this.notificationService.onRefresh(this.store, this.appStateStore);
             },
             onLoadMore: () => {
-                timer(1500).pipe(take(1))
-                    .subscribe(() => {
-                        this.appStateStore.markNotificationsAsRead();
-                    });
+                this.notificationService.onLoadMore(this.appStateStore);
             },
             create: false,
             listActionsClass: this.options?.listActionsClass ?? '',

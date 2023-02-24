@@ -144,6 +144,12 @@ export class AppStateStore implements StateStore {
         this.notificationStore = this.notificationService.initStore();
     }
 
+    public refreshNotifications(): void {
+        this.notificationStore.load(false).pipe(take(1)).subscribe(() => {
+            this.notificationService.onRefresh(this.notificationStore, this);
+        });
+    }
+
     /**
      * Mark current notifications as read
      */

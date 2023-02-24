@@ -192,7 +192,9 @@ export class LoginUiComponent implements OnInit {
                 }
 
                 const defaultModule = this.configs.getHomePage();
-                this.router.navigate(['/' + defaultModule]).then();
+                this.router.navigate(['/' + defaultModule]).then(() => {
+                    this.appState.refreshNotifications();
+                });
             });
 
         return;
