@@ -46,7 +46,7 @@ export class ModuleNameMapper {
      */
     public toFrontend(module: string): string {
         const map = this.getLegacyToFrontendMap();
-        if (!map[module]) {
+        if (!map || !map[module]) {
             return module;
         }
 
