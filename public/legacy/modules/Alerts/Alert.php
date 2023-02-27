@@ -100,6 +100,7 @@ class Alert extends Basic
 
         $preference = $current_user->getPreference('snooze_alert_timer') ?? null;
 
+        $snoozeTimer = $preference;
         if (empty($preference)){
             require_once 'modules/Configurator/Configurator.php';
             $configurator = new Configurator();
