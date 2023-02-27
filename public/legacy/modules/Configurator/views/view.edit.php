@@ -172,7 +172,7 @@ class ConfiguratorViewEdit extends ViewEdit
             $this->ss->assign('record_modal_pagination_type', get_select_options_with_id($app_list_strings['record_modal_pagination_type'], 'pagination'));
         }
         if (!empty($configurator->config['snooze_alert_timer'])){
-            $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], $configurator->config['snooze_alert_timer']));
+            $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], (int)$configurator->config['snooze_alert_timer']));
         } else {
             $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], 300));
         }
