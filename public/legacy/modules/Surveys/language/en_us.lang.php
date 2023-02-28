@@ -92,4 +92,15 @@ $mod_strings = array(
     'LBL_SURVEYS_SURVEYRESPONSES_FROM_SURVEYRESPONSES_TITLE' => 'Survey Responses',
     'LBL_SHOW_RESPONSES' => 'Show responses',
     'LNK_LIST_SURVEY_RESPONSES' => 'Show Survey Responses',
+    'LBL_SURVEY_QUESTION' => 'Question',
+    'LBL_SURVEY_TEXT' => 'Text',
+    'LBL_SURVEY_TYPE' => 'Type',
+    'LBL_SURVEY_ACTIONS' => 'Actions',
+    'LBL_SURVEY_NEW_QUESTION' => 'New Question',
+    'LBL_SURVEY_RESPONSES' => 'New Question',
+    'LBL_SURVEYS_SENT' => 'Surveys Sent:',
+    'LBL_SURVEY_DISTINCT' => 'Distinct Surveys Sent:',
+    'LBL_DRAFT' => 'Draft',
+    'LBL_SUBMIT' => 'Submit',
+    'LBL_STARS' => 'Stars'
 );
