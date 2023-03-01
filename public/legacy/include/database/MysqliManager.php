@@ -136,7 +136,11 @@ class MysqliManager extends MysqlManager
         $this->lastsql = $sql;
         if (!empty($sql)) {
             if ($this->database instanceof mysqli) {
-                $result = $suppress ? @mysqli_query($this->database, $sql) : mysqli_query($this->database, $sql);
+                try {
+                    $result = $suppress ? @mysqli_query($this->database, $sql) : mysqli_query($this->database, $sql);
+                } catch (Exception $e) {
+                    $result = false;
+                }
                 if ($result === false && !$suppress) {
                     if (inDeveloperMode()) {
                         LoggerManager::getLogger()->debug('Mysqli_query failed, error was: ' . $this->lastDbError() . ', query was: ');
@@ -426,5 +430,22 @@ class MysqliManager extends MysqlManager
     public function valid()
     {
         return function_exists("mysqli_connect") && empty($GLOBALS['sugar_config']['mysqli_disabled']);
+    }
+
+    public function compareVarDefs($fielddef1, $fielddef2, $ignoreName = false)
+    {
+        /**
+         * Int lengths are ignored in MySQL versions >= 8.0.19 so we need to ignore when comparing vardefs.
+         */
+        if($fielddef1['type'] == 'int') {
+            $db_version = $this->version();
+            if (!empty($db_version)
+                && version_compare($db_version, '8.0.19') >= 0
+                && strpos($db_version, "MariaDB") === false
+            ) {
+                unset($fielddef2['len']);
+            }
+        }
+        return parent::compareVarDefs($fielddef1, $fielddef2, $ignoreName);
     }
 }

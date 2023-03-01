@@ -54,7 +54,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *name and list of all prospects associated with this campaign..
  *
  */
-function get_message_scope_dom($campaign_id, $campaign_name, $db=null, $mod_strings=array())
+function get_message_scope_dom($campaign_id, $campaign_name, $db = null, $mod_strings = array())
 {
     if (empty($db)) {
         $db = DBManagerFactory::getInstance();
@@ -65,7 +65,7 @@ function get_message_scope_dom($campaign_id, $campaign_name, $db=null, $mod_stri
     }
 
     //find prospect list attached to this campaign..
-    $query =  "SELECT prospect_list_id, prospect_lists.name ";
+    $query = "SELECT prospect_list_id, prospect_lists.name ";
     $query .= "FROM prospect_list_campaigns ";
     $query .= "INNER join prospect_lists on prospect_lists.id = prospect_list_campaigns.prospect_list_id ";
     $query .= "WHERE prospect_lists.deleted = 0 ";
@@ -297,7 +297,7 @@ function log_campaign_activity($identifier, $activity, $update = true, $clicked_
             //values for return array..
             $return_array['target_id'] = $row['target_id'];
             $return_array['target_type'] = $row['target_type'];
-            
+
             // quote variable first
             $dataArrayKeys = array_keys($data);
             $dataArrayKeysQuoted = array();
@@ -305,13 +305,13 @@ function log_campaign_activity($identifier, $activity, $update = true, $clicked_
                 $dataArrayKeysQuoted[] = $db->quote($dataArrayKey);
             }
             $dataArrayKeysQuotedImplode = implode(', ', $dataArrayKeysQuoted);
-            
+
             $insert_query = "INSERT into campaign_log (" . $dataArrayKeysQuotedImplode . ")";
-            
+
             $dataArrayValuesQuotedImplode = implode(', ', array_values($data));
-            
+
             $insert_query .= " VALUES  (" . $dataArrayValuesQuotedImplode . ")";
-            
+
             $db->query($insert_query);
         }
     } else {
@@ -331,7 +331,7 @@ function log_campaign_activity($identifier, $activity, $update = true, $clicked_
         $rowCampaignIdQuoted = $db->quote($row['campaign_id']);
         $query = "SELECT campaigns.* FROM campaigns WHERE campaigns.id = '" . $rowCampaignIdQuoted . "' ";
         $result = $db->query($query);
-        
+
         if (!empty($result)) {
             $c_row = $db->fetchByAssoc($result);
 
@@ -413,15 +413,12 @@ function get_subscription_lists_query($focus, $additional_fields = null)
     $all_news_type_pl_query .= "and c.campaign_type = 'NewsLetter'  and pl.deleted = 0 and c.deleted=0 and plc.deleted=0 ";
     $all_news_type_pl_query .= "and (pl.list_type like 'exempt%' or pl.list_type ='default') ";
 
-    /* BEGIN - SECURITY GROUPS */
-    if ($focus->bean_implements('ACL') && ACLController::requireSecurityGroup('Campaigns', 'list')) {
-        require_once('modules/SecurityGroups/SecurityGroup.php');
-        global $current_user;
-        $owner_where = $focus->getOwnerWhere($current_user->id);
-        $group_where = SecurityGroup::getGroupWhere('c', 'Campaigns', $current_user->id);
-        $all_news_type_pl_query .= " AND ( c.assigned_user_id ='".$current_user->id."' or ".$group_where.") ";
+    $campaign = BeanFactory::newBean('Campaigns');
+    $campaign->table_name = 'c';
+    $accessWhere = $campaign->buildAccessWhere('list');
+    if (!empty($accessWhere)) {
+        $all_news_type_pl_query .= ' AND ' . $accessWhere;
     }
-    /* END - SECURITY GROUPS */
 
     $all_news_type_list =$focus->db->query($all_news_type_pl_query);
 
@@ -1159,4 +1156,34 @@ function filterFieldsFromBeans($beans)
         $formattedBeans[] = $holder;
     }
     return $formattedBeans;
+}
+
+/**
+ * Get valid web to person modules
+ * @return array
+ */
+function getValidWebToPersonModules(): array
+{
+    $superclass = 'Person';
+    $modules = [];
+    foreach ($GLOBALS['moduleList'] as $mod) {
+        $item = BeanFactory::getBean($mod);
+        if ($item && is_subclass_of($item, $superclass)) {
+            $modules[] = $item->module_name;
+        }
+    }
+
+    return $modules;
+}
+
+/**
+ * Check if it is a valid WebToPerson module
+ * @param string $module
+ * @return bool
+ */
+function isValidWebToPersonModule(string $module): bool
+{
+    $validModules = getValidWebToPersonModules();
+
+    return in_array($module, $validModules, true);
 }

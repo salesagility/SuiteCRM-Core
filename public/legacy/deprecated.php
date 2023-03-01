@@ -18,7 +18,9 @@ $saml2_class_names = [
 ];
 
 foreach ($saml2_class_names as $name) {
-    class_alias("OneLogin\\Saml2\\" . $name, 'OneLogin_Saml2_' . $name);
+    if (!class_exists('OneLogin_Saml2_' . $name)) {
+        class_alias("OneLogin\\Saml2\\" . $name, 'OneLogin_Saml2_' . $name);
+    }
 }
 
 if (!class_exists(OneLogin_Saml2_Auth::class)) {
@@ -52,7 +54,10 @@ if (!class_exists(OneLogin_Saml2_Auth::class)) {
 /**
  * Backwards compatibility for Zend
  */
-class_alias('SuiteCRM\\Zend_Oauth_Provider', 'Zend\\Oauth\\Provider');
+
+if (!class_exists('Zend\\Oauth\\Provider')){
+    class_alias('SuiteCRM\\Zend_Oauth_Provider', 'Zend\\Oauth\\Provider');
+}
 
 if (!class_exists(Provider::class)) {
     /** @deprecated this is an alias for Zend_Oauth_Provider */

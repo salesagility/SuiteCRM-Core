@@ -68,6 +68,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
         "filtermappers" =>   array("section" => "filter_mappers","extdir" => "FilterMappers",	"file" => 'filter_mappers.ext.php'),
         "classicviewroutingexclusions" =>   array("section" => "classicview_routing_exclusions","extdir" => "ClassicViewRoutingExclusions",	"file" => 'classicview_routing_exclusions.ext.php'),
         "pdf" =>     		 array("section" => "pdfs",	          "extdir" => "PDF",		    "file" => 'pdfs.ext.php', "module" => "application"),
+        "externaloauthproviders" =>  array("section" => "external_oauth_providers", "extdir" => "ExternalOAuthProviders", "file" => 'externaloauthproviders.ext.php', "module" => "application"),
 );
 if (file_exists("custom/application/Ext/Extensions/extensions.ext.php")) {
     include("custom/application/Ext/Extensions/extensions.ext.php");

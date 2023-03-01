@@ -58,7 +58,7 @@ class EmailsControllerActionGetFromFields
      * @var User
      */
     protected $currentUser;
-    
+
     /**
      *
      * @var EmailsDataAddressCollector
@@ -100,9 +100,40 @@ class EmailsControllerActionGetFromFields
             $defaultEmailSignature
         );
 
+        $dataAddresses = $dataAddresses ?? [];
+
+        $this->addOutboundEmailAccounts($dataAddresses);
+
         $dataEncoded = json_encode(array('data' => $dataAddresses), JSON_UNESCAPED_UNICODE);
         $results = utf8_decode($dataEncoded);
         return $results;
+    }
+
+    /**
+     * Get Outbound from fields
+     * @param Email $email
+     * @return string JSON
+     * @throws JsonException
+     */
+    public function getOutboundFromFields(Email $email)
+    {
+        global $log;
+        $email->email2init();
+
+        $dataAddresses = [];
+
+        $this->addOutboundEmailAccounts($dataAddresses);
+
+        $this->collector->addSystemEmailAddress($dataAddresses);
+
+        $dataEncoded = [];
+        try {
+            $dataEncoded = json_encode(array('data' => $dataAddresses), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            $log->fatal('getOutboundFromFields | unable to json encode the addresses for from fields | message: ' . $e->getMessage() ?? '');
+        }
+
+        return utf8_decode($dataEncoded);
     }
 
     /**
@@ -140,5 +171,53 @@ class EmailsControllerActionGetFromFields
         }
 
         return $defaultEmailSignature;
+    }
+
+    /**
+     * @param array $dataAddresses
+     * @return void
+     */
+    protected function addOutboundEmailAccounts(array &$dataAddresses): void
+    {
+        /** @var OutboundEmailAccounts $outboundAccount */
+        $outboundAccount = BeanFactory::newBean('OutboundEmailAccounts');
+
+        /** @var OutboundEmailAccounts[] $userOutboundAccounts */
+        $userOutboundAccounts = $outboundAccount->getUserOutboundAccounts();
+
+        foreach ($userOutboundAccounts as $userOutboundAccount) {
+
+            $id = $userOutboundAccount->id ?? '';
+            $name = $userOutboundAccount->name ?? '';
+            $fromAddress = $userOutboundAccount->getFromAddress();
+            $fromName = $userOutboundAccount->getFromName();
+            $replyToAddress = $userOutboundAccount->getReplyToAddress();
+            $replyToName = $userOutboundAccount->getReplyToName();
+            $type = $userOutboundAccount->type ?? '';
+            $signature = $userOutboundAccount->signature ?? '';
+            $isPersonal = $type === 'user';
+            $isGroup = $type === 'group';
+            $entry = [
+                'type' => 'OutboundEmailAccount',
+                'id' => $id,
+                'name' => $name,
+                'attributes' => [
+                    'from' => $fromAddress,
+                    'name' => $fromName,
+                    'oe' => '',
+                    'reply_to' => $replyToAddress,
+                    'reply_to_name' => $replyToName
+                ],
+                'prepend' => false,
+                'isPersonalEmailAccount' => $isPersonal,
+                'isGroupEmailAccount' => $isGroup,
+                'emailSignatures' => [
+                    'html' => utf8_encode(html_entity_decode($signature)),
+                    'plain' => ''
+                ]
+            ];
+
+            $dataAddresses[] = $entry;
+        }
     }
 }

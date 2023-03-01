@@ -25,6 +25,12 @@
  */
 /**** Admin ***/
 
+.view-action-index {
+  .moduleTitle {
+    max-width: 100%;
+  }
+}
+
 .admin-panel {
   h3 {
     font-size: $page-font-size + 1px;

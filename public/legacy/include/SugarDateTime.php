@@ -105,7 +105,7 @@ class SugarDateTime extends DateTime
      * @param string $format Format like in date()
      * @param string $time Time to parse
      * @param DateTimeZone $timezone
-     * @return SugarDateTime
+     * @return SugarDateTime|bool|null|mixed
      * @see DateTime::createFromFormat
      */
     public static function createFromFormat($format, $time, $timezone = null)
@@ -140,7 +140,7 @@ class SugarDateTime extends DateTime
      * @param string $format Format like in date()
      * @param string $time Time string to parse
      * @param DateTimeZone $timezone TZ
-     * @return SugarDateTime
+     * @return SugarDateTime|bool|null|mixed
      * @see DateTime::createFromFormat
      */
     protected static function _createFromFormat($format, $time, DateTimeZone $timezone = null)

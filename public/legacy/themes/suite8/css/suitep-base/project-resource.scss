@@ -60,6 +60,11 @@ hr.spacer {
 /* Projects Resource Panel Edit View */
 
 .view-module-Project {  
+    @media (max-width: 750px) {
+        #EditView_tabs {
+            clear: both;
+        }
+    } 
     #EditView {
         .buttons {
             position: absolute;

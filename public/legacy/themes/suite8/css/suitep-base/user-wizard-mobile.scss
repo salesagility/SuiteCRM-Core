@@ -1,9 +1,6 @@
 @media (max-width: $xs-breakpoint) {
     .user-wizard {
-        .welcome {
-            .panel {
-                padding: 4.5em 0 2.5em 0;
-            }
+        .welcome {            
             .wizard-mainlbl {
                 display: block;
                 .sub-mainlbl {
@@ -139,7 +136,7 @@
     .user-wizard {
         .welcome {
             .panel {
-                margin-top: 5em;
+                margin-top: 9em;
             }
         }
         .personal {
@@ -153,5 +150,20 @@
          .wizard-finish {
             margin-top: 0em; 
          }
+    }
+}
+
+@media (max-width: 450px) {
+    .user-wizard {
+        .welcome {
+            .panel {
+                h1 {
+                    font-size: 2rem;
+                }
+                .open-crm-txt {
+                    font-size: 1.2rem;
+                }
+            }
+        }
     }
 }

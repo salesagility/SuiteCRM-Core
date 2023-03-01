@@ -1,15 +1,15 @@
     <!-- tab_panel_content.tpl -->
-    <div class="row edit-view-row">
-        {{foreach name=rowIteration from=$panel key=row item=rowData}}
+    {{foreach name=rowIteration from=$panel key=row item=rowData}}
+        <div class="row edit-view-row">
             {*row*}
             {{counter name="columnCount" start=0 print=false assign="columnCount"}}
             {{foreach name=colIteration from=$rowData key=col item=colData}}
                 {*column*}
                 {*<!-- COLUMN -->*}
                 {{if $smarty.foreach.colIteration.total > 1 && $colData.colspan != 3}}
-                    <div class="col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered">
+                    <div class="col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered" data-field="{{$fields[$colData.field.name].name}}">
                 {{else}}
-                    <div class="col-xs-12 col-sm-12 edit-view-row-item">
+                    <div class="col-xs-12 col-sm-12 edit-view-row-item" data-field="{{$fields[$colData.field.name].name}}">
                 {{/if}}
 
                 {{counter name="fieldCount" start=0 print=false assign="fieldCount"}}
@@ -146,5 +146,5 @@
             <div class="clear"></div>
             {{/if}}
             {{counter name="columnCount" print=false}}
-        {{/foreach}}
-    </div>
+        </div>
+    {{/foreach}}

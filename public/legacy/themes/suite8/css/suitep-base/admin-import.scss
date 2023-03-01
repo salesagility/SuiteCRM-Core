@@ -35,8 +35,11 @@
     .list #pagination td .paginationTable .paginationChangeButtons {
         button {
             background-color: $transparent-color; 
-            margin: 0;
+            margin:0;
             padding: 0;
+            line-height: 26px;
+            height: 26px;
+            margin-right: 0.3em;
         }        
     }
     .paginationTable button[disabled] {
@@ -85,6 +88,21 @@
     div.confirmTable {
         margin-top: 1em;
     }  
+    .selectActionsDisabled {
+        background-color: transparent;
+        border: 0.09em solid #e9e9e9;
+        -webkit-border-radius: 0.15em;
+        -moz-border-radius: 0.15em;
+        min-width: 11em;
+        margin-right: 0.8em;
+        display: none;
+        label {
+            margin-top: 3px;
+        }
+        a {
+            color: $white;
+        }
+    }
     label {
         margin-top: 1em;
     }
@@ -100,4 +118,63 @@
         color: $shell-grey;
         line-height: 0.6em;
     } 
+    .importPaginationtable {
+        table.paginationTable {
+            .button {
+                background: $transparent-color;
+                padding:2px;
+                margin-right: -4px;
+            }
+        }   
+        .list thead {
+            background: $medium-grey;
+        }     
+        .list #pagination td .paginationTable .paginationActionButtons {
+            button {
+                margin: 0;
+                padding:0;
+                line-height: 26px;
+                height: 26px;
+                margin-right: 0.3em;
+            }
+            .sugar_action_button {
+                display: none;
+            }
+            background: $medium-grey;
+        } 
+        .list #pagination td .paginationTable .pageNumbers {
+            margin: -4px 4px 0 0;
+        }       
+        table.View {
+            tbody:nth-child(2) {
+                background: $nepal-grey;
+            }
+        }
+    }
+    #dup_table {
+        #dup_content {
+            table.paginationTable {
+                .button {
+                    margin-right: 3px;
+                    padding: 0;
+                }
+            }  
+        }
+    }
+    #errors_content {
+        table.paginationTable {
+            .button {
+                margin-right: 3px;                
+            }
+            .pageNumbers {
+                margin-left: 0.6em;
+            }
+        } 
+        .list tr th {
+            color: $midnight-blue;
+        }
+    }
+    .View {
+        border: none;
+    }
 }

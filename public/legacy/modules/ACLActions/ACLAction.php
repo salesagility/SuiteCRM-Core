@@ -423,7 +423,7 @@ class ACLAction extends SugarBean
             }
             $selectedActionCategory = isset($selected_actions[$category]) ? $selected_actions[$category] : null;
             $_SESSION['ACL'][$user_id][$category] = $selectedActionCategory;
-        } elseif (!empty($action) && !empty($category) && !empty($type)) {
+        } elseif (!empty($action) && !empty($category) && !empty($type) && isset($selected_actions[$category][$action])) {
             $_SESSION['ACL'][$user_id][$category][$type][$action] = $selected_actions[$category][$action];
         }
 

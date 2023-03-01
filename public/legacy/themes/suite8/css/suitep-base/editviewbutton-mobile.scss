@@ -1,0 +1,38 @@
+@media (max-width: 750px)  {  
+    .view-action-EditView {
+        .edit-border-bottom {
+            border-top: none;
+        }
+        #EditView_tabs {
+            margin-top: 5em;
+        }
+        #EditView .buttons, .action_buttons {
+            position: static;
+            display: flex !important;
+            justify-content: flex-end;
+            border-bottom: 1px solid $border-bottom-lightgrey;
+            padding-bottom: 0.5em;
+            flex-wrap: wrap;
+            margin-top: 0;
+            margin-bottom: 0.5em;
+        }
+        #EditView .action_buttons {
+            border-bottom: none;
+        }
+        #EditView {
+            .buttons .button {
+                width: auto;
+            }
+        }    
+        #EditView {
+            input[type="button"] {
+                font-size: 13px;
+            }
+        }
+        #EditView {
+            input[type="submit"] {
+                font-size: 13px;
+            }
+        }    
+    }    
+}    

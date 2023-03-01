@@ -1,0 +1,78 @@
+#reminders {
+    #reminder_view {
+        .reminder_item .invitees_list .invitees_item .invitee_btn {            
+            margin: 1em 0 0.5em 0;
+        }
+        .reminder_item {
+            .invitees_list {
+                .invitees_item {
+                    .suitepicon {
+                        position: relative;
+                        top: 0.3em;
+                    }
+                    .btn-danger {
+                        background: $nepal-grey;
+                        border: none;
+                        &:hover {
+                            background: $pale-blue;
+                        }
+                    }
+                    .invitee_btn {                        
+                        margin-left: 0;
+                        margin-right: 0.5em;  
+                        .related-value {
+                            margin-left: 0.3em;
+                        }                      
+                    }                    
+                    button[disabled] {
+                        line-height: 0;
+                        color: $white;
+                        .suitepicon {
+                            position: relative;
+                            top: 0em;
+                        }
+                    }                    
+                }
+            }
+            .btns {
+                .suitepicon {
+                    position: relative;
+                    top: 0.3em;
+                }
+                .suitepicon-action-plus {
+                    top: 5px;
+                }
+                margin-top: 0.5em;
+                .btn-danger {
+                    background: $nepal-grey;
+                    border: none;
+                    &:hover {
+                        background: $pale-blue;
+                    }
+                }
+                .btn-info {
+                    background: $midnight-blue;
+                    border: none;
+                    margin-right: 0.6em;
+                }
+            }
+        }     
+        select {
+            background: url($select-edit-background-url) no-repeat right $white;
+            background-size: 25px 11px;
+            border: 1px solid $bright-grey !important;
+            &:disabled {
+                cursor: not-allowed;
+            }
+        }     
+    }
+    #reminder_add_btn {
+        background: $midnight-blue;
+        border: none;
+        outline: none;
+        .suitepicon-action-plus {
+            top: 5px;
+            position: relative;
+        }
+    }
+}

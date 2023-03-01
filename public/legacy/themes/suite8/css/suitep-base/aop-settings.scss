@@ -1,7 +1,8 @@
 .aop-settings {
     position: relative;
     .moduleTitle {
-        border-bottom: 1px solid lightgrey;
+        border-bottom: 1px solid $mid-light-grey;
+        max-width: 100%;
     }
     #portal-seetings {
         tr td {

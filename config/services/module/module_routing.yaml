@@ -229,8 +229,20 @@ parameters:
       list: false
       record: false
     outbound-email-accounts:
-      index: false
-      list: false
+      index: true
+      list: true
+      record: false
+    inbound-email:
+      index: true
+      list: true
+      record: false
+    external-oauth-provider:
+      index: true
+      list: true
+      record: false
+    external-oauth-connection:
+      index: true
+      list: true
       record: false
     emails:
       index: false

@@ -608,7 +608,7 @@ slot {
 }
 
 .dotted-border {
-  height: 0.0625rem;
+  height: 0.08rem;
   color: $dark-grey-line;
   background-image: linear-gradient(to right, grey 10%, rgba(255, 255, 255, 0) 0%);
   background-position: top;
@@ -702,11 +702,13 @@ select {
   font-weight: normal;
   color: $main-font-color;
   max-width: 90%;
+  background-color: $white !important;
 }
 
-option[selected] {
+option:checked {
   font-weight: normal;
-  color: $main-font-color;
+  color: $main-font-color;  
+  background-color: $light-green !important;
 }
 
 .sqsEnabled {
@@ -1684,6 +1686,7 @@ div.confirmTable {
   color: $header-sub-title;
   margin: 0;
   display: flex;
+  max-width: 47%;
 }
 
 .moduleTitle h2 {

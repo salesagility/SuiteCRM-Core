@@ -64,3 +64,24 @@ parameters:
         exclude:
           - delete
           - merge
+      inbound-emails:
+        exclude:
+          - merge
+          - massupdate
+          - export
+      outbound-email-accounts:
+        exclude:
+          - merge
+          - massupdate
+          - export
+      external-oauth-connection:
+        exclude:
+          - merge
+          - massupdate
+          - export
+      external-oauth-provider:
+        exclude:
+          - merge
+          - massupdate
+          - export
+

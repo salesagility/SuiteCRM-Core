@@ -40,14 +40,14 @@
 *}
 
 <div class="email-indicator">
-    {if $bean}
-        {if $bean.status == 'unread'}
+    {if !empty($bean)}
+        {if !empty($bean.status) && $bean.status == 'unread'}
             <div class="email-new"></div>
         {/if}
-        {if $bean.is_imported == true AND $bean.inbound_email_record == $smarty.request.inbound_email_record}
+        {if !empty($bean.is_imported) && !empty($bean.inbound_email_record) && $bean.is_imported == true AND $bean.inbound_email_record == $smarty.request.inbound_email_record}
             <div class="email-imported"><span class="glyphicon glyphicon-ok"></span></div>
         {/if}
-        {if $bean.flagged == 1}
+        {if  !empty($bean.flagged) && $bean.flagged == 1}
             <span class="email-flagged">!</span>
         {/if}
     {/if}

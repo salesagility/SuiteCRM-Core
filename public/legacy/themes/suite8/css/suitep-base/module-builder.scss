@@ -5,4 +5,32 @@
     .yui-layout-unit-center .yui-navset .yui-content, .yui-layout .yui-layout-unit.yui-layout-unit-center div.yui-layout-bd {
         border-radius: 10px;
     }
+    input:not([type]) {
+        background-color: $transparent-color;
+        border: 1px solid $form-border-color;
+    }
+    input[type=text], textarea {
+        background-color: $transparent-color;
+        border: 1px solid $form-border-color;
+    }
+    select {
+        background: url($select-edit-background-url) no-repeat right;
+        background-size: 25px 11px;
+        border-color: $bright-grey;
+        background-color: $white !important;
+        max-width: 100%;
+    }
+    .button {
+        background-color: $nepal-grey;
+        border-radius: 0.2em;
+        font-weight: bold;
+        height: 2.2em;
+        line-height: 1em;
+        letter-spacing: 0.05em;
+        padding: 0.3em 1em;
+        text-transform: capitalize;
+        &:hover {
+            background: $pale-blue;
+        }
+    }
 }
