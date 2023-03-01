@@ -38,5 +38,7 @@ export interface MenuItem {
     icon: string;
     submenu: MenuItem[];
     module?: string;
+    isGroupedMenu?: boolean;
     recentRecords?: RecentlyViewed[];
+
 }

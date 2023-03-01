@@ -27,13 +27,13 @@
 -->
 <a *ngIf="link.route"
    [ngClass]="class"
-   [queryParams]="link.params"
    [routerLink]="link.route"
+   [queryParams]="link.params"
 >
     <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
     {{ link.label }}
 </a>
-<a *ngIf="!link.route"
+<a *ngIf="!link.route && link.url"
    [href]="link.url"
    [ngClass]="class"
 >
@@ -41,3 +41,9 @@
     {{ link.label }}
 </a>
 
+<a *ngIf="!link.route && !link.url"
+   [ngClass]="class"
+>
+    <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+    {{ link.label }}
+</a>

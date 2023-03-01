@@ -30,7 +30,7 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {StateStore} from '../state';
-import {deepClone} from 'common';
+import {deepClone, ObjectMap} from 'common';
 
 export interface Navigation {
     tabs: string[];
@@ -74,6 +74,7 @@ export interface ModuleAction {
     params?: string;
     icon: string;
     module?: string;
+    sublinks?: ObjectMap
 }
 
 const initialState: Navigation = {

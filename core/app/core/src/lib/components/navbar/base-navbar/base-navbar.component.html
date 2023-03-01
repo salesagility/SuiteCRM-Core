@@ -86,11 +86,13 @@
                 </div>
                 <div class="global-links" ngbDropdown>
                     <li (click)="myDrop.close()" class="global-link-item">
-                        <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
+                        <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle"
+                           ngbDropdownToggle>
                             <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                             {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
                         </a>
-                        <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth" aria-labelledby="navbarDropdownMenuLink"
+                        <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
+                             aria-labelledby="navbarDropdownMenuLink"
                              class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
                             <ng-template [ngIf]="navbar.globalActions">
                                 <a *ngFor="let globalAction of navbar.globalActions"
@@ -155,17 +157,26 @@
                     <ng-container *ngIf="vm.userPreferences['navigation_paradigm'] != 'gm'">
 
                         <ul class="navbar-nav">
-                            <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
+                            <li *ngIf="navbar.current && !navbar.current.isGroupedMenu"
+                                class="top-nav nav-item dropdown non-grouped active">
                                 <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                             </li>
+
+                            <ng-container *ngIf="navbar.current?.submenu  && navbar.current.isGroupedMenu">
+                                <li class="top-nav nav-item dropdown main-grouped">
+                                    <scrm-grouped-menu-item
+                                        [item]="navbar.current"
+                                        [subNavCollapse]="subNavCollapse">
+                                    </scrm-grouped-menu-item>
+                                </li>
+                            </ng-container>
+
                             <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown non-grouped">
                                 <scrm-menu-item [item]="item"></scrm-menu-item>
                             </li>
                         </ul>
 
-                        <scrm-menu-items-list [items]="navbar.all.modules"
-                                              labelKey="LBL_MORE">
-                        </scrm-menu-items-list>
+                        <scrm-menu-items-list [items]="navbar.all.modules" labelKey="LBL_MORE"></scrm-menu-items-list>
 
                     </ng-container>
 
@@ -181,9 +192,11 @@
                         <li class="global-link-item">
                             <a #globalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                <span class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>
+                                <span
+                                    class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>
                             </a>
-                            <div [style.min-width.px]="globalLinkTitle.offsetWidth" aria-labelledby="navbarDropdownMenuLink"
+                            <div [style.min-width.px]="globalLinkTitle.offsetWidth"
+                                 aria-labelledby="navbarDropdownMenuLink"
                                  class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
                                 <ng-container *ngIf="navbar.globalActions">
                                     <a *ngFor="let globalAction of navbar.globalActions"
