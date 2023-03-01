@@ -1,0 +1,9 @@
+parameters:
+  navbar.administration_override:
+    - configurator
+    - connectors
+    - currencies
+    - emailman
+    - module-builder
+    - studio
+    - sugar-feed

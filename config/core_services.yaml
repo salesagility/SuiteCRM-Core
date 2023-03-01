@@ -62,6 +62,7 @@ services:
       $samlAutoCreateAttributesMap: '%saml.autocreate.attributes_map%'
       $logoutConfig: '%auth.logout%'
       $sessionExpiredConfig: '%auth.session-expired%'
+      $navbarAdministrationOverrides: '%navbar.administration_override%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
