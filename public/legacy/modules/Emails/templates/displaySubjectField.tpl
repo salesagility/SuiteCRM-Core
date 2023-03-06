@@ -53,7 +53,7 @@
         {elseif !empty($bean.id) && $bean.status != $APP_LIST_STRINGS.dom_email_status.draft}
             <a href="index.php?module=Emails&action=DetailView&record={$bean.id}">{$subject}</a>
         {elseif !empty($bean)}
-            <a href="index.php?module=Emails&action=DisplayDetailView&folder_name={$bean.folder}&folder={$bean.folder_type}&inbound_email_record={$bean.inbound_email_record}&uid={$bean.uid}&msgno={$bean.msgno}">{$subject}</a>
+            <a href="index.php?module=Emails&action=DisplayDetailView&folder_name={if !empty($bean.folder)}{$bean.folder}{/if}&folder={if !empty($bean.folder_type)}{$bean.folder_type}{/if}&inbound_email_record={if !empty($bean.inbound_email_record)}{$bean.inbound_email_record}{/if}&uid={if !empty($bean.uid)}{$bean.uid}{/if}&msgno={if !empty($bean.msgno)}{$bean.msgno}{/if}">{$subject}</a>
         {/if}
     {/if}
 </div>
