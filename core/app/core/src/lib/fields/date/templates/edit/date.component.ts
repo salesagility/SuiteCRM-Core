@@ -26,7 +26,7 @@
 
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString} from 'common';
+import {ButtonInterface, isEmptyString, isVoid} from 'common';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
@@ -61,7 +61,7 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
 
         // Note: handle NgbDatePicker default validation
         // Note: convert empty form value to null for the ngb date validator to pass it
-        if (isEmptyString(this.field.value)) {
+        if (isVoid(this.field.value) || isEmptyString(this.field.value)) {
             this.field.formControl.setValue(null);
         }
 

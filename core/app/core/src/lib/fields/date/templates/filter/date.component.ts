@@ -26,7 +26,7 @@
 
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString} from 'common';
+import {ButtonInterface, isEmptyString, isVoid} from 'common';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -60,22 +60,23 @@ export class DateFilterFieldComponent extends BaseDateTimeComponent implements O
     ngOnInit(): void {
         super.ngOnInit();
 
-        let current = '';
+        let current = null;
         if (this.field.criteria.values && this.field.criteria.values.length > 0) {
             current = this.field.criteria.values[0];
         }
 
         let formattedValue = null;
-        if (!isEmptyString(current)) {
+        if (!isVoid(current) && !isEmptyString(current)) {
             current = current.trim();
             formattedValue = this.typeFormatter.toUserFormat(this.field.type, current, {mode: 'edit'});
         }
-        this.field.value = current;
+        this.field.value = current ?? '';
         this.field.formControl.setValue(formattedValue);
         this.field.formControl.markAsDirty();
 
-        this.setModel(current);
-
+        if (!isVoid(current)) {
+            this.setModel(current);
+        }
         this.subscribeValueChanges();
     }
 
