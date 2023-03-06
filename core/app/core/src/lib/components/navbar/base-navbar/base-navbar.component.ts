@@ -101,10 +101,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         favoriteRecords: [],
     };
 
-    searchTerm = '';
     loaded = true;
     isUserLoggedIn: boolean;
-    isSearchBarVisible: boolean = false;
 
     mainNavCollapse = true;
     subNavCollapse = true;
@@ -204,23 +202,6 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.authService.isUserLoggedIn.unsubscribe();
-    }
-
-    /**
-     * Toggle between searchbar and menu items
-     */
-    toggleSearchBar(): void {
-        this.isSearchBarVisible = !this.isSearchBarVisible;
-    }
-
-    search(): void {
-        this.globalSearch.navigateToSearch(this.searchTerm).finally(() => {
-            this.clearSearchTerm();
-        });
-    }
-
-    clearSearchTerm(): void {
-        this.searchTerm = '';
     }
 
     checkAppStrings(appStrings): boolean {

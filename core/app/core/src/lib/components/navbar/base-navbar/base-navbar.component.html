@@ -67,7 +67,7 @@
             <ul class="navbar mobile-nav-block mobilenavbar">
                 <div #myDrop="ngbDropdown" [autoClose]="false" class="position-static" ngbDropdown>
 
-                    <ng-container *ngIf="!isSearchBarVisible; else searchBar">
+                    <ng-container>
                         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
                                 class="navbar-toggler"
                                 ngbDropdownToggle type="button">
@@ -87,6 +87,10 @@
                         </div>
                     </ng-container>
 
+                </div>
+
+                <div >
+                    <scrm-search-bar></scrm-search-bar>
                 </div>
 
                 <div class="d-flex align-items-center">
@@ -130,7 +134,7 @@
         <ng-container *ngIf="this.isUserLoggedIn && !mobileNavbar">
             <nav class="navbar navbar-expand-md navbar-1">
                 <div [ngbCollapse]="mainNavCollapse" class="navbar-collapse collapse collapsenav">
-                    <ng-container *ngIf="!isSearchBarVisible; else searchBar">
+                    <ng-container>
                         <scrm-home-menu-item
                             [active]="vm.appState.module && vm.appState.module === 'home'"
                             [route]="getHomePage()"
@@ -197,8 +201,11 @@
                         <!-- END Navbar with non-grouped tabs -->
                     </ng-container>
 
-
                 </div>
+                <div class="mr-4">
+                    <scrm-search-bar></scrm-search-bar>
+                </div>
+
                 <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
 
                 <!-- Global Links -->
@@ -240,53 +247,8 @@
         </ng-container>
     </ng-container>
 
-    <ng-template #searchBar>
-        <form name="global-search" class="global-search">
-            <div class="d-flex ">
-                <input [(ngModel)]="searchTerm"
-                       type="text"
-                       name="global-search-term"
-                       class="form-control global-search-term mr-1"
-                       placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
-                       aria-label="Search"
-                       appAutoFocusDirective
-                       required>
-                <button class="filter-button btn btn-danger btn-sm"
-                        aria-label="Search"
-                        scrm-button-loading
-                        (click)="search()">
-                        <ng-container *ngIf="mobileNavbar">
-                            <scrm-image class="search-icon sicon" image="search"></scrm-image>
-                        </ng-container>
-                        <ng-container *ngIf="!mobileNavbar">
-                            <scrm-label labelKey="LBL_SEARCH"></scrm-label>
-                        </ng-container>
-
-
-                </button>
-                <button class="filter-button btn btn-danger btn-sm"
-                        aria-label="Cancel Search"
-                        (click)="isSearchBarVisible= false;">
-                    <ng-container *ngIf="mobileNavbar">
-                        <scrm-image class="search-icon sicon" image="cross"></scrm-image>
-                    </ng-container>
-                    <ng-container *ngIf="!mobileNavbar">
-                        <scrm-label labelKey="LBL_CANCEL"></scrm-label>
-                    </ng-container>
-                </button>
-            </div>
-        </form>
-    </ng-template>
-
     <ng-template #actionIcons>
         <div class="action-group">
-
-            <a class="action-link primary-global-link" type="button" aria-label="Toggle Search Bar"
-               (click)="toggleSearchBar()">
-                <scrm-image [ngClass]="isSearchBarVisible ? 'action-btn-icon-clicked' : 'action-btn-icon'"
-                            image="search"></scrm-image>
-                <!--                <scrm-image class="action-btn-icon" image="cross" *ngIf="isSearchBarVisible"></scrm-image>-->
-            </a>
 
             <div class="action-new dropdown">
                 <a class="action-link primary-global-link" type="button" aria-label="Quick Create">

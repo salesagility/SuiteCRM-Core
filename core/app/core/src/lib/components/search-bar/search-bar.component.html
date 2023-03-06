@@ -1,0 +1,79 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+
+<ng-container *ngIf="(vm$ | async) as vm" >
+    <form name="global-search" class="global-search" [formGroup]="searchForm">
+        <div class="input-group dropdown" [ngClass]="{'search-focused': isFocused}">
+            <input
+                   formControlName="searchTerm"
+                   type="text"
+                   name="global-search-term"
+                   class="form-control dropdown-toggle global-search-term"
+                   placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
+                   aria-label="Search"
+                   (focus)="onFocus()"
+                   (blur)="onBlur()"
+                   (keyup.enter)="getFirstDropdownItem()"
+                   data-toggle="dropdown"
+                   autocomplete="off"
+                   required>
+            <ul class="dropdown-menu global-search-dropdown">
+                <li *ngFor="let result of searchResults; let first = first" class="dropdown-text-size" [ngClass]="{'dropdown-active': first}">
+                    <a class="dropdown-item" routerLink="{{result?.link}}">
+                        <scrm-image class="search-icon sicon" image="search"></scrm-image>
+                        <span class="ml-2">"<strong>{{result?.title}}</strong>" in project SuiteCRM8</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Item 2</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Item 3</a>
+                </li>
+            </ul>
+
+            <div class="input-group-append">
+                <button *ngIf="!hasSearchTyped" class="btn btn-default search-button"
+                        aria-label="Search"
+                        scrm-button-loading
+                        (click)="search()">
+                    <scrm-image class="search-icon sicon" image="search"></scrm-image>
+                </button>
+
+                <button *ngIf="hasSearchTyped" class="btn btn-default search-button"
+                        aria-label="Search"
+                        scrm-button-loading
+                        (click)="clearSearchTerm()">
+                    <scrm-image class="search-icon sicon" image="cross"></scrm-image>
+                </button>
+
+            </div>
+        </div>
+    </form>
+</ng-container>
+
