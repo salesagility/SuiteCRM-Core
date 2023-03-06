@@ -62,6 +62,8 @@ class aSubPanel
     public $panel_definition ;
     public $sub_subpanels ;
     public $parent_bean ;
+    public $searchByFields = [];
+
 
     /**
      * Can we display this subpanel?
@@ -196,6 +198,8 @@ class aSubPanel
             $searchForm->populateFromRequest();
 
             $where_clauses = $searchForm->generateSearchWhere(true, $seed->module_dir);
+
+            $this->searchByFields = $searchForm->searchByFields;
 
             $GLOBALS['log']->info("Subpanel Where Clause: $this->search_query");
 

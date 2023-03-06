@@ -949,6 +949,8 @@ class SugarBean
                     $replacement = substr_replace($query_array['select'], "SELECT count(", $select_position, 6);
                     $query_rows = "( " . $replacement . ")" . $subquery['from_min']
                         . $query_array['join'] . $subquery['where'] . ' )';
+                } elseif (!empty($subquery['params']['subpanel_relate_field_search'])) {
+                    $query_rows = "( SELECT count(*)" . $subquery['from'] . $subquery['where'] . ' )';
                 } else {
                     //resort to default behavior.
                     $query_rows = "( SELECT count(*)" . $subquery['from_min']
@@ -1171,8 +1173,10 @@ class SugarBean
 
                     if(!empty($union_related_list_columns) && array_key_exists($this_subpanel->name, $union_related_list_columns)) {
                         $list_fields = $union_related_list_columns[$this_subpanel->name];
-                    }else{
+                    }elseif($subpanel_def->isCollection()){
                         $list_fields = $this_subpanel->get_list_fields();
+                    }else{
+                        $list_fields = $submodule->field_defs;
                     }
 
                     foreach ($list_fields as $list_key => $list_field) {
@@ -1208,6 +1212,16 @@ class SugarBean
                     // use single select in case when sorting by relate field
                     $singleSelect = method_exists($submodule, 'is_relate_field')
                         ? $submodule->is_relate_field($order_by) : null;
+
+                    if (!$singleSelect && !empty($this_subpanel->searchByFields) && method_exists($submodule, 'is_relate_field')){
+                        foreach($this_subpanel->searchByFields as $field){
+                            if ($submodule->is_relate_field($field)){
+                                $singleSelect = true;
+                                $params['subpanel_relate_field_search'] = true;
+                                break;
+                            }
+                        }
+                    }
 
                     $subquery = method_exists($submodule, 'create_new_list_query')
                         ? $submodule->create_new_list_query(
@@ -3956,7 +3970,7 @@ class SugarBean
                     }
 
 
-                    if ($join['type'] == 'many-to-many') {
+                    if ($join['type'] === 'many-to-many') {
                         if (empty($ret_array['secondary_select'])) {
                             $ret_array['secondary_select'] = " SELECT $this->table_name.id ref_id  ";
 
