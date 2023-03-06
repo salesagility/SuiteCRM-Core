@@ -318,7 +318,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                     'type' => $field['type'] ?? 'varchar',
                     'vname' => $field['label'] ?? '',
                     'options' => $field['options'] ?? [],
-                    'default' => $field['default'] ?? '',
+                    'default' => $field['default'] ?? null,
                     'width' => $field['width'] ?? '',
                     'enable_range_search' => $field['enable_range_search'] ?? '',
                 ];
