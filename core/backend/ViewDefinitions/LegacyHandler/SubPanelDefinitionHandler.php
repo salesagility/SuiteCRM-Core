@@ -312,14 +312,15 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         $searchDefs = $subpanel->_instance_properties['searchdefs'] ?? '';
 
         if (!empty($searchDefs)){
-            foreach ($searchDefs as $field) {
+            foreach ($searchDefs as &$field) {
                 $fieldDefinition = [
                     'name' => $field['name'],
                     'type' => $field['type'] ?? 'varchar',
                     'vname' => $field['label'] ?? '',
                     'options' => $field['options'] ?? [],
-                    'default' => $field['default'] ?? false,
-                    'width' => $field['width'],
+                    'default' => $field['default'] ?? '',
+                    'width' => $field['width'] ?? '',
+                    'enable_range_search' => $field['enable_range_search'] ?? '',
                 ];
                 $field['fieldDefinition'] = $fieldDefinition;
             }
