@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from 'common';
+import {isTrue, Record} from 'common';
 import {ViewFieldDefinition} from 'common';
 import {StandardValidationErrors, StandardValidatorFn} from 'common';
 import {FormControlUtils} from '../../field/form-control.utils';
@@ -87,7 +87,7 @@ export class RequiredValidator implements ValidatorInterface {
             return false;
         }
 
-        return !!viewField.fieldDefinition.required;
+        return isTrue(viewField.fieldDefinition.required);
     }
 
     getValidator(viewField: ViewFieldDefinition): StandardValidatorFn[] {
