@@ -78,6 +78,7 @@ class SearchForm
     public $nbTabs = 0;
     // hide saved searches drop and down near the search button
     public $showSavedSearchesOptions = true;
+    public $searchByFields = [];
 
     public $displayType = 'searchView';
 
@@ -900,6 +901,7 @@ class SearchForm
         global $timedate;
 
         $db = $this->seed->db;
+        $this->searchByFields = [];
         $this->searchColumns = array();
         $values = $this->searchFields;
 
@@ -995,6 +997,8 @@ class SearchForm
                 if (!empty($parms['operator'])) {
                     $operator = strtolower($parms['operator']);
                 }
+
+                $this->searchByFields[] = $field;
 
                 if (is_array($parms['value'])) {
                     $field_value = '';
