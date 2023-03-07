@@ -305,6 +305,8 @@ export class DatetimeFormatter implements Formatter {
     }
 
     fromUserFormat(datetime: string, options?: DateTimeOptions): DateTime {
+        // ensure datetime is in user format.
+        datetime = this.toUserFormat(datetime, options);
         datetime = datetime.toString();
         datetime = datetime.replace('a', 'A');
         datetime = datetime.replace('p', 'P');

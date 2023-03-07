@@ -61,6 +61,8 @@ class SubpanelDataPort
         array $criteria = []
     ): array
     {
+        $collection = [];
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/FilterMapper/FilterMapper.php';
         $filterMapper = new FilterMapper();
@@ -79,7 +81,15 @@ class SubpanelDataPort
         require_once 'include/SubPanel/SubPanelDefinitions.php';
 
         $spd = new SubPanelDefinitions($parentBean);
-        $aSubPanelObject = $spd->load_subpanel($subpanel);
+        if (!isset($mapped['collection_basic']) || empty($mapped['collection_basic'])){
+            $aSubPanelObject = $spd->load_subpanel($subpanel);
+        } else {
+            $collection = $mapped['collection_basic'];
+            if (!is_array($mapped['collection_basic'])){
+                $collection = [$mapped['collection_basic']];
+            }
+            $aSubPanelObject = $spd->load_subpanel($subpanel, false, false, '', $collection);
+        }
 
         try {
             $response = SugarBean::get_union_related_list(
