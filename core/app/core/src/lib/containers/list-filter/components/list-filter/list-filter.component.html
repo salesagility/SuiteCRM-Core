@@ -30,7 +30,7 @@
             [close]="store.closeButton"
             [isCollapsed$]="store.isCollapsed$"
             [mode]="store.panelMode"
-            klass="filter-panel {{ (config && config.klass) || ''}}"
+            klass="filter-panel m-0 {{ (config && config.klass) || ''}}"
             [titleKey]="'LBL_BASIC_FILTER'"
 >
 
@@ -38,7 +38,7 @@
         <scrm-dropdown-button [config]="store.myFilterButton"></scrm-dropdown-button>
     </div>
 
-    <div class="p-3 filter-body" panel-body>
+    <div class="p-2 filter-body" panel-body>
 
         <scrm-field-grid *ngIf="store.displayFields && store.displayFields.length"
                          [actions]="true"
