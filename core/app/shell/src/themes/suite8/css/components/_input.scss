@@ -87,6 +87,7 @@ input {
       width: 18em;
       color: $shell-grey;
     }
+
     select {
       padding: 0.6em 0 0.6em 0.6em;
     }
@@ -95,21 +96,24 @@ input {
 
 .global-search {
   margin: 0.3em 0;
-  width: 100%;
+  width: 14em;
 
   .input-group {
-    border-radius: 0.25rem;
+    border-radius: 0.4rem;
 
     &:hover {
       .global-search-term {
         background-color: #9794a2;
+
         &::placeholder {
           color: #cbc9d0;
         }
       }
+
       .search-button {
         background-color: #9794a2;
-        .search-icon svg path{
+
+        .search-icon svg path {
           fill: #cbc9d0;
         }
       }
@@ -118,19 +122,40 @@ input {
     .global-search-term {
       background-color: #757083;
       transition: background-color ease-in-out 0.15s;
-      border: transparent;
+      font-size: 14px;
+      height: 32px;
+
       &::placeholder {
         color: #9e9ba8;
+        font-size: 14px;
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: none;
       }
     }
 
     .search-button {
       background-color: #757083;
-      .search-icon svg {
-        fill: #9e9ba8;
+      font-size: 14px;
+      height: 32px;
+
+      &:focus {
+        box-shadow: none;
       }
-      .search-icon svg path {
-        fill: #9e9ba8;
+
+      .search-icon {
+        line-height: 14px;
+
+        svg {
+          fill: #9e9ba8;
+          vertical-align: text-top;
+        }
+
+        svg path {
+          fill: #9e9ba8;
+        }
       }
     }
 
@@ -144,29 +169,55 @@ input {
       .global-search-term {
         background-color: white;
       }
+
       .search-button {
         background-color: white;
       }
     }
+
     .global-search-term {
       box-shadow: 0 0 0 0 white;
       background-color: white;
       transition: background-color ease-in-out 0.15s;
     }
+
     .search-button {
       box-shadow: 0 0 0 0 white;
       background-color: white;
     }
+
     .dropdown-menu {
       display: block;
       background-color: white;
       width: 100%;
+      margin-top: 3px;
+
       .dropdown-active {
         background-color: #f2f2f2;
-        padding-top: 0.3em;
       }
-      .dropdown-text-size {
-        font-size: 0.8em;
+
+      .dropdown-item-block {
+        cursor: pointer;
+        padding: 0;
+
+        .dropdown-item {
+          padding: 0.25rem 0.75rem;
+
+          .search-icon {
+            pointer-events: none;
+
+            svg path {
+              fill: black;
+            }
+          }
+
+          .dropdown-text {
+            white-space: normal;
+            word-break: break-word;
+            width: 12em;
+          }
+        }
+
       }
     }
   }
@@ -185,6 +236,15 @@ input {
     padding: 0;
     max-width: 90%;
   }
+  .global-search {
+    width: 11em;
+
+    .input-group {
+      margin: 0;
+      max-width: 100%;
+    }
+  }
+
 
   .global-search input[type="text"] {
     font-size: 0.8em;

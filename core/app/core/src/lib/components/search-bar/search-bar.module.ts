@@ -30,8 +30,6 @@ import {SearchBarComponent} from './search-bar.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ImageModule} from '../image/image.module';
 import {LabelModule} from '../label/label.module';
-import {AutoFocusDirectiveModule} from '../../directives/auto-focus/auto-focus.module';
-import {RouterModule} from '@angular/router';
 
 @NgModule({
     declarations: [SearchBarComponent],
@@ -41,9 +39,7 @@ import {RouterModule} from '@angular/router';
         FormsModule,
         ImageModule,
         LabelModule,
-        AutoFocusDirectiveModule,
-        ReactiveFormsModule,
-        RouterModule
+        ReactiveFormsModule
     ]
 })
 export class SearchBarModule {

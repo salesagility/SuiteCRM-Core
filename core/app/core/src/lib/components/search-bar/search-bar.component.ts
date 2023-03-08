@@ -24,28 +24,27 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
-import {Observable, Subject, of, Subscription} from 'rxjs';
-import {map, debounceTime, distinctUntilChanged, switchMap, takeUntil, tap, filter} from 'rxjs/operators';
+import {Observable, Subscription} from 'rxjs';
+import {map, debounceTime, distinctUntilChanged, tap, filter} from 'rxjs/operators';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'scrm-search-bar',
     templateUrl: 'search-bar.component.html',
 })
-export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
 
-    //searchTerm = '';
+    @ViewChild('searchInput') searchInput: ElementRef;
 
-    isFocused: boolean = false;
-    isSelectedResult: boolean = false;
-    //#f2f2f2
-    hasSearchTyped: boolean = false;
-
+    searchWord: string = '';
     searchForm: FormGroup;
     searchResults: any[] = [];
+
+    isFocused: boolean = false;
+    hasSearchTyped: boolean = false;
 
     protected subs: Subscription[] = [];
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
@@ -58,214 +57,57 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
         })
     );
 
-    users = [
-        {
-            title: "John",
-            lastName: "Doe",
-            age: 25,
-            birthYear: 1998,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Jane",
-            lastName: "Smith",
-            age: 32,
-            birthYear: 1991,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Bob",
-            lastName: "Johnson",
-            age: 47,
-            birthYear: 1976,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Emily",
-            lastName: "Davis",
-            age: 19,
-            birthYear: 2004,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Michael",
-            lastName: "Brown",
-            age: 57,
-            birthYear: 1966,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Sarah",
-            lastName: "Wilson",
-            age: 41,
-            birthYear: 1982,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "David",
-            lastName: "Lee",
-            age: 28,
-            birthYear: 1995,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Karen",
-            lastName: "Nguyen",
-            age: 23,
-            birthYear: 2000,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Daniel",
-            lastName: "Garcia",
-            age: 36,
-            birthYear: 1987,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Linda",
-            lastName: "Martinez",
-            age: 63,
-            birthYear: 1960,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Anthony",
-            lastName: "Perez",
-            age: 51,
-            birthYear: 1972,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Melissa",
-            lastName: "Taylor",
-            age: 45,
-            birthYear: 1978,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Eric",
-            lastName: "Clark",
-            age: 29,
-            birthYear: 1994,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Rachel",
-            lastName: "Anderson",
-            age: 37,
-            birthYear: 1986,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Kevin",
-            lastName: "Wright",
-            age: 50,
-            birthYear: 1973,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Michelle",
-            lastName: "Turner",
-            age: 22,
-            birthYear: 2001,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Steven",
-            lastName: "Allen",
-            age: 43,
-            birthYear: 1980,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Amanda",
-            lastName: "Gonzalez",
-            age: 31,
-            birthYear: 1992,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Brian",
-            lastName: "Scott",
-            age: 39,
-            birthYear: 1984,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        },
-        {
-            title: "Jasmine",
-            lastName: "Rivera",
-            age: 26,
-            birthYear: 1997,
-            link: "/accounts/index?return_module=Accounts&return_action=DetailView"
-        }
-    ];
-
-
-    constructor(protected globalSearch: GlobalSearch,protected languageStore: LanguageStore,) {
+    constructor(protected globalSearch: GlobalSearch, protected languageStore: LanguageStore) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.searchForm = new FormGroup({
             searchTerm: new FormControl('')
         });
 
         this.subs.push(this.searchForm.get('searchTerm').valueChanges
             .pipe(
-                tap(value => {
-                    if(value.length) {
-                        this.hasSearchTyped = true
+                tap(data => {
+                    if (data) {
+                        this.hasSearchTyped = true;
                     } else {
                         this.hasSearchTyped = false;
                     }
                 }),
-                debounceTime(300),
+
+                debounceTime(200),
                 distinctUntilChanged(),
-                filter(searchString => searchString.length>2),
-                //switchMap(term => this.searchService.search(term)),
-            ).subscribe((term: string) => {
-            this.searchResults = this.users.filter(user =>
-                user.title.toLowerCase().includes(term.toLowerCase()) ||
-                user.lastName.toLowerCase().includes(term.toLowerCase())
-            )
-            }));
+                filter(searchString => searchString?.length > 2),
+            ).subscribe((term: string) => this.searchWord = term));
     }
 
-    ngAfterViewInit() {
-
-    }
-
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    getFirstDropdownItem() {
-
-
-    }
-
     search(): void {
-
-        this.globalSearch.navigateToSearch(this.searchForm.get('searchTerm').value).finally(() => {
-            this.clearSearchTerm();
-        });
+        if (this.searchWord.length) {
+            this.globalSearch.navigateToSearch(this.searchWord).finally(() => {
+                this.clearSearchTerm();
+                this.searchInput.nativeElement.blur();
+            });
+        }
     }
 
     clearSearchTerm(): void {
         this.searchForm.reset();
+        this.hasSearchTyped = false;
+        this.searchWord = '';
     }
 
-
-    onFocus() {
+    onFocus(): void {
         this.isFocused = true;
     }
 
-    onBlur() {
+    onBlur(): void {
         setTimeout(() => {
             this.isFocused = false;
-
+            this.hasSearchTyped = false;
         }, 200);
     }
-
-
 }

@@ -155,6 +155,8 @@ export * from './components/record-flexbox/record-flexbox.module';
 export * from './components/record-grid/record-grid.component';
 export * from './components/record-grid/record-grid.model';
 export * from './components/record-grid/record-grid.module';
+export * from './components/search-bar/search-bar.component';
+export * from './components/search-bar/search-bar.module';
 export * from './components/sort-button/sort-button.component';
 export * from './components/sort-button/sort-button.model';
 export * from './components/sort-button/sort-button.module';

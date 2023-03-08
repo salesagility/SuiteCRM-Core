@@ -89,10 +89,6 @@
 
                 </div>
 
-                <div >
-                    <scrm-search-bar></scrm-search-bar>
-                </div>
-
                 <div class="d-flex align-items-center">
                     <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
                     <div class="global-links" ngbDropdown>
@@ -202,9 +198,6 @@
                     </ng-container>
 
                 </div>
-                <div class="mr-4">
-                    <scrm-search-bar></scrm-search-bar>
-                </div>
 
                 <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
 
@@ -263,6 +256,10 @@
                         </a>
                     </li>
                 </ul>
+            </div>
+
+            <div class="d-flex align-items-center mx-1">
+                <scrm-search-bar></scrm-search-bar>
             </div>
 
             <div class="action-alert dropdown">

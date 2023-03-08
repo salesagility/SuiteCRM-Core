@@ -26,34 +26,29 @@
 */
 -->
 
-<ng-container *ngIf="(vm$ | async) as vm" >
+<ng-container *ngIf="(vm$ | async) as vm">
     <form name="global-search" class="global-search" [formGroup]="searchForm">
         <div class="input-group dropdown" [ngClass]="{'search-focused': isFocused}">
             <input
-                   formControlName="searchTerm"
-                   type="text"
-                   name="global-search-term"
-                   class="form-control dropdown-toggle global-search-term"
-                   placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
-                   aria-label="Search"
-                   (focus)="onFocus()"
-                   (blur)="onBlur()"
-                   (keyup.enter)="getFirstDropdownItem()"
-                   data-toggle="dropdown"
-                   autocomplete="off"
-                   required>
-            <ul class="dropdown-menu global-search-dropdown">
-                <li *ngFor="let result of searchResults; let first = first" class="dropdown-text-size" [ngClass]="{'dropdown-active': first}">
-                    <a class="dropdown-item" routerLink="{{result?.link}}">
+                formControlName="searchTerm"
+                type="text"
+                name="global-search-term"
+                class="form-control dropdown-toggle global-search-term"
+                placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
+                aria-label="Search"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+                (keydown.enter)="search()"
+                data-toggle="dropdown"
+                autocomplete="off"
+                #searchInput
+                required>
+            <ul class="dropdown-menu global-search-dropdown" *ngIf="searchWord.length && hasSearchTyped">
+                <li class="dropdown-item-block" [ngClass]="{'dropdown-active': searchWord}">
+                    <a class="dropdown-item" (click)="search()">
                         <scrm-image class="search-icon sicon" image="search"></scrm-image>
-                        <span class="ml-2">"<strong>{{result?.title}}</strong>" in project SuiteCRM8</span>
+                        <span class="dropdown-text ml-2">"<strong>{{searchWord}}</strong>" {{vm.appStrings['LBL_IN_EVERYWHERE'] | lowercase}}</span>
                     </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="#">Item 2</a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="#">Item 3</a>
                 </li>
             </ul>
 

@@ -7,7 +7,8 @@
   .badge-position {
     position: absolute;
     top: 2px;
-    right: 20px;
+    right: -6px;
+    z-index: 1;
   }
 
   .notifications {
