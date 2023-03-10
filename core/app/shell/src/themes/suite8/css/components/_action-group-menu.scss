@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2022 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,28 +24,41 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ActionGroupMenuComponent} from './action-group-menu.component';
-import {ButtonGroupModule} from '../button-group/button-group.module';
-import {ButtonModule} from '../button/button.module';
-import {ImageModule} from '../image/image.module';
-import {LabelModule} from '../label/label.module';
-import {DynamicLabelModule} from '../dynamic-label/dynamic-label.module';
-import {InlineLoadingSpinnerModule} from '../inline-loading-spinner/inline-loading-spinner.module';
+.action-group-menu {
+  .inline-spinner {
+    width: 30px;
+  }
 
-@NgModule({
-    declarations: [ActionGroupMenuComponent],
-    exports: [ActionGroupMenuComponent],
-    imports: [
-        CommonModule,
-        ImageModule,
-        ButtonModule,
-        ButtonGroupModule,
-        LabelModule,
-        DynamicLabelModule,
-        InlineLoadingSpinnerModule
-    ]
-})
-export class ActionGroupMenuModule {
+  .inline-confirmation {
+    width: 30px;
+
+    .inline-confirmation-button {
+      background-color: $white;
+    }
+
+    .inline-confirmation-label {
+      background-color: $white;
+    }
+
+    .inline-confirmation-label > scrm-label {
+      width: max-content;
+      max-width: 120px;
+      display: block;
+      background-color: $white;
+      text-align: end;
+      box-shadow: -.8rem 0.1rem .5rem rgba($white, .9);
+      padding-left: 3px;
+    }
+
+    .inline-confirmation-label > scrm-dynamic-label {
+      width: max-content;
+      max-width: 120px;
+      display: block;
+      background-color: $white;
+      text-align: end;
+      box-shadow: -.8rem 0.1rem .5rem rgba($white, .9);
+      padding-left: 3px;
+    }
+
+  }
 }

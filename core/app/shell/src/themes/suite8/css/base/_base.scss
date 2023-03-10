@@ -157,3 +157,10 @@ ul li::marker {
   stroke: $salmon-pink;
 }
 
+.shadow-md {
+  box-shadow: .1rem .15rem .2rem rgba(0,0,0,.25)!important;
+}
+
+.line-height-initial {
+  line-height: initial;
+}

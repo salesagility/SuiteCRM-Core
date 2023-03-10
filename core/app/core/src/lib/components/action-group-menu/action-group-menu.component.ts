@@ -25,10 +25,9 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {isFalse} from 'common';
+import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface, isFalse} from 'common';
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface} from 'common';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {
     ScreenSize,
@@ -58,12 +57,20 @@ export class ActionGroupMenuComponent implements OnInit {
 
     vm$: Observable<ActionGroupMenuViewModel>;
 
+    inlineConfirmationEnabled = false;
+    confirmationLabel = '';
+    confirmationDynamicLabel = '';
+    inlineCancelButton: ButtonInterface = null;
+    inlineConfirmButton: ButtonInterface = null;
+    loading = false;
+
     protected buttonGroupDropdownClass = 'dropdown-button-secondary';
 
     protected subs: Subscription[];
     protected screen: ScreenSize = ScreenSize.Medium;
     protected defaultBreakpoint = 3;
     protected breakpoint: number;
+
 
 
     constructor(
@@ -152,6 +159,18 @@ export class ActionGroupMenuComponent implements OnInit {
             klass: this.buttonClass,
             titleKey: action.titleKey || '',
             onClick: (): void => {
+
+                const inlineConfirmation = action?.params?.inlineConfirmation ?? false;
+                if (inlineConfirmation) {
+                    this.triggerTemporaryLoading();
+                    const callback = (): void => {
+                        this.config.runAction(action, this.actionContext);
+                    }
+                    this.initInlineConfirmation(action, callback);
+
+                    return;
+                }
+
                 this.config.runAction(action, this.actionContext);
             }
         } as ButtonInterface;
@@ -177,5 +196,64 @@ export class ActionGroupMenuComponent implements OnInit {
         }
 
         return button;
+    }
+
+    protected triggerTemporaryLoading() {
+        this.loading = true;
+        setTimeout(() => {
+            this.loading = false;
+        }, 300);
+    }
+
+    protected initInlineConfirmation(action: Action, callback: () => void): void {
+        const cancelConfig = action?.params?.inlineConfirmationButtons?.cancel ?? {};
+        const confirmConfig = action?.params?.inlineConfirmationButtons?.confirm ?? {};
+        this.confirmationLabel = action?.params?.confirmationLabel ?? '';
+        this.confirmationDynamicLabel = action?.params?.confirmationDynamicLabel ?? '';
+
+        this.inlineCancelButton = this.buildInlineCancelButton(cancelConfig)
+        this.inlineConfirmButton = this.buildInlineConfirmButton(confirmConfig, callback)
+        this.inlineConfirmationEnabled = true;
+    }
+
+    protected buildInlineCancelButton(config: ButtonInterface): ButtonInterface {
+        const defaults = {
+            labelKey: 'LBL_NO',
+            klass: 'btn btn-sm p-0 m-0 btn-link border-0 line-height-initial',
+            debounceClick: true,
+        } as ButtonInterface;
+        const button = {...defaults, ...(config ?? {})};
+
+        button.onClick = (): void => {
+            this.triggerTemporaryLoading();
+            this.resetInlineConfirmation();
+        }
+
+        return button;
+    }
+
+    protected buildInlineConfirmButton(config: ButtonInterface, callback: Function): ButtonInterface {
+        const defaults = {
+            labelKey: 'LBL_YES',
+            klass: 'btn btn-sm p-0 m-0 btn-link border-0 line-height-initial',
+            debounceClick: true,
+        } as ButtonInterface;
+        const button = {...defaults, ...(config ?? {})};
+
+        button.onClick = (): void => {
+            this.triggerTemporaryLoading();
+            callback();
+            this.resetInlineConfirmation();
+        }
+
+        return button;
+    }
+
+    protected resetInlineConfirmation(): void {
+        this.inlineConfirmationEnabled = false;
+        this.confirmationDynamicLabel = '';
+        this.confirmationLabel = '';
+        this.inlineConfirmButton = null;
+        this.inlineCancelButton = null;
     }
 }
