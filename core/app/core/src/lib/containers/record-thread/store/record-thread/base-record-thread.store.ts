@@ -83,9 +83,16 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
      *
      * @param {string} module to use
      * @param {boolean} load
+     * @param {number} pageSize
      */
-    public init(module: string, load = true): void {
-        const load$ = this.recordList.init(module, load, 'list_max_entries_per_subpanel');
+    public init(module: string, load = true, pageSize: number = null): void {
+        let pageSizeConfigKey = 'list_max_entries_per_record_thread';
+        if (pageSize && isFinite(pageSize)) {
+            pageSizeConfigKey = '';
+            this.recordList.setPageSize(pageSize)
+        }
+
+        const load$ = this.recordList.init(module, load, pageSizeConfigKey);
 
         this.subs.push(this.recordList.records$.subscribe(records => {
             this.initStores(records);

@@ -41,6 +41,7 @@ export interface RecordThreadConfig {
     create?: boolean;
     direction?: 'asc' | 'desc';
     itemConfig: RecordThreadItemConfig;
+    pageSize?: number;
     listActions?: Action[];
     listActionsClass?: string;
     listActionsButtonClass?: string;

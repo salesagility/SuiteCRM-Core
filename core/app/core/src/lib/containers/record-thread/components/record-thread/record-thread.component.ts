@@ -86,7 +86,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.store = this.storeFactory.create();
             this.store.setItemMetadata(this.config.itemConfig.metadata);
             this.store.setListMetadata({actions: this.config.listActions});
-            this.store.init(this.config.module, false);
+            this.store.init(this.config.module, false, this?.config?.pageSize ?? null);
         } else {
             this.store = this.config.store;
         }
@@ -186,7 +186,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
                         tap(() => this.config.onLoadMore())
                     ).subscribe();
                 }
-                this.store.loadMore();
+                this.store.loadMore(this.config.pageSize);
             }
         } as ButtonInterface;
     }

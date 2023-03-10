@@ -88,6 +88,7 @@ export class NotificationsComponent implements OnInit {
             listActionsClass: this.options?.listActionsClass ?? '',
             listActionsButtonClass: this.options?.listActionsButtonClass ?? '',
             listActionsButtonGroupClass: this.options?.listActionsButtonGroupClass ?? '',
+            pageSize: this.options?.pageSize ?? '',
             showNoDataMessage: this.options?.showNoDataMessage,
             noDataLabel: this.options?.noDataLabel,
         } as RecordThreadConfig;
