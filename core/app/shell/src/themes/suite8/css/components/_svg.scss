@@ -146,18 +146,6 @@
   height: 15em;
 }
 
-.search-icon svg {
-  vertical-align: baseline;
-}
-
-.search-icon, .search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon:hover svg path {
-  fill: $salmon-pink;
-}
-
 @media all and (max-width: $breakpoint-xsmall) {
   /* enable absolute positioning */
   .inner-addon {

@@ -52,7 +52,6 @@ import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
-import {GlobalSearch} from '../../../services/navigation/global-search/global-search.service';
 import {ActionBarModel} from './action-bar-model';
 
 @Component({
@@ -167,8 +166,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         protected appState: AppStateStore,
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
-        protected screenSize: ScreenSizeObserverService,
-        protected globalSearch: GlobalSearch
+        protected screenSize: ScreenSizeObserverService
     ) {
     }
 

@@ -64,7 +64,7 @@ export const navigationMockData = {
         userActionMenu: [
             {
                 name: 'profile',
-                labelKey: 'LBL_PROFILE',
+                labelKey: 'LBL_PROFILE_EDIT',
                 url: 'index.php?module=Users&action=EditView&record=1',
                 icon: ''
             },
