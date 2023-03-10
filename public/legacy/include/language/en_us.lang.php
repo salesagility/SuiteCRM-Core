@@ -337,6 +337,19 @@ $app_list_strings = array(
         86400 => 'Snooze for 1 day',
     ),
 
+    'snooze_alert_timer_simple' => array(
+        60 => '1 min',
+        300 => '5 mins',
+        600 => '10 mins',
+        900 => '15 mins',
+        1800 => '30 mins',
+        3600 => '1 hour',
+        7200 => '2 hours',
+        10800 => '3 hours',
+        18000 => '5 hours',
+        86400 => '1 day',
+    ),
+
     'task_priority_default' => 'Medium',
     'task_priority_dom' => array(
         'High' => 'High',
@@ -1639,7 +1652,10 @@ $app_strings = array(
     'LBL_LOCALE_NAME_EXAMPLE_TITLE' => 'Code Monkey Extraordinaire',
     'LBL_CANCEL' => 'Cancel',
     'LBL_SNOOZE' => 'Snooze',
+    'LBL_SNOOZE_INLINE_CONFIRM' => 'Snooze? ({{preferences.snooze_alert_timer|enum:snooze_alert_timer_simple}})',
     'LBL_DISMISS' => 'Dismiss',
+    'LBL_DISMISS_INLINE_CONFIRM' => 'Dismiss?',
+    'LBL_DISMISS_ALL_INLINE_CONFIRM' => 'Dismiss All?',
     'NTC_DISMISS_CONFIRMATION' => 'Are you sure you want to dismiss this alert?',
     'NTC_DISMISS_ALL_CONFIRMATION' => 'Are you sure you want to dismiss all alerts?',
     'LBL_ALERT_DISMISS_SUCCESS' => 'Alert dismissed successfully',
