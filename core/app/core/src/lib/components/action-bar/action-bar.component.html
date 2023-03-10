@@ -62,7 +62,7 @@
                         <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
                     </span>
                 </ng-container>
-                <div class="dropdown-menu dropdown-menu-right" *ngIf="checkAppStrings(vm.appStrings) && arePreferencesInitialized(preferences)">
+                <div class="dropdown-menu dropdown-menu-right shadow-md" *ngIf="checkAppStrings(vm.appStrings) && arePreferencesInitialized(preferences)">
                     <scrm-notifications></scrm-notifications>
                 </div>
             </div>
