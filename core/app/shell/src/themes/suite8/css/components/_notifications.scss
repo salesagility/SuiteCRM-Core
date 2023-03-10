@@ -41,15 +41,61 @@
 
         &:hover {
           background-color: $lighter-salmon-pink !important;
+
+          .notification-item-buttons {
+            .action-group-menu {
+              .inline-confirmation {
+
+                .inline-confirmation-button {
+                  background-color: $lighter-salmon-pink;
+                }
+
+                .inline-confirmation-label {
+                  background-color: $lighter-salmon-pink;
+                }
+
+                .inline-confirmation-label > scrm-label {
+                  background-color: $lighter-salmon-pink;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                }
+
+                .inline-confirmation-label > scrm-dynamic-label {
+                  background-color: $lighter-salmon-pink;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                }
+              }
+            }
+          }
+        }
+
+        .notification-item-buttons {
+          .action-group-menu {
+
+            .inline-confirmation {
+
+              .inline-confirmation-button button {
+                color: $danger;
+              }
+
+            }
+          }
         }
       }
 
-      .field-name-name {
+      .field-name-name, .field-name-target_module_label {
         display: block;
-        width: 175px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis !important;
+      }
+
+      .field-name-name {
+        width: 168px;
+        margin-right: 8px;
+      }
+
+      .field-name-target_module_label {
+        width: 150px;
       }
 
       .notifications-actions svg {
@@ -58,7 +104,7 @@
 
       .field-name-name {
 
-        a, a.clickable{
+        a, a.clickable {
           color: $black;
         }
       }
@@ -76,7 +122,7 @@
     }
 
     .notification-list-actions button {
-        color: $danger;
+      color: $danger;
     }
 
     .record-thread-load-more .load-more-button {
@@ -90,7 +136,16 @@
       color: $danger;
     }
 
+    .notification-list-actions {
+      .action-group-menu {
+        .inline-confirmation-label {
+          color: $dim-grey;
+        }
+      }
+    }
+
   }
+
 }
 
 

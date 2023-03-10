@@ -98,8 +98,8 @@ parameters:
             titleKey: 'LBL_DISMISS'
             asyncProcess: true
             params:
-              displayConfirmation: true
-              confirmationLabel: 'NTC_DISMISS_CONFIRMATION'
+              inlineConfirmation: true
+              confirmationLabel: 'LBL_DISMISS_INLINE_CONFIRM'
             klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0 m-0']
             modes: ['detail', 'edit']
             acl: []
@@ -109,8 +109,8 @@ parameters:
             titleKey: 'LBL_SNOOZE'
             asyncProcess: true
             params:
-              displayConfirmation: true
-              confirmationLabel: 'NTC_SNOOZE_CONFIRMATION'
+              inlineConfirmation: true
+              confirmationDynamicLabel: 'LBL_SNOOZE_INLINE_CONFIRM'
             klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0 m-0 pr-2']
             modes: ['detail', 'edit']
             acl: []
@@ -124,8 +124,8 @@ parameters:
         labelKey: 'LBL_DISMISS_ALL'
         asyncProcess: true
         params:
-          displayConfirmation: true
-          confirmationLabel: 'NTC_DISMISS_ALL_CONFIRMATION'
+          inlineConfirmation: true
+          confirmationLabel: 'LBL_DISMISS_ALL_INLINE_CONFIRM'
           module: 'alerts'
         klass: ['']
         modes: ['detail', 'list']
