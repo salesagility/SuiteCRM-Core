@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
     selector: 'scrm-inline-loading-spinner',
@@ -32,6 +32,7 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./inline-loading-spinner.component.scss']
 })
 export class InlineLoadingSpinnerComponent implements OnInit {
+    @Input() klass = '';
 
     constructor() {
     }

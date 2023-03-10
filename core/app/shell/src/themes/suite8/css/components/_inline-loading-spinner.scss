@@ -30,3 +30,24 @@
   height: 0.25em;
   background-color: $pale-grey;
 }
+
+.inline-spinner.inline-spinner-md > div {
+  width: 0.5em;
+  height: 0.5em;
+}
+
+.inline-spinner.inline-spinner-danger > div {
+  background-color: $danger;
+}
+
+.inline-spinner.inline-spinner-primary > div {
+  background-color: $primary;
+}
+
+.inline-spinner.inline-spinner-secondary > div {
+  background-color: $secondary;
+}
+
+.inline-spinner.inline-spinner-main > div {
+  background-color: $main;
+}
