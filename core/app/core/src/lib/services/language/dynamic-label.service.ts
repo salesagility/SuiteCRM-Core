@@ -26,14 +26,14 @@
 
 import {Injectable} from '@angular/core';
 import {DataTypeFormatter} from '../formatters/data-type.formatter.service';
-import {Field, FieldMap} from 'common';
-import {isVoid} from 'common';
+import {Field, FieldMap, isVoid, StringMap} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
-import {StringMap} from 'common';
 import get from 'lodash-es/get';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 
 
-export declare type TemplateValueFilter = (value: string) => string;
+export declare type TemplateValueFilter = (value: string, filterArguments?: string[]) => string;
 export declare type TemplateFieldFilter = (value: Field) => string;
 
 export interface TemplateValueFilterMap {
@@ -59,14 +59,19 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
     protected valuePipes: TemplateValueFilterMap = {};
     protected fieldPipes: TemplateFieldFilterMap = {};
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected language: LanguageStore) {
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected language: LanguageStore,
+        protected configs: SystemConfigStore,
+        protected preferences: UserPreferenceStore,
+    ) {
 
         this.valuePipes.int = (value: string): string => this.valueTypeFormat('int', value);
         this.valuePipes.float = (value: string): string => this.valueTypeFormat('float', value);
         this.valuePipes.date = (value: string): string => this.valueTypeFormat('date', value);
         this.valuePipes.datetime = (value: string): string => this.valueTypeFormat('datetime', value);
         this.valuePipes.currency = (value: string): string => this.valueTypeFormat('currency', value);
-        this.valuePipes.phone = (value: string): string => this.valueTypeFormat('phone', value);
+        this.valuePipes.enum = (value: string, filterArguments: string[] = []): string => this.enumFormat(value, filterArguments);
 
         this.fieldPipes.int = (value: Field): string => this.fieldTypeFormat('int', value);
         this.fieldPipes.float = (value: Field): string => this.fieldTypeFormat('float', value);
@@ -74,8 +79,8 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
         this.fieldPipes.datetime = (value: Field): string => this.fieldTypeFormat('datetime', value);
         this.fieldPipes.currency = (value: Field): string => this.fieldTypeFormat('currency', value);
         this.fieldPipes.phone = (value: Field): string => this.fieldTypeFormat('phone', value);
-        this.fieldPipes.enum = (value: Field): string => this.enumFormat(value);
-        this.fieldPipes.dynamicenum = (value: Field): string => this.enumFormat(value);
+        this.fieldPipes.enum = (value: Field): string => this.enumFieldFormat(value);
+        this.fieldPipes.dynamicenum = (value: Field): string => this.enumFieldFormat(value);
         this.fieldPipes.multienum = (value: Field): string => this.multiEnumFormat(value);
     }
 
@@ -112,6 +117,7 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
             }
 
             let filter = '';
+            let filterArguments = [];
             let value = '';
             let source = 'context';
             let parts = [];
@@ -124,8 +130,15 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
             let path = variableName;
 
             if (variableName.includes('|')) {
-                const [name, pipe] = variableName.split('|');
+                const [name, pipe, ...others] = variableName.split('|');
                 filter = pipe.trim();
+
+                if (pipe.trim().includes(':')) {
+                    let[filterType, ...filterArgs] = pipe.trim().split(':');
+                    filter = filterType.trim();
+                    filterArguments = filterArgs;
+                }
+
                 variableName = name.trim();
                 path = name.trim();
             }
@@ -142,12 +155,13 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
                 sourceValues = fields;
             }
 
-            if (!sourceValues || !(variableName in sourceValues)) {
-                parsedTemplate = parsedTemplate.replace(regexMatch, value);
-                return;
-            }
-
             if (source === 'fields') {
+
+                if (!sourceValues || !(variableName in sourceValues)) {
+                    parsedTemplate = parsedTemplate.replace(regexMatch, value);
+                    return;
+                }
+
                 const field = fields[variableName];
 
                 if (!field) {
@@ -173,6 +187,39 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
                 return;
             }
 
+            if (source === 'config') {
+                parsedTemplate = this.parseObjectContext(
+                    variableName,
+                    parsedTemplate,
+                    regexMatch,
+                    filter,
+                    filterArguments,
+                    (key: string): any => {
+                        return this.configs.getConfigValue(key);
+                    }
+                );
+                return;
+            }
+
+            if (source === 'preferences') {
+                parsedTemplate = this.parseObjectContext(
+                    variableName,
+                    parsedTemplate,
+                    regexMatch,
+                    filter,
+                    filterArguments,
+                    (key: string): any => {
+                        return this.preferences.getUserPreference(key);
+                    }
+                );
+                return;
+            }
+
+            if (!sourceValues || !(variableName in sourceValues)) {
+                parsedTemplate = parsedTemplate.replace(regexMatch, value);
+                return;
+            }
+
             value = get({context}, path, '');
 
             if (filter in this.valuePipes) {
@@ -189,11 +236,20 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
         return this.typeFormatter.toUserFormat(type, value);
     }
 
+    protected enumFormat(value: string, filterArguments?: string[]): string {
+        const options = filterArguments[0] ?? '';
+        if (!options || !value) {
+            return '';
+        }
+
+        return this.language.getListLabel(options, value);
+    }
+
     protected fieldTypeFormat(type: string, field: Field): string {
         return this.typeFormatter.toUserFormat(type, field.value);
     }
 
-    protected enumFormat(field: Field): string {
+    protected enumFieldFormat(field: Field): string {
         if (isVoid(field.definition.options) || isVoid(field.value)) {
             return '';
         }
@@ -225,5 +281,29 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
         }
 
         return this.language.getFieldLabel(labelKey, module);
+    }
+
+    protected parseObjectContext(variableName: string, parsedTemplate: string, regexMatch: string, filter: string, filterArguments: string[], getter: (key: string) => any): string {
+        let entryKey = variableName;
+        if (variableName.includes('.')) {
+            let [key, ...others] = variableName.split('.');
+            entryKey = key;
+        }
+
+        let value = getter(entryKey);
+
+        if (variableName.includes('.') && typeof value === 'object') {
+            value = get({value}, variableName, '');
+        }
+
+        if (!value || typeof value !== 'string') {
+            return parsedTemplate.replace(regexMatch, '');
+        }
+
+        if (filter in this.valuePipes) {
+            value = this.valuePipes[filter](value, filterArguments);
+        }
+
+        return parsedTemplate.replace(regexMatch, value);
     }
 }
