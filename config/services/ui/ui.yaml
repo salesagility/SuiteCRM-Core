@@ -5,6 +5,7 @@ parameters:
     loading_display_delay: 900
     table_loading_display_delay: 800
     modal_buttons_collapse_breakpoint: 4
+    list_max_entries_per_record_thread: 10
     tinymce:
       edit:
         base_url: './dist/tinymce'

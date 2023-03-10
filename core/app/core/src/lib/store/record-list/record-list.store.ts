@@ -234,7 +234,9 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page'): Observable<RecordList> {
         this.internalState.module = module;
 
-        this.watchPageSize(pageSizeConfigKey);
+        if (pageSizeConfigKey) {
+            this.watchPageSize(pageSizeConfigKey);
+        }
 
         if (load === false) {
             return null;

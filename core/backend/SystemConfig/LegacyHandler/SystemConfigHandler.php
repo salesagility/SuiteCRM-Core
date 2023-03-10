@@ -157,6 +157,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
         $this->injectedSystemConfigs['ui'] = $uiConfigs ?? [];
         $this->injectedSystemConfigs['ui']['notifications'] = $notificationsConfigs ?? [];
+        $this->injectedSystemConfigs['list_max_entries_per_record_thread'] = $uiConfigs['list_max_entries_per_record_thread'] ?? null;
         $this->injectedSystemConfigs['extensions'] = $extensions;
 
         $logoutConfig = $logoutConfig ?? [];
@@ -329,7 +330,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
 
 
         if (!empty($this->injectedSystemConfigs[$configKey])) {
-            $config->setItems($this->injectedSystemConfigs[$configKey]);
+            if (is_array($this->injectedSystemConfigs[$configKey])) {
+                $config->setItems($this->injectedSystemConfigs[$configKey]);
+            } else {
+                $config->setValue($this->injectedSystemConfigs[$configKey]);
+            }
 
             return $config;
         }

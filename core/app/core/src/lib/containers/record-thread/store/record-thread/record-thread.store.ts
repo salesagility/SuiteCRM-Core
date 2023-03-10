@@ -51,8 +51,8 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         this.$loading = this.recordList.loading$;
     }
 
-    public init(module: string, load = true): void {
-        super.init(module, load);
+    public init(module: string, load = true, pageSize: number = null): void {
+        super.init(module, load, pageSize);
     }
 
     setFilters(filters: SearchCriteria): Observable<Record[]> {
