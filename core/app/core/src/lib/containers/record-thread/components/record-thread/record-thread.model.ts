@@ -38,6 +38,7 @@ export interface RecordThreadConfig {
     autoRefreshFrequency?:number,
     onRefresh?(): void,
     onLoadMore?(): void,
+    loadMorePosition?: string;
     create?: boolean;
     direction?: 'asc' | 'desc';
     itemConfig: RecordThreadItemConfig;

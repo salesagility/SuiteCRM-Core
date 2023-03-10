@@ -56,12 +56,14 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     loading = false;
     maxHeight = 400;
     direction: 'asc' | 'desc' = 'asc';
+    loadMorePosition: 'bottom' | 'top' | string = 'top';
     listActionAdapter: RecordThreadListActionsAdapter;
 
     protected shouldResetScroll = false;
 
     protected subs: Subscription[] = [];
     protected presetFieldValues: AttributeMap;
+
 
 
     constructor(
@@ -92,6 +94,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.direction = this.config.direction || this.direction;
+        this.setLoadMorePosition();
 
         this.initCreate();
         this.initDataSubscription();
@@ -140,6 +143,13 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.listActionAdapter = this.actionAdapterFactory.create(this.store);
 
+    }
+
+    private setLoadMorePosition() {
+        this.loadMorePosition = this.direction === 'asc' ? 'top' : 'bottom';
+        if (this.config.loadMorePosition) {
+            this.loadMorePosition = this.config.loadMorePosition;
+        }
     }
 
     ngAfterViewInit() {

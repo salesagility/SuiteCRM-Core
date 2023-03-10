@@ -41,7 +41,7 @@
          [ngStyle]="getMaxHeight()"
          class="record-thread-list">
 
-        <div *ngIf="direction === 'asc' && !allLoaded()"
+        <div *ngIf="loadMorePosition === 'top' && !allLoaded()"
              class="record-thread-load-more d-flex justify-content-center flex-grow-1">
             <scrm-button [config]="getLoadMoreButton()"></scrm-button>
         </div>
@@ -52,7 +52,7 @@
 
         <div [class]="config.listActionsClass ?? ''">
 
-            <div *ngIf="direction === 'desc' && !allLoaded()"
+            <div *ngIf="loadMorePosition === 'bottom' && !allLoaded()"
                  class="record-thread-load-more d-flex justify-content-center">
                 <scrm-button [config]="getLoadMoreButton()"></scrm-button>
             </div>
