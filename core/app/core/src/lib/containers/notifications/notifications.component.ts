@@ -72,7 +72,11 @@ export class NotificationsComponent implements OnInit {
     getConfig(): RecordThreadConfig {
 
         const config = {
-            filters$: of({orderBy: 'date_entered', sortOrder: 'asc', preset: {type: 'alerts'}} as SearchCriteria),
+            filters$: of({
+                orderBy: this?.options?.filters?.orderBy ?? 'date_entered',
+                sortOrder: this?.options?.filters?.sortOrder ?? 'asc',
+                preset: {type: 'alerts'}
+            } as SearchCriteria),
             module: this.options.module,
             klass: this.options.class ?? '',
             maxListHeight: this.options.maxListHeight ?? 350,
@@ -84,6 +88,7 @@ export class NotificationsComponent implements OnInit {
             onLoadMore: () => {
                 this.notificationService.onLoadMore(this.appStateStore);
             },
+            loadMorePosition: this.options?.loadMorePosition ?? '',
             create: false,
             listActionsClass: this.options?.listActionsClass ?? '',
             listActionsButtonClass: this.options?.listActionsButtonClass ?? '',

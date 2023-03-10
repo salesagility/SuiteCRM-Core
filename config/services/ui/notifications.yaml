@@ -4,6 +4,10 @@ parameters:
     class: 'notifications'
     maxListHeight: 450
     direction: 'desc'
+    loadMorePosition: 'bottom'
+    filters:
+      orderBy: 'snooze'
+      sortOrder: 'desc'
     autoRefreshFrequency: 1 #minutes
     showNoDataMessage: true
     noDataLabel: 'LBL_NOTIFICATIONS_NONE'
@@ -65,7 +69,7 @@ parameters:
                   class: 'text-bigger-1'
                 -
                   field:
-                    name: 'date_entered'
+                    name: 'snooze'
                     dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE_ENTERED'
                     type: 'datetime'
                   labelClass: 'm-0'

@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {RecordThreadStore} from '../../record-thread/store/record-thread/record-thread.store';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {deepClone, Field, Record} from 'common';
+import {deepClone, Field, Record, SearchCriteria} from 'common';
 import {RecordThreadItemMetadata} from '../../record-thread/store/record-thread/record-thread-item.store.model';
 import {
     RecordThreadConfig,
@@ -75,7 +75,15 @@ export class NotificationsService {
         const store = this.storeFactory.create();
         store.setItemMetadata(config.itemConfig.metadata);
         store.setListMetadata({actions: config.listActions});
-        store.init(options.module, false);
+
+        const filters = {
+            orderBy: options?.filters?.orderBy ?? 'date_entered',
+            sortOrder: options?.filters?.sortOrder ?? 'asc',
+            preset: {type: 'alerts'}
+        } as SearchCriteria;
+
+        store.init(options.module, false, options?.pageSize ?? null);
+        store.setFilters(filters).pipe(take(1)).subscribe();
 
         return store;
     }
