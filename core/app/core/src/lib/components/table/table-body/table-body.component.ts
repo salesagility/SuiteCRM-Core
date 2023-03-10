@@ -93,16 +93,18 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             ) => {
                 const displayedColumns: string[] = [];
 
+                this.maxColumns = maxColumns;
+
+                const columnsDefs = this.buildDisplayColumns(columns);
+                this.popoverColumns = this.buildHiddenColumns(columns, columnsDefs);
+
                 if (selection) {
                     displayedColumns.push('checkbox');
                 }
 
-                this.maxColumns = maxColumns;
-
-                const columnsDefs = this.buildDisplayColumns(columns);
                 displayedColumns.push(...columnsDefs);
 
-                displayedColumns.push('line-actions');
+                displayedColumns.push('line-actions', 'show-more');
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
@@ -135,7 +137,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     buildDisplayColumns(metaFields: ColumnDefinition[]): string[] {
         let i = 0;
         let hasLinkField = false;
-        const returnArray = [];
+        const displayedColumns = [];
 
         const fields = metaFields.filter(function (field) {
             return !field.hasOwnProperty('default')
@@ -143,31 +145,40 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         });
 
         while (i < this.maxColumns && i < fields.length) {
-            returnArray.push(fields[i].name);
+            displayedColumns.push(fields[i].name);
             hasLinkField = hasLinkField || fields[i].link;
             i++;
         }
         if (!hasLinkField && (this.maxColumns < fields.length)) {
             for (i = this.maxColumns; i < fields.length; i++) {
                 if (fields[i].link) {
-                    returnArray.splice(-1, 1);
-                    returnArray.push(fields[i].name);
+                    displayedColumns.splice(-1, 1);
+                    displayedColumns.push(fields[i].name);
                     break;
                 }
             }
         }
 
+        return displayedColumns;
+    }
+
+    buildHiddenColumns(metaFields: ColumnDefinition[], displayedColumns:string[]): ColumnDefinition[] {
+        const fields = metaFields.filter(function (field) {
+            return !field.hasOwnProperty('default')
+                || (field.hasOwnProperty('default') && field.default === true);
+        });
+
         let missingFields = [];
 
         for (let i = 0; i < fields.length; i++) {
-            if (returnArray.indexOf(fields[i].name) === -1) {
+            if (displayedColumns.indexOf(fields[i].name) === -1) {
                 missingFields.push(fields[i].name);
             }
         }
 
-        this.popoverColumns = fields.filter(obj => missingFields.includes(obj.name));
+        let hiddenColumns= fields.filter(obj => missingFields.includes(obj.name));
 
-        return returnArray;
+        return hiddenColumns;
     }
 
     getFieldSort(field: ColumnDefinition): SortDirectionDataSource {

@@ -25,9 +25,9 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<scrm-popup-button [icon]="'eye'">
+<scrm-popup-button [icon]="'info-circle-fill'">
 
-    <div popup-content *ngIf="columns" class="container">
+    <div popup-content *ngIf="columns" class="container container-popover  scroll-thin">
         <div *ngFor="let column of columns" class="row py-1">
             <div class="col font-weight-bold text-muted">
                 <scrm-label [labelKey]="column.label" [module]="record.module"></scrm-label>

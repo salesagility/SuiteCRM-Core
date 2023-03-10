@@ -24,27 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {ButtonInterface} from "common";
+@media all and (max-width: $breakpoint-large) {
+  .container-popover {
+    padding: 0;
 
-@Component({
-    selector: 'scrm-popup-button',
-    templateUrl: 'popup-button.component.html',
-})
+    .row {
+      margin: 0 !important;
 
-export class PopupButtonComponent {
-
-    @Input() icon: string;
-    @Input() klass: string = 'line-action-item line-action float-right';
-
-    constructor() {
+      .col {
+        padding-left: 0;
+      }
     }
-
-    getButtonConfig(): ButtonInterface {
-        return {
-            icon: this.icon,
-            klass: this.klass,
-        } as ButtonInterface;
-    }
-
+  }
 }

@@ -24,27 +24,24 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {ButtonInterface} from "common";
+.scroll-thin {
+  max-height: 300px;
+  overflow-y: auto;
 
-@Component({
-    selector: 'scrm-popup-button',
-    templateUrl: 'popup-button.component.html',
-})
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
 
-export class PopupButtonComponent {
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px $dusky-blue;
+  }
 
-    @Input() icon: string;
-    @Input() klass: string = 'line-action-item line-action float-right';
+  &::-webkit-scrollbar-thumb {
+    background-color: $cool-blue;
+    border-radius: 51px;
+  }
 
-    constructor() {
-    }
-
-    getButtonConfig(): ButtonInterface {
-        return {
-            icon: this.icon,
-            klass: this.klass,
-        } as ButtonInterface;
-    }
-
+  &::-webkit-scrollbar-thumb:hover {
+    background: $nepal-grey;
+  }
 }
