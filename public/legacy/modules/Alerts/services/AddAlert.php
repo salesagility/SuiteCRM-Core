@@ -50,10 +50,10 @@ class AddAlert
         string $type = 'info',
         bool $is_read = false
     ): void {
-        global $current_user;
+        global $current_user, $timedate;
 
         $assigned_user_id = $current_user->id;
-        $snooze = null;
+        $snooze = $timedate->nowDb();
 
         if ($url_redirect === null) {
             $url_redirect = 'index.php?fakeid=' . uniqid('fake_', true);
