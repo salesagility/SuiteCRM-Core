@@ -447,7 +447,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
         $actions['LBL_PROFILE'] = [
             'name' => 'profile',
-            'labelKey' => 'LBL_PROFILE',
+            'labelKey' => 'LBL_PROFILE_EDIT',
             'url' => 'index.php?module=Users&action=EditView&record=' . $current_user->id,
             'icon' => '',
         ];
