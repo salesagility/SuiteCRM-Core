@@ -9,6 +9,8 @@ parameters:
       orderBy: 'snooze'
       sortOrder: 'desc'
     autoRefreshFrequency: 1 #minutes
+    autoRefreshDeviationMin: -15 #seconds. set 0 for no deviation
+    autoRefreshDeviationMax: 15 #seconds. set 0 for no deviation
     showNoDataMessage: true
     noDataLabel: 'LBL_NOTIFICATIONS_NONE'
     create: null
