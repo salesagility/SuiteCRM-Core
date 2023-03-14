@@ -135,7 +135,7 @@ class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessH
 
         $options = $process->getOptions();
 
-        if (empty($options['module']) || empty($options['action']) || empty($options['ids'])) {
+        if (empty($options['module']) || empty($options['action'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -145,6 +145,15 @@ class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessH
      */
     public function run(Process $process)
     {
+        $options = $process->getOptions();
+
+        if (empty($options['ids'])) {
+            $process->setStatus('success');
+            $process->setMessages([]);
+
+            return;
+        }
+
         $result = $this->markAllAsRead($process);
 
         $process->setStatus('success');
