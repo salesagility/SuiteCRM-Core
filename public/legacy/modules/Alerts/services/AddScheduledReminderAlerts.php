@@ -328,7 +328,7 @@ class AddScheduledReminderAlerts
     {
         global $app_strings, $timedate, $db;
 
-        $default = $app_strings['MSG_JS_ALERT_MTG_REMINDER_NO_START_DATE'];
+        $default = '';
         $dateStart = $relatedEvent->date_start ?? '';
 
         if (!empty($dateStart)) {
