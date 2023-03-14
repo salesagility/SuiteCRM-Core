@@ -35,6 +35,7 @@ import {MessageService} from "../../services/message/message.service";
 import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
 import {NotificationsService} from '../../containers/notifications/services/notifications.service';
 import {Process} from '../../services/process/process.service';
+import {SystemConfigStore} from '../system-config/system-config.store';
 
 export interface AppState {
     loading?: boolean;
@@ -97,7 +98,8 @@ export class AppStateStore implements StateStore {
     constructor(
         protected loadingBufferFactory: LoadingBufferFactory,
         protected messageService: MessageService,
-        protected notificationService: NotificationsService
+        protected notificationService: NotificationsService,
+        protected configs: SystemConfigStore
     ) {
 
         this.loading$ = this.state$.pipe(map(state => state.loading), distinctUntilChanged());
@@ -176,6 +178,37 @@ export class AppStateStore implements StateStore {
                         });
                 }
             });
+    }
+
+    public conditionalNotificationRefresh(view: string = ''): void {
+        const reloadActions = this.configs.getConfigValue('ui')['notifications_reload_actions'] ?? null;
+        const previousModule = this.getModule();
+
+        if (!view) {
+            view = this.getView();
+        }
+
+
+        if (!reloadActions || !previousModule) {
+            return;
+        }
+
+        const actions: string[] = reloadActions[previousModule];
+
+        if (!actions || !actions.length) {
+            return;
+        }
+
+        const reload = actions.some(action => {
+            return action === 'any' || action === view;
+        });
+
+        if (reload) {
+            this.refreshNotifications();
+            setTimeout(() => {
+                this.refreshNotifications();
+            }, 500)
+        }
     }
 
     public setRecordAsReadTrue(): void {

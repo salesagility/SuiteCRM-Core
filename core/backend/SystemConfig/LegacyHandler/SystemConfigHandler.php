@@ -99,6 +99,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $recordViewActionLimits
      * @param array $listViewLineActionsLimits
      * @param array $uiConfigs
+     * @param array $notificationsConfigs
+     * @param array $notificationsReloadActions
      * @param array $extensions
      * @param array $logoutConfig
      * @param array $sessionExpiredConfig
@@ -128,6 +130,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewLineActionsLimits,
         array $uiConfigs,
         array $notificationsConfigs,
+        array $notificationsReloadActions,
         array $extensions,
         array $logoutConfig,
         array $sessionExpiredConfig,
@@ -157,6 +160,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
         $this->injectedSystemConfigs['ui'] = $uiConfigs ?? [];
         $this->injectedSystemConfigs['ui']['notifications'] = $notificationsConfigs ?? [];
+        $this->injectedSystemConfigs['ui']['notifications_reload_actions'] = $notificationsReloadActions ?? [];
         $this->injectedSystemConfigs['list_max_entries_per_record_thread'] = $uiConfigs['list_max_entries_per_record_thread'] ?? null;
         $this->injectedSystemConfigs['extensions'] = $extensions;
 

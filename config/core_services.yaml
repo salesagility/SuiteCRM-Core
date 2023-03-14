@@ -50,6 +50,7 @@ services:
       $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
       $notificationsConfigs: '%notifications%'
+      $notificationsReloadActions: '%notifications_reload_actions%'
       $systemSettings: '%system.settings%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
