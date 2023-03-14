@@ -284,6 +284,10 @@ services:
     alias: App\Routes\Service\LegacyRouteHandler
     public: true
 
+  entity_manager:
+    alias: doctrine.orm.entity_manager
+    public: true
+
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
