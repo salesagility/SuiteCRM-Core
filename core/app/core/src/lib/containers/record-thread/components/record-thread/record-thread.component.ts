@@ -128,7 +128,8 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
                 currentDate.getMinutes() + 1
             );
 
-            this.subs.push(timer(startOfNextMinute, autoRefreshFrequency * 60000).subscribe(() => {
+            const autoRefreshTime = this.getAutoRefreshTime(autoRefreshFrequency)
+            this.subs.push(timer(startOfNextMinute, autoRefreshTime).subscribe(() => {
                 this.store.load(false).subscribe(
                     () => {
                         if (this.config.onRefresh) {
@@ -143,6 +144,26 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.listActionAdapter = this.actionAdapterFactory.create(this.store);
 
+    }
+
+
+    getAutoRefreshTime(autoRefreshFrequency: number) {
+        const min = this.config.autoRefreshDeviationMin ?? -15;
+        const max = this.config.autoRefreshDeviationMax ?? 15;
+
+        let autoRefreshTime = (autoRefreshFrequency * (60000));
+
+        if (min === 0 && max === 0) {
+            return autoRefreshTime;
+        }
+
+        return autoRefreshTime + this.getRandomDeviation(min, max);
+    }
+
+    getRandomDeviation(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
     }
 
     private setLoadMorePosition() {

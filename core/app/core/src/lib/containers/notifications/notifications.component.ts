@@ -82,6 +82,8 @@ export class NotificationsComponent implements OnInit {
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
             autoRefreshFrequency: this.options.autoRefreshFrequency || 0,
+            autoRefreshDeviationMin: this.options.autoRefreshDeviationMin ?? 0,
+            autoRefreshDeviationMax: this.options.autoRefreshDeviationMax ?? 0,
             onRefresh: () => {
                 this.notificationService.onRefresh(this.store, this.appStateStore);
             },
