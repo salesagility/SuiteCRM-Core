@@ -52,7 +52,7 @@ export class AppComponent {
         if (routerEvent instanceof NavigationStart) {
             this.appStateStore.updateLoading('router-navigation', true);
             this.conditionalCacheReset();
-
+            this.appStateStore.conditionalNotificationRefresh();
         }
 
         if (routerEvent instanceof NavigationEnd) {

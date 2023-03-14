@@ -28,8 +28,6 @@
 
 namespace App\Data\LegacyHandler\PresetDataHandlers;
 
-use App\Data\LegacyHandler\BaseListDataHandler;
-use App\Data\LegacyHandler\FilterMapper\LegacyFilterMapper;
 use App\Data\LegacyHandler\ListData;
 use App\Data\LegacyHandler\ListDataHandler;
 use App\Data\LegacyHandler\PresetListDataHandlerInterface;
@@ -129,7 +127,7 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         $now = date('Y-m-d H:i:s');
 
-        $where .= " AND (alerts.snooze < '$now' OR alerts.snooze IS NULL )";
+        $where .= " AND (alerts.snooze <= '$now' OR alerts.snooze IS NULL )";
 
         $queryParts = $this->getListDataPort()->getQueryParts($bean, $where, $filter_fields, $params);
         $queryParts['select'] = 'SELECT count(*) as unread';
