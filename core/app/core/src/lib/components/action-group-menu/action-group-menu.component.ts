@@ -200,9 +200,10 @@ export class ActionGroupMenuComponent implements OnInit {
 
     protected triggerTemporaryLoading() {
         this.loading = true;
+        const delay = parseInt(this.systemConfigStore.getUi('inline_confirmation_loading_delay')) ?? 200;
         setTimeout(() => {
             this.loading = false;
-        }, 300);
+        }, delay);
     }
 
     protected initInlineConfirmation(action: Action, callback: () => void): void {

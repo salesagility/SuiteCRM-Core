@@ -104,6 +104,17 @@ export class SystemConfigStore implements StateStore {
         return internalState.configs[configKey].items;
     }
 
+    /**
+     * Get ui config value by key
+     *
+     * @param {string} configKey of the ui config
+     * @returns {{}|string} config value
+     */
+    public getUi(configKey: string): any {
+        const ui = this.getConfigValue('ui') ?? {};
+        return ui[configKey] ?? null;
+    }
+
     public getHomePage(): string {
 
         let defaultModule = 'home';
