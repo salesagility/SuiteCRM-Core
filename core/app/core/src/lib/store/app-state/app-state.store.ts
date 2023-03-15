@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, Subscription, timer} from 'rxjs';
 import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
-import {deepClone, isVoid} from 'common';
+import {deepClone, isVoid, User} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
@@ -45,6 +45,7 @@ export interface AppState {
     loaded?: boolean;
     routeUrl?: string;
     preLoginUrl?: string;
+    currentUser?: User;
     activeRequests?: number;
     notificationsTotal?: number;
     notificationsUnreadTotal?: number;
@@ -58,6 +59,7 @@ const initialState: AppState = {
     loaded: false,
     routeUrl: null,
     preLoginUrl: null,
+    currentUser: null,
     activeRequests: 0,
     notificationsTotal: 0,
     notificationsUnreadTotal: 0
@@ -137,8 +139,25 @@ export class AppStateStore implements StateStore {
     public clearAuthBased(): void {
     }
 
+    public resetAuthBased(): void {
+        this.updateState({...internalState, currentUser: null, preLoginUrl: null});
+        this.disableNotificationAutoRefresh();
+    }
+
     public init(): void {
         this.initLoadingBuffer();
+    }
+
+    isLoggedIn(): boolean {
+        return !!(internalState.currentUser ?? false);
+    }
+
+    getCurrentUser(): User {
+        return internalState.currentUser;
+    }
+
+    setCurrentUser(user: User): void {
+        this.updateState({...internalState, currentUser: user});
     }
 
     public initNotifications() {
@@ -149,6 +168,10 @@ export class AppStateStore implements StateStore {
         this.notificationStore.load(false).pipe(take(1)).subscribe(() => {
             this.notificationService.onRefresh(this.notificationStore, this);
         });
+    }
+
+    public disableNotificationAutoRefresh(): void {
+        this.notificationStore.disableAutoRefresh();
     }
 
     /**
@@ -180,6 +203,11 @@ export class AppStateStore implements StateStore {
     }
 
     public conditionalNotificationRefresh(view: string = ''): void {
+
+        if (!this.isLoggedIn()) {
+            return;
+        }
+
         const reloadActions = this.configs.getConfigValue('ui')['notifications_reload_actions'] ?? null;
         const previousModule = this.getModule();
 
