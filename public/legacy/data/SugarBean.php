@@ -1173,11 +1173,22 @@ class SugarBean
 
                     if(!empty($union_related_list_columns) && array_key_exists($this_subpanel->name, $union_related_list_columns)) {
                         $list_fields = $union_related_list_columns[$this_subpanel->name];
-                    }elseif($subpanel_def->isCollection()){
-                        $list_fields = $this_subpanel->get_list_fields();
                     }else{
-                        $list_fields = $submodule->field_defs;
+                        $list_fields = $this_subpanel->get_list_fields();
+                        if (!$subpanel_def->isCollection()) {
+
+                            foreach($this_subpanel->searchByFields ?? [] as $field){
+                                if (!empty($list_fields[$field]) || empty($submodule->field_defs[$field])) {
+                                    continue;
+                                }
+                                $list_fields[$field] = [
+                                    'name' => $field,
+                                    'query_only' => true,
+                                ];
+                            }
+                        }
                     }
+
 
                     foreach ($list_fields as $list_key => $list_field) {
                         if (isset($list_field['usage']) && $list_field['usage'] === 'display_only') {
@@ -1213,7 +1224,7 @@ class SugarBean
                     $singleSelect = method_exists($submodule, 'is_relate_field')
                         ? $submodule->is_relate_field($order_by) : null;
 
-                    if (!$singleSelect && !empty($this_subpanel->searchByFields) && method_exists($submodule, 'is_relate_field')){
+                    if (!$singleSelect && !empty($this_subpanel->searchByFields) && method_exists($submodule, 'is_relate_field') && $this_subpanel->legacySearch === false){
                         foreach($this_subpanel->searchByFields as $field){
                             if ($submodule->is_relate_field($field)){
                                 $singleSelect = true;

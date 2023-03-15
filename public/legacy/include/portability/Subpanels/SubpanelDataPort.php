@@ -91,6 +91,8 @@ class SubpanelDataPort
             $aSubPanelObject = $spd->load_subpanel($subpanel, false, false, '', $collection);
         }
 
+        $aSubPanelObject->legacySearch = false;
+
         try {
             $response = SugarBean::get_union_related_list(
                 $parentBean,

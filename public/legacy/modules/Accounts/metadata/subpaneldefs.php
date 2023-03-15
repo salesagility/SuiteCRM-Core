@@ -207,7 +207,6 @@ $layout_defs['Accounts'] = array(
             'title_key' => 'LBL_OPPORTUNITIES_SUBPANEL_TITLE',
             'top_buttons' => array(
                 array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-                array('widget_class' => 'SubPanelTopFilterButton'),
             ),
         ),
         'leads' => array(

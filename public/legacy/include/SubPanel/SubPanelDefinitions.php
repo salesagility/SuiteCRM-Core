@@ -63,6 +63,7 @@ class aSubPanel
     public $sub_subpanels ;
     public $parent_bean ;
     public $searchByFields = [];
+    public $legacySearch = true;
 
 
     /**
