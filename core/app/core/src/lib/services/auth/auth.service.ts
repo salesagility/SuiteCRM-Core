@@ -121,6 +121,7 @@ export class AuthService {
             onSuccess(response);
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
+            this.appStateStore.setCurrentUser(response);
 
             const duration = response.duration;
 
@@ -215,6 +216,7 @@ export class AuthService {
                 finalize(() => {
                     this.appStateStore.updateInitialAppLoading(true);
                     this.appStateStore.updateLoading('logout', false, false);
+                    this.appStateStore.resetAuthBased();
                     this.stateManager.clearAuthBased();
                     this.configs.clear();
                     if (redirect === true) {
