@@ -138,7 +138,6 @@ export class AppStateStore implements StateStore {
     }
 
     public init(): void {
-        this.initNotifications(); // This will get the counter of notifications
         this.initLoadingBuffer();
     }
 
