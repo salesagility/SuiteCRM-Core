@@ -184,6 +184,8 @@ export class LoginUiComponent implements OnInit {
                     return;
                 }
 
+                this.appState.initNotifications();
+
                 if (this.appState.getPreLoginUrl()) {
                     this.router.navigateByUrl(this.appState.getPreLoginUrl()).then(() => {
                         this.appState.setPreLoginUrl('');
