@@ -25,7 +25,7 @@
  */
 
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {combineLatest, Subscription, timer} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
@@ -119,51 +119,16 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
         if (autoRefreshFrequency && this.store) {
-            const currentDate = new Date();
-            const startOfNextMinute = new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate(),
-                currentDate.getHours(),
-                currentDate.getMinutes() + 1
-            );
+            const min = this.config.autoRefreshDeviationMin ?? -15;
+            const max = this.config.autoRefreshDeviationMax ?? 15;
 
-            const autoRefreshTime = this.getAutoRefreshTime(autoRefreshFrequency)
-            this.subs.push(timer(startOfNextMinute, autoRefreshTime).subscribe(() => {
-                this.store.load(false).subscribe(
-                    () => {
-                        if (this.config.onRefresh) {
-                            this.config.onRefresh()
-                        }
-                    }
-                )
-            }));
+            this.subs.push(this.store.initAutoRefresh(autoRefreshFrequency, min, max, this.config.onRefresh).subscribe());
         }
 
         this.initLoading();
 
         this.listActionAdapter = this.actionAdapterFactory.create(this.store);
 
-    }
-
-
-    getAutoRefreshTime(autoRefreshFrequency: number) {
-        const min = this.config.autoRefreshDeviationMin ?? -15;
-        const max = this.config.autoRefreshDeviationMax ?? 15;
-
-        let autoRefreshTime = (autoRefreshFrequency * (60000));
-
-        if (min === 0 && max === 0) {
-            return autoRefreshTime;
-        }
-
-        return autoRefreshTime + this.getRandomDeviation(min, max);
-    }
-
-    getRandomDeviation(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
     }
 
     private setLoadMorePosition() {

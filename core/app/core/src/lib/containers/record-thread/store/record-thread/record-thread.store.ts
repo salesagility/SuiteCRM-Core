@@ -28,9 +28,9 @@
 import {Injectable} from '@angular/core';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {RecordStoreList} from './base-record-thread.store';
-import {Observable} from 'rxjs';
-import {Action, ActionContext, Record, SearchCriteria, SortDirection} from 'common';
-import {map} from 'rxjs/operators';
+import {Observable, timer} from 'rxjs';
+import {ActionContext, Record, SearchCriteria, SortDirection} from 'common';
+import {map, takeWhile, tap} from 'rxjs/operators';
 import {RecordThreadItemStoreFactory} from './record-thread-item.store.factory';
 import {RecordThreadItemMetadata} from './record-thread-item.store.model';
 import {RecordThreadItemStore} from './record-thread-item.store';
@@ -42,6 +42,7 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
     itemMetadata: RecordThreadItemMetadata;
     listMetadata: RecordThreadListMetadata;
     $loading: Observable<boolean>;
+    autoRefreshEnabled = true;
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
@@ -53,6 +54,7 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
 
     public init(module: string, load = true, pageSize: number = null): void {
         super.init(module, load, pageSize);
+        this.autoRefreshEnabled = true;
     }
 
     setFilters(filters: SearchCriteria): Observable<Record[]> {
@@ -122,5 +124,54 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
             module: this.module,
             ids: this.getRecordIds(),
         } as ActionContext;
+    }
+
+    public initAutoRefresh(autoRefreshFrequency: number, min: number, max: number, onRefresh: Function): Observable<number> {
+        const currentDate = new Date();
+        const startOfNextMinute = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            currentDate.getHours(),
+            currentDate.getMinutes() + 1
+        );
+
+        const autoRefreshTime = this.getAutoRefreshTime(autoRefreshFrequency, min, max);
+
+        return timer(startOfNextMinute, autoRefreshTime).pipe(
+            takeWhile(() => {
+                return this.autoRefreshEnabled;
+            }),
+            tap(() => {
+                this.load(false).subscribe(
+                    () => {
+                        if (onRefresh) {
+                            onRefresh();
+                        }
+                    }
+                );
+            })
+        );
+    }
+
+    disableAutoRefresh() {
+        this.autoRefreshEnabled = false;
+    }
+
+    getAutoRefreshTime(autoRefreshFrequency: number, min: number, max: number) {
+
+        let autoRefreshTime = (autoRefreshFrequency * (60000));
+
+        if (min === 0 && max === 0) {
+            return autoRefreshTime;
+        }
+
+        return autoRefreshTime + this.getRandomDeviation(min, max);
+    }
+
+    getRandomDeviation(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
     }
 }
