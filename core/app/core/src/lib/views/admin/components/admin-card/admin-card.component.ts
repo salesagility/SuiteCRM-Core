@@ -37,6 +37,7 @@ import {AdminLinkGroupModel} from '../../../../store/admin-metadata/admin-metada
 export class AdminCardComponent {
     @Input() content: AdminLinkGroupModel;
 
-    constructor(public language: LanguageStore) {}
+    constructor(public language: LanguageStore) {
+    }
 
 }

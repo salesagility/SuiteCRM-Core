@@ -42,8 +42,7 @@ import {RouterModule} from '@angular/router';
         CommonModule,
         RouterModule,
         LabelModule,
-        ImageModule,
-
+        ImageModule
     ]
 })
 export class AdminCardModule {

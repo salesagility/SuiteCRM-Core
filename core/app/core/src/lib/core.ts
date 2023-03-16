@@ -504,6 +504,8 @@ export * from './services/user/user.service';
 export * from './services/utils/immediate-debounce.service';
 export * from './store/state-manager';
 export * from './store/state';
+export * from './store/admin-metadata/admin-metadata.model';
+export * from './store/admin-metadata/admin-metadata.store';
 export * from './store/app-metadata/app-metadata.store.service';
 export * from './store/app-state/app-state.store';
 export * from './store/chart-data/chart-data.store.factory';
