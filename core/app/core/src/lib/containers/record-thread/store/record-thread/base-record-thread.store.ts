@@ -50,6 +50,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
     protected stores: T[] = [];
     protected storeSubject = new BehaviorSubject<T[]>([]);
     protected state$ = this.storeSubject.asObservable();
+    protected pageSize: number = 10;
 
     protected constructor(
         protected listStoreFactory: RecordListStoreFactory,
@@ -93,6 +94,8 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
         }
 
         const load$ = this.recordList.init(module, load, pageSizeConfigKey);
+
+        this.pageSize = this.recordList.getPageSize();
 
         this.subs.push(this.recordList.records$.subscribe(records => {
             this.initStores(records);

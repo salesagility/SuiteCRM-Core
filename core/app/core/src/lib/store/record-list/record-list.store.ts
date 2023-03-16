@@ -736,6 +736,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     /**
+     * Get Pagination page size
+     */
+    public getPageSize(): number {
+        return this?.internalState?.pagination?.pageSize ?? 10;
+    }
+
+    /**
      * Internal API
      */
 

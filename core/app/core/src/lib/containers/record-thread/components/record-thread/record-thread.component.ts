@@ -182,7 +182,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
                         tap(() => this.config.onLoadMore())
                     ).subscribe();
                 }
-                this.store.loadMore(this.config.pageSize);
+                this.store.loadMore();
             }
         } as ButtonInterface;
     }
