@@ -51,7 +51,9 @@
     </div>
     <div class="col justify-content-right">
         <div class="action-group">
-            <div class="action-alert dropdown">
+            <div
+                *ngIf="notificationsEnabled && checkAppStrings(vm.appStrings) && arePreferencesInitialized(preferences)"
+                class="action-alert dropdown">
                 <button class="alerts-button dropdown-toggle" type="button" aria-label="Toggle Alerts"
                         (mouseenter)="markAsRead()">
                     <scrm-image class="action-btn-icon" image="alert"></scrm-image>
@@ -62,7 +64,7 @@
                         <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
                     </span>
                 </ng-container>
-                <div class="dropdown-menu dropdown-menu-right shadow-md" *ngIf="checkAppStrings(vm.appStrings) && arePreferencesInitialized(preferences)">
+                <div class="dropdown-menu dropdown-menu-right shadow-md">
                     <scrm-notifications></scrm-notifications>
                 </div>
             </div>
