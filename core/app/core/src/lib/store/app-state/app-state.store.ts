@@ -47,6 +47,7 @@ export interface AppState {
     preLoginUrl?: string;
     currentUser?: User;
     activeRequests?: number;
+    notificationsEnabled?: boolean;
     notificationsTotal?: number;
     notificationsUnreadTotal?: number;
 }
@@ -61,6 +62,7 @@ const initialState: AppState = {
     preLoginUrl: null,
     currentUser: null,
     activeRequests: 0,
+    notificationsEnabled: false,
     notificationsTotal: 0,
     notificationsUnreadTotal: 0
 };
@@ -82,6 +84,7 @@ export class AppStateStore implements StateStore {
     activeRequests$: Observable<number>;
     notificationsUnreadTotal$: Observable<number>;
     notificationsTotal$: Observable<number>;
+    notificationsEnabled$: Observable<boolean>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -111,6 +114,7 @@ export class AppStateStore implements StateStore {
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
         this.notificationsUnreadTotal$ = this.state$.pipe(map(state => state.notificationsUnreadTotal), distinctUntilChanged());
         this.notificationsTotal$ = this.state$.pipe(map(state => state.notificationsTotal), distinctUntilChanged());
+        this.notificationsEnabled$ = this.state$.pipe(map(state => state.notificationsEnabled), distinctUntilChanged());
 
         this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
             map(([loading, module, view, initialAppLoading]) => ({
@@ -137,47 +141,102 @@ export class AppStateStore implements StateStore {
     }
 
     public clearAuthBased(): void {
-    }
-
-    public resetAuthBased(): void {
-        this.updateState({...internalState, currentUser: null, preLoginUrl: null});
-        this.disableNotificationAutoRefresh();
+        this.notificationStore.clear();
+        this.notificationStore = null;
     }
 
     public init(): void {
         this.initLoadingBuffer();
+        if (this.isLoggedIn()) {
+            this.initNotifications();
+        }
     }
 
+    /**
+     * Check if is logged in
+     */
     isLoggedIn(): boolean {
         return !!(internalState.currentUser ?? false);
     }
 
+    /**
+     * Get current user
+     */
     getCurrentUser(): User {
         return internalState.currentUser;
     }
 
+    /**
+     * Set current user
+     * @param user
+     */
     setCurrentUser(user: User): void {
+        if (!isVoid(user)) {
+            this.onLogin();
+        } else {
+            this.onLogout();
+        }
         this.updateState({...internalState, currentUser: user});
     }
 
+    /**
+     * Initialize notifications
+     */
     public initNotifications() {
+        if (this.notificationStore) {
+            return;
+        }
         this.notificationStore = this.notificationService.initStore();
     }
 
-    public refreshNotifications(): void {
-        this.notificationStore.load(false).pipe(take(1)).subscribe(() => {
-            this.notificationService.onRefresh(this.notificationStore, this);
+    /**
+     * Enable notifications
+     */
+    public enableNotifications(): void {
+        this.initNotifications();
+        this.updateState({...internalState, notificationsEnabled: true});
+    }
+
+    /**
+     * Disable notifications
+     */
+    public disableNotifications(): void {
+        this.disableNotificationAutoRefresh();
+        this.updateState({
+            ...internalState,
+            notificationsEnabled: false,
+            notificationsTotal: 0,
+            notificationsUnreadTotal: 0
         });
     }
 
-    public disableNotificationAutoRefresh(): void {
-        this.notificationStore.disableAutoRefresh();
+    /**
+     * Check if notifications are enabled
+     */
+    public areNotificationsEnabled(): boolean {
+        return internalState.notificationsEnabled;
+    }
+
+    /**
+     * Call notification refresh
+     */
+    public refreshNotifications(): void {
+        if (!this.areNotificationsEnabled()) {
+            return;
+        }
+        this.notificationStore.load(false).pipe(take(1)).subscribe(() => {
+            this.notificationService.onRefresh(this.notificationStore, this);
+        });
     }
 
     /**
      * Mark current notifications as read
      */
     public markNotificationsAsRead(): void {
+
+        if (!this.areNotificationsEnabled()) {
+            return;
+        }
 
         this.notificationStore.getRecordList().pagination$.pipe(
             take(1),
@@ -202,13 +261,17 @@ export class AppStateStore implements StateStore {
             });
     }
 
+    /**
+     * Run conditional navigation auto-refresh
+     * @param view current view
+     */
     public conditionalNotificationRefresh(view: string = ''): void {
 
-        if (!this.isLoggedIn()) {
+        if (!this.areNotificationsEnabled()) {
             return;
         }
 
-        const reloadActions = this.configs.getConfigValue('ui')['notifications_reload_actions'] ?? null;
+        const reloadActions = this.configs.getUi('notifications_reload_actions') ?? null;
         const previousModule = this.getModule();
 
         if (!view) {
@@ -235,12 +298,37 @@ export class AppStateStore implements StateStore {
         }
     }
 
+    /**
+     * Disable notifications auto-refresh
+     */
+    public disableNotificationAutoRefresh(): void {
+        this.notificationStore.disableAutoRefresh();
+    }
+
+    /**
+     * Mark record as read
+     */
     public setRecordAsReadTrue(): void {
         this.notificationStore.getRecordList().records.forEach(record => {
             if (!record.attributes.is_read) {
                 record.attributes.is_read = true;
             }
         });
+    }
+
+    /**
+     * Set notification as unread
+     * @param notificationsUnreadTotal
+     */
+    public setNotificationsUnreadTotal(notificationsUnreadTotal: number): void {
+        this.updateState({...internalState, notificationsUnreadTotal});
+    }
+
+    /**
+     * On login handlers
+     * @protected
+     */
+    protected onLogin(): void {
     }
 
     /**
@@ -270,11 +358,13 @@ export class AppStateStore implements StateStore {
     }
 
     /**
-     * Set notification as unread
-     * @param notificationsUnread
+     * On logout handlers
+     * @protected
      */
-    public setNotificationsUnreadTotal(notificationsUnreadTotal: number): void {
-        this.updateState({...internalState, notificationsUnreadTotal});
+    protected onLogout(): void {
+        this.disableNotifications();
+        this.clearAuthBased();
+        this.updateState({...internalState, preLoginUrl: null});
     }
 
     /**

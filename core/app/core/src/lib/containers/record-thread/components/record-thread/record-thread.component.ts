@@ -144,7 +144,9 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        this.store.clear();
+        if (!(this?.config?.store ?? null)) {
+            this.store.clear();
+        }
         this.store = null;
         this.subs.forEach(sub => sub.unsubscribe())
     }

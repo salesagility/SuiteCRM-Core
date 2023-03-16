@@ -184,8 +184,6 @@ export class LoginUiComponent implements OnInit {
                     return;
                 }
 
-                this.appState.initNotifications();
-
                 if (this.appState.getPreLoginUrl()) {
                     this.router.navigateByUrl(this.appState.getPreLoginUrl()).then(() => {
                         this.appState.setPreLoginUrl('');
@@ -194,9 +192,7 @@ export class LoginUiComponent implements OnInit {
                 }
 
                 const defaultModule = this.configs.getHomePage();
-                this.router.navigate(['/' + defaultModule]).then(() => {
-                    this.appState.refreshNotifications();
-                });
+                this.router.navigate(['/' + defaultModule]).then();
             });
 
         return;

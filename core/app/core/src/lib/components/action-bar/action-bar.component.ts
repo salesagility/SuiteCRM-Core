@@ -74,6 +74,7 @@ export class ActionBarUiComponent implements OnInit, OnDestroy {
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     notificationCount$: Observable<number>;
     preferences: UserPreferenceMap;
+    notificationsEnabled: boolean = false;
 
     protected subs: Subscription[] = [];
 
@@ -101,7 +102,11 @@ export class ActionBarUiComponent implements OnInit, OnDestroy {
 
         this.subs.push(this.preferencesStore.userPreferences$.subscribe(preferences => {
             this.preferences = preferences;
-        }))
+        }));
+
+        this.subs.push(this.appStateStore.notificationsEnabled$.subscribe(notificationsEnabled => {
+            this.notificationsEnabled = notificationsEnabled;
+        }));
     }
 
     ngOnDestroy() {
