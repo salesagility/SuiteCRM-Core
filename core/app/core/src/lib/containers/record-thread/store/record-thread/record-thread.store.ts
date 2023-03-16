@@ -105,7 +105,12 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         return pagination.pageSize >= pagination.total;
     }
 
-    public loadMore(jump: number = 10): void {
+    public loadMore(jump: number = null): void {
+
+        if (!jump) {
+            jump = this.pageSize;
+        }
+
         const pagination = this.recordList.getPagination();
         const currentPageSize = pagination.pageSize || 0;
         let newPageSize = currentPageSize + jump;

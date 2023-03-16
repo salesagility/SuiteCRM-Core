@@ -120,7 +120,7 @@ parameters:
             klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0 m-0 pr-2']
             modes: ['detail', 'edit']
             acl: []
-    pageSize: 7
+    pageSize: 10
     listActionsClass: "d-flex align-items-center justify-content-end notification-list-actions pr-2 pt-1"
     listActionsButtonClass: "line-actions-button btn btn-link small"
     listActionsButtonGroupClass: 'd-flex justify-content-end'
