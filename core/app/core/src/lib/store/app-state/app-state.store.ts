@@ -232,9 +232,6 @@ export class AppStateStore implements StateStore {
 
         if (reload) {
             this.refreshNotifications();
-            setTimeout(() => {
-                this.refreshNotifications();
-            }, 500)
         }
     }
 

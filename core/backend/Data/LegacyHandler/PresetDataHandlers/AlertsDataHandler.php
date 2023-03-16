@@ -76,16 +76,17 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         $bean = $this->getBean($module);
 
-        $sort['orderBy'] =  $sort['orderBy'] ?? 'snooze';
+        $sort['orderBy'] = $sort['orderBy'] ?? 'snooze';
         $sort['sortOrder'] = $sort['sortOrder'] ?? 'asc';
 
         $legacyCriteria = $this->mapCriteria($criteria, $sort, $type);
 
         [$params, $where, $filter_fields] = $this->prepareQueryData($type, $bean, $legacyCriteria);
 
-        $now = date('Y-m-d H:i:s');
+        global $timedate;
+        $now = $timedate->nowDb();
 
-        $where .= " AND (alerts.snooze < '$now' OR alerts.snooze IS NULL )";
+        $where .= " AND (alerts.snooze <= '$now' OR alerts.snooze IS NULL )";
 
         $resultData = $this->getListDataPort()->get($bean, $where, $offset, $limit, $filter_fields, $params);
 
@@ -125,7 +126,8 @@ class AlertsDataHandler extends ListDataHandler implements PresetListDataHandler
 
         [$params, $where, $filter_fields] = $this->prepareQueryData($type, $bean, $legacyCriteria);
 
-        $now = date('Y-m-d H:i:s');
+        global $timedate;
+        $now = $timedate->nowDb();
 
         $where .= " AND (alerts.snooze <= '$now' OR alerts.snooze IS NULL )";
 
