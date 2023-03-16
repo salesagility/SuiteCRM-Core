@@ -73,7 +73,7 @@
 
         <ng-container *ngIf="subNavigationType !== 'gm'">
 
-            <scrm-mobile-grouped-menu *ngIf="isAdmin && isAdminNavbarClicked" [items]="current?.submenu" [onClose]="onClose"></scrm-mobile-grouped-menu>
+            <scrm-mobile-grouped-menu *ngIf="isAdminNavbar && isAdminNavbarClicked" [items]="current?.submenu" [onClose]="onClose"></scrm-mobile-grouped-menu>
 
             <scrm-mobile-module-menu *ngIf="!isAdminNavbarClicked" [items]="submenu" [onClose]="onClose"></scrm-mobile-module-menu>
 
