@@ -8,4 +8,5 @@ parameters:
       - ConfigureTabs
     module-builder:
       - index
-
+    configurator:
+      - edit
