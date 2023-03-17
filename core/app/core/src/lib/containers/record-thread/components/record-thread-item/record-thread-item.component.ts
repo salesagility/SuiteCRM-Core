@@ -149,15 +149,16 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
                     return;
                 }
 
-                this.dynamicClassFieldSubs.push(record.fields[fieldKey].valueChanges$.pipe(debounceTime(100)).subscribe(() => {
+                if (record.fields[fieldKey]) {
+                    this.dynamicClassFieldSubs.push(record.fields[fieldKey].valueChanges$.pipe(debounceTime(100)).subscribe(() => {
 
-                    const klass = this.getDynamicClasses(fieldKey, record) ?? '';
-                    if (klass !== '') {
-                        this.dynamicClassesMap[fieldKey] = klass;
-                        this.calculateDynamicClasses();
-                    }
-                }));
-
+                        const klass = this.getDynamicClasses(fieldKey, record) ?? '';
+                        if (klass !== '') {
+                            this.dynamicClassesMap[fieldKey] = klass;
+                            this.calculateDynamicClasses();
+                        }
+                    }));
+                }
 
                 const klass = this.getDynamicClasses(fieldKey, record) ?? '';
                 if (klass !== '') {
