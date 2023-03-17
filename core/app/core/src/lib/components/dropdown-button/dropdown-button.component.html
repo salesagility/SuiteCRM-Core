@@ -64,7 +64,13 @@
                             <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
                         </div>
                         <div class="flex-grow-1">
-                            <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey" [module]="item.labelModule ?? ''"></scrm-label>
+                            <ng-container *ngIf="item && item.label">
+                                {{item && item.label}}
+                            </ng-container>
+                            <ng-container *ngIf="item && !item.label && item.labelKey">
+                                <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey"
+                                            [module]="item.labelModule ?? ''"></scrm-label>
+                            </ng-container>
                         </div>
                     </div>
                 </a>
