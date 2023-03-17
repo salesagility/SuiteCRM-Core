@@ -32,4 +32,5 @@ export interface RecordPanelMetadata {
     mode?: ViewMode;
     fields: ViewFieldDefinition[];
     actions?: Action[];
+    collapseActions?: boolean;
 }

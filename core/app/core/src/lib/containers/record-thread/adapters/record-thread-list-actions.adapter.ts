@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, isTrue, ModeActions, ViewMode} from 'common';
 import {combineLatest, Observable, of} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
@@ -49,6 +49,7 @@ export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<Rec
         create: [],
         list: []
     };
+    collapseButtons = false;
 
     constructor(
         protected threadStore: RecordThreadStore,

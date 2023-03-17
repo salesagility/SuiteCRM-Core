@@ -178,6 +178,10 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
         if (config && config.fields) {
             metadata.fields = deepClone(config.fields);
         }
+
+        if ((config?.collapseActions ?? null) !== null) {
+            metadata.collapseActions = config?.collapseActions;
+        }
     }
 
 

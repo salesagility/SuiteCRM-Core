@@ -96,6 +96,8 @@ export interface ActionDataSource {
     getActions(context?: ActionContext): Observable<Action[]>;
 
     runAction(action: Action, context?: ActionContext): void;
+
+    collapseButtons?: boolean;
 }
 
 export interface ActionManager<D extends ActionData> {

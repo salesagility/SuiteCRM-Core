@@ -53,7 +53,7 @@ export class ListViewRecordPanelActionAdapterFactory {
     }
 
     create(store: RecordPanelStore, listStore: ListViewStore): ListViewRecordPanelActionsAdapter {
-        return new ListViewRecordPanelActionsAdapter(
+        const adapter = new ListViewRecordPanelActionsAdapter(
             store,
             listStore,
             this.language,
@@ -64,5 +64,12 @@ export class ListViewRecordPanelActionAdapterFactory {
             this.selectModalService,
             this.metadata
         );
+
+        const collapseButtons = listStore?.recordPanelConfig?.collapseActions ?? null;
+        if (collapseButtons !== null) {
+            adapter.collapseButtons = collapseButtons;
+        }
+
+        return adapter;
     }
 }

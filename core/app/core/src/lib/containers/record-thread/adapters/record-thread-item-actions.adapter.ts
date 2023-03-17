@@ -49,6 +49,7 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
         edit: [],
         create: [],
     };
+    collapseButtons = false;
 
     constructor(
         protected itemStore: RecordThreadItemStore,

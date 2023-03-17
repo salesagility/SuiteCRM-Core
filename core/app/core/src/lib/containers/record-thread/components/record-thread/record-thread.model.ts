@@ -49,6 +49,7 @@ export interface RecordThreadConfig {
     itemConfig: RecordThreadItemConfig;
     pageSize?: number;
     listActions?: Action[];
+    collapseListActions?: boolean;
     listActionsClass?: string;
     listActionsButtonClass?: string;
     listActionsButtonGroupClass?: string;
@@ -66,4 +67,5 @@ export interface ThreadItemMetadataConfig {
     body?: FieldFlexbox;
     actions?: Action[];
     fields?: FieldDefinitionMap;
+    collapseActions?: boolean;
 }

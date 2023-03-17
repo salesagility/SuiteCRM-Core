@@ -127,7 +127,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.initLoading();
 
-        this.listActionAdapter = this.actionAdapterFactory.create(this.store);
+        this.listActionAdapter = this.actionAdapterFactory.create(this.store, this.config);
 
     }
 
