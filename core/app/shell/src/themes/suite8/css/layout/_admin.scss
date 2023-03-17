@@ -25,7 +25,7 @@
  */
 
 .admin-view {
-  background-color: #FFFFFF;
+  background-color: $white;
   min-height: 100vh;
   padding: 7em 5em 0 5em;
 }
@@ -36,13 +36,26 @@
 }
 
 .admin-card-link-box {
-  padding-bottom: 0.3em;
+  padding-bottom: 0.4em;
 
   .admin-card-link {
+    display: flex;
     font-size: 0.9em;
+    color: $burnt-red;
 
     .admin-card-icon {
-      fill: $coral-pink;
+      fill: $burnt-red;
     }
   }
 }
+
+.admin-card-label {
+  display: table;
+  &:hover {
+    text-decoration: underline;
+    display: table;
+  }
+}
+
+
+
