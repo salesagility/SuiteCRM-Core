@@ -437,7 +437,9 @@ td {
   margin: 0 0.7em;
   font-weight: bold;
   position: relative;
-  top: 0.2em;
+  top: initial;
+  bottom: initial;
+  line-height: 32px;
 }
 
 .list-view .col-lg-12, .list-view .col-lg-9, .list-view .col-lg-3 {
