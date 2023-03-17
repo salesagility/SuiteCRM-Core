@@ -31,5 +31,6 @@ export interface RecordThreadItemMetadata {
     headerLayout?: FieldFlexbox;
     bodyLayout?: FieldFlexbox;
     actions?: Action[];
+    collapseActions?: boolean;
     fields?: ViewFieldDefinitionMap;
 }

@@ -90,6 +90,10 @@ export class NotificationsService {
 
     setupListActions(config: RecordThreadConfig, options): void {
         config.listActions = options?.listActions ?? [];
+
+        if ((options?.collapseListActions ?? null) !== null) {
+            config.collapseListActions = options.collapseListActions;
+        }
     }
 
     setupItemConfig(config: RecordThreadConfig, options): void {
@@ -123,6 +127,10 @@ export class NotificationsService {
 
         if (options?.item && options?.item?.fields) {
             metadata.fields = deepClone(options.item.fields);
+        }
+
+        if ((options?.item?.collapseActions ?? null) !== null) {
+            metadata.collapseActions = options?.item?.collapseActions;
         }
     }
 

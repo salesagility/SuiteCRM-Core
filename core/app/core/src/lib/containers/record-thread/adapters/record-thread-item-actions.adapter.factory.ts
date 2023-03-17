@@ -35,6 +35,7 @@ import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.s
 import {LanguageStore} from '../../../store/language/language.store';
 import {RecordThreadItemActionManager} from '../actions/item-actions/record-thread-item-action-manager.service';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {RecordThreadItemConfig} from '../components/record-thread-item/record-thread-item.model';
 
 @Injectable({
     providedIn: 'root',
@@ -52,8 +53,8 @@ export class RecordThreadItemActionsAdapterFactory {
     ) {
     }
 
-    create(itemStore: RecordThreadItemStore, threadStore: RecordThreadStore): RecordThreadItemActionsAdapter {
-        return new RecordThreadItemActionsAdapter(
+    create(itemStore: RecordThreadItemStore, threadStore: RecordThreadStore, config: RecordThreadItemConfig = null): RecordThreadItemActionsAdapter {
+        const adapter = new RecordThreadItemActionsAdapter(
             itemStore,
             threadStore,
             this.language,
@@ -64,5 +65,12 @@ export class RecordThreadItemActionsAdapterFactory {
             this.selectModalService,
             this.metadata
         );
+
+        const collapseButtons = config?.metadata?.collapseActions ?? null;
+        if (collapseButtons !== null) {
+            adapter.collapseButtons = collapseButtons;
+        }
+
+        return adapter;
     }
 }

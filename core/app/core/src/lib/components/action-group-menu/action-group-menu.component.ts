@@ -116,9 +116,14 @@ export class ActionGroupMenuComponent implements OnInit {
             collapsed.push(button);
         });
 
-        let breakpoint = this.getBreakpoint();
-        if (expanded.length < breakpoint) {
-            breakpoint = expanded.length;
+        const collapseButtons = this.config.collapseButtons ?? true;
+
+        let breakpoint = actions.length;
+        if (collapseButtons === true) {
+            breakpoint = this.getBreakpoint();
+            if (expanded.length < breakpoint) {
+                breakpoint = expanded.length;
+            }
         }
 
         const buttons = expanded.concat(collapsed);

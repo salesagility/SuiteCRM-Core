@@ -59,7 +59,7 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngOnInit(): void {
-        this.actionAdapter = this.actionAdapterFactory.create(this.config.store, this.config.threadStore);
+        this.actionAdapter = this.actionAdapterFactory.create(this.config.store, this.config.threadStore, this.config);
         this.initDynamicClass();
     }
 

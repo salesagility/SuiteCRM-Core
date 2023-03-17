@@ -114,13 +114,11 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     protected getBreakpoint(): number {
 
-        const breakpoint = this.internalConfig?.breakpoint ?? null;
-
-        if (breakpoint === null) {
+        if (!this.internalConfig.breakpoint && this.internalConfig.breakpoint !== 0) {
             return 4;
         }
 
-        return breakpoint;
+        return this.internalConfig.breakpoint;
     }
 
     protected splitButtons(): void {
