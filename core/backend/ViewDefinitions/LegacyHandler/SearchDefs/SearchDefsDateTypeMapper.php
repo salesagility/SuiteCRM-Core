@@ -68,12 +68,10 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
 
     /**
      * @param string $type
-     * @param mixed $field
-     * @param array $search
-     * @param int|string $fieldKey
+     * @param array $field
      * @return array
      */
-    public function mapField(string $type, mixed $field): array
+    public function mapField(string $type, array $field): array
     {
         if ($type === 'datetime') {
             $type = 'date';
