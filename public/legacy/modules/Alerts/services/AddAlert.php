@@ -76,7 +76,7 @@ class AddAlert
 
         /** @var Alert $alert */
         $alert = BeanFactory::newBean('Alerts');
-        $alert->name = $name;
+        $alert->name = html_entity_decode($name, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
         $alert->description = $description;
         $alert->url_redirect = $url_redirect;
         $alert->target_module = $target_module;
