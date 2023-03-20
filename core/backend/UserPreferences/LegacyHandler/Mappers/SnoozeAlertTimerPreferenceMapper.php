@@ -64,7 +64,11 @@ class SnoozeAlertTimerPreferenceMapper implements UserPreferencesMapperInterface
                 return $defaultValue;
             }
 
-            return (int)($snoozeConfig->getValue() ?? $defaultValue);
+            if (empty($snoozeConfig->getValue())) {
+                return $defaultValue;
+            }
+
+            return (int)$snoozeConfig->getValue();
         }
 
         return $value;
