@@ -296,7 +296,7 @@ export class DynamicLabelService implements DynamicLabelServiceInterface {
             value = get({value}, variableName, '');
         }
 
-        if (!value || typeof value !== 'string') {
+        if (!value || typeof value === 'object') {
             return parsedTemplate.replace(regexMatch, '');
         }
 
