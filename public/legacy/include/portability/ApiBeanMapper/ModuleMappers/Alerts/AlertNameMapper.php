@@ -78,7 +78,7 @@ class AlertNameMapper implements FieldMapperInterface
             $nameValue = preg_replace('/^' . $searchString . '/', '', $nameValue);
         }
 
-        $container[$name] = html_entity_decode($nameValue);
+        $container[$name] = html_entity_decode($nameValue, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
     }
 
     /**
