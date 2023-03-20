@@ -354,6 +354,11 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function setLinks(array $legacyArray): array
     {
+
+        if (empty($legacyArray)) {
+            return [];
+        }
+        
         foreach ($legacyArray as $linkGroupKey => $linkGroup) {
             $mappedLinkGroup = [];
             if (empty($linkGroup)) {
