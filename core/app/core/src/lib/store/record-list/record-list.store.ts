@@ -336,7 +336,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
         if (filter.criteria) {
             let orderBy = filter.criteria.orderBy ?? '';
-            const sortOrder = filter.criteria.sortOrder ?? '';
+            const sortOrder = filter.criteria.sortOrder ?? 'desc';
             let direction = this.mapSortOrder(sortOrder);
 
             if (sort !== null) {

@@ -164,7 +164,7 @@ export class SubpanelStore implements StateStore {
         );
 
         this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
-        const filter = this.initSearchCriteria(this.parentModule, this.parentId, meta.name);
+        const filter = this.initSearchCriteria(this.parentModule, this.parentId, meta);
         this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel', filter)
 
         this.initStatistics(meta, parentModule, parentId);
@@ -255,7 +255,9 @@ export class SubpanelStore implements StateStore {
      * @param {string} parentId id
      * @param {string} subpanel name
      */
-    initSearchCriteria(parentModule: string, parentId: string, subpanel: string) {
+    initSearchCriteria(parentModule: string, parentId: string, meta: SubPanelDefinition) {
+        const sortOrder = meta?.sort_order ?? 'desc';
+        const orderBy = meta?.sort_by ?? '';
         return {
             key: 'default',
             module: 'saved-search',
@@ -266,12 +268,14 @@ export class SubpanelStore implements StateStore {
                 preset: {
                     type: 'subpanel',
                     params: {
-                        subpanel,
+                        subpanel: meta?.name,
                         parentModule,
                         parentId
                     }
-                }
-            }
+                },
+                sortOrder,
+                orderBy
+            },
         } as SavedFilter;
     }
 
