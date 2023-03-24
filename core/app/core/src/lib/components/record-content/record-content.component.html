@@ -42,16 +42,33 @@
     <div *ngIf="config && config.layout === 'tabs'" class="record-content tabs-layout container-fluid pl-0 pr-0">
 
         <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="active">
-            <li class="tab" *ngFor="let panel of panels; index as i;" [ngbNavItem]="i+1">
+            <li class="tab" *ngFor="let panel of panels; let i = index;" [ngbNavItem]="i+1">
                 <a class="tab-link" ngbNavLink>{{panel.label}}</a>
                 <ng-template ngbNavContent>
                     <div class="tab-{{panel.key}}">
                         <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
                     </div>
                 </ng-template>
+
             </li>
         </ul>
         <div [ngbNavOutlet]="nav" class="p-2 pt-3 rounded-right rounded-bottom"></div>
+
+        <ng-container *ngIf="panelsInPrevTab && panelsInPrevTab.length">
+            <ng-container *ngFor="let panel of panels; let j = index;">
+                <div *ngFor="let panel of panel.subPanels;">
+                    <div class="row no-gutters mt-3" *ngIf="j==active-1">
+                        <div class="col">
+                            <scrm-panel [title]="panel.label" mode="collapsible">
+                                <div panel-body class="panel-{{panel.key}}">
+                                    <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
+                                </div>
+                            </scrm-panel>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
 
     </div>
 

@@ -43,6 +43,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
     config: RecordContentConfig = {} as RecordContentConfig;
     panels: Panel[];
+    panelsInPrevTab: Panel[] = [];
     active = 1;
     protected record: Record;
     protected fields: FieldMap;
@@ -62,10 +63,52 @@ export class RecordContentComponent implements OnInit, OnDestroy {
             this.record = {...record};
             this.fields = record.fields;
         }));
+
+        this.updatePanelsArray();
     }
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    updatePanelsArray(): void {
+        let tempPanels = [];
+        let prevTabKey = '';
+        let index = -1;
+
+        for (const tabDefKey in this.config.tabDefs) {
+            const tabDef = this.config.tabDefs[tabDefKey];
+
+            if (tabDef.newTab) {
+                tempPanels = [...tempPanels, ...this.panels.filter(panel => panel.key.toUpperCase() === tabDefKey.toUpperCase())];
+                prevTabKey = tabDefKey.toUpperCase();
+                index++;
+            } else {
+                const prevTab = this.config.tabDefs[prevTabKey];
+                for (const panel of this.panels) {
+                    if (panel.key.toUpperCase() === prevTabKey && !this.panelsInPrevTab.includes(panel)) {
+                        this.panelsInPrevTab.push(panel);
+                    }
+                }
+
+                const panelToAdd = this.panels.filter(panel => panel.key === tabDefKey)[0];
+                if (prevTab.newTab && this.panelsInPrevTab.length > 0) {
+                    this.addToPrevTab(panelToAdd);
+                }
+            }
+        }
+        this.panels = tempPanels;
+    }
+
+    addToPrevTab(panelToAdd: any): void {
+
+        const index = this.panelsInPrevTab.length - 1;
+
+        if (!this.panelsInPrevTab[index].subPanels) {
+            this.panelsInPrevTab[index].subPanels = [];
+        }
+        this.panelsInPrevTab[index].subPanels.push(panelToAdd);
+
     }
 
     getLayoutDataSource(panel: Panel): FieldLayoutDataSource {

@@ -46,6 +46,7 @@ export interface Panel {
     label?: string;
     key: string;
     rows: PanelRow[];
+    subPanels?: Panel[];
 }
 
 export interface PanelRow {
