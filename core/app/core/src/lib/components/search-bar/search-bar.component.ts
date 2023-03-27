@@ -28,7 +28,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {Observable, Subscription} from 'rxjs';
-import {map, debounceTime, distinctUntilChanged, tap, filter} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -102,6 +102,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
     onFocus(): void {
         this.isFocused = true;
+        const initialValue = this.searchForm?.get('searchTerm')?.value ?? '';
+        if (initialValue.length > 2) {
+            this.hasSearchTyped = true;
+            this.searchWord = initialValue;
+        }
     }
 
     onBlur(): void {
