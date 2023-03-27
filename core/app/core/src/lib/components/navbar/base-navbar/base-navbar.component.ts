@@ -24,14 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {
-    Component,
-    HostListener,
-    OnDestroy,
-    OnInit
-
-} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
@@ -116,6 +110,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     navbar: NavbarModel;
     maxTabs = 8;
     screen: ScreenSize = ScreenSize.Medium;
+    notificationsEnabled: boolean = false;
+    subs: Subscription[] = []
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -196,14 +192,23 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         window.dispatchEvent(new Event('resize'));
 
         this.notificationCount$ = this.appState.notificationsUnreadTotal$;
+
+        this.subs.push(this.appState.notificationsEnabled$.subscribe(notificationsEnabled => {
+            this.notificationsEnabled = notificationsEnabled;
+        }));
     }
 
     ngOnDestroy(): void {
         this.authService.isUserLoggedIn.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     checkAppStrings(appStrings): boolean {
         return appStrings && Object.keys(appStrings).length > 0;
+    }
+
+    arePreferencesInitialized(preferences: UserPreferenceMap) {
+        return preferences && Object.keys(preferences).length;
     }
 
     markAsRead(): void {
