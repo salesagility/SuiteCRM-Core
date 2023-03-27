@@ -64,7 +64,7 @@ pre {
   background: $midnight-blue;
 }
 
-.navbar-nav a:not([href]):not([tabindex]), .global-links a:not([href]):not([tabindex]) {
+.navbar-nav a:not([href]):not([tabindex]) {
   color: $light-grey;
 }
 

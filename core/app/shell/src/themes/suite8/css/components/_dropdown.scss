@@ -82,8 +82,7 @@ ngb-datepicker-navigation {
 }
 
 .action-alert .dropdown-menu li:not(:last-of-type),
-.action-favourite .dropdown-menu li:not(:last-of-type),
-.action-new .dropdown-menu li:not(:last-of-type) {
+.action-favourite .dropdown-menu li:not(:last-of-type), {
   border-bottom: 0.05em dotted $midnight-grey;
 }
 
@@ -92,7 +91,50 @@ ngb-datepicker-navigation {
 }
 
 .action-new .dropdown-menu svg polygon {
-  fill: $bright-purple;
+  fill: $complementary;
+}
+
+.action-new .dropdown-menu {
+  margin-top: -5px;
+  min-width: 13em;
+  max-width: 14em;
+  padding-bottom: 0;
+  padding-top: 0;
+
+  .new-list-item {
+    padding-left: 0.75rem;
+    border-bottom: 1px solid $lightgray;
+
+    span {
+      vertical-align: bottom;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      white-space: nowrap;
+    }
+
+  }
+
+  .new-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .new-list-item-header {
+    padding-left: 0.75rem;
+    border-bottom: 1px solid $lightgray;
+
+    vertical-align: bottom;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    font-size: 1.15em;
+    color: $complementary;
+  }
+
+  .new-list-item:hover {
+    background-color: $off-white;
+    cursor: pointer;
+  }
 }
 
 .alert-list-item:hover {
@@ -105,21 +147,14 @@ ngb-datepicker-navigation {
   cursor: pointer;
 }
 
-.new-list-item:hover {
-  background-color: $bright-blue;
-  cursor: pointer;
-}
-
-.action-alert .dropdown-menu {
-  border: 0.35em solid $burnt-orange;
-}
-
 .action-favourite .dropdown-menu {
   border: 0.35em solid $sandy-yellow;
 }
 
-.action-new .dropdown-menu {
-  border: 0.35em solid $bright-purple;
+.action-new .dropdown-menu .action-btn-icon {
+  display: inline-block;
+  height: auto;
+  width: auto;
 }
 
 .alerts-button.dropdown-toggle[_ngcontent-c1]::after,
@@ -240,26 +275,24 @@ ul.main li a,
 
 .global-links-dropdown {
   margin: 0;
+  margin-top: -5px;
   right: 0;
   position: absolute;
   width: 240px;
-  -webkit-border-radius: 0.25em;
-  -webkit-border-top-left-radius: 0;
-  -webkit-border-top-right-radius: 0;
-  -moz-border-radius: 0.25em;
-  -moz-border-radius-topleft: 0;
-  -moz-border-radius-topright: 0;
-  border-radius: 0.25em;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top-width: 0;
+  background-color: $white;
+
+  hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
   .global-user-name {
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
     padding: 0.4em 0.8em 0 1.5em;
     font-size: .9em;
-    color: $salmon-pink;
+    color: $complementary;
     font-weight: bold;
   }
 }
@@ -267,12 +300,26 @@ ul.main li a,
 .primary-global-link {
   height: 3.1em;
   line-height: 3.1em;
+
   &:hover {
     background: $dusky-blue;
   }
+
   &::after {
     margin-top: -5px;
   }
+}
+
+.global-links a.global-links-sublink:not([href]):not([tabindex]) {
+  color: inherit;
+}
+
+.global-links a.global-links-sublink:hover:not([href]):not([tabindex]) {
+  color: inherit;
+}
+
+.global-links svg path {
+  fill: rgba(255, 255, 255, 0.8);
 }
 
 .global-link-item .nav-link {
@@ -289,40 +336,33 @@ ul.main li a,
 }
 
 @media only screen and (min-width: $breakpoint-large) {
+
+  .global-links-dropdown
   .global-links-sublink {
-    background-color: $dusky-blue;
     padding: 0.4em 0.8em 0.4em 1.8em;
     font-size: 0.8em;
     border-bottom: none;
-    color: $light-grey;
-  }
-
-  .global-links-sublink:not(:last-of-type) {
-    border-bottom: 0.05em solid $midnight-grey;
   }
 
   .global-links-dropdown a:hover {
-    color: $white;
     -webkit-transition: color 0.5s ease-out;
     -moz-transition: color 0.5s ease-out;
     -o-transition: color 0.5s ease-out;
     transition: color 0.5s ease-out;
-    background: $dull-orange;
+    background: $off-white;
   }
 }
 
 @media only screen and (max-width: $breakpoint-large) {
   .global-links .dropdown-menu {
     border: none;
-    background-color: $dusky-blue;
-    left: -5.7em;
+    left: -12.7em;
   }
 
   .global-links a {
     border: none;
     padding: 0.4em 0.8em 0.4em 1.8em;
     font-size: 0.9em;
-    color: $light-grey;
   }
 }
 

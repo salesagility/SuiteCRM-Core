@@ -94,7 +94,7 @@
                             </a>
                             <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
                                  aria-labelledby="navbarDropdownMenuLink"
-                                 class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
+                                 class="dropdown-menu global-links-dropdown border shadow-sm-2" ngbDropdownMenu>
                                 <span
                                     class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
                                 <ng-template [ngIf]="navbar.globalActions">
@@ -203,7 +203,8 @@
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
                             </a>
                             <div aria-labelledby="navbarDropdownMenuLink"
-                                 class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
+                                 class="dropdown-menu global-links-dropdown border shadow-sm-2 dropdown-menu-right"
+                                 ngbDropdownMenu>
                                 <span
                                     class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
                                 <ng-container *ngIf="navbar.globalActions">
@@ -234,18 +235,20 @@
     </ng-container>
 
     <ng-template #actionIcons>
-        <div class="action-group">
+        <div class="action-group navbar-action-group">
 
             <div class="action-new dropdown">
                 <a class="action-link primary-global-link" type="button" aria-label="Quick Create">
                     <scrm-image class="action-btn-icon" image="plus"></scrm-image>
                 </a>
-
-                <ul class="dropdown-menu dropdown-menu-right">
+                <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2">
+                    <li class="new-list-item-header font-weight-bold">
+                        <scrm-label labelKey="LBL_CREATE"></scrm-label>
+                    </li>
                     <li class="new-list-item" *ngFor="let createLink of actionBar.createLinks">
-                        <a [routerLink]="createLink.route">
-                            <scrm-image class="action-btn-icon" image="plus"></scrm-image>
-                            {{vm.appListStrings.moduleList && vm.appListStrings.moduleList[createLink.label]}}
+                        <a [routerLink]="createLink.route" class="d-flex align-items-center">
+                            <scrm-image class="action-btn-icon mr-2" image="plus"></scrm-image>
+                            <span>{{vm.appListStrings.moduleList && vm.appListStrings.moduleList[createLink.label]}}</span>
                         </a>
                     </li>
                 </ul>
@@ -268,7 +271,7 @@
                                 <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
                             </span>
                 </ng-container>
-                <div class="dropdown-menu dropdown-menu-right" *ngIf="checkAppStrings(vm.appStrings)">
+                <div class="dropdown-menu border shadow-sm-2 dropdown-menu-right">
                     <scrm-notifications></scrm-notifications>
                 </div>
             </div>

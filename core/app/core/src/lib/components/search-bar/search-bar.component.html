@@ -53,14 +53,14 @@
             </ul>
 
             <div class="input-group-append">
-                <button *ngIf="!hasSearchTyped" class="btn btn-default search-button"
+                <button *ngIf="!hasSearchTyped" class="btn btn-default search-button d-flex align-items-center"
                         aria-label="Search"
                         scrm-button-loading
                         (click)="search()">
                     <scrm-image class="search-icon sicon" image="search"></scrm-image>
                 </button>
 
-                <button *ngIf="hasSearchTyped" class="btn btn-default search-button"
+                <button *ngIf="hasSearchTyped" class="btn btn-default search-button d-flex align-items-center"
                         aria-label="Search"
                         scrm-button-loading
                         (click)="clearSearchTerm()">

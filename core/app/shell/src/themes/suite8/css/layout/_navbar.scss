@@ -31,6 +31,32 @@
   background-color: $midnight-blue;
   margin: 0;
   padding: 0 1em;
+
+  .navbar-action-group {
+    .action-link svg,
+    .action-link svg path,
+    .action-link svg polygon {
+      fill: rgba(255, 255, 255, 0.8);
+    }
+
+    .global-action-icon svg,
+    .global-action-icon svg path,
+    .global-action-icon svg polygon {
+      fill: rgba(255, 255, 255, 0.8);
+    }
+
+    .action-link:hover svg,
+    .action-link:hover svg path,
+    .action-link:hover svg polygon {
+      fill: $salmon-pink;
+    }
+
+    .global-action-icon:hover svg,
+    .global-action-icon:hover svg path,
+    .global-action-icon:hover svg polygon {
+      fill: $salmon-pink;
+    }
+  }
 }
 
 @media only screen and (min-width: $breakpoint-large) {
@@ -91,10 +117,6 @@ a.home-nav-link {
 
 .nav-link {
   color: $light-grey;
-}
-
-.mobilenavbar {
-  list-style: none;
 }
 
 .nav-link:hover {
@@ -288,12 +310,11 @@ a.nav-link.dropdown-toggle::after {
   display: none;
 }
 
-
 .mobilenavbar {
+  list-style: none;
+  padding: 0;
   background-color: $midnight-blue;
-}
 
-.mobilenavbar {
   .navbar-toggler.dropdown-toggle::after {
     display: none;
   }
