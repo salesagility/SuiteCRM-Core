@@ -159,8 +159,6 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
         const displayLogic = data?.action?.displayLogic ?? null;
         let toDisplay = true;
 
-        console.log(data.action)
-        console.log(displayLogic);
         if(displayLogic && Object.keys(displayLogic).length) {
             toDisplay = this.displayTypeLogic.runAll(displayLogic, data);
         }

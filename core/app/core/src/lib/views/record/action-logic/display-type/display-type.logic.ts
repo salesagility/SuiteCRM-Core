@@ -49,7 +49,6 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
             const allowedModes = logic['modes'] ?? [];
             return !!(allowedModes.length && allowedModes.includes(data.store.getMode()));
         });
-        console.log('validModeLogic', validModeLogic);
 
         if (!validModeLogic || !validModeLogic.length) {
             return toDisplay;
@@ -61,9 +60,6 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
             targetDisplay = 'show';
         }
 
-        console.log('original defaultDisplay', defaultDisplay);
-        console.log('original targetDisplay', targetDisplay);
-
         const isActive = validModeLogic.some(logic => {
             return this.run(data, logic as Action);
         });
@@ -74,17 +70,12 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
 
         toDisplay = (defaultDisplay === 'show');
 
-        console.log('targetDisplay', targetDisplay);
-        console.log('defaultDisplay', defaultDisplay);
-        console.log('isActive', isActive);
-        console.log('toDisplay', toDisplay);
         return toDisplay;
     }
 
     run(data: RecordActionData, logic: Action): boolean {
 
         const record = data.store.recordStore.getStaging();
-        console.log(record)
         if (!record || !logic) {
             return true;
         }
@@ -122,13 +113,11 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
             isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
         }
 
-        console.log('areFieldsActive  ', isActive);
 
         if (!isEmpty(activeOnAttributes)) {
             isActive = isActive && this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
         }
 
-        console.log('areAllActive  ', isActive);
 
         return isActive;
     }
@@ -182,7 +171,6 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
             if (!field || !activeValues || !activeValues.length) {
                 return true;
             }
-            console.log('isValueActive result ', this.isValueActive(field, activeValues));
             return this.isValueActive(field, activeValues);
         });
     }
