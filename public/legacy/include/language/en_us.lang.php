@@ -1849,6 +1849,8 @@ $app_strings = array(
     'LBL_VERIFY_EMAIL_ADDRESS' => 'Checking for existing email entry...',
     'LBL_VERIFY_PORTAL_NAME' => 'Checking for existing portal name...',
     'LBL_VIEW_IMAGE' => 'view',
+    'LBL_CREATE_PORTAL_USER_FAILED' => 'Failed to create portal user',
+    'LBL_CREATE_PORTAL_USER_SUCCESS' => 'Created portal user',
 
     'LNK_ABOUT' => 'About',
     'LNK_ADVANCED_FILTER' => 'Advanced Filter',
