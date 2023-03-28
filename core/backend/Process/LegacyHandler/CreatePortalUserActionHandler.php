@@ -174,6 +174,12 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
         if ($contact->id && $contact->email1) {
             $portalURL = $sugar_config['aop']['joomla_url'];
             $wbsv = file_get_contents($portalURL.'/index.php?option=com_advancedopenportal&task=create&sug='.$contact->id);
+            if($wbsv === false) {
+                $this->logger->error('Failed to create portal user, not able to connect to Joomla');
+                $process->setStatus('error');
+                $process->setMessages(['LBL_CREATE_PORTAL_USER_FAILED']);
+                return;
+            }
             $res = json_decode($wbsv, false, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
             if (!$res->success) {
                 $msg = $res->error ?: $mod_strings['LBL_CREATE_PORTAL_USER_FAILED'];
