@@ -28,15 +28,15 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {
     BooleanMap,
-    deepClone,
-    FieldDefinitionMap,
+    deepClone, FieldDefinition,
+    FieldDefinitionMap, FieldLogic, FieldLogicMap, FieldMetadata,
     isVoid,
     Record,
     StatisticsMap,
     StatisticsQueryMap,
     SubPanelMeta,
     ViewContext,
-    ViewFieldDefinition,
+    ViewFieldDefinition, ViewFieldDefinitionMap,
     ViewMode
 } from 'common';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
@@ -65,6 +65,7 @@ import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {isEmpty} from "lodash-es";
 
 const initialState: RecordViewState = {
     module: '',
@@ -588,13 +589,43 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected getViewFieldsObservable(): Observable<ViewFieldDefinition[]> {
         return this.metadataStore.recordViewMetadata$.pipe(map((recordMetadata: RecordViewMetadata) => {
             const fields: ViewFieldDefinition[] = [];
+            const fieldsMap: ViewFieldDefinitionMap = {};
             recordMetadata.panels.forEach(panel => {
                 panel.rows.forEach(row => {
                     row.cols.forEach(col => {
-                        fields.push(col);
+                        const fieldName = col.name ?? col.fieldDefinition.name ?? '';
+                        fieldsMap[fieldName] = col;
                     });
                 });
             });
+
+            Object.keys(recordMetadata.vardefs).forEach(fieldKey => {
+                const vardef = recordMetadata.vardefs[fieldKey] ?? null;
+                if (!vardef || isEmpty(vardef)) {
+                    return;
+                }
+
+                // already defined. skip
+                if (fieldsMap[fieldKey]) {
+                    return;
+                }
+
+                fieldsMap[fieldKey] = {
+                    name: fieldKey,
+                    label: vardef['vname'] ?? '',
+                    type: vardef['type'] ?? '',
+                    display: vardef['display'] ?? '',
+                    fieldDefinition: vardef as FieldDefinition,
+                    metadata: vardef['metadata'] ?? {} as FieldMetadata,
+                    logic: vardef['logic'] ?? {} as FieldLogicMap
+                } as ViewFieldDefinition;
+
+            })
+
+            Object.keys(fieldsMap).forEach(fieldKey => {
+                fields.push(fieldsMap[fieldKey]);
+            });
+
 
             return fields;
         }));
