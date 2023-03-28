@@ -146,25 +146,25 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
         global $sugar_config, $mod_strings;
         $contact = \BeanFactory::getBean('Contacts', $options['id']);
 
-        if(array_key_exists("aop", $sugar_config)){
+        if(!array_key_exists("aop", $sugar_config)){
             $this->logger->warning('LBL_ERROR_AOP_NOT_CONFIGURED');
             $process->setMessages(['LBL_ERROR_AOP_NOT_CONFIGURED']);
             $process->setStatus('error');
             return;
         }
-        if(!empty($sugar_config['aop']['enable_portal'])){
+        if(empty($sugar_config['aop']['enable_portal'])){
             $this->logger->warning('LBL_ERROR_PORTAL_NOT_ENABLED');
             $process->setMessages(['LBL_ERROR_PORTAL_NOT_ENABLED']);
             $process->setStatus('error');
             return;
         }
-        if(!empty($sugar_config['aop']['enable_aop'])){
+        if(empty($sugar_config['aop']['enable_aop'])){
             $this->logger->warning('LBL_ERROR_AOP_NOT_ENABLED');
             $process->setMessages(['LBL_ERROR_AOP_NOT_ENABLED']);
             $process->setStatus('error');
             return;
         }
-        if(!empty($sugar_config['aop']['joomla_url'])){
+        if(empty($sugar_config['aop']['joomla_url'])){
             $this->logger->warning('LBL_ERROR_JOOMLA_URL_MISSING');
             $process->setMessages(['LBL_ERROR_JOOMLA_URL_MISSING']);
             $process->setStatus('error');
