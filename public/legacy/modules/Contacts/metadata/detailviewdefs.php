@@ -219,7 +219,17 @@ $viewdefs ['Contacts'] =
                             'labelKey' => 'LBL_CREATE_PORTAL_USER',
                             'modes' => ['detail'],
                             'acl' => ['view'],
-                            'availability' => ['portal-enabled']
+                            'availability' => ['portal-enabled'],
+                            'displayLogic' => [
+                                'onPortalDisabled' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            'portal_account_disabled' => ['true'],
+                                        ]
+                                    ]
+                                ],
+                            ],
                         ],
                         'enable-portal-user' => [
                             'key' => 'enable-portal-user',
@@ -228,6 +238,16 @@ $viewdefs ['Contacts'] =
                             'modes' => ['detail'],
                             'acl' => ['view'],
                             'availability' => ['portal-enabled'],
+                            'displayLogic' => [
+                                'onJoomlaIDEmpty' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            '	joomla_account_id' => [''],
+                                        ]
+                                    ]
+                                ],
+                            ]
                         ],
                         'disable-portal-user' => [
                             'key' => 'disable-portal-user',
@@ -235,7 +255,25 @@ $viewdefs ['Contacts'] =
                             'labelKey' => 'LBL_DISABLE_PORTAL_USER',
                             'modes' => ['detail'],
                             'acl' => ['view'],
-                            'availability' => ['portal-enabled']
+                            'availability' => ['portal-enabled'],
+                            'displayLogic' => [
+                                'onPortalEnabled' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            'portal_account_disabled' => ['true'],
+                                        ]
+                                    ]
+                                ],
+                                'onJoomlaIDEmpty' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            '	joomla_account_id' => [''],
+                                        ]
+                                    ]
+                                ],
+                            ]
                         ],
                     ]
                 ],
