@@ -212,7 +212,31 @@ $viewdefs ['Contacts'] =
                                     'module' => 'AOS_PDF_Templates'
                                 ]
                             ]
-                        ]
+                        ],
+                        'create-portal-user' => [
+                            'key' => 'create-portal-user',
+                            'asyncProcess' => true,
+                            'labelKey' => 'LBL_CREATE_PORTAL_USER',
+                            'modes' => ['detail'],
+                            'acl' => ['view'],
+                            'availability' => ['portal-enabled']
+                        ],
+                        'enable-portal-user' => [
+                            'key' => 'enable-portal-user',
+                            'asyncProcess' => true,
+                            'labelKey' => 'LBL_ENABLE_PORTAL_USER',
+                            'modes' => ['detail'],
+                            'acl' => ['view'],
+                            'availability' => ['portal-enabled'],
+                        ],
+                        'disable-portal-user' => [
+                            'key' => 'disable-portal-user',
+                            'asyncProcess' => true,
+                            'labelKey' => 'LBL_DISABLE_PORTAL_USER',
+                            'modes' => ['detail'],
+                            'acl' => ['view'],
+                            'availability' => ['portal-enabled']
+                        ],
                     ]
                 ],
                 'panels' =>
