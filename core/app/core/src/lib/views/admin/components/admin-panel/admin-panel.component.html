@@ -26,9 +26,9 @@
 */
 -->
 
-<div class="admin-view d-flex align-items-center">
-    <div class="row">
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mt-5" *ngFor="let data of adminPanelData">
+<div class="admin-view full-height-view d-flex align-items-center">
+    <div class="row flex-grow-1">
+        <div *ngFor="let data of adminPanelData" class="col-12 col-sm-6 col-lg-4 col-xl-3 mt-3 mb-3">
 
             <scrm-admin-card [content]="data"></scrm-admin-card>
 

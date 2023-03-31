@@ -25,32 +25,62 @@
  */
 
 .admin-view {
-  background-color: $white;
-  min-height: 100vh;
-  padding: 7em 5em 0 5em;
+  background-color: $off-white;
+  padding: 108px 3em 0 3em;
+}
+
+@media all and (min-width: 95em) {
+  .admin-view {
+    padding: 108px 11% 0 11%;
+  }
+}
+
+scrm-admin-card {
+  .card-body {
+    padding: 0;
+    padding-top: 0.5rem;
+  }
 }
 
 .admin-card-title {
   color: $midnight-blue;
   font-weight: bold;
+  font-size: 1.2rem;
+  padding-left: 0.7rem;
 }
 
 .admin-card-link-box {
-  padding-bottom: 0.4em;
+  margin-bottom: 0em;
+  padding-left: 1rem !important;
+  padding-top: 0.5rem !important;
 
   .admin-card-link {
     display: flex;
     font-size: 0.9em;
-    color: $burnt-red;
+    padding-bottom: 0.2rem;
+    color: $black;
 
     .admin-card-icon {
-      fill: $burnt-red;
+      fill: $bright-purple;
+    }
+  }
+}
+
+.admin-card-link-box:hover {
+  background-color: $bright-purple;
+
+  .admin-card-link {
+    color: $white;
+
+    .admin-card-icon {
+      fill: $white;
     }
   }
 }
 
 .admin-card-label {
   display: table;
+
   &:hover {
     text-decoration: underline;
     display: table;
