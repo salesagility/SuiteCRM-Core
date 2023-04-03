@@ -27,13 +27,13 @@
 -->
 <scrm-popup-button [icon]="'info-circle-fill'">
 
-    <div popup-content *ngIf="columns" class="container container-popover  scroll-thin">
+    <div popup-content *ngIf="columns" class="container container-popover scroll-thin">
         <div *ngFor="let column of columns" class="row py-1">
             <div class="col font-weight-bold text-muted">
                 <scrm-label [labelKey]="column.label" [module]="record.module"></scrm-label>
             </div>
             <div class="col">
-                <scrm-field [mode]="'list'"
+                <scrm-field [mode]="'detail'"
                             [field]="getField(column, record)"
                             [type]="column.type"
                             [record]="record">
