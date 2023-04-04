@@ -64,6 +64,7 @@ services:
       $sessionExpiredConfig: '%auth.session-expired%'
       $adminOnlyModuleActions: '%system.admin_only_module_actions%'
       $navbarAdministrationOverrides: '%navbar.administration_override%'
+      $quickActions: '%quick_actions%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]

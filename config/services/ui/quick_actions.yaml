@@ -1,0 +1,21 @@
+parameters:
+  quick_actions:
+    max_number: 7
+    use_navigation_modules: true
+    actions:
+# Actions Example
+#      -
+#        name: create
+#        labelKey: LNK_NEW_ACCOUNT
+#        url: ./accounts/create
+#        params:
+#           return_module: Accounts
+#           return_action: index
+#        type: create
+#        module: accounts
+#      -
+#        name: create
+#        labelKey: LNK_NEW_TASK
+#        url: ./tasks/create
+#        type: create
+#        module: tasks
