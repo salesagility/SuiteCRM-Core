@@ -100,7 +100,7 @@ class SubpanelDataQueryHandler extends LegacyHandler
             $parentModule = $this->moduleNameMapper->toLegacy($parentModule);
         }
 
-        $this->initController($parentModule);
+        $this->initController($parentModule, $parentId);
 
         $parentBean = BeanFactory::getBean($parentModule, $parentId);
 
