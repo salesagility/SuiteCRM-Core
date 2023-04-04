@@ -96,14 +96,10 @@ ngb-datepicker-navigation {
 
 .action-new .dropdown-menu {
   margin-top: -5px;
-  min-width: 13em;
-  max-width: 14em;
-  padding-bottom: 0;
-  padding-top: 0;
+  width: 240px;
 
   .new-list-item {
-    padding-left: 0.75rem;
-    border-bottom: 1px solid $lightgray;
+    padding-left: 2rem;
 
     span {
       vertical-align: bottom;
@@ -115,19 +111,27 @@ ngb-datepicker-navigation {
 
   }
 
-  .new-list-item:last-child {
-    border-bottom: none;
+  .new-list-item-header:first-child {
+    border-top: none;
+    padding-top: 0.36rem;
+  }
+
+  .new-list-item-header:last-child {
+    padding-top: 0.6rem;
+    padding-bottom: 0.2rem;
+    margin-top: 0.2rem;
   }
 
   .new-list-item-header {
-    padding-left: 0.75rem;
-    border-bottom: 1px solid $lightgray;
+    padding-left: 1.44rem;
+    padding-bottom: 0;
+    border-top: 1px solid $lightgray;
 
     vertical-align: bottom;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
-    font-size: 1.15em;
+    font-size: 1.125em;
     color: $complementary;
   }
 
