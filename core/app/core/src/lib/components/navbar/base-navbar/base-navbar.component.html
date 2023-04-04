@@ -242,15 +242,28 @@
                     <scrm-image class="action-btn-icon" image="plus"></scrm-image>
                 </a>
                 <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2">
-                    <li class="new-list-item-header font-weight-bold">
-                        <scrm-label labelKey="LBL_CREATE"></scrm-label>
-                    </li>
-                    <li class="new-list-item" *ngFor="let createLink of actionBar.createLinks">
-                        <a [routerLink]="createLink.route" class="d-flex align-items-center">
-                            <scrm-image class="action-btn-icon mr-2" image="plus"></scrm-image>
-                            <span>{{vm.appListStrings.moduleList && vm.appListStrings.moduleList[createLink.label]}}</span>
-                        </a>
-                    </li>
+
+                    <ng-container *ngIf="(navbar?.current?.module ?? '') && getModuleQuickActions(navbar.current.module).length">
+                        <li class="new-list-item-header font-weight-bold">
+                            <scrm-label labelKey="LBL_MODULE_NAME" [module]="navbar.current.module"></scrm-label>
+                        </li>
+                        <li class="new-list-item" *ngFor="let moduleQuickAction of getModuleQuickActions(navbar.current.module)">
+                            <a [routerLink]="moduleQuickAction.url" [queryParams]="moduleQuickAction?.params ?? null" class="d-flex align-items-center">
+                                <scrm-label [labelKey]="moduleQuickAction.labelKey" [module]="navbar.current.module"></scrm-label>
+                            </a>
+                        </li>
+                    </ng-container>
+
+                    <ng-container *ngIf="(this?.navigation?.quickActions ?? []).length">
+                        <li class="new-list-item-header font-weight-bold">
+                            <scrm-label labelKey="LBL_QUICK_ACTIONS"></scrm-label>
+                        </li>
+                        <li class="new-list-item" *ngFor="let quickAction of (this?.navigation?.quickActions ?? [])">
+                            <a [routerLink]="quickAction.url" [queryParams]="quickAction?.params ?? null" class="d-flex align-items-center">
+                                <scrm-label [labelKey]="quickAction.labelKey" [module]="quickAction.module"></scrm-label>
+                            </a>
+                        </li>
+                    </ng-container>
                 </ul>
             </div>
 

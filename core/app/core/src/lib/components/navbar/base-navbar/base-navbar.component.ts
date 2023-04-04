@@ -33,7 +33,7 @@ import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {ActionNameMapper} from '../../../services/navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
+import {ModuleAction, NavbarModule, Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
 import {UserPreferenceMap, UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {
     ScreenSize,
@@ -112,6 +112,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     screen: ScreenSize = ScreenSize.Medium;
     notificationsEnabled: boolean = false;
     subs: Subscription[] = []
+    navigation: Navigation;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -133,6 +134,10 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             if (screenSize) {
                 this.screen = screenSize;
+            }
+
+            if (navigation && navigation.modules) {
+                this.navigation = navigation;
             }
 
             this.calculateMaxTabs(navigation);
@@ -284,5 +289,30 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.maxTabs = maxTabs;
         }
+    }
+
+    getModuleQuickActions(module: string): ModuleAction[] {
+        const moduleNavigation = this?.navigation?.modules[module] ?? null;
+        const moduleNavigationMenu = moduleNavigation?.menu ?? [];
+        if (moduleNavigation === null || !moduleNavigationMenu.length ) {
+            return [];
+        }
+
+        const actions = [] as ModuleAction[];
+
+        moduleNavigationMenu.forEach(entry => {
+            if (!entry.url || !entry.quickAction) {
+                return;
+            }
+
+            const url = entry?.url ?? '';
+
+            actions.push({
+                ...entry,
+                url: url.replace('/#/', '/')
+            } as ModuleAction);
+        });
+
+        return actions;
     }
 }

@@ -31,11 +31,13 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {StateStore} from '../state';
 import {deepClone, ObjectMap} from 'common';
+import {Params} from '@angular/router';
 
 export interface Navigation {
     tabs: string[];
     groupedTabs: GroupedTab[];
     modules: NavbarModuleMap;
+    quickActions: ModuleAction[];
     userActionMenu: UserActionMenu[];
     maxTabs: number;
 }
@@ -71,10 +73,12 @@ export interface ModuleAction {
     actionLabelKey?: string;
     label?: string;
     url: string;
-    params?: string;
+    params?: string | Params;
     icon: string;
     module?: string;
-    sublinks?: ObjectMap
+    sublinks?: ObjectMap;
+    quickAction?: boolean;
+    type?: string;
 }
 
 const initialState: Navigation = {
@@ -82,6 +86,7 @@ const initialState: Navigation = {
     groupedTabs: [],
     modules: {},
     userActionMenu: [],
+    quickActions: [],
     maxTabs: 0
 };
 
@@ -102,6 +107,7 @@ export class NavigationStore implements StateStore {
     modules$: Observable<NavbarModuleMap>;
     userActionMenu$: Observable<UserActionMenu[]>;
     maxTabs$: Observable<number>;
+    quickActions$: Observable<ModuleAction[]>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -128,6 +134,7 @@ export class NavigationStore implements StateStore {
         this.modules$ = this.state$.pipe(map(state => state.modules), distinctUntilChanged());
         this.userActionMenu$ = this.state$.pipe(map(state => state.userActionMenu), distinctUntilChanged());
         this.maxTabs$ = this.state$.pipe(map(state => state.maxTabs), distinctUntilChanged());
+        this.quickActions$ = this.state$.pipe(map(state => state.quickActions), distinctUntilChanged());
 
 
         this.vm$ = combineLatest(
@@ -136,7 +143,8 @@ export class NavigationStore implements StateStore {
                 this.groupedTabs$,
                 this.modules$,
                 this.userActionMenu$,
-                this.maxTabs$
+                this.maxTabs$,
+                this.quickActions$
             ])
             .pipe(
                 map((
@@ -145,8 +153,9 @@ export class NavigationStore implements StateStore {
                         groupedTabs,
                         modules,
                         userActionMenu,
-                        maxTabs
-                    ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs})
+                        maxTabs,
+                        quickActions
+                    ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs, quickActions})
                 )
             );
     }
@@ -184,7 +193,8 @@ export class NavigationStore implements StateStore {
                     groupedTabs: navigation.groupedTabs,
                     userActionMenu: navigation.userActionMenu,
                     modules: navigation.modules,
-                    maxTabs: navigation.maxTabs
+                    maxTabs: navigation.maxTabs,
+                    quickActions: navigation?.quickActions ?? []
                 });
             })
         );
@@ -208,7 +218,8 @@ export class NavigationStore implements StateStore {
             groupedTabs: navigation.groupedTabs,
             userActionMenu: navigation.userActionMenu,
             modules: navigation.modules,
-            maxTabs: navigation.maxTabs
+            maxTabs: navigation.maxTabs,
+            quickActions: navigation?.quickActions ?? []
         });
     }
 
@@ -262,7 +273,8 @@ export class NavigationStore implements StateStore {
                             groupedTabs: data.navbar.groupedTabs,
                             userActionMenu: data.navbar.userActionMenu,
                             modules: data.navbar.modules,
-                            maxTabs: data.navbar.maxTabs
+                            maxTabs: data.navbar.maxTabs,
+                            quickActions : data?.navbar?.quickActions ?? [],
                         };
 
                     }
