@@ -25,21 +25,11 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<scrm-popup-button [icon]="'info-circle-fill'">
+<div [ngClass]="klass" [title]="field.value"
+     *ngFor="let value of truncateValue(field.value); let last = last; let first= first">
+    <span>{{value}}</span> <br *ngIf="!last">
+    <ng-container *ngIf="last && isTruncated">
+        ...
+    </ng-container>
+</div>
 
-    <div popup-content *ngIf="columns" class="container container-popover scroll-thin">
-        <div *ngFor="let column of columns" class="row py-1">
-            <div class="col font-weight-bold text-muted">
-                <scrm-label [labelKey]="column.label" [module]="record.module"></scrm-label>
-            </div>
-            <div class="col">
-                <scrm-field [mode]="'list'"
-                            [field]="getField(column, record)"
-                            [type]="column.type"
-                            [record]="record">
-                </scrm-field>
-            </div>
-        </div>
-
-    </div>
-</scrm-popup-button>

@@ -103,6 +103,8 @@ import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.co
 import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
 import {IconListFieldModule} from "./icon/templates/detail/icon.module";
 import {IconDetailFieldComponent} from "./icon/templates/detail/icon.component";
+import {TextListFieldModule} from './text/templates/list/text.module';
+import {TextListFieldComponent} from './text/templates/list/text.component';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -125,6 +127,7 @@ export const baseFieldModules = [
     EmailListFieldsModule,
     TextDetailFieldModule,
     TextEditFieldModule,
+    TextListFieldModule,
     RelateDetailFieldsModule,
     RelateEditFieldModule,
     RelateFilterFieldModule,
@@ -166,6 +169,7 @@ export const baseFieldComponents = [
     EmailListFieldsComponent,
     TextDetailFieldComponent,
     TextEditFieldComponent,
+    TextListFieldComponent,
     RelateDetailFieldComponent,
     RelateEditFieldComponent,
     RelateFilterFieldComponent,
@@ -224,6 +228,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
     'text.edit': TextEditFieldComponent,
+    'text.list': TextListFieldComponent,
     'relate.list': RelateDetailFieldComponent,
     'relate.edit': RelateEditFieldComponent,
     'relate.detail': RelateDetailFieldComponent,
