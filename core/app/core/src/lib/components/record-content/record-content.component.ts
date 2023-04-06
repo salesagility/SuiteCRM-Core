@@ -26,7 +26,7 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {FieldMap, Panel, Record} from 'common';
+import {FieldMap, Panel, Record, isTrue} from 'common';
 import {map, shareReplay} from 'rxjs/operators';
 import {RecordContentConfig, RecordContentDataSource} from './record-content.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '../field-layout/field-layout.model';
@@ -71,33 +71,37 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    updatePanelsArray(): void {
+    updatePanelsArray() {
         let tempPanels = [];
         let prevTabKey = '';
-        let index = -1;
 
-        for (const tabDefKey in this.config.tabDefs) {
-            const tabDef = this.config.tabDefs[tabDefKey];
+        const panelsMap = this.buildPanelMap();
 
-            if (tabDef.newTab) {
-                tempPanels = [...tempPanels, ...this.panels.filter(panel => panel.key.toUpperCase() === tabDefKey.toUpperCase())];
-                prevTabKey = tabDefKey.toUpperCase();
-                index++;
+        const tabDefs = this.mapTabDefs();
+
+
+        Object.keys(tabDefs).forEach(tabDefKey => {
+            const tabDef = tabDefs[tabDefKey];
+
+            if (isTrue(tabDef.newTab)) {
+                tempPanels = [...tempPanels, panelsMap[tabDefKey]]
+                prevTabKey = tabDefKey;
             } else {
-                const prevTab = this.config.tabDefs[prevTabKey];
-                for (const panel of this.panels) {
-                    if (panel.key.toUpperCase() === prevTabKey && !this.panelsInPrevTab.includes(panel)) {
-                        this.panelsInPrevTab.push(panel);
-                    }
+                const prevTab = tabDefs[prevTabKey];
+                const panel = panelsMap[prevTabKey];
+                if (!this.panelsInPrevTab.includes(panel)) {
+                    this.panelsInPrevTab.push(panel);
                 }
 
-                const panelToAdd = this.panels.filter(panel => panel.key === tabDefKey)[0];
-                if (prevTab.newTab && this.panelsInPrevTab.length > 0) {
+                const panelToAdd = panelsMap[tabDefKey];
+                if (isTrue(prevTab.newTab) && this.panelsInPrevTab.length > 0) {
                     this.addToPrevTab(panelToAdd);
                 }
             }
-        }
+        });
+
         this.panels = tempPanels;
+
     }
 
     addToPrevTab(panelToAdd: any): void {
@@ -109,6 +113,28 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         }
         this.panelsInPrevTab[index].subPanels.push(panelToAdd);
 
+    }
+
+    buildPanelMap(): any {
+        const panelMap = {};
+
+        this.panels.forEach(panel => {
+            panel.label = panel.label.toUpperCase();
+            const panelKey = panel.key.toUpperCase();
+            panelMap[panelKey] = panel;
+        });
+
+        return panelMap;
+    }
+
+    mapTabDefs(): any {
+        const tabDefs = {};
+
+        Object.keys(this?.config?.tabDefs ?? {}).forEach(key => {
+            tabDefs[key.toUpperCase()] = this?.config?.tabDefs[key];
+        });
+
+        return tabDefs;
     }
 
     getLayoutDataSource(panel: Panel): FieldLayoutDataSource {
