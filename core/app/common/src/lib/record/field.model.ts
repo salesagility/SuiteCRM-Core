@@ -166,6 +166,7 @@ export interface Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    loading?: boolean;
     dynamicLabelKey?: string;
     parentKey?: string;
     attributes?: FieldAttributeMap;

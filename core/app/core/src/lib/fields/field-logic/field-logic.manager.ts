@@ -35,6 +35,7 @@ import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-curren
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
 import {UpdateValueAction} from './update-value/update-value.action';
+import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 
 @Injectable({
     providedIn: 'root'
@@ -48,7 +49,9 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
-        updateValue: UpdateValueAction
+        updateValue: UpdateValueAction,
+        updateFlexRelateModule: UpdateFlexRelateModuleAction,
+        updateValueBackend: UpdateValueBackendAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -58,6 +61,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateCurrency.modes.forEach(mode => this.actions[mode][updateCurrency.key] = updateCurrency);
         updateFlexRelateModule.modes.forEach(mode => this.actions[mode][updateFlexRelateModule.key] = updateFlexRelateModule);
         updateValue.modes.forEach(mode => this.actions[mode][updateValue.key] = updateValue);
+        updateValueBackend.modes.forEach(mode => this.actions[mode][updateValueBackend.key] = updateValueBackend);
     }
 
     /**
