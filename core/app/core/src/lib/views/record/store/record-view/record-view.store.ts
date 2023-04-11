@@ -612,6 +612,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
                 fieldsMap[fieldKey] = {
                     name: fieldKey,
+                    vardefBased: true,
                     label: vardef['vname'] ?? '',
                     type: vardef['type'] ?? '',
                     display: vardef['display'] ?? '',
