@@ -102,9 +102,11 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                     displayedColumns.push('checkbox');
                 }
 
+                displayedColumns.push('show-more');
+
                 displayedColumns.push(...columnsDefs);
 
-                displayedColumns.push('line-actions', 'show-more');
+                displayedColumns.push('line-actions');
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;

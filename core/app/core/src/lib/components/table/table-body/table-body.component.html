@@ -49,6 +49,17 @@
 
             </ng-container>
 
+            <ng-container cdkColumnDef="show-more">
+
+                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header show-more-column"></th>
+
+                <td cdk-cell *cdkCellDef="let record" class="show-more-column">
+                    <scrm-record-details-popup-button [record]="record" [columns]="popoverColumns"
+                                                      *ngIf="popoverColumns.length"></scrm-record-details-popup-button>
+                </td>
+
+            </ng-container>
+
             <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
 
                 <th cdk-header-cell
@@ -82,17 +93,6 @@
                                            [config]="config.lineActions"
                                            [record]="record">
                     </scrm-line-action-menu>
-                </td>
-
-            </ng-container>
-
-            <ng-container cdkColumnDef="show-more">
-
-                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header show-more-column"></th>
-
-                <td cdk-cell *cdkCellDef="let record" class="show-more-column">
-                    <scrm-record-details-popup-button [record]="record" [columns]="popoverColumns"
-                                                      *ngIf="popoverColumns.length"></scrm-record-details-popup-button>
                 </td>
 
             </ng-container>
