@@ -2158,6 +2158,7 @@ $app_strings = array(
 
     'LBL_NOTIFICATIONS_NONE' => 'No Current Notifications',
     'ERR_NOTIFICATIONS_MARK_AS_READ' => 'Error while trying to mark notifications as read',
+    'ERR_FIELD_LOGIC_BACKEND_CALCULATION' => 'Error while trying to get the value',
     'LBL_ALT_SORT_DESC' => 'Sorted Descending',
     'LBL_ALT_SORT_ASC' => 'Sorted Ascending',
     'LBL_ALT_SORT' => 'Sort',
