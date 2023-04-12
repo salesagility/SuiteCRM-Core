@@ -106,24 +106,26 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
 
                 const value = result?.data?.value ?? null;
                 field.loading = false;
-                if(value === null) {
-                    this.messages.addDangerMessageByKey("LBL_balbalabal")
+
+                if (value === null) {
+                    this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION")
                     return;
                 }
+
                 this.updateValue(field, value.toString(), record);
+
             }, (error) => {
                 field.loading = false;
-                this.messages.addDangerMessageByKey("LBL_balbalabal")
+                this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION")
             });
 
         }
 
 
-
     }
 
 
-    getBaseRecord(record:Record): Record {
+    getBaseRecord(record: Record): Record {
         if (!record) {
             return null;
         }
@@ -144,7 +146,7 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
     /**
      * Map staging fields
      */
-    protected mapRecordFields(record:Record): void {
+    protected mapRecordFields(record: Record): void {
         const mappers: MapEntry<RecordMapper> = this.recordMappers.get(record.module);
 
         Object.keys(mappers).forEach(key => {
