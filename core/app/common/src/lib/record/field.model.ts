@@ -189,6 +189,7 @@ export interface Field {
     attributeDependencies?: AttributeDependency[];
     logic?: FieldLogicMap;
     displayLogic?: FieldLogicMap;
+    previousValue?: string;
 }
 
 export class BaseField implements Field {

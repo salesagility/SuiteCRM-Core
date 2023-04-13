@@ -99,7 +99,6 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         this.runFrontEndAction(action, mode, context);
     }
 
-
     /**
      * Run front end action
      * @param {object} action

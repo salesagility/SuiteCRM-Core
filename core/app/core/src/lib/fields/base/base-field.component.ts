@@ -70,9 +70,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
 
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
+            this.field.previousValue = this.field.value;
 
-            if (this.field.valueChanges$ && (this.dependentFields || this.dependentAttributes.length)) {
-                this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe(() => {
+            if (this.field.valueChanges$ && (this.dependentFields.length || this.dependentAttributes.length)) {
+                this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe((data) => {
                     Object.keys(this.dependentFields).forEach(fieldKey => {
                         const dependentField = this.dependentFields[fieldKey];
                         const field = this.record.fields[fieldKey] || null;
@@ -80,16 +81,17 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             return;
                         }
 
-                        const types = dependentField.type ?? [];
+                        if(this.field.previousValue!= data.value) {
+                            const types = dependentField.type ?? [];
 
-                        if (types.includes('logic')) {
-                            this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                            if (types.includes('logic')) {
+                                this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                            }
+
+                            if (types.includes('displayLogic')) {
+                                this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
+                            }
                         }
-
-                        if (types.includes('displayLogic')) {
-                            this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
-                        }
-
                     });
 
                     this.dependentAttributes.forEach(dependency => {

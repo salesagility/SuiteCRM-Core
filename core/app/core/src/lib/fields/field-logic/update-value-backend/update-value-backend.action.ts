@@ -37,7 +37,7 @@ import {
 } from 'common';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {Process, ProcessService} from '../../../services/process/process.service';
+import {ProcessService} from '../../../services/process/process.service';
 import {MessageService} from '../../../services/message/message.service';
 import {BaseSaveRecordMapper} from '../../../store/record/record-mappers/base-save.record-mapper';
 
@@ -54,7 +54,7 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
         protected processService: ProcessService,
         protected messages: MessageService,
         protected recordMappers: RecordMapperRegistry,
-        protected baseMapper: BaseSaveRecordMapper,
+        protected baseMapper: BaseSaveRecordMapper
     ) {
         super();
         recordMappers.register('default', baseMapper.getKey(), baseMapper);
@@ -86,7 +86,6 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
 
         let isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
 
-
         if (isActive) {
 
             const processType = process;
@@ -101,29 +100,23 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
 
             field.loading = true;
 
-
             this.processService.submit(processType, options).subscribe((result) => {
 
                 const value = result?.data?.value ?? null;
                 field.loading = false;
 
                 if (value === null) {
-                    this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION")
+                    this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
                     return;
                 }
-
                 this.updateValue(field, value.toString(), record);
 
             }, (error) => {
                 field.loading = false;
-                this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION")
+                this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
             });
-
         }
-
-
     }
-
 
     getBaseRecord(record: Record): Record {
         if (!record) {
