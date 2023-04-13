@@ -81,6 +81,24 @@ class ApiBeanMapper
         $this->moduleMappers[CaseUpdatesMappers::getModule()] = new CaseUpdatesMappers();
         $this->linkMappers[DefaultLinkMapper::getRelateModule()] = [];
         $this->linkMappers[DefaultLinkMapper::getRelateModule()]['all'] = new DefaultLinkMapper();
+        global $api_bean_mappers;
+        $api_bean_mappers = $api_bean_mappers ?? [];
+        if (file_exists('custom/application/Ext/ApiBeanMappers/api_bean_mappers.ext.php')) {
+            include('custom/application/Ext/ApiBeanMappers/api_bean_mappers.ext.php');
+        }
+        if(!empty($api_bean_mappers['typeMappers'])){
+            $this->typeMappers = array_merge($this->typeMappers, $api_bean_mappers['typeMappers']);
+        }
+        if(!empty($api_bean_mappers['fieldMappers'])){
+            $this->fieldMappers = array_merge($this->fieldMappers, $api_bean_mappers['fieldMappers']);
+        }
+        if(!empty($api_bean_mappers['linkMappers'])){
+            $this->linkMappers = array_merge($this->linkMappers, $api_bean_mappers['linkMappers']);
+        }
+        if(!empty($api_bean_mappers['moduleMappers'])){
+            $this->moduleMappers = array_merge($this->moduleMappers, $api_bean_mappers['moduleMappers']);
+        }
+
     }
 
     /**
