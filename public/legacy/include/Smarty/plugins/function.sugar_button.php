@@ -570,10 +570,9 @@ function replaceFormClick(&$dom_tree = array(), $js_form = '', &$hidden_field_ex
             }
             //Onclick handler contains returning a variable, for example it prompts a confirm message.
             if (strpos($dom_tree['onclick'], "return ") !== false) {
-                $dom_tree['onclick'] = $js_form.' var _onclick=(function(){ldelim}'.$dom_tree['onclick']."{rdelim}()); if(_onclick!==false) _form.submit();";
-            } else {
-                $dom_tree['onclick'] = $js_form.$dom_tree['onclick']."_form.submit();";
+                $dom_tree['onclick'] = ' var _onclick=(function(){ldelim}' . $dom_tree['onclick'] . "{rdelim}()); if(_onclick!==false) ";
             }
+            $dom_tree['onclick'] = $js_form.$dom_tree['onclick']."window.location.href='index.php?' + (new URLSearchParams(new FormData(_form)).toString());";
 
             $set_submit = true;
         }
