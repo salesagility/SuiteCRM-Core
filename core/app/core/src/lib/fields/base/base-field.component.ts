@@ -81,7 +81,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             return;
                         }
 
-                        if(this.field.previousValue!= data.value) {
+                        if(this.field.previousValue != data.value) {
                             const types = dependentField.type ?? [];
 
                             if (types.includes('logic')) {
@@ -91,6 +91,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             if (types.includes('displayLogic')) {
                                 this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
                             }
+                            this.field.previousValue = data.value;
                         }
                     });
 
