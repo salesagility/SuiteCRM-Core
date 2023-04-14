@@ -260,6 +260,10 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 'labelKey' => $legacyName,
                 'menu' => $menu
             ];
+
+            if ($frontendName === 'administration') {
+                $modules[$frontendName]['defaultRoute'] = "./#/$frontendName/index";
+            }
         }
         foreach ($this->navbarAdministrationOverrides ?? [] as $specialModule) {
             if (!empty($modules[$specialModule]) && !empty($modules['administration'])) {
@@ -358,7 +362,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         if (empty($legacyArray)) {
             return [];
         }
-        
+
         foreach ($legacyArray as $linkGroupKey => $linkGroup) {
             $mappedLinkGroup = [];
             if (empty($linkGroup)) {
