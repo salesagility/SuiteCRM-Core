@@ -47,7 +47,7 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
 
     protected subs: Subscription[] = [];
 
-    @HostListener('window:scroll', ['$event']) onScroll() {
+    @HostListener('window:scroll') onScroll() {
         const scrollPosition = window.pageYOffset;
         //ScrollThreshold is set to 5em
         const scrollThreshold = 5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
