@@ -46,8 +46,7 @@ export class TextListFieldComponent extends BaseFieldComponent {
         const chars_limit = 50;
         let truncatedValue = value.slice(0, chars_limit);
 
-        let lines = truncatedValue.split("\n").filter(line => line.trim() !== '');
-        lines = lines.filter(item => item != '\r');
+        let lines = truncatedValue.split("\n");
         const maxLines = 3;
         const truncatedLines = lines.slice(0, maxLines);
 
