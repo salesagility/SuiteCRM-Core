@@ -260,10 +260,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 'labelKey' => $legacyName,
                 'menu' => $menu
             ];
-
-            if ($frontendName === 'administration') {
-                $modules[$frontendName]['defaultRoute'] = "./#/$frontendName/index";
-            }
+            
         }
         foreach ($this->navbarAdministrationOverrides ?? [] as $specialModule) {
             if (!empty($modules[$specialModule]) && !empty($modules['administration'])) {
