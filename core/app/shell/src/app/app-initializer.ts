@@ -144,6 +144,21 @@ export class AppInit {
                     });
 
                     routes.push({
+                        path: 'administration',
+                        component: AdminPanelComponent,
+                        canActivate: [AuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseModuleResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true,
+                            module: 'administration'
+                        }
+                    });
+
+                    routes.push({
                         path: 'administration/index',
                         component: AdminPanelComponent,
                         canActivate: [AuthGuard],
