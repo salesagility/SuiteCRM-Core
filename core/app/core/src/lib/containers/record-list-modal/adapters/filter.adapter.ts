@@ -65,7 +65,15 @@ export class ModalRecordFilterAdapter implements RecordListModalFilterAdapterInt
                         type = 'basic';
                     }
 
-                    return searchMeta.layout[type];
+                    const searchLayout = searchMeta.layout[type];
+
+                    Object.keys(searchLayout).forEach((key) => {
+                        if (searchLayout[key].fieldDefinition.default){
+                            searchLayout[key].fieldDefinition.default = null;
+                        }
+                    })
+
+                    return searchLayout;
                 })
             ),
             listFields: [],
