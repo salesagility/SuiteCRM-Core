@@ -40,7 +40,8 @@ import {
     RecentlyViewed,
     SearchMeta,
     SubPanelMeta,
-    WidgetMetadata
+    WidgetMetadata,
+    TabDefinitions
 } from 'common';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
@@ -64,15 +65,6 @@ export interface RecordTemplateMetadata {
     maxColumns: number;
     useTabs: boolean;
     tabDefs: TabDefinitions;
-}
-
-export interface TabDefinitions {
-    [key: string]: TabDefinition;
-}
-
-export interface TabDefinition {
-    newTab: boolean;
-    panelDefault: 'expanded' | 'collapsed';
 }
 
 export interface Metadata {

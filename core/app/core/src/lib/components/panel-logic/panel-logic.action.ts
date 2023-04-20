@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,24 +24,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Panel, Record, ViewMode, TabDefinitions} from 'common';
-import {Observable} from 'rxjs';
+import {Action, ActionData, ActionHandler, Field, Panel, Record} from 'common';
 
-export interface RecordContentDataSource {
-    inlineEdit: boolean;
-
-    getEditAction(): void;
-
-    getDisplayConfig(): Observable<RecordContentConfig>;
-
-    getPanels(): Observable<Panel[]>;
-
-    getRecord(): Observable<Record>;
+export interface PanelLogicActionData extends ActionData {
+    field: Field,
+    panel: Panel,
+    record?: Record
 }
 
-export interface RecordContentConfig {
-    layout: 'tabs' | 'panels';
-    mode: ViewMode;
-    maxColumns: number;
-    tabDefs: TabDefinitions;
+export abstract class PanelLogicActionHandler extends ActionHandler<PanelLogicActionData> {
+
+    abstract run(data: PanelLogicActionData, action: Action): boolean;
+
+    shouldDisplay(data: PanelLogicActionData): boolean {
+        return true
+    };
 }

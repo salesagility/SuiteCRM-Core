@@ -95,6 +95,7 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.contentAdapter.clean();
     }
 
     getContentAdapter(): RecordContentDataSource {

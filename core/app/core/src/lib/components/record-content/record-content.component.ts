@@ -71,7 +71,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    updatePanelsArray() {
+    updatePanelsArray(): void {
         let tempPanels = [];
         let prevTabKey = '';
 

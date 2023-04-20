@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Action, Panel, PanelRow, Record} from 'common';
@@ -34,16 +34,20 @@ import {RecordActionManager} from '../actions/record-action-manager.service';
 import {RecordActionData} from '../actions/record.action';
 import {LanguageStore} from '../../../store/language/language.store';
 import {RecordViewStore} from '../store/record-view/record-view.store';
+import {PanelLogicManager} from '../../../components/panel-logic/panel-logic.manager';
 
 @Injectable()
 export class RecordContentAdapter implements RecordContentDataSource {
     inlineEdit: true;
 
+    protected fieldSubs : Subscription[] = [];
+
     constructor(
         protected store: RecordViewStore,
         protected metadata: MetadataStore,
         protected language: LanguageStore,
-        protected actions: RecordActionManager
+        protected actions: RecordActionManager,
+        protected logicManager: PanelLogicManager
     ) {
     }
 
@@ -84,13 +88,19 @@ export class RecordContentAdapter implements RecordContentDataSource {
             [this.metadata.recordViewMetadata$, this.store.stagingRecord$, this.language.vm$]
         ).pipe(
             map(([meta, record, languages]) => {
-
                 const panels = [];
                 const module = (record && record.module) || '';
+
+                this.fieldSubs.forEach(sub => sub.unsubscribe());
 
                 meta.panels.forEach(panelDefinition => {
                     const label = this.language.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
                     const panel = {label, key: panelDefinition.key, rows: []} as Panel;
+
+                    const tabDef = meta.templateMeta.tabDefs[panelDefinition.key.toUpperCase()] ?? null;
+                    if(tabDef) {
+                        panel.meta = tabDef;
+                    }
 
                     panelDefinition.rows.forEach(rowDefinition => {
                         const row = {cols: []} as PanelRow;
@@ -100,9 +110,32 @@ export class RecordContentAdapter implements RecordContentDataSource {
                         panel.rows.push(row);
                     });
 
-                    panels.push(panel);
-                });
+                    panel.displayState = new BehaviorSubject(tabDef.display || true);
+                    panel.display$ = panel.displayState.asObservable();
 
+                    panels.push(panel);
+
+                    if (tabDef.displayLogic) {
+                        Object.keys(tabDef.displayLogic).forEach((logicDefKey) => {
+                            const logicDef = tabDef.displayLogic[logicDefKey];
+                            const logicType = logicDef.key;
+
+                            if(logicDef.params.fieldDependencies) {
+                                logicDef.params.fieldDependencies.forEach(fieldKey => {
+                                    const field = record.fields[fieldKey] || null;
+                                    if (!field) {
+                                        return;
+                                    }
+
+                                    this.fieldSubs.push(field.valueChanges$.subscribe((value) => {
+                                        this.logicManager.runLogic(logicType, field, panel, record, this.store.getMode());
+
+                                    }));
+                                });
+                            }
+                        });
+                    }
+                });
                 return panels;
             })
         );
@@ -120,4 +153,10 @@ export class RecordContentAdapter implements RecordContentDataSource {
 
         return layout;
     }
+
+    clean(): void {
+        this.fieldSubs.forEach(sub => sub.unsubscribe());
+    }
+
+
 }
