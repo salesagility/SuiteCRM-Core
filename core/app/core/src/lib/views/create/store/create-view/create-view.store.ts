@@ -145,7 +145,9 @@ export class CreateViewStore extends RecordViewStore {
                 assigned_user_name: {
                     id: user.id,
                     user_name: user.userName
-                }
+                },
+                relate_to: params?.return_relationship,
+                relate_id: params?.parent_id
             }
             /* eslint-enable camelcase,@typescript-eslint/camelcase */
         } as Record;

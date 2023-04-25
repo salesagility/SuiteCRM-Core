@@ -37,6 +37,7 @@ use App\Module\Service\FavoriteProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
+use RelateToFieldMapper;
 use SugarBean;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

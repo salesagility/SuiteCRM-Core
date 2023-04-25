@@ -51,15 +51,20 @@ export class SubpanelCreateAction extends SubpanelActionHandler {
         const moduleName = data.module;
         const moduleAction = data?.action?.moduleAction ?? 'edit';
 
+        const parentId = data?.parentId ?? '';
+        const parentModule = data.parentModule ?? '';
+
         const route = `/${moduleName}/${moduleAction}`;
 
         const queryParams = {
             // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-            return_module: this.moduleNameMapper.toLegacy(data.parentModule),
+            return_module: this.moduleNameMapper.toLegacy(parentModule),
             // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
             return_action: 'DetailView',
             // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
-            return_id: data.parentId || ''
+            return_id: parentId,
+            relate_to: parentModule,
+            relate_id: parentId,
         } as Params;
         this.addAdditionalFields(data, queryParams);
         this.addParams(data, queryParams);
