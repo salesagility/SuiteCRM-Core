@@ -27,6 +27,11 @@
 import {Injectable} from '@angular/core';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {Action, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {ConditionOperatorManager} from '../../../services/condition-operators/condition-operator.manager';
+
+/**
+ * @DEPRECATED
+ */
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +41,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
     key = 'displayType';
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor() {
+    constructor(protected operatorManager: ConditionOperatorManager) {
         super();
     }
 
@@ -138,8 +143,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
                 if (!activeValues || !activeValues.length || !attribute) {
                     return;
                 }
-
-                return this.isValueActive(attribute, activeValues);
+                return this.isValueActive(record, attribute, activeValues);
             });
         });
     }
@@ -151,17 +155,14 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
      * @param {object} activeOnFields
      */
     protected areFieldsActive(relatedFields: string[], record: Record, activeOnFields: StringArrayMap): boolean {
-        return relatedFields.some(fieldKey => {
-
+        return relatedFields.every(fieldKey => {
             const fields = record.fields;
             const field = (fields && record.fields[fieldKey]) || null;
             const activeValues = activeOnFields[fieldKey];
-
             if (!field || !activeValues || !activeValues.length) {
                 return;
             }
-
-            return this.isValueActive(field, activeValues);
+            return this.isValueActive(record, field, activeValues);
         });
     }
 
@@ -170,9 +171,8 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
      * @param {object} field
      * @param {array} activeValues
      */
-    protected isValueActive(field: Field, activeValues: string[]): boolean {
+    protected isValueActive(record:Record, field: Field, activeValues: string[] | any): boolean {
         let isActive = false;
-
         if (field.valueList && field.valueList.length) {
             field.valueList.some(value => {
                 return activeValues.some(activeValue => {
@@ -182,20 +182,33 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
                     }
                 })
             });
-
             return isActive;
         }
 
+        let opsArr:boolean[]= [];
         if (field.value) {
             activeValues.some(activeValue => {
 
-                if (activeValue === field.value) {
+                if (activeValue === field.value && !activeValue.operator) {
                     isActive = true;
                 }
-
+                if(activeValue.operator) {
+                    const operatorKey = activeValue.operator;
+                    const operator = this.operatorManager.get(operatorKey);
+                    opsArr.push(operator.run(record, field, activeValue))
+                    isActive = opsArr.every(data => data);
+                }
+            })
+        } else {
+            activeValues.some(activeValue => {
+                if(activeValue.operator) {
+                    const operatorKey = activeValue.operator;
+                    const operator = this.operatorManager.get(operatorKey);
+                    opsArr.push(operator.run(record, field, activeValue))
+                    isActive = opsArr.every(data => data);
+                }
             })
         }
-
         return isActive;
     }
 }

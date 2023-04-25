@@ -85,10 +85,18 @@ export interface LogicDefinition {
     modes: Array<string>;
     params: {
         activeOnFields?: {
-            [key:string]: string[];
+            [key:string]: LogicRuleValues[];
         }
         displayState?: boolean;
         fieldDependencies: Array<string>;
         asyncProcessHandler?: string;
     }
+}
+
+export interface LogicRuleValues{
+    operator?: string;
+    values?: any;
+    value?: any;
+    field?: string;
+    [key: string]: string;
 }
