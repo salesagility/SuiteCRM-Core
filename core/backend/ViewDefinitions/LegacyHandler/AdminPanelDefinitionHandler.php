@@ -31,9 +31,9 @@ namespace App\ViewDefinitions\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Routes\Service\RouteConverterInterface;
 use App\ViewDefinitions\Service\AdminPanelDefinitionProviderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Routes\Service\RouteConverterInterface;
 
 /**
  * Class AdminPanelDefinitionHandler
@@ -101,6 +101,8 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
     public function getAdminPanelDef(): array
     {
         $this->init();
+        $admin_group_header = [];
+
         /* @noinspection PhpIncludeInspection */
         require 'modules/Administration/metadata/adminpaneldefs.php';
         $admin_group_header = $admin_group_header ?? [];
@@ -119,29 +121,10 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
             $adminEntryLinks = $adminEntry[3] ?? [];
 
             foreach ($adminEntryLinks as $linkGroupKey => $linkGroup) {
-                $mappedLinkGroup = [];
                 if (empty($linkGroup)) {
                     continue;
                 }
-                foreach ($linkGroup as $linkKey => $link) {
-                    $path = $this->routeConverter->convertUri($link[3]);
-                    $path = str_replace('./#/', '/', $path);
-                    $mappedLink = [
-                        'category' => $link[0] ?? '',
-                        'titleKey' => $link[1] ?? '',
-                        'descriptionKey' => $link[2] ?? '',
-                        'link' => $path ?? '',
-                        'icon' => $link[4] ?? '',
-                    ];
-                    $query = parse_url($path, PHP_URL_QUERY);
-                    if ($query) {
-                        parse_str($query, $params);
-                        $mappedLink['params'] = $params;
-                        $path = str_replace('?' . $query, '', $path);
-                        $mappedLink['link'] = $path;
-                    }
-                    $mappedLinkGroup[$linkKey] = $mappedLink;
-                }
+                $mappedLinkGroup = $this->buildAdminMenuGroup($linkGroup);
                 $mapEntry['linkGroup'][$linkGroupKey] = $mappedLinkGroup;
 
             }
@@ -153,4 +136,44 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
         return array_values($adminPanelMap);
     }
 
+    /**
+     * @param mixed $linkGroup
+     * @return array
+     */
+    protected function buildAdminMenuGroup($linkGroup): array
+    {
+        $mappedLinkGroup = [];
+        foreach ($linkGroup as $linkKey => $link) {
+            $mappedLink = $this->buildAdminMenuLink($link);
+            $mappedLinkGroup[$linkKey] = $mappedLink;
+        }
+
+        return $mappedLinkGroup;
+    }
+
+    /**
+     * @param mixed $link
+     * @return array
+     */
+    protected function buildAdminMenuLink($link): array
+    {
+        $path = $this->routeConverter->convertUri($link[3]);
+        $path = str_replace('./#/', '/', $path);
+        $mappedLink = [
+            'category' => $link[0] ?? '',
+            'titleKey' => $link[1] ?? '',
+            'descriptionKey' => $link[2] ?? '',
+            'link' => $path ?? '',
+            'icon' => $link[4] ?? '',
+        ];
+        $query = parse_url($path, PHP_URL_QUERY);
+        if ($query) {
+            parse_str($query, $params);
+            $mappedLink['params'] = $params;
+            $path = str_replace('?' . $query, '', $path);
+            $mappedLink['link'] = $path;
+        }
+
+        return $mappedLink;
+    }
 }
