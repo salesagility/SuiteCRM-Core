@@ -104,7 +104,7 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
         /* @noinspection PhpIncludeInspection */
         require 'modules/Administration/metadata/adminpaneldefs.php';
         $admin_group_header = $admin_group_header ?? [];
-        $adminPanel = [];
+        $adminPanelMap = [];
         foreach ($admin_group_header as $adminEntry) {
             if (empty($adminEntry)) {
                 continue;
@@ -145,12 +145,12 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
                 $mapEntry['linkGroup'][$linkGroupKey] = $mappedLinkGroup;
 
             }
-            $adminPanel[] = $mapEntry;
+            $adminPanelMap[$mapEntry['titleLabelKey']] = $mapEntry;
 
         }
         $this->close();
 
-        return $adminPanel;
+        return array_values($adminPanelMap);
     }
 
 }
