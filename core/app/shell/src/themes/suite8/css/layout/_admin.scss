@@ -51,18 +51,21 @@ scrm-admin-card {
 
 .admin-card-link-box {
   margin-bottom: 0em;
-  padding-left: 1rem !important;
-  padding-top: 0.5rem !important;
 
   .admin-card-link {
-    display: flex;
-    font-size: 0.9em;
-    padding-bottom: 0.2rem;
-    color: $black;
 
-    .admin-card-icon {
-      fill: $bright-purple;
+    .admin-card-link-wrapper {
+      font-size: 0.9em;
+      color: $black;
+      padding-bottom: 0.5rem !important;
+      padding-left: 1rem !important;
+      padding-top: 0.5rem !important;
+
+      .admin-card-icon {
+        fill: $bright-purple;
+      }
     }
+
   }
 }
 
@@ -70,7 +73,15 @@ scrm-admin-card {
   background-color: $bright-purple;
 
   .admin-card-link {
-    color: $white;
+
+    .admin-card-link-wrapper {
+      color: $white;
+
+      .admin-card-label {
+        text-decoration: underline;
+        display: table;
+      }
+    }
 
     .admin-card-icon {
       fill: $white;
