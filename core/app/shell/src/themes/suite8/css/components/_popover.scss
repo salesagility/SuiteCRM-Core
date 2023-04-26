@@ -24,6 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+.popover-wrapper {
+  z-index: 1;
+}
+
 .scroll-thin {
   max-height: 300px;
   overflow-y: auto;
