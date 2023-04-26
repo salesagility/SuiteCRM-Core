@@ -40,4 +40,3 @@ parameters:
     logout: true
     session-expired: true
     site_url: true
-    admin-panel-definitions: true
