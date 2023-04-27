@@ -74,10 +74,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
                         this.hasSearchTyped = false;
                     }
                 }),
-
-                debounceTime(200),
                 distinctUntilChanged(),
-                filter(searchString => searchString?.length > 2),
+                filter(searchString => searchString?.length > 1),
             ).subscribe((term: string) => this.searchWord = term));
     }
 
