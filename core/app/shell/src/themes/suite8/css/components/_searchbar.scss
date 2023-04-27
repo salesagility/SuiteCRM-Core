@@ -30,19 +30,17 @@
 
   .input-group {
     border-radius: 0.4rem;
-
+    background-color: $dusky-light-blue;
+    transition: background-color ease-in-out 0.15s;
     &:hover {
+      background-color: $smoky-grey;
       .global-search-term {
-        background-color: $smoky-grey;
-
         &::placeholder {
           color: $lilac-grey;
         }
       }
 
       .search-button {
-        background-color: $smoky-grey;
-
         .search-icon svg path {
           fill: $lilac-grey;
         }
@@ -50,8 +48,7 @@
     }
 
     .global-search-term {
-      background-color: $dusky-light-blue;
-      transition: background-color ease-in-out 0.15s;
+      background-color: transparent;
       font-size: 14px;
       height: 32px;
       border: none;
@@ -68,7 +65,7 @@
     }
 
     .search-button {
-      background-color: $dusky-light-blue;
+      background-color: transparent;
       font-size: 14px;
       height: 32px;
 
@@ -96,25 +93,18 @@
   }
 
   .search-focused {
+    box-shadow: 0 0 0 0 $white;
+    background-color: $white;
     &:hover {
-      .global-search-term {
-        background-color: $white;
-      }
-
-      .search-button {
-        background-color: $white;
-      }
+      background-color: $white;
     }
 
     .global-search-term {
-      box-shadow: 0 0 0 0 $white;
-      background-color: $white;
-      transition: background-color ease-in-out 0.15s;
+      background-color: transparent;
     }
 
     .search-button {
-      box-shadow: 0 0 0 0 $white;
-      background-color: $white;
+      background-color: transparent;
     }
 
     .dropdown-menu {
