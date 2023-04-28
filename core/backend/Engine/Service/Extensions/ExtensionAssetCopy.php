@@ -63,30 +63,17 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
 
         $this->cleanPublicExtensions($filesystem, $publicExtensionsPath);
 
-        try {
-            $it = $this->find($extensionsPath);
-        } catch (DirectoryNotFoundException $e) {
-            $it = null;
-        }
-
-        if (empty($it)) {
-            return;
-        }
-
-        foreach ($it as $file) {
-            $path = $file->getPathname();
-
-            $name = str_replace(array($extensionsPath, '/Resources/public'), '', $path);
-            $filesystem->copy($path, $publicExtensionsPath . '/' . $name);
-        }
+        $this->copyFromPath($extensionsPath, $filesystem, $publicExtensionsPath, '/Resources/public');
+        $this->copyFromPath($extensionsPath, $filesystem, $publicExtensionsPath, '/public');
     }
 
     /**
      * Get list of assets
      * @param $fullPath
+     * @param string $publicFolderPath
      * @return SplFileInfo[]
      */
-    protected function find($fullPath): iterable
+    protected function find($fullPath, string $publicFolderPath): iterable
     {
         if (!is_dir($fullPath)) {
             return [];
@@ -97,7 +84,7 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
         $finder->files();
 
 
-        $finder->in($fullPath . '*/Resources/public');
+        $finder->in($fullPath . '*' . $publicFolderPath);
 
         return $finder->getIterator();
     }
@@ -110,5 +97,36 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
     {
         $filesystem->remove($publicExtensionsPath);
         $filesystem->mkdir($publicExtensionsPath);
+    }
+
+    /**
+     * @param string $extensionsPath
+     * @param Filesystem $filesystem
+     * @param string $publicExtensionsPath
+     * @param string $publicFolderPath
+     * @return void
+     */
+    protected function copyFromPath(
+        string $extensionsPath,
+        Filesystem $filesystem,
+        string $publicExtensionsPath,
+        string $publicFolderPath
+    ): void {
+        try {
+            $it = $this->find($extensionsPath, $publicFolderPath);
+        } catch (DirectoryNotFoundException $e) {
+            $it = null;
+        }
+
+        if (empty($it)) {
+            return;
+        }
+
+        foreach ($it as $file) {
+            $path = $file->getPathname();
+
+            $name = str_replace(array($extensionsPath, $publicFolderPath), '', $path);
+            $filesystem->copy($path, $publicExtensionsPath . '/' . $name);
+        }
     }
 }
