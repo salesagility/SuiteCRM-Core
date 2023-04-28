@@ -56,31 +56,13 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
         ],
         edit: [
             {
-                key: 'cancel',
-                labelKey: 'LBL_CANCEL',
-                params: {
-                    expanded: true
-                },
-                acl: []
-            },
-            {
                 key: 'toggle-widgets',
                 labelKey: 'LBL_INSIGHTS',
                 params: {
                     expanded: true
                 },
                 acl: []
-            },
-        ],
-        create: [
-            {
-                key: 'cancelCreate',
-                labelKey: 'LBL_CANCEL',
-                params: {
-                    expanded: true
-                },
-                acl: []
-            },
+            }
         ],
     };
 
