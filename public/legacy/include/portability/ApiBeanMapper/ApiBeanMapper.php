@@ -26,6 +26,7 @@
  */
 
 require_once __DIR__ . '/FieldMappers/AssignedUserMapper.php';
+require_once __DIR__ . '/FieldMappers/RelateToFieldMapper.php';
 require_once __DIR__ . '/LinkMappers/LinkMapperInterface.php';
 require_once __DIR__ . '/LinkMappers/EmailAddressLinkMapper.php';
 require_once __DIR__ . '/LinkMappers/DefaultLinkMapper.php';
@@ -70,6 +71,7 @@ class ApiBeanMapper
     public function __construct()
     {
         $this->fieldMappers[AssignedUserMapper::getField()] = new AssignedUserMapper();
+        $this->fieldMappers[RelateToFieldMapper::getField()] = new RelateToFieldMapper();
         $this->typeMappers[FullNameMapper::getType()] = new FullNameMapper();
         $this->typeMappers[ParentMapper::getType()] = new ParentMapper();
         $this->typeMappers[DateMapper::getType()] = new DateMapper();
