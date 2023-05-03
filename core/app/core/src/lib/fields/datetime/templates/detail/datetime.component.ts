@@ -29,6 +29,7 @@ import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.compon
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-datetime-detail',
@@ -41,9 +42,10 @@ export class DateTimeDetailFieldComponent extends BaseDateTimeComponent{
     constructor(
         protected formatter: DatetimeFormatter,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
     }
 
     getUserTimeZone(): string {

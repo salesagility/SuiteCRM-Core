@@ -36,6 +36,7 @@ import {
     LanguageStrings
 } from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -48,8 +49,13 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     protected mappedOptions: { [key: string]: Option[] };
     protected isDynamicEnum = false;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
-        super(typeFormatter, logic);
+    constructor(
+        protected languages: LanguageStore,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
+    ) {
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

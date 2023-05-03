@@ -29,10 +29,10 @@ import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {
     AttributeDependency,
-    BaseField,
+    BaseField, DisplayType,
     Field,
     FieldDefinition,
-    FieldLogic,
+    FieldLogic, FieldLogicMap, ObjectMap,
     isTrue,
     Record,
     StringMap,
@@ -178,7 +178,7 @@ export class FieldBuilder {
         field.type = viewField.type || definition.type;
         field.name = viewField.name || definition.name || '';
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
-        field.display = viewField.display || definition.display || 'default';
+        field.display = (viewField.display || definition.display || 'default') as DisplayType;
         field.defaultDisplay = field.display;
         field.value = value;
         field.metadata = metadata;
@@ -203,37 +203,17 @@ export class FieldBuilder {
         field.attributes = {};
         field.source = 'field';
         field.logic = viewField.logic || definition.logic || null;
+        field.displayLogic = viewField.displayLogic || definition.displayLogic || null;
+        const fieldDependencies: ObjectMap = {};
+        const attributeDependencies: { [key: string]: AttributeDependency } = {};
 
-        if (field.logic && Object.keys(field.logic).length) {
-            const attributeDependencies: { [key: string]: AttributeDependency } = {};
-            const fieldDependencies: StringMap = {};
 
-            Object.keys(field.logic).forEach(logicKey => {
-                const entry = field.logic[logicKey] || {} as FieldLogic;
 
-                if (!entry.params) {
-                    return;
-                }
+        this.addFieldDependencies(field.logic, fieldDependencies, attributeDependencies, 'logic');
+        this.addFieldDependencies(field.displayLogic, fieldDependencies, attributeDependencies, 'displayLogic');
 
-                if (entry.params && entry.params.attributeDependencies) {
-                    entry.params.attributeDependencies.forEach(dependency => {
-                        const dependencyKey = dependency.field + '.' + dependency.attribute;
-                        attributeDependencies[dependencyKey] = dependency;
-                    });
-
-                }
-
-                if (entry.params && entry.params.fieldDependencies) {
-                    entry.params.fieldDependencies.forEach(dependency => {
-                        fieldDependencies[dependency] = dependency;
-                    });
-                }
-
-            });
-
-            field.attributeDependencies = Object.keys(attributeDependencies).map(key => attributeDependencies[key]);
-            field.fieldDependencies = Object.keys(fieldDependencies);
-        }
+        field.attributeDependencies = Object.keys(attributeDependencies).map(key => attributeDependencies[key]);
+        field.fieldDependencies = fieldDependencies;
 
         if (valueList) {
             field.valueList = valueList;
@@ -251,6 +231,41 @@ export class FieldBuilder {
             field.labelKey = viewField.label;
         }
         return field;
+    }
+
+    protected addFieldDependencies(config: FieldLogicMap, fieldDependencies: ObjectMap, attributeDependencies: { [key: string]: AttributeDependency }, type: string) {
+        if (config && Object.keys(config).length) {
+
+            Object.keys(config).forEach(logicKey => {
+                const entry = config[logicKey] || {} as FieldLogic;
+
+                if (!entry.params) {
+                    return;
+                }
+
+                if (entry.params && entry.params.attributeDependencies) {
+                    entry.params.attributeDependencies.forEach(dependency => {
+                        const dependencyKey = dependency.field + '.' + dependency.attribute;
+                        attributeDependencies[dependencyKey] = dependency;
+                    });
+
+                }
+
+                if (entry.params && entry.params.fieldDependencies) {
+                    entry.params.fieldDependencies.forEach(dependency => {
+                        const fieldDependency = fieldDependencies[dependency] ?? {}
+                        const types = fieldDependency['types'] ?? [];
+                        types.push(type);
+
+                        fieldDependencies[dependency] = {
+                            field: dependency,
+                            type: types
+                        };
+                    });
+                }
+
+            });
+        }
     }
 
     /**

@@ -92,11 +92,67 @@ array(
         array(
             'newTab' => true,
             'panelDefault' => 'expanded',
+            'display' => 'show',
+            'displayLogic' => [
+               'display' => [
+                    'key' => 'displayType',
+                    'modes' => ['detail', 'edit', 'create'],
+                    'params' => [
+                        'fieldDependencies' => [
+                            'name',
+                        ],
+                        'activeOnFields' => [
+                            'name' => ['Banking']
+                        ]
+                    ]
+                ]
+            ]
         ),
           'LBL_PANEL_ASSIGNMENT' =>
               array(
+                  'newTab' => false,
+                  'panelDefault' => 'expanded',
+              ),
+          'LBL_NO_DATA' =>
+              array(
                   'newTab' => true,
                   'panelDefault' => 'expanded',
+
+              ),
+          'LBL_INSIGHTS' =>
+              array(
+                  'newTab' => true,
+                  'panelDefault' => 'expanded',
+                  /*'display' => 'show',
+                    'displayLogic' => [
+                      'display' => [
+                          'key' => 'displayType',
+                          'modes' => ['detail', 'edit', 'create'],
+                          'params' => [
+                              'fieldDependencies' => [
+                                  'name',
+                                  'website'
+                              ],
+                              'activeOnFields' => [
+                                  'name' => ['Banking'],
+                                  'website' => ['www.google.com']
+                              ]
+                          ]
+                      ],
+                      'display2' => [
+                          'key' => 'displayType',
+                          'modes' => ['detail', 'edit', 'create'],
+                          'params' => [
+                              'fieldDependencies' => [
+                                  'phone_fax'
+                              ],
+                              'activeOnFields' => [
+                                  'phone_fax' => ['05']
+                              ]
+                          ]
+                      ]
+                  ]*/
+
               ),
       ),
     ),
@@ -183,6 +239,146 @@ array(
             'name' => 'phone_office',
             'comment' => 'The office phone number',
             'label' => 'LBL_PHONE_OFFICE',
+              'displayLogic' => [
+                 /* 'display' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'name'
+                          ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'name' => [ 'Yunus'],
+                          ]
+                      ]
+                  ],*/
+                  /*'display2' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'phone_fax'
+                          ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'phone_fax' => [
+                                  [ 'operator' => 'greater-than',
+                                      'value' => 5
+                                  ]
+
+                              ]
+                          ]
+                      ]
+                  ],*/
+
+                 'display3' => [
+                       'key' => 'displayType',
+                       'modes' => ['detail', 'edit', 'create'],
+                       'params' => [
+                           'fieldDependencies' => [
+                               'website',
+                           ],
+                           'targetDisplayType' => 'none',
+                           'activeOnFields' =>  [
+                               'website' => [
+                                   [ 'operator' => 'greater-than',
+                                       'value' => 5
+                                   ],
+                                   [ 'operator' => 'less-than',
+                                       'value' => 15
+                                   ],
+                               ]
+                           ]
+                       ]
+                   ],
+                  'display4' => [
+                       'key' => 'displayType',
+                       'modes' => ['detail', 'edit', 'create'],
+                       'params' => [
+                           'fieldDependencies' => [
+                               'phone_fax',
+                               'website'
+                           ],
+                           'targetDisplayType' => 'none',
+                           'activeOnFields' =>  [
+                               //AND
+                               'phone_fax' => [
+                                   //AND
+                                   [ 'operator' => 'greater-than',
+                                       'value' => 5
+                                   ],
+                                   [ 'operator' => 'less-than',
+                                       'value' => 25
+                                   ],
+                                   [ 'operator' => 'not-equal',
+                                       //OR
+                                       'values' => [15,20]
+                                   ],
+                                   [ 'operator' => 'not-empty'],
+
+                               ],
+                               'website' => [[
+                                   'operator' => 'is-equal',
+                                   'values' => [
+                                       'www.google.com',
+                                       'www.yahoo.com'
+                                     ]
+                               ]]
+                               /*'website' => [[
+                                   'operator' => 'is-empty'
+                               ]]*/
+
+                               ]
+                           ]
+                       ],
+                    /*'display5' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'phone_fax'
+                         ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'phone_fax' => [
+                                  [ 'operator' => 'is-equal',
+                                      'field' => 'employees'
+                                  ]
+
+                              ]
+                          ]
+                      ]
+                    ],*/
+
+
+                  /*'display6' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'industry',
+                          ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'industry' => [ 'Banking']
+                          ]
+                      ]
+                  ],*/
+                  /*'display7' => [
+                       'key' => 'displayType',
+                       'modes' => ['detail', 'edit', 'create'],
+                       'params' => [
+                           'fieldDependencies' => [
+                               'website',
+                           ],
+                           'targetDisplayType' => 'none',
+                           'activeOnFields' =>  [
+                               'website' => [ 'www.google.net']
+                           ]
+                       ]
+                   ],*/
+              ]
           ),
         ),
         1 =>
@@ -243,6 +439,21 @@ array(
             'name' => 'description',
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
+              'logic' => [
+                  'display' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'name',
+                          ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'name' => [ 'Bahar']
+                          ]
+                      ]
+                  ],
+              ]
           ),
         ),
         5 =>
@@ -284,6 +495,88 @@ array(
             'name' => 'employees',
             'comment' => 'Number of employees, varchar to accomodate for both number (100) or range (50-100)',
             'label' => 'LBL_EMPLOYEES',
+              /*'logic' => [
+                  'update-value1' => [
+                      'key' => 'updateValue',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'industry',
+                          ],
+                          'targetValue' => '550',
+                          'activeOnFields' =>  [
+                              'industry' => [ 'Biotechnology'],
+                          ]
+                      ]
+                  ],
+                  'update-value2' => [
+                      'key' => 'updateValue',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'industry',
+                          ],
+                          'targetValue' => '375',
+                          'activeOnFields' =>  [
+                              'industry' => [ 'Chemicals'],
+                          ]
+                      ]
+                  ],
+                  'update-value3' => [
+                      'key' => 'updateValue',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'industry',
+                              'name'
+                          ],
+                          'targetValue' => '450',
+                          'activeOnFields' =>  [ //AND
+                              'industry' => [ 'Banking'],
+                              'name' => [ 'Yerli']
+                          ]
+                      ]
+                  ],
+                  'update-value4' => [
+                      'key' => 'updateValue',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'website',
+                          ],
+                          'targetValue' => '220',
+                          'activeOnFields' =>  [
+                              'website' => [ 'www.google.com', 'www.mynet.com'], //OR
+                          ]
+                      ]
+                  ],
+                  'update-value-backend' => [
+                      'key' => 'updateValueBackend',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'industry',
+                          ],
+                          'process' => 'updateValueProcess',
+                          'activeOnFields' =>  [
+                              'industry' => [ 'industry']
+                          ]
+                      ]
+                  ],
+                  'display' => [
+                      'key' => 'displayType',
+                      'modes' => ['detail', 'edit', 'create'],
+                      'params' => [
+                          'fieldDependencies' => [
+                              'name',
+                          ],
+                          'targetDisplayType' => 'none',
+                          'activeOnFields' =>  [
+                              'name' => [ 'Emre']
+                          ]
+                      ]
+                  ]
+              ]*/
           ),
         ),
         2 =>
@@ -316,6 +609,40 @@ array(
           ),
         ),
       ),
+          'LBL_NO_DATA' =>
+              array(
+                  0 =>
+                      array(
+                          0 =>
+                              array(
+                                  'name' => 'date_entered',
+                                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                              ),
+                          1 =>
+                              array(
+                                  'name' => 'date_modified',
+                                  'label' => 'LBL_DATE_MODIFIED',
+                                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                              ),
+                      ),
+              ),
+          'LBL_INSIGHTS' =>
+              array(
+                  0 =>
+                      array(
+                          0 =>
+                              array(
+                                  'name' => 'date_entered',
+                                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+                              ),
+                          1 =>
+                              array(
+                                  'name' => 'date_modified',
+                                  'label' => 'LBL_DATE_MODIFIED',
+                                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+                              ),
+                      ),
+              ),
     ),
   ),
 );

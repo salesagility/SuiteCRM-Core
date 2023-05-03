@@ -32,6 +32,7 @@ import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
 export class BaseNumberComponent extends BaseFieldComponent{
@@ -49,9 +50,10 @@ export class BaseNumberComponent extends BaseFieldComponent{
         protected userPreferences: UserPreferenceStore,
         protected systemConfig: SystemConfigStore,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     get format(): boolean {

@@ -33,6 +33,7 @@ import {DatetimeFormatter} from "../../../../services/formatters/datetime/dateti
 import {DateTimeModel} from "../../datetime.model";
 import {PlacementArray} from "@ng-bootstrap/ng-bootstrap/util/positioning";
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-datetime-filter',
@@ -51,9 +52,10 @@ export class DateTimeFilterFieldComponent extends BaseDateTimeComponent implemen
         protected typeFormatter: DataTypeFormatter,
         protected calendar: NgbCalendar,
         protected config: NgbPopoverConfig,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
         config.autoClose = "outside";
         config.placement = this.getPlacement();
     }

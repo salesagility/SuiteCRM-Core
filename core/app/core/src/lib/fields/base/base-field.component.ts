@@ -26,11 +26,12 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
-import {AttributeDependency, Field, isVoid, Record, ViewMode} from 'common';
+import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
 import {Subscription} from 'rxjs';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {debounceTime} from 'rxjs/operators';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface, OnInit {
@@ -39,11 +40,15 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
     @Input() record: Record;
     @Input() parent: Record;
     @Input() klass: { [klass: string]: any } = null;
-    dependentFields: string[] = [];
+    dependentFields: ObjectMap = {};
     dependentAttributes: AttributeDependency[] = [];
     protected subs: Subscription[] = [];
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
+    ) {
     }
 
     ngOnInit(): void {
@@ -66,15 +71,30 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
 
-            if (this.field.valueChanges$ && (this.dependentFields.length || this.dependentAttributes.length)) {
+            console.log("this.dependentFields ", this.dependentFields )
+
+            if (this.field.valueChanges$ && (this.dependentFields || this.dependentAttributes.length)) {
                 this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe(() => {
-                    this.dependentFields.forEach(fieldKey => {
+                    Object.keys(this.dependentFields).forEach(fieldKey => {
+                        const dependentField = this.dependentFields[fieldKey];
                         const field = this.record.fields[fieldKey] || null;
                         if (!field) {
                             return;
                         }
 
-                        this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                        const types = dependentField.type ?? [];
+
+                        if (types.includes('logic')) {
+                            this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                        }
+
+                        console.log("yunus.dependentField", dependentField)
+                        console.log("yunus yerli", types)
+                        if (types.includes('displayLogic')) {
+
+                            this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
+                        }
+
                     });
 
                     this.dependentAttributes.forEach(dependency => {
@@ -120,15 +140,15 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
      * @param {array} dependentFields
      * @param {object} dependentAttributes
      */
-    protected addFieldDependency(fieldKey: string, dependentFields: string[], dependentAttributes: AttributeDependency[]): void {
+    protected addFieldDependency(fieldKey: string, dependentFields: ObjectMap, dependentAttributes: AttributeDependency[]): void {
         const field = this.record.fields[fieldKey];
         const name = this.field.name || this.field.definition.name || '';
         if (fieldKey === name || !field) {
             return;
         }
 
-        if (field.fieldDependencies && field.fieldDependencies.length && this.isDependencyField(field.fieldDependencies)) {
-            dependentFields.push(fieldKey);
+        if (field.fieldDependencies && this.isDependencyField(field.fieldDependencies)) {
+            dependentFields[name] = field.fieldDependencies[name];
         }
 
         const attributeKeys = (field.attributes && Object.keys(field.attributes)) || [];
@@ -143,7 +163,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
             if (this.isDependencyField(attribute.fieldDependencies)) {
                 dependentAttributes.push({
                     field: fieldKey,
-                    attribute: attributeKey
+                    attribute: attributeKey,
+                    types: dependentFields[name]['types'] ?? []
                 });
             }
         });
@@ -154,9 +175,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
      * @param dependencies
      * @returns {boolean}
      */
-    protected isDependencyField(dependencies: string[]): boolean {
+    protected isDependencyField(dependencies: ObjectMap): boolean {
         const name = this.field.name || this.field.definition.name || '';
-        return dependencies.some(dependency => name === dependency);
+
+        return !!(dependencies[name] ?? false);
     }
 
     /**
@@ -165,7 +187,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
      * @param {array} dependentFields
      * @param {object} dependentAttributes
      */
-    protected addAttributeDependency(fieldKey: string, dependentFields: string[], dependentAttributes: AttributeDependency[]): void {
+    protected addAttributeDependency(fieldKey: string, dependentFields: ObjectMap, dependentAttributes: AttributeDependency[]): void {
         const field = this.record.fields[fieldKey];
         const name = this.field.name || this.field.definition.name || '';
         if (fieldKey === name || !field) {
@@ -173,7 +195,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
         }
 
         if (field.attributeDependencies && field.attributeDependencies.length && this.isDependencyAttribute(field.attributeDependencies)) {
-            dependentFields.push(fieldKey);
+            dependentFields[name] = field.fieldDependencies[name];
         }
 
         const attributeKeys = (field.attributes && Object.keys(field.attributes)) || [];
@@ -188,7 +210,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
             if (this.isDependencyAttribute(attribute.attributeDependencies)) {
                 dependentAttributes.push({
                     field: fieldKey,
-                    attribute: attributeKey
+                    attribute: attributeKey,
+                    types: dependentFields[name]['types'] ?? []
                 });
             }
         });

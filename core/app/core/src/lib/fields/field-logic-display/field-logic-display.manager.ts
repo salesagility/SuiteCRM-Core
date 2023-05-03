@@ -26,20 +26,86 @@
 
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
-import {PanelLogicActionData} from './panel-logic.action';
-import {Action, ActionContext, Field, Record, ViewMode, Panel} from 'common';
+import {FieldLogicDisplayActionData} from './field-logic-display.action';
+import {Action, ActionContext, Field, Record, ViewMode, Panel, DisplayType} from 'common';
 import {DisplayTypeAction} from './display-type/display-type.action';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
+export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDisplayActionData> {
 
     constructor(
         displayType: DisplayTypeAction,
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
+    }
+
+    runAll(field: Field, record: Record, mode: ViewMode) {
+
+        console.log("field", field)
+        console.log("actions", this.actions)
+
+        let toDisplay: DisplayType = 'show';
+
+        if(!field.displayLogic) {
+            return;
+        }
+
+        const validModeLogic = Object.values(field.displayLogic).filter(logic => {
+            const allowedModes = logic['modes'] ?? [];
+            return !!(allowedModes.length && allowedModes.includes(mode));
+        });
+
+        console.log("validModeLogic", validModeLogic)
+
+        if (!validModeLogic || !validModeLogic.length) {
+            return toDisplay;
+        }
+
+        let defaultDisplay = field.display ?? 'show';
+        let targetDisplay: DisplayType = 'none';
+        if (defaultDisplay === 'none') {
+            targetDisplay = 'show';
+        }
+
+        const context = {
+            record,
+            field,
+            module: record.module
+        } as ActionContext;
+
+        const isActive = validModeLogic.some(logic => {
+            const data: FieldLogicDisplayActionData = this.buildActionData(logic, context);
+            return this.actions[mode][logic.key].run(data, logic);
+        });
+
+        if (isActive) {
+            defaultDisplay = targetDisplay;
+        }
+
+        toDisplay = 'none';
+
+        if (defaultDisplay === 'show') {
+            toDisplay = 'show';
+        }
+
+        console.log("toDisplay", toDisplay)
+
+        field.display = toDisplay;
+
+        const resetOn: string = field?.metadata?.displayLogicResetOn ?? 'none';
+
+        if (resetOn === toDisplay) {
+            if (field.valueList && field.valueList.length) {
+                field.valueList = [];
+            }
+
+            if (field.value) {
+                field.value = '';
+            }
+        }
     }
 
     /**
@@ -51,9 +117,6 @@ export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
      * @param {object} mode
      */
     runLogic(logicType: string, field: Field, panel: Panel, record: Record, mode: ViewMode) {
-        console.log("panel field", field)
-        console.log("panel ", panel)
-        console.log("logicType ", logicType)
         let toDisplay = true;
 
         const validModeLogic = Object.values(panel.meta.displayLogic).filter(logic => {
@@ -66,8 +129,8 @@ export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
         }
 
         let defaultDisplay = panel.meta.display ?? 'show';
-        let targetDisplay = 'hide';
-        if (defaultDisplay === 'hide') {
+        let targetDisplay = 'none';
+        if (defaultDisplay === 'none') {
             targetDisplay = 'show';
         }
 
@@ -79,7 +142,7 @@ export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
         } as ActionContext;
 
         const isActive = validModeLogic.some(logic => {
-            const data: PanelLogicActionData = this.buildActionData(logic, context);
+            const data: FieldLogicDisplayActionData = this.buildActionData(logic, context);
             return this.actions[mode][logic.key].run(data, logic);
         });
 
@@ -92,12 +155,11 @@ export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
         panel.displayState.next(toDisplay);
     }
 
-    protected buildActionData(action: Action, context?: ActionContext): PanelLogicActionData {
+    protected buildActionData(action: Action, context?: ActionContext): FieldLogicDisplayActionData {
         return {
             field: context.field,
             record: (context && context.record) || null,
-            panel: context.panel || null,
-        } as PanelLogicActionData;
+        } as FieldLogicDisplayActionData;
     }
 
 }

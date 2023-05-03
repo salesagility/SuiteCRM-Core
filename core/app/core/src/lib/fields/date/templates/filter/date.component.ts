@@ -34,6 +34,7 @@ import {DateParserFormatter} from '../../../base/datetime/date/date-parser-forma
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 
@@ -53,9 +54,10 @@ export class DateFilterFieldComponent extends BaseDateComponent implements OnIni
     constructor(
         protected formatter: DateFormatter,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

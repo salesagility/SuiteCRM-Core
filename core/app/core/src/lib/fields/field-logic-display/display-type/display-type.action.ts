@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,18 +25,16 @@
  */
 
 import {Injectable} from '@angular/core';
-import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
-import {Action, DisplayType, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {FieldLogicDisplayActionData, FieldLogicDisplayActionHandler} from '../field-logic-display.action';
+import {Action, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
 import {ConditionOperatorManager} from '../../../services/condition-operators/condition-operator.manager';
+import {isEmpty} from 'lodash-es';
 
-/**
- * @DEPRECATED
- */
 
 @Injectable({
     providedIn: 'root'
 })
-export class DisplayTypeAction extends FieldLogicActionHandler {
+export class DisplayTypeAction extends FieldLogicDisplayActionHandler {
 
     key = 'displayType';
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
@@ -45,12 +43,14 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
         super();
     }
 
-    run(data: FieldLogicActionData, action: Action): void {
+    run(data: FieldLogicDisplayActionData, action: Action): boolean {
         const record = data.record;
         const field = data.field;
 
+    console.log("data", data)
+
         if (!record || !field) {
-            return;
+            return true;
         }
 
         const activeOnFields: StringArrayMap = (action.params && action.params.activeOnFields) || {} as StringArrayMap;
@@ -60,36 +60,10 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
         const relatedAttributesFields: string[] = Object.keys(activeOnAttributes);
 
         if (!relatedFields.length && !relatedAttributesFields.length) {
-            return;
+            return true;
         }
 
-        const targetDisplay = action.params && action.params.targetDisplayType;
-
-        if (!targetDisplay) {
-            return;
-        }
-
-        let isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
-
-        let display = data.field.defaultDisplay;
-        if (isActive) {
-            display = targetDisplay;
-        }
-
-        data.field.display = display as DisplayType;
-
-        const resetOn: string = (action.params && action.params.resetOn) || 'none';
-
-        if (resetOn === display) {
-            if (data.field.valueList && data.field.valueList.length) {
-                data.field.valueList = [];
-            }
-
-            if (data.field.value) {
-                data.field.value = '';
-            }
-        }
-
+       return this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
     }
 
     /**
@@ -107,10 +81,13 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
         relatedAttributesFields: string[],
         activeOnAttributes: StringArrayMatrix
     ) {
-        let isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
+        let isActive = true;
+        if (!isEmpty(activeOnFields)) {
+            isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
+        }
 
-        if (!isActive) {
-            isActive = this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
+        if (!isEmpty(activeOnAttributes)) {
+            isActive = isActive && this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
         }
 
         return isActive;
@@ -127,7 +104,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
         record: Record,
         activeOnAttributes: StringArrayMatrix
     ): boolean {
-        return relatedAttributesFields.some(fieldKey => {
+        return relatedAttributesFields.every(fieldKey => {
 
             const fields = record.fields;
             const field = (fields && record.fields[fieldKey]) || null;
@@ -160,7 +137,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
             const field = (fields && record.fields[fieldKey]) || null;
             const activeValues = activeOnFields[fieldKey];
             if (!field || !activeValues || !activeValues.length) {
-                return;
+                return true;
             }
             return this.isValueActive(record, field, activeValues);
         });
@@ -172,6 +149,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
      * @param {array} activeValues
      */
     protected isValueActive(record:Record, field: Field, activeValues: string[] | any): boolean {
+
         let isActive = false;
         if (field.valueList && field.valueList.length) {
             field.valueList.some(value => {
@@ -182,6 +160,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
                     }
                 })
             });
+
             return isActive;
         }
 
@@ -208,7 +187,10 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
                     isActive = opsArr.every(data => data);
                 }
             })
+
         }
+        console.log("opsArr", opsArr)
+
         return isActive;
     }
 }

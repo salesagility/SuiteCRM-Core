@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,38 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BaseFieldComponent} from './base-field.component';
-import {Field, Record} from 'common';
-import {Component} from '@angular/core';
-import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {FieldLogicManager} from '../field-logic/field-logic.manager';
-import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
+import {Action, ActionData, ActionHandler, Field, Panel, Record} from 'common';
 
-@Component({template: ''})
-export class BaseNameComponent extends BaseFieldComponent {
+export interface FieldLogicDisplayActionData extends ActionData {
+    field: Field,
+    record?: Record
+}
 
-    constructor(
-        protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager,
-        protected logicDisplay: FieldLogicDisplayManager
-    ) {
-        super(typeFormatter, logic, logicDisplay);
-    }
+export abstract class FieldLogicDisplayActionHandler extends ActionHandler<FieldLogicDisplayActionData> {
 
-    getNameField(field: Field, record: Record): string {
-        if (!field.value || !record.attributes) {
-            return;
-        }
+    abstract run(data: FieldLogicDisplayActionData, action: Action): boolean;
 
-        const format = field.value.split(' ');
-        const groupField = [];
-
-        format.forEach(item => {
-            if (record.attributes[item]) {
-                groupField.push(record.attributes[item]);
-            }
-        });
-
-        return groupField.join(' ');
-    }
+    shouldDisplay(data: FieldLogicDisplayActionData): boolean {
+        return true
+    };
 }

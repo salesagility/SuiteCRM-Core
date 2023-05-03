@@ -30,6 +30,7 @@ import {StandardFieldRegistry} from '../standard-field.registry';
 import {RecordManager} from '../../services/record/record.manager';
 import {BaseComposite} from '../base/base-composite.component';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-composite-field',
@@ -42,9 +43,10 @@ export class CompositeComponent extends BaseComposite {
         protected typeFormatter: DataTypeFormatter,
         protected registry: StandardFieldRegistry,
         protected recordManager: RecordManager,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, registry, recordManager, logic);
+        super(typeFormatter, registry, recordManager, logic, logicDisplay);
     }
 
 }

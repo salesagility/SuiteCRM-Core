@@ -32,6 +32,8 @@ import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
 
+export type DisplayType = 'none' | 'show' | 'readonly' | 'inline' | 'disabled' | 'default';
+
 export interface Option {
     value: string;
     label?: string;
@@ -89,6 +91,7 @@ export interface FieldDefinition {
     dynamic?: boolean;
     parentenum?: string;
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     default?: string;
@@ -130,6 +133,7 @@ export interface FieldMetadata {
     onClick?: FieldClickCallback;
     tinymce?: any;
     date_time_format?: string;
+    displayLogicResetOn?: string;
 
     [key: string]: any;
 }
@@ -150,6 +154,7 @@ export interface FieldMap {
 export interface AttributeDependency {
     field: string;
     attribute: string;
+    types: string[];
 }
 
 export interface Field {
@@ -166,7 +171,7 @@ export interface Field {
     attributes?: FieldAttributeMap;
     items?: Record[];
     readonly?: boolean;
-    display?: string;
+    display?: DisplayType;
     defaultDisplay?: string;
     source?: 'field' | 'attribute' | 'item';
     valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
@@ -179,9 +184,10 @@ export interface Field {
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
-    fieldDependencies?: string[];
+    fieldDependencies?: ObjectMap;
     attributeDependencies?: AttributeDependency[];
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
 }
 
 export class BaseField implements Field {
@@ -191,7 +197,7 @@ export class BaseField implements Field {
     labelKey?: string;
     dynamicLabelKey?: string;
     readonly?: boolean;
-    display?: string;
+    display?: DisplayType;
     defaultDisplay?: string;
     source?: 'field' | 'attribute';
     metadata?: FieldMetadata;
@@ -204,9 +210,10 @@ export class BaseField implements Field {
     attributes?: FieldAttributeMap;
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
-    fieldDependencies: string[] = [];
+    fieldDependencies: ObjectMap = {};
     attributeDependencies: AttributeDependency[] = [];
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
 
     protected valueState?: string;
     protected valueListState?: string[];

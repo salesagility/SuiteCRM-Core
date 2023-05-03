@@ -34,6 +34,7 @@ import {DateFormatter} from '../../../../services/formatters/datetime/date-forma
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 @Component({
@@ -54,9 +55,10 @@ export class DateEditFieldComponent extends BaseDateComponent implements OnInit,
         protected dateAdapter: NgbDateAdapter<string>,
         protected dateParserFormatter: NgbDateParserFormatter,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

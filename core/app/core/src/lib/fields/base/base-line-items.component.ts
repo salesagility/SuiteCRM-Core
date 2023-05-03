@@ -46,6 +46,7 @@ import set from 'lodash-es/set';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldManager} from '../../services/record/field/field.manager';
 import {FieldRegistry} from '../field.registry';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
 export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -55,9 +56,10 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
         protected registry: FieldRegistry,
         protected recordManager: RecordManager,
         protected logic: FieldLogicManager,
-        protected fieldManager: FieldManager
+        protected fieldManager: FieldManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

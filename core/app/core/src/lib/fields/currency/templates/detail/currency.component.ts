@@ -32,6 +32,7 @@ import {UserPreferenceStore} from '../../../../store/user-preference/user-prefer
 import {FormatOptions} from '../../../../services/formatters/formatter.model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {CurrencyService} from '../../../../services/currency/currency.service';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-currency-detail',
@@ -44,9 +45,10 @@ export class CurrencyDetailFieldComponent extends BaseNumberComponent {
         protected systemConfig: SystemConfigStore,
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
-        protected currencyService: CurrencyService
+        protected currencyService: CurrencyService,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(userPreferences, systemConfig, typeFormatter, logic);
+        super(userPreferences, systemConfig, typeFormatter, logic, logicDisplay);
     }
 
     getOptions(): FormatOptions {

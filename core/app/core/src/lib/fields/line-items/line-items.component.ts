@@ -32,6 +32,7 @@ import {BaseLineItemsComponent} from '../base/base-line-items.component';
 import {ButtonInterface, ObjectMap} from 'common';
 import {FieldManager} from '../../services/record/field/field.manager';
 import {FieldRegistry} from '../field.registry';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-line-items-field',
@@ -46,8 +47,9 @@ export class LineItemsComponent extends BaseLineItemsComponent {
         protected recordManager: RecordManager,
         protected logic: FieldLogicManager,
         protected fieldManager: FieldManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, registry, recordManager, logic, fieldManager);
+        super(typeFormatter, registry, recordManager, logic, fieldManager, logicDisplay);
     }
 
     /**

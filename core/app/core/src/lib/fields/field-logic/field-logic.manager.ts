@@ -67,6 +67,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
      * @param {object} record
      */
     runLogic(field: Field, mode: ViewMode, record: Record): void {
+        console.log("field", field)
         if (!field.logic) {
             return;
         }

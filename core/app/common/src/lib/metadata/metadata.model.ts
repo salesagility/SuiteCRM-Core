@@ -41,6 +41,7 @@ export interface ViewFieldDefinition {
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
 }
 
 export interface Panel {

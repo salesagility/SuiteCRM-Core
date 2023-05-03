@@ -33,6 +33,7 @@ import {DynamicLabelService} from '../../services/language/dynamic-label.service
 import {
     LinkRouteAsyncActionService
 } from '../../services/navigation/link-route-async-action/link-route-async-action.service';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-dynamic-field',
