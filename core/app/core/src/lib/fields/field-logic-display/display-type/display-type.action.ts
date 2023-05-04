@@ -47,8 +47,6 @@ export class DisplayTypeAction extends FieldLogicDisplayActionHandler {
         const record = data.record;
         const field = data.field;
 
-    console.log("data", data)
-
         if (!record || !field) {
             return true;
         }
@@ -63,7 +61,7 @@ export class DisplayTypeAction extends FieldLogicDisplayActionHandler {
             return true;
         }
 
-       return this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+        return this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
     }
 
     /**
@@ -189,7 +187,6 @@ export class DisplayTypeAction extends FieldLogicDisplayActionHandler {
             })
 
         }
-        console.log("opsArr", opsArr)
 
         return isActive;
     }

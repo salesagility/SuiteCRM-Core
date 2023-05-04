@@ -180,6 +180,9 @@ export class FieldBuilder {
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
         field.display = (viewField.display || definition.display || 'default') as DisplayType;
         field.defaultDisplay = field.display;
+        if(field.defaultDisplay === 'default') {
+            field.defaultDisplay = 'show';
+        }
         field.value = value;
         field.metadata = metadata;
         field.definition = definition;

@@ -51,9 +51,6 @@ export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
      * @param {object} mode
      */
     runLogic(logicType: string, field: Field, panel: Panel, record: Record, mode: ViewMode) {
-        console.log("panel field", field)
-        console.log("panel ", panel)
-        console.log("logicType ", logicType)
         let toDisplay = true;
 
         const validModeLogic = Object.values(panel.meta.displayLogic).filter(logic => {

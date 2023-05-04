@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {FieldLogicDisplayActionData} from './field-logic-display.action';
-import {Action, ActionContext, Field, Record, ViewMode, Panel, DisplayType} from 'common';
+import {Action, ActionContext, Field, Record, ViewMode, DisplayType} from 'common';
 import {DisplayTypeAction} from './display-type/display-type.action';
 
 @Injectable({
@@ -42,11 +42,7 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
     }
 
-    runAll(field: Field, record: Record, mode: ViewMode) {
-
-        console.log("field", field)
-        console.log("actions", this.actions)
-
+    runAll(field: Field, record: Record, mode: ViewMode): void {
         let toDisplay: DisplayType = 'show';
 
         if(!field.displayLogic) {
@@ -58,14 +54,14 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
             return !!(allowedModes.length && allowedModes.includes(mode));
         });
 
-        console.log("validModeLogic", validModeLogic)
-
         if (!validModeLogic || !validModeLogic.length) {
-            return toDisplay;
+            return;
         }
 
-        let defaultDisplay = field.display ?? 'show';
+        let defaultDisplay = field.defaultDisplay ?? 'show';
+
         let targetDisplay: DisplayType = 'none';
+
         if (defaultDisplay === 'none') {
             targetDisplay = 'show';
         }
@@ -75,6 +71,7 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
             field,
             module: record.module
         } as ActionContext;
+
 
         const isActive = validModeLogic.some(logic => {
             const data: FieldLogicDisplayActionData = this.buildActionData(logic, context);
@@ -83,76 +80,17 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
 
         if (isActive) {
             defaultDisplay = targetDisplay;
+
         }
 
-        toDisplay = 'none';
+        toDisplay = defaultDisplay as DisplayType;
 
         if (defaultDisplay === 'show') {
             toDisplay = 'show';
         }
 
-        console.log("toDisplay", toDisplay)
-
         field.display = toDisplay;
 
-        const resetOn: string = field?.metadata?.displayLogicResetOn ?? 'none';
-
-        if (resetOn === toDisplay) {
-            if (field.valueList && field.valueList.length) {
-                field.valueList = [];
-            }
-
-            if (field.value) {
-                field.value = '';
-            }
-        }
-    }
-
-    /**
-     * Run logic for the given field
-     * @param {string} logicType
-     * @param {object} field
-     * @param {object} panel
-     * @param {object} record
-     * @param {object} mode
-     */
-    runLogic(logicType: string, field: Field, panel: Panel, record: Record, mode: ViewMode) {
-        let toDisplay = true;
-
-        const validModeLogic = Object.values(panel.meta.displayLogic).filter(logic => {
-            const allowedModes = logic['modes'] ?? [];
-            return !!(allowedModes.length && allowedModes.includes(mode));
-        });
-
-        if (!validModeLogic || !validModeLogic.length) {
-            return toDisplay;
-        }
-
-        let defaultDisplay = panel.meta.display ?? 'show';
-        let targetDisplay = 'none';
-        if (defaultDisplay === 'none') {
-            targetDisplay = 'show';
-        }
-
-        const context = {
-            panel,
-            record,
-            field,
-            module: record.module
-        } as ActionContext;
-
-        const isActive = validModeLogic.some(logic => {
-            const data: FieldLogicDisplayActionData = this.buildActionData(logic, context);
-            return this.actions[mode][logic.key].run(data, logic);
-        });
-
-        if (isActive) {
-            defaultDisplay  = targetDisplay;
-        }
-
-        toDisplay = (defaultDisplay === 'show');
-
-        panel.displayState.next(toDisplay);
     }
 
     protected buildActionData(action: Action, context?: ActionContext): FieldLogicDisplayActionData {

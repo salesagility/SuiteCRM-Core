@@ -71,8 +71,6 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
 
-            console.log("this.dependentFields ", this.dependentFields )
-
             if (this.field.valueChanges$ && (this.dependentFields || this.dependentAttributes.length)) {
                 this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe(() => {
                     Object.keys(this.dependentFields).forEach(fieldKey => {
@@ -88,10 +86,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             this.logic.runLogic(field, this.mode as ViewMode, this.record);
                         }
 
-                        console.log("yunus.dependentField", dependentField)
-                        console.log("yunus yerli", types)
                         if (types.includes('displayLogic')) {
-
                             this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
                         }
 
@@ -148,7 +143,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
         }
 
         if (field.fieldDependencies && this.isDependencyField(field.fieldDependencies)) {
-            dependentFields[name] = field.fieldDependencies[name];
+            //dependentFields[name] = field.fieldDependencies[name];
+            dependentFields[fieldKey] = field.fieldDependencies[name];
         }
 
         const attributeKeys = (field.attributes && Object.keys(field.attributes)) || [];
