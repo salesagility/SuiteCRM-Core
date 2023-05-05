@@ -15,7 +15,14 @@
   .notifications {
 
     .notifications-item {
-
+      &:after {
+        content: "";
+        display: block;
+        margin: 0 auto;
+        width: 92%;
+        border-bottom: 1px solid $lightgray;
+        padding-top: 0.2rem;
+      }
     }
 
     .notifications-item.is_read-true {
@@ -37,22 +44,22 @@
       width: 100%;
       padding: 0;
       background-color: $bright-blue;
-
+      transition: background-color 500ms ease-in-out;
       &:hover {
         background-color: $off-white !important;
 
         .record-thread-item-body {
           background-color: $off-white !important;
+          transition: background-color 500ms ease-in-out;
         }
       }
 
       .record-thread-item-body {
         background-color: transparent;
         box-shadow: none;
-        margin: 0.25rem 0.75rem 0;
-        border-bottom: 1px solid $lightgray;
+        padding: 0.55rem 1.25rem 0;
         border-radius: 0;
-
+        margin-bottom: 0;
         &:hover {
           background-color: $off-white !important;
 
