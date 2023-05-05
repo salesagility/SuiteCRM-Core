@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
      y="0px"
-     viewBox="0 0 15.9 14" style="enable-background:new 0 0 15.9 14;" xml:space="preserve">
+     viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
   <g id="Page-1-Copy-27" transform="translate(1.250000, 1.500000)">
 			<g id="Group-3" transform="translate(0.000000, 0.023385)">
 				<g id="Clip-2">
 				</g>
         <defs>
-					<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-1.2" y="-1.5" width="15.9"
-                  height="14">
+					<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-1.2" y="-1.5" width="16"
+                  height="16">
 						<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
 					</filter>
 				</defs>
-        <mask maskUnits="userSpaceOnUse" x="-1.2" y="-1.5" width="15.9" height="14" id="mask-2_1_">
+        <mask maskUnits="userSpaceOnUse" x="-1.2" y="-1.5" width="16" height="16" id="mask-2_1_">
 					<g class="st0">
 						<polygon id="path-1_1_" class="st1"
                      points="14.7,-1.5 14.7,12.5 -1.2,12.5 -1.2,-1.5 						"/>

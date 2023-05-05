@@ -620,7 +620,19 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function isModuleQuickAction($url): bool
     {
-        return preg_match('/(edit(\/)?$)|(edit(\/)?\?)/', $url) || preg_match('/(create(\/)?$)|(create(\/)?\?)/', $url) || preg_match('/\/import\//', $url);
+        $regex = [
+            '/(edit(\/)?$)|(edit(\/)?\?)/',
+            '/(create(\/)?$)|(create(\/)?\?)/',
+            '/\/import\//',
+            '/(compose(\/)?$)|(compose(\/)?\?)/',
+            '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
+        ];
+        foreach ($regex as $item)  {
+            if( preg_match($item, $url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -629,10 +641,17 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      */
     protected function getActionType($url): string
     {
-        if (preg_match('/(edit(\/)?$)|(edit(\/)?\?)/', $url) || preg_match('/(create(\/)?$)|(create(\/)?\?)/', $url)) {
-            return 'create';
+        $regex = [
+            '/(edit(\/)?$)|(edit(\/)?\?)/',
+            '/(create(\/)?$)|(create(\/)?\?)/',
+            '/(compose(\/)?$)|(compose(\/)?\?)/',
+            '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
+        ];
+        foreach ($regex as $item)  {
+            if( preg_match($item, $url)) {
+                return 'create';
+            }
         }
-
         return '';
     }
 

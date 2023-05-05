@@ -400,6 +400,10 @@
   fill: $dusty-grey;
 }
 
+.clock-icon svg {
+  overflow: visible;
+}
+
 .create-popup-arrow svg {
   width: 1.2em;
 }
