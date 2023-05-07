@@ -72,9 +72,7 @@ export class RecordComponent implements OnInit, OnDestroy {
         if (this.recordSub) {
             this.recordSub.unsubscribe();
         }
-
         this.sidebarWidgetHandler.destroy();
-
         this.recordStore.destroy();
     }
 }
