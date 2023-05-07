@@ -36,8 +36,7 @@ import {Router} from "@angular/router";
 
 @Component({
     selector: 'scrm-record-header',
-    templateUrl: 'record-header.component.html',
-    providers: [RecordActionsAdapter]
+    templateUrl: 'record-header.component.html'
 })
 export class RecordHeaderComponent implements OnInit, OnDestroy {
 

@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, filter} from 'rxjs/operators';
 import {ViewContext, WidgetMetadata} from 'common';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStrings} from '../../../../store/language/language.store';
@@ -39,6 +39,8 @@ import {RecordContentAdapter} from '../../adapters/record-content.adapter';
 import {RecordContentDataSource} from '../../../../components/record-content/record-content.model';
 import {TopWidgetAdapter} from '../../adapters/top-widget.adapter';
 import {BottomWidgetAdapter} from '../../adapters/bottom-widget.adapter';
+import {RecordActionsAdapter} from '../../adapters/actions.adapter';
+import {Action, ActionContext} from 'common';
 import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
 
 @Component({
@@ -48,6 +50,10 @@ import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar
 })
 export class RecordContainerComponent implements OnInit, OnDestroy {
 
+    protected subs: Subscription[] = [];
+
+    saveAction: Action;
+    context: ActionContext;
     loading: boolean = true;
     language$: Observable<LanguageStrings> = this.language.vm$;
     displayWidgets: boolean = true;
@@ -75,7 +81,25 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         }))
     );
 
-    protected subs: Subscription[] = [];
+    actionConfig$ =  this.recordViewStore.mode$.pipe(
+        combineLatestWith(
+            this.actionsAdapter.getActions(),
+            this.getViewContext$()),
+        filter(([mode, actions, context]) => mode === 'edit'),
+        map(([mode, actions, context]) => ({
+            mode,
+            actions,
+            context
+        }))
+    );
+
+    @HostListener('keyup.control.enter')
+    onEnterKey() {
+        if (!this.saveAction || !this.context) {
+            return;
+        }
+        this.actionsAdapter.runAction(this.saveAction, this.context);
+    }
 
     constructor(
         public recordViewStore: RecordViewStore,
@@ -85,6 +109,7 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         protected topWidgetAdapter: TopWidgetAdapter,
         protected sidebarWidgetAdapter: SidebarWidgetAdapter,
         protected bottomWidgetAdapter: BottomWidgetAdapter,
+        protected actionsAdapter: RecordActionsAdapter,
         protected sidebarWidgetHandler: RecordViewSidebarWidgetService
     ) {
     }
@@ -92,8 +117,17 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.subs.push(this.recordViewStore.loading$.subscribe(loading => {
             this.loading = loading;
-        }))
+        }));
 
+        this.subs.push(this.actionConfig$.subscribe(config => {
+                this.context = config.context;
+                config.actions.forEach(actionItem => {
+                    if (actionItem.key === 'save') {
+                        this.saveAction = actionItem;
+                    }
+                });
+            })
+        );
 
         this.subs.push(this.sidebarWidgetAdapter.config$.subscribe(sidebarWidgetConfig => {
             this.sidebarWidgetConfig = sidebarWidgetConfig;
