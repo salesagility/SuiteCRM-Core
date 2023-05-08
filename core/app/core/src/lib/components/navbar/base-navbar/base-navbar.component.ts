@@ -26,14 +26,14 @@
 
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {ActionNameMapper} from '../../../services/navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {ModuleAction, NavbarModule, Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
+import {ModuleAction, Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
 import {UserPreferenceMap, UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {
     ScreenSize,
@@ -46,7 +46,6 @@ import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
-import {ActionBarModel} from './action-bar-model';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -63,36 +62,6 @@ import {ActionBarModel} from './action-bar-model';
 export class BaseNavbarComponent implements OnInit, OnDestroy {
 
     protected static instances: BaseNavbarComponent[] = [];
-
-    actionBar: ActionBarModel = {
-        createLinks: [
-            {
-                label: 'Accounts',
-                route: '/accounts/edit'
-            },
-            {
-                label: 'Contacts',
-                route: '/contacts/edit'
-            },
-            {
-                label: 'Leads',
-                route: '/leads/edit'
-            },
-            {
-                label: 'Opportunities',
-                route: '/opportunities/edit'
-            },
-            {
-                label: 'AOS_Quotes',
-                route: '/quotes/edit'
-            },
-            {
-                label: 'AOS_Contracts',
-                route: '/contracts/edit'
-            },
-        ],
-        favoriteRecords: [],
-    };
 
     loaded = true;
     isUserLoggedIn: boolean;
@@ -113,6 +82,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     notificationsEnabled: boolean = false;
     subs: Subscription[] = []
     navigation: Navigation;
+
+    currentQuickActions:any;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -142,6 +113,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.calculateMaxTabs(navigation);
 
+            this.getModuleQuickActions(appState.module);
+
             this.navbar.resetMenu();
             if (ready([language.appStrings, language.modStrings, language.appListStrings, userPreferences, currentUser])) {
                 this.navbar.build(
@@ -152,7 +125,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             }
 
             return {
-                navigation, userPreferences, appState,
+                navigation,
+                userPreferences,
+                appState,
                 appStrings: language.appStrings || {},
                 appListStrings: language.appListStrings || {}
             };
@@ -291,11 +266,11 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         }
     }
 
-    getModuleQuickActions(module: string): ModuleAction[] {
+    getModuleQuickActions(module: string): void {
         const moduleNavigation = this?.navigation?.modules[module] ?? null;
         const moduleNavigationMenu = moduleNavigation?.menu ?? [];
         if (moduleNavigation === null || !moduleNavigationMenu.length ) {
-            return [];
+            this.currentQuickActions= [];
         }
 
         const actions = [] as ModuleAction[];
@@ -313,6 +288,6 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             } as ModuleAction);
         });
 
-        return actions;
+        this.currentQuickActions = actions;
     }
 }

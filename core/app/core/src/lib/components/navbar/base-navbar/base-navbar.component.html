@@ -243,11 +243,11 @@
                 </a>
                 <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2">
 
-                    <ng-container *ngIf="(navbar?.current?.module ?? '') && getModuleQuickActions(navbar.current.module).length">
+                    <ng-container *ngIf="(navbar?.current?.module ?? '') && currentQuickActions.length">
                         <li class="new-list-item-header font-weight-bold">
                             <scrm-label labelKey="LBL_MODULE_NAME" [module]="navbar.current.module"></scrm-label>
                         </li>
-                        <li class="new-list-item" *ngFor="let moduleQuickAction of getModuleQuickActions(navbar.current.module)">
+                        <li class="new-list-item" *ngFor="let moduleQuickAction of currentQuickActions">
                             <a [routerLink]="moduleQuickAction.url" [queryParams]="moduleQuickAction?.params ?? null" class="d-flex align-items-center">
                                 <scrm-label [labelKey]="moduleQuickAction.labelKey" [module]="navbar.current.module"></scrm-label>
                             </a>
