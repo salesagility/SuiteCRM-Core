@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Record, ScreenSizeMap} from 'common';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {ButtonInterface, Record, ScreenSizeMap} from 'common';
 import {Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';
@@ -47,8 +47,17 @@ export class ListFilterComponent implements OnInit, OnDestroy {
     vm$: Observable<Record>;
     store: ListFilterStore;
     filterActionsAdapter: SavedFilterActionsAdapter;
-
+    searchActionButton: ButtonInterface;
     gridConfig: RecordGridConfig;
+
+    @HostListener('keyup.enter')
+    onEnterKey() {
+        if (!this.searchActionButton) {
+            return;
+        }
+
+        this.searchActionButton.onClick();
+    }
 
     constructor(
         protected storeFactory: ListFilterStoreFactory,
@@ -65,6 +74,9 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             record.fields = savedFilter.criteriaFields;
             return record;
         }));
+
+        this.searchActionButton = this.store.gridButtons.find(button => button.labelKey === "LBL_SEARCH_BUTTON_LABEL");
+
         this.gridConfig = {
             record$: this.store.filterStore.stagingRecord$,
             mode$: this.store.filterStore.mode$,
@@ -93,5 +105,4 @@ export class ListFilterComponent implements OnInit, OnDestroy {
         this.store.clear();
         this.store = null;
     }
-
 }

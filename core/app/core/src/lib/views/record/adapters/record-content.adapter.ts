@@ -89,13 +89,16 @@ export class RecordContentAdapter implements RecordContentDataSource {
     getRecord(): Observable<Record> {
         return this.store.stagingRecord$.pipe(
             combineLatestWith(this.store.mode$),
-            map(([record, mode]) => {
+            map(([record, mode]: [Record, ViewMode]) => {
                 if (mode === 'edit' || mode === 'create') {
                     this.store.initValidators(record);
                 } else {
                     this.store.resetValidatorsForAllFields(record);
                 }
-                record.formGroup.enable();
+
+                if(record.formGroup) {
+                    record.formGroup.enable();
+                }
                 return record;
             })
         );
