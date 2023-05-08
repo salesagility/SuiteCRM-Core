@@ -103,6 +103,7 @@ button : "start_range_{$id}_trigger",
 singleClick : true,
 dateStr : "{$date_value}",
 step : 1,
+startWeekday: {$CALENDAR_FDOW|default:'0'},
 weekNumbers:false
 {rdelim}
 );
@@ -128,6 +129,7 @@ button : "end_range_{$id}_trigger",
 singleClick : true,
 dateStr : "{$date_value}",
 step : 1,
+startWeekday: {$CALENDAR_FDOW|default:'0'},
 weekNumbers:false
 {rdelim}
 );

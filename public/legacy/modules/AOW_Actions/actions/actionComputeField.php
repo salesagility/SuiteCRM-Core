@@ -103,12 +103,13 @@ class actionComputeField extends actionBase
 
             $relateFields = $this->getAllRelatedFields($bean);
 
-            for ($i = 0; $i < count($formulas); $i++) {
+             for ($i = 0; $i < count($formulas); $i++) {
                 if (array_key_exists($formulas[$i], $relateFields) && isset($relateFields[$formulas[$i]]['id_name'])) {
-                    $bean->{$relateFields[$formulas[$i]]['id_name']} =
-                        $calculator->calculateFormula($formulaContents[$i]);
+                    $calcValue = $calculator->calculateFormula($formulaContents[$i]);
+                    $bean->{$relateFields[$formulas[$i]]['id_name']} = ( is_numeric($calcValue) ? (float)$calcValue : $calcValue );
                 } else {
-                    $bean->{$formulas[$i]} = $calculator->calculateFormula($formulaContents[$i]);
+                    $calcValue = $calculator->calculateFormula($formulaContents[$i]);
+                    $bean->{$formulas[$i]} = ( is_numeric($calcValue) ? (float)$calcValue : $calcValue );
                 }
             }
 
@@ -152,7 +153,7 @@ class actionComputeField extends actionBase
             if ($parameterTypes[$i] == actionComputeField::FORMATTED_VALUE) {
                 $dataType = $bean->field_name_map[$parameters[$i]]['type'];
 
-                if ($dataType == 'enum') {
+                if ($dataType == 'enum' || $dataType == 'dynamicenum') {
                     $resolvedParameters[$i] =
                         $GLOBALS['app_list_strings'][$bean->field_defs[$parameters[$i]]['options']][$bean->{$parameters[$i]}];
                 } else {
