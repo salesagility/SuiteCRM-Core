@@ -913,9 +913,6 @@ class SearchForm
         //rrs check for team_id
 
         foreach ((array)$this->searchFields as $field => $parms) {
-
-            $this->searchByFields[] = $field;
-
             $customField = false;
             // Jenny - Bug 7462: We need a type check here to avoid database errors
             // when searching for numeric fields. This is a temporary fix until we have
@@ -1000,6 +997,8 @@ class SearchForm
                 if (!empty($parms['operator'])) {
                     $operator = strtolower($parms['operator']);
                 }
+
+                $this->searchByFields[] = $field;
 
                 if (is_array($parms['value'])) {
                     $field_value = '';
