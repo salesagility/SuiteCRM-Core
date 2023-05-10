@@ -41,10 +41,11 @@ export class DynamicEnumEditFieldComponent extends BaseEnumComponent {
 
     @ViewChild('tag') tag: TagInputComponent;
 
-    constructor(protected languages: LanguageStore,
-                protected typeFormatter: DataTypeFormatter,
-                protected logic: FieldLogicManager,
-                protected logicDisplay: FieldLogicDisplayManager
+    constructor(
+        protected languages: LanguageStore,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(languages, typeFormatter, logic, logicDisplay);
     }

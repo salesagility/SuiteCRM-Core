@@ -39,10 +39,11 @@ import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-displ
 })
 export class GroupFieldComponent extends BaseFieldComponent {
 
-    constructor(protected typeFormatter: DataTypeFormatter,
-                protected registry: StandardFieldRegistry,
-                protected logic: FieldLogicManager,
-                protected logicDisplay: FieldLogicDisplayManager
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected registry: StandardFieldRegistry,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(typeFormatter, logic, logicDisplay);
     }

@@ -41,10 +41,11 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     formGroup: FormGroup;
 
-    constructor(protected languages: LanguageStore,
-                protected typeFormatter: DataTypeFormatter,
-                protected logic: FieldLogicManager,
-                protected logicDisplay: FieldLogicDisplayManager
+    constructor(
+        protected languages: LanguageStore,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(languages, typeFormatter, logic, logicDisplay);
     }

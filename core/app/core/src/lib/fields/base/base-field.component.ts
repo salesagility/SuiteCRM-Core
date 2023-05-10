@@ -143,7 +143,6 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
         }
 
         if (field.fieldDependencies && this.isDependencyField(field.fieldDependencies)) {
-            //dependentFields[name] = field.fieldDependencies[name];
             dependentFields[fieldKey] = field.fieldDependencies[name];
         }
 

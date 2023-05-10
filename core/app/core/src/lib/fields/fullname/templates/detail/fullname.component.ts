@@ -38,9 +38,10 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 export class FullNameDetailFieldsComponent extends BaseNameComponent implements OnInit {
     data: string;
 
-    constructor(protected typeFormatter: DataTypeFormatter,
-                protected logic: FieldLogicManager,
-                protected logicDisplay: FieldLogicDisplayManager
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(typeFormatter, logic, logicDisplay);
     }

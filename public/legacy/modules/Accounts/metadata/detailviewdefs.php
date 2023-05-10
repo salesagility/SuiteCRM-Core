@@ -95,17 +95,6 @@ array(
         ),
           'LBL_PANEL_ASSIGNMENT' =>
               array(
-                  'newTab' => false,
-                  'panelDefault' => 'expanded',
-              ),
-          'LBL_NO_DATA' =>
-              array(
-                  'newTab' => true,
-                  'panelDefault' => 'expanded',
-
-              ),
-          'LBL_INSIGHTS' =>
-              array(
                   'newTab' => true,
                   'panelDefault' => 'expanded',
               ),
@@ -254,21 +243,6 @@ array(
             'name' => 'description',
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
-              'logic' => [
-                  'display' => [
-                      'key' => 'displayType',
-                      'modes' => ['detail', 'edit', 'create'],
-                      'params' => [
-                          'fieldDependencies' => [
-                              'name',
-                          ],
-                          'targetDisplayType' => 'none',
-                          'activeOnFields' =>  [
-                              'name' => [ 'Bahar']
-                          ]
-                      ]
-                  ],
-              ]
           ),
         ),
         5 =>
@@ -341,41 +315,7 @@ array(
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
           ),
         ),
-      ),
-          'LBL_NO_DATA' =>
-              array(
-                  0 =>
-                      array(
-                          0 =>
-                              array(
-                                  'name' => 'date_entered',
-                                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                              ),
-                          1 =>
-                              array(
-                                  'name' => 'date_modified',
-                                  'label' => 'LBL_DATE_MODIFIED',
-                                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                              ),
-                      ),
-              ),
-          'LBL_INSIGHTS' =>
-              array(
-                  0 =>
-                      array(
-                          0 =>
-                              array(
-                                  'name' => 'date_entered',
-                                  'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-                              ),
-                          1 =>
-                              array(
-                                  'name' => 'date_modified',
-                                  'label' => 'LBL_DATE_MODIFIED',
-                                  'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-                              ),
-                      ),
-              ),
+      )
     ),
   ),
 );
