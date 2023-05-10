@@ -1981,7 +1981,7 @@ $app_strings = array(
     'LBL_REMOVE_ALL_LEAD_FIELDS' => 'Remove All Fields',
     'LBL_NEXT_BTN' => 'Next',
     'LBL_ONLY_IMAGE_ATTACHMENT' => 'Only the following supported image type attachments can be embedded: JPG, PNG.',
-    'LBL_TRAINING' => 'Support Forum',
+    'LBL_TRAINING' => 'Community Forum',
     'ERR_MSSQL_DB_CONTEXT' => 'Changed database context to',
     'ERR_MSSQL_WARNING' => 'Warning:',
 
