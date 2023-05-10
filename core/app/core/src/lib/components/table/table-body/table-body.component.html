@@ -49,7 +49,7 @@
 
             </ng-container>
 
-            <ng-container cdkColumnDef="show-more">
+            <ng-container cdkColumnDef="show-more" *ngIf="popoverColumns && popoverColumns.length">
 
                 <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header show-more-column"></th>
 
@@ -65,7 +65,7 @@
                 <th cdk-header-cell
                     *cdkHeaderCellDef
                     scope="col"
-                    class="primary-table-header">
+                    [class]="'primary-table-header ' + 'column-' + column?.name ?? ''">
 
                     <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
                     <scrm-sort-button *ngIf="config.sort$ && column.sortable"
@@ -74,7 +74,7 @@
 
                 </th>
 
-                <td cdk-cell *cdkCellDef="let record">
+                <td cdk-cell *cdkCellDef="let record" [class]="'column-' + column?.name ?? ''">
                     <scrm-field [mode]="'list'"
                                 [type]="column.type"
                                 [field]="getField(column, record)"

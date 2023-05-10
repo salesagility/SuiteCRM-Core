@@ -24,29 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.popover-wrapper {
-  z-index: 1;
-  left: 0.3em!important;
-}
-
-.scroll-thin {
-  max-height: 300px;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px $dusky-blue;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $cool-blue;
-    border-radius: 51px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: $nepal-grey;
+.subpanel-history {
+  .column-module_name {
+    width: 3em;
   }
 }

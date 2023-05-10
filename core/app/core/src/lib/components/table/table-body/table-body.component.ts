@@ -102,7 +102,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                     displayedColumns.push('checkbox');
                 }
 
-                displayedColumns.push('show-more');
+                if (this.popoverColumns && this.popoverColumns.length) {
+                    displayedColumns.push('show-more');
+                }
 
                 displayedColumns.push(...columnsDefs);
 

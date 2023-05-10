@@ -26,7 +26,7 @@
 */
 -->
 <ng-container>
-    <scrm-panel [title]="store.getTitle()" mode="closable" [close]="closeButton" bodyPadding="0">
+    <scrm-panel [title]="store.getTitle()" mode="closable" [close]="closeButton" bodyPadding="0" [klass]="'subpanel-' + store?.metadata?.name ?? ''">
         <span class="subpanel-icon pl-1" panel-icon-area>
             <scrm-image [image]="store.getIcon()"></scrm-image>
         </span>
