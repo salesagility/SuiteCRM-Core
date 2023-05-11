@@ -746,15 +746,18 @@ function bothExist(item1, item2) {
 trim = YAHOO.lang.trim;
 
 
-function check_form(formname) {
+function check_form(formname, switchTab = true) {
   if (typeof(siw) != 'undefined' && siw
     && typeof(siw.selectingSomething) != 'undefined' && siw.selectingSomething)
     return false;
-  return validate_form(formname, '');
+  return validate_form(formname, '', switchTab);
 }
 
-function add_error_style(formname, input, txt, flash) {
+function add_error_style(formname, input, txt, flash, switchTab) {
   var raiseFlag = false;
+  if (typeof flash == "undefined" || switchTab === null) {
+    switchTab = true;
+  }
   if (typeof flash == "undefined")
     flash = true;
   try {
@@ -808,7 +811,7 @@ function add_error_style(formname, input, txt, flash) {
             if (tabs[i].get("contentEl") == parentDiv
               || YAHOO.util.Dom.isAncestor(tabs[i].get("contentEl"), inputHandle)) {
               tabs[i].get("labelEl").style.color = "red";
-              if (inputsWithErrors.length == 1)
+              if (inputsWithErrors.length == 1 && switchTab === true)
                 tabView.selectTab(i);
             }
           }
@@ -915,7 +918,7 @@ function isFieldTypeExceptFromEmptyCheck(fieldType) {
   }
   return results;
 }
-function validate_form(formname, startsWith) {
+function validate_form(formname, startsWith, switchTab = true) {
   requiredTxt = SUGAR.language.get('app_strings', 'ERR_MISSING_REQUIRED_FIELDS');
   invalidTxt = SUGAR.language.get('app_strings', 'ERR_INVALID_VALUE');
 
@@ -956,7 +959,7 @@ function validate_form(formname, startsWith) {
           && !isFieldTypeExceptFromEmptyCheck(validate[formname][i][typeIndex])
         ) {
           if (typeof form[validate[formname][i][nameIndex]] == 'undefined' || trim(form[validate[formname][i][nameIndex]].value) == "") {
-            add_error_style(formname, validate[formname][i][nameIndex], requiredTxt + ' ' + validate[formname][i][msgIndex]);
+            add_error_style(formname, validate[formname][i][nameIndex], requiredTxt + ' ' + validate[formname][i][msgIndex], true, switchTab);
             isError = true;
           }
         }
@@ -965,19 +968,19 @@ function validate_form(formname, startsWith) {
             case 'email':
               if (!isValidEmail(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'time':
               if (!isTime(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'date':
               if (!isDate(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'alpha':
@@ -985,14 +988,14 @@ function validate_form(formname, startsWith) {
             case 'DBName':
               if (!isDBName(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             // Bug #49614 : Check value without trimming before
             case 'DBNameRaw':
               if (!isDBName(form[validate[formname][i][nameIndex]].value)) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'alphanumeric':
@@ -1001,26 +1004,26 @@ function validate_form(formname, startsWith) {
               var file_input = form[validate[formname][i][nameIndex] + '_file'];
               if (file_input && validate[formname][i][requiredIndex] && trim(file_input.value) == "" && !file_input.disabled) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], requiredTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], requiredTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'int':
               if (!isInteger(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'decimal':
               if (!isDecimal(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'currency':
             case 'float':
               if (!isFloat(trim(form[validate[formname][i][nameIndex]].value))) {
                 isError = true;
-                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
               }
               break;
             case 'teamset_mass':
@@ -1055,7 +1058,7 @@ function validate_form(formname, startsWith) {
               }
 
               if (replace_selected && !validation_passed) {
-                add_error_style(formname, primary_field_id, SUGAR.language.get('app_strings', 'ERR_NO_PRIMARY_TEAM_SPECIFIED'));
+                add_error_style(formname, primary_field_id, SUGAR.language.get('app_strings', 'ERR_NO_PRIMARY_TEAM_SPECIFIED'), true, switchTab);
                 isError = true;
               }
               break;
@@ -1079,13 +1082,13 @@ function validate_form(formname, startsWith) {
                 if (!has_primary) {
                   isError = true;
                   var field_id = form[validate[formname][i][nameIndex]].name + '_collection_' + input_elements[0].value;
-                  add_error_style(formname, field_id, SUGAR.language.get('app_strings', 'ERR_NO_PRIMARY_TEAM_SPECIFIED'));
+                  add_error_style(formname, field_id, SUGAR.language.get('app_strings', 'ERR_NO_PRIMARY_TEAM_SPECIFIED'), true, switchTab);
                 }
               }
               break;
             case 'error':
               isError = true;
-              add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex]);
+              add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex], true, switchTab);
               break;
           }
 
@@ -1098,7 +1101,7 @@ function validate_form(formname, startsWith) {
                   var result = validate[formname][i][callbackIndex](formname, validate[formname][i][nameIndex]);
                   if (result == false) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
                   }
                 }
                 break;
@@ -1107,13 +1110,13 @@ function validate_form(formname, startsWith) {
                   isError = true;
                   var lbl_validate_range = SUGAR.language.get('app_strings', 'LBL_VALIDATE_RANGE');
                   if (typeof validate[formname][i][minIndex] == 'number' && typeof validate[formname][i][maxIndex] == 'number') {
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " value " + form[validate[formname][i][nameIndex]].value + " " + lbl_validate_range + " (" + validate[formname][i][minIndex] + " - " + validate[formname][i][maxIndex] + ")");
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " value " + form[validate[formname][i][nameIndex]].value + " " + lbl_validate_range + " (" + validate[formname][i][minIndex] + " - " + validate[formname][i][maxIndex] + ")", true, switchTab);
                   }
                   else if (typeof validate[formname][i][minIndex] == 'number') {
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_SHOULD_BE') + ' ' + validate[formname][i][minIndex] + ' ' + SUGAR.language.get('app_strings', 'MSG_OR_GREATER'));
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_SHOULD_BE') + ' ' + validate[formname][i][minIndex] + ' ' + SUGAR.language.get('app_strings', 'MSG_OR_GREATER'), true, switchTab);
                   }
                   else if (typeof validate[formname][i][maxIndex] == 'number') {
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_IS_MORE_THAN') + ' ' + validate[formname][i][maxIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_IS_MORE_THAN') + ' ' + validate[formname][i][maxIndex], true, switchTab);
                   }
                 }
                 break;
@@ -1128,7 +1131,7 @@ function validate_form(formname, startsWith) {
 
                       isError = true;
                       //jc:#12287 - adding translation for the is not before message
-                      add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + "(" + date1 + ") " + SUGAR.language.get('app_strings', 'MSG_IS_NOT_BEFORE') + ' ' + date2);
+                      add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + "(" + date1 + ") " + SUGAR.language.get('app_strings', 'MSG_IS_NOT_BEFORE') + ' ' + date2, true, switchTab);
                     }
                   }
                 }
@@ -1139,7 +1142,7 @@ function validate_form(formname, startsWith) {
                 if (typeof maximum != 'undefined') {
                   if (value > maximum) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_IS_MORE_THAN') + ' ' + validate[formname][i][altMsgIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_IS_MORE_THAN') + ' ' + validate[formname][i][altMsgIndex], true, switchTab);
                   }
                 }
                 break;
@@ -1149,7 +1152,7 @@ function validate_form(formname, startsWith) {
                 if (typeof minimum != 'undefined') {
                   if (value < minimum) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_SHOULD_BE') + ' ' + minimum + ' ' + SUGAR.language.get('app_strings', 'MSG_OR_GREATER'));
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex] + " " + SUGAR.language.get('app_strings', 'MSG_SHOULD_BE') + ' ' + minimum + ' ' + SUGAR.language.get('app_strings', 'MSG_OR_GREATER'), true, switchTab);
                   }
                 }
                 break;
@@ -1160,7 +1163,7 @@ function validate_form(formname, startsWith) {
                   item2 = trim(compareTo.value);
                   if (!bothExist(item1, item2)) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex], true, switchTab);
                   }
                 }
                 break;
@@ -1171,7 +1174,7 @@ function validate_form(formname, startsWith) {
                   item2 = trim(compareTo.value);
                   if (!bothExist(item1, item2) || item1 != item2) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], validate[formname][i][msgIndex], true, switchTab);
                   }
                 }
                 break;
@@ -1191,7 +1194,7 @@ function validate_form(formname, startsWith) {
                   val = arr[j];
                   if ((operator == "==" && val == item1) || (operator == "!=" && val != item1)) {
                     isError = true;
-                    add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex]);
+                    add_error_style(formname, validate[formname][i][nameIndex], invalidTxt + " " + validate[formname][i][msgIndex], true, switchTab);
                   }
                 }
                 break;
