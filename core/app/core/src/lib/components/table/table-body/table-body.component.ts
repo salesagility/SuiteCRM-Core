@@ -223,5 +223,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         }
         return loading$;
     }
+
+    trackRecord(index: number, item: Record): any {
+        return item?.id ?? '';
+    }
 }
 
