@@ -129,6 +129,7 @@ export interface FieldMetadata {
     extraOptions?: Option[];
     onClick?: FieldClickCallback;
     tinymce?: any;
+    date_time_format?: string;
 
     [key: string]: any;
 }
