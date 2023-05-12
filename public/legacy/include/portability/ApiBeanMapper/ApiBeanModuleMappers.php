@@ -49,6 +49,11 @@ class ApiBeanModuleMappers
     protected $linkMappers = [];
 
     /**
+     * @var ExtraAttributeMapperInterface[]
+     */
+    protected $extraAttributeMappers;
+
+    /**
      * @return string
      */
     public static function getModule(): string
@@ -83,6 +88,7 @@ class ApiBeanModuleMappers
     {
         return isset($this->fieldMappers[$field]);
     }
+
 
     /**
      * @return TypeMapperInterface[]
@@ -151,5 +157,22 @@ class ApiBeanModuleMappers
     public function hasLinkMapper(string $relateModule, string $field): bool
     {
         return $this->getLinkMapper($relateModule, $field) !== null;
+    }
+
+    /**
+     * @return ExtraAttributeMapperInterface[]
+     */
+    public function getExtraAttributeMappers()
+    {
+        return $this->extraAttributeMappers;
+    }
+
+    /**
+     * @param string $field
+     * @return bool
+     */
+    public function hasExtraAttributeMapper(string $field): bool
+    {
+        return isset($this->extraAttributeMappers[$field]);
     }
 }
