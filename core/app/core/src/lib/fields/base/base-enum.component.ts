@@ -194,6 +194,9 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     protected initEnumDefault(): void {
 
         if (!isEmptyString(this.record?.id)) {
+
+            this.field?.formControl.setValue('');
+
             return;
         }
 
