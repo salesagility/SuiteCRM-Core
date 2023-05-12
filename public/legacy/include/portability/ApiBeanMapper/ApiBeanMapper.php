@@ -64,6 +64,11 @@ class ApiBeanMapper
     protected $linkMappers = [];
 
     /**
+     * @var ExtraAttributeMapperInterface[][]
+     */
+    protected $extraAttributeMappers = [];
+
+    /**
      * @var ApiBeanModuleMappers[]
      */
     protected $moduleMappers = [];
@@ -71,7 +76,7 @@ class ApiBeanMapper
     public function __construct()
     {
         $this->fieldMappers[AssignedUserMapper::getField()] = new AssignedUserMapper();
-        $this->fieldMappers[RelateToFieldMapper::getField()] = new RelateToFieldMapper();
+        $this->extraAttributeMappers[RelateToFieldMapper::getField()] = new RelateToFieldMapper();
         $this->typeMappers[FullNameMapper::getType()] = new FullNameMapper();
         $this->typeMappers[ParentMapper::getType()] = new ParentMapper();
         $this->typeMappers[DateMapper::getType()] = new DateMapper();
@@ -160,8 +165,53 @@ class ApiBeanMapper
             $this->setValue($bean, $field, $arr, $definition);
         }
 
+        $attributeMappers = $this->getExtraAttributesMappers($bean->module_name);
+
+        foreach ($attributeMappers as $attributeMapper) {
+            if (null !== $attributeMapper) {
+                $attributeMapper->toApi($bean, $arr, $attributeMapper->getField());
+            }
+        }
+
         return $arr;
     }
+
+    /**
+     * @param string $module
+     * @param string $field
+     * @return ExtraAttributeMapperInterface|array
+     */
+    protected function getExtraAttributesMapper(string $module, string $field)
+    {
+        $moduleMappers = $this->moduleMappers[$module] ?? null;
+
+        if ($moduleMappers !== null && $moduleMappers->hasExtraAttributeMapper($field)) {
+            return $moduleMappers->getExtraAttributeMappers()[$field];
+        }
+
+        return $this->extraAttributeMappers[$field] ?? null;
+    }
+
+    /**
+     * @param string $module
+     * @return array|ExtraAttributeMapperInterface[]|null
+     */
+    protected function getExtraAttributesMappers(string $module)
+    {
+        $moduleMappers = $this->moduleMappers[$module] ?? null;
+
+        $attributeMappers = [];
+        if ($moduleMappers !== null && !empty($moduleMappers->getExtraAttributeMappers())) {
+            $attributeMappers = $moduleMappers->getExtraAttributeMappers();
+        }
+
+        if (!empty($this->extraAttributeMappers ?? [])) {
+            $attributeMappers = array_merge($this->extraAttributeMappers ?? [], $attributeMappers);
+        }
+
+        return $attributeMappers;
+    }
+
 
     /**
      * @param SugarBean $bean
@@ -176,7 +226,11 @@ class ApiBeanMapper
 
         [$linkFields, $idFields] = $this->getLinkFields($bean);
 
+        $mappedAttributes = [];
+
         foreach ($bean->field_defs as $field => $properties) {
+            $mappedAttributes[$field] = true;
+
             if (!isset($values[$field])) {
                 continue;
             }
@@ -198,11 +252,24 @@ class ApiBeanMapper
         }
 
         foreach ($bean->relationship_fields as $field => $link) {
+            $mappedAttributes[$field] = true;
             if (!empty($values[$field])) {
                 $bean->$field = $values[$field];
             }
         }
+
+        foreach ($values as $field => $value) {
+            if (!empty($mappedAttributes[$field])) {
+                continue;
+            }
+
+            $attributeMapper = $this->getExtraAttributesMapper($bean->module_name, $field);
+            if (null !== $attributeMapper) {
+                $attributeMapper->toBean($bean, $values, $field);
+            }
+        }
     }
+
 
     /**
      * @param SugarBean $bean
