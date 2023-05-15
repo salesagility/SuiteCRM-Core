@@ -25,31 +25,31 @@
                 background: $pale-blue;
             }
         }
-    }  
+    }
     .activity-stream-container {
         line-height: 3em;
         background: $white;
         border-radius: 10px;
         padding: 1em;
-        .activity-box-enable { 
+        .activity-box-enable {
             display: flex;
             .activity-left-label-enable {
                 width: 22.3%;
                 @media (min-width: 768px) and (max-width: 1024px) {
                     width: 36%;
-                }                
-                @media (min-width: 320px) and (max-width: 480px) { //for mobile 
+                }
+                @media (min-width: 320px) and (max-width: 480px) { //for mobile
                     min-width: 17em;
                 }
-                @media (min-width: 480px) and (max-width: 767px) { 
+                @media (min-width: 480px) and (max-width: 767px) {
                     width: 100%;
                 }
             }
             .activity-right-label-enable {
                 width: 82%;
             }
-        } 
-        .activity-box {            
+        }
+        .activity-box {
             @media (max-width: 750px) {
                 display: block;
             }
@@ -65,6 +65,21 @@
                 }
                 @media (min-width: 480px) and (max-width: 767px) {
                     margin-left: 1em;
+                }
+
+                .activate-feed {
+
+                    .activity-checkbox {
+                        padding-right: 4em;
+                        padding-left: 4em;
+
+                        @media (min-width: 320px) and (max-width: 371px) {
+                            padding-right: 2em;
+                            padding-left: 2em;
+                        }
+
+                    }
+
                 }
             }
         }
@@ -86,10 +101,10 @@
         span[scope="row"] {
             width: 7%;
             display: inline-block;
-            text-align: left;   
+            text-align: left;
             @media (min-width: 320px) and (max-width: 480px) {
                 width: 50%;
-            }        
+            }
         }
     }
 }

@@ -70,8 +70,7 @@
          {foreach name=feedModuleList from=$module_list key=i item=entry}
          {if ($i % 2)==0}<div class="activate-feed">{/if}
          <span scope="row" align="right" style="padding-right: 3em;">{$entry.label}:</span>
-         <span style="padding-right: 4em;
-    padding-left: 4em;">
+         <span class="activity-checkbox">
          <input type="hidden" name="modules[module_{$entry.module}]" value="0">
          <input type="checkbox" id="modules[module_{$entry.module}]" name="modules[module_{$entry.module}]" value="1" {if $entry.enabled==1}CHECKED{/if}>
          </span>
