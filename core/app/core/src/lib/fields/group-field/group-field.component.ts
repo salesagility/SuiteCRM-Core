@@ -47,7 +47,7 @@ export class GroupFieldComponent extends BaseFieldComponent {
 
         const displayType = (definition && definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, type, displayType, this.mode);
+        return this.registry.getDisplayType(module, type, displayType, this.mode, this.field.name);
     }
 
     /**

@@ -71,7 +71,7 @@ export class FieldComponent implements OnInit {
 
         const displayType = (this.field.definition && this.field.definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, this.type, displayType, this.componentMode);
+        return this.registry.getDisplayType(module, this.type, displayType, this.componentMode, this.field.name);
     }
 
     public setHostClass() {

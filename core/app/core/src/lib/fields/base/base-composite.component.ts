@@ -59,7 +59,7 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
 
         const displayType = (definition && definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, type, displayType, this.getMode());
+        return this.registry.getDisplayType(module, type, displayType, this.getMode(), this.field.name);
     }
 
     /**
