@@ -80,6 +80,14 @@ class InstallActionHandler implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

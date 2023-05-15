@@ -109,6 +109,48 @@ class UnlinkRelationHandler extends LegacyHandler implements ProcessHandlerInter
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $payload = $options['payload'] ?? [];
+        $baseModule = $payload['baseModule'] ?? '';
+        $relateModule = $payload['relateModule'] ?? '';
+        $relateModuleId = $payload['relateRecordId'] ?? '';
+
+        $acls = [
+            $baseModule => [
+                [
+                    'action' => 'view',
+                    'record' => $payload['baseRecordId'] ?? ''
+                ],
+                [
+                    'action' => 'edit'
+                ],
+            ],
+            $relateModule => [
+                [
+                    'action' => 'view',
+                    'record' => $relateModuleId
+                ]
+            ]
+        ];
+
+        if (!empty($relateModule) && !empty($relateModuleId)) {
+            $acls[$relateModule] = [
+                [
+                    'action' => 'view',
+                    'record' =>  $relateModuleId ?? ''
+                ]
+            ];
+        }
+
+        return $acls;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function configure(
         Process $process
     ): void {

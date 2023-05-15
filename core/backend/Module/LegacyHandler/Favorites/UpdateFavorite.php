@@ -104,6 +104,26 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        ['favorite' => $favorite] = $process->getOptions();
+
+        $module = $favorite['attributes']['parent_type'] ?? '';
+        $id = $favorite['attributes']['parent_id'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'view',
+                    'record' => $id
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous
@@ -119,6 +139,15 @@ class UpdateFavorite extends LegacyHandler implements ProcessHandlerInterface
     public function validate(Process $process): void
     {
         if (empty($process->getOptions())) {
+            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        }
+
+        ['favorite' => $favorite, 'action' => $action] = $process->getOptions();
+
+        $module = $favorite['attributes']['parent_type'] ?? '';
+        $id = $favorite['attributes']['parent_id'] ?? '';
+
+        if (empty($module) || empty($id) || empty($action)) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }

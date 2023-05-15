@@ -1,0 +1,17 @@
+parameters:
+  system.admin_only_module_actions:
+    administration:
+      '*': true
+    users:
+      'list': true
+      'index': true
+    'sugar-feed':
+      'adminsettings': true
+    'address-cache':
+      '*': true
+    maps:
+      'geocoded_counts': true
+      'geocoding_test': true
+      'config': true
+    external-oauth-connection:
+      '*': true

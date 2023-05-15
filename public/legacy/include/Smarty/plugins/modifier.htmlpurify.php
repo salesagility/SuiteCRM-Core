@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,51 +25,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-namespace App\Process\Service;
+/**
+ * Smarty HTML purifier modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     htmlpurify<br>
+ * Purpose:  purify html to display
+ * @param string
+ * @return string
+ */
 
-use App\Process\Entity\Process;
-
-interface ProcessHandlerInterface
+function smarty_modifier_htmlpurify($string)
 {
-    /**
-     * Get the Process Type
-     * @return string
-     */
-    public function getProcessType(): string;
+    $string = purify_html(securexss($string));
 
-    /**
-     * Required Auth role, empty string means no authentication needed
-     *
-     * @return string
-     */
-    public function requiredAuthRole(): string;
-
-    /**
-     * Get required acls list per module, empty array means no acl check needed
-     *
-     * @param Process $process
-     * @return array
-     */
-    public function getRequiredACLs(Process $process): array;
-
-    /**
-     * Configure process for given type
-     * @param Process $process
-     */
-    public function configure(Process $process): void;
-
-    /**
-     * Validate received options
-     * @param Process $process
-     * @return void
-     */
-    public function validate(Process $process): void;
-
-    /**
-     * Run process
-     * @param Process $process
-     * @return mixed
-     */
-    public function run(Process $process);
+    return $string;
 }

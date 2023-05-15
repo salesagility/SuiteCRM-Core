@@ -6203,6 +6203,11 @@ class SugarBean
         if ($current_user->isAdmin() || !$this->bean_implements('ACL')) {
             return true;
         }
+
+        if (check_default_module_access($this->module_name ?? '') === false) {
+            return false;
+        }
+
         $view = strtolower($view);
         switch ($view) {
             case 'list':

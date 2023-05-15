@@ -30,8 +30,8 @@ namespace App\Process\LegacyHandler;
 
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Process\Entity\Process;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use BadFunctionCallException;
 use Exception;
@@ -72,6 +72,15 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
     {
         return '';
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        return [];
+    }
+
 
     /**
      * @inheritDoc
@@ -122,7 +131,7 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
 
         try {
             $service->sendResetLink($username, $useremail);
-        } catch (BadFunctionCallException | \InvalidArgumentException $e) {
+        } catch (BadFunctionCallException|\InvalidArgumentException $e) {
             //logged by suite 7
         } catch (Exception $unknownException) {
             $this->logger->error($unknownException->getMessage(), ['exception' => $unknownException]);

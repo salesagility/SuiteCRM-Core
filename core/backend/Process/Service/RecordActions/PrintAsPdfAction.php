@@ -71,6 +71,46 @@ class PrintAsPdfAction implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+        $modalRecord = $options['params']['modalRecord'] ?? [];
+        $modalRecordModule = $modalRecord['module'] ?? '';
+        $modalRecordId = $modalRecord['id'] ?? '';
+
+        $acls = [
+            $module => [
+                [
+                    'action' => 'view',
+                    'record' => $options['id'] ?? ''
+                ],
+                [
+                    'action' => 'export',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
+        if ($modalRecordModule !== '') {
+            $acls[$modalRecordModule] = [
+                [
+                    [
+                        'action' => 'view',
+                        'record' => $modalRecordId
+                    ]
+                ]
+            ];
+        }
+
+        return $acls;
+
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

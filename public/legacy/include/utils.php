@@ -292,6 +292,10 @@ function make_sugar_config(&$sugar_config)
         'strict_id_validation' => false,
         'legacy_email_behaviour' => false,
         'snooze_alert_timer' => 600,
+        'default_module_access' => [
+            'SecurityGroups' => false,
+            'AOW_WorkFlow' => false
+        ],
     );
 }
 
@@ -592,6 +596,10 @@ function get_sugar_config_defaults(): array
         ],
         'legacy_email_behaviour' => false,
         'snooze_alert_timer' => 600,
+        'default_module_access' => [
+            'SecurityGroups' => false,
+            'AOW_WorkFlow' => false,
+        ],
     ];
 
     if (!is_object($locale)) {
@@ -6218,11 +6226,57 @@ function has_group_action_acls_defined(string $module, string $action): bool
 }
 
 /**
+ * Check if user has action acls defined
+ * @param string $module
+ * @param string $action
+ * @return bool
+ */
+function has_action_acls_defined(string $module, string $action): bool
+{
+    global $current_user;
+
+    $hasGroupActionAcls = true;
+
+    $aclActions = ACLAction::getUserActions($current_user->id, false, $module, 'module', $action);
+    $isDefaultListACL = !empty($aclActions['isDefault']) && isTrue($aclActions['isDefault']);
+
+    if (empty($aclActions) || $isDefaultListACL) {
+        $hasGroupActionAcls = false;
+    }
+
+    return $hasGroupActionAcls;
+}
+
+/**
+ * Check default module access
+ * @param string $module
+ * @return bool
+ */
+function check_default_module_access(string $module): bool
+{
+    global $sugar_config, $current_user;
+
+    if (empty($module) || is_admin($current_user)) {
+        return true;
+    }
+
+    $hasActionAclsDefined = has_action_acls_defined($module, 'access');
+    $defaultModuleAccessConfig = $sugar_config['default_module_access'] ?? [];
+    $defaultModuleAccess = $defaultModuleAccessConfig[$module] ?? true;
+    if ($defaultModuleAccess === false && isFalse($hasActionAclsDefined ?? false)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Check if is value is smtp in a case-insensitive way
  * @param $value
  * @return bool
  */
-function isSmtp($value): bool {
+function isSmtp($value): bool
+{
     if (empty($value) || !is_string($value)) {
         return false;
     }

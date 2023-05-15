@@ -113,6 +113,25 @@ class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessH
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $ids = $options['ids'] ?? [];
+
+        return [
+            $module => [
+                [
+                    'action' => 'view',
+                    'ids' => $ids
+                ]
+            ],
+        ];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configure(Process $process): void

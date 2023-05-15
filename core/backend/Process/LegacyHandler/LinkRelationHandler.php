@@ -117,6 +117,34 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $baseModule = $options['module'] ?? '';
+        $baseModuleId = $options['id'] ?? '';
+        $payload = $options['payload'] ?? [];
+        $relateModule = $payload['relateModule'] ?? '';
+        $relateRecordIds = $payload['relateRecordIds'] ?? [];
+
+        return [
+            $baseModule => [
+                [
+                    'action' => 'view',
+                    'record' => $baseModuleId
+                ]
+            ],
+            $relateModule => [
+                [
+                    'action' => 'view',
+                    'ids' => $relateRecordIds
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

@@ -79,6 +79,24 @@ class SnoozeRecordThreadItemAction implements ProcessHandlerInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'view',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configure(Process $process): void

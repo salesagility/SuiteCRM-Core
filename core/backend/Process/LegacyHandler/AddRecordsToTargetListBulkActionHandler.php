@@ -111,6 +111,30 @@ class AddRecordsToTargetListBulkActionHandler extends LegacyHandler implements P
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $baseModule = $options['module'] ?? '';
+        $baseIds = $options['ids'] ?? [];
+        $modalRecord = $options['modalRecord'] ?? [];
+        $modalModule = $modalRecord['module'] ?? '';
+
+        return [
+            $baseModule => [
+                [
+                    'action' => 'view',
+                    'ids' => $baseIds
+                ]
+            ],
+            $modalModule => [
+                ['action' => 'view']
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

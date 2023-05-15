@@ -777,7 +777,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {string} pageSizeConfig to use
      */
     protected determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
-        let size = 0;
+        let size = 20;
 
         if (pageSizePreference) {
             size = pageSizePreference;

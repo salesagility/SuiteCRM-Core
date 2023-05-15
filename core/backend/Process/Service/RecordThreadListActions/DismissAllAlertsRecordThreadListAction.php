@@ -70,6 +70,24 @@ class DismissAllAlertsRecordThreadListAction implements ProcessHandlerInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $ids = $options['ids'] ?? [];
+
+        return [
+            'alerts' => [
+                [
+                    'action' => 'delete',
+                    'ids' => $ids
+                ]
+            ],
+        ];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configure(Process $process): void

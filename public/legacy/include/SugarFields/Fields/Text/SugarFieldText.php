@@ -56,6 +56,10 @@ class SugarFieldText extends SugarFieldBase
             $displayParams['url2html'] = true;
         }
 
+        if (isset($vardef['editor']) && $vardef['editor'] === "html") {
+            $displayParams['purifyHtml'] = $displayParams['purifyHtml'] ?? true;
+        }
+
         return parent::getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
     }
 
@@ -98,8 +102,11 @@ class SugarFieldText extends SugarFieldBase
             if (!isset($displayParams['htmlescape'])) {
                 $displayParams['htmlescape'] = false;
             }
+            if (isset($vardef['editor']) && $vardef['editor'] === "html") {
+                $displayParams['purifyHtml'] = $displayParams['purifyHtml'] ?? true;
+            }
 
-            if ($_REQUEST['action'] == "EditView") {
+            if ($_REQUEST['action'] === "EditView") {
                 require_once(__DIR__ . "/../../../../include/SugarTinyMCE.php");
                 $tiny = new SugarTinyMCE();
                 $editor = $tiny->getInstance($vardef['name'], 'email_compose_light');

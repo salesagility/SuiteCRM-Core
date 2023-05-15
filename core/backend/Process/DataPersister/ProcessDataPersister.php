@@ -30,9 +30,10 @@ namespace App\Process\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\Exception\InvalidResourceException;
+use App\Engine\Service\AclManagerInterface;
 use App\Process\Entity\Process;
-use App\Process\Service\ProcessHandlerRegistry;
 use App\Process\Service\ProcessHandlerInterface;
+use App\Process\Service\ProcessHandlerRegistry;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
@@ -42,20 +43,28 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
      * @var ProcessHandlerRegistry
      */
     private $registry;
+
     /**
      * @var Security
      */
     private $security;
 
     /**
+     * @var AclManagerInterface
+     */
+    private $acl;
+
+    /**
      * ProcessDataPersister constructor.
      * @param ProcessHandlerRegistry $registry
      * @param Security $security
+     * @param AclManagerInterface $acl
      */
-    public function __construct(ProcessHandlerRegistry $registry, Security $security)
+    public function __construct(ProcessHandlerRegistry $registry, Security $security, AclManagerInterface $acl)
     {
         $this->registry = $registry;
         $this->security = $security;
+        $this->acl = $acl;
     }
 
     /**
@@ -79,7 +88,17 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
         $this->checkAuthentication($processHandler);
 
         $processHandler->validate($process);
+
+        $hasAccess = $this->checkACLAccess($processHandler, $process);
+
         $processHandler->configure($process);
+
+        if (!$hasAccess) {
+            $process->setMessages(['LBL_ACCESS_DENIED']);
+            $process->setStatus('error');
+
+            return $process;
+        }
 
         if ($process->getAsync() === true) {
             // Store process for background processing
@@ -109,6 +128,63 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
+     * Check acl access
+     * @param ProcessHandlerInterface $processHandler
+     * @param Process $process
+     */
+    protected function checkACLAccess(ProcessHandlerInterface $processHandler, Process $process): bool
+    {
+        $modulesACLs = $processHandler->getRequiredACLs($process) ?? [];
+        if (empty($modulesACLs)) {
+            return true;
+        }
+
+        $hasAccess = true;
+        foreach ($modulesACLs as $module => $requiredACLs) {
+            if (empty($requiredACLs)) {
+                continue;
+            }
+            if (empty($module)) {
+                continue;
+            }
+
+            if ($hasAccess === false) {
+                return false;
+            }
+
+            foreach ($requiredACLs as $requiredACL) {
+                $record = $requiredACL['record'] ?? '';
+                $ids = $requiredACL['ids'] ?? '';
+                $action = $requiredACL['action'] ?? '';
+
+                if (empty($action)) {
+                    continue;
+                }
+
+                if ($hasAccess === false) {
+                    return false;
+                }
+
+                if (empty($record) && empty($ids)) {
+                    $hasAccess &= $this->acl->checkAccess($module, $action, true, 'module', true);
+                    continue;
+                }
+
+                if (!empty($record)) {
+                    $hasAccess &= $this->acl->checkRecordAccess($module, $action, $record);
+                    continue;
+                }
+
+                if (!empty($ids)) {
+                    $hasAccess &= $this->checkRecordsAccess($ids, $module, $action);
+                }
+            }
+        }
+
+        return $hasAccess;
+    }
+
+    /**
      * Handler process deletion request
      * @param $data
      * @param array $context
@@ -118,5 +194,27 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
     {
         // Deleting processes is not supported
         throw new InvalidResourceException();
+    }
+
+    /**
+     * @param array $ids
+     * @param string $module
+     * @param string $action
+     * @return bool
+     */
+    protected function checkRecordsAccess(array $ids, string $module, string $action): bool
+    {
+        if (empty($ids)) {
+            return true;
+        }
+
+        foreach ($ids as $id) {
+            $hasAccess = $this->acl->checkRecordAccess($module, $action, $id);
+            if ($hasAccess === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

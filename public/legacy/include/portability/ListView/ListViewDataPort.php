@@ -618,7 +618,12 @@ class ListViewDataPort extends ListViewData
             $totalCount = $this->getTotalCount($main_query);
         }
 
-        $endOffset = (floor(($totalCount - 1) / $limit)) * $limit;
+        if ($limit > 0) {
+            $endOffset = (floor(($totalCount - 1) / $limit)) * $limit;
+        } else {
+            $endOffset = 0;
+        }
+
         $pageData['ordering'] = $order;
         $pageData['ordering']['sortOrder'] = $this->getReverseSortOrder($pageData['ordering']['sortOrder']);
         //get url parameters as an array

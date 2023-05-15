@@ -301,7 +301,21 @@ class SugarApplication
         if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "RetrieveEmail") {
             return;
         }
-        if (!is_admin($GLOBALS['current_user']) && !empty($GLOBALS['adminOnlyList'][$this->controller->module]) && !empty($GLOBALS['adminOnlyList'][$this->controller->module]['all']) && (empty($GLOBALS['adminOnlyList'][$this->controller->module][$this->controller->action]) || $GLOBALS['adminOnlyList'][$this->controller->module][$this->controller->action] != 'allow')) {
+
+        $module = $this->controller->module ?? '';
+        $action = strtolower($this->controller->action ?? '');
+
+        if (!empty($_REQUEST['import_module'] ?? '') && strtolower($module) === 'import') {
+            $module = $_REQUEST['import_module'] ?? '';
+            $action = 'import';
+        }
+
+        $adminOnlyList = $GLOBALS['adminOnlyList'] ?? [];
+        $adminOnlyModuleActions = $adminOnlyList[$module] ?? [];
+        $adminOnlyAction = $adminOnlyModuleActions[$action] ?? $adminOnlyModuleActions['all'] ?? false;
+        $isAdminOnly = !empty($adminOnlyAction) && $adminOnlyAction !== 'allow';
+
+        if ($isAdminOnly && !is_admin($GLOBALS['current_user'])) {
             $this->controller->hasAccess = false;
             return;
         }
@@ -629,7 +643,7 @@ class SugarApplication
     {
         session_destroy();
     }
-    
+
     /**
      * Redirect to another URL
      *
@@ -643,7 +657,7 @@ class SugarApplication
          * If the headers have been sent, then we cannot send an additional location header
          * so we will output a javascript redirect statement.
          */
-        
+
         if (!empty($_REQUEST['ajax_load'])) {
             ob_get_clean();
             $ajax_ret = array(

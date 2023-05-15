@@ -109,6 +109,16 @@ class AddContactsToTargetListService
             $bean->retrieve($id);
             $contacts = $bean->get_linked_beans('contacts', 'Contacts3');
             foreach ($contacts as $contact) {
+
+                if (empty($contact)) {
+                    continue;
+                }
+
+                $hasAccess = $contact->ACLAccess('view');
+                if (!$hasAccess) {
+                    continue;
+                }
+
                 $relationship = $contact->load_relationship($sanitizedModuleName);
 
                 if (!$relationship) {

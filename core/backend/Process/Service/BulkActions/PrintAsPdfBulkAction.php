@@ -29,8 +29,8 @@
 namespace App\Process\Service\BulkActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Process\Entity\Process;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 
 class PrintAsPdfBulkAction implements ProcessHandlerInterface
@@ -66,6 +66,29 @@ class PrintAsPdfBulkAction implements ProcessHandlerInterface
     public function requiredAuthRole(): string
     {
         return 'ROLE_USER';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $ids = $options['ids'] ?? [];
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'view'
+                ],
+                [
+                    'action' => 'export',
+                    'ids' => $ids
+                ]
+            ]
+        ];
     }
 
     /**
