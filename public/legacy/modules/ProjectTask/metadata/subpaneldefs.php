@@ -137,6 +137,7 @@ $layout_defs['ProjectTask'] = array(
                 'name' =>
                     array(
                         'name' => 'name',
+                        'label' => 'LBL_SUBJECT',
                         'default' => true,
                         'width' => '10%',
                     ),
@@ -151,7 +152,8 @@ $layout_defs['ProjectTask'] = array(
                 'date_modified' =>
                     array(
                         'name' => 'date_modified',
-                        'default' => true,
+                        'label' => 'LBL_DATE_MODIFIED',
+                        'type' => 'date',
                         'width' => '10%',
                     ),
             ),

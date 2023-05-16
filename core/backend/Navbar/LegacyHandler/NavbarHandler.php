@@ -71,6 +71,11 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected $moduleRouting;
 
     /**
+     * @var array
+     */
+    protected $navbarAdministrationOverrides;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -83,6 +88,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      * @param ModuleRegistryInterface $moduleRegistry
      * @param SessionInterface $session
      * @param array $moduleRouting
+     * @param array $navbarAdministrationOverrides
      */
     public function __construct(
         string $projectDir,
@@ -95,7 +101,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         RouteConverterInterface $routeConverter,
         ModuleRegistryInterface $moduleRegistry,
         SessionInterface $session,
-        array $moduleRouting
+        array $moduleRouting,
+        array $navbarAdministrationOverrides
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);
@@ -104,6 +111,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $this->menuItemMap = $menuItemMap;
         $this->moduleRegistry = $moduleRegistry;
         $this->moduleRouting = $moduleRouting;
+        $this->navbarAdministrationOverrides = $navbarAdministrationOverrides;
     }
 
     /**
@@ -252,6 +260,12 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 'labelKey' => $legacyName,
                 'menu' => $menu
             ];
+            
+        }
+        foreach ($this->navbarAdministrationOverrides ?? [] as $specialModule) {
+            if (!empty($modules[$specialModule]) && !empty($modules['administration'])) {
+                $modules[$specialModule] = $modules['administration'];
+            }
         }
 
         return $modules;
@@ -267,35 +281,125 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected function buildSubModule(SugarView $sugarView, string $legacyModule, string $frontendModule): array
     {
         $subMenu = [];
+        $administration_menu = [];
         $legacyMenuItems = $sugarView->getMenu($legacyModule);
+
+        if ($frontendModule === 'administration') {
+
+            global $current_language;
+
+            $admin_mod_strings = return_module_language($current_language, 'Administration');
+
+            require 'modules/Administration/metadata/adminpaneldefs.php';
+
+            $admin_group_header = $admin_group_header ?? [];
+
+            foreach ($admin_group_header as $adminEntry) {
+
+                $this->administration_menu[] = array(
+                    "",
+                    $admin_mod_strings[$adminEntry[0]],
+                    'View',
+                    'Administration',
+                    $adminEntry[3]
+                );
+            }
+
+        }
+
+
+        $legacyMenuItems = $frontendModule === 'administration' ? $this->administration_menu : $sugarView->getMenu($legacyModule);
 
         foreach ($legacyMenuItems as $legacyMenuItem) {
 
             [$url, $label, $action] = $legacyMenuItem;
+            $routeInfo = [
+                'module' => 'Administration',
+                'route' => '',
+                'params' => []
+            ];
 
-            $routeInfo = $this->routeConverter->parseUri($url);
-
+            if (!empty($url)) {
+                $routeInfo = $this->routeConverter->parseUri($url);
+            }
             $subMenuItem = [
                 'name' => $action,
                 'labelKey' => $this->mapEntry($frontendModule, $action, 'labelKey', $label),
                 'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route']),
                 'params' => $routeInfo['params'],
                 'icon' => $this->mapEntry($frontendModule, $action, 'icon', ''),
-                'actionLabelKey' => $this->mapEntry($frontendModule, $action, 'actionLabelKey', '')
+                'actionLabelKey' => $this->mapEntry($frontendModule, $action, 'actionLabelKey', ''),
             ];
 
             if (!empty($routeInfo['module'])) {
                 $subMenuItem['module'] = $this->moduleNameMapper->toFrontEnd($routeInfo['module']);
             }
 
-            if ($subMenuItem['module'] === 'security-groups' && $subMenuItem['actionLabelKey']){
+            if ($subMenuItem['module'] === 'security-groups' && $subMenuItem['actionLabelKey']) {
                 $subMenuItem['labelKey'] = $subMenuItem['actionLabelKey'];
             }
 
+            if ($subMenuItem['module'] === 'administration') {
+                $subMenuItem['sublinks'] = $this->setLinks($legacyMenuItem[4]);
+            }
             $subMenu[] = $subMenuItem;
         }
 
         return $subMenu;
+    }
+
+    /**
+     * Convert legacy submenu data and return it
+     * @param array $legacyArray
+     * @return array
+     */
+    protected function setLinks(array $legacyArray): array
+    {
+
+        if (empty($legacyArray)) {
+            return [];
+        }
+
+        foreach ($legacyArray as $linkGroupKey => $linkGroup) {
+            $mappedLinkGroup = [];
+            if (empty($linkGroup)) {
+                continue;
+            }
+            foreach ($linkGroup as $linkKey => $link) {
+                unset($mappedLinkGroup[$linkKey]);
+                $path = $this->routeConverter->convertUri($link[3]);
+
+                $mappedLink = [
+                    'name' => $link[0] ?? '',
+                    'labelKey' => $link[1] ?? '',
+                    'actionLabelKey' => '',
+                    'url' => $path ?? '',
+                    'icon' => '',
+                ];
+
+                $query = parse_url($path, PHP_URL_QUERY);
+                if ($query) {
+                    parse_str($query, $params);
+                    $mappedLink['params'] = $params;
+                    $path = str_replace('?' . $query, '', $path);
+                    $mappedLink['link'] = $path;
+                }
+
+                $mappedLinkGroup[$linkKey] = $mappedLink;
+            }
+            $mapEntry[$linkGroupKey] = $mappedLinkGroup;
+            $linkGroupKeys = array_keys($mapEntry);
+
+        }
+        for ($j = 0; $j < count($linkGroupKeys); $j++) {
+            $linkGroup = $mapEntry[$linkGroupKeys[$j]];
+            $links = array_values($linkGroup);
+            for ($i = 0; $i < count($links); $i++) {
+                $linkGroups[] = $links[$i];
+            }
+        }
+
+        return $linkGroups;
     }
 
     /**
@@ -435,7 +539,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     /**
      * @return string
      */
-    protected function getNavigationType(): string {
+    protected function getNavigationType(): string
+    {
         global $current_user;
         $navigationType = $current_user->getPreference('navigation_paradigm');
 
@@ -444,7 +549,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             $navigationType = $sugar_config['default_navigation_paradigm'] ?? 'm';
         }
 
-        if (empty($navigationType)){
+        if (empty($navigationType)) {
             $navigationType = 'm';
         }
 

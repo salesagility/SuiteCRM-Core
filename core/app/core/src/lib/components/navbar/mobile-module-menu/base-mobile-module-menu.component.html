@@ -28,13 +28,13 @@
 
 <ng-container *ngFor="let item of items">
     <div class="mobile-menu-items">
-        <li (click)="onClose && onClose()" class="">
+        <a (click)="onClose && onClose()" class="">
             <scrm-menu-item-link
                 [class]="'mobile-nav-link dropdown-item action-link pl-3 pr-3 pt-2 pb-2'"
                 [icon]="item.icon || ''"
                 [link]="item.link">
             </scrm-menu-item-link>
-        </li>
+        </a>
     </div>
 </ng-container>
 

@@ -1,0 +1,60 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+
+<div class="widget-panel h-100 shadow-sm">
+    <div *ngIf="content" class="card h-100 panel-card border-0">
+        <div class="card-header">
+            <h5 [title]="language.getFieldLabel(content.descriptionLabelKey, 'administration')"
+                class="card-title admin-card-title m-0">
+                <scrm-label [labelKey]="content.titleLabelKey" module="administration"></scrm-label>
+            </h5>
+        </div>
+        <div class="card-body d-flex flex-column align-items-start">
+            <ng-container *ngIf="content.linkGroup">
+                <div *ngFor="let item of content.linkGroup; let isFirst = first" [class.border-top]="isFirst"
+                     class="admin-card-link-box border-bottom w-100">
+                    <a [queryParams]="item?.params"
+                       [routerLink]="item.link"
+                       [title]="language.getFieldLabel(item.descriptionKey, 'administration')"
+                       class="card-link admin-card-link"
+                       queryParamsHandling="merge">
+                        <div class="d-flex admin-card-link-wrapper align-items-center w-100 p-1 ">
+                            <scrm-image [image]="item.icon" class="admin-card-icon sicon-2x"></scrm-image>
+                            <scrm-label [labelKey]="item.titleKey"
+                                        class="admin-card-label pl-1 flex-grow-1"
+                                        module="administration">
+                            </scrm-label>
+                        </div>
+
+                    </a>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+

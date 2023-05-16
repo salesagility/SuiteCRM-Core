@@ -60,14 +60,29 @@
 		<th align="left" scope="row" colspan="4"><h4>{$MOD.DEFAULT_SYSTEM_SETTINGS}</h4></th>
 	</tr>
 	<tr>
-		<td  scope="row">{$MOD.LIST_ENTRIES_PER_LISTVIEW}: </td>
+		<td scope="row">{$MOD.LIST_ENTRIES_PER_LISTVIEW}:</td>
 		<td>
-			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_page' name='list_max_entries_per_page' value='{$config.list_max_entries_per_page}'>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_page'
+				   name='list_max_entries_per_page' value='{$config.list_max_entries_per_page}'>
 		</td>
-		<td  scope="row">{$MOD.LIST_ENTRIES_PER_SUBPANEL}: </td>
+		<td scope="row">{$MOD.LBL_SET_LISTVIEW_PAGINATION_TYPE}:</td>
+		<td><select name="listview_pagination_type">{$listview_pagination_type}</select></td>
+	</tr>
+	<tr>
+		<td scope="row">{$MOD.LIST_ENTRIES_PER_SUBPANEL}:</td>
 		<td>
-			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_subpanel' name='list_max_entries_per_subpanel' value='{$config.list_max_entries_per_subpanel}'>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_subpanel'
+				   name='list_max_entries_per_subpanel' value='{$config.list_max_entries_per_subpanel}'>
 		</td>
+		<td scope="row">{$MOD.LBL_SET_SUBPANEL_PAGINATION_TYPE}:</td>
+		<td><select name="subpanel_pagination_type">{$subpanel_pagination_type}</select></td>
+	</tr>
+	<tr>
+		<td scope="row"><span>{$MOD.LBL_LIST_ENTRIES_PER_MODAL}:</td>
+		<td>
+			<input type='text' size='4' id='ConfigureSettings_list_max_entries_per_modal' name='list_max_entries_per_modal' value='{$config.list_max_entries_per_modal}'></td>
+		<td scope="row">{$MOD.LBL_SET_RECORD_MODAL_PAGINATION_TYPE}:</td>
+		<td><select name="record_modal_pagination_type">{$record_modal_pagination_type}</select></td>
 	</tr>
 	<tr>
 		<td scope="row">{$MOD.LOCK_HOMEPAGE}: </td>
@@ -143,6 +158,8 @@
         <td width='35%' >
             <img id="company_logo_image" src='{$company_logo}' alt=$mod_strings.LBL_LOGO>
         </td>
+		<td scope="row">{$MOD.LBL_SNOOZE_TIMER}:</td>
+		<td><select name="snooze_alert_timer">{$SNOOZE_ALERT_TIMER}</select></td>
     </tr>
     <tr>
         <td scope="row" width='12%' nowrap>
@@ -219,19 +236,20 @@
 		{/if}
 		<td>
 			<input type='hidden' name='hide_subpanels' value='false'>
-			<input name='hide_subpanels'  type="checkbox" value="true" {$hide_subpanels}>
+			<input name='hide_subpanels' type="checkbox" value="true" {$hide_subpanels}>
 		</td>
 	</tr>
 
 </table>
 
-<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view table-system-settings">
+	<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view table-system-settings">
 
-	<tr>
-		<th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_PROXY_TITLE}</h4></th>
-	</tr>
-	<tr>
-	<td width="25%" scope="row" valign='middle'>{$MOD.LBL_PROXY_ON}&nbsp{sugar_help text=$MOD.LBL_PROXY_ON_DESC}</td>
+		<tr>
+			<th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_PROXY_TITLE}</h4></th>
+		</tr>
+		<tr>
+			<td width="25%" scope="row" valign='middle'>{$MOD.LBL_PROXY_ON}
+				&nbsp{sugar_help text=$MOD.LBL_PROXY_ON_DESC}</td>
 		{if !empty($settings.proxy_on)}
 		{assign var='proxy_on_checked' value='CHECKED'}
 	{else}

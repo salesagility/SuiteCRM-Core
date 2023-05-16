@@ -35,6 +35,9 @@ import {LoadingSpinnerModule} from '../../loading-spinner/loading-spinner.module
 import {SortButtonModule} from '../../sort-button/sort-button.module';
 import {LabelModule} from '../../label/label.module';
 import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
+import {
+    RecordDetailsPopupButtonModule
+} from "../../popups/components/record-details-popup-button/record-details-popup-button.module";
 
 @NgModule({
     declarations: [TableBodyComponent],
@@ -47,7 +50,8 @@ import {LineActionModule} from '../../line-action-menu/line-action-menu.module';
         SortButtonModule,
         LineActionModule,
         LoadingSpinnerModule,
-        LabelModule
+        LabelModule,
+        RecordDetailsPopupButtonModule
     ]
 })
 export class TableBodyModule {

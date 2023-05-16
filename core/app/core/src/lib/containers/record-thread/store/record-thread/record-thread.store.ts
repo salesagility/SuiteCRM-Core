@@ -28,18 +28,21 @@
 import {Injectable} from '@angular/core';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {RecordStoreList} from './base-record-thread.store';
-import {Observable} from 'rxjs';
-import {Record, SearchCriteria, SortDirection} from 'common';
-import {map} from 'rxjs/operators';
+import {Observable, timer} from 'rxjs';
+import {ActionContext, Record, SearchCriteria, SortDirection} from 'common';
+import {map, takeWhile, tap} from 'rxjs/operators';
 import {RecordThreadItemStoreFactory} from './record-thread-item.store.factory';
 import {RecordThreadItemMetadata} from './record-thread-item.store.model';
 import {RecordThreadItemStore} from './record-thread-item.store';
+import {RecordThreadListMetadata} from "./record-thread-list.store.model";
 
 @Injectable()
 export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, RecordThreadItemMetadata> {
 
-    metadata: RecordThreadItemMetadata;
+    itemMetadata: RecordThreadItemMetadata;
+    listMetadata: RecordThreadListMetadata;
     $loading: Observable<boolean>;
+    autoRefreshEnabled = true;
 
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
@@ -49,8 +52,9 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         this.$loading = this.recordList.loading$;
     }
 
-    public init(module: string, load = true): void {
-        super.init(module, load);
+    public init(module: string, load = true, pageSize: number = null): void {
+        super.init(module, load, pageSize);
+        this.autoRefreshEnabled = true;
     }
 
     setFilters(filters: SearchCriteria): Observable<Record[]> {
@@ -76,12 +80,20 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         );
     }
 
-    public getMetadata(): RecordThreadItemMetadata {
-        return this.metadata;
+    public getItemMetadata(): RecordThreadItemMetadata {
+        return this.itemMetadata;
     }
 
-    public setMetadata(meta: RecordThreadItemMetadata) {
-        return this.metadata = meta;
+    public getListMetadata(): RecordThreadListMetadata {
+        return this.listMetadata;
+    }
+
+    public setItemMetadata(meta: RecordThreadItemMetadata) {
+        return this.itemMetadata = meta;
+    }
+
+    public setListMetadata(meta: RecordThreadListMetadata) {
+        return this.listMetadata = meta;
     }
 
     public allLoaded(): boolean {
@@ -93,7 +105,12 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
         return pagination.pageSize >= pagination.total;
     }
 
-    public loadMore(jump: number = 10): void {
+    public loadMore(jump: number = null): void {
+
+        if (!jump) {
+            jump = this.pageSize;
+        }
+
         const pagination = this.recordList.getPagination();
         const currentPageSize = pagination.pageSize || 0;
         let newPageSize = currentPageSize + jump;
@@ -104,5 +121,62 @@ export class RecordThreadStore extends RecordStoreList<RecordThreadItemStore, Re
 
     public reload(): void {
         this.recordList.updatePagination(0);
+    }
+
+    public getViewContext(): ActionContext {
+
+        return {
+            module: this.module,
+            ids: this.getRecordIds(),
+        } as ActionContext;
+    }
+
+    public initAutoRefresh(autoRefreshFrequency: number, min: number, max: number, onRefresh: Function): Observable<number> {
+        const currentDate = new Date();
+        const startOfNextMinute = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            currentDate.getHours(),
+            currentDate.getMinutes() + 1
+        );
+
+        const autoRefreshTime = this.getAutoRefreshTime(autoRefreshFrequency, min, max);
+
+        return timer(startOfNextMinute, autoRefreshTime).pipe(
+            takeWhile(() => {
+                return this.autoRefreshEnabled;
+            }),
+            tap(() => {
+                this.load(false).subscribe(
+                    () => {
+                        if (onRefresh) {
+                            onRefresh();
+                        }
+                    }
+                );
+            })
+        );
+    }
+
+    disableAutoRefresh() {
+        this.autoRefreshEnabled = false;
+    }
+
+    getAutoRefreshTime(autoRefreshFrequency: number, min: number, max: number) {
+
+        let autoRefreshTime = (autoRefreshFrequency * (60000));
+
+        if (min === 0 && max === 0) {
+            return autoRefreshTime;
+        }
+
+        return autoRefreshTime + this.getRandomDeviation(min, max);
+    }
+
+    getRandomDeviation(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
     }
 }

@@ -89,6 +89,25 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $ids = $options['ids'] ?? [];
+
+        return [
+            $module => [
+                [
+                    'action' => 'delete',
+                    'ids' => $ids
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

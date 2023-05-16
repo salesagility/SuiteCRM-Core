@@ -26,7 +26,7 @@
 */
 -->
 
-<div *ngIf="config" class="d-flex flex-column {{(config && config.klass) || ''}}">
+<div *ngIf="config" class="d-flex {{((config && config.flexDirection) ? config.flexDirection : 'flex-column' ) || ''}} {{(config && config.klass) || ''}}"   >
     <ng-container *ngIf="layout && layout.rows">
         <ng-container *ngFor="let item of layout.rows">
 
@@ -64,6 +64,11 @@
                                                             [labelKey]="field.labelKey"
                                                             [ngClass]="getLabelClass(col)">
                                                 </scrm-label>
+
+                                                <scrm-dynamic-label *ngIf="field.dynamicLabelKey"
+                                                                    [labelKey]="field.dynamicLabelKey"
+                                                                    [fields]="record.fields">
+                                                </scrm-dynamic-label>
                                             </div>
 
                                         </ng-container>
@@ -71,10 +76,10 @@
                                         <ng-container *ngIf="getDisplay(col) !== 'none'">
 
                                             <div [class.flex-grow-1]="getLabelDisplay(col, mode) === 'inline'">
-
                                                 <scrm-field [field]="field"
                                                             [klass]="getFieldClass(col)"
                                                             [mode]="mode"
+                                                            [record]="record"
                                                             [type]="field.type">
                                                 </scrm-field>
 
@@ -89,7 +94,8 @@
                             </ng-container>
 
                             <ng-container *ngIf="col.actionSlot && this.config.actions">
-                                <scrm-action-group-menu [buttonClass]="config.buttonClass"
+                                <scrm-action-group-menu [buttonClass]="config.buttonClass ?? ''"
+                                                        [buttonGroupClass]="config.buttonGroupClass ?? ''"
                                                         [config]="config.actions">
                                 </scrm-action-group-menu>
                             </ng-container>

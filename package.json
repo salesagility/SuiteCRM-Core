@@ -1,6 +1,6 @@
 {
   "name": "suitecrm",
-  "version": "8.2.4",
+  "version": "8.3.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run start:shell",
@@ -11,10 +11,12 @@
     "build-dev:shell": "ng build shell",
     "build-dev:common": "ng build common",
     "build-dev:core": "ng build core",
+    "build-dev:default": "ng build default --configuration dev",
     "build": "npm run build:shell",
     "build:shell": "ng build shell --configuration production",
     "build:common": "ng build common --configuration production",
     "build:core": "ng build core --configuration production",
+    "build:default": "ng build default --configuration production",
     "test": "npm run test:shell",
     "test:core": "ng test core",
     "gen-index": "barrelsby --delete -e '.*\\.spec.*' -q",
@@ -34,7 +36,7 @@
   "dependencies": {
     "@angular-architects/module-federation": "^12.1.1",
     "@angular/animations": "12.1.0",
-    "@angular/cdk": "^11.2.13",
+    "@angular/cdk": "^12",
     "@angular/common": "12.1.0",
     "@angular/compiler": "12.1.0",
     "@angular/core": "12.1.0",

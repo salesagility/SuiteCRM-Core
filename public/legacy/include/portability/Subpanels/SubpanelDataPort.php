@@ -43,7 +43,7 @@ class SubpanelDataPort
 
 
     /**
-     * @param SugarBean $bean
+     * @param SugarBean $parentBean
      * @param string $subpanel
      * @param int $offset
      * @param int $limit
@@ -52,24 +52,50 @@ class SubpanelDataPort
      * @return array
      */
     public function fetch(
-        SugarBean $bean,
+        SugarBean $parentBean,
         string $subpanel = '',
         int $offset = -1,
         int $limit = -1,
         string $orderBy = '',
-        string $sortOrder = ''
+        string $sortOrder = '',
+        array $criteria = []
     ): array
     {
+        $collection = [];
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/FilterMapper/FilterMapper.php';
+        $filterMapper = new FilterMapper();
+
+        $mapped = $filterMapper->toLegacy($criteria, 'basic');
+
+        if (!empty($mapped)){
+            foreach($mapped as $key => $item){
+                if (!empty($item)){
+                    $_REQUEST[$key] = $item;
+                }
+            }
+        }
 
         /* @noinspection PhpIncludeInspection */
         require_once 'include/SubPanel/SubPanelDefinitions.php';
 
-        $spd = new SubPanelDefinitions($bean);
-        $aSubPanelObject = $spd->load_subpanel($subpanel);
+        $spd = new SubPanelDefinitions($parentBean);
+        if (!isset($mapped['collection_basic']) || empty($mapped['collection_basic'])){
+            $aSubPanelObject = $spd->load_subpanel($subpanel);
+        } else {
+            $collection = $mapped['collection_basic'];
+            if (!is_array($mapped['collection_basic'])){
+                $collection = [$mapped['collection_basic']];
+            }
+            $aSubPanelObject = $spd->load_subpanel($subpanel, false, false, '', $collection);
+        }
+
+        $aSubPanelObject->legacySearch = false;
 
         try {
             $response = SugarBean::get_union_related_list(
-                $bean,
+                $parentBean,
                 $orderBy,
                 $sortOrder,
                 '',

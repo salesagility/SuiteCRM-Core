@@ -62,18 +62,57 @@ class Alert extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $is_read;
+    public $snooze;
+
+    /**
+     * @var string
+     */
+    public $url_redirect;
+
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string
+     */
+    public $target_module;
 
     /**
      * @var string
      */
     public $reminder_id;
 
+    /**
+     * @var string
+     */
+    public $date_start;
+
     public function __construct()
     {
         parent::__construct();
     }
 
+    public function snoozeUntil() {
 
+        global $current_user;
+
+        $preference = $current_user->getPreference('snooze_alert_timer') ?? null;
+
+        $snoozeTimer = $preference;
+        if (empty($preference)){
+            require_once 'modules/Configurator/Configurator.php';
+            $configurator = new Configurator();
+            $snoozeTimer = $configurator->config['snooze_alert_timer'] ?? $sugar_config['snooze_alert_timer'] ?? '';
+        }
+
+        if (empty($snoozeTimer) || !is_numeric($snoozeTimer)) {
+            $snoozeTimer = 600;
+        }
+
+        return date("Y-m-d H:i:s", strtotime("+ $snoozeTimer sec"));
+    }
 
 
     public function bean_implements($interface)

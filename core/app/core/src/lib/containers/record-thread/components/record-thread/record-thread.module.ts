@@ -35,6 +35,7 @@ import {RecordGridModule} from '../../../../components/record-grid/record-grid.m
 import {RecordThreadComponent} from './record-thread.component';
 import {RecordThreadItemModule} from '../record-thread-item/record-thread-item.module';
 import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loading-spinner.module';
+import {ActionGroupMenuModule} from "../../../../components/action-group-menu/action-group-menu.module";
 
 @NgModule({
     declarations: [RecordThreadComponent],
@@ -51,7 +52,9 @@ import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loadi
         RecordGridModule,
         ButtonModule,
         RecordThreadItemModule,
-        LoadingSpinnerModule
+        LoadingSpinnerModule,
+        ActionGroupMenuModule,
+
     ]
 })
 export class RecordThreadModule {

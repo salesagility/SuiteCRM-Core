@@ -36,9 +36,12 @@ require_once __DIR__ . '/TypeMappers/DateTimeMapper.php';
 require_once __DIR__ . '/TypeMappers/DateTimeComboMapper.php';
 require_once __DIR__ . '/TypeMappers/MultiEnumMapper.php';
 require_once __DIR__ . '/TypeMappers/BooleanMapper.php';
+require_once __DIR__ . '/TypeMappers/HtmlMapper.php';
+require_once __DIR__ . '/TypeMappers/TextMapper.php';
 require_once __DIR__ . '/ApiBeanModuleMappers.php';
 require_once __DIR__ . '/ModuleMappers/SavedSearch/SavedSearchMappers.php';
 require_once __DIR__ . '/ModuleMappers/AOP_Case_Updates/CaseUpdatesMappers.php';
+require_once __DIR__ . '/ModuleMappers/Alerts/AlertsMappers.php';
 require_once __DIR__ . '/../Bean/Field/Validation/FieldValidatorRegistry.php';
 
 class ApiBeanMapper
@@ -74,11 +77,14 @@ class ApiBeanMapper
         $this->typeMappers[MultiEnumMapper::getType()] = new MultiEnumMapper();
         $this->typeMappers[BooleanMapper::getType()] = new BooleanMapper();
         $this->typeMappers['boolean'] = $this->typeMappers[BooleanMapper::getType()];
+        $this->typeMappers[HtmlMapper::getType()] = new HtmlMapper();
+        $this->typeMappers[TextMapper::getType()] = new TextMapper();
         $this->moduleMappers[SavedSearchMappers::getModule()] = new SavedSearchMappers();
         $this->typeMappers[DateTimeComboMapper::getType()] = new DateTimeMapper();
         $this->linkMappers[EmailAddressLinkMapper::getRelateModule()] = [];
         $this->linkMappers[EmailAddressLinkMapper::getRelateModule()]['all'] = new EmailAddressLinkMapper();
         $this->moduleMappers[CaseUpdatesMappers::getModule()] = new CaseUpdatesMappers();
+        $this->moduleMappers[AlertsMappers::getModule()] = new AlertsMappers();
         $this->linkMappers[DefaultLinkMapper::getRelateModule()] = [];
         $this->linkMappers[DefaultLinkMapper::getRelateModule()]['all'] = new DefaultLinkMapper();
     }

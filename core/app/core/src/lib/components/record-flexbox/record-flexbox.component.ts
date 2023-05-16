@@ -200,7 +200,7 @@ export class RecordFlexboxComponent implements OnInit, OnDestroy {
             return null;
         }
 
-        return record.fields[field.name] || null;
+        return record.fields[field.name] ?? null;
     }
 
     getFieldClass(col: FieldFlexboxCol): { [key: string]: any } {

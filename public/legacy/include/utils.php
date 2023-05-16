@@ -46,6 +46,8 @@ require_once __DIR__ . '/../php_version.php';
 require_once __DIR__ . '/../include/SugarObjects/SugarConfig.php';
 require_once __DIR__ . '/../include/utils/security_utils.php';
 
+use SuiteCRM\ErrorMessage;
+use SuiteCRM\Utility\SuiteValidator;
 use voku\helper\AntiXSS;
 
 /**
@@ -102,6 +104,9 @@ function make_sugar_config(&$sugar_config)
     global $upload_maxsize;
     global $import_max_execution_time;
     global $list_max_entries_per_subpanel;
+    global $list_max_entries_per_modal;
+    global $subpanel_max_height;
+    global $listview_max_height;
     global $passwordsetting;
 
     // assumes the following variables must be set:
@@ -147,6 +152,10 @@ function make_sugar_config(&$sugar_config)
             'chown' => '',
             'chgrp' => '',
         ),
+        'subpanel_pagination_type' => 'pagination',
+        'subpanel_max_height' => empty($subpanel_max_height) ? 620 : $subpanel_max_height,
+        'listview_pagination_type' => 'pagination',
+        'listview_max_height' => empty($listview_max_height) ? 0 : $listview_max_height,
         'default_theme' => empty($default_theme) ? 'SuiteP' : $default_theme,
         'default_time_format' => empty($defaultTimeFormat) ? 'h:ia' : $defaultTimeFormat,
         'default_user_is_admin' => empty($default_user_is_admin) ? false : $default_user_is_admin,
@@ -164,6 +173,7 @@ function make_sugar_config(&$sugar_config)
         'languages' => empty($languages) ? array('en_us' => 'English (US)') : $languages,
         'list_max_entries_per_page' => empty($list_max_entries_per_page) ? 20 : $list_max_entries_per_page,
         'list_max_entries_per_subpanel' => empty($list_max_entries_per_subpanel) ? 10 : $list_max_entries_per_subpanel,
+        'list_max_entries_per_modal' => empty($list_max_entries_per_modal) ? 10 : $list_max_entries_per_modal,
         'lock_default_user_name' => empty($lock_default_user_name) ? false : $lock_default_user_name,
         'log_memory_usage' => empty($log_memory_usage) ? false : $log_memory_usage,
         'name_formats' => empty($nameFormats) ? array(
@@ -281,6 +291,11 @@ function make_sugar_config(&$sugar_config)
         ),
         'strict_id_validation' => false,
         'legacy_email_behaviour' => false,
+        'snooze_alert_timer' => 600,
+        'default_module_access' => [
+            'SecurityGroups' => false,
+            'AOW_WorkFlow' => false
+        ],
     );
 }
 
@@ -435,7 +450,11 @@ function get_sugar_config_defaults(): array
         'languages' => ['en_us' => 'English (US)'],
         'large_scale_test' => false,
         'list_max_entries_per_page' => 20,
+        'record_modal_pagination_type' => 'pagination',
         'list_max_entries_per_subpanel' => 10,
+        'list_max_entries_per_modal' => 10,
+        'listview_max_height' => 0,
+        'subpanel_max_height' => 620,
         'lock_default_user_name' => false,
         'log_memory_usage' => false,
         'oauth2_encryption_key' => base64_encode(random_bytes(32)),
@@ -489,6 +508,8 @@ function get_sugar_config_defaults(): array
             'phtml',
             'phar',
         ],
+        'subpanel_pagination_type' => 'pagination',
+        'listview_pagination_type' => 'pagination',
         'valid_image_ext' => [
             'gif',
             'png',
@@ -505,13 +526,6 @@ function get_sugar_config_defaults(): array
             'jpg'
         ],
         'upload_maxsize' => 30000000,
-        'allowed_preview' => [
-            'pdf',
-            'gif',
-            'png',
-            'jpeg',
-            'jpg'
-        ],
         'import_max_execution_time' => 3600,
 //	'use_php_code_json' => returnPhpJsonStatus(),
         'verify_client_ip' => true,
@@ -581,6 +595,11 @@ function get_sugar_config_defaults(): array
             'gc_divisor' => 100,
         ],
         'legacy_email_behaviour' => false,
+        'snooze_alert_timer' => 600,
+        'default_module_access' => [
+            'SecurityGroups' => false,
+            'AOW_WorkFlow' => false,
+        ],
     ];
 
     if (!is_object($locale)) {
@@ -2087,7 +2106,7 @@ function sugar_die($error_message, $exit_code = 1)
     global $focus;
     sugar_cleanup();
     echo $error_message;
-    throw new \Exception($error_message, $exit_code);
+    throw new Exception($error_message, $exit_code);
 }
 
 /**
@@ -3943,7 +3962,7 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
     $error_msg = '<b>[' . $type . ']</b> ' . $error_msg;
     echo $error_msg;
     $trace = display_stack_trace();
-    \SuiteCRM\ErrorMessage::log("Catch an error: $error_msg \nTrace info:\n" . $trace);
+    ErrorMessage::log("Catch an error: $error_msg \nTrace info:\n" . $trace);
     if ($halt_script) {
         exit(1);
     }
@@ -6027,7 +6046,7 @@ function isValidId($id)
     } else {
         trigger_error($deprecatedMessage, E_USER_DEPRECATED);
     }
-    $isValidator = new \SuiteCRM\Utility\SuiteValidator();
+    $isValidator = new SuiteValidator();
     $result = $isValidator->isValidId($id);
     return $result;
 }
@@ -6043,7 +6062,7 @@ function isValidEmailAddress($email, $message = 'Invalid email address given', $
     if ($logInvalid) {
         $trace = debug_backtrace();
         $where = "Called at {$trace[1]['file']}:{$trace[1]['line']} from function {$trace[1]['function']}.";
-        \SuiteCRM\ErrorMessage::log("$message: [$email] $where", $logInvalid);
+        ErrorMessage::log("$message: [$email] $where", $logInvalid);
     }
     return false;
 }
@@ -6207,11 +6226,57 @@ function has_group_action_acls_defined(string $module, string $action): bool
 }
 
 /**
+ * Check if user has action acls defined
+ * @param string $module
+ * @param string $action
+ * @return bool
+ */
+function has_action_acls_defined(string $module, string $action): bool
+{
+    global $current_user;
+
+    $hasGroupActionAcls = true;
+
+    $aclActions = ACLAction::getUserActions($current_user->id, false, $module, 'module', $action);
+    $isDefaultListACL = !empty($aclActions['isDefault']) && isTrue($aclActions['isDefault']);
+
+    if (empty($aclActions) || $isDefaultListACL) {
+        $hasGroupActionAcls = false;
+    }
+
+    return $hasGroupActionAcls;
+}
+
+/**
+ * Check default module access
+ * @param string $module
+ * @return bool
+ */
+function check_default_module_access(string $module): bool
+{
+    global $sugar_config, $current_user;
+
+    if (empty($module) || is_admin($current_user)) {
+        return true;
+    }
+
+    $hasActionAclsDefined = has_action_acls_defined($module, 'access');
+    $defaultModuleAccessConfig = $sugar_config['default_module_access'] ?? [];
+    $defaultModuleAccess = $defaultModuleAccessConfig[$module] ?? true;
+    if ($defaultModuleAccess === false && isFalse($hasActionAclsDefined ?? false)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Check if is value is smtp in a case-insensitive way
  * @param $value
  * @return bool
  */
-function isSmtp($value): bool {
+function isSmtp($value): bool
+{
     if (empty($value) || !is_string($value)) {
         return false;
     }

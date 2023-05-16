@@ -35,8 +35,8 @@ import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
-import {RecordThreadItemActionData} from '../actions/record-thread-item.action';
-import {RecordThreadItemActionManager} from '../actions/record-thread-item-action-manager.service';
+import {RecordThreadItemActionData} from '../actions/item-actions/record-thread-item.action';
+import {RecordThreadItemActionManager} from '../actions/item-actions/record-thread-item-action-manager.service';
 import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.store';
 import {RecordThreadStore} from '../store/record-thread/record-thread.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
@@ -49,6 +49,7 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
         edit: [],
         create: [],
     };
+    collapseButtons = false;
 
     constructor(
         protected itemStore: RecordThreadItemStore,

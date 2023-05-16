@@ -56,7 +56,8 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
         super.ngOnInit();
 
-        if (this.field.metadata && this.field.metadata.options$) {
+        const options$ = this?.field?.metadata?.options$ ?? null;
+        if (options$) {
             this.subs.push(this.field.metadata.options$.subscribe((options: Option[]) => {
                 this.buildProvidedOptions(options);
 
@@ -67,13 +68,18 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
         }
 
-        if (this.field.definition && this.field.definition.options) {
+        const options = this?.field?.definition?.options ?? null;
+        if (options) {
             this.subs.push(this.languages.vm$.subscribe((strings: LanguageStrings) => {
 
                 this.buildAppStringListOptions(strings.appListStrings);
                 this.initValue();
 
             }));
+        }
+
+        if (!options && !options$) {
+            this.initValue();
         }
 
     }
@@ -188,6 +194,9 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     protected initEnumDefault(): void {
 
         if (!isEmptyString(this.record?.id)) {
+
+            this.field?.formControl.setValue('');
+
             return;
         }
 
@@ -196,6 +205,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             defaultVal = defaultVal.trim();
         }
         if (!defaultVal) {
+            this.field.formControl.setValue('');
             return;
         }
 

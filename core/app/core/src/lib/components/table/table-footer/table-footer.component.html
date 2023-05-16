@@ -33,8 +33,15 @@
                              [selectionSource]="selection"
                              [actionSource]="bulkActions">
       </scrm-bulk-action-menu>
+      <div *ngIf="!isPaginationEnabled() && !allLoaded()"
+           class="col mx-0 pl-0 load-more-style">
+          <scrm-load-more
+              [loadMoreButton]="getLoadMoreButton()">
+          </scrm-load-more>
+      </div>
       <div class="col mx-0 pl-0 table-pagination-wrapper">
           <scrm-pagination *ngIf="pagination"
+                           [allowPagination]="isPaginationEnabled()"
                            [state]="pagination">
           </scrm-pagination>
       </div>

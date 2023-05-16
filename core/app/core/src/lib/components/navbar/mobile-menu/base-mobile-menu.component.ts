@@ -47,6 +47,8 @@ export class BaseMobileMenuComponent implements OnInit {
     backLink = false;
     mobileSubNav = false;
     mainNavLink = true;
+    isAdminNavbar: boolean = false;
+    isAdminNavbarClicked: boolean = false;
 
     constructor() {
     }
@@ -55,7 +57,10 @@ export class BaseMobileMenuComponent implements OnInit {
         this.mainItems = this.items;
 
         if (this.navigationType !== 'gm' && this.current) {
-            this.mainItems = [this.current, ...this.items];
+            this.isAdminNavbar = this.current.isGroupedMenu;
+            if(!this.current.isGroupedMenu) {
+                this.mainItems = [this.current, ...this.items];
+            }
         }
     }
 
@@ -74,6 +79,14 @@ export class BaseMobileMenuComponent implements OnInit {
         this.subNavItem = item;
         this.submenu = items;
         this.subNavigationType = navigationType;
+
+        if(item.isGroupedMenu) {
+            this.isAdminNavbarClicked = true;
+            this.mainItems = this.items;
+        } else {
+            this.isAdminNavbarClicked = false;
+            this.isAdminNavbar = false;
+        }
     }
 
     /**

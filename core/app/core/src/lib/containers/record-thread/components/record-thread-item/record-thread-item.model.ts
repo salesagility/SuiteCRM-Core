@@ -35,15 +35,18 @@ export interface RecordThreadItemConfig {
     dynamicClass?: string[];
     collapsible?: boolean;
     collapseLimit?: number;
+    flexDirection?: string;
     metadata: RecordThreadItemMetadata;
     store?: RecordThreadItemStore;
     threadStore?: RecordThreadStore;
     initialMode?: ViewMode;
     buttonClass?: string;
+    buttonGroupClass?: string;
     labelClass?: { [klass: string]: any };
     inputClass?: { [klass: string]: any };
     rowClass?: { [klass: string]: any };
     colClass?: { [klass: string]: any };
+    containerClass?: string;
 
     collapsed(): void;
 

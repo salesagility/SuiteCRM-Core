@@ -70,6 +70,33 @@ class EditAction implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+        $baseModule = $options['payload']['baseModule'] ?? '';
+        $baseRecord = $options['payload']['baseRecordId'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+            $baseModule => [
+                [
+                    'action' => 'view',
+                    'record' => $baseRecord
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

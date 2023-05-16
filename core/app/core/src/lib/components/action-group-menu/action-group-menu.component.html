@@ -26,7 +26,32 @@
 */
 -->
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div class="{{klass}} float-right">
-        <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+    <div class="{{klass}} float-right action-group-menu">
+        <ng-container *ngIf="!inlineConfirmationEnabled && !loading">
+            <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="buttonGroupClass"></scrm-button-group>
+        </ng-container>
+        <ng-container *ngIf="inlineConfirmationEnabled && !loading">
+            <div class="d-flex align-items-start justify-content-end inline-confirmation">
+                <div *ngIf="confirmationLabel" class="pl-1 inline-confirmation-label">
+                    <scrm-label [labelKey]="confirmationLabel"></scrm-label>
+                </div>
+                <div *ngIf="confirmationDynamicLabel && !confirmationLabel" class="pl-1 inline-confirmation-label">
+                    <scrm-dynamic-label [labelKey]="confirmationDynamicLabel"
+                                        [module]="actionContext?.module ?? ''"
+                                        [fields]="actionContext?.record?.fields ?? {}"
+                    >
+                    </scrm-dynamic-label>
+                </div>
+                <div *ngIf="inlineCancelButton" class="pl-1 inline-confirmation-button">
+                    <scrm-button [config]="inlineCancelButton"></scrm-button>
+                </div>
+                <div *ngIf="inlineConfirmButton" class="pl-1 inline-confirmation-button">
+                    <scrm-button [config]="inlineConfirmButton"></scrm-button>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="loading">
+            <scrm-inline-loading-spinner klass="inline-spinner-md inline-spinner-danger"></scrm-inline-loading-spinner>
+        </ng-container>
     </div>
 </ng-container>

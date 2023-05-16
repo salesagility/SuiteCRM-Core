@@ -436,6 +436,9 @@ class UserViewHelper
             $email_reminder_time = -1;
         }
 
+        $snooze = $this->bean->getPreference('snooze_alert_timer') ?? $sugar_config['snooze_alert_timer'] ?? 600;
+        $this->ss->assign('SNOOZE_ALERT_TIMER', get_select_options_with_id($app_list_strings['snooze_alert_timer'], (int)$snooze));
+
         $this->ss->assign("REMINDER_TIME_OPTIONS", $app_list_strings['reminder_time_options']);
         $this->ss->assign("EMAIL_REMINDER_TIME_OPTIONS", $app_list_strings['reminder_time_options']);
         $this->ss->assign("REMINDER_TIME", $reminder_time);
@@ -561,7 +564,7 @@ class UserViewHelper
 
     protected function setupAdvancedTabNavSettings()
     {
-        global $app_list_strings;
+        global $app_list_strings, $sugar_config;
 
         // Grouped tabs?
         $useGroupTabs = $this->bean->getPreference('navigation_paradigm');
@@ -582,6 +585,30 @@ class UserViewHelper
             $this->ss->assign("SUBPANEL_TABS", $user_subpanel_tabs ? 'checked' : '');
         } else {
             $this->ss->assign("SUBPANEL_TABS", $GLOBALS['sugar_config']['default_subpanel_tabs'] ? 'checked' : '');
+        }
+
+        $subpanel_paginationType = $this->bean->getPreference('subpanel_pagination_type');
+
+        if (!empty($subpanel_paginationType)) {
+            $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $subpanel_paginationType));
+        } else {
+            $this->ss->assign('subpanel_pagination_type', get_select_options_with_id($app_list_strings['subpanel_pagination_type'], $sugar_config['subpanel_pagination_type']));
+        }
+
+        $listview_pagination_type = $this->bean->getPreference('listview_pagination_type');
+
+        if (!empty($listview_pagination_type)) {
+            $this->ss->assign('listview_pagination_type', get_select_options_with_id($app_list_strings['listview_pagination_type'], $listview_pagination_type));
+        } else {
+            $this->ss->assign('listview_pagination_type', get_select_options_with_id($app_list_strings['listview_pagination_type'], $sugar_config['listview_pagination_type']));
+        }
+
+        $record_modal_pagination_type = $this->bean->getPreference('record_modal_pagination_type');
+
+        if (!empty($record_modal_pagination_type)){
+            $this->ss->assign('record_modal_pagination_type', get_select_full_options_with_id($app_list_strings['record_modal_pagination_type'], $record_modal_pagination_type));
+        } else {
+            $this->ss->assign('record_modal_pagination_type', get_select_options_with_id($app_list_strings['record_modal_pagination_type'], $sugar_config['record_modal_pagination_type']));
         }
 
         if ($this->bean->getPreference('count_collapsed_subpanels')) {

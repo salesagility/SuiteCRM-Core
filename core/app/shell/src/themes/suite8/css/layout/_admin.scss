@@ -1,0 +1,102 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+.admin-view {
+  background-color: $off-white;
+  padding: 108px 3em 0 3em;
+}
+
+@media all and (min-width: 95em) {
+  .admin-view {
+    padding: 108px 11% 0 11%;
+  }
+}
+
+scrm-admin-card {
+  .card-body {
+    padding: 0;
+    padding-top: 0.5rem;
+  }
+}
+
+.admin-card-title {
+  color: $midnight-blue;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding-left: 0.7rem;
+}
+
+.admin-card-link-box {
+  margin-bottom: 0em;
+
+  .admin-card-link {
+
+    .admin-card-link-wrapper {
+      font-size: 0.9em;
+      color: $black;
+      padding-bottom: 0.5rem !important;
+      padding-left: 1rem !important;
+      padding-top: 0.5rem !important;
+
+      .admin-card-icon {
+        fill: $bright-purple;
+      }
+    }
+
+  }
+}
+
+.admin-card-link-box:hover {
+  background-color: $bright-purple;
+
+  .admin-card-link {
+
+    .admin-card-link-wrapper {
+      color: $white;
+
+      .admin-card-label {
+        text-decoration: underline;
+        display: table;
+      }
+    }
+
+    .admin-card-icon {
+      fill: $white;
+    }
+  }
+}
+
+.admin-card-label {
+  display: table;
+
+  &:hover {
+    text-decoration: underline;
+    display: table;
+  }
+}
+
+
+

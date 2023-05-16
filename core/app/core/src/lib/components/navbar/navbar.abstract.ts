@@ -31,7 +31,7 @@ import {ActionLinkModel} from './action-link-model';
 import {MenuItem, ready, User} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
 import {
-    GroupedTab,
+    GroupedTab, ModuleAction,
     NavbarModule,
     NavbarModuleMap,
     Navigation,
@@ -413,41 +413,54 @@ export class NavbarAbstract implements NavbarModel {
         module: string,
         moduleInfo: NavbarModule,
     ): MenuItem {
-
+        if (moduleInfo.name) {
+            module = moduleInfo.name;
+        }
         const moduleRoute = this.moduleNavigation.getModuleRoute(moduleInfo);
-
-        const menuItem = {
+        const appListStrings = this.language.getLanguageStrings()?.appListStrings ?? {};
+        const menuItem: MenuItem = {
             link: {
-                label: this.moduleNavigation.getModuleLabel(moduleInfo, this.language.getLanguageStrings()?.appListStrings ?? {}),
+                label: this.moduleNavigation.getModuleLabel(moduleInfo, appListStrings),
                 url: moduleRoute.url,
                 route: moduleRoute.route,
                 params: null
             },
             icon: (module === 'home') ? 'home' : '',
             submenu: [],
-            module: module ?? null
+            module: module ?? null,
+            isGroupedMenu: false
         };
-
+        let hasSubmenu = false;
         if (moduleInfo) {
             moduleInfo.menu.forEach((subMenu) => {
-
-                const moduleActionRoute = this.moduleNavigation.getActionRoute(subMenu);
-
-                menuItem.submenu.push({
-                    link: {
-                        label: this.moduleNavigation.getActionLabel(module, subMenu, this.language.getLanguageStrings()),
-                        url: moduleActionRoute.url,
-                        route: moduleActionRoute.route,
-                        params: moduleActionRoute.params
-                    },
-                    icon: subMenu.icon,
-                    submenu: []
-                });
+                const sublinks = subMenu.sublinks || [];
+                const subMenuItem = this.buildSubMenuItem(module, subMenu, sublinks);
+                menuItem.submenu.push(subMenuItem);
+                if (sublinks.length > 0) {
+                    hasSubmenu = true;
+                }
             });
         }
-
+        menuItem.isGroupedMenu = hasSubmenu;
         return menuItem;
     }
+
+    protected buildSubMenuItem(module: string, subMenu: any, sublinks: any): MenuItem {
+        const moduleActionRoute = this.moduleNavigation.getActionRoute(subMenu);
+        const subMenuItem: MenuItem = {
+            link: {
+                label: this.moduleNavigation.getActionLabel(module, subMenu, this.language.getLanguageStrings()),
+                url: moduleActionRoute.url,
+                route: moduleActionRoute.route,
+                params: moduleActionRoute.params,
+            },
+            icon: subMenu.icon || '',
+            submenu: sublinks.map((item) => this.buildSubMenuItem(module, item, [])),
+
+        };
+        return subMenuItem;
+    }
+
 
     /**
      * Sort menu items by label

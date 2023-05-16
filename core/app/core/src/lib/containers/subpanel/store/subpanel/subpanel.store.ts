@@ -30,13 +30,31 @@ import {RecordList, RecordListStore} from '../../../../store/record-list/record-
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {SubPanelDefinition} from 'common';
-import {Statistic, StatisticsMap, StatisticsQuery, StatisticsQueryMap} from 'common';
+import {
+    ColumnDefinition,
+    deepClone,
+    Record,
+    RecordListMeta,
+    SearchCriteria,
+    SearchCriteriaFilter,
+    SearchMeta,
+    Statistic,
+    StatisticsMap,
+    StatisticsQuery,
+    StatisticsQueryMap,
+    StatisticWidgetOptions,
+    SubPanelDefinition
+} from 'common';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
-import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
-import {deepClone} from 'common';
-import {StatisticWidgetOptions} from 'common';
-import {Record} from 'common';
+import {
+    SingleValueStatisticsStoreFactory
+} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
+import {FilterListStore} from "../../../../store/saved-filters/filter-list.store";
+import {FilterListStoreFactory} from "../../../../store/saved-filters/filter-list.store.factory";
+import {map, take, tap} from "rxjs/operators";
+import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {SavedFilter, SavedFilterMap} from "../../../../store/saved-filters/saved-filter.model";
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -56,8 +74,20 @@ export class SubpanelStore implements StateStore {
     recordList: RecordListStore;
     statistics: SingleValueStatisticsStoreMap;
     metadata$: Observable<SubPanelDefinition>;
+    listMetadata$: Observable<RecordListMeta>;
+    searchMetadata$: Observable<SearchMeta>;
+    columns$: Observable<ColumnDefinition[]>;
     metadata: SubPanelDefinition;
     loading$: Observable<boolean>;
+
+    // Filter variables
+    filterList: FilterListStore;
+    criteria$: Observable<SearchCriteria>;
+    showFilter = false;
+    filterApplied = false;
+
+    preferenceKey = null;
+
     protected metadataState: BehaviorSubject<SubPanelDefinition>;
     protected subs: Subscription[] = [];
 
@@ -65,9 +95,14 @@ export class SubpanelStore implements StateStore {
     constructor(
         protected listStoreFactory: RecordListStoreFactory,
         protected languageStore: LanguageStore,
-        protected statisticsStoreFactory: SingleValueStatisticsStoreFactory
+        protected statisticsStoreFactory: SingleValueStatisticsStoreFactory,
+        protected filterListStoreFactory: FilterListStoreFactory,
+        protected meta: MetadataStore,
+        protected preferences: UserPreferenceStore,
     ) {
         this.recordList = listStoreFactory.create();
+        this.filterList = this.filterListStoreFactory.create();
+        this.criteria$ = this.recordList.criteria$;
         this.statistics = {};
         this.metadataState = new BehaviorSubject<SubPanelDefinition>({} as SubPanelDefinition);
         this.metadata$ = this.metadataState.asObservable();
@@ -101,6 +136,11 @@ export class SubpanelStore implements StateStore {
         this.recordList.clearAuthBased();
     }
 
+    searchFilter() {
+        this.filterApplied = true;
+        this.showFilter = false;
+    }
+
     /**
      * Initial list records load if not cached and update state.
      * Returns observable to be used in resolver if needed
@@ -115,17 +155,63 @@ export class SubpanelStore implements StateStore {
         this.parentId = parentId;
         this.metadata = meta;
         this.metadataState.next(this.metadata);
-        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel');
+        const meta$ = this.meta.getMetadata(meta.module).pipe(
+            tap(() => {
+                this.recordList.load().pipe(
+                    take(1)
+                ).subscribe();
+            })
+        );
+
+        this.searchMetadata$ = meta$.pipe(map(meta => meta.search));
+        const filter = this.initSearchCriteria(this.parentModule, this.parentId, meta);
+        this.recordList.init(meta.module, false, 'list_max_entries_per_subpanel', filter)
 
         this.initStatistics(meta, parentModule, parentId);
-
-        this.initSearchCriteria(parentModule, parentId, meta.name);
 
         if (parentRecord$) {
             this.parentRecord$ = parentRecord$;
             this.parentRecord$.subscribe(record => this.parentRecord = record);
         }
 
+    }
+
+    public setFilters(filters: SavedFilterMap, reload = true) {
+        this.recordList.setFilters(filters, reload, null);
+    }
+
+    public isAnyFilterApplied(): boolean {
+        return this.hasActiveFilter() || !this.areAllCurrentCriteriaFilterEmpty();
+    }
+
+    public hasActiveFilter(): boolean {
+        const activeFilters = this.recordList.criteria;
+
+        if (activeFilters) {
+            return false;
+        }
+
+        const filterKeys = Object.keys(activeFilters) ?? [];
+
+        if (!filterKeys || !filterKeys.length) {
+            return false;
+        }
+
+        if (filterKeys.length > 1) {
+            return true;
+        }
+
+        const currentFilter = activeFilters[filterKeys[0]];
+
+        return currentFilter.key && currentFilter.key !== '' && currentFilter.key !== 'default'
+    }
+
+    public areAllCurrentCriteriaFilterEmpty(): boolean {
+        return Object.keys(this.getFilters() ?? {}).every(key => this.getFilters()[key].operator === '');
+    }
+
+    public getFilters(): SearchCriteriaFilter {
+        return this.recordList?.criteria?.filters ?? {};
     }
 
     /**
@@ -135,7 +221,6 @@ export class SubpanelStore implements StateStore {
      * @returns {object} Observable<RecordList>
      */
     public load(useCache = true): Observable<RecordList> {
-
         return this.recordList.load(useCache);
     }
 
@@ -151,6 +236,47 @@ export class SubpanelStore implements StateStore {
         }
 
         return this.statistics[key];
+    }
+
+    public resetFilters(reload = true): void {
+        this.recordList.resetFilters(reload);
+    }
+
+    public clearFilter(): void {
+        this.resetFilters();
+        this.filterApplied = false;
+        this.showFilter = false;
+    }
+
+    /**
+     * add search criteria
+     *
+     * @param {string} parentModule name
+     * @param {string} parentId id
+     * @param {string} subpanel name
+     */
+    initSearchCriteria(parentModule: string, parentId: string, meta: SubPanelDefinition) {
+        const sortOrder = meta?.sort_order ?? 'desc';
+        const orderBy = meta?.sort_by ?? '';
+        return {
+            key: 'default',
+            module: 'saved-search',
+            attributes: {contents: ''},
+            criteria: {
+                name: 'default',
+                filters: {},
+                preset: {
+                    type: 'subpanel',
+                    params: {
+                        subpanel: meta?.name,
+                        parentModule,
+                        parentId
+                    }
+                },
+                sortOrder,
+                orderBy
+            },
+        } as SavedFilter;
     }
 
     /**
@@ -304,24 +430,8 @@ export class SubpanelStore implements StateStore {
         return layout;
     }
 
-    /**
-     * Init search criteria
-     *
-     * @param {string} parentModule name
-     * @param {string} parentId id
-     * @param {string} subpanel name
-     */
-    protected initSearchCriteria(parentModule: string, parentId: string, subpanel: string): void {
-        this.recordList.criteria = {
-            preset: {
-                type: 'subpanel',
-                params: {
-                    subpanel,
-                    parentModule,
-                    parentId
-                }
-            }
-        };
+    public toggleFilter(): boolean {
+        return this.showFilter = !this.showFilter;
     }
 
     /**

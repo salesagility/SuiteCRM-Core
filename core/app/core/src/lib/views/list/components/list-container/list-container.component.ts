@@ -26,7 +26,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
-import {ViewContext} from 'common';
+import {ViewContext, WidgetMetadata} from 'common';
 import {map} from 'rxjs/operators';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
 import {LanguageStore} from '../../../../store/language/language.store';
@@ -35,7 +35,7 @@ import {ListViewStore} from '../../store/list-view/list-view.store';
 import {TableConfig} from '../../../../components/table/table.model';
 import {TableAdapter} from '../../adapters/table.adapter';
 import {ListViewSidebarWidgetAdapter} from '../../adapters/sidebar-widget.adapter';
-import {WidgetMetadata} from 'common';
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 export interface ListContainerState {
     sidebarWidgetConfig: {
@@ -52,7 +52,6 @@ export interface ListContainerState {
 })
 
 export class ListContainerComponent implements OnInit {
-    @Input() module;
     screen: ScreenSize = ScreenSize.Medium;
     maxColumns = 5;
     tableConfig: TableConfig;
@@ -70,13 +69,23 @@ export class ListContainerComponent implements OnInit {
         protected adapter: TableAdapter,
         protected maxColumnCalculator: MaxColumnsCalculator,
         public languageStore: LanguageStore,
-        protected sidebarWidgetAdapter: ListViewSidebarWidgetAdapter
+        protected sidebarWidgetAdapter: ListViewSidebarWidgetAdapter,
+        protected systemConfigs: SystemConfigStore
     ) {
     }
 
     ngOnInit(): void {
         this.tableConfig = this.adapter.getTable();
         this.tableConfig.maxColumns$ = this.getMaxColumns();
+
+        if (this.store?.metadata?.listView?.maxHeight) {
+            this.tableConfig.maxListHeight = this.store.metadata.listView.maxHeight;
+        }
+        if (!this.tableConfig?.maxListHeight) {
+            const ui = this.systemConfigs.getConfigValue('ui');
+            this.tableConfig.maxListHeight = ui.listview_max_height;
+        }
+        this.tableConfig.paginationType = this?.store?.metadata?.listView?.paginationType ?? this.tableConfig.paginationType;
     }
 
     getMaxColumns(): Observable<number> {

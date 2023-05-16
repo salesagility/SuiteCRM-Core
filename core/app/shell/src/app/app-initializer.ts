@@ -47,7 +47,8 @@ import {
     SystemConfigStore,
     SystemNameService,
     BaseRouteService,
-    LogoutComponent
+    LogoutComponent,
+    AdminPanelComponent
 } from 'core';
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
@@ -160,6 +161,27 @@ export class AppInit {
                                 languageStrings: ['appStrings']
                             }
                         }
+                    });
+
+                    routes.push({
+                        path: 'administration',
+                        component: AdminPanelComponent,
+                        canActivate: [AuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseModuleResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true,
+                            module: 'administration'
+                        },
+                        children: [
+                            {
+                                path: 'index',
+                                redirectTo: ''
+                            }
+                        ]
                     });
 
                     routes.push(loggedOutConfig);

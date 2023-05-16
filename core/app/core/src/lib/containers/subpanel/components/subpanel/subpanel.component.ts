@@ -25,9 +25,8 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {Action, AnyButtonInterface, ButtonGroupInterface, ButtonInterface, isFalse} from 'common';
-import {Observable, of} from 'rxjs';
-import {shareReplay} from 'rxjs/operators';
+import {ActionContext, ButtonGroupInterface, ButtonInterface} from 'common';
+import {Observable} from 'rxjs';
 import {TableConfig} from '../../../../components/table/table.model';
 import {SubpanelTableAdapter} from '../../adapters/table.adapter';
 import {LanguageStore} from '../../../../store/language/language.store';
@@ -35,6 +34,12 @@ import {SubpanelStore} from '../../store/subpanel/subpanel.store';
 import {SubpanelActionManager} from './action-manager.service';
 import {SubpanelTableAdapterFactory} from '../../adapters/table.adapter.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {FilterConfig} from "../../../list-filter/components/list-filter/list-filter.model";
+import {SubpanelFilterAdapterFactory} from "../../adapters/filter.adapter.factory";
+import {SubpanelFilterAdapter} from "../../adapters/filter.adapter";
+import {SubpanelActionAdapterFactory} from "../../adapters/actions.adapter.factory";
+import {SubpanelActionsAdapter} from "../../adapters/actions.adapter";
 
 @Component({
     selector: 'scrm-subpanel',
@@ -47,26 +52,44 @@ export class SubpanelComponent implements OnInit {
     @Input() store: SubpanelStore;
     @Input() maxColumns$: Observable<number>;
     @Input() onClose: Function;
+    @Input() filterConfig: FilterConfig;
 
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;
     config$: Observable<ButtonGroupInterface>;
     tableConfig: TableConfig;
+    filterAdapter: SubpanelFilterAdapter;
+    actionsAdapter: SubpanelActionsAdapter;
 
     constructor(
         protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
         protected tableAdapterFactory: SubpanelTableAdapterFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore,
+        protected filterAdapterFactory: SubpanelFilterAdapterFactory,
+        protected actionAdapterFactory: SubpanelActionAdapterFactory
     ) {
     }
 
     ngOnInit(): void {
-        this.adapter = this.tableAdapterFactory.create(this.store);
-        this.tableConfig = this.adapter.getTable();
+
+        this.buildAdapters();
+
         if (this.maxColumns$) {
             this.tableConfig.maxColumns$ = this.maxColumns$;
         }
+
+        if (this.store?.metadata?.max_height) {
+            this.tableConfig.maxListHeight = this.store.metadata.max_height;
+        }
+
+        if (!this.tableConfig?.maxListHeight) {
+            const ui = this.systemConfigs.getConfigValue('ui') ?? {};
+            this.tableConfig.maxListHeight = ui.subpanel_max_height;
+        }
+
+        this.tableConfig.paginationType = this?.store?.metadata?.pagination_type ?? this.tableConfig.paginationType;
 
         const parentModule = this.store.parentModule;
         const module = this.store.recordList.getModule();
@@ -77,8 +100,6 @@ export class SubpanelComponent implements OnInit {
             this.store.recordList.updateSorting(sort.orderBy, sort.sortOrder);
         }
 
-        this.config$ = of(this.getButtonGroupConfig(this.buildAction())).pipe(shareReplay(1));
-
         this.closeButton = {
             onClick: (): void => {
                 this.onClose && this.onClose();
@@ -86,77 +107,16 @@ export class SubpanelComponent implements OnInit {
         } as ButtonInterface;
     }
 
-    buildAction(): any {
-        const actions = [];
-
-        if (this.store.metadata) {
-            if (this.store.metadata.top_buttons) {
-                this.store.metadata.top_buttons.forEach(button => {
-                    const label = this.languages.getFieldLabel(
-                        button.labelKey,
-                        button.module
-                    );
-
-                    actions.push({
-                        ...button,
-                        label,
-                        params: {
-                            module: button.module
-                        }
-                    });
-                });
-            }
-        }
-
-        return actions;
+    getActionContext(): ActionContext {
+        const module = this.store?.metadata?.module ?? '';
+        return {module} as ActionContext;
     }
 
-    getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {
-        const buttons = [];
-
-        actions.forEach((action: Action) => {
-            buttons.push(this.buildButton(action));
-        });
-
-        let breakpoint = 1;
-        if (buttons && buttons.length > 1) {
-            breakpoint = -1;
-        }
-
-        const dropdownLabel = this.languages.getAppString('LBL_ACTIONS');
-
-        return {
-            buttons,
-            breakpoint,
-            dropdownLabel,
-            buttonKlass: ['btn', 'btn-sm', 'btn-outline-light']
-        } as ButtonGroupInterface;
-    }
-
-    protected buildButton(action: Action): AnyButtonInterface {
-        const button = {
-            label: action.label || '',
-            klass: 'btn btn-sm btn-outline-light',
-            onClick: (): void => {
-                this.actionManager.run(action.key, {
-                    subpanelMeta: this.store.metadata,
-                    module: action.params.module || this.store.metadata.module,
-                    parentModule: this.store.parentModule,
-                    parentId: this.store.parentId,
-                    store: this.store,
-                    action
-                });
-            }
-        } as AnyButtonInterface;
-
-        const debounceClick = action?.params?.debounceClick ?? null;
-
-        button.debounceClick = true;
-
-        if (isFalse(debounceClick)) {
-            button.debounceClick = false;
-        }
-
-        return button;
+    buildAdapters(): void {
+        this.adapter = this.tableAdapterFactory.create(this.store);
+        this.tableConfig = this.adapter.getTable();
+        this.filterAdapter = this.filterAdapterFactory.create(this.store);
+        this.filterConfig = this.filterAdapter.getConfig();
+        this.actionsAdapter = this.actionAdapterFactory.create(this.store);
     }
 }

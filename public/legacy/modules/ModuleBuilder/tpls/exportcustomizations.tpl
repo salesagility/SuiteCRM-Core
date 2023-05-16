@@ -82,23 +82,28 @@
     </tr>
     </tbody>
 	</table>
-	
-    <table border="0" CELLSPACING="15" WIDTH="100%">
-        <TR><input type="hidden" name="hiddenCount"></TR>
+    <div class="export-customization">
+        <div>
+            <input type="hidden" name="hiddenCount">
+        </div>
         {foreach from=$modules key=k item=i}
-        
-        <TR>
-            <TD><h3 style='margin-bottom:20px;'>{if $i != ""}<INPUT onchange="updateCount(this);" type="checkbox" name="modules[]" value={$k}>{/if}{$moduleList[$k]}</h3></TD>
-            <TD VALIGN="top">
-            {foreach from=$i item=j}
-            {$j}<br>
-            {/foreach}
-            </TD>
-        </TR>
-        
-        {/foreach} 
-    </table>
-    <br> 
+            <div class="export-field">
+                <div class="export-label">
+                     <span style="margin-right: 0.5em;">{$moduleList[$k]}</span>
+                </div>
+                <div>
+                    {if $i != ""}
+                        <INPUT onchange="updateCount(this);" type="checkbox" name="modules[]" value={$k}>
+                    {/if} 
+                </div>
+                <div>
+                {foreach from=$i item=j}
+                    {$j}<br>
+                {/foreach}
+                </div>
+            </div>
+         {/foreach} 
+    </div>
 </form>
 
 {literal}

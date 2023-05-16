@@ -70,6 +70,25 @@ class ChangeLogAction implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $recordId = $options['id'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'view',
+                    'record' => $recordId
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

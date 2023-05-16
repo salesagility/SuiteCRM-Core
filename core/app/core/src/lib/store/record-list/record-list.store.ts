@@ -26,6 +26,8 @@
 
 import {
     deepClone,
+    emptyObject,
+    ObjectMap,
     PageSelection,
     Pagination,
     PaginationCount,
@@ -49,6 +51,24 @@ import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
+import {SavedFilter, SavedFilterMap} from "../saved-filters/saved-filter.model";
+
+
+const initialFilter: SavedFilter = {
+    key: 'default',
+    module: 'saved-search',
+    attributes: {
+        contents: ''
+    },
+    criteria: {
+        name: 'default',
+        filters: {}
+    }
+};
+
+const initialFilters: SavedFilterMap = {
+    'default': deepClone(initialFilter)
+};
 
 const initialSearchCriteria = {
     filters: {}
@@ -71,7 +91,10 @@ export interface RecordList {
     records: Record[];
     pagination?: Pagination;
     criteria?: SearchCriteria;
+    activeFilters?: SavedFilterMap,
+    openFilter?: SavedFilter;
     sort?: SortingSelection;
+    meta?: ObjectMap;
 }
 
 export interface RecordListState {
@@ -81,13 +104,17 @@ export interface RecordListState {
     criteria?: SearchCriteria;
     sort?: SortingSelection;
     selection: RecordSelection;
+    activeFilters?: SavedFilterMap,
+    openFilter?: SavedFilter;
     loading: boolean;
+    meta?: ObjectMap;
 }
 
 const initialState: RecordListState = {
     module: '',
     records: [],
     criteria: deepClone(initialSearchCriteria),
+    activeFilters: deepClone(initialFilters),
     sort: deepClone(initialListSort),
     pagination: {
         pageSize: 5,
@@ -100,7 +127,9 @@ const initialState: RecordListState = {
         pageLast: 0
     },
     selection: deepClone(initialSelection),
+    openFilter: deepClone(initialFilter),
     loading: false,
+    meta: {}
 };
 
 @Injectable()
@@ -116,6 +145,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     selection$: Observable<RecordSelection>;
     selectedCount$: Observable<number>;
     selectedStatus$: Observable<SelectionStatus>;
+    activeFilters$: Observable<SavedFilterMap>;
+    openFilter$: Observable<SavedFilter>;
     loading$: Observable<boolean>;
 
     /** Internal Properties */
@@ -124,6 +155,11 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     protected store = new BehaviorSubject<RecordListState>(this.internalState);
     protected state$ = this.store.asObservable();
     protected preferencesSub: Subscription;
+
+    preferenceKey: string;
+    baseFilter: SavedFilter;
+    baseFilterMap: SavedFilterMap;
+
 
     constructor(
         protected listGQL: ListGQL,
@@ -140,6 +176,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.selection$ = this.state$.pipe(map(state => state.selection), distinctUntilChanged());
         this.selectedCount$ = this.state$.pipe(map(state => state.selection.count), distinctUntilChanged());
         this.selectedStatus$ = this.state$.pipe(map(state => state.selection.status), distinctUntilChanged());
+        this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
+        this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
         this.loading$ = this.state$.pipe(map(state => state.loading));
     }
 
@@ -163,6 +201,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             ...this.internalState,
             criteria
         });
+    }
+
+    get activeFilters(): SavedFilterMap {
+        return deepClone(this.internalState.activeFilters);
     }
 
     get sort(): SortingSelection {
@@ -226,12 +268,19 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {string} module to use
      * @param {boolean} load if to load
      * @param {string} pageSizeConfigKey string
+     * @param filter
+     * @param preferenceKey
      * @returns {object} Observable<any>
      */
-    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page'): Observable<RecordList> {
+    public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page', filter = deepClone(initialFilter), preferenceKey = ''): Observable<RecordList> {
         this.internalState.module = module;
+        this.preferenceKey = preferenceKey;
 
-        this.watchPageSize(pageSizeConfigKey);
+        if (pageSizeConfigKey) {
+            this.watchPageSize(pageSizeConfigKey);
+        }
+        this.setBaseFilter(filter);
+        this.loadCurrentFilter(module);
 
         if (load === false) {
             return null;
@@ -240,6 +289,81 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         return this.load();
     }
 
+    public setBaseFilter(filter) {
+
+        this.baseFilterMap = {'default': deepClone(filter)};
+        this.baseFilter = deepClone(filter);
+
+        this.updateState({...this.internalState, activeFilters: deepClone(this.baseFilterMap), openFilter: deepClone(this.baseFilter)});
+
+
+    }
+
+    /**
+     * Load current filter
+     * @param module
+     * @protected
+     */
+    public loadCurrentFilter(module: string): void {
+
+        const activeFiltersPref = this.loadPreference(module, 'current-filters') ?? this.baseFilterMap;
+
+        if (!activeFiltersPref || emptyObject(activeFiltersPref)) {
+            return;
+        }
+
+        let currentSort = this.loadPreference(module, 'current-sort') as SortingSelection;
+        if (!currentSort && emptyObject(currentSort)) {
+            currentSort = null;
+        }
+
+        this.setFilters(activeFiltersPref, false, currentSort);
+    }
+
+    /**
+     * Set active filters
+     *
+     * @param {object} filters to set
+     * @param {boolean} reload flag
+     * @param sort
+     */
+    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null): void {
+
+        const filterKey = Object.keys(filters).shift();
+        const filter = filters[filterKey];
+
+        this.updateState({...this.internalState, activeFilters: deepClone(filters), openFilter: deepClone(filter)});
+
+        if (filter.criteria) {
+            let orderBy = filter.criteria.orderBy ?? '';
+            const sortOrder = filter.criteria.sortOrder ?? 'desc';
+            let direction = this.mapSortOrder(sortOrder);
+
+            if (sort !== null) {
+                orderBy = sort.orderBy;
+                direction = sort.sortOrder;
+            }
+
+            this.updateSorting(orderBy, direction, false);
+            this.updateSortLocalStorage();
+
+            this.updateSearchCriteria(filter.criteria, reload);
+        }
+
+        this.updateFilterLocalStorage();
+    }
+
+    public updateFilterLocalStorage(): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-filters', this.internalState.activeFilters);
+    }
+
+    public updateSortLocalStorage(): void {
+        const module = this.internalState.module;
+
+        this.savePreference(module, 'current-sort', this.sort);
+    }
 
     /**
      * Load / reload records using current pagination and criteria
@@ -277,7 +401,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         pageFirst: 0,
                         pageLast: 0
                     },
+                    openFilter: deepClone(this.baseFilter),
+                    activeFilters: deepClone(this.baseFilterMap),
                     selection: deepClone(initialSelection),
+                    meta: {}
                 });
             }),
             tap(
@@ -287,7 +414,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                         ...this.internalState,
                         records: data.records,
                         pagination: data.pagination,
-                        loading: false
+                        loading: false,
+                        meta: data.meta ?? {}
                     });
                 },
             )
@@ -369,6 +497,67 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.updateState({...this.internalState, pagination});
 
         this.load(false).pipe(take(1)).subscribe();
+    }
+
+    /**
+     * Set open filters
+     *
+     * @param {object} filter to set
+     */
+    public setOpenFilter(filter: SavedFilter): void {
+        this.updateState({...this.internalState, openFilter: deepClone(filter)});
+    }
+
+    /**
+     * Reset active filters
+     *
+     * @param {boolean} reload flag
+     */
+    public resetFilters(reload = true): void {
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(this.baseFilterMap),
+            openFilter: deepClone(this.baseFilter),
+        });
+
+        this.clearSort();
+        this.updateSortLocalStorage();
+        this.updateFilterLocalStorage();
+
+        this.updateSearchCriteria(this.baseFilter.criteria, reload)
+    }
+
+    /**
+     * Save ui user preference
+     * @param module
+     * @param storageKey
+     * @param value
+     * @protected
+     */
+    protected savePreference(module: string, storageKey: string, value: any): void {
+        const preferenceKey = this.preferenceKey ?? null;
+        if (!preferenceKey) {
+            return null;
+        }
+        const key = `${preferenceKey}${storageKey}`;
+        this.preferencesStore.setUi(module, key, value);
+    }
+
+    /**
+     * Load ui user preference
+     * @param module
+     * @param storageKey
+     * @protected
+     */
+    protected loadPreference(module: string, storageKey: string): any {
+
+        const preferenceKey = this.preferenceKey ?? null;
+        if (!preferenceKey) {
+            return null;
+        }
+        const key = `${preferenceKey}${storageKey}`;
+        return this.preferencesStore.getUi(module, key);
     }
 
     /**
@@ -508,6 +697,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         return this.store.value.pagination;
     }
 
+    getMeta(): ObjectMap {
+        return this.store.value.meta;
+    }
+
     changePage(page: PageSelection): void {
         let pageToLoad = 0;
 
@@ -520,7 +713,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         if (page in pageMap && pageMap[page] >= 0) {
             pageToLoad = pageMap[page];
 
-            if (pageToLoad > this.internalState.pagination.last) {
+            if (Number(pageToLoad) > this.internalState.pagination.last) {
                 return;
             }
 
@@ -540,6 +733,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     public setPageSize(pageSize: number): void {
         const pagination = {...this.internalState.pagination, pageSize};
         this.updateState({...this.internalState, pagination});
+    }
+
+    /**
+     * Get Pagination page size
+     */
+    public getPageSize(): number {
+        return this?.internalState?.pagination?.pageSize ?? 10;
     }
 
     /**
@@ -577,7 +777,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      * @param {string} pageSizeConfig to use
      */
     protected determinePageSize(pageSizePreference: any, pageSizeConfig: string): void {
-        let size = 0;
+        let size = 20;
 
         if (pageSizePreference) {
             size = pageSizePreference;

@@ -282,13 +282,13 @@ class SugarFeedDashlet extends DashletGeneric
             '".$current_user->id."' = (select assigned_user_id from ".$mod_bean->table_name." where id = sugarfeed.related_id)
         OR  EXISTS (SELECT  1
                   FROM    securitygroups secg
-                          INNER JOIN securitygroups_users secu 
-                            ON secg.id = secu.securitygroup_id 
-                               AND secu.deleted = 0 
+                          INNER JOIN securitygroups_users secu
+                            ON secg.id = secu.securitygroup_id
+                               AND secu.deleted = 0
                                AND secu.user_id = '".$current_user->id."'
-                          INNER JOIN securitygroups_records secr 
-                            ON secg.id = secr.securitygroup_id 
-                               AND secr.deleted = 0 
+                          INNER JOIN securitygroups_records secr
+                            ON secg.id = secr.securitygroup_id
+                               AND secr.deleted = 0
                                AND secr.module = '".$module."'
                        WHERE   secr.record_id = sugarfeed.related_id
                                AND secg.deleted = 0)
@@ -594,9 +594,23 @@ enableQS(false);
         /* BEGIN - SECURITY GROUPS */
         //hide links for those that shouldn't have one
         $listview = preg_replace('/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]\[HIDELINK\]/', '$3', $listview);
-        /* END - SECURITY GROUPS */ 
-        $listview = preg_replace('/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]/', '<a href="index.php?module=$1&action=DetailView&record=$2"><img src="themes/default/images/$1.gif" border=0 REPLACE_ALT>$3</a>', $listview); /*SKIP_IMAGE_TAG*/
+        /* END - SECURITY GROUPS */
 
+        require_once 'include/portability/RouteConverter.php';
+        $routeConverter = new RouteConverter();
+
+        $listview = preg_replace_callback(
+            '/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]/',
+            static function (&$matches) use ($routeConverter) {
+                $module = $matches[1] ?? '';
+                $record = $matches[2] ?? '';
+                $name = $matches[3] ?? '';
+                $uiLink = str_replace('./', '../', $routeConverter->convert($module, 'DetailView', $record, []));
+
+                return '<a href="' . $uiLink . '">' . $name . '</a>';
+            },
+            $listview
+        );/*SKIP_IMAGE_TAG*/
 
         //process each module for the singular version so we can populate the alt tag on the image
         $altStrings = array();
@@ -659,7 +673,7 @@ enableQS(false);
             // The user feed system isn't enabled, don't let them post notes
             return '';
         }
-        
+
         $user_name = ucfirst($GLOBALS['current_user']->user_name);
         $moreimg = SugarThemeRegistry::current()->getImage('advanced_search', 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"', null, null, '.gif', translate('LBL_SHOW_MORE_OPTIONS', 'SugarFeed'));
         $lessimg = SugarThemeRegistry::current()->getImage('basic_search', 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"', null, null, '.gif', translate('LBL_HIDE_OPTIONS', 'SugarFeed'));

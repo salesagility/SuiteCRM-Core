@@ -147,6 +147,8 @@ export class ListGQL {
                     });
                 }
 
+                recordsList.meta = listData.meta;
+
                 return recordsList;
             }));
     }

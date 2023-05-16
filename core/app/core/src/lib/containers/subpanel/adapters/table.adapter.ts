@@ -32,6 +32,7 @@ import {TableConfig} from '../../../components/table/table.model';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Injectable()
 export class SubpanelTableAdapter {
@@ -39,7 +40,8 @@ export class SubpanelTableAdapter {
     constructor(
         protected store: SubpanelStore,
         protected lineActionsAdapterFactory: SubpanelLineActionsAdapterFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected systemConfigs: SystemConfigStore
     ) {
     }
 
@@ -71,8 +73,37 @@ export class SubpanelTableAdapter {
                 const sort = {orderBy, sortOrder} as SortingSelection;
 
                 this.preferences.setUi(parentModule, module + '-subpanel-sort', sort);
-
             },
+
+            maxListHeight: this.preferences.getUserPreference('subpanel_max_height') ?? this.systemConfigs.getConfigValue('subpanel_max_height'),
+
+            paginationType: this.preferences.getUserPreference('subpanel_pagination_type') ?? this.systemConfigs.getConfigValue('subpanel_pagination_type'),
+
+            loadMore: (): void => {
+                const jump = this.preferences.getUserPreference('list_max_entries_per_subpanel') ?? this.systemConfigs.getConfigValue('list_max_entries_per_subpanel');
+                const pagination = this.store.recordList.getPagination();
+                const currentPageSize = pagination.pageSize || 0;
+                const newPageSize = Number(currentPageSize) + Number(jump);
+
+
+                this.store.recordList.setPageSize(newPageSize);
+                this.store.recordList.updatePagination(pagination.current)
+            },
+
+            allLoaded: (): boolean => {
+                const pagination = this.store.recordList.getPagination();
+
+                if (!pagination) {
+                    return false;
+                }
+
+                if (Number(pagination.pageLast) >= Number(pagination.total)) {
+                    return true;
+                }
+
+                return Number(pagination.pageSize) >= Number(pagination.total);
+            }
+
         } as TableConfig;
     }
 

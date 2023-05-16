@@ -24,14 +24,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Observable, of} from 'rxjs';
-import {ColumnDefinition, Field, Record, SelectionStatus, SortDirection} from 'common';
+import {of} from 'rxjs';
+import {ColumnDefinition, Field, Record, SortDirection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordListModalTableAdapterInterface} from './adapter.model';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
 import {TableConfig} from '../../../components/table/table.model';
+import {UserPreferenceStore} from "../../../store/user-preference/user-preference.store";
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 export class ModalRecordListTableAdapter implements RecordListModalTableAdapterInterface {
+
+    constructor(
+        protected systemConfigs: SystemConfigStore,
+        protected preferences: UserPreferenceStore
+    ){
+    }
 
     /**
      * Get table config
@@ -63,6 +71,36 @@ export class ModalRecordListTableAdapter implements RecordListModalTableAdapterI
                 store.recordList.updateSorting(orderBy, sortOrder);
                 store.saveCurrentSort();
             },
+
+            maxListHeight: this.preferences.getUserPreference('record_modal_max_height') ?? this.systemConfigs.getConfigValue('record_modal_max_height'),
+
+            paginationType: this.preferences.getUserPreference('record_modal_pagination_type') ?? this.systemConfigs.getConfigValue('record_modal_pagination_type'),
+
+            loadMore: (): void => {
+                const jump = this.preferences.getUserPreference('list_max_entries_per_modal') ?? this.systemConfigs.getConfigValue('list_max_entries_per_modal');
+                const pagination = store.recordList.getPagination();
+                const currentPageSize = pagination.pageSize || 0;
+                const newPageSize = Number(currentPageSize) + Number(jump);
+
+
+                store.recordList.setPageSize(newPageSize);
+                store.recordList.updatePagination(pagination.current);
+            },
+
+            allLoaded: (): boolean => {
+                const pagination = store.recordList.getPagination();
+
+                if (!pagination) {
+                    return false;
+                }
+
+                if (Number(pagination.pageLast) >= Number(pagination.total)) {
+                    return true;
+                }
+
+                return Number(pagination.pageSize) >= Number(pagination.total);
+            }
+
         } as TableConfig;
 
 

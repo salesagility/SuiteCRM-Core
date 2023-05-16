@@ -25,7 +25,16 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Action, ActionContext, ActionDataSource, Button, ButtonGroupInterface, ButtonInterface, Record, isFalse} from 'common';
+import {
+    Action,
+    ActionContext,
+    ActionDataSource,
+    Button,
+    ButtonGroupInterface,
+    ButtonInterface,
+    isFalse,
+    Record
+} from 'common';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
@@ -112,10 +121,7 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
             collapsed.push(button);
         });
 
-        let breakpoint = this.getBreakpoint();
-        if (expanded.length < breakpoint) {
-            breakpoint = expanded.length;
-        }
+        let breakpoint = actions.length;
 
         const buttons = expanded.concat(collapsed);
 

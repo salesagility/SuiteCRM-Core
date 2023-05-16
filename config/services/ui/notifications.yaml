@@ -1,0 +1,151 @@
+parameters:
+  notifications:
+    module: 'alerts'
+    class: 'notifications'
+    maxListHeight: 450
+    direction: 'desc'
+    loadMorePosition: 'bottom'
+    filters:
+      orderBy: 'snooze'
+      sortOrder: 'desc'
+    autoRefreshFrequency: 1 #minutes
+    autoRefreshDeviationMin: -15 #seconds. set 0 for no deviation
+    autoRefreshDeviationMax: 15 #seconds. set 0 for no deviation
+    showNoDataMessage: true
+    noDataLabel: 'LBL_NOTIFICATIONS_NONE'
+    create: null
+    item:
+      collapsible: false
+      collapseLimit: 200
+      itemClass: 'notifications-item'
+      buttonGroupClass: 'd-flex flex-row-reverse align-items-end notifications-actions'
+      containerClass: 'flex-row align-items-start py-2 justify-content-start containerClass'
+      dynamicClass: [ 'is_read' ]
+      flexDirection: 'flex-row'
+      fields:
+        url_redirect:
+          name: 'url_redirect'
+          type: 'varchar'
+        date_start:
+          name: 'date_start'
+          dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE'
+          type: 'datetime'
+        is_read:
+          name: 'is_read'
+          type: 'bool'
+      layout:
+        body:
+          class: 'itemContentClass'
+          rows:
+            -
+              cols:
+                -
+                  field:
+                    name: 'target_module_type'
+                    type: 'icon'
+                  labelDisplay: 'none'
+                  hideIfEmpty: false
+                  class: 'font-weight-bold stroke-danger-light stroke-hover-danger fill-danger-light'
+            -
+              class: 'd-flex flex-column flex-grow-1 pl-2 pr-2'
+              align: 'start'
+              cols:
+                -
+                  field:
+                    name: 'target_module_label'
+                  labelDisplay: 'none'
+                  labelClass: 'm-0'
+                  display: 'readonly'
+                  hideIfEmpty: true
+                  class: 'small text-main text-uppercase'
+                -
+                  field:
+                    name: 'name'
+                    metadata:
+                      link: true
+                      linkRoute: '{{fields.url_redirect.value}}'
+                  labelDisplay: 'none'
+                  labelClass: 'm-0'
+                  display: 'readonly'
+                  hideIfEmpty: false
+                  class: 'text-bigger-1'
+                -
+                  field:
+                    name: 'snooze'
+                    dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE_ENTERED'
+                    type: 'datetime'
+                  labelClass: 'm-0'
+                  labelDisplay: 'inline'
+                  display: 'none'
+                  hideIfEmpty: false
+                  class: 'small'
+                -
+                  field:
+                    name: 'date_start'
+                    dynamicLabelKey: 'LBL_NOTIFICATION_ITEM_DATE'
+                    type: 'datetime'
+                  labelClass: 'm-0'
+                  labelDisplay: 'inline'
+                  display: 'none'
+                  hideIfEmpty: true
+                  class: 'small'
+            -
+              class: 'd-flex'
+              align: 'start'
+              justify: 'start'
+              cols:
+                -
+                  actionSlot: 'true'
+                  class: 'notification-item-buttons'
+        actions:
+          -
+            key: 'dismiss-alert'
+            icon: 'cross'
+            titleKey: 'LBL_DISMISS'
+            asyncProcess: true
+            params:
+              inlineConfirmation: true
+              confirmationLabel: 'LBL_DISMISS_INLINE_CONFIRM'
+            klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0 m-0']
+            modes: ['detail', 'edit']
+            acl: []
+          -
+            key: 'snooze'
+            icon: 'clock'
+            titleKey: 'LBL_SNOOZE'
+            asyncProcess: true
+            params:
+              inlineConfirmation: true
+              confirmationDynamicLabel: 'LBL_SNOOZE_INLINE_CONFIRM'
+            klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0 m-0 pr-2']
+            modes: ['detail', 'edit']
+            acl: []
+    pageSize: 10
+    listActionsClass: "d-flex align-items-center justify-content-end notification-list-actions pr-2 pt-1"
+    listActionsButtonClass: "line-actions-button btn btn-link small"
+    listActionsButtonGroupClass: 'd-flex justify-content-end'
+    listActions:
+      -
+        key: 'dismiss-all-alerts'
+        label: 'LBL_DISMISS_ALL'
+        labelKey: 'LBL_DISMISS_ALL'
+        asyncProcess: true
+        params:
+          inlineConfirmation: true
+          confirmationLabel: 'LBL_DISMISS_ALL_INLINE_CONFIRM'
+          module: 'alerts'
+        klass: ['']
+        modes: ['detail', 'list']
+        acl: []
+      -
+        key: 'mark-as-read'
+        label: 'LBL_DISMISS_ALL'
+        labelKey: 'LBL_DISMISS_ALL'
+        asyncProcess: true
+        params:
+          displayConfirmation: true
+          confirmationLabel: 'NTC_DELETE_CONFIRMATION'
+          module: 'alerts'
+        klass: ['']
+        modes: []
+        acl: []

@@ -502,7 +502,7 @@ class SugarAuthenticate
      */
     public function validateIP()
     {
-        global $sugar_config;
+        global $sugar_config, $mod_strings;
         // grab client ip address
         $clientIP = query_client_ip();
         $classCheck = 0;

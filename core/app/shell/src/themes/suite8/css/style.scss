@@ -50,6 +50,8 @@
 @import 'components/tabs';
 @import 'components/field-layout';
 @import 'components/subpanel';
+@import 'components/subpanel-history';
+@import 'components/subpanel-activities';
 @import 'components/shapes';
 @import 'components/history-timeline-widget';
 @import 'components/loading-spinner';
@@ -67,6 +69,11 @@
 @import 'components/favorite';
 @import 'components/box-loading';
 @import 'components/record-content-skeleton';
+@import 'components/notifications';
+@import 'components/notifications-mobile';
+@import 'components/action-group-menu';
+@import 'components/popover';
+@import 'components/popover-mobile';
 
 @import 'layout/panel';
 @import 'layout/app';
@@ -88,6 +95,7 @@
 @import 'layout/navbar-mobile';
 @import 'layout/saved-search';
 @import 'layout/install';
+@import 'layout/admin';
 
 @import 'fields/email';
 @import 'fields/composite-mobile';

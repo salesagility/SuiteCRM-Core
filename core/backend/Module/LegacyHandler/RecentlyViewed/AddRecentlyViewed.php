@@ -110,6 +110,25 @@ class AddRecentlyViewed extends LegacyHandler implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        ['recentlyViewed' => $recentlyViewed] = $process->getOptions();
+        $itemId = $recentlyViewed['attributes']['item_id'] ?? '';
+        $itemModule = $recentlyViewed['attributes']['module_name'] ?? '';
+
+        return [
+            $itemModule => [
+                [
+                    'action' => 'view',
+                    'record' => $itemId,
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous
@@ -125,6 +144,16 @@ class AddRecentlyViewed extends LegacyHandler implements ProcessHandlerInterface
     public function validate(Process $process): void
     {
         if (empty($process->getOptions())) {
+            throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+        }
+
+        ['recentlyViewed' => $recentlyViewed] = $process->getOptions();
+        $itemModule = $recentlyViewed['attributes']['module_name'] ?? '';
+        $itemModule = $this->moduleNameMapper->toLegacy($itemModule);
+        $action = $recentlyViewed['attributes']['action'] ?? '';
+
+
+        if (empty($itemModule) || empty($action)) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }

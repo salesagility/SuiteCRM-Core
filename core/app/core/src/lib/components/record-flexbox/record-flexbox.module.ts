@@ -31,6 +31,7 @@ import {ButtonModule} from '../button/button.module';
 import {LabelModule} from '../label/label.module';
 import {RecordFlexboxComponent} from './record-flexbox.component';
 import {ActionGroupMenuModule} from '../action-group-menu/action-group-menu.module';
+import {DynamicLabelModule} from '../dynamic-label/dynamic-label.module';
 
 @NgModule({
     declarations: [RecordFlexboxComponent],
@@ -42,7 +43,8 @@ import {ActionGroupMenuModule} from '../action-group-menu/action-group-menu.modu
         ButtonModule,
         FieldModule,
         LabelModule,
-        ActionGroupMenuModule
+        ActionGroupMenuModule,
+        DynamicLabelModule
     ]
 })
 export class RecordFlexboxModule {

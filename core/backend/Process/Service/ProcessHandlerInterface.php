@@ -46,6 +46,14 @@ interface ProcessHandlerInterface
     public function requiredAuthRole(): string;
 
     /**
+     * Get required acls list per module, empty array means no acl check needed
+     *
+     * @param Process $process
+     * @return array
+     */
+    public function getRequiredACLs(Process $process): array;
+
+    /**
      * Configure process for given type
      * @param Process $process
      */

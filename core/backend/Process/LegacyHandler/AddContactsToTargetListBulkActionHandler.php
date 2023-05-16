@@ -111,6 +111,34 @@ class AddContactsToTargetListBulkActionHandler extends LegacyHandler implements 
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $baseModule = $options['module'] ?? '';
+        $baseIds = $options['ids'] ?? [];
+        $modalRecord = $options['modalRecord'] ?? [];
+        $modalModule = $modalRecord['module'] ?? '';
+        $modalRecordId = $modalRecord['id'] ?? '';
+
+        return [
+            $baseModule => [
+                [
+                    'action' => 'view',
+                    'ids' => $baseIds
+                ]
+            ],
+            $modalModule => [
+                [
+                    'action' => 'view',
+                    'record' => $modalRecordId,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous
@@ -152,6 +180,7 @@ class AddContactsToTargetListBulkActionHandler extends LegacyHandler implements 
     public function run(Process $process)
     {
         $this->init();
+        $this->startLegacyApp();
 
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/Services/Relationships/AddContactsToTargetListService.php';

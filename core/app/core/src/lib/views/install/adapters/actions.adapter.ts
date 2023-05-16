@@ -57,6 +57,7 @@ export class InstallActionsAdapter extends BaseRecordActionsAdapter<InstallViewA
         ],
         create: [],
     };
+    collapseButtons = false;
 
     constructor(
         protected store: InstallViewStore,

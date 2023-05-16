@@ -49,6 +49,27 @@ class ListData
     protected $ordering;
 
     /**
+     * @var array
+     */
+    protected $meta;
+
+    /**
+     * @return array|null
+     */
+    public function getMeta(): ?array
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param array $meta
+     */
+    public function setMeta(array $meta): void
+    {
+        $this->meta = $meta;
+    }
+
+    /**
      * @return Record[]
      */
     public function getRecords(): array

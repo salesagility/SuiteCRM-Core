@@ -86,6 +86,8 @@ $moduleList[] = 'Bugs';
 $moduleList[] = 'ResourceCalendar';
 $moduleList[] = 'AOBH_BusinessHours';
 
+$moduleList[] = 'Alerts';
+
 // this list defines all of the module names and bean names in the app
 // to create a new module's bean class, add the bean definition here
 $beanList = [];
@@ -273,14 +275,13 @@ $modInvisList = [
     'DocumentRevisions',
     'ProjectTask',
     'ModuleBuilder',
-    'Alert',
     'ResourceCalendar',
     'AOBH_BusinessHours',
 ];
 
 $adminOnlyList = [
     //module => list of actions  (all says all actions are admin only)
-    //'Administration' => ['all'=>1, 'SupportPortal'=>'allow'],
+    'Administration' => ['all'=>1, 'supportportal'=>'allow'],
     'Dropdown' => ['all' => 1],
     'Dynamic' => ['all' => 1],
     'DynamicFields' => ['all' => 1],
@@ -294,6 +295,10 @@ $adminOnlyList = [
     'UpgradeWizard' => ['all' => 1],
     'Studio' => ['all' => 1],
     'Schedulers' => ['all' => 1],
+    'ExternalOAuthConnection' => ['all' => 1],
+    'jjwg_Address_Cache' => ['all' => 1],
+    'SugarFeed' => ['adminsettings' => 1],
+    'jjwg_Maps' => ['geocoded_counts' => 1, 'geocoding_test' => 1, 'config' => 1],
 ];
 
 $modInvisList[] = 'ACL';

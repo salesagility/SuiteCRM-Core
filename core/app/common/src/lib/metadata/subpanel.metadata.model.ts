@@ -24,15 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ColumnDefinition} from './list.metadata.model';
+import {ColumnDefinition, SearchMetaField} from './list.metadata.model';
 import {WidgetOptionMap} from './widget.metadata';
 import {Action} from '../actions/action.model';
-
-export interface SubPanelTopButton {
-    key: string;
-    labelKey: string;
-    module: string;
-}
 
 export interface SubPanelCollectionList {
     [key: string]: SubPanelCollectionItem;
@@ -58,19 +52,24 @@ export interface SubPanelDefinition {
     sort_order?: string;
     sort_by?: string;
     title_key?: string;
+    pagination_type: string;
     type?: string;
     name: string;
+    searchdefs?: SearchMetaField;
     subpanel_name?: string;
+    max_height?: number;
     header_definition_from_subpanel?: string;
     module?: string;
     legacyModule?: string;
     headerModule?: string;
-    top_buttons?: SubPanelTopButton[];
+    top_buttons?: Action[];
     collection_list: SubPanelCollectionList;
     columns: ColumnDefinition[];
     icon?: string;
     lineActions?: Action[];
     get_subpanel_data?: string;
+    showFilter?: boolean;
+    parameters?: { [key: string]: any };
 }
 
 /* eslint-enable camelcase */

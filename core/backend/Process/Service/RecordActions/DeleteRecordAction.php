@@ -82,6 +82,24 @@ class DeleteRecordAction implements ProcessHandlerInterface
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'delete',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

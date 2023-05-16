@@ -24,19 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActionBarModel} from './action-bar-model';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
+import {AppStateStore} from "../../store/app-state/app-state.store";
+import {UserPreferenceMap, UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 
 @Component({
     selector: 'scrm-action-bar-ui',
     templateUrl: './action-bar.component.html',
     styleUrls: []
 })
-export class ActionBarUiComponent {
+export class ActionBarUiComponent implements OnInit, OnDestroy {
 
     searchTerm = '';
     actionBar: ActionBarModel = {
@@ -70,6 +72,11 @@ export class ActionBarUiComponent {
     };
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
+    notificationCount$: Observable<number>;
+    preferences: UserPreferenceMap;
+    notificationsEnabled: boolean = false;
+
+    protected subs: Subscription[] = [];
 
     vm$ = combineLatest([
         this.languages$,
@@ -82,7 +89,32 @@ export class ActionBarUiComponent {
         )
     );
 
-    constructor(protected languageStore: LanguageStore, protected globalSearch: GlobalSearch) {
+    constructor(
+        protected languageStore: LanguageStore,
+        protected globalSearch: GlobalSearch,
+        protected appStateStore: AppStateStore,
+        protected preferencesStore: UserPreferenceStore
+    ) {
+    }
+
+    ngOnInit(): void {
+        this.notificationCount$ = this.appStateStore.notificationsUnreadTotal$;
+
+        this.subs.push(this.preferencesStore.userPreferences$.subscribe(preferences => {
+            this.preferences = preferences;
+        }));
+
+        this.subs.push(this.appStateStore.notificationsEnabled$.subscribe(notificationsEnabled => {
+            this.notificationsEnabled = notificationsEnabled;
+        }));
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    checkAppStrings(appStrings): boolean {
+        return appStrings && Object.keys(appStrings).length > 0;
     }
 
     search(): void {
@@ -93,5 +125,13 @@ export class ActionBarUiComponent {
 
     clearSearchTerm(): void {
         this.searchTerm = '';
+    }
+
+    markAsRead(): void {
+        this.appStateStore.markNotificationsAsRead();
+    }
+
+    arePreferencesInitialized(preferences: UserPreferenceMap) {
+        return preferences && Object.keys(preferences).length;
     }
 }

@@ -40,6 +40,7 @@ use App\SystemConfig\Service\SystemConfigProviderInterface;
 use App\Themes\Service\ThemeImageService;
 use App\UserPreferences\Entity\UserPreference;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
+use App\ViewDefinitions\Service\AdminPanelDefinitionProviderInterface;
 use Exception;
 use Symfony\Component\Security\Core\Security;
 
@@ -104,6 +105,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $userHandler;
 
     /**
+     * @var AdminPanelDefinitionProviderInterface
+     */
+    protected $adminPanelDefinitions;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -128,7 +134,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         ThemeImageService $themeImageService,
         ModuleMetadataProviderInterface $moduleMetadata,
         Security $security,
-        UserHandler $userHandler
+        UserHandler $userHandler,
+        AdminPanelDefinitionProviderInterface $adminPanelDefinitions
     ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->systemConfigProvider = $systemConfigProvider;
@@ -141,6 +148,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->moduleMetadata = $moduleMetadata;
         $this->security = $security;
         $this->userHandler = $userHandler;
+        $this->adminPanelDefinitions = $adminPanelDefinitions;
     }
 
     /**
@@ -201,6 +209,19 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+        }
+
+        /** @var \User $currentUser */
+        $currentUser = $this->userHandler->getCurrentUser() ?? null;
+
+        if (in_array('adminMetadata', $exposed, true) && !empty($currentUser) && $currentUser->isAdmin()) {
+            $adminMetadata = [
+                'adminPanel' => $this->adminPanelDefinitions->getAdminPanelDef()
+            ];
+            $metadata->setAdminMetadata($adminMetadata);
+        } elseif (!$currentUser->isAdmin()) {
+            $adminMetadata = [];
+            $metadata->setAdminMetadata($adminMetadata);
         }
 
         return $metadata;
@@ -489,6 +510,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         if (in_array('themeImages', $exposed, true)) {
             $metadata->setThemeImages($this->themeImageService->get($theme)->toArray());
         }
+
+        $metadata->setAdminMetadata([]);
 
         return $metadata;
     }

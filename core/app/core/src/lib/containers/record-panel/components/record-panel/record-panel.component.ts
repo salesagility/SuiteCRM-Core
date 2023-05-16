@@ -77,7 +77,7 @@ export class RecordPanelComponent implements OnInit, OnDestroy {
             mode$: this.config.store.mode$,
             fields$: this.config.store.getViewFieldsKeys$(),
             actions: this.config.actions,
-            klass: 'mt-2 rounded shadow-sm',
+            klass: 'mt-2 rounded',
             buttonClass: 'btn btn-outline-danger btn-sm',
             maxColumns$: of(4).pipe(shareReplay(1)),
             sizeMap$: of({

@@ -51,9 +51,38 @@ ul li::marker {
   color: $midnight-blue;
 }
 
-.text-danger {
-  color: $btn-danger;
+.text-main {
+  color: $main;
 }
+
+.text-primary {
+  color: $primary !important;
+}
+
+.text-secondary {
+  color: $secondary !important;
+}
+
+.text-danger {
+  color: $btn-danger !important;
+}
+
+.text-bigger-1 {
+  font-size: 110%;
+}
+
+.text-bigger-2 {
+  font-size: 120%;
+}
+
+.text-bigger-3 {
+  font-size: 140%;
+}
+
+.text-bigger-4 {
+  font-size: 140%;
+}
+
 
 .fill-white {
   fill: $white;
@@ -96,3 +125,42 @@ ul li::marker {
   stroke: $secondary;
 }
 
+.fill-danger {
+  fill: $danger;
+}
+
+.stroke-danger {
+  stroke: $danger;
+}
+
+.fill-hover-danger:hover {
+  fill: $danger;
+}
+
+.stroke-hover-danger:hover {
+  stroke: $danger;
+}
+
+.fill-danger-light {
+  fill: $salmon-pink;
+}
+
+.stroke-danger-light {
+  stroke: $salmon-pink;
+}
+
+.fill-hover-danger-light:hover {
+  fill: $salmon-pink;
+}
+
+.stroke-hover-danger-light:hover {
+  stroke: $salmon-pink;
+}
+
+.shadow-md {
+  box-shadow: .1rem .15rem .2rem rgba(0,0,0,.25)!important;
+}
+
+.line-height-initial {
+  line-height: initial;
+}

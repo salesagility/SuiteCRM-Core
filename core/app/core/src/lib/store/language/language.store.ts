@@ -219,12 +219,18 @@ export class LanguageStore implements StateStore {
 
         internalState.hasChanged = true;
 
-        this.appStateStore.updateLoading('change-language', true);
+        let languagesLoading = false;
+        if (this?.appStateStore?.updateLoading) {
+            this.appStateStore.updateLoading('change-language', true);
+            languagesLoading = true;
+        }
 
         this.load(languageKey, types, reload).pipe(
             tap(() => {
                 this.localStorage.set('selected_language', languageKey, true);
-                this.appStateStore.updateLoading('change-language', false);
+                if (languagesLoading) {
+                    this.appStateStore.updateLoading('change-language', false);
+                }
             })
         ).subscribe();
     }

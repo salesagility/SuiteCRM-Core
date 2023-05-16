@@ -44,7 +44,8 @@ class ModStringsHandler extends LegacyHandler
 
     protected static $extraModules = [
         'SecurityGroups',
-        'Bugs'
+        'Bugs',
+        'History'
     ];
 
     /**

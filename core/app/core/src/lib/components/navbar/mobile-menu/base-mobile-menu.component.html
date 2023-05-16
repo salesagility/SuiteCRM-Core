@@ -42,6 +42,13 @@
     <ng-container *ngIf="mainNavLink">
         <div class="mobile-menu-items">
 
+            <li (click)="changeSubNav($event, current.submenu, navigationType, current)" *ngIf="isAdminNavbar"
+                class=" d-flex align-items-center">
+                <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">{{ current.link.label }}</a>
+                <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled"
+                ></scrm-image>
+            </li>
+
             <li (click)="changeSubNav($event, item.submenu, navigationType, item)" *ngFor="let item of mainItems"
                 class=" d-flex align-items-center">
                 <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">{{ item.link.label }}</a>
@@ -66,7 +73,9 @@
 
         <ng-container *ngIf="subNavigationType !== 'gm'">
 
-            <scrm-mobile-module-menu [items]="submenu" [onClose]="onClose"></scrm-mobile-module-menu>
+            <scrm-mobile-grouped-menu *ngIf="isAdminNavbar && isAdminNavbarClicked" [items]="current?.submenu" [onClose]="onClose"></scrm-mobile-grouped-menu>
+
+            <scrm-mobile-module-menu *ngIf="!isAdminNavbarClicked" [items]="submenu" [onClose]="onClose"></scrm-mobile-module-menu>
 
             <ng-container *ngIf="subNavItem && subNavItem.module">
                 <div class="mobile-menu-items">

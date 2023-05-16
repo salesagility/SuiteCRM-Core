@@ -29,14 +29,7 @@ import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
-import {
-    deepClone,
-    Field,
-    FieldDefinition,
-    SearchCriteria,
-    SearchCriteriaFieldFilter,
-    ViewFieldDefinition
-} from 'common';
+import {deepClone, Field, FieldDefinition, SearchCriteria, SearchCriteriaFieldFilter, ViewFieldDefinition} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 
@@ -117,7 +110,7 @@ export class FilterFieldBuilder extends FieldBuilder {
             fieldType = field.definition.type;
         }
 
-        if (searchCriteria.filters[fieldName]) {
+        if (searchCriteria.filters[fieldName] && searchCriteria.filters[fieldName].fieldType) {
             fieldCriteria = deepClone(searchCriteria.filters[fieldName]);
         } else {
             fieldCriteria = {

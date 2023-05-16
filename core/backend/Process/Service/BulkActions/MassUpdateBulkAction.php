@@ -89,6 +89,29 @@ class MassUpdateBulkAction implements ProcessHandlerInterface, LoggerAwareInterf
     /**
      * @inheritDoc
      */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $ids = $options['ids'] ?? [];
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'ids' => $ids
+                ],
+                [
+                    'action' => 'massupdate'
+                ]
+            ],
+        ];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function configure(Process $process): void
     {
         //This process is synchronous

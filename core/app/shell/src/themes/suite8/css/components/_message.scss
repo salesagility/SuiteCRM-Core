@@ -30,9 +30,10 @@
   position: fixed;
   top: 3.3em;
   left: 0;
-  width: 100%;
   z-index: map-get($zindex, app-low);
-  border-radius: 0
+  border-radius: 0;
+  margin-left: calc(50% - 20rem);
+  width: fit-content;
 }
 
 .message-container {

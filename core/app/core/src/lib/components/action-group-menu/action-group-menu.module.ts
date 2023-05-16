@@ -30,6 +30,9 @@ import {ActionGroupMenuComponent} from './action-group-menu.component';
 import {ButtonGroupModule} from '../button-group/button-group.module';
 import {ButtonModule} from '../button/button.module';
 import {ImageModule} from '../image/image.module';
+import {LabelModule} from '../label/label.module';
+import {DynamicLabelModule} from '../dynamic-label/dynamic-label.module';
+import {InlineLoadingSpinnerModule} from '../inline-loading-spinner/inline-loading-spinner.module';
 
 @NgModule({
     declarations: [ActionGroupMenuComponent],
@@ -38,7 +41,10 @@ import {ImageModule} from '../image/image.module';
         CommonModule,
         ImageModule,
         ButtonModule,
-        ButtonGroupModule
+        ButtonGroupModule,
+        LabelModule,
+        DynamicLabelModule,
+        InlineLoadingSpinnerModule
     ]
 })
 export class ActionGroupMenuModule {

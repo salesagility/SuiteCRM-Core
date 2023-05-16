@@ -25,9 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Button, ButtonInterface} from 'common';
-import {DropdownButtonInterface} from 'common';
-import {ButtonGroupInterface} from 'common';
+import {Button, ButtonGroupInterface, ButtonInterface, DropdownButtonInterface} from 'common';
 import {Observable, Subscription} from 'rxjs';
 
 interface SplitButtons {
@@ -43,6 +41,7 @@ interface SplitButtons {
 export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     @Input() config$: Observable<ButtonGroupInterface>;
+    @Input() klass: string = '';
 
     buttons: SplitButtons = {
         expanded: [],
@@ -53,6 +52,7 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     protected internalConfig: ButtonGroupInterface;
     private sub: Subscription;
+
 
     constructor() {
     }
@@ -114,7 +114,7 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     protected getBreakpoint(): number {
 
-        if (!this.internalConfig.breakpoint) {
+        if (!this.internalConfig.breakpoint && this.internalConfig.breakpoint !== 0) {
             return 4;
         }
 

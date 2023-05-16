@@ -100,6 +100,10 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
 
         $hasAccess = ACLController::checkAccess($legacyName, $action, $isOwner, $type, $in_group);
 
+        if (check_default_module_access($legacyName) === false) {
+            $hasAccess = false;
+        }
+
         $this->close();
 
         return $hasAccess;

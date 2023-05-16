@@ -26,9 +26,9 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-    Action,
     AttributeMap,
     deepClone,
+    FieldDefinitionMap,
     isFalse,
     isTrue,
     Record,
@@ -41,16 +41,12 @@ import {Observable, of, Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {distinctUntilChanged, filter, map, shareReplay} from 'rxjs/operators';
-import {RecordThreadConfig} from '../../../record-thread/components/record-thread/record-thread.model';
-import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
+import {
+    RecordThreadConfig,
+    ThreadItemMetadataConfig
+} from '../../../record-thread/components/record-thread/record-thread.model';
 import {RecordThreadItemMetadata} from '../../../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
-
-interface ThreadItemMetadataConfig {
-    header?: FieldFlexbox;
-    body?: FieldFlexbox;
-    actions?: Action[];
-}
 
 @Component({
     selector: 'scrm-record-thread-sidebar-widget',
@@ -71,6 +67,7 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             collapsible?: boolean;
             collapseLimit?: number;
             layout?: ThreadItemMetadataConfig;
+            fields?: FieldDefinitionMap;
         },
         create: {
             presetFields?: {
@@ -176,6 +173,14 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
 
         if (config && config.actions) {
             metadata.actions = deepClone(config.actions);
+        }
+
+        if (config && config.fields) {
+            metadata.fields = deepClone(config.fields);
+        }
+
+        if ((config?.collapseActions ?? null) !== null) {
+            metadata.collapseActions = config?.collapseActions;
         }
     }
 

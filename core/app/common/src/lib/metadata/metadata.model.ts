@@ -30,6 +30,8 @@ import {FieldLogicMap} from '../actions/field-logic-action.model';
 export interface ViewFieldDefinition {
     name?: string;
     label?: string;
+    labelKey?: string;
+    dynamicLabelKey?: string;
     link?: boolean;
     type?: string;
     display?: string;

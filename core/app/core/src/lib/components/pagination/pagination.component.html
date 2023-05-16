@@ -26,13 +26,13 @@
 */
 -->
 <div class="bulk-action float-right" *ngIf="(vm$ | async) as vm">
-    <button class="pagination-button pagination-first"
+    <button *ngIf="allowPagination" class="pagination-button pagination-first"
             aria-label="Navigate to first page"
             (click)="first()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_first">
         </scrm-image>
     </button>
-    <button class="pagination-button pagination-previous"
+    <button *ngIf="allowPagination" class="pagination-button pagination-previous"
             aria-label="Previous page"
             (click)="previous()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_previous">
@@ -40,19 +40,19 @@
     </button>
     <span class="pagination-count"
           [ngClass]="{
-            'hide-pagination-count': displayResponsiveTable
+            'hide-pagination-count': displayResponsiveTable, 'centre-pagination': !allowPagination
           }"
     >
       ({{vm.pageCount.pageFirst}}
         - {{vm.pageCount.pageLast}} {{vm.appStrings['LBL_LIST_OF'] || ''}} {{vm.pageCount.total}})
     </span>
-    <button class="pagination-button pagination-next"
+    <button *ngIf="allowPagination" class="pagination-button pagination-next"
             aria-label="Navigate to last page"
             (click)="next()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_next">
         </scrm-image>
     </button>
-    <button class="pagination-button pagination-last"
+    <button *ngIf="allowPagination" class="pagination-button pagination-last"
             aria-label="Next page"
             (click)="last()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_last">

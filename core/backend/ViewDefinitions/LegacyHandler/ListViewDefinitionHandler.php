@@ -196,6 +196,8 @@ class ListViewDefinitionHandler extends LegacyHandler
             'lineActions' => [],
             'availableFilters' => [],
             'sidebarWidgets' => [],
+            'paginationType' => '',
+            'maxHeight' => '',
         ];
 
         /* @noinspection PhpIncludeInspection */
@@ -233,12 +235,16 @@ class ListViewDefinitionHandler extends LegacyHandler
 
         $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module) ?? [];
         $metadata['sidebarWidgets'] = $this->widgetDefinitionProvider->getSidebarWidgets(
-                $this->listViewSidebarWidgets,
-                $module,
-                ['widgets' => $listMeta['sidebarWidgets'] ?? []]
-            ) ?? [];
+            $this->listViewSidebarWidgets,
+            $module,
+            ['widgets' => $listMeta['sidebarWidgets'] ?? []]
+        ) ?? [];
 
         $metadata['availableFilters'] = $this->filterDefinitionProvider->getFilters($module) ?? [];
+
+        $metadata['paginationType'] = $listMeta['paginationType'] ?? null;
+
+        $metadata['maxHeight'] = $listMeta['maxHeight'] ?? null;
 
         return $metadata;
     }

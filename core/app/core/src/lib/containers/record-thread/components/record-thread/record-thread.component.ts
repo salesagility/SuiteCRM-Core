@@ -29,13 +29,15 @@ import {combineLatest, Subscription} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
-import {take} from 'rxjs/operators';
+import {take, tap} from 'rxjs/operators';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {AttributeMap, ButtonInterface, isVoid, Record, ViewMode} from 'common';
 import {RecordThreadItemStoreFactory} from '../../store/record-thread/record-thread-item.store.factory';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {MessageService} from '../../../../services/message/message.service';
+import {RecordThreadListActionsAdapter} from "../../adapters/record-thread-list-actions.adapter";
+import {RecordThreadListActionsAdapterFactory} from "../../adapters/record-thread-list-actions.adapter.factory";
 
 
 @Component({
@@ -54,52 +56,86 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     loading = false;
     maxHeight = 400;
     direction: 'asc' | 'desc' = 'asc';
+    loadMorePosition: 'bottom' | 'top' | string = 'top';
+    listActionAdapter: RecordThreadListActionsAdapter;
+
     protected shouldResetScroll = false;
 
     protected subs: Subscription[] = [];
     protected presetFieldValues: AttributeMap;
 
+
+
     constructor(
         protected storeFactory: RecordThreadStoreFactory,
         protected itemFactory: RecordThreadItemStoreFactory,
         protected recordManager: RecordManager,
-        protected message: MessageService
+        protected message: MessageService,
+        protected actionAdapterFactory: RecordThreadListActionsAdapterFactory,
     ) {
     }
 
     ngOnInit(): void {
-
         if (!isVoid(this.config.maxListHeight)) {
             this.maxHeight = this.config.maxListHeight;
-        }
-
-        if (!this.config.store) {
-            this.store = this.storeFactory.create();
         }
 
         if (!this.config.module) {
             return;
         }
 
+        if (!this.config.store) {
+            this.store = this.storeFactory.create();
+            this.store.setItemMetadata(this.config.itemConfig.metadata);
+            this.store.setListMetadata({actions: this.config.listActions});
+            this.store.init(this.config.module, false, this?.config?.pageSize ?? null);
+        } else {
+            this.store = this.config.store;
+        }
+
         this.direction = this.config.direction || this.direction;
+        this.setLoadMorePosition();
 
-        this.store.setMetadata(this.config.itemConfig.metadata);
-
-        this.store.init(this.config.module, false);
         this.initCreate();
         this.initDataSubscription();
 
         if (this.config.filters$) {
 
             this.subs.push(this.config.filters$.subscribe(filters => {
-                this.store.setFilters(filters).pipe(take(1)).subscribe();
+                this.store.setFilters(filters).pipe(take(1)).subscribe(() => {
+                    if (this.config.onRefresh) {
+                        this.config.onRefresh()
+                    }
+                });
             }));
 
         } else {
-            this.store.load(false);
+            this.store.load(false).subscribe(() => {
+                if (this.config.onRefresh) {
+                    this.config.onRefresh()
+                }
+            });
+        }
+
+        const autoRefreshFrequency = this?.config?.autoRefreshFrequency ?? 0;
+        if (autoRefreshFrequency && this.store) {
+            const min = this.config.autoRefreshDeviationMin ?? -15;
+            const max = this.config.autoRefreshDeviationMax ?? 15;
+
+            this.subs.push(this.store.initAutoRefresh(autoRefreshFrequency, min, max, this.config.onRefresh).subscribe());
         }
 
         this.initLoading();
+
+        this.listActionAdapter = this.actionAdapterFactory.create(this.store, this.config);
+
+    }
+
+    private setLoadMorePosition() {
+        this.loadMorePosition = this.direction === 'asc' ? 'top' : 'bottom';
+        if (this.config.loadMorePosition) {
+            this.loadMorePosition = this.config.loadMorePosition;
+        }
     }
 
     ngAfterViewInit() {
@@ -108,7 +144,9 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        this.store.clear();
+        if (!(this?.config?.store ?? null)) {
+            this.store.clear();
+        }
         this.store = null;
         this.subs.forEach(sub => sub.unsubscribe())
     }
@@ -119,12 +157,13 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.config.itemConfig.klass) {
             klass += ' ' + this.config.itemConfig.klass
         }
-
         return {
             ...this.config.itemConfig,
             store: item,
             threadStore: this.store,
             klass: klass,
+            containerClass: this.config.itemConfig.containerClass,
+            flexDirection: this.config?.itemConfig?.flexDirection ?? '',
             expanded: (): void => {
                 this.scrollToItem(itemRef);
             },
@@ -139,6 +178,12 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             klass: 'load-more-button btn btn-link btn-sm',
             labelKey: 'LBL_LOAD_MORE',
             onClick: () => {
+                if (this?.config?.onLoadMore) {
+                    this.store.getRecordList().records$.pipe(
+                        take(1),
+                        tap(() => this.config.onLoadMore())
+                    ).subscribe();
+                }
                 this.store.loadMore();
             }
         } as ButtonInterface;
@@ -155,7 +200,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getCreateButton(): ButtonInterface {
         return {
-            klass: 'create-thread-item-button btn btn-danger btn-sm',
+            klass: 'create-thread-item-button btn btn-main btn-sm',
             labelKey: 'LBL_SUBMIT_BUTTON_LABEL',
             onClick: () => {
                 this.createStore.validate().pipe(take(1)).subscribe(valid => {
@@ -192,7 +237,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
     protected initRecord() {
         const emptyRecord = this.recordManager.buildEmptyRecord(this.config.module);
         this.addPresetFields(emptyRecord);
-
         let mode = 'edit' as ViewMode;
         if (this.config.createConfig && this.config.createConfig.initialMode) {
             mode = this.config.createConfig.initialMode;
@@ -327,7 +371,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const $loading = combineLatest(loading);
         this.subs.push($loading.subscribe((loadings) => {
-
             if (!loadings || !loadings.length) {
                 this.loading = false;
                 return;
@@ -338,7 +381,6 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             loadings.forEach(value => {
                 loading = loading || value;
             });
-
             this.loading = loading;
         }));
     }

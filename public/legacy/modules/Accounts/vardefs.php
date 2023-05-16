@@ -183,7 +183,6 @@ $dictionary['Account'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_CALLS',
         ),
-
         'emails' => array(
             'name' => 'emails',
             'type' => 'link',

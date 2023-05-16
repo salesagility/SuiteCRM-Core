@@ -141,7 +141,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
 
         $legacyParentModule = $this->moduleNameMapper->toLegacy($parentModule);
 
-        $this->initController($parentModule);
+        $this->initController($parentModule, $parentId);
 
         $parentBean = BeanFactory::getBean($parentModule, $parentId);
 

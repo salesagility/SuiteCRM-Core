@@ -1,0 +1,7 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+  # default configuration for services in *this* file

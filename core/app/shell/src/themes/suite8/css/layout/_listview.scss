@@ -52,6 +52,10 @@
   text-align: end;
 }
 
+.load-more-style {
+  align-content: center;
+}
+
 .list-view-container {
   font-size: 0.85em;
   margin-bottom: 4em;
@@ -106,6 +110,27 @@
 
 .table td {
   vertical-align: middle;
+}
+
+.table .show-more-column {
+  float: none !important;
+  width: 16px;
+
+  scrm-record-details-popup-button {
+    display: flex;
+    width: 100%;
+
+    scrm-popup-button {
+      display: flex;
+      width: 100%;
+
+      scrm-button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+    }
+  }
 }
 
 .list-view-tableactions {
@@ -386,6 +411,24 @@ td {
   color: $white;
 }
 
+.load-more {
+  background-color: #76858f;
+  background-repeat: no-repeat;
+  border: 0.09em solid rgb(233, 233, 233);
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-repeat: initial;
+  border-radius: 0.15em;
+  cursor: pointer;
+  overflow: hidden;
+  outline: initial none initial;
+  padding: 0.3em 0.5em;
+  font-weight: 700;
+  font-size: .9em;
+  color: #fff;
+  min-width: 11em;
+}
+
 @media all and (max-width: $breakpoint-medium) {
   .select-action-group {
     margin: 0 0 0 1em;
@@ -409,6 +452,15 @@ td {
   font-weight: bold;
   position: relative;
   bottom: 0.1em;
+}
+
+.centre-pagination {
+  margin: 0 0.7em;
+  font-weight: bold;
+  position: relative;
+  top: initial;
+  bottom: initial;
+  line-height: 32px;
 }
 
 .list-view .col-lg-12, .list-view .col-lg-9, .list-view .col-lg-3 {

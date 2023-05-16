@@ -121,6 +121,7 @@ $mod_strings = array(
     'MSG_DUPLICATE' => 'Creating this account may potentially create a duplicate account. You may either select an account from the list below or you may click on Save to continue creating a new account with the previously entered data.',
     'MSG_SHOW_DUPLICATES' => 'Creating this account may potentially create a duplicate account. You may either click on Save to continue creating this new account with the previously entered data or you may click Cancel.',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'LBL_LIST_FORM_TITLE' => 'Quotes List',
     'LBL_MODULE_NAME' => 'Quotes',
     'LBL_MODULE_TITLE' => 'Quotes: Home',

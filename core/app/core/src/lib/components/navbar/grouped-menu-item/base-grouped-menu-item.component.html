@@ -26,11 +26,18 @@
 */
 -->
 <ng-container>
-    <span data-target=".navbar-collapse" data-toggle="collapse">
-        <a class="top-nav-link nav-link-grouped dropdown-toggle" data-toggle="dropdown">
+
+    <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu">
+        <a class="top-nav-link nav-link-grouped dropdown-toggle active" data-toggle="dropdown">
             {{ item.link.label }}
         </a>
     </span>
+    <ul class="navbar-nav grouped" *ngIf="item.isGroupedMenu">
+
+        <li class="top-nav nav-item dropdown main-grouped active">
+            <scrm-menu-item [item]="item"></scrm-menu-item>
+        </li>
+    </ul>
 
     <ul [ngbCollapse]="subNavCollapse"
         (click)="hideDropdown()"

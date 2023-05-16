@@ -67,6 +67,9 @@ class ListDataHandler extends BaseListDataHandler implements ListDataHandlerInte
         $records = $this->recordMapper->mapRecords($resultData['data'] ?? [], $resultData['pageData'] ?? []);
         $listData->setRecords($records);
         $listData->setOrdering($resultData['pageData']['ordering'] ?? []);
+        if(isset($resultData['pageData']['offsets']['total']) && is_numeric($resultData['pageData']['offsets']['total'])) {
+            $resultData['pageData']['offsets']['total'] = (int) $resultData['pageData']['offsets']['total'];
+        }
         $listData->setOffsets($resultData['pageData']['offsets'] ?? []);
 
         return $listData;

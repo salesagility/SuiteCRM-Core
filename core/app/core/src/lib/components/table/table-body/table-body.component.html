@@ -25,9 +25,10 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
+
 <ng-container *ngIf="(vm$ | async) as vm">
     <div class="position-relative d-flex flex-column">
-        <table cdk-table [dataSource]="config.dataSource"
+        <table cdk-table recycleRows [dataSource]="config.dataSource" [trackBy]="trackRecord"
                aria-describedby="table-body"
                class="list-view-table striped-table table">
 
@@ -48,12 +49,23 @@
 
             </ng-container>
 
+            <ng-container cdkColumnDef="show-more" *ngIf="popoverColumns && popoverColumns.length">
+
+                <th cdk-header-cell scope="col" *cdkHeaderCellDef class="primary-table-header show-more-column"></th>
+
+                <td cdk-cell *cdkCellDef="let record" class="show-more-column">
+                    <scrm-record-details-popup-button [record]="record" [columns]="popoverColumns"
+                                                      *ngIf="popoverColumns.length"></scrm-record-details-popup-button>
+                </td>
+
+            </ng-container>
+
             <ng-container *ngFor="let column of vm.columns" [cdkColumnDef]="column.name">
 
                 <th cdk-header-cell
                     *cdkHeaderCellDef
                     scope="col"
-                    class="primary-table-header">
+                    [class]="'primary-table-header ' + 'column-' + column?.name ?? ''">
 
                     <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
                     <scrm-sort-button *ngIf="config.sort$ && column.sortable"
@@ -62,7 +74,7 @@
 
                 </th>
 
-                <td cdk-cell *cdkCellDef="let record">
+                <td cdk-cell *cdkCellDef="let record" [class]="'column-' + column?.name ?? ''">
                     <scrm-field [mode]="'list'"
                                 [type]="column.type"
                                 [field]="getField(column, record)"

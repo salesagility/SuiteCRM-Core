@@ -26,7 +26,7 @@
 
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {NgbCalendar, NgbDateStruct, NgbPopover, NgbPopoverConfig, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString} from 'common';
+import {ButtonInterface, isEmptyString, isVoid} from 'common';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from "../../../../services/formatters/datetime/datetime-formatter.service";
@@ -62,7 +62,7 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
 
         // Note: handle NgbDatePicker default validation
         // Note: convert empty form value to null for the ngb date validator to pass it
-        if (isEmptyString(this.field.value)) {
+        if (isVoid(this.field.value) || isEmptyString(this.field.value)) {
             this.dateTimeModel.date = this.calendar.getToday() as NgbDateStruct;
             this.dateTimeModel.time = {hour: 0, minute: 0, second: 0} as NgbTimeStruct;
             this.field.formControl.setValue(null);

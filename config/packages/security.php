@@ -32,7 +32,9 @@ use App\Security\Ldap\AppLdapUserProvider;
 use App\Security\Saml\AppSamlAuthenticator;
 use App\Security\UserChecker;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Ldap\Ldap;
+use Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter;
 
 /** @var $container Container */
 if (!isset($container)) {
@@ -44,7 +46,36 @@ return static function (ContainerConfigurator $containerConfig) {
     $env = $_ENV ?? [];
     $authType = $env['AUTH_TYPE'] ?? 'native';
 
-    $maxAttempts = (int)($env['LOGIN_THROTTLING_MAX_ATTEMPTS'] ?? 3);
+    $maxAttempts = (int)($env['LOGIN_THROTTLING_MAX_ATTEMPTS'] ?? 5);
+    $ipLoginMaxAttempts = (int)($env['LOGIN_THROTTLING_IP_LOGIN_MAX_ATTEMPTS'] ?? 50);
+    $loginThrottlingInterval = (string)($env['LOGIN_THROTTLING_INTERVAL'] ?? '30 minutes');
+
+    $containerConfig->extension('framework', [
+        'rate_limiter' => [
+            // define 2 rate limiters (one for username+IP, the other for IP)
+            'username_ip_login' => [
+                'policy' => 'token_bucket',
+                'limit' => $maxAttempts,
+                'rate' => [ 'interval' => $loginThrottlingInterval ],
+            ],
+            'ip_login' => [
+                'policy' => 'sliding_window',
+                'limit' => $ipLoginMaxAttempts,
+                'interval' => $loginThrottlingInterval,
+            ],
+        ],
+    ]);
+
+    $containerConfig->services()->set('app.login_rate_limiter')
+        ->class(DefaultLoginRateLimiter::class)
+        ->args(
+            [
+                // 1st argument is the limiter for IP
+                new Reference('limiter.ip_login'),
+                // 2nd argument is the limiter for username+IP
+                new Reference('limiter.username_ip_login'),
+            ]
+        );
 
     $baseFirewall = [
         'dev' => [
@@ -84,7 +115,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         'check_path' => 'app_login',
                     ],
                     'login_throttling' => [
-                        'max_attempts' => $maxAttempts
+                        'limiter' => 'app.login_rate_limiter'
                     ],
                     'logout' => [
                         'path' => 'app_logout'
@@ -170,7 +201,7 @@ return static function (ContainerConfigurator $containerConfig) {
                     'json_login_ldap' => $baseLdapConfig,
                     'provider' => $baseLdapConfig['provider'],
                     'login_throttling' => [
-                        'max_attempts' => $maxAttempts
+                        'limiter' => 'app.login_rate_limiter',
                     ],
                     'logout' => [
                         'path' => 'app_logout'
@@ -239,7 +270,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         'check_path' => 'native_auth_login',
                     ],
                     'login_throttling' => [
-                        'max_attempts' => $maxAttempts,
+                        'limiter' => 'app.login_rate_limiter',
                     ],
                     'logout' => [
                         'path' => 'native_auth_logout'
@@ -255,7 +286,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         'check_path' => 'native_auth_login',
                     ],
                     'login_throttling' => [
-                        'max_attempts' => $maxAttempts,
+                        'limiter' => 'app.login_rate_limiter',
                     ],
                     'logout' => [
                         'path' => 'native_auth_logout'

@@ -38,6 +38,7 @@ export class ImageComponent {
     @Input() image: string;
     @Input() klass = '';
     @Input() title = '';
+    @Input() wrapperClass = 'sicon';
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 

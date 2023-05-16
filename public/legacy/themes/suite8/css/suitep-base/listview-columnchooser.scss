@@ -26,6 +26,7 @@
     }
     #columnsFilterDialog {
         .modal-dialog {
+            max-width: 450px;
             .modal-content {
                 .modal-header {
                     padding: 10px;
@@ -53,6 +54,7 @@
                        background: #534d64;
                        text-transform: capitalize;
                        font-weight: 700;
+                       margin-left: 0.5em;
                        &:hover {
                             background: $modal-btn-hover !important;
                             border: none;

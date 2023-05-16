@@ -102,11 +102,13 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     protected initValue(): void {
         if (!this.field.valueObject) {
             this.selectedValues = [];
+            this.field.formControl.setValue('');
             return;
         }
 
         if (!this.field.valueObject.id) {
             this.selectedValues = [];
+            this.field.formControl.setValue('');
             return;
         }
 

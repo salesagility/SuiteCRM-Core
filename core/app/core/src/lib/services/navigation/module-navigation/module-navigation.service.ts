@@ -127,7 +127,7 @@ export class ModuleNavigation {
     public getActionRoute(action: ModuleAction): NavigationRoute {
         let url = action.url;
         let route = null;
-        let params = null;
+        let params = {};
 
         if (url.startsWith(ROUTE_PREFIX)) {
             route = url.replace(ROUTE_PREFIX, '');
@@ -135,6 +135,19 @@ export class ModuleNavigation {
 
             if (action.params) {
                 params = action.params;
+            } else {
+                const routeParts = route.split('?');
+                route = routeParts[0];
+                const queryParamsStr = routeParts[1];
+                const queryParamsObj = {};
+
+                if (queryParamsStr) {
+                    queryParamsStr.split('&').forEach(param => {
+                        const keyValue = param.split('=');
+                        queryParamsObj[keyValue[0]] = keyValue[1];
+                    });
+                }
+                params = queryParamsObj;
             }
         }
 

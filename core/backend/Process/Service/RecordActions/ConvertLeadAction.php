@@ -28,8 +28,8 @@
 namespace App\Process\Service\RecordActions;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Process\Entity\Process;
 use App\Module\Service\ModuleNameMapperInterface;
+use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 
 class ConvertLeadAction implements ProcessHandlerInterface
@@ -65,6 +65,26 @@ class ConvertLeadAction implements ProcessHandlerInterface
     public function requiredAuthRole(): string
     {
         return 'ROLE_USER';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+        $id = $options['id'] ?? '';
+
+        return [
+            $module => [
+                [
+                    'action' => 'view',
+                    'record' => $id
+                ],
+            ],
+        ];
+
     }
 
     /**

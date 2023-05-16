@@ -27,17 +27,24 @@
 -->
 <div class="{{ (config && config.klass) || ''}}">
     <scrm-table-header *ngIf="showHeader()"
-                   [selection]="config.selection"
-                   [bulkActions]="config.bulkActions"
-                   [pagination]="config.pagination">
+                       [bulkActions]="config.bulkActions"
+                       [paginationType]="getPaginationType()"
+                       [pagination]="config.pagination"
+                       [selection]="config.selection"
+    >
     </scrm-table-header>
+
 
     <scrm-table-body [config]="config"></scrm-table-body>
 
+
     <scrm-table-footer *ngIf="showFooter()"
-                   [selection]="config.selection"
-                   [bulkActions]="config.bulkActions"
-                   [pagination]="config.pagination">
+                       [bulkActions]="config.bulkActions"
+                       [paginationType]="getPaginationType()"
+                       [pagination]="config.pagination"
+                       [selection]="config.selection"
+                       [config]="config"
+    >
     </scrm-table-footer>
 </div>
 

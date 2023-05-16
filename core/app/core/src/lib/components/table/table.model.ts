@@ -48,6 +48,7 @@ export interface TableConfig {
     columns: Observable<ColumnDefinition[]>;
     maxColumns$: Observable<number>;
     lineActions?: ActionDataSource;
+    maxListHeight?: number;
     selection$?: Observable<RecordSelection>;
     selectedCount$?: Observable<number>;
     selectedStatus$?: Observable<SelectionStatus>;
@@ -58,6 +59,12 @@ export interface TableConfig {
 
     bulkActions?: BulkActionDataSource;
     pagination?: PaginationDataSource;
+
+    paginationType?: string;
+
+    loadMore?(): void;
+
+    allLoaded?(): boolean;
 
     module?: string;
 

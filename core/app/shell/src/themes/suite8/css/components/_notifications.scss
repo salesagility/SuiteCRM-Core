@@ -1,0 +1,151 @@
+.action-alert.dropdown {
+
+  .dropdown-menu {
+    padding: 0;
+  }
+
+  .badge-position {
+    position: absolute;
+    top: -5px;
+    right: 45px;
+  }
+
+  .notifications {
+
+    .notifications-item {
+      border-bottom: 1px dotted $danger;
+    }
+
+    .notifications-item.is_read-true {
+      .record-thread-item-body {
+        background-color: white !important;
+      }
+    }
+
+    .line-actions-button {
+      font-size: .775rem;
+      color: $midnight-blue;
+      margin: 0;
+      padding: 0;
+    }
+
+    .record-thread-item.record-thread-list-item {
+      width: 100%;
+      padding: 0;
+
+      .record-thread-item-body {
+        background-color: $bright-grey;
+        transition: background-color 300ms ease-in-out;
+        box-shadow: none;
+        margin-bottom: 0;
+
+        &:hover {
+          background-color: $lighter-salmon-pink !important;
+
+          .notification-item-buttons {
+            .action-group-menu {
+              .inline-confirmation {
+
+                .inline-confirmation-button {
+                  background-color: $lighter-salmon-pink;
+                }
+
+                .inline-confirmation-label {
+                  background-color: $lighter-salmon-pink;
+                }
+
+                .inline-confirmation-label > scrm-label {
+                  background-color: $lighter-salmon-pink;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                }
+
+                .inline-confirmation-label > scrm-dynamic-label {
+                  background-color: $lighter-salmon-pink;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                }
+              }
+            }
+          }
+        }
+
+        .notification-item-buttons {
+          .action-group-menu {
+
+            .inline-confirmation {
+
+              .inline-confirmation-button button {
+                color: $danger;
+              }
+
+            }
+          }
+        }
+      }
+
+      .field-name-name, .field-name-target_module_label {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+      }
+
+      .field-name-name {
+        width: 168px;
+        margin-right: 8px;
+      }
+
+      .field-name-target_module_label {
+        width: 150px;
+      }
+
+      .notifications-actions svg {
+        font-size: 75%;
+      }
+
+      .field-name-name {
+
+        a, a.clickable {
+          color: $black;
+        }
+      }
+
+      .field-name-target_module_type.field-type-icon svg {
+        font-size: 130%;
+        fill: $burnt-orange;
+        stroke: $burnt-orange;
+        margin-top: -0.3rem;
+      }
+
+      .notification-item-buttons {
+        margin-top: -0.2rem;
+      }
+    }
+
+    .notification-list-actions button {
+      color: $danger;
+    }
+
+    .record-thread-load-more .load-more-button {
+      font-weight: 400;
+    }
+
+    .record-thread-load-more::after {
+      content: "|";
+      margin-right: 0.2rem;
+      margin-left: 0.2rem;
+      color: $danger;
+    }
+
+    .notification-list-actions {
+      .action-group-menu {
+        .inline-confirmation-label {
+          color: $dim-grey;
+        }
+      }
+    }
+
+  }
+
+}
+
+

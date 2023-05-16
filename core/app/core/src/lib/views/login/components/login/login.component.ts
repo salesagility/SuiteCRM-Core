@@ -215,7 +215,7 @@ export class LoginUiComponent implements OnInit {
 
         const errorMessage = httpError?.error?.error ?? '';
 
-        if (errorMessage === 'Too many failed login attempts, please try again in 1 minute.') {
+        if (typeof errorMessage === 'string' && errorMessage.includes('Too many failed login attempts, please try again in')) {
             message = this.getTooManyFailedMessage(defaultTooManyFailedMessage);
         }
 

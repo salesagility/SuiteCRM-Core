@@ -42,6 +42,7 @@ services:
       $recordViewSidebarWidgets: '%module.recordview.sidebar_widgets%'
       $recordViewBottomWidgets: '%module.recordview.bottom_widgets%'
       $recordViewTopWidgets: '%module.recordview.top_widgets%'
+      $subpanelViewActionLimits: '%module.subpanelview.actions_limits%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $currencyFieldsTypeMap: '%record.fields.currency_fields_type_map%'
       $legacyToFrontEndFieldsMap: '%record.fields.legacy_to_frontend_fields_map%'
@@ -49,6 +50,8 @@ services:
       $legacyActionResolverMap: '%legacy.action_resolver%'
       $massupdate: '%massupdate%'
       $uiConfigs: '%ui%'
+      $notificationsConfigs: '%notifications%'
+      $notificationsReloadActions: '%notifications_reload_actions%'
       $systemSettings: '%system.settings%'
       $extensions: '%extensions%'
       $upgradeConfig: '%upgrades%'
@@ -59,6 +62,8 @@ services:
       $samlAutoCreateAttributesMap: '%saml.autocreate.attributes_map%'
       $logoutConfig: '%auth.logout%'
       $sessionExpiredConfig: '%auth.session-expired%'
+      $adminOnlyModuleActions: '%system.admin_only_module_actions%'
+      $navbarAdministrationOverrides: '%navbar.administration_override%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -280,6 +285,10 @@ services:
 
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
+    public: true
+
+  entity_manager:
+    alias: doctrine.orm.entity_manager
     public: true
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'

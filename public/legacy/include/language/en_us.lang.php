@@ -227,6 +227,18 @@ $app_list_strings = array(
         'Budget' => 'Budget',
 
     ),
+    'subpanel_pagination_type' => [
+        'pagination' => 'Pagination',
+        'load-more' => 'Load More'
+    ],
+    'listview_pagination_type' => [
+        'pagination' => 'Pagination',
+        'load-more' => 'Load More'
+    ],
+    'record_modal_pagination_type' => [
+        'pagination' => 'Pagination',
+        'load-more' => 'Load More'
+    ],
     //Note:  do not translate opportunity_relationship_type_default_key
 //       it is the key for the default opportunity_relationship_type_dom value
     'opportunity_relationship_type_default_key' => 'Primary Decision Maker',
@@ -309,6 +321,33 @@ $app_list_strings = array(
         10800 => '3 hours prior',
         18000 => '5 hours prior',
         86400 => '1 day prior',
+    ),
+
+    // snooze for alerts
+    'snooze_alert_timer' => array(
+        60 => 'Snooze for 1 minute',
+        300 => 'Snooze for 5 minutes',
+        600 => 'Snooze for 10 minutes',
+        900 => 'Snooze for 15 minutes',
+        1800 => 'Snooze for 30 minutes',
+        3600 => 'Snooze for 1 hour',
+        7200 => 'Snooze for 2 hours',
+        10800 => 'Snooze for 3 hours',
+        18000 => 'Snooze for 5 hours',
+        86400 => 'Snooze for 1 day',
+    ),
+
+    'snooze_alert_timer_simple' => array(
+        60 => '1 min',
+        300 => '5 mins',
+        600 => '10 mins',
+        900 => '15 mins',
+        1800 => '30 mins',
+        3600 => '1 hour',
+        7200 => '2 hours',
+        10800 => '3 hours',
+        18000 => '5 hours',
+        86400 => '1 day',
     ),
 
     'task_priority_default' => 'Medium',
@@ -1612,6 +1651,17 @@ $app_strings = array(
     'LBL_LOCALE_NAME_EXAMPLE_SALUTATION' => 'Dr.',
     'LBL_LOCALE_NAME_EXAMPLE_TITLE' => 'Code Monkey Extraordinaire',
     'LBL_CANCEL' => 'Cancel',
+    'LBL_SNOOZE' => 'Snooze',
+    'LBL_SNOOZE_INLINE_CONFIRM' => 'Snooze? ({{preferences.snooze_alert_timer|enum:snooze_alert_timer_simple}})',
+    'LBL_DISMISS' => 'Dismiss',
+    'LBL_DISMISS_INLINE_CONFIRM' => 'Dismiss?',
+    'LBL_DISMISS_ALL_INLINE_CONFIRM' => 'Dismiss All?',
+    'NTC_DISMISS_CONFIRMATION' => 'Are you sure you want to dismiss this alert?',
+    'NTC_DISMISS_ALL_CONFIRMATION' => 'Are you sure you want to dismiss all alerts?',
+    'LBL_ALERT_DISMISS_SUCCESS' => 'Alert dismissed successfully',
+    'LBL_ALERT_DISMISS_ERROR' => 'Error while trying to dismiss alert',
+    'LBL_ALERT_DISMISS_ALL_SUCCESS' => 'Alerts dismissed successfully',
+    'LBL_DISMISS_ALL' => 'Dismiss All',
     'LBL_VERIFY' => 'Verify',
     'LBL_RESEND' => 'Resend',
     'LBL_RECORD_DOES_NOT_EXIST' => 'Error retrieving record. This record may be deleted or you may not be authorized to view it.',
@@ -1681,6 +1731,7 @@ $app_strings = array(
     'LBL_SEARCH_BUTTON_LABEL' => 'Search',
     'LBL_SEARCH_BUTTON_TITLE' => 'Search',
     'LBL_FILTER' => 'Filter',
+    'LBL_CLEAR_FILTER' => 'Clear Filter',
     'LBL_SEARCH' => 'Search',
     'LBL_SEARCH_ALT' => '',
     'LBL_SEARCH_MORE' => 'more',
@@ -1829,6 +1880,7 @@ $app_strings = array(
     'NTC_CLICK_BACK' => 'Please click the browser back button and fix the error.',
     'NTC_DATE_FORMAT' => '(yyyy-mm-dd)',
     'NTC_DELETE_CONFIRMATION_MULTIPLE' => 'Are you sure you want to delete selected record(s)?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
     'NTC_TEMPLATE_IS_USED' => 'The template is used in at least one email marketing record. Are you sure you want to delete it?',
     'NTC_TEMPLATES_IS_USED' => 'The following templates are used in email marketing records. Are you sure you want to delete them?' . PHP_EOL,
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
@@ -2103,6 +2155,7 @@ $app_strings = array(
     //define labels to be used for overriding local values during import/export
 
     'LBL_NOTIFICATIONS_NONE' => 'No Current Notifications',
+    'ERR_NOTIFICATIONS_MARK_AS_READ' => 'Error while trying to mark notifications as read',
     'LBL_ALT_SORT_DESC' => 'Sorted Descending',
     'LBL_ALT_SORT_ASC' => 'Sorted Ascending',
     'LBL_ALT_SORT' => 'Sort',
@@ -2158,6 +2211,8 @@ $app_strings = array(
     'LBL_BULK_ACTION_MASS_UPDATE_NO_ACLS' => 'Insufficient Privilege, Save action not allowed',
     'LBL_UNEXPECTED_ERROR' => 'Unexpected error. No able to perform action.',
     'LBL_RECORD_DELETE_SUCCESS' => 'Record deleted successfully',
+    'LBL_RECORD_DELETE_ALL_SUCCESS' => 'Records deleted successfully',
+    'LBL_RECORD_SNOOZE_SUCCESS' => 'Notification Snoozed',
     'LBL_ERROR_SAVING' => 'Error occurred while saving record',
     'LBL_SAVE_BUTTON_KEY' => 'a',
     'LBL_SAVE_BUTTON_LABEL' => 'Save',
@@ -3956,3 +4011,6 @@ $app_strings['LBL_INBOUND_ACCOUNT'] = 'Inbound Account';
 $app_strings['LBL_SYSTEM_ACCOUNT'] = 'System Account';
 $app_strings['LBL_FROM_SYSTEM'] = 'Send From System';
 $app_strings['LBL_SIGNATURE'] = 'Signature';
+$app_strings['LBL_NEW_NOTIFICATION'] = "You have {{context.unread}} new notifications";
+$app_strings['LBL_NOTIFICATION_ITEM_DATE'] = 'Due: {{fields.date_start.value}}';
+$app_strings['LBL_NOTIFICATION_ITEM_DATE_ENTERED'] = 'Notified: {{fields.snooze.value}}';

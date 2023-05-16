@@ -78,6 +78,7 @@ class SearchForm
     public $nbTabs = 0;
     // hide saved searches drop and down near the search button
     public $showSavedSearchesOptions = true;
+    public $searchByFields = [];
 
     public $displayType = 'searchView';
 
@@ -799,6 +800,13 @@ class SearchForm
                         $date_value = $timedate->to_db_date($this->searchFields[$name]['value'], false);
                         $this->searchFields[$name]['value'] = $date_value == '' ? $this->searchFields[$name]['value'] : $date_value;
                     }
+
+                    if (!empty($params['is_datetime_field']) && isset($this->searchFields[$name]['value'])) {
+                        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+                        $dateFormat = new DateFormatService();
+                        $dateValue = $dateFormat->toDBDateTime($this->searchFields[$name]['value']);
+                        $this->searchFields[$name]['value'] = $dateValue ?? '';
+                    }
                 }
 
                 if ((empty($array['massupdate']) || $array['massupdate'] == 'false') && $addAllBeanFields) {
@@ -893,6 +901,7 @@ class SearchForm
         global $timedate;
 
         $db = $this->seed->db;
+        $this->searchByFields = [];
         $this->searchColumns = array();
         $values = $this->searchFields;
 
@@ -988,6 +997,8 @@ class SearchForm
                 if (!empty($parms['operator'])) {
                     $operator = strtolower($parms['operator']);
                 }
+
+                $this->searchByFields[] = $field;
 
                 if (is_array($parms['value'])) {
                     $field_value = '';

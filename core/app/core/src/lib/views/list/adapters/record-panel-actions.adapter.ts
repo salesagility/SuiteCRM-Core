@@ -45,6 +45,8 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 @Injectable()
 export class ListViewRecordPanelActionsAdapter extends BaseRecordActionsAdapter<RecordPanelActionData> {
 
+    collapseButtons = false;
+
     constructor(
         protected store: RecordPanelStore,
         protected listStore: ListViewStore,

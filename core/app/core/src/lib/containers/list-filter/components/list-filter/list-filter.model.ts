@@ -39,6 +39,7 @@ export interface FilterConfig {
     panelMode?: 'collapsible' | 'closable' | 'none';
     isCollapsed?: boolean;
     collapseOnSearch?: boolean;
+    displayHeader?: boolean;
 
     onClose(): void;
 

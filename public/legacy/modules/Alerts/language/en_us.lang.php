@@ -70,6 +70,7 @@ $mod_strings = array(
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
     'LBL_NEW_FORM_TITLE' => 'New Alert',
     'LBL_IS_READ' => 'Is Read',
+    'LBL_DATE_START' => 'Date Start',
 
     'LBL_TYPE' => 'Type',
 );

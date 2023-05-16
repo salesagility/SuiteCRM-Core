@@ -87,6 +87,7 @@ $mod_strings = array(
     'LBL_LIST_ACCOUNT_NAME' => 'Account Name',
     'LBL_LIST_PHONE' => 'Phone',
     'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to remove this contact from this bug?',
+    'NTC_SNOOZE_CONFIRMATION' => 'Are you sure you want to snooze?',
 
     'LBL_DEFAULT_SUBPANEL_TITLE' => 'Bug Tracker',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',

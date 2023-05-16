@@ -97,8 +97,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $listViewSettingsLimits
      * @param array $listViewActionsLimits
      * @param array $recordViewActionLimits
+     * @param array $subpanelViewActionLimits
      * @param array $listViewLineActionsLimits
      * @param array $uiConfigs
+     * @param array $notificationsConfigs
+     * @param array $notificationsReloadActions
      * @param array $extensions
      * @param array $logoutConfig
      * @param array $sessionExpiredConfig
@@ -125,8 +128,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewSettingsLimits,
         array $listViewActionsLimits,
         array $recordViewActionLimits,
+        array $subpanelViewActionLimits,
         array $listViewLineActionsLimits,
         array $uiConfigs,
+        array $notificationsConfigs,
+        array $notificationsReloadActions,
         array $extensions,
         array $logoutConfig,
         array $sessionExpiredConfig,
@@ -153,8 +159,12 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
         $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;
         $this->injectedSystemConfigs['recordview_actions_limits'] = $recordViewActionLimits;
+        $this->injectedSystemConfigs['subpanelview_actions_limits'] = $subpanelViewActionLimits;
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
-        $this->injectedSystemConfigs['ui'] = $uiConfigs;
+        $this->injectedSystemConfigs['ui'] = $uiConfigs ?? [];
+        $this->injectedSystemConfigs['ui']['notifications'] = $notificationsConfigs ?? [];
+        $this->injectedSystemConfigs['ui']['notifications_reload_actions'] = $notificationsReloadActions ?? [];
+        $this->injectedSystemConfigs['list_max_entries_per_record_thread'] = $uiConfigs['list_max_entries_per_record_thread'] ?? null;
         $this->injectedSystemConfigs['extensions'] = $extensions;
 
         $logoutConfig = $logoutConfig ?? [];
@@ -327,7 +337,11 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
 
 
         if (!empty($this->injectedSystemConfigs[$configKey])) {
-            $config->setItems($this->injectedSystemConfigs[$configKey]);
+            if (is_array($this->injectedSystemConfigs[$configKey])) {
+                $config->setItems($this->injectedSystemConfigs[$configKey]);
+            } else {
+                $config->setValue($this->injectedSystemConfigs[$configKey]);
+            }
 
             return $config;
         }

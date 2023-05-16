@@ -30,7 +30,7 @@
  * @param {any} value to check
  * @returns {boolean} isFalse
  */
-export const isFalse = (value: any): boolean => (value === false || value === 'false');
+export const isFalse = (value: any): boolean => (value === false || value === 'false' || value === '0' || value === 0);
 
 /**
  * Check if value is true
@@ -38,7 +38,7 @@ export const isFalse = (value: any): boolean => (value === false || value === 'f
  * @param {any} value to check
  * @returns {boolean} isFalse
  */
-export const isTrue = (value: any): boolean => (value === true || value === 'true');
+export const isTrue = (value: any): boolean => (value === true || value === 'true' || value === '1' || value === 1);
 
 /**
  * Check if value is null or undefined

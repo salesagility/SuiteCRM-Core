@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
-import {catchError, map, take, tap} from 'rxjs/operators';
+import {catchError, filter, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
 import {AuthService, SessionStatus} from './auth.service';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
@@ -35,8 +35,9 @@ import {Process} from '../process/process.service';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
-import {isEmptyString} from 'common';
+import {emptyObject, isEmptyString} from 'common';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {LanguageStore} from '../../store/language/language.store';
 
 @Injectable({
     providedIn: 'root'
@@ -50,7 +51,8 @@ export class AuthGuard implements CanActivate {
         protected asyncActionService: AsyncActionService,
         protected appState: AppStateStore,
         protected routeConverter: RouteConverter,
-        protected configs: SystemConfigStore
+        protected configs: SystemConfigStore,
+        protected language: LanguageStore
     ) {
     }
 
@@ -178,7 +180,20 @@ export class AuthGuard implements CanActivate {
                     }
 
                     if (user && user.active === true) {
+                        const wasLoggedIn = !!this.appState.getCurrentUser();
                         this.authService.setCurrentUser(user);
+
+                        if (!wasLoggedIn) {
+                            this.language.appStrings$.pipe(
+                                filter(appStrings => appStrings && !emptyObject(appStrings)),
+                                tap(() => {
+                                    this.appState.enableNotifications();
+                                    this.appState.refreshNotifications();
+                                }),
+                                take(1)
+                            ).subscribe();
+                        }
+
                         return true;
                     }
                     this.appState.setPreLoginUrl(snapshot.url);

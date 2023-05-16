@@ -31,6 +31,7 @@ import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {ButtonLoadingUiModule} from '../../directives/button-loading/button-loading.module';
 import {ImageModule} from '../image/image.module';
+import {NotificationsModule} from "../../containers/notifications/notifications.module";
 
 @NgModule({
     declarations: [ActionBarUiComponent],
@@ -40,7 +41,8 @@ import {ImageModule} from '../image/image.module';
         ImageModule,
         RouterModule,
         FormsModule,
-        ButtonLoadingUiModule
+        ButtonLoadingUiModule,
+        NotificationsModule
     ]
 })
 export class ActionBarUiModule {

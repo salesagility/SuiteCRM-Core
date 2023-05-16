@@ -44,11 +44,13 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
     storesMap$: Observable<RecordStoreMap<T, M>>;
     stores$: Observable<T[]>;
+    module: string;
     protected subs: Subscription[] = [];
     protected recordList: RecordListStore;
     protected stores: T[] = [];
     protected storeSubject = new BehaviorSubject<T[]>([]);
     protected state$ = this.storeSubject.asObservable();
+    protected pageSize: number = 10;
 
     protected constructor(
         protected listStoreFactory: RecordListStoreFactory,
@@ -68,8 +70,12 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
     clearAuthBased(): void {
     }
 
-    public getMetadata(): M {
+    public getItemMetadata(): M {
         return null;
+    }
+
+    public getRecordList():RecordListStore {
+        return this.recordList;
     }
 
     /**
@@ -78,9 +84,18 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
      *
      * @param {string} module to use
      * @param {boolean} load
+     * @param {number} pageSize
      */
-    public init(module: string, load = true): void {
-        const load$ = this.recordList.init(module, load, 'list_max_entries_per_subpanel');
+    public init(module: string, load = true, pageSize: number = null): void {
+        let pageSizeConfigKey = 'list_max_entries_per_record_thread';
+        if (pageSize && isFinite(pageSize)) {
+            pageSizeConfigKey = '';
+            this.recordList.setPageSize(pageSize)
+        }
+
+        const load$ = this.recordList.init(module, load, pageSizeConfigKey);
+
+        this.pageSize = this.recordList.getPageSize();
 
         this.subs.push(this.recordList.records$.subscribe(records => {
             this.initStores(records);
@@ -95,6 +110,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
                 this.initStores(recordList.records);
             })
         ).pipe(take(1)).subscribe();
+        this.module = module;
     }
 
     /**
@@ -142,8 +158,8 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
             newStores[id] = this.recordStoreFactory.create();
 
-            if (this.getMetadata()) {
-                newStores[id].setMetadata(this.getMetadata());
+            if (this.getItemMetadata()) {
+                newStores[id].setMetadata(this.getItemMetadata());
             }
 
             newStores[id].initRecord(record, 'detail', false);
@@ -167,7 +183,7 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
     }
 
 
-    protected getStoreMap(stores: T[]): RecordStoreMap<T, M> {
+    public getStoreMap(stores: T[]): RecordStoreMap<T, M> {
         const map: RecordStoreMap<T, M> = {};
 
         if (!stores || !stores.length) {
@@ -180,4 +196,28 @@ export abstract class RecordStoreList<T extends BaseRecordContainerStore<M>, M> 
 
         return map;
     }
+
+    public getItemStores(): T[] {
+        const stores = this.stores ?? [];
+        if(stores && stores.length) {
+            return stores;
+        }
+
+        return [];
+    }
+
+    getRecordIds(): string[] {
+        const ids: string[] = [];
+
+        if (!this.stores || !this.stores.length) {
+            return ids;
+        }
+
+        this.stores.forEach(store => {
+            ids.push(store.getRecordId());
+        });
+
+        return ids;
+    }
+
 }

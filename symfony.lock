@@ -245,9 +245,6 @@
     "fakerphp/faker": {
         "version": "v1.16.0"
     },
-    "fig/link-util": {
-        "version": "1.1.0"
-    },
     "filp/whoops": {
         "version": "2.12.0"
     },
@@ -332,9 +329,6 @@
     "javanile/php-imap2": {
         "version": "0.1.10"
     },
-    "jeremykendall/php-domain-parser": {
-        "version": "4.0.3-alpha"
-    },
     "jeroendesloovere/vcard": {
         "version": "1.5.0"
     },
@@ -362,8 +356,8 @@
     "league/oauth2-server": {
         "version": "5.1.6"
     },
-    "league/uri": {
-        "version": "4.2.3"
+    "league/uri-interfaces": {
+        "version": "2.3.0"
     },
     "mikey179/vfsstream": {
         "version": "v1.6.8"
@@ -448,9 +442,6 @@
     },
     "phpseclib/phpseclib": {
         "version": "3.0.6"
-    },
-    "phpspec/prophecy": {
-        "version": "v1.10.2"
     },
     "phpunit/php-code-coverage": {
         "version": "7.0.10"

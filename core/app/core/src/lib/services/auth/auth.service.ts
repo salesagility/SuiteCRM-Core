@@ -91,6 +91,7 @@ export class AuthService {
     }
 
     setCurrentUser(data): void {
+        this.appStateStore.setCurrentUser(data);
         this.currentUserSubject.next(data);
         this.isUserLoggedIn.next(true);
     }
@@ -139,9 +140,12 @@ export class AuthService {
 
             this.appStateStore.updateInitialAppLoading(true);
             onSuccess(response);
+
             if (response.userNeedFactorAuthentication === false) {
                 this.isUserLoggedIn.next(true);
                 this.setCurrentUser(response);
+                this.appStateStore.enableNotifications();
+                this.appStateStore.refreshNotifications();              
             }
 
             const duration = response.duration;
@@ -272,6 +276,7 @@ export class AuthService {
                 finalize(() => {
                     this.appStateStore.updateInitialAppLoading(true);
                     this.appStateStore.updateLoading('logout', false, false);
+                    this.appStateStore.setCurrentUser(null);
                     this.stateManager.clearAuthBased();
                     this.configs.clear();
                     if (redirect === true) {

@@ -949,6 +949,8 @@ class SugarBean
                     $replacement = substr_replace($query_array['select'], "SELECT count(", $select_position, 6);
                     $query_rows = "( " . $replacement . ")" . $subquery['from_min']
                         . $query_array['join'] . $subquery['where'] . ' )';
+                } elseif (!empty($subquery['params']['subpanel_relate_field_search'])) {
+                    $query_rows = "( SELECT count(*)" . $subquery['from'] . $subquery['where'] . ' )';
                 } else {
                     //resort to default behavior.
                     $query_rows = "( SELECT count(*)" . $subquery['from_min']
@@ -1173,7 +1175,20 @@ class SugarBean
                         $list_fields = $union_related_list_columns[$this_subpanel->name];
                     }else{
                         $list_fields = $this_subpanel->get_list_fields();
+                        if (!$subpanel_def->isCollection()) {
+
+                            foreach($this_subpanel->searchByFields ?? [] as $field){
+                                if (!empty($list_fields[$field]) || empty($submodule->field_defs[$field])) {
+                                    continue;
+                                }
+                                $list_fields[$field] = [
+                                    'name' => $field,
+                                    'query_only' => true,
+                                ];
+                            }
+                        }
                     }
+
 
                     foreach ($list_fields as $list_key => $list_field) {
                         if (isset($list_field['usage']) && $list_field['usage'] === 'display_only') {
@@ -1208,6 +1223,16 @@ class SugarBean
                     // use single select in case when sorting by relate field
                     $singleSelect = method_exists($submodule, 'is_relate_field')
                         ? $submodule->is_relate_field($order_by) : null;
+
+                    if (!$singleSelect && !empty($this_subpanel->searchByFields) && method_exists($submodule, 'is_relate_field') && $this_subpanel->legacySearch === false){
+                        foreach($this_subpanel->searchByFields as $field){
+                            if ($submodule->is_relate_field($field)){
+                                $singleSelect = true;
+                                $params['subpanel_relate_field_search'] = true;
+                                break;
+                            }
+                        }
+                    }
 
                     $subquery = method_exists($submodule, 'create_new_list_query')
                         ? $submodule->create_new_list_query(
@@ -3590,7 +3615,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-        
+
         $query = $this->create_new_list_query(
             $order_by,
             $where,
@@ -3956,7 +3981,7 @@ class SugarBean
                     }
 
 
-                    if ($join['type'] == 'many-to-many') {
+                    if ($join['type'] === 'many-to-many') {
                         if (empty($ret_array['secondary_select'])) {
                             $ret_array['secondary_select'] = " SELECT $this->table_name.id ref_id  ";
 
@@ -4553,7 +4578,7 @@ class SugarBean
         if (isset($_SESSION['show_deleted'])) {
             $show_deleted = 1;
         }
-        
+
         $query = $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted, $offset);
 
         return $this->process_detail_query($query, $row_offset, $limit, $max, $where, $offset);
@@ -6178,6 +6203,11 @@ class SugarBean
         if ($current_user->isAdmin() || !$this->bean_implements('ACL')) {
             return true;
         }
+
+        if (check_default_module_access($this->module_name ?? '') === false) {
+            return false;
+        }
+
         $view = strtolower($view);
         switch ($view) {
             case 'list':
@@ -6243,10 +6273,10 @@ class SugarBean
 
         return $args->access
             && ACLController::checkAccess(
-                $this->module_dir, 
-                $args->view, 
-                $args->is_owner, 
-                $this->acltype, 
+                $this->module_dir,
+                $args->view,
+                $args->is_owner,
+                $this->acltype,
                 $args->in_group
             );
     }
