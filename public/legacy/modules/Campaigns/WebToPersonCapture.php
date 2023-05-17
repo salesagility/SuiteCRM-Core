@@ -143,7 +143,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 } elseif (preg_match('/^' . $optInPrefix . '/', $k)) {
                     $optInEmailFields[] = substr($k, strlen($optInPrefix));
                 } else {
-                    if (array_key_exists($k, $person) || array_key_exists($k, $person->field_defs)) {
+                    if (property_exists($person, $k) || array_key_exists($k, $person->field_defs)) {
                         if (in_array($k, $possiblePersonCaptureFields)) {
                             if (is_array($v)) {
                                 $v = encodeMultienumValue($v);
