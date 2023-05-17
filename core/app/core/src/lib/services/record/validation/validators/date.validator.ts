@@ -33,10 +33,10 @@ import {DateFormatter} from '../../../formatters/datetime/date-formatter.service
 import {StandardValidationErrors, StandardValidatorFn} from 'common';
 import {FormControlUtils} from '../../field/form-control.utils';
 
-export const dateValidator = (formatter: DateFormatter): StandardValidatorFn => (
+export const dateValidator = (formatter: DateFormatter, userFormat: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        const invalid = formatter.validateUserFormat(control.value);
+        const invalid = formatter.validateUserFormat(control.value, userFormat);
         return invalid ? {
             invalidDate: {
                 value: control.value,
@@ -75,7 +75,9 @@ export class DateValidator implements ValidatorInterface {
             return [];
         }
 
-        return [dateValidator(this.formatter)];
+        let userFormat = viewField?.metadata?.date_time_format || '';
+
+        return [dateValidator(this.formatter, userFormat)];
     }
 
 

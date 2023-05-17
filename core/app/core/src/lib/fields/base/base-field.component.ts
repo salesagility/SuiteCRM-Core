@@ -218,12 +218,17 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                 }
 
                 if (this.typeFormatter && this.field.type) {
-                    value = this.typeFormatter.toInternalFormat(this.field.type, value);
+                    value = this.toInternalFormat(this.field.type, value);
                 }
 
                 this.setFieldValue(value);
             }));
         }
+    }
+
+    protected toInternalFormat(fieldType, value): string {
+        return this.typeFormatter.toInternalFormat(fieldType, value);
+
     }
 
     protected setFieldValue(newValue): void {
