@@ -79,6 +79,7 @@ export interface ModuleAction {
     sublinks?: ObjectMap;
     quickAction?: boolean;
     type?: string;
+    process?: string;
 }
 
 const initialState: Navigation = {

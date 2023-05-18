@@ -26,7 +26,7 @@
 
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
@@ -46,6 +46,7 @@ import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
+import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -83,7 +84,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     subs: Subscription[] = []
     navigation: Navigation;
 
-    currentQuickActions:any;
+    currentQuickActions: ModuleAction[];
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -142,7 +143,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         protected appState: AppStateStore,
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
-        protected screenSize: ScreenSizeObserverService
+        protected screenSize: ScreenSizeObserverService,
+        protected asyncActionService: AsyncActionService
     ) {
     }
 
@@ -289,5 +291,20 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         });
 
         this.currentQuickActions = actions;
+    }
+
+    handleProcess(action: ModuleAction) {
+        if(!action.process) {
+            return;
+        }
+
+        const processType = action.process;
+
+        const options = {
+            action: processType,
+            module: action.module,
+        } as AsyncActionInput;
+
+        this.asyncActionService.run(processType, options).pipe(take(1)).subscribe();
     }
 }

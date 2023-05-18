@@ -453,6 +453,7 @@ export class NavbarAbstract implements NavbarModel {
                 url: moduleActionRoute.url,
                 route: moduleActionRoute.route,
                 params: moduleActionRoute.params,
+                process: moduleActionRoute.process
             },
             icon: subMenu.icon || '',
             submenu: sublinks.map((item) => this.buildSubMenuItem(module, item, [])),

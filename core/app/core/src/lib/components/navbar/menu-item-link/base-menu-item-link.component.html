@@ -25,25 +25,34 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<a *ngIf="link.route"
-   [ngClass]="class"
-   [routerLink]="link.route"
-   [queryParams]="link.params"
->
-    <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
-    {{ link.label }}
-</a>
-<a *ngIf="!link.route && link.url"
-   [href]="link.url"
-   [ngClass]="class"
->
-    <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
-    {{ link.label }}
-</a>
+<ng-container *ngIf="!link.process">
+    <a *ngIf="link.route"
+       [ngClass]="class"
+       [queryParams]="link.params"
+       [routerLink]="link.route"
+    >
+        <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+        {{ link.label }}
+    </a>
+    <a *ngIf="!link.route && link.url"
+       [href]="link.url"
+       [ngClass]="class"
+    >
+        <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+        {{ link.label }}
+    </a>
+    <a *ngIf="!link.route && !link.url"
+       [ngClass]="class"
+    >
+        <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+        {{ link.label }}
+    </a>
+</ng-container>
+<ng-container *ngIf="link.process">
+    <a [ngClass]="class" (click)="handleProcess(link.process)">
+        <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+        {{ link.label }}
+    </a>
+</ng-container>
 
-<a *ngIf="!link.route && !link.url"
-   [ngClass]="class"
->
-    <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
-    {{ link.label }}
-</a>
+
