@@ -333,6 +333,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
             $quickAction = $legacyMenuItem[4] ?? null;
             $type = $legacyMenuItem[5] ?? '';
+            $process = $legacyMenuItem[6] ?? null;
 
             if (!empty($url)) {
                 $routeInfo = $this->routeConverter->parseUri($url);
@@ -342,6 +343,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 'name' => $action,
                 'labelKey' => $this->mapEntry($frontendModule, $action, 'labelKey', $label),
                 'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route']),
+                'process' => $process['process'],
                 'params' => $routeInfo['params'],
                 'icon' => $this->mapEntry($frontendModule, $action, 'icon', ''),
                 'actionLabelKey' => $this->mapEntry($frontendModule, $action, 'actionLabelKey', ''),
@@ -694,7 +696,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                     'icon' => $menuEntry['icon'] ?? '',
                     'quickAction' => $menuEntry['quickAction'] ?? false,
                     'type' => $type,
-                    'module' => $module
+                    'module' => $module,
+                    'process' => $menuEntry['process'] ?? null
                 ];
 
                 if ($count >= $maxQuickActions) {
