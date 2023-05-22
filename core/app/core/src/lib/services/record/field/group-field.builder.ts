@@ -74,6 +74,10 @@ export class GroupFieldBuilder extends FieldBuilder {
                 return;
             }
 
+            if (fieldDefinition && fieldDefinition.type === 'relate' && fieldDefinition.type_name === 'parent_type') {
+                fieldDefinition.module = record.attributes.parent_type;
+            }
+
             const groupViewField = {
                 name: fieldDefinition.name,
                 label: fieldDefinition.vname,

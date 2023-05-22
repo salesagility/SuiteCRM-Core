@@ -61,9 +61,14 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     }
 
     get getRelateLink(): string {
-        if (this.field.definition.id_name && this.field.definition.module) {
-            const moduleName = this.moduleNameMapper.toFrontend(this.field.definition.module);
+        let linkModule = this.field.definition.module;
 
+        if (this.field.definition.type_name === 'parent_type') {
+            linkModule = this.record.attributes.parent_type;
+        }
+
+        if (this.field.definition.id_name && linkModule) {
+            const moduleName = this.moduleNameMapper.toFrontend(linkModule);
             return this.navigation.getRecordRouterLink(
                 moduleName,
                 this.record.attributes[this.field.definition.id_name]
