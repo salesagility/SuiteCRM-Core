@@ -2,15 +2,6 @@ parameters:
   module.recordview.actions:
     default:
       actions:
-        create:
-          key: create
-          labelKey: LBL_NEW
-          params:
-            expanded: true
-          modes:
-            - detail
-          acl:
-            - edit
         edit:
           key: edit
           labelKey: LBL_EDIT
