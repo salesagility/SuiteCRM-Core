@@ -168,7 +168,7 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ngx-build-plus:extract-i18n",
           "options": {
             "browserTarget": "shell:build"
           }
@@ -276,8 +276,7 @@
               "node_modules/bootstrap-css-only/css/bootstrap.min.css"
             ],
             "scripts": [],
-            "assets": [
-            ],
+            "assets": [],
             "extraWebpackConfig": "core/app/core/webpack.config.spec.js"
           }
         }
@@ -345,7 +344,7 @@
               ],
               "extraWebpackConfig": "extensions/defaultExt/app/webpack.prod.config.js"
             },
-            "dev" : {
+            "dev": {
               "outputPath": "public/extensions/defaultExt"
             }
           }
