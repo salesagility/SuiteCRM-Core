@@ -7889,12 +7889,12 @@ nested-error-stacks@^2.0.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
   integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
-ng-animate@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ng-animate/-/ng-animate-1.0.0.tgz#59b0ae69a14ab88ac10fea5ae92406f95615b3c7"
-  integrity sha512-30l80kCkAelXEbQ0RKCCQo+5NOXWHQx3+HwtN+oarWhP6ISbmx/LtMGbEGYSwSTUj6NQZ+u07sFxlEsoC8AMDw==
+ng-animate@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ng-animate/-/ng-animate-2.0.1.tgz#f2c72e54da4dc21e125b3c6a758a0146008b5d0f"
+  integrity sha512-ulXsBUYLLSBBypRenYFwqxOs0jvnJm5+TtiyOIhiau5+MOEK3n8o/WDdEeciicw8h8HocPAOvLg7XnDXqQW41w==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.3.0"
 
 ng-dynamic-component@^9.0.0:
   version "9.0.0"

@@ -64,7 +64,7 @@
     "lodash-es": "^4.17.20",
     "luxon": "3.0.1",
     "mathjs": "^9.4.4",
-    "ng-animate": "^1.0.0",
+    "ng-animate": "^2.0.1",
     "ng-dynamic-component": "^9.0.0",
     "ngx-build-plus": "13.0.0",
     "ngx-chips": "^2.2.2",
