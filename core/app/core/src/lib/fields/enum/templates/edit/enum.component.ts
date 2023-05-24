@@ -29,7 +29,7 @@ import {TagInputComponent} from 'ngx-chips';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {TagModel} from "ngx-chips/core/accessor";
+import {TagModel} from 'ngx-chips/core/tag-model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 

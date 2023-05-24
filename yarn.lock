@@ -7935,12 +7935,12 @@ ng-packagr@^13.3.1:
   optionalDependencies:
     esbuild "^0.14.0"
 
-ng2-material-dropdown@>=0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/ng2-material-dropdown/-/ng2-material-dropdown-0.11.0.tgz#27a402ef3cbdcaf6791ef4cfd4b257e31db7546f"
-  integrity sha512-wptBo09qKecY0QPTProAThrc4A3ajJTcHE9LTpCG5XZZUhXLBzhnGK8OW33TN8A+K/jqcs7OB74ppYJiqs3nhQ==
+ng2-material-dropdown@>=1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ng2-material-dropdown/-/ng2-material-dropdown-1.0.0.tgz#1d8a5ff5926fcf0b64a2094a36fcfeb54f08fb43"
+  integrity sha512-waKgEkKQwGZT0dqRAd3ZW+wueYs5Xw9owiPBSMdg5jru5DcKDpUqFaADMqqI7HPuzJCxNJSln6nXX1tMYDbXGA==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 ngx-build-plus@13.0.0:
   version "13.0.0"
@@ -7950,13 +7950,13 @@ ngx-build-plus@13.0.0:
     "@schematics/angular" "^12.0.0"
     webpack-merge "^5.0.0"
 
-ngx-chips@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/ngx-chips/-/ngx-chips-2.2.2.tgz#a4a3a283bc56195c047982418ca654ee3023bd37"
-  integrity sha512-ZrkqiE4mtTo8cBA4+2C/OBeyPuvC6dgNPz7VflerbpTF8Qp6WwCGnZb4ApH+kcmBpSDSxHAE9lMYuYIrF+rFgA==
+ngx-chips@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-chips/-/ngx-chips-3.0.0.tgz#9a373adcd8997c820bc1bc9f0751a19ae1210551"
+  integrity sha512-hBJg4m9kCtCfersQef7vr2Ve6j9ntFSoB5ktF8MyOQnpONAriIp46c3Tb2wdf/lMEB2Xmc45snfJKnxKh3zimg==
   dependencies:
-    ng2-material-dropdown ">=0.11.0"
-    tslib "^1.10.0"
+    ng2-material-dropdown ">=1.0.0"
+    tslib "^2.3.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

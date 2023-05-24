@@ -35,7 +35,7 @@ import {BaseRelateComponent} from '../../../base/base-relate.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
-import {TagModel} from "ngx-chips/core/accessor";
+import {TagModel} from 'ngx-chips/core/tag-model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
