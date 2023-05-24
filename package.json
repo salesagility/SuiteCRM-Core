@@ -65,7 +65,7 @@
     "luxon": "3.0.1",
     "mathjs": "^9.4.4",
     "ng-animate": "^1.0.0",
-    "ng-dynamic-component": "8.0.1-no-barrels.1",
+    "ng-dynamic-component": "^9.0.0",
     "ngx-chips": "^2.2.2",
     "nyc": "~14.1.1",
     "object-hash": "^2.1.1",

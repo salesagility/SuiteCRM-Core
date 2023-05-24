@@ -7727,10 +7727,10 @@ ng-animate@^1.0.0:
   dependencies:
     tslib "^2.0.0"
 
-ng-dynamic-component@8.0.1-no-barrels.1:
-  version "8.0.1-no-barrels.1"
-  resolved "https://registry.yarnpkg.com/ng-dynamic-component/-/ng-dynamic-component-8.0.1-no-barrels.1.tgz#7599eceb22d6bcffb476b98462c5a78169ef353a"
-  integrity sha512-O3qGBtxr0srpuzEq/hDi0pnwgJYQDnv2C6w1ZokBMKDd2d0R6AEnthuOucIUcMKh+aIMPhyLzUBhL6e8GyJvyA==
+ng-dynamic-component@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/ng-dynamic-component/-/ng-dynamic-component-9.0.0.tgz#04a48978060d38f6ea61e517ffd5a16fa6af5f9c"
+  integrity sha512-ZB4OWHIdNbBXi/bTZn4TtYfKPmwNSPJp/Ix+GXcrQ8Q/o6Evay4QmuCrQkv4/K7yL+91Y+4z7W8mUU1pBU7tVQ==
   dependencies:
     tslib "^2.0.0"
 
