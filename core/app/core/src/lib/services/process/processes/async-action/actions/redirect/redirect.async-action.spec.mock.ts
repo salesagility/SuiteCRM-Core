@@ -35,6 +35,7 @@ TestBed.configureTestingModule({
     imports: [
         RouterTestingModule
     ],
+    teardown: { destroyAfterEach: false }
 }).compileComponents().then();
 
 const router = TestBed.inject(Router); // Just if we need to test Route Service functionality

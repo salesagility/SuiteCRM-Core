@@ -245,18 +245,6 @@
             "tsConfig": "core/app/common/tsconfig.spec.json",
             "karmaConfig": "core/app/common/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "core/app/common/tsconfig.lib.json",
-              "core/app/common/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -291,18 +279,6 @@
             "assets": [
             ],
             "extraWebpackConfig": "core/app/core/webpack.config.spec.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "core/app/core/tsconfig.lib.json",
-              "core/app/core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -410,19 +386,6 @@
             ],
             "scripts": [],
             "extraWebpackConfig": "extensions/defaultExt/app/webpack.config.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "extensions/defaultExt/app/tsconfig.app.json",
-              "extensions/defaultExt/app/tsconfig.spec.json",
-              "extensions/defaultExt/app/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         },
         "e2e": {
