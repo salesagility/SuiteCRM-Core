@@ -69,7 +69,7 @@
     "ngx-build-plus": "13.0.0",
     "ngx-chips": "^3.0.0",
     "nyc": "~15.1.0",
-    "object-hash": "^2.1.1",
+    "object-hash": "^3.0.0",
     "rxjs": "^6.6.3",
     "tinymce": "^5.10.2",
     "tslib": "^2.3.0",
