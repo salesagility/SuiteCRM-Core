@@ -15,39 +15,39 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^11.2.13'
+          requiredVersion: '^13.3.9'
         },
         '@angular/cdk/table': {
           singleton: true,
-          requiredVersion: '^11.2.13'
+          requiredVersion: '^13.3.9'
         },
         '@angular/cdk/observers': {
           singleton: true,
-          requiredVersion: '^11.2.13'
+          requiredVersion: '^13.3.9'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         '@apollo/client': {
           singleton: true,
@@ -59,7 +59,7 @@ module.exports = {
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^13.0.0'
         },
         'apollo-angular': {
           singleton: true,
@@ -79,30 +79,30 @@ module.exports = {
         },
         luxon: {
           singleton: true,
-          requiredVersion: '3.0.0'
+          requiredVersion: '3.3.0'
         },
         'ng-animate': {
           singleton: true,
-          requiredVersion: '^1.0.0'
+          requiredVersion: '^2.0.1'
         },
         'ngx-chips': {
           singleton: true,
-          requiredVersion: '^2.2.2'
+          requiredVersion: '^3.0.0'
         },
 
         '@swimlane/ngx-charts': {
           singleton: true,
-          requiredVersion: '^17.0.0'
+          requiredVersion: '^19.2.0'
         },
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^9.0.2'
+          requiredVersion: '^11.0.0'
         },
 
         'bn-ng-idle': {
           singleton: true,
-          requiredVersion: '^1.0.1'
+          requiredVersion: '^2.0.5'
         },
 
         'rxjs': {
