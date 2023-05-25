@@ -51,7 +51,7 @@
     "@nrwl/workspace": "^13.4.6",
     "@swimlane/ngx-charts": "^19.2.0",
     "@tinymce/tinymce-angular": "^6.0.1",
-    "@types/object-hash": "^1.3.4",
+    "@types/object-hash": "^3.0.2",
     "ajv": "~6.9.1",
     "angular-svg-icon": "^13.0.0",
     "apollo-angular": "^2.2.0",
