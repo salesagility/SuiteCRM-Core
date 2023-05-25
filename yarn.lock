@@ -2323,12 +2323,13 @@
     d3-transition "^2.0.0"
     tslib "^2.0.0"
 
-"@tinymce/tinymce-angular@^4.2.4":
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-4.2.4.tgz#45974f39fcdb1af6f30dba6405bfb0b8a3db748f"
-  integrity sha512-A+FIvhTahHaqDuvcXovuhzvpCR2yjUbPuF+Z/t/MnNaCv/9Y0w7W5Qgmo5wARIW+NM7o8msWcMSxOMK4xkv10Q==
+"@tinymce/tinymce-angular@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-6.0.1.tgz#8573bef54be8533c29e938c8c96cb2057e08b7a6"
+  integrity sha512-USuwQwcBmvl1fN9n1FsUqM8ZOQjJLe2VleQRENU9R46ZgrB6Ic5thyUV2RPHUrNgN99QJ+4HyE465qzgv+M7Mw==
   dependencies:
-    tslib "^1.10.0"
+    tinymce "^6.0.0 || ^5.5.0"
+    tslib "^2.3.0"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -10660,6 +10661,11 @@ tinymce@^5.10.2:
   version "5.10.2"
   resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.10.2.tgz#cf1ff01025909be26c64348509e6de8e70d58e1d"
   integrity sha512-5QhnZ6c8F28fYucLLc00MM37fZoAZ4g7QCYzwIl38i5TwJR5xGqzOv6YMideyLM4tytCzLCRwJoQen2LI66p5A==
+
+"tinymce@^6.0.0 || ^5.5.0":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.4.2.tgz#dd0a6d1d229ba6d1bf11cc88e418eb29315f6080"
+  integrity sha512-te+4c8PoAwTKPMBQtMQehnSZlOO9Ay5tDgaRFJKBehYb6SlX2PYZ0v3oe/cmiv5EfqdwZLkEMXk2MNOeApZZLg==
 
 tmp@^0.0.33:
   version "0.0.33"
