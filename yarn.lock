@@ -36,7 +36,7 @@
     "@angular-devkit/core" "16.0.3"
     rxjs "7.8.1"
 
-"@angular-devkit/build-angular@>=15.0.0", "@angular-devkit/build-angular@^16.0.3":
+"@angular-devkit/build-angular@^16.0.0", "@angular-devkit/build-angular@^16.0.3":
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-16.0.3.tgz#f7e35acdf75525d8864e3be3dd9c64cb9baf4114"
   integrity sha512-AMxxrK0eMN7s6N4nxq0ZvyVIKwBD6L0xEb3kHOCt6BSSy7KdKnc3hTjB6ozQuzZog01xqtIfS87jsVA8WoRD2Q==
@@ -2084,7 +2084,7 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
-"@schematics/angular@16.0.3", "@schematics/angular@>=15.0.0":
+"@schematics/angular@16.0.3", "@schematics/angular@^16.0.0":
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-16.0.3.tgz#adec0e5cdb5280125a8d30a562356d5766d47d64"
   integrity sha512-aWRVvgOTMxsaY6FETd+1L4YvqAjfIRSmB3yqfRXpzEdUelAkYozg0lWDHS6q6u6YlfCIUnEw0oUTJG3m8JSF4w==
@@ -6785,13 +6785,13 @@ ng2-material-dropdown@>=1.0.0:
   dependencies:
     tslib "^2.0.0"
 
-ngx-build-plus@15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-build-plus/-/ngx-build-plus-15.0.0.tgz#cf1896f5c43d2d445999645524418a4913cd2c94"
-  integrity sha512-vcEJMsGETztb7fqXin9ecvsgfXkCzxvNceSHII0wrEcJ/nNyTp2cYrDlS5JWepj2H5jD5m9Gy1h9R0F4EMSUNw==
+ngx-build-plus@16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-build-plus/-/ngx-build-plus-16.0.0.tgz#49b240c7504931233603fd0813eaea7cf886894b"
+  integrity sha512-AXqBJoQGyptbHTK09yfuxS2Gm2+YnVCBnPWyORq79wbC2gdbkYLR34eLA5wi8HZbqWNXdaYdGc75MFAZmkho4Q==
   dependencies:
-    "@angular-devkit/build-angular" ">=15.0.0"
-    "@schematics/angular" ">=15.0.0"
+    "@angular-devkit/build-angular" "^16.0.0"
+    "@schematics/angular" "^16.0.0"
     webpack-merge "^5.0.0"
 
 ngx-chips@^3.0.0:
