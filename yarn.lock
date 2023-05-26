@@ -2283,10 +2283,10 @@
     rfdc "^1.3.0"
     tslib "^2.0.0"
 
-"@tinymce/tinymce-angular@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-6.0.1.tgz#8573bef54be8533c29e938c8c96cb2057e08b7a6"
-  integrity sha512-USuwQwcBmvl1fN9n1FsUqM8ZOQjJLe2VleQRENU9R46ZgrB6Ic5thyUV2RPHUrNgN99QJ+4HyE465qzgv+M7Mw==
+"@tinymce/tinymce-angular@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-7.0.0.tgz#010de497d5774a8bdc5d5936bf4fb976adf05f56"
+  integrity sha512-IKNaG/ihlxE1XCfq6lzULbnsqZO9KNJtlpu5jo6JDJDL9zcFzj/N2A16Kk7rTj1yfmDoB1IXAk/BpMOvgDY8cg==
   dependencies:
     tinymce "^6.0.0 || ^5.5.0"
     tslib "^2.3.0"

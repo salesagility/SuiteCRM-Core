@@ -50,7 +50,7 @@
     "@ng-bootstrap/ng-bootstrap": "13.1.1",
     "@nrwl/workspace": "^14.6.4",
     "@swimlane/ngx-charts": "^20.3.0",
-    "@tinymce/tinymce-angular": "^6.0.1",
+    "@tinymce/tinymce-angular": "^7.0.0",
     "@types/object-hash": "^3.0.2",
     "ajv": "~8.12.0",
     "angular-svg-icon": "^13.0.0",
