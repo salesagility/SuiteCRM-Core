@@ -25,32 +25,49 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-require_once __DIR__ . '/CaseUpdatesDescriptionMapper.php';
-require_once __DIR__ . '/CaseUpdatesAuthorMapper.php';
-require_once __DIR__ . '/CaseUpdatesSourceMapper.php';
-require_once __DIR__ . '/CaseUpdatesNotesMapper.php';
-require_once __DIR__ . '/../../ApiBeanModuleMappers.php';
+require_once __DIR__ . '/../../LinkMappers/LineItemMapper.php';
 
-class CaseUpdatesMappers extends ApiBeanModuleMappers
+
+class CaseUpdatesNotesMapper extends LineItemMapper
 {
-    /**
-     * @var string
-     */
-    public const MODULE = 'AOP_Case_Updates';
+    public const MODULE = 'Notes';
 
-    public function __construct()
+    /**
+     * @inheritDoc
+     */
+    public static function getField(): string
     {
-        $this->fieldMappers[CaseUpdatesDescriptionMapper::getField()] = new CaseUpdatesDescriptionMapper();
-        $this->fieldMappers[CaseUpdatesAuthorMapper::getField()] = new CaseUpdatesAuthorMapper();
-        $this->fieldMappers[CaseUpdatesSourceMapper::getField()] = new CaseUpdatesSourceMapper();
-        $this->linkMappers[CaseUpdatesNotesMapper::getRelateModule()][CaseUpdatesNotesMapper::getField()] = new CaseUpdatesNotesMapper();
+        return 'notes';
     }
 
     /**
-     * @return string
+     * @inheritDoc
+     */
+    public static function getRelateModule(): string
+    {
+        return self::MODULE;
+    }
+
+    /**
+     * @inheritDoc
      */
     public static function getModule(): string
     {
-        return self::MODULE;
+        return 'default';
+    }
+
+    protected function getItemBeans(SugarBean $bean, array $definition): array
+    {
+        $beanNotes = $bean->get_linked_beans('notes', 'Notes');
+
+        return $beanNotes;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function isLineItem(SugarBean $bean, string $name): bool
+    {
+        return true;
     }
 }
