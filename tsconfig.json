@@ -11,7 +11,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "typeRoots": [
       "../../node_modules/@types"
     ],
@@ -32,7 +32,8 @@
       "es2018",
       "dom",
       "esnext.asynciterable"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true
