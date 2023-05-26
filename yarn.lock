@@ -1838,10 +1838,10 @@
   resolved "https://registry.yarnpkg.com/@mdn/browser-compat-data/-/browser-compat-data-3.3.14.tgz#b72a37c654e598f9ae6f8335faaee182bebc6b28"
   integrity sha512-n2RC9d6XatVbWFdHLimzzUJxJ1KY8LdjqrW6YvGPiRmsHkhOUx74/Ct10x5Yo7bC/Jvqx7cDEW8IMPv/+vwEzA==
 
-"@ng-bootstrap/ng-bootstrap@14.2.0":
-  version "14.2.0"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-14.2.0.tgz#2371e2c9ec6fd7809c1d7ca99597394df6cde003"
-  integrity sha512-nqEKVXauSontGKqC5WSKpch5TiAGDZB3hluvxkINS0r9LUE6sBQRP3qeYOe7Uwu+UbQcj28NG3qFHhpfnG8KHw==
+"@ng-bootstrap/ng-bootstrap@15.0.0":
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-15.0.0.tgz#e4314a1b9a1ff218d0fff5c2f0f69c91ef1e6095"
+  integrity sha512-BA/SI7sURpKwIex6bj2ujL+xUh8oYMrc5POdGC8sVe+yX3NRS0xNbozI6oke6pL2PpYq+/zaJTmuEJsEMCplZA==
   dependencies:
     tslib "^2.3.0"
 

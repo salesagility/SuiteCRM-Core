@@ -47,7 +47,7 @@
     "@angular/router": "16.0.3",
     "@apollo/client": "^3.7.0",
     "@apollo/link-error": "^2.0.0-beta.3",
-    "@ng-bootstrap/ng-bootstrap": "14.2.0",
+    "@ng-bootstrap/ng-bootstrap": "15.0.0",
     "@nrwl/workspace": "^15.9.2",
     "@swimlane/ngx-charts": "^20.3.0",
     "@tinymce/tinymce-angular": "^7.0.0",
