@@ -8099,10 +8099,10 @@ ng-animate@^2.0.1:
   dependencies:
     tslib "^2.3.0"
 
-ng-dynamic-component@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/ng-dynamic-component/-/ng-dynamic-component-9.0.0.tgz#04a48978060d38f6ea61e517ffd5a16fa6af5f9c"
-  integrity sha512-ZB4OWHIdNbBXi/bTZn4TtYfKPmwNSPJp/Ix+GXcrQ8Q/o6Evay4QmuCrQkv4/K7yL+91Y+4z7W8mUU1pBU7tVQ==
+ng-dynamic-component@^10.0.0:
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/ng-dynamic-component/-/ng-dynamic-component-10.7.0.tgz#454ae427a484c95c8b4220fcb0d569321256dc72"
+  integrity sha512-shkht4L2nA632qo5GNendZdQXoHUBuKz6SLLh20qi5oESBm3b5AWyhHu0fb/7tb+f+zAcwtVVe1M0819/bnK9A==
   dependencies:
     tslib "^2.0.0"
 
