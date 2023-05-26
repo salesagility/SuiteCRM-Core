@@ -181,6 +181,9 @@ export class FieldBuilder {
         field.value = value;
         field.metadata = metadata;
         field.definition = definition;
+        if (viewField?.lineItems) {
+            field.definition.lineItems = viewField.lineItems;
+        }
         field.labelKey = viewField.label || definition.vname || '';
         field.dynamicLabelKey = viewField.dynamicLabelKey || definition.dynamicLabelKey || '';
 
