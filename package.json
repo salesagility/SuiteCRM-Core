@@ -59,7 +59,7 @@
     "bootstrap-css-only": "^4.4.1",
     "concurrently": "^8.0.1",
     "core-js": "^3.30.2",
-    "graphql": "^16.3.0",
+    "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "lodash-es": "^4.17.20",
     "luxon": "3.3.0",
