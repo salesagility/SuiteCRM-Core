@@ -3684,10 +3684,10 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-angular@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-3.0.1.tgz#e2cea7502fbacda3337db92c2fac8878814ef9e0"
-  integrity sha512-gMUa+XdNXYtc4bwK/XFELnYptOKHAW6DYDlQUjxjWlrzqbmiHb49bFI/IT3EK5sR4sukCyYb8rbC4jfsztd/Qg==
+apollo-angular@^4.1.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-4.2.1.tgz#74f805195c3bf908b41a16ac3d0e5693faeb4739"
+  integrity sha512-lMFVZmw7hIa4+VGutoiUMwHWggXFiDhbsrnZddQYzfdV6lkJRjm0hANG0KxXoaoLqEqkGTHdq5DaMCdsp6E4rw==
   dependencies:
     tslib "^2.0.0"
 
