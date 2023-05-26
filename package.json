@@ -34,7 +34,7 @@
     "defaults"
   ],
   "dependencies": {
-    "@angular-architects/module-federation": "^15.0.0",
+    "@angular-architects/module-federation": "^16.0.3",
     "@angular/animations": "16.0.3",
     "@angular/cdk": "^15.2.9",
     "@angular/common": "16.0.3",
