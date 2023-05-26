@@ -2753,10 +2753,10 @@ ajv@^8.0.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-angular-svg-icon@^15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/angular-svg-icon/-/angular-svg-icon-15.0.0.tgz#70a472744dfeba3f286b3070476b941dac0fe29b"
-  integrity sha512-qurcOPbGri1ZveGd3Iol7CRSpveaxu21V1VCPwMSUfXlwwUT1hL4Aq3VE/RkJw5zZmFuR8akgaKeHLD+CFjjEQ==
+angular-svg-icon@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/angular-svg-icon/-/angular-svg-icon-16.0.0.tgz#813801c5d486c88a4f0ca5133d8a1e44de4948c6"
+  integrity sha512-pTf4eI4T25POm/mMMXTnYGvi4ykjR+aoPq/D8Ipz9HmrrSHMSqb6Bp4MeqkaDgL6l8ACPY1/BdUKkgrmretaRw==
   dependencies:
     tslib "^2.3.1"
 
