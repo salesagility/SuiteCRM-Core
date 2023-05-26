@@ -352,7 +352,6 @@
       }
     }
   },
-  "defaultProject": "shell",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

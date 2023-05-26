@@ -34,7 +34,7 @@ import {AttributeBuilder} from './attribute.builder';
 import {FilterFieldBuilder} from './filter-field.builder';
 import {FilterAttributeBuilder} from './filter-attribute.builder';
 import {LineItemBuilder} from './line-item.builder';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -165,7 +165,7 @@ export class FieldManager {
                 module: parentField.definition.module || '',
                 attributes: {},
                 fields: {},
-                formGroup: new FormGroup({}),
+                formGroup: new UntypedFormGroup({}),
             } as Record;
         }
 

@@ -26,7 +26,7 @@
 
 import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
@@ -179,8 +179,8 @@ export interface Field {
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
-    formControl?: FormControl;
-    itemFormArray?: FormArray;
+    formControl?: UntypedFormControl;
+    itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
@@ -205,8 +205,8 @@ export class BaseField implements Field {
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
-    formControl?: FormControl;
-    itemFormArray?: FormArray;
+    formControl?: UntypedFormControl;
+    itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     attributes?: FieldAttributeMap;

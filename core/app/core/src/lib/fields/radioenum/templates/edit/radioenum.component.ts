@@ -29,7 +29,7 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {Option} from 'common';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
@@ -39,7 +39,7 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
     styleUrls: []
 })
 export class RadioEnumEditFieldComponent extends BaseEnumComponent {
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
 
     constructor(
         protected languages: LanguageStore,
@@ -65,7 +65,7 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
         if (this.record && this.record.formGroup) {
             this.formGroup = this.record.formGroup
         } else {
-            this.formGroup = new FormGroup({});
+            this.formGroup = new UntypedFormGroup({});
             this.formGroup.addControl(this.field.name, this.field.formControl);
         }
 

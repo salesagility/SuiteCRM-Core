@@ -30,7 +30,7 @@ import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {Injectable} from '@angular/core';
 import {AttributeBuilder} from './attribute.builder';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -142,7 +142,7 @@ export class LineItemBuilder extends AttributeBuilder {
             module: item.module || '',
             attributes: item.attributes || {},
             fields: {},
-            formGroup: new FormGroup({})
+            formGroup: new UntypedFormGroup({})
         } as Record;
 
         buildLineItemFunction(itemRecord, itemViewField, language);

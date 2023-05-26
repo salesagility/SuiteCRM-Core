@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {FieldDefinitionMap, FieldMap, isVoid, Record, ViewFieldDefinition} from 'common';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldManager} from './field/field.manager';
 import {Params} from '@angular/router';
@@ -56,7 +56,7 @@ export class RecordManager {
                 id: ''
             },
             fields: {},
-            formGroup: new FormGroup({}),
+            formGroup: new UntypedFormGroup({}),
         } as Record;
     }
 
@@ -74,7 +74,7 @@ export class RecordManager {
         }
 
         if (!record.formGroup) {
-            record.formGroup = new FormGroup({});
+            record.formGroup = new UntypedFormGroup({});
         }
 
         viewFieldDefinitions.forEach(viewField => {

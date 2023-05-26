@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {DateTimeEditFieldComponent} from './datetime.component';
 import {Field} from 'common';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject} from 'rxjs';
 import {ButtonModule} from '../../../../components/button/button.module';
@@ -48,7 +48,7 @@ class DatetimeEditFieldTestHostComponent {
     field: Field = {
         type: 'datetime',
         value: '2020-11-09 10:12:14',
-        formControl: new FormControl('2020-11-09 12:12:12')
+        formControl: new UntypedFormControl('2020-11-09 12:12:12')
     };
 }
 

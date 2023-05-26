@@ -25,7 +25,7 @@
  */
 
 import {FieldMap} from './field.model';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 export interface AttributeMap {
     [key: string]: any;
@@ -39,5 +39,5 @@ export interface Record {
     attributes: AttributeMap;
     acls?: string[];
     fields?: FieldMap;
-    formGroup?: FormGroup;
+    formGroup?: UntypedFormGroup;
 }

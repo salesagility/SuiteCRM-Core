@@ -49,7 +49,7 @@ import {languageStoreMock} from '../../../../store/language/language.store.spec.
 import {currencyFormatterMock} from '../../../../services/formatters/currency/currency-formatter.service.spec.mock';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 @Component({
     selector: 'relate-filter-field-test-host-component',
@@ -76,7 +76,7 @@ class RelateFilterFieldTestHostComponent {
                 'Related Account'
             ]
         } as SearchCriteriaFieldFilter,
-        formControl: new FormControl({
+        formControl: new UntypedFormControl({
             id: '123',
             name: 'Related Account',
         })

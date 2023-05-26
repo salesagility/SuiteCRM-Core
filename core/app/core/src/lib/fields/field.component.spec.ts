@@ -32,7 +32,7 @@ import {BehaviorSubject, of} from 'rxjs';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {TagInputModule} from 'ngx-chips';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Field} from 'common';
@@ -50,7 +50,7 @@ import {FormControlUtils} from '../services/record/field/form-control.utils';
 import {NumberFormatter} from '../services/formatters/number/number-formatter.service';
 
 const buildField = (field: Field): Field => {
-    field.formControl = new FormControl(field.value);
+    field.formControl = new UntypedFormControl(field.value);
     return field;
 };
 

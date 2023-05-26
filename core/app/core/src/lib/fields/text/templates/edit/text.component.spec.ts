@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {TextEditFieldModule} from './text.module';
 import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
@@ -48,7 +48,7 @@ class TextEditFieldTestHostComponent {
         type: 'text',
         value: 'My Text',
         metadata: null,
-        formControl: new FormControl('My Text')
+        formControl: new UntypedFormControl('My Text')
     };
 }
 

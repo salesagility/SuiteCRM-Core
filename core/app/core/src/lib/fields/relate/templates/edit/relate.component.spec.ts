@@ -52,7 +52,7 @@ import {NumberFormatter} from '../../../../services/formatters/number/number-for
 import {waitUntil} from '../../../../../testing/utils.spec';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 @Component({
     selector: 'relate-edit-field-test-host-component',
@@ -73,7 +73,7 @@ class RelateEditFieldTestHostComponent {
             id_name: 'account_id',
             rname: 'name'
         },
-        formControl: new FormControl({
+        formControl: new UntypedFormControl({
             id: '123',
             name: 'Related Account',
         })

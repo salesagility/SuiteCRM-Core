@@ -41,7 +41,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay, tap} from 'rxjs/operators';
 import {RecordStore} from '../../../../store/record/record.store';
 import {SavedFilter, SavedFilterAttributeMap} from '../../../../store/saved-filters/saved-filter.model';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
 import {MessageService} from '../../../../services/message/message.service';
 import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
@@ -265,7 +265,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
         record.criteriaFields = record.criteriaFields || {} as FieldMap;
         if (!record.criteriaFormGroup) {
-            record.criteriaFormGroup = new FormGroup({});
+            record.criteriaFormGroup = new UntypedFormGroup({});
         }
 
         if (!searchFields) {

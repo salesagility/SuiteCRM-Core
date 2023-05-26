@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {DynamicFieldComponent} from './dynamic-field.component';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {TagInputModule} from 'ngx-chips';
@@ -86,7 +86,7 @@ describe('DynamicFieldComponent', () => {
         component.field = {
             type: 'varchar',
             value: 'My Varchar',
-            formControl: new FormControl('My Varchar')
+            formControl: new UntypedFormControl('My Varchar')
         };
         component.klass = {'test-class': true};
         component.componentType = VarcharDetailFieldComponent;

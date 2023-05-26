@@ -29,7 +29,7 @@ import {Component} from '@angular/core';
 import {VarcharFilterFieldComponent} from './filter.component';
 import {Field} from 'common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {VarcharFilterFieldModule} from './filter.module';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
@@ -53,7 +53,7 @@ class VarcharFilterFieldTestHostComponent {
             values: ['test filter value'],
             operator: '='
         },
-        formControl: new FormControl('test filter value')
+        formControl: new UntypedFormControl('test filter value')
     };
 }
 
