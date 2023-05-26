@@ -49,6 +49,7 @@
     "@apollo/link-error": "^2.0.0-beta.3",
     "@ng-bootstrap/ng-bootstrap": "15.0.0",
     "@nrwl/workspace": "^16.2.2",
+    "@popperjs/core": "^2.11.7",
     "@swimlane/ngx-charts": "^20.3.0",
     "@tinymce/tinymce-angular": "^7.0.0",
     "@types/object-hash": "^3.0.2",
