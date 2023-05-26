@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldDefinition, FieldMetadata} from '../record/field.model';
+import {FieldDefinition, FieldMetadata, LineItemsMetadata} from '../record/field.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 
 export interface ViewFieldDefinition {
@@ -36,6 +36,7 @@ export interface ViewFieldDefinition {
     type?: string;
     display?: string;
     fieldDefinition?: FieldDefinition;
+    lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     logic?: FieldLogicMap;
 }

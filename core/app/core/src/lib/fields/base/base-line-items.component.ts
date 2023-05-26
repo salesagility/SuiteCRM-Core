@@ -91,15 +91,13 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
     getItems(): Record[] {
         this.field.items = this.field.items || [];
 
-        const definition = (this.field && this.field.definition && this.field.definition.lineItems) || {} as LineItemsMetadata;
-        const items = this.field.items || [];
+        const items = this.field.items;
         const activeItems = items && items.filter(item => !(item && item.attributes && item.attributes.deleted));
 
+        const labelOnFirstLine = !!(this.field?.definition?.lineItems?.labelOnFirstLine ?? false);
+
         activeItems.forEach((item, index) => {
-            let show = true;
-            if (definition.labelOnFirstLine && index > 0) {
-                show = false;
-            }
+            const show = !labelOnFirstLine || index <= 0;
             this.setAttributeLabelDisplay(item, show);
         });
 
@@ -141,7 +139,7 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      * @return {void}
      */
     addEmptyItem(): void {
-        const itemDefinition = (this.field.definition.lineItems && this.field.definition.lineItems.definition) || {};
+        const itemDefinition: FieldDefinition = this.field?.definition?.lineItems?.definition || {};
 
         this.fieldManager.addLineItem(
             itemDefinition,
@@ -266,7 +264,7 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      * @returns {boolean} has groupFields
      */
     protected hasItemConfig(): boolean {
-        return !!(this.field.definition.lineItems && this.field.definition.lineItems.definition);
+        return !!(this.field?.definition?.lineItems?.definition ?? null);
     }
 
     /**
