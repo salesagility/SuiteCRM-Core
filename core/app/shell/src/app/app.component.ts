@@ -25,7 +25,15 @@
  */
 
 import {Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {
+    Event,
+    NavigationCancel,
+    NavigationEnd,
+    NavigationError,
+    NavigationStart,
+    Router,
+    RouterEvent
+} from '@angular/router';
 import {AppState, AppStateStore, StateManager, SystemConfigStore} from 'core';
 import {Observable} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
@@ -45,10 +53,10 @@ export class AppComponent {
         protected stateManager: StateManager,
         protected systemConfigs: SystemConfigStore
     ) {
-        router.events.subscribe((routerEvent: Event) => this.checkRouterEvent(routerEvent));
+        router.events.subscribe((routerEvent: Event | RouterEvent) => this.checkRouterEvent(routerEvent));
     }
 
-    protected checkRouterEvent(routerEvent: Event): void {
+    protected checkRouterEvent(routerEvent: Event | RouterEvent): void {
         if (routerEvent instanceof NavigationStart) {
             this.appStateStore.updateLoading('router-navigation', true);
             this.conditionalCacheReset();

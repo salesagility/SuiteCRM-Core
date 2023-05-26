@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, filter, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
@@ -42,7 +42,7 @@ import {LanguageStore} from '../../store/language/language.store';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard  {
     constructor(
         protected message: MessageService,
         protected router: Router,

@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
+import {ActivatedRouteSnapshot} from '@angular/router';
 import {concatAll, map, take, tap, toArray} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
@@ -42,7 +42,7 @@ import {AuthService} from '../auth/auth.service';
 
 
 @Injectable({providedIn: 'root'})
-export class BaseMetadataResolver implements Resolve<any> {
+export class BaseMetadataResolver  {
 
     constructor(
         protected systemConfigStore: SystemConfigStore,
