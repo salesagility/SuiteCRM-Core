@@ -2264,15 +2264,14 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@swimlane/ngx-charts@^19.2.0":
-  version "19.2.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-19.2.0.tgz#42b888a6eeb7926199272343d271705ff694588e"
-  integrity sha512-FJuDuwxti8U6BfMC0m/KfcyBqbn6mmkAX7NANbcoUaNUrngq+JBZYGVJhM66RDt54m82S7IIZV5kOK/jDTry+w==
+"@swimlane/ngx-charts@^20.3.0":
+  version "20.3.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-20.3.0.tgz#fb8a1fb9562843c9249a8af4d2d5172987c5c4fe"
+  integrity sha512-zn36+Fjl0jXA5ojm2h+8tILpGU73KMl1ocdL0HuPTBh6lCcDImbXproowGgupHmZL5Op2okm77eGuZxuIyavXg==
   dependencies:
-    "@types/d3-shape" "^2.0.0"
     d3-array "^2.9.1"
     d3-brush "^2.1.0"
-    d3-color "^2.0.0"
+    d3-color "^3.1.0"
     d3-format "^2.0.0"
     d3-hierarchy "^2.0.0"
     d3-interpolate "^2.0.1"
@@ -2281,6 +2280,7 @@
     d3-shape "^2.0.0"
     d3-time-format "^3.0.0"
     d3-transition "^2.0.0"
+    rfdc "^1.3.0"
     tslib "^2.0.0"
 
 "@tinymce/tinymce-angular@^6.0.1":
@@ -2373,18 +2373,6 @@
   version "2.8.12"
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
-
-"@types/d3-path@^2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-2.0.2.tgz#6052f38f6186319769dfabab61b5514b0e02c75c"
-  integrity sha512-3YHpvDw9LzONaJzejXLOwZ3LqwwkoXb9LI2YN7Hbd6pkGo5nIlJ09ul4bQhBN4hQZJKmUpX8HkVqbzgUKY48cg==
-
-"@types/d3-shape@^2.0.0":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@types/d3-shape/-/d3-shape-2.1.3.tgz#35d397b9e687abaa0de82343b250b9897b8cacf3"
-  integrity sha512-HAhCel3wP93kh4/rq+7atLdybcESZ5bRHDEZUojClyZWsRuEMo3A52NGYJSh48SxfxEU6RZIVbZL2YFZ2OAlzQ==
-  dependencies:
-    "@types/d3-path" "^2"
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
@@ -4324,10 +4312,15 @@ d3-brush@^2.1.0:
     d3-selection "2"
     d3-transition "2"
 
-"d3-color@1 - 2", d3-color@^2.0.0:
+"d3-color@1 - 2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-2.0.0.tgz#8d625cab42ed9b8f601a1760a389f7ea9189d62e"
   integrity sha512-SPXi0TSKPD4g9tw0NMZFnR95XVgUZiBH+uUTqQuDu1OsE2zomHU7ho0FISciaPvosimixwHFl3WHLGabv6dDgQ==
+
+d3-color@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
 "d3-dispatch@1 - 2":
   version "2.0.0"
@@ -9447,7 +9440,7 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rfdc@^1.1.4:
+rfdc@^1.1.4, rfdc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/rfdc/-/rfdc-1.3.0.tgz#d0b7c441ab2720d05dc4cf26e01c89631d9da08b"
   integrity sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==
