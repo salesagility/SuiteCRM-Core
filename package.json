@@ -66,7 +66,7 @@
     "mathjs": "^11.8.0",
     "ng-animate": "^2.0.1",
     "ng-dynamic-component": "^10.0.0",
-    "ngx-build-plus": "14.0.0",
+    "ngx-build-plus": "15.0.0",
     "ngx-chips": "^3.0.0",
     "nyc": "~15.1.0",
     "object-hash": "^3.0.0",
