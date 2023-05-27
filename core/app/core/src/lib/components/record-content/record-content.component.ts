@@ -58,13 +58,14 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         }));
         this.subs.push(this.dataSource.getPanels().subscribe(panels => {
             this.panels = [...panels];
+            this.updatePanelsArray();
         }));
         this.subs.push(this.dataSource.getRecord().subscribe(record => {
             this.record = {...record};
             this.fields = record.fields;
         }));
 
-        this.updatePanelsArray();
+
     }
 
     ngOnDestroy(): void {

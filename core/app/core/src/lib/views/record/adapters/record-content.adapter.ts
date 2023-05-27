@@ -120,7 +120,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
                             const logicDef = tabDef.displayLogic[logicDefKey];
                             const logicType = logicDef.key;
 
-                            if(logicDef.params.fieldDependencies) {
+                            if(logicDef.params.fieldDependencies && (record && record.fields)) {
                                 logicDef.params.fieldDependencies.forEach(fieldKey => {
                                     const field = record.fields[fieldKey] || null;
                                     if (!field) {
