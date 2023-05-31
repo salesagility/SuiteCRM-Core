@@ -72,10 +72,10 @@ export class AuthGuard  {
      */
     protected authorizeUser(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // Note: this session and acl are not always booleans
-        return forkJoin({
-            session: this.authorizeUserSession(route, snapshot),
-            acl: this.authorizeUserACL(route)
-        }).pipe(map(({session, acl}) => {
+        return forkJoin([
+            this.authorizeUserSession(route, snapshot),
+            this.authorizeUserACL(route)
+        ]).pipe(map(([session, acl]: any) => {
 
                 if (session instanceof UrlTree) {
                     return session;

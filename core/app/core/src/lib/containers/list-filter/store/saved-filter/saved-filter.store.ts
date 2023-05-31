@@ -162,14 +162,9 @@ export class SavedFilterStore implements StateStore {
 
         this.metadataLoadingState.next(true);
 
-        const dataMap = {
-            $meta: this.meta$,
-            record: this.load()
-        };
+        const $data = forkJoin([this.meta$, this.load()]);
 
-        const $data = forkJoin(dataMap);
-
-        return $data.pipe(map(({meta, record}) => record));
+        return $data.pipe(map(([meta, record]) => record));
     }
 
     /**

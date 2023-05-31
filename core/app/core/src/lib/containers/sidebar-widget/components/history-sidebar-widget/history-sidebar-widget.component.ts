@@ -72,7 +72,7 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
         const subpanelsToWatch = ['history', 'activities'];
 
         const reload$ = combineLatest(reloadMap).pipe(
-            map(([reload, subpanelReload]) => {
+            map(([reload, subpanelReload={}]) => {
                 if (reload) {
                     return reload;
                 }
