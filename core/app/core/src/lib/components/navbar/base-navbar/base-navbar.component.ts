@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
@@ -60,7 +60,9 @@ import {AsyncActionInput, AsyncActionService} from '../../../services/process/pr
         ])
     ]
 })
-export class BaseNavbarComponent implements OnInit, OnDestroy {
+export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
+
+    @ViewChild('mobileGlobalLinkTitle') mobileGlobalLinkTitle: ElementRef;
 
     protected static instances: BaseNavbarComponent[] = [];
 
@@ -91,6 +93,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
     navigation$: Observable<Navigation> = this.navigationStore.vm$;
+    dropdownLength: number;
 
     notificationCount$: Observable<number>;
 
@@ -195,6 +198,13 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
     markAsRead(): void {
         this.appState.markNotificationsAsRead();
+    }
+
+    ngAfterViewInit(): void {
+        if(!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidt) {
+            return;
+        }
+        this.dropdownLength = this.mobileGlobalLinkTitle.nativeElement.offsetWidt;
     }
 
     /**

@@ -39,7 +39,6 @@ import {NavigationStore} from '../navigation/navigation.store';
 import {Metadata, MetadataMap, MetadataStore} from '../metadata/metadata.store.service';
 import {ApolloQueryResult} from '@apollo/client/core';
 import {AdminMetadataStore} from '../admin-metadata/admin-metadata.store';
-import {AuthService} from '../../services/auth/auth.service';
 import {AdminMetadata} from '../admin-metadata/admin-metadata.model';
 
 export interface AppMetadata {
@@ -122,8 +121,7 @@ export class AppMetadataStore implements StateStore {
         protected config: SystemConfigStore,
         protected preferences: UserPreferenceStore,
         protected navigation: NavigationStore,
-        protected adminMetadataStore:AdminMetadataStore,
-        protected auth: AuthService
+        protected adminMetadataStore:AdminMetadataStore
     ) {
         this.metadata$ = this.state$;
     }

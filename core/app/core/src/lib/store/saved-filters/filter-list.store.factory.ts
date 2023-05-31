@@ -31,7 +31,6 @@ import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/mod
 import {FiltersListGQL} from './graphql/api.list.get';
 import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
-import {AppStateStore} from '../app-state/app-state.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 
@@ -45,7 +44,6 @@ export class FilterListStoreFactory {
      * @param listGQL
      * @param configs
      * @param preferences
-     * @param appState
      * @param language
      * @param message
      * @param auth
@@ -55,7 +53,6 @@ export class FilterListStoreFactory {
         protected listGQL: FiltersListGQL,
         protected configs: SystemConfigStore,
         protected preferences: UserPreferenceStore,
-        protected appState: AppStateStore,
         protected language: LanguageStore,
         protected message: MessageService,
         protected auth: AuthService,
@@ -72,7 +69,6 @@ export class FilterListStoreFactory {
             this.listGQL,
             this.configs,
             this.preferences,
-            this.appState,
             this.language,
             this.message,
             this.auth,

@@ -27,7 +27,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {combineLatest, Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {RecoverPasswordService} from '../../../../services/process/processes/recover-password/recover-password';
@@ -122,7 +122,21 @@ export class LoginUiComponent implements OnInit {
 
     changeLanguage(language: string): void {
         this.language = language;
-        this.languageStore.changeLanguage(language, true);
+
+        let languagesLoading = false;
+        if (this?.appState?.updateLoading) {
+            this.appState.updateLoading('change-language', true);
+            languagesLoading = true;
+        }
+
+        this.languageStore.changeLanguage(language, true).pipe(
+            tap(() => {
+                if (languagesLoading) {
+                    this.appState.updateLoading('change-language', false);
+                }
+
+            })
+        ).subscribe();
     }
 
     getEnabledLanguages(): StringMap {

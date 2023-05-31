@@ -33,7 +33,6 @@ import {SavedFilter, SavedFilterList} from './saved-filter.model';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
-import {AppStateStore} from '../app-state/app-state.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {FiltersListGQL} from './graphql/api.list.get';
@@ -54,7 +53,6 @@ export class FilterListStore extends RecordListStore {
      * @param listGQL
      * @param configs
      * @param preferences
-     * @param appState
      * @param language
      * @param message
      * @param auth
@@ -64,13 +62,12 @@ export class FilterListStore extends RecordListStore {
         protected listGQL: FiltersListGQL,
         protected configs: SystemConfigStore,
         protected preferences: UserPreferenceStore,
-        protected appState: AppStateStore,
         protected language: LanguageStore,
         protected message: MessageService,
         protected auth: AuthService,
         protected moduleNameMapper: ModuleNameMapper
     ) {
-        super(listGQL, configs, preferences, appState, language, message);
+        super(listGQL, configs, preferences, language, message);
     }
 
     /**

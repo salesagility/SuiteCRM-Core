@@ -43,7 +43,6 @@ import {
 import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '../state';
-import {AppStateStore} from '../app-state/app-state.store';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
 import {ListGQL} from './graphql/api.list.get';
@@ -165,7 +164,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         protected listGQL: ListGQL,
         protected configStore: SystemConfigStore,
         protected preferencesStore: UserPreferenceStore,
-        protected appStateStore: AppStateStore,
         protected languageStore: LanguageStore,
         protected message: MessageService,
     ) {

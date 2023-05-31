@@ -29,9 +29,34 @@ import {Record, ViewFieldDefinition, ViewFieldDefinitionMap, ViewMode} from 'com
 import {map} from 'rxjs/operators';
 import {RecordThreadItemMetadata} from './record-thread-item.store.model';
 import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
+import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
+import {MessageService} from '../../../../services/message/message.service';
+import {FieldManager} from '../../../../services/record/field/field.manager';
+import {LanguageStore} from '../../../../store/language/language.store';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 
 @Injectable()
 export class RecordThreadItemStore extends BaseRecordContainerStore<RecordThreadItemMetadata> {
+
+    constructor(
+        protected appStateStore: AppStateStore,
+        protected meta: MetadataStore,
+        protected message: MessageService,
+        protected fieldManager: FieldManager,
+        protected language: LanguageStore,
+        protected storeFactory: RecordStoreFactory
+    ) {
+
+        super(
+            appStateStore,
+            meta,
+            message,
+            fieldManager,
+            language,
+            storeFactory
+        );
+    }
 
     /**
      * Get view fields observable

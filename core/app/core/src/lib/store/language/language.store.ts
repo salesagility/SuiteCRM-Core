@@ -29,7 +29,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, take, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {AppStateStore} from '../app-state/app-state.store';
 import {deepClone, emptyObject, StringMap} from 'common';
 import {StateStore} from '../state';
 import {LocalStorageService} from '../../services/local-storage/local-storage.service';
@@ -150,7 +149,6 @@ export class LanguageStore implements StateStore {
 
     constructor(
         protected recordGQL: EntityGQL,
-        protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
         protected processService: ProcessService,
         protected configs: SystemConfigStore
@@ -212,27 +210,19 @@ export class LanguageStore implements StateStore {
      * @param {string} languageKey language key
      * @param {boolean} reload
      */
-    public changeLanguage(languageKey: string, reload = false): void {
+    public changeLanguage(languageKey: string, reload = false): Observable<any> {
         const types = [];
 
         Object.keys(loadedLanguages).forEach(type => loadedLanguages[type] && types.push(type));
 
         internalState.hasChanged = true;
 
-        let languagesLoading = false;
-        if (this?.appStateStore?.updateLoading) {
-            this.appStateStore.updateLoading('change-language', true);
-            languagesLoading = true;
-        }
-
-        this.load(languageKey, types, reload).pipe(
+        return this.load(languageKey, types, reload).pipe(
             tap(() => {
                 this.localStorage.set('selected_language', languageKey, true);
-                if (languagesLoading) {
-                    this.appStateStore.updateLoading('change-language', false);
-                }
+
             })
-        ).subscribe();
+        );
     }
 
     /**

@@ -25,24 +25,24 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordThreadStore} from '../../record-thread/store/record-thread/record-thread.store';
-import {SystemConfigStore} from '../../../store/system-config/system-config.store';
+import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
+import {SystemConfigStore} from '../system-config/system-config.store';
 import {deepClone, Field, Record, SearchCriteria} from 'common';
-import {RecordThreadItemMetadata} from '../../record-thread/store/record-thread/record-thread-item.store.model';
+import {RecordThreadItemMetadata} from '../../containers/record-thread/store/record-thread/record-thread-item.store.model';
 import {
     RecordThreadConfig,
     ThreadItemMetadataConfig
-} from '../../record-thread/components/record-thread/record-thread.model';
-import {RecordThreadStoreFactory} from '../../record-thread/store/record-thread/record-thread.store.factory';
-import {RecordThreadItemConfig} from '../../record-thread/components/record-thread-item/record-thread-item.model';
-import {Process, ProcessService} from '../../../services/process/process.service';
+} from '../../containers/record-thread/components/record-thread/record-thread.model';
+import {RecordThreadStoreFactory} from '../../containers/record-thread/store/record-thread/record-thread.store.factory';
+import {RecordThreadItemConfig} from '../../containers/record-thread/components/record-thread-item/record-thread-item.model';
+import {Process, ProcessService} from '../../services/process/process.service';
 import {catchError, take, tap} from 'rxjs/operators';
-import {AsyncActionInput} from '../../../services/process/processes/async-action/async-action';
-import {MessageService} from '../../../services/message/message.service';
+import {AsyncActionInput} from '../../services/process/processes/async-action/async-action';
+import {MessageService} from '../../services/message/message.service';
 import {Observable, timer} from 'rxjs';
-import {LanguageStore} from '../../../store/language/language.store';
-import {DynamicLabelService} from '../../../services/language/dynamic-label.service';
-import {AppStateStore} from '../../../store/app-state/app-state.store';
+import {LanguageStore} from '../language/language.store';
+import {DynamicLabelService} from '../../services/language/dynamic-label.service';
+import {NotificationStore} from './notification.store';
 
 @Injectable({
     providedIn: 'root',
@@ -179,21 +179,21 @@ export class NotificationsService {
             );
     }
 
-    onLoadMore(appStateStore: AppStateStore): void {
+    onLoadMore(notificationStore: NotificationStore): void {
         timer(1500).pipe(take(1)).subscribe(() => {
-            appStateStore.markNotificationsAsRead();
+            notificationStore.markNotificationsAsRead();
         });
     }
 
-    onRefresh(store: RecordThreadStore, appStateStore: AppStateStore): void {
+    onRefresh(store: RecordThreadStore, notificationStore: NotificationStore): void {
         const count = store.getRecordList().getMeta().unreadCount as number;
-        let appStateCount = appStateStore.getNotificationsUnreadTotal();
+        let appStateCount = notificationStore.getNotificationsUnreadTotal();
         if (count > appStateCount) {
             let unreadCount = (count - appStateCount).toString();
             const labelTemplate = this.language.getFieldLabel('LBL_NEW_NOTIFICATION');
             const parsedLabel = this.dynamicLabels.parse(labelTemplate, {unread: unreadCount}, {});
             this.messages.addSuccessMessage(parsedLabel);
         }
-        appStateStore.setNotificationsUnreadTotal(count);
+        notificationStore.setNotificationsUnreadTotal(count);
     }
 }

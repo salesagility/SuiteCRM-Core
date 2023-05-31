@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ButtonInterface} from 'common';
 
 @Component({
@@ -32,14 +32,14 @@ import {ButtonInterface} from 'common';
     templateUrl: './modal.component.html',
     styleUrls: [],
 })
-export class ModalComponent {
+export class ModalComponent{
 
     @Input() klass = '';
     @Input() headerKlass = '';
     @Input() bodyKlass = '';
     @Input() footerKlass = '';
     @Input() titleKey = '';
-    @Input() closable = false;
+    @Input() closable:boolean = false;
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
     } as ButtonInterface;

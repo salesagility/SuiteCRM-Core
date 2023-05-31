@@ -28,7 +28,6 @@ import {Injectable} from '@angular/core';
 import {ListGQL} from './graphql/api.list.get';
 import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
-import {AppStateStore} from '../app-state/app-state.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {RecordListStore} from './record-list.store';
@@ -42,7 +41,6 @@ export class RecordListStoreFactory {
         protected listGQL: ListGQL,
         protected configStore: SystemConfigStore,
         protected preferencesStore: UserPreferenceStore,
-        protected appStateStore: AppStateStore,
         protected languageStore: LanguageStore,
         protected message: MessageService,
     ) {
@@ -53,7 +51,6 @@ export class RecordListStoreFactory {
             this.listGQL,
             this.configStore,
             this.preferencesStore,
-            this.appStateStore,
             this.languageStore,
             this.message
         );

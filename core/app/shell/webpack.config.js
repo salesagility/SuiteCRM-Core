@@ -5,7 +5,8 @@ module.exports = {
     uniqueName: 'shell',
   },
   optimization: {
-    runtimeChunk: false
+    runtimeChunk: false,
+    minimize: false
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -15,63 +16,59 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^13.3.9'
+          requiredVersion: '^16.0.2'
         },
         '@angular/cdk/table': {
           singleton: true,
-          requiredVersion: '^13.3.9'
+          requiredVersion: '^16.0.2'
         },
         '@angular/cdk/observers': {
           singleton: true,
-          requiredVersion: '^13.3.9'
+          requiredVersion: '^16.0.2'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@apollo/client': {
           singleton: true,
-          requiredVersion: '^3.3.7'
-        },
-        '@apollo/link-error': {
-          singleton: true,
-          requiredVersion: '^2.0.0-beta.3'
+          requiredVersion: '^3.7.14'
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^13.0.0'
+          requiredVersion: '^16.0.0'
         },
         'apollo-angular': {
           singleton: true,
-          requiredVersion: '^2.2.0'
+          requiredVersion: '^5.0.0'
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^14.7.0'
+          requiredVersion: '^16.6.0'
         },
         'graphql-tag': {
           singleton: true,
-          requiredVersion: '^2.11.0'
+          requiredVersion: '^2.12.6'
         },
         'lodash-es': {
           singleton: true,
@@ -92,12 +89,12 @@ module.exports = {
 
         '@swimlane/ngx-charts': {
           singleton: true,
-          requiredVersion: '^19.2.0'
+          requiredVersion: '^20.3.0'
         },
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^11.0.0'
+          requiredVersion: '^15.0.0'
         },
 
         'bn-ng-idle': {

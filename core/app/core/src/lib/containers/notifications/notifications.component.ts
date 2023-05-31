@@ -36,10 +36,9 @@ import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/rec
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {RecordThreadStoreFactory} from "../record-thread/store/record-thread/record-thread.store.factory";
 import {RecordThreadStore} from "../record-thread/store/record-thread/record-thread.store";
-import {AppStateStore} from "../../store/app-state/app-state.store";
 import {MessageService} from "../../services/message/message.service";
-import {NotificationsService} from './services/notifications.service';
-import {DynamicLabelService} from "../../services/language/dynamic-label.service";
+import {NotificationsService} from '../../store/notification/notifications.service';
+import {NotificationStore} from '../../store/notification/notification.store';
 
 @Component({
     selector: 'scrm-notifications',
@@ -49,7 +48,6 @@ import {DynamicLabelService} from "../../services/language/dynamic-label.service
 export class NotificationsComponent implements OnInit {
 
     recordThreadConfig: RecordThreadConfig;
-    filters$: Observable<SearchCriteria>;
     store: RecordThreadStore;
     options: any;
 
@@ -57,10 +55,9 @@ export class NotificationsComponent implements OnInit {
         protected language: LanguageStore,
         protected systemConfig: SystemConfigStore,
         protected storeFactory: RecordThreadStoreFactory,
-        protected appStateStore: AppStateStore,
         protected message: MessageService,
         protected notificationService: NotificationsService,
-        protected dynamicLabels: DynamicLabelService
+        protected notificationStore: NotificationStore
     ) {
     }
 
@@ -85,10 +82,10 @@ export class NotificationsComponent implements OnInit {
             autoRefreshDeviationMin: this.options.autoRefreshDeviationMin ?? 0,
             autoRefreshDeviationMax: this.options.autoRefreshDeviationMax ?? 0,
             onRefresh: () => {
-                this.notificationService.onRefresh(this.store, this.appStateStore);
+                this.notificationService.onRefresh(this.store, this.notificationStore);
             },
             onLoadMore: () => {
-                this.notificationService.onLoadMore(this.appStateStore);
+                this.notificationService.onLoadMore(this.notificationStore);
             },
             loadMorePosition: this.options?.loadMorePosition ?? '',
             create: false,
@@ -103,8 +100,8 @@ export class NotificationsComponent implements OnInit {
         this.notificationService.setupListActions(config, this.options);
         this.notificationService.setupItemConfig(config, this.options);
 
-        config.store = this.appStateStore.getNotificationStore();
-        this.store = this.appStateStore.getNotificationStore();
+        config.store = this.notificationStore.getNotificationStore();
+        this.store = this.notificationStore.getNotificationStore();
 
         return config;
     }

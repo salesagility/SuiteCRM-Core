@@ -37,6 +37,7 @@ import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {BaseRouteService} from "../base-route/base-route.service";
+import {NotificationStore} from '../../store/notification/notification.store';
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -69,7 +70,8 @@ export class AuthService {
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
         protected configs: SystemConfigStore,
-        protected baseRoute: BaseRouteService
+        protected baseRoute: BaseRouteService,
+        protected notificationStore: NotificationStore
     ) {
         this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     }
@@ -118,8 +120,8 @@ export class AuthService {
             onSuccess(response);
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
-            this.appStateStore.enableNotifications();
-            this.appStateStore.refreshNotifications();
+            this.notificationStore.enableNotifications();
+            this.notificationStore.refreshNotifications();
         }, (error: HttpErrorResponse) => {
             onError(error);
         });

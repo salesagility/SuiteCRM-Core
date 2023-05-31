@@ -38,6 +38,7 @@ import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-con
 import {emptyObject, isEmptyString} from 'common';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {LanguageStore} from '../../store/language/language.store';
+import {NotificationStore} from '../../store/notification/notification.store';
 
 @Injectable({
     providedIn: 'root'
@@ -52,7 +53,8 @@ export class AuthGuard  {
         protected appState: AppStateStore,
         protected routeConverter: RouteConverter,
         protected configs: SystemConfigStore,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected notificationStore: NotificationStore
     ) {
     }
 
@@ -181,8 +183,8 @@ export class AuthGuard  {
                             this.language.appStrings$.pipe(
                                 filter(appStrings => appStrings && !emptyObject(appStrings)),
                                 tap(() => {
-                                    this.appState.enableNotifications();
-                                    this.appState.refreshNotifications();
+                                    this.notificationStore.enableNotifications();
+                                    this.notificationStore.refreshNotifications();
                                 }),
                                 take(1)
                             ).subscribe();

@@ -34,7 +34,7 @@ import {ModalModule} from "../modal/modal.module";
     declarations: [ClassicModalComponent],
     imports: [
         CommonModule,
-        ModalModule,
+        ModalModule
     ]
 })
 export class ClassicModalModule {

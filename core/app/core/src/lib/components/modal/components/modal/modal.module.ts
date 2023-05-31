@@ -31,6 +31,7 @@ import {ModalComponent} from './modal.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {LabelModule} from '../../../label/label.module';
 import {CloseButtonModule} from '../../../close-button/close-button.module';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [ModalComponent],
@@ -39,7 +40,8 @@ import {CloseButtonModule} from '../../../close-button/close-button.module';
         CommonModule,
         AngularSvgIconModule,
         CloseButtonModule,
-        LabelModule
+        LabelModule,
+        NgbModalModule
     ]
 })
 export class ModalModule {

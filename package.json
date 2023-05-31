@@ -23,8 +23,7 @@
     "gen-index:core": "barrelsby --delete -e '.*\\.spec.*' -q -d core/app/core/src/lib/ -n 'core'",
     "gen-index:common": "barrelsby --delete -e '.*\\.spec.*' -q -d 'core/app/common/src/lib/' -n 'common'",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ngcc"
+    "e2e": "ng e2e"
   },
   "private": true,
   "engines": {
@@ -46,7 +45,6 @@
     "@angular/platform-browser-dynamic": "16.0.3",
     "@angular/router": "16.0.3",
     "@apollo/client": "^3.7.14",
-    "@apollo/link-error": "^2.0.0-beta.3",
     "@ng-bootstrap/ng-bootstrap": "15.0.0",
     "@nrwl/workspace": "^16.2.2",
     "@popperjs/core": "^2.11.7",
@@ -61,7 +59,6 @@
     "concurrently": "^8.0.1",
     "core-js": "^3.30.2",
     "graphql": "^16.6.0",
-    "graphql-tag": "^2.12.6",
     "lodash-es": "^4.17.20",
     "luxon": "3.3.0",
     "mathjs": "^11.8.0",

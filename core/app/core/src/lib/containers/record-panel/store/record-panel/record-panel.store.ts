@@ -29,9 +29,34 @@ import {Record, ViewFieldDefinition, ViewMode} from 'common';
 import {map} from 'rxjs/operators';
 import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
 import {RecordPanelMetadata} from './record-panel.store.model';
+import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
+import {MessageService} from '../../../../services/message/message.service';
+import {FieldManager} from '../../../../services/record/field/field.manager';
+import {LanguageStore} from '../../../../store/language/language.store';
+import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 
 @Injectable()
 export class RecordPanelStore extends BaseRecordContainerStore<RecordPanelMetadata> {
+
+    constructor(
+        protected appStateStore: AppStateStore,
+        protected meta: MetadataStore,
+        protected message: MessageService,
+        protected fieldManager: FieldManager,
+        protected language: LanguageStore,
+        protected storeFactory: RecordStoreFactory
+    ) {
+
+        super(
+            appStateStore,
+            meta,
+            message,
+            fieldManager,
+            language,
+            storeFactory
+        );
+    }
 
     /**
      * Get view fields observable

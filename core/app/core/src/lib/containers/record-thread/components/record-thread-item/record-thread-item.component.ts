@@ -32,7 +32,6 @@ import {debounceTime, shareReplay} from 'rxjs/operators';
 import {ButtonInterface, Record, StringMap} from 'common';
 import {RecordThreadItemActionsAdapter} from '../../adapters/record-thread-item-actions.adapter';
 import {RecordThreadItemActionsAdapterFactory} from '../../adapters/record-thread-item-actions.adapter.factory';
-import {AppStateStore} from "../../../../store/app-state/app-state.store";
 
 @Component({
     selector: 'scrm-record-thread-item',
@@ -53,8 +52,7 @@ export class RecordThreadItemComponent implements OnInit, OnDestroy, AfterViewIn
     protected dynamicClassFieldSubs: Subscription[] = [];
 
     constructor(
-        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory,
-        protected appStateStore: AppStateStore
+        protected actionAdapterFactory: RecordThreadItemActionsAdapterFactory
     ) {
     }
 
