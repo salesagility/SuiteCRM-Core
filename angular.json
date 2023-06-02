@@ -21,7 +21,9 @@
             "main": "core/app/shell/src/main.ts",
             "polyfills": "core/app/shell/src/polyfills.ts",
             "tsConfig": "core/app/shell/tsconfig.app.json",
-            "scripts": [],
+            "scripts": [
+              "node_modules/tinymce/tinymce.min.js"
+            ],
             "styles": [
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
               "core/app/shell/src/themes/suite8/css/style.scss"
@@ -40,11 +42,6 @@
                   "**/*.scss"
                 ],
                 "output": "/themes/"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/tinymce",
-                "output": "/tinymce/"
               },
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
             ],

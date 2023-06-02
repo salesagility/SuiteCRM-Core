@@ -130,6 +130,7 @@
 
 .modal-backdrop {
   background-color: $light-grey;
+  z-index: 1050!important;
 }
 
 .modal-backdrop.show {

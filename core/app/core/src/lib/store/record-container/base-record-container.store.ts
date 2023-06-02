@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BehaviorSubject, combineLatest, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, forkJoin, Observable, of, Subscription} from 'rxjs';
 import {deepClone, Record, ViewContext, ViewFieldDefinition, ViewMode} from 'common';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
 import {RecordStore} from '../record/record.store';

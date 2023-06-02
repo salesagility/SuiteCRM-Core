@@ -79,9 +79,9 @@ export class ClassicViewResolver extends BaseMetadataResolver {
         const module = this.calculateActiveModule(route);
         return super.resolve(route).pipe(
             concatMap(() => {
-                return forkJoin({
-                    metadata: this.metadataStore.load(module, this.metadataStore.getMetadataTypes()),
-                });
+                return forkJoin([
+                    this.metadataStore.load(module, this.metadataStore.getMetadataTypes()),
+                ]);
             }),
             map(() => this.routeConverter.toLegacy(route.params, route.queryParams)),
             tap(

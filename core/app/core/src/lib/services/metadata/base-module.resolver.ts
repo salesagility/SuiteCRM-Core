@@ -79,19 +79,17 @@ export class BaseModuleResolver extends BaseMetadataResolver {
         if (!routeModule) {
             routeModule = route.data.module;
         }
-
         return super.resolve(route).pipe(
-            concatMap(() => {
-                return forkJoin({
-                    metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
-                    savedSearchMeta: this.metadataStore.getMetadata('saved-search', ['recordView']),
-                });
-            }),
+            concatMap(
+                () => forkJoin([
+                    this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
+                    this.metadataStore.getMetadata('saved-search', ['recordView'])
+                ]),
+            ),
             map(value => {
                 return {
-                    base: value[0] ?? {},
-                    metadata: value[1] ?? {},
-                    savedSearchMeta: value[2] ?? {},
+                    metadata: value[0] ?? {},
+                    savedSearchMeta: value[1] ?? {},
                 }
             }),
             tap(

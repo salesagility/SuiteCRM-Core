@@ -86,16 +86,18 @@ export class AuthGuard  {
                 return session && acl;
             }
         ));
+
+
     }
 
     /**
      * Authorize user acl
      *
-     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+     * @returns {object} Observable<boolean | UrlTree>
      * @param {ActivatedRouteSnapshot} activatedRoute information about the current route
      */
     protected authorizeUserACL(activatedRoute: ActivatedRouteSnapshot):
-        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        Observable<boolean | UrlTree> {
 
         const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute.url);
 
@@ -120,7 +122,6 @@ export class AuthGuard  {
                 queryParams: activatedRoute?.queryParams ?? []
             }
         } as AsyncActionInput;
-
         return this.asyncActionService.run(actionName, asyncData)
             .pipe(take(1),
                 map((process: Process) => {
@@ -142,8 +143,7 @@ export class AuthGuard  {
 
                     return false;
                 }),
-                catchError(() => of(homeUrlTree)),
-                tap((result: boolean | UrlTree) => result)
+                catchError(() => of(homeUrlTree))
             );
     }
 
@@ -155,7 +155,7 @@ export class AuthGuard  {
      * @param snapshot
      */
     protected authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
-        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        Observable<boolean | UrlTree> {
 
         if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
             return of(true);

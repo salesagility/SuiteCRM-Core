@@ -47,10 +47,8 @@ export class ActionMenuComponent implements OnInit {
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
-    vm$ = combineLatest([
-        this.screenSize.screenSize$
-    ]).pipe(
-        map(([screenSize]) => {
+    vm$ = this.screenSize.screenSize$.pipe(
+        map((screenSize) => {
             if (screenSize) {
                 this.screen = screenSize;
             }

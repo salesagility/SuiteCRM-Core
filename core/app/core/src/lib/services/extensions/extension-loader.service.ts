@@ -87,6 +87,8 @@ export class ExtensionLoader {
             return of({});
         }
 
+        //TODO: Correct here
+
         return forkJoin(extensionModules$);
     }
 

@@ -25,8 +25,8 @@
  */
 
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {combineLatest, Observable, Subscription} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
@@ -97,14 +97,14 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     notificationCount$: Observable<number>;
 
-    vm$ = combineLatest([
-        this.navigation$,
-        this.userPreferences$,
-        this.currentUser$,
-        this.appState$,
-        this.screenSize.screenSize$,
-        this.languages$,
-    ]).pipe(
+    vm$ = this.navigation$.pipe(
+        combineLatestWith(
+            this.userPreferences$,
+            this.currentUser$,
+            this.appState$,
+            this.screenSize.screenSize$,
+            this.languages$,
+        ),
         map(([navigation, userPreferences, currentUser, appState, screenSize, language]) => {
 
             if (screenSize) {

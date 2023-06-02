@@ -50,3 +50,32 @@
     background: $nepal-grey;
   }
 }
+.tooltip-class  {
+  width: 20px;
+  height: 20px;
+  z-index: 1500!important;
+  display: block;
+
+}
+
+::ng-deep .tooltip-class .arrow::before {
+  border-top-color: black;
+}
+
+.popover-arrow {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0 2px;
+
+  &::before,
+  &::after {
+    position: absolute;
+    display: block;
+    content: "";
+    border-color: transparent;
+    border-style: solid;
+  }
+}
+

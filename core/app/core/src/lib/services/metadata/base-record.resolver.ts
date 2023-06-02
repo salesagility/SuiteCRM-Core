@@ -89,9 +89,9 @@ export class BaseRecordResolver extends BaseModuleResolver {
 
         return super.resolve(route).pipe(
             concatMap(() => {
-                return forkJoin({
-                    metadata: this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
-                });
+                return forkJoin([
+                   this.metadataStore.load(routeModule, this.metadataStore.getMetadataTypes()),
+                ]);
             }),
             tap(() => {
                 if (this.auth.isLoggedIn()) {

@@ -24,55 +24,47 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.3'
         },
         '@apollo/client': {
           singleton: true,
-          requiredVersion: '^3.3.7'
-        },
-        '@apollo/link-error': {
-          singleton: true,
-          requiredVersion: '^2.0.0-beta.3'
+          requiredVersion: '^3.7.14'
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.0'
         },
         'apollo-angular': {
           singleton: true,
-          requiredVersion: '^2.2.0'
+          requiredVersion: '^5.0.0'
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^14.7.0'
-        },
-        'graphql-tag': {
-          singleton: true,
-          requiredVersion: '^2.11.0'
+          requiredVersion: '^16.6.0'
         },
         'lodash-es': {
           singleton: true,
@@ -80,40 +72,40 @@ module.exports = {
         },
         luxon: {
           singleton: true,
-          requiredVersion: '^1.25.0'
+          requiredVersion: '^3.3.0'
         },
         'ng-animate': {
           singleton: true,
-          requiredVersion: '^1.0.0'
+          requiredVersion: '^2.0.1'
         },
         'ngx-chips': {
           singleton: true,
-          requiredVersion: '^2.2.2'
+          requiredVersion: '^3.0.0'
         },
 
         '@swimlane/ngx-charts': {
           singleton: true,
-          requiredVersion: '^17.0.0'
+          requiredVersion: '^20.3.0'
         },
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^9.0.2'
+          requiredVersion: '^15.0.0'
         },
 
         'bn-ng-idle': {
           singleton: true,
-          requiredVersion: '^1.0.1'
+          requiredVersion: '^2.0.5'
         },
 
         'rxjs': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         'rxjs/operators': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         common: {

@@ -246,7 +246,7 @@ export class MetadataStore implements StateStore {
      * @param useCache
      * @returns any data
      */
-    public load(moduleID: string, types: string[], useCache: boolean = true): any {
+    public load(moduleID: string, types: string[], useCache: boolean = true): Observable<any> {
 
         if (!types) {
             types = this.getMetadataTypes();

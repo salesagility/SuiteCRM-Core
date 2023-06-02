@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-images/theme-images.store';
 
@@ -42,8 +42,8 @@ export class ImageComponent {
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
-    vm$ = combineLatest([this.images$]).pipe(
-        map(([images]) => ({
+    vm$ = this.images$.pipe(
+        map((images) => ({
             images
         })));
 

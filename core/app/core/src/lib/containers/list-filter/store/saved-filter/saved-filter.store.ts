@@ -293,10 +293,10 @@ export class SavedFilterStore implements StateStore {
      */
     public validate(): Observable<boolean> {
 
-        return forkJoin({
-            fields: this.recordStore.validate(),
-            criteria: this.validateCriteria()
-        }).pipe(map(({fields, criteria}) => fields && criteria));
+        return forkJoin([
+            this.recordStore.validate(),
+            this.validateCriteria()
+        ]).pipe(map(([fields, criteria]) => fields && criteria));
     }
 
     /**

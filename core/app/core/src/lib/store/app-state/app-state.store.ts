@@ -25,8 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, Subscription, timer} from 'rxjs';
-import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone, isVoid, User} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
@@ -95,7 +95,8 @@ export class AppStateStore implements StateStore {
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
 
-        this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
+        this.vm$ = this.loading$.pipe(
+            combineLatestWith(this.module$, this.view$, this.initialAppLoading$),
             map(([loading, module, view, initialAppLoading]) => ({
                 loading,
                 module,
