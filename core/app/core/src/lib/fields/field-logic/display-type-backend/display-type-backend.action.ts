@@ -268,4 +268,8 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
         return isActive;
     }
 
+    getTriggeringStatus() : string[] {
+        return ['onValueChange', 'onFieldInitialize'];
+    }
+
 }

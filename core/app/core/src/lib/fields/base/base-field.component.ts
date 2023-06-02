@@ -77,7 +77,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                     if (!field) {
                         return;
                     }
-                        this.logic.runLogic(field, this.mode as ViewMode, this.record);
+
+                    this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onFieldInitialize');
                 });
             }
 
@@ -94,7 +95,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             const types = dependentField.type ?? [];
 
                             if (types.includes('logic')) {
-                                this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                                this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onValueChange');
                             }
 
                             if (types.includes('displayLogic')) {
@@ -112,7 +113,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             return;
                         }
 
-                        this.logic.runLogic(attribute, this.mode as ViewMode, this.record);
+                        this.logic.runLogic(attribute, this.mode as ViewMode, this.record, 'onValueChange');
                     });
 
                 }));

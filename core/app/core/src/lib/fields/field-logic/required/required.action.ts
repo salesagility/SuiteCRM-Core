@@ -185,4 +185,8 @@ export class RequiredAction extends FieldLogicActionHandler {
 
         return isActive;
     }
+
+    getTriggeringStatus() : string[] {
+        return ['onValueChange', 'onFieldInitialize'];
+    }
 }
