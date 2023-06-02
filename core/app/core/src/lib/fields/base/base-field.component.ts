@@ -67,10 +67,19 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
             return;
         }
         const fieldKeys = (this.record.fields && Object.keys(this.record.fields)) || [];
-
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
             this.field.previousValue = this.field.value;
+
+            if(this.dependentFields.length || this.dependentAttributes.length) {
+                this.dependentFields.forEach(fieldKey => {
+                    const field = this.record.fields[fieldKey] || null;
+                    if (!field) {
+                        return;
+                    }
+                        this.logic.runLogic(field, this.mode as ViewMode, this.record);
+                });
+            }
 
             if (this.field.valueChanges$ && (this.dependentFields.length || this.dependentAttributes.length)) {
                 this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe((data) => {
