@@ -886,6 +886,7 @@ class SugarFolder
                 }
                 //add check to remove deleted folders
                 if ($a['is_group'] == 1 && $a['deleted'] != 1) {
+                    if (!in_array($a['id'], $groupFolderIds)) {
                     if ($a['has_child'] == 1) {
                         // Include only the parent folder and its immediate child folders
                         $childFolders = $this->getChildFolders($folders, $a['id']);
