@@ -787,22 +787,29 @@ class SugarFolder
         $secureReturn = [];
 
         $userAccessibleInboundIds = $this->getUserAccessibleInboundIds($user);
-
+		
+        $groupFolderIdsAdded = [];
+        
         foreach ($return as $item) {
             if (empty($item) || empty($item['id'])) {
                 continue;
             }
 
-            $isGroup = $item->isgroup ?? '';
-            if ($isGroup === 1) {
+          $isGroup = $item['is_group'] ?? '';
+            if ($isGroup == 1) {
+                //added check if user has access to the inbound account, OR is admin and also check for duplicates
+                if ((isset($userAccessibleInboundIds[$item['id']]) || is_admin($user)) && !in_array($item['id'], $groupFolderIdsAdded)) {
                 $secureReturn[] = $item;
+                $groupFolderIdsAdded[] = $item['id'];    
             }
+                
+            } else {
 
             if (!empty($userAccessibleInboundIds[$item['id']])) {
                 $secureReturn[] = $item;
             }
+          }
         }
-
         return $secureReturn;
     }
 
@@ -864,6 +871,7 @@ class SugarFolder
         try {
             $folders = $this->retrieveFoldersForProcessing($focusUser, false);
             $subscriptions = $this->getSubscriptions($focusUser);
+            $groupFolderIds = array(); // Track group folder IDs to remove duplicates
 
             foreach ($folders as $a) {
                 $a['selected'] = (in_array($a['id'], $subscriptions)) ? true : false;
@@ -876,25 +884,20 @@ class SugarFolder
                 if (isset($a['dynamic_query'])) {
                     unset($a['dynamic_query']);
                 }
-
-                if ($a['is_group'] == 1) {
-                    $grp[] = $a;
-                } else {
-                    $user[] = $a;
-                }
-
-                if ($a['has_child'] == 1) {
-                    $qGetChildren = $this->core . $this->coreWhere . "AND parent_folder = " . $this->db->quoted($a['id']);
-                    $rGetChildren = $this->db->query($qGetChildren);
-
-                    while ($aGetChildren = $this->db->fetchByAssoc($rGetChildren)) {
-                        if ($a['is_group']) {
-                            $this->_depth = 1;
-                            $grp = $this->getFoldersChildForSettings($aGetChildren, $grp, $subscriptions);
-                        } else {
-                            $this->_depth = 1;
-                            $user = $this->getFoldersChildForSettings($aGetChildren, $user, $subscriptions);
+                //add check to remove deleted folders
+                if ($a['is_group'] == 1 && $a['deleted'] != 1) {
+                    if (!in_array($a['id'], $groupFolderIds)) {
+                    if ($a['has_child'] == 1) {
+                        // Include only the parent folder and its immediate child folders
+                        $childFolders = $this->getChildFolders($folders, $a['id']);
+                        $a['children'] = $childFolders;
                         }
+                    $grp[] = $a;
+                    $groupFolderIds[] = $a['id'];
+                   }
+                } else {
+                    if ($a['is_group'] == 0) {
+                    $user[] = $a;
                     }
                 }
             }
