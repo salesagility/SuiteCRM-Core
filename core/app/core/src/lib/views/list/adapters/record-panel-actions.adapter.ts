@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore} from '../../../store/language/language.store';
@@ -70,20 +70,13 @@ export class ListViewRecordPanelActionsAdapter extends BaseRecordActionsAdapter<
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.store.meta$,
-                this.store.mode$,
-                this.store.stagingRecord$,
-                this.language.vm$,
-            ]
-        ).pipe(
-            map((
-                [
-                    meta,
-                    mode
-                ]
-            ) => {
+        return this.store.meta$.pipe(
+            combineLatestWith(
+                    this.store.mode$,
+                    this.store.stagingRecord$,
+                    this.language.vm$,
+            ),
+            map(([meta, mode, stagingRecord, vm]) => {
                 if (!mode || !meta) {
                     return [];
                 }

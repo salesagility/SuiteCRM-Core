@@ -25,7 +25,7 @@
  */
 
 import {Component} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {AuthService} from '../../services/auth/auth.service';
@@ -46,10 +46,8 @@ export class LogoutUiComponent {
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
 
-    vm$ = combineLatest([
-        this.languages$,
-    ]).pipe(
-        map(([languages]) => (
+    vm$ = this.languages$.pipe(
+        map(languages => (
             {
                 appStrings: languages.appStrings || {},
                 appListStrings: languages.appListStrings || {}

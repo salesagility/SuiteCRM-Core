@@ -24,15 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {Action, Panel, PanelRow, Record} from 'common';
+import {Action, Panel, PanelRow, Record, ViewMode} from 'common';
 import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {RecordActionManager} from '../actions/record-action-manager.service';
 import {RecordActionData} from '../actions/record.action';
-import {LanguageStore} from '../../../store/language/language.store';
+import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 import {PanelLogicManager} from '../../../components/panel-logic/panel-logic.manager';
 
@@ -65,10 +65,9 @@ export class RecordContentAdapter implements RecordContentDataSource {
 
     getDisplayConfig(): Observable<RecordContentConfig> {
 
-        return combineLatest(
-            [this.metadata.recordViewMetadata$, this.store.mode$]
-        ).pipe(
-            map(([meta, mode]) => {
+        return this.metadata.recordViewMetadata$.pipe(
+            combineLatestWith(this.store.mode$),
+            map(([meta, mode]: [RecordViewMetadata, ViewMode]) => {
                 const layout = this.getLayout(meta);
                 const maxColumns = meta.templateMeta.maxColumns || 2;
                 const tabDefs = meta.templateMeta.tabDefs;
@@ -84,10 +83,9 @@ export class RecordContentAdapter implements RecordContentDataSource {
     }
 
     getPanels(): Observable<Panel[]> {
-        return combineLatest(
-            [this.metadata.recordViewMetadata$, this.store.stagingRecord$, this.language.vm$]
-        ).pipe(
-            map(([meta, record, languages]) => {
+        return this.metadata.recordViewMetadata$.pipe(
+            combineLatestWith(this.store.stagingRecord$, this.language.vm$),
+            map(([meta, record, languages]: [RecordViewMetadata, Record, LanguageStrings]) => {
                 const panels = [];
                 const module = (record && record.module) || '';
 

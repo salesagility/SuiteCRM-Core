@@ -25,7 +25,7 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {combineLatest, Observable, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ViewContext, WidgetMetadata} from 'common';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
@@ -50,13 +50,13 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
     loading: boolean = true;
     language$: Observable<LanguageStrings> = this.language.vm$;
 
-    vm$ = combineLatest([
-        this.language$,
-        this.sidebarWidgetAdapter.config$,
-        this.bottomWidgetAdapter.config$,
-        this.topWidgetAdapter.config$,
-        this.recordViewStore.showSubpanels$
-    ]).pipe(
+    vm$ = this.language$.pipe(
+        combineLatestWith(
+            this.sidebarWidgetAdapter.config$,
+            this.bottomWidgetAdapter.config$,
+            this.topWidgetAdapter.config$,
+            this.recordViewStore.showSubpanels$
+        ),
         map((
             [
                 language,

@@ -25,15 +25,15 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {Action, ActionContext, ModeActions, Record, ViewMode} from 'common';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 import {RecordActionManager} from '../actions/record-action-manager.service';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {RecordActionData} from '../actions/record.action';
-import {LanguageStore} from '../../../store/language/language.store';
+import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
@@ -88,21 +88,9 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.metadata.recordViewMetadata$,
-                this.store.mode$,
-                this.store.record$,
-                this.store.language$,
-                this.store.widgets$,
-            ]
-        ).pipe(
-            map((
-                [
-                    meta,
-                    mode
-                ]
-            ) => {
+        return this.metadata.recordViewMetadata$.pipe(
+            combineLatestWith(this.store.mode$, this.store.record$, this.store.language$, this.store.widgets$),
+            map(([meta, mode]: [RecordViewMetadata, ViewMode, Record, LanguageStrings, boolean]) => {
                 if (!mode || !meta) {
                     return [];
                 }

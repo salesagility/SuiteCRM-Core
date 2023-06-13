@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {
     BooleanMap,
     deepClone,
@@ -151,16 +151,16 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.mode$ = this.state$.pipe(map(state => state.mode));
         this.subpanelReload$ = this.subpanelReloadSubject.asObservable();
 
-        const data$ = combineLatest(
-            [this.record$, this.loading$]
-        ).pipe(
-            map(([record, loading]) => {
+        const data$ = this.record$.pipe(
+            combineLatestWith(this.loading$),
+            map(([record, loading]: [Record, boolean]) => {
                 this.data = {record, loading} as RecordViewData;
                 return this.data;
             })
         );
 
-        this.vm$ = combineLatest([data$, this.appData$, this.metadata$]).pipe(
+        this.vm$ = data$.pipe(
+            combineLatestWith(this.appData$, this.metadata$),
             map(([data, appData, metadata]) => {
                 this.vm = {data, appData, metadata} as RecordViewModel;
                 return this.vm;

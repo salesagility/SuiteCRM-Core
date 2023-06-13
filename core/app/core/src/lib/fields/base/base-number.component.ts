@@ -25,12 +25,12 @@
  */
 
 import {BaseFieldComponent} from './base-field.component';
-import {combineLatest} from 'rxjs';
+import {combineLatestWith} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
-import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {Component} from '@angular/core';
+import {SystemConfigMap, SystemConfigStore} from '../../store/system-config/system-config.store';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
+import {UserPreferenceMap, UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
@@ -39,8 +39,9 @@ export class BaseNumberComponent extends BaseFieldComponent{
 
     preferences$ = this.userPreferences.userPreferences$;
     configs$ = this.systemConfig.configs$;
-    vm$ = combineLatest([this.configs$, this.preferences$]).pipe(
-        map(([configs, preferences]) => ({
+    vm$ = this.configs$.pipe(
+        combineLatestWith(this.preferences$),
+        map(([configs, preferences]: [SystemConfigMap, UserPreferenceMap]) => ({
             configs,
             preferences,
         }))

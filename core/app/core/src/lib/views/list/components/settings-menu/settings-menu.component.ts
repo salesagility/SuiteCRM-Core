@@ -33,7 +33,7 @@ import {
     SearchCriteriaFilter
 } from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {BehaviorSubject, combineLatestWith} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
@@ -53,14 +53,14 @@ export class SettingsMenuComponent implements OnInit {
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
-    vm$ = combineLatest([
-        this.listStore.widgets$,
-        this.listStore.displayFilters$,
-        this.listStore.criteria$,
-        this.screenSize.screenSize$,
-        this.listStore.showSidebarWidgets$,
-        this.listStore.filterList.records$
-    ]).pipe(
+    vm$ = this.listStore.widgets$.pipe(
+        combineLatestWith(
+            this.listStore.displayFilters$,
+            this.listStore.criteria$,
+            this.screenSize.screenSize$,
+            this.listStore.showSidebarWidgets$,
+            this.listStore.filterList.records$
+        ),
         map((
             [
                 widgets,

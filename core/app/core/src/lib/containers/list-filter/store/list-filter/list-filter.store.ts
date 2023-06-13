@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
 import {ButtonInterface, DropdownButtonInterface, emptyObject, Field, isVoid, SearchMetaFieldMap} from 'common';
 import {take, tap} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {FilterConfig} from '../../components/list-filter/list-filter.model';
 import {MessageService} from '../../../../services/message/message.service';
 import {SaveFilterStoreFactory} from '../saved-filter/saved-filter.store.factory';
@@ -59,7 +59,8 @@ export class ListFilterStore implements StateStore {
                 this.initGridButtons();
                 this.initHeaderButtons();
                 this.initMyFiltersButton(this.savedFilters);
-            })
+            }),
+            tap(data=> console.log("data", data))
         );
 
         if (this.config.panelMode) {
@@ -135,8 +136,9 @@ export class ListFilterStore implements StateStore {
      */
     protected initConfigUpdatesSubscription() {
         this.subs.push(
-            combineLatest([this.config.filter$, this.config.searchFields$]).pipe(
-                tap(([filter, searchFields]) => {
+            this.config.filter$.pipe(
+                combineLatestWith(this.config.searchFields$),
+                tap(([filter, searchFields]: [SavedFilter, SearchMetaFieldMap]) => {
                     this.reset();
                     this.filterStore.initRecord(
                         this.config.module,
@@ -145,7 +147,8 @@ export class ListFilterStore implements StateStore {
                         this.config.listFields,
                         'edit'
                     );
-                })
+                }),
+                tap(data=> console.log("data", data))
             ).subscribe()
         );
 
@@ -154,7 +157,8 @@ export class ListFilterStore implements StateStore {
                 tap(([filters]) => {
                     this.savedFilters = filters;
                     this.initMyFiltersButton(filters);
-                })
+                }),
+                tap(data=> console.log("data", data))
             ).subscribe()
         );
     }

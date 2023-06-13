@@ -40,14 +40,14 @@ import {
     SortDirection,
     SortingSelection
 } from 'common';
-import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '../state';
 import {DataSource} from '@angular/cdk/table';
 import {Injectable} from '@angular/core';
 import {ListGQL} from './graphql/api.list.get';
-import {SystemConfigStore} from '../system-config/system-config.store';
-import {UserPreferenceStore} from '../user-preference/user-preference.store';
+import {SystemConfigMap, SystemConfigStore} from '../system-config/system-config.store';
+import {UserPreferences, UserPreferenceStore} from '../user-preference/user-preference.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {SavedFilter, SavedFilterMap} from "../saved-filters/saved-filter.model";
@@ -755,9 +755,9 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         const pageSizeConfig = this.configStore.getConfigValue(pageSizeConfigKey);
         this.determinePageSize(pageSizePreference, pageSizeConfig);
 
-        this.preferencesSub = combineLatest([this.configStore.configs$, this.preferencesStore.userPreferences$])
-            .pipe(
-                tap(([configs, preferences]) => {
+        this.preferencesSub = this.configStore.configs$.pipe(
+            combineLatestWith(this.preferencesStore.userPreferences$),
+                tap(([configs, preferences]: [SystemConfigMap, UserPreferences]) => {
                     const key = pageSizeConfigKey;
                     const sizePreference = (preferences && preferences[key]) || null;
                     const sizeConfig = (configs && configs[key] && configs[key].value) || null;

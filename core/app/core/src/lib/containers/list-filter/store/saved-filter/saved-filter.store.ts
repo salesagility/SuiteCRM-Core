@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, forkJoin, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
 import {
     ColumnDefinition,
     deepClone,
@@ -116,8 +116,9 @@ export class SavedFilterStore implements StateStore {
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
-        this.vm$ = combineLatest([this.stagingRecord$, this.mode$]).pipe(
-            map(([record, mode]) => {
+        this.vm$ = this.stagingRecord$.pipe(
+            combineLatestWith(this.mode$),
+            map(([record, mode]: [Record, ViewMode]) => {
                 this.vm = {record, mode} as FilterContainerData;
                 return this.vm;
             })

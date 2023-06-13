@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatestWith, Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
@@ -68,8 +68,9 @@ export class LoginUiComponent implements OnInit {
 
     language: string = null;
 
-    vm$ = combineLatest([this.systemConfigs$, this.appStrings$]).pipe(
-        map(([systemConfigs, appStrings]) => {
+    vm$ = this.systemConfigs$.pipe(
+        combineLatestWith(this.appStrings$),
+        map(([systemConfigs, appStrings]: [SystemConfigMap, LanguageStringMap]) => {
             let showLanguages = false;
             let showForgotPassword = false;
 

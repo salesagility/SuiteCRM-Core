@@ -26,7 +26,7 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
-import {combineLatest, Observable, of, Subscription} from 'rxjs';
+import {combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay, take} from 'rxjs/operators';
 import {SingleValueStatisticsStoreFactory} from '../../store/single-value-statistics/single-value-statistics.store.factory';
 import {LanguageStore} from '../../store/language/language.store';
@@ -394,8 +394,9 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
             allStatistics$ = combineLatest(statistics$);
         }
 
-        this.vm$ = combineLatest([allStatistics$, layout$]).pipe(
-            map(([statistics, layout]) => {
+        this.vm$ = allStatistics$.pipe(
+            combineLatestWith(layout$),
+            map(([statistics, layout]: [SingleValueStatisticsState[], StatisticWidgetLayoutRow[]]) => {
 
                 const statsMap: { [key: string]: SingleValueStatisticsState } = {};
                 const tooltipTitles = [];

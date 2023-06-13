@@ -30,9 +30,9 @@ import {SingleValueStatisticsStore} from '../../../../store/single-value-statist
 import {
     SingleValueStatisticsStoreFactory
 } from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
-import {map, take} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
-import {combineLatest, Observable, Subscription} from 'rxjs';
+import {combineLatest, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SingleValueStatisticsState, StatisticsQuery, ViewContext} from 'common';
 
 interface StatisticsTopWidgetState {
@@ -125,27 +125,29 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             loadings$.push(this.statistics[statistic.type].store.loading$);
         });
 
-        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
+       this.loading$ = loadings$[0].pipe(
+            combineLatestWith(...loadings$),
+            map((loadings) => {
+                if (!loadings || loadings.length < 1) {
+                    this.loading = false;
+                    return false;
+                }
 
-            if (!loadings || loadings.length < 1) {
-                this.loading = false;
-                return false;
-            }
+                let loading = true;
 
-            let loading = true;
+                loadings.forEach(value => {
+                    loading = loading && value;
+                });
 
-            loadings.forEach(value => {
-                loading = loading && value;
-            });
+                this.loading = loading;
 
-            this.loading = loading;
-
-            return loading;
-        }));
+                return loading;
+            })
+        );
 
         this.subs.push(this.loading$.subscribe());
 
-        this.vm$ = combineLatest([combineLatest(statistics$), this.language.appStrings$]).pipe(
+      this.vm$ = combineLatest([combineLatest(statistics$), this.language.appStrings$]).pipe(
             map(([statistics, appStrings]) => {
                 const statsMap: { [key: string]: SingleValueStatisticsState } = {};
                 statistics.forEach(value => {

@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, Record, ViewMode} from 'common';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatestWith, Observable, of} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../../services/message/message.service';
@@ -64,10 +64,11 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
     }
 
     getActions(context: ActionContext = null): Observable<Action[]> {
-        return combineLatest(
-            [this.store.lineActions$, of('list' as ViewMode).pipe(shareReplay())]
-        ).pipe(
-            map(([lineActions, mode]) => {
+        return this.store.lineActions$.pipe(
+            combineLatestWith(
+                of('list' as ViewMode).pipe(shareReplay())
+            ),
+            map(([lineActions, mode]: [Action[], ViewMode]) => {
                 return this.parseModeActions(lineActions, mode, context);
             })
         );

@@ -25,18 +25,17 @@
  */
 
 import {Injectable} from '@angular/core';
-import {combineLatest} from 'rxjs';
+import {combineLatestWith} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 
 @Injectable()
 export class BottomWidgetAdapter {
 
-    config$ = combineLatest([
-        this.metadata.recordViewMetadata$, this.store.widgets$
-    ]).pipe(
-        map(([metadata, show]) => {
+    config$ = this.metadata.recordViewMetadata$.pipe(
+        combineLatestWith(this.store.widgets$),
+        map(([metadata, show]: [RecordViewMetadata, boolean]) => {
 
             if (metadata.bottomWidgets && metadata.bottomWidgets.length) {
                 metadata.bottomWidgets.forEach(widget => {

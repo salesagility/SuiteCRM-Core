@@ -39,8 +39,8 @@ import {
     SortingSelection,
     ViewContext
 } from 'common';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, take} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
@@ -197,20 +197,21 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
         this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
 
-        const data$ = combineLatest(
-            [this.records$, this.criteria$, this.pagination$, this.selection$, this.loading$]
-        ).pipe(
+        const data$ = this.records$.pipe(
+            combineLatestWith(this.criteria$, this.pagination$, this.selection$, this.loading$),
             map(([records, criteria, pagination, selection, loading]) => {
                 this.data = {records, criteria, pagination, selection, loading} as ListViewData;
                 return this.data;
             })
         );
 
-        this.vm$ = combineLatest([data$, this.appData$, this.metadata$]).pipe(
+        this.vm$ = data$.pipe(
+            combineLatestWith(this.appData$, this.metadata$),
             map(([data, appData, metadata]) => {
                 this.vm = {data, appData, metadata} as ListViewModel;
                 return this.vm;
-            }));
+            })
+        );
 
         this.columns = new BehaviorSubject<ColumnDefinition[]>([]);
         this.columns$ = this.columns.asObservable();
@@ -733,8 +734,9 @@ export class ListViewStore extends ViewStore implements StateStore {
      *  due to data edit or any event which causes change in the resulting dataSet.
      */
     protected initDataSetUpdatedState(): void {
-        this.dataSetUpdate$ = combineLatest(
-            [this.criteria$, this.dataUpdate$]
-        ).pipe(map(() => true));
+        this.dataSetUpdate$ = this.criteria$.pipe(
+            combineLatestWith(this.dataUpdate$),
+            map(() => true)
+        );
     }
 }

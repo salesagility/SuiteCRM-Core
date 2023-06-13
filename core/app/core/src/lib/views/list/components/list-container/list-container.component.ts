@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 import {ViewContext, WidgetMetadata} from 'common';
 import {map} from 'rxjs/operators';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
@@ -56,12 +56,12 @@ export class ListContainerComponent implements OnInit {
     maxColumns = 5;
     tableConfig: TableConfig;
 
-    vm$: Observable<ListContainerState> = combineLatest([this.sidebarWidgetAdapter.config$]).pipe(
+    vm$: Observable<ListContainerState> = this.sidebarWidgetAdapter.config$.pipe(
         map((
-            [sidebarWidgetConfig]
+            sidebarWidgetConfig
         ) => ({
             sidebarWidgetConfig,
-        }))
+        })),
     );
 
     constructor(
