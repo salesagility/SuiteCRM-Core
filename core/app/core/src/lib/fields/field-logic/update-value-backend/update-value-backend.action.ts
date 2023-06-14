@@ -40,6 +40,7 @@ import {AsyncActionInput, AsyncActionService} from '../../../services/process/pr
 import {ProcessService} from '../../../services/process/process.service';
 import {MessageService} from '../../../services/message/message.service';
 import {BaseSaveRecordMapper} from '../../../store/record/record-mappers/base-save.record-mapper';
+import {take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -100,7 +101,7 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
 
             field.loading = true;
 
-            this.processService.submit(processType, options).subscribe((result) => {
+            this.processService.submit(processType, options).pipe(take(1)).subscribe((result) => {
 
                 const value = result?.data?.value ?? null;
                 field.loading = false;

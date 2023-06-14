@@ -91,9 +91,9 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                             if (types.includes('displayLogic')) {
                                 this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
                             }
-                            this.field.previousValue = data.value;
                         }
                     });
+                    this.field.previousValue = data.value;
 
                     this.dependentAttributes.forEach(dependency => {
                         const field = this.record.fields[dependency.field] || {} as Field;
