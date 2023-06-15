@@ -185,9 +185,15 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
             return isActive;
         }
 
+        const fields = Object.keys(record.fields);
         let opsArr:boolean[]= [];
+
         if (field.value) {
             activeValues.some(activeValue => {
+
+                if(activeValue.field && !fields.includes(activeValue.field)) {
+                    return;
+                }
 
                 if (activeValue === field.value && !activeValue.operator) {
                     isActive = true;
