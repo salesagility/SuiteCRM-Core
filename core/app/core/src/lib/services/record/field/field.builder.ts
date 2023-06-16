@@ -33,6 +33,7 @@ import {
     Field,
     FieldDefinition,
     FieldLogic,
+    isTrue,
     Record,
     StringMap,
     ViewFieldDefinition
@@ -176,6 +177,7 @@ export class FieldBuilder {
 
         field.type = viewField.type || definition.type;
         field.name = viewField.name || definition.name || '';
+        field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
         field.display = viewField.display || definition.display || 'default';
         field.defaultDisplay = field.display;
         field.value = value;

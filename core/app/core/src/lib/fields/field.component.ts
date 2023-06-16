@@ -59,7 +59,7 @@ export class FieldComponent implements OnInit {
             mode = 'edit';
         }
 
-        if (mode === 'edit' && this.field.display && this.field.display === 'readonly') {
+        if (mode === 'edit' && this.field.readonly) {
             mode = 'detail';
         }
 
