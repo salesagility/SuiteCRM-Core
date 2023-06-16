@@ -69,7 +69,9 @@
                 <ng-content select="[field-grid-special]"></ng-content>
             </ng-container>
 
-            <div class="field-separation mt-2" *ngIf="col.field && i < fieldGrid.length - 1"></div>
+            <div *ngIf="col.field && col.field?.display !== 'none' && i < fieldGrid.length - 1"
+                 class="field-separation mt-2">
+            </div>
         </div>
     </div>
 </form>
