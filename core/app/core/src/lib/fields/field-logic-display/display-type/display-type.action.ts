@@ -185,6 +185,9 @@ export class DisplayTypeAction extends FieldLogicDisplayActionHandler {
         } else {
             activeValues.some(activeValue => {
                 if(activeValue.operator) {
+                    if(activeValue.field && !fields.includes(activeValue.field)) {
+                        return;
+                    }
                     const operatorKey = activeValue.operator;
                     const operator = this.operatorManager.get(operatorKey);
                     opsArr.push(operator.run(record, field, activeValue))
