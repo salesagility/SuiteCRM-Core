@@ -34,6 +34,7 @@ export interface ViewFieldDefinition {
     dynamicLabelKey?: string;
     link?: boolean;
     type?: string;
+    readonly?: boolean;
     display?: string;
     fieldDefinition?: FieldDefinition;
     metadata?: FieldMetadata;

@@ -164,6 +164,7 @@ export interface Field {
     parentKey?: string;
     attributes?: FieldAttributeMap;
     items?: Record[];
+    readonly?: boolean;
     display?: string;
     defaultDisplay?: string;
     source?: 'field' | 'attribute' | 'item';
@@ -188,6 +189,7 @@ export class BaseField implements Field {
     label?: string;
     labelKey?: string;
     dynamicLabelKey?: string;
+    readonly?: boolean;
     display?: string;
     defaultDisplay?: string;
     source?: 'field' | 'attribute';
