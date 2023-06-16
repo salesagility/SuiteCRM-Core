@@ -62,11 +62,11 @@ class LegacyReadOnlyFieldDefinitionMapper implements FieldDefinitionMapperInterf
 
             if (count($resultReadonlyDefinitions)) {
 
-                $fieldDefinition['display'] = 'readonly';
-
                 foreach (array_keys($resultReadonlyDefinitions) as $key) {
                     unset($fieldDefinition[$key]);
                 }
+
+                $fieldDefinition['readonly'] = true;
 
                 if (!isset($fieldDefinition['type'])) {
                     if (array_key_exists('dbType', $fieldDefinition)) {
