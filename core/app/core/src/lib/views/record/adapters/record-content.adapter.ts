@@ -142,7 +142,17 @@ export class RecordContentAdapter implements RecordContentDataSource {
     }
 
     getRecord(): Observable<Record> {
-        return this.store.stagingRecord$;
+        return combineLatest([this.store.stagingRecord$, this.store.mode$]).pipe(
+            map(([record, mode]) => {
+                if (mode === 'edit' || mode === 'create') {
+                    this.store.initValidators(record);
+                } else {
+                    this.store.resetValidatorsForAllFields(record);
+                }
+                record.formGroup.enable();
+                return record;
+            })
+        );
     }
 
     protected getLayout(recordMeta: RecordViewMetadata): string {
