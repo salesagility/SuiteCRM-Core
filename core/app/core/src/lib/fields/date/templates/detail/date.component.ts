@@ -29,13 +29,14 @@ import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.compon
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
+import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 @Component({
     selector: 'scrm-date-detail',
     templateUrl: './date.component.html',
     styleUrls: []
 })
-export class DateDetailFieldComponent extends BaseDateTimeComponent {
+export class DateDetailFieldComponent extends BaseDateComponent {
 
     constructor(
         protected formatter: DateFormatter,

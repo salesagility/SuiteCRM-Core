@@ -34,6 +34,7 @@ import {DateParserFormatter} from '../../../base/datetime/date/date-parser-forma
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 
 @Component({
@@ -45,7 +46,7 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
         {provide: NgbDateParserFormatter, useClass: DateParserFormatter}
     ]
 })
-export class DateFilterFieldComponent extends BaseDateTimeComponent implements OnInit, OnDestroy {
+export class DateFilterFieldComponent extends BaseDateComponent implements OnInit, OnDestroy {
 
     public dateModel: NgbDateStruct;
 

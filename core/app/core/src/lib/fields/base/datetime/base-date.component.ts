@@ -24,44 +24,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {BaseDateTimeComponent} from './datetime/base-datetime.component';
-import {BaseFieldComponent} from './base-field.component';
-import {BaseNumberComponent} from './base-number.component';
-import {BaseBooleanComponent} from './base-boolean.component';
-import {BaseEnumComponent} from './base-enum.component';
-import {BaseMultiEnumComponent} from './base-multienum.component';
-import {BaseNameComponent} from './base-name.component';
-import {BaseRelateComponent} from './base-relate.component';
-import {BaseDateComponent} from './datetime/base-date.component';
+import {Component} from '@angular/core';
+import {DataTypeFormatter} from '../../../services/formatters/data-type.formatter.service';
+import {DatetimeFormatter} from '../../../services/formatters/datetime/datetime-formatter.service';
+import {FieldLogicManager} from '../../field-logic/field-logic.manager';
+import {BaseDateTimeComponent} from './base-datetime.component';
 
-@NgModule({
-    exports: [
-        BaseBooleanComponent,
-        BaseEnumComponent,
-        BaseFieldComponent,
-        BaseMultiEnumComponent,
-        BaseNameComponent,
-        BaseNumberComponent,
-        BaseRelateComponent,
-        BaseDateTimeComponent,
-        BaseDateComponent
-    ],
-    declarations: [
-        BaseBooleanComponent,
-        BaseEnumComponent,
-        BaseFieldComponent,
-        BaseMultiEnumComponent,
-        BaseNameComponent,
-        BaseNumberComponent,
-        BaseRelateComponent,
-        BaseDateTimeComponent,
-        BaseDateComponent
-    ],
-    imports: [
-        CommonModule
-    ]
-})
-export class BaseFieldModule {
+@Component({template: ''})
+export class BaseDateComponent extends BaseDateTimeComponent {
+
+
+
+    constructor(
+        protected formatter: DatetimeFormatter,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
+    ) {
+        super(formatter, typeFormatter, logic);
+    }
+
+    protected toInternalFormat(fieldType, value): string {
+        return this.formatter.toInternalFormat(value, {fromFormat: this.getDateFormat()});
+
+    }
+
 }

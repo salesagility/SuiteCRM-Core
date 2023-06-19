@@ -34,6 +34,7 @@ import {DateFormatter} from '../../../../services/formatters/datetime/date-forma
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 @Component({
     selector: 'scrm-date-edit',
@@ -44,7 +45,7 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
         {provide: NgbDateParserFormatter, useClass: DateParserFormatter}
     ]
 })
-export class DateEditFieldComponent extends BaseDateTimeComponent implements OnInit, OnDestroy {
+export class DateEditFieldComponent extends BaseDateComponent implements OnInit, OnDestroy {
 
     public dateModel: NgbDateStruct;
 

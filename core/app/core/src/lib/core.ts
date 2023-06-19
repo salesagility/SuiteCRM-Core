@@ -314,6 +314,7 @@ export * from './fields/base/base-name.component';
 export * from './fields/base/base-number.component';
 export * from './fields/base/base-relate.component';
 export * from './fields/base/field.interface';
+export * from './fields/base/datetime/base-date.component';
 export * from './fields/base/datetime/base-datetime.component';
 export * from './fields/base/datetime/date/date-adapter.service';
 export * from './fields/base/datetime/date/date-parser-formatter.service';

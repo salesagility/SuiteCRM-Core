@@ -55,7 +55,7 @@ export class BaseDateTimeComponent extends BaseFieldComponent {
     }
 
     protected toInternalFormat(fieldType, value): string {
-        return this.formatter.toInternalFormat(value, {fromFormat: this.getDateFormat()});
+        return this.formatter.toInternalFormat(value, {fromFormat: this.getDateTimeFormat()});
 
     }
 
