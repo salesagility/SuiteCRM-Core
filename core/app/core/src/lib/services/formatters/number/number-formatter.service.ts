@@ -27,8 +27,8 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {formatNumber} from '@angular/common';
-import {Formatter} from '../formatter.model';
-import {isVoid} from 'common';
+import {FormatOptions, Formatter} from '../formatter.model';
+import {isFalse, isVoid} from 'common';
 import {FormControlUtils} from '../../record/field/form-control.utils';
 
 @Injectable({
@@ -43,10 +43,14 @@ export class NumberFormatter implements Formatter {
     ) {
     }
 
-    toUserFormat(value: string): string {
+    toUserFormat(value: string,  options?: FormatOptions): string {
 
         if (isVoid(value) || value === '') {
             return '';
+        }
+
+        if(isFalse(options?.metadata?.format ?? true)) {
+            return value;
         }
 
         const formatted = formatNumber(Number(value), this.locale);

@@ -165,9 +165,9 @@ export class FieldBuilder {
         language: LanguageStore
     ): BaseField {
 
-        const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit'});
-
         const metadata = merge(definition?.metadata ?? {}, viewField?.metadata ?? {});
+
+        const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit', metadata});
 
         if (viewField.link) {
             metadata.link = viewField.link;
