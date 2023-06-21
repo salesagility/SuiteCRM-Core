@@ -44,35 +44,30 @@ pre {
   z-index: map-get($zindex, page-low);
 }
 
-/* width */
 ::-webkit-scrollbar {
-  width: 0.8em;
+  width: 4px;
+  height: 4px;
+  background: $scrollbar-area-color;
+  border-radius: 10px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: $dusky-blue;
-}
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: $midnight-blue;
+  border-radius: 10px;
+  background: $scrollbar-thumb-color;
+
+  &:active {
+    background: $scrollbar-active-color;
+  }
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: $midnight-blue;
-}
-
-.navbar-nav a:not([href]):not([tabindex]), .global-links a:not([href]):not([tabindex]) {
-  color: $light-grey;
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .navbar-nav a:not([href]):not([tabindex]):focus,
 .navbar-nav a:not([href]):not([tabindex]):hover,
 .global-links a:not([href]):not([tabindex]):focus,
 .global-links a:not([href]):not([tabindex]):hover {
-  color: $white;
   -webkit-transition: color 0.5s ease-out;
   -moz-transition: color 0.5s ease-out;
   -o-transition: color 0.5s ease-out;

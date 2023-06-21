@@ -167,6 +167,7 @@ $mod_strings = array(
     'LBL_LAYOUT_OPTIONS' => 'Layout Options',
     'LBL_SUBTHEMES' => 'Style',
     'LBL_SUBTHEME_OPTIONS_DAWN' => 'Dawn',
+    'LBL_SUBTHEME_OPTIONS_POD' => 'Pod',
     'LBL_SUBTHEME_OPTIONS_DAY' => 'Day',
     'LBL_SUBTHEME_OPTIONS_DUSK' => 'Dusk',
     'LBL_SUBTHEME_OPTIONS_NIGHT' => 'Night',

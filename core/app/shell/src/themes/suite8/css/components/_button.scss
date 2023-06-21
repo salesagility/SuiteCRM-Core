@@ -96,20 +96,20 @@ button {
 }
 
 .alerts-button {
-  background-color: $burnt-red;
+  background-color: $primary-color;
 }
 
 .alerts-button:active, .alerts-button:hover {
-  background-color: $burnt-orange;
+  background-color: $primary-color-hover;
 }
 
 .quickcreate-button {
-  background-color: $sky-blue;
+  background-color: $primary-color;
   color: $white;
 }
 
 .quickcreate-button:active, .quickcreate-button:hover {
-  background-color: $bright-purple;
+  background-color: $primary-color-hover;
 }
 
 .favourites-button {
@@ -158,7 +158,7 @@ button {
 }
 
 .action-button {
-  background-color: $cool-blue;
+  background-color: $primary-color;
   text-transform: uppercase;
   padding: 0.3em 1em;
   font-weight: 400;
@@ -166,26 +166,28 @@ button {
   line-height: 1.6em;
   font-size: 0.8rem;
   letter-spacing: 1px;
+
+  &:hover {
+    background-color: $primary-color-hover;
+  }
 }
 
-.action-button:hover {
-  background-color: $astral-blue;
-}
 
 .settings-button {
-  background-color: $nepal-grey;
+  background-color: $primary-color-light;
   padding: 0.3em 1em;
   font-size: 0.8em;
   font-weight: bold;
   height: 2.2em;
+
+  &:hover {
+    background-color: $primary-color-hover;
+  }
 }
 
-.settings-button:hover {
-  background-color: $pale-blue;
-}
 
 .settings-button.active {
-  background-color: $midnight-blue;
+  background-color: $primary-color;
 }
 
 .saved-filters-button, .quick-filter-button {
@@ -262,12 +264,8 @@ button {
   line-height: 1.9em;
 }
 
-.navbar-toggler {
-  background-color: $midnight-blue;
-}
-
 .modal-button-save {
-  background-color: $midnight-blue;
+  background-color: $primary-color;
   border: none;
   color: $white;
   padding: 0.3rem 1rem;
@@ -276,18 +274,27 @@ button {
   -webkit-border-radius: 0.2em;
   -moz-border-radius: 0.2em;
   border-radius: 0.2em;
+  &:hover {
+    background-color: $primary-color-hover !important;
+  }
 }
 
 .modal-button-cancel {
-  background-color: $pale-grey;
+  background-color: $white;
   border: none;
-  color: $white;
+  color: $text-color;
   padding: 0.3rem 1rem;
   font-size: 0.8em;
   font-weight: bold;
+  border: 1px solid $text-color;
   -webkit-border-radius: 0.2em;
   -moz-border-radius: 0.2em;
   border-radius: 0.2em;
+  
+  &:hover {
+    background: $off-white !important;
+    color: $text-color !important;
+  }
 }
 
 .modal-button-save:hover, .modal-button-cancel:hover {

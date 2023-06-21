@@ -7,7 +7,7 @@
         padding-bottom: 1px;
     }
     .button {
-        background-color: $nepal-grey;
+        background-color: $primary-color-light;
         border-radius: 0.2em;
         font-weight: bold;
         height: 2.2em;
@@ -16,7 +16,7 @@
         padding: 0.3em 1em;
         text-transform: capitalize;
         &:hover {
-            background: $pale-blue;
+            background: $primary-color-hover;
         }
     }
 }

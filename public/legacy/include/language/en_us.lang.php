@@ -2265,6 +2265,7 @@ $app_strings = array(
     'ERR_FACTOR_TPL_INVALID' => 'Factor Authentication message is invalid, please contact to your administrator.',
     'LBL_SUBTHEMES' => 'Style',
     'LBL_SUBTHEME_OPTIONS_DAWN' => 'Dawn',
+    'LBL_SUBTHEME_OPTIONS_POD' => 'Pod',
     'LBL_SUBTHEME_OPTIONS_DAY' => 'Day',
     'LBL_SUBTHEME_OPTIONS_DUSK' => 'Dusk',
     'LBL_SUBTHEME_OPTIONS_NIGHT' => 'Night',

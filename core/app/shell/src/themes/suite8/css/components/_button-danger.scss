@@ -28,16 +28,16 @@
  * Override danger button color and outline danger button
  */
 
-.btn-outline-danger {
+ .btn-outline-danger {
   color: $btn-danger;
   border-color: $btn-danger;
+
+  &:hover {
+    color: $btn-danger;
+    background: $off-white;
+  }
 }
 
-.btn-outline-danger:hover {
-  color: #fff;
-  background-color: $btn-danger;
-  border-color: $btn-danger;
-}
 
 .btn-outline-danger:focus, .btn-outline-danger.focus {
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
@@ -64,19 +64,11 @@
   color: #fff;
   background-color: $btn-danger;
   border-color: $btn-danger;
-}
 
-.btn-danger:hover {
-  color: #fff;
-  background-color: $coral-pink;
-  border-color: $coral-pink;
-}
-
-.btn-danger:focus, .btn-danger.focus {
-  color: #fff;
-  background-color: $coral-pink;
-  border-color: $coral-pink;
-  box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
+  &:hover {
+    background: $btn-danger;
+    opacity: 0.7;
+  }
 }
 
 .btn-danger.disabled, .btn-danger:disabled {

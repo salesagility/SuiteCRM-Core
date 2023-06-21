@@ -1,4 +1,4 @@
-<! --
+<!--
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
 * Copyright (C) 2021 SalesAgility Ltd.
@@ -32,7 +32,7 @@
     <form name="login" class="login-form" #loginForm="ngForm">
         <div class="form-row form-group">
             <div class="col">
-                <scrm-logo-ui></scrm-logo-ui>
+                <scrm-logo-ui [logoType]="logoType"></scrm-logo-ui>
             </div>
         </div>
         <div class="form-row" *ngIf="vm.showLanguages">

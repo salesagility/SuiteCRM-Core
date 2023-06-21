@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.column-chooser-container {
+ .column-chooser-container {
   width: 15em;
   max-width: 100%;
   margin: 0 0.75em 1.5em 0.75em;
@@ -57,7 +57,8 @@
 }
 
 .column-hidden {
-  background-color: #ffafa4;
+  background-color: $secondary-color;
+  opacity: 0.8;
 }
 
 .column-displayed {

@@ -343,7 +343,7 @@ div.target-list-table {
 }
 
 .icon-btn-lst .icon-btn a:hover {
-  background-color: $campaign-type-bg-hover;
+  background-color: $primary-color-light;
 }
 
 .icon-btn-lst .icon-btn img {
@@ -352,7 +352,8 @@ div.target-list-table {
 }
 
 .icon-btn-lst .icon-btn a {
-  display: block;
+  display: flex;
+  flex-direction: column;
   color: $campaign-type-color;
   padding: 10px;
   width: 100%;
@@ -545,11 +546,11 @@ form[name="wizform"] .icon-btn-lst .icon-btn a br {
 
 /* campaign wizard progress bar stuff */
 form[name="wizform"] .progression-container .progression .nav-steps {
-  background-color: $campaign-progression-bg;
+  background-color: $primary-color-light;
 }
 
 form[name="wizform"] .progression-container .progression .nav-steps:hover {
-  background-color: $campaign-progression-bg-hover;
+  background-color: $primary-color-hover;
   color: $campaign-progression-color-hover;
 }
 
@@ -562,27 +563,31 @@ form[name="wizform"] .selected  {
 }
 
 form[name="wizform"] .progression-container .progression .nav-steps.selected {
-  background-color: $campaign-progression-bg-active;
+  background-color: $primary-color;
 }
 
 form[name="wizform"] .progression li.selected::after {
-  border-left-color: $campaign-progression-bg-active;
+  border-left-color: $primary-color;
+}
+
+form[name="wizform"] .progression li.selected:hover::after {
+  border-left-color: $primary-color;
 }
 
 form[name="wizform"] .progression li:hover{
-  border-left-color: $campaign-progression-bg-hover;
+  border-left-color: $primary-color-hover;
 }
 
 form[name="wizform"] .progression li:hover::after{
-  border-left-color: $campaign-progression-bg-hover;
+  border-left-color: $primary-color-hover;
 }
 
 form[name="wizform"] .progression li::after {
-  border-left-color: $campaign-progression-bg;
+  border-left-color: $primary-color-light;
 }
 
 form[name="wizform"] .progression li::after {
-  border-left-color: $campaign-progression-bg;
+  border-left-color: $primary-color-light;
 }
 
 form[name="wizform"] .progression li::before {

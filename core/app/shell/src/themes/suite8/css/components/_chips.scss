@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-tag-input tag {
+ tag-input tag {
   margin-top: 0 !important;
   padding: 0 0.5rem 0 .7rem !important;
   line-height: 24px !important;
@@ -39,6 +39,10 @@ tag-input tag delete-icon:hover {
 tag-input .ng2-tag-input {
   padding: 0 0 2px 0 !important;
   min-height: 28px !important;
+}
+
+tag-input .ng2-tag-input.ng2-tag-input--focused {
+    border-bottom: 2px solid $text-color !important;
 }
 
 tag-input-form form input.ng2-tag-input__text-input {
@@ -86,6 +90,7 @@ tag-input.is-invalid .ng2-tag-input {
 
 tag-input-form {
   ::placeholder {
-    color: $dusky-blue;
+    color: $text-color;
+    opacity: 0.6;
   }
 }

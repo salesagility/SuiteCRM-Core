@@ -25,7 +25,7 @@
  */
 
 
-.tabs-layout .tab-content {
+ .tabs-layout .tab-content {
   background-color: $white;
 }
 
@@ -38,20 +38,26 @@
 }
 
 .tabs-layout .nav-tabs .tab-link {
-  background-color: $geyser-blue;
-  color: $median-grey;
+  background-color: $white;
+  color: $disabled-text-color;
   font-size: 0.875rem;
   border: none;
   padding: .4512rem 1rem;
+  border: 1px solid $off-white;
+
+  &:hover {
+    color: $primary-color;
+  }
 }
 
 .tabs-layout .nav-tabs .tab-link.active {
-  background-color: $midnight-blue;
+  background-color: $primary-color;
   color: $white;
-  border-color: $midnight-blue;
+  font-weight: 600;
+  border-color: $primary-color;
 }
 
 .nav-tabs .tab-link.active:hover {
-  color: $geyser-blue;
+  font-weight: 600;
 }
 

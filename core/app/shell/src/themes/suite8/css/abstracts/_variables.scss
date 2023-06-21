@@ -28,14 +28,24 @@
 
 /* --------- COLOURS ---------- */
 
+$primary-color: #5d21d1;
+$secondary-color: #37deb6;
+$primary-color-hover: rgba($primary-color, 0.7);
+$primary-color-light: rgba($primary-color, 0.6);
+
 $white: #ffffff;
 $off-white: #f5f5f5;
+$white-hover: #f9f9f9;
 $black: black;
+
+$scrollbar-thumb-color: #0000003D;
+$scrollbar-active-color: #8a8989;
+$scrollbar-area-color: #00000014;
 
 $light-grey: #e9e9e9;
 $median-grey: #333333;
 $dark-midnight-grey: #444444;
-$midnight-grey: #666666;
+$midnight-grey: $primary-color;
 $nepal-grey: #93a4b3;
 $shell-grey: #777777;
 $dusty-grey: #778591;
@@ -48,7 +58,7 @@ $dim-grey: dimgrey;
 
 $geyser-blue: #d7dde1;
 $cool-blue: #76858f;
-$dusky-blue: #666176;
+$dusky-blue: $primary-color;
 $midnight-blue: #534d64;
 $midnight-blue-transparent: #534d641f;
 $suite-logo-blue: #4e5063;
@@ -59,9 +69,9 @@ $pale-blue: #7096b5;
 $bright-blue: #eeebf5;
 
 $burnt-orange: #e65545;
-$light-orange: #f05645;
-$dull-orange: #ee8776;
-$bright-orange: #f08377;
+$light-orange: rgba($primary-color, 0.8);
+$dull-orange: $secondary-color;
+$bright-orange: $primary-color;
 $vacant-orange: #a97375;
 $lighter-orange: #fd7e143b;
 
@@ -72,9 +82,9 @@ $mellow-yellow: #e2b98e;
 $sandy-yellow: #e3a35f;
 
 $lighter-salmon-pink: #faeeeb;
-$salmon-pink: #f5aea6;
-$coral-pink: #eb6657;
-$suite-logo-pink: #e67062;
+$salmon-pink: $primary-color;
+$coral-pink: $primary-color;
+$suite-logo-pink: $primary-color;
 
 $bright-purple: #8d74cc;
 
@@ -99,7 +109,7 @@ $very-lighter-orange: #fffbe0;
 
 /* ----Base colors -- */
 
-$danger: #ee8776;
+$danger: #e01e1e;
 
 /* ----Buttons -- */
 
@@ -111,6 +121,9 @@ $btn-danger: $danger;
 $main: $midnight-blue;
 $primary: $cool-blue;
 $secondary: $nepal-grey;
+
+$text-color: #333333;
+$disabled-text-color: #666666;
 
 
 /* --------- BREAKPOINTS ---------- */

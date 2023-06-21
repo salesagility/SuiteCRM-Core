@@ -72,7 +72,7 @@ export const userPreferenceMockData = {
                 export_delimiter: ',',
                 default_export_charset: 'UTF-8',
                 email_link_type: 'sugar',
-                subtheme: 'Dawn',
+                subtheme: 'Pod',
                 list_max_entries_per_page: 20,
                 date_format: 'dd.MM.yyyy',
                 time_format: 'HH.mm.ss',

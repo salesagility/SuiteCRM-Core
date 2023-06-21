@@ -57,7 +57,7 @@ $themedef = array(
         'sub_themes' => array(
             'vname' => 'LBL_SUBTHEME_OPTIONS',
             'type' => 'select',
-            'default' => 'Dawn',
+            'default' => 'Noon',
         ),
     ),
 );
@@ -66,8 +66,10 @@ if (!empty($app_strings['LBL_SUBTHEMES'])) {
     // if statement removes the php notice
     $themedef['config_options']['sub_themes']['options'] = array(
         $app_strings['LBL_SUBTHEMES'] => array(
-            'Dawn' => $app_strings['LBL_SUBTHEME_OPTIONS_DAWN']
+            'Dawn' => $app_strings['LBL_SUBTHEME_OPTIONS_DAWN'],
+            'Noon' => $app_strings['LBL_SUBTHEME_OPTIONS_NOON'],
+            'Pod' => $app_strings['LBL_SUBTHEME_OPTIONS_POD'],
         ),
     );
-    $themedef['config_options']['sub_themes']['default'] = 'Dawn';
+    $themedef['config_options']['sub_themes']['default'] = 'Pod';
 }

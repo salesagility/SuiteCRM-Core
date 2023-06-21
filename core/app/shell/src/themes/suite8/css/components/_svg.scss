@@ -43,14 +43,14 @@
 .action-link svg,
 .action-link svg path,
 .action-link svg polygon {
-  fill: $white;
+  fill: $text-color;
   margin: 0 0.8em 0 0;
 }
 
 .action-link:hover svg,
 .action-link:hover svg path,
 .action-link:hover svg polygon {
-  fill: $salmon-pink;
+  fill: $primary-color;
 }
 
 .nav-link {
@@ -58,12 +58,6 @@
     width: 1.2em;
     height: 1.2em;
   }
-}
-
-.nav-link:hover svg,
-.nav-link:hover svg *,
-.home-nav-link:hover svg {
-  fill: $salmon-pink;
 }
 
 .action_btn_alert .dropdown-menu svg,
@@ -151,15 +145,7 @@
 }
 
 .search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon:hover svg path {
-  fill: $salmon-pink;
+  fill: $text-color;
 }
 
 @media all and (max-width: $breakpoint-xsmall) {
@@ -311,6 +297,7 @@
 
 .action-btn-icon {
   svg {
+    padding-right: 0.1rem;
     width: 1.2em;
     height: 1.2em;
   }
@@ -321,16 +308,16 @@
   fill: $white;
 }
 
-.navbar-toggler:hover svg path {
-  stroke: $salmon-pink;
-}
-
 .mobile-nav-close svg polygon {
-  fill: $dusty-grey;
+  fill: $text-color;
 }
 
 .mobile-nav-close svg {
   margin: 0 0.3em 0 0;
+
+  & g {
+    fill: $text-color;
+  }
 }
 
 .back-to-top svg {
@@ -340,7 +327,7 @@
 }
 
 .back-to-top svg polygon {
-  fill: $midnight-grey;
+  fill: $text-color;
 }
 
 .login-form {
@@ -463,6 +450,11 @@
   cursor:pointer;
   svg polygon {
     vertical-align: middle;
-    fill: $off-white;
   }
+}
+
+.full-width {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }

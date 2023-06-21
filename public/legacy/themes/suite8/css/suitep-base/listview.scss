@@ -434,7 +434,11 @@ a.listViewTdToolsS1 {
   font-size: 13px;
   font-weight: 700;
   padding-right: 10px;
-  color: $list-view-header-color;
+  color: $text-color;
+
+  & svg g {
+    fill: $text-color;
+  }
 }
 
 .list {
@@ -1443,6 +1447,9 @@ form#MassAssign_SecurityGroups {
 
 .submitButtons input {
   margin-bottom: 10px;
+   &[type=text] {
+    background: $white;
+   }
 }
 
 .search td input[type=text] {
@@ -3025,9 +3032,13 @@ table.subpanel-table li.sugar_action_button {
 
 .listViewLinkButton li.sugar_action_button {
   padding: 0px;
-  background-color: $list-view-action-button-bg;
-  border: 1px solid $list-view-action-button-border-color;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
   border-radius: $border-radius-base;
+
+  &:hover {
+    background-color: $primary-color-hover;
+  }
 }
 
 #selectLinkTop li.sugar_action_button {
@@ -3093,10 +3104,6 @@ table.subpanel-table .pagination .sugar_action_button > form > a {
 }
 
 table.subpanel-table li.sugar_action_button:hover {
-  background-color: $list-view-header-bg;
-}
-
-.listViewLinkButton li.sugar_action_button:hover {
   background-color: $list-view-header-bg;
 }
 

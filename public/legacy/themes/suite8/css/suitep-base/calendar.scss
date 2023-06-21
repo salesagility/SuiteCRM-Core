@@ -223,8 +223,8 @@ a#callnav_today {
 }
 
 .monthHeader {
-  background: $calendar-title-bg;
-  color: $calendar-title-color;
+  background: $primary-color;
+  color: $white;
   padding-left: 8px;
   padding-right: 8px;
   margin-top: 10px;
@@ -244,7 +244,8 @@ a#callnav_today {
 }
 
 .monthCalBody {
-  background-color: $calendar-user-bg;
+  background-color: $light-grey;
+  color: $text-color;
 }
 
 .monthCalBody h5 {
@@ -330,7 +331,7 @@ div.monthFooter {
 }
 
 h5.calSharedUser {
-  color: $calendar-month-day-header-bg;
+  color: $text-color;
 }
 
 .olCgClass td {
@@ -419,7 +420,7 @@ ul.yui-nav li.selected {
 }
 
 .qtip {
-  font-family: 'Lato', Lato, Arial, sans-serif;
+  font-family: 'Red Hat Display', Arial, sans-serif;
   font-size: $qtip-font-size;
   border: none;
   border-radius: $border-radius-base;
@@ -511,19 +512,16 @@ ul.yui-nav li.selected {
 }
 
 td.fc-widget-header {
-  background-color: $calendar-header-bg;
   padding: 0;
   border: none;
 }
 
 td.fc-widget-header table > thead {
-  background-color: $calendar-header-bg;
   padding: 0;
   border: none;
 }
 
 td.fc-widget-header table > thead > tr > th {
-  background-color: $calendar-header-bg;
   padding: 0;
   border: none;
 }
@@ -539,11 +537,7 @@ td.fc-day-top.fc-other-month {
 }
 
 .fc-day-header a {
-  color: $calendar-header-color;
-}
-
-.fc-day-header a:hover {
-  color: $calendar-header-color;
+  color: $text-color;
 }
 
 td.fc-day-top.fc-today {
@@ -704,12 +698,12 @@ td.fc-day-top.fc-today {
 }
 
 .monthCalBody > .calSharedUser {
-  color: $default-btn-color;
+  color: $text-color;
 }
 
 thead.fc-head {
-  background: $calendar-month-day-header-bg;
-  color: $default-btn-color;
+  background: $off-white;
+  color: $text-color;
 }
 
 thead.fc-head tr td {
@@ -1082,18 +1076,18 @@ iframe.teamNoticeBox {
       font-weight: bold;
       height: 2.2em;
       line-height: 1.1em;
-      background-color: rgb(147, 164, 179);
+      background-color: $primary-color;
       text-transform: capitalize; 
       border-radius: 0.2em;
       padding: 0.3em 1em;
       letter-spacing: 0.05em;     
       &:disabled {
-          background: #a59f9f;
+          background: $primary-color-light;
           opacity: 0.5;
-          &:hover {
-            color: #808F9C;
-          }
-      }      
+        }      
+      &:hover {
+        color: $primary-color-hover;
+      }
     }
   }
   

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.admin-view {
+ .admin-view {
   background-color: $off-white;
   padding: 108px 3em 0 3em;
 }
@@ -43,7 +43,7 @@ scrm-admin-card {
 }
 
 .admin-card-title {
-  color: $midnight-blue;
+  color: $text-color;
   font-weight: bold;
   font-size: 1.2rem;
   padding-left: 0.7rem;
@@ -56,7 +56,7 @@ scrm-admin-card {
 
     .admin-card-link-wrapper {
       font-size: 0.9em;
-      color: $black;
+      color: $text-color;
       padding-bottom: 0.5rem !important;
       padding-left: 1rem !important;
       padding-top: 0.5rem !important;
@@ -97,6 +97,3 @@ scrm-admin-card {
     display: table;
   }
 }
-
-
-

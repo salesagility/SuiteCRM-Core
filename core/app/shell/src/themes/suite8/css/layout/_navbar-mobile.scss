@@ -43,7 +43,7 @@
   .card-header {
     padding: 0;
     background: none;
-    color: $white;
+    color: $text-color;
     border: 0;
     border-top: .05em solid $white;
 
@@ -54,11 +54,7 @@
       text-decoration: none;
       width: 100%;
       text-align: left;
-      color: $white;
+      color: $text-color;
     }
-  }
-
-  .card-body {
-
   }
 }

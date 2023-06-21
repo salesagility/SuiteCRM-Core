@@ -5,7 +5,6 @@
         margin-bottom: 1em;        
     }
     input[type=submit] {
-        background-color: $nepal-grey;
         border-radius: 0.2em;
         font-weight: bold;
         height: 2.2em;
@@ -14,9 +13,6 @@
         padding: 0.3em 1em;
         text-transform: capitalize;
         margin-top: 2em;
-        &:hover {
-            background: $pale-blue;
-        }
     }
     input[type=input],input[type=password],input[type=email],input[type=number]{
         background-color: $transparent-color;

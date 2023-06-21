@@ -28,9 +28,13 @@
 
 .navbar {
   height: 3.1em;
-  background-color: $midnight-blue;
+  background-color: $primary-color;
   margin: 0;
-  padding: 0 1em;
+  padding: 0 0.3em;
+}
+
+.navbar-nav {
+  display: flex;
 }
 
 @media only screen and (min-width: $breakpoint-large) {
@@ -40,22 +44,27 @@
     .non-grouped:hover .dropdown-menu {
       display: block;
       right: 0;
+      border: none;
     }
   }
 
   .nav-link-grouped,
-  .nav-link-nongrouped {
+  .nav-link-nongrouped, 
+  .nav-link-nongrouped.dropdown-toggle:not([href]) {
+    display: inline-block;
+    height: 100%;
     color: $off-white;
     line-height: 3.1em;
-    padding: 0.5em 0.5em 1.1em 0.5em;
+    padding: 0 0.5rem;
   }
 
   .nav-link-grouped:active,
-  .nav-link-nongrouped:active {
+  .nav-link-nongrouped:not(.dropdown-toggle):active {
     color: $light-grey;
     border-top: 0.2em solid $salmon-pink;
     padding: 0.8em 0.5em 1em 0.5em;
     text-decoration: none;
+    font-weight: 600;
   }
 
   .nav-link-grouped a:hover,
@@ -76,7 +85,7 @@ a.home-nav-link {
 }
 
 .nav-item.active .home-nav-link svg {
-  fill: $salmon-pink;
+  fill: $secondary-color;
 }
 
 .recent-link scrm-svg-icon-ui > svg {
@@ -90,33 +99,36 @@ a.home-nav-link {
 }
 
 .nav-link {
-  color: $light-grey;
+  color: $text-color;
 }
 
 .mobilenavbar {
   list-style: none;
 }
 
-.nav-link:hover {
-  color: $off-white;
-}
-
 .nav-item.active .nav-link-nongrouped,
 .nav-item.active .home-nav-link {
-  color: $salmon-pink;
-  border-top: 0.2em solid $salmon-pink;
-  padding: 0.8em 1em 1.1em 1em;
+  display: inline-block;
+  color: $secondary-color;
+  height: 100%;
+  border-top: 0.2em solid $secondary-color;
+  padding: 0 1rem;
   text-decoration: none;
+  font-weight: 600;
 }
 
-.global-link-item:hover {
-  color: $salmon-pink;
+.global-link-item {
+  color: $white;
+  
+  &:hover {
+    font-weight: 600;
+  }
 }
 
 .submenu,
 .globalactions {
-  background-color: $dusky-blue;
-  color: $light-grey;
+  background-color: $white;
+  color: $text-color;
   margin: 0;
   border: 0;
 }
@@ -150,9 +162,9 @@ h4.favorite-header {
   font-size: 0.9em;
 }
 
-.nav-link:hover svg path,
-.nav-link:hover svg polygon {
-  fill: $salmon-pink;
+.nav-link.primary:hover svg path,
+.nav-link.primary:hover svg polygon {
+  fill: $white;
 }
 
 .navbar-1 {
@@ -201,7 +213,7 @@ h4.favorite-header {
 
   .nav-link {
     font-size: 0.85em;
-    color: $white;
+    color: $text-color;
   }
 
   .nav-link-grouped,
@@ -248,12 +260,8 @@ h4.favorite-header {
 
   .navbar-nav > li > .dropdown-menu,
   .collapsenav .navbar-nav > li {
-    background-color: $dusky-blue;
+    background-color: $primary-color;
   }
-}
-
-.navbar-toggler:hover svg path {
-  stroke: $salmon-pink;
 }
 
 .navbar {
@@ -271,12 +279,16 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 }
 
 .mobilenavbar {
-  background-color: $midnight-blue;
+  background-color: $primary-color;
 }
 
 .mobilenavbar {
-  .navbar-toggler.dropdown-toggle::after {
-    display: none;
+  .navbar-toggler {
+    padding: 0;
+
+    &.dropdown-toggle::after {
+      display: none;
+    }
   }
 }
 
@@ -292,17 +304,15 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 
 .mobile-nav-link {
   font-size: 0.85em;
-  color: $white;
 }
 
 .mobile-nav-link:hover {
-  color: $white;
+  color: $off-white;
   background-color: none;
 }
 
 .mobile-back-link {
   font-size: 0.85em;
-  color: $white;
   font-weight: bold;
 }
 
@@ -317,12 +327,12 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 }
 
 .mobile-nav-close:hover {
-  color: $white;
+  color: $text-color;
   text-decoration: none;
 }
 
 .mobile-nav-close:hover svg polygon {
-  fill: $white;
+  fill: $text-color;
 }
 
 .nav-collapsed-items {

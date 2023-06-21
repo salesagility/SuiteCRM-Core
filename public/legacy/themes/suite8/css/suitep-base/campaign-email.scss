@@ -86,7 +86,6 @@
       bottom: 5.8em !important;
     }
     .button {
-      background-color: $nepal-grey;
       border-radius: 0.2em;
       font-weight: bold;
       height: 2.2em;
@@ -94,9 +93,6 @@
       letter-spacing: 0.05em;
       padding: 0.3em 1em;
       text-transform: capitalize;
-      &:hover {
-          background: $pale-blue;
-      }
     }
     select {
         background: url($select-edit-background-url) no-repeat right;

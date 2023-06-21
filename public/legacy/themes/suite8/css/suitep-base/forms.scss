@@ -808,27 +808,14 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .btn-default{
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
-}
-
-.btn-default:hover {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
-}
-
-.btn-default:active {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
-}
-
-.btn-default:focus {
-  background-color: $default-btn-bg;
-  color: $default-btn-color;
-  border: 1px solid $default-btn-bg;
+  color: $text-color;
+  background-color: $white;
+  border: 1px solid $default-btn-bg !important;
+  
+  &:hover {
+    background-color: $off-white;
+    color: $text-color;
+  }
 }
 
 .btn-primary {
@@ -965,10 +952,6 @@ input[type=button].btn-info:focus {
   line-height: $button-line-height;
   height: $button-line-height;
   text-transform: uppercase;
-}
-
-input[type=submit].button:hover {
-  background: $danger-btn-bg-hover;
 }
 
 input[type=submit] {
@@ -1249,33 +1232,21 @@ input[type="button"][disabled] {
 
 
 .button:hover {
-  background-color: $disabled-btn-color;
-  color: $default-btn-color;
-  border-color: $disabled-btn-color;
-}
-
-.button:focus {
-  background-color: $disabled-btn-color;
-  color: $default-btn-color;
-  border-color: $disabled-btn-color;
-}
-
-.button.focus {
-  background-color: $disabled-btn-color;
-  color: $default-btn-color;
-  border-color: $disabled-btn-color;
+  background-color: $primary-color-hover;
+  color: $white;
+  border-color: $primary-color-hover;
 }
 
 .button:active {
-  background-color: $disabled-btn-color;
-  color: $default-btn-color;
-  border-color: $disabled-btn-color;
+  background-color: $primary-color-light;
+  color: $white;
+  border-color: $primary-color-light;
 }
 
 .button.active {
-  background-color: $disabled-btn-color;
-  color: $default-btn-color;
-  border-color: $disabled-btn-color;
+  background-color: $primary-color-light;
+  color: $white;
+  border-color: $primary-color-light;
 }
 
 .open > .dropdown-toggle.btn-primary {
@@ -1320,7 +1291,7 @@ input[type="button"][disabled] {
 }
 
 input[type=text] {
-  background: $input-bg;
+  background: $white;
   padding: 5px;
   border: 1px solid $input-select-bg;
   border-radius: $border-radius-base;
@@ -1355,7 +1326,7 @@ input:not([type]) {
 }
 
 textarea {
-  background: $input-bg;
+  background: $white;
   padding: 5px;
   border: 1px solid $input-select-bg;
   border-radius: $border-radius-base;

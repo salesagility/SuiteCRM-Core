@@ -162,7 +162,6 @@ ul.subpanelTablist li {
 
 #dashletCategories > li a {
   font-weight: 400;
-  background-color: $default-tab-bg;
   color: $add-dashlet-tab-color;
   padding: 10px 20px 10px 10px;
   border: 1px solid transparent;
@@ -173,8 +172,8 @@ ul.subpanelTablist li {
 
 #dashletCategories > li a:link {
   font-weight: 400;
-  background-color: $default-tab-bg;
-  color: $add-dashlet-tab-color;
+  background-color: $primary-color-hover;
+  color: $white;
   padding: 10px 20px 10px 10px;
   border: 1px solid transparent;
   border-top-left-radius: 4px;
@@ -183,19 +182,7 @@ ul.subpanelTablist li {
 }
 
 #dashletCategories > li a:hover {
-  font-weight: 400;
-  background-color: $default-tab-bg;
-  color: $add-dashlet-tab-color;
-  padding: 10px 20px 10px 10px;
-  border: 1px solid transparent;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  text-transform: uppercase;
-}
-
-#dashletCategories > li a:visited {
-  font-weight: 400;
-  background-color: $default-tab-bg;
+  font-weight: 600;
   color: $add-dashlet-tab-color;
   padding: 10px 20px 10px 10px;
   border: 1px solid transparent;
@@ -205,8 +192,7 @@ ul.subpanelTablist li {
 }
 
 #dashletCategories > li a:active {
-  font-weight: 400;
-  background-color: $default-tab-bg;
+  font-weight: 600;
   color: $add-dashlet-tab-color;
   padding: 10px 20px 10px 10px;
   border: 1px solid transparent;
@@ -217,7 +203,6 @@ ul.subpanelTablist li {
 
 #dashletCategories > li a:focus {
   font-weight: 400;
-  background-color: $default-tab-bg;
   color: $add-dashlet-tab-color;
   padding: 10px 20px 10px 10px;
   border: 1px solid transparent;
@@ -232,28 +217,14 @@ ul.subpanelTablist li {
 }
 
 #dashletCategories > li.active a:link {
-  background-color: $active-tab-bg;
-  color: $add-dashlet-tab-color;
+  background-color: $primary-color;
+  color: $white;
+  font-weight: 600;
 }
 
-#dashletCategories > li.active a:hover {
-  background-color: $active-tab-bg;
-  color: $add-dashlet-tab-color;
-}
-
-#dashletCategories > li.active a:visited {
-  background-color: $active-tab-bg;
-  color: $add-dashlet-tab-color;
-}
-
-#dashletCategories > li.active a:active {
-  background-color: $active-tab-bg;
-  color: $add-dashlet-tab-color;
-}
-
+#dashletCategories > li.active a:hover,
 #dashletCategories > li.active a:focus {
-  background-color: $active-tab-bg;
-  color: $add-dashlet-tab-color;
+  font-weight: 600;
 }
 
 #dashletCtrls {
@@ -366,7 +337,7 @@ div#chartDashlets {
 
 .dashletPanel {
   padding: 0;
-  margin: 0 15px 15px 0;
+  margin: 0 20px 20px 0;
 }
 
 .dashletTable {
@@ -561,6 +532,9 @@ table #dashletPanel {
       padding: 14px;
     }
   }
+  & tbody td a {
+    color: $text-color;
+  }
 }
 
 .h3Row {
@@ -611,7 +585,8 @@ table #dashletPanel {
 }
 
 .yui-skin-sam.masked #dlg.SuiteP-configureDashlet.yui-module.yui-overlay.yui-panel .hd {
-  font-family: Lato, Lato, Arial, sans-serif;
+  // font-family: Lato, Lato, Arial, sans-serif;
+  font-family: 'Red Hat Display', Arial, sans-serif;
   font-size: 18px;
   font-weight: bold;
   background: $main-alternate-bg;
@@ -844,24 +819,21 @@ table #dashletPanel {
       margin-right: 5px;
       a {
         border-radius: 4px;
-        background: $dashboard-toolbar-bg;
+        background: $primary-color;
         color: $white;
         line-height: 9px;
         font-size: 13px;
         letter-spacing: 1px;
         &:hover {
-          background: $action-btn-hover-bg-color;
+          background: $primary-color-hover;
         }
       }
     }
     li.active {
       a {
-        @media (max-width: 1200px) { 
-          background: $dashboard-dropdown-btn; 
-        }
-        background: $dashboard-active-tab-bg;   
+        background: $primary-color;
         &:hover {
-          background: $action-btn-hover-bg-color;
+          background: $primary-color-hover;
         }     
       }
     }
@@ -869,9 +841,10 @@ table #dashletPanel {
   #tab-actions {
     ul.dropdown-menu {
       .button {
-        background: $dashboard-toolbar-bg;
+        color: $text-color;
+        background: $white;
         &:hover {
-          background: $action-btn-hover-bg-color;
+          background: $white-hover;
         }
       }
     }
@@ -883,18 +856,18 @@ table #dashletPanel {
 
 #dashboard #tab-actions ul.dropdown-menu li {
   background: none;
-  border-bottom: 1px solid $base-border-light-color;
+  border-bottom: none;
 }
 
 #dashboard #tab-actions ul.dropdown-menu {
-  background : $dashboard-toolbar-bg;
+  background : $white;
 }
 
 #dashboard #tab-actions > a.dropdown-toggle {
-  background: $dashboard-toolbar-bg;
+  background: $primary-color;
   padding-bottom: 6px;
   &:hover {
-    background: $action-btn-hover-bg-color;
+    background: $primary-color-hover;
   }
 }
 
@@ -913,10 +886,19 @@ table #dashletPanel {
       overflow-x: auto;
     }   
     .header-title {
-      color: $white;
+      color: $text-color;
       white-space: nowrap;
       width: 100%;
-    } 
+
+      & a {
+        color: $text-color;
+
+      }
+
+      & svg g {
+        fill: $text-color;
+      }
+    }
   }
 }  
 

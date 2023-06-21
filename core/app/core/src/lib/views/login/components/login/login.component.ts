@@ -39,6 +39,7 @@ import {Process} from '../../../../services/process/process.service';
 import {StringMap} from 'common';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
+import { LogoType } from '../../../../core';
 
 
 @Component({
@@ -62,6 +63,7 @@ export class LoginUiComponent implements OnInit {
     email = '';
 
     cardState = 'front';
+    logoType = LogoType.DARK;
 
     systemConfigs$: Observable<SystemConfigMap> = this.configs.configs$;
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;

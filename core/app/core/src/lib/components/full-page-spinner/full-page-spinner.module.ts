@@ -28,6 +28,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {FullPageSpinnerComponent} from './full-page-spinner.component';
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import {FullPageSpinnerComponent} from './full-page-spinner.component';
     ],
     imports: [
         CommonModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        LoadingSpinnerModule,
     ]
 })
 export class FullPageSpinnerModule {

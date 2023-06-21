@@ -35,13 +35,13 @@
         font-weight: bold;
         height: 2.2em;
         line-height: 1.1em;
-        background-color: rgb(147, 164, 179);
+        background-color: $primary-color;
         text-transform: capitalize;
         border-radius: 0.2em;
         padding: 0.3em 1em;
         letter-spacing: 0.05em;
         &:hover {
-            background: $btn-hover-bg-color;
+            background: $primary-color-hover;
         }
     }
     input[type=button] {
@@ -49,13 +49,13 @@
         font-weight: bold;
         height: 2.2em;
         line-height: 1.1em;
-        background-color: rgb(147, 164, 179);
+        background-color: $primary-color;
         text-transform: capitalize;
         border-radius: 0.2em;
         padding: 0.3em 1em;
         letter-spacing: 0.05em;
         &:hover {
-            background: $btn-hover-bg-color;
+            background: $primary-color-hover;
         }
     }
     input[type="button"][disabled] {

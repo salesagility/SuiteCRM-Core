@@ -24,12 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.footer a {
+ .footer a {
   font-size: 0.8em;
 }
 
 .footer-link {
-  color: $midnight-grey;
+  color: $text-color;
   cursor: pointer;
   margin: 0 0.5em;
   font-size: 1em;
@@ -40,11 +40,12 @@
 }
 
 a.footer-link:not([href]):not([tabindex]) {
-  color: $midnight-grey;
+  color: $text-color;
 }
 
 .footer-link:hover {
-  color: $median-grey;
+  color: $text-color;
+  opacity: 0.7;
   text-decoration: none;
 }
 
@@ -64,7 +65,7 @@ a.footer-link:not([href]):not([tabindex]) {
     height: 3.1em;
     line-height: 3.1em;
     background-color: $light-grey;
-    color: $midnight-blue;
+    color: $text-color;
   }
 
   .copyright-links {

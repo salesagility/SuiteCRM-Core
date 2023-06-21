@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.list-view {
+ .list-view {
   padding-top: 7em;
   width: 100%;
   margin: 0;
@@ -134,13 +134,13 @@
 }
 
 .list-view-tableactions {
-  background-color: $cool-blue;
+  background-color: $primary-color;
   padding: 0.2em;
 }
 
 .list-view-table thead {
-  background-color: $nepal-grey;
-  color: $white;
+  background-color: $light-grey;
+  color: $text-color;
 }
 
 .list-view-table td {
@@ -153,7 +153,7 @@
 }
 
 .list-view-table a {
-  color: $burnt-red;
+  color: $text-color;
   font-weight: bold;
 }
 
@@ -264,11 +264,6 @@
     background-color: #edecf0;
   }
 
-  .primary-table-header {
-    background-color: $nepal-grey;
-    color: $white;
-  }
-
   .list-view-table thead th {
     border: none;
   }
@@ -319,8 +314,6 @@
 }
 
 .primary-table-header {
-  background-color: $nepal-grey;
-  color: $white;
   white-space: nowrap;
 }
 
@@ -330,10 +323,6 @@
 
 .table thead th {
   border-bottom: 0;
-}
-
-.primary-table-header span {
-  font-weight: bold;
 }
 
 .primary-table-header span:hover {

@@ -1,6 +1,7 @@
 .view-module-Import {
     input[type=submit],input[type=button] {
-        background-color: $nepal-grey;
+        background-color: $white;
+        color: $text-color;
         border-radius: 0.2em;
         font-weight: bold;
         height: 2.2em;
@@ -9,7 +10,7 @@
         padding: 0.3em 1em;
         text-transform: capitalize;
         &:hover {
-            background: $pale-blue;
+            background: $off-white;
         }
     }
     select {

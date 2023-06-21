@@ -177,7 +177,7 @@ div#searchResults {
   font-weight: bold;
   height: 2.2em;
   line-height: 1.1em;
-  background-color: rgb(147, 164, 179);
+  background-color: $primary-color;
   text-transform: capitalize;
   border-radius: 0.2em;
   padding: 0.3em 1em;
@@ -185,7 +185,7 @@ div#searchResults {
   border: none;
   color: $white;
   &:hover {
-      background: $btn-hover-bg-color;
+      background: $primary-color;
   }
 }
 
@@ -199,7 +199,7 @@ div#searchResults {
   font-weight: bold;
   height: 2.2em;
   line-height: 1.1em;
-  background-color: rgb(147, 164, 179);
+  background-color: $primary-color;
   text-transform: capitalize;
   border-radius: 0.2em;
   padding: 0.3em 1em;
@@ -207,14 +207,14 @@ div#searchResults {
   border: none;
   color: $white;
   &:hover {
-      background: $btn-hover-bg-color;
+      background: $primary-color-hover;
   }
 }
 
 /** add invitees search **/
 #EditView .edit input[type=submit]#invitees_search  {
   font-size: $page-font-size;
-  background-color: $danger-btn-bg;
+  background: $primary-color;
   color: $default-btn-color;
   padding: 0 10px;
   margin: 4px;
@@ -223,6 +223,9 @@ div#searchResults {
   line-height: $button-line-height;
   height: $button-line-height;
   text-transform: uppercase;
+  &:hover {
+    background: $primary-color-hover
+  }
 }
 
 #list_div_win {
@@ -762,10 +765,10 @@ option:checked {
   height: 2.2em;
   line-height: 1.1em;
   padding: 0.3em 0.9em;
-  background-color: $button-bg-color;
+  background-color: $primary-color-hover;
   text-transform: capitalize;
   &:hover {
-    background-color: $btn-hover-bg-color;
+    background-color: $primary-color;
   }
 }
 
@@ -1728,7 +1731,8 @@ div.confirmTable {
 }
 
 ul.subTabs {
-  font: 12px 'Lato', Arial, Verdana, Helvetica, sans-serif;
+  // font: 12px 'Lato', Arial, Verdana, Helvetica, sans-serif;
+  font: 12px 'Red Hat Display', Arial, Verdana, Helvetica, sans-serif;
   padding: 4px 0;
   margin: 0;
   border: none;
@@ -4203,11 +4207,6 @@ tr:hover img.info {
   background-color: $danger-btn-bg;
 }
 
-#EditView div.action_buttons .button:hover,
-#save_and_continue.button:hover {
-  background-color: $btn-hover-bg-color;
-}
-
 .paginationWrapper {
   float: right;
 }
@@ -4634,7 +4633,8 @@ object {
 }
 
 .rgraph_chart_tooltips_css {
-  font-family: 'Lato', Arial;
+  // font-family: 'Lato', Arial;
+  font-family: 'Red Hat Display', Arial;
 }
 
 @media (min-width: 320px) and (max-width: 978px) {
