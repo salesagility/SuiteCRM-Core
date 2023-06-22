@@ -59,8 +59,7 @@ export class ListFilterStore implements StateStore {
                 this.initGridButtons();
                 this.initHeaderButtons();
                 this.initMyFiltersButton(this.savedFilters);
-            }),
-            tap(data=> console.log("data", data))
+            })
         );
 
         if (this.config.panelMode) {
@@ -147,8 +146,7 @@ export class ListFilterStore implements StateStore {
                         this.config.listFields,
                         'edit'
                     );
-                }),
-                tap(data=> console.log("data", data))
+                })
             ).subscribe()
         );
 
@@ -157,8 +155,7 @@ export class ListFilterStore implements StateStore {
                 tap(([filters]) => {
                     this.savedFilters = filters;
                     this.initMyFiltersButton(filters);
-                }),
-                tap(data=> console.log("data", data))
+                })
             ).subscribe()
         );
     }
