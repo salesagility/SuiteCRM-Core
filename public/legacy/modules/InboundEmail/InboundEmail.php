@@ -4845,12 +4845,17 @@ class InboundEmail extends SugarBean
         $subjectDecoded = $this->getImap()->MimeHeaderDecode($subject);
 
         $ret = '';
-        foreach ($subjectDecoded as $object) {
-            if ($object->charset != 'default') {
-                $ret .= $this->handleCharsetTranslation($object->text, $object->charset);
-            } else {
-                $ret .= $object->text;
+        if (is_array($subjectDecoded)) {
+            
+            foreach ($subjectDecoded as $object) {
+                if ($object->charset != 'default') {
+                    $ret .= $this->handleCharsetTranslation($object->text, $object->charset);
+                } else {
+                    $ret .= $object->text;
+                }
             }
+        } else {
+            $ret = $subjectDecoded;
         }
 
         return $ret;
