@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {DropdownButtonInterface} from 'common';
 import {ButtonInterface} from 'common';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +35,7 @@ import {LanguageStore} from '../../store/language/language.store';
     selector: 'scrm-dropdown-button',
     templateUrl: './dropdown-button.component.html',
     styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DropdownButtonComponent implements OnInit {
     @Input() config: DropdownButtonInterface;
