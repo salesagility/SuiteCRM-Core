@@ -65,7 +65,6 @@ export class InstallAuthGuard  {
         const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
-        // this.message.removeMessages();
         return this.authService.fetchSessionStatus()
             .pipe(
                 take(1),

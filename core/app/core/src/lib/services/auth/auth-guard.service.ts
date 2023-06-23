@@ -28,15 +28,12 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, filter, map, take, tap} from 'rxjs/operators';
-import {MessageService} from '../message/message.service';
 import {AuthService, SessionStatus} from './auth.service';
-import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {Process} from '../process/process.service';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
 import {emptyObject, isEmptyString} from 'common';
-import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {LanguageStore} from '../../store/language/language.store';
 import {NotificationStore} from '../../store/notification/notification.store';
 
@@ -45,14 +42,11 @@ import {NotificationStore} from '../../store/notification/notification.store';
 })
 export class AuthGuard  {
     constructor(
-        protected message: MessageService,
         protected router: Router,
         protected authService: AuthService,
-        protected preferences: UserPreferenceStore,
         protected asyncActionService: AsyncActionService,
         protected appState: AppStateStore,
         protected routeConverter: RouteConverter,
-        protected configs: SystemConfigStore,
         protected language: LanguageStore,
         protected notificationStore: NotificationStore
     ) {
