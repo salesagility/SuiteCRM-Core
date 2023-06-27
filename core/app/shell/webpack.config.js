@@ -16,39 +16,39 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^16.0.2'
+          requiredVersion: '^16.1.1'
         },
         '@angular/cdk/table': {
           singleton: true,
-          requiredVersion: '^16.0.2'
+          requiredVersion: '^16.1.1'
         },
         '@angular/cdk/observers': {
           singleton: true,
-          requiredVersion: '^16.0.2'
+          requiredVersion: '^16.1.1'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@apollo/client': {
           singleton: true,
@@ -64,11 +64,7 @@ module.exports = {
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^16.6.0'
-        },
-        'graphql-tag': {
-          singleton: true,
-          requiredVersion: '^2.12.6'
+          requiredVersion: '^16.7.1'
         },
         'lodash-es': {
           singleton: true,
@@ -94,7 +90,7 @@ module.exports = {
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^15.0.0'
+          requiredVersion: '^15.0.1'
         },
 
         'bn-ng-idle': {
@@ -104,12 +100,12 @@ module.exports = {
 
         'rxjs': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         'rxjs/operators': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         common: {

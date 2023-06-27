@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit, signal} from '@angular/core';
 import {ButtonInterface} from "common";
 
 @Component({
@@ -32,12 +32,18 @@ import {ButtonInterface} from "common";
     templateUrl: 'popup-button.component.html',
 })
 
-export class PopupButtonComponent {
+export class PopupButtonComponent implements OnInit{
 
     @Input() icon: string;
     @Input() klass: string = 'line-action-item line-action float-right';
 
+    buttonConfig = signal<ButtonInterface>({});
+
     constructor() {
+    }
+
+    ngOnInit(): void {
+        this.buttonConfig.update( () => this.getButtonConfig());
     }
 
     getButtonConfig(): ButtonInterface {

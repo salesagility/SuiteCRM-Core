@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {
     ColumnDefinition,
     Field,
@@ -35,6 +35,7 @@ import {FieldManager} from "../../../../services/record/field/field.manager";
 @Component({
     selector: 'scrm-record-details-popup-button',
     templateUrl: 'record-details-popup-button.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class RecordDetailsPopupButtonComponent {

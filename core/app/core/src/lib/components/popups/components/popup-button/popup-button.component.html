@@ -31,7 +31,7 @@
 <ng-template #popTitle>
     <ng-content select="[popup-title]"></ng-content>
 </ng-template>
-<scrm-button [config]="getButtonConfig()"
+<scrm-button [config]="buttonConfig()"
              [autoClose]="'outside'"
              [ngbPopover]="popContent"
              [popoverTitle]="popTitle"
