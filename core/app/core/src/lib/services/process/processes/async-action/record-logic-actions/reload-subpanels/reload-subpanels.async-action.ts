@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,36 +24,38 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
+import { first, switchMap } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {AsyncActionData, AsyncActionHandler} from '../../async-action.model';
+import {
+    RecordLogicContext
+} from '../../../../../../views/record/record-logic/record-logic.model';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
-}
 
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
+@Injectable({
+    providedIn: 'root'
+})
+export class ReloadSubpanelsAsyncAction extends AsyncActionHandler {
+    key = 'reload-subpanels';
 
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
+    constructor() {
+        super();
+    }
 
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
+    run(data: AsyncActionData): void {
+        const context: RecordLogicContext = data.context;
+
+        if (!context) {
+            return;
+        }
+
+        const spNames: string[] = data.subpanelNames ?? [];
+
+        context.subpanels$
+            .pipe(
+                first(),
+                switchMap((sp) => spNames.map(spName => sp[spName]?.load(false)))
+            )
+            .subscribe((subpanelLoad$) => subpanelLoad$?.subscribe());
+    }
 }

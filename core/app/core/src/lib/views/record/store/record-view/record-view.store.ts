@@ -24,14 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { cloneDeep, isEmpty, isEqual } from 'lodash-es';
+import { BehaviorSubject, combineLatest, Observable, of, Subscription, combineLatestWith} from 'rxjs';
+import { catchError, distinctUntilChanged, finalize, map, take, tap } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import { Params } from '@angular/router';
 import {
     BooleanMap,
     deepClone,
     FieldDefinitionMap,
+    FieldValue,
+    FieldValueMap,
     isVoid,
     Record,
+    RecordLogicMap,
     StatisticsMap,
     StatisticsQueryMap,
     SubPanelMeta,
@@ -39,8 +45,7 @@ import {
     ViewFieldDefinition,
     ViewMode
 } from 'common';
-import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
-import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
+import { RecordLogicMapPerField, RecordViewData, RecordViewModel, RecordViewState } from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {StateStore} from '../../../../store/state';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
@@ -61,10 +66,11 @@ import {LocalStorageService} from '../../../../services/local-storage/local-stor
 import {SubpanelStoreFactory} from '../../../../containers/subpanel/store/subpanel/subpanel.store.factory';
 import {ViewStore} from '../../../../store/view/view.store';
 import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
-import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import { RecordLogicManager } from '../../record-logic/record-logic.manager';
+import { RecordLogicContext } from '../../record-logic/record-logic.model';
 
 const initialState: RecordViewState = {
     module: '',
@@ -119,6 +125,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected subpanelReloadSubject = new BehaviorSubject<BooleanMap>({} as BooleanMap);
     protected subpanelReloadSub: Subscription[] = [];
     protected subs: Subscription[] = [];
+    protected logicSubs: Subscription[] = [];
+    protected recordLogicPrevValues: FieldValueMap = {};
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -134,7 +142,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
         protected recordStoreFactory: RecordStoreFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected recordLogicManager: RecordLogicManager
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -170,9 +179,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.subpanels$ = this.subpanelsState.asObservable();
 
 
-        this.viewContext$ = this.record$.pipe(map(() => {
-            return this.getViewContext();
-        }));
+        this.viewContext$ = this.record$.pipe(map(() => this.getViewContext()));
     }
 
     get widgets(): boolean {
@@ -276,6 +283,17 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.calculateShowWidgets();
 
+        this.recordLogicPrevValues = {};
+        this.subs.push(
+            this.stagingRecord$.subscribe(stagingRecord => {
+                if (!stagingRecord || !stagingRecord.fields) {
+                    return;
+                }
+                this.recordLogicPrevValues = {};
+                this.initializeRecordLogic(stagingRecord);
+            })
+        );
+
         return this.load().pipe(
             tap(() => {
                 this.showTopWidget = true;
@@ -293,6 +311,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.clearSubpanels();
         this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
+        this.logicSubs = this.safeUnsubscription(this.logicSubs);
+        this.recordLogicPrevValues = {};
     }
 
     /**
@@ -364,6 +384,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
             ...this.internalState,
             loading: true
         });
+
+        this.recordLogicPrevValues = {};
 
         return this.recordStore.retrieveRecord(
             this.internalState.module,
@@ -602,8 +624,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Build ui user preference key
-     * @param storageKey
+     *
+     * @param {string} storageKey Storage Key
      * @protected
+     * @returns {string} Preference Key
      */
     protected getPreferenceKey(storageKey: string): string {
         return 'recordview-' + storageKey;
@@ -611,9 +635,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Save ui user preference
-     * @param module
-     * @param storageKey
-     * @param value
+     *
+     * @param {string} module Module
+     * @param {string} storageKey Storage Key
+     * @param {any} value Value
      * @protected
      */
     protected savePreference(module: string, storageKey: string, value: any): void {
@@ -622,9 +647,11 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Load ui user preference
-     * @param module
-     * @param storageKey
+     *
+     * @param {string} module Module
+     * @param {string} storageKey Storage Key
      * @protected
+     * @returns {any} User Preference
      */
     protected loadPreference(module: string, storageKey: string): any {
         return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
@@ -678,4 +705,104 @@ export class RecordViewStore extends ViewStore implements StateStore {
         });
     }
 
+    private initializeRecordLogic(stagingRecord: Record): void {
+        this.logicSubs = this.safeUnsubscription(this.logicSubs);
+
+        const recordViewMetadata = this.getRecordViewMetadata();
+        if (isEmpty(recordViewMetadata.logic)) {
+            return;
+        }
+
+        const recordLogicsPerFields = this.buildLogicConfigMap(recordViewMetadata.logic);
+        if (isEmpty(recordLogicsPerFields)) {
+            return;
+        }
+
+        this.initializeLogicSubscriptions(stagingRecord, recordViewMetadata.logic);
+    }
+
+    private initializeLogicSubscriptions(stagingRecord: Record, recordLogicMap: RecordLogicMap): void {
+        Object.keys(recordLogicMap).forEach((recordLogicKey) => {
+            const recordLogic = recordLogicMap[recordLogicKey];
+            const dependentFields = recordLogic?.params?.fieldDependencies ?? [];
+
+            if (isEmpty(dependentFields)) {
+                return;
+            }
+
+            const dependentFieldsValueChanges$ = [];
+            dependentFields.forEach(fieldName => {
+                const field = stagingRecord.fields[fieldName];
+                if (isEmpty(field)) {
+                    return;
+                }
+
+                dependentFieldsValueChanges$.push(field.valueChanges$);
+            });
+
+            this.logicSubs.push(
+                combineLatest(dependentFieldsValueChanges$).subscribe((valueChanges: FieldValue[]) => {
+                    this.recordLogicPrevValues[recordLogicKey] = this.recordLogicPrevValues[recordLogicKey] ?? {};
+                    const recordLogicPrevValues = this.recordLogicPrevValues[recordLogicKey];
+
+                    let isSame = true;
+                    dependentFields.forEach((fieldName, index) => {
+                        const prevValue: FieldValue = recordLogicPrevValues[fieldName] ?? {};
+                        const currValue: FieldValue = cloneDeep({
+                            value: valueChanges[index].value,
+                            valueList: valueChanges[index].valueList,
+                            valueObject: valueChanges[index].valueObject
+                        });
+                        isSame = isSame && isEqual(prevValue, currValue);
+
+                        recordLogicPrevValues[fieldName] = currValue;
+                    });
+
+                    if (isSame === true) {
+                        return;
+                    }
+
+                    const recordLogicContext: RecordLogicContext = {
+                        mode: this.getMode(),
+                        record: stagingRecord,
+                        subpanels$: this.subpanels$,
+                        reload: () => this.load(false),
+                    };
+
+                    this.recordLogicManager.runLogic({
+                        ...recordLogicContext,
+                        logicEntries: [recordLogic],
+                    });
+                }),
+            );
+        });
+    }
+
+    private buildLogicConfigMap(recordLogicMap: RecordLogicMap): RecordLogicMapPerField {
+        const logicConfigsPerField: RecordLogicMapPerField = {};
+
+        Object.entries(recordLogicMap).forEach(([recordLogicName, recordLogic]) => {
+            const dependentFields = recordLogic?.params?.fieldDependencies ?? [];
+
+            dependentFields.forEach(fieldName => {
+                logicConfigsPerField[fieldName] = logicConfigsPerField[fieldName] ?? {};
+                logicConfigsPerField[fieldName][recordLogicName] = recordLogic;
+            });
+        });
+
+        return logicConfigsPerField;
+    }
+
+    private safeUnsubscription(subscriptionArray: Subscription[]): Subscription[] {
+        subscriptionArray.forEach(sub => {
+            if (sub.closed) {
+                return;
+            }
+
+            sub.unsubscribe();
+        });
+        subscriptionArray = [];
+
+        return subscriptionArray;
+    }
 }

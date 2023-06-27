@@ -97,7 +97,7 @@ export interface FieldDefinition {
     default?: string;
     modes?: ViewMode[];
     relationship?: string;
-    relationshipMetadata?: RelationshipMetadata
+    relationshipMetadata?: RelationshipMetadata;
 
     [key: string]: any;
 }
@@ -155,6 +155,16 @@ export interface AttributeDependency {
     field: string;
     attribute: string;
     types: string[];
+}
+
+export interface FieldValue {
+    value?: string;
+    valueList?: string[];
+    valueObject?: any;
+}
+
+export interface FieldValueMap {
+    [key: string]: FieldValue;
 }
 
 export interface Field {
@@ -275,14 +285,6 @@ export class BaseField implements Field {
             value: this.valueState,
             valueList: this.valueListState,
             valueObject: this.valueObjectState
-        })
+        });
     }
 }
-
-export interface FieldValue {
-    value?: string;
-    valueList?: string[];
-    valueObject?: any;
-}
-
-

@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,36 +24,39 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
+import {Injectable} from '@angular/core';
+import {AsyncActionData, AsyncActionHandler} from '../../async-action.model';
+import {
+    RecordLogicContext
+} from '../../../../../../views/record/record-logic/record-logic.model';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
-}
 
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
+@Injectable({
+    providedIn: 'root'
+})
+export class SetFieldsAsyncAction extends AsyncActionHandler {
+    key = 'set-fields';
 
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
+    constructor() {
+        super();
+    }
 
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
+    run(data: AsyncActionData): void {
+        const context: RecordLogicContext = data.context ?? {};
+        const fieldsValuesToSet = data.fieldValues ?? null;
+
+        if (!fieldsValuesToSet || !context) {
+            return;
+        }
+
+        Object.keys(fieldsValuesToSet).forEach(fieldName => {
+            const fieldValue = fieldsValuesToSet[fieldName] ?? null;
+            if (fieldValue === null || !context?.record?.fields[fieldName]) {
+                return;
+            }
+
+            context.record.fields[fieldName].value = fieldValue;
+            context.record.fields[fieldName].formControl.setValue(fieldValue);
+        });
+    }
 }
