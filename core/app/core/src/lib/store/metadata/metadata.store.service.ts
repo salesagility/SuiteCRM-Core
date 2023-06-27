@@ -38,6 +38,7 @@ import {
     MassUpdateMeta,
     Panel,
     RecentlyViewed,
+    RecordLogicMap,
     SearchMeta,
     SubPanelMeta,
     WidgetMetadata
@@ -54,6 +55,7 @@ export interface RecordViewMetadata {
     sidebarWidgets?: WidgetMetadata[];
     bottomWidgets?: WidgetMetadata[];
     actions?: Action[];
+    logic?: RecordLogicMap;
     templateMeta?: RecordTemplateMetadata;
     panels?: Panel[];
     summaryTemplates?: SummaryTemplates;
@@ -449,6 +451,7 @@ export class MetadataStore implements StateStore {
         const entries = {
             templateMeta: 'templateMeta',
             actions: 'actions',
+            logic:  'logic',
             panels: 'panels',
             topWidget: 'topWidget',
             sidebarWidgets: 'sidebarWidgets',

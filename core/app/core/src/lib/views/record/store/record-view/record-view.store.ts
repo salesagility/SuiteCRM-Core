@@ -32,6 +32,7 @@ import {
     FieldDefinitionMap,
     isVoid,
     Record,
+    RecordLogicMap,
     StatisticsMap,
     StatisticsQueryMap,
     SubPanelMeta,
@@ -65,6 +66,10 @@ import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {RecordLogicManager} from '../../record-logic/record-logic.manager';
+import {RecordLogicContext} from '../../record-logic/record-logic.model';
+import {timer} from 'rxjs';
+import {debounce} from 'rxjs/operators';
 
 const initialState: RecordViewState = {
     module: '',
@@ -119,6 +124,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected subpanelReloadSubject = new BehaviorSubject<BooleanMap>({} as BooleanMap);
     protected subpanelReloadSub: Subscription[] = [];
     protected subs: Subscription[] = [];
+    protected logicSubs: Subscription[] = [];
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -134,7 +140,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
         protected recordStoreFactory: RecordStoreFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected recordLogicManager: RecordLogicManager
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -142,7 +149,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.recordStore = recordStoreFactory.create(this.getViewFieldsObservable());
 
         this.record$ = this.recordStore.state$.pipe(distinctUntilChanged());
-        this.stagingRecord$ = this.recordStore.staging$.pipe(distinctUntilChanged());
+        this.stagingRecord$ = this.recordStore.staging$.pipe(
+            distinctUntilChanged(),
+            tap(stagingRecord => this.initializeRecordLogic(stagingRecord))
+        );
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
@@ -293,6 +303,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.clearSubpanels();
         this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
+        this.logicSubs.forEach(sub => sub.unsubscribe());
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     /**
@@ -414,7 +426,6 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.params = params;
     }
-
 
     /**
      * Load all statistics
@@ -628,5 +639,66 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     protected loadPreference(module: string, storageKey: string): any {
         return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
+    }
+
+    private initializeRecordLogic(stagingRecord: Record) {
+        this.logicSubs.forEach(sub => sub.unsubscribe());
+
+        const recordViewMetadata = this.getRecordViewMetadata();
+        if (!recordViewMetadata.logic) {
+            return;
+        }
+
+        const recordLogicsPerFields = this.buildLogicConfigMap(recordViewMetadata.logic);
+        if (!Object.keys(recordLogicsPerFields).length) {
+            return;
+        }
+
+        this.initializeLogicSubscriptions(stagingRecord, recordLogicsPerFields);
+    }
+
+    private initializeLogicSubscriptions(stagingRecord: Record, recordLogicsPerFields: {
+        [fieldName: string]: RecordLogicMap
+    }) {
+        const recordLogicContext: RecordLogicContext = {
+            mode: this.getMode(),
+            record: stagingRecord,
+            reload: () => this.load(false)
+        };
+
+        Object.entries(recordLogicsPerFields).forEach(([fieldName, recordLogicMap]) => {
+            const recordLogics = Object.values(recordLogicMap ?? {});
+
+            if (!stagingRecord.fields[fieldName] || !recordLogics.length) {
+                return;
+            }
+
+            this.logicSubs.push(
+                stagingRecord.fields[fieldName].valueChanges$
+                    .pipe(debounce(() => timer(500)))
+                    .subscribe((valueChange) => {
+                        recordLogicContext.record.attributes[fieldName] = valueChange
+                        this.recordLogicManager.runLogic({
+                            ...recordLogicContext,
+                            logicEntries: recordLogics,
+                        });
+                    })
+            );
+        })
+    }
+
+    private buildLogicConfigMap(recordLogicMap: RecordLogicMap): { [fieldName: string]: RecordLogicMap } {
+        const logicConfigsPerField: { [fieldName: string]: RecordLogicMap } = {};
+
+        Object.entries(recordLogicMap).forEach(([recordLogicName, recordLogic]) => {
+            const dependentFields = recordLogic?.params?.fieldDependencies ?? [];
+
+            dependentFields.forEach(fieldName => {
+                logicConfigsPerField[fieldName] = logicConfigsPerField[fieldName] ?? {}
+                logicConfigsPerField[fieldName][recordLogicName] = recordLogic;
+            });
+        })
+
+        return logicConfigsPerField;
     }
 }

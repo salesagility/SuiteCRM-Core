@@ -45,6 +45,7 @@ import {MessageService} from '../../../../services/message/message.service';
 import {Record, ViewMode} from 'common';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {RecordLogicManager} from '../../../record/record-logic/record-logic.manager';
 
 @Injectable()
 export class CreateViewStore extends RecordViewStore {
@@ -64,7 +65,8 @@ export class CreateViewStore extends RecordViewStore {
         protected statisticsBatch: StatisticsBatch,
         protected auth: AuthService,
         protected recordStoreFactory: RecordStoreFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected recordLogicManager: RecordLogicManager
     ) {
         super(
             recordFetchGQL,
@@ -80,7 +82,8 @@ export class CreateViewStore extends RecordViewStore {
             recordManager,
             statisticsBatch,
             recordStoreFactory,
-            preferences
+            preferences,
+            recordLogicManager
         );
     }
 

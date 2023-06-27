@@ -17,6 +17,7 @@ export * from './metadata/widget.metadata';
 export * from './record/favorites.model';
 export * from './record/field.model';
 export * from './record/recently-viewed.model';
+export * from './record/record-logic-action.model';
 export * from './record/record.model';
 export * from './record/record-mappers/record-mapper.model';
 export * from './record/record-mappers/record-mapper.registry';

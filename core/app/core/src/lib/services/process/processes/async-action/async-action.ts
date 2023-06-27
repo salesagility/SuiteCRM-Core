@@ -83,9 +83,10 @@ export class AsyncActionService {
      * @param {string} actionName to submit
      * @param {string} data to send
      * @param {string} presetHandlerKey to use
+     * @param {array} parentHandlers
      * @returns {object} Observable<Process>
      */
-    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null): Observable<Process> {
+    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null, parentHandlers: string[] = []): Observable<Process> {
         const options = {
             ...data
         };
@@ -123,6 +124,10 @@ export class AsyncActionService {
                     }
 
                     const actionHandler: AsyncActionHandler = this.actions[actionHandlerKey];
+
+                    if (parentHandlers.includes(actionHandlerKey)) {
+                        return;
+                    }
 
                     if (!actionHandler) {
                         this.message.addDangerMessageByKey('LBL_MISSING_HANDLER');
