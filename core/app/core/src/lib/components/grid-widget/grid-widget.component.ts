@@ -26,7 +26,7 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
-import {combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay, take} from 'rxjs/operators';
 import {SingleValueStatisticsStoreFactory} from '../../store/single-value-statistics/single-value-statistics.store.factory';
 import {LanguageStore} from '../../store/language/language.store';
@@ -342,23 +342,39 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
         const loadings$: Observable<boolean>[] = [];
         Object.keys(this.statistics).forEach(type => loadings$.push(this.statistics[type].store.loading$));
 
-        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
+        let statisticObs: Observable<boolean[]> = of([]);
 
-            if (!loadings || loadings.length < 1) {
-                this.loading = false;
-                return false;
-            }
+        if(loadings$.length < 1) {
+            statisticObs = of([]);
+        } else if(loadings$.length === 1){
+            statisticObs = loadings$[0].pipe(
+                map(value => [value])
+            );
+        } else {
+            let firsObs = null;
+            let others;
+            [firsObs, ...others] = loadings$;
+            statisticObs = firsObs.pipe(
+                combineLatestWith(others)
+            );
+        }
 
-            let loading = true;
+        this.loading$ = statisticObs.pipe(
+            map((loadings) => {
 
-            loadings.forEach(value => {
-                loading = loading && value;
-            });
+                if (!loadings || loadings.length < 1) {
+                    this.loading = false;
+                    return false;
+                }
+                let loading = true;
 
-            this.loading = loading;
+                loadings.forEach(value => {
+                    loading = loading && value;
+                });
+                this.loading = loading;
 
-            return loading;
-        }));
+                return loading;
+            }));
         this.subs.push(this.loading$.subscribe());
     }
 
@@ -391,7 +407,21 @@ export class GridWidgetComponent implements OnInit, OnDestroy {
         if (this.statistics && Object.keys(this.statistics).length > 0) {
             const statistics$: Observable<SingleValueStatisticsState>[] = [];
             Object.keys(this.statistics).forEach(type => statistics$.push(this.statistics[type].store.state$));
-            allStatistics$ = combineLatest(statistics$);
+
+            if(statistics$.length < 1) {
+                allStatistics$ = of([]);
+            } else if(statistics$.length === 1){
+                allStatistics$ = statistics$[0].pipe(
+                    map(value => [value])
+                );
+            } else {
+                let firsObs = null;
+                let others;
+                [firsObs, ...others] = statistics$;
+                allStatistics$ = firsObs.pipe(
+                    combineLatestWith(others)
+                );
+            }
         }
 
         this.vm$ = allStatistics$.pipe(

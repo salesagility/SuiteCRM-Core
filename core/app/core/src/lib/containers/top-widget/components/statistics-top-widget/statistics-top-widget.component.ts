@@ -30,9 +30,9 @@ import {SingleValueStatisticsStore} from '../../../../store/single-value-statist
 import {
     SingleValueStatisticsStoreFactory
 } from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
-import {map, take, tap} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
-import {combineLatest, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {SingleValueStatisticsState, StatisticsQuery, ViewContext} from 'common';
 
 interface StatisticsTopWidgetState {
@@ -125,6 +125,23 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             loadings$.push(this.statistics[statistic.type].store.loading$);
         });
 
+        let statisticObs = null;
+
+        if(statistics$.length < 1) {
+            statisticObs = of([]);
+        } else if(statistics$.length === 1){
+            statisticObs = statistics$[0].pipe(
+                map(value => [value])
+            );
+        } else {
+            let firsObs = null;
+            let others;
+            [firsObs, ...others] = statistics$;
+            statisticObs = firsObs.pipe(
+                combineLatestWith(others)
+            );
+        }
+
        this.loading$ = loadings$[0].pipe(
             combineLatestWith(...loadings$),
             map((loadings) => {
@@ -147,22 +164,23 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
         this.subs.push(this.loading$.subscribe());
 
-      this.vm$ = combineLatest([combineLatest(statistics$), this.language.appStrings$]).pipe(
-            map(([statistics, appStrings]) => {
-                const statsMap: { [key: string]: SingleValueStatisticsState } = {};
-                statistics.forEach(value => {
-                    statsMap[value.query.key] = value;
+      this.vm$ = statisticObs.pipe(
+          combineLatestWith(this.language.appStrings$),
+          map(([statistics, appStrings]) => {
+              const statsMap: { [key: string]: SingleValueStatisticsState } = {};
+              statistics.forEach(value => {
+                  statsMap[value.query.key] = value;
 
-                    this.statistics[value.query.key].labelKey = this.getMetadataEntry(value, 'labelKey');
-                    this.statistics[value.query.key].endLabelKey = this.getMetadataEntry(value, 'endLabelKey');
-                });
+                  this.statistics[value.query.key].labelKey = this.getMetadataEntry(value, 'labelKey');
+                  this.statistics[value.query.key].endLabelKey = this.getMetadataEntry(value, 'endLabelKey');
+              });
 
-                return {
-                    statistics: statsMap,
-                    appStrings
-                };
-            })
-        );
+              return {
+                  statistics: statsMap,
+                  appStrings
+              };
+          })
+      );
 
         if (this.config.reload$) {
             this.subs.push(this.config.reload$.subscribe(() => {

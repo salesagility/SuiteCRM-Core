@@ -25,11 +25,11 @@
  */
 
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {combineLatest, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 import {RecordThreadStoreFactory} from '../../store/record-thread/record-thread.store.factory';
 import {RecordThreadConfig} from './record-thread.model';
-import {take, tap} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {AttributeMap, ButtonInterface, isVoid, Record, ViewMode} from 'common';
@@ -361,16 +361,19 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     protected initLoading(): void {
-        const loading = [
-            this.store.$loading
-        ];
+        let loading$: Observable<Array<boolean>>;
 
         if (this.createStore && this.createStore.loading$) {
-            loading.push(this.createStore.loading$)
+            loading$ = this.store.$loading.pipe(
+                combineLatestWith(this.createStore.loading$)
+            );
+        } else {
+            loading$= this.store.$loading.pipe(
+                map(value => [value])
+            )
         }
 
-        const $loading = combineLatest(loading);
-        this.subs.push($loading.subscribe((loadings) => {
+        this.subs.push(loading$.subscribe((loadings) => {
             if (!loadings || !loadings.length) {
                 this.loading = false;
                 return;

@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ChartDataSource, ChartMetadata, ChartsWidgetOptions, StatisticsQuery, ViewContext} from 'common';
-import {combineLatest, Observable, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, take, tap} from 'rxjs/operators';
 import {ChartDataStoreFactory} from '../../../../store/chart-data/chart-data.store.factory';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
@@ -238,7 +238,25 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
 
         Object.keys(this.charts).forEach(key => statistics$.push(this.charts[key].store.state$));
 
-        this.vm$ = combineLatest([combineLatest(statistics$), this.language.appStrings$]).pipe(
+        let statisticObs: Observable<ChartDataState[]> = of([]);
+
+        if(statistics$.length < 1) {
+            statisticObs = of([]);
+        } else if(statistics$.length === 1){
+            statisticObs = statistics$[0].pipe(
+                map(value => [value])
+            );
+        } else {
+            let firsObs = null;
+            let others;
+            [firsObs, ...others] = statistics$;
+            statisticObs = firsObs.pipe(
+                combineLatestWith(others)
+            );
+        }
+
+        this.vm$ = statisticObs.pipe(
+            combineLatestWith(this.language.appStrings$),
             map(([statistics, appStrings]) => {
                 const statsMap = this.mapChartData(statistics);
 
@@ -294,7 +312,25 @@ export class ChartSidebarWidgetComponent extends BaseWidgetComponent implements 
 
         Object.keys(this.charts).forEach(key => loadings$.push(this.charts[key].store.loading$));
 
-        this.loading$ = combineLatest(loadings$).pipe(map((loadings) => {
+        let statisticObs: Observable<boolean[]> = of([]);
+
+        if(loadings$.length < 1) {
+            statisticObs = of([]);
+        } else if(loadings$.length === 1){
+            statisticObs = loadings$[0].pipe(
+                map(value => [value])
+            );
+        } else {
+            let firsObs = null;
+            let others;
+            [firsObs, ...others] = loadings$;
+            statisticObs = firsObs.pipe(
+                combineLatestWith(others)
+            );
+        }
+
+        this.loading$ = statisticObs.pipe(
+            map((loadings) => {
 
             if (!loadings || loadings.length < 1) {
                 this.loading = false;

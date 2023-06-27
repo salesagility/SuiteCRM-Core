@@ -24,11 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Compiler, Injectable, Injector, NgModuleFactory, NgModuleRef} from '@angular/core';
+import {Compiler, Injectable, Injector, NgModuleFactory, NgModuleRef, Type} from '@angular/core';
 import {forkJoin, from, isObservable, Observable, of} from 'rxjs';
 import {LoadChildrenCallback} from '@angular/router';
 import {map, mergeMap} from 'rxjs/operators';
-import {loadRemoteModule} from '@angular-architects/module-federation';
+import {loadRemoteModule} from '@angular-architects/module-federation-runtime';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {isFalse} from 'common';
 
@@ -147,7 +147,7 @@ export class ExtensionLoader {
      * @param {function} loadChildren
      */
     protected loadModuleFactory(loadChildren: LoadChildrenCallback): Observable<NgModuleFactory<any>> {
-        return this.wrapIntoObservable(loadChildren()).pipe(mergeMap((t: any) => {
+        return this.wrapIntoObservable(loadChildren()).pipe(mergeMap((t: Type<any>|NgModuleFactory<any>) => {
             if (t instanceof NgModuleFactory) {
                 return of(t);
             } else {
