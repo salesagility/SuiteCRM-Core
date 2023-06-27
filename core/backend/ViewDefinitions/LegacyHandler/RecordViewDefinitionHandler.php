@@ -29,6 +29,7 @@
 namespace App\ViewDefinitions\LegacyHandler;
 
 use App\Data\Service\RecordActionDefinitionProviderInterface;
+use App\Data\Service\RecordLogicDefinitionProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
@@ -198,6 +199,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->addBottomWidgetConfig($module, $detailViewDefs, $metadata);
         $this->addPanelDefinitions($detailViewDefs, $editViewDefs, $vardefs, $metadata);
         $this->addActionConfig($module, $detailViewDefs, $metadata);
+        $this->addLogicConfig($detailViewDefs, $metadata);
         $this->addSummaryTemplates($detailViewDefs, $metadata);
 
         return $metadata;
@@ -570,6 +572,16 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $actions = $this->actionDefinitionProvider->getActions($module, $recordActions) ?? [];
 
         $metadata['actions'] = array_values($actions);
+    }
+
+    /**
+     * @param array $detailViewDefs
+     * @param array $metadata
+     * @return void
+     */
+    protected function addLogicConfig(array $detailViewDefs, array &$metadata): void
+    {
+        $metadata['logic'] = $detailViewDefs['logic'] ?? [];
     }
 
     /**
