@@ -35,6 +35,7 @@ import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-curren
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
 import {ConditionalOptionsAction} from './conditional-options/conditional-options.action';
+import {UpdateFieldAction} from './update-field/update-field.action';
 
 @Injectable({
     providedIn: 'root'
@@ -48,7 +49,8 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
-        conditionalOptionsAction: ConditionalOptionsAction
+        conditionalOptionsAction: ConditionalOptionsAction,
+        updateFieldAction: UpdateFieldAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -58,6 +60,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateCurrency.modes.forEach(mode => this.actions[mode][updateCurrency.key] = updateCurrency);
         updateFlexRelateModule.modes.forEach(mode => this.actions[mode][updateFlexRelateModule.key] = updateFlexRelateModule);
         conditionalOptionsAction.modes.forEach(mode => this.actions[mode][conditionalOptionsAction.key] = conditionalOptionsAction);
+        updateFieldAction.modes.forEach(mode => this.actions[mode][updateFieldAction.key] = updateFieldAction);
     }
 
     /**

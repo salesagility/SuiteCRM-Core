@@ -57,6 +57,12 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         super.ngOnInit();
 
         this.subs.push(
+            this.field.valueChanges$.subscribe(() => {
+                this.initValue();
+            })
+        );
+
+        this.subs.push(
             this.field.optionsChanges$.subscribe((options: Option[]) => {
                 if (options) {
                     this.buildProvidedOptions(options);
@@ -80,8 +86,6 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                 this.field.options = options;
             }));
         }
-
-        this.initValue();
 
     }
 

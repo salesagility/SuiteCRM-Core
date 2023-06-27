@@ -46,7 +46,7 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
         }
 
         this.field.valueList.forEach(value => {
-            if (typeof this.optionsMap[value] !== 'string') {
+            if (!this.optionsMap || typeof this.optionsMap[value] !== 'string') {
                 return;
             }
             this.selectedValues.push({
