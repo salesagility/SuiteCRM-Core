@@ -31,6 +31,7 @@ import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
+import {cloneDeep} from 'lodash-es';
 
 export interface Option {
     value: string;
@@ -125,8 +126,8 @@ export interface FieldMetadata {
     digits?: number;
     isBaseCurrency?: boolean;
     labelDisplay?: string;
-    options$?: Observable<Option[]>;
     extraOptions?: Option[];
+    conditionalOptions?: { [value: string]: Option };
     onClick?: FieldClickCallback;
     tinymce?: any;
 
@@ -177,6 +178,10 @@ export interface Field {
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
+    options?: Option[];
+    optionsState?: Option[];
+    optionsSubject?: BehaviorSubject<Option[]>;
+    optionsChanges$?: Observable<Option[]>;
     fieldDependencies?: string[];
     attributeDependencies?: AttributeDependency[];
     logic?: FieldLogicMap;
@@ -201,6 +206,9 @@ export class BaseField implements Field {
     attributes?: FieldAttributeMap;
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
+    optionsState?: Option[];
+    optionsSubject?: BehaviorSubject<Option[]>;
+    optionsChanges$?: Observable<Option[]>;
     fieldDependencies: string[] = [];
     attributeDependencies: AttributeDependency[] = [];
     logic?: FieldLogicMap;
@@ -213,6 +221,9 @@ export class BaseField implements Field {
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
         this.valueChanges$ = this.valueSubject.asObservable();
+
+        this.optionsSubject = new BehaviorSubject<Option[]>(this.optionsState);
+        this.optionsChanges$ = this.optionsSubject.asObservable();
     }
 
     get value(): string {
@@ -264,6 +275,19 @@ export class BaseField implements Field {
             valueList: this.valueListState,
             valueObject: this.valueObjectState
         })
+    }
+
+    get options(): Option[] {
+        return this.optionsState;
+    }
+
+    set options(options: Option[]) {
+        this.optionsState = options;
+        this.emitOptionsChanges();
+    }
+
+    protected emitOptionsChanges() {
+        this.optionsSubject.next(cloneDeep(this.optionsState));
     }
 }
 

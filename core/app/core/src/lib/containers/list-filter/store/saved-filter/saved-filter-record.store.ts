@@ -37,8 +37,8 @@ import {
     SearchMetaFieldMap,
     ViewFieldDefinition
 } from 'common';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {RecordStore} from '../../../../store/record/record.store';
 import {SavedFilter, SavedFilterAttributeMap} from '../../../../store/saved-filters/saved-filter.model';
 import {FormGroup} from '@angular/forms';
@@ -231,7 +231,8 @@ export class SavedFilterRecordStore extends RecordStore {
             })
         });
 
-        record.fields.orderBy.metadata.options$ = of(options).pipe(shareReplay());
+        record.fields.orderBy.definition.options = null;
+        record.fields.orderBy.options = options;
     }
 
     /**
