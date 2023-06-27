@@ -149,6 +149,42 @@ array(
                                           ]
                                       ],
                                       [
+                                          'justify' => 'left',
+                                          'class' => 'flex-grow-1 item-content-extra',
+                                          'cols' => [
+                                              [
+                                                  'field' => [
+                                                      'name' => 'notes',
+                                                      'type' => 'line-items',
+                                                      'lineItems' => [
+                                                          'labelOnFirstLine' => true,
+                                                          'definition' => [
+                                                              'name' => 'notes_fields',
+                                                              'vname' => 'LBL_FILENAME',
+                                                              'type' => 'composite',
+                                                              'layout' => ['filename'],
+                                                              'display' => 'inline',
+                                                              'attributeFields' => [
+                                                                  'filename' => [
+                                                                      'name' => 'filename',
+                                                                      'type' => 'file',
+                                                                      'vname' => 'LBL_FILENAME',
+                                                                      'labelKey' => 'LBL_FILENAME',
+                                                                      'required' => true,
+                                                                      'valueParent' => 'record',
+                                                                      'showLabel' => ['*'],
+                                                                  ],
+                                                              ],
+                                                          ]
+                                                      ],
+                                                  ],
+                                                  'labelDisplay' => 'none',
+                                                  'hideIfEmpty' => false,
+                                                  'class' => 'small ml-auto font-weight-light',
+                                              ],
+                                          ],
+                                      ],
+                                      [
                                           'justify' => 'end',
                                           'class' => 'flex-grow-1',
                                           'cols' => [
