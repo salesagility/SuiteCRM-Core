@@ -292,7 +292,7 @@ class Imap2Handler implements ImapHandlerInterface
     {
         $this->logCall(__FUNCTION__, func_get_args());
 
-        $mbh = imap2_open($mailbox, $username, $password, $options, $n_retries, $params);
+        $mbh = Connection::open($mailbox, $username, $password, $options, $n_retries, $params);
         $this->setStream($mbh);
 
         if (empty($mbh) || !is_a($mbh, Connection::class)) {
@@ -1204,7 +1204,7 @@ class Imap2Handler implements ImapHandlerInterface
             $pageLast = $pageOffSet + $pageSize;
             $sequence = "$pageOffSet:$pageLast";
 
-            $sorteUids = $this->getSortedMessageIds('ARRIVAL', $pageOffSet, $pageLast);
+            $sorteUids = $this->getSortedMessageIds('ARRIVAL', $pageOffSet, $pageLast, '');
             $sequence = implode(',', $sorteUids);
 
             $mailList = $this->$fetchMethod($sequence, FT_UID);

@@ -486,7 +486,7 @@ class actionSendEmail extends actionBase
         $mail->handleAttachments($attachments);
         $mail->prepForOutbound();
 
-        if (empty($emailTo)) {
+        if ((empty($emailTo)) || (!is_array($emailTo))) {
             return false;
         }
         foreach ($emailTo as $to) {
@@ -501,6 +501,13 @@ class actionSendEmail extends actionBase
             foreach ($emailBcc as $email) {
                 $mail->AddBCC($email);
             }
+        }
+        if (!is_array($emailCc)) {
+            $emailCc = [];
+        }
+
+        if (!is_array($emailBcc)) {
+            $emailBcc = [];
         }
 
         //now create email
