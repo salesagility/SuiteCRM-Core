@@ -6904,7 +6904,7 @@ class InboundEmail extends SugarBean
         /** @var User $owner */
         $owner = BeanFactory::getBean('Users', $createdBy);
 
-        $emailSignatures = $owner->getPreference('account_signatures', 'Emails');
+        $emailSignatures = $owner->getPreference('account_signatures', 'Emails') ?? '';
         $emailSignatures = sugar_unserialize(base64_decode($emailSignatures));
 
         $signatureId = $emailSignatures[$inboundEmailId] ?? '';
@@ -8598,16 +8598,7 @@ eoq;
      */
     protected function getImapHandlerType(): string
     {
-        global $log;
-        $handlerType = 'native';
-
-        if (!empty($this->auth_type) && $this->auth_type === 'oauth') {
-            $handlerType = 'imap2';
-        }
-
-        $log->debug('Using imap handler type: ' . $handlerType);
-
-        return $handlerType;
+        return 'imap2';
     }
 
     /**
