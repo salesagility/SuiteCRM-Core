@@ -24,9 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    signal,
+} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {filter, map, tap} from 'rxjs/operators';
 import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-images/theme-images.store';
 
 @Component({
@@ -34,7 +40,7 @@ import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-ima
     templateUrl: './image.component.html',
     styleUrls: []
 })
-export class ImageComponent {
+export class ImageComponent  implements OnInit, OnDestroy {
     @Input() image: string;
     @Input() klass = '';
     @Input() title = '';
@@ -42,12 +48,23 @@ export class ImageComponent {
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
-    vm$ = this.images$.pipe(
-        map((images) => ({
-            images
-        })));
+    imageSig = signal<any>({});
+
+    vm$:Subscription;
 
     constructor(protected themeImagesStore: ThemeImagesStore) {
+    }
+
+    ngOnInit(): void {
+        this.vm$ = this.images$.pipe(
+            filter(img => img !== null),
+            map((images) => ({images})),
+            tap(data => this.getImage(data, this.image)),
+        ).subscribe();
+    }
+
+    ngOnDestroy() {
+        this.vm$.unsubscribe();
     }
 
     /**
@@ -57,17 +74,15 @@ export class ImageComponent {
      * @param image name
      * @returns ThemeImage
      */
-    getImage(vm: { images: ThemeImageMap }, image: string): ThemeImage {
+    getImage(vm: { images: ThemeImageMap }, image: string): void {
         if (!vm || !vm.images || Object.keys(vm.images).length < 1) {
             return null;
         }
 
-        const img = vm.images[image];
+        this.imageSig.update(() => vm.images[image]);
 
-        if (!img) {
+        if (!this.imageSig()) {
             console.warn(`Image with name '${image}' not found`);
         }
-
-        return img;
     }
 }
