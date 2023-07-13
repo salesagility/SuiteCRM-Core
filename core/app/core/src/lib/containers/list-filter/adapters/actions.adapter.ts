@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, ViewMode} from 'common';
-import {combineLatest, combineLatestWith, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
