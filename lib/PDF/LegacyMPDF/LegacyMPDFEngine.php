@@ -52,6 +52,7 @@ require_once __DIR__ . '/../../../modules/AOS_PDF_Templates/PDF_Lib/mpdf.php';
  * Class MPDFEngine
  * @package SuiteCRM\PDF\MPDF
  */
+#[\AllowDynamicProperties]
 class LegacyMPDFEngine extends PDFEngine
 {
     /**

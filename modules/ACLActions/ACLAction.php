@@ -51,6 +51,7 @@ if (file_exists(__DIR__ . '/../../modules/ACLActions/actiondefs.override.php')) 
 
 /* END - SECURITY GROUPS */
 
+#[\AllowDynamicProperties]
 class ACLAction extends SugarBean
 {
     public $module_dir = 'ACLActions';
@@ -204,7 +205,7 @@ class ACLAction extends SugarBean
     {
         global $ACLActionAccessLevels;
         if (isset($ACLActionAccessLevels[$access])) {
-            $label = preg_replace('/(LBL_ACCESS_)(.*)/', '$2', $ACLActionAccessLevels[$access]['label']);
+            $label = preg_replace('/(LBL_ACCESS_)(.*)/', '$2', (string) $ACLActionAccessLevels[$access]['label']);
 
             return strtolower($label);
         }

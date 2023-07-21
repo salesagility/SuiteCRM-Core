@@ -51,6 +51,7 @@ include_once __DIR__ . '/ImapHandlerFakeData.php';
  *
  * @author gyula
  */
+#[\AllowDynamicProperties]
 class ImapHandlerFake implements ImapHandlerInterface
 {
     protected $fakes;
@@ -497,7 +498,7 @@ class ImapHandlerFake implements ImapHandlerInterface
      */
     public function isValidStream($stream): bool
     {
-        return $this->fakes->call('isValidStream', [$stream]);
+        return $this->fakes->call('isValidStream', $stream);
     }
 
     /**

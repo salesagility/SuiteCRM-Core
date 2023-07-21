@@ -1019,6 +1019,7 @@ EOHTML;
 
         $ss = new Sugar_Smarty();
         $ss->assign("AUTHENTICATED", isset($_SESSION["authenticated_user_id"]));
+        $ss->assign("APP", $app_strings);
         $ss->assign('MOD', return_module_language($GLOBALS['current_language'], 'Users'));
 
         $bottomLinkList = array();
@@ -1500,7 +1501,7 @@ EOHTML;
         if (!empty($paramString)) {
             $theTitle .= "<h2 class='module-title-text'> $paramString </h2>";
 
-            if ($this->type == "detail") {
+            if ($this->type === "detail") {
                 $theTitle .= "<div class='favorite' record_id='" .
                     $this->bean->id .
                     "' module='" .

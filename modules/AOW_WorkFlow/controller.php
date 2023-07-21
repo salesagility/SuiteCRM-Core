@@ -25,6 +25,7 @@
 
 require_once("modules/AOW_WorkFlow/aow_utils.php");
 
+#[\AllowDynamicProperties]
 class AOW_WorkFlowController extends SugarController
 {
     protected function action_getModuleFields()
@@ -55,7 +56,7 @@ class AOW_WorkFlowController extends SugarController
             } else {
                 $module = $_REQUEST['aow_module'];
             }
-            echo htmlspecialchars($module);
+            echo htmlspecialchars((string) $module);
         }
         die;
     }
@@ -328,6 +329,8 @@ class AOW_WorkFlowController extends SugarController
             $value = '';
         }
 
+        $params = [];
+
         if ($_REQUEST['is_value_set'] === 'false'){
             $params['value_set'] = false;
         } else{
@@ -555,6 +558,10 @@ class AOW_WorkFlowController extends SugarController
             $aow_action->retrieve($_REQUEST['id']);
             $id = $aow_action->id;
             $params = unserialize(base64_decode($aow_action->parameters));
+
+            if ($params === false) {
+                $params = [];
+            }
         }
 
         $action = new $action_name($id);
