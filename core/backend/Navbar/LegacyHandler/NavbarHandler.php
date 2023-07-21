@@ -293,38 +293,36 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected function buildSubModule(SugarView $sugarView, string $legacyModule, string $frontendModule): array
     {
         $subMenu = [];
-        $administration_menu = [];
-        $legacyMenuItems = $sugarView->getMenu($legacyModule);
+        $legacyMenuItems = $sugarView->getMenu($legacyModule) ?? [];
 
         if ($frontendModule === 'administration') {
 
             global $current_language;
+            $admin_mod_strings = return_module_language($current_language, 'Administration') ?? [];
 
-            $admin_mod_strings = return_module_language($current_language, 'Administration');
-
+            $admin_group_header = [];
             require 'modules/Administration/metadata/adminpaneldefs.php';
 
             $admin_group_header = $admin_group_header ?? [];
 
+            $administration_menu = [];
             foreach ($admin_group_header as $adminEntry) {
 
-                $this->administration_menu[] = array(
+                $administration_menu[] = [
                     "",
-                    $admin_mod_strings[$adminEntry[0]],
+                    $admin_mod_strings[$adminEntry[0] ?? ''] ?? '',
                     'View',
                     'Administration',
-                    $adminEntry[3]
-                );
+                    $adminEntry[3] ?? ''
+                ];
             }
 
+            $legacyMenuItems = $administration_menu ?? [];
         }
-
-
-        $legacyMenuItems = $frontendModule === 'administration' ? $this->administration_menu : $sugarView->getMenu($legacyModule);
 
         foreach ($legacyMenuItems as $legacyMenuItem) {
 
-            [$url, $label, $action] = $legacyMenuItem;
+            [$url, $label, $action] = $legacyMenuItem ?? [];
             $routeInfo = [
                 'module' => 'Administration',
                 'route' => '',
@@ -333,24 +331,23 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
             $quickAction = $legacyMenuItem[4] ?? null;
             $type = $legacyMenuItem[5] ?? '';
-            $process = $legacyMenuItem[6] ?? null;
+            $process = $legacyMenuItem[6] ?? [];
 
             if (!empty($url)) {
-                $routeInfo = $this->routeConverter->parseUri($url);
+                $routeInfo = $this->routeConverter->parseUri($url) ?? [];
             }
 
             $subMenuItem = [
                 'name' => $action,
                 'labelKey' => $this->mapEntry($frontendModule, $action, 'labelKey', $label),
-                'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route']),
-                'process' => $process['process'],
-                'params' => $routeInfo['params'],
+                'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route'] ?? ''),
+                'process' => $process['process'] ?? '',
+                'params' => $routeInfo['params'] ?? [],
                 'icon' => $this->mapEntry($frontendModule, $action, 'icon', ''),
                 'actionLabelKey' => $this->mapEntry($frontendModule, $action, 'actionLabelKey', ''),
                 'quickAction' => $quickAction ?? false,
                 'type' => $type ?? ''
             ];
-
 
             if (!empty($subMenuItem) && (($quickAction ?? null) === null)) {
                 $url = $subMenuItem['url'];
@@ -398,13 +395,13 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             }
             foreach ($linkGroup as $linkKey => $link) {
                 unset($mappedLinkGroup[$linkKey]);
-                $path = $this->routeConverter->convertUri($link[3]);
+                $path = $this->routeConverter->convertUri($link[3]) ?? '';
 
                 $mappedLink = [
                     'name' => $link[0] ?? '',
                     'labelKey' => $link[1] ?? '',
                     'actionLabelKey' => '',
-                    'url' => $path ?? '',
+                    'url' => $path,
                     'icon' => '',
                 ];
 
@@ -422,10 +419,12 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             $linkGroupKeys = array_keys($mapEntry);
 
         }
-        for ($j = 0; $j < count($linkGroupKeys); $j++) {
+
+        $linkGroups = [];
+        for ($j = 0, $jMax = count($linkGroupKeys); $j < $jMax; $j++) {
             $linkGroup = $mapEntry[$linkGroupKeys[$j]];
             $links = array_values($linkGroup);
-            for ($i = 0; $i < count($links); $i++) {
+            for ($i = 0, $iMax = count($links); $i < $iMax; $i++) {
                 $linkGroups[] = $links[$i];
             }
         }
@@ -629,8 +628,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             '/(compose(\/)?$)|(compose(\/)?\?)/',
             '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
         ];
-        foreach ($regex as $item)  {
-            if( preg_match($item, $url)) {
+        foreach ($regex as $item) {
+            if (preg_match($item, $url)) {
                 return true;
             }
         }
@@ -649,8 +648,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             '/(compose(\/)?$)|(compose(\/)?\?)/',
             '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
         ];
-        foreach ($regex as $item)  {
-            if( preg_match($item, $url)) {
+        foreach ($regex as $item) {
+            if (preg_match($item, $url)) {
                 return 'create';
             }
         }
@@ -667,7 +666,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $preDefinedQuickActions = $this->quickActionsConfig['actions'] ?? [];
         $maxQuickActions = $this->quickActionsConfig['max_number'] ?? 7;
 
-        if ($useNavigationModules === false && !empty($preDefinedQuickActions)){
+        if ($useNavigationModules === false && !empty($preDefinedQuickActions)) {
             return $preDefinedQuickActions;
         }
 
@@ -690,7 +689,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
                 $quickActions[] = [
                     'name' => $menuEntry['name'] ?? '',
-                    'labelKey' => $menuEntry['labelKey']?? '',
+                    'labelKey' => $menuEntry['labelKey'] ?? '',
                     'url' => str_replace('/#/', '/', $menuEntry['url'] ?? ''),
                     'params' => $menuEntry['params'] ?? [],
                     'icon' => $menuEntry['icon'] ?? '',
