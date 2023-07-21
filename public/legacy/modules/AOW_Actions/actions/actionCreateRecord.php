@@ -116,7 +116,7 @@ class actionCreateRecord extends actionBase
             $html .= 'cr_fields[' . $line . '] = "' . trim(preg_replace(
                 '/\s+/',
                 ' ',
-                getModuleFields(
+                (string) getModuleFields(
                         $params['record_type'],
                         'EditView',
                         '',
@@ -127,7 +127,7 @@ class actionCreateRecord extends actionBase
             $html .= 'cr_relationships[' . $line . '] = "' . trim(preg_replace(
                 '/\s+/',
                 ' ',
-                getModuleRelationships($params['record_type'])
+                (string) getModuleRelationships($params['record_type'])
             )) . '";';
             $html .= 'cr_module[' .$line. '] = "' .$params['record_type']. '";';
             if (isset($params['field'])) {
@@ -136,7 +136,7 @@ class actionCreateRecord extends actionBase
                         $params['value'][$key] = json_encode($params['value'][$key]);
                     }
 
-                    $html .= "load_crline('".$line."','".$field."','".str_replace(array("\r\n","\r","\n"), ' ', $params['value'][$key])."','".$params['value_type'][$key]."');";
+                    $html .= "load_crline('".$line."','".$field."','".str_replace(array("\r\n","\r","\n"), ' ', (string) $params['value'][$key])."','".$params['value_type'][$key]."');";
                 }
             }
             if (isset($params['rel'])) {
@@ -494,10 +494,10 @@ class actionCreateRecord extends actionBase
             LoggerManager::getLogger()->error('Given parameter should contains index "copy_email_addresses"');
             return -2;
         }
-        
+
         return $ret;
     }
-    
+
     /**
      *
      * @param arra $currentEmailAddress

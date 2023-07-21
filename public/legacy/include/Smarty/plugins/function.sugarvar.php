@@ -79,7 +79,7 @@ function smarty_function_sugarvar($params, &$smarty)
 
 
     if (empty($params['memberName'])) {
-        $member = $smarty->get_template_vars('vardef');
+        $member = $smarty->tpl_vars['vardef']->value ?? [];
         $member = $member['name'];
     } else {
         $members = explode('.', $params['memberName']);

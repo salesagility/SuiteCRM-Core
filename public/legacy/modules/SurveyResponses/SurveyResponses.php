@@ -40,6 +40,7 @@
 
 require_once 'modules/AOP_Case_Updates/util.php';
 
+#[\AllowDynamicProperties]
 class SurveyResponses extends Basic
 {
     public $new_schema = true;
@@ -103,6 +104,8 @@ class SurveyResponses extends Basic
         if (!$email) {
             return $res;
         }
+
+        $case = null;
 
         if ($this->happiness > 7 || $this->happiness == -1) {
             $templateId = $sugar_config['survey_positive_confirmation_email'];
@@ -190,12 +193,12 @@ class SurveyResponses extends Basic
         $ret['subject'] = from_html(aop_parse_template($template->subject, $beans));
         $ret['body'] =
             from_html(
-                aop_parse_template(str_replace("\$sugarurl", $sugar_config['site_url'], $template->body_html), $beans)
+                aop_parse_template(str_replace("\$sugarurl", $sugar_config['site_url'], (string) $template->body_html), $beans)
             );
         $ret['body_alt'] =
             strip_tags(
                 from_html(
-                    aop_parse_template(str_replace("\$sugarurl", $sugar_config['site_url'], $template->body), $beans)
+                    aop_parse_template(str_replace("\$sugarurl", $sugar_config['site_url'], (string) $template->body), $beans)
                 )
             );
 

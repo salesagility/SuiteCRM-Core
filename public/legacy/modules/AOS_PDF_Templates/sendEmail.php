@@ -47,6 +47,7 @@ require_once('modules/Contacts/Contact.php');
  * TODO: Move to emails module. This class violates single responsibility principle. In that the emails
  * module should handle the email
  */
+#[\AllowDynamicProperties]
 class sendEmail
 {
     /**
@@ -74,6 +75,8 @@ class sendEmail
         // type is draft
         $email->type = "draft";
         $email->status = "draft";
+
+        $contact_id = '';
 
         if (!empty($module->billing_contact_id)) {
             $contact_id = $module->billing_contact_id;
@@ -122,7 +125,7 @@ class sendEmail
             $note->filename = $file_name;
             $noteId = $note->save();
 
-            if ($noteID !== false && !empty($noteId)) {
+            if (!empty($noteId)) {
                 rename($sugar_config['upload_dir'] . 'attachfile.pdf', $sugar_config['upload_dir'] . $note->id);
                 $email->attachNote($note);
             } else {

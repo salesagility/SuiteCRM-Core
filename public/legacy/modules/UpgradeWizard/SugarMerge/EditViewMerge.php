@@ -54,6 +54,7 @@ require_once __DIR__ . '/MergeMetadataTrait.php';
  * This is the base class that all other SugarMerge objects extend
  *
  */
+#[\AllowDynamicProperties]
 class EditViewMerge
 {
     use MergeMetadataTrait;
@@ -633,7 +634,7 @@ class EditViewMerge
         $panel_ids = array();
         $setDefaultPanel = false;
 
-        if (count($panels) == 1) {
+        if ((is_countable($panels) ? count($panels) : 0) == 1) {
             $arrayKeys = array_keys($panels);
             if (!empty($arrayKeys[0])) {
                 $this->defaulPanel = $arrayKeys[0];
@@ -672,12 +673,12 @@ class EditViewMerge
         $this->module = $module;
         $varnmame = $this->varName;
         require($original_file);
-        $this->originalData = $$varnmame;
+        $this->originalData = ${$varnmame};
         require($new_file);
-        $this->newData = $$varnmame;
+        $this->newData = ${$varnmame};
         if (file_exists($custom_file)) {
             require($custom_file);
-            $this->customData = $$varnmame;
+            $this->customData = ${$varnmame};
         } else {
             $this->customData = $this->originalData;
         }

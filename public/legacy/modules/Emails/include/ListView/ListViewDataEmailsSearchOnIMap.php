@@ -103,8 +103,8 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
 
         // TODO: figure out why was it for?
         $orderby = $order['orderBy'];
-        if (strpos($order['orderBy'], '.') && ($order['orderBy'] != "report_cache.date_modified")) {
-            $orderby = substr($order['orderBy'], strpos($order['orderBy'], '.') + 1);
+        if (strpos((string) $order['orderBy'], '.') && ($order['orderBy'] != "report_cache.date_modified")) {
+            $orderby = substr((string) $order['orderBy'], strpos((string) $order['orderBy'], '.') + 1);
         }
 
 
@@ -168,6 +168,7 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
         }
         $crmWhere = $where . " AND mailbox_id LIKE " . "'" . $inboundEmailIdQuoted . "'";
 
+        $ret_array = [];
         $ret_array['inner_join'] = '';
         if (!empty($this->lvde->seed->listview_inner_join)) {
             $ret_array['inner_join'] = ' ' . implode(' ', $this->lvde->seed->listview_inner_join) . ' ';
@@ -377,7 +378,7 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
                         )
                     ) {
                         // Ensure the encoding is UTF-8
-                        $queryString = htmlentities($request[$field_name], null, 'UTF-8');
+                        $queryString = htmlentities((string) $request[$field_name], null, 'UTF-8');
                         break;
                     }
                 }

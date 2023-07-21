@@ -58,6 +58,7 @@ $current_module_strings = return_module_language($current_language, 'Activities'
 
 $focus = BeanFactory::getBean($_REQUEST['module_name']);
 
+#[\AllowDynamicProperties]
 class Popup_Picker
 {
 
@@ -70,11 +71,15 @@ class Popup_Picker
 
     public function process_page()
     {
+        global $sugar_config;
         global $focus;
         global $mod_strings;
         global $app_strings;
         global $app_list_strings;
         global $timedate;
+
+        $sugar_config = $sugar_config ?? [];
+
 
         $summary_list = array();
         $task_list = array();
@@ -100,15 +105,15 @@ class Popup_Picker
         //Setup the arrays to store the linked records.
         foreach ($activitiesRels as $relMod => $beanName) {
             $varname = 'focus_' . $relMod . '_list';
-            $$varname = array();
+            ${$varname} = array();
         }
         foreach ($focus->get_linked_fields() as $field => $def) {
             if ($focus->load_relationship($field)) {
                 $relTable = BeanFactory::getBean($focus->$field->getRelatedModuleName())->table_name;
                 if (array_key_exists($relTable, $activitiesRels)) {
                     $varname = 'focus_' . $relTable . '_list';
-                    $$varname =
-                        sugarArrayMerge($$varname, $focus->get_linked_beans($field, $activitiesRels[$relTable]));
+                    ${$varname} =
+                        sugarArrayMerge(${$varname}, $focus->get_linked_beans($field, $activitiesRels[$relTable]));
                 }
             }
         }

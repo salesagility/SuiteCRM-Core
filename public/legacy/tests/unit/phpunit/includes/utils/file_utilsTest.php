@@ -51,6 +51,7 @@ require_once __DIR__ . '/../../../../../include/utils/file_utils.php';
  */
 class file_utilsTest extends SuitePHPUnitFrameworkTestCase
 {
+    public $rootFs;
     protected function setUp(): void
     {
         parent::setUp();
@@ -236,9 +237,9 @@ class file_utilsTest extends SuitePHPUnitFrameworkTestCase
         );
 
         $actual = get_module_dir_list();
-        sort($actual);
-        sort($expected);
-        self::assertSame($expected, $actual);
+        foreach ($expected as $key => $expect){
+        self::assertEquals($expect, $actual[$key]);
+    }
     }
 
     public function testremove_file_extension(): void

@@ -4,6 +4,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 
+#[\AllowDynamicProperties]
 class AssignGroups
 {
     public function popup_select(&$bean, $event, $arguments)
@@ -24,7 +25,7 @@ class AssignGroups
                 require_once('modules/SecurityGroups/SecurityGroup.php');
                 $security_modules = SecurityGroup::getSecurityModules();
                 //sanity check
-                if (in_array($bean->module_dir, array_keys($security_modules))) {
+                if (array_key_exists($bean->module_dir, $security_modules)) {
                     //add each group in securitygroup_list to new record
                     $rel_name = SecurityGroup::getLinkName($bean->module_dir, "SecurityGroups");
 
@@ -158,7 +159,7 @@ EOQ;
                 $groupFocus = BeanFactory::newBean('SecurityGroups');
                 $security_modules = SecurityGroup::getSecurityModules();
                 //if(in_array($module,$security_modules)) {
-                if (in_array($module, array_keys($security_modules))) {
+                if (array_key_exists($module, $security_modules)) {
                     global $app_strings;
 
                     global $current_language;
@@ -194,10 +195,10 @@ function send_massassign(mode, no_record_txt, start_string, end_string, del) {
 		return false;
 
 	if(document.MassAssign_SecurityGroups.massassign_group.selectedIndex == 0) {
-		alert("${current_module_strings['LBL_SELECT_GROUP_ERROR']}");
-		return false;	
+		alert("{$current_module_strings['LBL_SELECT_GROUP_ERROR']}");
+		return false;
 	}
-	 
+
 	if (document.MassUpdate.select_entire_list &&
 		document.MassUpdate.select_entire_list.value == 1)
 		mode = 'entire';
@@ -238,7 +239,7 @@ function send_massassign(mode, no_record_txt, start_string, end_string, del) {
 							ar.push(document.MassUpdate.elements[wp].value);
 				}
 			}
-			if(document.MassUpdate.uid.value != '') { 
+			if(document.MassUpdate.uid.value != '') {
                 document.MassUpdate.uid.value += ',';
                 document.MassUpdate.uid.value += ar.join(',');
                 document.MassAssign_SecurityGroups.uid.value = document.MassUpdate.uid.value;
@@ -267,8 +268,8 @@ function send_massassign(mode, no_record_txt, start_string, end_string, del) {
 		<form action='index.php' method='post' name='MassAssign_SecurityGroups'  id='MassAssign_SecurityGroups'>
 			<input type='hidden' name='action' value='MassAssign' />
 			<input type='hidden' name='module' value='SecurityGroups' />
-			<input type='hidden' name='return_action' value='${action}' />
-			<input type='hidden' name='return_module' value='${module}' />
+			<input type='hidden' name='return_action' value='{$action}' />
+			<input type='hidden' name='return_module' value='{$module}' />
 			<input type="hidden" name="export_where_md5" value="{$export_where_md5}">
 			<textarea style='display: none' name='uid'></textarea>
 
@@ -277,19 +278,19 @@ function send_massassign(mode, no_record_txt, start_string, end_string, del) {
 		<table cellpadding='0' cellspacing='0' border='0' width='100%'>
 		<tr>
 		<td style='padding-bottom: 2px;' class='listViewButtons'>
-		<input type='submit' name='Assign' value='${current_module_strings['LBL_ASSIGN']}' onclick="return send_massassign('selected', '{$app_strings['LBL_LISTVIEW_NO_SELECTED']}','${current_module_strings['LBL_ASSIGN_CONFIRM']}','${current_module_strings['LBL_CONFIRM_END']}',0);" class='button'>
-		<input type='submit' name='Remove' value='${current_module_strings['LBL_REMOVE']}' onclick="return send_massassign('selected', '{$app_strings['LBL_LISTVIEW_NO_SELECTED']}','${current_module_strings['LBL_REMOVE_CONFIRM']}','${current_module_strings['LBL_CONFIRM_END']}',1);" class='button'>
+		<input type='submit' name='Assign' value='{$current_module_strings['LBL_ASSIGN']}' onclick="return send_massassign('selected', '{$app_strings['LBL_LISTVIEW_NO_SELECTED']}','{$current_module_strings['LBL_ASSIGN_CONFIRM']}','{$current_module_strings['LBL_CONFIRM_END']}',0);" class='button'>
+		<input type='submit' name='Remove' value='{$current_module_strings['LBL_REMOVE']}' onclick="return send_massassign('selected', '{$app_strings['LBL_LISTVIEW_NO_SELECTED']}','{$current_module_strings['LBL_REMOVE_CONFIRM']}','{$current_module_strings['LBL_CONFIRM_END']}',1);" class='button'>
 
 
 		</td></tr></table>
 		<table cellpadding='0' cellspacing='0' border='0' width='100%' class='tabForm' id='mass_update_table'>
 		<tr><td><table width='100%' border='0' cellspacing='0' cellpadding='0'>
 		<tr>
-		<td>${current_module_strings['LBL_GROUP']}</td>
-		<td><select name='massassign_group' id="massassign_group" tabindex='1'>${group_options}</select></td>
+		<td>{$current_module_strings['LBL_GROUP']}</td>
+		<td><select name='massassign_group' id="massassign_group" tabindex='1'>{$group_options}</select></td>
 		</tr>
-		</table></td></tr></table></div>			
-		</form>		
+		</table></td></tr></table></div>
+		</form>
 EOQ;
 
 
@@ -304,12 +305,12 @@ EOQ;
             unset($_SESSION['securitysuite_error']);
             echo <<<EOQ
 <script>
-				
+
 
 var oNewP = document.createElement("div");
 oNewP.className = 'error';
 
-var oText = document.createTextNode("${lbl_securitysuite_error}");
+var oText = document.createTextNode("{$lbl_securitysuite_error}");
 oNewP.appendChild(oText);
 
 var beforeMe = document.getElementsByTagName("div")[0];

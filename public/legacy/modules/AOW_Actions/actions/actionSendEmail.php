@@ -388,17 +388,19 @@ class actionSendEmail extends actionBase
 
     public function parse_template(SugarBean $bean, &$template, $object_override = array())
     {
+
         global $sugar_config;
 
         require_once __DIR__ . '/templateParser.php';
 
+        $object_arr = [];
         $object_arr[$bean->module_dir] = $bean->id;
 
         foreach ($bean->field_defs as $bean_arr) {
             if ($bean_arr['type'] == 'relate') {
                 if (isset($bean_arr['module']) &&  $bean_arr['module'] != '' && isset($bean_arr['id_name']) &&  $bean_arr['id_name'] != '' && $bean_arr['module'] != 'EmailAddress') {
                     $idName = $bean_arr['id_name'];
-                    if (isset($bean->field_defs[$idName]) && $bean->field_defs[$idName]['source'] != 'non-db') {
+                    if (isset($bean->field_defs[$idName]) && ($bean->field_defs[$idName]['source'] ?? '') != 'non-db') {
                         if (!isset($object_arr[$bean_arr['module']])) {
                             $object_arr[$bean_arr['module']] = $bean->$idName;
                         }
@@ -426,7 +428,7 @@ class actionSendEmail extends actionBase
 
         $object_arr = array_merge($object_arr, $object_override);
 
-        $parsedSiteUrl = parse_url($sugar_config['site_url']);
+        $parsedSiteUrl = parse_url((string) $sugar_config['site_url']);
         $host = $parsedSiteUrl['host'];
         if (!isset($parsedSiteUrl['port'])) {
             $parsedSiteUrl['port'] = 80;
@@ -438,15 +440,15 @@ class actionSendEmail extends actionBase
 
         $url =  $cleanUrl."/index.php?module={$bean->module_dir}&action=DetailView&record={$bean->id}";
 
-        $template->subject = str_replace("\$contact_user", "\$user", $template->subject);
-        $template->body_html = str_replace("\$contact_user", "\$user", $template->body_html);
-        $template->body = str_replace("\$contact_user", "\$user", $template->body);
+        $template->subject = str_replace("\$contact_user", "\$user", (string) $template->subject);
+        $template->body_html = str_replace("\$contact_user", "\$user", (string) $template->body_html);
+        $template->body = str_replace("\$contact_user", "\$user", (string) $template->body);
         $template->subject = aowTemplateParser::parse_template($template->subject, $object_arr);
         $template->body_html = aowTemplateParser::parse_template($template->body_html, $object_arr);
-        $template->body_html = str_replace("\$url", $url, $template->body_html);
+        $template->body_html = str_replace("\$url", $url, (string) $template->body_html);
         $template->body_html = str_replace('$sugarurl', $sugar_config['site_url'], $template->body_html);
         $template->body = aowTemplateParser::parse_template($template->body, $object_arr);
-        $template->body = str_replace("\$url", $url, $template->body);
+        $template->body = str_replace("\$url", $url, (string) $template->body);
         $template->body = str_replace('$sugarurl', $sugar_config['site_url'], $template->body);
     }
 

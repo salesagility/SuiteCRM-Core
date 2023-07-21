@@ -73,7 +73,7 @@ function display_email_lines($focus, $field, $value, $view)
         if (isset($params['email_target_type'])) {
             $typeValues = $params['email'];
             foreach ($params['email_target_type'] as $key => $type) {
-                if (in_array($type, array_keys($app_list_strings['aor_email_type_list']), true)) {
+                if (array_key_exists($type, $app_list_strings['aor_email_type_list'])) {
                     switch ($type) {
                         case 'Specify User':
                             $recipients['User'][] = BeanFactory::getBean('Users', $typeValues[$key])->name;

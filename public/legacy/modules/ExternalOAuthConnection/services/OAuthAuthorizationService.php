@@ -49,6 +49,7 @@ require_once __DIR__ . '/../provider/ExternalOAuthProviderConnectorInterface.php
 require_once __DIR__ . '/../provider/Generic/GenericOAuthProviderConnector.php';
 require_once __DIR__ . '/../provider/Microsoft/MicrosoftOAuthProviderConnector.php';
 
+#[\AllowDynamicProperties]
 class OAuthAuthorizationService
 {
 
@@ -271,7 +272,7 @@ class OAuthAuthorizationService
      * Map token to bean fields array
      * @param string $providerId
      * @param AccessTokenInterface|null $token
-     * @return array|null
+     * @return mixed[]
      */
     public function mapToken(string $providerId, ?AccessTokenInterface $token): array
     {

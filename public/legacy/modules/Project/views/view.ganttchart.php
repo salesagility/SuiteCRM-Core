@@ -23,6 +23,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+#[\AllowDynamicProperties]
 class ProjectViewGanttChart extends ViewDetail
 {
     public function display()
@@ -81,7 +82,7 @@ class ProjectViewGanttChart extends ViewDetail
                 <form id="popup_form" class="projects-gantt-chart-popup">
                     <fieldset>
 						<table width="100%">
-							<tr><td>						
+							<tr><td>
 							<input type="hidden" name="project_id" id="project_id" value="<?php echo $project->id; ?>">
 							<input type="hidden" name="consider_business_hours" id="consider_business_hours" value="<?php echo $project->override_business_hours; ?>">
 							<input type="hidden" name="task_id" style="display: none; visibility: collapse;" id="task_id" value="">
@@ -129,8 +130,8 @@ class ProjectViewGanttChart extends ViewDetail
 									startWeekday: 0
 								});
 							</script>
-					
-						</td><td> 
+
+						</td><td>
 
 							<label for="Duration"><?php echo $mod_strings['LBL_DURATION_TITLE']; ?></label>
 							<input type="text" name="Duration" id="Duration" class="text ui-widget-content ui-corner-all" />
@@ -175,13 +176,13 @@ class ProjectViewGanttChart extends ViewDetail
 				<h2> <?php echo $project->name; ?> </h2>
 				<div class="clear"></div>
 				<br><a class="utilsLink" href="index.php?module=Project&action=DetailView&record=<?php echo $_REQUEST["project_id"]; ?>&return_module=Project&return_action=view_GanttChart" id="create_link"><?php echo $mod_strings['LBL_VIEW_DETAIL']; ?></a>
-				<span class="utils">&nbsp; 
+				<span class="utils">&nbsp;
 				</span>
 				<div class="clear"></div>
 			</div -->
 			<!-- div class="yui-navset detailview_tabs yui-navset-top" id="Project_detailview_tabs">
 				<!--ul class="yui-nav"-- >
-				<div class="yui-content">    
+				<div class="yui-content">
 					<div id="tabcontent0">
 						<div id="detailpanel_1" class="detail view  detail508 expanded">
 							<table id="project_information" class="panelContainer" cellspacing="0">
@@ -219,7 +220,7 @@ class ProjectViewGanttChart extends ViewDetail
 					</div>
 				</div>
 				<br>
-	
+
 				?>
 			</div -->
 

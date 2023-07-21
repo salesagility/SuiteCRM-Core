@@ -139,24 +139,24 @@ function requestToUserParameters($reportBean = null)
 
             // determine if parameter is a date
             if ($_REQUEST['parameter_type'][$key] === 'Value') {
-                $paramLength = strlen($_REQUEST['parameter_value'][$key]);
+                $paramLength = strlen((string) $_REQUEST['parameter_value'][$key]);
                 $paramValue = $_REQUEST['parameter_value'][$key];
                 if ($paramLength === 10) {
-                    if (strpos($paramValue, '/') === 2 || strpos($paramValue, '/') === 4) {
+                    if (strpos((string) $paramValue, '/') === 2 || strpos((string) $paramValue, '/') === 4) {
                         $params[$parameterId] = array(
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
                             'type' => $_REQUEST['parameter_type'][$key],
                             'value' => $value,
                         );
-                    } elseif (strpos($paramValue, '-') === 2 || strpos($paramValue, '-') === 4) {
+                    } elseif (strpos((string) $paramValue, '-') === 2 || strpos((string) $paramValue, '-') === 4) {
                         $params[$parameterId] = array(
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
                             'type' => $_REQUEST['parameter_type'][$key],
                             'value' => $value,
                         );
-                    } elseif (strpos($paramValue, '.') === 2 || strpos($paramValue, '.') === 4) {
+                    } elseif (strpos((string) $paramValue, '.') === 2 || strpos((string) $paramValue, '.') === 4) {
                         $params[$parameterId] = array(
                             'id' => $parameterId,
                             'operator' => $_REQUEST['parameter_operator'][$key],
@@ -337,6 +337,9 @@ function getPeriodDate($date_time_period_list_selected)
 function getPeriodEndDate($dateTimePeriodListSelected)
 {
     global $timedate;
+
+    $datetimePeriod = null;
+
     switch ($dateTimePeriodListSelected) {
         case 'today':
             $datetimePeriod = new DateTime();
@@ -480,6 +483,7 @@ function calculateQuarters($offsetMonths = 0)
  */
 function convertToDateTime($value)
 {
+
     global $current_user, $timedate;
 
     $user_dateformat = $current_user->getPreference('datef');
@@ -488,6 +492,8 @@ function convertToDateTime($value)
     if ($timedate->check_matching_format($value, $timedate->get_db_date_format())) {
         $user_dateformat = $timedate->get_db_date_format();
     }
+
+    $formattedValue = null;
 
     switch ($user_dateformat) {
         case 'Y-m-d':
