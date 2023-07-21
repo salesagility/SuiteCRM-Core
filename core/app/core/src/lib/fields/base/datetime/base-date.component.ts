@@ -29,6 +29,7 @@ import {DataTypeFormatter} from '../../../services/formatters/data-type.formatte
 import {DatetimeFormatter} from '../../../services/formatters/datetime/datetime-formatter.service';
 import {FieldLogicManager} from '../../field-logic/field-logic.manager';
 import {BaseDateTimeComponent} from './base-datetime.component';
+import {FieldLogicDisplayManager} from "../../field-logic-display/field-logic-display.manager";
 
 @Component({template: ''})
 export class BaseDateComponent extends BaseDateTimeComponent {
@@ -38,9 +39,10 @@ export class BaseDateComponent extends BaseDateTimeComponent {
     constructor(
         protected formatter: DatetimeFormatter,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
     }
 
     protected toInternalFormat(fieldType, value): string {

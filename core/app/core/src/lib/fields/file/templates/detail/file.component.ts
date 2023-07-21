@@ -31,6 +31,7 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {
     LegacyEntrypointLinkBuilder
 } from "../../../../services/navigation/legacy-entrypoint-link-builder/legacy-entrypoint-link-builder.service";
+import {FieldLogicDisplayManager} from "../../../field-logic-display/field-logic-display.manager";
 
 @Component({
     selector: 'scrm-file-detail',
@@ -43,9 +44,10 @@ export class FileDetailFieldComponent extends BaseFieldComponent {
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager,
         private legacyEntrypointLinkBuilder: LegacyEntrypointLinkBuilder
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit() {

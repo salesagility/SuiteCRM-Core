@@ -28,8 +28,11 @@ import {Injectable} from '@angular/core';
 import {
     Action,
     deepClone,
-    Field, MapEntry,
-    Record, RecordMapper,
+    DisplayType,
+    Field,
+    MapEntry,
+    Record,
+    RecordMapper,
     RecordMapperRegistry,
     StringArrayMap,
     StringArrayMatrix,
@@ -59,6 +62,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
         super();
         recordMappers.register('default', baseMapper.getKey(), baseMapper);
     }
+
     run(data: FieldLogicActionData, action: Action): void {
         const record = data.record;
         const field = data.field;
@@ -105,7 +109,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
                     return;
                 }
                 display = targetDisplay
-                data.field.display = display;
+                data.field.display = display as DisplayType;
 
             }, (error) => {
                 field.loading = false;
@@ -268,7 +272,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
         return isActive;
     }
 
-    getTriggeringStatus() : string[] {
+    getTriggeringStatus(): string[] {
         return ['onValueChange', 'onFieldInitialize'];
     }
 

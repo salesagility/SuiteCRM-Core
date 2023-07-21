@@ -43,7 +43,8 @@ export class DateDetailFieldComponent extends BaseDateComponent {
         protected formatter: DateFormatter,
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
-        protected logicDisplay: FieldLogicDisplayManager
+        protected logicDisplay: FieldLogicDisplayManager,
+
     ) {
         super(formatter, typeFormatter, logic, logicDisplay);
     }

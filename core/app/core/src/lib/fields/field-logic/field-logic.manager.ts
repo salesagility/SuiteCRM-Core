@@ -59,7 +59,6 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
-        updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValue: UpdateValueAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValueBackend: UpdateValueBackendAction,
