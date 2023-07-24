@@ -63,7 +63,7 @@
     "psr/log": "^1.0",
     "shivas/versioning-bundle": "^4.0",
     "slim/slim": "^3.8",
-    "smarty/smarty": "^2.6",
+    "smarty/smarty": "^4",
     "soundasleep/html2text": "~0.5",
     "symfony/asset": "5.2.*",
     "symfony/console": "5.2.*",
