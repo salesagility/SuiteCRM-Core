@@ -44,7 +44,7 @@ import {
     TabDefinition,
     TabDefinitions
 } from 'common';
-import {distinctUntilChanged, map} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {InstallViewMetadata, InstallViewModel, InstallViewState} from './install-view.store.model';
 import {StateStore} from '../../../../store/state';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
@@ -224,6 +224,7 @@ export class InstallViewStore implements StateStore {
             panels: [
                 {
                     key: 'LBL_CONFIG',
+                    display$: of(true).pipe(shareReplay(1)),
                     rows: [
                         {
                             cols: [

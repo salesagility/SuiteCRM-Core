@@ -120,8 +120,8 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         const panelMap = {};
 
         this.panels.forEach(panel => {
-            panel.label = panel.label.toUpperCase();
-            const panelKey = panel.key.toUpperCase();
+            panel.label = panel?.label?.toUpperCase() ?? '';
+            const panelKey = panel?.key?.toUpperCase() ?? '';
             panelMap[panelKey] = panel;
         });
 
