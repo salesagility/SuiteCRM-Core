@@ -1149,7 +1149,7 @@ EOQ;
     {
         $title = '';
         $resource = 'include/' . $this->view . '/headerTitle.tpl';
-        $titleResource = $this->th->ss->getThemeResource($resource);
+        $titleResource = $this->th->ss->loadTemplatePath($resource);
         if (file_exists($titleResource)) {
             $title = $this->ss->fetch($titleResource);
         }
