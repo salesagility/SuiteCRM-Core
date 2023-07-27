@@ -82,7 +82,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
                 });
             }
 
-            if (this.field.valueChanges$ && (this.dependentFields.length || this.dependentAttributes.length)) {
+            if (this.field.valueChanges$ && ((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length)) {
                 this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe((data) => {
                     Object.keys(this.dependentFields).forEach(fieldKey => {
                         const dependentField = this.dependentFields[fieldKey];
