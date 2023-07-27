@@ -58,7 +58,9 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         }));
         this.subs.push(this.dataSource.getPanels().subscribe(panels => {
             this.panels = [...panels];
-            this.updatePanelsArray();
+            if (this?.config?.layout === 'tabs') {
+                this.updatePanelsArray();
+            }
         }));
         this.subs.push(this.dataSource.getRecord().subscribe(record => {
             this.record = {...record};
@@ -95,7 +97,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
                 }
 
                 const panelToAdd = panelsMap[tabDefKey];
-                if (isTrue(prevTab.newTab) && this.panelsInPrevTab.length > 0) {
+                if (isTrue(prevTab?.newTab) && this.panelsInPrevTab.length > 0) {
                     this.addToPrevTab(panelToAdd);
                 }
             }
@@ -109,7 +111,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
         const index = this.panelsInPrevTab.length - 1;
 
-        if (!this.panelsInPrevTab[index].subPanels) {
+        if (!(this.panelsInPrevTab[index]?.subPanels ?? null)) {
             this.panelsInPrevTab[index].subPanels = [];
         }
         this.panelsInPrevTab[index].subPanels.push(panelToAdd);
