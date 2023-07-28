@@ -486,7 +486,8 @@ class SugarView
             }
 
             if ($key === 'training') {
-                $value['linkinfo']['Support Forum'] .= '" target="_blank"';
+                $supportForum = $value['linkinfo']['Support Forum'] ?? '';
+                $supportForum .= '" target="_blank"';
             }
 
             foreach ($value as $linkattribute => $attributevalue) {
