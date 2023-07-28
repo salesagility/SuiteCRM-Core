@@ -107,7 +107,7 @@
 				<td scope='row' align='{$params.align|default:'left'}' valign="top" {if ($params.type == 'teamset')}class="nowrap"{/if}>
 					{if $col == 'NAME' || $params.bold}<b>{/if}
 				    {if $params.link && !$params.customCode}
-						{capture assign='recordUrl'}index.php?action={$params.action|default:'DetailView'}&module={if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}&record={$rowData[$params.id]|default:$rowData.ID}&offset={$pageData.offsets.current+$smarty.foreach.rowIteration.iteration}&stamp={$pageData.stamp}{/capture}
+						{capture assign='recordUrl'}index.php?action={$params.action|default:'DetailView'}&module={if $params.dynamic_module && $rowData[$params.dynamic_module]}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}&record={$rowData[$params.id]|default:$rowData.ID}&offset={$pageData.offsets.current+$smarty.foreach.rowIteration.iteration}&stamp={$pageData.stamp}{/capture}
 						<{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN} href='{convert_link link=$recordUrl}'>
 					{/if}
 					{if $params.customCode}
