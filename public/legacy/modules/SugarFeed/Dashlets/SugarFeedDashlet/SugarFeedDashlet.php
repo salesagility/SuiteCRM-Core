@@ -604,7 +604,7 @@ enableQS(false);
 
         $listview = preg_replace_callback(
             '/\[(\w+)\:([\w\-\d]*)\:([^\]]*)\]/',
-            static function (&$matches) use ($routeConverter) {
+            static function ($matches) use ($routeConverter) {
                 $module = $matches[1] ?? '';
                 $record = $matches[2] ?? '';
                 $name = $matches[3] ?? '';
