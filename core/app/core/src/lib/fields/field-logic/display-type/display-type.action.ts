@@ -168,6 +168,7 @@ export class DisplayTypeAction extends FieldLogicActionHandler {
 
     /**
      * Is value active
+     * @param record
      * @param {object} field
      * @param {array} activeValues
      */
