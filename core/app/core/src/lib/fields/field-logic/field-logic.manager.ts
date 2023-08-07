@@ -182,7 +182,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
             const frontendActionTriggeringStatus = this?.actions[mode][action.key]?.getTriggeringStatus() ?? null;
             const actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
 
-            if(!actionTriggeringStatus.includes(triggeringStatus)) {
+            if(triggeringStatus && !actionTriggeringStatus.includes(triggeringStatus)) {
                 return;
             }
 
