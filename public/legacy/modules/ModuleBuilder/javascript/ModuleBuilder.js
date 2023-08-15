@@ -1153,7 +1153,9 @@ if (typeof('console') == 'undefined') {
       autoSetLayout: function () {
         var mp = ModuleBuilder.mainPanel;
         var c = Dom.get("mblayout");
-        mp.set("height", Dom.getViewportHeight() - Dom.getY(c) - 75);
+        if(Dom.getViewportHeight() < (window.outerHeight + 150)) {
+          mp.set("height",  Dom.getViewportHeight() - 125);
+        }
         //mp.set("width", Dom.getViewportWidth() - 40);
         mp.resize(true);
         var tabEl = ModuleBuilder.tabPanel.get("element");
