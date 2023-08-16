@@ -110,12 +110,12 @@ export class RecordContentAdapter implements RecordContentDataSource {
                         panel.rows.push(row);
                     });
 
-                    panel.displayState = new BehaviorSubject(tabDef.display || true);
+                    panel.displayState = new BehaviorSubject(tabDef?.display ?? true);
                     panel.display$ = panel.displayState.asObservable();
 
                     panels.push(panel);
 
-                    if (tabDef.displayLogic) {
+                    if (tabDef?.displayLogic) {
                         Object.keys(tabDef.displayLogic).forEach((logicDefKey) => {
                             const logicDef = tabDef.displayLogic[logicDefKey];
                             const logicType = logicDef.key;

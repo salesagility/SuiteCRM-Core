@@ -82,6 +82,14 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
         const tabDefs = this.mapTabDefs();
 
+        if(!Object.keys(tabDefs ?? {}).length) {
+            Object.keys(panelsMap ?? {}).forEach(key => {
+                tabDefs[key.toUpperCase()] = {
+                    newTab: true,
+                    panelDefault: 'expanded'
+                };
+            });
+        }
 
         Object.keys(tabDefs).forEach(tabDefKey => {
             const tabDef = tabDefs[tabDefKey];
