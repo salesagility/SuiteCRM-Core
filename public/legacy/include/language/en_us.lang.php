@@ -3938,6 +3938,7 @@ $app_strings['LBL_CASE_UPDATES'] = 'Case Updates';
 $app_strings['LBL_CASE_UPDATE_SUBMITTED'] = 'Case Update Submitted';
 $app_strings['LBL_SUMMARY_DEFAULT'] = "{{fields.name.value}}";
 $app_strings['LBL_SUMMARY_PERSON'] = "{{fields.salutation.value}} {{fields.first_name.value}} {{fields.last_name.value}}";
+$app_strings['LBL_SUMMARY_DOCUMENT'] = "{{fields.document_name.value}}";
 $app_strings['LBL_CREATE'] = 'Create';
 $app_strings['LBL_CLEAR_FILTER'] = 'Clear Filter';
 $app_strings['LBL_QUICK_FILTERS'] = 'Quick Filters';
