@@ -339,8 +339,28 @@ class RecordViewDefinitionHandler extends LegacyHandler
     {
         $templates = $viewDefs['summaryTemplates'] ?? [];
         $metadata['summaryTemplates']['create'] = $templates['create'] ?? 'LBL_CREATE';
-        $metadata['summaryTemplates']['edit'] = $templates['edit'] ?? 'LBL_SUMMARY_DEFAULT';
-        $metadata['summaryTemplates']['detail'] = $templates['detail'] ?? 'LBL_SUMMARY_DEFAULT';
+
+        $nameVardefs = $metadata['vardefs']['name'] ?? [];
+        $nameSource = $nameVardefs['source'] ?? '';
+        $nameConcatFields = $nameVardefs['db_concat_fields'] ?? [];
+
+        if ($nameSource !== 'non-db' || empty($nameConcatFields)) {
+            $metadata['summaryTemplates']['edit'] = $templates['edit'] ?? 'LBL_SUMMARY_DEFAULT';
+            $metadata['summaryTemplates']['detail'] = $templates['detail'] ?? 'LBL_SUMMARY_DEFAULT';
+            return;
+        }
+
+        if (in_array('first_name', $nameConcatFields, true) && in_array('last_name', $nameConcatFields, true)) {
+            $metadata['summaryTemplates']['edit'] = $templates['edit'] ?? 'LBL_SUMMARY_PERSON';
+            $metadata['summaryTemplates']['detail'] = $templates['detail'] ?? 'LBL_SUMMARY_PERSON';
+            return;
+        }
+
+        if (in_array('document_name', $nameConcatFields, true)) {
+            $metadata['summaryTemplates']['edit'] = $templates['edit'] ?? 'LBL_SUMMARY_DOCUMENT';
+            $metadata['summaryTemplates']['detail'] = $templates['detail'] ?? 'LBL_SUMMARY_DOCUMENT';
+        }
+
     }
 
     /**
