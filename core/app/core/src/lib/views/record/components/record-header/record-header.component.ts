@@ -54,10 +54,10 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
 
         if (scrollPosition > scrollThreshold) {
             //20 is just a random safezone number
-            if (scrollPosition - scrollThreshold < 20) return;
+            if (scrollPosition - scrollThreshold < 10) return;
             this.isScrolled = true;
         } else {
-            if (scrollThreshold - scrollPosition < 20) return;
+            if (scrollThreshold - scrollPosition < 10) return;
             this.isScrolled = false;
         }
     }
