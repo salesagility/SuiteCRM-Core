@@ -26,7 +26,7 @@
 */
 -->
 <ng-container *ngIf="hasOnClick()">
-    <a (click)="onClick()" class="clickable field-link">
+    <a (click)="onClick()" class="clickable field-link" [title]="field.definition.help ?? '' ">
         <ndc-dynamic
             [ndcDynamicComponent]="componentType"
             [ndcDynamicInputs]="{
@@ -40,7 +40,7 @@
     </a>
 </ng-container>
 <ng-container *ngIf="isLink() && !hasOnClick()">
-    <a [routerLink]="getLink()" class="field-link">
+    <a [routerLink]="getLink()" class="field-link" [title]="field.definition.help ?? '' ">
         <ndc-dynamic
             [ndcDynamicComponent]="componentType"
             [ndcDynamicInputs]="{
@@ -54,16 +54,18 @@
     </a>
 </ng-container>
 <ng-container *ngIf="!isLink() && !hasOnClick()">
-    <ndc-dynamic
-        [ndcDynamicComponent]="componentType"
-        [ndcDynamicInputs]="{
+    <div [title]="field.definition.help ?? '' ">
+        <ndc-dynamic
+                [ndcDynamicComponent]="componentType"
+                [ndcDynamicInputs]="{
             'mode': mode,
             'field': field,
             'klass': klass,
             'record': record,
             'parent': parent
         }"
-    ></ndc-dynamic>
+        ></ndc-dynamic>
+    </div>
 </ng-container>
 <ng-container *ngIf="isEdit() && field.formControl && field.formControl.errors">
     <ng-container *ngIf="field.formControl.invalid && field.formControl.touched">
