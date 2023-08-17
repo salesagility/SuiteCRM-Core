@@ -307,15 +307,15 @@
         }
       }
     },
-    "default": {
+    "defaultExt": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "extensions/default",
-      "sourceRoot": "extensions/default/app/src",
+      "root": "extensions/defaultExt",
+      "sourceRoot": "extensions/defaultExt/app/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -325,27 +325,27 @@
             "commonChunk": false,
             "sourceMap": true,
             "aot": true,
-            "outputPath": "extensions/default/public",
-            "index": "extensions/default/app/src/index.html",
-            "main": "extensions/default/app/src/main.ts",
-            "polyfills": "extensions/default/app/src/polyfills.ts",
-            "tsConfig": "extensions/default/app/tsconfig.app.json",
+            "outputPath": "extensions/defaultExt/public",
+            "index": "extensions/defaultExt/app/src/index.html",
+            "main": "extensions/defaultExt/app/src/main.ts",
+            "polyfills": "extensions/defaultExt/app/src/polyfills.ts",
+            "tsConfig": "extensions/defaultExt/app/tsconfig.app.json",
             "assets": [
-              "extensions/default/app/src/favicon.ico",
-              "extensions/default/app/src/assets"
+              "extensions/defaultExt/app/src/favicon.ico",
+              "extensions/defaultExt/app/src/assets"
             ],
             "styles": [
-              "extensions/default/app/src/styles.scss"
+              "extensions/defaultExt/app/src/styles.scss"
             ],
             "scripts": [],
-            "extraWebpackConfig": "extensions/default/app/webpack.config.js"
+            "extraWebpackConfig": "extensions/defaultExt/app/webpack.config.js"
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "extensions/default/app/src/environments/environment.ts",
-                  "with": "extensions/default/app/src/environments/environment.prod.ts"
+                  "replace": "extensions/defaultExt/app/src/environments/environment.ts",
+                  "with": "extensions/defaultExt/app/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -367,10 +367,10 @@
                   "maximumError": "10kb"
                 }
               ],
-              "extraWebpackConfig": "extensions/default/app/webpack.prod.config.js"
+              "extraWebpackConfig": "extensions/defaultExt/app/webpack.prod.config.js"
             },
             "dev" : {
-              "outputPath": "public/extensions/default"
+              "outputPath": "public/extensions/defaultExt"
             }
           }
         },
@@ -378,13 +378,13 @@
           "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "services:build",
-            "extraWebpackConfig": "extensions/default/app/webpack.config.js",
+            "extraWebpackConfig": "extensions/defaultExt/app/webpack.config.js",
             "port": 3000
           },
           "configurations": {
             "production": {
               "browserTarget": "services:build:production",
-              "extraWebpackConfig": "extensions/default/app/webpack.prod.config.js"
+              "extraWebpackConfig": "extensions/defaultExt/app/webpack.prod.config.js"
             }
           }
         },
@@ -397,28 +397,28 @@
         "test": {
           "builder": "ngx-build-plus:karma",
           "options": {
-            "main": "extensions/default/app/src/test.ts",
-            "polyfills": "extensions/default/app/src/polyfills.ts",
-            "tsConfig": "extensions/default/app/tsconfig.spec.json",
-            "karmaConfig": "extensions/default/app/karma.conf.js",
+            "main": "extensions/defaultExt/app/src/test.ts",
+            "polyfills": "extensions/defaultExt/app/src/polyfills.ts",
+            "tsConfig": "extensions/defaultExt/app/tsconfig.spec.json",
+            "karmaConfig": "extensions/defaultExt/app/karma.conf.js",
             "assets": [
-              "extensions/default/app/src/favicon.ico",
-              "extensions/default/app/src/assets"
+              "extensions/defaultExt/app/src/favicon.ico",
+              "extensions/defaultExt/app/src/assets"
             ],
             "styles": [
-              "extensions/default/app/src/styles.scss"
+              "extensions/defaultExt/app/src/styles.scss"
             ],
             "scripts": [],
-            "extraWebpackConfig": "extensions/default/app/webpack.config.js"
+            "extraWebpackConfig": "extensions/defaultExt/app/webpack.config.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "extensions/default/app/tsconfig.app.json",
-              "extensions/default/app/tsconfig.spec.json",
-              "extensions/default/app/e2e/tsconfig.json"
+              "extensions/defaultExt/app/tsconfig.app.json",
+              "extensions/defaultExt/app/tsconfig.spec.json",
+              "extensions/defaultExt/app/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -428,7 +428,7 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "extensions/default/app/e2e/protractor.conf.js",
+            "protractorConfig": "extensions/defaultExt/app/e2e/protractor.conf.js",
             "devServerTarget": "services:serve"
           },
           "configurations": {

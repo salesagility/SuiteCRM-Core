@@ -42,9 +42,9 @@ node_modules
 # Custom
 /extensions/
 !extensions/.gitkeep
-!extensions/default/app
-!extensions/default/backend
-!extensions/default/config
+!extensions/defaultExt/app
+!extensions/defaultExt/backend
+!extensions/defaultExt/config
 
 # Tests
 tests/_output/

@@ -3,7 +3,7 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 module.exports = {
   output: {
     publicPath: 'auto',
-    uniqueName: 'default'
+    uniqueName: 'defaultExt'
   },
   optimization: {
     runtimeChunk: false
@@ -11,14 +11,14 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
 
-      name: 'default',
+      name: 'defaultExt',
       filename: 'remoteEntry.js',
       library: {
         type: 'window',
-        name: 'default',
+        name: 'defaultExt',
       },
       exposes: {
-        './Module': './extensions/default/app/src/extension.module.ts'
+        './Module': './extensions/defaultExt/app/src/extension.module.ts'
       },
 
       shared: {
