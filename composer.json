@@ -132,7 +132,6 @@
       "App\\": "core/backend/",
       "App\\Module\\": "core/modules/",
       "App\\Extension\\": "extensions/",
-      "App\\DefaultExtension\\": "extensions/default",
       "SuiteCRM\\": [
         "public/legacy/lib/",
         "public/legacy/include/"
