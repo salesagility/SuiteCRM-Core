@@ -77,6 +77,9 @@ tag-input-form {
 
 .ng2-dropdown-menu {
   max-height: 12em !important;
+  width: max-content!important;
+  min-width: 260px!important;
+  max-width: 380px!important;
   z-index: map-get($zindex, modal-mid) !important;
 }
 
