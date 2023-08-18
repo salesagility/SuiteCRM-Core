@@ -54,7 +54,7 @@
                     <div>
                         <button type="button" class="record-action-button"
                                 (click)="this.dataSource.getEditAction()"
-                                *ngIf="col.field.definition.inline_edit !== false && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
+                                *ngIf="col.field.definition.inline_edit !== false && !col.field.readonly && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
                             <scrm-image class="sicon" image="pencil"></scrm-image>
                         </button>
                     </div>
