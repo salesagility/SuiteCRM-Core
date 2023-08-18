@@ -115,7 +115,7 @@ class RecordViewReadOnlyMapper implements ViewDefinitionMapperInterface
             }
 
             if ($readOnly === true) {
-                $cell['display'] = 'readonly';
+                $cell['readonly'] = true;
                 // required(true) and readonly(true) can't co-exist
                 if (isset($cell['fieldDefinition']['required']) && $cell['fieldDefinition']['required'] === true) {
                     $cell['fieldDefinition']['required'] = false;
