@@ -68,10 +68,10 @@ export class RequiredAction extends FieldLogicActionHandler {
             validators = validators.concat(this.requiredValidator.getValidator(field));
         }
 
-        data.field.definition.required = required;
-        data.field.formControl.setValidators(validators);
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
+        data.field.definition.required = required;
+        data.field.formControl.setValidators(validators);
     }
 
     /**
