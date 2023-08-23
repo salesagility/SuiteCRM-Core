@@ -2047,6 +2047,7 @@ abstract class DBManager
             $GLOBALS['log']->fatal('Field Definition should be an array.');
         } else {
             foreach ((array)$fields as $field => $fieldDef) {
+                $val = '';
                 if (isset($fieldDef['source']) && $fieldDef['source'] != 'db') {
                     continue;
                 }// Do not write out the id field on the update statement.
@@ -3054,7 +3055,7 @@ abstract class DBManager
             $field_defs = array_intersect_key($field_defs, (array)$bean);
 
             foreach ($field_defs as $field => $properties) {
-                $before_value = from_html($fetched_row[$field]);
+                $before_value = from_html($fetched_row[$field] ?? '') ?? '';
                 $after_value = $bean->$field;
                 if (isset($properties['type'])) {
                     $field_type = $properties['type'];
@@ -3073,7 +3074,7 @@ abstract class DBManager
                 //Because of bug #25078(sqlserver haven't 'date' type, trim extra "00:00:00" when insert into *_cstm table).
                 // so when we read the audit datetime field from sqlserver, we have to replace the extra "00:00:00" again.
                 if (!empty($field_type) && $field_type == 'date') {
-                    $before_value = $this->fromConvert($before_value, $field_type);
+                    $before_value = $this->fromConvert($before_value, $field_type) ?? '';
                 }
                 //if the type and values match, do nothing.
                 if (!($this->_emptyValue($before_value, $field_type) && $this->_emptyValue(
@@ -3082,7 +3083,7 @@ abstract class DBManager
                 ))
                 ) {
                     $change = false;
-                    if (trim($before_value) !== trim($after_value)) {
+                    if (trim((string)$before_value) !== trim((string)$after_value)) {
                         // decode value for field type of 'text' or 'varchar' to check before audit if the value contain trip tags or special character
                         if ($field_type == 'varchar' || $field_type == 'name' || $field_type == 'text') {
                             $decode_before_value = strip_tags(html_entity_decode((string) $before_value));
@@ -3096,8 +3097,8 @@ abstract class DBManager
                         // Manual merge of fix 95727f2eed44852f1b6bce9a9eccbe065fe6249f from DBHelper
                         // This fix also fixes Bug #44624 in a more generic way and therefore eliminates the need for fix 0a55125b281c4bee87eb347709af462715f33d2d in DBHelper
                         elseif ($this->isNumericType($field_type)) {
-                            $numerator = abs(2 * ((trim($before_value) + 0) - (trim($after_value) + 0)));
-                            $denominator = abs(((trim($before_value) + 0) + (trim($after_value) + 0)));
+                            $numerator = abs(2 * ((trim((float)$before_value) + 0) - (trim((float)$after_value) + 0)));
+                            $denominator = abs(((trim((float)$before_value) + 0) + (trim((float)$after_value) + 0)));
                             // detect whether to use absolute or relative error. use absolute if denominator is zero to avoid division by zero
                             $error = ($denominator == 0) ? $numerator : $numerator / $denominator;
                             if ($error >= 0.0000000001) {    // Smaller than 10E-10

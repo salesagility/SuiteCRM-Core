@@ -1972,7 +1972,7 @@ function get_select_options_with_id_separate_key($label_list, $key_list, $select
     //for setting null selection values to human readable --None--
     get_select_empty_option();
     $pattern = "/'0?'></";
-    $replacement = "''>" . $app_strings['LBL_NONE'] . '<';
+    $replacement = "''>" . ($app_strings['LBL_NONE'] ?? '') . '<';
     if ($massupdate) {
         $replacement .= "/OPTION>\n<OPTION value='__SugarMassUpdateClearField__'><"; // Giving the user the option to unset a drop down list. I.e. none means that it won't get updated
     }
@@ -2018,7 +2018,9 @@ function get_select_empty_option($value = '', $isSelected = false, $app_strings_
         $response .= ' ' . 'selected';
     }
 
-    $response .= '>' . $app_strings[$app_strings_label] . '</OPTION>';
+    $string = $app_strings[$app_strings_label] ?? '';
+
+    $response .= '>' . $string . '</OPTION>';
 
     return $response;
 }

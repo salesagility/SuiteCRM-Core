@@ -48,6 +48,8 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
     $vardefFields = [];
     $parentfieldlist = [];
     $displayParams = [];
+    $rel_value = '';
+
     global $current_language, $app_strings, $app_list_strings, $current_user, $beanFiles, $beanList;
 
     $bean = BeanFactory::getBean($module, $id);
@@ -260,6 +262,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
     }
 
     if (isset($fieldlist[$fieldname]['id_name']) && $fieldlist[$fieldname]['id_name'] != '' && $fieldlist[$fieldname]['id_name'] != $fieldlist[$fieldname]['name']) {
+        $rel_value = '';
         if ($value) {
             $relateIdField = $fieldlist[$fieldname]['id_name'];
             $rel_value =  $bean->$relateIdField;
@@ -440,6 +443,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
     $_REQUEST['record'] = $bean->id;
     $vardef['fields']['ID'] = $bean->id;
     $vardef['fields'][strtoupper($vardef['name'])] = $value;
+    $vardef['ext2'] = '';
 
     // If field is of type email.
     if ($vardef['name'] == "email1" && $vardef['group'] == "email1") {
@@ -505,7 +509,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
     //if field is of type relate.
     if ($vardef['type'] == "relate" || $vardef['type'] == "parent") {
         if ($vardef['source'] == "non-db") {
-            if ($vardef['module'] == "Employees") {
+            if (($vardef['module'] ?? '') == "Employees") {
                 $vardef['ext2'] = "Users";
                 $vardef['rname'] = "full_name";
             }
@@ -526,12 +530,16 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
 
         //To fix github bug 880 (the rname was null and was causing a 500 error in the getFieldValueFromModule call to $fieldname
         $fieldName = 'name';//$vardef['name'];
-        if (!is_null($vardef['rname'])) {
+
+
+        if (!is_null($vardef['rname'] ?? null)) {
             $fieldName = $vardef['rname'];
         }
 
-        if ($vardef['ext2']) {
-            $value .= getFieldValueFromModule($fieldName, $vardef['ext2'], $record);
+        $ext2 = $vardef['ext2'] ?? '';
+
+        if (!empty($ext2)) {
+            $value .= getFieldValueFromModule($fieldName, $ext2, $record);
         } elseif (!empty($vardef['rname']) || $vardef['name'] == "related_doc_name") {
             $value .= getFieldValueFromModule($fieldName, $vardef['module'], $record);
         } else {

@@ -257,7 +257,9 @@ class AOW_WorkFlowController extends SugarController
         $focus = new $beanList[$module];
         $vardef = $focus->getFieldDefinition($fieldname);
 
-        switch ($vardef['type']) {
+        $vardefType = $vardef['type'] ?? '';
+
+        switch ($vardefType) {
             case 'double':
             case 'decimal':
             case 'float':
@@ -330,8 +332,8 @@ class AOW_WorkFlowController extends SugarController
         }
 
         $params = [];
-
-        if ($_REQUEST['is_value_set'] === 'false'){
+        $isValueSet = $_REQUEST['is_value_set'] ?? 'false';
+        if ($isValueSet === 'false'){
             $params['value_set'] = false;
         } else{
             $params['value_set'] = true;
@@ -557,7 +559,7 @@ class AOW_WorkFlowController extends SugarController
             $aow_action = BeanFactory::newBean('AOW_Actions');
             $aow_action->retrieve($_REQUEST['id']);
             $id = $aow_action->id;
-            $params = unserialize(base64_decode($aow_action->parameters));
+            $params = unserialize(base64_decode($aow_action->parameters ?? ''));
 
             if ($params === false) {
                 $params = [];

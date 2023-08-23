@@ -668,7 +668,8 @@ class InboundEmail extends SugarBean
             $offset,
             $pageSize,
             $mailboxInfo,
-            $columns
+            $columns,
+            $this->auth_type
         );
 
         return array(
@@ -4734,7 +4735,7 @@ class InboundEmail extends SugarBean
 
         $this->tempAttachment[$fileName] = urldecode($attach->filename);
         // if all was successful, feel for inline and cache Note ID for display:
-        if ((strtolower($part->disposition) == 'inline' && in_array($part->subtype, $this->imageTypes))
+        if ((isset($part->disposition) && strtolower($part->disposition) == 'inline' && in_array($part->subtype, $this->imageTypes))
             || ($part->type == 5)
         ) {
 
