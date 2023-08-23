@@ -175,7 +175,8 @@ class EmailsController extends SugarController
             $relateLine = '<input type="hidden" class="email-relate-target" ';
             $relateLine .= 'data-relate-module="' . $_REQUEST['relatedModule'] . '" ';
             $relateLine .= 'data-relate-id="' . $_REQUEST['relatedId'] . '" ';
-            $relateLine .= 'data-relate-name="' . $relateBean->name . '">';
+            $relatedName = $relateBean->name ?? '';
+            $relateLine .= 'data-relate-name="' . $relatedName . '">';
             echo $relateLine;
         }
     }
@@ -264,8 +265,10 @@ class EmailsController extends SugarController
                 $useOutbound = $outboundEmailAccount->ACLAccess('view');
             }
 
-            $this->bean->from_name = $_REQUEST['from_addr_name'];
-            $this->bean->from_addr_name = $_REQUEST['from_addr_name'];
+            $fromAddr = $_REQUEST['from_addr_name'] ?? '';
+
+            $this->bean->from_name = $fromAddr;
+            $this->bean->from_addr_name = $fromAddr;
         }
 
         if ($useOutbound || $this->userIsAllowedToSendEmail($current_user, $inboundEmailAccount, $this->bean)) {
@@ -641,7 +644,8 @@ class EmailsController extends SugarController
                 }
             } else {
                 foreach ($_REQUEST['uid'] as $uid) {
-                    $importedEmailId = $inboundEmail->returnImportedEmail($_REQUEST['msgno'], $uid);
+                    $msgno = $_REQUEST['msgno'] ?? '';
+                    $importedEmailId = $inboundEmail->returnImportedEmail($msgno, $uid);
                     $this->bean = $this->setAfterImport($importedEmailId, $_REQUEST);
                 }
             }
@@ -950,21 +954,20 @@ class EmailsController extends SugarController
      */
     protected function setAfterImport($importedEmailId, $request)
     {
-        $emails = BeanFactory::getBean("Emails", $importedEmailId);
+        $emails = BeanFactory::getBean("Emails", $importedEmailId) ?? '';
 
-        foreach ($request as $requestKey => $requestValue) {
-            if (strpos($requestKey, 'SET_AFTER_IMPORT_') !== false) {
-                $field = str_replace('SET_AFTER_IMPORT_', '', $requestKey);
-                if (in_array($field, self::$doNotImportFields)) {
-                    continue;
+        if (!empty($emails)) {
+            foreach ($request as $requestKey => $requestValue) {
+                if (strpos($requestKey, 'SET_AFTER_IMPORT_') !== false) {
+                    $field = str_replace('SET_AFTER_IMPORT_', '', $requestKey);
+                    if (in_array($field, self::$doNotImportFields)) {
+                        continue;
+                    }
+                    $emails->{$field} = $requestValue;
                 }
-
-                $emails->{$field} = $requestValue;
             }
+            $emails->save();
         }
-
-        $emails->save();
-
         return $emails;
     }
 

@@ -150,7 +150,7 @@ class Popup_Picker
                     'contact_name' => $task->contact_name,
                     'date_modified' => $date_due,
                     'description' => $this->getTaskDetails($task),
-                    'date_type' => $app_strings['DATA_TYPE_DUE'],
+                    'date_type' => $app_strings['DATA_TYPE_DUE'] ?? '',
                     'sort_value' => $ts,
                     'image' => SugarThemeRegistry::current()->getImageURL('Tasks.svg')
                 );
@@ -168,7 +168,7 @@ class Popup_Picker
                     'contact_name' => $task->contact_name,
                     'date_due' => $date_due,
                     'description' => $this->getTaskDetails($task),
-                    'date_type' => $app_strings['DATA_TYPE_DUE']
+                    'date_type' => $app_strings['DATA_TYPE_DUE'] ?? ''
                 );
             }
         } // end Tasks
@@ -370,7 +370,7 @@ class Popup_Picker
                     'module' => 'Notes',
                     'status' => '',
                     'parent_id' => $note->parent_id,
-                    'parent_type' => $app_list_strings['parent_type_display'][$note->parent_type],
+                    'parent_type' => $app_list_strings['parent_type_display'][$note->parent_type] ?? '',
                     'parent_name' => $note->parent_name,
                     'contact_id' => $note->contact_id,
                     'contact_name' => $note->contact_name,
@@ -483,7 +483,7 @@ class Popup_Picker
 
         $details = "";
         if (!empty($task->date_start) && $task->date_start != '0000-00-00') {
-            $details .= $app_strings['DATA_TYPE_START'] . $task->date_start . '<br>';
+            $details .= $app_strings['DATA_TYPE_START'] ?? '' . $task->date_start . '<br>';
             $details .= '<br>';
         }
         $details .= $this->formatDescription($task->description);

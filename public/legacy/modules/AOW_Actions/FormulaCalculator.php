@@ -107,8 +107,11 @@ class FormulaCalculator
         $this->configurator = new Configurator();
         $this->configurator->loadConfig();
 
-        $this->debugEnabled = $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DebugEnabled'] == 1;
-        $this->debugFileName = isset($this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DebugFileName']) ? $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME]['DebugFileName'] : 'SweeterCalc.log';
+        $configName = $this->configurator->config[FormulaCalculator::CONFIGURATOR_NAME] ?? '';
+
+        $debugEnabled = $configName['DebugEnabled'] ?? 0;
+        $this->debugEnabled = $debugEnabled == 1;
+        $this->debugFileName = $configName['DebugFileName'] ?? 'SweeterCalc.log';
     }
 
     /**

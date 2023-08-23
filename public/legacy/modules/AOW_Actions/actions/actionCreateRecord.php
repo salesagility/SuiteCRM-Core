@@ -62,6 +62,7 @@ class actionCreateRecord extends actionBase
         global $app_list_strings;
 
         $modules = $app_list_strings['aow_moduleList'];
+        $recordType = $params['record_type'] ?? '';
 
         $checked = 'CHECKED';
         if (isset($params['relate_to_workflow']) && !$params['relate_to_workflow']) {
@@ -78,7 +79,7 @@ class actionCreateRecord extends actionBase
                  translate('LBL_RECORD_TYPE', 'AOW_Actions') .
                  '</label>:<span class="required">
 *</span>&nbsp;&nbsp;';
-        $html .= "<select name='aow_actions_param[".$line."][record_type]' id='aow_actions_param_record_type".$line."'  onchange='show_crModuleFields($line);'>".get_select_options_with_id($modules, $params['record_type']). '</select></td>';
+        $html .= "<select name='aow_actions_param[".$line."][record_type]' id='aow_actions_param_record_type".$line."'  onchange='show_crModuleFields($line);'>".get_select_options_with_id($modules, $recordType). '</select></td>';
         $html .= '<td id="relate_label" class="relate_label" scope="row" valign="top"><label>' .
                  translate('LBL_RELATE_WORKFLOW', 'AOW_Actions') .
                  '</label>:';
@@ -178,7 +179,8 @@ class actionCreateRecord extends actionBase
 
                 if (isset($params['relate_to_workflow']) && $params['relate_to_workflow']) {
                     require_once 'modules/Relationships/Relationship.php';
-                    $key = Relationship::retrieve_by_modules($bean->module_dir, $record->module_dir, DBManagerFactory::getInstance());
+                    $dbManager = DBManagerFactory::getInstance();
+                    $key = Relationship::retrieve_by_modules($bean->module_dir, $record->module_dir, $dbManager);
                     if (!empty($key)) {
                         foreach ($bean->field_defs as $field=>$def) {
                             if ($def['type'] == 'link' && !empty($def['relationship']) && $def['relationship'] == $key) {
@@ -383,12 +385,14 @@ class actionCreateRecord extends actionBase
 
         $bean_processed = isset($record->processed) ? $record->processed : false;
 
+        $assignedUserId = $record->fetched_row['assigned_user_id'] ?? '';
+
         if ($in_save) {
             global $current_user;
             $record->processed = true;
-            $check_notify = $record->assigned_user_id != $current_user->id && $record->assigned_user_id != $record->fetched_row['assigned_user_id'];
+            $check_notify = $record->assigned_user_id != $current_user->id && $record->assigned_user_id != $assignedUserId;
         } else {
-            $check_notify = $record->assigned_user_id != $record->fetched_row['assigned_user_id'];
+            $check_notify = $record->assigned_user_id != $assignedUserId;
         }
 
         $record->process_save_dates =false;
