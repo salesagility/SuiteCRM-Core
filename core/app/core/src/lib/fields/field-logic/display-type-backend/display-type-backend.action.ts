@@ -29,7 +29,6 @@ import {
     Action,
     deepClone,
     DisplayType,
-    Field,
     MapEntry,
     Record,
     RecordMapper,
@@ -43,6 +42,7 @@ import {AsyncActionInput, AsyncActionService} from '../../../services/process/pr
 import {ProcessService} from '../../../services/process/process.service';
 import {MessageService} from '../../../services/message/message.service';
 import {BaseSaveRecordMapper} from '../../../store/record/record-mappers/base-save.record-mapper';
+import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
 
 @Injectable({
     providedIn: 'root'
@@ -57,7 +57,8 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
         protected processService: ProcessService,
         protected messages: MessageService,
         protected recordMappers: RecordMapperRegistry,
-        protected baseMapper: BaseSaveRecordMapper
+        protected baseMapper: BaseSaveRecordMapper,
+        protected activeFieldsChecker: ActiveFieldsChecker
     ) {
         super();
         recordMappers.register('default', baseMapper.getKey(), baseMapper);
@@ -86,7 +87,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
             return;
         }
 
-        let isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+        const isActive = this.activeFieldsChecker.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
 
         let display = data.field.defaultDisplay;
         if (isActive) {
@@ -158,118 +159,6 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
             const mapper = mappers[key];
             mapper.map(record);
         });
-    }
-
-    /**
-     * Check if any of the configured values is currently set
-     * @param {array} relatedFields
-     * @param {object} record
-     * @param {object} activeOnFields
-     * @param {array} relatedAttributesFields
-     * @param {object} activeOnAttributes
-     */
-    protected isActive(
-        relatedFields: string[],
-        record: Record,
-        activeOnFields: StringArrayMap,
-        relatedAttributesFields: string[],
-        activeOnAttributes: StringArrayMatrix
-    ) {
-        let isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
-
-        if (!isActive) {
-            isActive = this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
-        }
-
-        return isActive;
-    }
-
-    /**
-     * Are attributes active
-     * @param {array} relatedAttributesFields
-     * @param {object} record
-     * @param {object} activeOnAttributes
-     */
-    protected areAttributesActive(
-        relatedAttributesFields: string[],
-        record: Record,
-        activeOnAttributes: StringArrayMatrix
-    ): boolean {
-        return relatedAttributesFields.some(fieldKey => {
-
-            const fields = record.fields;
-            const field = (fields && record.fields[fieldKey]) || null;
-            const attributes = activeOnAttributes[fieldKey] && Object.keys(activeOnAttributes[fieldKey]);
-            if (!field || !attributes || !attributes.length) {
-                return;
-            }
-
-            return attributes.some(attributeKey => {
-                const activeValues = activeOnAttributes[fieldKey][attributeKey];
-                const attribute = field.attributes && field.attributes[attributeKey];
-
-                if (!activeValues || !activeValues.length || !attribute) {
-                    return;
-                }
-
-                return this.isValueActive(attribute, activeValues);
-            });
-        });
-    }
-
-    /**
-     * Are fields active
-     * @param {array} relatedFields
-     * @param {object} record
-     * @param {object} activeOnFields
-     */
-    protected areFieldsActive(relatedFields: string[], record: Record, activeOnFields: StringArrayMap): boolean {
-        return relatedFields.some(fieldKey => {
-
-            const fields = record.fields;
-            const field = (fields && record.fields[fieldKey]) || null;
-            const activeValues = activeOnFields[fieldKey];
-
-            if (!field || !activeValues || !activeValues.length) {
-                return;
-            }
-
-            return this.isValueActive(field, activeValues);
-        });
-    }
-
-    /**
-     * Is value active
-     * @param {object} field
-     * @param {array} activeValues
-     */
-    protected isValueActive(field: Field, activeValues: string[]): boolean {
-        let isActive = false;
-
-        if (field.valueList && field.valueList.length) {
-            field.valueList.some(value => {
-                return activeValues.some(activeValue => {
-                    if (activeValue === value) {
-                        isActive = true;
-                        return true;
-                    }
-                })
-            });
-
-            return isActive;
-        }
-
-        if (field.value) {
-            activeValues.some(activeValue => {
-
-                if (activeValue === field.value) {
-                    isActive = true;
-                }
-
-            })
-        }
-
-        return isActive;
     }
 
     getTriggeringStatus(): string[] {
