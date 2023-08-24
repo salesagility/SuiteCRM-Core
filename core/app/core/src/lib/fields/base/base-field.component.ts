@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
 import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
 import {Subscription} from 'rxjs';
@@ -34,7 +34,7 @@ import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
-export class BaseFieldComponent implements FieldComponentInterface, OnInit {
+export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDestroy {
     @Input() mode: string;
     @Input() field: Field;
     @Input() record: Record;
@@ -53,6 +53,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit {
 
     ngOnInit(): void {
         this.baseInit();
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribeAll();
     }
 
     protected baseInit(): void {
