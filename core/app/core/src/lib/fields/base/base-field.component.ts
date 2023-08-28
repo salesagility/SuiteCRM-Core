@@ -75,14 +75,22 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
             this.calculateDependentFields(fieldKeys);
             this.field.previousValue = this.field.value;
 
-            if(this.dependentFields.length || this.dependentAttributes.length) {
-                this.dependentFields.forEach(fieldKey => {
+            if((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length) {
+                Object.keys(this.dependentFields).forEach(fieldKey => {
                     const field = this.record.fields[fieldKey] || null;
                     if (!field) {
                         return;
                     }
 
-                    this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onFieldInitialize');
+                    const types = this.dependentFields[fieldKey].type ?? [];
+
+                    if (types.includes('logic')) {
+                        this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onFieldInitialize');
+                    }
+
+                    if (types.includes('displayLogic')) {
+                        this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
+                    }
                 });
             }
 
