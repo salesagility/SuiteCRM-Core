@@ -1127,18 +1127,12 @@ $app_strings = array(
     'LBL_TOUR_SKIP' => 'Skip',
     'LBL_TOUR_BACK' => 'Back',
     'LBL_TOUR_TAKE_TOUR' => 'Take the tour',
-    'LBL_MOREDETAIL' => 'More Detail'
-    /*for 508 compliance fix*/,
-    'LBL_EDIT_INLINE' => 'Edit Inline'
-    /*for 508 compliance fix*/,
-    'LBL_VIEW_INLINE' => 'View'
-    /*for 508 compliance fix*/,
-    'LBL_BASIC_SEARCH' => 'Filter'
-    /*for 508 compliance fix*/,
-    'LBL_Blank' => ' '
-    /*for 508 compliance fix*/,
-    'LBL_ID_FF_ADD' => 'Add'
-    /*for 508 compliance fix*/,
+    'LBL_MOREDETAIL' => 'More Detail' /*for 508 compliance fix*/,
+    'LBL_EDIT_INLINE' => 'Edit Inline' /*for 508 compliance fix*/,
+    'LBL_VIEW_INLINE' => 'View' /*for 508 compliance fix*/,
+    'LBL_BASIC_SEARCH' => 'Filter' /*for 508 compliance fix*/,
+    'LBL_Blank' => ' ' /*for 508 compliance fix*/,
+    'LBL_ID_FF_ADD' => 'Add' /*for 508 compliance fix*/,
     'LBL_ID_FF_ADD_EMAIL' => 'Add Email Address' /*for 508 compliance fix*/,
     'LBL_HIDE_SHOW' => 'Hide/Show' /*for 508 compliance fix*/,
     'LBL_DELETE_INLINE' => 'Delete' /*for 508 compliance fix*/,
@@ -1282,22 +1276,8 @@ $app_strings = array(
     'LBL_EMAIL_ERROR_VIEW_RAW_SOURCE' => 'This information is not available',
     'LBL_EMAIL_ERROR_NO_OUTBOUND' => 'No outgoing mail server specified.',
     'LBL_EMAIL_ERROR_SENDING' => 'Error Sending Email. Please contact your administrator for assistance.',
-    'LBL_EMAIL_FOLDERS' => SugarThemeRegistry::current()->getImage(
-            'icon_email_folder',
-            'align=absmiddle border=0',
-            null,
-            null,
-            '.gif',
-            ''
-        ) . 'Folders',
-    'LBL_EMAIL_FOLDERS_SHORT' => SugarThemeRegistry::current()->getImage(
-        'icon_email_folder',
-        'align=absmiddle border=0',
-        null,
-        null,
-        '.gif',
-        ''
-    ),
+    'LBL_EMAIL_FOLDERS' => SugarThemeRegistry::current()->getImage('icon_email_folder', 'align=absmiddle border=0', null, null, '.gif', '') . 'Folders',
+    'LBL_EMAIL_FOLDERS_SHORT' => SugarThemeRegistry::current()->getImage('icon_email_folder', 'align=absmiddle border=0', null, null, '.gif', ''),
     'LBL_EMAIL_FOLDERS_ADD' => 'Add',
     'LBL_EMAIL_FOLDERS_ADD_DIALOG_TITLE' => 'Add New Folder',
     'LBL_EMAIL_FOLDERS_RENAME_DIALOG_TITLE' => 'Rename Folder',
@@ -1403,22 +1383,8 @@ $app_strings = array(
     'LBL_EMAIL_SAVE_DRAFT' => 'Save Draft',
     'LBL_EMAIL_DRAFT_SAVED' => 'Draft has been saved',
 
-    'LBL_EMAIL_SEARCH' => SugarThemeRegistry::current()->getImage(
-        'Search',
-        'align=absmiddle border=0',
-        null,
-        null,
-        '.gif',
-        ''
-    ),
-    'LBL_EMAIL_SEARCH_SHORT' => SugarThemeRegistry::current()->getImage(
-        'Search',
-        'align=absmiddle border=0',
-        null,
-        null,
-        '.gif',
-        ''
-    ),
+    'LBL_EMAIL_SEARCH' => SugarThemeRegistry::current()->getImage('Search', 'align=absmiddle border=0', null, null,    '.gif', ''),
+    'LBL_EMAIL_SEARCH_SHORT' => SugarThemeRegistry::current()->getImage('Search', 'align=absmiddle border=0', null,        null, '.gif', ''),
     'LBL_EMAIL_SEARCH_DATE_FROM' => 'Date From',
     'LBL_EMAIL_SEARCH_DATE_UNTIL' => 'Date Until',
     'LBL_EMAIL_SEARCH_NO_RESULTS' => 'No results match your search criteria.',
