@@ -124,10 +124,6 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
             $params['return_relationship'] = $relationshipName;
         }
 
-        if (!empty($relationshipName)) {
-            $params['return_relationship'] = $relationshipName;
-        }
-
         if ($relationshipName === 'activities' && $parentModule === 'Contacts') {
             $params['return_relationship'] = $parentModule;
         }
