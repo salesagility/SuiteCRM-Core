@@ -132,7 +132,7 @@ class CreateButtonMapper implements SubpanelButtonMapperInterface
             $params['return_relationship'] = $parentModule;
         }
 
-        if ($parentModule === 'Contacts') {
+        if ($parentModule === 'Contacts' && isset($bean->account_id) && isset($bean->account_name)) {
             $params['parent_type'] = 'Accounts';
             $additionalFields['parent_name'] = 'account_name.name';
             $additionalFields['account_name'] = 'account_name.name';
