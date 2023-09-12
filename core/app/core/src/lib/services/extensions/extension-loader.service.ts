@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Compiler, Injectable, Injector, NgModuleFactory, NgModuleRef, Type} from '@angular/core';
+import {createNgModule, Injectable, Injector, NgModuleRef, Type} from '@angular/core';
 import {forkJoin, from, isObservable, Observable, of} from 'rxjs';
 import {LoadChildrenCallback} from '@angular/router';
-import {map, mergeMap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {loadRemoteModule} from '@angular-architects/module-federation-runtime';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {isFalse} from 'common';
@@ -49,7 +49,6 @@ export class ExtensionLoader {
 
     constructor(
         protected systemConfigStore: SystemConfigStore,
-        protected compiler: Compiler,
     ) {
     }
 
@@ -100,16 +99,12 @@ export class ExtensionLoader {
      */
     public loadExtension(config: ExtensionConfig, injector: Injector): Observable<NgModuleRef<any>> {
         const promise = () => loadRemoteModule({
+            type: 'module',
             remoteEntry: config.remoteEntry,
-            remoteName: config.remoteName,
             exposedModule: './Module'
         }).then(m => m.ExtensionModule);
 
-        return this.loadModuleFactory(promise).pipe(
-            map((factory: NgModuleFactory<any>) => {
-                return factory.create(injector);
-            })
-        );
+        return this.loadModule(promise, injector);
     }
 
     /**
@@ -146,13 +141,9 @@ export class ExtensionLoader {
      * Load module factory and return observable
      * @param {function} loadChildren
      */
-    protected loadModuleFactory(loadChildren: LoadChildrenCallback): Observable<NgModuleFactory<any>> {
-        return this.wrapIntoObservable(loadChildren()).pipe(mergeMap((t: Type<any>|NgModuleFactory<any>) => {
-            if (t instanceof NgModuleFactory) {
-                return of(t);
-            } else {
-                return from(this.compiler.compileModuleAsync(t));
-            }
+    protected loadModule(loadChildren: LoadChildrenCallback, injector: Injector): Observable<NgModuleRef<any>> {
+        return this.wrapIntoObservable(loadChildren()).pipe(map((module: Type<any>) => {
+            return createNgModule(module, injector);
         }));
     }
 }
