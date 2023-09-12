@@ -8,14 +8,16 @@ module.exports = {
   optimization: {
     runtimeChunk: false
   },
+  experiments: {
+    outputModule: true
+  },
   plugins: [
     new ModuleFederationPlugin({
 
       name: 'defaultExt',
       filename: 'remoteEntry.js',
       library: {
-        type: 'window',
-        name: 'defaultExt',
+        type: "module",
       },
       exposes: {
         './Module': './extensions/defaultExt/app/src/extension.module.ts'
