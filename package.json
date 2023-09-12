@@ -20,8 +20,8 @@
     "test": "npm run test:shell",
     "test:core": "ng test core",
     "gen-index": "barrelsby --delete -e '.*\\.spec.*' -q",
-    "gen-index:core": "barrelsby --delete -e '.*\\.spec.*' -q -d core/app/core/src/lib/ -n 'core'",
-    "gen-index:common": "barrelsby --delete -e '.*\\.spec.*' -q -d 'core/app/common/src/lib/' -n 'common'",
+    "gen-index:core": "barrelsby --delete -e '.*\\.spec.*' -q -d core/app/core/src/lib/ -n core",
+    "gen-index:common": "barrelsby --delete -e '.*\\.spec.*' -q -d 'core/app/common/src/lib/' -n common",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

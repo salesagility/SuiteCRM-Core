@@ -26,7 +26,7 @@
 
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
@@ -47,6 +47,7 @@ import {AppState, AppStateStore} from '../../../store/app-state/app-state.store'
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {NotificationStore} from "../../../store/notification/notification.store";
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -147,7 +148,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
-        protected asyncActionService: AsyncActionService
+        protected asyncActionService: AsyncActionService,
+        protected notificationStore: NotificationStore
     ) {
     }
 
@@ -176,9 +178,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
         window.dispatchEvent(new Event('resize'));
 
-        this.notificationCount$ = this.appState.notificationsUnreadTotal$;
+        this.notificationCount$ = this.notificationStore.notificationsUnreadTotal$;
 
-        this.subs.push(this.appState.notificationsEnabled$.subscribe(notificationsEnabled => {
+        this.subs.push(this.notificationStore.notificationsEnabled$.subscribe(notificationsEnabled => {
             this.notificationsEnabled = notificationsEnabled;
         }));
     }
@@ -197,11 +199,11 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     markAsRead(): void {
-        this.appState.markNotificationsAsRead();
+        this.notificationStore.markNotificationsAsRead();
     }
 
     ngAfterViewInit(): void {
-        if(!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidt) {
+        if (!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidt) {
             return;
         }
         this.dropdownLength = this.mobileGlobalLinkTitle.nativeElement.offsetWidt;
@@ -281,8 +283,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     getModuleQuickActions(module: string): void {
         const moduleNavigation = this?.navigation?.modules[module] ?? null;
         const moduleNavigationMenu = moduleNavigation?.menu ?? [];
-        if (moduleNavigation === null || !moduleNavigationMenu.length ) {
-            this.currentQuickActions= [];
+        if (moduleNavigation === null || !moduleNavigationMenu.length) {
+            this.currentQuickActions = [];
         }
 
         const actions = [] as ModuleAction[];
@@ -304,7 +306,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     handleProcess(action: ModuleAction) {
-        if(!action.process) {
+        if (!action.process) {
             return;
         }
 

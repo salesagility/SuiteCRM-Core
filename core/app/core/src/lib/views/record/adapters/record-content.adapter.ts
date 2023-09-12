@@ -40,7 +40,7 @@ import {PanelLogicManager} from '../../../components/panel-logic/panel-logic.man
 export class RecordContentAdapter implements RecordContentDataSource {
     inlineEdit: true;
 
-    protected fieldSubs : Subscription[] = [];
+    protected fieldSubs: Subscription[] = [];
 
     constructor(
         protected store: RecordViewStore,
@@ -96,7 +96,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
                     const panel = {label, key: panelDefinition.key, rows: []} as Panel;
 
                     const tabDef = meta.templateMeta.tabDefs[panelDefinition.key.toUpperCase()] ?? null;
-                    if(tabDef) {
+                    if (tabDef) {
                         panel.meta = tabDef;
                     }
 
@@ -118,7 +118,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
                             const logicDef = tabDef.displayLogic[logicDefKey];
                             const logicType = logicDef.key;
 
-                            if(logicDef.params.fieldDependencies && (record && record.fields)) {
+                            if (logicDef.params.fieldDependencies && (record && record.fields)) {
                                 logicDef.params.fieldDependencies.forEach(fieldKey => {
                                     const field = record.fields[fieldKey] || null;
                                     if (!field) {
@@ -140,7 +140,8 @@ export class RecordContentAdapter implements RecordContentDataSource {
     }
 
     getRecord(): Observable<Record> {
-        return combineLatest([this.store.stagingRecord$, this.store.mode$]).pipe(
+        return this.store.stagingRecord$.pipe(
+            combineLatestWith(this.store.mode$),
             map(([record, mode]) => {
                 if (mode === 'edit' || mode === 'create') {
                     this.store.initValidators(record);

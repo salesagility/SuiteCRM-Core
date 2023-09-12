@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,28 +25,32 @@
  */
 
 import {Injectable} from '@angular/core';
-import {PanelLogicActionData, PanelLogicActionHandler} from '../panel-logic.action';
-import {Action, Field, isVoid, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
-import {isEmpty} from 'lodash-es';
+import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
+import {Action, DisplayType, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {ConditionOperatorManager} from '../../../services/condition-operators/condition-operator.manager';
+
+/**
+ * @DEPRECATED
+ */
 
 @Injectable({
     providedIn: 'root'
 })
-export class DisplayTypeAction extends PanelLogicActionHandler {
+export class FieldLogicDisplayTypeAction extends FieldLogicActionHandler {
 
     key = 'displayType';
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor() {
+    constructor(protected operatorManager: ConditionOperatorManager) {
         super();
     }
 
-    run(data: PanelLogicActionData, action: Action): boolean {
+    run(data: FieldLogicActionData, action: Action): void {
         const record = data.record;
         const field = data.field;
 
         if (!record || !field) {
-            return true;
+            return;
         }
 
         const activeOnFields: StringArrayMap = (action.params && action.params.activeOnFields) || {} as StringArrayMap;
@@ -56,10 +60,36 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
         const relatedAttributesFields: string[] = Object.keys(activeOnAttributes);
 
         if (!relatedFields.length && !relatedAttributesFields.length) {
-            return true;
+            return;
         }
 
-        return this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+        const targetDisplay = action.params && action.params.targetDisplayType;
+
+        if (!targetDisplay) {
+            return;
+        }
+
+        let isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+
+        let display = data.field.defaultDisplay;
+        if (isActive) {
+            display = targetDisplay;
+        }
+
+        data.field.display = display as DisplayType;
+
+        const resetOn: string = (action.params && action.params.resetOn) || 'none';
+
+        if (resetOn === display) {
+            if (data.field.valueList && data.field.valueList.length) {
+                data.field.valueList = [];
+            }
+
+            if (data.field.value) {
+                data.field.value = '';
+            }
+        }
+
     }
 
     /**
@@ -77,13 +107,10 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
         relatedAttributesFields: string[],
         activeOnAttributes: StringArrayMatrix
     ) {
-        let isActive = true;
-        if (!isEmpty(activeOnFields)) {
-            isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
-        }
+        let isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
 
-        if (!isEmpty(activeOnAttributes)) {
-            isActive = isActive && this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
+        if (!isActive) {
+            isActive = this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
         }
 
         return isActive;
@@ -100,7 +127,7 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
         record: Record,
         activeOnAttributes: StringArrayMatrix
     ): boolean {
-        return relatedAttributesFields.every(fieldKey => {
+        return relatedAttributesFields.some(fieldKey => {
 
             const fields = record.fields;
             const field = (fields && record.fields[fieldKey]) || null;
@@ -116,8 +143,7 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
                 if (!activeValues || !activeValues.length || !attribute) {
                     return;
                 }
-
-                return this.isValueActive(attribute, activeValues);
+                return this.isValueActive(record, attribute, activeValues);
             });
         });
     }
@@ -130,26 +156,24 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
      */
     protected areFieldsActive(relatedFields: string[], record: Record, activeOnFields: StringArrayMap): boolean {
         return relatedFields.every(fieldKey => {
-
             const fields = record.fields;
             const field = (fields && record.fields[fieldKey]) || null;
             const activeValues = activeOnFields[fieldKey];
-
             if (!field || !activeValues || !activeValues.length) {
-                return true;
+                return;
             }
-            return this.isValueActive(field, activeValues);
+            return this.isValueActive(record, field, activeValues);
         });
     }
 
     /**
      * Is value active
+     * @param record
      * @param {object} field
      * @param {array} activeValues
      */
-    protected isValueActive(field: Field, activeValues: string[]): boolean {
+    protected isValueActive(record:Record, field: Field, activeValues: string[] | any): boolean {
         let isActive = false;
-
         if (field.valueList && field.valueList.length) {
             field.valueList.some(value => {
                 return activeValues.some(activeValue => {
@@ -159,20 +183,46 @@ export class DisplayTypeAction extends PanelLogicActionHandler {
                     }
                 })
             });
-
             return isActive;
         }
 
-        if (!isVoid(field.value)) {
+        const fields = Object.keys(record.fields);
+        let opsArr:boolean[]= [];
+
+        if (field.value) {
             activeValues.some(activeValue => {
 
-                if (activeValue === field.value) {
-                    isActive = true;
+                if(activeValue.field && !fields.includes(activeValue.field)) {
+                    return;
                 }
 
-            });
+                if (activeValue === field.value && !activeValue.operator) {
+                    isActive = true;
+                }
+                if(activeValue.operator) {
+                    const operatorKey = activeValue.operator;
+                    const operator = this.operatorManager.get(operatorKey);
+                    opsArr.push(operator.run(record, field, activeValue))
+                    isActive = opsArr.every(data => data);
+                }
+            })
+        } else {
+            activeValues.some(activeValue => {
+                if(activeValue.operator) {
+                    if(activeValue.field && !fields.includes(activeValue.field)) {
+                        return;
+                    }
+                    const operatorKey = activeValue.operator;
+                    const operator = this.operatorManager.get(operatorKey);
+                    opsArr.push(operator.run(record, field, activeValue))
+                    isActive = opsArr.every(data => data);
+                }
+            })
         }
-
         return isActive;
+    }
+
+    getTriggeringStatus() : string[] {
+        return ['onValueChange', 'onFieldInitialize'];
     }
 }
