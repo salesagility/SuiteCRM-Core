@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,27 +24,23 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FieldLayoutComponent} from './field-layout.component';
-import {FieldModule} from '../../fields/field.module';
-import {FieldGridModule} from '../field-grid/field-grid.module';
-import {ImageModule} from '../image/image.module';
-import {ActionGroupMenuModule} from '../action-group-menu/action-group-menu.module';
+import {Injectable} from '@angular/core';
+import {FieldActionData} from './field.action';
+import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
+import {AsyncProcessFieldAction} from './async-process/async-process.service';
+import {FieldClearAction} from './clear/field-clear.action';
 
-
-@NgModule({
-    declarations: [FieldLayoutComponent],
-    exports: [
-        FieldLayoutComponent
-    ],
-    imports: [
-        CommonModule,
-        FieldModule,
-        FieldGridModule,
-        ImageModule,
-        ActionGroupMenuModule
-    ]
+@Injectable({
+    providedIn: 'root',
 })
-export class FieldLayoutModule {
+export class FieldActionManager extends BaseActionManager<FieldActionData> {
+
+    constructor(
+        protected async: AsyncProcessFieldAction,
+        protected clear: FieldClearAction
+    ) {
+        super();
+        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+        clear.modes.forEach(mode => this.actions[mode][clear.key] = clear);
+    }
 }

@@ -33,8 +33,7 @@ import {FieldLayoutConfig, FieldLayoutDataSource} from './field-layout.model';
 
 @Component({
     selector: 'scrm-field-layout',
-    templateUrl: './field-layout.component.html',
-    styles: []
+    templateUrl: './field-layout.component.html'
 })
 export class FieldLayoutComponent extends BaseFieldGridComponent {
 
@@ -100,6 +99,8 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
             layoutRow.cols.forEach((layoutCol, colIndex) => {
                 const fieldName = layoutCol.name;
                 const field = this.fields[fieldName] || null;
+                const fieldActions = layoutCol.fieldActions || null;
+                const adaptor = layoutCol.adaptor ?? null;
 
                 if (!field) {
                     row.cols.push({} as FieldGridColumn);
@@ -107,7 +108,9 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
                 }
 
                 row.cols.push({
-                    field
+                    field,
+                    fieldActions,
+                    adaptor
                 } as FieldGridColumn);
 
                 if (this.colNumber === 1 && colIndex < layoutRow.cols.length - 1) {

@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,27 +24,34 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FieldLayoutComponent} from './field-layout.component';
-import {FieldModule} from '../../fields/field.module';
-import {FieldGridModule} from '../field-grid/field-grid.module';
-import {ImageModule} from '../image/image.module';
-import {ActionGroupMenuModule} from '../action-group-menu/action-group-menu.module';
+import {Injectable} from '@angular/core';
+import {ViewMode} from 'common';
+import {FieldActionData, FieldActionHandler} from '../field.action';
+import {map, take} from 'rxjs/operators';
 
-
-@NgModule({
-    declarations: [FieldLayoutComponent],
-    exports: [
-        FieldLayoutComponent
-    ],
-    imports: [
-        CommonModule,
-        FieldModule,
-        FieldGridModule,
-        ImageModule,
-        ActionGroupMenuModule
-    ]
+@Injectable({
+    providedIn: 'root'
 })
-export class FieldLayoutModule {
+export class FieldClearAction extends FieldActionHandler {
+
+    key = 'clear';
+    modes = ['edit' as ViewMode];
+
+    constructor() {
+        super();
+    }
+
+    run(data: FieldActionData): void {
+        data.store.stagingRecord$.pipe(
+            take(1),
+            map(records=> {
+                const field = records.fields[data.action.fieldName];
+                return field.value = '';
+            }),
+        ).subscribe()
+    }
+
+    shouldDisplay(data: FieldActionData): boolean {
+        return this.checkRecordAccess(data, ['edit']);
+    }
 }

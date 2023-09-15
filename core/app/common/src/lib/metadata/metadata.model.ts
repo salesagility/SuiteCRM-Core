@@ -26,6 +26,7 @@
 
 import {FieldDefinition, FieldMetadata, LineItemsMetadata} from '../record/field.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
+import {Action} from '../actions/action.model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ViewMode} from "../views/view.model";
 
@@ -45,6 +46,8 @@ export interface ViewFieldDefinition {
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     logic?: FieldLogicMap;
+    fieldActions?: FieldActions;
+    adaptor?: any;
     displayLogic?: FieldLogicMap;
 
     [key: string]: any;
@@ -71,6 +74,13 @@ export interface PanelCell extends ViewFieldDefinition {
 
 export interface ViewFieldDefinitionMap {
     [key: string]: ViewFieldDefinition;
+}
+
+export interface FieldActions {
+    actions: Action[];
+    klass: string;
+    containerKlass: string;
+    position: string;
 }
 
 export interface TabDefinitions {

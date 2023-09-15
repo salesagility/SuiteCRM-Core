@@ -254,16 +254,16 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         attributeKeys.forEach(attributeKey => {
 
             const attribute = field.attributes[attributeKey];
-            if (!attribute || !attribute.attributeDependencies || !attribute.attributeDependencies.length) {
-                return;
-            }
+            if (attribute && attribute.attributeDependencies && attribute.attributeDependencies.length) {
+                const hasDependency = this.isDependencyAttribute(attribute.attributeDependencies);
 
-            if (this.isDependencyAttribute(attribute.attributeDependencies)) {
-                dependentAttributes.push({
-                    field: fieldKey,
-                    attribute: attributeKey,
-                    types: (dependentFields[name] ?? {})['types'] ?? [],
-                });
+                if (hasDependency) {
+                    dependentAttributes.push({
+                        field: fieldKey,
+                        attribute: attributeKey,
+                        types:  (dependentFields[name] ?? {})['types'] ?? []
+                    });
+                }
             }
         });
     }

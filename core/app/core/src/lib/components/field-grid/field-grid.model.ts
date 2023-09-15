@@ -24,13 +24,14 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface, Field} from 'common';
+import {ButtonInterface, Field, FieldActions} from 'common';
 
 export interface FieldGridColumn {
     field?: Field;
     buttons?: ButtonInterface[];
     actionSlot?: boolean;
     specialSlot?: boolean;
+    fieldActions?: FieldActions;
 }
 
 export interface FieldGridRow {
