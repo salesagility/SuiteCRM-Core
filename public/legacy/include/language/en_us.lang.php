@@ -1625,6 +1625,7 @@ $app_strings = array(
     'LBL_LOCALE_NAME_EXAMPLE_LAST' => 'Livingstone',
     'LBL_LOCALE_NAME_EXAMPLE_SALUTATION' => 'Dr.',
     'LBL_LOCALE_NAME_EXAMPLE_TITLE' => 'Code Monkey Extraordinaire',
+    'LBL_COPY' => 'Copy',
     'LBL_CANCEL' => 'Cancel',
     'LBL_SNOOZE' => 'Snooze',
     'LBL_SNOOZE_INLINE_CONFIRM' => 'Snooze? ({{preferences.snooze_alert_timer|enum:snooze_alert_timer_simple}})',
