@@ -27,7 +27,6 @@
 import {Injectable} from '@angular/core';
 import {ViewMode} from 'common';
 import {FieldActionData, FieldActionHandler} from '../field.action';
-import {map, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -42,13 +41,9 @@ export class FieldClearAction extends FieldActionHandler {
     }
 
     run(data: FieldActionData): void {
-        data.store.stagingRecord$.pipe(
-            take(1),
-            map(records=> {
-                const field = records.fields[data.action.fieldName];
-                return field.value = '';
-            }),
-        ).subscribe()
+        let staging = data.store.recordStore.getStaging();
+        const field = staging.fields[data.action.fieldName];
+        field.formControl.setValue('');
     }
 
     shouldDisplay(data: FieldActionData): boolean {

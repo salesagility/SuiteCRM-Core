@@ -25,25 +25,29 @@
  */
 
 import {Injectable} from '@angular/core';
-import {FieldActionData} from './field.action';
-import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
-import {AsyncProcessFieldAction} from './async-process/async-process.service';
-import {FieldClearAction} from './clear/field-clear.action';
-import {FieldCopyAction} from "./copy/field-copy.action";
+import {ALL_VIEW_MODES} from 'common';
+import {FieldActionData, FieldActionHandler} from '../field.action';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
-export class FieldActionManager extends BaseActionManager<FieldActionData> {
+export class FieldCopyAction extends FieldActionHandler {
 
-    constructor(
-        protected async: AsyncProcessFieldAction,
-        protected clear: FieldClearAction,
-        protected copy: FieldCopyAction
-    ) {
+    key = 'copy';
+    modes = ALL_VIEW_MODES;
+
+    constructor( private clipboard: Clipboard) {
         super();
-        async.modes.forEach(mode => this.actions[mode][async.key] = async);
-        clear.modes.forEach(mode => this.actions[mode][clear.key] = clear);
-        copy.modes.forEach(mode => this.actions[mode][copy.key] = copy);
+    }
+
+    run(data: FieldActionData): void {
+        let staging = data.store.recordStore.getStaging();
+        const field = staging.fields[data.action.fieldName];
+        this.clipboard.copy(field.value)
+    }
+
+    shouldDisplay(data: FieldActionData): boolean {
+        return this.checkRecordAccess(data, ['edit']);
     }
 }
