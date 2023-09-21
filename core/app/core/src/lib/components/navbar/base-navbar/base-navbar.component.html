@@ -136,7 +136,18 @@
 
                             <ul class="navbar-nav grouped">
 
-                                <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
+                                <ng-container *ngIf="navbar.current && navbar.current.isGroupedMenu">
+                                    <li class="top-nav nav-item dropdown main-grouped">
+                                        <scrm-grouped-menu-item
+                                                [item]="navbar.current"
+                                                [subNavCollapse]="subNavCollapse"
+                                        >
+                                        </scrm-grouped-menu-item>
+
+                                    </li>
+                                </ng-container>
+
+                                <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown non-grouped active">
                                     <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                                 </li>
 
