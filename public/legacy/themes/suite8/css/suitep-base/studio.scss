@@ -89,8 +89,9 @@
 }
 
 #panels {
-  position: inherit;
+  position: absolute;
   padding: 5px;
+  margin-left: 200px;
   border: 1px solid $panel-default-border;
   border-radius: $border-radius-base;
   float: right;
