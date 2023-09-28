@@ -220,4 +220,6 @@ $mod_strings = array(
     'LBL_LAST_CALL' => 'Your last interaction was a call on :',
     'LBL_LAST_EMAIL' => 'Your last interaction was an email on :',
     'LBL_NO_INTERACTION' => 'You have yet to interact with this contact.',
+
+    'LBL_LIST_INVITE_STATUS' => 'Invite Status',
 );

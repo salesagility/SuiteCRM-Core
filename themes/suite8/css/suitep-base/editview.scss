@@ -3554,7 +3554,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+    width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -3657,7 +3657,7 @@ select#sales_stage_advanced {
   }
 
   .col-sm-12 .col-sm-8.edit-view-field textarea {
-    width: 45%;
+    width: 120%;
   }
 
   [field=bool].col-sm-8.edit-view-field {
@@ -5721,6 +5721,15 @@ table.subpanel-table .pagination li.single > #formprojects_project_tasks {
   position: absolute;
   top: -39px;
   right: 7px;
+}
+
+body.popupBody {
+  input {
+    border-radius: 4px;
+  }
+  .button {
+    border-radius: 4px;
+  }
 }
 
 .edit-border-bottom {

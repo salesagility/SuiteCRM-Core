@@ -3334,7 +3334,7 @@ class InboundEmail extends SugarBean
             // Open the connection and try the test string
             $this->conn = $this->getImapConnection($serviceTest, $login, $passw, $imapConnectionOptions);
 
-            if (($errors = $this->getImap()->getLastError()) || ($alerts = $this->getImap()->getAlerts())) {
+            if (($errors = $this->getImap()->getLastError()) || ($alerts = $this->getImap()->getAlerts()) || !$this->conn) {
                 // login failure means don't bother trying the rest
                 if ($errors == 'Too many login failures'
                     || $errors == '[CLOSED] IMAP connection broken (server response)'
@@ -3357,6 +3357,8 @@ class InboundEmail extends SugarBean
                     $GLOBALS['log']->debug($l . ': I-E failed using [' . $serviceTest . '] - error: ' . $errors);
                     $retArray['err'][$k] = $errors;
                     $retArray['bad'][$k] = $serviceTest;
+
+                    return $retArray;
                 }
             } else {
                 $GLOBALS['log']->debug($l . ': I-E found good connect using [' . $serviceTest . ']');
@@ -6381,9 +6383,9 @@ class InboundEmail extends SugarBean
 
         $useSsl = ($requestSsl == 'true') ? true : false; // TODO: validate the ssl request variable value (for e.g its posibble to give a numeric 1 as true)
         if ($test) {
-            $this->getImap()->setTimeout(1, 15); // 60 secs is the default
-            $this->getImap()->setTimeout(2, 15);
-            $this->getImap()->setTimeout(3, 15);
+            $this->getImap()->setTimeout(1, 5); // 60 secs is the default
+            $this->getImap()->setTimeout(2, 5);
+            $this->getImap()->setTimeout(3, 5);
 
             $opts = $this->findOptimumSettings($useSsl);
             if (!empty($opts) && isset($opts['good']) && empty($opts['good'])) {
@@ -6469,7 +6471,7 @@ class InboundEmail extends SugarBean
             $errors = '';
             $alerts = '';
             $successful = false;
-            if (($errors = $this->getImap()->getLastError()) || ($alerts = $this->getImap()->getAlerts())) {
+            if (($errors = $this->getImap()->getLastError()) || ($alerts = $this->getImap()->getAlerts()) || !$this->conn) {
                 if ($errors === 'Mailbox is empty') { // false positive
                     $successful = true;
                 } else {
@@ -6568,6 +6570,10 @@ class InboundEmail extends SugarBean
             }
 
             $connection = $this->getImap()->open($mailbox, $username, $password, $options, 0, $params);
+
+            if (!$connection){
+                break;
+            }
 
         }
 
