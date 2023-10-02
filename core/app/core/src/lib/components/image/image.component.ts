@@ -50,21 +50,23 @@ export class ImageComponent  implements OnInit, OnDestroy {
 
     imageSig = signal<any>({});
 
-    vm$:Subscription;
+    protected subs: Subscription[] = [];
 
     constructor(protected themeImagesStore: ThemeImagesStore) {
     }
 
     ngOnInit(): void {
-        this.vm$ = this.images$.pipe(
+        this.subs = [];
+        this.subs.push(this.images$.pipe(
             filter(img => img !== null),
             map((images) => ({images})),
             tap(data => this.getImage(data, this.image)),
-        ).subscribe();
+        ).subscribe());
     }
 
     ngOnDestroy() {
-        this.vm$.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe());
+        this.subs = [];
     }
 
     /**
