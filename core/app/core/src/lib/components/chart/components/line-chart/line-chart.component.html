@@ -27,27 +27,31 @@
 -->
 <scrm-chart-message-area *ngIf="!results || !results.length || results.length < 1"
                          labelKey="LBL_NO_DATA"></scrm-chart-message-area>
-<ngx-charts-line-chart *ngIf="results && results.length > 0"
-                       class="line-chart"
-                       (window:resize)="onResize()"
-                       [animations]="false"
-                       [results]="results"
-                       [view]="view"
-                       [scheme]="scheme"
-                       [gradient]="gradient"
-                       [xAxis]="xAxis"
-                       [yAxis]="yAxis"
-                       [legend]="legend"
-                       [xScaleMin]="xScaleMin"
-                       [xScaleMax]="xScaleMax"
-                       [xAxisTicks]="xAxisTicks"
-                       [showXAxisLabel]="showXAxisLabel"
-                       [showYAxisLabel]="showYAxisLabel"
-                       [xAxisLabel]="xAxisLabel"
-                       [legendPosition]="'below'"
-                       [autoScale]="true"
-                       [yAxisTickFormatting]="yAxisTickFormatting"
-                       [xAxisTickFormatting]="xAxisTickFormatting"
-                       [tooltipDisabled]="tooltipDisabled"
-                       [yAxisLabel]="yAxisLabel">
-</ngx-charts-line-chart>
+<ng-container *ngIf="view().length">
+    <ngx-charts-line-chart *ngIf="results && results.length > 0"
+                           class="line-chart"
+                           [animations]="false"
+                           [results]="results"
+                           [view]="view()"
+                           [scheme]="scheme"
+                           [gradient]="gradient"
+                           [xAxis]="xAxis"
+                           [yAxis]="yAxis"
+                           [legend]="legend"
+                           [xScaleMin]="xScaleMin"
+                           [xScaleMax]="xScaleMax"
+                           [xAxisTicks]="xAxisTicks"
+                           [showXAxisLabel]="showXAxisLabel"
+                           [showYAxisLabel]="showYAxisLabel"
+                           [xAxisLabel]="xAxisLabel"
+                           [legendPosition]="'below'"
+                           [autoScale]="true"
+                           [yAxisTickFormatting]="yAxisTickFormatting"
+                           [xAxisTickFormatting]="xAxisTickFormatting"
+                           [tooltipDisabled]="tooltipDisabled"
+                           [yAxisLabel]="yAxisLabel">
+    </ngx-charts-line-chart>
+</ng-container>
+<div *ngIf="!view().length && results && results.length > 0" [class.m-5]="true" class="chart-loading">
+    <scrm-loading-spinner></scrm-loading-spinner>
+</div>

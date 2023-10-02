@@ -26,8 +26,9 @@
 
 import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {isFalse, SingleSeries} from 'common';
-import {Subscription} from 'rxjs';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
     selector: 'scrm-vertical-bar-chart',
@@ -37,10 +38,9 @@ import {BaseChartComponent} from '../base-chart/base-chart.component';
 export class VerticalBarChartComponent extends BaseChartComponent implements OnInit, OnDestroy {
 
     results: SingleSeries;
-    protected subs: Subscription[] = [];
 
-    constructor(protected elementRef:ElementRef) {
-        super(elementRef);
+    constructor(protected elementRef: ElementRef, protected screenSize: ScreenSizeObserverService) {
+        super(elementRef, screenSize);
     }
 
     ngOnInit(): void {
@@ -48,10 +48,11 @@ export class VerticalBarChartComponent extends BaseChartComponent implements OnI
             this.height = this.dataSource.options.height;
         }
 
-        this.calculateView();
+        this.initResizeListener();
 
-        this.subs.push(this.dataSource.getResults().subscribe(value => {
+        this.subs.push(this.dataSource.getResults().pipe(debounceTime(500)).subscribe(value => {
             this.results = value.singleSeries;
+            this.calculateView()
         }));
     }
 

@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {ChartMessageAreaModule} from '../chart-message-area/chart-message-area.module';
 import {LineChartComponent} from './line-chart.component';
+import {LoadingSpinnerModule} from "../../../loading-spinner/loading-spinner.module";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {LineChartComponent} from './line-chart.component';
     imports: [
         CommonModule,
         NgxChartsModule,
-        ChartMessageAreaModule
+        ChartMessageAreaModule,
+        LoadingSpinnerModule
     ]
 })
 export class LineChartModule {

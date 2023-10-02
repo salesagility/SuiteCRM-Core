@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {VerticalBarChartComponent} from './vertical-bar-chart.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {ChartMessageAreaModule} from '../chart-message-area/chart-message-area.module';
+import {LoadingSpinnerModule} from "../../../loading-spinner/loading-spinner.module";
 
 @NgModule({
     declarations: [VerticalBarChartComponent],
@@ -36,7 +37,8 @@ import {ChartMessageAreaModule} from '../chart-message-area/chart-message-area.m
     imports: [
         CommonModule,
         NgxChartsModule,
-        ChartMessageAreaModule
+        ChartMessageAreaModule,
+        LoadingSpinnerModule
     ]
 })
 export class VerticalBarChartModule {

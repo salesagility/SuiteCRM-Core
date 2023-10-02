@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {isFalse, MultiSeries} from 'common';
-import {Subscription} from 'rxjs';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
 
 @Component({
     selector: 'scrm-line-chart',
@@ -53,10 +53,8 @@ export class LineChartComponent extends BaseChartComponent implements OnInit, On
     xAxisTickFormatting: Function;
     tooltipDisabled: boolean;
 
-    protected subs: Subscription[] = [];
-
-    constructor(protected elementRef:ElementRef) {
-        super(elementRef);
+    constructor(protected elementRef: ElementRef, protected screenSize: ScreenSizeObserverService) {
+        super(elementRef, screenSize);
     }
 
     ngOnInit(): void {
@@ -64,10 +62,11 @@ export class LineChartComponent extends BaseChartComponent implements OnInit, On
             this.height = this.dataSource.options.height;
         }
 
-        this.calculateView();
+        this.initResizeListener();
 
         this.subs.push(this.dataSource.getResults().subscribe(value => {
             this.results = value.multiSeries;
+            this.calculateView();
         }));
 
         this.scheme = this.getScheme();

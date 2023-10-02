@@ -27,11 +27,15 @@
 -->
 <scrm-chart-message-area *ngIf="!results || !results.length || results.length < 1"
                          labelKey="LBL_NO_DATA"></scrm-chart-message-area>
-<ngx-charts-pie-grid *ngIf="results && results.length > 0"
-                     (window:resize)="onResize()"
-                     [animations]="false"
-                     [view]="view"
-                     [scheme]="scheme"
-                     [label]="language.getFieldLabel(label)"
-                     [results]="results">
-</ngx-charts-pie-grid>
+<ng-container *ngIf="view().length">
+    <ngx-charts-pie-grid *ngIf="results && results.length > 0"
+                         [animations]="false"
+                         [view]="view()"
+                         [scheme]="scheme"
+                         [label]="language.getFieldLabel(label)"
+                         [results]="results">
+    </ngx-charts-pie-grid>
+</ng-container>
+<div *ngIf="!view().length && results && results.length > 0" [class.m-5]="true" class="chart-loading">
+    <scrm-loading-spinner></scrm-loading-spinner>
+</div>
