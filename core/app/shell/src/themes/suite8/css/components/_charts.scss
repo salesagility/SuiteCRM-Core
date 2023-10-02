@@ -50,3 +50,13 @@
   width: calc(100% - 20px) ;
   margin-left: 10px;
 }
+
+/**
+  Workaround for issues:
+  - https://github.com/swimlane/ngx-charts/issues/1248
+  - https://github.com/swimlane/ngx-charts/issues/1424
+ */
+.ngx-charts-outer {
+  width: auto!important;
+  height: auto!important;
+}
