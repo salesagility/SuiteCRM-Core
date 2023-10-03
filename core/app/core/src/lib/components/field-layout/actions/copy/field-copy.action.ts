@@ -47,7 +47,4 @@ export class FieldCopyAction extends FieldActionHandler {
         this.clipboard.copy(field.value)
     }
 
-    shouldDisplay(data: FieldActionData): boolean {
-        return this.checkRecordAccess(data, ['edit']);
-    }
 }

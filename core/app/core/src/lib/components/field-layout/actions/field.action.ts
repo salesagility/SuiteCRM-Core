@@ -36,7 +36,9 @@ export abstract class FieldActionHandler extends ActionHandler<FieldActionData> 
 
     abstract run(data: FieldActionData): void;
 
-    abstract shouldDisplay(data: FieldActionData): boolean;
+    shouldDisplay(data: FieldActionData): boolean{
+        return true
+    };
 
     checkRecordAccess(data: FieldActionData, defaultAcls: string[] = []): boolean {
 

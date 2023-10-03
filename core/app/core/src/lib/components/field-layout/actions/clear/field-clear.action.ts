@@ -46,7 +46,4 @@ export class FieldClearAction extends FieldActionHandler {
         field.formControl.setValue('');
     }
 
-    shouldDisplay(data: FieldActionData): boolean {
-        return this.checkRecordAccess(data, ['edit']);
-    }
 }

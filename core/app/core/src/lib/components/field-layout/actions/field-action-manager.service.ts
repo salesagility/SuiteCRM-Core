@@ -27,9 +27,9 @@
 import {Injectable} from '@angular/core';
 import {FieldActionData} from './field.action';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
-import {AsyncProcessFieldAction} from './async-process/async-process.service';
 import {FieldClearAction} from './clear/field-clear.action';
 import {FieldCopyAction} from "./copy/field-copy.action";
+import {CalculateValueBackendAction} from "./calculate-value-backend/calculate-value-backend.action";
 
 @Injectable({
     providedIn: 'root',
@@ -37,12 +37,13 @@ import {FieldCopyAction} from "./copy/field-copy.action";
 export class FieldActionManager extends BaseActionManager<FieldActionData> {
 
     constructor(
-        protected async: AsyncProcessFieldAction,
+        protected calculate: CalculateValueBackendAction,
         protected clear: FieldClearAction,
         protected copy: FieldCopyAction
     ) {
         super();
-        async.modes.forEach(mode => this.actions[mode][async.key] = async);
+
+        calculate.modes.forEach(mode => this.actions[mode][calculate.key] = calculate);
         clear.modes.forEach(mode => this.actions[mode][clear.key] = clear);
         copy.modes.forEach(mode => this.actions[mode][copy.key] = copy);
     }
