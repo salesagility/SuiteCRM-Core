@@ -109,7 +109,7 @@ class CSRFCookieListener
     public function onKernelResponse(ResponseEvent $event): void
     {
         if (
-            HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()
+            HttpKernelInterface::MAIN_REQUEST !== $event->getRequestType()
         ) {
             return;
         }
