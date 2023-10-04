@@ -27,12 +27,13 @@
 
 namespace App\Security;
 
-use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
+use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-class LegacyPasswordEncoder extends BasePasswordEncoder
+class LegacyPasswordEncoder
 {
 
+    use CheckPasswordLengthTrait;
     /**
      * @inheritDoc
      */
