@@ -41,7 +41,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use SubpanelDataPort;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use User;
 
 class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements PresetListDataHandlerInterface, LoggerAwareInterface
@@ -72,7 +72,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -81,7 +81,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session,
+        RequestStack $session,
         RecordMapper $recordMapper,
         FieldDefinitionsProviderInterface $fieldDefinitionProvider
     ) {

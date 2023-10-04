@@ -38,7 +38,7 @@ use BeanFactory;
 use DateFormatService;
 use DateTime;
 use Exception;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Task;
 
 /**
@@ -65,7 +65,7 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -74,7 +74,7 @@ class DaysUntilDueTask extends LegacyHandler implements StatisticsProviderInterf
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;

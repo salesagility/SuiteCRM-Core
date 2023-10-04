@@ -29,7 +29,7 @@ namespace App\DateTime\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use DateFormatService;
 
 class DateTimeHandler extends LegacyHandler
@@ -53,7 +53,7 @@ class DateTimeHandler extends LegacyHandler
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param array $datetimeFormatMap
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -62,7 +62,7 @@ class DateTimeHandler extends LegacyHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         array $datetimeFormatMap,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->datetimeFormatMap = $datetimeFormatMap;

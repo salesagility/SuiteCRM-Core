@@ -35,7 +35,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Languages\Entity\ModStrings;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Module\Service\ModuleRegistryInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ModStringsHandler extends LegacyHandler
 {
@@ -68,7 +68,7 @@ class ModStringsHandler extends LegacyHandler
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ModuleRegistryInterface $moduleRegistry
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -78,7 +78,7 @@ class ModStringsHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         ModuleRegistryInterface $moduleRegistry,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;

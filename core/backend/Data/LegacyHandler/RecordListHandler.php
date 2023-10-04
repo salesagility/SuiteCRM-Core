@@ -33,7 +33,7 @@ use App\Data\Entity\RecordList;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Data\Service\RecordListProviderInterface;
 use InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class RecordListHandler
@@ -78,7 +78,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         ModuleNameMapperInterface $moduleNameMapper,
         ListDataHandler $listDataHandler,
         PresetListDataHandlers $presetHandlers,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);

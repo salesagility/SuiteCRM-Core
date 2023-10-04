@@ -32,7 +32,7 @@ use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AclHandler extends LegacyHandler implements AclManagerInterface
 {
@@ -51,7 +51,7 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -60,7 +60,7 @@ class AclHandler extends LegacyHandler implements AclManagerInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        RequestStack $session
     )
     {
         parent::__construct(

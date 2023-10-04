@@ -35,7 +35,7 @@ use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use UnlinkService;
 
 class UnlinkRelationHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
@@ -60,7 +60,7 @@ class UnlinkRelationHandler extends LegacyHandler implements ProcessHandlerInter
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -68,7 +68,7 @@ class UnlinkRelationHandler extends LegacyHandler implements ProcessHandlerInter
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct(

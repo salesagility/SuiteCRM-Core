@@ -33,7 +33,7 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Module\Service\ModuleNameMapperInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class LegacyInlineEditFieldDefinitionMapper extends LegacyHandler implements FieldDefinitionMapperInterface
 {
@@ -52,7 +52,7 @@ class LegacyInlineEditFieldDefinitionMapper extends LegacyHandler implements Fie
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -61,7 +61,7 @@ class LegacyInlineEditFieldDefinitionMapper extends LegacyHandler implements Fie
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        RequestStack $session
     )
     {
         parent::__construct(

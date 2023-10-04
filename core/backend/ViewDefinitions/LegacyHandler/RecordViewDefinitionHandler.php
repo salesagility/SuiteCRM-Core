@@ -39,7 +39,7 @@ use DetailView2;
 use EditView;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use ViewDetail;
 use ViewEdit;
 use ViewFactory;
@@ -102,7 +102,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
      * @param array $recordViewSidebarWidgets
      * @param array $recordViewBottomWidgets
      * @param array $recordViewTopWidgets
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -117,7 +117,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         array $recordViewSidebarWidgets,
         array $recordViewBottomWidgets,
         array $recordViewTopWidgets,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct(
             $projectDir,

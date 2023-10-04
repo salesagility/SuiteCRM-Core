@@ -40,7 +40,7 @@ use aSubPanel;
 use Exception;
 use SearchForm;
 use SubPanelDefinitions;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class SubPanelDefinitionHandler
@@ -91,7 +91,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider
      * @param SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider
      * @param FieldAliasMapper $fieldAliasMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -104,7 +104,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider,
         SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider,
         FieldAliasMapper $fieldAliasMapper,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct(
             $projectDir,

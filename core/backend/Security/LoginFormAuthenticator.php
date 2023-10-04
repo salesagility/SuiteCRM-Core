@@ -31,8 +31,8 @@ use App\Authentication\LegacyHandler\Authentication;
 use App\Security\Exception\UserNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -67,7 +67,7 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator implements Passw
     private $authentication;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     private $session;
 
@@ -81,14 +81,14 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator implements Passw
      * @param Authentication $authentication
      * @param RouterInterface $router
      * @param CsrfTokenManagerInterface $csrfTokenManager
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param Security $security
      */
     public function __construct(
         Authentication $authentication,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
-        SessionInterface $session,
+        RequestStack $session,
         Security $security
     ) {
         $this->router = $router;

@@ -40,7 +40,7 @@ use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SearchForm;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use function in_array;
 
 /**
@@ -134,7 +134,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param FieldAliasMapper $fieldAliasMapper
      * @param LoggerInterface $logger
      * @param ViewDefinitionMappers $mappers
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string                                $projectDir,
@@ -151,7 +151,7 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         FieldAliasMapper                      $fieldAliasMapper,
         LoggerInterface                       $logger,
         ViewDefinitionMappers                 $mappers,
-        SessionInterface                      $session
+        RequestStack                          $session
     )
     {
         parent::__construct(

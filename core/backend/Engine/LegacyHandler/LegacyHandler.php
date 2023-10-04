@@ -34,7 +34,7 @@ use RuntimeException;
 use SugarApplication;
 use SugarController;
 use SugarThemeRegistry;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use User;
 
 /**
@@ -72,7 +72,7 @@ abstract class LegacyHandler
     protected $state;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     protected $session;
 
@@ -83,7 +83,7 @@ abstract class LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -91,7 +91,7 @@ abstract class LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session
+        RequestStack $session
     ) {
         $this->projectDir = $projectDir;
         $this->legacyDir = $legacyDir;

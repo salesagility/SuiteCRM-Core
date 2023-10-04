@@ -37,7 +37,7 @@ use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -65,7 +65,7 @@ class LegacySessionDenyAccessListener
     private $authentication;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     private $session;
 
@@ -80,14 +80,14 @@ class LegacySessionDenyAccessListener
      * @param ResourceMetadataFactoryInterface $resourceMetadataFactory
      * @param ResourceAccessCheckerInterface $resourceAccessCheckerOrExpressionLanguage
      * @param Authentication $authentication
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         DenyAccessListener $decorated,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
         ResourceAccessCheckerInterface $resourceAccessCheckerOrExpressionLanguage,
         Authentication $authentication,
-        SessionInterface $session
+        RequestStack $session
     ) {
         $this->decorated = $decorated;
         $this->resourceMetadataFactory = $resourceMetadataFactory;

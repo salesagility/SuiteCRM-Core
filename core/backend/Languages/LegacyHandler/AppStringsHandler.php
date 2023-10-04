@@ -32,7 +32,7 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Install\LegacyHandler\InstallHandler;
 use App\Languages\Entity\AppStrings;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AppStringsHandler extends LegacyHandler
 {
@@ -70,7 +70,7 @@ class AppStringsHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param InstallHandler $installHandler
      */
     public function __construct(
@@ -79,7 +79,7 @@ class AppStringsHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         InstallHandler $installHandler
     ) {
         parent::__construct(

@@ -32,7 +32,7 @@ use ACLController;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleRegistryInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInterface
 {
@@ -51,7 +51,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param array $frontendExcludedModules
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -60,7 +60,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         array $frontendExcludedModules,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->frontendExcludedModules = $frontendExcludedModules;

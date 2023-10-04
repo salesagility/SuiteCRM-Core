@@ -29,7 +29,7 @@
 namespace App\Routes\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -40,7 +40,7 @@ class RequestSubscriber implements EventSubscriberInterface
 
     private $session;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $session)
     {
         $this->session = $session;
     }

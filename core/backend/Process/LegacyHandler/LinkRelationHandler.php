@@ -36,7 +36,7 @@ use App\Process\Service\ProcessHandlerInterface;
 use LinkService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
@@ -66,7 +66,7 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -74,7 +74,7 @@ class LinkRelationHandler extends LegacyHandler implements ProcessHandlerInterfa
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper,
         ValidatorInterface $validator
     ) {

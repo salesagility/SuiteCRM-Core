@@ -36,7 +36,7 @@ use App\Process\Service\ProcessHandlerInterface;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use TrackerManagerPort;
 
 class AddRecentlyViewed extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
@@ -60,7 +60,7 @@ class AddRecentlyViewed extends LegacyHandler implements ProcessHandlerInterface
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
@@ -69,7 +69,7 @@ class AddRecentlyViewed extends LegacyHandler implements ProcessHandlerInterface
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct(

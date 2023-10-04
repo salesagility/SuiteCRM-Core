@@ -42,7 +42,7 @@ use Opportunity;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AssignedUserOpportunitiesCount extends SubpanelDataQueryHandler implements StatisticsProviderInterface, LoggerAwareInterface
 {
@@ -70,7 +70,7 @@ class AssignedUserOpportunitiesCount extends SubpanelDataQueryHandler implements
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param PreparedStatementHandler $preparedStatementHandler
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -80,7 +80,7 @@ class AssignedUserOpportunitiesCount extends SubpanelDataQueryHandler implements
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         PreparedStatementHandler $preparedStatementHandler,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $moduleNameMapper, $session);

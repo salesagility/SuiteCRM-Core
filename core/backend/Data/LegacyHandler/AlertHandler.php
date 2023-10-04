@@ -34,7 +34,7 @@ use App\Engine\Service\AclManagerInterface;
 use App\Module\Service\FavoriteProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AlertHandler
@@ -56,7 +56,7 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
      * @param RecordDeletionServiceInterface $recordDeletionProvider
@@ -68,7 +68,7 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session,
+        RequestStack $session,
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
         RecordDeletionServiceInterface $recordDeletionProvider

@@ -31,7 +31,7 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Data\Service\RecordSnoozeServiceInterface;
 use BeanFactory;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ListViewHandler
@@ -55,7 +55,7 @@ class RecordSnoozeHandler extends LegacyHandler implements RecordSnoozeServiceIn
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session
+        RequestStack $session
     )
     {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);

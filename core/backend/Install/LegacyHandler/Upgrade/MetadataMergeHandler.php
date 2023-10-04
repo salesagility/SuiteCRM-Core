@@ -32,7 +32,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Model\Feedback;
 use App\Install\Service\Upgrade\UpgradePackageHandler;
 use SugarMerge;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MetadataMergeHandler extends LegacyHandler
 {
@@ -55,7 +55,7 @@ class MetadataMergeHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param string $upgradePackageDir
      * @param UpgradePackageHandler $packageHandler
      */
@@ -65,7 +65,7 @@ class MetadataMergeHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         string $upgradePackageDir,
         UpgradePackageHandler $packageHandler
     ) {

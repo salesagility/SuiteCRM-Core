@@ -33,7 +33,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Routes\Service\RouteConverterInterface;
 use App\ViewDefinitions\Service\AdminPanelDefinitionProviderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AdminPanelDefinitionHandler
@@ -62,7 +62,7 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param RouteConverterInterface $routeConverter
      */
     public function __construct(
@@ -72,7 +72,7 @@ class AdminPanelDefinitionHandler extends LegacyHandler implements AdminPanelDef
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session,
+        RequestStack $session,
         RouteConverterInterface $routeConverter
     ) {
         parent::__construct(

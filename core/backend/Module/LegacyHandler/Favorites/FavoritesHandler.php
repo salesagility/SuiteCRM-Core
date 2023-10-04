@@ -7,7 +7,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\FavoriteProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use FavoritesManagerPort;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class FavoritesHandler
@@ -29,7 +29,7 @@ class FavoritesHandler extends LegacyHandler implements FavoriteProviderInterfac
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
@@ -38,7 +38,7 @@ class FavoritesHandler extends LegacyHandler implements FavoriteProviderInterfac
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct(

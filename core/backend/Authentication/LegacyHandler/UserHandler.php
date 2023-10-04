@@ -34,7 +34,7 @@ use App\Module\Users\Entity\User;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class UserHandler
@@ -61,7 +61,7 @@ class UserHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param SystemConfigProviderInterface $systemConfigProvider
      * @param UserPreferencesProviderInterface $userPreferenceService
      */
@@ -71,7 +71,7 @@ class UserHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         SystemConfigProviderInterface $systemConfigProvider,
         UserPreferencesProviderInterface $userPreferenceService
     ) {

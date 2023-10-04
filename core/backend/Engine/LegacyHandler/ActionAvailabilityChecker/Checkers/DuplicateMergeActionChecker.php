@@ -32,7 +32,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityCheckerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailabilityCheckerInterface
 {
@@ -49,7 +49,7 @@ class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailab
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
@@ -58,7 +58,7 @@ class DuplicateMergeActionChecker extends LegacyHandler implements ActionAvailab
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,

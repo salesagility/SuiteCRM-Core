@@ -45,7 +45,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Schema;
 use App\Authentication\LegacyHandler\Authentication;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class LegacySessionSecurityStageTest
@@ -119,7 +119,7 @@ class LegacySessionSecurityStageTest extends Unit
     protected $expiredSessionAuthentication;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     protected $session;
 
@@ -217,9 +217,9 @@ class LegacySessionSecurityStageTest extends Unit
             ]
         );
 
-        /** @var SessionInterface $session */
+        /** @var RequestStack $session */
         $this->session = $this->makeEmpty(
-            SessionInterface::class,
+            RequestStack::class,
             [
                 'invalidate' => function () use ($self) {
                     $self->invalidateCalled = true;

@@ -35,7 +35,7 @@ use App\Routes\Service\RouteConverterInterface;
 use InvalidArgumentException;
 use RouteConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class RouteConverter
@@ -68,7 +68,7 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ActionNameMapperInterface $actionNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -78,7 +78,7 @@ class RouteConverterHandler extends LegacyHandler implements RouteConverterInter
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         ActionNameMapperInterface $actionNameMapper,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;

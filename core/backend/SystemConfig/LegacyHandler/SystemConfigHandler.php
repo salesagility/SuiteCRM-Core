@@ -40,7 +40,7 @@ use App\Routes\Service\NavigationProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
 {
@@ -106,7 +106,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $extensions
      * @param array $logoutConfig
      * @param array $sessionExpiredConfig
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param NavigationProviderInterface $navigation
      */
     public function __construct(
@@ -139,7 +139,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $extensions,
         array $logoutConfig,
         array $sessionExpiredConfig,
-        SessionInterface $session,
+        RequestStack $session,
         NavigationProviderInterface $navigation
     ) {
         parent::__construct(

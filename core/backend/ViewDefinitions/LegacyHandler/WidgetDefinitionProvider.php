@@ -34,7 +34,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityChecker;
 use App\Engine\Service\DefinitionEntryHandlingTrait;
 use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class SidebarWidgetDefinitionProvider
@@ -58,7 +58,7 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ActionAvailabilityChecker $actionChecker
      */
     public function __construct(
@@ -67,7 +67,7 @@ class WidgetDefinitionProvider extends LegacyHandler implements WidgetDefinition
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ActionAvailabilityChecker $actionChecker
     ) {
         parent::__construct(

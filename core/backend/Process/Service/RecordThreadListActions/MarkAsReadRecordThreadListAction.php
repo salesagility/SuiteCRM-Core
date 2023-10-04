@@ -35,7 +35,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessHandlerInterface
 {
@@ -65,7 +65,7 @@ class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessH
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param RecordMarkAsReadServiceInterface $recordMarkAsReadService
      * @param AlertsDataHandler $alertsDataHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
@@ -76,7 +76,7 @@ class MarkAsReadRecordThreadListAction extends LegacyHandler implements ProcessH
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         RecordMarkAsReadServiceInterface $recordMarkAsReadService,
         AlertsDataHandler $alertsDataHandler,
         ModuleNameMapperInterface $moduleNameMapper

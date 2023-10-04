@@ -37,7 +37,7 @@ use BeanFactory;
 use MassUpdatePort;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class MassUpdateHandler
@@ -68,7 +68,7 @@ class MassUpdateHandler extends LegacyHandler implements RecordMassUpdateService
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RecordListProviderInterface $listViewProvider
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -78,7 +78,7 @@ class MassUpdateHandler extends LegacyHandler implements RecordMassUpdateService
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         RecordListProviderInterface $listViewProvider,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct(
             $projectDir,

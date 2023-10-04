@@ -38,7 +38,7 @@ use App\Authentication\LegacyHandler\Authentication;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\ResolveInfo;
 use LogicException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Based on @see \ApiPlatform\Core\GraphQl\Resolver\Stage\SecurityStage
@@ -68,7 +68,7 @@ class LegacySessionSecurityStage implements SecurityStageInterface
      */
     private $authentication;
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     private $session;
 
@@ -78,14 +78,14 @@ class LegacySessionSecurityStage implements SecurityStageInterface
      * @param ResourceMetadataFactoryInterface $resourceMetadataFactory
      * @param ResourceAccessCheckerInterface|null $resourceAccessChecker
      * @param Authentication $authentication
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         SecurityStageInterface $decorated,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
         ?ResourceAccessCheckerInterface $resourceAccessChecker,
         Authentication $authentication,
-        SessionInterface $session
+        RequestStack $session
     ) {
         $this->resourceMetadataFactory = $resourceMetadataFactory;
         $this->resourceAccessChecker = $resourceAccessChecker;

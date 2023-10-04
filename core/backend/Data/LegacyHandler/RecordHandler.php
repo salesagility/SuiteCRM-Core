@@ -39,7 +39,7 @@ use BeanFactory;
 use InvalidArgumentException;
 use RelateToFieldMapper;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -73,7 +73,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
      */
@@ -84,7 +84,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session,
+        RequestStack $session,
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites
     ) {

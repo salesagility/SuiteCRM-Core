@@ -41,7 +41,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -78,7 +78,7 @@ class CaseDaysOpen extends LegacyHandler implements StatisticsProviderInterface
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         EntityManagerInterface $entityManager,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;

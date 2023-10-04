@@ -37,7 +37,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SubpanelDataPort;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandlerInterface
 {
@@ -67,7 +67,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RecordMapper $recordMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -78,7 +78,7 @@ class SubpanelDataHandler extends LegacyHandler implements PresetListDataHandler
         ModuleNameMapperInterface $moduleNameMapper,
         RecordMapper $recordMapper,
         LegacyFilterMapper $legacyFilterMapper,
-        SessionInterface $session
+        RequestStack $session
     )
     {
         parent::__construct(

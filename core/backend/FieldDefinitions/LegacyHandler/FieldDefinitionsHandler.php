@@ -34,7 +34,7 @@ use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use Exception;
 use SugarView;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class FieldDefinitionsHandler
@@ -63,7 +63,7 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param FieldDefinitionMappers $mappers
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -73,7 +73,7 @@ class FieldDefinitionsHandler extends LegacyHandler implements FieldDefinitionsP
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         FieldDefinitionMappers $mappers,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);

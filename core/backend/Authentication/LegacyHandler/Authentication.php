@@ -31,7 +31,7 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Install\Service\InstallationUtilsTrait;
 use AuthenticationController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -60,7 +60,7 @@ class Authentication extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param array $systemSettings
      * @param UserHandler $userHandler
      */
@@ -70,7 +70,7 @@ class Authentication extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         array $systemSettings,
         UserHandler $userHandler
     ) {

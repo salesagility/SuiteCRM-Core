@@ -32,7 +32,7 @@ use App\Languages\LegacyHandler\AppStringsHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class BaseCommand extends Command
 {
@@ -52,7 +52,7 @@ abstract class BaseCommand extends Command
     protected $defaultSessionName;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     protected $session;
 
@@ -86,9 +86,9 @@ abstract class BaseCommand extends Command
 
     /**
      * @required
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
-    public function setSession(SessionInterface $session): void
+    public function setSession(RequestStack $session): void
     {
         $this->session = $session;
     }

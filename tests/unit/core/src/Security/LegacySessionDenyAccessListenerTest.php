@@ -43,6 +43,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
 use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -129,7 +130,7 @@ class LegacySessionDenyAccessListenerTest extends Unit
     protected $activeSessionAuthentication;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
     protected $session;
 
@@ -242,9 +243,9 @@ class LegacySessionDenyAccessListenerTest extends Unit
         );
 
 
-        /** @var SessionInterface $session */
+        /** @var RequestStack $session */
         $this->session = $this->makeEmpty(
-            SessionInterface::class,
+            RequestStack::class,
             [
                 'invalidate' => function () use ($self) {
                     $self->invalidateCalled = true;

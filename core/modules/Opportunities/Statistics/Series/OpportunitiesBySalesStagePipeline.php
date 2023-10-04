@@ -37,7 +37,7 @@ use App\Statistics\Service\StatisticsProviderInterface;
 use App\Statistics\StatisticsHandlingTrait;
 use BeanFactory;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class OpportunitiesBySalesStagePipeline extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -64,7 +64,7 @@ class OpportunitiesBySalesStagePipeline extends LegacyHandler implements Statist
      * @param LegacyScopeState $legacyScopeState
      * @param ListDataQueryHandler $queryHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -74,7 +74,7 @@ class OpportunitiesBySalesStagePipeline extends LegacyHandler implements Statist
         LegacyScopeState $legacyScopeState,
         ListDataQueryHandler $queryHandler,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->queryHandler = $queryHandler;

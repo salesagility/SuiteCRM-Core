@@ -38,7 +38,7 @@ use App\Process\Service\LegacyActionResolverInterface;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use UserACLService;
 
 class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
@@ -83,7 +83,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param BaseActionDefinitionProviderInterface $baseActionDefinitionProvider
      * @param LegacyActionResolverInterface $legacyActionResolver
@@ -95,7 +95,7 @@ class UserACLHandler extends LegacyHandler implements ProcessHandlerInterface, L
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper,
         BaseActionDefinitionProviderInterface $baseActionDefinitionProvider,
         LegacyActionResolverInterface $legacyActionResolver,

@@ -32,7 +32,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface;
 use Configurator;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefinitionMapperInterface
 {
@@ -50,7 +50,7 @@ abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefi
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param FieldAliasMapper $fieldAliasMapper
      */
     public function __construct(
@@ -59,7 +59,7 @@ abstract class EmailOptoutMapper extends LegacyHandler implements MassUpdateDefi
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         FieldAliasMapper $fieldAliasMapper
     ) {
         parent::__construct(

@@ -32,7 +32,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Model\Feedback;
 use App\SystemConfig\LegacyHandler\SystemConfigHandler;
 use Exception;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AddNewConfigEntriesHandler extends LegacyHandler
 {
@@ -50,7 +50,7 @@ class AddNewConfigEntriesHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param SystemConfigHandler $configHandler
      */
     public function __construct(
@@ -59,7 +59,7 @@ class AddNewConfigEntriesHandler extends LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         SystemConfigHandler $configHandler
     ) {
         parent::__construct(

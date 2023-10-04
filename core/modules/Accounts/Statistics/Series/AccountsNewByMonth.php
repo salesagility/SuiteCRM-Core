@@ -37,7 +37,7 @@ use App\Statistics\Model\ChartOptions;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use SugarBean;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInterface
 {
@@ -64,7 +64,7 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
      * @param LegacyScopeState $legacyScopeState
      * @param ListDataQueryHandler $queryHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -74,7 +74,7 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
         LegacyScopeState $legacyScopeState,
         ListDataQueryHandler $queryHandler,
         ModuleNameMapperInterface $moduleNameMapper,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->queryHandler = $queryHandler;

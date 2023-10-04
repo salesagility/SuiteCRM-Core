@@ -34,7 +34,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SetSessionLanguage extends LegacyHandler implements ProcessHandlerInterface
 {
@@ -53,7 +53,7 @@ class SetSessionLanguage extends LegacyHandler implements ProcessHandlerInterfac
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param UserHandler $userHandler
      */
     public function __construct(
@@ -62,7 +62,7 @@ class SetSessionLanguage extends LegacyHandler implements ProcessHandlerInterfac
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         UserHandler $userHandler
     ) {
         parent::__construct(

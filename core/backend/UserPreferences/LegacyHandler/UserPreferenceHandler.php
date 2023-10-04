@@ -33,7 +33,7 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use UnexpectedValueException;
 use User;
 
@@ -77,7 +77,7 @@ class UserPreferenceHandler extends LegacyHandler implements UserPreferencesProv
         array $exposedUserPreferences,
         UserPreferencesMappers $mappers,
         array $userPreferencesKeyMap,
-        SessionInterface $session
+        RequestStack $session
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
 

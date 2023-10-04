@@ -40,7 +40,7 @@ use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use Exception;
 use ListViewFacade;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ListViewDefinitionHandler extends LegacyHandler
 {
@@ -116,7 +116,7 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param TableActionDefinitionProviderInterface $tableActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
      * @param FieldAliasMapper $fieldAliasMapper
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param array $listViewSidebarWidgets
      */
     public function __construct(
@@ -132,7 +132,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         TableActionDefinitionProviderInterface $tableActionDefinitionProvider,
         FilterDefinitionProviderInterface     $filterDefinitionProvider,
         FieldAliasMapper                      $fieldAliasMapper,
-        SessionInterface                      $session,
+        RequestStack                          $session,
         array                                 $listViewSidebarWidgets
     )
     {

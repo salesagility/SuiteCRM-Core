@@ -41,7 +41,7 @@ use PDOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class InstallHandler
@@ -78,17 +78,17 @@ class InstallHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param LoggerInterface $logger
      */
     public function __construct(
-        string           $projectDir,
-        string           $legacyDir,
-        string           $legacySessionName,
-        string           $defaultSessionName,
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
-        LoggerInterface  $logger
+        RequestStack $session,
+        LoggerInterface $logger
     )
     {
         parent::__construct(

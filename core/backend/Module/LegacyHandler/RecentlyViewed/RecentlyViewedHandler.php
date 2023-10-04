@@ -30,7 +30,7 @@ namespace App\Module\LegacyHandler\RecentlyViewed;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use TrackerManagerPort;
 
 /**
@@ -58,7 +58,7 @@ class RecentlyViewedHandler extends LegacyHandler
      * @param string $defaultSessionName
      * @param array $uiConfigs
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $session
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
@@ -68,7 +68,7 @@ class RecentlyViewedHandler extends LegacyHandler
         string $defaultSessionName,
         array $uiConfigs,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $session,
         ModuleNameMapperInterface $moduleNameMapper
     ) {
         parent::__construct(
