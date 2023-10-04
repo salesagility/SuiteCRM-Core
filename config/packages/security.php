@@ -30,10 +30,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use App\Module\Users\Entity\User;
 use App\Security\Ldap\AppLdapUserProvider;
 use App\Security\Saml\AppSamlAuthenticator;
-use App\Security\UserChecker;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Ldap\Ldap;
+use Symfony\Component\Security\Core\User\InMemoryUserChecker;
 use Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter;
 
 /** @var $container Container */
@@ -80,7 +80,7 @@ return static function (ContainerConfigurator $containerConfig) {
     $baseFirewall = [
         'dev' => [
             'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
-            'user_checker' => UserChecker::class,
+            'user_checker' => InMemoryUserChecker::class,
             'security' => false
         ],
         'main' => [
