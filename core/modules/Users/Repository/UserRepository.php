@@ -47,20 +47,25 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
      *
      * This method must return null if the user is not found.
      *
-     * @param string $username The username
+     * @param string $identifier The username
      *
      * @return UserInterface|null
      * @throws NonUniqueResultException
      */
-    public function loadUserByUsername($username): ?UserInterface
+    public function loadUserByIdentifier($identifier): ?UserInterface
     {
         return $this->createQueryBuilder('u')
             ->where('u.user_name = :user_name')
             ->andWhere("u.status = 'active'")
             ->andWhere('u.deleted = :deleted')
-            ->setParameter('user_name', $username)
+            ->setParameter('user_name', $identifier)
             ->setParameter('deleted', 0)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function loadUserByUsername(string $username): ?UserInterface
+    {
+        return $this->loadUserByIdentifier($username);
     }
 }

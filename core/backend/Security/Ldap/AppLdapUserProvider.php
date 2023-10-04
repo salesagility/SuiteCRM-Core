@@ -28,9 +28,9 @@
 namespace App\Security\Ldap;
 
 use App\Authentication\LegacyHandler\UserHandler;
+use App\Security\Exception\UserNotFoundException;
 use Symfony\Component\Ldap\Security\LdapUser;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -70,22 +70,22 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
     /**
      * @inheritDoc
      */
-    public function loadUserByUsername(string $username)
+    public function loadUserByIdentifier(string $identifier)
     {
-        $existsUser = $this->userHandler->userExists($username);
+        $existsUser = $this->userHandler->userExists($identifier);
 
-        $ldapUser = $this->getLdapUser($username, $existsUser);
-        $entityUser = $this->getEntityUser($existsUser, $username);
+        $ldapUser = $this->getLdapUser($identifier, $existsUser);
+        $entityUser = $this->getEntityUser($existsUser, $identifier);
 
         if ($entityUser !== null) {
             return $entityUser;
         }
 
         if ($ldapUser !== null) {
-            return $this->createUser($ldapUser, $username);
+            return $this->createUser($ldapUser, $identifier);
         }
 
-        throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
+        throw new UserNotFoundException(sprintf('User "%s" not found.', $identifier));
     }
 
     /**
@@ -97,8 +97,8 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
     {
         $ldapUser = null;
         try {
-            $ldapUser = $this->proxy->getLdapUserProvider()->loadUserByUsername($username);
-        } catch (UsernameNotFoundException|InvalidArgumentException $e) {
+            $ldapUser = $this->proxy->getLdapUserProvider()->loadUserByIdentifier($username);
+        } catch (UserNotFoundException|InvalidArgumentException $e) {
             if ($existsUser === false) {
                 throw $e;
             }
@@ -117,8 +117,8 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
         $entityUser = null;
         if ($existsUser === true) {
             try {
-                $entityUser = $this->proxy->getEntityUserProvider()->loadUserByUsername($username);
-            } catch (UsernameNotFoundException $e) {
+                $entityUser = $this->proxy->getEntityUserProvider()->loadUserByIdentifier($username);
+            } catch (UserNotFoundException $e) {
             }
         }
 
@@ -139,8 +139,8 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
 
         $entityUser = null;
         try {
-            $entityUser = $this->proxy->getEntityUserProvider()->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
+            $entityUser = $this->proxy->getEntityUserProvider()->loadUserByIdentifier($username);
+        } catch (UserNotFoundException $e) {
         }
 
         return $entityUser;
@@ -190,5 +190,10 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
         $this->proxy->getEntityUserProvider()->upgradePassword($user, $newEncodedPassword);
+    }
+
+    public function loadUserByUsername(string $username)
+    {
+        return $this->loadUserByIdentifier($username);
     }
 }

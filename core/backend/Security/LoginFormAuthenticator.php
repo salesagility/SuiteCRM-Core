@@ -136,7 +136,7 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator implements Passw
             throw new InvalidCsrfTokenException('Invalid Token');
         }
 
-        $user = $userProvider->loadUserByUsername($credentials['username']);
+        $user = $userProvider->loadUserByIdentifier($credentials['username']);
 
         if (!$user) {
             throw new UserNotFoundException('Authentication: Unknown user');
