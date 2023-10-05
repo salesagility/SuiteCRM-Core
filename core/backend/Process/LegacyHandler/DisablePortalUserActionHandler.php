@@ -157,4 +157,24 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
     {
         $this->logger = $logger;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
+    }
 }

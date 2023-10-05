@@ -64,12 +64,12 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        string                    $projectDir,
+        string                    $legacyDir,
+        string                    $legacySessionName,
+        string                    $defaultSessionName,
+        LegacyScopeState          $legacyScopeState,
+        SessionInterface          $session,
         ModuleNameMapperInterface $moduleNameMapper
     )
     {
@@ -146,25 +146,25 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
         global $sugar_config, $mod_strings;
         $contact = \BeanFactory::getBean('Contacts', $options['id']);
 
-        if(!array_key_exists("aop", $sugar_config)){
+        if (!array_key_exists("aop", $sugar_config)) {
             $this->logger->warning('LBL_ERROR_AOP_NOT_CONFIGURED');
             $process->setMessages(['LBL_ERROR_AOP_NOT_CONFIGURED']);
             $process->setStatus('error');
             return;
         }
-        if(empty($sugar_config['aop']['enable_portal'])){
+        if (empty($sugar_config['aop']['enable_portal'])) {
             $this->logger->warning('LBL_ERROR_PORTAL_NOT_ENABLED');
             $process->setMessages(['LBL_ERROR_PORTAL_NOT_ENABLED']);
             $process->setStatus('error');
             return;
         }
-        if(empty($sugar_config['aop']['enable_aop'])){
+        if (empty($sugar_config['aop']['enable_aop'])) {
             $this->logger->warning('LBL_ERROR_AOP_NOT_ENABLED');
             $process->setMessages(['LBL_ERROR_AOP_NOT_ENABLED']);
             $process->setStatus('error');
             return;
         }
-        if(empty($sugar_config['aop']['joomla_url'])){
+        if (empty($sugar_config['aop']['joomla_url'])) {
             $this->logger->warning('LBL_ERROR_JOOMLA_URL_MISSING');
             $process->setMessages(['LBL_ERROR_JOOMLA_URL_MISSING']);
             $process->setStatus('error');
@@ -173,8 +173,8 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
 
         if ($contact->id && $contact->email1) {
             $portalURL = $sugar_config['aop']['joomla_url'];
-            $wbsv = file_get_contents($portalURL.'/index.php?option=com_advancedopenportal&task=create&sug='.$contact->id);
-            if($wbsv === false) {
+            $wbsv = file_get_contents($portalURL . '/index.php?option=com_advancedopenportal&task=create&sug=' . $contact->id);
+            if ($wbsv === false) {
                 $this->logger->error($mod_strings['LBL_FAILED_TO_CONNECT_JOOMLA']);
                 $process->setStatus('error');
                 $process->setMessages(['LBL_CREATE_PORTAL_USER_FAILED']);
@@ -207,5 +207,25 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
     }
 }
