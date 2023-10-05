@@ -27,7 +27,6 @@
 
 namespace App\Process\LegacyHandler;
 
-use AddContactsToTargetListService;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
