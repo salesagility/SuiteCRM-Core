@@ -28,35 +28,36 @@
 namespace App\Security;
 
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-class LegacyPasswordHasher
+class LegacyPasswordHasher implements PasswordHasherInterface
 {
 
     use CheckPasswordLengthTrait;
     /**
      * @inheritDoc
      */
-    public function encodePassword($raw, $salt): string
+    public function hash($plainPassword): string
     {
-        if ($this->isPasswordTooLong($raw)) {
+        if ($this->isPasswordTooLong($plainPassword)) {
             throw new BadCredentialsException('Invalid password.');
         }
 
-        return password_hash(strtolower(md5($raw)), PASSWORD_DEFAULT);
+        return password_hash(strtolower(md5($plainPassword)), PASSWORD_DEFAULT);
     }
 
     /**
      * @inheritDoc
      */
-    public function isPasswordValid($encoded, $raw, $salt): bool
+    public function verify($hashedPassword, $plainPassword): bool
     {
-        if ($this->isPasswordTooLong($raw)) {
+        if ($this->isPasswordTooLong($plainPassword)) {
             return false;
         }
 
-        $userHash = $encoded;
-        $password = (md5($raw));
+        $userHash = $hashedPassword;
+        $password = (md5($plainPassword));
 
         $valid = self::checkPasswordMD5($password, $userHash);
 
@@ -86,5 +87,10 @@ class LegacyPasswordHasher
         }
 
         return $valid;
+    }
+
+    public function needsRehash(string $hashedPassword): bool
+    {
+        return false;
     }
 }

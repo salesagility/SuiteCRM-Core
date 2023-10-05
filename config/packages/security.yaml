@@ -2,7 +2,7 @@ security:
     enable_authenticator_manager: true
     password_hashers:
       App\Module\Users\Entity\User:
-        id: App\Security\LegacyPasswordEncoder
+        id: App\Security\LegacyPasswordHasher
       app_hasher:
         id: 'App\Security\LegacyPasswordHasher'
 
