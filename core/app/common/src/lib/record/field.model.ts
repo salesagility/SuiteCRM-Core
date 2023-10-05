@@ -25,12 +25,15 @@
  */
 
 import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
+import {isEqual} from 'lodash-es';
+import {deepClone} from '../utils/object-utils';
+
 
 export interface Option {
     value: string;
@@ -151,6 +154,12 @@ export interface AttributeDependency {
     attribute: string;
 }
 
+export interface FieldValue {
+    value?: string;
+    valueList?: string[];
+    valueObject?: any;
+}
+
 export interface Field {
     type: string;
     value?: string;
@@ -176,7 +185,7 @@ export interface Field {
     itemFormArray?: FormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
-    valueSubject?: BehaviorSubject<FieldValue>;
+    valueSubject?: Subject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
     fieldDependencies?: string[];
     attributeDependencies?: AttributeDependency[];
@@ -201,7 +210,7 @@ export class BaseField implements Field {
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     attributes?: FieldAttributeMap;
-    valueSubject?: BehaviorSubject<FieldValue>;
+    valueSubject?: Subject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
     fieldDependencies: string[] = [];
     attributeDependencies: AttributeDependency[] = [];
@@ -213,7 +222,7 @@ export class BaseField implements Field {
     protected valueObjectArrayState?: ObjectMap[];
 
     constructor() {
-        this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
+        this.valueSubject = new Subject<FieldValue>();
         this.valueChanges$ = this.valueSubject.asObservable();
     }
 
@@ -223,9 +232,7 @@ export class BaseField implements Field {
 
     set value(value: string) {
         const changed = value !== this.valueState;
-
         this.valueState = value;
-
         if (changed) {
             this.emitValueChanges();
         }
@@ -236,10 +243,11 @@ export class BaseField implements Field {
     }
 
     set valueList(value: string[]) {
-
-        this.valueListState = value;
-
-        this.emitValueChanges();
+        const changed = !isEqual(value, this.valueListState)
+        this.valueListState = deepClone(value);
+        if (changed) {
+            this.emitValueChanges();
+        }
     }
 
     get valueObject(): any {
@@ -247,8 +255,11 @@ export class BaseField implements Field {
     }
 
     set valueObject(value: any) {
-        this.valueObjectState = value;
-        this.emitValueChanges();
+        const changed = !isEqual(value, this.valueObjectState)
+        this.valueObjectState = deepClone(value);
+        if (changed) {
+            this.emitValueChanges();
+        }
     }
 
     get valueObjectArray(): any {
@@ -256,8 +267,11 @@ export class BaseField implements Field {
     }
 
     set valueObjectArray(value: ObjectMap[]) {
-        this.valueObjectArrayState = value;
-        this.emitValueChanges();
+        const changed = !isEqual(value, this.valueObjectArrayState)
+        this.valueObjectArrayState = deepClone(value);
+        if (changed) {
+            this.emitValueChanges();
+        }
     }
 
     protected emitValueChanges() {
@@ -268,11 +282,3 @@ export class BaseField implements Field {
         })
     }
 }
-
-export interface FieldValue {
-    value?: string;
-    valueList?: string[];
-    valueObject?: any;
-}
-
-

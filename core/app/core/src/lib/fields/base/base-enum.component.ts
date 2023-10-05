@@ -300,23 +300,28 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     protected subscribeToParentValueChanges(parentEnum: Field): void {
-        if (parentEnum.formControl) {
-            this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
+        this.subs.push(parentEnum.valueChanges$.subscribe(fieldValue => {
+            let valueList = [];
+            if (fieldValue.valueList && fieldValue.valueList.length) {
+                valueList = fieldValue.valueList;
+            } else if(parentEnum.value) {
+                const value = fieldValue.value ?? ''
+                valueList = [value]
+            } else {
+                valueList = [];
+            }
 
-                if (typeof values === 'string') {
-                    values = [values];
-                }
+            // Rebuild available enum options
+            this.options = this.filterMatchingOptions(valueList);
+            this.setDependentValue();
+            this.initValue();
+        }));
+    }
 
-                // Reset selected values on Form Control
-                this.field.value = '';
-                this.field.formControl.setValue('');
-
-                // Rebuild available enum options
-                this.options = this.filterMatchingOptions(values);
-
-                this.initValue();
-            }));
-        }
+    protected setDependentValue(): void {
+        // Reset selected values on Form Control
+        this.field.value = '';
+        this.field.formControl.setValue('');
     }
 
 }
