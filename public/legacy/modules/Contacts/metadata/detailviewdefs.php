@@ -269,7 +269,7 @@ $viewdefs ['Contacts'] =
                                     'modes' => ['detail', 'edit', 'create'],
                                     'params' => [
                                         'activeOnFields' =>  [
-                                            '	joomla_account_id' => [''],
+                                            'joomla_account_id' => [''],
                                         ]
                                     ]
                                 ],
