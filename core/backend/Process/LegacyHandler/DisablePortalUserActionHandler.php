@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -156,5 +156,25 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
     }
 }
