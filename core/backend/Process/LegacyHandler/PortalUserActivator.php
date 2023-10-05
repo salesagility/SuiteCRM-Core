@@ -43,8 +43,9 @@ class PortalUserActivator
 
         if (
             array_key_exists("aop", $sugar_config) &&
-            array_key_exists("joomla_url", $sugar_config['aop'])
-            && $contact->joomla_account_id
+            array_key_exists("joomla_url", $sugar_config['aop']) &&
+            property_exists($contact, 'joomla_account_id') &&
+            $contact->joomla_account_id !== null
         ) {
             $portalURL = $sugar_config['aop']['joomla_url'];
             $apiEndpoint = $portalURL . '/index.php?option=com_advancedopenportal&task='
@@ -58,7 +59,7 @@ class PortalUserActivator
                 $msg = $decodedResponse->error ?: $mod_strings[$label];
             } else {
                 $contact->portal_account_disabled = !$activate;
-                $contact->save(false);
+                $contact->save();
             }
         }
     }
