@@ -170,33 +170,38 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
             $process->setStatus('error');
             return;
         }
-
-        if ($contact->id && $contact->email1) {
-            $portalURL = $sugar_config['aop']['joomla_url'];
-            $wbsv = file_get_contents($portalURL . '/index.php?option=com_advancedopenportal&task=create&sug=' . $contact->id);
-            if ($wbsv === false) {
-                $this->logger->error($mod_strings['LBL_FAILED_TO_CONNECT_JOOMLA']);
-                $process->setStatus('error');
-                $process->setMessages(['LBL_CREATE_PORTAL_USER_FAILED']);
-                return;
-            }
-            $res = json_decode($wbsv, false, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
-            if (!$res->success) {
-                $msg = $res->error ?: $mod_strings['LBL_CREATE_PORTAL_USER_FAILED'];
-                $this->logger->error($msg);
-                $this->logger->error('JSON error: ' . json_last_error_msg());
-                $process->setStatus('error');
-                $process->setMessages([$msg]);
-            } else {
-                $process->setMessages(['LBL_CREATE_PORTAL_USER_SUCCESS']);
-                $process->setStatus('success');
-                $process->setData(['reload' => true]);
-            }
-        } else {
+        if (!$contact->id || !$contact->email1) {
             $this->logger->error($mod_strings['LBL_ERROR_CONTACT_ID_OR_EMAIL_EMPTY']);
             $process->setMessages(['LBL_ERROR_CONTACT_ID_OR_EMAIL_EMPTY']);
             $process->setStatus('error');
+            return;
         }
+
+        $portalURL = $sugar_config['aop']['joomla_url'];
+        $apiEndpoint = $portalURL . '/index.php?option=com_advancedopenportal&task=create&sug=' . $contact->id;
+        $apiResponse = file_get_contents($apiEndpoint);
+
+        if ($apiResponse === false) {
+            $this->logger->error($mod_strings['LBL_FAILED_TO_CONNECT_JOOMLA']);
+            $process->setStatus('error');
+            $process->setMessages(['LBL_CREATE_PORTAL_USER_FAILED']);
+            return;
+        }
+
+        $decodedResponse = json_decode($apiResponse, false, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
+
+        if (!$decodedResponse->success) {
+            $msg = $decodedResponse->error ?: $mod_strings['LBL_CREATE_PORTAL_USER_FAILED'];
+            $this->logger->error($msg);
+            $this->logger->error('JSON error: ' . json_last_error_msg());
+            $process->setStatus('error');
+            $process->setMessages([$msg]);
+            return;
+        }
+
+        $process->setMessages(['LBL_CREATE_PORTAL_USER_SUCCESS']);
+        $process->setStatus('success');
+        $process->setData(['reload' => true]);
 
         $this->close();
     }
