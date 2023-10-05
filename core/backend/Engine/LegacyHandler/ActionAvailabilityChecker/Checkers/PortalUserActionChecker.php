@@ -31,7 +31,6 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\ActionAvailabilityChecker\ActionAvailabilityCheckerInterface;
 use App\Module\Service\ModuleNameMapperInterface;
-use BeanFactory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PortalUserActionChecker extends LegacyHandler implements ActionAvailabilityCheckerInterface
@@ -53,14 +52,15 @@ class PortalUserActionChecker extends LegacyHandler implements ActionAvailabilit
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        string                    $projectDir,
+        string                    $legacyDir,
+        string                    $legacySessionName,
+        string                    $defaultSessionName,
+        LegacyScopeState          $legacyScopeState,
+        SessionInterface          $session,
         ModuleNameMapperInterface $moduleNameMapper
-    ) {
+    )
+    {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);
         $this->moduleNameMapper = $moduleNameMapper;
@@ -96,9 +96,11 @@ class PortalUserActionChecker extends LegacyHandler implements ActionAvailabilit
     {
         $this->init();
         global $sugar_config;
-        if(array_key_exists("aop", $sugar_config)){
-            $result = !empty($sugar_config['aop']['enable_portal']) && !empty($sugar_config['aop']['enable_aop']) && !empty($sugar_config['aop']['joomla_url']);
-        }else{
+        if (array_key_exists("aop", $sugar_config)) {
+            $result =   !empty($sugar_config['aop']['enable_portal']) &&
+                        !empty($sugar_config['aop']['enable_aop']) &&
+                        !empty($sugar_config['aop']['joomla_url']);
+        } else {
             $result = false;
         }
         $this->close();
