@@ -1,11 +1,16 @@
 security:
     enable_authenticator_manager: true
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+      App\Module\Users\Entity\User:
+        id: App\Security\LegacyPasswordEncoder
+      app_hasher:
+        id: 'App\Security\LegacyPasswordHasher'
+
     providers:
-        users_in_memory: { memory: null }
+      app_user_provider:
+        entity:
+          class: App\Module\Users\Entity\User
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
