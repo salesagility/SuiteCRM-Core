@@ -34,6 +34,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -51,7 +52,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users", indexes={@ORM\Index(name="idx_user_name", columns={"user_name", "is_group", "status", "last_name", "first_name", "id"}, options={"lengths": {null, null, null, 30, 30}})}))
  * @ORM\Entity(repositoryClass="App\Module\Users\Repository\UserRepository")
  */
-class User implements UserInterface, EquatableInterface
+class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @var string
