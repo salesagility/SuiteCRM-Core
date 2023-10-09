@@ -119,12 +119,12 @@
         "version": "1.2.0"
     },
     "dama/doctrine-test-bundle": {
-        "version": "4.0",
+        "version": "6.7",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
+            "branch": "main",
             "version": "4.0",
-            "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
+            "ref": "2c920f73a217f30bd4a37833c91071f4d3dc1ecd"
         },
         "files": [
             "config/packages/test/dama_doctrine_test_bundle.yaml"
