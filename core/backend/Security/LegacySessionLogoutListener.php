@@ -29,24 +29,25 @@ namespace App\Security;
 
 use App\Authentication\LegacyHandler\Authentication;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
+use Symfony\Component\Security\Http\EventListener\SessionLogoutListener;
 
 /**
- * Class LegacySessionLogoutHandler
+ * Class LegacySessionLogoutListener
  * @package App\Security
  */
-class LegacySessionLogoutHandler
+class LegacySessionLogoutListener
 {
     /**
      * @var Authentication
      */
     protected $authentication;
     /**
-     * @var SessionLogoutHandler
+     * @var SessionLogoutListener
      */
     private $decorated;
 
     /**
-     * LegacySessionLogoutHandler constructor.
+     * LegacySessionLogoutListener constructor.
      * @param Authentication $authentication
      */
     public function __construct(

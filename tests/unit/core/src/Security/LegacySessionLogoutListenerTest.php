@@ -28,7 +28,7 @@
 
 namespace App\Tests\unit\core\src\Security;
 
-use App\Security\LegacySessionLogoutHandler;
+use App\Security\LegacySessionLogoutListener;
 use App\Tests\UnitTester;
 use AspectMock\Test;
 use AuthenticationController;
@@ -40,13 +40,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
+use Symfony\Component\Security\Http\Logout\SessionLogoutListener;
 
 /**
- * Class LegacySessionLogoutHandlerTest
+ * Class LegacySessionLogoutListenerTest
  * @package App\Tests\unit\core\src\Security
  */
-class LegacySessionLogoutHandlerTest extends Unit
+class LegacySessionLogoutListenerTest extends Unit
 {
     /**
      * @var UnitTester
@@ -54,7 +54,7 @@ class LegacySessionLogoutHandlerTest extends Unit
     protected $tester;
 
     /**
-     * @var LegacySessionLogoutHandler
+     * @var LegacySessionLogoutListener
      */
     protected $handler;
 

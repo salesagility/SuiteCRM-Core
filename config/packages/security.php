@@ -90,14 +90,15 @@ return static function (ContainerConfigurator $containerConfig) {
 
     //Note: Only the *first* access control that matches will be used
     $baseAccessControl = [
-        ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
+        ['path' => '^/login$', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/session-status$', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/logout$', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/logged-out', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/$', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/api', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/api/graphql', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/api/graphql/graphiql*', 'roles' => 'PUBLIC_ACCESS'],
+        ['path' => '^/', 'roles' => 'PUBLIC_ACCESS']
     ];
 
 
@@ -251,22 +252,23 @@ return static function (ContainerConfigurator $containerConfig) {
         }
 
         $samlAccessControl = [
-            ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/saml/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/saml/metadata', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/login$', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/session-status$', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/logout$', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/saml/login', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/saml/metadata', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
             ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
-            ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/auth', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/auth/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/auth/session-status', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/auth/logout', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/logged-out', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/auth', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/auth/login', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/auth/session-status', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/auth/logout', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/$', 'roles' => 'ROLE_USER'],
-            ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
+            ['path' => '^/api', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/api/graphql', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/api/graphql/graphiql*', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/', 'roles' => 'PUBLIC_ACCESS']
         ];
 
         if (!$showDocs) {

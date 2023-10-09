@@ -172,7 +172,7 @@ services:
     arguments:
       - '@security.ldap_locator'
 
-  App\Security\LegacySessionLogoutHandler:
+  App\Security\LegacySessionLogoutListener:
     tags:
       - name: 'kernel.event_listener'
         event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
