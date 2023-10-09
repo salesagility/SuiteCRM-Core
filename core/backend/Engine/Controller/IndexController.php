@@ -33,6 +33,7 @@ use App\Authentication\LegacyHandler\UserHandler;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -59,6 +60,12 @@ class IndexController extends AbstractController
      * @var Authentication
      */
     protected $authentication;
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
 
     /**
      * IndexController constructor.
@@ -139,7 +146,7 @@ class IndexController extends AbstractController
 
         $response = new Response(file_get_contents($indexHtmlPath));
 
-        $this->get('security.token_storage')->setToken(null);
+        $this->request->get('security.token_storage')->setToken(null);
         $session->clear();
         $response->headers->clearCookie('XSRF-TOKEN');
 
