@@ -137,15 +137,15 @@
         "version": "v1.1.0"
     },
     "doctrine/annotations": {
-        "version": "1.0",
+        "version": "1.14",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
+            "branch": "main",
             "version": "1.0",
-            "ref": "cb4152ebcadbe620ea2261da1a1c5a9b8cea7672"
+            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
         },
         "files": [
-            "./config/routes/annotations.yaml"
+            "config/routes/annotations.yaml"
         ]
     },
     "doctrine/cache": {
