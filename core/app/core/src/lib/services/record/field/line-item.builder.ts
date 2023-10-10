@@ -103,7 +103,7 @@ export class LineItemBuilder extends AttributeBuilder {
             return;
         }
 
-        const itemDefinition = (definition.lineItems && definition.lineItems.definition) || {};
+        const itemDefinition: FieldDefinition = definition.lineItems?.definition || {};
         field.items = [];
 
         items.forEach(item => {

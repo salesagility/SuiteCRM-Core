@@ -32,6 +32,8 @@ import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
 
+export type DisplayType = 'none' | 'show' | 'readonly' | 'inline' | 'disabled' | 'default';
+
 export interface Option {
     value: string;
     label?: string;
@@ -89,6 +91,7 @@ export interface FieldDefinition {
     dynamic?: boolean;
     parentenum?: string;
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     default?: string;
@@ -129,6 +132,8 @@ export interface FieldMetadata {
     extraOptions?: Option[];
     onClick?: FieldClickCallback;
     tinymce?: any;
+    date_time_format?: string;
+    displayLogicResetOn?: string;
 
     [key: string]: any;
 }
@@ -149,6 +154,7 @@ export interface FieldMap {
 export interface AttributeDependency {
     field: string;
     attribute: string;
+    types: string[];
 }
 
 export interface Field {
@@ -160,11 +166,13 @@ export interface Field {
     name?: string;
     label?: string;
     labelKey?: string;
+    loading?: boolean;
     dynamicLabelKey?: string;
     parentKey?: string;
     attributes?: FieldAttributeMap;
     items?: Record[];
-    display?: string;
+    readonly?: boolean;
+    display?: DisplayType;
     defaultDisplay?: string;
     source?: 'field' | 'attribute' | 'item';
     valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
@@ -177,9 +185,11 @@ export interface Field {
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
-    fieldDependencies?: string[];
+    fieldDependencies?: ObjectMap;
     attributeDependencies?: AttributeDependency[];
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
+    previousValue?: string;
 }
 
 export class BaseField implements Field {
@@ -188,7 +198,8 @@ export class BaseField implements Field {
     label?: string;
     labelKey?: string;
     dynamicLabelKey?: string;
-    display?: string;
+    readonly?: boolean;
+    display?: DisplayType;
     defaultDisplay?: string;
     source?: 'field' | 'attribute';
     metadata?: FieldMetadata;
@@ -201,9 +212,10 @@ export class BaseField implements Field {
     attributes?: FieldAttributeMap;
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
-    fieldDependencies: string[] = [];
+    fieldDependencies: ObjectMap = {};
     attributeDependencies: AttributeDependency[] = [];
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
 
     protected valueState?: string;
     protected valueListState?: string[];

@@ -253,7 +253,7 @@ final class NavbarTest extends Unit
         $expected = [
             [
                 'name' => 'profile',
-                'labelKey' => 'LBL_PROFILE',
+                'labelKey' => 'LBL_PROFILE_EDIT',
                 'url' => 'index.php?module=Users&action=EditView&record=',
                 'icon' => '',
             ],

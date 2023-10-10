@@ -26,19 +26,32 @@
 
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
-import {FieldLogicActionData} from './field-logic.action';
-import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'common';
+import {FieldLogicActionData, FieldLogicActionHandlerMap} from './field-logic.action';
+import {Action, ActionContext, ActionHandlerMap, Field, ModeActions, Record, ViewMode} from 'common';
 import {DisplayTypeAction} from './display-type/display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';
 import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
+import {UpdateValueAction} from './update-value/update-value.action';
+import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
+import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
+import {RecordActionData} from '../../views/record/actions/record.action';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
+
+    actions: { [key: string]: FieldLogicActionHandlerMap } = {
+        edit: {} as FieldLogicActionHandlerMap,
+        create: {} as FieldLogicActionHandlerMap,
+        list: {} as FieldLogicActionHandlerMap,
+        detail: {} as FieldLogicActionHandlerMap,
+        massupdate: {} as FieldLogicActionHandlerMap,
+        filter: {} as FieldLogicActionHandlerMap
+    };
 
     constructor(
         displayType: DisplayTypeAction,
@@ -46,7 +59,10 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
-        updateFlexRelateModule: UpdateFlexRelateModuleAction
+        updateValue: UpdateValueAction,
+        updateFlexRelateModule: UpdateFlexRelateModuleAction,
+        updateValueBackend: UpdateValueBackendAction,
+        dislayTypeBackend: DisplayTypeBackendAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -55,6 +71,9 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateBaseCurrency.modes.forEach(mode => this.actions[mode][updateBaseCurrency.key] = updateBaseCurrency);
         updateCurrency.modes.forEach(mode => this.actions[mode][updateCurrency.key] = updateCurrency);
         updateFlexRelateModule.modes.forEach(mode => this.actions[mode][updateFlexRelateModule.key] = updateFlexRelateModule);
+        updateValue.modes.forEach(mode => this.actions[mode][updateValue.key] = updateValue);
+        updateValueBackend.modes.forEach(mode => this.actions[mode][updateValueBackend.key] = updateValueBackend);
+        dislayTypeBackend.modes.forEach(mode => this.actions[mode][dislayTypeBackend.key] = dislayTypeBackend);
     }
 
     /**
@@ -62,15 +81,16 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
      * @param {object} field
      * @param {object} mode
      * @param {object} record
+     * @param triggeringStatus
      */
-    runLogic(field: Field, mode: ViewMode, record: Record): void {
+    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus: string = ''): void {
         if (!field.logic) {
             return;
         }
 
         const actions = Object.keys(field.logic).map(key => field.logic[key]);
 
-        const modeActions = this.parseModeActions(actions, mode);
+        const modeActions = this.parseModeActions(actions, mode, triggeringStatus);
         const context = {
             record,
             field,
@@ -91,7 +111,6 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
     runAction(action: Action, mode: ViewMode, context: ActionContext = null): void {
         this.runFrontEndAction(action, mode, context);
     }
-
 
     /**
      * Run front end action
@@ -124,8 +143,9 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
      * Parse mode actions
      * @param declaredActions
      * @param mode
+     * @param triggeringStatus
      */
-    protected parseModeActions(declaredActions: Action[], mode: ViewMode) {
+    protected parseModeActions(declaredActions: Action[], mode: ViewMode, triggeringStatus: string) {
         if (!declaredActions) {
             return [];
         }
@@ -155,8 +175,17 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         }
 
         const actions = [];
+        const defaultTriggeringStatus = ['onValueChange'];
 
         availableActions[mode].forEach(action => {
+
+            const frontendActionTriggeringStatus = this?.actions[mode][action.key]?.getTriggeringStatus() ?? null;
+            const actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
+
+            if(triggeringStatus && !actionTriggeringStatus.includes(triggeringStatus)) {
+                return;
+            }
+
             actions.push(action);
         });
 

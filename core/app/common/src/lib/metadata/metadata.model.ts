@@ -24,8 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldDefinition, FieldMetadata} from '../record/field.model';
+import {FieldDefinition, FieldMetadata, LineItemsMetadata} from '../record/field.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export interface ViewFieldDefinition {
     name?: string;
@@ -34,16 +35,23 @@ export interface ViewFieldDefinition {
     dynamicLabelKey?: string;
     link?: boolean;
     type?: string;
+    readonly?: boolean;
     display?: string;
     fieldDefinition?: FieldDefinition;
+    lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     logic?: FieldLogicMap;
+    displayLogic?: FieldLogicMap;
 }
 
 export interface Panel {
     label?: string;
     key: string;
     rows: PanelRow[];
+    subPanels?: Panel[];
+    displayState: BehaviorSubject<boolean>;
+    display$: Observable<boolean>;
+    meta: TabDefinition;
 }
 
 export interface PanelRow {
@@ -56,4 +64,40 @@ export interface PanelCell extends ViewFieldDefinition {
 
 export interface ViewFieldDefinitionMap {
     [key: string]: ViewFieldDefinition
+}
+
+export interface TabDefinitions {
+    [key: string]: TabDefinition;
+}
+
+export interface TabDefinition {
+    newTab: boolean;
+    panelDefault: 'expanded' | 'collapsed';
+    display?: boolean;
+    displayLogic?: LogicDefinitions;
+}
+
+export interface LogicDefinitions {
+    [key: string]: LogicDefinition;
+}
+
+export interface LogicDefinition {
+    key: string;
+    modes: Array<string>;
+    params: {
+        activeOnFields?: {
+            [key:string]: LogicRuleValues[];
+        }
+        displayState?: boolean;
+        fieldDependencies: Array<string>;
+        asyncProcessHandler?: string;
+    }
+}
+
+export interface LogicRuleValues{
+    operator?: string;
+    values?: any;
+    value?: any;
+    field?: string;
+    [key: string]: string;
 }

@@ -35,6 +35,7 @@ import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {ActionNameMapper} from "../../../../services/navigation/action-name-mapper/action-name-mapper.service";
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-email-list',
@@ -47,6 +48,7 @@ export class EmailListFieldsComponent extends BaseFieldComponent implements OnIn
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager,
         protected preferences: UserPreferenceStore,
         protected navigation: ModuleNavigation,
         protected moduleNameMapper: ModuleNameMapper,
@@ -55,7 +57,7 @@ export class EmailListFieldsComponent extends BaseFieldComponent implements OnIn
         protected modalService: NgbModal,
         protected router: Router
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

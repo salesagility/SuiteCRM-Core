@@ -84,7 +84,6 @@ class CSRFValidationListener
     {
         if (
             HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType() ||
-            Request::METHOD_GET === $event->getRequest()->getMethod() ||
             Request::METHOD_HEAD === $event->getRequest()->getMethod() ||
             !$this->routeMatcher->match($event->getRequest(), $this->routes)
         ) {

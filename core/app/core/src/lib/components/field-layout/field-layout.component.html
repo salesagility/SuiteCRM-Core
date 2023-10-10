@@ -54,7 +54,7 @@
                     <div>
                         <button type="button" class="record-action-button"
                                 (click)="this.dataSource.getEditAction()"
-                                *ngIf="col.field.definition.inline_edit !== false && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
+                                *ngIf="col.field.definition.inline_edit !== false && !col.field.readonly && !col.field.definition.readonly && this.dataSource.inlineEdit && config.mode === 'detail'">
                             <scrm-image class="sicon" image="pencil"></scrm-image>
                         </button>
                     </div>
@@ -69,7 +69,9 @@
                 <ng-content select="[field-grid-special]"></ng-content>
             </ng-container>
 
-            <div class="field-separation mt-2" *ngIf="col.field && i < fieldGrid.length - 1"></div>
+            <div *ngIf="col.field && col.field?.display !== 'none' && i < fieldGrid.length - 1"
+                 class="field-separation mt-2">
+            </div>
         </div>
     </div>
 </form>

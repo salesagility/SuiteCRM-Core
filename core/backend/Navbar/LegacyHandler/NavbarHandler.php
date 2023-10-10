@@ -76,6 +76,11 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected $navbarAdministrationOverrides;
 
     /**
+     * @var array
+     */
+    protected $quickActionsConfig;
+
+    /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
@@ -89,6 +94,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
      * @param SessionInterface $session
      * @param array $moduleRouting
      * @param array $navbarAdministrationOverrides
+     * @param array $quickActions
      */
     public function __construct(
         string $projectDir,
@@ -102,7 +108,8 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         ModuleRegistryInterface $moduleRegistry,
         SessionInterface $session,
         array $moduleRouting,
-        array $navbarAdministrationOverrides
+        array $navbarAdministrationOverrides,
+        array $quickActions
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);
@@ -112,6 +119,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $this->moduleRegistry = $moduleRegistry;
         $this->moduleRouting = $moduleRouting;
         $this->navbarAdministrationOverrides = $navbarAdministrationOverrides;
+        $this->quickActionsConfig = $quickActions;
     }
 
     /**
@@ -151,6 +159,10 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $navbar->maxTabs = $this->getMaxTabs();
 
         $navbar->type = $this->getNavigationType();
+
+        $quickActions = $this->getQuickActions($navbar);
+
+        $navbar->quickActions = $quickActions;
 
         $this->close();
 
@@ -260,7 +272,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
                 'labelKey' => $legacyName,
                 'menu' => $menu
             ];
-            
+
         }
         foreach ($this->navbarAdministrationOverrides ?? [] as $specialModule) {
             if (!empty($modules[$specialModule]) && !empty($modules['administration'])) {
@@ -281,55 +293,71 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
     protected function buildSubModule(SugarView $sugarView, string $legacyModule, string $frontendModule): array
     {
         $subMenu = [];
-        $administration_menu = [];
-        $legacyMenuItems = $sugarView->getMenu($legacyModule);
+        $legacyMenuItems = $sugarView->getMenu($legacyModule) ?? [];
 
         if ($frontendModule === 'administration') {
 
             global $current_language;
+            $admin_mod_strings = return_module_language($current_language, 'Administration') ?? [];
 
-            $admin_mod_strings = return_module_language($current_language, 'Administration');
-
+            $admin_group_header = [];
             require 'modules/Administration/metadata/adminpaneldefs.php';
 
             $admin_group_header = $admin_group_header ?? [];
 
+            $administration_menu = [];
             foreach ($admin_group_header as $adminEntry) {
 
-                $this->administration_menu[] = array(
+                $administration_menu[] = [
                     "",
-                    $admin_mod_strings[$adminEntry[0]],
+                    $admin_mod_strings[$adminEntry[0] ?? ''] ?? '',
                     'View',
                     'Administration',
-                    $adminEntry[3]
-                );
+                    $adminEntry[3] ?? ''
+                ];
             }
 
+            $legacyMenuItems = $administration_menu ?? [];
         }
-
-
-        $legacyMenuItems = $frontendModule === 'administration' ? $this->administration_menu : $sugarView->getMenu($legacyModule);
 
         foreach ($legacyMenuItems as $legacyMenuItem) {
 
-            [$url, $label, $action] = $legacyMenuItem;
+            [$url, $label, $action] = $legacyMenuItem ?? [];
             $routeInfo = [
                 'module' => 'Administration',
                 'route' => '',
                 'params' => []
             ];
 
+            $quickAction = $legacyMenuItem[4] ?? null;
+            $type = $legacyMenuItem[5] ?? '';
+            $process = $legacyMenuItem[6] ?? [];
+
             if (!empty($url)) {
-                $routeInfo = $this->routeConverter->parseUri($url);
+                $routeInfo = $this->routeConverter->parseUri($url) ?? [];
             }
+
             $subMenuItem = [
                 'name' => $action,
                 'labelKey' => $this->mapEntry($frontendModule, $action, 'labelKey', $label),
-                'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route']),
-                'params' => $routeInfo['params'],
+                'url' => $this->mapEntry($frontendModule, $action, 'url', $routeInfo['route'] ?? ''),
+                'process' => $process['process'] ?? '',
+                'params' => $routeInfo['params'] ?? [],
                 'icon' => $this->mapEntry($frontendModule, $action, 'icon', ''),
                 'actionLabelKey' => $this->mapEntry($frontendModule, $action, 'actionLabelKey', ''),
+                'quickAction' => $quickAction ?? false,
+                'type' => $type ?? ''
             ];
+
+            if (!empty($subMenuItem) && (($quickAction ?? null) === null)) {
+                $url = $subMenuItem['url'];
+                $subMenuItem['quickAction'] = $this->isModuleQuickAction($url);
+            }
+
+            if (!empty($subMenuItem) && empty($type)) {
+                $url = $subMenuItem['url'];
+                $subMenuItem['type'] = $this->getActionType($url);
+            }
 
             if (!empty($routeInfo['module'])) {
                 $subMenuItem['module'] = $this->moduleNameMapper->toFrontEnd($routeInfo['module']);
@@ -367,13 +395,13 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             }
             foreach ($linkGroup as $linkKey => $link) {
                 unset($mappedLinkGroup[$linkKey]);
-                $path = $this->routeConverter->convertUri($link[3]);
+                $path = $this->routeConverter->convertUri($link[3]) ?? '';
 
                 $mappedLink = [
                     'name' => $link[0] ?? '',
                     'labelKey' => $link[1] ?? '',
                     'actionLabelKey' => '',
-                    'url' => $path ?? '',
+                    'url' => $path,
                     'icon' => '',
                 ];
 
@@ -391,10 +419,12 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
             $linkGroupKeys = array_keys($mapEntry);
 
         }
-        for ($j = 0; $j < count($linkGroupKeys); $j++) {
+
+        $linkGroups = [];
+        for ($j = 0, $jMax = count($linkGroupKeys); $j < $jMax; $j++) {
             $linkGroup = $mapEntry[$linkGroupKeys[$j]];
             $links = array_values($linkGroup);
-            for ($i = 0; $i < count($links); $i++) {
+            for ($i = 0, $iMax = count($links); $i < $iMax; $i++) {
                 $linkGroups[] = $links[$i];
             }
         }
@@ -447,7 +477,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
         $actions['LBL_PROFILE'] = [
             'name' => 'profile',
-            'labelKey' => 'LBL_PROFILE',
+            'labelKey' => 'LBL_PROFILE_EDIT',
             'url' => 'index.php?module=Users&action=EditView&record=' . $current_user->id,
             'icon' => '',
         ];
@@ -583,5 +613,104 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $this->close();
 
         return $routes;
+    }
+
+    /**
+     * @param $url
+     * @return bool
+     */
+    protected function isModuleQuickAction($url): bool
+    {
+        $regex = [
+            '/(edit(\/)?$)|(edit(\/)?\?)/',
+            '/(create(\/)?$)|(create(\/)?\?)/',
+            '/\/import\//',
+            '/(compose(\/)?$)|(compose(\/)?\?)/',
+            '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
+        ];
+        foreach ($regex as $item) {
+            if (preg_match($item, $url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $url
+     * @return string
+     */
+    protected function getActionType($url): string
+    {
+        $regex = [
+            '/(edit(\/)?$)|(edit(\/)?\?)/',
+            '/(create(\/)?$)|(create(\/)?\?)/',
+            '/(compose(\/)?$)|(compose(\/)?\?)/',
+            '/(wizard-home(\/)?$)|(wizard-home(\/)?\?)/'
+        ];
+        foreach ($regex as $item) {
+            if (preg_match($item, $url)) {
+                return 'create';
+            }
+        }
+        return '';
+    }
+
+    /**
+     * @param Navbar $navbar
+     * @return array
+     */
+    protected function getQuickActions(Navbar $navbar): array
+    {
+        $useNavigationModules = $this->quickActionsConfig['use_navigation_modules'] ?? true;
+        $preDefinedQuickActions = $this->quickActionsConfig['actions'] ?? [];
+        $maxQuickActions = $this->quickActionsConfig['max_number'] ?? 7;
+
+        if ($useNavigationModules === false && !empty($preDefinedQuickActions)) {
+            return $preDefinedQuickActions;
+        }
+
+        $quickActions = [];
+        $count = 0;
+        foreach ($navbar->modules ?? [] as $module => $entry) {
+            $menu = $entry['menu'] ?? [];
+
+            if (empty($menu)) {
+                continue;
+            }
+
+            foreach ($menu as $menuEntry) {
+                $type = $menuEntry['type'] ?? '';
+                if (empty($menuEntry) || $type !== 'create') {
+                    continue;
+                }
+
+                $count++;
+
+                $quickActions[] = [
+                    'name' => $menuEntry['name'] ?? '',
+                    'labelKey' => $menuEntry['labelKey'] ?? '',
+                    'url' => str_replace('/#/', '/', $menuEntry['url'] ?? ''),
+                    'params' => $menuEntry['params'] ?? [],
+                    'icon' => $menuEntry['icon'] ?? '',
+                    'quickAction' => $menuEntry['quickAction'] ?? false,
+                    'type' => $type,
+                    'module' => $module,
+                    'process' => $menuEntry['process'] ?? null
+                ];
+
+                if ($count >= $maxQuickActions) {
+                    break;
+                }
+            }
+
+            if ($count >= $maxQuickActions) {
+                break;
+            }
+
+
+        }
+
+        return $quickActions;
     }
 }

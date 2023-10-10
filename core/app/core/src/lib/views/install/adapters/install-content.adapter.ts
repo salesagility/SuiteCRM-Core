@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {Panel, PanelRow, Record} from 'common';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
@@ -81,7 +81,12 @@ export class InstallContentAdapter implements RecordContentDataSource {
 
                 meta.panels.forEach(panelDefinition => {
                     const label = this.language.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
-                    const panel = {label, key: panelDefinition.key, rows: []} as Panel;
+                    const panel = {
+                        label,
+                        key: panelDefinition.key,
+                        display$: panelDefinition?.display$ ?? of(true).pipe(shareReplay(1)),
+                        rows: []
+                    } as Panel;
 
                     panelDefinition.rows.forEach(rowDefinition => {
                         const row = {cols: []} as PanelRow;

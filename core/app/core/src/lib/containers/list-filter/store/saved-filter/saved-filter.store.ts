@@ -100,7 +100,13 @@ export class SavedFilterStore implements StateStore {
 
         this.meta$ = this.meta.getMetadata('saved-search', ['recordView']).pipe(
             tap(() => this.metadataLoadingState.next(false)),
-            map(definitions => definitions.recordView)
+            map(definitions => {
+                const recordViewMeta = {...definitions.recordView};
+                recordViewMeta.actions = (recordViewMeta?.actions ?? []).filter(value => {
+                    return value.key !== 'cancel'
+                });
+                return recordViewMeta;
+            })
         );
 
         this.recordStore = savedFilterStoreFactory.create(this.getViewFields$());

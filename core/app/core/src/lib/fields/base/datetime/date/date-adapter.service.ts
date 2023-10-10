@@ -27,9 +27,12 @@
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Injectable} from '@angular/core';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
+import {FormatOptions} from '../../../../services/formatters/formatter.model';
 
 @Injectable()
 export class DateAdapter extends NgbDateAdapter<string> {
+
+    userFormat: string;
 
     constructor(
         protected formatter: DateFormatter,
@@ -37,11 +40,19 @@ export class DateAdapter extends NgbDateAdapter<string> {
         super();
     }
 
+    getUserFormat() {
+        return this.userFormat;
+    }
+
+    setUserFormat(format: string) {
+        this.userFormat = format;
+    }
+
     fromModel(value: string | null): NgbDateStruct | null {
         if (!value) {
             return null;
         }
-        return this.formatter.dateFormatToStruct(value);
+        return this.formatter.dateFormatToStruct(value, this.userFormat || '');
     }
 
     toModel(date: NgbDateStruct | null): string | null {
@@ -49,6 +60,10 @@ export class DateAdapter extends NgbDateAdapter<string> {
             return null;
         }
         const dateString = [date.year, date.month, date.day].join('-');
-        return this.formatter.toUserFormat(dateString, {fromFormat: 'yyyy-M-d'});
+        const options = {fromFormat: 'yyyy-M-d'} as FormatOptions;
+        if(this.userFormat) {
+            options.toFormat = this.userFormat;
+        }
+        return this.formatter.toUserFormat(dateString, options);
     }
 }

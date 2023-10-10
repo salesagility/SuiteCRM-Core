@@ -1437,7 +1437,7 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
         $cnt = $row['cnt'];
 
         $result = $this->ea->getAddressesByGUID($id, $module);
-        $count = count($result);
+        $count = is_countable($result) ? count($result) : 0;
         self::assertEquals($cnt, $count);
 
         // test
@@ -1445,7 +1445,7 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
         $module = null;
 
         $result = $this->ea->getAddressesByGUID($id, $module);
-        $count = count($result);
+        $count = is_countable($result) ? count($result) : 0;
         self::assertEquals(0, $count);
 
         // test
@@ -1607,7 +1607,7 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
         self::assertEquals(false, $result);
 
         self::assertFalse(strpos(
-            $result,
+            (string) $result,
             '[{"email_address":null,"email_address_caps":"TEST@EMAIL.COM","invalid_email":"0","opt_out":"0","date_created":null,"date_modified":null,"id":"test_email_bean_rel_1","email_address_id":"test_email_1","bean_id":"test_contact_1","bean_module":"Contacts","primary_address":"0","reply_to_address":"0","deleted":"0"},{"email_address":null,"email_address_caps":"TEST@EMAIL.COM","invalid_email":"0","opt_out":"0","date_created":null,"date_modified":null,"id":"","email_address_id":"test_email_1","bean_id":"test_contact_1","bean_module":"Contacts","primary_address":"0","reply_to_address":"1","deleted":"0"}]'
         ));
 
@@ -1722,7 +1722,7 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
         $c = BeanFactory::getBean('Contacts');
         $c->id = 'an-non-exists-id';
         $result = $this->ea->getEmailAddressWidgetDetailView($c);
-        self::assertNotFalse(strpos($result, '--None--'));
+        self::assertNotFalse(strpos((string) $result, '--None--'));
 
         $expected = !empty($result) && is_string($result);
         self::assertTrue($expected);
@@ -1730,7 +1730,7 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
         // test
         $c->id = "test_contact_{$i}";
         $result = $this->ea->getEmailAddressWidgetDetailView($c);
-        self::assertFalse(strpos($result, '--None--'));
+        self::assertFalse(strpos((string) $result, '--None--'));
 
         $expected = !empty($result) && is_string($result);
         self::assertTrue($expected);
@@ -2100,17 +2100,17 @@ class SugarEmailAddressTest extends SuitePHPUnitFrameworkTestCase
 
         // test
         $result = getEmailAddressWidget($c, null, null, 'ConvertLead');
-        self::assertFalse(strpos($result, '--None--'));
+        self::assertFalse(strpos((string) $result, '--None--'));
         self::assertCount(1, $GLOBALS['log']->calls['fatal']);
 
 
         // test
         $result = getEmailAddressWidget($a, null, null, 'ConvertLead');
-        self::assertFalse(strpos($result, '--None--'));
+        self::assertFalse(strpos((string) $result, '--None--'));
 
         // test
         $result = getEmailAddressWidget($c, null, null, 'EditView');
-        self::assertFalse(strpos($result, '--None--'));
+        self::assertFalse(strpos((string) $result, '--None--'));
 
         // test
         $result = getEmailAddressWidget($c, null, null, 'DetailView');

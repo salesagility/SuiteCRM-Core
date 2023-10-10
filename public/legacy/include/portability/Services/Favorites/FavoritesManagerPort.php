@@ -130,7 +130,9 @@ class FavoritesManagerPort
         $db = DBManagerFactory::getInstance();
         $userId = $current_user->id ?? null;
 
-        if (empty($db) || empty($userId) || empty($module)) {
+        $excludedModules = ['Home', 'Administration', 'ModuleBuilder'];
+  
+        if (empty($db) || empty($userId) || empty($module) || in_array($module, $excludedModules)) {
             return [];
         }
 

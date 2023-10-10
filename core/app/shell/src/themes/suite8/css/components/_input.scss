@@ -87,21 +87,10 @@ input {
       width: 18em;
       color: $shell-grey;
     }
+
     select {
       padding: 0.6em 0 0.6em 0.6em;
     }
-  }
-}
-
-
-.global-search {
-  margin: 0.3em 1.5em;
-}
-
-@media all and (min-width: $breakpoint-small) {
-  .global-search input,
-  .global-search button {
-    height: 2em;
   }
 }
 
@@ -111,16 +100,6 @@ input {
     padding: 0;
     max-width: 90%;
   }
-
-  .global-search input[type="text"] {
-    font-size: 0.8em;
-    height: 2.2em;
-  }
-}
-
-.global-search .form-control {
-  border: none;
-  max-width: 15em;
 }
 
 .modal-label {
@@ -244,3 +223,4 @@ input {
   box-shadow: 0 0 0 0.1rem $border-focus-blue;
   border-color: $border-focus-blue;
 }
+

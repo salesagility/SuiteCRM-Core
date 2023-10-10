@@ -188,7 +188,7 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     protected fillRow(row: FieldGridRow): void {
         const len = row.cols.length;
         for (let i = len; i < this.colNumber; i++) {
-            row.cols.push({});
+            row.cols.push({field: {type: '', display: 'none'}});
         }
     }
 

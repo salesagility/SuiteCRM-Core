@@ -71,6 +71,7 @@ export class RecordSaveGQL {
                     saveRecord(input: $input) {
                         record {
                             attributes
+                            favorite
                             id
                             _id
                             module
@@ -99,6 +100,7 @@ export class RecordSaveGQL {
             module: response?.data?.saveRecord?.record?.module ?? '',
             attributes: response?.data?.saveRecord?.record?.attributes ?? [],
             acls: response?.data?.saveRecord?.record?.acls ?? [],
+            favorite: response?.data.saveRecord?.record?.favorite ?? false
         } as Record;
     }
 }

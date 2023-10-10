@@ -42,16 +42,39 @@
     <div *ngIf="config && config.layout === 'tabs'" class="record-content tabs-layout container-fluid pl-0 pr-0">
 
         <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="active">
-            <li class="tab" *ngFor="let panel of panels; index as i;" [ngbNavItem]="i+1">
-                <a class="tab-link" ngbNavLink>{{panel.label}}</a>
-                <ng-template ngbNavContent>
-                    <div class="tab-{{panel.key}}">
-                        <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
-                    </div>
-                </ng-template>
-            </li>
+            <ng-container *ngFor="let panel of panels; index as i;">
+                <ng-container *ngIf="(panel.display$ | async) as panelDisplay">
+                    <li class="tab" [ngbNavItem]="i+1" *ngIf="!!panelDisplay">
+                        <a class="tab-link" ngbNavLink>{{panel.label}}</a>
+                        <ng-template ngbNavContent>
+                            <div class="tab-{{panel.key}}">
+                                <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
+                            </div>
+                        </ng-template>
+                    </li>
+                </ng-container>
+            </ng-container>
         </ul>
         <div [ngbNavOutlet]="nav" class="p-2 pt-3 rounded-right rounded-bottom"></div>
+
+
+        <ng-container *ngIf="panelsInPrevTab && panelsInPrevTab.length">
+            <ng-container *ngFor="let panel of panels; let j = index;">
+                <div *ngFor="let panel of panel.subPanels;">
+                    <ng-container *ngIf="(panel.display$ | async) as panelDisplay">
+                        <div class="row no-gutters mt-3" *ngIf="!!panelDisplay">
+                            <div class="col" *ngIf="j==active-1">
+                                <scrm-panel [title]="panel.label" mode="collapsible">
+                                    <div panel-body class="panel-{{panel.key}}">
+                                        <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
+                                    </div>
+                                </scrm-panel>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
 
     </div>
 

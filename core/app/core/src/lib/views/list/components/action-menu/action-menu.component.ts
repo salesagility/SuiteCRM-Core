@@ -27,7 +27,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ButtonGroupInterface, ButtonInterface} from 'common';
 import {BehaviorSubject, combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {ModuleAction} from '../../../../store/navigation/navigation.store';
@@ -36,6 +36,7 @@ import {
     ScreenSizeObserverService
 } from '../../../../services/ui/screen-size-observer/screen-size-observer.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {AsyncActionInput, AsyncActionService} from '../../../../services/process/processes/async-action/async-action';
 
 @Component({
     selector: 'scrm-action-menu',
@@ -67,7 +68,8 @@ export class ActionMenuComponent implements OnInit {
         protected listStore: ListViewStore,
         protected actionHandler: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
-        protected systemConfigs: SystemConfigStore
+        protected systemConfigs: SystemConfigStore,
+        protected asyncActionService: AsyncActionService
     ) {
     }
 
@@ -93,7 +95,6 @@ export class ActionMenuComponent implements OnInit {
                 config.buttons.push(buttonConfig);
             }
         });
-
         return config;
     }
 
@@ -142,8 +143,28 @@ export class ActionMenuComponent implements OnInit {
             klass: 'action-button',
             label: this.actionHandler.getActionLabel(module, action, language, labelKey),
             onClick: (): void => {
+                if(action?.process) {
+                    this.handleProcess(module, action?.process)
+                    return ;
+                }
                 this.actionHandler.navigate(action).then();
             }
         };
+    }
+
+    protected handleProcess(moduleName: string, process: string) {
+
+        if(!process) {
+            return;
+        }
+
+        const processType = process;
+
+        const options = {
+            action: processType,
+            module: moduleName,
+        } as AsyncActionInput;
+
+        this.asyncActionService.run(processType, options).pipe(take(1)).subscribe();
     }
 }

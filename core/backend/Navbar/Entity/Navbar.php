@@ -102,6 +102,13 @@ final class Navbar
             'modules' => $this->modules,
             'maxTabs' => $this->maxTabs,
             'type' => $this->type,
+            'quickActions' => $this->quickActions,
         ];
     }
+
+    /**
+     * @var array
+     * @ApiProperty
+     */
+    public $quickActions;
 }

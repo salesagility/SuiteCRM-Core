@@ -38,6 +38,7 @@ use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface;
 use aSubPanel;
 use Exception;
+use SearchForm;
 use SubPanelDefinitions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -282,12 +283,21 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      */
     protected function mapButtons(aSubPanel $subpanel, $tab): array
     {
+
+        $module = $tab['module'] ?? '';
+
+        $searchDefs = SearchForm::retrieveSearchDefs($module);
+
         $topButtons = [];
 
         $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
-        foreach($topButtonDefinitions as $top_button){
-            if (stripos($top_button['widget_class'], 'topfilter')){
+        foreach($topButtonDefinitions as $key => $value){
+            if (stripos($value['widget_class'], 'topfilter')){
+                if (!$this->getSearchdefs($subpanel) && !$searchDefs['searchdefs']){
+                    unset($topButtonDefinitions[$key]);
+                    break;
+                }
                 $topButtonDefinitions[] = [
                     'widget_class' => 'SubPanelFilterClearButton',
                 ];

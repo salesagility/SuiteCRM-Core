@@ -24,9 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Panel, Record, ViewMode} from 'common';
+import {Panel, Record, ViewMode, TabDefinitions} from 'common';
 import {Observable} from 'rxjs';
-import {TabDefinitions} from '../../store/metadata/metadata.store.service';
 
 export interface RecordContentDataSource {
     inlineEdit: boolean;

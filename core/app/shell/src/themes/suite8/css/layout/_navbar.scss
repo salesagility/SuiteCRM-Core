@@ -31,6 +31,32 @@
   background-color: $midnight-blue;
   margin: 0;
   padding: 0 1em;
+
+  .navbar-action-group {
+    .action-link svg,
+    .action-link svg path,
+    .action-link svg polygon {
+      fill: rgba(255, 255, 255, 0.8);
+    }
+
+    .global-action-icon svg,
+    .global-action-icon svg path,
+    .global-action-icon svg polygon {
+      fill: rgba(255, 255, 255, 0.8);
+    }
+
+    .action-link:hover svg,
+    .action-link:hover svg path,
+    .action-link:hover svg polygon {
+      fill: $salmon-pink;
+    }
+
+    .global-action-icon:hover svg,
+    .global-action-icon:hover svg path,
+    .global-action-icon:hover svg polygon {
+      fill: $salmon-pink;
+    }
+  }
 }
 
 @media only screen and (min-width: $breakpoint-large) {
@@ -91,10 +117,6 @@ a.home-nav-link {
 
 .nav-link {
   color: $light-grey;
-}
-
-.mobilenavbar {
-  list-style: none;
 }
 
 .nav-link:hover {
@@ -168,7 +190,7 @@ h4.favorite-header {
 .global-action-icon {
   width: 1.5em;
   height: 1.5em;
-  margin: 0 0.6em 0 0;
+  margin: 0;
 }
 
 @media only screen and (max-width: $breakpoint-medium) {
@@ -235,10 +257,11 @@ h4.favorite-header {
     width: 1.5em;
     height: 1.5em;
     margin: 0 0.6em 0 0;
+    fill: $white;
   }
 
   .global-links .nav-link {
-    font-size: 0.85em;
+    font-size: 1em;
     font-weight: bold;
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -262,6 +285,19 @@ h4.favorite-header {
     padding-left: 0.5em;
     height: 2.4em;
   }
+
+  .action-group {
+    display: flex;
+    flex-direction: row;
+
+    .action-link {
+      padding: 0 0.6rem;
+
+      svg {
+        margin: 0;
+      }
+    }
+  }
 }
 
 a.nav-link.dropdown-toggle::after,
@@ -270,11 +306,15 @@ a.nav-link-nongrouped.dropdown-toggle::after {
   vertical-align: middle;
 }
 
-.mobilenavbar {
-  background-color: $midnight-blue;
+.primary-global-link.dropdown-toggle::after {
+  display: none;
 }
 
 .mobilenavbar {
+  list-style: none;
+  padding: 0;
+  background-color: $midnight-blue;
+
   .navbar-toggler.dropdown-toggle::after {
     display: none;
   }
@@ -313,7 +353,7 @@ a.nav-link-nongrouped.dropdown-toggle::after {
 
 .nav-close-text {
   font-size: 0.8em;
-  margin-left:0.2em;
+  margin-left: 0.2em;
 }
 
 .mobile-nav-close:hover {

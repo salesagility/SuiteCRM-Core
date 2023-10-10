@@ -56,6 +56,10 @@
     overflow: hidden;
   }
 
+  .record-thread-item-body.collapsed .item-content-extra {
+    display: none !important;
+  }
+
   .record-thread-item-body.expanded .item-content {
     height: auto;
   }

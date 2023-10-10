@@ -26,7 +26,7 @@
 
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {viewFieldsMap} from './field.manifest';
-import {Field, Record} from 'common';
+import {DisplayType, Field, Record} from 'common';
 import {FieldRegistry} from './field.registry';
 
 @Component({
@@ -59,7 +59,7 @@ export class FieldComponent implements OnInit {
             mode = 'edit';
         }
 
-        if (mode === 'edit' && this.field.display && this.field.display === 'readonly') {
+        if (mode === 'edit' && this.field.readonly) {
             mode = 'detail';
         }
 
@@ -71,7 +71,7 @@ export class FieldComponent implements OnInit {
 
         const displayType = (this.field.definition && this.field.definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, this.type, displayType, this.componentMode);
+        return this.registry.getDisplayType(module, this.type, displayType, this.componentMode, this.field.name);
     }
 
     public setHostClass() {

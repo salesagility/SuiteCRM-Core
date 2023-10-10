@@ -21,6 +21,10 @@ parameters:
       - 'logs'
       - '.env.local'
       - '.env.local.php'
+      - '.env.prod.local'
+      - '.env.prod.local.php'
+      - '.env.dev.local'
+      - '.env.dev.local.php'
       - 'tmp'
     toKeepIgnore:
       - 'public/legacy/modules/Accounts'

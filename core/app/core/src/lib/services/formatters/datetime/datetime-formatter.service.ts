@@ -182,7 +182,6 @@ export class DatetimeFormatter implements Formatter {
         }
 
         let dateTime = this.fromUserFormat(datetimeString, options);
-
         if (!dateTime.isValid) {
             dateTime = this.fromInternalFormat(datetimeString, options);
         }
@@ -272,7 +271,6 @@ export class DatetimeFormatter implements Formatter {
         }
 
         const dateTime = this.toDateTime(datetime, fromFormat);
-
         if (!dateTime.isValid) {
             return null;
         }
@@ -304,9 +302,9 @@ export class DatetimeFormatter implements Formatter {
         } as NgbTimeStruct;
     }
 
-    fromUserFormat(datetime: string, options?: DateTimeOptions): DateTime {
+    fromUserFormat(datetime: string, options?: DateTimeOptions, formatOptions?: FormatOptions): DateTime {
         // ensure datetime is in user format.
-        datetime = this.toUserFormat(datetime, options);
+        datetime = this.toUserFormat(datetime, formatOptions);
         datetime = datetime.toString();
         datetime = datetime.replace('a', 'A');
         datetime = datetime.replace('p', 'P');
@@ -322,13 +320,13 @@ export class DatetimeFormatter implements Formatter {
         return DateTime.fromFormat(datetime.toString(), format, options);
     }
 
-    validateUserFormat(inputValue: any): boolean {
+    validateUserFormat(inputValue: any, userFormat: string = ''): boolean {
 
         const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
         if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
             return false;
         }
-        const dateTime = this.fromUserFormat(trimmedInputValue);
+        const dateTime = this.fromUserFormat(trimmedInputValue, {},{fromFormat: userFormat});
         return !dateTime.isValid;
     }
 

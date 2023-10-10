@@ -315,7 +315,7 @@ array(
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
           ),
         ),
-      ),
+      )
     ),
   ),
 );

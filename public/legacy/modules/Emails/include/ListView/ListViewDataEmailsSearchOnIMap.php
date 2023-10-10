@@ -103,8 +103,8 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
 
         // TODO: figure out why was it for?
         $orderby = $order['orderBy'];
-        if (strpos($order['orderBy'], '.') && ($order['orderBy'] != "report_cache.date_modified")) {
-            $orderby = substr($order['orderBy'], strpos($order['orderBy'], '.') + 1);
+        if (strpos((string) $order['orderBy'], '.') && ($order['orderBy'] != "report_cache.date_modified")) {
+            $orderby = substr((string) $order['orderBy'], strpos((string) $order['orderBy'], '.') + 1);
         }
 
 
@@ -121,15 +121,15 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
         // TODO: PHP Warning:  imap_fetchbody(): Bad message number
         $emailServerEmails = $inboundEmail->checkWithPagination($offset, $limitPerPage, $order, $filter, $filter_fields);
 
-        $total = $emailServerEmails['mailbox_info']['Nmsgs']; // + count($importedEmails['data']);
-        if ($request['Emails2_EMAIL_offset'] === "end") {
+        $total = $emailServerEmails['mailbox_info']['Nmsgs'] ?? 0; // + count($importedEmails['data']);
+        if (isset($request['Emails2_EMAIL_offset']) && $request['Emails2_EMAIL_offset'] === "end") {
             $offset = $total - $limitPerPage;
         }
 
 
         /// Populate the data and its fields from the email server
         $request['uids'] = array();
-
+        $emailServerEmailsData = [];
 
         if (isset($emailServerEmails['data']) && is_array($emailServerEmails['data'])) {
             $emailServerEmailsData = $emailServerEmails['data'];
@@ -168,6 +168,7 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
         }
         $crmWhere = $where . " AND mailbox_id LIKE " . "'" . $inboundEmailIdQuoted . "'";
 
+        $ret_array = [];
         $ret_array['inner_join'] = '';
         if (!empty($this->lvde->seed->listview_inner_join)) {
             $ret_array['inner_join'] = ' ' . implode(' ', $this->lvde->seed->listview_inner_join) . ' ';
@@ -377,7 +378,7 @@ class ListViewDataEmailsSearchOnIMap extends ListViewDataEmailsSearchAbstract
                         )
                     ) {
                         // Ensure the encoding is UTF-8
-                        $queryString = htmlentities($request[$field_name], null, 'UTF-8');
+                        $queryString = htmlentities((string) $request[$field_name], null, 'UTF-8');
                         break;
                     }
                 }

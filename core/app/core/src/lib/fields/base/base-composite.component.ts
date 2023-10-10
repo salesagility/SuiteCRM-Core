@@ -32,6 +32,7 @@ import {RecordManager} from '../../services/record/record.manager';
 import {emptyObject, Field, FieldAttribute, FieldDefinition} from 'common';
 import set from 'lodash-es/set';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({template: ''})
 export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -40,9 +41,10 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
         protected typeFormatter: DataTypeFormatter,
         protected registry: StandardFieldRegistry,
         protected recordManager: RecordManager,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {
@@ -59,7 +61,7 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
 
         const displayType = (definition && definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, type, displayType, this.getMode());
+        return this.registry.getDisplayType(module, type, displayType, this.getMode(), this.field.name);
     }
 
     /**

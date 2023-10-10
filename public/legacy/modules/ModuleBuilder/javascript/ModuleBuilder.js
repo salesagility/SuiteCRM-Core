@@ -299,7 +299,7 @@ if (typeof('console') == 'undefined') {
             });
           }
           var module_str = module;
-          if (typeof SUGAR.language.languages['app_list_strings']['moduleList'][module] != 'undefined') {
+          if (SUGAR.language.languages['app_list_strings'] && typeof SUGAR.language.languages['app_list_strings']['moduleList'][module] != 'undefined') {
             module_str = SUGAR.language.languages['app_list_strings']['moduleList'][module];
           }
           ModuleBuilder.history.popup_window.setHeader(module_str + ' : ' + SUGAR.language.get('ModuleBuilder', 'LBL_' + layout.toUpperCase()) + SUGAR.language.get('ModuleBuilder', 'LBL_HISTORY_TITLE'));
@@ -1153,7 +1153,9 @@ if (typeof('console') == 'undefined') {
       autoSetLayout: function () {
         var mp = ModuleBuilder.mainPanel;
         var c = Dom.get("mblayout");
-        mp.set("height", Dom.getViewportHeight() - Dom.getY(c) - 75);
+        if(Dom.getViewportHeight() < (window.outerHeight + 150)) {
+          mp.set("height",  Dom.getViewportHeight() - 125);
+        }
         //mp.set("width", Dom.getViewportWidth() - 40);
         mp.resize(true);
         var tabEl = ModuleBuilder.tabPanel.get("element");

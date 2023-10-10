@@ -48,6 +48,8 @@ import {VarcharFilterFieldComponent} from './varchar/templates/filter/filter.com
 import {CurrencyDetailFieldComponent} from './currency/templates/detail/currency.component';
 import {EnumEditFieldModule} from './enum/templates/edit/enum.module';
 import {MultiEnumDetailFieldModule} from './multienum/templates/detail/multienum.module';
+import {FileDetailFieldModule} from './file/templates/detail/file.module';
+import {FileDetailFieldComponent} from './file/templates/detail/file.component';
 import {FloatDetailFieldModule} from './float/templates/detail/float.module';
 import {DateDetailFieldComponent} from './date/templates/detail/date.component';
 import {FloatDetailFieldComponent} from './float/templates/detail/float.component';
@@ -114,6 +116,7 @@ export const baseFieldModules = [
     PasswordEditFieldModule,
     IntDetailFieldModule,
     IconListFieldModule,
+    FileDetailFieldModule,
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
     DateDetailFieldModule,
@@ -155,6 +158,7 @@ export const baseFieldComponents = [
     PasswordDetailFieldComponent,
     PasswordEditFieldComponent,
     IntDetailFieldComponent,
+    FileDetailFieldComponent,
     FloatDetailFieldComponent,
     PhoneDetailFieldComponent,
     DateDetailFieldComponent,
@@ -203,6 +207,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'char.detail': VarcharDetailFieldComponent,
     'int.list': IntDetailFieldComponent,
     'int.detail': IntDetailFieldComponent,
+    'file.detail': FileDetailFieldComponent,
     'float.list': FloatDetailFieldComponent,
     'float.detail': FloatDetailFieldComponent,
     'phone.list': PhoneDetailFieldComponent,

@@ -30,6 +30,7 @@ export interface FormatOptions {
     [key: string]: any;
     fromFormat?: string;
     mode?: ViewMode;
+    toFormat?: string;
 }
 
 export interface Formatter {

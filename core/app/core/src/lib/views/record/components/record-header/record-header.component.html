@@ -26,7 +26,7 @@
 */
 -->
 <ng-container>
-    <div class="record-view-header">
+    <div [ngClass]="isScrolled ? 'record-view-header-scrolled shadow-md': ''" class="record-view-header">
         <ng-container *ngIf="displayResponsiveTable">
             <div class="d-flex flex-nowrap">
                 <div class="row">
@@ -37,8 +37,7 @@
                     <div class="w-100"></div>
                     <div class="col">
                         <div class="order-2">
-                            <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                            <div class="record-view-name d-flex">
+                            <div class="record-view-name d-flex align-items-center">
                                 <scrm-dynamic-label *ngIf="record && record.fields"
                                                     [fields]="record.fields"
                                                     [labelKey]="getSummaryTemplate()">
@@ -64,33 +63,34 @@
         </ng-container>
         <ng-template [ngIf]="!displayResponsiveTable">
             <div *ngIf="loading" class="row mr-0">
-                <div class="col-md-4">
-                    <scrm-module-title [title]="moduleTitle" class="record-view-title"></scrm-module-title>
+                <div class="col-md-4 d-flex align-items-center">
+                    <scrm-module-title [title]="moduleTitle" class="record-view-title title-font"></scrm-module-title>
                     <div class="record-view-name pt-3 pb-3"></div>
                 </div>
             </div>
             <div *ngIf="!loading" class="row mr-0">
-                <div class="col-md-4">
-                    <scrm-module-title class="record-view-title" [title]="moduleTitle"></scrm-module-title>
-                    <div class="record-view-name d-flex">
+                <div
+                    [ngClass]="isScrolled ? 'col-md-4 d-flex align-items-center' : 'col-md-4 d-flex align-items-center'">
+                    <div
+                        [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-center' : 'record-view-name d-flex align-items-center'">
                         <scrm-dynamic-label *ngIf="record && record.fields"
+                                            class="d-inline-block h-100 lh-100"
                                             [fields]="record.fields"
                                             [labelKey]="getSummaryTemplate()">
                         </scrm-dynamic-label>
                         <div *ngIf="record && record.fields && mode !== 'create'" class="pl-1 d-flex align-items-top">
-                            <scrm-favorite-toggle [record]="record"></scrm-favorite-toggle>
+                            <scrm-favorite-toggle [record]="record"
+                                                  class="d-inline-block h-100 lh-100"></scrm-favorite-toggle>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 d-flex align-items-center justify-content-end">
                     <div class="row mr-1 ml-1">
-                        <div class="w-100">
-                        </div>
                         <div *ngIf="record" class="w-100">
                             <scrm-action-group-menu
                                 [config]="actionsAdapter"
                                 [actionContext]="getActionContext(record)"
-                                klass="record-view-actions float-right"
+                                [klass]="isScrolled ?  'record-view-actions-scrolled float-right' : 'record-view-actions float-right'"
                                 buttonClass="settings-button"
                             >
                             </scrm-action-group-menu>

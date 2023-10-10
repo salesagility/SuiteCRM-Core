@@ -39,6 +39,7 @@ import {TagModel} from 'ngx-chips/core/accessor';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
 import {EMPTY, Observable, of} from 'rxjs';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-relate-filter',
@@ -68,9 +69,10 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         protected relateService: RelateService,
         protected moduleNameMapper: ModuleNameMapper,
         protected modalService: NgbModal,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(languages, typeFormatter, relateService, moduleNameMapper, logic);
+        super(languages, typeFormatter, relateService, moduleNameMapper, logic, logicDisplay);
 
         this.selectButton = {
             klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'select-button', 'm-0'],

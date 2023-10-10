@@ -109,6 +109,22 @@ ul li::marker {
   stroke: $main;
 }
 
+.fill-main-light {
+  fill: $dusky-light-blue;
+}
+
+.stroke-main-light {
+  stroke: $dusky-light-blue;
+}
+
+.fill-hover-main-light:hover {
+  fill: $dusky-light-blue;
+}
+
+.stroke-hover-main-light:hover {
+  stroke: $dusky-light-blue;
+}
+
 .fill-primary {
   fill: $primary;
 }
@@ -157,10 +173,52 @@ ul li::marker {
   stroke: $salmon-pink;
 }
 
+
+.fill-complementary {
+  fill: $complementary;
+}
+
+.stroke-complementary {
+  stroke: $complementary;
+}
+
+.fill-hover-complementary:hover {
+  fill: $complementary;
+}
+
+.stroke-hover-complementary:hover {
+  stroke: $complementary;
+}
+
+.fill-complementary-light {
+  fill: $complementary-light;
+}
+
+.stroke-complementary-light {
+  stroke: $complementary-light;
+}
+
+.fill-hover-complementary-light:hover {
+  fill: $complementary-light;
+}
+
+.stroke-hover-complementary-light:hover {
+  stroke: $complementary-light;
+}
+
 .shadow-md {
-  box-shadow: .1rem .15rem .2rem rgba(0,0,0,.25)!important;
+  box-shadow: .1rem .15rem .2rem rgba(0, 0, 0, .25) !important;
+}
+
+.shadow-sm-2 {
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1) !important;
 }
 
 .line-height-initial {
   line-height: initial;
+}
+
+.lh-100 {
+  line-height: 100%;
 }

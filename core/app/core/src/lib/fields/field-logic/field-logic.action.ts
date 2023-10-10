@@ -31,6 +31,10 @@ export interface FieldLogicActionData extends ActionData {
     record?: Record
 }
 
+export interface FieldLogicActionHandlerMap {
+    [key: string]: FieldLogicActionHandler;
+}
+
 export abstract class FieldLogicActionHandler extends ActionHandler<FieldLogicActionData> {
 
     abstract run(data: FieldLogicActionData, action: Action): void;
@@ -38,4 +42,8 @@ export abstract class FieldLogicActionHandler extends ActionHandler<FieldLogicAc
     shouldDisplay(data: FieldLogicActionData): boolean {
         return true
     };
+
+    getTriggeringStatus() : string[] {
+        return ['onValueChange'];
+    }
 }

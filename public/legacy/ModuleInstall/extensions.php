@@ -63,6 +63,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
         "jsgroupings" =>     array("section" => "jsgroups",	      "extdir" => "JSGroupings",    "file" => 'jsgroups.ext.php'),
         "aow" =>     		 array("section" => "aow_actions",	  "extdir" => "Actions",		"file" => 'actions.ext.php', "module" => "AOW_Actions"),
         "actionnamemap" =>   array("section" => "action_name_map","extdir" => "ActionNameMap",	"file" => 'action_name_map.ext.php'),
+        "apibeanmappers" =>   array("section" => "api_bean_mappers","extdir" => "ApiBeanMappers",	"file" => 'api_bean_mappers.ext.php'),
         "modulenamemap" =>   array("section" => "module_name_map","extdir" => "ModuleNameMap",	"file" => 'module_name_map.ext.php'),
         "filteroperatormap" =>   array("section" => "filter_operator_map","extdir" => "FilterOperatorMap",	"file" => 'filter_operator_map.ext.php'),
         "filtermappers" =>   array("section" => "filter_mappers","extdir" => "FilterMappers",	"file" => 'filter_mappers.ext.php'),

@@ -25,9 +25,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {Action, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {RequiredValidator} from '../../../services/record/validation/validators/required.validator';
+import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +38,10 @@ export class RequiredAction extends FieldLogicActionHandler {
     key = 'required';
     modes = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor(protected requiredValidator: RequiredValidator) {
+    constructor(
+        protected requiredValidator: RequiredValidator,
+        protected activeFieldsChecker: ActiveFieldsChecker
+    ) {
         super();
     }
 
@@ -59,7 +63,7 @@ export class RequiredAction extends FieldLogicActionHandler {
             return;
         }
 
-        const isActive = this.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
+        const isActive = this.activeFieldsChecker.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
 
         let required = false;
         let validators = [...data.field.validators || []];
@@ -68,121 +72,15 @@ export class RequiredAction extends FieldLogicActionHandler {
             validators = validators.concat(this.requiredValidator.getValidator(field));
         }
 
+        data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
+        record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
         data.field.definition.required = required;
         data.field.formControl.setValidators(validators);
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
 
-    /**
-     * Check if any of the configured values is currently set
-     * @param {array} relatedFields
-     * @param {object} record
-     * @param {object} activeOnFields
-     * @param {array} relatedAttributesFields
-     * @param {object} activeOnAttributes
-     */
-    protected isActive(
-        relatedFields: string[],
-        record: Record,
-        activeOnFields: StringArrayMap,
-        relatedAttributesFields: string[],
-        activeOnAttributes: StringArrayMatrix
-    ) {
-        let isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
-
-        if (!isActive) {
-            isActive = this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
-        }
-
-        return isActive;
-    }
-
-    /**
-     * Are attributes active
-     * @param {array} relatedAttributesFields
-     * @param {object} record
-     * @param {object} activeOnAttributes
-     */
-    protected areAttributesActive(
-        relatedAttributesFields: string[],
-        record: Record,
-        activeOnAttributes: StringArrayMatrix
-    ): boolean {
-        return relatedAttributesFields.some(fieldKey => {
-
-            const fields = record.fields;
-            const field = (fields && record.fields[fieldKey]) || null;
-            const attributes = activeOnAttributes[fieldKey] && Object.keys(activeOnAttributes[fieldKey]);
-            if (!field || !attributes || !attributes.length) {
-                return;
-            }
-
-            return attributes.some(attributeKey => {
-                const activeValues = activeOnAttributes[fieldKey][attributeKey];
-                const attribute = field.attributes && field.attributes[attributeKey];
-
-                if (!activeValues || !activeValues.length || !attribute) {
-                    return;
-                }
-
-                return this.isValueActive(attribute, activeValues);
-            });
-        });
-    }
-
-    /**
-     * Are fields active
-     * @param {array} relatedFields
-     * @param {object} record
-     * @param {object} activeOnFields
-     */
-    protected areFieldsActive(relatedFields: string[], record: Record, activeOnFields: StringArrayMap): boolean {
-        return relatedFields.some(fieldKey => {
-
-            const fields = record.fields;
-            const field = (fields && record.fields[fieldKey]) || null;
-            const activeValues = activeOnFields[fieldKey];
-
-            if (!field || !activeValues || !activeValues.length) {
-                return;
-            }
-
-            return this.isValueActive(field, activeValues);
-        });
-    }
-
-    /**
-     * Is value active
-     * @param {object} field
-     * @param {array} activeValues
-     */
-    protected isValueActive(field: Field, activeValues: string[]): boolean {
-        let isActive = false;
-
-        if (field.valueList && field.valueList.length) {
-            field.valueList.some(value => {
-                return activeValues.some(activeValue => {
-                    if (activeValue === value) {
-                        isActive = true;
-                        return true;
-                    }
-                });
-            });
-
-            return isActive;
-        }
-
-        if (field.value) {
-            activeValues.some(activeValue => {
-
-                if (activeValue === field.value) {
-                    isActive = true;
-                }
-
-            });
-        }
-
-        return isActive;
+    getTriggeringStatus(): string[] {
+        return ['onValueChange', 'onFieldInitialize'];
     }
 }

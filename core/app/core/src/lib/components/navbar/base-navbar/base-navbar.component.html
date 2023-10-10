@@ -66,48 +66,55 @@
         <ng-container *ngIf="this.isUserLoggedIn && mobileNavbar">
             <ul class="navbar mobile-nav-block mobilenavbar">
                 <div #myDrop="ngbDropdown" [autoClose]="false" class="position-static" ngbDropdown>
-                    <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
-                            class="navbar-toggler"
-                            ngbDropdownToggle type="button">
-                        <scrm-image class=" responsive-menu-toggler" image="hamburger"></scrm-image>
-                    </button>
-                    <div [@mobileNavFade] class="mobile-nav-dropdown w-100" ngbDropdownMenu>
-                        <ng-container *ngIf="navbar && navbar.menu && navbar.menu.length">
-                            <scrm-mobile-menu [all]="navbar.all.modules"
-                                              [current]="navbar.current"
-                                              [items]="navbar.menu"
-                                              [navigationType]="vm.userPreferences['navigation_paradigm'] || ''"
-                                              [onClose]="getCloseCallBack(myDrop)"
-                            >
-                            </scrm-mobile-menu>
-                        </ng-container>
+                        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
+                                class="navbar-toggler"
+                                ngbDropdownToggle type="button">
+                            <scrm-image class=" responsive-menu-toggler" image="hamburger"></scrm-image>
+                        </button>
+                        <div [@mobileNavFade] class="mobile-nav-dropdown w-100" ngbDropdownMenu>
+                            <ng-container *ngIf="navbar && navbar.menu && navbar.menu.length">
+                                <scrm-mobile-menu [all]="navbar.all.modules"
+                                                  [current]="navbar.current"
+                                                  [items]="navbar.menu"
+                                                  [navigationType]="vm.userPreferences['navigation_paradigm'] || ''"
+                                                  [onClose]="getCloseCallBack(myDrop)"
+                                >
+                                </scrm-mobile-menu>
+                            </ng-container>
+                        </div>
+                </div>
 
+                <div class="d-flex align-items-center">
+                    <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
+                    <div class="global-links" ngbDropdown>
+                        <li (click)="myDrop.close()" class="global-link-item">
+                            <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle"
+                               ngbDropdownToggle>
+                                <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
+                            </a>
+                            <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
+                                 aria-labelledby="navbarDropdownMenuLink"
+                                 class="dropdown-menu global-links-dropdown border shadow-sm-2" ngbDropdownMenu>
+                                <span
+                                    class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
+                                <ng-template [ngIf]="navbar.globalActions">
+                                    <ng-container
+                                        *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                        <a class="dropdown-item global-links-sublink"
+                                           href="{{ globalAction.link.url }}"
+                                           ngbDropdownItem
+                                           target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
+                                        </a>
+                                        <hr *ngIf="last === true || first === true"/>
+                                    </ng-container>
+                                </ng-template>
+                                <scrm-logout-ui></scrm-logout-ui>
+                            </div>
+                        </li>
                     </div>
                 </div>
-                <div class="global-links" ngbDropdown>
-                    <li (click)="myDrop.close()" class="global-link-item">
-                        <a #mobileGlobalLinkTitle class="nav-link primary-global-link dropdown-toggle"
-                           ngbDropdownToggle>
-                            <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                            {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}}
-                        </a>
-                        <div [style.min-width.px]="mobileGlobalLinkTitle.offsetWidth"
-                             aria-labelledby="navbarDropdownMenuLink"
-                             class="dropdown-menu global-links-dropdown" ngbDropdownMenu>
-                            <ng-template [ngIf]="navbar.globalActions">
-                                <a *ngFor="let globalAction of navbar.globalActions"
-                                   class="dropdown-item global-links-sublink"
-                                   href="{{ globalAction.link.url }}"
-                                   ngbDropdownItem
-                                   target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
-                                </a>
-                            </ng-template>
-                            <scrm-logout-ui></scrm-logout-ui>
-                        </div>
-                    </li>
-                </div>
+
             </ul>
-            <scrm-action-bar-ui></scrm-action-bar-ui>
 
         </ng-container>
 
@@ -118,93 +125,99 @@
         <ng-container *ngIf="this.isUserLoggedIn && !mobileNavbar">
             <nav class="navbar navbar-expand-md navbar-1">
                 <div [ngbCollapse]="mainNavCollapse" class="navbar-collapse collapse collapsenav">
-                    <scrm-home-menu-item
-                        [active]="vm.appState.module && vm.appState.module === 'home'"
-                        [route]="getHomePage()"
-                    ></scrm-home-menu-item>
+                        <scrm-home-menu-item
+                            [active]="vm.appState.module && vm.appState.module === 'home'"
+                            [route]="getHomePage()"
+                        ></scrm-home-menu-item>
 
-                    <!-- Navbar with grouped tabs -->
+                        <!-- Navbar with grouped tabs -->
 
-                    <ng-container *ngIf="vm.userPreferences['navigation_paradigm'] == 'gm'">
+                        <ng-container *ngIf="vm.userPreferences['navigation_paradigm'] == 'gm'">
 
-                        <ul class="navbar-nav grouped">
+                            <ul class="navbar-nav grouped">
 
-                            <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
-                                <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
-                            </li>
+                                <li *ngIf="navbar.current" class="top-nav nav-item dropdown non-grouped active">
+                                    <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
+                                </li>
 
-                            <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown main-grouped">
-                                <scrm-grouped-menu-item
-                                    [item]="item"
-                                    [subNavCollapse]="subNavCollapse"
-                                >
-                                </scrm-grouped-menu-item>
+                                <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown main-grouped">
+                                    <scrm-grouped-menu-item
+                                        [item]="item"
+                                        [subNavCollapse]="subNavCollapse"
+                                    >
+                                    </scrm-grouped-menu-item>
 
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+
+                            <scrm-menu-items-list [items]="navbar.all.modules"
+                                                  labelKey="LBL_TABGROUP_ALL">
+                            </scrm-menu-items-list>
+
+                        </ng-container>
+
+
+                        <!-- END Navbar with grouped tabs -->
+
+                        <!-- Navbar with non-grouped tabs -->
+
+                        <ng-container *ngIf="vm.userPreferences['navigation_paradigm'] != 'gm'">
+
+                            <ul class="navbar-nav">
+                                <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown non-grouped active">
+                                    <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
+                                </li>
+
+                                <ng-container *ngIf="navbar.current?.submenu  && navbar.current.isGroupedMenu">
+                                    <li class="top-nav nav-item dropdown main-grouped">
+                                        <scrm-grouped-menu-item
+                                            [item]="navbar.current"
+                                            [subNavCollapse]="subNavCollapse">
+                                        </scrm-grouped-menu-item>
+                                    </li>
+                                </ng-container>
+
+                                <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown non-grouped">
+                                    <scrm-menu-item [item]="item"></scrm-menu-item>
+                                </li>
+                            </ul>
 
                         <scrm-menu-items-list [items]="navbar.all.modules"
-                                              labelKey="LBL_TABGROUP_ALL">
+                                              labelKey="LBL_MORE">
                         </scrm-menu-items-list>
 
-                    </ng-container>
+                        </ng-container>
 
-
-                    <!-- END Navbar with grouped tabs -->
-
-                    <!-- Navbar with non-grouped tabs -->
-
-                    <ng-container *ngIf="vm.userPreferences['navigation_paradigm'] != 'gm'">
-
-                        <ul class="navbar-nav">
-                            <li *ngIf="navbar.current && !navbar.current.isGroupedMenu"
-                                class="top-nav nav-item dropdown non-grouped active">
-                                <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
-                            </li>
-
-                            <ng-container *ngIf="navbar.current?.submenu  && navbar.current.isGroupedMenu">
-                                <li class="top-nav nav-item dropdown main-grouped">
-                                    <scrm-grouped-menu-item
-                                        [item]="navbar.current"
-                                        [subNavCollapse]="subNavCollapse">
-                                    </scrm-grouped-menu-item>
-                                </li>
-                            </ng-container>
-
-                            <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown non-grouped">
-                                <scrm-menu-item [item]="item"></scrm-menu-item>
-                            </li>
-                        </ul>
-
-                        <scrm-menu-items-list [items]="navbar.all.modules" labelKey="LBL_MORE"></scrm-menu-items-list>
-
-                    </ng-container>
-
-                    <!-- END Navbar with non-grouped tabs -->
+                        <!-- END Navbar with non-grouped tabs -->
 
                 </div>
 
+                <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
 
                 <!-- Global Links -->
 
                 <div class="global-links" ngbDropdown>
                     <ul class="navbar-nav">
                         <li class="global-link-item">
-                            <a #globalLinkTitle class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
+                            <a class="nav-link primary-global-link dropdown-toggle" ngbDropdownToggle>
                                 <scrm-image class="global-action-icon sicon-2x" image="user"></scrm-image>
-                                <span
-                                    class="global-user-name"> {{ navbar.currentUser.firstName }} {{navbar.currentUser.lastName}} </span>
                             </a>
-                            <div [style.min-width.px]="globalLinkTitle.offsetWidth"
-                                 aria-labelledby="navbarDropdownMenuLink"
-                                 class="dropdown-menu global-links-dropdown dropdown-menu-right" ngbDropdownMenu>
+                            <div aria-labelledby="navbarDropdownMenuLink"
+                                 class="dropdown-menu global-links-dropdown border shadow-sm-2 dropdown-menu-right"
+                                 ngbDropdownMenu>
+                                <span
+                                    class="global-user-name">{{ navbar.currentUser.firstName }} {{ navbar.currentUser.lastName }}</span>
                                 <ng-container *ngIf="navbar.globalActions">
-                                    <a *ngFor="let globalAction of navbar.globalActions"
-                                       class="dropdown-item global-links-sublink"
-                                       href="{{ globalAction.link.url }}"
-                                       ngbDropdownItem
-                                       target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
-                                    </a>
+                                    <ng-container
+                                        *ngFor="let globalAction of navbar.globalActions; let first = first; let last = last;">
+                                        <a class="dropdown-item global-links-sublink"
+                                           href="{{ globalAction.link.url }}"
+                                           ngbDropdownItem
+                                           target="{{ globalAction.link.target }}">{{ globalAction.link.label }}
+                                        </a>
+                                        <hr *ngIf="last === true || first === true"/>
+                                    </ng-container>
+
                                 </ng-container>
                                 <scrm-logout-ui></scrm-logout-ui>
                             </div>
@@ -218,9 +231,82 @@
 
             <!-- End of navbar section with data once authenticated -->
 
-            <scrm-action-bar-ui></scrm-action-bar-ui>
         </ng-container>
     </ng-container>
+
+    <ng-template #actionIcons>
+        <div class="action-group navbar-action-group">
+
+            <div class="action-new dropdown">
+                <a class="action-link primary-global-link" type="button" aria-label="Quick Create">
+                    <scrm-image class="action-btn-icon" image="plus"></scrm-image>
+                </a>
+                <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2">
+
+                    <ng-container *ngIf="(navbar?.current?.module ?? '') && currentQuickActions.length">
+                        <li class="new-list-item-header font-weight-bold">
+                            <scrm-label labelKey="LBL_MODULE_NAME" [module]="navbar.current.module"></scrm-label>
+                        </li>
+                        <li class="new-list-item" *ngFor="let moduleQuickAction of currentQuickActions">
+                            <ng-container *ngIf="!moduleQuickAction.process">
+                                <a [routerLink]="moduleQuickAction.url" [queryParams]="moduleQuickAction?.params ?? null" class="d-flex align-items-center">
+                                    <scrm-label [labelKey]="moduleQuickAction.labelKey" [module]="navbar.current.module"></scrm-label>
+                                </a>
+                            </ng-container>
+                            <ng-container *ngIf="moduleQuickAction.process">
+                                <a (click)="handleProcess(moduleQuickAction)" class="d-flex align-items-center">
+                                    <scrm-label [labelKey]="moduleQuickAction.labelKey" [module]="navbar.current.module"></scrm-label>
+                                </a>
+                            </ng-container>
+
+                        </li>
+                    </ng-container>
+
+                    <ng-container *ngIf="(this?.navigation?.quickActions ?? []).length">
+                        <li class="new-list-item-header font-weight-bold">
+                            <scrm-label labelKey="LBL_QUICK_ACTIONS"></scrm-label>
+                        </li>
+                        <li class="new-list-item" *ngFor="let quickAction of (this?.navigation?.quickActions ?? [])">
+                            <ng-container *ngIf="!quickAction.process">
+                                <a [routerLink]="quickAction.url" [queryParams]="quickAction?.params ?? null" class="d-flex align-items-center">
+                                    <scrm-label [labelKey]="quickAction.labelKey" [module]="quickAction.module"></scrm-label>
+                                </a>
+                            </ng-container>
+                            <ng-container *ngIf="quickAction.process">
+                                <a (click)="handleProcess(quickAction)" class="d-flex align-items-center">
+                                    <scrm-label [labelKey]="quickAction.labelKey" [module]="quickAction.module"></scrm-label>
+                                </a>
+                            </ng-container>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center mx-1">
+                <scrm-search-bar></scrm-search-bar>
+            </div>
+
+            <div
+                *ngIf="notificationsEnabled && checkAppStrings(vm.appStrings) && arePreferencesInitialized(vm.userPreferences)"
+                class="action-alert dropdown">
+                <a class="action-link primary-global-link" type="button" aria-label="Toggle Alerts"
+                   (mouseenter)="markAsRead()">
+                    <scrm-image class="action-btn-icon" image="alert"></scrm-image>
+                </a>
+                <ng-container *ngIf="(notificationCount$ | async) as notificationCount">
+                            <span *ngIf="(notificationCount ?? false)"
+                                  class="badge badge-position rounded-pill bg-danger text-white">
+                                <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
+                            </span>
+                </ng-container>
+                <div class="dropdown-menu border shadow-sm-2 dropdown-menu-right">
+                    <scrm-notifications></scrm-notifications>
+                </div>
+            </div>
+
+        </div>
+    </ng-template>
+
 </div>
 
 <!-- End of main navbar section -->

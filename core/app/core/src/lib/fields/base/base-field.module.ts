@@ -34,6 +34,7 @@ import {BaseEnumComponent} from './base-enum.component';
 import {BaseMultiEnumComponent} from './base-multienum.component';
 import {BaseNameComponent} from './base-name.component';
 import {BaseRelateComponent} from './base-relate.component';
+import {BaseDateComponent} from './datetime/base-date.component';
 
 @NgModule({
     exports: [
@@ -44,7 +45,8 @@ import {BaseRelateComponent} from './base-relate.component';
         BaseNameComponent,
         BaseNumberComponent,
         BaseRelateComponent,
-        BaseDateTimeComponent
+        BaseDateTimeComponent,
+        BaseDateComponent
     ],
     declarations: [
         BaseBooleanComponent,
@@ -54,7 +56,8 @@ import {BaseRelateComponent} from './base-relate.component';
         BaseNameComponent,
         BaseNumberComponent,
         BaseRelateComponent,
-        BaseDateTimeComponent
+        BaseDateTimeComponent,
+        BaseDateComponent
     ],
     imports: [
         CommonModule

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostBinding, Input, OnInit, Type, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, HostBinding, Input, OnInit, Type} from '@angular/core';
 import {EDITABLE_VIEW_MODES, Field, Record, StringMap, ViewMode} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -33,13 +33,14 @@ import {DynamicLabelService} from '../../services/language/dynamic-label.service
 import {
     LinkRouteAsyncActionService
 } from '../../services/navigation/link-route-async-action/link-route-async-action.service';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-dynamic-field',
     templateUrl: './dynamic-field.component.html',
     styleUrls: []
 })
-export class DynamicFieldComponent implements OnInit, OnChanges {
+export class DynamicFieldComponent implements OnInit {
 
     @Input('mode') mode: string;
     @Input('type') type: string;
@@ -61,9 +62,14 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
     }
 
     get getRelateLink(): string {
-        if (this.field.definition.id_name && this.field.definition.module) {
-            const moduleName = this.moduleNameMapper.toFrontend(this.field.definition.module);
+        let linkModule = this.field.definition.module;
 
+        if (this.field.definition.type_name === 'parent_type') {
+            linkModule = this.record.attributes.parent_type;
+        }
+
+        if (this.field.definition.id_name && linkModule) {
+            const moduleName = this.moduleNameMapper.toFrontend(linkModule);
             return this.navigation.getRecordRouterLink(
                 moduleName,
                 this.record.attributes[this.field.definition.id_name]
@@ -75,47 +81,6 @@ export class DynamicFieldComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.setHostClass();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-
-        if (!changes.mode) {
-            return;
-        }
-
-        if (this.isEdit()) {
-            this.initValidators();
-        } else {
-            this.resetValidators();
-        }
-
-    }
-
-    protected initValidators(): void {
-
-        const formControl = this.field?.formControl ?? null;
-
-        if (!formControl) {
-            return;
-        }
-
-        this.resetValidators();
-
-        const validators = this.field?.validators ?? [];
-        const asyncValidators = this.field?.asyncValidators ?? [];
-
-        if (validators.length) {
-            this.field?.formControl?.setValidators(validators);
-        }
-        if (asyncValidators.length) {
-            this.field?.formControl?.setAsyncValidators(asyncValidators);
-        }
-
-    }
-
-    resetValidators() {
-        this.field?.formControl?.clearValidators();
-        this.field?.formControl?.clearAsyncValidators();
     }
 
     isLink(): boolean {

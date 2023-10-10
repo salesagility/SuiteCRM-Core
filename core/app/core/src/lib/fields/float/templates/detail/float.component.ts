@@ -30,6 +30,7 @@ import {SystemConfigStore} from '../../../../store/system-config/system-config.s
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-float-detail',
@@ -41,8 +42,9 @@ export class FloatDetailFieldComponent extends BaseNumberComponent {
         protected userPreferences: UserPreferenceStore,
         protected systemConfig: SystemConfigStore,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(userPreferences, systemConfig, typeFormatter, logic);
+        super(userPreferences, systemConfig, typeFormatter, logic, logicDisplay);
     }
 }

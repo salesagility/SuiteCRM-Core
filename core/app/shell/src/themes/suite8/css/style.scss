@@ -71,14 +71,14 @@
 @import 'components/record-content-skeleton';
 @import 'components/notifications';
 @import 'components/notifications-mobile';
+@import 'components/searchbar';
+@import 'components/searchbar-mobile';
 @import 'components/action-group-menu';
 @import 'components/popover';
 @import 'components/popover-mobile';
 
 @import 'layout/panel';
 @import 'layout/app';
-@import 'layout/actionbar';
-@import 'layout/actionbar-mobile';
 @import 'layout/columnchooser';
 @import 'layout/columnchooser_mobile';
 @import 'layout/common';
@@ -96,6 +96,7 @@
 @import 'layout/saved-search';
 @import 'layout/install';
 @import 'layout/admin';
+@import 'layout/scrollbar';
 
 @import 'fields/email';
 @import 'fields/composite-mobile';

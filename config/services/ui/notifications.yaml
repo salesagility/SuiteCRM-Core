@@ -45,7 +45,7 @@ parameters:
                     type: 'icon'
                   labelDisplay: 'none'
                   hideIfEmpty: false
-                  class: 'font-weight-bold stroke-danger-light stroke-hover-danger fill-danger-light'
+                  class: 'font-weight-bold'
             -
               class: 'd-flex flex-column flex-grow-1 pl-2 pr-2'
               align: 'start'
@@ -106,7 +106,7 @@ parameters:
             params:
               inlineConfirmation: true
               confirmationLabel: 'LBL_DISMISS_INLINE_CONFIRM'
-            klass: ['btn fill-danger-light fill-hover-danger border-0 btn-sm p-0 m-0']
+            klass: [ 'btn fill-complementary fill-hover-complementary-light border-0 btn-sm p-0 m-0' ]
             modes: ['detail', 'edit']
             acl: []
           -
@@ -117,7 +117,7 @@ parameters:
             params:
               inlineConfirmation: true
               confirmationDynamicLabel: 'LBL_SNOOZE_INLINE_CONFIRM'
-            klass: ['btn stroke-danger-light stroke-hover-danger fill-danger-light border-0 btn-sm p-0 m-0 pr-2']
+            klass: [ 'btn stroke-complementary stroke-hover-complementary-light fill-complementary clock-icon border-0 btn-sm p-0 m-0 mr-2' ]
             modes: ['detail', 'edit']
             acl: []
     pageSize: 10

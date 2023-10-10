@@ -40,13 +40,15 @@ import {
     Record,
     ViewContext,
     ViewFieldDefinition,
-    ViewMode
+    ViewMode,
+    TabDefinition,
+    TabDefinitions
 } from 'common';
-import {distinctUntilChanged, map} from 'rxjs/operators';
+import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {InstallViewMetadata, InstallViewModel, InstallViewState} from './install-view.store.model';
 import {StateStore} from '../../../../store/state';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
-import {RecordTemplateMetadata, TabDefinition, TabDefinitions} from '../../../../store/metadata/metadata.store.service';
+import {RecordTemplateMetadata} from '../../../../store/metadata/metadata.store.service';
 import {MessageService} from '../../../../services/message/message.service';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {RecordStore} from '../../../../store/record/record.store';
@@ -222,6 +224,7 @@ export class InstallViewStore implements StateStore {
             panels: [
                 {
                     key: 'LBL_CONFIG',
+                    display$: of(true).pipe(shareReplay(1)),
                     rows: [
                         {
                             cols: [

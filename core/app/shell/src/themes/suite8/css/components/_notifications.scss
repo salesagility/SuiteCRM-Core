@@ -1,24 +1,35 @@
 .action-alert.dropdown {
 
   .dropdown-menu {
+    margin-top: -5px;
     padding: 0;
   }
 
   .badge-position {
     position: absolute;
-    top: -5px;
-    right: 45px;
+    top: 2px;
+    right: -6px;
+    z-index: 1;
   }
 
   .notifications {
 
     .notifications-item {
-      border-bottom: 1px dotted $danger;
+      &:after {
+        content: "";
+        display: block;
+        margin: 0 auto;
+        width: 92%;
+        border-bottom: 1px solid $lightgray;
+        padding-top: 0.2rem;
+      }
     }
 
     .notifications-item.is_read-true {
+      background-color: transparent !important;
+
       .record-thread-item-body {
-        background-color: white !important;
+        background-color: transparent !important;
       }
     }
 
@@ -32,36 +43,46 @@
     .record-thread-item.record-thread-list-item {
       width: 100%;
       padding: 0;
+      background-color: $bright-blue;
+      transition: background-color 500ms ease-in-out;
+      &:hover {
+        background-color: $off-white !important;
+
+        .record-thread-item-body {
+          background-color: $off-white !important;
+          transition: background-color 500ms ease-in-out;
+        }
+      }
 
       .record-thread-item-body {
-        background-color: $bright-grey;
-        transition: background-color 300ms ease-in-out;
+        background-color: transparent;
         box-shadow: none;
+        padding: 0.55rem 1.25rem 0;
+        border-radius: 0;
         margin-bottom: 0;
-
         &:hover {
-          background-color: $lighter-salmon-pink !important;
+          background-color: $off-white !important;
 
           .notification-item-buttons {
             .action-group-menu {
               .inline-confirmation {
 
                 .inline-confirmation-button {
-                  background-color: $lighter-salmon-pink;
+                  background-color: $off-white;
                 }
 
                 .inline-confirmation-label {
-                  background-color: $lighter-salmon-pink;
+                  background-color: $off-white;
                 }
 
                 .inline-confirmation-label > scrm-label {
-                  background-color: $lighter-salmon-pink;
-                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                  background-color: $off-white;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($off-white, .9);
                 }
 
                 .inline-confirmation-label > scrm-dynamic-label {
-                  background-color: $lighter-salmon-pink;
-                  box-shadow: -.8rem 0.1rem .5rem rgba($lighter-salmon-pink, .9);
+                  background-color: $off-white;
+                  box-shadow: -.8rem 0.1rem .5rem rgba($off-white, .9);
                 }
               }
             }
@@ -74,7 +95,7 @@
             .inline-confirmation {
 
               .inline-confirmation-button button {
-                color: $danger;
+                color: $complementary;
               }
 
             }
@@ -111,8 +132,8 @@
 
       .field-name-target_module_type.field-type-icon svg {
         font-size: 130%;
-        fill: $burnt-orange;
-        stroke: $burnt-orange;
+        fill: $complementary;
+        stroke: $complementary;
         margin-top: -0.3rem;
       }
 
@@ -122,7 +143,7 @@
     }
 
     .notification-list-actions button {
-      color: $danger;
+      color: $complementary;
     }
 
     .record-thread-load-more .load-more-button {
@@ -133,7 +154,7 @@
       content: "|";
       margin-right: 0.2rem;
       margin-left: 0.2rem;
-      color: $danger;
+      color: $complementary;
     }
 
     .notification-list-actions {

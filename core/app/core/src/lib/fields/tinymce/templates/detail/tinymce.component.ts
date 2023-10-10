@@ -30,6 +30,7 @@ import {DataTypeFormatter} from '../../../../services/formatters/data-type.forma
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {merge} from 'lodash-es';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-tinymce-detail',
@@ -45,9 +46,10 @@ export class TinymceDetailFieldComponent extends BaseFieldComponent {
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
-        protected config: SystemConfigStore
+        protected config: SystemConfigStore,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(typeFormatter, logic);
+        super(typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

@@ -27,7 +27,7 @@
 /* --------- SVG SECTION ---------- */
 
 .home-nav-link svg {
-  fill: $white;
+  fill: rgba(255, 255, 255, 0.8);
   display: inline-block;
   vertical-align: middle;
   width: 1.2em;
@@ -144,22 +144,6 @@
 .sicon-5x svg {
   width: 15em;
   height: 15em;
-}
-
-.search-icon svg {
-  vertical-align: baseline;
-}
-
-.search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon svg path {
-  fill: $light-grey;
-}
-
-.search-icon:hover svg path {
-  fill: $salmon-pink;
 }
 
 @media all and (max-width: $breakpoint-xsmall) {
@@ -316,8 +300,7 @@
   }
 }
 
-.action-btn-icon svg path,
-.global-links svg path {
+.action-btn-icon svg path {
   fill: $white;
 }
 
@@ -415,6 +398,10 @@
 
 .info-icon svg path {
   fill: $dusty-grey;
+}
+
+.clock-icon svg {
+  overflow: visible;
 }
 
 .create-popup-arrow svg {

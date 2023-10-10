@@ -30,7 +30,6 @@ import {NavbarUiComponent} from './navbar.component';
 
 import {LogoUiModule} from '../logo/logo.module';
 import {LogoutUiModule} from '../logout/logout.module';
-import {ActionBarUiModule} from '../action-bar/action-bar.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import {MenuItemLinkComponent} from './menu-item-link/menu-item-link.component';
@@ -63,6 +62,9 @@ import {SubMenuFavoritesComponent} from './sub-menu-favorites/sub-menu-favorites
 import {MenuFavoritesComponent} from './menu-favorites/menu-favorites.component';
 import {BaseMenuFavoritesComponent} from './menu-favorites/base-menu-favorites.component';
 import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component';
+import {FormsModule} from '@angular/forms';
+import {NotificationsModule} from '../../containers/notifications/notifications.module';
+import {SearchBarModule} from '../search-bar/search-bar.module';
 
 
 @NgModule({
@@ -93,7 +95,7 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         MobileGroupedMenuComponent,
         BaseMobileGroupedMenuComponent,
         MobileModuleMenuComponent,
-        BaseMobileModuleMenuComponent
+        BaseMobileModuleMenuComponent,
     ],
     exports: [
         NavbarUiComponent,
@@ -105,7 +107,6 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         BaseSubMenuRecentlyViewedComponent,
         BaseFavoritesComponent,
         MenuFavoritesComponent,
-        BaseMenuFavoritesComponent,
         SubMenuFavoritesComponent,
         BaseSubMenuFavoritesComponent,
         HomeMenuItemComponent,
@@ -129,12 +130,14 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
         CommonModule,
         LogoUiModule,
         LogoutUiModule,
-        ActionBarUiModule,
         NgbModule,
         RouterModule,
         ImageModule,
         DynamicModule,
-        LabelModule
+        LabelModule,
+        FormsModule,
+        NotificationsModule,
+        SearchBarModule
     ]
 })
 export class NavbarUiModule {

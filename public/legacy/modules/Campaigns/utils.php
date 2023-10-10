@@ -56,10 +56,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 function get_message_scope_dom($campaign_id, $campaign_name, $db = null, $mod_strings = array())
 {
+
     if (empty($db)) {
         $db = DBManagerFactory::getInstance();
     }
-    if (empty($mod_strings) or !isset($mod_strings['LBL_DEFAULT'])) {
+    if (empty($mod_strings) || !isset($mod_strings['LBL_DEFAULT'])) {
         global $current_language;
         $mod_strings = return_module_language($current_language, 'Campaigns');
     }
@@ -75,6 +76,8 @@ function get_message_scope_dom($campaign_id, $campaign_name, $db = null, $mod_st
 
     //add campaign to the result array.
     //$return_array[$campaign_id]= $campaign_name . ' (' . $mod_strings['LBL_DEFAULT'] . ')';
+
+    $return_array = [];
 
     $result=$db->query($query);
     while (($row=$db->fetchByAssoc($result))!= null) {
@@ -101,6 +104,7 @@ function get_campaign_mailboxes(&$emails, $get_name=true)
     $query =  "select id,name,stored_options from inbound_email where mailbox_type='bounce' and status='Active' and deleted='0'";
     $db = DBManagerFactory::getInstance();
     $result=$db->query($query);
+    $return_array = [];
     while (($row=$db->fetchByAssoc($result))!= null) {
         if ($get_name) {
             $return_array[$row['id']] = $row['name'];
@@ -158,7 +162,11 @@ function get_campaign_mailboxes_with_stored_options_outbound()
 
 function log_campaign_activity($identifier, $activity, $update = true, $clicked_url_key = null)
 {
-    $return_array = array();
+
+    global $sugar_config;
+
+    $data = [];
+    $return_array = [];
 
     $db = DBManagerFactory::getInstance();
 
@@ -452,6 +460,7 @@ function get_subscription_lists_query($focus, $additional_fields = null)
  * */
 function get_subscription_lists($focus, $descriptions = false)
 {
+    $return_array = [];
     $subs_arr = array();
     $unsubs_arr = array();
 
@@ -469,7 +478,7 @@ function get_subscription_lists($focus, $descriptions = false)
             //compare current user list id against newsletter id
             if ($news_list['prospect_list_id'] == $current_list['prospect_list_id']) {
                 //if id's match, user is subscribed to this list, check to see if this is an exempt list,
-                if (strpos($news_list['list_type'], 'exempt')!== false) {
+                if (strpos((string) $news_list['list_type'], 'exempt')!== false) {
                     //this is an exempt list, so process
                     if (array_key_exists($news_list['name'], $subs_arr)) {
                         //first, add to unsubscribed array
@@ -498,7 +507,7 @@ function get_subscription_lists($focus, $descriptions = false)
         }
         //if this newsletter id never matched a user subscription..
         //..then add to available(unsubscribed) NewsLetters if list is not of type exempt
-        if (($match == 'false') && (strpos($news_list['list_type'], 'exempt') === false) && (!array_key_exists($news_list['name'], $subs_arr))) {
+        if (($match == 'false') && (strpos((string) $news_list['list_type'], 'exempt') === false) && (!array_key_exists($news_list['name'], $subs_arr))) {
             $unsubs_arr[$news_list['name']] = "prospect_list@".$news_list['prospect_list_id']."@campaign@".$news_list['campaign_id'];
         }
     }
@@ -512,6 +521,7 @@ function get_subscription_lists($focus, $descriptions = false)
  */
 function get_subscription_lists_keyed($focus)
 {
+    $return_array = [];
     $subs_arr = array();
     $unsubs_arr = array();
 
@@ -613,6 +623,7 @@ function process_subscriptions($subscription_string_to_parse)
      * */
     function subscribe($campaign, $prospect_list, $focus, $default_list = false)
     {
+
         $relationship = strtolower($focus->getObjectName()).'s';
 
         //--grab all the lists for the passed in campaign id
@@ -642,7 +653,7 @@ function process_subscriptions($subscription_string_to_parse)
         //search through prospect lists for this campaign and identifiy the "unsubscription list"
         $exempt_id = '';
         foreach ($pl_arr as $subscription_list) {
-            if (strpos($subscription_list['list_type'], 'exempt')!== false) {
+            if (strpos((string) $subscription_list['list_type'], 'exempt')!== false) {
                 $exempt_id = $subscription_list['id'];
             }
 
@@ -651,6 +662,7 @@ function process_subscriptions($subscription_string_to_parse)
             }
         }
 
+        $exempt_array = [];
         //now that we have exempt (unsubscription) list id, compare against user list id's
         if (!empty($exempt_id)) {
             $exempt_array['exempt_id'] = $exempt_id;
@@ -706,6 +718,7 @@ function process_subscriptions($subscription_string_to_parse)
      * */
     function unsubscribe($campaign, $focus)
     {
+
         $relationship = strtolower($focus->getObjectName()).'s';
         //--grab all the list for this campaign id
         $pl_qry ="select id, list_type from prospect_lists where id in (select prospect_list_id from prospect_list_campaigns ";
@@ -748,6 +761,8 @@ function process_subscriptions($subscription_string_to_parse)
                 }
             }
         }
+
+        $exempt_list = null;
 
         //unsubscribe subscripted newsletter
         foreach ($pl_arr as $subscription_list) {
@@ -833,7 +848,7 @@ function process_subscriptions($subscription_string_to_parse)
         }
 
 
-        if (strstr($focus->settings['notify_fromaddress'], 'example.com')) {
+        if (strstr((string) $focus->settings['notify_fromaddress'], 'example.com')) {
             //if "from_address" is the default, then set "bad" message and increment health counter
             $email_health =$email_health +1;
             $msg .= "<tr><td ><font color='red'><b> ".$mod_strings['LBL_MAILBOX_CHECK2_BAD']." </b></font></td></tr>";
@@ -1021,7 +1036,7 @@ function write_mail_merge_log_entry($campaign_id, $pl_row)
             $focus->load_relationship($rel_name);
             $target_ids = $focus->$rel_name->get();
         }
-        if (count($target_ids)>0) {
+        if ((is_countable($target_ids) ? count($target_ids) : 0)>0) {
 
 
             //retrieve the target beans and create campaign log entry
@@ -1126,7 +1141,7 @@ function filterFieldsFromBeans($beans)
             }
 
 
-            $field_def['vname'] = preg_replace('/:$/', '', translate($field_def['vname'], $b->module_dir));
+            $field_def['vname'] = preg_replace('/:$/', '', (string) translate($field_def['vname'], $b->module_dir));
 
             //$cols_name = "{'".$field_def['vname']."'}";
             $col_arr = array();

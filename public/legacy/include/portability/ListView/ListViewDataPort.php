@@ -130,7 +130,7 @@ class ListViewDataPort extends ListViewData
         $id_list = '';
 
         while (($row = $this->db->fetchByAssoc($result)) != null) {
-            if ($count < $limit) {
+            if ($count < $limit || $limit < -1) {
                 $id_list .= ',\'' . $row[$id_field] . '\'';
                 $idIndex[$row[$id_field]][] = count($rows);
                 $rows[] = $seed->convertRow($row);

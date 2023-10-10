@@ -26,6 +26,9 @@
 
 import {Component, Input} from '@angular/core';
 import {MenuItemLink} from 'common';
+import {take} from 'rxjs/operators';
+import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {AppStateStore} from '../../../store/app-state/app-state.store';
 
 @Component({
     selector: 'scrm-base-menu-item-link',
@@ -37,6 +40,24 @@ export class BaseMenuItemLinkComponent {
     @Input() icon: string;
     @Input() class: string;
 
-    constructor() {
+    constructor(
+        protected asyncActionService: AsyncActionService,
+        protected appState: AppStateStore
+    ) {}
+
+     handleProcess(process: string) {
+
+         if(!process) {
+             return;
+         }
+
+         const processType = process;
+
+        const options = {
+            action: processType,
+            module: this.appState.getModule(),
+        } as AsyncActionInput;
+
+         this.asyncActionService.run(processType, options).pipe(take(1)).subscribe();
     }
 }

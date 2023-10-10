@@ -220,7 +220,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             ];
             $metadata->setAdminMetadata($adminMetadata);
         } elseif (!$currentUser->isAdmin()) {
-            $adminMetadata = [];
+            $adminMetadata = ['adminPanel' => []];
             $metadata->setAdminMetadata($adminMetadata);
         }
 

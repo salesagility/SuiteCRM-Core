@@ -30,6 +30,7 @@ import {BaseFieldComponent} from '../base/base-field.component';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {StandardFieldRegistry} from '../standard-field.registry';
+import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-group-field',
@@ -38,8 +39,13 @@ import {StandardFieldRegistry} from '../standard-field.registry';
 })
 export class GroupFieldComponent extends BaseFieldComponent {
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected registry: StandardFieldRegistry, protected logic: FieldLogicManager) {
-        super(typeFormatter, logic);
+    constructor(
+        protected typeFormatter: DataTypeFormatter,
+        protected registry: StandardFieldRegistry,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
+    ) {
+        super(typeFormatter, logic, logicDisplay);
     }
 
     getComponentType(type: string, definition: FieldDefinition): any {
@@ -47,7 +53,7 @@ export class GroupFieldComponent extends BaseFieldComponent {
 
         const displayType = (definition && definition.displayType) || '';
 
-        return this.registry.getDisplayType(module, type, displayType, this.mode);
+        return this.registry.getDisplayType(module, type, displayType, this.mode, this.field.name);
     }
 
     /**

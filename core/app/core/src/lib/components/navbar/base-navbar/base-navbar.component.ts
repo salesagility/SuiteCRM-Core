@@ -25,15 +25,15 @@
  */
 
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {combineLatest, Observable, Subscription} from 'rxjs';
+import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {ActionNameMapper} from '../../../services/navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
+import {ModuleAction, Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
 import {UserPreferenceMap, UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {
     ScreenSize,
@@ -46,6 +46,7 @@ import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
+import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -79,12 +80,19 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     navbar: NavbarModel;
     maxTabs = 8;
     screen: ScreenSize = ScreenSize.Medium;
+    notificationsEnabled: boolean = false;
+    subs: Subscription[] = []
+    navigation: Navigation;
+
+    currentQuickActions: ModuleAction[];
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
     navigation$: Observable<Navigation> = this.navigationStore.vm$;
+
+    notificationCount$: Observable<number>;
 
     vm$ = combineLatest([
         this.navigation$,
@@ -100,7 +108,13 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
                 this.screen = screenSize;
             }
 
+            if (navigation && navigation.modules) {
+                this.navigation = navigation;
+            }
+
             this.calculateMaxTabs(navigation);
+
+            this.getModuleQuickActions(appState.module);
 
             this.navbar.resetMenu();
             if (ready([language.appStrings, language.modStrings, language.appListStrings, userPreferences, currentUser])) {
@@ -112,7 +126,11 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             }
 
             return {
-                navigation, userPreferences, appState
+                navigation,
+                userPreferences,
+                appState,
+                appStrings: language.appStrings || {},
+                appListStrings: language.appListStrings || {}
             };
         })
     );
@@ -126,6 +144,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
+        protected asyncActionService: AsyncActionService
     ) {
     }
 
@@ -148,16 +167,34 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
             this.appState
         );
         this.setNavbar(navbar);
-
         this.authService.isUserLoggedIn.subscribe(value => {
             this.isUserLoggedIn = value;
         });
 
         window.dispatchEvent(new Event('resize'));
+
+        this.notificationCount$ = this.appState.notificationsUnreadTotal$;
+
+        this.subs.push(this.appState.notificationsEnabled$.subscribe(notificationsEnabled => {
+            this.notificationsEnabled = notificationsEnabled;
+        }));
     }
 
     ngOnDestroy(): void {
         this.authService.isUserLoggedIn.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    checkAppStrings(appStrings): boolean {
+        return appStrings && Object.keys(appStrings).length > 0;
+    }
+
+    arePreferencesInitialized(preferences: UserPreferenceMap) {
+        return preferences && Object.keys(preferences).length;
+    }
+
+    markAsRead(): void {
+        this.appState.markNotificationsAsRead();
     }
 
     /**
@@ -229,5 +266,45 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
             this.maxTabs = maxTabs;
         }
+    }
+
+    getModuleQuickActions(module: string): void {
+        const moduleNavigation = this?.navigation?.modules[module] ?? null;
+        const moduleNavigationMenu = moduleNavigation?.menu ?? [];
+        if (moduleNavigation === null || !moduleNavigationMenu.length ) {
+            this.currentQuickActions= [];
+        }
+
+        const actions = [] as ModuleAction[];
+
+        moduleNavigationMenu.forEach(entry => {
+            if (!entry.url || !entry.quickAction) {
+                return;
+            }
+
+            const url = entry?.url ?? '';
+
+            actions.push({
+                ...entry,
+                url: url.replace('/#/', '/')
+            } as ModuleAction);
+        });
+
+        this.currentQuickActions = actions;
+    }
+
+    handleProcess(action: ModuleAction) {
+        if(!action.process) {
+            return;
+        }
+
+        const processType = action.process;
+
+        const options = {
+            action: processType,
+            module: action.module,
+        } as AsyncActionInput;
+
+        this.asyncActionService.run(processType, options).pipe(take(1)).subscribe();
     }
 }

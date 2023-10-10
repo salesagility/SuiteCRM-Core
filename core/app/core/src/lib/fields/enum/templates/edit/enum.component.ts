@@ -31,6 +31,7 @@ import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {TagModel} from "ngx-chips/core/accessor";
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-enum-edit',
@@ -41,8 +42,13 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
 
     @ViewChild('tag') tag: TagInputComponent;
 
-    constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
-        super(languages, typeFormatter, logic);
+    constructor(
+        protected languages: LanguageStore,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
+    ) {
+        super(languages, typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {

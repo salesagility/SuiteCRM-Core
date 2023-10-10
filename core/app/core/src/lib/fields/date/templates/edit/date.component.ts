@@ -34,6 +34,8 @@ import {DateFormatter} from '../../../../services/formatters/datetime/date-forma
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
+import {BaseDateComponent} from '../../../base/datetime/base-date.component';
 
 @Component({
     selector: 'scrm-date-edit',
@@ -44,17 +46,19 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
         {provide: NgbDateParserFormatter, useClass: DateParserFormatter}
     ]
 })
-export class DateEditFieldComponent extends BaseDateTimeComponent implements OnInit, OnDestroy {
+export class DateEditFieldComponent extends BaseDateComponent implements OnInit, OnDestroy {
 
     public dateModel: NgbDateStruct;
 
     constructor(
         protected formatter: DateFormatter,
         protected dateAdapter: NgbDateAdapter<string>,
+        protected dateParserFormatter: NgbDateParserFormatter,
         protected typeFormatter: DataTypeFormatter,
-        protected logic: FieldLogicManager
+        protected logic: FieldLogicManager,
+        protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic);
+        super(formatter, typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {
@@ -64,7 +68,12 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
         if (isVoid(this.field.value) || isEmptyString(this.field.value)) {
             this.field.formControl.setValue(null);
         }
+        this.field.formControl.setValue(this.formatter.toUserFormat(this.field.value, {toFormat: this.getDateFormat()}));
 
+        const adapter = this.dateAdapter as DateAdapter;
+        adapter.setUserFormat(this.getDateFormat());
+        const parserFormatter = this.dateParserFormatter as DateParserFormatter;
+        parserFormatter.setUserFormat(this.getDateFormat());
         this.dateModel = this.formatter.dateFormatToStruct(this.field.value, this.formatter.getInternalFormat());
         this.subscribeValueChanges();
     }
@@ -74,8 +83,8 @@ export class DateEditFieldComponent extends BaseDateTimeComponent implements OnI
     }
 
     setModel(value: any): void {
-        this.field.value = this.formatter.toInternalFormat(value);
-        this.dateModel = this.formatter.dateFormatToStruct(value, this.formatter.getUserFormat());
+        this.field.value = this.formatter.toInternalFormat(value, {fromFormat: this.getDateFormat()});
+        this.dateModel = this.formatter.dateFormatToStruct(value, this.getDateFormat());
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {

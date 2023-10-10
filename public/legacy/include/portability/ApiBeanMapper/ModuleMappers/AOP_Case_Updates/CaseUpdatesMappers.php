@@ -28,6 +28,7 @@
 require_once __DIR__ . '/CaseUpdatesDescriptionMapper.php';
 require_once __DIR__ . '/CaseUpdatesAuthorMapper.php';
 require_once __DIR__ . '/CaseUpdatesSourceMapper.php';
+require_once __DIR__ . '/CaseUpdatesNotesMapper.php';
 require_once __DIR__ . '/../../ApiBeanModuleMappers.php';
 
 class CaseUpdatesMappers extends ApiBeanModuleMappers
@@ -42,6 +43,7 @@ class CaseUpdatesMappers extends ApiBeanModuleMappers
         $this->fieldMappers[CaseUpdatesDescriptionMapper::getField()] = new CaseUpdatesDescriptionMapper();
         $this->fieldMappers[CaseUpdatesAuthorMapper::getField()] = new CaseUpdatesAuthorMapper();
         $this->fieldMappers[CaseUpdatesSourceMapper::getField()] = new CaseUpdatesSourceMapper();
+        $this->linkMappers[CaseUpdatesNotesMapper::getRelateModule()][CaseUpdatesNotesMapper::getField()] = new CaseUpdatesNotesMapper();
     }
 
     /**

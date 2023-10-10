@@ -34,15 +34,16 @@ export interface FieldRegistryInterface {
 
     exclude(module: string, key: string): void;
 
-    get(module: string, type: string, mode: string): Type<BaseFieldComponent>;
+    get(module: string, type: string, mode: string, field: string): Type<BaseFieldComponent>;
 
     has(module: string, type: string, mode: string): boolean;
 
-    getDisplayType(module: string, type: string, displayType: string, mode: string): Type<BaseFieldComponent>;
+    getDisplayType(module: string, type: string, displayType: string, mode: string, field: string): Type<BaseFieldComponent>;
 }
 
 export class BaseFieldRegistry implements FieldRegistryInterface {
     protected map: OverridableMap<Type<BaseFieldComponent>>;
+    protected fieldMap: OverridableMap<Type<BaseFieldComponent>>;
 
     constructor() {
         this.init();
@@ -52,22 +53,30 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
         this.map.addEntry(module, BaseFieldRegistry.getKey(type, mode), component);
     }
 
+    public registerField(module: string, field: string, mode: string, component: Type<BaseFieldComponent>): void {
+        this.fieldMap.addEntry(module, BaseFieldRegistry.getKey(field, mode), component);
+    }
+
     public exclude(module: string, key: string): void {
         this.map.excludeEntry(module, key);
     }
 
-    public getDisplayType(module: string, type: string, displayType: string, mode: string): Type<BaseFieldComponent> {
+    public getDisplayType(module: string, type: string, displayType: string, mode: string, field: string): Type<BaseFieldComponent> {
 
         const displayTypeKey = this.getDisplayTypeKey(type, displayType);
 
-        if (displayType && this.has(module, displayTypeKey, mode)) {
-            return this.get(module, displayTypeKey, mode);
+        if (this.hasFieldOverride(module, field, mode)) {
+            return this.getFieldOverride(module, type, mode, field);
         }
 
-        return this.get(module, type, mode);
+        if (displayType && this.has(module, displayTypeKey, mode)) {
+            return this.get(module, displayTypeKey, mode, field);
+        }
+
+        return this.get(module, type, mode, field);
     }
 
-    public get(module: string, type: string, mode: string): Type<BaseFieldComponent> {
+    public get(module: string, type: string, mode: string, field:string): Type<BaseFieldComponent> {
 
         const moduleFields = this.map.getGroupEntries(module);
 
@@ -88,11 +97,32 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
         return moduleFields[defaultKey];
     }
 
+    public getFieldOverride(module: string, type: string, mode: string, field: string): Type<BaseFieldComponent> {
+        const moduleFields = this.fieldMap.getGroupEntries(module);
+        let key = BaseFieldRegistry.getKey(field, mode);
+        if (moduleFields[key]) {
+            return moduleFields[key];
+        }
+        if (mode === 'massupdate') {
+            key = BaseFieldRegistry.getKey(field, 'edit');
+            if (moduleFields[key]) {
+                return moduleFields[key];
+            }
+        }
+        return null;
+    }
+
     public has(module: string, type: string, mode: string): boolean {
 
         const moduleFields = this.map.getGroupEntries(module);
 
         const key = BaseFieldRegistry.getKey(type, mode);
+        return !!moduleFields[key];
+    }
+
+    public hasFieldOverride(module: string, field: string, mode: string): boolean {
+        const moduleFields = this.fieldMap.getGroupEntries(module);
+        const key = BaseFieldRegistry.getKey(field, mode);
         return !!moduleFields[key];
     }
 
@@ -109,6 +139,7 @@ export class BaseFieldRegistry implements FieldRegistryInterface {
 
     protected init(): void {
         this.map = new OverridableMap<Type<BaseFieldComponent>>();
+        this.fieldMap = new OverridableMap<Type<BaseFieldComponent>>();
 
         Object.keys(this.getDefaultMap()).forEach(key => {
             const [type, mode] = key.split('.', 2);
