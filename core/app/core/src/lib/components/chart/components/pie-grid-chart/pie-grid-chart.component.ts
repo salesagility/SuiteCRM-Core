@@ -39,6 +39,7 @@ import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-obs
 export class PieGridChartComponent extends BaseChartComponent implements OnInit, OnDestroy {
     results: SingleSeries;
     height = 700;
+    minWidth = 100;
 
     constructor(
         public language: LanguageStore,
@@ -51,6 +52,10 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
     ngOnInit(): void {
         if (this.dataSource.options.height) {
             this.height = this.dataSource.options.height;
+        }
+
+        if (this?.dataSource?.options?.minWidth) {
+            this.minWidth = this.dataSource.options.minWidth;
         }
 
         this.initResizeListener();
@@ -106,6 +111,29 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
                 });
             });
         }
+    }
+
+    protected calculateView(): void {
+        let width;
+        const el = (this.elementRef && this.elementRef.nativeElement) || {} as HTMLElement;
+        const parentEl = (el.parentElement && el.parentElement.parentElement) || {} as HTMLElement;
+        const parentWidth = (parentEl && parentEl.offsetWidth) || 0;
+
+        if (parentWidth > 0) {
+            width = parentWidth;
+        } else {
+            width = window.innerWidth * 0.7;
+
+            if (window.innerWidth > 990) {
+                width = window.innerWidth * 0.23;
+            }
+        }
+
+        if (width > 239) {
+            this.view.set([width, this.height]);
+            return;
+        }
+        this.view.set([width, 800]);
     }
 
 }
