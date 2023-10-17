@@ -43,6 +43,7 @@ use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use App\ViewDefinitions\Service\AdminPanelDefinitionProviderInterface;
 use Exception;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class AppMetadataProvider
@@ -110,6 +111,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $adminPanelDefinitions;
 
     /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -122,6 +128,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param ModuleMetadataProviderInterface $moduleMetadata
      * @param Security $security
      * @param UserHandler $userHandler
+     * @param AdminPanelDefinitionProviderInterface $adminPanelDefinitions
+     * @param CacheInterface $cache
      */
     public function __construct(
         ModuleNameMapperInterface $moduleNameMapper,
@@ -135,7 +143,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         ModuleMetadataProviderInterface $moduleMetadata,
         Security $security,
         UserHandler $userHandler,
-        AdminPanelDefinitionProviderInterface $adminPanelDefinitions
+        AdminPanelDefinitionProviderInterface $adminPanelDefinitions,
+        CacheInterface $cache
     ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->systemConfigProvider = $systemConfigProvider;
@@ -149,6 +158,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->security = $security;
         $this->userHandler = $userHandler;
         $this->adminPanelDefinitions = $adminPanelDefinitions;
+        $this->cache = $cache;
     }
 
     /**
@@ -171,6 +181,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      */
     protected function getUserMetadata(string $moduleName, array $exposed = []): AppMetadata
     {
+        $userId = $this->userHandler->getCurrentUser()->id;
         $metadata = new AppMetadata();
         $metadata->setId('app');
         $language = $this->getLanguage();
@@ -178,37 +189,75 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setSystemConfig([]);
         if (in_array('systemConfig', $exposed, true)) {
-            $metadata->setSystemConfig($this->getSystemConfigs());
+            $key = 'app-metadata-system-configs';
+//            $this->checkForCacheUpdate($key);
+            $systemConfig =  $this->cache->get($key, function() {
+                return $this->getSystemConfigs();
+            });
+            $metadata->setSystemConfig($systemConfig);
         }
 
         $metadata->setUserPreferences([]);
         if (in_array('userPreferences', $exposed, true)) {
-            $metadata->setUserPreferences($this->getUserPreferences());
+            $key = 'app-metadata-user-preferences-'.$userId;
+
+//            $this->checkForCacheUpdate($key);
+            $userPreferences =  $this->cache->get($key, function() {
+                return $this->getUserPreferences();
+            });
+            $metadata->setUserPreferences($userPreferences);
         }
 
         $metadata->setLanguage([]);
         if (in_array('language', $exposed, true)) {
-            $metadata->setLanguage($this->getLanguageStrings($language) ?? []);
+            $key = 'app-metadata-language-strings';
+
+            $languageStrings =  $this->cache->get($key, function() use ($language) {
+                return $this->getLanguageStrings($language) ?? [];
+            });
+            $metadata->setLanguage($languageStrings);
         }
 
         $metadata->setThemeImages([]);
         if (in_array('themeImages', $exposed, true)) {
-            $metadata->setThemeImages($this->themeImageService->get($theme)->toArray());
+            $key = 'app-metadata-theme-images';
+
+            $themeImages =  $this->cache->get($key, function() use ($theme) {
+                return $this->themeImageService->get($theme)->toArray();
+            });
+            $metadata->setThemeImages($themeImages);
         }
 
 
-        $navigation = $this->navigationService->getNavbar();
         $metadata->setNavigation([]);
         if (in_array('navigation', $exposed, true)) {
-            $metadata->setNavigation($navigation->toArray());
+            $key = 'app-metadata-navigation-'.$userId;
+
+            $navigation =  $this->cache->get($key, function() {
+                return $this->navigationService->getNavbar()->toArray();
+            });
+            $metadata->setNavigation($navigation);
         }
 
         $metadata->setModuleMetadata([]);
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
-            $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
+            $key = 'app-metadata-module-metadata-'. $moduleName .'-'.$userId;
+
+            $moduleMetadata =  $this->cache->get($key, function() use ($moduleName)  {
+                $navigation = $this->navigationService->getNavbar();
+                return $this->getModuleMetadata($moduleName, $navigation) ?? [];
+            });
+
+            $metadata->setModuleMetadata($moduleMetadata);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
-            $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+            $key = 'app-metadata-minimal-module-metadata-'. $moduleName .'-'.$userId;
+
+            $minimalModuleMetadata =  $this->cache->get($key, function() use ($moduleName) {
+                return $this->getMinimalModuleMetadata($moduleName) ?? [];
+            });
+
+            $metadata->setMinimalModuleMetadata($minimalModuleMetadata);
         }
 
         /** @var \User $currentUser */
@@ -531,5 +580,25 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         }
 
         return array_keys($groupedTabsModules);
+    }
+
+    protected function checkForCacheUpdate($key)
+    {
+        global $db;
+        $query = "SELECT * FROM cache_rebuild WHERE cache_key=$key AND deleted=0";
+        $result = $db->query($query);
+
+        if (!empty($result)) {
+            while ($row = $db->fetchByAssoc($result)) {
+                if ($row['cache_key'] == $key
+                    && $row['rebuild'] == 1) {
+                    $this->cache->delete($key);
+                    break;
+                }
+            }
+            $query = "UPDATE cache_rebuild SET rebuild=0, deleted=1 ";
+            $query .= "WHERE WHERE cache_key=$key";
+            $db->query($query);
+        }
     }
 }

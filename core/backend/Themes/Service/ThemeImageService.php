@@ -29,6 +29,7 @@
 namespace App\Themes\Service;
 
 use App\Themes\Entity\ThemeImages;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class ThemeImageService
 {
@@ -46,10 +47,16 @@ class ThemeImageService
      * @var string
      */
     private $projectDir;
+
     /**
      * @var ThemeImageFinder
      */
     private $themeImageFinder;
+
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
 
     /**
      * ThemeImageService constructor.
@@ -57,18 +64,21 @@ class ThemeImageService
      * @param array $themeImageSupportedTypes
      * @param string $projectDir
      * @param ThemeImageFinder $themeImageFinder
+     * @param CacheInterface $cache
      */
     public function __construct(
         array $themeImagePaths,
         array $themeImageSupportedTypes,
         string $projectDir,
-        ThemeImageFinder $themeImageFinder
+        ThemeImageFinder $themeImageFinder,
+        CacheInterface $cache
     ) {
         $this->themeImagePaths = $themeImagePaths;
         $this->projectDir = $projectDir;
         $this->themeImageFinder = $themeImageFinder;
 
         $this->themeImageTypePriority = $this->buildTypePriorityMap($themeImageSupportedTypes);
+        $this->cache = $cache;
     }
 
     /**
@@ -90,14 +100,21 @@ class ThemeImageService
     {
         $images = new ThemeImages();
         $images->setId($theme);
-        $items = [];
 
-        foreach ($this->themeImagePaths as $themeImagePath) {
-            $themeImages = $this->getImages($themeImagePath, $theme);
-            foreach ($themeImages as $imageKey => $image) {
-                $items[$imageKey] = $image;
+        $items = $this->cache->get('theme-images', function () use ($theme) {
+
+            $items = [];
+
+            foreach ($this->themeImagePaths as $themeImagePath) {
+                $themeImages = $this->getImages($themeImagePath, $theme);
+                foreach ($themeImages as $imageKey => $image) {
+                    $items[$imageKey] = $image;
+                }
             }
-        }
+
+
+            return $items;
+        });
 
         $images->setItems($items);
 
