@@ -26,7 +26,15 @@
 
 import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
-import {ButtonInterface, DropdownButtonInterface, emptyObject, Field, isVoid, SearchMetaFieldMap} from 'common';
+import {
+    ButtonInterface,
+    DropdownButtonInterface,
+    emptyObject,
+    Field,
+    isVoid,
+    SearchMetaFieldMap,
+    ViewMode
+} from 'common';
 import {map, take, tap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {FilterConfig} from '../../components/list-filter/list-filter.model';
@@ -40,7 +48,7 @@ export class ListFilterStore implements StateStore {
 
     config: FilterConfig;
     panelMode: 'collapsible' | 'closable' | 'none' = 'closable';
-    mode = 'filter';
+    mode: ViewMode = 'filter';
 
     isCollapsed$: Observable<boolean>;
 
@@ -83,7 +91,11 @@ export class ListFilterStore implements StateStore {
                 this.reset();
                 this.splitCriteriaFields(savedFilter);
                 this.initDisplayFields();
-                this.initGridButtons();
+
+                if (this.filterStore.getMode() !== 'detail') {
+                    this.initGridButtons();
+                }
+
                 this.initHeaderButtons();
                 this.initMyFiltersButton(this.savedFilters);
             })
@@ -166,12 +178,20 @@ export class ListFilterStore implements StateStore {
                 combineLatestWith(this.config.searchFields$),
                 tap(([filter, searchFields]: [SavedFilter, SearchMetaFieldMap]) => {
                     this.reset();
+                    let mode = 'edit' as ViewMode;
+
+                    const isReadOnly = filter.readonly ?? false;
+                    if (isReadOnly) {
+                        mode = 'detail' as ViewMode;
+                        this.mode = mode;
+                    }
+
                     this.filterStore.initRecord(
                         this.config.module,
                         filter,
                         searchFields,
                         this.config.listFields,
-                        'edit'
+                        mode
                     );
                 })
             ).subscribe()
@@ -219,14 +239,14 @@ export class ListFilterStore implements StateStore {
 
     protected initDisplayFields(): void {
 
-        if(!this.searchFields || emptyObject(this.searchFields) || !this.fields){
+        if (!this.searchFields || emptyObject(this.searchFields) || !this.fields) {
             this.displayFields = [];
         }
 
         const fields = [];
         this.fields.forEach(field => {
             const name = field.name;
-            if(!this.searchFields[name]){
+            if (!this.searchFields[name]) {
                 return;
             }
             fields.push(field);
@@ -269,7 +289,7 @@ export class ListFilterStore implements StateStore {
 
     protected initMyFiltersButton(filters: SavedFilter[]): void {
 
-        if(!filters || filters.length < 1){
+        if (!filters || filters.length < 1) {
             this.myFilterButton = null;
             return;
         }

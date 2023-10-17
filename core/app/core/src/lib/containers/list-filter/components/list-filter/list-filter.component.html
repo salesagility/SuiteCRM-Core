@@ -67,10 +67,9 @@
             </div>
         </scrm-field-grid>
 
-        <ng-container *ngIf="config && config.savedFilterEdit">
+        <ng-container *ngIf="config && config.savedFilterEdit && store.filterStore.getMode() !== 'detail'">
             <scrm-record-grid [config]="getGridConfig()"></scrm-record-grid>
         </ng-container>
-
     </div>
 
 </scrm-panel>

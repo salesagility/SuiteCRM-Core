@@ -1,0 +1,9 @@
+
+// This mixin is for em format, e.g, fs-70 will make html tag's font size 70%.
+@mixin font-size($size) {
+  font-size: $size * 1%;
+}
+
+.fs-70 {
+  @include font-size(70);
+}

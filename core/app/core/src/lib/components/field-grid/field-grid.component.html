@@ -38,11 +38,15 @@
                      class="d-flex"
                 >
                     <div *ngIf="col.field && col.field.display !== 'none'"
-                         [class.pr-3]="labelDisplay === 'inline'">
+                         [class.pr-3]="labelDisplay === 'inline'" >
                         <label *ngIf="col.field.label" [ngClass]="labelClass">{{col.field.label}}</label>
                         <scrm-label *ngIf="!col.field.label && col.field.labelKey"
                                     [labelKey]="col.field.labelKey"
                                     [ngClass]="labelClass"></scrm-label>
+                        <ng-container
+                            *ngIf="col.field.definition.required && (['edit', 'create'].includes(fieldMode))">
+                            <span class="required">*</span>
+                        </ng-container>
                     </div>
                     <div *ngIf="col.field && col.field.display !== 'none'"
                          [class.flex-grow-1]="labelDisplay === 'inline'">

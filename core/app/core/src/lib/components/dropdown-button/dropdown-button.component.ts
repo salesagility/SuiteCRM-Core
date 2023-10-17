@@ -42,6 +42,12 @@ export class DropdownButtonComponent implements OnInit {
     @Input() disabled = false;
     @Input() autoClose: boolean | 'outside' | 'inside' = true;
 
+    buttonsFilter: any[];
+    buttons:any[];
+
+    protected defaultBreakpoint = 5;
+    protected quickFilterBreakpoint: number;
+
     constructor(public language: LanguageStore) {
     }
 
@@ -65,6 +71,25 @@ export class DropdownButtonComponent implements OnInit {
         if (this.config && !this.config.placement) {
             this.config.placement = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
         }
+        this.quickFilterBreakpoint = this.config?.quickFilterBreakpoint || this.defaultBreakpoint;
+        this.preprocessItems(this.config?.items);
+    }
+
+    preprocessItems(items: any[]): void {
+        this.buttonsFilter = [];
+        this.buttons = [];
+
+        if(!items) {
+            return;
+        }
+        for (const item of items) {
+            if (item.quick_filter) {
+                this.buttonsFilter.push(item);
+            } else {
+                this.buttons.push(item);
+            }
+        }
+        this.buttonsFilter = this.buttonsFilter.slice(this.quickFilterBreakpoint);
     }
 
     getPlacement(): PlacementArray {

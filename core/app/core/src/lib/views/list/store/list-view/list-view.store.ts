@@ -61,7 +61,7 @@ import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-lis
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
-import {isArray} from 'lodash-es';
+import {isArray, union} from 'lodash-es';
 
 export interface ListViewData {
     records: Record[];
@@ -371,6 +371,44 @@ export class ListViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Toggle Quick filter
+     *
+     * @param filter
+     * @param {boolean} reload flag
+     */
+    public toggleQuickFilter(filter: SavedFilter, reload = true): void {
+        let activeFilters = this.getActiveQuickFilters();
+
+        const isActive = Object.keys(activeFilters).some(key => key === filter.key);
+
+        if (isActive) {
+            let {[filter.key]: removedFilters, ...newFilters} = activeFilters;
+            activeFilters = newFilters;
+        } else {
+            activeFilters = {};
+            activeFilters[filter.key] = filter;
+        }
+
+        if (emptyObject(activeFilters)) {
+            this.resetFilters(reload);
+            return;
+        }
+
+        if (Object.keys(activeFilters).length === 1) {
+            this.setFilters(activeFilters);
+            return;
+        }
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(activeFilters),
+        });
+
+        this.updateSearchCriteria(reload)
+    }
+
+
+    /**
      * Set active filters
      *
      * @param {object} filters to set
@@ -468,12 +506,10 @@ export class ListViewStore extends ViewStore implements StateStore {
      * @param {boolean} reload flag
      */
     public updateSearchCriteria(reload = true): void {
-
         const filters = {...this.internalState.activeFilters};
-        const filterKey = Object.keys(filters).shift();
-        const filter = filters[filterKey];
+        let criteria = this.mergeCriteria(filters);
 
-        this.recordList.updateSearchCriteria(filter.criteria, reload);
+        this.recordList.updateSearchCriteria(criteria, reload);
         this.updateFilterLocalStorage();
     }
 
@@ -543,6 +579,79 @@ export class ListViewStore extends ViewStore implements StateStore {
      */
     protected updateState(state: ListViewState): void {
         this.store.next(this.internalState = state);
+    }
+
+    /**
+     * Get Active quick filters
+     * @protected
+     */
+    protected getActiveQuickFilters(): SavedFilterMap {
+        let {'default': defaultFilter, ...currentQuickFilters} = this.activeFilters;
+        let activeFilters = {} as SavedFilterMap;
+
+        Object.keys(currentQuickFilters).forEach(key => {
+            const activeFilter = currentQuickFilters[key] ?? null;
+            if (!key) {
+                return;
+            }
+
+            const isQuickFilter = activeFilter?.attributes?.quick_filter ?? false;
+
+            if (isQuickFilter) {
+                activeFilters[key] = activeFilter;
+            }
+        });
+        return activeFilters;
+    }
+
+    /**
+     * Merge Criteria
+     * @protected
+     */
+    protected mergeCriteria(filters: SavedFilterMap): SearchCriteria {
+
+        let criteria = {} as SearchCriteria;
+
+        const keys = Object.keys(filters ?? {}) ?? [];
+
+        keys.forEach(key => {
+            const filter = filters[key] ?? null;
+            const filterCriteria = filter?.criteria ?? null;
+            const filterCriteriaKeys = Object.keys(filterCriteria?.filters ?? {});
+            if (filterCriteria === null || (filterCriteriaKeys && !filterCriteriaKeys.length)) {
+                return;
+            }
+
+            if (emptyObject(criteria)) {
+                criteria = deepClone(filterCriteria);
+                return;
+            }
+
+            filterCriteriaKeys.forEach(criteriaKey => {
+                const filterCriteriaContent = filterCriteria?.filters[criteriaKey] ?? null;
+                const criteriaContent = criteria?.filters[criteriaKey] ?? null;
+                if (!filterCriteriaContent) {
+                    return;
+                }
+
+                const criteriaOperator = criteriaContent?.operator ?? null
+
+                if (!criteriaContent || !criteriaOperator) {
+                    criteria.filters[criteriaKey] = deepClone(filterCriteriaContent);
+                    return;
+                }
+
+                const filterCriteriaOperator = filterCriteriaContent?.operator ?? null
+                if (filterCriteriaOperator !== criteriaOperator || filterCriteriaOperator !== '=') {
+                    delete criteria.filters[criteriaKey];
+                    return;
+                }
+
+                criteriaContent.values = union(criteriaContent.values ?? [], filterCriteriaContent.values ?? []);
+            });
+        });
+
+        return criteria;
     }
 
     /**

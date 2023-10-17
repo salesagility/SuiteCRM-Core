@@ -25,6 +25,17 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="list-view-settings float-right" *ngIf="(vm$ | async) as vm">
-    <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+<div *ngIf="(vm$ | async) as vm" class="list-view-settings float-right d-flex flex-column flex-xl-row">
+    <div *ngIf="quickFilters"
+         class="d-flex align-items-baseline">
+        <div class="text-nowrap text-muted fs-70 pl-1 mr-2">
+            <scrm-label labelKey="LBL_QUICK_FILTERS"></scrm-label>
+        </div>
+        <div class="quick-filter-border pr-xxl-1 mr-xxl-1">
+            <scrm-button-group *ngIf="quickFiltersConfig$" [config$]="quickFiltersConfig$" [klass]="'quick-filter-button'"></scrm-button-group>
+        </div>
+    </div>
+    <div class="text-nowrap">
+        <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+    </div>
 </div>

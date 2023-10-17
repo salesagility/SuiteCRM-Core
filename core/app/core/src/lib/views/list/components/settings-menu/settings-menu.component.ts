@@ -52,6 +52,9 @@ export class SettingsMenuComponent implements OnInit {
 
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
+    quickFiltersConfigState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
+    quickFiltersConfig$ = this.quickFiltersConfigState.asObservable();
+    quickFilters = false;
 
     vm$ = this.listStore.widgets$.pipe(
         combineLatestWith(
@@ -75,6 +78,7 @@ export class SettingsMenuComponent implements OnInit {
                 this.screen = screenSize;
             }
             this.configState.next(this.getButtonGroupConfig());
+            this.initQuickFilters();
             return {widgets, displayFilters, criteria, screenSize, showSidebarWidgets, savedFilters};
         })
     );
@@ -95,6 +99,67 @@ export class SettingsMenuComponent implements OnInit {
         this.configState.next(this.getButtonGroupConfig());
     }
 
+    initQuickFilters(): void {
+        let filters = this.listStore.filterList.getFilters() ?? [];
+        filters = filters.filter(filter => filter?.attributes?.quick_filter ?? false);
+
+        this.quickFilters = true;
+        if (!filters || filters.length < 1) {
+            this.quickFilters = false;
+            return;
+        }
+
+        const config = {
+            buttonKlass: ['settings-button btn btn-outline-main'],
+            dropdownLabel: this.listStore.appStrings.LBL_QUICK_FILTERS || '',
+            breakpoint: this.getQuickFiltersBreakpoint(),
+            showAfterBreakpoint: false,
+            dropdownOptions: {
+                placement: ['bottom-right'],
+                wrapperKlass: ['dropdown-button-secondary', 'filter-action-group']
+            },
+            buttons: []
+        } as ButtonGroupInterface;
+
+        const activeFilters = this.listStore.activeFilters;
+
+        let anyActive = false;
+        filters.forEach((filter: SavedFilter) => {
+
+            const isQuickFilter = filter?.attributes?.quick_filter ?? false;
+
+            if (!isQuickFilter) {
+                return;
+            }
+
+            const isActive = Object.keys(activeFilters).some(key => key === filter.key);
+            anyActive = anyActive || isActive;
+
+            const button = {
+                label: filter.attributes.name,
+                onClick: (): void => {
+                    this.listStore.toggleQuickFilter(filter);
+                }
+            } as ButtonInterface;
+
+
+            if (isActive) {
+                button.icon = 'filter';
+                button.iconKlass = 'small';
+                button.klass = ['active'];
+            }
+
+            config.buttons.push(button);
+        });
+
+        if (anyActive) {
+            config.dropdownOptions.klass = ['active'];
+            config.dropdownOptions.icon = 'filter';
+        }
+
+        this.quickFiltersConfigState.next(config);
+    }
+
     getButtonGroupConfig(): ButtonGroupInterface {
 
         const availableButtons = [
@@ -106,7 +171,10 @@ export class SettingsMenuComponent implements OnInit {
                 show: (): boolean => this.listStore.filterList.getFilters() && this.listStore.filterList.getFilters().length >= 1,
                 button: this.getMyFiltersButton(),
             },
-            {button: this.getFilterButton()},
+            {
+                show: (): boolean => Object.keys(this.listStore.activeFilters ?? {}).length < 2,
+                button: this.getFilterButton()
+            },
             {
                 show: (): boolean => this.isAnyFilterApplied(),
                 button: this.getClearButton(),
@@ -139,7 +207,6 @@ export class SettingsMenuComponent implements OnInit {
                 config.buttons.push(availableButton.button);
             }
         });
-
         return config;
     }
 
@@ -195,6 +262,21 @@ export class SettingsMenuComponent implements OnInit {
         return this.defaultBreakpoint;
     }
 
+    getQuickFiltersBreakpoint(): number {
+        const breakpointMap = this.systemConfigStore.getUi('displayed_quick_filters');
+
+        if (this.screen && breakpointMap && breakpointMap[this.screen]) {
+            this.breakpoint = breakpointMap[this.screen];
+            return this.breakpoint;
+        }
+
+        if (this.breakpoint) {
+            return this.breakpoint;
+        }
+
+        return this.defaultBreakpoint;
+    }
+
 
     getFilterButton(): DropdownButtonInterface {
 
@@ -223,6 +305,7 @@ export class SettingsMenuComponent implements OnInit {
             label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
             klass: ['dropdown-toggle'],
             wrapperKlass: ['filter-action-group'],
+            quickFilterBreakpoint: this.getQuickFiltersBreakpoint(),
             items: []
         } as DropdownButtonInterface;
 
@@ -236,6 +319,7 @@ export class SettingsMenuComponent implements OnInit {
 
             const button = {
                 label: filter.attributes.name,
+                quick_filter: filter.attributes.quick_filter,
                 onClick: (): void => {
                     this.listStore.showFilters = false;
 

@@ -10,6 +10,7 @@ export interface SavedFilterAttributeMap {
     contents?: any;
     date_entered?: string;
     date_modified?: string;
+    quick_filter?: boolean;
 
     [key: string]: any;
 }
@@ -23,6 +24,7 @@ export interface SavedFilterFieldMap {
     contents?: Field;
     date_entered?: Field;
     date_modified?: Field;
+    quick_filter?: Field;
 
     [key: string]: Field;
 }
@@ -39,6 +41,7 @@ export interface SavedFilter extends Record {
     criteriaFormGroup?: UntypedFormGroup;
     attributes: SavedFilterAttributeMap;
     fields?: SavedFilterFieldMap;
+    readonly?: boolean;
 }
 
 export interface SavedFilterList extends RecordList {

@@ -35,6 +35,7 @@ import {ButtonGroupModule} from '../../../../components/button-group/button-grou
 import {ButtonModule} from '../../../../components/button/button.module';
 import {ColumnChooserModule} from '../../../../components/columnchooser/columnchooser.module';
 import {ImageModule} from '../../../../components/image/image.module';
+import {LabelModule} from '../../../../components/label/label.module';
 
 @NgModule({
     declarations: [SettingsMenuComponent],
@@ -46,7 +47,8 @@ import {ImageModule} from '../../../../components/image/image.module';
         ButtonModule,
         DropdownButtonModule,
         NgbModule,
-        ButtonGroupModule
+        ButtonGroupModule,
+        LabelModule
     ]
 })
 export class SettingsMenuModule {

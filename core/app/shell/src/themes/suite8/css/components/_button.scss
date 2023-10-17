@@ -188,8 +188,37 @@ button {
   background-color: $midnight-blue;
 }
 
-.saved-filters-button, .quick-filter-button {
-  display: none;
+.settings-button.btn-outline-main {
+  background-color: transparent;
+}
+
+.settings-button.btn-outline-main:hover {
+  background-color: $midnight-blue;
+}
+
+.settings-button.active {
+  background-color: $midnight-blue;
+}
+
+.settings-button.btn-outline-main.active {
+  background-color: $midnight-blue;
+}
+
+.settings-button.btn-outline-main.active:hover {
+  background-color: transparent;
+  border-color: transparent;
+  color: $midnight-blue;
+  fill: $midnight-blue;
+  stroke: $midnight-blue;
+}
+
+.quick-filter-button {
+  .settings-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+  }
 }
 
 .action-button.disabled, .settings-button.disabled {

@@ -52,34 +52,50 @@
     </button>
     <div ngbDropdownMenu>
 
-        <ng-container *ngFor="let item of config.items">
+        <div class="dropdown-menu-item-header" *ngIf="buttonsFilter.length">
+            <scrm-label *ngIf="buttonsFilter" labelKey="LBL_QUICK_FILTERS"></scrm-label>
+        </div>
 
-            <ng-container *ngIf="item && !isDropdown(item)">
-                <a ngbDropdownItem
-                   [ngClass]="item && item.klass"
-                   (click)="item && click(item.onClick, dropDown)">
-
-                    <div class="d-flex align-items-center">
-                        <div *ngIf="item.icon">
-                            <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
-                        </div>
-                        <div class="flex-grow-1">
-                            <ng-container *ngIf="item && item.label">
-                                {{item && item.label}}
-                            </ng-container>
-                            <ng-container *ngIf="item && !item.label && item.labelKey">
-                                <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey"
-                                            [module]="item.labelModule ?? ''"></scrm-label>
-                            </ng-container>
-                        </div>
-                    </div>
-                </a>
-            </ng-container>
-
-            <ng-container *ngIf="item && isDropdown(item)">
-                <scrm-dropdown-submenu (item-clicked)="close(dropDown)" [item]="item"></scrm-dropdown-submenu>
-            </ng-container>
-
+        <ng-container *ngFor="let item of buttonsFilter">
+            <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
         </ng-container>
+
+        <div class="dropdown-menu-item-header" *ngIf="buttons.length && (config?.wrapperKlass?.includes('filter-action-group'))">
+            <scrm-label labelKey="LBL_SAVED_FILTER_SHORTCUT"></scrm-label>
+        </div>
+
+        <ng-container *ngFor="let item of buttons">
+            <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+        </ng-container>
+
+
+
     </div>
 </div>
+
+
+<ng-template #buttonTemplate let-item="item">
+
+    <ng-container *ngIf="item && !isDropdown(item)">
+        <a ngbDropdownItem [ngClass]="item && item.klass" (click)="item && click(item.onClick, dropDown)">
+            <div class="d-flex align-items-center">
+                <div *ngIf="item.icon">
+                    <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
+                </div>
+                <div class="dropdown-item-label flex-grow-1">
+                    <ng-container *ngIf="item && item.label">
+                        {{ item.label }}
+                    </ng-container>
+                    <ng-container *ngIf="item && !item.label && item.labelKey">
+                        <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey" [module]="item.labelModule ?? ''"></scrm-label>
+                    </ng-container>
+                </div>
+            </div>
+        </a>
+    </ng-container>
+
+    <ng-container *ngIf="item && isDropdown(item)">
+        <scrm-dropdown-submenu (item-clicked)="close(dropDown)" [item]="item"></scrm-dropdown-submenu>
+    </ng-container>
+
+</ng-template>

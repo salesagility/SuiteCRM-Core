@@ -37,6 +37,7 @@ export interface ButtonInterface {
     icon?: string;
     iconKlass?: string;
     labelModule?: string;
+    quick_filter?: boolean;
 }
 
 export class Button implements ButtonInterface {

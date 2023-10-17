@@ -1,3 +1,13 @@
+@media all and (max-width: $breakpoint-xxlarge) {
+  .list-view-settings {
+    .quick-filter-border {
+      border: none!important;
+      margin-right: 0;
+      padding-right: 0;
+    }
+  }
+}
+
 @media all and (max-width: $breakpoint-xlarge) {
     .list-view {
         .list-widget-container {
@@ -9,7 +19,7 @@
 
 @media all and (max-width: $breakpoint-large) {
     .list-view {
-        .list-view-header {  
+        .list-view-header {
             .container-fluid {
                 .row {
                     margin-left: 0;
@@ -18,7 +28,7 @@
             }
             .col-md-4 {
                 padding: 0.3em 0;
-            }         
+            }
             .list-view-title {
                 margin: 0;
             }
@@ -32,7 +42,7 @@
 
 
 @media all and (max-width: $breakpoint-small) {
-    .list-view {          
+    .list-view {
         .pagination-count {
             display: none;
         }

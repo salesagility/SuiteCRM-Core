@@ -132,6 +132,8 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
         let count = 0;
 
+        const showAfterBreakpoint = this.internalConfig.showAfterBreakpoint ?? true;
+
         this.internalConfig.buttons.forEach(button => {
 
             if (!button) {
@@ -147,7 +149,7 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
                 Button.appendClasses(newButton, [...classes]);
 
                 this.buttons.expanded.push(newButton);
-            } else {
+            } else if(showAfterBreakpoint === true) {
                 this.buttons.collapsed.push({...button});
             }
 

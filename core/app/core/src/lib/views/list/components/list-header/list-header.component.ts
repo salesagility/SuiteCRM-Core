@@ -39,7 +39,6 @@ import {RecordPanelAdapter} from '../../adapters/record-panel.adapter';
 })
 export class ListHeaderComponent implements OnInit, OnDestroy {
 
-    displayResponsiveTable = false;
     actionPanel = '';
     recordPanelConfig: RecordPanelConfig;
     protected subs: Subscription[] = [];

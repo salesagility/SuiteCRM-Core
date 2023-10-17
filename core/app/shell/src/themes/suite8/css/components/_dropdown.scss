@@ -452,8 +452,6 @@ ul.main li a,
   background-color: $nepal-grey;
 }
 
-
-.filter-action-group .dropdown-menu,
 .select-action-group .dropdown-menu {
   font-size: 1em;
   -webkit-border-radius: 0.25em;
@@ -471,6 +469,44 @@ ul.main li a,
   border: 0;
   margin: 0;
 
+}
+
+.filter-action-group .dropdown-menu {
+  font-size: 0.8em;
+  -webkit-border-radius: 0.25em;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius: 0.25em;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  border-radius: 0.25em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: $white;
+  color: $black;
+  min-width: 10em;
+  border: 0;
+  margin: 0;
+  width: 240px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1)!important;;
+
+  .dropdown-menu-item-header {
+    padding: 0.5rem 1.44rem 0 1.44rem;
+    border-top: 1px solid $lightgray;
+    vertical-align: bottom;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    font-size: 1.125em;
+    font-weight: bold;
+    color: $complementary;
+
+    &:first-child {
+      border-top: none;
+      padding-top: 1rem;
+    }
+
+  }
 }
 
 .filter-select .dropdown-menu,
@@ -497,13 +533,11 @@ ul.main li a,
 }
 
 .dropdown-button-secondary .dropdown-menu a,
-.filter-action-group .dropdown-menu a,
 .select-action-group .dropdown-menu a {
   color: $white;
 }
 
 .dropdown-button-secondary .dropdown-menu a:hover,
-.filter-action-group .dropdown-menu a:hover,
 .select-action-group .dropdown-menu a:hover {
   background-color: $astral-blue;
   color: $white;
@@ -524,6 +558,27 @@ ul.main li a,
   background-color: $astral-blue;
   color: $white;
   cursor: pointer;
+}
+
+.filter-action-group .dropdown-menu .dropdown-item {
+  color: $black;
+  padding: 0.5rem 0 0.5rem 2rem;
+
+  .dropdown-item-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1rem;
+  }
+
+  &:last-child {
+    margin-bottom: 0.5rem;
+  }
+  &:hover {
+    background-color: $off-white;
+    color: $black;
+    cursor: pointer;
+  }
 }
 
 .mobile-nav-dropdown.dropdown-menu {

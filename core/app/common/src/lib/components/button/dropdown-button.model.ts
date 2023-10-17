@@ -33,4 +33,5 @@ export interface DropdownButtonInterface extends ButtonInterface {
     wrapperKlass?: string | string[] | Set<string> | { [key: string]: any };
     items?: AnyButtonInterface[];
     placement?: PlacementArray;
+    quickFilterBreakpoint?: number;
 }

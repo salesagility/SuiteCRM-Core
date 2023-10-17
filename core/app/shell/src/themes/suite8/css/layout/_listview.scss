@@ -32,14 +32,16 @@
 
 .list-view-header {
   border-bottom: 0.03em solid transparent;
+  padding-top: 0.5em;
 }
 
 .list-view-title {
   color: $shell-grey;
   font-size: 1.8em;
   font-weight: 300;
-  margin: 1em 0.7em;
+  margin: 0 0.7em;
   letter-spacing: 0.1em;
+  line-height: normal;
   text-transform: uppercase;
 }
 
@@ -50,6 +52,12 @@
 
 .list-view-settings {
   text-align: end;
+}
+
+.quick-filter-border {
+  border-right: 1px solid rgb(108, 117, 125, 0.5)!important;
+  margin-right: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .load-more-style {
@@ -373,7 +381,7 @@ td.list-group-icon {
 
   .list-view-hr-container {
     font-size: 0.85em;
-    padding-top: 0.6em;
+    padding-top: 0.4em;
     padding-left: 1.2em;
     padding-right: 1.2em;
   }
