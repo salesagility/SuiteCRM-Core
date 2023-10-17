@@ -87,6 +87,9 @@ $viewdefs ['SavedSearch'] = [
                         ]
                     ],
                     [
+                        'name' => 'quick_filter',
+                    ],
+                    [
                         'name' => 'orderBy',
                     ],
                     [
