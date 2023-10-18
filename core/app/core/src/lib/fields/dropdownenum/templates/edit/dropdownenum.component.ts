@@ -24,12 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {FormGroup} from '@angular/forms';
-import {Option} from 'common';
+import {deepClone, Option} from 'common';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 
 @Component({
@@ -38,7 +38,11 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
     styleUrls: []
 })
 export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
+
+    @ViewChild('selectElement') selectElement: ElementRef;
+
     formGroup: FormGroup;
+    elementWidth: number;
 
     constructor(protected languages: LanguageStore, protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
         super(languages, typeFormatter, logic);
@@ -55,10 +59,27 @@ export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
             this.formGroup = new FormGroup({});
             this.formGroup.addControl(this.field.name, this.field.formControl);
         }
-
     }
 
     public getId(item: Option) {
         return this.field.name + '-' + item.value;
+    }
+
+    public truncateOptionLabel(options: Option[]): Option[] {
+        const _options = deepClone(options);
+
+        const elementWidth = this.selectElement?.nativeElement?.offsetWidth ?? null;
+        if (!elementWidth) {
+            return _options;
+        }
+
+        let textLength = Math.min(100, Math.max(35, Math.floor(elementWidth / 10)));
+
+        return _options.map((option) => {
+            if (option?.label?.length > textLength) {
+                option.label = option.label.substr(0, textLength) + '...'
+            }
+            return option;
+        });
     }
 }
