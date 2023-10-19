@@ -4859,19 +4859,38 @@ class InboundEmail extends SugarBean
      */
     public function handleMimeHeaderDecode($subject)
     {
+        $GLOBALS['log']->debug('handleMimeHeaderDecode: Starting MIME header decoding for subject: ' . $subject);
+    
         $subjectDecoded = $this->getImap()->MimeHeaderDecode($subject);
-
-        $ret = '';
-        foreach ($subjectDecoded as $object) {
-            if ($object->charset != 'default') {
-                $ret .= $this->handleCharsetTranslation($object->text, $object->charset);
-            } else {
-                $ret .= $object->text;
-            }
+    
+        // If $subjectDecoded is a string, log its content to understand why
+        if (is_string($subjectDecoded)) {
+            $GLOBALS['log']->error('handleMimeHeaderDecode: $subjectDecoded is a string. Content: ' . $subjectDecoded);
+            // Instead of returning an error message, we might want to return the original subject
+            // or handle this case appropriately based on the actual content of $subjectDecoded.
+            return $subject; // returning the original subject for now
         }
-
+    
+        $ret = '';
+        if (is_array($subjectDecoded)) { // Checking if it's an array as expected
+            $GLOBALS['log']->debug('handleMimeHeaderDecode: $subjectDecoded is an array, proceeding with decoding');
+            foreach ($subjectDecoded as $object) {
+                if (isset($object->charset) && $object->charset != 'default' && isset($object->text)) {
+                    $ret .= $this->handleCharsetTranslation($object->text, $object->charset);
+                } elseif (isset($object->text)) {
+                    $ret .= $object->text;
+                }
+            }
+        } else {
+            $GLOBALS['log']->error('handleMimeHeaderDecode: $subjectDecoded is not an array');
+            // Similar to above, decide how you want to handle this error.
+            return $subject; // returning the original subject for now
+        }
+    
+        $GLOBALS['log']->debug('handleMimeHeaderDecode: Decoding completed, result: ' . $ret);
         return $ret;
     }
+    
 
     /**
      * Calculates the appropriate display date/time sent for an email.
