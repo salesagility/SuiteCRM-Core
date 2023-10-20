@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="bulk-action float-left" *ngIf="(vm$ | async) as vm">
+<div class="bulk-action float-left">
     <div ngbDropdown class="dropdown select-action-group float-left">
         <button class="bulk-action-button dropdown-toggle btn btn-sm"
                 type="button"
@@ -36,28 +36,31 @@
                 aria-label="Select Action Menu">
             <label class="checkbox-container">
                 <input type="checkbox"
-                       [checked]="checked(vm.status)"
-                       [indeterminate]="intermediate(vm.status)"
-                       (change)="toggleSelection(vm.status)"
+                       [checked]="status === 'ALL'"
+                       [indeterminate]="status === 'SOME' || status === 'PAGE'"
+                       (change)="toggleSelection(status)"
                        aria-hidden="true">
                 <span class="checkmark"></span>
             </label>
-            <span class="bulk-action-selected-number">{{vm.count > 0 ? (vm.appStrings['LBL_LISTVIEW_SELECTED_OBJECTS'] || '') : ''}} {{vm.count > 0 ? vm.count : ''}}</span>
+            <span class="bulk-action-selected-number">
+                <ng-container *ngIf="count > 0"> <scrm-label labelKey="LBL_LISTVIEW_SELECTED_OBJECTS"></scrm-label></ng-container> {{count > 0 ? count : ''}}
+            </span>
         </button>
         <div class="dropdown-menu"
              ngbDropdownMenu
              aria-hidden="true">
             <a class="dropdown-item select-all" (click)="selectAll()">
-                {{vm.appStrings['LBL_LISTVIEW_OPTION_ENTIRE'] || ''}}
+                <scrm-label labelKey="LBL_LISTVIEW_OPTION_ENTIRE"></scrm-label>
             </a>
             <a class="dropdown-item select-page" (click)="selectPage()">
-                {{vm.appStrings['LBL_LISTVIEW_OPTION_CURRENT'] || ''}}
+                <scrm-label labelKey="LBL_LISTVIEW_OPTION_CURRENT"></scrm-label>
             </a>
             <a class="dropdown-item deselect-all" (click)="deselectAll()">
-                {{vm.appStrings['LBL_LISTVIEW_NONE'] || ''}}
+                <scrm-label labelKey="LBL_LISTVIEW_NONE"></scrm-label>
             </a>
         </div>
     </div>
-    <scrm-dropdown-button [disabled]="vm.count < 1"
-                          [config]="getDropdownConfig(vm.actions, vm.appStrings)"></scrm-dropdown-button>
+    <scrm-dropdown-button [disabled]="count < 1"
+                          [config]="dropdownConfig">
+    </scrm-dropdown-button>
 </div>
