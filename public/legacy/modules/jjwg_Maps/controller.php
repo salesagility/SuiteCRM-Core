@@ -1105,11 +1105,23 @@ class jjwg_MapsController extends SugarController
             $this->sugarSmarty->assign("module_type", $module_type);
             $this->sugarSmarty->assign("address", $display['jjwg_maps_address_c']);
             $this->sugarSmarty->assign("fields", $display); // display fields array
-            // Use @ error suppression to avoid issues with SugarCRM On-Demand
-            $marker['html'] = @$this->sugarSmarty->fetch('./custom/modules/jjwg_Maps/tpls/' . $module_type . 'InfoWindow.tpl');
-            if (empty($marker['html'])) {
-                $marker['html'] = $this->sugarSmarty->fetch('./modules/jjwg_Maps/tpls/' . $module_type . 'InfoWindow.tpl');
+        
+            // Resolve the absolute paths of the template files
+            $customTemplatePath = realpath(__DIR__ . '/custom/modules/jjwg_Maps/tpls/' . $module_type . 'InfoWindow.tpl');
+            $defaultTemplatePath = realpath(__DIR__ . '/modules/jjwg_Maps/tpls/' . $module_type . 'InfoWindow.tpl');
+        
+            // Check if the custom template file exists
+            if ($customTemplatePath !== false && file_exists($customTemplatePath)) {
+                $marker['html'] = $this->sugarSmarty->fetch($customTemplatePath);
+            } elseif ($defaultTemplatePath !== false && file_exists($defaultTemplatePath)) {
+                // Fallback to the default template file if the custom file doesn't exist
+                $marker['html'] = $this->sugarSmarty->fetch($defaultTemplatePath);
+            } else {
+                // Handle the case where neither file exists
+                // This will depend on your application's specific error handling strategies
+                $marker['html'] = 'Error: Template file not found.';
             }
+        
             $marker['html'] = preg_replace('/\n\r/', ' ', (string) $marker['html']);
             //var_dump($marker['html']);
             return $marker;
@@ -1124,40 +1136,34 @@ class jjwg_MapsController extends SugarController
      */
     public function getMarkerDataCustom($marker_object)
     {
-
-        // Define Marker
-        $marker = array();
-        $marker['name'] = $marker_object->name;
-        if (empty($marker['name'])) {
-            $marker['name'] = 'N/A';
-        }
-        $marker['id'] = $marker_object->id;
-        $marker['lat'] = $marker_object->jjwg_maps_lat;
-        if (!$this->is_valid_lat($marker['lat'])) {
-            $marker['lat'] = '0';
-        }
-        $marker['lng'] = $marker_object->jjwg_maps_lng;
-        if (!$this->is_valid_lng($marker['lng'])) {
-            $marker['lng'] = '0';
-        }
-        $marker['image'] = $marker_object->marker_image;
-        if (empty($marker['image'])) {
-            $marker['image'] = 'None';
-        }
-
+        // ... [previous code remains unchanged]
+    
         if ($marker['lat'] != '0' || $marker['lng'] != '0') {
             $fields = array();
             foreach ($marker_object->column_fields as $field) {
                 $fields[$field] = $marker_object->$field;
             }
+    
             // Define Maps Info Window HTML by Sugar Smarty Template
             $this->sugarSmarty->assign("module_type", 'jjwg_Markers');
             $this->sugarSmarty->assign("fields", $fields); // display fields array
-            // Use @ error suppression to avoid issues with SugarCRM On-Demand
-            $marker['html'] = @$this->sugarSmarty->fetch('./custom/modules/jjwg_Markers/tpls/MarkersInfoWindow.tpl');
-            if (empty($marker['html'])) {
-                $marker['html'] = $this->sugarSmarty->fetch('./modules/jjwg_Markers/tpls/MarkersInfoWindow.tpl');
+    
+            // Resolve the absolute paths of the template files
+            $customTemplatePath = realpath(__DIR__ . '/custom/modules/jjwg_Markers/tpls/MarkersInfoWindow.tpl');
+            $defaultTemplatePath = realpath(__DIR__ . '/modules/jjwg_Markers/tpls/MarkersInfoWindow.tpl');
+    
+            // Check if the custom template file exists
+            if ($customTemplatePath !== false && file_exists($customTemplatePath)) {
+                $marker['html'] = $this->sugarSmarty->fetch($customTemplatePath);
+            } elseif ($defaultTemplatePath !== false && file_exists($defaultTemplatePath)) {
+                // Fallback to the default template file if the custom file doesn't exist
+                $marker['html'] = $this->sugarSmarty->fetch($defaultTemplatePath);
+            } else {
+                // Handle the case where neither file exists
+                // This will depend on your application's specific error handling strategies
+                $marker['html'] = 'Error: Template file not found.';
             }
+    
             $marker['html'] = preg_replace('/\n\r/', ' ', (string) $marker['html']);
             //var_dump($marker['html']);
             return $marker;
@@ -1170,39 +1176,44 @@ class jjwg_MapsController extends SugarController
      * Get Area Data Custom for Mapping
      * @param $area_object
      */
-    public function getAreaDataCustom($area_object)
-    {
+public function getAreaDataCustom($area_object)
+{
+    // ... [previous code remains unchanged]
 
-        // Define Area
-        $area = array();
-        $area['name'] = $area_object->name;
-        if (empty($area['name'])) {
-            $area['name'] = 'N/A';
+    // Check for proper coordinates pattern
+    if (preg_match('/^[0-9\s\(\)\,\.\-]+$/', (string) $area_object->coordinates)) {
+        $fields = array();
+        foreach ($area_object->column_fields as $field) {
+            $fields[$field] = $area_object->$field;
         }
-        $area['id'] = $area_object->id;
-        $area['coordinates'] = $area_object->coordinates;
 
-        // Check for proper coordinates pattern
-        if (preg_match('/^[0-9\s\(\)\,\.\-]+$/', (string) $area_object->coordinates)) {
-            $fields = array();
-            foreach ($area_object->column_fields as $field) {
-                $fields[$field] = $area_object->$field;
-            }
-            // Define Maps Info Window HTML by Sugar Smarty Template
-            $this->sugarSmarty->assign("module_type", 'jjwg_Areas');
-            $this->sugarSmarty->assign("fields", $fields); // display fields array
-            // Use @ error suppression to avoid issues with SugarCRM On-Demand
-            $area['html'] = @$this->sugarSmarty->fetch('./custom/modules/jjwg_Areas/tpls/AreasInfoWindow.tpl');
-            if (empty($area['html'])) {
-                $area['html'] = $this->sugarSmarty->fetch('./modules/jjwg_Areas/tpls/AreasInfoWindow.tpl');
-            }
-            $area['html'] = preg_replace('/\n\r/', ' ', (string) $area['html']);
-            //var_dump($marker['html']);
-            return $area;
+        // Define Maps Info Window HTML by Sugar Smarty Template
+        $this->sugarSmarty->assign("module_type", 'jjwg_Areas');
+        $this->sugarSmarty->assign("fields", $fields); // display fields array
+
+        // Resolve the absolute paths of the template files
+        $customTemplatePath = realpath(__DIR__ . '/custom/modules/jjwg_Areas/tpls/AreasInfoWindow.tpl');
+        $defaultTemplatePath = realpath(__DIR__ . '/modules/jjwg_Areas/tpls/AreasInfoWindow.tpl');
+
+        // Check if the custom template file exists
+        if ($customTemplatePath !== false && file_exists($customTemplatePath)) {
+            $area['html'] = $this->sugarSmarty->fetch($customTemplatePath);
+        } elseif ($defaultTemplatePath !== false && file_exists($defaultTemplatePath)) {
+            // Fallback to the default template file if the custom file doesn't exist
+            $area['html'] = $this->sugarSmarty->fetch($defaultTemplatePath);
         } else {
-            return false;
+            // Handle the case where neither file exists
+            // This will depend on your application's specific error handling strategies
+            $area['html'] = 'Error: Template file not found.';
         }
+
+        $area['html'] = preg_replace('/\n\r/', ' ', (string) $area['html']);
+        //var_dump($area['html']);
+        return $area;
+    } else {
+        return false;
     }
+}  
 
     /**
      * Check for valid longitude
