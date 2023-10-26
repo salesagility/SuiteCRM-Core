@@ -604,7 +604,13 @@ ul.main li a,
   float: right;
 }
 
-.mobile-nav-dropdown .dropdown-item:hover {
-  background-color: $vacant-orange;
-  cursor: pointer;
+.mobile-nav-dropdown .dropdown-item {
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+    cursor: pointer;
+  }
+  &:focus {
+    outline: none;
+  }
 }

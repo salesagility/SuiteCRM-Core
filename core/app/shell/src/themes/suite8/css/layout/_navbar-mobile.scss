@@ -36,11 +36,11 @@
   overflow-y: auto;
 }
 
-.card.mobile-nav-group-item {
+.accordion-item.mobile-nav-group-item {
   background: none;
   padding: 0;
 
-  .card-header {
+  .accordion-header {
     padding: 0;
     background: none;
     color: $white;
@@ -56,9 +56,5 @@
       text-align: left;
       color: $white;
     }
-  }
-
-  .card-body {
-
   }
 }

@@ -26,61 +26,70 @@
 */
 -->
 <div class="mobile-menu-items">
-    <ngb-accordion [closeOthers]="true">
-
+    <div ngbAccordion [closeOthers]="true">
         <ng-container *ngFor="let item of items">
+            <div ngbAccordionItem *ngIf="!item.submenu || !item.submenu.length"
+                 class="mobile-nav-group-item disabled"
+                 [disabled]="true">
 
-            <ngb-panel *ngIf="!item.submenu || !item.submenu.length"
-                       [cardClass]="'mobile-nav-group-item disabled'"
-                       [disabled]="true">
-
-                <ng-template ngbPanelHeader>
-                    <li (click)="onClose && onClose()"
-                        class="">
+                <div ngbAccordionHeader>
+                    <div ngbAccordionButton (click)="onClose && onClose()">
                         <scrm-menu-item-link
                             [class]="'mobile-nav-link dropdown-item action-link pl-5 pr-3 pt-2 pb-2'"
                             [icon]="item.icon || ''"
                             [link]="item.link"></scrm-menu-item-link>
-                    </li>
-                </ng-template>
+                    </div>
+                </div>
 
-            </ngb-panel>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <ng-template></ng-template>
+                    </div>
+                </div>
+            </div>
 
-            <ngb-panel *ngIf="item.submenu && item.submenu.length"
-                       [title]="item.link.label"
-                       cardClass="mobile-nav-group-item">
+            <div ngbAccordionItem *ngIf="item.submenu && item.submenu.length"
+                 [title]="item.link.label"
+                 class="mobile-nav-group-item">
 
-                <ng-template ngbPanelContent>
+                <div ngbAccordionHeader>
+                    <button ngbAccordionButton
+                    class="mobile-nav-link dropdown-item action-link pl-5 pr-3 pt-2 pb-2">{{item.link.label}}</button>
+                </div>
 
-                    <li (click)="onClose && onClose()"
-                        *ngFor="let subitem of item.submenu"
-                        class="ml-4">
-                        <scrm-menu-item-link
-                            [class]="'mobile-nav-link action-link pl-1 pr-3 pt-2 pb-2 w-100'"
-                            [icon]="subitem.icon || ''"
-                            [link]="subitem.link"></scrm-menu-item-link>
-                    </li>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <ng-template>
+                            <li (click)="onClose && onClose()"
+                                *ngFor="let subitem of item.submenu"
+                                class="ml-4">
+                                <scrm-menu-item-link
+                                    [class]="'mobile-nav-link action-link pl-1 pr-3 pt-2 pb-2 w-100'"
+                                    [icon]="subitem.icon || ''"
+                                    [link]="subitem.link"></scrm-menu-item-link>
+                            </li>
+                            <ng-container *ngIf="item && item.module">
+                                <li>
+                                    <scrm-menu-recently-viewed [collapsible]="true"
+                                                               [module]="item.module"
+                                                               [onClick]="onClose">
+                                    </scrm-menu-recently-viewed>
+                                </li>
+                                <li>
+                                    <scrm-menu-favorites [collapsible]="true"
+                                                         [module]="item.module"
+                                                         [onClick]="onClose">
+                                    </scrm-menu-favorites>
+                                </li>
+                            </ng-container>
 
-                    <ng-container *ngIf="item && item.module">
-                        <li>
-                            <scrm-menu-recently-viewed [collapsible]="true"
-                                                       [module]="item.module"
-                                                       [onClick]="onClose">
-                            </scrm-menu-recently-viewed>
-                        </li>
-                        <li>
-                            <scrm-menu-favorites [collapsible]="true"
-                                                 [module]="item.module"
-                                                 [onClick]="onClose">
-                            </scrm-menu-favorites>
-                        </li>
-                    </ng-container>
 
-                </ng-template>
-            </ngb-panel>
+                        </ng-template>
+                    </div>
+                </div>
 
+            </div>
         </ng-container>
-
-    </ngb-accordion>
+    </div>
 </div>
 
