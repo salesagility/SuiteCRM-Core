@@ -92,8 +92,8 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
         };
 
         this.rowClass = {
-            ...this.rowClass,
-            ...this.baseRowClass
+            ...this.baseRowClass,
+            ...this.rowClass
         };
 
         this.labelClass = {
