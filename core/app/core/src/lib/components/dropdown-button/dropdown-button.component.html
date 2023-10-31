@@ -30,6 +30,7 @@
      [placement]="getPlacement()"
      #dropDown="ngbDropdown"
      class="d-inline-block dropdown-button"
+     [class.sectioned-dropdown-menu]="sectionsEnabled"
      [ngClass]="config.wrapperKlass">
     <button [disabled]="disabled"
             [ngClass]="config.klass"
@@ -48,27 +49,33 @@
             <scrm-label [labelKey]="config.labelKey"></scrm-label>
         </ng-container>
 
-        <ng-content></ng-content>
     </button>
     <div ngbDropdownMenu>
 
-        <div class="dropdown-menu-item-header" *ngIf="buttonsFilter.length">
-            <scrm-label *ngIf="buttonsFilter" labelKey="LBL_QUICK_FILTERS"></scrm-label>
-        </div>
+        <ng-container *ngIf="sectionsEnabled">
 
-        <ng-container *ngFor="let item of buttonsFilter">
-            <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+            <div *ngFor="let section of sections; last as isLast; first as isFirst"
+                 [ngClass]="section.klass ?? ''"
+                 [class.section-split]="!isFirst"
+                 [class.last-section]="isLast"
+                 [class.first-section]="isFirst">
+                <div class="dropdown-menu-item-header">
+                    <scrm-label [labelKey]="section.labelKey ?? section.label ?? ''" ></scrm-label>
+                </div>
+
+                <ng-container *ngFor="let item of section.items; let last = last">
+                    <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+                </ng-container>
+
+            </div>
+
         </ng-container>
 
-        <div class="dropdown-menu-item-header" *ngIf="buttons.length && (config?.wrapperKlass?.includes('filter-action-group'))">
-            <scrm-label labelKey="LBL_SAVED_FILTER_SHORTCUT"></scrm-label>
-        </div>
-
-        <ng-container *ngFor="let item of buttons">
-            <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+        <ng-container *ngIf="!sectionsEnabled">
+            <ng-container *ngFor="let item of buttons">
+                <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+            </ng-container>
         </ng-container>
-
-
 
     </div>
 </div>
@@ -87,7 +94,8 @@
                         {{ item.label }}
                     </ng-container>
                     <ng-container *ngIf="item && !item.label && item.labelKey">
-                        <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey" [module]="item.labelModule ?? ''"></scrm-label>
+                        <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey"
+                                    [module]="item.labelModule ?? ''"></scrm-label>
                     </ng-container>
                 </div>
             </div>

@@ -29,9 +29,21 @@ import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
 export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface;
 
+export interface DropdownButtonSection {
+    label?: string;
+    labelKey?: string;
+    klass?: string | string[] | Set<string> | { [key: string]: any };
+    items?: AnyButtonInterface[];
+}
+
+export interface DropdownButtonSectionMap {
+    [key: string]: DropdownButtonSection;
+}
+
+
 export interface DropdownButtonInterface extends ButtonInterface {
     wrapperKlass?: string | string[] | Set<string> | { [key: string]: any };
     items?: AnyButtonInterface[];
     placement?: PlacementArray;
-    quickFilterBreakpoint?: number;
+    sections?: DropdownButtonSectionMap;
 }

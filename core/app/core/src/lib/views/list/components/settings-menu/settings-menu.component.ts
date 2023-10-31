@@ -30,7 +30,10 @@ import {
     ButtonInterface,
     DropdownButtonInterface,
     SearchCriteria,
-    SearchCriteriaFilter
+    SearchCriteriaFilter,
+    DropdownButtonSectionMap,
+    isTrue,
+    DropdownButtonSection
 } from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatestWith} from 'rxjs';
@@ -305,21 +308,36 @@ export class SettingsMenuComponent implements OnInit {
             label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
             klass: ['dropdown-toggle'],
             wrapperKlass: ['filter-action-group'],
-            quickFilterBreakpoint: this.getQuickFiltersBreakpoint(),
-            items: []
+            items: [],
+            sections: {
+                'quick-filters' : {
+                    labelKey: 'LBL_QUICK_FILTERS'
+                } as DropdownButtonSection,
+                'default' : {
+                    labelKey: 'LBL_SAVED_FILTER_SHORTCUT'
+                } as DropdownButtonSection,
+            } as DropdownButtonSectionMap
         } as DropdownButtonInterface;
 
         const activeFilters = this.listStore.activeFilters;
 
         let anyActive = false;
+        let quickFilterCount = 0;
+        const quickFilterBreakpoint = this.getQuickFiltersBreakpoint();
         filters.forEach((filter: SavedFilter) => {
+
+            const isQuickFilterButton = isTrue(filter?.attributes?.quick_filter ?? false);
+            if (isQuickFilterButton && quickFilterCount < quickFilterBreakpoint) {
+                quickFilterCount++;
+                return;
+            }
 
             const isActive = Object.keys(activeFilters).some(key => key === filter.key);
             anyActive = anyActive || isActive;
 
             const button = {
                 label: filter.attributes.name,
-                quick_filter: filter.attributes.quick_filter,
+                section: isQuickFilterButton ? 'quick-filters' : 'default',
                 onClick: (): void => {
                     this.listStore.showFilters = false;
 
