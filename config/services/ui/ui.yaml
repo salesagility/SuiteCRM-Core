@@ -41,7 +41,7 @@ parameters:
     displayed_quick_filters:
       XSmall: 1
       Small: 2
-      Medium: 3
+      Medium: 2
       Large: 3
       XLarge: 5
 

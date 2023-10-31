@@ -217,7 +217,8 @@ button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 220px;
+    max-width: 120px;
+    padding: 0.3em .5em
   }
 }
 
