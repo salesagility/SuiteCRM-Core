@@ -10,7 +10,7 @@ if (!isset($container)) {
 $extensions = $container->getParameter('extensions') ?? [];
 
 $extensions['defaultExt'] = [
-    'remoteEntry' => './extensions/defaultExt/remoteEntry.js',
+    'remoteEntry' => '../extensions/defaultExt/remoteEntry.js',
     'remoteName' => 'defaultExt',
     'enabled' => false,
     'extension_name' => 'Default Extension',

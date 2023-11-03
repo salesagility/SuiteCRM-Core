@@ -1,5 +1,6 @@
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
+
 module.exports = {
   output: {
     publicPath: 'auto',
@@ -26,31 +27,39 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
+        },
+        '@angular/cdk/table': {
+          singleton: true,
+          requiredVersion: '^16.1.1'
+        },
+        '@angular/cdk/observers': {
+          singleton: true,
+          requiredVersion: '^16.1.1'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^16.0.3'
+          requiredVersion: '^16.1.1'
         },
         '@apollo/client': {
           singleton: true,
@@ -66,7 +75,7 @@ module.exports = {
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^16.6.0'
+          requiredVersion: '^16.7.1'
         },
         'lodash-es': {
           singleton: true,
@@ -74,7 +83,7 @@ module.exports = {
         },
         luxon: {
           singleton: true,
-          requiredVersion: '^3.3.0'
+          requiredVersion: '3.3.0'
         },
         'ng-animate': {
           singleton: true,
@@ -92,7 +101,7 @@ module.exports = {
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^15.0.0'
+          requiredVersion: '^15.0.1'
         },
 
         'bn-ng-idle': {

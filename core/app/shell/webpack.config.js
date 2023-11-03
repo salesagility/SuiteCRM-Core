@@ -6,7 +6,7 @@ module.exports = {
   },
   optimization: {
     runtimeChunk: false,
-    minimize: false
+    minimize: true
   },
   experiments: {
     outputModule: true
