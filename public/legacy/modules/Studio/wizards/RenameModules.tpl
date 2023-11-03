@@ -70,11 +70,11 @@
 <table cellspacing="2">
     <tr>
         <td colspan="3">{$MOD.LBL_RENAME_MOD_SAVE_HELP}</td>
-    </tr>    
+    </tr>
     <tr>
         <td colspan="3" class='action-button'>
             <input type="button" class="button primary" value="{$MOD.LBL_BTN_SAVE}" id="renameSaveBttn" onclick='validateForm();'name="{$MOD.LBL_BTN_SAVE}" />
-            <input type="button" class="button" value="{$MOD.LBL_BTN_CANCEL}"  id="renameCancelBttn" name="{$MOD.LBL_BTN_CANCEL}" onclick="document.editdropdown.action.value='index'; document.editdropdown.module.value='Administration';document.editdropdown.submit()" />
+            <input type="button" class="button" value="{$MOD.LBL_BTN_CANCEL}"  id="renameCancelBttn" name="{$MOD.LBL_BTN_CANCEL}" onclick="document.location.href='index.php?module=Administration&action=index'" />
         </td>
     </tr>
 </table>
@@ -103,7 +103,7 @@
 </tr>
 <tr>
     <td>
-<form method='post' action='index.php' name='editdropdown'>
+<form method='GET' action='index.php' name='editdropdown'>
 <input type='hidden' name='action' value='wizard'>
 <input type='hidden' name='wizard' value='RenameModules'>
 <input type='hidden' name='option' value='SaveDropDown'>

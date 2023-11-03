@@ -47,21 +47,26 @@
 <script type="text/javascript">
 <!--
 {literal}
-function change_state(radiobutton) 
+function change_state(radiobutton)
 {
 	if (radiobutton.value == '1') {
 		radiobutton.form['massemailer_tracking_entities_location'].disabled=true;
 		radiobutton.form['massemailer_tracking_entities_location'].value='{/literal}{$MOD.TRACKING_ENTRIES_LOCATION_DEFAULT_VALUE}{literal}';
-	} 
+	}
 	else {
 		radiobutton.form['massemailer_tracking_entities_location'].disabled=false;
 		radiobutton.form['massemailer_tracking_entities_location'].value='{/literal}{$SITEURL}{literal}';
 	}
 }
+function clearQueryParamsAndNavigate() {
+	let currentURL = window.location.href;
+	let baseURL = currentURL.split('?')[0];
+	window.location.href = baseURL + '?module=Administration&action=index';
+}
 {/literal}
 -->
 </script>
-<form name="ConfigureSettings" id="EditView" method="POST">
+<form name="ConfigureSettings" id="EditView" method="GET">
 	<input type="hidden" name="module" value="EmailMan">
 	<input type="hidden" name="campaignConfig" value="true">
 	<input type="hidden" name="action">
@@ -71,7 +76,7 @@ function change_state(radiobutton)
 
 <div class="action-button">
     <input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button" onclick="this.form.action.value='Save';return verify_data(this);" type="submit" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} ">
-    <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" class="button" onclick="this.form.action.value='{$RETURN_ACTION}'; this.form.module.value='{$RETURN_MODULE}';" type="submit" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
+    <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" class="button" onclick="clearQueryParamsAndNavigate();" type="button" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
 </div>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
@@ -99,7 +104,7 @@ function change_state(radiobutton)
 					</td>
 					<td >
 						<input type='radio' onclick="change_state(this);" name='massemailer_tracking_entities_location_type' value="1" {$default_checked}>
-						{$MOD.LBL_DEFAULT_LOCATION}&nbsp;<input type='radio' {$userdefined_checked} onclick="change_state(this);" name='massemailer_tracking_entities_location_type' value="2">{$MOD.LBL_CUSTOM_LOCATION} 
+						{$MOD.LBL_DEFAULT_LOCATION}&nbsp;<input type='radio' {$userdefined_checked} onclick="change_state(this);" name='massemailer_tracking_entities_location_type' value="2">{$MOD.LBL_CUSTOM_LOCATION}
 				</tr>
 				<tr>
 					<td scope="row" class="mobile-hide">
@@ -117,7 +122,7 @@ function change_state(radiobutton)
 					</td>
 					<td >
 						<input type='radio' name='massemailer_email_copy' value="1" {$yes_checked}>
-						{$MOD.LBL_YES}&nbsp;<input type='radio' {$no_checked} name='massemailer_email_copy' value="2">{$MOD.LBL_NO} 
+						{$MOD.LBL_YES}&nbsp;<input type='radio' {$no_checked} name='massemailer_email_copy' value="2">{$MOD.LBL_NO}
 					</td>
 				</tr>
 

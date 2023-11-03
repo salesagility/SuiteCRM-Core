@@ -39,16 +39,15 @@
  */
 
 *}
-<form name="themeSettings" method="POST">
+<form name="themeSettings" method="GET">
 	<input type="hidden" name="module" value="Administration">
 	<input type="hidden" name="action" value="ThemeSettings">
 	<input type="hidden" name="disabled_themes" value="">
-	
 	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer action-button">
 		<tr>
 			<td>
 			<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}">
-			<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="document.themeSettings.action.value='';" type="submit" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
+			<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="clearQueryParamsAndNavigate();" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
 			</td>
 		</tr>
 	</table>
@@ -81,7 +80,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer hide-btn">
 		<tr>
 			<td>
@@ -111,5 +110,10 @@
 
 		});
 	});
+	function clearQueryParamsAndNavigate() {
+		let currentURL = window.location.href;
+		let baseURL = currentURL.split('?')[0];
+		window.location.href = baseURL + '?module=Administration&action=index';
+	}
 	{/literal}
 </script>

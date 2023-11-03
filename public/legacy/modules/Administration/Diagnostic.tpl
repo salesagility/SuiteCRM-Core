@@ -43,15 +43,15 @@
  */
 *}
 
-<form name="Diagnostic" method="POST" action="index.php">
+<form name="Diagnostic" method="GET" action="index.php">
 <input type="hidden" name="module" value="Administration">
 <input type="hidden" name="action" value="DiagnosticRun">
- 
+
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="actionsContainer">
 	<tr>
 	<td class="action-button">
 	<input title="{$MOD.LBL_DIAG_EXECUTE_BUTTON}" class="button" onclick="this.form.action.value='DiagnosticRun';" type="submit" name="button" value="  {$MOD.LBL_DIAG_EXECUTE_BUTTON}  " >
-	<input title="{$MOD.LBL_DIAG_CANCEL_BUTTON}" class="button" onclick="this.form.action.value='index'; this.form.module.value='Administration'; " type="submit" name="button" value="  {$MOD.LBL_DIAG_CANCEL_BUTTON}  "></td>
+		<input title="{$MOD.LBL_DIAG_CANCEL_BUTTON}" class="button" onclick="this.form.action.value='index'; this.form.module.value='Administration'; this.form.submit();" type="button" name="button" value="  {$MOD.LBL_DIAG_CANCEL_BUTTON}">
 
 	</tr>
 </table>

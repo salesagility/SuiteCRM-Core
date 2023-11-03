@@ -46,6 +46,12 @@
 {literal}
 <script type="text/javascript" >
 <!--
+function clearQueryParamsAndNavigate() {
+	let currentURL = window.location.href;
+	let baseURL = currentURL.split('?')[0];
+	window.location.href = baseURL + '?module=Administration&action=index';
+}
+
 function change_state(radiobutton) {
 
 	if (radiobutton.value == '1') {
@@ -60,7 +66,7 @@ function change_state(radiobutton) {
 </script>
 {/literal}
 {$ROLLOVER}
-<form name="ConfigureSettings" id="EditView" method="POST" >
+<form name="ConfigureSettings" id="EditView" method="GET" >
 	<input type="hidden" name="module" value="EmailMan">
 	<input type="hidden" name="action">
 	<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
@@ -71,7 +77,7 @@ function change_state(radiobutton) {
 	<tr>
 		<td class="action-btn-top">
 			<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="this.form.action.value='Save';return verify_data(this);" type="submit" name="button" id="btn_save" value=" {$APP.LBL_SAVE_BUTTON_LABEL} ">
-			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="this.form.action.value='{$RETURN_ACTION}'; this.form.module.value='{$RETURN_MODULE}';" type="submit" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
+			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="clearQueryParamsAndNavigate();" type="button" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} ">
 		</td>
 	</tr>
 	<tr>
@@ -319,9 +325,9 @@ function change_state(radiobutton) {
 			</div>
 			<div class="panel-body applet-content">
 				<div class="tab-content">
-					<div>{$MOD.LBL_SECURITY_DESC}</div> 
-					
-					<div class="flex"> 
+					<div>{$MOD.LBL_SECURITY_DESC}</div>
+
+					<div class="flex">
 						<div>{$MOD.LBL_SECURITY_OUTLOOK_DEFAULTS}</div>
 						<div style="margin-left: 3em;">
 							<input type="checkbox" value="1" name="set_outlook_defaults" id="set_outlook_defaults" onclick="setOutlookDefaults();">&nbsp;
@@ -387,12 +393,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_APPLET}</div>
 								<div><input type="checkbox" value="1" name="applet" id="applet" {$appletChecked}></div>
-								<div>&nbsp; &lt;applet&gt;</div>								
+								<div>&nbsp; &lt;applet&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_BASE}</div>
 								<div><input type="checkbox" value="1" name="base" id="base" {$baseChecked}></div>
-								<div>&nbsp; &lt;base&gt</div>								
+								<div>&nbsp; &lt;base&gt</div>
 							</div>
 						</div>
 
@@ -400,12 +406,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_EMBED}</div>
 								<div><input type="checkbox" value="1" name="embed" id="embed" {$embedChecked}></div>
-								<div>&nbsp; &lt;embed&gt;</div>								
+								<div>&nbsp; &lt;embed&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_FORM}</div>
 								<div><input type="checkbox" value="1" name="form" id="form" {$formChecked}></div>
-								<div>&nbsp; &lt;form&gt;</div>								
+								<div>&nbsp; &lt;form&gt;</div>
 							</div>
 						</div>
 
@@ -413,12 +419,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_FRAME}</div>
 								<div><input type="checkbox" value="1" name="frame" id="frame" {$frameChecked}></div>
-								<div>&nbsp; &lt;frame&gt;</div>								
+								<div>&nbsp; &lt;frame&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_FRAMESET}</div>
 								<div><input type="checkbox" value="1" name="frameset" id="frameset" {$framesetChecked}></div>
-								<div>&nbsp; &lt;frameset&gt;</div>								
+								<div>&nbsp; &lt;frameset&gt;</div>
 							</div>
 						</div>
 
@@ -426,12 +432,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_IFRAME}</div>
 								<div><input type="checkbox" value="1" name="iframe" id="iframe" {$iframeChecked}></div>
-								<div>&nbsp; &lt;iframe&gt;</div>								
+								<div>&nbsp; &lt;iframe&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_IMPORT}</div>
 								<div><input type="checkbox" value="1" name="import" id="import" {$importChecked}></div>
-								<div>&nbsp; &lt;import&gt;</div>								
+								<div>&nbsp; &lt;import&gt;</div>
 							</div>
 						</div>
 
@@ -439,12 +445,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_LAYER}</div>
 								<div><input type="checkbox" value="1" name="layer" id="layer" {$layerChecked}></div>
-								<div>&nbsp; &lt;layer&gt;</div>								
+								<div>&nbsp; &lt;layer&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_LINK}</div>
 								<div><input type="checkbox" value="1" name="link" id="link" {$linkChecked}></div>
-								<div>&nbsp; &lt;link&gt;</div>								
+								<div>&nbsp; &lt;link&gt;</div>
 							</div>
 						</div>
 
@@ -452,12 +458,12 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_OBJECT}</div>
 								<div><input type="checkbox" value="1" name="object" id="object" {$objectChecked}></div>
-								<div>&nbsp; &lt;object&gt;</div>								
+								<div>&nbsp; &lt;object&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_STYLE}</div>
 								<div><input type="checkbox" value="1" name="style" id="style" {if isset($styleChecked)}{$styleChecked}{else}{log msg="styleChecked is not set"}{/if}></div>
-								<div>&nbsp; &lt;style&gt;</div>								
+								<div>&nbsp; &lt;style&gt;</div>
 							</div>
 						</div>
 
@@ -465,7 +471,7 @@ function change_state(radiobutton) {
 							<div class="flex-child">
 								<div class="lbl-space">{$MOD.LBL_SECURITY_XMP}</div>
 								<div><input type="checkbox" value="1" name="xmp" id="xmp" {$xmpChecked}></div>
-								<div>&nbsp; &lt;xmp&gt;</div>								
+								<div>&nbsp; &lt;xmp&gt;</div>
 							</div>
 							<div class="flex-child">
 								<div>&nbsp;</div>
@@ -473,7 +479,7 @@ function change_state(radiobutton) {
 							</div>
 						</div>
 
-						
+
 					</div>
 				</div>
 			</div>

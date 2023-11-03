@@ -42,7 +42,7 @@
 <link rel="stylesheet" type="text/css" href="{sugar_getjspath file='modules/Connectors/tpls/tabs.css'}"/>
 <script type="text/javascript" src="cache/include/javascript/sugar_grp_yui_widgets.js"></script>
 <div class="display-modules-config">
-<form name="ConfigureTabs" method="POST"  method="POST" action="index.php">
+<form name="ConfigureTabs" method="GET" action="index.php">
 <input type="hidden" name="module" value="Administration">
 <input type="hidden" name="action" value="SaveTabs">
 <input type="hidden" id="enabled_tabs" name="enabled_tabs" value="">
@@ -62,12 +62,12 @@
 	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer action-button">
 		<tr>
 			<td>
-				<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="SUGAR.saveConfigureTabs();this.form.action.value='SaveTabs'; " type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" > 
-				<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="this.form.action.value='index'; this.form.module.value='Administration';" type="submit" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
+				<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="SUGAR.saveConfigureTabs();this.form.action.value='SaveTabs'; " type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" >
+				<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="clearQueryParamsAndNavigate();" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
 			</td>
 		</tr>
 	</table>
-	
+
 	<div class='add_table'>
 		<table id="ConfigureTabs" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
 			<tr class="config-text">
@@ -89,12 +89,12 @@
 			</tr>
 		</table>
 	</div>
-	
+
 	<div class='add_subpanels' style='margin-bottom:5px'>
 		<table id="ConfigureSubPanels" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
 			<tr class="enabled-tab mobile-tab-subpanel">
 				<td width='1%' class="mobile-enabled">
-					<div id="enabled_subpanels_div"></div>	
+					<div id="enabled_subpanels_div"></div>
 				</td>
 				<td class="mobile-disabled">
 					<div id="disabled_subpanels_div"></div>
@@ -102,7 +102,7 @@
 			</tr>
 		</table>
 	</div>
-	
+
 	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer hide-btn">
 		<tr>
 			<td>
@@ -112,7 +112,7 @@
 		</tr>
 	</table>
 </td></tr>
-</table>	
+</table>
 </form>
 </div>
 
@@ -122,7 +122,11 @@
 	var lblEnabled = '{sugar_translate label="LBL_VISIBLE_TABS"}';
 	var lblDisabled = '{sugar_translate label="LBL_HIDDEN_TABS"}';
 	{literal}
-	
+	function clearQueryParamsAndNavigate() {
+		let currentURL = window.location.href;
+		let baseURL = currentURL.split('?')[0];
+		window.location.href = baseURL + '?module=Administration&action=index';
+	}
 	SUGAR.enabledTabsTable = new YAHOO.SUGAR.DragDropTable(
 		"enabled_div",
 		[{key:"label",  label: lblEnabled, width: 200, sortable: false},
@@ -132,7 +136,7 @@
 			   resultsList : "modules",
 			   fields : [{key : "module"}, {key : "label"}]
 			}
-		}), 
+		}),
 		{
 			height: "300px",
 			group: ["enabled_div", "disabled_div"]
@@ -173,7 +177,7 @@
 			responseSchema: {
 			   fields : [{key : "module"}, {key : "label"}]
 			}
-		}),  
+		}),
 		{
 		 	height: "300px",
 		 	group: ["enabled_subpanels_div", "disabled_subpanels_div"]
@@ -199,7 +203,7 @@
 	SUGAR.subDisabledTable.addRow({module: "", label: ""});
 	SUGAR.subEnabledTable.render();
 	SUGAR.subDisabledTable.render();
-	
+
 	SUGAR.saveConfigureTabs = function()
 	{
 		var enabledTable = SUGAR.enabledTabsTable;
@@ -210,7 +214,7 @@
 			    modules[i] = data.module;
 		}
 		YAHOO.util.Dom.get('enabled_tabs').value = YAHOO.lang.JSON.stringify(modules);
-		
+
 		var disabledTable = SUGAR.subDisabledTable;
 		var modules = [];
 		for(var i=0; i < disabledTable.getRecordSet().getLength(); i++){
