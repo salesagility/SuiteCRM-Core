@@ -1118,7 +1118,7 @@ $app_list_strings = array(
 );
 
 $app_strings = array(
-    'LBL_SEARCH_REAULTS_TITLE' => 'Results',
+    'LBL_SEARCH_RESULTS_TITLE' => 'Results',
     'ERR_SEARCH_INVALID_QUERY' => 'An error has occurred while performing the search. Your query syntax might not be valid.',
     'ERR_SEARCH_NO_RESULTS' => 'No results matching your search criteria. Try broadening your search.',
     'LBL_SEARCH_PERFORMED_IN' => 'Search performed in',

@@ -66,12 +66,14 @@ class SearchFormController extends Controller
 
     public function display(): void
     {
+        global $app_strings;
         $smarty = $this->view->getTemplate();
 
         $smarty->assign(
             'searchQueryString',
             htmlspecialchars($this->query->getSearchString(), ENT_COMPAT | ENT_XHTML, 'UTF-8')
         );
+        $smarty->assign('APP', $app_strings);
         $smarty->assign('searchQuerySize', $this->query->getSize());
         $smarty->assign('searchQueryFrom', $this->query->getFrom());
         $smarty->assign('searchQueryEngine', $this->query->getEngine());
