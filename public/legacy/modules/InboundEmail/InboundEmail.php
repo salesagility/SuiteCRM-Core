@@ -79,6 +79,7 @@ class InboundEmail extends SugarBean
     public $mailbox_type;
     public $template_id;
     public $stored_options;
+    public $email_body_filtering;
     public $group_id;
     public $is_personal;
     public $groupfolder_id;
@@ -302,6 +303,7 @@ class InboundEmail extends SugarBean
      */
     public $move_messages_to_trash_after_import;
 
+
     /**
      * Email constructor
      * @param ImapHandlerInterface|null $imapHandler
@@ -383,7 +385,7 @@ class InboundEmail extends SugarBean
             $this->retrieveMailBoxFolders();
         }
 
-        if (!empty($ret) && !$this->checkPersonalAccountAccess()) {
+        if (!empty($ret) && !$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('retrieve');
             return null;
         }
@@ -397,7 +399,7 @@ class InboundEmail extends SugarBean
      */
     public function save($check_notify = false)
     {
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied('save');
             throw new RuntimeException('Access Denied');
         }
@@ -426,7 +428,7 @@ class InboundEmail extends SugarBean
      * Check if user has access to personal account
      * @return bool
      */
-    public function checkPersonalAccountAccess() : bool {
+    public function hasAccessToPersonalAccount() : bool {
         global $current_user;
 
         if (is_admin($current_user)) {
@@ -471,7 +473,7 @@ class InboundEmail extends SugarBean
             return false;
         }
 
-        if (!$this->checkPersonalAccountAccess()) {
+        if (!$this->hasAccessToPersonalAccount()) {
             $this->logPersonalAccountAccessDenied("ACLAccess-$view");
             return false;
         }
@@ -479,7 +481,7 @@ class InboundEmail extends SugarBean
         $isPersonal = isTrue($this->is_personal);
         $isAdmin = is_admin($current_user);
 
-        if ($isPersonal === true && $this->checkPersonalAccountAccess()) {
+        if ($isPersonal === true && $this->hasAccessToPersonalAccount()) {
             return true;
         }
 
@@ -6358,7 +6360,7 @@ class InboundEmail extends SugarBean
      */
     public function connectMailserver($test = false, $force = false)
     {
-        global $mod_strings;
+        global $mod_strings, $sugar_config;
 
         $msg = '';
 
@@ -6379,6 +6381,11 @@ class InboundEmail extends SugarBean
             $requestSsl = null;
         } else {
             $requestSsl = $_REQUEST['ssl'];
+        }
+
+        if (empty($this->port) || !in_array($this->port, $sugar_config['valid_imap_ports'] ?? [], true)) {
+            $GLOBALS['log']->fatal("InboundEmail::connectMailserver - Invalid port provided: '" . ($this->port ?? '') . "'. See valid_imap_ports config.");
+            return $mod_strings['ERR_INVALID_PORT'] ?? "Invalid port";
         }
 
         $useSsl = ($requestSsl == 'true') ? true : false; // TODO: validate the ssl request variable value (for e.g its posibble to give a numeric 1 as true)
@@ -8531,12 +8538,17 @@ eoq;
      */
     protected function getFilterCriteria(array $filter): ?string
     {
-// handle filtering
+        // handle filtering
         $filterCriteria = null;
+        $emailFilteringOption = 'multi';
 
+        if ($this->email_body_filtering) {
+            $emailFilteringOption = $this->email_body_filtering;
+        }
 
         if (!empty($filter)) {
             foreach ($filter as $filterField => $filterFieldValue) {
+
                 if (empty($filterFieldValue)) {
                     continue;
                 }
@@ -8546,7 +8558,14 @@ eoq;
                     $filterCriteria = '';
                 }
 
-                $filterCriteria .= ' ' . $filterField . ' "' . $filterFieldValue . '" ';
+                if ($filterField === 'BODY' && $emailFilteringOption !== 'multi') {
+                    $word = strtok($filterFieldValue, ' ') ?? '';
+                    if (!empty($word)){
+                        $filterCriteria .= ' ' . $filterField . ' "' . $word . '" ';
+                    }
+                } else {
+                    $filterCriteria .= ' ' . $filterField . ' "' . $filterFieldValue . '" ';
+                }
             }
         }
 

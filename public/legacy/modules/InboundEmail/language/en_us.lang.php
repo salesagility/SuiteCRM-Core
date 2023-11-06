@@ -52,6 +52,7 @@ $mod_strings = array(
     'ERR_NO_IMAP' => 'No IMAP libraries found. Please resolve this before continuing with Inbound Email',
     'ERR_NO_OPTS_SAVED' => 'No optimums were saved with your Inbound Email account. Please review the settings',
     'ERR_TEST_MAILBOX' => 'Please check your settings and try again.',
+    'ERR_INVALID_PORT' => 'Invalid Port',
 
     'LBL_ASSIGN_TO_USER' => 'Assign To User',
     'LBL_AUTOREPLY' => 'Auto-Reply Template',
@@ -128,6 +129,7 @@ $mod_strings = array(
     'LBL_ASSIGN_TO_TEAM_DESC' => 'The selected team has access to the mail account.',
     'LBL_SSL' => 'Use SSL',
     'LBL_STATUS' => 'Status',
+    'LBL_EMAIL_BODY_FILTERING' => 'Email Body Filter Type',
     'LBL_SYSTEM_DEFAULT' => 'System Default',
     'LBL_TEST_BUTTON_TITLE' => 'Test',
     'LBL_TEST_SETTINGS' => 'Test Settings',
