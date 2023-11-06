@@ -68,7 +68,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
-import {BnNgIdleService} from 'bn-ng-idle';
 import {AppInit} from '@app/app-initializer';
 import {GraphQLError} from 'graphql';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -109,7 +108,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
-        BnNgIdleService,
         AppInit,
         {
             provide: APP_INITIALIZER,

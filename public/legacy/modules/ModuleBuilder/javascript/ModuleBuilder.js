@@ -299,7 +299,7 @@ if (typeof('console') == 'undefined') {
             });
           }
           var module_str = module;
-          if (typeof SUGAR.language.languages['app_list_strings']['moduleList'][module] != 'undefined') {
+          if (SUGAR.language.languages['app_list_strings'] && typeof SUGAR.language.languages['app_list_strings']['moduleList'][module] != 'undefined') {
             module_str = SUGAR.language.languages['app_list_strings']['moduleList'][module];
           }
           ModuleBuilder.history.popup_window.setHeader(module_str + ' : ' + SUGAR.language.get('ModuleBuilder', 'LBL_' + layout.toUpperCase()) + SUGAR.language.get('ModuleBuilder', 'LBL_HISTORY_TITLE'));

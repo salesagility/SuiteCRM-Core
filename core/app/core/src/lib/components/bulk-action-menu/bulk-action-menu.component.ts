@@ -24,11 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {BulkActionsMap, DropdownButtonInterface, SelectionDataSource, SelectionStatus} from 'common';
-import {LanguageStore, LanguageStringMap} from '../../store/language/language.store';
+import {LanguageStore} from '../../store/language/language.store';
 
 export interface BulkActionDataSource {
     getBulkActions(): Observable<BulkActionsMap>;
@@ -37,7 +36,6 @@ export interface BulkActionDataSource {
 }
 
 export interface BulkActionViewModel {
-    appStrings: LanguageStringMap;
     status: SelectionStatus;
     count: number;
     actions: BulkActionsMap;
@@ -47,33 +45,53 @@ export interface BulkActionViewModel {
     selector: 'scrm-bulk-action-menu',
     templateUrl: 'bulk-action-menu.component.html'
 })
-export class BulkActionMenuComponent implements OnInit {
+export class BulkActionMenuComponent implements OnInit, OnDestroy {
 
     @Input() selectionSource: SelectionDataSource;
     @Input() actionSource: BulkActionDataSource;
 
-    appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
-
-    vm$: Observable<BulkActionViewModel> = null;
+    dropdownConfig: DropdownButtonInterface;
+    subs: Subscription[] = [];
+    status: SelectionStatus = SelectionStatus.NONE;
+    count: number = 0;
 
     constructor(protected languageStore: LanguageStore) {
     }
 
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+        this.subs = [];
+        this.count = 0;
+        this.status = SelectionStatus.NONE;
+    }
+
     ngOnInit(): void {
-        const status$ = this.selectionSource.getSelectionStatus();
-        const count$ = this.selectionSource.getSelectedCount();
-        const actions$ = this.actionSource.getBulkActions();
-        this.vm$ = combineLatest([this.appStrings$, status$, count$, actions$]).pipe(
-            map(([appStrings, status, count, actions]) => ({appStrings, status, count, actions}))
-        );
-    }
+        this.subs = [];
 
-    checked(status: SelectionStatus): boolean {
-        return status === SelectionStatus.ALL;
-    }
+        this.subs.push(this.selectionSource.getSelectionStatus().subscribe(status => this.status = status));
+        this.subs.push(this.selectionSource.getSelectedCount().subscribe(count => this.count = count));
 
-    intermediate(status: SelectionStatus): boolean {
-        return status === SelectionStatus.SOME || status === SelectionStatus.PAGE;
+        this.subs.push(this.actionSource.getBulkActions().subscribe(actions => {
+            const dropdownConfig = {
+                labelKey: 'LBL_BULK_ACTION_BUTTON_LABEL',
+                klass: ['bulk-action-button', 'btn', 'btn-sm'],
+                wrapperKlass: ['bulk-action-group', 'float-left'],
+                items: []
+            } as DropdownButtonInterface;
+
+            Object.keys(actions).forEach(actionKey => {
+                const action = actions[actionKey];
+                dropdownConfig.items.push({
+                    labelKey: action.labelKey ?? '',
+                    klass: [`${actionKey}-bulk-action`],
+                    onClick: (): void => {
+                        this.actionSource.executeBulkAction(action.key);
+                    }
+                });
+            });
+
+            this.dropdownConfig = dropdownConfig;
+        }));
     }
 
     selectPage(): void {
@@ -97,26 +115,5 @@ export class BulkActionMenuComponent implements OnInit {
         this.selectionSource.updateSelection(SelectionStatus.ALL);
     }
 
-    getDropdownConfig(actions: BulkActionsMap, appStrings: LanguageStringMap): DropdownButtonInterface {
-        const label = appStrings && appStrings.LBL_BULK_ACTION_BUTTON_LABEL || '';
-        const dropdownConfig = {
-            label,
-            klass: ['bulk-action-button', 'btn', 'btn-sm'],
-            wrapperKlass: ['bulk-action-group', 'float-left'],
-            items: []
-        } as DropdownButtonInterface;
-
-        Object.keys(actions).forEach(actionKey => {
-            const action = actions[actionKey];
-            dropdownConfig.items.push({
-                label: appStrings && appStrings[action.labelKey] || '',
-                klass: [`${actionKey}-bulk-action`],
-                onClick: (): void => {
-                    this.actionSource.executeBulkAction(action.key);
-                }
-            });
-        });
-
-        return dropdownConfig;
-    }
+    protected readonly SelectionStatus = SelectionStatus;
 }

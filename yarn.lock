@@ -2924,13 +2924,6 @@ bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-bn-ng-idle@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/bn-ng-idle/-/bn-ng-idle-1.0.1.tgz#ef40bb62c8fea8e6f57fd7e31c481ec70b5dcbff"
-  integrity sha512-qLAx2m12VfiI399Hlae+3ZF87WttKS6FafHM5YMibZQoeu6XUoIOCESJM+hm/ZhIk8cieKBzP3y92QEW14B4CQ==
-  dependencies:
-    tslib "^1.9.0"
-
 body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
