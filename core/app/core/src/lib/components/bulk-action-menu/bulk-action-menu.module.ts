@@ -30,6 +30,7 @@ import {CommonModule} from '@angular/common';
 import {BulkActionMenuComponent} from './bulk-action-menu.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
+import {LabelModule} from "../label/label.module";
 
 @NgModule({
     declarations: [BulkActionMenuComponent],
@@ -38,6 +39,7 @@ import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
         CommonModule,
         NgbModule,
         DropdownButtonModule,
+        LabelModule,
     ]
 })
 export class BulkActionMenuModule {
