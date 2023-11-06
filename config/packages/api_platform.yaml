@@ -2,9 +2,9 @@ api_platform:
   graphql:
     default_ide: graphql-playground
     graphiql:
-      enabled: true
-    graphql_playground:
       enabled: false
+    graphql_playground:
+      enabled: true
   mapping:
     paths: ['%kernel.project_dir%/core']
   patch_formats:

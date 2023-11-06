@@ -129,4 +129,15 @@ class Kernel extends BaseKernel
 
         return [];
     }
+
+    /**
+     * Enable/disable graphql introspection
+     * @return void
+     */
+    public function configureGraphqlIntrospection(): void
+    {
+        if ($this->container->has('graphql.introspection_manager')) {
+            $this->container->get('graphql.introspection_manager')->configure();
+        }
+    }
 }
