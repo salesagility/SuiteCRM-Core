@@ -75,7 +75,8 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
         if ($bean_name == 'aCase') {
             $bean_name = 'Case';
         }
-        if (!file_exists('modules/' . $module . '/' . $bean_name . '.php')) {
+        global $beanFiles;
+        if (!file_exists($beanFiles[$bean_name])){
             die($app_strings['ERROR_TYPE_NOT_VALID']);
         }
 
@@ -272,7 +273,7 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
                 $row['file_ext'] = pathinfo((string) $name, PATHINFO_EXTENSION);
             }
 
-            if (in_array($row['file_ext'], $allowedPreview, true)) {
+            if (!empty($row['file_ext']) && in_array($row['file_ext'], $allowedPreview, true)) {
                 $showPreview = isset($_REQUEST['preview']) && $_REQUEST['preview'] === 'yes' && $mime_type !== 'text/html';
             }
 
