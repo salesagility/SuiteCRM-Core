@@ -24,21 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
-import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
-import {BaseEnumComponent} from '../../../base/base-enum.component';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {FormGroup} from '@angular/forms';
 import {Option} from 'common';
+import {Component} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
+import {LanguageStore} from '../../../../store/language/language.store';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
+import {DropdownEnumDetailFieldComponent} from '../detail/dropdownenum.component';
 
 @Component({
     selector: 'scrm-dropdownenum-edit',
     templateUrl: './dropdownenum.component.html',
     styleUrls: []
 })
-export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
+export class DropdownEnumEditFieldComponent extends DropdownEnumDetailFieldComponent {
     formGroup: FormGroup;
 
     constructor(
@@ -53,10 +53,8 @@ export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.subscribeValueChanges();
-
         if (this.record && this.record.formGroup) {
-            this.formGroup = this.record.formGroup
+            this.formGroup = this.record.formGroup;
         } else {
             this.formGroup = new FormGroup({});
             this.formGroup.addControl(this.field.name, this.field.formControl);
@@ -64,7 +62,15 @@ export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
 
     }
 
-    public getId(item: Option) {
+    public getId(item: Option): string {
         return this.field.name + '-' + item.value;
     }
+
+    protected buildProvidedOptions(options: Option[]): void {
+        if (!options.find(option => option.value === '')) {
+            options.unshift({ value: '', label: '' });
+        }
+        super.buildProvidedOptions(options);
+    }
+
 }

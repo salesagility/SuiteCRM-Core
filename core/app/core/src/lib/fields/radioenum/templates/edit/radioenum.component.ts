@@ -60,10 +60,8 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.subscribeValueChanges();
-
         if (this.record && this.record.formGroup) {
-            this.formGroup = this.record.formGroup
+            this.formGroup = this.record.formGroup;
         } else {
             this.formGroup = new FormGroup({});
             this.formGroup.addControl(this.field.name, this.field.formControl);
@@ -71,7 +69,7 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
 
     }
 
-    public getId(item: Option) {
+    public getId(item: Option): string {
         return this.field.name + '-' + item.value;
     }
 }

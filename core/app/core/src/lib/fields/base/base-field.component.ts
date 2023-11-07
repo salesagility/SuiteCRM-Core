@@ -24,12 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isEqual } from 'lodash-es';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { AttributeDependency, deepClone, Field, FieldValue, isVoid, ObjectMap, Record, ViewMode } from 'common';
 import {FieldComponentInterface} from './field.interface';
-import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
-import {Subscription} from 'rxjs';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {debounceTime} from 'rxjs/operators';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
@@ -43,6 +44,11 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     dependentFields: ObjectMap = {};
     dependentAttributes: AttributeDependency[] = [];
     protected subs: Subscription[] = [];
+    protected previousValue?: FieldValue = {
+        value: '',
+        valueList: [],
+        valueObject: {},
+    };
 
     constructor(
         protected typeFormatter: DataTypeFormatter,
@@ -73,7 +79,12 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         const fieldKeys = (this.record.fields && Object.keys(this.record.fields)) || [];
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
-            this.field.previousValue = this.field.value;
+            this.previousValue = deepClone({
+                value: this.field.value,
+                valueList: this.field.valueList,
+                valueObject: this.field.valueObject,
+                forceNotEqual: 'forceNotEqual',
+            });
 
             if((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length) {
                 Object.keys(this.dependentFields).forEach(fieldKey => {
@@ -94,7 +105,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                 });
             }
 
-            if (this.field.valueChanges$ && ((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length)) {
+            if (
+                this.field.valueChanges$
+                && ((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length)
+            ) {
                 this.subs.push(this.field.valueChanges$.pipe(debounceTime(500)).subscribe((data) => {
                     Object.keys(this.dependentFields).forEach(fieldKey => {
                         const dependentField = this.dependentFields[fieldKey];
@@ -103,7 +117,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             return;
                         }
 
-                        if(this.field.previousValue != data.value) {
+                        if (!isEqual(this.previousValue, data)) {
                             const types = dependentField.type ?? [];
 
                             if (types.includes('logic')) {
@@ -115,7 +129,11 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             }
                         }
                     });
-                    this.field.previousValue = data.value;
+                    this.previousValue = deepClone({
+                        value: data.value,
+                        valueList: data.valueList,
+                        valueObject: data.valueObject,
+                    });
 
                     this.dependentAttributes.forEach(dependency => {
                         const field = this.record.fields[dependency.field] || {} as Field;
@@ -136,7 +154,9 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     /**
      * Calculate dependent fields
-     * @param {array} fieldKeys
+     *
+     * @param {string[]} fieldKeys Record field keys
+     * @protected
      */
     protected calculateDependentFields(fieldKeys: string[]): void {
         fieldKeys.forEach(key => {
@@ -156,9 +176,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     /**
      * Add field dependency
-     * @param {string} fieldKey
-     * @param {array} dependentFields
-     * @param {object} dependentAttributes
+     *
+     * @param {string} fieldKey Field key
+     * @param {Array} dependentFields Dependent Fields
+     * @param {object} dependentAttributes Dependent Attributes
      */
     protected addFieldDependency(fieldKey: string, dependentFields: ObjectMap, dependentAttributes: AttributeDependency[]): void {
         const field = this.record.fields[fieldKey];
@@ -184,7 +205,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                 dependentAttributes.push({
                     field: fieldKey,
                     attribute: attributeKey,
-                    types: dependentFields[name]['types'] ?? []
+                    types: dependentFields[name].types ?? []
                 });
             }
         });
@@ -192,8 +213,9 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     /**
      * Check if field is dependency
-     * @param dependencies
-     * @returns {boolean}
+     *
+     * @param {ObjectMap} dependencies Dependencies
+     * @returns {boolean} field is dependency
      */
     protected isDependencyField(dependencies: ObjectMap): boolean {
         const name = this.field.name || this.field.definition.name || '';
@@ -203,9 +225,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     /**
      * Add attribute dependency
-     * @param {string} fieldKey
-     * @param {array} dependentFields
-     * @param {object} dependentAttributes
+     *
+     * @param {string} fieldKey Field Key
+     * @param {ObjectMap} dependentFields Dependent Fields
+     * @param {AttributeDependency[]} dependentAttributes Dependent Attributes
      */
     protected addAttributeDependency(fieldKey: string, dependentFields: ObjectMap, dependentAttributes: AttributeDependency[]): void {
         const field = this.record.fields[fieldKey];
@@ -231,7 +254,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                 dependentAttributes.push({
                     field: fieldKey,
                     attribute: attributeKey,
-                    types: dependentFields[name]['types'] ?? []
+                    types: (dependentFields[name] ?? {}).types ?? [],
                 });
             }
         });
@@ -239,8 +262,9 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     /**
      * Check if attribute is dependency
-     * @param {object} attributeDependencies
-     * @returns {boolean}
+     *
+     * @param {object} attributeDependencies Attribute Dependencies
+     * @returns {boolean} attribute is dependency
      */
     protected isDependencyAttribute(attributeDependencies: AttributeDependency[]): boolean {
 
@@ -254,7 +278,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         if (this.field && this.field.formControl) {
             this.subs.push(this.field.formControl.valueChanges.subscribe(value => {
 
-                if (!isVoid(value)) {
+                if (!isVoid(value) && typeof value === 'string') {
                     value = value.trim();
                 } else {
                     value = '';
@@ -274,8 +298,17 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     }
 
-    protected setFieldValue(newValue): void {
+    protected setFieldValue(newValue: string): void {
         this.field.value = newValue;
+    }
+
+    protected setFormControlValue(newValue: string | string[]): void {
+        this.field.formControl.markAsDirty();
+
+        if (isEqual(this.field.formControl.value, newValue)) {
+            return;
+        }
+        this.field.formControl.setValue(newValue);
     }
 
     protected unsubscribeAll(): void {
