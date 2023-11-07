@@ -74,7 +74,7 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
                 this.field.formControl.setValue(null);
                 return;
             }
-            this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+            this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter, {toFormat: this.getDateTimeFormat()}));
         }
 
         // enable seconds in timepicker
@@ -95,13 +95,13 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
 
     onDateChange(date: NgbDateStruct | null) {
         this.dateTimeModel.date = date;
-        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter, {toFormat: this.getDateTimeFormat()}));
         this.field.formControl.markAsDirty();
     }
 
     onTimeChange(time: NgbTimeStruct | null) {
         this.dateTimeModel.time = time;
-        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+        this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter, {toFormat: this.getDateTimeFormat()}));
         this.field.formControl.markAsDirty();
     }
 

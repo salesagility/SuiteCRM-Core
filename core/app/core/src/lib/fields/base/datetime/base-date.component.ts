@@ -34,8 +34,6 @@ import {FieldLogicDisplayManager} from "../../field-logic-display/field-logic-di
 @Component({template: ''})
 export class BaseDateComponent extends BaseDateTimeComponent {
 
-
-
     constructor(
         protected formatter: DatetimeFormatter,
         protected typeFormatter: DataTypeFormatter,
@@ -43,6 +41,13 @@ export class BaseDateComponent extends BaseDateTimeComponent {
         protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(formatter, typeFormatter, logic, logicDisplay);
+    }
+
+    getDateFormat(): string {
+        if(this.field?.metadata?.date_time_format) {
+            return this.field?.metadata?.date_time_format ?? ''
+        }
+        return this.formatter.getDateFormat();
     }
 
     protected toInternalFormat(fieldType, value): string {

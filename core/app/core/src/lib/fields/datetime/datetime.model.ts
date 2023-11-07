@@ -1,5 +1,6 @@
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DatetimeFormatter} from "../../services/formatters/datetime/datetime-formatter.service";
+import {FormatOptions} from "../../services/formatters/formatter.model";
 
 export class DateTimeModel {
     hourStep = 1;
@@ -47,7 +48,7 @@ export class DateTimeModel {
 
     }
 
-    public toUserFormat(formatter: DatetimeFormatter): string {
+    public toUserFormat(formatter: DatetimeFormatter, options?: FormatOptions): string {
 
         //prepare datetime string in yyyy-M-d H:m:s format (datetimepicker default)
         const dateString = [this.date.year, this.date.month, this.date.day].join('-');
@@ -57,7 +58,7 @@ export class DateTimeModel {
         const internalDateTimeString = formatter.toInternalFormat(datetimeString, {fromFormat: 'yyyy-M-d H:m:s'});
 
         //convert from yyyy-M-d H:m:s format to user format
-        return formatter.toUserFormat(internalDateTimeString, {fromFormat: 'yyyy-M-d H:m:s'});
+        return formatter.toUserFormat(internalDateTimeString, {...options, fromFormat: 'yyyy-M-d H:m:s'});
 
     }
 }

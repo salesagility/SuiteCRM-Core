@@ -45,14 +45,11 @@ export class BaseDateTimeComponent extends BaseFieldComponent {
         super(typeFormatter, logic, logicDisplay);
     }
 
-    getDateFormat(): string {
-        if(this.field.metadata.date_time_format) {
+    getDateTimeFormat(): string {
+        if(this.field?.metadata?.date_time_format) {
             return this.field.metadata.date_time_format
         }
-        return this.formatter.getDateFormat();
-    }
 
-    getDateTimeFormat(): string {
         return this.formatter.getDateTimeFormat();
     }
 

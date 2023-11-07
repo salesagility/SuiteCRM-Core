@@ -73,7 +73,7 @@ export class DatetimeFormatter implements Formatter {
             return dateFormatPreference;
         }
 
-        return this.getInternalTimeFormat();
+        return this.getInternalDateFormat();
     }
 
     getTimeFormat(): string {
@@ -129,6 +129,7 @@ export class DatetimeFormatter implements Formatter {
      */
     toUserFormat(dateString: string, options?: FormatOptions): string {
         const fromFormat = (options && options.fromFormat) || this.getInternalFormat();
+        const toFormat = (options && options.toFormat) || this.getUserFormat();
         if (dateString) {
             const dateTime = this.toDateTime(dateString, fromFormat,  {
                 zone: 'GMT'
@@ -137,7 +138,7 @@ export class DatetimeFormatter implements Formatter {
             if (!dateTime.isValid) {
                 return dateString;
             }
-            return formatDate(dateTime.toJSDate(), this.getUserFormat(), this.locale, this.userTimeZone());
+            return formatDate(dateTime.toJSDate(), toFormat, this.locale, this.userTimeZone());
         }
         return '';
     }

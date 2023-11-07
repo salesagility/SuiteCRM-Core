@@ -32,10 +32,10 @@ import {Injectable} from '@angular/core';
 import {DatetimeFormatter} from '../../../formatters/datetime/datetime-formatter.service';
 import {StandardValidationErrors, StandardValidatorFn} from 'common';
 
-export const dateTimeValidator = (formatter: DatetimeFormatter): StandardValidatorFn => (
+export const dateTimeValidator = (formatter: DatetimeFormatter, userFormat: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        const invalid = formatter.validateUserFormat(control.value);
+        const invalid = formatter.validateUserFormat(control.value, userFormat);
         return invalid ? {
             dateTimeValidator: {
                 value: control.value,
@@ -73,6 +73,8 @@ export class DateTimeValidator implements ValidatorInterface {
             return [];
         }
 
-        return [dateTimeValidator(this.formatter)];
+        const userFormat = viewField?.metadata?.date_time_format || '';
+
+        return [dateTimeValidator(this.formatter, userFormat)];
     }
 }
