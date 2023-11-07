@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -37,7 +37,6 @@ import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-f
 import {UpdateValueAction} from './update-value/update-value.action';
 import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
-import {RecordActionData} from '../../views/record/actions/record.action';
 
 @Injectable({
     providedIn: 'root'
@@ -62,7 +61,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateValue: UpdateValueAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValueBackend: UpdateValueBackendAction,
-        dislayTypeBackend: DisplayTypeBackendAction
+        dislayTypeBackend: DisplayTypeBackendAction,
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -78,12 +77,13 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run logic for the given field
-     * @param {object} field
-     * @param {object} mode
-     * @param {object} record
-     * @param triggeringStatus
+     *
+     * @param {Field} field Field
+     * @param {ViewMode} mode Mode
+     * @param {Record} record Record
+     * @param {string} triggeringStatus Triggering Status
      */
-    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus: string = ''): void {
+    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus = ''): void {
         if (!field.logic) {
             return;
         }
@@ -104,6 +104,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run the action using given context
+     *
      * @param action
      * @param mode
      * @param context
@@ -114,6 +115,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run front end action
+     *
      * @param {object} action
      * @param {object} mode
      * @param {object} context
@@ -126,6 +128,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Get module name
+     *
      * @param {object} context
      */
     protected getModuleName(context?: ActionContext): string {
@@ -141,6 +144,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Parse mode actions
+     *
      * @param declaredActions
      * @param mode
      * @param triggeringStatus
