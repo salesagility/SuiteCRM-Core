@@ -58,8 +58,10 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         }));
         this.subs.push(this.dataSource.getPanels().subscribe(panels => {
             this.panels = [...panels];
-            if (this?.config?.layout === 'tabs') {
-                this.updatePanelsArray();
+            if (this?.config?.layout === 'panels') {
+                this.updatePanelCollapseState();
+            } else {
+                this.updatePanelsInTabs();
             }
         }));
         this.subs.push(this.dataSource.getRecord().subscribe(record => {
@@ -74,7 +76,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
-    updatePanelsArray(): void {
+    updatePanelsInTabs(): void {
         let tempPanels = [];
         let prevTabKey = '';
 
@@ -82,20 +84,11 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
         const tabDefs = this.mapTabDefs();
 
-        if(!Object.keys(tabDefs ?? {}).length) {
-            Object.keys(panelsMap ?? {}).forEach(key => {
-                tabDefs[key.toUpperCase()] = {
-                    newTab: true,
-                    panelDefault: 'expanded'
-                };
-            });
-        }
-
         Object.keys(tabDefs).forEach(tabDefKey => {
             const tabDef = tabDefs[tabDefKey];
 
             if (isTrue(tabDef.newTab)) {
-                tempPanels = [...tempPanels, panelsMap[tabDefKey]]
+                tempPanels = [...tempPanels, panelsMap[tabDefKey]];
                 prevTabKey = tabDefKey;
             } else {
                 const prevTab = tabDefs[prevTabKey];
@@ -126,12 +119,28 @@ export class RecordContentComponent implements OnInit, OnDestroy {
 
     }
 
+    updatePanelCollapseState(): void {
+        const panelMap = this.buildPanelMap();
+
+        this.panels.forEach(panel => {
+            const panelKey = panel.key.toUpperCase();
+            if (panelMap[panelKey]) {
+                panel.isCollapsed = panelMap[panelKey].isCollapsed;
+            }
+        });
+    }
+
     buildPanelMap(): any {
         const panelMap = {};
 
         this.panels.forEach(panel => {
+            let isCollapsed = false;
             panel.label = panel?.label?.toUpperCase() ?? '';
             const panelKey = panel?.key?.toUpperCase() ?? '';
+            if (panel.meta.panelDefault === 'collapsed') {
+                isCollapsed = true;
+            }
+            panel.isCollapsed = isCollapsed;
             panelMap[panelKey] = panel;
         });
 

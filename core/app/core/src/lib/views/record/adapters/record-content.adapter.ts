@@ -24,15 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {Action, Panel, PanelRow, Record, ViewMode} from 'common';
+import {Action, Panel, Record, ViewMode} from 'common';
 import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {RecordActionManager} from '../actions/record-action-manager.service';
 import {RecordActionData} from '../actions/record.action';
-import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
+import {LanguageStore} from '../../../store/language/language.store';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 import {PanelLogicManager} from '../../../components/panel-logic/panel-logic.manager';
 
@@ -83,60 +83,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
     }
 
     getPanels(): Observable<Panel[]> {
-        return this.metadata.recordViewMetadata$.pipe(
-            combineLatestWith(this.store.stagingRecord$, this.language.vm$),
-            map(([meta, record, languages]: [RecordViewMetadata, Record, LanguageStrings]) => {
-                const panels = [];
-                const module = (record && record.module) || '';
-
-                this.fieldSubs.forEach(sub => sub.unsubscribe());
-
-                meta.panels.forEach(panelDefinition => {
-                    const label = this.language.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
-                    const panel = {label, key: panelDefinition.key, rows: []} as Panel;
-
-                    const tabDef = meta.templateMeta.tabDefs[panelDefinition.key.toUpperCase()] ?? null;
-                    if (tabDef) {
-                        panel.meta = tabDef;
-                    }
-
-                    panelDefinition.rows.forEach(rowDefinition => {
-                        const row = {cols: []} as PanelRow;
-                        rowDefinition.cols.forEach(cellDefinition => {
-                            row.cols.push({...cellDefinition});
-                        });
-                        panel.rows.push(row);
-                    });
-
-                    panel.displayState = new BehaviorSubject(tabDef?.display ?? true);
-                    panel.display$ = panel.displayState.asObservable();
-
-                    panels.push(panel);
-
-                    if (tabDef?.displayLogic) {
-                        Object.keys(tabDef.displayLogic).forEach((logicDefKey) => {
-                            const logicDef = tabDef.displayLogic[logicDefKey];
-                            const logicType = logicDef.key;
-
-                            if (logicDef.params.fieldDependencies && (record && record.fields)) {
-                                logicDef.params.fieldDependencies.forEach(fieldKey => {
-                                    const field = record.fields[fieldKey] || null;
-                                    if (!field) {
-                                        return;
-                                    }
-
-                                    this.fieldSubs.push(field.valueChanges$.subscribe((value) => {
-                                        this.logicManager.runLogic(logicType, field, panel, record, this.store.getMode());
-
-                                    }));
-                                });
-                            }
-                        });
-                    }
-                });
-                return panels;
-            })
-        );
+        return this.store.panels$;
     }
 
     getRecord(): Observable<Record> {

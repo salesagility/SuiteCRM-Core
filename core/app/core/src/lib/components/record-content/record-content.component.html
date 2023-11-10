@@ -29,7 +29,7 @@
     <div *ngIf="config && config.layout === 'panels'" class="record-content panel-layout container-fluid pl-0 pr-0">
         <div class="row no-gutters mb-3" *ngFor="let panel of panels">
             <div class="col">
-                <scrm-panel [title]="panel.label" mode="collapsible">
+                <scrm-panel [title]="panel.label" [isCollapsed$]="(panel.isCollapsed | toObservable)" mode="collapsible">
                     <div panel-body class="panel-{{panel.key}}">
                         <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
                     </div>
@@ -64,7 +64,7 @@
                     <ng-container *ngIf="(panel.display$ | async) as panelDisplay">
                         <div class="row no-gutters mt-3" *ngIf="!!panelDisplay">
                             <div class="col" *ngIf="j==active-1">
-                                <scrm-panel [title]="panel.label" mode="collapsible">
+                                <scrm-panel [title]="panel.label" [isCollapsed$]="(panel.isCollapsed | toObservable)" mode="collapsible">
                                     <div panel-body class="panel-{{panel.key}}">
                                         <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>
                                     </div>
