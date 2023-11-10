@@ -61,6 +61,7 @@ export interface PanelRow {
 
 export interface PanelCell extends ViewFieldDefinition {
     name?: string;
+    required_f_submit?: boolean;
 }
 
 export interface ViewFieldDefinitionMap {

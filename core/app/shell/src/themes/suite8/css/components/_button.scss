@@ -194,6 +194,7 @@ button {
 
 .action-button.disabled, .settings-button.disabled {
   opacity: 40%;
+  cursor: not-allowed;
 }
 
 .widget-header .btn-link {

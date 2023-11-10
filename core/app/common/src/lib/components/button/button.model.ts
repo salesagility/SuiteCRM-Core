@@ -23,6 +23,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
+import {Observable} from 'rxjs';
 
 export declare type ButtonCallback = (...args) => void;
 
@@ -37,6 +38,7 @@ export interface ButtonInterface {
     icon?: string;
     iconKlass?: string;
     labelModule?: string;
+    disabled$?: Observable<boolean>;
 }
 
 export class Button implements ButtonInterface {

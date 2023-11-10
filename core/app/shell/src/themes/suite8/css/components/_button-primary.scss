@@ -46,6 +46,7 @@
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
   color: $primary;
   background-color: transparent;
+  cursor: not-allowed;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
@@ -83,6 +84,7 @@
   color: $white;
   background-color: $primary;
   border-color: $primary;
+  cursor: not-allowed;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,

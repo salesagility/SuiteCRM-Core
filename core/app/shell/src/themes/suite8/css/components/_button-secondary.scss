@@ -48,6 +48,7 @@
 .btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
   color: $secondary;
   background-color: transparent;
+  cursor: not-allowed;
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
@@ -90,6 +91,7 @@
   fill: $white;
   background-color: $secondary;
   border-color: $secondary;
+  cursor: not-allowed;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,

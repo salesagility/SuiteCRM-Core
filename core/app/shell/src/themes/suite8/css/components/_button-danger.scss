@@ -46,6 +46,7 @@
 .btn-outline-danger.disabled, .btn-outline-danger:disabled {
   color: $btn-danger;
   background-color: transparent;
+  cursor: not-allowed;
 }
 
 .btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
@@ -83,6 +84,7 @@
   color: #fff;
   background-color: $btn-danger;
   border-color: $btn-danger;
+  cursor: not-allowed;
 }
 
 .btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,

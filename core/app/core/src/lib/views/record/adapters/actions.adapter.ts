@@ -24,21 +24,45 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
-import {Action, ActionContext, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {RecordViewStore} from '../store/record-view/record-view.store';
-import {RecordActionManager} from '../actions/record-action-manager.service';
-import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {RecordActionData} from '../actions/record.action';
-import {LanguageStore} from '../../../store/language/language.store';
-import {MessageService} from '../../../services/message/message.service';
-import {Process} from '../../../services/process/process.service';
-import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
-import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
-import {SelectModalService} from '../../../services/modals/select-modal.service';
+import { isEmpty } from 'lodash-es';
+import { combineLatest, Observable, of } from 'rxjs';
+import {
+    distinctUntilChanged,
+    filter,
+    map,
+    mergeMap,
+    startWith,
+    take,
+} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import {
+    Action,
+    ActionContext,
+    ActionHandler,
+    EDITABLE_VIEW_MODES,
+    LogicDefinitions,
+    ModeActions,
+    ObjectMap,
+    Panel,
+    PanelCell,
+    PanelRow,
+    Record,
+    ViewMode,
+} from 'common';
+import { MetadataStore } from '../../../store/metadata/metadata.store.service';
+import { RecordViewStore } from '../store/record-view/record-view.store';
+import { RecordActionManager } from '../actions/record-action-manager.service';
+import {
+    AsyncActionInput,
+    AsyncActionService,
+} from '../../../services/process/processes/async-action/async-action';
+import { RecordActionData } from '../actions/record.action';
+import { LanguageStore } from '../../../store/language/language.store';
+import { MessageService } from '../../../services/message/message.service';
+import { Process } from '../../../services/process/process.service';
+import { ConfirmationModalService } from '../../../services/modals/confirmation-modal.service';
+import { BaseRecordActionsAdapter } from '../../../services/actions/base-record-action.adapter';
+import { SelectModalService } from '../../../services/modals/select-modal.service';
 
 @Injectable()
 export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionData> {
@@ -98,19 +122,96 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
                 this.store.panels$,
             ]
         ).pipe(
-            map((
+            mergeMap((
                 [
                     meta,
                     mode
                 ]
             ) => {
                 if (!mode || !meta) {
-                    return [];
+                    return of([]);
                 }
 
-                return this.parseModeActions(meta.actions, mode, this.store.getViewContext());
-            })
+                const actions = this.parseModeActions(meta.actions, mode, this.store.getViewContext());
+                const stagingState = this.store.recordStore.getStaging();
+
+                if (EDITABLE_VIEW_MODES.includes(mode)) {
+                    const panelDisplayState$ = this.getLatestPanelDisplayStates();
+                    return panelDisplayState$.pipe(
+                        map(() => {
+                            const requiredForSubmitObj: ObjectMap = this.extractRequiredSubmitFields();
+                            this.disableActionsOnEditMode(actions, stagingState, requiredForSubmitObj);
+                            return actions;
+                        })
+                    );
+                } else {
+                    const requiredForSubmitObj: ObjectMap = this.extractRequiredSubmitFields();
+                    this.disableActionsOnDetailMode(actions, stagingState, requiredForSubmitObj);
+
+                    return of(actions);
+                }
+            }),
         );
+    }
+
+    getLatestPanelDisplayStates(): Observable<any[]> {
+        const panelDisplay$: Observable<any>[] = [];
+        if (this.store) {
+            this.store.panels.forEach((panel: Panel )=> {
+                panelDisplay$.push(panel.display$);
+            });
+        }
+
+        return combineLatest(panelDisplay$);
+    }
+
+    public disableActionsOnEditMode(actions: Action[], stagingState: Record, requiredForSubmitObj: ObjectMap): void {
+        const submitReqFieldsChanges$ = [];
+        stagingState.formGroup.markAllAsTouched();
+        const validationState$ = stagingState.formGroup.statusChanges.pipe(
+            startWith(stagingState.formGroup.status),
+            filter(status => status !== 'PENDING' && status !== 'DISABLED'),
+            map(status => status !== 'VALID')
+        );
+
+        Object.keys(requiredForSubmitObj).forEach(fieldName => {
+            const field = stagingState?.fields[fieldName];
+            if(field) {
+                const valueChanges$: Observable<boolean> = field.valueChanges$.pipe(
+                    distinctUntilChanged(),
+                    map((valueChange: any) => !isEmpty(valueChange.value) ||
+                          !isEmpty(valueChange.valueList) ||
+                          !isEmpty(valueChange.valueObject))
+                );
+                submitReqFieldsChanges$.push(valueChanges$);
+            }
+        });
+        actions.forEach(action => {
+            const disableOnValidationErrors = action.disableOnValidationErrors ?? false;
+            const disableOnReqFieldsNotChecked = action.disableOnReqFieldsNotChecked ?? false;
+
+            const hasAllReqFieldsValue$: Observable<boolean> = combineLatest(submitReqFieldsChanges$).pipe(
+                distinctUntilChanged(),
+                map((reqArr: any) => reqArr.every(value => value))
+            );
+
+            if (disableOnValidationErrors && disableOnReqFieldsNotChecked) {
+                action.disabled$  = combineLatest([validationState$, hasAllReqFieldsValue$]).pipe(
+                    map(([isValid, hasAllValue]) => isValid || !hasAllValue)
+                );
+            }
+
+            else if (disableOnValidationErrors && !disableOnReqFieldsNotChecked) {
+                action.disabled$ = validationState$;
+            }
+
+            else if (!disableOnValidationErrors && disableOnReqFieldsNotChecked) {
+                action.disabled$ = hasAllReqFieldsValue$;
+            } else {
+                return;
+            }
+
+        });
     }
 
     protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
@@ -153,4 +254,42 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     protected reload(action: Action, process: Process, context?: ActionContext): void {
         this.store.load(false).pipe(take(1)).subscribe();
     }
+
+    private disableActionsOnDetailMode(actions: Action[], stagingState: Record, requiredForSubmitObj: ObjectMap): void {
+        Object.keys(requiredForSubmitObj).forEach((fieldName) => {
+            const field = stagingState.fields[fieldName];
+            if (!field) {
+                return;
+            }
+            if (
+                !isEmpty(field?.value)
+              || !isEmpty(field?.valueList)
+              || !isEmpty(field?.valueObject)
+            ) {
+                return;
+            }
+            actions.forEach((action) => {
+                const disableOnReqFieldsNotChecked = action.disableOnReqFieldsNotChecked ??
+                  false;
+                if (disableOnReqFieldsNotChecked) {
+                    action.disabled$ = of(true);
+                }
+            });
+        });
+    }
+
+    private extractRequiredSubmitFields(): ObjectMap {
+        const requiredForSubmitObj = {};
+        this.store.panels.forEach((panel: Panel) => {
+            panel.rows.forEach((panelRow: PanelRow) => {
+                panelRow.cols.forEach((col: PanelCell) => {
+                    if (col?.required_f_submit && panel.displayState.value) {
+                        requiredForSubmitObj[col.name] = col?.required_f_submit;
+                    }
+                });
+            });
+        });
+        return requiredForSubmitObj;
+    }
+
 }
