@@ -95,6 +95,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
                 this.store.record$,
                 this.store.language$,
                 this.store.widgets$,
+                this.store.panels$,
             ]
         ).pipe(
             map((
@@ -115,17 +116,18 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
         return {
             store: this.store,
-            action: action
+            action,
         } as RecordActionData;
     }
 
     /**
      * Build backend process input
      *
-     * @param action
-     * @param actionName
-     * @param moduleName
-     * @param context
+     * @param {Action} action Action
+     * @param {string} actionName Action Name
+     * @param {string} moduleName Module Name
+     * @param {ActionContext|null} context Context
+     * @returns {AsyncActionInput} Built backend process input
      */
     protected buildActionInput(action: Action, actionName: string, moduleName: string, context: ActionContext = null): AsyncActionInput {
         const baseRecord = this.store.getBaseRecord();

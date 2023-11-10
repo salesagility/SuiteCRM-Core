@@ -429,6 +429,8 @@ export * from './pipes/format-number/format-number.module';
 export * from './pipes/format-number/format-number.pipe';
 export * from './pipes/html-sanitize/html-sanitize.module';
 export * from './pipes/html-sanitize/html-sanitize.pipe';
+export * from './pipes/toObservable/toObservable.module';
+export * from './pipes/toObservable/toObservable.pipe';
 export * from './services/actions/base-action-manager.service';
 export * from './services/actions/base-action.adapter';
 export * from './services/actions/base-record-action.adapter';

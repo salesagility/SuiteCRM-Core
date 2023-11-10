@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,29 +24,14 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RecordContentComponent} from './record-content.component';
-import {PanelModule} from '../panel/panel.module';
-import {FieldLayoutModule} from '../field-layout/field-layout.module';
-import {ToObservableModule} from '../../pipes/toObservable/toObservable.module';
+import { Pipe, PipeTransform } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-
-@NgModule({
-    declarations: [
-        RecordContentComponent
-    ],
-    exports: [
-        RecordContentComponent
-    ],
-    imports: [
-        CommonModule,
-        PanelModule,
-        NgbModule,
-        FieldLayoutModule,
-        ToObservableModule,
-    ]
+@Pipe({
+    name: 'toObservable'
 })
-export class RecordContentModule {
+export class ToObservablePipe implements PipeTransform {
+    transform(value: any): Observable<any> {
+        return of(value);
+    }
 }
