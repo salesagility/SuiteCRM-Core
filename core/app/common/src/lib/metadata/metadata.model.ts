@@ -53,6 +53,7 @@ export interface Panel {
     displayState: BehaviorSubject<boolean>;
     display$: Observable<boolean>;
     meta: TabDefinition;
+    isCollapsed: boolean;
 }
 
 export interface PanelRow {

@@ -105,7 +105,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
 
     getActions(context?: ActionContext): Observable<Action[]> {
         return this.metadata.recordViewMetadata$.pipe(
-            combineLatestWith(this.store.mode$, this.store.record$, this.store.language$, this.store.widgets$),
+            combineLatestWith(this.store.mode$, this.store.record$, this.store.language$, this.store.widgets$, this.store.panels$),
             map(([meta, mode]: [RecordViewMetadata, ViewMode, Record, LanguageStrings, boolean]) => {
                 if (!mode || !meta) {
                     return [];
@@ -119,7 +119,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
         return {
             store: this.store,
-            action
+            action,
         } as RecordActionData;
     }
 
