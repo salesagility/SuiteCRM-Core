@@ -1012,6 +1012,11 @@ class User extends Person implements EmailInterface
                 require_once 'modules/Users/GeneratePassword.php';
             }
         }
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        $cacheManager = new CacheManager();
+        $cacheManager->markAsNeedsUpdate('app-metadata-navigation-'.$this->id);
+        $cacheManager->markAsNeedsUpdate('app-metadata-user-preferences-'.$this->id);
+        $cacheManager->markAsNeedsUpdate('app-metadata-theme-images');
     }
 
 
