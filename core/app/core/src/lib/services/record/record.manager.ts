@@ -81,6 +81,18 @@ export class RecordManager {
             if (!viewField || !viewField.name) {
                 return;
             }
+
+            if(record.fields[viewField.name]) {
+                return;
+            }
+
+            const isVardefBased = viewField?.vardefBased ?? false;
+
+            if (isVardefBased) {
+                this.fieldManager.addVardefOnlyField(record, viewField, this.language);
+                return;
+            }
+
             this.fieldManager.addField(record, viewField, this.language);
         });
 
