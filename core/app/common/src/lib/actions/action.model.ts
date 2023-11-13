@@ -29,6 +29,7 @@ import {ViewMode} from '../views/view.model';
 import {Record} from '../record/record.model';
 import {SearchCriteria} from '../views/list/search-criteria.model';
 import {StringMap} from '../types/string-map';
+import { LogicDefinitions } from '../metadata/metadata.model';
 
 export interface ActionData {
     [key: string]: any;
@@ -45,19 +46,15 @@ export abstract class ActionHandler<D extends ActionData> {
 
     abstract modes: ViewMode[];
 
-    abstract run(data: D, action?: Action): void;
-
     getStatus(data: D): string {
         return '';
     }
 
-    abstract shouldDisplay(data: D): boolean;
-
-    protected checkAccess(action: Action, acls: string[], defaultAcls?: string[]) {
+    protected checkAccess(action: Action, acls: string[], defaultAcls?: string[]): boolean {
         let requiredAcls = defaultAcls || [];
 
         if (action && action.acl) {
-            requiredAcls = action.acl
+            requiredAcls = action.acl;
         }
 
         if (!requiredAcls || !requiredAcls.length) {
@@ -69,6 +66,10 @@ export abstract class ActionHandler<D extends ActionData> {
 
         return requiredAcls.every(value => aclsMap[value]);
     }
+
+    abstract run(data: D, action?: Action): void;
+
+    abstract shouldDisplay(data: D): boolean;
 }
 
 export interface ModeActions {
@@ -76,6 +77,8 @@ export interface ModeActions {
 }
 
 export interface Action {
+    [key: string]: any;
+
     key: string;
     labelKey?: string;
     titleKey?: string;
@@ -88,16 +91,15 @@ export interface Action {
     params?: { [key: string]: any };
     extraParams?: { [key: string]: any };
     acl?: string[];
-
-    [key: string]: any;
+    displayLogic?: LogicDefinitions;
 }
 
 export interface ActionDataSource {
+    collapseButtons?: boolean;
+
     getActions(context?: ActionContext): Observable<Action[]>;
 
     runAction(action: Action, context?: ActionContext): void;
-
-    collapseButtons?: boolean;
 }
 
 export interface ActionManager<D extends ActionData> {
@@ -106,7 +108,7 @@ export interface ActionManager<D extends ActionData> {
 
     getHandler(action: Action, mode: ViewMode): ActionHandler<D>;
 
-    addHandler(action: Action, mode: ViewMode, handler: ActionHandler<D>);
+    addHandler(action: Action, mode: ViewMode, handler: ActionHandler<D>): void;
 }
 
 export interface ActionContext {
