@@ -381,6 +381,8 @@ export * from './fields/icon/templates/detail/icon.component';
 export * from './fields/icon/templates/detail/icon.module';
 export * from './fields/int/templates/detail/int.component';
 export * from './fields/int/templates/detail/int.module';
+export * from './fields/int/templates/edit/int.component';
+export * from './fields/int/templates/edit/int.module';
 export * from './fields/line-items/line-items.component';
 export * from './fields/line-items/line-items.module';
 export * from './fields/multienum/templates/detail/multienum.component';
