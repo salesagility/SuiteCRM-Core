@@ -86,6 +86,8 @@ class AdministrationController extends SugarController
         $cfg->config['disabled_languages'] = implode(',', $disabled_langs);
         // TODO: find way to enforce order
         $cfg->handleOverride();
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('app-metadata-language-strings');
         header("Location: index.php?module=Administration&action=Languages");
     }
 
