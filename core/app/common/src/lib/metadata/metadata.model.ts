@@ -30,6 +30,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 
 export interface ViewFieldDefinition {
     name?: string;
+    vardefBased?: boolean;
     label?: string;
     labelKey?: string;
     dynamicLabelKey?: string;
@@ -63,7 +64,7 @@ export interface PanelCell extends ViewFieldDefinition {
 }
 
 export interface ViewFieldDefinitionMap {
-    [key: string]: ViewFieldDefinition
+    [key: string]: ViewFieldDefinition;
 }
 
 export interface TabDefinitions {
@@ -86,12 +87,12 @@ export interface LogicDefinition {
     modes: Array<string>;
     params: {
         activeOnFields?: {
-            [key:string]: LogicRuleValues[];
-        }
+            [key: string]: LogicRuleValues[];
+        };
         displayState?: boolean;
         fieldDependencies: Array<string>;
         asyncProcessHandler?: string;
-    }
+    };
 }
 
 export interface LogicRuleValues{
