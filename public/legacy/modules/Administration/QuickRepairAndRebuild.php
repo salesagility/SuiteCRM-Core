@@ -120,6 +120,7 @@ class RepairAndClear
                 $this->rebuildExtensions();
                 $this->rebuildAuditTables();
                 $this->repairDatabase();
+                $this->clearCoreCache();
                 break;
         }
         }
@@ -127,6 +128,11 @@ class RepairAndClear
 
     /////////////OLD
 
+    public function clearCoreCache()
+    {
+        $coreCachePath = __DIR__ . '/../../../../cache/';
+        rmdir_recursive($coreCachePath);
+    }
 
     public function repairDatabase()
     {
