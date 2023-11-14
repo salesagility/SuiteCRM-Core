@@ -52,7 +52,7 @@ export class ActionGroupMenuComponent implements OnInit {
     @Input() buttonGroupClass = '';
     @Input() actionContext: ActionContext;
     @Input() config: ActionDataSource;
-    @Input() actionLimitConfig: string = 'recordview_actions_limits';
+    @Input() actionLimitConfig = 'recordview_actions_limits';
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
@@ -170,7 +170,7 @@ export class ActionGroupMenuComponent implements OnInit {
                     this.triggerTemporaryLoading();
                     const callback = (): void => {
                         this.config.runAction(action, this.actionContext);
-                    }
+                    };
                     this.initInlineConfirmation(action, callback);
 
                     return;
@@ -204,11 +204,16 @@ export class ActionGroupMenuComponent implements OnInit {
             Button.appendClasses(button, action.klass);
         }
 
+        if(action.disabled$){
+            button.disabled$ = action.disabled$;
+        }
+
         return button;
     }
 
-    protected triggerTemporaryLoading() {
+    protected triggerTemporaryLoading(): void {
         this.loading = true;
+        // eslint-disable-next-line radix
         const delay = parseInt(this.systemConfigStore.getUi('inline_confirmation_loading_delay')) ?? 200;
         setTimeout(() => {
             this.loading = false;
@@ -221,8 +226,8 @@ export class ActionGroupMenuComponent implements OnInit {
         this.confirmationLabel = action?.params?.confirmationLabel ?? '';
         this.confirmationDynamicLabel = action?.params?.confirmationDynamicLabel ?? '';
 
-        this.inlineCancelButton = this.buildInlineCancelButton(cancelConfig)
-        this.inlineConfirmButton = this.buildInlineConfirmButton(confirmConfig, callback)
+        this.inlineCancelButton = this.buildInlineCancelButton(cancelConfig);
+        this.inlineConfirmButton = this.buildInlineConfirmButton(confirmConfig, callback);
         this.inlineConfirmationEnabled = true;
     }
 
@@ -237,7 +242,7 @@ export class ActionGroupMenuComponent implements OnInit {
         button.onClick = (): void => {
             this.triggerTemporaryLoading();
             this.resetInlineConfirmation();
-        }
+        };
 
         return button;
     }
@@ -254,7 +259,7 @@ export class ActionGroupMenuComponent implements OnInit {
             this.triggerTemporaryLoading();
             callback();
             this.resetInlineConfirmation();
-        }
+        };
 
         return button;
     }

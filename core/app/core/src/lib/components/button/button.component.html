@@ -27,7 +27,9 @@
 -->
 <button type="button"
         [ngClass]="config.klass"
+        [class.disabled]="disabled"
         (click)="runClick()"
+        [disabled]="disabled"
         [title]="language.getFieldLabel(config.titleKey) || ''">
     <scrm-image *ngIf="config.icon"
                 [image]="config.icon"

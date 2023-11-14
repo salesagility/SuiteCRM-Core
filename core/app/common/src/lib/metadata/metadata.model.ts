@@ -52,6 +52,7 @@ export interface Panel {
     displayState: BehaviorSubject<boolean>;
     display$: Observable<boolean>;
     meta: TabDefinition;
+    isCollapsed: boolean;
 }
 
 export interface PanelRow {
@@ -60,10 +61,11 @@ export interface PanelRow {
 
 export interface PanelCell extends ViewFieldDefinition {
     name?: string;
+    required_f_submit?: boolean;
 }
 
 export interface ViewFieldDefinitionMap {
-    [key: string]: ViewFieldDefinition
+    [key: string]: ViewFieldDefinition;
 }
 
 export interface TabDefinitions {
@@ -86,12 +88,12 @@ export interface LogicDefinition {
     modes: Array<string>;
     params: {
         activeOnFields?: {
-            [key:string]: LogicRuleValues[];
-        }
+            [key: string]: LogicRuleValues[];
+        };
         displayState?: boolean;
         fieldDependencies: Array<string>;
         asyncProcessHandler?: string;
-    }
+    };
 }
 
 export interface LogicRuleValues{

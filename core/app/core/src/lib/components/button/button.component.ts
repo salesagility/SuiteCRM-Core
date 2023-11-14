@@ -37,6 +37,7 @@ import {debounceTime} from 'rxjs/operators';
 export class ButtonComponent implements OnInit, OnDestroy {
     @Input() config: ButtonInterface;
     clickCallBack: ButtonCallback;
+    disabled = false;
     protected clickBuffer = new Subject<any>();
     protected clickBuffer$: Observable<any> = this.clickBuffer.asObservable();
     protected subs: Subscription[] = [];
@@ -53,6 +54,12 @@ export class ButtonComponent implements OnInit, OnDestroy {
             this.subs.push(this.clickBuffer$.pipe(debounceTime(clickDebounceTime)).subscribe(value => {
                 const input = value ?? null;
                 this.clickCallBack(input);
+            }));
+        }
+
+        if(this.config.disabled$) {
+            this.subs.push(this.config.disabled$.subscribe(value => {
+                this.disabled = value;
             }));
         }
     }
@@ -79,7 +86,8 @@ export class ButtonComponent implements OnInit, OnDestroy {
 
     /**
      * Get debounce time
-     * @return number
+     *
+     * @returns number
      * @protected
      */
     protected getDebounceTime(): number {
