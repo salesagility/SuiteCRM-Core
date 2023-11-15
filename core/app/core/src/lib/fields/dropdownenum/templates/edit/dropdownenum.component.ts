@@ -67,7 +67,7 @@ export class DropdownEnumEditFieldComponent extends DropdownEnumDetailFieldCompo
     }
 
     protected buildProvidedOptions(options: Option[]): void {
-        if (!options.find(option => option.value === '')) {
+        if (!options.find(option => option.value === '' || option.label === '')) {
             options.unshift({ value: '', label: '' });
         }
         super.buildProvidedOptions(options);

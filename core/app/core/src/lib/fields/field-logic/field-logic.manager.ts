@@ -37,6 +37,7 @@ import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-f
 import {UpdateValueAction} from './update-value/update-value.action';
 import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
+import {ConditionalOptionsAction} from './conditional-options/conditional-options.action';
 
 @Injectable({
     providedIn: 'root'
@@ -62,6 +63,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValueBackend: UpdateValueBackendAction,
         dislayTypeBackend: DisplayTypeBackendAction,
+        conditionalOptionsAction: ConditionalOptionsAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -73,6 +75,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateValue.modes.forEach(mode => this.actions[mode][updateValue.key] = updateValue);
         updateValueBackend.modes.forEach(mode => this.actions[mode][updateValueBackend.key] = updateValueBackend);
         dislayTypeBackend.modes.forEach(mode => this.actions[mode][dislayTypeBackend.key] = dislayTypeBackend);
+        conditionalOptionsAction.modes.forEach(mode => this.actions[mode][conditionalOptionsAction.key] = conditionalOptionsAction);
     }
 
     /**

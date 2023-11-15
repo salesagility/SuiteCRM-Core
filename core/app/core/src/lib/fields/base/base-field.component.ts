@@ -44,11 +44,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     dependentFields: ObjectMap = {};
     dependentAttributes: AttributeDependency[] = [];
     protected subs: Subscription[] = [];
-    protected previousValue?: FieldValue = {
-        value: '',
-        valueList: [],
-        valueObject: {},
-    };
+    protected previousValue?: FieldValue = undefined;
 
     constructor(
         protected typeFormatter: DataTypeFormatter,
@@ -79,12 +75,6 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         const fieldKeys = (this.record.fields && Object.keys(this.record.fields)) || [];
         if (fieldKeys.length > 1) {
             this.calculateDependentFields(fieldKeys);
-            this.previousValue = deepClone({
-                value: this.field.value,
-                valueList: this.field.valueList,
-                valueObject: this.field.valueObject,
-                forceNotEqual: 'forceNotEqual',
-            });
 
             if((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length) {
                 Object.keys(this.dependentFields).forEach(fieldKey => {
