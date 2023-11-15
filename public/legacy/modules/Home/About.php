@@ -72,27 +72,26 @@ global $sugar_config, $mod_strings;
                     <br>
                     <h3><?php echo $mod_strings['LBL_CONTRIBUTORS']; ?></h3>
                     <ul id="about_menu">
-                        <li><?php echo $mod_strings['LBL_FEATURING']; ?>(<a href="http://www.salesagility.com"
-                                                                            target="_blank">http://www.salesagility.com</a>)
+                        <li><?php echo $mod_strings['LBL_FEATURING']; ?>(<a 
+                                    href="https://www.salesagility.com" target="_blank">https://www.salesagility.com</a>)
                         </li>
                         <li><?php echo $mod_strings['LBL_CONTRIBUTOR_SECURITY_SUITE']; ?> (<a
-                                    href="http://www.sugaroutfitters.com"
-                                    target="_blank">http://www.sugaroutfitters.com</a>)
+                                    href="https://www.sugaroutfitters.com" target="_blank">https://www.sugaroutfitters.com</a>)
                         </li>
-                        <li><?php echo $mod_strings['LBL_CONTRIBUTOR_JJW_GMAPS']; ?> (<a href="http://www.jjwdesign.com"
-                                                                                         target="_blank">http://www.jjwdesign.com</a>)
+                        <li><?php echo $mod_strings['LBL_CONTRIBUTOR_JJW_GMAPS']; ?> (<a 
+                                   href="https://www.jjwdesign.com" target="_blank">https://www.jjwdesign.com</a>)
                         </li>
                         <li><?php echo $mod_strings['LBL_CONTRIBUTOR_CONSCIOUS']; ?> (<a
-                                    href="http://www.conscious.co.uk" target="_blank">http://www.conscious.co.uk</a>)
+                                    href="https://www.conscious.co.uk/" target="_blank">https://www.conscious.co.uk</a>)
                         </li>
                         <li><?php echo $mod_strings['LBL_CONTRIBUTOR_RESPONSETAP']; ?> (<a
-                                    href="https://www.responsetap.com">https://www.responsetap.com</a>)
+                                    href="https://www.responsetap.com" target="_blank">https://www.responsetap.com</a>)
                         </li>
-                        <li><?php echo $mod_strings['LBL_SOURCE_SUGAR']; ?> (<a href="http://www.sugarcrm.com"
-                                                                                target="_blank">http://www.sugarcrm.com</a>)
+                        <li><?php echo $mod_strings['LBL_SOURCE_SUGAR']; ?> (<a 
+                                    href="https://www.sugarcrm.com" target="_blank">https://www.sugarcrm.com</a>)
                         </li>
-                        <li><?php echo $mod_strings['LBL_CONTRIBUTOR_GMBH']; ?> (<a href="http://www.dtbc.eu/"
-                                                                                    target="_blank">http://www.dtbc.eu/</a>)
+                        <li><?php echo $mod_strings['LBL_CONTRIBUTOR_GMBH']; ?> (<a 
+                                   href="https://www.diligentsols.com/" target="_blank">https://www.diligentsols.com</a>)
                         </li>
                     </ul>
                 </div>
@@ -114,7 +113,7 @@ global $sugar_config, $mod_strings;
                     <h3><?php echo $mod_strings['LBL_PARTNERS']; ?></h3>
                     <ul id="about_menu">
                         <li><?php echo $mod_strings['LBL_SUITE_PARTNERS']; ?> (<a
-                                    href="https://suitecrm.com/about/about-us/partners">http://suitecrm.com</a>)
+                                    href="https://suitecrm.com/about/about-us/partners">https://suitecrm.com</a>)
                         </li>
                     </ul>
                 </div>
