@@ -24,21 +24,22 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isEmpty } from 'lodash-es';
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
+import { TagModel } from 'ngx-chips/core/accessor';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
-import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {TagModel} from "ngx-chips/core/accessor";
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
+import { MultiEnumDetailFieldComponent } from '../detail/multienum.component';
 
 @Component({
     selector: 'scrm-multienum-edit',
     templateUrl: './multienum.component.html',
     styleUrls: []
 })
-export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
+export class MultiEnumEditFieldComponent extends MultiEnumDetailFieldComponent {
 
     @ViewChild('tag') tag: TagInputComponent;
 
@@ -51,25 +52,12 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         super(languages, typeFormatter, logic, logicDisplay);
     }
 
-    ngOnInit(): void {
-        this.checkAndInitAsDynamicEnum();
-        super.ngOnInit();
-    }
-
     public onAdd(): void {
-        const value = this.selectedValues.map(option => option.value);
-        this.field.valueList = value;
-        this.field.formControl.setValue(value);
-        this.field.formControl.markAsDirty();
-
-        return;
+        this.syncSelectedValuesWithForm();
     }
 
     public onRemove(): void {
-        const value = this.selectedValues.map(option => option.value);
-        this.field.valueList = value;
-        this.field.formControl.setValue(value);
-        this.field.formControl.markAsDirty();
+        this.syncSelectedValuesWithForm();
 
         setTimeout(() => {
             this.tag.focus(true, true);
@@ -83,12 +71,15 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public selectFirstElement(): void {
         const filteredElements: TagModel = this.tag.dropdown.items;
-        if (filteredElements.length !== 0) {
-            const firstElement = filteredElements[0];
-            this.selectedValues.push(firstElement);
-            this.onAdd();
-            this.tag.dropdown.hide();
+
+        if (isEmpty(filteredElements)) {
+            return;
         }
+
+        const firstElement = filteredElements[0];
+        this.selectedValues.push(firstElement);
+        this.onAdd();
+        this.tag.dropdown.hide();
     }
 
 }

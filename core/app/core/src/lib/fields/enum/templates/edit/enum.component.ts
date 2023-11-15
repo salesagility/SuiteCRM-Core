@@ -24,12 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isEmpty } from 'lodash-es';
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {TagModel} from "ngx-chips/core/accessor";
+import {TagModel} from 'ngx-chips/core/accessor';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
 
@@ -46,37 +47,23 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
-        protected logicDisplay: FieldLogicDisplayManager
+        protected logicDisplay: FieldLogicDisplayManager,
     ) {
         super(languages, typeFormatter, logic, logicDisplay);
     }
 
-    ngOnInit(): void {
-
-        this.checkAndInitAsDynamicEnum();
-        super.ngOnInit();
-    }
-
     public onAdd(item): void {
-        if (item && item.value) {
-            this.field.value = item.value;
-            this.field.formControl.setValue(item.value);
-            this.field.formControl.markAsDirty();
+        if (!item?.value) {
+            this.updateInternalState();
             return;
         }
 
-        this.field.value = '';
-        this.field.formControl.setValue('');
-        this.field.formControl.markAsDirty();
-        this.selectedValues = [];
-
-        return;
+        this.updateInternalState(item.value);
     }
 
     public onRemove(): void {
-        this.field.value = '';
-        this.field.formControl.setValue('');
-        this.field.formControl.markAsDirty();
+        this.updateInternalState();
+
         setTimeout(() => {
             this.tag.focus(true, true);
             this.tag.dropdown.show();
@@ -89,12 +76,14 @@ export class EnumEditFieldComponent extends BaseEnumComponent {
 
     public selectFirstElement(): void {
         const filteredElements: TagModel = this.tag.dropdown.items;
-        if (filteredElements.length !== 0) {
-            const firstElement = filteredElements[0];
-            this.selectedValues.push(firstElement);
-            this.onAdd(firstElement);
-            this.tag.dropdown.hide();
+
+        if (isEmpty(filteredElements)) {
+            return;
         }
+
+        const firstElement = filteredElements[0];
+        this.onAdd(firstElement);
+        this.tag.dropdown.hide();
     }
 
 }

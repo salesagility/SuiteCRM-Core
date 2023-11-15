@@ -24,17 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BaseFieldComponent} from './base-field.component';
+import {isEmpty, isNull, isObject} from 'lodash-es';
+import {combineLatest, of, Subscription} from 'rxjs';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {Field, FieldDefinition, isEmptyString, isVoid, Option} from 'common';
+import {deepClone, Field, FieldValue, isEmptyString, isVoid, Option} from 'common';
+import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
-import {
-    LanguageListStringMap,
-    LanguageStore,
-    LanguageStringMap,
-    LanguageStrings
-} from '../../store/language/language.store';
+import {LanguageListStringMap, LanguageStore, LanguageStringMap} from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
@@ -42,12 +38,11 @@ import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-displ
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
     selectedValues: Option[] = [];
     valueLabel = '';
-    optionsMap: LanguageStringMap;
+    optionsMap: LanguageStringMap = {};
     options: Option[] = [];
     labels: LanguageStringMap;
     protected subs: Subscription[] = [];
     protected mappedOptions: { [key: string]: Option[] };
-    protected isDynamicEnum = false;
 
     constructor(
         protected languages: LanguageStore,
@@ -59,40 +54,11 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     ngOnInit(): void {
-
         super.ngOnInit();
 
-        const options$ = this?.field?.metadata?.options$ ?? null;
-        if (options$) {
-            this.subs.push(this.field.metadata.options$.subscribe((options: Option[]) => {
-                this.buildProvidedOptions(options);
+        this.subscribeValueAndOptionChanges();
 
-                this.initValue();
-
-            }));
-            return;
-
-        }
-
-        const options = this?.field?.definition?.options ?? null;
-        if (options) {
-            this.subs.push(this.languages.vm$.subscribe((strings: LanguageStrings) => {
-
-                this.buildAppStringListOptions(strings.appListStrings);
-                this.initValue();
-
-            }));
-        }
-
-        if (!options && !options$) {
-            this.initValue();
-        }
-
-    }
-
-    ngOnDestroy(): void {
-        this.isDynamicEnum = false;
-        this.subs.forEach(sub => sub.unsubscribe());
+        this.initAsEnumAndDynamicIf();
     }
 
     getInvalidClass(): string {
@@ -102,93 +68,24 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         return '';
     }
 
-    protected buildProvidedOptions(options: Option[]): void {
-        this.options = options;
-        this.optionsMap = {};
-
-        options.forEach(option => {
-            this.optionsMap[option.value] = option.label;
-        });
-
-    }
-
-    protected buildAppStringListOptions(appStrings: LanguageListStringMap): void {
-
-        this.optionsMap = {} as LanguageStringMap;
-        this.addExtraOptions();
-
-        if (appStrings && this.field.definition.options && appStrings[this.field.definition.options]) {
-            const options = appStrings[this.field.definition.options] as LanguageStringMap;
-
-            if (this.options && Object.keys(this.options)) {
-                this.optionsMap = {...this.optionsMap, ...options};
-            }
-        }
-
-        this.buildOptionsArray(appStrings);
-    }
-
-    protected addExtraOptions(): void {
-        const extraOptions = (this.field.metadata && this.field.metadata.extraOptions) || [];
-
-        extraOptions.forEach((item: Option) => {
-            if (isVoid(item.value)) {
-                return;
-            }
-
-            let label = item.label || '';
-            if (item.labelKey) {
-                label = this.languages.getFieldLabel(item.labelKey);
-            }
-
-            this.optionsMap[item.value] = label;
-        });
-    }
-
-    protected buildOptionsArray(appStrings: LanguageListStringMap): void {
-
-        this.options = [];
-        Object.keys(this.optionsMap).forEach(key => {
-
-            this.options.push({
-                value: key,
-                label: this.optionsMap[key]
-            });
-        });
-
-        if (this.isDynamicEnum) {
-            this.buildDynamicEnumOptions(appStrings);
-        }
-    }
 
     protected initValue(): void {
+        const fieldValue = this.field.value ?? '';
 
-        this.selectedValues = [];
-
-        if (!this.field.value) {
+        if (isEmptyString(fieldValue)) {
             this.initEnumDefault();
             return;
         }
 
-        if (typeof this.field.value !== 'string') {
+        if (
+            !isEmpty(this.field.options)
+            && !this.field.options.find(option => option.value === fieldValue)
+        ) {
+            this.updateInternalState();
             return;
         }
 
-        if (!this.optionsMap) {
-            return;
-        }
-
-        if (typeof this.optionsMap[this.field.value] !== 'string') {
-            return;
-        }
-
-        if (this.field.value) {
-            this.valueLabel = this.optionsMap[this.field.value];
-            this.selectedValues.push({
-                value: this.field.value,
-                label: this.valueLabel
-            });
-        }
+        this.updateInternalState(fieldValue);
     }
 
     /**
@@ -198,104 +95,159 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
      *  @description set default enum value, if defined in vardefs
      * */
     protected initEnumDefault(): void {
+        const defaultValue = this.field.definition?.default;
 
-        if (!isEmptyString(this.record?.id)) {
-
-            this.field?.formControl.setValue('');
-
+        if (
+            isEmptyString(this.record?.id)
+            && !isVoid(defaultValue)
+        ) {
+            this.updateInternalState(defaultValue);
             return;
         }
 
-        let defaultVal = this.field?.definition?.default;
-        if (typeof defaultVal === 'string') {
-            defaultVal = defaultVal.trim();
+        this.updateInternalState();
+    }
+
+    protected updateInternalState(value = ''): void {
+        this.selectedValues = [];
+        const option = this.buildOptionFromValue(value);
+        if (!isEmptyString(option.value)) {
+            this.selectedValues.push(option);
         }
-        if (!defaultVal) {
-            this.field.formControl.setValue('');
+        this.valueLabel = option.label;
+        this.setFormControlValue(option.value);
+    }
+
+    protected buildOptionFromValue(value: string): Option {
+        const option: Option = {value: '', label: ''};
+
+        if (isNull(value)) {
+            return option;
+        }
+        option.value = (typeof value !== 'string' ? JSON.stringify(value) : value).trim();
+        option.label = option.value;
+
+        const valueLabel = this.optionsMap[option.value] ?? option.label;
+        if (isObject(valueLabel)) {
+            return option;
+        }
+        option.label = (typeof valueLabel !== 'string' ? JSON.stringify(valueLabel) : valueLabel).trim();
+
+        return option;
+    }
+
+    protected buildProvidedOptions(options: Option[]): void {
+        this.addExtraOptions(options);
+        this.addConditionalOptions(options);
+
+        this.optionsMap = {} as LanguageStringMap;
+        options.forEach(option => this.addToOptionMap(option));
+
+        this.options = Object.entries(this.optionsMap)
+            .map(([value, label]) => ({value, label}));
+    }
+
+    protected addExtraOptions(options: Option[]): void {
+        const extraOptions = this.field.metadata?.extraOptions ?? [];
+
+        extraOptions.forEach(extraOption=>options.push(extraOption));
+    }
+
+    protected addConditionalOptions(options: Option[]): void {
+        const conditionalOptions = this.field.metadata?.conditionalOptions ?? {};
+
+        Object.values(conditionalOptions).forEach(extraOption => options.push(extraOption));
+    }
+
+    protected addToOptionMap(option: Option): void {
+        if (isVoid(option.value)) {
             return;
         }
 
-        this.selectedValues.push({
-            value: defaultVal,
-            label: this.optionsMap[defaultVal]
+        let label = option.label || '';
+        if (option.labelKey) {
+            label = this.languages.getFieldLabel(option.labelKey, this.record.module) || option.labelKey;
+        }
+
+        this.optionsMap[option.value] = label;
+    }
+
+    private subscribeValueAndOptionChanges(): void {
+        this.subscribeValueChanges();
+
+        const valueAndOptionChanges = combineLatest([
+            this.field.valueChanges$,
+            this.field.optionsChanges$
+        ]).subscribe(([_, options]) => {
+            if (options) {
+                this.buildProvidedOptions(options);
+            }
+            this.initValue();
         });
 
-        this.initEnumDefaultFieldValues(defaultVal);
+        this.subs.push(valueAndOptionChanges);
     }
 
-    protected initEnumDefaultFieldValues(defaultVal: string): void {
+    private initAsEnumAndDynamicIf(): void {
+        const definition = (this.field.definition ?? {});
+        const dynamic = definition?.dynamic ?? false;
+        const parentEnumKey = definition?.parentenum ?? '';
+        const fields = this.record?.fields ?? {};
 
-        if (this.field.type === 'multienum') {
-            const defaultValues = this.selectedValues.map(option => option.value);
-            this.field.valueList = defaultValues;
-            this.field.formControl.setValue(defaultValues);
+        const parentEnum = dynamic ? fields[parentEnumKey] ?? null : null;
 
-        } else {
-            this.field.value = defaultVal;
-            this.field.formControl.setValue(defaultVal);
-        }
-        this.field.formControl.markAsDirty();
+        this.subscribeToParentValueChanges(parentEnum);
     }
 
-    protected checkAndInitAsDynamicEnum(): void {
+    private subscribeToParentValueChanges(parentEnum: Field | null): void {
+        const parentValueChangesSubscription = combineLatest([
+            parentEnum?.valueChanges$ ?? of({} as FieldValue),
+            this.languages.vm$
+        ]).subscribe(([parentFieldValue, languageStrings]) => {
+            const appStrings = languageStrings.appListStrings ?? {};
+            const optionsKey = this.field.definition?.options ?? '';
 
-        const definition = (this.field && this.field.definition) || {} as FieldDefinition;
-        const dynamic = (definition && definition.dynamic) || false;
-        const parentEnumKey = (definition && definition.parentenum) || '';
-        const fields = (this.record && this.record.fields) || null;
+            const optionsMap = (appStrings[optionsKey] ?? {}) as LanguageStringMap;
+            let options: Option[] = Object.entries(optionsMap)
+                .map(([value, label]) => ({value, label}));
 
-        if (dynamic && parentEnumKey && fields) {
-            this.isDynamicEnum = true;
-            const parentEnum: Field = fields[parentEnumKey];
-            if (parentEnum) {
-                this.subscribeToParentValueChanges(parentEnum);
-            }
-        }
-    }
+            options = this.getDynamicEnumOptions(parentEnum,appStrings,parentFieldValue,options);
 
-    protected buildDynamicEnumOptions(appStrings: LanguageListStringMap): void {
-
-        const parentEnum = this.record.fields[this.field.definition.parentenum];
-
-        if (parentEnum) {
-
-            const parentOptionMap: LanguageStringMap = appStrings[parentEnum.definition.options] as LanguageStringMap;
-
-            if (parentOptionMap && Object.keys(parentOptionMap).length !== 0) {
-
-                this.mappedOptions = this.createParentChildOptionsMap(parentOptionMap, this.options);
-
-                let parentValues: string[] = [];
-                if (parentEnum.definition.type === 'multienum') {
-                    parentValues = parentEnum.valueList;
-                } else {
-                    parentValues.push(parentEnum.value);
-                }
-                this.options = this.filterMatchingOptions(parentValues);
-
-            }
-        }
-    }
-
-    protected filterMatchingOptions(values: string[]): Option[] {
-
-        let filteredOptions: Option[] = [];
-
-        if (!values || !values.length) {
-            return [];
-        }
-
-        values.forEach(value => {
-            if (!this.mappedOptions[value]) {
-                return;
-            }
-            filteredOptions = filteredOptions.concat([...this.mappedOptions[value]]);
+            this.field.options = options;
         });
 
-        return filteredOptions;
+        this.subs.push(parentValueChangesSubscription);
     }
 
-    protected createParentChildOptionsMap(parentOptions: LanguageStringMap, childOptions: Option[]): { [key: string]: Option[] } {
+    private getDynamicEnumOptions(
+        parentEnum: Field | null,
+        appStrings: LanguageListStringMap,
+        parentFieldValue: FieldValue,
+        prevOptions: Option[]
+    ): Option[] {
+        if (isEmpty(parentEnum)) {
+            return prevOptions;
+        }
+
+        const parentOptionsKey = parentEnum?.definition.options ?? '';
+
+        const parentOptionMap: LanguageStringMap = (appStrings[parentOptionsKey] ?? {}) as LanguageStringMap;
+        if (isEmpty(parentOptionMap)) {
+            return prevOptions;
+        }
+
+        this.mappedOptions = this.createParentChildOptionsMap(parentOptionMap, prevOptions);
+        let parentValues: string[] = [];
+        if (!isEmpty(parentFieldValue.valueList)) {
+            parentValues = parentFieldValue.valueList;
+        } else if (parentEnum.value) {
+            parentValues = [parentFieldValue.value ?? ''];
+        }
+
+        return this.filterMatchingOptions(parentValues);
+    }
+
+    private createParentChildOptionsMap(parentOptions: LanguageStringMap, childOptions: Option[]): { [key: string]: Option[] } {
         const mappedOptions: { [key: string]: Option[] } = {};
         Object.keys(parentOptions).forEach(key => {
             mappedOptions[key] = childOptions.filter(
@@ -305,24 +257,19 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         return mappedOptions;
     }
 
-    protected subscribeToParentValueChanges(parentEnum: Field): void {
-        if (parentEnum.formControl) {
-            this.subs.push(parentEnum.formControl.valueChanges.subscribe(values => {
-
-                if (typeof values === 'string') {
-                    values = [values];
-                }
-
-                // Reset selected values on Form Control
-                this.field.value = '';
-                this.field.formControl.setValue('');
-
-                // Rebuild available enum options
-                this.options = this.filterMatchingOptions(values);
-
-                this.initValue();
-            }));
+    private filterMatchingOptions(values: string[]): Option[] {
+        if (isEmpty(values)) {
+            return [];
         }
-    }
 
+        let filteredOptions: Option[] = [];
+        values.forEach(value => {
+            if (!this.mappedOptions[value]) {
+                return;
+            }
+            filteredOptions = filteredOptions.concat([...deepClone(this.mappedOptions[value])]);
+        });
+
+        return filteredOptions;
+    }
 }
