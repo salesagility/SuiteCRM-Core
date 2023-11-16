@@ -29,6 +29,7 @@ namespace App\Metadata\Service;
 
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Engine\Service\CacheManagerInterface;
+use App\Install\LegacyHandler\InstallHandler;
 use App\Languages\LegacyHandler\AppListStringsHandler;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use App\Languages\LegacyHandler\ModStringsHandler;
@@ -122,6 +123,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $cacheManager;
 
     /**
+     * @var InstallHandler
+     */
+    private $installHandler;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -136,6 +142,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param UserHandler $userHandler
      * @param AdminPanelDefinitionProviderInterface $adminPanelDefinitions
      * @param CacheInterface $cache
+     * @param InstallHandler $installHandler
      */
     public function __construct(
         ModuleNameMapperInterface             $moduleNameMapper,
@@ -151,7 +158,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         UserHandler                           $userHandler,
         AdminPanelDefinitionProviderInterface $adminPanelDefinitions,
         CacheInterface                        $cache,
-        CacheManagerInterface                 $cacheManager
+        CacheManagerInterface                 $cacheManager,
+        InstallHandler $installHandler,
     )
     {
         $this->moduleNameMapper = $moduleNameMapper;
@@ -168,6 +176,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->adminPanelDefinitions = $adminPanelDefinitions;
         $this->cache = $cache;
         $this->cacheManager = $cacheManager;
+        $this->installHandler = $installHandler;
     }
 
     /**
@@ -197,11 +206,14 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $theme = $this->getTheme();
         $keys = [];
 
+        if (!$this->isInstalled()){
+            return $metadata;
+        }
+
         $metadata->setSystemConfig([]);
         if (in_array('systemConfig', $exposed, true)) {
             $key = 'app-metadata-system-configs';
             array_push($keys, $key);
-            error_log('checking if cache exists');
             $systemConfig = $this->cache->get($key, function () {
                 error_log('getting cache system configs');
                 return $this->getSystemConfigs();
@@ -211,7 +223,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setUserPreferences([]);
         if (in_array('userPreferences', $exposed, true)) {
-            $key ='app-metadata-user-preferences-' . $userId;
+            $key = 'app-metadata-user-preferences-' . $userId;
             array_push($keys, $key);
             $userPreferences = $this->cache->get($key, function () {
                 return $this->getUserPreferences();
@@ -255,11 +267,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         if (in_array('moduleMetadata', $exposed, true)) {
             $key = 'app-metadata-module-metadata-' . $moduleName . '-' . $userId;
             array_push($keys, $key);
-            $moduleMetadata = $this->cache->get($key, function () use ($moduleName) {
-                $navigation = $this->navigationService->getNavbar();
-                return $this->getModuleMetadata($moduleName, $navigation) ?? [];
-            });
-
+            $navigation = $this->navigationService->getNavbar();
+            $moduleMetadata = $this->getModuleMetadata($moduleName, $navigation) ?? [];
             $metadata->setModuleMetadata($moduleMetadata);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
@@ -276,9 +285,6 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         } elseif (!$currentUser->isAdmin()) {
             $adminMetadata = ['adminPanel' => []];
             $metadata->setAdminMetadata($adminMetadata);
-        }
-        if ($this->cacheManager->fullCacheReset()) {
-            return $metadata;
         }
 
         $this->cacheManager->checkForCacheUpdate($keys);
@@ -590,5 +596,13 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         }
 
         return array_keys($groupedTabsModules);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isInstalled(): bool
+    {
+        return $this->installHandler->isLegacyInstalled();
     }
 }
