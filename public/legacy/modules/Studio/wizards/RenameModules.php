@@ -370,6 +370,9 @@ class RenameModules
             $this->renameCertainModuleModStrings($module, $labelsArr);
         }
 
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('app-metadata-language-strings-' . $this->selectedLanguage);
+
         //Refresh the page again so module tabs are changed as the save process happens after module tabs are already generated.
         if ($redirect) {
             SugarApplication::redirect('index.php?action=wizard&module=Studio&wizard=StudioWizard&option=RenameTabs');
