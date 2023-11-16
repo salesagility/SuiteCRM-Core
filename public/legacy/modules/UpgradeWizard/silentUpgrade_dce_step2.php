@@ -629,6 +629,7 @@ if ($upgradeType == constant('DCE_INSTANCE')) {
         $rac = new RepairAndClear();
         $rac->clearVardefs();
         $rac->rebuildExtensions();
+        $rac->clearCoreCache();
 
         $repairedTables = array();
 
