@@ -42,6 +42,7 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     @Input() inputClass: { [klass: string]: any } = {};
     @Input() rowClass: { [klass: string]: any } = {};
     @Input() colClass: { [klass: string]: any } = {};
+    @Input() colAlignItems: string = '';
 
     @Input() maxColumns: number;
     @Input() sizeMap: ScreenSizeMap = {

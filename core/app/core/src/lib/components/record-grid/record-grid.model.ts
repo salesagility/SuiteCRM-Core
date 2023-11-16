@@ -50,4 +50,5 @@ export interface RecordGridConfig {
     rowClass?: { [klass: string]: any };
     colClass?: { [klass: string]: any };
     labelDisplay?: LabelDisplay;
+    colAlignItems?: string;
 }

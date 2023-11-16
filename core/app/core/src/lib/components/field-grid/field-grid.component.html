@@ -29,12 +29,11 @@
     <div [ngClass]="rowClass" *ngFor="let row of fieldGrid">
 
         <div [ngClass]="colClass" *ngFor="let col of row.cols">
-
-            <ng-container>
-                <div [class.align-items-center]="labelDisplay === 'inline'"
+            <div [class.align-items-center]="labelDisplay === 'inline' && !colAlignItems"
                      [class.flex-column]="labelDisplay === 'top'"
                      [class.flex-row]="labelDisplay === 'inline'"
                      [class.justify-content-end]="!col.field"
+                     [ngClass]="colAlignItems ? colAlignItems : ''"
                      class="d-flex"
                 >
                     <div *ngIf="col.field && col.field.display !== 'none'"
@@ -60,7 +59,6 @@
                         <ng-content select="[field-grid-actions]"></ng-content>
                     </ng-container>
                 </div>
-            </ng-container>
         </div>
     </div>
 </form>

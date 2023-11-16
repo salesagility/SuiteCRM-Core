@@ -78,10 +78,11 @@ export class ListFilterComponent implements OnInit, OnDestroy {
                 'align-items-start': true,
                 'align-items-center': false
             },
+            colAlignItems: 'align-items-start',
             maxColumns$: of(4).pipe(shareReplay(1)),
             sizeMap$: of({
                 handset: 1,
-                tablet: 4,
+                tablet: 2,
                 web: 4,
                 wide: 4
             } as ScreenSizeMap).pipe(shareReplay(1))
