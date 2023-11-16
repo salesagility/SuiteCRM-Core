@@ -99,6 +99,9 @@ class ModuleBuilderController extends SugarController
         } else {
             $this->hasAccess = false;
         }
+        // It's hard to predict everywhere that can invalidate cache, so it's being called here to cover that.
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('rebuild_all');
         parent::process();
     }
 
@@ -203,13 +206,13 @@ class ModuleBuilderController extends SugarController
 
     public function action_DeployPackage()
     {
-        global $current_user;
-        
+        global $current_user, $current_language;
+
         if (defined('TEMPLATE_URL')) {
             sugar_cache_reset();
             SugarTemplateUtilities::disableCache();
         }
-        
+
         //increment etag for menu so the new module shows up when the AJAX UI reloads
         $current_user->incrementETag("mainMenuETag");
 
@@ -234,6 +237,8 @@ class ModuleBuilderController extends SugarController
             $cache_key = 'app_list_strings.'.$GLOBALS['current_language'];
             sugar_cache_clear($cache_key);
             sugar_cache_reset();
+            require_once "include/portability/Services/Cache/CacheManager.php";
+            (new CacheManager())->markAsNeedsUpdate('app-metadata-language-strings-'.$current_language);
             //clear end
             $pm->performInstall($_REQUEST [ 'install_file' ], true);
 
@@ -437,19 +442,19 @@ class ModuleBuilderController extends SugarController
     {
         global $mod_strings;
         require_once('modules/DynamicFields/FieldCases.php') ;
-                
+
         $field = get_widget($_REQUEST [ 'type' ]) ;
         $_REQUEST [ 'name' ] = trim($_POST [ 'name' ]) ;
 
         $field->populateFromPost() ;
         require_once('modules/ModuleBuilder/parsers/StandardField.php') ;
         $module = $_REQUEST [ 'view_module' ] ;
-        
+
         // Need to map Employees -> Users
         if ($module=='Employees') {
             $module = 'Users';
         }
-        
+
         $df = new StandardField($module) ;
         $mod = BeanFactory::getBean($module);
         $class_name = $GLOBALS [ 'beanList' ] [ $module ] ;
@@ -602,7 +607,7 @@ class ModuleBuilderController extends SugarController
                 if ($moduleName == 'Employees') {
                     $moduleName = 'Users';
                 }
-                
+
                 $class_name = $GLOBALS [ 'beanList' ] [ $moduleName ] ;
                 require_once($GLOBALS [ 'beanFiles' ] [ $class_name ]) ;
                 $seed = new $class_name() ;
