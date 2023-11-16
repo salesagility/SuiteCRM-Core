@@ -77,7 +77,7 @@ class AdministrationController extends SugarController
 
     public function action_savelanguages()
     {
-        global $sugar_config;
+        global $sugar_config, $current_language;
         $toDecode = html_entity_decode((string) $_REQUEST['disabled_langs'], ENT_QUOTES);
         $disabled_langs = json_decode($toDecode);
         $toDecode = html_entity_decode((string) $_REQUEST['enabled_langs'], ENT_QUOTES);
@@ -87,7 +87,7 @@ class AdministrationController extends SugarController
         // TODO: find way to enforce order
         $cfg->handleOverride();
         require_once "include/portability/Services/Cache/CacheManager.php";
-        (new CacheManager())->markAsNeedsUpdate('app-metadata-language-strings');
+        (new CacheManager())->markAsNeedsUpdate('app-metadata-language-strings-'. $current_language);
         header("Location: index.php?module=Administration&action=Languages");
     }
 
