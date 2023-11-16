@@ -8,6 +8,16 @@
   }
 }
 
+@media all and (min-width: $breakpoint-xxlarge) {
+  .list-view-settings {
+    .quick-filter-border {
+      border-right: 1px solid rgb(108, 117, 125, 0.5)!important;
+      margin-right: 0.25rem;
+      padding-right: 0.25rem;
+    }
+  }
+}
+
 @media all and (max-width: $breakpoint-xlarge) {
     .list-view {
         .list-widget-container {
