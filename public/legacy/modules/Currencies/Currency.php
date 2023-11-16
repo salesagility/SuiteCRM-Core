@@ -255,7 +255,11 @@ class Currency extends SugarBean
     }
     public function save($check_notify = false)
     {
+        global $current_user;
+
         sugar_cache_clear('currency_list');
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('rebuild_all');
         return parent::save($check_notify);
     }
 } // end currency class
