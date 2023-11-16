@@ -529,12 +529,12 @@ ul.main li a,
   }
 
   .dropdown-item.active {
-    color: $mellow-yellow;
+    padding-left: 1em;
     font-weight: bold;
 
     svg {
-      fill: $mellow-yellow;
-      stroke: $mellow-yellow;
+      fill: $black;
+      stroke: $black;
     }
   }
 }
