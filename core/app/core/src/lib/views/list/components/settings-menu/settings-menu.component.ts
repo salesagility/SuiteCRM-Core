@@ -140,6 +140,7 @@ export class SettingsMenuComponent implements OnInit {
 
             const button = {
                 label: filter.attributes.name,
+                title: filter.attributes.name,
                 onClick: (): void => {
                     this.listStore.toggleQuickFilter(filter);
                 }
