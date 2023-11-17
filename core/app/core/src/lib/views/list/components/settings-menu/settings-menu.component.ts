@@ -167,12 +167,8 @@ export class SettingsMenuComponent implements OnInit {
     getButtonGroupConfig(): ButtonGroupInterface {
 
         const availableButtons = [
-            // Commented temporarily as it is not implemented
-            /*
-            {button: this.getDisplayAsButton()},
-             */
             {
-                show: (): boolean => this.listStore.filterList.getFilters() && this.listStore.filterList.getFilters().length >= 1,
+                show: (): boolean => this.checkFiltersDisplay(),
                 button: this.getMyFiltersButton(),
             },
             {
@@ -212,6 +208,18 @@ export class SettingsMenuComponent implements OnInit {
             }
         });
         return config;
+    }
+
+    checkFiltersDisplay(): boolean {
+        const filters = this.listStore.filterList.getFilters() ?? [];
+        const quickFilterBreakpoint = this.getQuickFiltersBreakpoint();
+        const totalFilters = filters.length;
+        const totalQuickFilters = filters.filter(obj => obj.attributes.quick_filter).length;
+
+        if(totalFilters > 0 && (totalQuickFilters > quickFilterBreakpoint || (totalFilters - totalQuickFilters) > 0)) {
+            return true;
+        }
+        return false;
     }
 
     getFilters(): SearchCriteriaFilter {
@@ -396,14 +404,6 @@ export class SettingsMenuComponent implements OnInit {
         };
     }
 
-    getDisplayAsButton(): DropdownButtonInterface {
-
-        return {
-            label: 'Display As',
-            klass: {},
-            items: []
-        };
-    }
 
     getColumnChooserButton(): ButtonInterface {
 
