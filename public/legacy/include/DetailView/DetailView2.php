@@ -123,6 +123,10 @@ class DetailView2 extends EditView
             require("modules/$this->module/metadata/$metadataFileName.php");
         }
 
+        if (file_exists("custom/modules/$this->module/metadata/ext_metadata/$metadataFileName.php")) {
+            require("custom/modules/$this->module/metadata/ext_metadata/$metadataFileName.php");
+        }
+
         $this->defs = $viewdefs[$this->module][$this->view];
     }
 
