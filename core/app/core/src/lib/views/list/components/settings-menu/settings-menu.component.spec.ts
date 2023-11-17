@@ -32,7 +32,6 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {ButtonModule} from '../../../../components/button/button.module';
-import {FilterUiModule} from '../../../../components/filter/filter.module';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {ColumnChooserModule} from '../../../../components/columnchooser/columnchooser.module';
 import {themeImagesMockData} from '../../../../store/theme-images/theme-images.store.spec.mock';
@@ -48,7 +47,6 @@ describe('SettingsmenuUiComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 ColumnChooserModule,
-                FilterUiModule,
                 HttpClientTestingModule,
                 ApolloTestingModule,
                 ImageModule,

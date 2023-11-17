@@ -38,8 +38,6 @@ export * from './components/field-grid/field-grid.module';
 export * from './components/field-layout/field-layout.component';
 export * from './components/field-layout/field-layout.model';
 export * from './components/field-layout/field-layout.module';
-export * from './components/filter/filter.component';
-export * from './components/filter/filter.module';
 export * from './components/footer/footer.component';
 export * from './components/footer/footer.module';
 export * from './components/full-page-spinner/full-page-spinner.component';
