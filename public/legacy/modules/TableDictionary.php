@@ -129,6 +129,7 @@ include('metadata/securitygroups_acl_rolesMetaData.php');
 include('metadata/securitygroups_defaultsMetaData.php');
 include('metadata/securitygroups_recordsMetaData.php');
 include('metadata/securitygroups_usersMetaData.php');
+include("metadata/cache_rebuildMetaData.php");
 
 include 'metadata/surveyquestionoptions_surveyquestionresponsesMetaData.php';
 
