@@ -28,9 +28,7 @@
 <form class="field-layout {{config.mode}}">
     <div [ngClass]="rowClass" *ngFor="let row of fieldGrid; index as i">
 
-        <div *ngFor="let col of row.cols; index as colNumber"
-             [class.field-column-bordered]="row.cols.length > 1 && colNumber < row.cols.length - 1"
-             [ngClass]="colClass">
+        <div *ngFor="let col of row.cols; index as colNumber" [ngClass]="colClass">
 
             <ng-container *ngIf="col.field && col.field.display !== 'none'">
                 <div class="label-container">
