@@ -204,18 +204,24 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setId('app');
         $language = $this->getLanguage();
         $theme = $this->getTheme();
-        $keys = [];
+        $keys = [
+            'app-metadata-system-configs',
+            'app-metadata-user-preferences-' . $userId,
+            'app-metadata-language-strings-' . $language,
+            'app-metadata-theme-images',
+            'app-metadata-navigation-' . $userId,
+            'app-metadata-module-metadata-' . $moduleName . '-' . $userId
+        ];
 
         if (!$this->isInstalled()){
-            return $metadata;
+            return $this->getMetadataWithoutCache($metadata, $moduleName, $language, $exposed, $theme);
         }
+
+        $this->cacheManager->checkForCacheUpdate($keys);
 
         $metadata->setSystemConfig([]);
         if (in_array('systemConfig', $exposed, true)) {
-            $key = 'app-metadata-system-configs';
-            array_push($keys, $key);
-            $systemConfig = $this->cache->get($key, function () {
-                error_log('getting cache system configs');
+            $systemConfig = $this->cache->get('app-metadata-system-configs', function () {
                 return $this->getSystemConfigs();
             });
             $metadata->setSystemConfig($systemConfig);
@@ -223,9 +229,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setUserPreferences([]);
         if (in_array('userPreferences', $exposed, true)) {
-            $key = 'app-metadata-user-preferences-' . $userId;
-            array_push($keys, $key);
-            $userPreferences = $this->cache->get($key, function () {
+            $userPreferences = $this->cache->get('app-metadata-user-preferences-' . $userId, function () {
                 return $this->getUserPreferences();
             });
             $metadata->setUserPreferences($userPreferences);
@@ -233,9 +237,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setLanguage([]);
         if (in_array('language', $exposed, true)) {
-            $key = 'app-metadata-language-strings-' . $language;
-            array_push($keys, $key);
-            $languageStrings = $this->cache->get($key, function () use ($language) {
+            $languageStrings = $this->cache->get('app-metadata-language-strings-' . $language, function () use ($language) {
                 return $this->getLanguageStrings($language) ?? [];
             });
             $metadata->setLanguage($languageStrings);
@@ -243,9 +245,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setThemeImages([]);
         if (in_array('themeImages', $exposed, true)) {
-            $key = 'app-metadata-theme-images';
-            array_push($keys, $key);
-            $themeImages = $this->cache->get($key, function () use ($theme) {
+            $themeImages = $this->cache->get('app-metadata-theme-images', function () use ($theme) {
                 return $this->themeImageService->get($theme)->toArray();
             });
             $metadata->setThemeImages($themeImages);
@@ -254,9 +254,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setNavigation([]);
         if (in_array('navigation', $exposed, true)) {
-            $key = 'app-metadata-navigation-' . $userId;
-            array_push($keys, $key);
-            $navigation = $this->cache->get($key, function () {
+            $navigation = $this->cache->get('app-metadata-navigation-' . $userId, function () {
                 return $this->navigationService->getNavbar()->toArray();
             });
             $metadata->setNavigation($navigation);
@@ -265,8 +263,6 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setModuleMetadata([]);
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
-            $key = 'app-metadata-module-metadata-' . $moduleName . '-' . $userId;
-            array_push($keys, $key);
             $navigation = $this->navigationService->getNavbar();
             $moduleMetadata = $this->getModuleMetadata($moduleName, $navigation) ?? [];
             $metadata->setModuleMetadata($moduleMetadata);
@@ -287,7 +283,6 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             $metadata->setAdminMetadata($adminMetadata);
         }
 
-        $this->cacheManager->checkForCacheUpdate($keys);
 
         return $metadata;
     }
@@ -604,5 +599,58 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected function isInstalled(): bool
     {
         return $this->installHandler->isLegacyInstalled();
+    }
+
+    protected function getMetadataWithoutCache($metadata, $moduleName, $language, $exposed, $theme): AppMetadata
+    {
+        $metadata->setSystemConfig([]);
+        if (in_array('systemConfig', $exposed, true)) {
+            $metadata->setSystemConfig($this->getSystemConfigs());
+        }
+
+        $metadata->setUserPreferences([]);
+        if (in_array('userPreferences', $exposed, true)) {
+            $metadata->setUserPreferences($this->getUserPreferences());
+        }
+
+        $metadata->setLanguage([]);
+        if (in_array('language', $exposed, true)) {
+            $metadata->setLanguage($this->getLanguageStrings($language) ?? []);
+        }
+
+        $metadata->setThemeImages([]);
+        if (in_array('themeImages', $exposed, true)) {
+            $metadata->setThemeImages($this->themeImageService->get($theme)->toArray());
+        }
+
+
+        $navigation = $this->navigationService->getNavbar();
+        $metadata->setNavigation([]);
+        if (in_array('navigation', $exposed, true)) {
+            $metadata->setNavigation($navigation->toArray());
+        }
+
+        $metadata->setModuleMetadata([]);
+        $metadata->setMinimalModuleMetadata([]);
+        if (in_array('moduleMetadata', $exposed, true)) {
+            $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
+        } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
+            $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+        }
+
+        /** @var \User $currentUser */
+        $currentUser = $this->userHandler->getCurrentUser() ?? null;
+
+        if (in_array('adminMetadata', $exposed, true) && !empty($currentUser) && $currentUser->isAdmin()) {
+            $adminMetadata = [
+                'adminPanel' => $this->adminPanelDefinitions->getAdminPanelDef()
+            ];
+            $metadata->setAdminMetadata($adminMetadata);
+        } elseif (!$currentUser->isAdmin()) {
+            $adminMetadata = ['adminPanel' => []];
+            $metadata->setAdminMetadata($adminMetadata);
+        }
+
+        return $metadata;
     }
 }
