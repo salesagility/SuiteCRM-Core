@@ -73,7 +73,7 @@ class EditAction implements ProcessHandlerInterface
     public function getRequiredACLs(Process $process): array
     {
         $options = $process->getOptions();
-        $module = $options['module'] ?? '';
+        $module = $options['payload']['recordModule'] ?? $options['module'] ?? '';
 
         $baseModule = $options['payload']['baseModule'] ?? '';
         $baseRecord = $options['payload']['baseRecordId'] ?? '';
