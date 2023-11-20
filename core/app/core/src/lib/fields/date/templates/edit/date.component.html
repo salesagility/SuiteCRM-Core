@@ -33,7 +33,6 @@
            [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
            [formControl]="field.formControl"
            [startDate]="dateModel"
-           (ngModelChange)="setModel($event)"
            #datepicker="ngbDatepicker">
     <span class="input-group-append align-items-end">
         <scrm-button [config]="getOpenButton(datepicker)">

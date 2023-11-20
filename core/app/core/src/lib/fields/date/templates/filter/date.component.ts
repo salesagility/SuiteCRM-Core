@@ -24,11 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEmpty, isEqual} from 'lodash-es';
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonInterface, isEmptyString, isVoid} from 'common';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
@@ -61,36 +61,20 @@ export class DateFilterFieldComponent extends BaseDateComponent implements OnIni
     }
 
     ngOnInit(): void {
-        super.ngOnInit();
-
         let current = null;
-        if (this.field.criteria.values && this.field.criteria.values.length > 0) {
+        if (!isEmpty(this.field.criteria.values)) {
             current = this.field.criteria.values[0];
+            if (isVoid(current) || isEmptyString(current)) {
+                current = null;
+            }
         }
+        this.setFormControlValue(current);
 
-        let formattedValue = null;
-        if (!isVoid(current) && !isEmptyString(current)) {
-            current = current.trim();
-            formattedValue = this.typeFormatter.toUserFormat(this.field.type, current, {mode: 'edit'});
-        }
-        this.field.value = current ?? '';
-        this.field.formControl.setValue(formattedValue);
-        this.field.formControl.markAsDirty();
-
-        if (!isVoid(current)) {
-            this.setModel(current);
-        }
         this.subscribeValueChanges();
     }
 
     ngOnDestroy(): void {
         this.unsubscribeAll();
-    }
-
-    setModel(value: any): void {
-        this.field.formControl.setValue(value);
-        this.field.value = this.formatter.toInternalFormat(value);
-        this.dateModel = this.formatter.dateFormatToStruct(value, this.formatter.getUserFormat());
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
@@ -109,10 +93,36 @@ export class DateFilterFieldComponent extends BaseDateComponent implements OnIni
         return ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
     }
 
-    protected setFieldValue(newValue): void {
-        this.field.value = newValue;
+    protected setCriteria(newValue: string): void {
         this.field.criteria.operator = '=';
         this.field.criteria.values = [newValue];
+    }
+
+    protected setDateModel(newValue: string): void{
+        this.dateModel = this.formatter.dateFormatToStruct(newValue, this.formatter.getUserFormat());
+    }
+
+    protected setFieldValue(newValue: string): void {
+        this.field.value = this.formatter.toInternalFormat(newValue);
+
+        this.setDateModel(newValue);
+        this.setCriteria(newValue);
+    }
+
+    protected setFormControlValue(newValue: string | null): void {
+        const trimmedNewValue: string | null = newValue?.trim();
+
+        let newFormattedValue: string | null = null;
+        if (!isVoid(trimmedNewValue) && !isEmptyString(trimmedNewValue)) {
+            newFormattedValue = this.typeFormatter.toUserFormat(this.field.type, trimmedNewValue, {mode: 'edit'});
+        }
+
+        if (isEqual(this.field.formControl.value, newFormattedValue)) {
+            return;
+        }
+
+        this.field.formControl.setValue(newFormattedValue);
+        this.field.formControl.markAsDirty();
     }
 
 }
