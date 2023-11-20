@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEqual} from 'lodash-es';
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonInterface, isEmptyString, isVoid} from 'common';
-import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
@@ -62,30 +62,20 @@ export class DateEditFieldComponent extends BaseDateComponent implements OnInit,
     }
 
     ngOnInit(): void {
-
-        // Note: handle NgbDatePicker default validation
-        // Note: convert empty form value to null for the ngb date validator to pass it
-        if (isVoid(this.field.value) || isEmptyString(this.field.value)) {
-            this.field.formControl.setValue(null);
-        } else {
-            this.field.formControl.setValue(this.formatter.toUserFormat(this.field.value, {toFormat: this.getDateFormat()}));
-        }
+        this.setFormControlValue(this.field.value);
 
         const adapter = this.dateAdapter as DateAdapter;
         adapter.setUserFormat(this.getDateFormat());
         const parserFormatter = this.dateParserFormatter as DateParserFormatter;
         parserFormatter.setUserFormat(this.getDateFormat());
-        this.dateModel = this.formatter.dateFormatToStruct(this.field.value, this.formatter.getInternalFormat());
+
+        this.setDateModel(this.field.value);
+
         this.subscribeValueChanges();
     }
 
     ngOnDestroy(): void {
         this.unsubscribeAll();
-    }
-
-    setModel(value: any): void {
-        this.field.value = this.formatter.toInternalFormat(value, {fromFormat: this.getDateFormat()});
-        this.dateModel = this.formatter.dateFormatToStruct(value, this.getDateFormat());
     }
 
     getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
@@ -104,4 +94,32 @@ export class DateEditFieldComponent extends BaseDateComponent implements OnInit,
         return ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
     }
 
+    protected setDateModel(newValue: string): void {
+        this.dateModel = this.formatter.dateFormatToStruct(newValue, this.getDateFormat());
+    }
+
+    protected setFieldValue(newValue: string): void {
+        this.field.value = this.formatter.toInternalFormat(newValue);
+
+        this.setDateModel(newValue);
+    }
+
+    protected setFormControlValue(newValue: string): void {
+        // Note: handle NgbDatePicker default validation
+        // Note: convert empty form value to null for the ngb date validator to pass it
+
+        const trimmedNewValue: string | null = newValue?.trim();
+
+        let newFormattedValue: string | null = null;
+        if (!isVoid(trimmedNewValue) && !isEmptyString(trimmedNewValue)) {
+            newFormattedValue = this.formatter.toUserFormat(trimmedNewValue, {toFormat: this.getDateFormat()});
+        }
+
+        if (isEqual(this.field.formControl.value, newFormattedValue)) {
+            return;
+        }
+
+        this.field.formControl.setValue(newFormattedValue);
+        this.field.formControl.markAsDirty();
+    }
 }

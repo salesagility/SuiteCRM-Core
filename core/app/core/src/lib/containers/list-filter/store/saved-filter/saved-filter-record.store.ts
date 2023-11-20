@@ -96,6 +96,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
     /**
      * Get search fields metadata
+     *
      * @returns SearchMetaFieldMap
      */
     public getSearchFields(): SearchMetaFieldMap {
@@ -104,6 +105,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
     /**
      * Set search fields metadata
+     *
      * @param {object} searchFields SearchMetaFieldMap
      */
     public setSearchFields(searchFields: SearchMetaFieldMap): void {
@@ -112,6 +114,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
     /**
      * Get list fields metadata
+     *
      * @returns SearchMetaFieldMap
      */
     public getListColumns(): ColumnDefinition[] {
@@ -120,6 +123,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
     /**
      * Set list fields metadata
+     *
      * @param {object} listColumns SearchMetaFieldMap
      */
     public setListColumns(listColumns: ColumnDefinition[]): void {
@@ -153,6 +157,7 @@ export class SavedFilterRecordStore extends RecordStore {
      * Extract base record
      *
      * @returns {object} Record
+     * @param record
      */
     extractBaseRecord(record: SavedFilter): Record {
         if (!record) {
@@ -170,7 +175,7 @@ export class SavedFilterRecordStore extends RecordStore {
             module: record.module,
             key: record.key,
             searchModule: record.searchModule,
-            criteria: criteria,
+            criteria,
             attributes: record.attributes,
         } as SavedFilter);
     }
@@ -206,11 +211,12 @@ export class SavedFilterRecordStore extends RecordStore {
 
     /**
      * Init Order by options using list view columns set as default
+     *
      * @param record
      */
     protected initOrderByOptions(record: SavedFilter): void {
         if (!record.fields || !record.fields.orderBy) {
-            return
+            return;
         }
 
         record.fields.orderBy.metadata = record.fields.orderBy.metadata || {} as FieldMetadata;
@@ -228,14 +234,16 @@ export class SavedFilterRecordStore extends RecordStore {
             options.push({
                 value: column.fieldDefinition.name || column.name,
                 label
-            })
+            });
         });
 
-        record.fields.orderBy.metadata.options$ = of(options).pipe(shareReplay());
+        record.fields.orderBy.definition.options = null;
+        record.fields.orderBy.options = options;
     }
 
     /**
      * Get criteria from filter
+     *
      * @param filter
      */
     protected getCriteria(filter: SavedFilter): SearchCriteria {

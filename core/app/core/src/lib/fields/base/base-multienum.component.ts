@@ -24,6 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isArray, isEmpty, uniqBy } from 'lodash-es';
+import { isVoid } from 'common';
 import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from './base-enum.component';
@@ -43,22 +45,42 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
         super(languages, typeFormatter, logic, logicDisplay);
     }
 
-    protected initValue(): void {
-        this.selectedValues = [];
+    protected subscribeValueChanges(): void {
+        if (!this.field?.formControl) {
+            return;
+        }
 
-        if (!this.field.valueList || this.field.valueList.length < 1) {
+        const formValueChangesSubscription = this.field.formControl.valueChanges.subscribe(
+            (value: string[]) => this.field.valueList = value);
+
+        this.subs.push(formValueChangesSubscription);
+    }
+
+    protected initValue(): void {
+        const fieldValueList = this.field.valueList;
+
+        if (isVoid(fieldValueList) || isEmpty(fieldValueList)) {
             this.initEnumDefault();
             return;
         }
 
-        this.field.valueList.forEach(value => {
-            if (typeof this.optionsMap[value] !== 'string') {
-                return;
-            }
-            this.selectedValues.push({
-                value,
-                label: this.optionsMap[value]
-            });
-        });
+        this.updateInternalState(fieldValueList);
+    }
+
+    protected updateInternalState(value: string | string[] = []): void {
+        const valueArray = isArray(value) ? value : [value];
+
+        this.selectedValues = valueArray.map(valueElement=>this.buildOptionFromValue(valueElement));
+        this.selectedValues = uniqBy(this.selectedValues, 'value');
+
+        this.syncSelectedValuesWithForm();
+    }
+
+    protected syncSelectedValuesWithForm(): string[] {
+        const selectedValuesValueMap = this.selectedValues.map(selectedValue => selectedValue.value);
+
+        this.setFormControlValue(selectedValuesValueMap);
+
+        return selectedValuesValueMap;
     }
 }
