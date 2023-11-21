@@ -130,8 +130,10 @@ class RepairAndClear
 
     public function clearCoreCache()
     {
-        $coreCachePath = __DIR__ . '/../../../../cache/';
-        rmdir_recursive($coreCachePath);
+        if (empty($GLOBALS['installing'])) {
+            $coreCachePath = __DIR__ . '/../../../../cache/';
+            rmdir_recursive($coreCachePath);
+        }
     }
 
     public function repairDatabase()
