@@ -25,7 +25,13 @@
  */
 
 import {Injectable} from '@angular/core';
-import {FieldDefinitionMap, FieldMap, isVoid, Record, ViewFieldDefinition} from 'common';
+import {
+    FieldDefinitionMap,
+    FieldMap,
+    isVoid,
+    Record,
+    ViewFieldDefinition
+} from 'common';
 import {FormGroup} from '@angular/forms';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldManager} from './field/field.manager';
@@ -78,7 +84,18 @@ export class RecordManager {
         }
 
         viewFieldDefinitions.forEach(viewField => {
-            if (!viewField || !viewField.name) {
+            if (!viewField || !viewField.name || (viewField?.vardefBased ?? false)) {
+                return;
+            }
+            this.fieldManager.addField(record, viewField, this.language);
+        });
+
+        viewFieldDefinitions.forEach(viewField => {
+            if (!viewField || !viewField.name || !(viewField?.vardefBased ?? false)) {
+                return;
+            }
+
+            if(record.fields[viewField.name]) {
                 return;
             }
             this.fieldManager.addField(record, viewField, this.language);

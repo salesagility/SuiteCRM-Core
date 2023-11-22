@@ -25,29 +25,65 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
 namespace App\Process\LegacyHandler;
 
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
+use App\Process\LegacyHandler\PortalUserActivator;
 use App\Process\Service\ProcessHandlerInterface;
-use BadFunctionCallException;
-use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use ResetPassword;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
+class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
     protected const MSG_OPTIONS_NOT_FOUND = 'Process options is not defined';
-    protected const PROCESS_TYPE = 'recover-password';
+    protected const PROCESS_TYPE = 'record-enable-portal-user';
 
     /**
      * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var ModuleNameMapperInterface
+     */
+    protected $moduleNameMapper;
+
+    /**
+     * LinkRelationHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param SessionInterface $session
+     * @param ModuleNameMapperInterface $moduleNameMapper
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        SessionInterface $session,
+        ModuleNameMapperInterface $moduleNameMapper
+    )
+    {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
+        $this->moduleNameMapper = $moduleNameMapper;
+    }
 
     /**
      * @inheritDoc
@@ -70,17 +106,8 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
      */
     public function requiredAuthRole(): string
     {
-        return '';
+        return 'ROLE_USER';
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRequiredACLs(Process $process): array
-    {
-        return [];
-    }
-
 
     /**
      * @inheritDoc
@@ -88,8 +115,6 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
     public function configure(Process $process): void
     {
         //This process is synchronous
-        //We aren't going to store a record on db
-        //thus we will use process type as the id
         $process->setId(self::PROCESS_TYPE);
         $process->setAsync(false);
     }
@@ -103,52 +128,55 @@ class ResetPasswordHandler extends LegacyHandler implements ProcessHandlerInterf
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
 
-        ['username' => $username, 'useremail' => $useremail] = $process->getOptions();
+        $options = $process->getOptions();
 
-        if (empty($username) || empty($useremail)) {
+        if (empty($options['id'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
 
     /**
      * @inheritDoc
+     * @throws \JsonException
      */
     public function run(Process $process)
     {
         $this->init();
 
-        /* @noinspection PhpIncludeInspection */
-        require_once 'modules/Users/services/ResetPassword.php';
+        $options = $process->getOptions();
 
-        $service = new ResetPassword();
-
-        ['username' => $username, 'useremail' => $useremail] = $process->getOptions();
-
-        $process->setStatus('success');
-        $process->setMessages([
-            'LBL_RECOVER_PASSWORD_SUCCESS'
-        ]);
-
-        try {
-            $service->sendResetLink($username, $useremail);
-        } catch (BadFunctionCallException|\InvalidArgumentException $e) {
-            //logged by suite 7
-        } catch (Exception $unknownException) {
-            $this->logger->error($unknownException->getMessage(), ['exception' => $unknownException]);
-            $process->setStatus('error');
-            $process->setMessages([
-                'ERR_AJAX_LOAD_FAILURE'
-            ]);
-        }
-
+        $user_activator = new PortalUserActivator();
+        $user_activator->switchPortalUserStatus($options['id'], 'LBL_ENABLE_PORTAL_USER_FAILED', true);
+        $process->setData(['reload' => true]);
         $this->close();
     }
 
     /**
      * @inheritDoc
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
     }
 }

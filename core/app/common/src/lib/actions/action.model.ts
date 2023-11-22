@@ -88,6 +88,7 @@ export interface Action {
     params?: { [key: string]: any };
     extraParams?: { [key: string]: any };
     acl?: string[];
+    display?: string;
 
     [key: string]: any;
 }

@@ -30,6 +30,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 
 export interface ViewFieldDefinition {
     name?: string;
+    vardefBased?: boolean;
     label?: string;
     labelKey?: string;
     dynamicLabelKey?: string;
