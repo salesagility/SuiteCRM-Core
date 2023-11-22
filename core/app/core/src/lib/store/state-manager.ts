@@ -85,6 +85,11 @@ export class StateManager {
         });
     }
 
+    public clearBackendCacheable(): void {
+        this.clearAuthBased();
+        this.systemConfigStore.clear();
+    }
+
     /**
      * Internal api
      */

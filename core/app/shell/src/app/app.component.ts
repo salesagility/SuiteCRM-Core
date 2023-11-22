@@ -96,7 +96,7 @@ export class AppComponent {
 
         resetCacheActions.some(action => {
             if (action === 'any' || action === view) {
-                this.stateManager.clearAuthBased();
+                this.stateManager.clearBackendCacheable();
                 return true;
             }
         });
