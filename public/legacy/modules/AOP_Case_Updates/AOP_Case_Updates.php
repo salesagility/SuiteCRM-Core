@@ -106,7 +106,8 @@ class AOP_Case_Updates extends Basic
      */
     public function save($check_notify = false)
     {
-        $this->name = SugarCleaner::cleanHtml($this->name);
+
+        $this->name = SugarCleaner::cleanHtml($this->name ?? '');
         $this->parseDescription();
         parent::save($check_notify);
         if (file_exists('custom/modules/AOP_Case_Updates/CaseUpdatesHook.php')) {

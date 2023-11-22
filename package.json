@@ -1,6 +1,6 @@
 {
   "name": "suitecrm",
-  "version": "8.4.1",
+  "version": "8.4.2",
   "scripts": {
     "ng": "ng",
     "start": "npm run start:shell",

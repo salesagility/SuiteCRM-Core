@@ -65,6 +65,8 @@ services:
       $adminOnlyModuleActions: '%system.admin_only_module_actions%'
       $navbarAdministrationOverrides: '%navbar.administration_override%'
       $quickActions: '%quick_actions%'
+      $graphqlShowDocs: '%graphql.graphql_show_docs%'
+
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -286,6 +288,10 @@ services:
 
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
+    public: true
+
+  graphql.introspection_manager:
+    alias: App\Security\GraphqlIntrospectionManager
     public: true
 
   entity_manager:
