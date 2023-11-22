@@ -173,7 +173,7 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
             }
 
             if ($value['module']['access']['aclaccess'] < ACL_ALLOW_ENABLED) {
-                continue;
+                unset($modules[$key]);
             }
 
             if ($value['module']['access']['aclaccess'] === ACL_ALLOW_DISABLED) {
