@@ -108,14 +108,14 @@ class SearchDefsEnumToRelateTypeMapper implements ViewDefinitionMapperInterface
             $field['fieldDefinition']['groupKey'] = 'assigned_user';
 
             $field['fieldDefinition']['groupFields'] = [
-                'assigned_user_id' => array_merge($vardefs['assigned_user_id'], [
+                'assigned_user_id' => array_merge($vardefs['assigned_user_id'] ?? [], [
                     'name' => 'assigned_user_id',
                     'type' => 'id',
                     'showLabel' => [],
                     'display' => 'none',
                     'group' => 'assigned_user'
                 ]),
-                'assigned_user_name' => array_merge($vardefs['assigned_user_name'], [
+                'assigned_user_name' => array_merge($vardefs['assigned_user_name'] ?? [], [
                     'name' => 'assigned_user_name',
                     'type' => 'relate',
                     'showLabel' => ['*'],
