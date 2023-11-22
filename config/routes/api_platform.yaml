@@ -9,4 +9,4 @@ swagger_ui:
 
 graphiql:
   path: /docs/graphql
-  controller: api_platform.graphql.action.graphiql
+  controller: api_platform.graphql.action.graphql_playground
