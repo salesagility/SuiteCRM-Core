@@ -97,7 +97,7 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
     {
         $this->init();
 
-        global $db;
+        global $db, $current_user;
 
         $query = "SELECT * FROM cache_rebuild WHERE cache_key='rebuild_all'";
         $result = $db->fetchOne($query);
@@ -118,10 +118,11 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
             foreach ($keys as $key) {
                 if ($row['cache_key'] == $key && $row['rebuild'] == 1) {
                     $this->cache->delete($key);
+                    $_SESSION[$current_user->user_name.'_PREFERENCES'] = [];
+                    $query = "DELETE FROM cache_rebuild ";
+                    $query .= "WHERE cache_key='$key'";
+                    $db->query($query);
                 }
-                $query = "DELETE FROM cache_rebuild ";
-                $query .= "WHERE cache_key='$key'";
-                $db->query($query);
             }
         }
 
