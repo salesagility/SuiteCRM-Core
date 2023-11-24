@@ -1,0 +1,12 @@
+
+@media all and (max-width: $breakpoint-xxlarge) {
+  .ng2-dropdown-menu {
+    max-width: 320px!important;
+  }
+}
+
+@media all and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+  .ng2-dropdown-menu {
+    max-width: 260px!important;
+  }
+}
