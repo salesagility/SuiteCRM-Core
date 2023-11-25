@@ -122,6 +122,7 @@ export class MetadataStore implements StateStore {
      */
     listViewColumns$: Observable<ColumnDefinition[]>;
     listViewLineActions$: Observable<Action[]>;
+    listViewTableActions$: Observable<Action[]>;
     listMetadata$: Observable<ListViewMeta>;
     searchMetadata$: Observable<SearchMeta>;
     recordViewMetadata$: Observable<RecordViewMetadata>;
@@ -169,6 +170,7 @@ export class MetadataStore implements StateStore {
     constructor(protected recordGQL: EntityGQL, protected appState: AppStateStore) {
         this.listViewColumns$ = this.state$.pipe(map(state => state.listView.fields), distinctUntilChanged());
         this.listViewLineActions$ = this.state$.pipe(map(state => state.listView.lineActions), distinctUntilChanged());
+        this.listViewTableActions$ = this.state$.pipe(map(state => state.listView.tableActions), distinctUntilChanged());
         this.listMetadata$ = this.state$.pipe(map(state => state.listView), distinctUntilChanged());
         this.searchMetadata$ = this.state$.pipe(map(state => state.search), distinctUntilChanged());
         this.recordViewMetadata$ = this.state$.pipe(map(state => state.recordView), distinctUntilChanged());
@@ -383,6 +385,7 @@ export class MetadataStore implements StateStore {
             fields: [],
             bulkActions: {},
             lineActions: [],
+            tableActions: [],
             chartTypes: {},
             filters: []
         };
@@ -398,6 +401,7 @@ export class MetadataStore implements StateStore {
         const entries = {
             bulkActions: 'bulkActions',
             lineActions: 'lineActions',
+            tableActions: 'tableActions',
             sidebarWidgets: 'sidebarWidgets',
             availableFilters: 'filters',
             paginationType: 'paginationType'

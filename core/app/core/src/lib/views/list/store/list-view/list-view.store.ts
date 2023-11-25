@@ -124,6 +124,7 @@ export class ListViewStore extends ViewStore implements StateStore {
     columns: BehaviorSubject<ColumnDefinition[]>;
     columns$: Observable<ColumnDefinition[]>;
     lineActions$: Observable<Action[]>;
+    tableActions$: Observable<Action[]>
     records$: Observable<Record[]>;
     criteria$: Observable<SearchCriteria>;
     context$: Observable<ViewContext>;
@@ -180,6 +181,7 @@ export class ListViewStore extends ViewStore implements StateStore {
 
         this.columns$ = metadataStore.listViewColumns$;
         this.lineActions$ = metadataStore.listViewLineActions$;
+        this.tableActions$ = metadataStore.listViewTableActions$;
         this.records$ = this.recordList.records$;
         this.criteria$ = this.recordList.criteria$;
         this.context$ = this.recordList.criteria$.pipe(map(() => this.getViewContext()));

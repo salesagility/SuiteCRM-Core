@@ -35,6 +35,7 @@ export interface RecordListMeta {
     fields: ColumnDefinition[];
     bulkActions: BulkActionsMap;
     lineActions: Action[];
+    tableActions?: Action[];
     filters: Filter[];
     maxHeight?: number;
 }
