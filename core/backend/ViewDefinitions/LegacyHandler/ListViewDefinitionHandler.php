@@ -34,6 +34,7 @@ use App\FieldDefinitions\Entity\FieldDefinition;
 use App\Filters\Service\FilterDefinitionProviderInterface;
 use App\Process\Service\BulkActionDefinitionProviderInterface;
 use App\Process\Service\LineActionDefinitionProviderInterface;
+use App\Process\Service\TableActionDefinitionProviderInterface;
 use App\ViewDefinitions\Service\FieldAliasMapper;
 use App\ViewDefinitions\Service\WidgetDefinitionProviderInterface;
 use Exception;
@@ -82,6 +83,11 @@ class ListViewDefinitionHandler extends LegacyHandler
     private $lineActionDefinitionProvider;
 
     /**
+     * @var TableActionDefinitionProviderInterface
+     */
+    private $tableActionDefinitionProvider;
+
+    /**
      * @var FilterDefinitionProviderInterface
      */
     private $filterDefinitionProvider;
@@ -107,6 +113,7 @@ class ListViewDefinitionHandler extends LegacyHandler
      * @param BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider
      * @param WidgetDefinitionProviderInterface $widgetDefinitionProvider
      * @param LineActionDefinitionProviderInterface $lineActionDefinitionProvider
+     * @param TableActionDefinitionProviderInterface $tableActionDefinitionProvider
      * @param FilterDefinitionProviderInterface $filterDefinitionProvider
      * @param FieldAliasMapper $fieldAliasMapper
      * @param SessionInterface $session
@@ -122,6 +129,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         BulkActionDefinitionProviderInterface $bulkActionDefinitionProvider,
         WidgetDefinitionProviderInterface     $widgetDefinitionProvider,
         LineActionDefinitionProviderInterface $lineActionDefinitionProvider,
+        TableActionDefinitionProviderInterface $tableActionDefinitionProvider,
         FilterDefinitionProviderInterface     $filterDefinitionProvider,
         FieldAliasMapper                      $fieldAliasMapper,
         SessionInterface                      $session,
@@ -140,6 +148,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         $this->bulkActionDefinitionProvider = $bulkActionDefinitionProvider;
         $this->widgetDefinitionProvider = $widgetDefinitionProvider;
         $this->lineActionDefinitionProvider = $lineActionDefinitionProvider;
+        $this->tableActionDefinitionProvider = $tableActionDefinitionProvider;
         $this->filterDefinitionProvider = $filterDefinitionProvider;
         $this->listViewSidebarWidgets = $listViewSidebarWidgets;
         $this->fieldAliasMapper = $fieldAliasMapper;
@@ -194,6 +203,7 @@ class ListViewDefinitionHandler extends LegacyHandler
             'columns' => [],
             'bulkActions' => [],
             'lineActions' => [],
+            'tableActions' => [],
             'availableFilters' => [],
             'sidebarWidgets' => [],
             'paginationType' => '',
@@ -234,6 +244,7 @@ class ListViewDefinitionHandler extends LegacyHandler
             ) ?? [];
 
         $metadata['lineActions'] = $this->lineActionDefinitionProvider->getLineActions($module) ?? [];
+        $metadata['tableActions'] = array_values($this->tableActionDefinitionProvider->getActions($module) ?? []);
         $metadata['sidebarWidgets'] = $this->widgetDefinitionProvider->getSidebarWidgets(
             $this->listViewSidebarWidgets,
             $module,

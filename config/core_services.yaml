@@ -32,6 +32,7 @@ services:
       $baseActions: '%module.base_actions%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewLineActions: '%module.listview.line_action%'
+      $listViewTableActions: '%module.listview.table_action%'
       $listViewLineActionsLimits: '%module.listview.line_actions_limits%'
       $listViewSidebarWidgets: '%module.listview.sidebar_widgets%'
       $listViewColumnLimits: '%module.listview.column_limits%'
