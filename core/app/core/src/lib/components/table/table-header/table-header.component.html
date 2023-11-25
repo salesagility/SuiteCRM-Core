@@ -33,6 +33,7 @@
                                [selectionSource]="selection"
                                [actionSource]="bulkActions">
         </scrm-bulk-action-menu>
+        <scrm-action-group-menu [config]="tableActions" buttonClass="btn table-action-button"></scrm-action-group-menu>
         <div class="col mx-0 pl-0 table-pagination-wrapper">
             <scrm-pagination *ngIf="pagination"
                              [allowPagination]="isPaginationEnabled()"
