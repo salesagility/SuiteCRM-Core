@@ -134,6 +134,8 @@ class RecordViewGroupTypeMapper implements ViewDefinitionMapperInterface
                 $cellDefinition['groupKey'] = $cell['displayParams']['key'];
             }
 
+            $this->mapper->replaceDynamicFields($groupedType, $cellDefinition);
+
             $groupFields = $cellDefinition['groupFields'] ?? [];
 
             if (empty($groupFields)) {
@@ -150,6 +152,12 @@ class RecordViewGroupTypeMapper implements ViewDefinitionMapperInterface
                 );
                 $this->mapper->setDisplay($groupedType, $cellDefinition);
                 $this->mapper->setShowLabel($groupedType, $cellDefinition);
+
+                $cellDefinition['groupFields'] = $this->mapper->getGroupedFieldDefinitions(
+                    array_keys($groupFields),
+                    $vardefs,
+                    $groupedType
+                );
             }
 
             $cell['fieldDefinition'] = $cellDefinition;

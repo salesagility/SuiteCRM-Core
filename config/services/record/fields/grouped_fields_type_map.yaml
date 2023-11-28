@@ -24,6 +24,13 @@ parameters:
       showLabel:
         edit: ['*']
         filter: ['*']
+      replaceAttributes:
+        - name
+      definition:
+        '{name}_street':
+          type: 'text'
+          metadata:
+            rows: 3
     parent:
       name: '{name}-group'
       display: inline

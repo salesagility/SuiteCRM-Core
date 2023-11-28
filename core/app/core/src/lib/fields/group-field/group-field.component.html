@@ -36,7 +36,8 @@
 
             <div *ngIf="isModeEnabled(mode, groupField)"
                  [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
-                 class="field-group-item d-flex flex-column justify-content-end h-100 w-100">
+                 class="field-group-item d-flex flex-column justify-content-end w-100"
+                 [class.h-100]="getDirection() === 'flex-row'">
 
                 <!-- LABEL -->
                 <span *ngIf="groupField.labelKey && showLabel(groupField.definition.name)"
