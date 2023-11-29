@@ -40,8 +40,31 @@ parameters:
     inline_confirmation_loading_delay: 300
     displayed_quick_filters:
       XSmall: 1
-      Small: 2
+      Small: 4
       Medium: 2
       Large: 3
       XLarge: 5
-
+    default_displayed_quick_filters:
+      XSmall: 1
+      Small: 4
+      Medium: 2
+      Large: 3
+      XLarge: 5
+    enable_quick_filters:
+      XSmall: false
+      Small: true
+      Medium: true
+      Large: true
+      XLarge: true
+    quick_filters_breakdown_screen_sizes:
+      XSmall: true
+      Small: true
+      Medium: false
+      Large: false
+      XLarge: false
+    widget_swap_screen_sizes:
+      XSmall: true
+      Small: true
+      Medium: false
+      Large: false
+      XLarge: false

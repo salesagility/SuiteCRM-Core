@@ -1,6 +1,6 @@
 parameters:
   module.listview.settings_limits:
-    XSmall: 1
+    XSmall: 3
     Small: 3
     Medium: 5
     Large: 5
