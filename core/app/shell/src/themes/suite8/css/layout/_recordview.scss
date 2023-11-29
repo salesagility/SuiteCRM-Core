@@ -81,15 +81,17 @@
 .record-view-name {
   color: $median-grey;
   font-size: 1.5em;
-  margin-left: 1.3rem;
   word-wrap: break-word;
 }
 
 .record-view-name-scrolled {
   color: $median-grey;
   font-size: 1.5em;
-  margin-left: 1.3rem;
   word-wrap: break-word;
+}
+
+.record-view-back-button {
+  margin-left: 1.3rem;
 }
 
 .record-view-actions {

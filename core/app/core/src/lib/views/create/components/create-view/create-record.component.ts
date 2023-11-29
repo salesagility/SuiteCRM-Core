@@ -76,6 +76,7 @@ export class CreateRecordComponent implements OnInit, OnDestroy {
         }
         this.recordSub = this.recordStore.init(this.appState.getModule(), recordId, mode, params).subscribe();
         this.vm$ = this.recordStore.vm$;
+        this.appState.removeAllPrevRoutes();
     }
 
     ngOnDestroy(): void {

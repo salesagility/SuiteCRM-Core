@@ -467,3 +467,22 @@ button.settings-button.dropdown-toggle::after {
 .btn-link:hover {
   color: $coral-pink;
 }
+
+.back-button {
+  width: 1em;
+  height: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid $shell-grey;
+  fill: $shell-grey;
+  padding: 0.6em;
+  font-size: 1.4em;
+  &:hover {
+    background-color: $light-grey;
+  }
+  &:focus {
+    outline: none;
+  }
+}

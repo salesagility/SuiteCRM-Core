@@ -54,6 +54,7 @@ export class RecordComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         let mode = 'detail' as ViewMode;
+        this.appState.addToPrevRoute(this.appState.getRouteUrl());
         const data = (this.route.snapshot && this.route.snapshot.data) || {};
 
         if (data.mode) {

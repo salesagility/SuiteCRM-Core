@@ -43,6 +43,7 @@ export interface AppState {
     preLoginUrl?: string;
     currentUser?: User;
     activeRequests?: number;
+    prevRoutes?: string[];
 }
 
 const initialState: AppState = {
@@ -55,6 +56,7 @@ const initialState: AppState = {
     preLoginUrl: null,
     currentUser: null,
     activeRequests: 0,
+    prevRoutes: []
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -389,5 +391,32 @@ export class AppStateStore implements StateStore {
      */
     protected updateState(state: AppState): void {
         this.store.next(internalState = state);
+    }
+
+    getLatestPrevRoute(): string {
+        return internalState.prevRoutes[internalState.prevRoutes.length - 2];
+    }
+
+    getPrevRoutes(): string[] {
+        return internalState.prevRoutes;
+    }
+
+    addToPrevRoute(route: string): void {
+        const prevRoutes = this.getPrevRoutes();
+        if(prevRoutes.length > 0 && prevRoutes[prevRoutes.length - 1] === route) {
+            return;
+        }
+        prevRoutes.push(route);
+        this.updateState({...internalState});
+    }
+
+    removeLatestPrevRoute(): void {
+        const prevRoutes = this.getPrevRoutes();
+        const newArr = prevRoutes.slice(0, prevRoutes.length - 1);
+        this.updateState({...internalState, prevRoutes: newArr});
+    }
+
+    removeAllPrevRoutes(): void {
+        this.updateState({...internalState, prevRoutes: []});
     }
 }

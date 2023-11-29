@@ -52,6 +52,7 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.appState.removeAllPrevRoutes();
         this.listSub = this.listStore.init(this.appState.getModule()).subscribe();
         this.vm$ = this.listStore.vm$;
     }
