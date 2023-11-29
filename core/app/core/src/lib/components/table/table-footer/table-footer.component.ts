@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {ButtonInterface, PaginationDataSource, SelectionDataSource} from 'common';
+import {ActionDataSource, ButtonInterface, PaginationDataSource, SelectionDataSource} from 'common';
 import {BulkActionDataSource} from '../../bulk-action-menu/bulk-action-menu.component';
 import {TableConfig} from "../table.model";
 
@@ -37,6 +37,7 @@ export class TableFooterComponent {
     @Input() selection: SelectionDataSource;
     @Input() bulkActions: BulkActionDataSource;
     @Input() pagination: PaginationDataSource;
+    @Input() tableActions: ActionDataSource;
     @Input() paginationType: string;
     @Input() config: TableConfig;
 
