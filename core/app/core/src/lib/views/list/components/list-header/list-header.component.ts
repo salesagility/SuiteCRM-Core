@@ -31,6 +31,8 @@ import {ModuleNavigation} from '../../../../services/navigation/module-navigatio
 import {RecordPanelConfig} from '../../../../containers/record-panel/components/record-panel/record-panel.model';
 import {Subscription} from 'rxjs';
 import {RecordPanelAdapter} from '../../adapters/record-panel.adapter';
+import {QuickFiltersService} from "../../services/quick-filters.service";
+import {isTrue} from 'common';
 
 @Component({
     selector: 'scrm-list-header',
@@ -41,13 +43,16 @@ export class ListHeaderComponent implements OnInit, OnDestroy {
 
     actionPanel = '';
     recordPanelConfig: RecordPanelConfig;
+    showQuickFilters = false;
+    enableQuickFilters = false;
     protected subs: Subscription[] = [];
 
     constructor(
         public filterAdapter: FilterAdapter,
         protected listStore: ListViewStore,
         protected moduleNavigation: ModuleNavigation,
-        protected recordPanelAdapter: RecordPanelAdapter
+        protected recordPanelAdapter: RecordPanelAdapter,
+        public quickFilters: QuickFiltersService
     ) {
     }
 
@@ -66,6 +71,14 @@ export class ListHeaderComponent implements OnInit, OnDestroy {
                 this.recordPanelConfig = null;
             }
         });
+
+        this.subs.push(this.quickFilters.breakdown$.subscribe(breakdown => {
+            this.showQuickFilters = isTrue(breakdown);
+        }))
+
+        this.subs.push(this.quickFilters.enabled$.subscribe(enabled => {
+            this.enableQuickFilters = isTrue(enabled ?? false);
+        }))
     }
 
     ngOnDestroy(): void {

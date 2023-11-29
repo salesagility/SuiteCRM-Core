@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {ViewContext, WidgetMetadata} from 'common';
 import {map} from 'rxjs/operators';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
@@ -36,6 +36,7 @@ import {TableConfig} from '../../../../components/table/table.model';
 import {TableAdapter} from '../../adapters/table.adapter';
 import {ListViewSidebarWidgetAdapter} from '../../adapters/sidebar-widget.adapter';
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {ListViewSidebarWidgetService} from "../../services/list-view-sidebar-widget.service";
 
 export interface ListContainerState {
     sidebarWidgetConfig: {
@@ -51,18 +52,16 @@ export interface ListContainerState {
     providers: [TableAdapter, MaxColumnsCalculator, ListViewSidebarWidgetAdapter],
 })
 
-export class ListContainerComponent implements OnInit {
+export class ListContainerComponent implements OnInit, OnDestroy {
     screen: ScreenSize = ScreenSize.Medium;
     maxColumns = 5;
     tableConfig: TableConfig;
+    displayWidgets: boolean = true;
+    swapWidgets: boolean = false;
+    sidebarWidgetConfig: any;
+    widgetDisplayType: string = 'none';
 
-    vm$: Observable<ListContainerState> = this.sidebarWidgetAdapter.config$.pipe(
-        map((
-            sidebarWidgetConfig
-        ) => ({
-            sidebarWidgetConfig,
-        })),
-    );
+    protected subs: Subscription[] = [];
 
     constructor(
         public store: ListViewStore,
@@ -70,7 +69,8 @@ export class ListContainerComponent implements OnInit {
         protected maxColumnCalculator: MaxColumnsCalculator,
         public languageStore: LanguageStore,
         protected sidebarWidgetAdapter: ListViewSidebarWidgetAdapter,
-        protected systemConfigs: SystemConfigStore
+        protected systemConfigs: SystemConfigStore,
+        protected sidebarWidgetHandler: ListViewSidebarWidgetService
     ) {
     }
 
@@ -86,6 +86,22 @@ export class ListContainerComponent implements OnInit {
             this.tableConfig.maxListHeight = ui.listview_max_height;
         }
         this.tableConfig.paginationType = this?.store?.metadata?.listView?.paginationType ?? this.tableConfig.paginationType;
+
+
+        this.subs.push(this.sidebarWidgetAdapter.config$.subscribe(sidebarWidgetConfig => {
+            this.sidebarWidgetConfig = sidebarWidgetConfig;
+            this.displayWidgets = this.store.widgets && this.store.showSidebarWidgets;
+            this.widgetDisplayType = this.getDisplay(!!(this.sidebarWidgetConfig.show && this.sidebarWidgetConfig.widgets));
+        }));
+
+        this.subs.push(this.sidebarWidgetHandler.widgetSwap$.subscribe(swap => {
+            this.swapWidgets = swap;
+        }));
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
+        this.subs = [];
     }
 
     getMaxColumns(): Observable<number> {

@@ -28,19 +28,26 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {ListViewModel, ListViewStore} from '../../store/list-view/list-view.store';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {QuickFiltersService} from "../../services/quick-filters.service";
+import {ListViewSidebarWidgetService} from "../../services/list-view-sidebar-widget.service";
 
 @Component({
     selector: 'scrm-list',
     templateUrl: './list.component.html',
     styleUrls: [],
-    providers: [ListViewStore]
+    providers: [ListViewStore, QuickFiltersService, ListViewSidebarWidgetService]
 })
 export class ListComponent implements OnInit, OnDestroy {
     listSub: Subscription;
 
     vm$: Observable<ListViewModel> = null;
 
-    constructor(protected appState: AppStateStore, protected listStore: ListViewStore) {
+    constructor(
+        protected appState: AppStateStore,
+        protected listStore: ListViewStore,
+        protected quickFilters: QuickFiltersService,
+        protected sidebarWidgetHandler: ListViewSidebarWidgetService
+    ) {
 
     }
 
@@ -53,6 +60,9 @@ export class ListComponent implements OnInit, OnDestroy {
         if (this.listSub) {
             this.listSub.unsubscribe();
         }
+
+        this.quickFilters.destroy();
+        this.sidebarWidgetHandler.destroy();
 
         this.listStore.destroy();
     }

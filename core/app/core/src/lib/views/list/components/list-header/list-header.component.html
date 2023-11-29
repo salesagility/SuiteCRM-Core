@@ -28,16 +28,27 @@
 <ng-container>
     <div class="list-view-header">
         <div class="row align-items-start mr-0">
-            <div class="col-md-4 d-flex align-items-center">
+            <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-sm-start">
                     <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
 
             </div>
             <div class="col-md-8">
-                <div class="row justify-content-end mr-0 ml-1">
+                <div class="row justify-content-center justify-content-sm-end mr-0 ml-md-1">
                     <scrm-settings-menu></scrm-settings-menu>
                 </div>
             </div>
         </div>
+
+        <div *ngIf="showQuickFilters && enableQuickFilters"
+             class="d-flex align-items-baseline w-100 justify-content-end pr-3">
+            <div class="text-nowrap text-muted fs-70 pl-1 mr-2 ">
+                <scrm-label labelKey="LBL_QUICK_FILTERS"></scrm-label>
+            </div>
+            <div class="quick-filter-border pr-xxl-1 mr-xxl-1">
+                <scrm-button-group *ngIf="quickFilters.config$" [config$]="quickFilters.config$" [klass]="'quick-filter-button'"></scrm-button-group>
+            </div>
+        </div>
+
         <div class="list-view-hr-container">
             <hr class="list-view-hr">
         </div>
