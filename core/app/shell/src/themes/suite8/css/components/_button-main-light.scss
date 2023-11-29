@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -28,71 +28,71 @@
  * Override main button color and outline main button
  */
 
-.btn-outline-main {
-  color: $main !important;
-  border-color: $main !important;
+.btn-outline-main-light {
+  color: $main-light !important;
+  border-color: $main-light !important;
 }
 
-.btn-outline-main:hover {
+.btn-outline-main-light:hover {
   color: $white !important;
-  background-color: $main !important;
-  border-color: $main !important;
+  background-color: $main-light !important;
+  border-color: $main-light !important;
 }
 
-.btn-outline-main:focus, .btn-outline-main.focus {
+.btn-outline-main-light:focus, .btn-outline-main-light.focus {
   box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
 }
 
-.btn-outline-main.disabled, .btn-outline-main:disabled {
-  color: $main !important;
+.btn-outline-main-light.disabled, .btn-outline-main-light:disabled {
+  color: $main-light !important;
   background-color: transparent !important;
 }
 
-.btn-outline-main:not(:disabled):not(.disabled):active, .btn-outline-main:not(:disabled):not(.disabled).active,
-.show > .btn-outline-main.dropdown-toggle {
+.btn-outline-main-light:not(:disabled):not(.disabled):active, .btn-outline-main-light:not(:disabled):not(.disabled).active,
+.show > .btn-outline-main-light.dropdown-toggle {
   color: $white !important;
-  background-color: $main !important;
-  border-color: $main !important;
+  background-color: $main-light !important;
+  border-color: $main-light !important;
 }
 
-.btn-outline-main:not(:disabled):not(.disabled):active:focus, .btn-outline-main:not(:disabled):not(.disabled).active:focus,
-.show > .btn-outline-main.dropdown-toggle:focus {
+.btn-outline-main-light:not(:disabled):not(.disabled):active:focus, .btn-outline-main-light:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-main-light.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
 }
 
-.btn-main {
+.btn-main-light {
   color: $white !important;
-  background-color: $main !important;
-  border-color: $main !important;
+  background-color: $main-light !important;
+  border-color: $main-light !important;
 }
 
-.btn-main:hover {
+.btn-main-light:hover {
   color: $white !important;
-  background-color: $bright-orange !important;
-  border-color: $bright-orange !important;
+  background-color: $main-light-hover !important;
+  border-color: $main-light-hover !important;
 }
 
-.btn-main:focus, .btn-main.focus {
+.btn-main-light:focus, .btn-main-light.focus {
   color: $white !important;
-  background-color: $main !important;
-  border-color: $main !important;
+  background-color: $main-light !important;
+  border-color: $main-light !important;
   box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
 }
 
-.btn-main.disabled, .btn-main:disabled {
+.btn-main-light.disabled, .btn-main-light:disabled {
   color: $white !important;
-  background-color: $main !important;
-  border-color: $main !important;
+  background-color: $main-light !important;
+  border-color: $main-light !important;
 }
 
-.btn-main:not(:disabled):not(.disabled):active, .btn-main:not(:disabled):not(.disabled).active,
-.show > .btn-main.dropdown-toggle {
+.btn-main-light:not(:disabled):not(.disabled):active, .btn-main-light:not(:disabled):not(.disabled).active,
+.show > .btn-main-light.dropdown-toggle {
   color: $white !important;
-  background-color: $bright-orange !important;
-  border-color: $bright-orange !important;
+  background-color: $main-light-hover !important;
+  border-color: $main-light-hover !important;
 }
 
-.btn-main:not(:disabled):not(.disabled):active:focus, .btn-main:not(:disabled):not(.disabled).active:focus,
-.show > .btn-main.dropdown-toggle:focus {
+.btn-main-light:not(:disabled):not(.disabled):active:focus, .btn-main-light:not(:disabled):not(.disabled).active:focus,
+.show > .btn-main-light.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(83, 77, 100, 0.5);
 }
