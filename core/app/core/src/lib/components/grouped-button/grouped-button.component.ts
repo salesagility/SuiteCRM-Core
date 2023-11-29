@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,32 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonInterface} from './button.model';
-import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {GroupedButtonInterface} from 'common';
 
-export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface | GroupedButtonInterface;
+@Component({
+    selector: 'scrm-grouped-button',
+    templateUrl: './grouped-button.component.html',
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class GroupedButtonComponent {
+    @Input() config: GroupedButtonInterface;
 
-export interface DropdownButtonSection {
-    label?: string;
-    labelKey?: string;
-    klass?: string | string[] | Set<string> | { [key: string]: any };
-    items?: AnyButtonInterface[];
-}
-
-export interface DropdownButtonSectionMap {
-    [key: string]: DropdownButtonSection;
-}
-
-export interface MultiItemButtonInterface extends ButtonInterface {
-    wrapperKlass?: string | string[] | Set<string> | { [key: string]: any };
-    items?: AnyButtonInterface[];
-    type?: string;
-}
-
-export interface DropdownButtonInterface extends MultiItemButtonInterface {
-    placement?: PlacementArray;
-    sections?: DropdownButtonSectionMap;
-}
-
-export interface GroupedButtonInterface extends MultiItemButtonInterface {
 }
