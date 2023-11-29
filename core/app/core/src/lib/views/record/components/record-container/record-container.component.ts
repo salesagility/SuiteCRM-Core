@@ -39,6 +39,7 @@ import {RecordContentAdapter} from '../../adapters/record-content.adapter';
 import {RecordContentDataSource} from '../../../../components/record-content/record-content.model';
 import {TopWidgetAdapter} from '../../adapters/top-widget.adapter';
 import {BottomWidgetAdapter} from '../../adapters/bottom-widget.adapter';
+import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
 
 @Component({
     selector: 'scrm-record-container',
@@ -49,10 +50,12 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
 
     loading: boolean = true;
     language$: Observable<LanguageStrings> = this.language.vm$;
+    displayWidgets: boolean = true;
+    swapWidgets: boolean = false;
+    sidebarWidgetConfig: any;
 
     vm$ = this.language$.pipe(
         combineLatestWith(
-            this.sidebarWidgetAdapter.config$,
             this.bottomWidgetAdapter.config$,
             this.topWidgetAdapter.config$,
             this.recordViewStore.showSubpanels$
@@ -60,14 +63,12 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         map((
             [
                 language,
-                sidebarWidgetConfig,
                 bottomWidgetConfig,
                 topWidgetConfig,
                 showSubpanels
             ]
         ) => ({
             language,
-            sidebarWidgetConfig,
             bottomWidgetConfig,
             topWidgetConfig,
             showSubpanels
@@ -83,7 +84,8 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         protected contentAdapter: RecordContentAdapter,
         protected topWidgetAdapter: TopWidgetAdapter,
         protected sidebarWidgetAdapter: SidebarWidgetAdapter,
-        protected bottomWidgetAdapter: BottomWidgetAdapter
+        protected bottomWidgetAdapter: BottomWidgetAdapter,
+        protected sidebarWidgetHandler: RecordViewSidebarWidgetService
     ) {
     }
 
@@ -91,6 +93,16 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         this.subs.push(this.recordViewStore.loading$.subscribe(loading => {
             this.loading = loading;
         }))
+
+
+        this.subs.push(this.sidebarWidgetAdapter.config$.subscribe(sidebarWidgetConfig => {
+            this.sidebarWidgetConfig = sidebarWidgetConfig;
+            this.displayWidgets = this.sidebarWidgetConfig.show && this.sidebarWidgetConfig.widgets;
+        }));
+
+        this.subs.push(this.sidebarWidgetHandler.widgetSwap$.subscribe(swap => {
+            this.swapWidgets = swap;
+        }));
     }
 
     ngOnDestroy() {

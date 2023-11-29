@@ -63,14 +63,14 @@
         </ng-container>
         <ng-template [ngIf]="!displayResponsiveTable">
             <div *ngIf="loading" class="row mr-0">
-                <div class="col-md-4 d-flex align-items-center">
+                <div class="col-md-5 d-flex align-items-center justify-content-center justify-content-sm-start">
                     <scrm-module-title [title]="moduleTitle" class="record-view-title title-font"></scrm-module-title>
                     <div class="record-view-name pt-3 pb-3"></div>
                 </div>
             </div>
             <div *ngIf="!loading" class="row mr-0">
                 <div
-                    [ngClass]="isScrolled ? 'col-md-4 d-flex align-items-center' : 'col-md-4 d-flex align-items-center'">
+                    [ngClass]="isScrolled ? 'col-md-5 d-flex align-items-center justify-content-center justify-content-sm-start' : 'col-md-5 d-flex align-items-center justify-content-center justify-content-sm-start'">
                     <div
                         [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-center' : 'record-view-name d-flex align-items-center'">
                         <scrm-dynamic-label *ngIf="record && record.fields"
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 d-flex align-items-center justify-content-end">
+                <div class="col-md-7 d-flex align-items-center justify-content-center justify-content-sm-end">
                     <div class="row mr-1 ml-1">
                         <div *ngIf="record" class="w-100">
                             <scrm-action-group-menu
