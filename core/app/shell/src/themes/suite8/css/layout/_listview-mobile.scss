@@ -73,6 +73,12 @@
             padding: 0 0.8em;
         }
     }
+    .list-view-header .row {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+      margin-right: 0!important;
+    }
     .table-pagination-wrapper {
         flex-basis: auto;
         display: flex;

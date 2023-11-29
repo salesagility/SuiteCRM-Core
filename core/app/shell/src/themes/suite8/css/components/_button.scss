@@ -172,39 +172,56 @@ button {
   background-color: $astral-blue;
 }
 
-.settings-button {
+.clear-filter-button,
+.clear-filter-button.btn,
+.settings-button.clear-filter-button,
+.settings-button.clear-filter-button.btn {
+  padding-left: .55rem;
+  padding-right: .55rem;
+}
+
+.settings-button,
+.settings-button.btn {
   background-color: $nepal-grey;
+  color: $off-white;
   padding: 0.3em 1em;
   font-size: 0.8em;
   font-weight: bold;
   height: 2.2em;
 }
 
-.settings-button:hover {
+.settings-button:hover,
+.settings-button.btn:hover {
   background-color: $pale-blue;
 }
 
-.settings-button.active {
+.settings-button.active,
+.settings-button.btn.active {
   background-color: $midnight-blue;
 }
 
-.settings-button.btn-outline-main {
+.settings-button.btn-outline-main,
+.settings-button.btn.btn-outline-main {
   background-color: transparent;
 }
 
-.settings-button.btn-outline-main:hover {
+.settings-button.btn-outline-main:hover,
+.settings-button.btn.btn-outline-main:hover {
   background-color: $midnight-blue;
 }
 
-.settings-button.active {
+.settings-button.active,
+.settings-button.btn.active {
   background-color: $midnight-blue;
 }
 
-.settings-button.btn-outline-main.active {
+.settings-button.btn-outline-main.active,
+.settings-button.btn.btn-outline-main.active {
   background-color: $midnight-blue;
 }
 
-.settings-button.btn-outline-main.active:hover {
+.settings-button.btn-outline-main.active:hover,
+.settings-button.btn.btn-outline-main.active:hover {
   background-color: transparent;
   border-color: transparent;
   color: $midnight-blue;
@@ -218,7 +235,8 @@ button {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 120px;
-    padding: 0.3em .5em
+    padding: 0.3em .5em;
+    color: $off-white;
   }
 }
 
