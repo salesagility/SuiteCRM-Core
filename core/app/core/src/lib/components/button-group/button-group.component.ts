@@ -25,12 +25,12 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Button, ButtonGroupInterface, ButtonInterface, DropdownButtonInterface} from 'common';
+import {Button, ButtonGroupInterface, ButtonInterface, DropdownButtonInterface, AnyButtonInterface} from 'common';
 import {Observable, Subscription} from 'rxjs';
 
 interface SplitButtons {
-    expanded: ButtonInterface[];
-    collapsed: ButtonInterface[];
+    expanded: AnyButtonInterface[];
+    collapsed: AnyButtonInterface[];
 }
 
 @Component({
@@ -66,13 +66,6 @@ export class ButtonGroupComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
-    }
-
-    isDropdown(item: ButtonInterface): boolean {
-        if (!item) {
-            return false;
-        }
-        return 'items' in item;
     }
 
     buildDropdownConfig(): void {

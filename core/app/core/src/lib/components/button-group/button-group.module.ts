@@ -29,6 +29,7 @@ import {CommonModule} from '@angular/common';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
 import {ButtonModule} from '../button/button.module';
 import {ButtonGroupComponent} from './button-group.component';
+import {GroupedButtonModule} from "../grouped-button/grouped-button.module";
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import {ButtonGroupComponent} from './button-group.component';
         CommonModule,
         ButtonModule,
         DropdownButtonModule,
+        GroupedButtonModule,
     ]
 })
 export class ButtonGroupModule {
