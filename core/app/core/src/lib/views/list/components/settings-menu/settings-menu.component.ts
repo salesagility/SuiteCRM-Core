@@ -279,10 +279,11 @@ export class SettingsMenuComponent implements OnInit, OnDestroy {
         let anyActive = false;
         let quickFilterCount = 0;
         const quickFilterBreakpoint = this.quickFilters.getBreakpoint();
+        const isQuickFiltersEnabled = this.quickFilters.areConfigEnabled();
         filters.forEach((filter: SavedFilter) => {
 
             const isQuickFilterButton = isTrue(filter?.attributes?.quick_filter ?? false);
-            if (isQuickFilterButton && quickFilterCount < quickFilterBreakpoint) {
+            if (isQuickFiltersEnabled && isQuickFilterButton && quickFilterCount < quickFilterBreakpoint) {
                 quickFilterCount++;
                 return;
             }
