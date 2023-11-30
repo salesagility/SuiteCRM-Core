@@ -179,10 +179,10 @@ $sugar_smarty->assign('PWDSETTINGS', $GLOBALS['sugar_config']['passwordsetting']
 
 $rules = "'','',''";
 
-$sugar_smarty->assign('SUBMIT_BUTTON', '<input title="' . $mod_strings['LBL_LOGIN_BUTTON_TITLE']
+$sugar_smarty->assign('SUBMIT_BUTTON', '<input title="' . $mod_strings['LBL_GENERATE_PASSWORD_BUTTON_LABEL']
     . '" class="button" '
     . 'onclick="if(!set_password(form,newrules(' . $rules . '))) return false; validateCaptchaAndSubmit();" '
-    . 'type="button" tabindex="3" id="login_button" name="Login" value="' . $mod_strings['LBL_LOGIN_BUTTON_LABEL'] . '" /><br>&nbsp');
+    . 'type="button" tabindex="3" id="reset_password" name="Reset Password" value="' . $mod_strings['LBL_GENERATE_PASSWORD_BUTTON_LABEL'] . '" /><br>&nbsp');
 
 if (!empty($_REQUEST['guid'])) {
     $sugar_smarty->assign("GUID", $_REQUEST['guid']);
