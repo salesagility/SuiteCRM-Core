@@ -27,7 +27,7 @@
 import {Injectable} from "@angular/core";
 import {SavedFilter} from "../../../store/saved-filters/saved-filter.model";
 import {ListViewStore} from "../store/list-view/list-view.store";
-import {ButtonGroupInterface, ButtonInterface, isTrue} from 'common';
+import {ButtonGroupInterface, ButtonInterface, isTrue, isVoid} from 'common';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {
     ScreenSize,
@@ -59,7 +59,18 @@ export class QuickFiltersService {
     ) {
         this.breakdownSizes = this.systemConfigStore.getUi('quick_filters_breakdown_screen_sizes');
 
+        const displayedQuickFilters  = this.systemConfigStore.getUi('displayed_quick_filters');
+
+        const quickFiltersBreakdownThresholds  = this.systemConfigStore.getUi('quick_filters_breakdown_threshold');
+
         this.breakdown$ = this.screenSize.screenSize$.pipe(map(screenSize => {
+            const quickFiltersBreakpoint = displayedQuickFilters[screenSize] ?? 2;
+            const maxQuickFiltersForDisplay = quickFiltersBreakdownThresholds[screenSize] ?? 2;
+
+            if (quickFiltersBreakpoint > maxQuickFiltersForDisplay) {
+                return true;
+            }
+
             return isTrue(this.breakdownSizes[screenSize] ?? false);
         }))
 

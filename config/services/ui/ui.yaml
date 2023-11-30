@@ -39,13 +39,13 @@ parameters:
     record_modal_max_height: 620
     inline_confirmation_loading_delay: 300
     displayed_quick_filters:
-      XSmall: 1
+      XSmall: 0
       Small: 4
       Medium: 2
       Large: 3
       XLarge: 5
-    default_displayed_quick_filters:
-      XSmall: 1
+    quick_filters_breakdown_threshold:
+      XSmall: 0
       Small: 4
       Medium: 2
       Large: 3
