@@ -33,6 +33,7 @@ import {SystemConfigStore} from '../system-config/system-config.store';
 import {UserPreferenceStore} from '../user-preference/user-preference.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
+import {LocalStorageService} from "../../services/local-storage/local-storage.service";
 
 @Injectable({
     providedIn: 'root',
@@ -48,6 +49,7 @@ export class FilterListStoreFactory {
      * @param message
      * @param auth
      * @param moduleNameMapper
+     * @param localStorageService
      */
     constructor(
         protected listGQL: FiltersListGQL,
@@ -56,7 +58,8 @@ export class FilterListStoreFactory {
         protected language: LanguageStore,
         protected message: MessageService,
         protected auth: AuthService,
-        protected moduleNameMapper: ModuleNameMapper
+        protected moduleNameMapper: ModuleNameMapper,
+        protected localStorageService: LocalStorageService
     ) {
     }
 
@@ -72,7 +75,8 @@ export class FilterListStoreFactory {
             this.language,
             this.message,
             this.auth,
-            this.moduleNameMapper
+            this.moduleNameMapper,
+            this.localStorageService
         );
     }
 }

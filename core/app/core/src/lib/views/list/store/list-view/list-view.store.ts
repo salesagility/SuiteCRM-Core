@@ -177,7 +177,8 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected confirmation: ConfirmationModalService,
         protected preferences: UserPreferenceStore,
         protected route: ActivatedRoute,
-        protected listViewUrlQueryService: ListViewUrlQueryService
+        protected listViewUrlQueryService: ListViewUrlQueryService,
+        protected localStorageService: LocalStorageService
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -375,6 +376,7 @@ export class ListViewStore extends ViewStore implements StateStore {
                 this.loadCurrentSort(module);
         }
         this.loadCurrentDisplayedColumns();
+        this.loadCurrentPagination(module);
 
         return this.load();
     }
@@ -543,6 +545,12 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.savePreference(module, 'current-sort', this.recordList.sort);
     }
 
+    public updatePaginationLocalStorage(): void {
+        const module = this.internalState.module;
+        const key = module + '-' + this.getPreferenceKey('current-pagination');
+        this.localStorageService.set(key, this.recordList.pagination);
+    }
+
     /**
      * Updated displayed columns' ui user preference
      * @param display
@@ -582,6 +590,7 @@ export class ListViewStore extends ViewStore implements StateStore {
 
         this.savePreference(module, 'current-filters', this.internalState.activeFilters);
         this.savePreference(module, 'current-sort', this.recordList.sort);
+        this.updatePaginationLocalStorage();
 
         return this.recordList.load(useCache);
     }
@@ -841,6 +850,21 @@ export class ListViewStore extends ViewStore implements StateStore {
         }
 
         this.recordList.sort = currentSort;
+    }
+
+    /**
+     * Load current pagination
+     * @param module
+     * @protected
+     */
+    protected loadCurrentPagination(module: string): void {
+        const key = module + '-' + this.getPreferenceKey('current-pagination');
+        const currentPagination = this.localStorageService.get(key) as Pagination;
+        if (!currentPagination || emptyObject(currentPagination)) {
+            return;
+        }
+
+        this.recordList.pagination = currentPagination;
     }
 
     /**

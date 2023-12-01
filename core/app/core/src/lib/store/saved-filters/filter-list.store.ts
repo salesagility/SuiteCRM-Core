@@ -36,6 +36,7 @@ import {UserPreferenceStore} from '../user-preference/user-preference.store';
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {FiltersListGQL} from './graphql/api.list.get';
+import {LocalStorageService} from "../../services/local-storage/local-storage.service";
 
 @Injectable()
 export class FilterListStore extends RecordListStore {
@@ -57,6 +58,7 @@ export class FilterListStore extends RecordListStore {
      * @param message
      * @param auth
      * @param moduleNameMapper
+     * @param localStorageService
      */
     constructor(
         protected listGQL: FiltersListGQL,
@@ -65,9 +67,10 @@ export class FilterListStore extends RecordListStore {
         protected language: LanguageStore,
         protected message: MessageService,
         protected auth: AuthService,
-        protected moduleNameMapper: ModuleNameMapper
+        protected moduleNameMapper: ModuleNameMapper,
+        protected localStorageService: LocalStorageService
     ) {
-        super(listGQL, configs, preferences, language, message);
+        super(listGQL, configs, preferences, language, message, localStorageService);
     }
 
     /**

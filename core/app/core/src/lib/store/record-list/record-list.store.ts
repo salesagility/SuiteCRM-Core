@@ -51,6 +51,7 @@ import {UserPreferences, UserPreferenceStore} from '../user-preference/user-pref
 import {LanguageStore} from '../language/language.store';
 import {MessageService} from '../../services/message/message.service';
 import {SavedFilter, SavedFilterMap} from "../saved-filters/saved-filter.model";
+import {LocalStorageService} from "../../services/local-storage/local-storage.service";
 
 
 const initialFilter: SavedFilter = {
@@ -76,6 +77,17 @@ const initialSearchCriteria = {
 const initialListSort = {
     orderBy: '',
     sortOrder: SortDirection.DESC
+};
+
+const initialListPagination = {
+    pageSize: 5,
+    current: 0,
+    previous: 0,
+    next: 5,
+    last: 0,
+    total: 0,
+    pageFirst: 0,
+    pageLast: 0
 };
 
 const initialSelection: RecordSelection = {
@@ -115,16 +127,7 @@ const initialState: RecordListState = {
     criteria: deepClone(initialSearchCriteria),
     activeFilters: deepClone(initialFilters),
     sort: deepClone(initialListSort),
-    pagination: {
-        pageSize: 5,
-        current: 0,
-        previous: 0,
-        next: 5,
-        last: 0,
-        total: 0,
-        pageFirst: 0,
-        pageLast: 0
-    },
+    pagination: deepClone(initialListPagination),
     selection: deepClone(initialSelection),
     openFilter: deepClone(initialFilter),
     loading: false,
@@ -166,6 +169,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         protected preferencesStore: UserPreferenceStore,
         protected languageStore: LanguageStore,
         protected message: MessageService,
+        protected localStorageService: LocalStorageService
     ) {
         this.records$ = this.state$.pipe(map(state => state.records), distinctUntilChanged());
         this.criteria$ = this.state$.pipe(map(state => state.criteria), distinctUntilChanged());
@@ -217,6 +221,21 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.updateState({
             ...this.internalState,
             sort
+        });
+    }
+
+    get pagination(): Pagination {
+        if (!this.internalState.pagination) {
+            return deepClone(initialListPagination);
+        }
+
+        return deepClone(this.internalState.pagination);
+    }
+
+    set pagination(pagination: Pagination) {
+        this.updateState({
+            ...this.internalState,
+            pagination
         });
     }
 
@@ -363,6 +382,12 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.savePreference(module, 'current-sort', this.sort);
     }
 
+   public updatePaginationLocalStorage(): void {
+        const module = this.internalState.module;
+        const key = module + '-' +  'listview-' +'current-pagination';
+        this.localStorageService.set(key, this.pagination);
+    }
+
     /**
      * Load / reload records using current pagination and criteria
      *
@@ -389,16 +414,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
                     records: [],
                     criteria: deepClone(initialSearchCriteria),
                     sort: deepClone(initialListSort),
-                    pagination: {
-                        pageSize: 5,
-                        current: 0,
-                        previous: 0,
-                        next: 5,
-                        last: 0,
-                        total: 0,
-                        pageFirst: 0,
-                        pageLast: 0
-                    },
+                    pagination: deepClone(initialListPagination),
                     openFilter: deepClone(this.baseFilter),
                     activeFilters: deepClone(this.baseFilterMap),
                     selection: deepClone(initialSelection),
@@ -720,6 +736,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             }
 
             this.updatePagination(pageToLoad);
+            this.pagination$.pipe(take(1)).subscribe((data) => {
+                this.pagination = data;
+                this.updatePaginationLocalStorage();
+            });
         }
     }
 
