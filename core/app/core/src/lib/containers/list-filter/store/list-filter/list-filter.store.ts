@@ -280,11 +280,13 @@ export class ListFilterStore implements StateStore {
     protected initGridButtons(): void {
         this.gridButtons = [
             {
+                id: 'clear',
                 labelKey: 'LBL_CLEAR_BUTTON_LABEL',
                 klass: ['clear-filters-button', 'btn', 'btn-outline-danger', 'btn-sm'],
                 onClick: this.clearFilter.bind(this)
             },
             {
+                id: 'search',
                 labelKey: 'LBL_SEARCH_BUTTON_LABEL',
                 klass: ['filter-button', 'btn', 'btn-danger', 'btn-sm'],
                 onClick: this.applyFilter.bind(this)

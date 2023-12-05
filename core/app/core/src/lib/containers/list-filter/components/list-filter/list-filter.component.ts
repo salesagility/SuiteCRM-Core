@@ -75,7 +75,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             return record;
         }));
 
-        this.searchActionButton = this.store.gridButtons.find(button => button.labelKey === "LBL_SEARCH_BUTTON_LABEL");
+        this.searchActionButton = this.store.gridButtons.find(button => button.id === "search");
 
         this.gridConfig = {
             record$: this.store.filterStore.stagingRecord$,
@@ -100,6 +100,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             } as ScreenSizeMap).pipe(shareReplay(1))
         }
     }
+
 
     ngOnDestroy(): void {
         this.store.clear();
