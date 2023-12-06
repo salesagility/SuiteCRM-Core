@@ -367,7 +367,6 @@ export * from './fields/field-logic/email-primary-select/email-primary-select.ac
 export * from './fields/field-logic/required/required.action';
 export * from './fields/field-logic/update-field/update-field.action';
 export * from './fields/field-logic/update-flex-relate-module/update-flex-relate-module.action';
-export * from './fields/field-logic/update-value/update-value.action';
 export * from './fields/field-logic/update-value-backend/update-value-backend.action';
 export * from './fields/field-logic-display/field-logic-display.action';
 export * from './fields/field-logic-display/field-logic-display.manager';

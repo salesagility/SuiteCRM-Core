@@ -24,8 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEmpty} from 'lodash-es';
 import {Injectable} from '@angular/core';
-import {EDITABLE_VIEW_MODES, Field, Record} from 'common';
+import {ALL_VIEW_MODES, Field, Record} from 'common';
 import {ActionableFieldLogicActionHandler} from '../actionable-field-logic/actionable-field-logic.action';
 import {ActiveLogicChecker} from '../../../services/logic/active-logic-checker.service';
 
@@ -34,6 +35,7 @@ type UpdateFieldParamType = string | string[];
 interface UpdateFieldParams {
     nonActiveValue?: UpdateFieldParamType;
     activeValue?: UpdateFieldParamType;
+    targetValue?: UpdateFieldParamType;
 }
 
 @Injectable({
@@ -41,8 +43,8 @@ interface UpdateFieldParams {
 })
 export class UpdateFieldAction extends ActionableFieldLogicActionHandler {
 
-    key = 'updateField';
-    modes = EDITABLE_VIEW_MODES;
+    key = 'updateValue';
+    modes = ALL_VIEW_MODES;
 
     constructor(
         protected activeLogicChecker: ActiveLogicChecker
@@ -61,6 +63,10 @@ export class UpdateFieldAction extends ActionableFieldLogicActionHandler {
     }
 
     private getToUpdateValue(logicIsActive: boolean, params: UpdateFieldParams): UpdateFieldParamType | null {
+        if (!isEmpty(params.targetValue)){
+            params.activeValue = params.targetValue;
+        }
+
         const valueAccordingToLogicState = logicIsActive
             ? params.activeValue
             : params.nonActiveValue;

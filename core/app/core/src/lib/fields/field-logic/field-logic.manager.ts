@@ -34,10 +34,9 @@ import {RequiredAction} from './required/required.action';
 import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
-import {UpdateValueAction} from './update-value/update-value.action';
+import {UpdateFieldAction} from './update-field/update-field.action';
 import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
-import {UpdateFieldAction} from './update-field/update-field.action';
 
 @Injectable({
     providedIn: 'root'
@@ -59,11 +58,10 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
-        updateValue: UpdateValueAction,
+        updateValue: UpdateFieldAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValueBackend: UpdateValueBackendAction,
-        dislayTypeBackend: DisplayTypeBackendAction,
-        updateFieldAction: UpdateFieldAction,
+        dislayTypeBackend: DisplayTypeBackendAction
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);
@@ -75,7 +73,6 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         updateValue.modes.forEach(mode => this.actions[mode][updateValue.key] = updateValue);
         updateValueBackend.modes.forEach(mode => this.actions[mode][updateValueBackend.key] = updateValueBackend);
         dislayTypeBackend.modes.forEach(mode => this.actions[mode][dislayTypeBackend.key] = dislayTypeBackend);
-        updateFieldAction.modes.forEach(mode => this.actions[mode][updateFieldAction.key] = updateFieldAction);
     }
 
     /**
