@@ -70,7 +70,13 @@ abstract class BaseMigration extends AbstractMigration
             return $this->upgradeLogger;
         }
 
-        $logger = $this->container->get('monolog.logger.upgrade');
+        $logger = '';
+
+        if ($this->container !== null){
+            $logger = $this->container->get('monolog.logger.upgrade');
+        }
+
+
         if ($logger instanceof LoggerInterface) {
             $this->upgradeLogger = $logger;
 
