@@ -13,21 +13,18 @@ use Doctrine\DBAL\Schema\Schema;
 final class Version20231117113210 extends BaseMigration
 {
 
-    /**
-     * @var CacheManager
-     */
-    protected $cacheManager;
-
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return "Create cache_rebuild table if the table doesn't exist";
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        $tableExists = $this->cacheManager->checkIfCacheTableExists();
 
-        if ($tableExists){
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        $tableExists = (new CacheManager())->checkIfCacheTableExists();
+
+        if ($tableExists) {
             $this->log('Cache Table Exists');
             return;
         }
@@ -35,7 +32,7 @@ final class Version20231117113210 extends BaseMigration
         $this->log('Could not create cache table');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
     }
 }
