@@ -87,6 +87,7 @@ class PostUpgrade
 
             $_REQUEST = [];
             $_REQUEST['addTaskReminder'] = 'remind';
+            $_REQUEST['post_install'] = true;
 
             $this->checkConfigForPermissions();
             $this->checkLoggerSettings();

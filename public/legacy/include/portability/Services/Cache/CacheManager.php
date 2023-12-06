@@ -33,9 +33,9 @@ class CacheManager
 
     public function markAsNeedsUpdate($key): void
     {
-        global $db, $sugar_config;
+        global $db;
 
-        if (isFalse($sugar_config['installer_locked']) || !isset($sugar_config['dbconfig']['db_name'])) {
+        if (!empty($GLOBALS['installing']) || isTrue($_REQUEST['post_install'])) {
             return;
         }
 
