@@ -147,6 +147,7 @@ export class ListViewStore extends ViewStore implements StateStore {
     activeFilters$: Observable<SavedFilterMap>;
     openFilter$: Observable<SavedFilter>;
     filterList: FilterListStore;
+    pageKey: string = 'listview';
 
     /**
      * View-model that resolves once all the data is ready (or updated).
@@ -228,6 +229,8 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.initDataSetUpdatedState();
 
         this.filterList = this.filterListStoreFactory.create();
+
+        this.recordList.pageKey = this.pageKey;
     }
 
     get actionPanel(): string {
@@ -759,7 +762,7 @@ export class ListViewStore extends ViewStore implements StateStore {
      * @protected
      */
     protected getPreferenceKey(storageKey: string): string {
-        return 'listview-' + storageKey;
+        return this.pageKey + '-' + storageKey;
     }
 
     /**

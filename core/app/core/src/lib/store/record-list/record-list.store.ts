@@ -162,6 +162,8 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     baseFilter: SavedFilter;
     baseFilterMap: SavedFilterMap;
 
+    pageKey: string = null;
+
 
     constructor(
         protected listGQL: ListGQL,
@@ -383,8 +385,11 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
    public updatePaginationLocalStorage(): void {
+        if(this.pageKey === null) {
+            return;
+        }
         const module = this.internalState.module;
-        const key = module + '-' +  'listview-' +'current-pagination';
+        const key = module + '-' + this.pageKey + '-' +'current-pagination';
         this.localStorageService.set(key, this.pagination);
     }
 
@@ -509,7 +514,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     public updatePagination(current: number): void {
         const pagination = {...this.internalState.pagination, current};
         this.updateState({...this.internalState, pagination});
-
+        this.updatePaginationLocalStorage();
         this.load(false).pipe(take(1)).subscribe();
     }
 
@@ -736,10 +741,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             }
 
             this.updatePagination(pageToLoad);
-            this.pagination$.pipe(take(1)).subscribe((data) => {
-                this.pagination = data;
-                this.updatePaginationLocalStorage();
-            });
         }
     }
 
