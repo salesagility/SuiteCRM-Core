@@ -80,7 +80,7 @@ export class ActionGroupMenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.vm$ = this.config.getActions().pipe(
+        this.vm$ = this.config?.getActions().pipe(
             combineLatestWith(
                 this.screenSize.screenSize$,
                 this.languages.vm$
