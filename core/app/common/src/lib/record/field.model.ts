@@ -24,13 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
+import {isArray, isEqual, isObject, isString, uniq} from 'lodash-es';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
+import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
+import {deepClone} from '../utils/object-utils';
 
 export type DisplayType = 'none' | 'show' | 'readonly' | 'inline' | 'disabled' | 'default';
 
@@ -97,7 +99,7 @@ export interface FieldDefinition {
     default?: string;
     modes?: ViewMode[];
     relationship?: string;
-    relationshipMetadata?: RelationshipMetadata
+    relationshipMetadata?: RelationshipMetadata;
 
     [key: string]: any;
 }
@@ -155,6 +157,16 @@ export interface AttributeDependency {
     field: string;
     attribute: string;
     types: string[];
+}
+
+export interface FieldValue {
+    value?: string;
+    valueList?: string[];
+    valueObject?: any;
+}
+
+export interface FieldValueMap {
+    [key: string]: FieldValue;
 }
 
 export interface Field {
@@ -232,13 +244,19 @@ export class BaseField implements Field {
     }
 
     set value(value: string) {
-        const changed = value !== this.valueState;
-
-        this.valueState = value;
-
-        if (changed) {
-            this.emitValueChanges();
+        if (!isString(value)) {
+            this.setValue(value);
+            return;
         }
+
+        const valueClean: string = value.trim();
+
+        if (isEqual(this.valueState, valueClean)) {
+            return;
+        }
+
+        this.valueState = valueClean;
+        this.emitValueChanges();
     }
 
     get valueList(): string[] {
@@ -246,9 +264,18 @@ export class BaseField implements Field {
     }
 
     set valueList(value: string[]) {
+        if (!isArray(value)) {
+            this.setValue(value);
+            return;
+        }
 
-        this.valueListState = value;
+        const valueListClean: string[] = uniq(deepClone(value));
 
+        if (isEqual(this.valueListState, valueListClean)) {
+            return;
+        }
+
+        this.valueListState = valueListClean;
         this.emitValueChanges();
     }
 
@@ -257,7 +284,16 @@ export class BaseField implements Field {
     }
 
     set valueObject(value: any) {
-        this.valueObjectState = value;
+        if (!isObject(value)) {
+            this.setValue(value);
+            return;
+        }
+
+        if (isEqual(this.valueObjectState, value)) {
+            return;
+        }
+
+        this.valueObjectState = deepClone(value);
         this.emitValueChanges();
     }
 
@@ -266,23 +302,32 @@ export class BaseField implements Field {
     }
 
     set valueObjectArray(value: ObjectMap[]) {
+        if (isEqual(this.valueObjectArrayState, value)) {
+            return;
+        }
+
         this.valueObjectArrayState = value;
         this.emitValueChanges();
     }
 
-    protected emitValueChanges() {
+    public setValue(value: string | string[] | any): void {
+        if (isString(value)) {
+            this.value = value;
+        } else if (isArray(value)) {
+            this.valueList = value;
+        } else if (isObject(value)) {
+            this.valueObject = value;
+        } else {
+            this.value = value?.toString() ?? '';
+        }
+    }
+
+    protected emitValueChanges(): void {
         this.valueSubject.next({
             value: this.valueState,
             valueList: this.valueListState,
             valueObject: this.valueObjectState
-        })
+        });
     }
+
 }
-
-export interface FieldValue {
-    value?: string;
-    valueList?: string[];
-    valueObject?: any;
-}
-
-
