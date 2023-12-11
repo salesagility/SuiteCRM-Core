@@ -727,7 +727,7 @@ $configurator->saveConfig();
 
 // Bug 37310 - Delete any existing currency that matches the one we've just set the default to during the admin wizard
 installLog('new Currency');
-$currency = new Currency;
+$currency = new Currency();
 installLog('retrieve');
 $currency->retrieve($currency->retrieve_id_by_name($_REQUEST['default_currency_name']));
 if (!empty($currency->id)
@@ -749,10 +749,15 @@ installLog('Save user settings..');
 // set all of these default parameters since the Users save action will undo the defaults otherwise
 
 // load admin
-$current_user = BeanFactory::newBean('Users');
-$current_user->retrieve(1);
-$current_user->is_admin = '1';
-$sugar_config = get_sugar_config_defaults();
+if (empty($current_user) || empty($current_user->id)) {
+    $current_user = BeanFactory::newBean('Users');
+    $current_user->retrieve(1);
+    $current_user->is_admin = '1';
+}
+
+if (empty($sugar_config)) {
+    $sugar_config = get_sugar_config_defaults();
+}
 
 // set local settings -  if neccessary you can set here more fields as named in User module / EditView form...
 if (isset($_REQUEST['timezone']) && $_REQUEST['timezone']) {
