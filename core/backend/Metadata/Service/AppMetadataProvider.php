@@ -159,7 +159,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         AdminPanelDefinitionProviderInterface $adminPanelDefinitions,
         CacheInterface                        $cache,
         CacheManagerInterface                 $cacheManager,
-        InstallHandler $installHandler,
+        InstallHandler $installHandler
     )
     {
         $this->moduleNameMapper = $moduleNameMapper;
