@@ -59,6 +59,8 @@ import {BaseFavoritesComponent} from './menu-favorites/base-favorites.component'
 import {FormsModule} from '@angular/forms';
 import {NotificationsModule} from '../../containers/notifications/notifications.module';
 import {SearchBarModule} from '../search-bar/search-bar.module';
+import {DropdownButtonModule} from "../dropdown-button/dropdown-button.module";
+import {RecentlyViewedComponent} from "./recently-viewed/recently-viewed.component";
 
 
 @NgModule({
@@ -119,7 +121,9 @@ import {SearchBarModule} from '../search-bar/search-bar.module';
         LabelModule,
         FormsModule,
         NotificationsModule,
-        SearchBarModule
+        SearchBarModule,
+        RecentlyViewedComponent,
+        DropdownButtonModule
     ]
 })
 export class NavbarUiModule {

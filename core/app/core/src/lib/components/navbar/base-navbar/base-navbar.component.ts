@@ -45,9 +45,10 @@ import {ModuleNavigation} from '../../../services/navigation/module-navigation/m
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
-import {MenuItem, ready} from 'common';
+import {MenuItem, ready, RecentlyViewed} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {NotificationStore} from "../../../store/notification/notification.store";
+import {GlobalRecentlyViewedStore} from "../../../store/global-recently-viewed/global-recently-viewed.store";
 import {GlobalSearch} from "../../../services/navigation/global-search/global-search.service";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {SearchBarComponent} from "../../search-bar/search-bar.component";
@@ -91,6 +92,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     mobileNavbar = false;
     isSmallScreen = signal<boolean>(false);
     isTabletScreen = signal<boolean>(false);
+    dropdownLength: number;
+    recentlyViewedCount: number = 10;
 
     currentQuickActions: ModuleAction[];
     isSearchBoxVisible = signal<boolean>(false);
@@ -100,7 +103,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
     navigation$: Observable<Navigation> = this.navigationStore.vm$;
-    dropdownLength: number;
+    recentlyViewed$: Observable<RecentlyViewed[]> = this.globalRecentlyViewedStore.globalRecentlyViewed$;
 
     notificationCount$: Observable<number>;
 
@@ -159,6 +162,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         protected screenSize: ScreenSizeObserverService,
         protected asyncActionService: AsyncActionService,
         protected notificationStore: NotificationStore,
+        protected globalRecentlyViewedStore: GlobalRecentlyViewedStore,
         protected globalSearch: GlobalSearch,
         protected breakpointObserver: BreakpointObserver
     ) {
@@ -193,6 +197,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         window.dispatchEvent(new Event('resize'));
 
         this.notificationCount$ = this.notificationStore.notificationsUnreadTotal$;
+
+        this.recentlyViewedCount = this.systemConfigStore.getUi('global_recently_viewed');
 
         this.subs.push(this.notificationStore.notificationsEnabled$.subscribe(notificationsEnabled => {
             this.notificationsEnabled = notificationsEnabled;

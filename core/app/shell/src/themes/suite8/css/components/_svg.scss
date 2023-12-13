@@ -151,8 +151,12 @@
   }
 }
 
-.action-btn-icon svg path {
-  fill: $white;
+.action-new .dropdown-menu svg polygon {
+  fill: $complementary;
+}
+
+.action-history .dropdown-menu svg g {
+  fill: $complementary;
 }
 
 .navbar-toggler:hover svg path {
@@ -241,10 +245,6 @@
 
 .info-icon svg path {
   fill: $dusty-grey;
-}
-
-.clock-icon svg {
-  overflow: visible;
 }
 
 .create-popup-arrow svg {

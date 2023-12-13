@@ -40,6 +40,7 @@ import {Metadata, MetadataMap, MetadataStore} from '../metadata/metadata.store.s
 import {ApolloQueryResult} from '@apollo/client/core';
 import {AdminMetadataStore} from '../admin-metadata/admin-metadata.store';
 import {AdminMetadata} from '../admin-metadata/admin-metadata.model';
+import {GlobalRecentlyViewedStore} from "../global-recently-viewed/global-recently-viewed.store";
 
 export interface AppMetadata {
     loaded?: boolean;
@@ -52,6 +53,7 @@ export interface AppMetadata {
     moduleMetadata?: MetadataMap;
     minimalModuleMetadata?: MetadataMap;
     adminMetadata?: AdminMetadata;
+    globalRecentlyViewed?: any;
 }
 
 export interface AppMetadataFlags {
@@ -65,6 +67,7 @@ export interface AppMetadataFlags {
     moduleMetadata?: boolean;
     minimalModuleMetadata?: boolean;
     adminMetadata?: boolean;
+    globalRecentlyViewed?: boolean;
 }
 
 
@@ -77,7 +80,8 @@ const initialState: AppMetadataFlags = {
     themeImages: false,
     navigation: false,
     moduleMetadata: false,
-    adminMetadata: false
+    adminMetadata: false,
+    globalRecentlyViewed: false
 };
 
 let internalState: AppMetadataFlags = deepClone(initialState);
@@ -110,7 +114,8 @@ export class AppMetadataStore implements StateStore {
         'themeImages',
         'navigation',
         'moduleMetadata',
-        'adminMetadata'
+        'adminMetadata',
+        'globalRecentlyViewed'
     ];
 
     constructor(
@@ -121,7 +126,8 @@ export class AppMetadataStore implements StateStore {
         protected config: SystemConfigStore,
         protected preferences: UserPreferenceStore,
         protected navigation: NavigationStore,
-        protected adminMetadataStore:AdminMetadataStore
+        protected adminMetadataStore:AdminMetadataStore,
+        protected globalRecentlyViewedStore: GlobalRecentlyViewedStore
     ) {
         this.metadata$ = this.state$;
     }
@@ -228,6 +234,10 @@ export class AppMetadataStore implements StateStore {
             types.push('adminMetadata');
         }
 
+        if (!this.isGlobalRecentlyViewedLoaded()) {
+            types.push('globalRecentlyViewed');
+        }
+
         return types;
     }
 
@@ -252,6 +262,10 @@ export class AppMetadataStore implements StateStore {
     }
 
     protected isAdminMetadataLoaded(): boolean {
+        return !!(internalState.adminMetadata ?? false);
+    }
+
+    protected isGlobalRecentlyViewedLoaded(): boolean {
         return !!(internalState.adminMetadata ?? false);
     }
 
@@ -301,6 +315,7 @@ export class AppMetadataStore implements StateStore {
                     this.setLanguages(appMetadata, result);
                     this.setModuleMetadata(appMetadata, result);
                     this.setAdminMetadata(appMetadata,result);
+                    this.setGlobalRecentlyViewed(appMetadata,result);
                     return appMetadata;
                 })
             );
@@ -392,6 +407,14 @@ export class AppMetadataStore implements StateStore {
         if (!emptyObject(adminMetadata)) {
             currentMetadata.adminMetadata = true;
             this.adminMetadataStore.set(adminMetadata);
+        }
+    }
+
+    protected setGlobalRecentlyViewed(currentMetadata: AppMetadataFlags, appMetadata: AppMetadata) {
+        const globalRecentlyViewed = appMetadata?.globalRecentlyViewed ?? {};
+        if (!emptyObject(globalRecentlyViewed)) {
+            currentMetadata.globalRecentlyViewed = true;
+            this.globalRecentlyViewedStore.set(globalRecentlyViewed);
         }
     }
 

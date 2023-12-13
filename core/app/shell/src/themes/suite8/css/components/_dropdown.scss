@@ -90,8 +90,60 @@ ngb-datepicker-navigation {
   fill: $sandy-yellow;
 }
 
-.action-new .dropdown-menu svg polygon {
-  fill: $complementary;
+.action-history .dropdown-menu {
+  margin-top: -5px;
+  width: 290px;
+  overflow-y: auto;
+  max-height: 600px;
+
+  li {
+    padding: 0;
+  }
+
+  .new-list-item:first-child {
+    border-top: none;
+    padding-top: 0.36rem;
+  }
+
+  .new-list-item {
+    padding-left: 1.44rem;
+    padding-bottom: 0.45rem;
+    padding-top: 0.45rem;
+    padding-right: 0.6rem;
+    border-top: 1px solid $lightgray;
+
+    vertical-align: bottom;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+
+    &:hover {
+      background-color: $off-white;
+      cursor: pointer;
+    }
+
+    .text-title {
+      font-size: 0.8em;
+      color: #534D64;
+    }
+
+    .text-subtitle {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+  }
+
+  .action-btn-icon {
+    display: inline-block;
+    height: auto;
+    width: auto;
+    svg {
+      width: 1.8em;
+      height: 1.8em;
+    }
+  }
+
 }
 
 .action-new .dropdown-menu {
@@ -139,6 +191,13 @@ ngb-datepicker-navigation {
     background-color: $off-white;
     cursor: pointer;
   }
+
+  .action-btn-icon {
+    display: inline-block;
+    height: auto;
+    width: auto;
+  }
+
 }
 
 .alert-list-item:hover {
@@ -153,12 +212,6 @@ ngb-datepicker-navigation {
 
 .action-favourite .dropdown-menu {
   border: 0.35em solid $sandy-yellow;
-}
-
-.action-new .dropdown-menu .action-btn-icon {
-  display: inline-block;
-  height: auto;
-  width: auto;
 }
 
 .alerts-button.dropdown-toggle[_ngcontent-c1]::after,

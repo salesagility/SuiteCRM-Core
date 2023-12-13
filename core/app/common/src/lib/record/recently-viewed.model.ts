@@ -63,3 +63,7 @@ export interface RecentlyViewed extends Record {
     attributes: RecentlyViewedAttributeMap;
     fields?: RecentlyViewedFieldMap;
 }
+
+export interface GlobalRecentlyViewed {
+    globalRecentlyViewed: RecentlyViewed[];
+}

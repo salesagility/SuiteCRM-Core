@@ -45,6 +45,10 @@ class RecentlyViewedHandler extends LegacyHandler
      * @var ModuleNameMapperInterface
      */
     private $moduleNameMapper;
+    /**
+     * @var array
+     */
+    private $uiConfigs;
 
     /**
      * LegacyHandler constructor.
@@ -52,6 +56,7 @@ class RecentlyViewedHandler extends LegacyHandler
      * @param string $legacyDir
      * @param string $legacySessionName
      * @param string $defaultSessionName
+     * @param array $uiConfigs
      * @param LegacyScopeState $legacyScopeState
      * @param SessionInterface $session
      * @param ModuleNameMapperInterface $moduleNameMapper
@@ -61,6 +66,7 @@ class RecentlyViewedHandler extends LegacyHandler
         string $legacyDir,
         string $legacySessionName,
         string $defaultSessionName,
+        array $uiConfigs,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
         ModuleNameMapperInterface $moduleNameMapper
@@ -74,6 +80,7 @@ class RecentlyViewedHandler extends LegacyHandler
             $session
         );
         $this->moduleNameMapper = $moduleNameMapper;
+        $this->uiConfigs = $uiConfigs;
     }
 
     /**
@@ -105,6 +112,28 @@ class RecentlyViewedHandler extends LegacyHandler
         $this->close();
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGlobalTrackers(array $modules): ?array
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/Trackers/TrackerManagerPort.php';
+
+        $trackerManager = new TrackerManagerPort();
+
+        $historyViewedLimit =  $this->uiConfigs['global_recently_viewed'] ?? 10;
+
+        $result = $trackerManager->getModule($modules, $historyViewedLimit);
+
+        $this->close();
+
+        return $result ?? [];
     }
 
 }

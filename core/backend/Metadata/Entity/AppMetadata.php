@@ -157,6 +157,22 @@ class AppMetadata
     public $minimalModuleMetadata;
 
     /**
+     * Global Recently Viewed Metadata
+     *
+     * @var array
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "openapi_context"={
+     *             "type"="array",
+     *             "description"="Global recently viewed metadata",
+     *         },
+     *     }
+     * )
+     */
+    public $globalRecentlyViewed;
+
+    /**
      * Admin Metadata
      *
      * @var array
@@ -336,6 +352,25 @@ class AppMetadata
     public function setMinimalModuleMetadata(?array $moduleMetadata): AppMetadata
     {
         $this->minimalModuleMetadata = $moduleMetadata;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getGlobalRecentlyViewedMetadata(): ?array
+    {
+        return $this->globalRecentlyViewed ?? [];
+    }
+
+    /**
+     * @param array|null $moduleMetadata
+     * @return AppMetadata
+     */
+    public function setGlobalRecentlyViewedMetadata(?array $moduleMetadata): AppMetadata
+    {
+        $this->globalRecentlyViewed = $moduleMetadata ?? [];
 
         return $this;
     }

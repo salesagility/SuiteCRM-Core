@@ -295,6 +295,18 @@
                     </li>
                 </ul>
             </div>
+
+            <!--Global Recently Viewed-->
+            <div class="action-history dropdown">
+                <a class="action-link primary-global-link" type="button" aria-label="Recently Viewed">
+                    <scrm-image class="action-btn-icon" image="recently_viewed"></scrm-image>
+                </a>
+                <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2 dropdown-menu-right">
+                    <scrm-recently-viewed [menuItems]="recentlyViewed$ | async | slice:0:recentlyViewedCount"></scrm-recently-viewed>
+                </ul>
+
+            </div>
+
             <!--Searchbar-->
             <div class="d-flex align-items-center px-2">
                 <a class="search-mobile-view" [ngClass]="isSearchBoxVisible() ? 'd-none' : 'd-block'"

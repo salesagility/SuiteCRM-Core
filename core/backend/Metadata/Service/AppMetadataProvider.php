@@ -34,6 +34,7 @@ use App\Languages\LegacyHandler\AppListStringsHandler;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use App\Languages\LegacyHandler\ModStringsHandler;
 use App\Metadata\Entity\AppMetadata;
+use App\Module\LegacyHandler\RecentlyViewed\RecentlyViewedHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Navbar\Entity\Navbar;
 use App\Routes\Service\NavigationProviderInterface;
@@ -128,6 +129,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     private $installHandler;
 
     /**
+     * @var RecentlyViewedHandler
+     */
+    protected $recentlyViewedHandler;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -143,6 +149,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param AdminPanelDefinitionProviderInterface $adminPanelDefinitions
      * @param CacheInterface $cache
      * @param InstallHandler $installHandler
+     * @param RecentlyViewedHandler $recentlyViewedHandler
      */
     public function __construct(
         ModuleNameMapperInterface             $moduleNameMapper,
@@ -159,7 +166,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         AdminPanelDefinitionProviderInterface $adminPanelDefinitions,
         CacheInterface                        $cache,
         CacheManagerInterface                 $cacheManager,
-        InstallHandler $installHandler
+        InstallHandler                        $installHandler,
+        RecentlyViewedHandler                 $recentlyViewedHandler,
     )
     {
         $this->moduleNameMapper = $moduleNameMapper;
@@ -177,6 +185,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->cache = $cache;
         $this->cacheManager = $cacheManager;
         $this->installHandler = $installHandler;
+        $this->recentlyViewedHandler = $recentlyViewedHandler;
     }
 
     /**
@@ -268,6 +277,12 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             $metadata->setModuleMetadata($moduleMetadata);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+        }
+
+        $metadata->setGlobalRecentlyViewedMetadata([]);
+        if (in_array('globalRecentlyViewed', $exposed, true)) {
+            $navigation = $this->navigationService->getNavbar();
+            $metadata->setGlobalRecentlyViewedMetadata($this->getGlobalRecentlyViewedMetadata($navigation));
         }
 
         /** @var \User $currentUser */
@@ -531,6 +546,16 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     }
 
     /**
+     * @return array
+     */
+    protected function getGlobalRecentlyViewedMetadata(Navbar $navigation): array
+    {
+        $modules = $navigation->tabs ?? [];
+        return $this->recentlyViewedHandler->getGlobalTrackers($modules) ?? [];
+    }
+
+
+    /**
      * @param array $exposed
      * @return AppMetadata
      */
@@ -541,6 +566,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setUserPreferences([]);
         $metadata->setModuleMetadata([]);
         $metadata->setNavigation([]);
+        $metadata->setGlobalRecentlyViewedMetadata([]);
 
         $language = $this->getDefaultMetadataLanguage();
 

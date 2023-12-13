@@ -1,0 +1,42 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2023 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+<ng-container *ngIf="itemWithRoutes() && itemWithRoutes().length">
+    <li *ngFor="let item of itemWithRoutes(); let i = index; trackBy: trackByFn;">
+        <a class="new-list-item d-flex" [routerLink] = "item.attributes?.route" >
+            <scrm-image class="action-btn-icon mr-3" [image]="item?.attributes?.module_name"></scrm-image>
+            <div class="d-flex flex-column">
+                <span class="text-title">{{item?.attributes?.module_name | uppercase}}</span>
+                <span class="text-subtitle">{{item?.attributes?.item_summary}}</span>
+            </div>
+        </a>
+    </li>
+</ng-container>
+
+
+
+
