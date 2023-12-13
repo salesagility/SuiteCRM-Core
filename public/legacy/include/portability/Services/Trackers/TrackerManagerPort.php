@@ -48,18 +48,12 @@ class TrackerManagerPort
      * @param array $modules
      * @return array
      */
-    public function getModule(array $modules): array
+    public function getModule(array $modules, int $history_max_viewed = 10): array
     {
         global $current_user;
         $db = DBManagerFactory::getInstance();
         $userId = $db->quote($current_user->id);
         $tracker = BeanFactory::newBean('Trackers');
-
-        if (!empty($modules)) {
-            $history_max_viewed = 10;
-        } else {
-            $history_max_viewed = (!empty($GLOBALS['sugar_config']['history_max_viewed'])) ? $GLOBALS['sugar_config']['history_max_viewed'] : 50;
-        }
 
         $table = $tracker->table_name;
 
