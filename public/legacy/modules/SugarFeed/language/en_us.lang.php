@@ -96,10 +96,10 @@ $mod_strings = array(
     'LBL_TIME_AND' => 'and',
     'LBL_TIME_AGO' => 'ago',
 // Activity stream
-    'CREATED_CONTACT' => 'created a <b>NEW</b> {0}',
-    'CREATED_OPPORTUNITY' => 'created a <b>NEW</b> {0}',
-    'CREATED_CASE' => 'created a <b>NEW</b> {0}',
-    'CREATED_LEAD' => 'created a <b>NEW</b> {0}',
+    'CREATED_CONTACT' => 'created a <b>NEW</b> {0}', // For fusional (inflected) languages: used in the sentence "Administrator created a new contact"
+    'CREATED_OPPORTUNITY' => 'created a <b>NEW</b> {0}', // For fusional (inflected) languages: used in the sentence "Administrator created a new opportunity"
+    'CREATED_CASE' => 'created a <b>NEW</b> {0}', // For fusional (inflected) languages: used in the sentence "Administrator created a new case"
+    'CREATED_LEAD' => 'created a <b>NEW</b> {0}', // For fusional (inflected) languages: used in sentence "Administrator created a new lead"
     'FOR' => 'for', // Activity stream for cases
     'FOR_AMOUNT' => 'for amount', // Activity stream for cases
     'CLOSED_CASE' => '<b>CLOSED</b> a {0} ',
