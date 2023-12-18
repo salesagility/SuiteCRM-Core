@@ -34,6 +34,7 @@
         [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
         [formControl]="field.formControl"
         (change)="onInputChange($event)"
+        [ngbPopover]="calendarContent"
     >
 
     <div class="input-group-append">

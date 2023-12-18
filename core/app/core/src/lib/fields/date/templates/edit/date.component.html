@@ -34,6 +34,7 @@
            [formControl]="field.formControl"
            [startDate]="dateModel"
            (ngModelChange)="setModel($event)"
+           (click)="openDatePicker(datepicker)"
            #datepicker="ngbDatepicker">
     <span class="input-group-append align-items-end">
         <scrm-button [config]="getOpenButton(datepicker)">

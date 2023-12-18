@@ -100,6 +100,11 @@ export class DateEditFieldComponent extends BaseDateComponent implements OnInit,
         };
     }
 
+    openDatePicker(datepicker: any): void {
+        datepicker.toggle(); // Open the datepicker popup
+        datepicker.navigateTo(this.dateModel);
+    }
+
     getPlacement(): PlacementArray {
         return ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
     }
