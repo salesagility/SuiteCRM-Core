@@ -295,7 +295,6 @@ $adminOnlyList = [
     'UpgradeWizard' => ['all' => 1],
     'Studio' => ['all' => 1],
     'Schedulers' => ['all' => 1],
-    'ExternalOAuthConnection' => ['all' => 1],
     'jjwg_Address_Cache' => ['all' => 1],
     'SugarFeed' => ['adminsettings' => 1],
     'jjwg_Maps' => ['geocoded_counts' => 1, 'geocoding_test' => 1, 'config' => 1],
