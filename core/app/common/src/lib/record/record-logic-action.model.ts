@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -23,37 +23,19 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
+import { Action } from '../actions/action.model'
+import { AttributeDependency } from './field.model'
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
+export interface RecordLogicMap {
+    [recordLogicName: string]: RecordLogic;
 }
 
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
-
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
-
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
+export interface RecordLogic extends Action {
+    params?: {
+        fieldDependencies?: string[];
+        attributeDependencies?: AttributeDependency[];
+        triggerOnEvents?: [LineActionEvent: boolean][];
+        [key: string]: any;
+    };
 }

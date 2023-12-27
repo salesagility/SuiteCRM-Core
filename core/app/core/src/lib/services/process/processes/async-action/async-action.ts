@@ -24,20 +24,32 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, take, tap} from 'rxjs/operators';
+import {Record, SearchCriteria, SortingSelection} from 'common';
+import {Injectable} from '@angular/core';
 import {Process, ProcessService} from '../../process.service';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {MessageService} from '../../../message/message.service';
 import {AsyncActionHandler} from './async-action.model';
-import {Record, SearchCriteria, SortingSelection} from 'common';
 import {RedirectAsyncAction} from './actions/redirect/redirect.async-action';
 import {ExportAsyncAction} from './actions/export/export.async-action';
 import {NoopAsyncAction} from './actions/noop/noop.async-action';
 import {ChangelogAsyncAction} from './actions/changelog/changelog.async-action';
+import { isEmpty } from 'lodash-es';
+import {
+    RecordLogicContext
+} from '../../../../views/record/record-logic/record-logic.model';
+import {
+    SetFieldsAsyncAction
+} from './record-logic-actions/set-fields/set-fields.async-action';
+import {
+    ReloadSubpanelsAsyncAction
+} from './record-logic-actions/reload-subpanels/reload-subpanels.async-action';
 
 export interface AsyncActionInput {
+    [key: string]: any;
+
     action?: string;
     module?: string;
     criteria?: SearchCriteria;
@@ -47,8 +59,6 @@ export interface AsyncActionInput {
     payload?: { [key: string]: any };
     modalRecord?: Record;
     record?: Record;
-
-    [key: string]: any
 }
 
 @Injectable({
@@ -57,6 +67,7 @@ export interface AsyncActionInput {
 export class AsyncActionService {
 
     actions: { [key: string]: AsyncActionHandler } = {};
+    recordLogicActions: { [key: string]: AsyncActionHandler } = {};
 
     constructor(
         private processService: ProcessService,
@@ -65,27 +76,43 @@ export class AsyncActionService {
         protected redirectAction: RedirectAsyncAction,
         protected exportAction: ExportAsyncAction,
         protected noopAction: NoopAsyncAction,
-        protected changelogAction: ChangelogAsyncAction
+        protected changelogAction: ChangelogAsyncAction,
+        protected setFieldsAsyncAction: SetFieldsAsyncAction,
+        protected reloadSubpanelsAsyncAction: ReloadSubpanelsAsyncAction
     ) {
         this.registerHandler(redirectAction);
         this.registerHandler(exportAction);
         this.registerHandler(noopAction);
         this.registerHandler(changelogAction);
+        this.registeRecordHandler(noopAction);
+        this.registeRecordHandler(setFieldsAsyncAction);
+        this.registeRecordHandler(reloadSubpanelsAsyncAction);
     }
 
     public registerHandler(handler: AsyncActionHandler): void {
         this.actions[handler.key] = handler;
     }
 
+    public registeRecordHandler(handler: AsyncActionHandler): void {
+        this.recordLogicActions[handler.key] = handler;
+    }
+
+
     /**
      * Send action request
      *
      * @param {string} actionName to submit
-     * @param {string} data to send
+     * @param {object} data to send
      * @param {string} presetHandlerKey to use
-     * @returns {object} Observable<Process>
+     * @param {RecordLogicContext} recordLogicContext Record Logic Context
+     * @returns {Observable<Process>} Observable<Process>
      */
-    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null): Observable<Process> {
+    public run(
+        actionName: string,
+        data: AsyncActionInput,
+        presetHandlerKey: string = null,
+        recordLogicContext: RecordLogicContext|null = null
+    ): Observable<Process> {
         const options = {
             ...data
         };
@@ -106,7 +133,7 @@ export class AsyncActionService {
 
                     if (process.messages) {
                         process.messages.forEach(message => {
-                            if(!!message) {
+                            if(message) {
                                 this.message[handler](message);
                             }
                         });
@@ -116,24 +143,30 @@ export class AsyncActionService {
                         return;
                     }
 
-                    const actionHandlerKey = presetHandlerKey || (process.data && process.data.handler) || null;
+                    const actionHandlerKey = presetHandlerKey || process.data?.handler || null;
 
-                    if (!actionHandlerKey) {
+                    if (isEmpty(actionHandlerKey)) {
                         return;
                     }
 
-                    const actionHandler: AsyncActionHandler = this.actions[actionHandlerKey];
+                    const actionHandler: AsyncActionHandler = recordLogicContext === null
+                        ? this.actions[actionHandlerKey]
+                        : this.recordLogicActions[actionHandlerKey];
 
                     if (!actionHandler) {
                         this.message.addDangerMessageByKey('LBL_MISSING_HANDLER');
                         return;
                     }
 
+                    if (recordLogicContext){
+                        process.data.params.context = recordLogicContext;
+                    }
+
                     actionHandler.run(process.data.params);
 
                 }),
                 catchError((err) => {
-                    const errorMessage = err?.message ?? ''
+                    const errorMessage = err?.message ?? '';
 
                     if (errorMessage === 'Access Denied.') {
                         this.appStateStore.updateLoading(actionName, false);

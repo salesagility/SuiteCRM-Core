@@ -24,36 +24,6 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
+import {NoopAsyncAction} from './noop.async-action';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
-}
-
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
-
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
-
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
-}
+export const noopActionMock = new NoopAsyncAction();

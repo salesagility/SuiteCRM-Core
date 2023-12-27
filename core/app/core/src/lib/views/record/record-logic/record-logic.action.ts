@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,36 +24,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
+import { Action, ActionData, ActionHandler, Record } from 'common';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
+export interface RecordLogicActionData extends ActionData {
+    record?: Record;
 }
 
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
+export abstract class RecordLogicActionHandler extends ActionHandler<RecordLogicActionData> {
 
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
+    /**
+     * Should Display
+     *
+     * @param {object} data Data
+     * @returns {boolean} Should Display?
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public shouldDisplay(data: RecordLogicActionData): boolean {
+        return true;
+    }
 
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
+    abstract run(data: RecordLogicActionData, action: Action): void;
+
 }

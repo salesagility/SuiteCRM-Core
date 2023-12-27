@@ -24,36 +24,19 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Record, RecordLogicMap, ViewMode } from 'common';
-import {AppData} from '../../../../store/view/view.store';
-import {Metadata} from '../../../../store/metadata/metadata.store.service';
+import {AsyncActionData, AsyncActionHandler} from '../../async-action.model';
+import {Injectable} from '@angular/core';
 
-export interface RecordViewModel {
-    data: RecordViewData;
-    appData: AppData;
-    metadata: Metadata;
-}
+@Injectable({
+    providedIn: 'root'
+})
+export class NoopAsyncAction extends AsyncActionHandler {
+    key = 'noop';
 
-export interface RecordViewData {
-    module?: string;
-    recordID?: string;
-    mode?: ViewMode;
-    record: Record;
-    loading: boolean;
-}
+    constructor() {
+        super();
+    }
 
-export interface RecordViewState {
-    module: string;
-    recordID: string;
-    loading: boolean;
-    widgets: boolean;
-    showSidebarWidgets: boolean;
-    showTopWidget: boolean;
-    showSubpanels: boolean;
-    mode: ViewMode;
-    params: { [key: string]: string };
-}
-
-export interface RecordLogicMapPerField {
-    [fieldName: string]: RecordLogicMap;
+    run(data: AsyncActionData): void {
+    }
 }
