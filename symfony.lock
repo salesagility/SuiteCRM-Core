@@ -276,13 +276,16 @@
         "version": "2.1.1"
     },
     "google/apiclient": {
-        "version": "2.0",
+        "version": "2.14",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "49c5d7a66d863d28513979bf0666dc77599100c0"
-        }
+            "branch": "main",
+            "version": "2.10",
+            "ref": "07a97ec434d43b7903c78069a04c92adb6442e52"
+        },
+        "files": [
+            "config/packages/google_apiclient.yaml"
+        ]
     },
     "google/apiclient-services": {
         "version": "v0.166.0"
