@@ -41,4 +41,5 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Shivas\VersioningBundle\ShivasVersioningBundle::class => ['all' => true],
     Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
+    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
 ];
