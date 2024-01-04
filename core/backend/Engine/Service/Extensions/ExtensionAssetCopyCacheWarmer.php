@@ -25,67 +25,34 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
 namespace App\Engine\Service\Extensions;
 
-use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
-class ExtensionAssetCacheWarmupDecorator extends CacheWarmerAggregate
+class ExtensionAssetCopyCacheWarmer implements CacheWarmerInterface
 {
-    /**
-     * @var CacheWarmerInterface
-     */
-    protected $decorated;
-
-    /**
-     * @var ExtensionAssetCopyInterface
-     */
-    protected $assetCopy;
-
-    /**
-     * ExtensionAssetCacheWarmupDecorator constructor.
-     * @param CacheWarmerAggregate $decorated
-     * @param ExtensionAssetCopyInterface $assetCopy
-     */
-    public function __construct(CacheWarmerAggregate $decorated, ExtensionAssetCopyInterface $assetCopy)
+    public function __construct(private readonly ExtensionAssetCopyInterface $assetCopy)
     {
-        $this->decorated = $decorated;
-        $this->assetCopy = $assetCopy;
-        parent::__construct();
     }
 
     /**
-     * Enable optional warmers
+     * {@inheritdoc}
+     *
+     * @return string[]
      */
-    public function enableOptionalWarmers(): void
+    public function warmUp(string $cacheDir, string $buildDir = null): array
     {
-        $this->decorated->enableOptionalWarmers();
+        $this->assetCopy->copyAssets();
+
+        return [];
     }
 
     /**
-     * Enable only optional warmers
-     */
-    public function enableOnlyOptionalWarmers(): void
-    {
-        $this->decorated->enableOnlyOptionalWarmers();
-    }
-
-    /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function isOptional(): bool
     {
-        return $this->decorated->isOptional();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warmUp(string $cacheDir): array
-    {
-        $result = $this->decorated->warmUp($cacheDir);
-        $this->assetCopy->copyAssets();
-        return $result;
+        // optional cache warmers are not run when handling the request
+        return false;
     }
 }

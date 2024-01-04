@@ -150,8 +150,11 @@ services:
   App\Security\LegacySessionSecurityStage:
     decorates: 'api_platform.graphql.resolver.stage.security'
 
-  App\Engine\Service\Extensions\ExtensionAssetCacheWarmupDecorator:
-    decorates: 'cache_warmer'
+  App\Engine\Service\Extensions\ExtensionAssetCopyCacheWarmer:
+    arguments:
+      - '@App\Engine\Service\Extensions\ExtensionAssetCopyInterface'
+    tags:
+      - name: 'kernel.cache_warmer'
 
   security.authenticator.json_login:
     class: App\Security\AppJsonLoginAuthenticator
