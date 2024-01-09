@@ -58,10 +58,11 @@ require_once 'include/SugarObjects/SugarConfig.php';
 
 
 if (empty($GLOBALS['installing']) && !file_exists('config.php')) {
-    header('Location: install.php');
+    header('Location: ../../public/install.php');
     if (isset($GLOBALS['log'])) {
         $GLOBALS['log']->fatal('SuiteCRM is not installed. Entry point needs an installed SuiteCRM, please install first.');
     }
+    return;
 }
 
 $BASE_DIR = realpath(dirname(__DIR__));
@@ -96,7 +97,8 @@ if (is_file('config_override.php')) {
     require_once 'config_override.php';
 }
 if (empty($GLOBALS['installing']) && empty($sugar_config['dbconfig']['db_name'])) {
-    header('Location: install.php');
+    header('Location: ../../public/install.php');
+    return;
 }
 
 // make sure SugarConfig object is available
