@@ -31,6 +31,7 @@ use App\Authentication\LegacyHandler\UserHandler;
 use App\Security\Exception\UserNotFoundException;
 use Symfony\Component\Ldap\Security\LdapUser;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -70,7 +71,7 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
     /**
      * @inheritDoc
      */
-    public function loadUserByIdentifier(string $identifier)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $existsUser = $this->userHandler->userExists($identifier);
 
@@ -187,9 +188,9 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
     /**
      * @inheritDoc
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        $this->proxy->getEntityUserProvider()->upgradePassword($user, $newEncodedPassword);
+        $this->proxy->getEntityUserProvider()->upgradePassword($user, $newHashedPassword);
     }
 
     public function loadUserByUsername(string $username)
