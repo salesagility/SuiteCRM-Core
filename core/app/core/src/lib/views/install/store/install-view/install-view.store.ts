@@ -85,6 +85,7 @@ export class InstallViewStore implements StateStore {
     vm$: Observable<InstallViewModel>;
     vm: InstallViewModel;
     recordStore: RecordStore;
+    url: string;
 
     /** Internal Properties */
     protected cache$: Observable<any> = null;
@@ -210,6 +211,10 @@ export class InstallViewStore implements StateStore {
     }
 
     getMetadata(): InstallViewMetadata {
+        this.url = window.location.href;
+        if (typeof this.url !== 'undefined') {
+            this.url = this.url.replace('/#/install', '');
+        }
         return {
             actions: [],
             templateMeta: {
@@ -238,6 +243,7 @@ export class InstallViewStore implements StateStore {
                                         "vname": "LBL_SITECFG_URL",
                                         "type": "varchar",
                                         "required": true,
+                                        "default": this.url?.toString()
                                     } as FieldDefinition,
                                 } as PanelCell,
                                 {
@@ -324,7 +330,8 @@ export class InstallViewStore implements StateStore {
                                                 "vname": "LBL_DBCONF_DB_PORT",
                                                 "labelKey": "LBL_DBCONF_DB_PORT",
                                                 "showLabel": ["*"],
-                                                "required": false
+                                                "required": false,
+                                                "default":'3306'
                                             }
                                         },
                                         showLabel: {
@@ -353,6 +360,7 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_SITECFG_ADMIN_Name",
                                                 "showLabel": ["edit"],
                                                 "required": true,
+                                                "default": "admin"
                                             },
                                             "site_password": {
                                                 "name": "site_password",
