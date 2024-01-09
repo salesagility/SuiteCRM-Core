@@ -92,7 +92,7 @@ class ModuleNameMapper
     {
         global $moduleList;
 
-        return $moduleList;
+        return $moduleList ?? [];
     }
 
     /**
