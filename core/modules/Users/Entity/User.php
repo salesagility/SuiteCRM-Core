@@ -938,4 +938,9 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
         return $this;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getUserName();
+    }
 }
