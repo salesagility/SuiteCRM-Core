@@ -23,6 +23,11 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
+if (!file_exists('legacy/config.php') && !file_exists('.installed_checked')){
+    header('Location: install.php');
+    return;
+}
+
 // Get the autoloader class
 require __DIR__ . '/../vendor/autoload.php';
 
