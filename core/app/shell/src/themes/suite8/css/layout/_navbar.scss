@@ -44,6 +44,14 @@
     .global-action-icon svg polygon {
       fill: rgba(255, 255, 255, 0.8);
     }
+
+    .navbar-collapse {
+      .navbar-nav li img {
+        margin: .3em;
+        padding-left: .5em;
+        height: 2.4em
+      }
+    }
   }
 
   .navbar-nav {
