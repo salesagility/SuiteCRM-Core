@@ -111,7 +111,7 @@
     "twig/twig": "^2.12|^3.0",
     "vlucas/phpdotenv": "^3.5",
     "voku/anti-xss": "^4.1",
-    "webonyx/graphql-php": "^0.13.8",
+    "webonyx/graphql-php": "^15.0",
     "wikimedia/composer-merge-plugin": "^2.0",
     "zbateson/mail-mime-parser": "^2.2",
     "zf1/zend-gdata": "^1.12",
