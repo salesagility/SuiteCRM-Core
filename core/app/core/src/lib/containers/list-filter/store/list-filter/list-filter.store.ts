@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEmpty} from 'lodash-es';
 import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
 import {
@@ -33,7 +34,8 @@ import {
     Field,
     isVoid,
     SearchMetaFieldMap,
-    ViewMode
+    ViewMode,
+    SearchCriteriaFieldFilter
 } from 'common';
 import {map, take, tap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
@@ -219,15 +221,29 @@ export class ListFilterStore implements StateStore {
             return;
         }
 
-        Object.keys(savedFilter.criteriaFields).forEach(key => {
-            const field = savedFilter.criteriaFields[key];
+        Object.entries(savedFilter.criteriaFields).forEach(([key, field]) => {
             const name = field.name || key;
 
             if (name.includes('_only')) {
                 this.special.push(field);
-            } else {
-                this.fields.push(field);
+                return;
             }
+
+            if (field.vardefBased) {
+                const filters = savedFilter?.criteria?.filters ?? {};
+                const fieldFilter = (
+                    filters[key] ?? {}
+                ) as SearchCriteriaFieldFilter;
+
+                if (
+                    !isEmpty(fieldFilter?.operator)
+                    && field.display === 'none'
+                ) {
+                    field.display = 'default';
+                }
+            }
+
+            this.fields.push(field);
         });
     }
 
@@ -246,8 +262,11 @@ export class ListFilterStore implements StateStore {
         const fields = [];
         this.fields.forEach(field => {
             const name = field.name;
-            if (!this.searchFields[name]) {
+            if (field.display === 'none' || field.source === 'groupField') {
                 return;
+            }
+            if (!this.searchFields[name]) {
+                field.readonly = true;
             }
             fields.push(field);
         });

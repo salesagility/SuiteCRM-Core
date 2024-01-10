@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEmpty} from 'lodash-es';
 import {Field, FieldDefinition, Record, ViewFieldDefinition} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {Injectable} from '@angular/core';
@@ -121,6 +122,9 @@ export class FieldManager {
      * @returns {object}Field
      */
     public addFilterField(record: SavedFilter, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
+        if (viewField.vardefBased && !isEmpty(record.criteriaFields[viewField.name])) {
+            return record.criteriaFields[viewField.name];
+        }
 
         const field = this.filterFieldBuilder.buildFilterField(record, viewField, language);
 

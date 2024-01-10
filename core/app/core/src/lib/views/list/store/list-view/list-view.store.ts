@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isArray, isEmpty, union } from 'lodash-es';
 import {
     Action,
     ColumnDefinition,
@@ -37,11 +38,13 @@ import {
     SelectionStatus,
     SortDirection,
     SortingSelection,
-    ViewContext
+    ViewContext,
+    isTrue
 } from 'common';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {Metadata, MetadataStore} from '../../../../store/metadata/metadata.store.service';
@@ -61,7 +64,7 @@ import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-lis
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
-import {isArray, union} from 'lodash-es';
+import {ListViewUrlQueryService} from '../../services/list-view-url-query.service';
 
 export interface ListViewData {
     records: Record[];
@@ -173,6 +176,8 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected filterListStoreFactory: FilterListStoreFactory,
         protected confirmation: ConfirmationModalService,
         protected preferences: UserPreferenceStore,
+        protected route: ActivatedRoute,
+        protected listViewUrlQueryService: ListViewUrlQueryService
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -356,8 +361,19 @@ export class ListViewStore extends ViewStore implements StateStore {
             sortOrder: this?.metadata?.listView?.sortOrder ?? 'NONE' as SortDirection
         } as SortingSelection;
 
-        this.loadCurrentFilter(module);
-        this.loadCurrentSort(module);
+        const queryParams = this.route?.snapshot?.queryParams ?? {};
+        let filterType = '';
+        if (isTrue(queryParams['query'])) {
+            filterType = 'query';
+        }
+        switch (filterType) {
+            case 'query':
+                this.loadQueryFilter(module, queryParams);
+                break
+            default:
+                this.loadCurrentFilter(module);
+                this.loadCurrentSort(module);
+        }
         this.loadCurrentDisplayedColumns();
 
         return this.load();
@@ -776,6 +792,41 @@ export class ListViewStore extends ViewStore implements StateStore {
         }
 
         this.setFilters(activeFiltersPref, false, currentSort);
+    }
+
+    /**
+     * Load current filter
+     * @param module
+     * @param queryParams
+     * @protected
+     */
+    protected loadQueryFilter (
+        module:string,
+        queryParams: Params
+    ): void {
+        const orderBy: string = queryParams['orderBy'] ?? '';
+        const sortOrder: string = queryParams['sortOrder'] ?? '';
+        const direction = this.recordList.mapSortOrder(sortOrder);
+
+        const filter = this.listViewUrlQueryService.buildUrlQueryBasedFilter(
+            module,
+            this.internalState.activeFilters.default,
+            queryParams
+        );
+        if (isEmpty(filter)){
+            return;
+        }
+
+        const filters = { 'default': filter };
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(filters),
+            openFilter: deepClone(filter)
+        });
+
+        this.recordList.updateSorting(orderBy, direction, false);
+        this.recordList.updateSearchCriteria(filter.criteria, false);
     }
 
     /**

@@ -26,7 +26,7 @@
 
 import {ViewFieldDefinition} from './metadata.model';
 import {WidgetMetadata} from './widget.metadata';
-import {FieldDefinition} from '../record/field.model';
+import {DisplayType,FieldDefinition} from '../record/field.model';
 import {BulkActionsMap} from '../actions/bulk-action.model';
 import {ChartTypesMap} from '../containers/chart/chart.model';
 import {Action} from '../actions/action.model';
@@ -65,6 +65,9 @@ export interface ColumnDefinition extends ViewFieldDefinition {
 
 export interface SearchMetaField {
     name?: string;
+    vardefBased?: boolean;
+    readonly?: boolean;
+    display?: DisplayType;
     type?: string;
     label?: string;
     default?: boolean;

@@ -86,6 +86,7 @@ export class GroupFieldBuilder extends FieldBuilder {
             };
 
             const groupField = buildFieldFunction(record, groupViewField, language);
+            groupField.source = 'groupField';
             addRecordFunction(record, fieldDefinition.name, groupField);
         });
     }

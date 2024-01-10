@@ -130,6 +130,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $recordViewActionLimits,
         array $subpanelViewActionLimits,
         array $listViewLineActionsLimits,
+        array $listViewUrlQueryFilterMapping,
         array $uiConfigs,
         array $notificationsConfigs,
         array $notificationsReloadActions,
@@ -161,6 +162,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['recordview_actions_limits'] = $recordViewActionLimits;
         $this->injectedSystemConfigs['subpanelview_actions_limits'] = $subpanelViewActionLimits;
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
+        $this->injectedSystemConfigs['listview_url_query_filter_mapping'] = $listViewUrlQueryFilterMapping;
         $this->injectedSystemConfigs['ui'] = $uiConfigs ?? [];
         $this->injectedSystemConfigs['ui']['notifications'] = $notificationsConfigs ?? [];
         $this->injectedSystemConfigs['ui']['notifications_reload_actions'] = $notificationsReloadActions ?? [];

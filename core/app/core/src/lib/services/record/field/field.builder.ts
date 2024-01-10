@@ -177,6 +177,7 @@ export class FieldBuilder {
 
         field.type = viewField.type || definition.type;
         field.name = viewField.name || definition.name || '';
+        field.vardefBased = viewField?.vardefBased ?? definition?.vardefBased ?? false;
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
         field.display = (viewField.display || definition.display || 'default') as DisplayType;
         field.defaultDisplay = field.display;

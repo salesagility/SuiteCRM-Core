@@ -31,6 +31,7 @@ export interface SearchCriteriaFieldFilter {
     fieldType?: string;
     operator: string;
     values?: string[];
+    target?: string;
     start?: string;
     end?: string;
     valueObjectArray?: ObjectMap[];

@@ -290,6 +290,9 @@ export class SavedFilterRecordStore extends RecordStore {
         const definition = {
             name: fieldMeta.name,
             label: fieldMeta.label,
+            vardefBased: fieldMeta?.vardefBased ?? false,
+            readonly: fieldMeta?.readonly ?? false,
+            display: fieldMeta?.display ?? '',
             type,
             fieldDefinition: {}
         } as ViewFieldDefinition;

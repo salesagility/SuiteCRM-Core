@@ -1,0 +1,64 @@
+parameters:
+  module.listview.url_query_filter_mapping:
+    '{field}_range_choice':
+      not_equal:
+        'range_{field}': 'target'
+      between:
+        'start_range_{field}': 'start'
+        'end_range_{field}': 'end'
+      'greater_than':
+        'range_{field}': 'target'
+      'less_than':
+        'range_{field}': 'target'
+      'last_7_days':
+        '{field}_range_choice': 'operator'
+      'next_7_days':
+        '{field}_range_choice': 'operator'
+      'last_30_days':
+        '{field}_range_choice': 'operator'
+      'next_30_days':
+        '{field}_range_choice': 'operator'
+      'last_month':
+        '{field}_range_choice': 'operator'
+      'this_month':
+        '{field}_range_choice': 'operator'
+      'next_month':
+        '{field}_range_choice': 'operator'
+      'last_year':
+        '{field}_range_choice': 'operator'
+      'this_year':
+        '{field}_range_choice': 'operator'
+      'next_year':
+        '{field}_range_choice': 'operator'
+    '{field}_filter_type':
+      equal:
+        '{field}_filter_value': 'target'
+      not_equal:
+        '{field}_filter_value': 'target'
+      between:
+        '{field}_filter_start': 'start'
+        '{field}_filter_end': 'end'
+      'greater_than':
+        '{field}_filter_start': 'target'
+      'less_than':
+        '{field}_filter_end': 'target'
+      'last_7_days':
+        '{field}_filter_type': 'operator'
+      'next_7_days':
+        '{field}_filter_type': 'operator'
+      'last_30_days':
+        '{field}_filter_type': 'operator'
+      'next_30_days':
+        '{field}_filter_type': 'operator'
+      'last_month':
+        '{field}_filter_type': 'operator'
+      'this_month':
+        '{field}_filter_type': 'operator'
+      'next_month':
+        '{field}_filter_type': 'operator'
+      'last_year':
+        '{field}_filter_type': 'operator'
+      'this_year':
+        '{field}_filter_type': 'operator'
+      'next_year':
+        '{field}_filter_type': 'operator'
