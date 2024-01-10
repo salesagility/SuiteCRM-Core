@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isEmpty } from 'lodash-es';
 import {Injectable} from '@angular/core';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {Action, DisplayType, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
@@ -107,9 +108,12 @@ export class FieldLogicDisplayTypeAction extends FieldLogicActionHandler {
         relatedAttributesFields: string[],
         activeOnAttributes: StringArrayMatrix
     ) {
-        let isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
+        let isActive = false;
+        if (!isActive && !isEmpty(activeOnFields)) {
+            isActive = this.areFieldsActive(relatedFields, record, activeOnFields);
+        }
 
-        if (!isActive) {
+        if (!isActive && !isEmpty(activeOnAttributes)) {
             isActive = this.areAttributesActive(relatedAttributesFields, record, activeOnAttributes);
         }
 
