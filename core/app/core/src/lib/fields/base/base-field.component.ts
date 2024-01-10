@@ -231,7 +231,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                 dependentAttributes.push({
                     field: fieldKey,
                     attribute: attributeKey,
-                    types: dependentFields[name]['types'] ?? []
+                    types: (dependentFields[name] ?? {})['types'] ?? [],
                 });
             }
         });
