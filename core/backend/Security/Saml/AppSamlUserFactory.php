@@ -29,7 +29,7 @@ namespace App\Security\Saml;
 
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Logging\Services\AppLoggingTrait;
-use Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
+use Nbgrp\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -72,15 +72,15 @@ class AppSamlUserFactory implements SamlUserFactoryInterface
     /**
      * @inheritDoc
      */
-    public function createUser($username, array $attributes = []): UserInterface
+    public function createUser(string $identifier, array $attributes): UserInterface
     {
-        $this->log('createUser username: ' . $username);
+        $this->log('createUser identifier: ' . $identifier);
         $this->logArray('createUser attributes', $attributes);
 
         $userInfo = $this->mapAttributes($attributes);
 
 
-        $legacyUser = $this->userHandler->createExternalAuthUser($username, $userInfo);
+        $legacyUser = $this->userHandler->createExternalAuthUser($identifier, $userInfo);
         if ($legacyUser === null) {
             $this->log('createUser - Not able to create user');
             throw new RuntimeException('Not able to create user');
