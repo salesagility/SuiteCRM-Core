@@ -33,7 +33,7 @@ use Symfony\Component\Ldap\Security\LdapBadge;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
 class AppCheckLdapCredentialsListener extends CheckLdapCredentialsListener
@@ -74,10 +74,10 @@ class AppCheckLdapCredentialsListener extends CheckLdapCredentialsListener
     }
 
     /**
-     * @param PassportInterface $passport
+     * @param Passport $passport
      * @return string|null
      */
-    protected function getExternalAuthOnly(PassportInterface $passport): ?string
+    protected function getExternalAuthOnly(Passport $passport): ?string
     {
         $user = $this->getUser($passport);
 
@@ -89,10 +89,10 @@ class AppCheckLdapCredentialsListener extends CheckLdapCredentialsListener
     }
 
     /**
-     * @param PassportInterface $passport
+     * @param Passport $passport
      * @return User|null
      */
-    protected function getUser(PassportInterface $passport): ?User
+    protected function getUser(Passport $passport): ?User
     {
         /** @var UserBadge $userBadge */
         $userBadge = $passport->getBadge(UserBadge::class);

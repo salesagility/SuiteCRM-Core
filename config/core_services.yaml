@@ -175,6 +175,13 @@ services:
     arguments:
       - '@security.ldap_locator'
 
+  App\Security\Ldap\AppCheckLdapCredentialsListener:
+    tags:
+      - name: 'kernel.event_subscriber'
+        dispatcher: security.event_dispatcher.main
+    arguments:
+      - '@security.ldap_locator'
+
   App\Security\LegacySessionLogoutListener:
     tags:
       - name: 'kernel.event_listener'
