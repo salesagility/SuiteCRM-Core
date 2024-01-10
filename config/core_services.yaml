@@ -147,8 +147,8 @@ services:
   App\Security\LegacySessionDenyAccessListener:
     decorates: 'api_platform.security.listener.request.deny_access'
 
-  App\Security\LegacySessionSecurityStage:
-    decorates: 'api_platform.graphql.resolver.stage.security'
+  App\Security\LegacySessionAccessCheckerProvider:
+    decorates: 'api_platform.graphql.state_provider.access_checker'
 
   App\Engine\Service\Extensions\ExtensionAssetCopyCacheWarmer:
     arguments:
