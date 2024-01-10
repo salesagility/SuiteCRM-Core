@@ -25,141 +25,66 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
-
 namespace App\Security;
 
-
-use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
-use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
-use ApiPlatform\Core\Security\EventListener\DenyAccessListener;
-use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
-use ApiPlatform\Core\Util\RequestAttributesExtractor;
+use ApiPlatform\Symfony\EventListener\DenyAccessListener;
 use App\Authentication\LegacyHandler\Authentication;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Based on @see \ApiPlatform\Core\Security\EventListener\DenyAccessListener
+ * Based on @see \ApiPlatform\Symfony\EventListener\DenyAccessListener
  * Adds extra check to verify in legacy session is still active
  *
  * Class LegacyDenyAccessListener
  */
 class LegacySessionDenyAccessListener
 {
-    /**
-     * @var ResourceMetadataFactoryInterface
-     */
-    private $resourceMetadataFactory;
-
-    /**
-     * @var ResourceAccessCheckerInterface
-     */
-    private $resourceAccessChecker;
-
-    /**
-     * @var Authentication
-     */
-    private $authentication;
-
-    /**
-     * @var RequestStack
-     */
-    private $session;
-
-    /**
-     * @var DenyAccessListener
-     */
-    private $decorated;
 
     /**
      * LegacySessionDenyAccessListener constructor.
-     * @param DenyAccessListener $decorated
-     * @param ResourceMetadataFactoryInterface $resourceMetadataFactory
-     * @param ResourceAccessCheckerInterface $resourceAccessCheckerOrExpressionLanguage
-     * @param Authentication $authentication
-     * @param RequestStack $session
+     * @param DenyAccessListener|null $decorated
+     * @param Authentication|null $authentication
+     * @param RequestStack|null $requestStack
      */
     public function __construct(
-        DenyAccessListener $decorated,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        ResourceAccessCheckerInterface $resourceAccessCheckerOrExpressionLanguage,
-        Authentication $authentication,
-        RequestStack $session
-    ) {
-        $this->decorated = $decorated;
-        $this->resourceMetadataFactory = $resourceMetadataFactory;
-        $this->authentication = $authentication;
-        $this->resourceAccessChecker = $resourceAccessCheckerOrExpressionLanguage;
-        $this->session = $session;
+        private readonly ?DenyAccessListener $decorated,
+        private readonly ?Authentication     $authentication,
+        private readonly ?RequestStack       $requestStack
+    )
+    {
     }
 
     /**
-     * @param RequestEvent $event
-     * @throws ResourceClassNotFoundException
+     * Check if legacy session is active
+     * @return void
      */
-    public function onKernelRequest(RequestEvent $event): void
+    protected function checkLegacySession(): void
     {
-        $this->decorated->onKernelRequest($event);
-        $this->checkLegacySession($event->getRequest(), 'security_post_denormalize');
-    }
-
-    /**
-     * @param Request $request
-     * @param string $attribute
-     * @param array $extraVariables
-     * @throws ResourceClassNotFoundException
-     */
-    protected function checkLegacySession(Request $request, string $attribute, array $extraVariables = []): void
-    {
-        if (!$attributes = RequestAttributesExtractor::extractAttributes($request)) {
-            return;
-        }
-
-        $resourceMetadata = $this->resourceMetadataFactory->create($attributes['resource_class']);
-
-        $isGranted = $resourceMetadata->getOperationAttribute($attributes, $attribute, null, true);
-
-        if (null === $isGranted) {
-            return;
-        }
-
-        $extraVariables += $request->attributes->all();
-        $extraVariables['object'] = $request->attributes->get('data');
-        $extraVariables['request'] = $request;
-
-        if (!$this->resourceAccessChecker->isGranted($attributes['resource_class'], $isGranted, $extraVariables)) {
-            //don't do anything if it was an un-authorized request
-            return;
-        }
-
         $isActive = $this->authentication->checkSession();
 
         if ($isActive !== true) {
-            $this->session->invalidate();
+            $this->requestStack?->getSession()?->invalidate();
             throw new AccessDeniedException();
         }
     }
 
     /**
      * @param RequestEvent $event
-     * @throws ResourceClassNotFoundException
      */
     public function onSecurity(RequestEvent $event): void
     {
         $this->decorated->onSecurity($event);
-        $this->checkLegacySession($event->getRequest(), 'security');
+        $this->checkLegacySession();
     }
 
     /**
      * @param RequestEvent $event
-     * @throws ResourceClassNotFoundException
      */
     public function onSecurityPostDenormalize(RequestEvent $event): void
     {
         $this->decorated->onSecurityPostDenormalize($event);
-        $this->checkLegacySession($event->getRequest(), 'security_post_denormalize');
+        $this->checkLegacySession();
     }
 }
