@@ -28,99 +28,54 @@
 
 namespace App\Statistics\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Query;
 use App\Statistics\Resolver\BatchedStatisticsItemResolver;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *           "get"={
- *               "openapi_context" = {
- *                  "parameters" = {
- *                      {
- *                          "name" = "id",
- *                          "in" = "path",
- *                          "description" = "module name",
- *                          "required" = true
- *                      },
- *                      {
- *                          "name" = "queries",
- *                          "in" = "query",
- *                          "description" = "queries",
- *                          "required" = true,
- *                          "style" = "simple",
- *                          "schema" = {
- *                              "type": "object",
- *                              "additionalProperties" : {
- *                                  "type": "object",
- *                                  "properties": {
- *                                      "key" : {
- *                                          "type": "string"
- *                                      },
- *                                      "context" : {
- *                                          "type": "object",
- *                                          "properties": {
- *                                              "module" : {
- *                                                  "type": "string",
- *                                                  "required": false
- *                                              },
- *                                              "id" : {
- *                                                  "type": "string",
- *                                                  "required": false
- *                                              },
- *                                              "criteria" : {
- *                                                  "type": "object",
- *                                                  "required": false,
- *                                                  "additionalProperties": true
- *                                              },
- *                                              "sort" : {
- *                                                  "type": "object",
- *                                                  "required": false,
- *                                                  "additionalProperties": true
- *                                              },
- *                                          }
- *                                      },
- *                                      "params" : {
- *                                          "type": "object",
- *                                          "required": false,
- *                                           "additionalProperties": true
- *                                      },
- *                                  }
- *                              }
- *                          }
- *                      },
- *                  }
- *              }
- *          }
- *     },
- *     collectionOperations={
- *     },
- *     graphql={
- *          "get"={
- *              "item_query"=BatchedStatisticsItemResolver::class,
- *              "args"={
- *                 "module"={"type"="String!"},
- *                 "queries"={"type"="Iterable"},
- *              }
- *          },
- *      },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            security: "is_granted('ROLE_USER')"
+        ),
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(
+            resolver: BatchedStatisticsItemResolver::class,
+            args: [
+                'module' => ['type' => 'String!'],
+                'queries' => ['type' => 'Iterable'],
+            ],
+            security: "is_granted('ROLE_USER')"
+        ),
+    ]
+)]
 class BatchedStatistics
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var string|null
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The id',
+        ]
+    )]
+    protected ?string $id;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $items;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'items',
+        ]
+    )]
+    protected ?array $items;
 
     /**
      * @return string|null

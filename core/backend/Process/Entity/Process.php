@@ -25,72 +25,108 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
-
 namespace App\Process\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\Put;
 
-/**
- * @ApiResource(
- *     itemOperations={
- *          "get",
- *          "put",
- *     },
- *     collectionOperations={
- *          "get"
- *     },
- *     graphql={
- *         "item_query",
- *         "collection_query",
- *         "create"
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(),
+        new Put(),
+        new GetCollection()
+    ],
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection(),
+        new Mutation(name: 'create')
+    ]
+)]
 class Process
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var string|null
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The id',
+        ]
+    )]
+    protected ?string $id;
 
     /**
-     * @ApiProperty
      * @var string|null
      */
-    protected $type;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'type',
+        ]
+    )]
+    protected ?string $type;
 
     /**
-     * @ApiProperty
      * @var string|null
      */
-    protected $status;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'status',
+        ]
+    )]
+    protected ?string $status;
 
     /**
-     * @ApiProperty
      * @var string[]|null
      */
-    protected $messages;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'messages',
+        ]
+    )]
+    protected ?array $messages;
 
     /**
-     * @ApiProperty
      * @var bool|null
      */
-    protected $async;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'bool',
+            'description' => 'async',
+        ]
+    )]
+    protected ?bool $async;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $options;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'options',
+        ]
+    )]
+    protected ?array $options;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $data;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'data',
+        ]
+    )]
+    protected ?array $data;
 
     /**
      * Get Id

@@ -26,45 +26,60 @@
  */
 
 
-
 namespace App\SystemConfig\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 
-/**
- * @ApiResource(
- *     itemOperations={
- *          "get"
- *     },
- *     collectionOperations={
- *          "get"
- *     },
- *     graphql={
- *         "item_query",
- *         "collection_query"
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection()
+    ],
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection()
+    ]
+)]
 class SystemConfig
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var string|null
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The preference id',
+        ]
+    )]
+    protected ?string $id;
 
     /**
-     * @ApiProperty
      * @var string|null
      */
-    protected $value;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The value',
+        ]
+    )]
+    protected ?string $value;
 
     /**
-     * @ApiProperty
      * @var array
      */
-    protected $items = [];
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The items',
+        ]
+    )]
+    protected array $items = [];
 
     /**
      * Get Id

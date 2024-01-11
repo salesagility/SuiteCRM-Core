@@ -27,166 +27,142 @@
 
 namespace App\Metadata\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Query;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *           "get"={"path"="/module-metadata/{id}"}
- *     },
- *     collectionOperations={
- *     },
- *     graphql={
- *         "item_query",
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/module-metadata/{id}',
+            security: "is_granted('ROLE_USER')"
+        ),
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(security: "is_granted('ROLE_USER')")
+    ]
+)]
 class ModuleMetadata
 {
     /**
      * Record View metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The record-view metadata",
-     *         },
-     *     }
-     * )
      */
-    public $recordView;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The record-view metadata',
+        ]
+    )]
+    public array $recordView;
+
     /**
      * Edit View metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The edit-view metadata",
-     *         },
-     *     }
-     * )
      */
-    public $editView;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The edit-view metadata',
+        ]
+    )]
+    public array $editView;
+
     /**
      * List View metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view metadata",
-     *         },
-     *     }
-     * )
      */
-    public $listView;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The list-view metadata',
+        ]
+    )]
+    public array $listView;
+
     /**
      * Search metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The search metadata",
-     *         },
-     *     }
-     * )
      */
-    public $search;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The search metadata',
+        ]
+    )]
+    public array $search;
+
     /**
      * Subpanel metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The subpanel metadata",
-     *         },
-     *     }
-     * )
      */
-    public $subpanel;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The subpanel metadata',
+        ]
+    )]
+    public array $subpanel;
 
     /**
      * MassUpdate metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The massUpdate metadata",
-     *         },
-     *     }
-     * )
      */
-    public $massUpdate;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The massUpdate metadata',
+        ]
+    )]
+    public array $massUpdate;
 
     /**
      * recentlyViewed
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The recently viewed records",
-     *         },
-     *     }
-     * )
      */
-    public $recentlyViewed;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The recently viewed records',
+        ]
+    )]
+    public array $recentlyViewed;
 
     /**
      * Favorites
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The favorite records",
-     *         },
-     *     }
-     * )
      */
-    public $favorites;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The favorite records',
+        ]
+    )]
+    public array $favorites;
 
     /**
      * The module
      *
      * @var string
-     *
-     * @ApiProperty(
-     *     identifier=true,
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="string",
-     *             "description"="The module.",
-     *             "example"="Accounts"
-     *         }
-     *     },
-     *
-     * )
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'the module',
+        ]
+    )]
+    protected string $id;
 
     /**
      * Get EditView Metadata

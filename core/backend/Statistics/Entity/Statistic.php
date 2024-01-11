@@ -26,63 +26,87 @@
  */
 
 
-
 namespace App\Statistics\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Query;
 use App\Statistics\Resolver\StatisticsItemResolver;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get"
- *     },
- *     collectionOperations={
- *     },
- *     graphql={
- *          "get"={
- *              "item_query"=StatisticsItemResolver::class,
- *              "args"={
- *                 "module"={"type"="String!"},
- *                 "query"={"type"="Iterable"},
- *              }
- *          },
- *      },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('ROLE_USER')"),
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(
+            resolver: StatisticsItemResolver::class,
+            args: [
+                'module' => ['type' => 'String!'],
+                'query' => ['type' => 'Iterable'],
+            ],
+            security: "is_granted('ROLE_USER')"
+        ),
+    ]
+)]
 class Statistic
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var string|null
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The id',
+        ]
+    )]
+    protected ?string $id;
 
     /**
-     * @ApiProperty
      * @var string[]|null
      */
-    protected $messages;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'messages',
+        ]
+    )]
+    protected ?array $messages;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $options;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'options',
+        ]
+    )]
+    protected ?array $options;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $data;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'data',
+        ]
+    )]
+    protected ?array $data;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $metadata;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'metadata',
+        ]
+    )]
+    protected ?array $metadata;
 
     /**
      * @return string|null

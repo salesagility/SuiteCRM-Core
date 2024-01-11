@@ -28,96 +28,89 @@
 
 namespace App\Data\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Query;
 use App\Data\Resolver\RecordListResolver;
+use App\Statistics\Resolver\StatisticsItemResolver;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get"={"path"="/record-list/{id}"}
- *     },
- *     collectionOperations={},
- *     graphql={
- *          "get"={
- *              "item_query"=RecordListResolver::class,
- *              "args"={
- *                 "module"={"type"="String!"},
- *                 "limit"={"type"="Int"},
- *                 "offset"={"type"="Int"},
- *                 "criteria"={"type"="Iterable" , "description"="search criteria"},
- *                 "sort"={"type"="Iterable" , "description"="sort"}
- *              }
- *          },
- *      },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: "/record-list/{id}",
+            security: "is_granted('ROLE_USER')"
+        )
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(
+            resolver: RecordListResolver::class,
+            args: [
+                'module' => ['type' => 'String!'],
+                'limit' => ['type' => 'Int'],
+                'offset' => ['type' => 'Int'],
+                'criteria' => ['type' => 'Iterable', 'description'=>'search criteria'],
+                'sort' => ['type' => 'Iterable', 'description'=>'sort'],
+            ],
+            security: "is_granted('ROLE_USER')"
+        )
+    ]
+)]
 class RecordList
 {
     /**
      * RecordList data
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view data",
-     *         },
-     *     }
-     * )
      */
-    public $records;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The list-view data',
+        ]
+    )]
+    public array $records;
+
     /**
      * RecordList metadata
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list metadata",
-     *         },
-     *     }
-     * )
      */
-    public $meta;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The list metadata',
+        ]
+    )]
+    public array $meta;
+
     /**
      * RecordList filters
      *
      * @var array
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="array",
-     *             "description"="The list-view filters",
-     *         },
-     *     }
-     * )
      */
-    public $filters;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The list-view filters',
+        ]
+    )]
+    public array $filters;
+
     /**
      * The module
      *
      * @var string
-     *
-     * @ApiProperty(
-     *     identifier=true,
-     *     attributes={
-     *         "openapi_context"={
-     *             "type"="string",
-     *             "description"="The module.",
-     *             "example"="Accounts"
-     *         }
-     *     },
-     *
-     * )
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The module',
+        ]
+    )]
+    protected string $id;
 
     /**
      * @return string

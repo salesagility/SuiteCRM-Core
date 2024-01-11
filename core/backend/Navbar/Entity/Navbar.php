@@ -28,64 +28,110 @@
 
 namespace App\Navbar\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Query;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get"
- *     },
- *     collectionOperations={
- *     },
- *     graphql={
- *         "item_query"
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('ROLE_USER')"),
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(security: "is_granted('ROLE_USER')"),
+    ]
+)]
 final class Navbar
 {
     /**
-     * @ApiProperty(identifier=true)
+     * @var string|null
      */
-    public $userID;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'user id',
+        ]
+    )]
+    public ?string $userID;
 
     /**
      * @var array
-     * @ApiProperty
      */
-    public $tabs;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'tabs',
+        ]
+    )]
+    public array $tabs;
 
     /**
      * @var array
-     * @ApiProperty
      */
-    public $groupedTabs;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'groupedTabs',
+        ]
+    )]
+    public array $groupedTabs;
 
     /**
      * @var array
-     * @ApiProperty
      */
-    public $userActionMenu;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'userActionMenu',
+        ]
+    )]
+    public array $userActionMenu;
 
     /**
      * @var array
-     * @ApiProperty
      */
-    public $modules;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'modules',
+        ]
+    )]
+    public array $modules;
 
     /**
      * @var int
-     * @ApiProperty
      */
-    public $maxTabs;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'int',
+            'description' => 'maxTabs',
+        ]
+    )]
+    public int $maxTabs;
 
     /**
      * @var string
-     * @ApiProperty
      */
-    public $type;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'maxTabs',
+        ]
+    )]
+    public string $type;
+
+    /**
+     * @var array
+     */
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'quickActions',
+        ]
+    )]
+    public array $quickActions;
 
     /**
      * @return array
@@ -105,10 +151,4 @@ final class Navbar
             'quickActions' => $this->quickActions,
         ];
     }
-
-    /**
-     * @var array
-     * @ApiProperty
-     */
-    public $quickActions;
 }

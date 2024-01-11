@@ -28,74 +28,111 @@
 
 namespace App\Data\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
 use App\Data\Resolver\RecordItemResolver;
 
-/**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get"={"path"="/record/{id}"}
- *     },
- *     collectionOperations={},
- *     graphql={
- *          "get"={
- *              "item_query"=RecordItemResolver::class,
- *              "args"={
- *                 "module"={"type"="String!"},
- *                 "record"={"type"="String!"},
- *              }
- *          },
- *          "save"={
- *              "validate"=false,
- *              "args"={
- *                 "_id"={"type"="String", "description"="id"},
- *                 "identifier"={"type"="String", "description"="id"},
- *                 "module"={"type"="String!", "description"="module"},
- *                 "attributes"={"type"="Iterable", "description"="attributes"}
- *              }
- *          },
- *      },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: "/record/{id}",
+            security: "is_granted('ROLE_USER')"
+        )
+    ],
+    security: "is_granted('ROLE_USER')",
+    graphQlOperations: [
+        new Query(
+            resolver: RecordItemResolver::class,
+            args: [
+                'module' => ['type' => 'String!'],
+                'record' => ['type' => 'Int'],
+            ],
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Mutation(
+            args: [
+                '_id' => ['type' => 'String', 'description' => 'id'],
+                'identifier' => ['type' => 'String', 'description' => 'id'],
+                'module' => ['type' => 'String!', 'description' => 'module'],
+                'attributes' => ['type' => 'Iterable', 'description' => 'attributes'],
+            ],
+            security: "is_granted('ROLE_USER')",
+            validate: false,
+            name: 'save'
+        )
+    ]
+)]
 class Record
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var string|null
      */
-    protected $id;
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The id',
+        ]
+    )]
+    protected ?string $id;
 
     /**
-     * @ApiProperty
      * @var string|null
      */
-    protected $module;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The module',
+        ]
+    )]
+    protected ?string $module;
 
     /**
-     * @ApiProperty
      * @var string|null
      */
-    protected $type;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'The type',
+        ]
+    )]
+    protected ?string $type;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $attributes;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The attributes',
+        ]
+    )]
+    protected ?array $attributes;
 
     /**
-     * @ApiProperty
      * @var array|null
      */
-    protected $acls;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'description' => 'The acls',
+        ]
+    )]
+    protected ?array $acls;
 
     /**
-     * @ApiProperty
      * @var bool|null
      */
-    protected $favorite;
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'bool',
+            'description' => 'The favorite',
+        ]
+    )]
+    protected ?bool $favorite;
 
     /**
      * @return array
