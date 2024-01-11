@@ -368,9 +368,9 @@ class AppMetadata
      * @param array|null $moduleMetadata
      * @return AppMetadata
      */
-    public function setGlobalRecentlyViewedMetadata(?array $moduleMetadata): AppMetadata
+    public function setGlobalRecentlyViewedMetadata(?array $globalRecentlyViewed): AppMetadata
     {
-        $this->globalRecentlyViewed = $moduleMetadata ?? [];
+        $this->globalRecentlyViewed = $globalRecentlyViewed ?? [];
 
         return $this;
     }

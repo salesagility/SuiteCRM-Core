@@ -27,7 +27,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
-import {AppStateStore} from '../app-state/app-state.store';
 import {StateStore} from '../state';
 import {deepClone, GlobalRecentlyViewed, RecentlyViewed} from 'common';
 
@@ -53,9 +52,7 @@ export class GlobalRecentlyViewedStore implements StateStore {
     protected store = new BehaviorSubject<GlobalRecentlyViewed>(internalState);
     protected state$ = this.store.asObservable();
 
-    constructor(
-        protected appStateStore: AppStateStore,
-    ) {
+    constructor() {
         this.globalRecentlyViewed$ = this.state$.pipe(map(state => state.globalRecentlyViewed), distinctUntilChanged());
     }
 

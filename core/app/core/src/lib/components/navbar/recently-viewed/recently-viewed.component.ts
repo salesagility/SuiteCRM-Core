@@ -24,20 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ChangeDetectionStrategy, Component, computed, Input, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, Input, signal} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ImageModule} from "../../image/image.module";
 import {RouterLink} from "@angular/router";
 import {ModuleNameMapper} from "../../../services/navigation/module-name-mapper/module-name-mapper.service";
 import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
 import {RecentlyViewed} from "common";
+import {LabelModule} from "../../label/label.module";
 
 @Component({
     selector: 'scrm-recently-viewed',
     templateUrl: './recently-viewed.component.html',
     styleUrls: [],
     standalone: true,
-    imports: [CommonModule, ImageModule, RouterLink],
+    imports: [CommonModule, ImageModule, RouterLink, LabelModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentlyViewedComponent {
@@ -59,7 +60,9 @@ export class RecentlyViewedComponent {
         };
     }));
 
-    constructor(protected nameMapper: ModuleNameMapper, protected navigation: ModuleNavigation) {}
+    constructor(
+        protected nameMapper: ModuleNameMapper,
+        protected navigation: ModuleNavigation) {}
 
     /**
      * Build route from recently viewed item

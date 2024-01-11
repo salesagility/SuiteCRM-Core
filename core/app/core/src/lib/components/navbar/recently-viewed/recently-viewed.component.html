@@ -30,7 +30,9 @@
         <a class="new-list-item d-flex" [routerLink] = "item.attributes?.route" >
             <scrm-image class="action-btn-icon mr-3" [image]="item?.attributes?.module_name"></scrm-image>
             <div class="d-flex flex-column">
-                <span class="text-title">{{item?.attributes?.module_name | uppercase}}</span>
+                <span class="text-title text-uppercase">
+                    <scrm-label listKey="moduleList" [labelKey]="item?.attributes?.module_name" ></scrm-label>
+                </span>
                 <span class="text-subtitle">{{item?.attributes?.item_summary}}</span>
             </div>
         </a>

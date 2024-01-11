@@ -5,6 +5,7 @@ import {ProcessService} from '../../process/process.service';
 import {take} from 'rxjs/operators';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {GlobalRecentlyViewedStore} from "../../../store/global-recently-viewed/global-recently-viewed.store";
+import {ModuleNameMapper} from "../module-name-mapper/module-name-mapper.service";
 
 @Injectable({providedIn: 'root'})
 export class RecentlyViewedService {
@@ -12,7 +13,8 @@ export class RecentlyViewedService {
     constructor(
         protected metadata: MetadataStore,
         protected globalRecentlyViewedStore: GlobalRecentlyViewedStore,
-        protected processService: ProcessService
+        protected processService: ProcessService,
+        protected moduleNameMapper: ModuleNameMapper
     ) {
     }
 
@@ -49,7 +51,7 @@ export class RecentlyViewedService {
      * @param view
      */
     public buildRecentlyViewed(module: string, id: string, view = 'detailview'): RecentlyViewed {
-        module = module.charAt(0).toUpperCase() + module.slice(1);
+        module = this.moduleNameMapper.toLegacy(module);
         return deepClone({
             module: 'Tracker',
             type: 'Tracker',
