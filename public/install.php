@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2023 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -39,9 +39,12 @@
  */
 
 use App\Install\Service\InstallPreChecks;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 require __DIR__ . '/../config/bootstrap.php';
 require __DIR__ . '/../vendor/autoload.php';
-
-(new InstallPreChecks())->setupTwigTemplate();
+$log = new Logger('install');
+$log->pushHandler(new StreamHandler('legacy/install.log', Logger::DEBUG));
+(new InstallPreChecks($log))->setupTwigTemplate();
 
