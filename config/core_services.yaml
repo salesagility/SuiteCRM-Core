@@ -97,6 +97,8 @@ services:
       tags: [ 'app.legacy.migration.step' ]
     App\Install\Service\Installation\InstallStepInterface:
       tags: [ 'app.install.step' ]
+    App\Install\Service\Cli\CliStepInterface:
+      tags: ['cli.install.step']
     App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
       tags: [ 'massupdate.definition.mapper' ]
 
@@ -268,6 +270,7 @@ services:
     # inject all services tagged with app.install.step as first argument
     arguments:
       - !tagged { tag: 'app.install.step' }
+      - !tagged { tag: 'cli.install.step'}
       - '@monolog.logger.install'
 
   Doctrine\Migrations\Version\DbalMigrationFactory: ~

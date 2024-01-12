@@ -39,10 +39,11 @@ class InstallStepHandler extends ProcessStepExecutor implements InstallHandlerIn
      */
     public function __construct(
         iterable $handlers,
+        iterable $extraSteps,
         LoggerInterface $installLogger
     ) {
         $this->logger = $installLogger;
-        $this->initSteps($handlers, $this->logger);
+        $this->initSteps($handlers, $extraSteps, $this->logger);
     }
 
 }

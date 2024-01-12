@@ -198,7 +198,7 @@ abstract class ProcessStepExecutor implements ProcessStepExecutorInterface
      * @param iterable $handlers
      * @param LoggerInterface $logger
      */
-    protected function initSteps(iterable $handlers, LoggerInterface $logger): void
+    protected function initSteps(iterable $handlers, iterable $extraSteps, LoggerInterface $logger): void
     {
         /**
          * @var $ordered ProcessStepInterface[][]
@@ -219,6 +219,18 @@ abstract class ProcessStepExecutor implements ProcessStepExecutorInterface
             $ordered[$order] = $positionSteps;
 
             $this->steps[$key] = $step;
+        }
+
+        foreach ($extraSteps as $extraStep){
+            $key = $extraStep->getKey();
+            $order = $extraStep->getOrder() ?? count($this->orderedSteps);
+
+            $extraStep->setLogger($logger);
+            $positionSteps = $ordered[$order] ?? [];
+            $positionSteps[$key] = $extraStep;
+            $ordered[$order] = $positionSteps;
+
+            $this->steps[$key] = $extraStep;
         }
 
         ksort($ordered, SORT_NUMERIC);
