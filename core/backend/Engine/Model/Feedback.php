@@ -63,6 +63,10 @@ class Feedback
      * @var array
      */
     public $errors = [];
+    /**
+     * @var array
+     */
+    public $warnings = [];
 
     /**
      * @return bool
@@ -206,6 +210,18 @@ class Feedback
     public function setErrors(array $errors): Feedback
     {
         $this->errors = $errors;
+
+        return $this;
+    }
+
+    public function getWarnings(): array
+    {
+        return $this->warnings;
+    }
+
+    public function setWarnings(array $warnings): Feedback
+    {
+        $this->warnings = $warnings;
 
         return $this;
     }
