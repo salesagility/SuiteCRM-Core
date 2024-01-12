@@ -32,6 +32,7 @@ use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Model\Feedback;
 use App\Install\Service\Installation\InstallStatus;
 use App\Install\Service\InstallationUtilsTrait;
+use App\Install\Service\InstallPreChecks;
 use PDO;
 use PDOException;
 use Psr\Log\LoggerInterface;
@@ -78,13 +79,13 @@ class InstallHandler extends LegacyHandler
      * @param LoggerInterface $logger
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
+        string           $projectDir,
+        string           $legacyDir,
+        string           $legacySessionName,
+        string           $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
-        LoggerInterface $logger
+        LoggerInterface  $logger
     )
     {
         parent::__construct(
@@ -198,6 +199,43 @@ class InstallHandler extends LegacyHandler
         $this->switchSession($this->defaultSessionName);
 
         error_reporting($errorLevelStored);
+
+        return $feedback;
+    }
+
+    public function runCheckRouteAccess(array $inputArray): FeedBack
+    {
+        $results = [];
+        $url = $inputArray['site_host'];
+
+        require_once "core/backend/Install/Service/InstallPreChecks.php";
+        $installChecks = new InstallPreChecks($this->logger);
+        $results[] = $installChecks->checkMainPage($url);
+        $results[] = $installChecks->checkGraphQlAPI($url);
+        $modStrings = $installChecks->getLanguageStrings();
+
+        $feedback = new Feedback();
+        $feedback->setSuccess(true);
+        $warnings = [];
+
+        foreach ($results as $result) {
+            if (is_array($result['errors'])) {
+                foreach ($result['errors'] as $error) {
+                    if (in_array($error, $modStrings)) {
+                        $warnings[] = "Check Failed:" . $error . " Please refer to the logs/install.log";
+                    }
+                }
+                continue;
+            }
+
+            if (!empty($result['errors'])) {
+                $warnings[] = $result['errors'];
+            }
+        }
+
+        if (isset($warnings)){
+            $feedback->setWarnings($warnings);
+        }
 
         return $feedback;
     }
