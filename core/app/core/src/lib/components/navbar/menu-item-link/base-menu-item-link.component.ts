@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItemLink} from 'common';
 import {take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
@@ -39,13 +39,14 @@ export class BaseMenuItemLinkComponent {
     @Input() link: MenuItemLink;
     @Input() icon: string;
     @Input() class: string;
+    @Input() disableRoute: boolean;
 
     constructor(
         protected asyncActionService: AsyncActionService,
         protected appState: AppStateStore
     ) {}
 
-     handleProcess(process: string) {
+    handleProcess(process: string) {
 
          if(!process) {
              return;

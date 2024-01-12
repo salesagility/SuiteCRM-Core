@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem} from 'common';
 
 @Component({
@@ -34,6 +34,7 @@ import {MenuItem} from 'common';
 })
 export class BaseMenuItemComponent {
     @Input() item: MenuItem;
+    @Input() disableRoute: boolean;
     showDropdown: boolean = true;
 
     constructor() {

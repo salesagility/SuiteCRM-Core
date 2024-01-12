@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem} from 'common';
 import {MenuItemRegistry} from './menu-item.registry';
 
@@ -33,12 +33,12 @@ import {MenuItemRegistry} from './menu-item.registry';
     templateUrl: './menu-item.component.html',
     styleUrls: []
 })
-export class MenuItemComponent {
+export class MenuItemComponent{
     @Input() item: MenuItem;
+    @Input() disableRoute: boolean;
 
     constructor(protected registry: MenuItemRegistry) {
     }
-
     get getType(): any {
         return this.registry.get('default', 'default');
     }

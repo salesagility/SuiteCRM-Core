@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
@@ -69,10 +69,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     loaded = true;
     isUserLoggedIn: boolean;
-
     mainNavCollapse = true;
     subNavCollapse = true;
-    mobileNavbar = false;
     mobileSubNav = false;
     backLink = false;
     mainNavLink = true;
@@ -86,8 +84,11 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     notificationsEnabled: boolean = false;
     subs: Subscription[] = []
     navigation: Navigation;
+    mobileNavbar = false;
+    isSmallScreen = signal<boolean>(false);
 
     currentQuickActions: ModuleAction[];
+    isSearchBoxVisible: boolean = false;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -110,6 +111,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if (screenSize) {
                 this.screen = screenSize;
+                if(!this.isSmallScreen()) {
+                    this.isSearchBoxVisible = true;
+                }
             }
 
             if (navigation && navigation.modules) {
@@ -161,6 +165,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     onResize(event: any): void {
         const innerWidth = event.target.innerWidth;
         this.mobileNavbar = innerWidth <= 768;
+        this.isSmallScreen.set(innerWidth <= 576);
     }
 
     ngOnInit(): void {
@@ -318,5 +323,15 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         } as AsyncActionInput;
 
         this.asyncActionService.run(processType, options).pipe(take(1)).subscribe();
+    }
+
+    openSearchBox() {
+        if(this.isSmallScreen()) {
+            this.isSearchBoxVisible = true;
+        }
+    }
+
+    closeSearchBox(isVisible: boolean) {
+        this.isSearchBoxVisible = isVisible;
     }
 }

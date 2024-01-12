@@ -37,6 +37,7 @@ export class MenuItemLinkComponent {
     @Input() link: MenuItemLink;
     @Input() icon: string;
     @Input() class: string;
+    @Input() disableRoute: boolean;
 
     constructor(protected registry: MenuItemLinkRegistry) {
     }

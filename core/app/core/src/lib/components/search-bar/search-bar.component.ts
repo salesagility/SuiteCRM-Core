@@ -24,11 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {GlobalSearch} from '../../services/navigation/global-search/global-search.service';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {Observable, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -38,6 +47,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class SearchBarComponent implements OnInit, OnDestroy {
 
     @ViewChild('searchInput') searchInput: ElementRef;
+    @Input() isMobile: boolean = false;
+    @Output() isSearchVisible = new EventEmitter<boolean>(false);
 
     searchWord: string = '';
     searchForm: FormGroup;
@@ -112,5 +123,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             this.isFocused = false;
             this.hasSearchTyped = false;
         }, 200);
+
+        if(this.isMobile) {
+            this.isSearchVisible.emit(false);
+        }
     }
 }

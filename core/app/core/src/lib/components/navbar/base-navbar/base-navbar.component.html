@@ -65,7 +65,8 @@
 
         <ng-container *ngIf="this.isUserLoggedIn && mobileNavbar">
             <ul class="navbar mobile-nav-block mobilenavbar">
-                <div #myDrop="ngbDropdown" [autoClose]="false" class="position-static" ngbDropdown>
+                <div class="d-flex">
+                    <div #myDrop="ngbDropdown" [autoClose]="false" class="position-static" ngbDropdown>
                         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"
                                 class="navbar-toggler"
                                 ngbDropdownToggle type="button">
@@ -82,6 +83,7 @@
                                 </scrm-mobile-menu>
                             </ng-container>
                         </div>
+                    </div>
                 </div>
 
                 <div class="d-flex align-items-center">
@@ -293,8 +295,15 @@
                 </ul>
             </div>
 
-            <div class="d-flex align-items-center mx-1">
-                <scrm-search-bar></scrm-search-bar>
+            <div class="d-flex align-items-center">
+                <a class="action-link primary-global-link search-mobile-view" [ngClass]="isSearchBoxVisible ? 'd-none' : 'd-block'"
+                   type="button" (click)="openSearchBox()" aria-label="Search">
+                    <scrm-image class="action-btn-icon" image="search"></scrm-image>
+                </a>
+
+                <div [ngClass]="isSearchBoxVisible ? 'd-block' : 'd-none'">
+                    <scrm-search-bar [isMobile]="isSmallScreen()" (isSearchVisible)="closeSearchBox($event)"></scrm-search-bar>
+                </div>
             </div>
 
             <div
