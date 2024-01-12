@@ -46,6 +46,61 @@
         }
     }
 }
+@media all and (max-width: $breakpoint-medium) {
+  .listview-actions {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: 0.5s;
+    border-radius: 10px;
+    overflow: hidden;
+    &.active {
+      background-color: #fff;
+      box-shadow: 0 8px 15px rgba(0,0,0,.2);
+
+      .icon-bar {
+        display: flex;
+        overflow: hidden;
+        transition: 0.8s;
+        width: 200px;
+
+        .icon-bar-block {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(50px, 1fr));
+
+          .line-action-item {
+            font-size: 1.2em;
+
+            &:focus {
+              outline: none;
+              border-radius: 50px;
+              background-color: rgba(232, 234, 237, 0.4);
+            }
+          }
+        }
+      }
+    }
+
+    .icon-bar {
+      display: flex;
+      width: 0;
+      overflow: hidden;
+      transition: 0.5s;
+
+      .icon-bar-block {
+        display: none;
+      }
+    }
+
+    .more-button {
+      background-color: transparent;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
 
 
 @media all and (max-width: $breakpoint-small) {

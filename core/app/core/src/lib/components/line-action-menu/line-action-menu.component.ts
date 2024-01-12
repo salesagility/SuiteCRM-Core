@@ -58,12 +58,14 @@ export interface LineActionMenuViewModel {
 export class LineActionMenuComponent implements OnInit, OnDestroy {
 
     @Input() klass = '';
+    @Input() wrapperClass = '';
     @Input() record: Record;
     @Input() config: ActionDataSource;
     @Input() limitConfigKey = 'listview_line_actions_limits';
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
     actions: Action[];
+    isButtonClicked:boolean = false;
 
     vm$: Observable<LineActionMenuViewModel>;
 
@@ -98,7 +100,7 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
 
                 this.actions = actions;
             })
-        ).subscribe())
+        ).subscribe());
     }
 
     ngOnDestroy(): void {

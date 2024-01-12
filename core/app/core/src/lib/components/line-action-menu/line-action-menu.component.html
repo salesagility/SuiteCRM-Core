@@ -25,11 +25,16 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="actions">
+<ng-container *ngIf="actions.length">
     <div id="line-action-div" class="line-action float-right">
-        <div class="{{klass}}">
-            <scrm-button-group *ngIf="config$" [config$]="config$"></scrm-button-group>
+        <div class="{{wrapperClass}}" [ngClass]="isButtonClicked  ? 'active': ''">
+            <button class="more-button d-sm-none" aria-label="Mobile Menu Button" (click)="isButtonClicked=!isButtonClicked">
+                <scrm-image class="sicon" image="apps-line"></scrm-image>
+            </button>
+
+           <div class="{{klass}}">
+               <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="'icon-bar-block'"></scrm-button-group>
+            </div>
         </div>
     </div>
 </ng-container>
-
