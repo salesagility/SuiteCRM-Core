@@ -181,6 +181,15 @@ button {
   background-color: $pale-blue;
 }
 
+.settings-button:focus,
+.settings-button:focus-visible,
+.settings-button.btn:focus
+.settings-button.btn:focus-visible {
+  outline: none!important;
+  box-shadow: none!important;
+  border-color: transparent!important;
+}
+
 .settings-button.active,
 .settings-button.btn.active {
   background-color: $midnight-blue;
