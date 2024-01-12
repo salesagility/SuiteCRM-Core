@@ -26,6 +26,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem} from 'common';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'scrm-base-mobile-menu',
@@ -50,17 +51,16 @@ export class BaseMobileMenuComponent implements OnInit {
     isAdminNavbar: boolean = false;
     isAdminNavbarClicked: boolean = false;
 
-    constructor() {
-    }
+    constructor(protected router: Router) {}
 
     ngOnInit(): void {
         this.mainItems = this.items;
-
-        if (this.navigationType !== 'gm' && this.current) {
-            this.isAdminNavbar = this.current.isGroupedMenu;
-            if(!this.current.isGroupedMenu) {
-                this.mainItems = [this.current, ...this.items];
+        if (this.navigationType !== 'gm') {
+            if(this.current) {
+                this.isAdminNavbar = this.current.isGroupedMenu;
             }
+            this.all.splice(2, 0, ...this.items);
+            this.mainItems = [...this.all];
         }
     }
 
@@ -73,6 +73,9 @@ export class BaseMobileMenuComponent implements OnInit {
      * @param item
      */
     public changeSubNav(event: Event, items: MenuItem[], navigationType: string, item: MenuItem): void {
+        if(item?.isGroupedMenu == false) {
+            return;
+        }
         this.mobileSubNav = !this.mobileSubNav;
         this.backLink = !this.backLink;
         this.mainNavLink = !this.mainNavLink;
@@ -80,9 +83,8 @@ export class BaseMobileMenuComponent implements OnInit {
         this.submenu = items;
         this.subNavigationType = navigationType;
 
-        if(item.isGroupedMenu) {
+        if(item?.isGroupedMenu) {
             this.isAdminNavbarClicked = true;
-            this.mainItems = this.items;
         } else {
             this.isAdminNavbarClicked = false;
             this.isAdminNavbar = false;
@@ -99,7 +101,14 @@ export class BaseMobileMenuComponent implements OnInit {
     }
 
 
-    getItems() {
+    navigateRoute(route: string) {
+        if(this.navigationType !== 'gm') {
+            this.router.navigate([route]).then();
+            if(this.onClose) {
+                this.onClose();
+            }
+        }
+
 
     }
 }

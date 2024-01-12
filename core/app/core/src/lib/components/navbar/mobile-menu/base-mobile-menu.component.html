@@ -42,30 +42,17 @@
     <ng-container *ngIf="mainNavLink">
         <div class="mobile-menu-items">
 
-            <li (click)="changeSubNav($event, current.submenu, navigationType, current)" *ngIf="isAdminNavbar"
-                class=" d-flex align-items-center">
-                <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">{{ current.link.label }}</a>
-                <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled"
+            <li class=" d-flex align-items-center" (click)="changeSubNav($event, current.submenu, navigationType, current)" *ngIf="isAdminNavbar">
+                <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2" [routerLink]="current?.link?.route">{{ current?.link?.label }}</a>
+                <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled" *ngIf="current?.isGroupedMenu"
                 ></scrm-image>
             </li>
 
-            <li (click)="changeSubNav($event, item.submenu, navigationType, item)" *ngFor="let item of mainItems"
-                class=" d-flex align-items-center">
-                <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">{{ item.link.label }}</a>
-                <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled"
+            <li class=" d-flex align-items-center"(click)="changeSubNav($event, item.submenu, navigationType, item)" *ngFor="let item of mainItems">
+                <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2" (click)="navigateRoute(item?.link?.route)">{{ item.link.label }}</a>
+                <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled" *ngIf="navigationType == 'gm'"
                 ></scrm-image>
             </li>
-
-            <ng-container>
-                <li (click)="changeSubNav($event, all, 'gm', null)"
-                    class=" d-flex align-items-center">
-                    <a class="flex-grow-1 mobile-nav-link pl-3 pr-3 pt-2 pb-2">
-                        <scrm-label labelKey="LBL_MORE"></scrm-label>
-                    </a>
-                    <scrm-image class="sicon-xs mobile-nav-arrow pl-3 pr-3" image="arrow_right_filled"
-                    ></scrm-image>
-                </li>
-            </ng-container>
         </div>
     </ng-container>
 
