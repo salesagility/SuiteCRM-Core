@@ -293,6 +293,7 @@ export class SettingsMenuComponent implements OnInit, OnDestroy {
 
             const button = {
                 label: filter.attributes.name,
+                title: filter.attributes.name,
                 section: isQuickFilterButton ? 'quick-filters' : 'default',
                 onClick: (): void => {
                     this.listStore.showFilters = false;

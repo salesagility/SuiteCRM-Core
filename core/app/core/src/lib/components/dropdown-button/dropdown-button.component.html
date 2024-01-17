@@ -84,7 +84,10 @@
 <ng-template #buttonTemplate let-item="item">
 
     <ng-container *ngIf="item && !isDropdown(item)">
-        <a ngbDropdownItem [ngClass]="item && item.klass" (click)="item && click(item.onClick, dropDown)">
+        <a ngbDropdownItem
+           [ngClass]="item && item.klass"
+           [title]="(language.getFieldLabel(item?.titleKey) || item?.title) || ''"
+           (click)="item && click(item.onClick, dropDown)">
             <div class="d-flex align-items-center">
                 <div *ngIf="item.icon">
                     <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
