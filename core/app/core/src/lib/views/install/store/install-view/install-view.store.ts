@@ -211,10 +211,7 @@ export class InstallViewStore implements StateStore {
     }
 
     getMetadata(): InstallViewMetadata {
-        this.url = window.location.href;
-        if (typeof this.url !== 'undefined') {
-            this.url = this.url.replace('/#/install', '');
-        }
+        this.url = window.location.origin + window.location.pathname;
         return {
             actions: [],
             templateMeta: {
