@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -69,6 +69,10 @@ class CheckRouteAccess implements CliStepInterface {
 
         if (!$inputsValid) {
             return (new Feedback())->setSuccess(false)->setMessages(['Missing inputs']);
+        }
+
+        if (!isset($inputs['site_host'])){
+            return (new Feedback())->setSuccess(false)->setMessages(['Site URL not set.']);
         }
 
         return $this->handler->runCheckRouteAccess($inputs);
