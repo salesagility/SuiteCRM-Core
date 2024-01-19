@@ -50,15 +50,15 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
 
     @HostListener('window:scroll') onScroll() {
         const scrollPosition = window.pageYOffset;
-        //ScrollThreshold is set to 5em
-        const scrollThreshold = 5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        //ScrollThreshold is set to 1em
+        const scrollThreshold = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
         if (scrollPosition > scrollThreshold) {
-            //20 is just a random safezone number
-            if (scrollPosition - scrollThreshold < 10) return;
+            //5 is just a random safezone number
+            if (scrollPosition - scrollThreshold < 5) return;
             this.isScrolled = true;
         } else {
-            if (scrollThreshold - scrollPosition < 10) return;
+            if (scrollThreshold - scrollPosition < 5) return;
             this.isScrolled = false;
         }
     }
