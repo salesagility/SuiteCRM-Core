@@ -38,6 +38,7 @@ import {
     ModeActions,
     Record,
     ViewMode,
+    Panel
 } from 'common';
 import { MetadataStore, RecordViewMetadata } from '../../../store/metadata/metadata.store.service';
 import { RecordViewStore } from '../store/record-view/record-view.store';
@@ -90,7 +91,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected displayTypeLogic: RecordActionDisplayTypeLogic
+        protected displayTypeLogic: RecordActionDisplayTypeLogic,
     ) {
         super(
             actionManager,
@@ -106,7 +107,7 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     getActions(context?: ActionContext): Observable<Action[]> {
         return this.metadata.recordViewMetadata$.pipe(
             combineLatestWith(this.store.mode$, this.store.record$, this.store.language$, this.store.widgets$, this.store.panels$),
-            map(([meta, mode]: [RecordViewMetadata, ViewMode, Record, LanguageStrings, boolean]) => {
+            map(([meta, mode]: [RecordViewMetadata, ViewMode, Record, LanguageStrings, boolean, Panel[]]) => {
                 if (!mode || !meta) {
                     return [];
                 }
