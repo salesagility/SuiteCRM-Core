@@ -27,17 +27,16 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {FieldLogicActionData, FieldLogicActionHandlerMap} from './field-logic.action';
-import {Action, ActionContext, ActionHandlerMap, Field, ModeActions, Record, ViewMode} from 'common';
+import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'common';
 import {FieldLogicDisplayTypeAction} from './display-type/field-logic-display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';
 import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
 import {UpdateCurrencyAction} from './currency-conversion/update-currency.action';
 import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-flex-relate-module.action';
-import {UpdateValueAction} from './update-value/update-value.action';
+import {UpdateFieldAction} from './update-field/update-field.action';
 import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
-import {RecordActionData} from '../../views/record/actions/record.action';
 
 @Injectable({
     providedIn: 'root'
@@ -59,7 +58,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,
         updateCurrency: UpdateCurrencyAction,
-        updateValue: UpdateValueAction,
+        updateValue: UpdateFieldAction,
         updateFlexRelateModule: UpdateFlexRelateModuleAction,
         updateValueBackend: UpdateValueBackendAction,
         dislayTypeBackend: DisplayTypeBackendAction
@@ -78,12 +77,13 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run logic for the given field
-     * @param {object} field
-     * @param {object} mode
-     * @param {object} record
-     * @param triggeringStatus
+     *
+     * @param {Field} field Field
+     * @param {ViewMode} mode Mode
+     * @param {Record} record Record
+     * @param {string} triggeringStatus Triggering Status
      */
-    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus: string = ''): void {
+    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus = ''): void {
         if (!field.logic) {
             return;
         }
@@ -104,6 +104,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run the action using given context
+     *
      * @param action
      * @param mode
      * @param context
@@ -114,6 +115,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Run front end action
+     *
      * @param {object} action
      * @param {object} mode
      * @param {object} context
@@ -126,6 +128,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Get module name
+     *
      * @param {object} context
      */
     protected getModuleName(context?: ActionContext): string {
@@ -141,6 +144,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
     /**
      * Parse mode actions
+     *
      * @param declaredActions
      * @param mode
      * @param triggeringStatus

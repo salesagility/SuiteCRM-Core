@@ -24,67 +24,60 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
-import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
-import {Action, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
-import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
+import {isArray, isString} from 'lodash-es';
+import {
+    Action,
+    ALL_VIEW_MODES,
+    Field,
+    Record,
+} from 'common';
+import { FieldLogicActionData, FieldLogicActionHandler } from '../field-logic.action';
+import {ActiveLogicChecker} from '../../../services/logic/active-logic-checker.service';
 
-@Injectable({
-    providedIn: 'root'
-})
-export class UpdateValueAction extends FieldLogicActionHandler {
+export type FieldValueTypes = string | string[] | object;
 
-    key = 'updateValue';
-    modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
+export abstract class ActionableFieldLogicActionHandler extends FieldLogicActionHandler {
+    modes = ALL_VIEW_MODES;
 
-    constructor(protected activeFieldsChecker: ActiveFieldsChecker) {
+    protected constructor(
+        protected activeLogicChecker: ActiveLogicChecker
+    ) {
         super();
     }
 
     run(data: FieldLogicActionData, action: Action): void {
         const record = data.record;
         const field = data.field;
-
         if (!record || !field) {
             return;
         }
+        const params = action.params ?? {};
 
-        const activeOnFields: StringArrayMap = (action.params && action.params.activeOnFields) || {} as StringArrayMap;
-        const relatedFields: string[] = Object.keys(activeOnFields);
+        const logicIsActive = this.activeLogicChecker.run(record, action);
 
-        const activeOnAttributes: StringArrayMatrix = (action.params && action.params.activeOnAttributes) || {} as StringArrayMatrix;
-        const relatedAttributesFields: string[] = Object.keys(activeOnAttributes);
-
-        if (!relatedFields.length && !relatedAttributesFields.length) {
-            return;
-        }
-
-        const targetValue = action.params && action.params.targetValue;
-
-        if (!targetValue) {
-            return;
-        }
-
-        const isActive = this.activeFieldsChecker.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
-
-        let value = data.field?.value;
-
-        if (isActive) {
-            value = targetValue;
-        }
-
-        this.updateValue(field, value.toString(), record);
-
+        this.executeLogic(logicIsActive, params, field, record);
     }
 
-    /**
-     * Update the new value
-     * @param {object} field
-     * @param {object} record
-     */
-    protected updateValue(field: Field, value: string, record: Record): void {
-        field.value = value.toString();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    shouldDisplay(data: FieldLogicActionData): boolean {
+        return true;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    executeLogic(logicIsActive: boolean, params: { [p: string]: any }, field: Field, record: Record): void {
+    }
+
+    protected updateValue(value: FieldValueTypes, field: Field, record: Record): void {
+        if (isString(value)) {
+            field.value = value;
+        } else if (isArray(value)) {
+            field.valueList = value;
+        } else {
+            field.valueObject = value;
+        }
+
         field.formControl.setValue(value);
+
         // re-validate the parent form-control after value update
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
