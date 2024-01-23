@@ -205,6 +205,7 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(breakpointObserver.observe([
             Breakpoints.TabletPortrait,
+            Breakpoints.Small
         ]).subscribe((result: BreakpointState) => {
             if (result.matches) {
                 this.currentSize = 'tablet';
@@ -214,7 +215,6 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(breakpointObserver.observe([
             Breakpoints.TabletLandscape,
-            Breakpoints.WebPortrait,
             Breakpoints.WebLandscape,
         ]).subscribe((result: BreakpointState) => {
             if (result.matches) {
