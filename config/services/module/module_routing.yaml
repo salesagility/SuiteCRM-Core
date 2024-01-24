@@ -209,8 +209,8 @@ parameters:
       list: true
       record: false
     workflow-processed:
-      index: true
-      list: true
+      index: false
+      list: false
       record: false
     security-groups:
       index: false
