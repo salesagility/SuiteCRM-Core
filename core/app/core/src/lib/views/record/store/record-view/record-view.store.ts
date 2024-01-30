@@ -720,6 +720,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected getViewFieldsObservable(): Observable<ViewFieldDefinition[]> {
         return this.metadataStore.recordViewMetadata$.pipe(map((recordMetadata: RecordViewMetadata) => {
             const fieldsMap: ViewFieldDefinitionMap = {};
+
             recordMetadata.panels.forEach(panel => {
                 panel.rows.forEach(row => {
                     row.cols.forEach(col => {
@@ -737,6 +738,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
                 // already defined. skip
                 if (fieldsMap[fieldKey]) {
+                    return;
+                }
+
+                if (vardef.type == 'relate'){
                     return;
                 }
 
