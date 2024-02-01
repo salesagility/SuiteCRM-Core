@@ -141,7 +141,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     protected calculateDependentFields(fieldKeys: string[]): void {
         fieldKeys.forEach(key => {
 
-            if (this.field.source === 'field') {
+            if (this.field.source === 'field' || this.field.source === 'groupField') {
                 this.addFieldDependency(key, this.dependentFields, this.dependentAttributes);
                 return;
             }
