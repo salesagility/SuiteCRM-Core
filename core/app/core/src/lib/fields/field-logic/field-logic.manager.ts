@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {FieldLogicActionData, FieldLogicActionHandlerMap} from './field-logic.action';
-import {Action, ActionContext, ActionHandlerMap, Field, ModeActions, Record, ViewMode} from 'common';
+import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'common';
 import {FieldLogicDisplayTypeAction} from './display-type/field-logic-display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';
@@ -37,7 +37,6 @@ import {UpdateFlexRelateModuleAction} from './update-flex-relate-module/update-f
 import {UpdateValueAction} from './update-value/update-value.action';
 import {UpdateValueBackendAction} from './update-value-backend/update-value-backend.action';
 import {DisplayTypeBackendAction} from './display-type-backend/display-type-backend.action';
-import {RecordActionData} from '../../views/record/actions/record.action';
 
 @Injectable({
     providedIn: 'root'

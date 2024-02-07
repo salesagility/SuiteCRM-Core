@@ -39,6 +39,7 @@ import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-displ
 @Component({template: ''})
 export class BaseRelateComponent extends BaseFieldComponent implements OnInit, OnDestroy {
     selectedValues: AttributeMap[] = [];
+    options: AttributeMap[] = [];
 
     status: '' | 'searching' | 'not-found' | 'error' | 'found' | 'no-module' = '';
     initModule = '';
@@ -79,7 +80,6 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
     }
 
     onModuleChange(): void {
-
         const currentModule = this.initModule;
         const newModule = this?.field?.definition?.module ?? '';
 
@@ -96,11 +96,19 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
         if (newModule === '') {
             this.status = 'no-module';
         } else {
+            this.init();
             this.status = '';
+            this.selectedValues = [];
+            this.options = [];
+
         }
     }
 
     search = (text: string): Observable<any> => {
+
+        if(text === '') {
+            return of([]);
+        }
 
         this.status = 'searching';
 

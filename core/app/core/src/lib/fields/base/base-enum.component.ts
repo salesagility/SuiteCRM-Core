@@ -37,6 +37,7 @@ import {
 } from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
+import {isNull, isObject} from "lodash-es";
 
 @Component({template: ''})
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
@@ -150,6 +151,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.options = [];
         Object.keys(this.optionsMap).forEach(key => {
 
+            if(isEmptyString(this.optionsMap[key]) && this.field.type === 'multienum') {
+                return;
+            }
+
             this.options.push({
                 value: key,
                 label: this.optionsMap[key]
@@ -209,8 +214,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
      * */
     protected initEnumDefault(): void {
 
-        if (!isEmptyString(this.record?.id)) {
-
+       if (!isEmptyString(this.record?.id)) {
             this.field?.formControl.setValue('');
 
             return;
@@ -224,12 +228,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             this.field.formControl.setValue('');
             return;
         }
-
         this.selectedValues.push({
             value: defaultVal,
             label: this.optionsMap[defaultVal]
         });
-
         this.initEnumDefaultFieldValues(defaultVal);
     }
 
@@ -333,6 +335,24 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                 this.initValue();
             }));
         }
+    }
+
+    protected buildOptionFromValue(value: string): Option {
+        const option: Option = {value: '', label: ''};
+
+        if (isNull(value)) {
+            return option;
+        }
+        option.value = (typeof value !== 'string' ? JSON.stringify(value) : value).trim();
+        option.label = option.value;
+
+        const valueLabel = this.optionsMap[option.value] ?? option.label;
+        if (isObject(valueLabel)) {
+            return option;
+        }
+        option.label = (typeof valueLabel !== 'string' ? JSON.stringify(valueLabel) : valueLabel).trim();
+
+        return option;
     }
 
 }

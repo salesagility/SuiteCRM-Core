@@ -25,22 +25,15 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<tag-input [(ngModel)]="selectedValues"
-           [onlyFromAutocomplete]="true"
-           [clearOnBlur]="true"
-           [displayBy]="'label'"
-           [identifyBy]="'value'"
-           [placeholder]="getPlaceholderLabel()"
-           [secondaryPlaceholder]="getPlaceholderLabel()"
-           [inputClass]="getInvalidClass()"
-           #tag
-           (onAdd)="onAdd()"
-           (onRemove)="onRemove()"
-           (keyup.enter)="selectFirstElement()">
-    <tag-input-dropdown [displayBy]="'label'"
-                        [identifyBy]="'value'"
-                        [showDropdownIfEmpty]="true"
-                        [keepOpen]="false"
-                        [autocompleteItems]="this.options">
-    </tag-input-dropdown>
-</tag-input>
+<p-multiSelect
+    [options]="this.options"
+    [(ngModel)]="selectedValues"
+    [optionLabel]="'label'"
+    (onChange)="onAdd($event)"
+    (onRemove)="onRemove()"
+    [placeholder]="placeholderLabel"
+    [selectedItemsLabel]="'{0} ' + selectedItemsLabel"
+    [emptyFilterMessage]="emptyFilterLabel"
+    [maxSelectedLabels]="maxSelectedLabels"
+    [styleClass]="getInvalidClass()"
+></p-multiSelect>

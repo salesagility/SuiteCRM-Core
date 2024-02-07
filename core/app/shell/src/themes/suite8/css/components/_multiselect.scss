@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,24 +24,31 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RelateEditFieldComponent} from './relate.component';
-import {FormsModule} from '@angular/forms';
-import {ButtonModule} from '../../../../components/button/button.module';
-import {LabelModule} from '../../../../components/label/label.module';
-import {MultiSelectModule} from "primeng/multiselect";
+/* --------- MESSAGE SECTION ---------- */
 
-@NgModule({
-    declarations: [RelateEditFieldComponent],
-    exports: [RelateEditFieldComponent],
-    imports: [
-        CommonModule,
-        LabelModule,
-        FormsModule,
-        ButtonModule,
-        MultiSelectModule
-    ]
-})
-export class RelateEditFieldModule {
+.p-multiselect {
+  width: 100%;
+  height: calc(1.5em + 0.5rem + 1px);
+
+  .p-multiselect-label {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.48rem;
+    max-width: 400px;
+  }
+
+  .p-multiselect-panel {
+    .p-inputtext {
+      padding: 0.3rem 0.6rem;
+    }
+    .p-multiselect-close {
+      padding: 0.6em;
+    }
+    ul.p-multiselect-items {
+      padding-inline-start: 0em;
+    }
+  }
 }
+
+
+
+

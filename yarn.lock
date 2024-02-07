@@ -7911,6 +7911,13 @@ pretty-format@^29.7.0:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
+primeng@^16.9.1:
+  version "16.9.1"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-16.9.1.tgz#50ee3ed304633c1c5a8ea155f6c0c8be9de7b85c"
+  integrity sha512-dCkvKoV62xDEyeGaEm8B0qncdKWNz4mDU/Camnr27AafaDNGV0lCA29imgJvZPEmJTmC2wDhtedg7Syfwz4UqA==
+  dependencies:
+    tslib "^2.3.0"
+
 proc-log@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/proc-log/-/proc-log-3.0.0.tgz#fb05ef83ccd64fd7b20bbe9c8c1070fc08338dd8"

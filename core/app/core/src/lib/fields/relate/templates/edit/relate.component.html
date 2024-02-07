@@ -28,27 +28,23 @@
 <div class="d-flex">
     <ng-container *ngIf="initModule">
         <div class="flex-grow-1">
-            <tag-input #tag
-                       (keyup.enter)="selectFirstElement()"
-                       (onAdd)="onAdd($event)"
-                       (onBlur)="resetStatus()"
-                       (onRemove)="onRemove()"
-                       [(ngModel)]="selectedValues"
-                       [class]="getInvalidClass()"
-                       [clearOnBlur]="true"
-                       [displayBy]="getRelateFieldName()"
-                       [inputClass]="getInvalidClass()"
-                       [onTextChangeDebounce]="500"
-                       [onlyFromAutocomplete]="true"
-                       [placeholder]="getPlaceholderLabel()"
-                       [secondaryPlaceholder]="getPlaceholderLabel()"
-                       maxItems="1">
-                <tag-input-dropdown [autocompleteObservable]="search"
-                                    [displayBy]="getRelateFieldName()"
-                                    [keepOpen]="false"
-                                    [showDropdownIfEmpty]="true">
-                </tag-input-dropdown>
-            </tag-input>
+            <p-multiSelect
+                #tag
+                [options]="options"
+                [(ngModel)]="selectedValues"
+                [optionLabel]="getRelateFieldName()"
+                (onChange)="onAdd($event.value[0])"
+                (onBlur)="resetStatus()"
+                (onRemove)="onRemove()"
+                (onFilter)="onFilter($event)"
+                [virtualScroll]="true"
+                [virtualScrollItemSize]="40"
+                [placeholder]="placeholderLabel"
+                [emptyFilterMessage]="emptyFilterLabel"
+                [selectionLimit]="1"
+                [styleClass]="getInvalidClass()"
+            >
+            </p-multiSelect>
         </div>
         <div class="relate-btn">
             <scrm-button [config]="selectButton">

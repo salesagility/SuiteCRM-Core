@@ -205,7 +205,7 @@ export class SavedFilterStore implements StateStore {
     }
 
     initValidators(record: Record): void {
-        if(!record || !Object.keys(record?.fields).length) {
+        if(!record || !record?.fields || !Object.keys(record?.fields).length) {
             return;
         }
 

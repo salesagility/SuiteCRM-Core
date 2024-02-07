@@ -24,14 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, ViewChild} from '@angular/core';
-import {TagInputComponent} from 'ngx-chips';
+import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {TagModel} from 'ngx-chips/core/tag-model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
+import {take} from "rxjs/operators";
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -40,29 +41,40 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 })
 export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
-    @ViewChild('tag') tag: TagInputComponent;
+    placeholderLabel: string = '';
+    selectedItemsLabel: string = '';
+    emptyFilterLabel: string = '';
+    maxSelectedLabels: number = 20;
 
     constructor(
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
-        protected logicDisplay: FieldLogicDisplayManager
+        protected logicDisplay: FieldLogicDisplayManager,
+        protected screenSize: ScreenSizeObserverService,
+        protected systemConfigStore: SystemConfigStore,
     ) {
         super(languages, typeFormatter, logic, logicDisplay);
     }
 
     ngOnInit(): void {
         this.checkAndInitAsDynamicEnum();
+        this.getTranslatedLabels();
         super.ngOnInit();
+        const maxSelectedLabelsForDisplay = this.systemConfigStore.getUi('multiselect_max_number');
+        this.screenSize.screenSize$
+            .pipe(take(1))
+            .subscribe((screenSize: any) => {
+                this.maxSelectedLabels = maxSelectedLabelsForDisplay[screenSize] || this.maxSelectedLabels;
+        })
+
     }
 
-    public onAdd(): void {
+    public onAdd(event): void {
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
-
-        return;
     }
 
     public onRemove(): void {
@@ -70,25 +82,12 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
-
-        setTimeout(() => {
-            this.tag.focus(true, true);
-            this.tag.dropdown.show();
-        }, 200);
     }
 
-    public getPlaceholderLabel(): string {
-        return this.languages.getAppString('LBL_SELECT_ITEM') || '';
-    }
-
-    public selectFirstElement(): void {
-        const filteredElements: TagModel = this.tag.dropdown.items;
-        if (filteredElements.length !== 0) {
-            const firstElement = filteredElements[0];
-            this.selectedValues.push(firstElement);
-            this.onAdd();
-            this.tag.dropdown.hide();
-        }
+    public getTranslatedLabels(): void {
+        this.placeholderLabel = this.languages.getAppString('LBL_SELECT_ITEM') || '';
+        this.selectedItemsLabel = this.languages.getAppString('LBL_ITEMS_SELECTED') || '';
+        this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
     }
 
 }

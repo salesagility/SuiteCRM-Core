@@ -32,6 +32,7 @@ import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.s
 import {debounceTime} from 'rxjs/operators';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
+import {isEqual} from "lodash-es";
 
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDestroy {
@@ -276,6 +277,15 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     protected setFieldValue(newValue): void {
         this.field.value = newValue;
+    }
+
+    protected setFormControlValue(newValue: string | string[]): void {
+        this.field.formControl.markAsDirty();
+
+        if (isEqual(this.field.formControl.value, newValue)) {
+            return;
+        }
+        this.field.formControl.setValue(newValue);
     }
 
     protected unsubscribeAll(): void {

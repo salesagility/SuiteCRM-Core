@@ -25,7 +25,6 @@
  */
 
 import {Component, ViewChild} from '@angular/core';
-import {TagInputComponent} from 'ngx-chips';
 import {ButtonInterface, Field, Record} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -35,9 +34,10 @@ import {BaseRelateComponent} from '../../../base/base-relate.component';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
-import {TagModel} from 'ngx-chips/core/tag-model';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
+import {map, take} from "rxjs/operators";
+import {MultiSelect} from "primeng/multiselect";
 
 @Component({
     selector: 'scrm-relate-edit',
@@ -46,9 +46,12 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
     providers: [RelateService]
 })
 export class RelateEditFieldComponent extends BaseRelateComponent {
-    @ViewChild('tag') tag: TagInputComponent;
+    @ViewChild('tag') tag: MultiSelect;
     selectButton: ButtonInterface;
     idField: Field;
+
+    placeholderLabel: string = '';
+    emptyFilterLabel: string = '';
 
     /**
      * Constructor
@@ -113,9 +116,8 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             this.field.formControl.setValue('');
             return;
         }
-
-        this.selectedValues = [];
-        this.selectedValues.push(this.field.valueObject);
+        this.selectedValues = [this.field.valueObject];
+        this.options = [this.field.valueObject];
     }
 
     /**
@@ -124,8 +126,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} item added
      */
     onAdd(item): void {
-
-        if (item) {
+        if(item) {
             const relateName = this.getRelateFieldName();
             this.setValue(item.id, item[relateName]);
             return;
@@ -143,10 +144,23 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     onRemove(): void {
         this.setValue('', '');
         this.selectedValues = [];
+        this.options = [];
+    }
 
-        setTimeout(() => {
-            this.tag.focus(true, true);
-        }, 200);
+    onFilter($event): void {
+        this.onRemove();
+        const relateName = this.getRelateFieldName();
+        let term = $event.filter;
+        this.search(term).pipe(
+            take(1),
+            map(data => data.filter(item => item[relateName] !== '')),
+            map(filteredData => filteredData.map(item => ({
+                id: item.id,
+                [relateName]: item[relateName]
+            })))
+       ).subscribe(filteredOptions => {
+            this.options = filteredOptions;
+       })
     }
 
     /**
@@ -167,6 +181,13 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             this.idField.formControl.setValue(id);
             this.idField.formControl.markAsDirty();
         }
+
+        if(relateValue) {
+            const relateName = this.getRelateFieldName();
+            this.selectedValues = [{ id: id, [relateName]: relateValue }];
+        }
+
+        this.options = this.selectedValues;
     }
 
     /**
@@ -223,14 +244,8 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.onAdd(record.attributes);
     }
 
-    public selectFirstElement(): void {
-        const filteredElements: TagModel = this.tag.dropdown.items;
-        if (filteredElements.length !== 0) {
-            const firstElement = filteredElements[0];
-            this.selectedValues.push(firstElement);
-            this.onAdd(firstElement);
-            this.tag.dropdown.hide();
-        }
+    public getTranslatedLabels(): void {
+        this.placeholderLabel = this.languages.getAppString('LBL_SELECT_ITEM') || '';
+        this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
     }
-
 }

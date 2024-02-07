@@ -26,7 +26,9 @@
             ],
             "styles": [
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
-              "core/app/shell/src/themes/suite8/css/style.scss"
+              "core/app/shell/src/themes/suite8/css/style.scss",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -359,6 +361,7 @@
     }
   },
   "cli": {
-    "packageManager": "yarn"
+    "packageManager": "yarn",
+    "analytics": false
   }
 }
