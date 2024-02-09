@@ -24,20 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {HtmlDetailFieldComponent} from './html.component';
-import { SafeHtmlModule } from '../../../../pipes/safe-html/safe-html.module'
+import {Pipe, PipeTransform} from '@angular/core';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
-@NgModule({
-    declarations: [HtmlDetailFieldComponent],
-    exports: [HtmlDetailFieldComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    SafeHtmlModule,
-  ],
+@Pipe({
+    name: 'safeHtml'
 })
-export class HtmlDetailFieldModule {
+export class SafeHtmlPipe implements PipeTransform {
+
+    constructor(private sanitizer: DomSanitizer) {
+    }
+
+    transform(value: string): SafeHtml {
+        return this.sanitizer.bypassSecurityTrustHtml(value);
+    }
 }

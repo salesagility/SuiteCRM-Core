@@ -26,18 +26,19 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {HtmlDetailFieldComponent} from './html.component';
-import { SafeHtmlModule } from '../../../../pipes/safe-html/safe-html.module'
+import {SafeHtmlPipe} from './safe-html.pipe';
+
 
 @NgModule({
-    declarations: [HtmlDetailFieldComponent],
-    exports: [HtmlDetailFieldComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    SafeHtmlModule,
-  ],
+    declarations: [
+        SafeHtmlPipe
+    ],
+    exports: [
+        SafeHtmlPipe
+    ],
+    imports: [
+        CommonModule
+    ]
 })
-export class HtmlDetailFieldModule {
+export class SafeHtmlModule {
 }
