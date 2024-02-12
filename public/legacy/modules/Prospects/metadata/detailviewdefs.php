@@ -131,6 +131,21 @@ array(
       'edit' => 'LBL_SUMMARY_PERSON',
       'detail' => 'LBL_SUMMARY_PERSON',
     ],
+      'recordActions' => [
+          'actions' => [
+              'convert-target' => [
+                  'key' => 'convert',
+                  'labelKey' => 'LBL_CONVERT_BUTTON_LABEL',
+                  'asyncProcess' => true,
+                  'params' => [
+                      'convertModule' => 'leads',
+                  ],
+                  'modes' => ['detail'],
+                  'acl' => ['edit', 'view'],
+                  'aclModule' => 'Leads',
+              ],
+          ]
+      ],
     'panels' =>
     array(
       'lbl_prospect_information' =>
