@@ -25,60 +25,52 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\FieldDefinitions\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\FieldDefinitions\Entity\FieldDefinition;
-use App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler;
+namespace App\Data\DataProvider;
+
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Data\Entity\Record;
+use App\Data\Service\RecordProviderInterface;
 use Exception;
 
 /**
- * Class FieldDefinitionItemDataProvider
- * @package App\DataProvider
+ * Class RecordStateProvider
  */
-class FieldDefinitionItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class RecordStateProvider implements ProviderInterface
 {
     /**
-     * @var FieldDefinitionsHandler
+     * @var RecordProviderInterface
      */
-    protected $vardefHandler;
+    private $recordHandler;
 
     /**
-     * FieldDefinitionItemDataProvider constructor.
-     * @param FieldDefinitionsHandler $vardefHandler
+     * RecordStateProvider constructor.
+     * @param RecordProviderInterface $recordHandler
      */
-    public function __construct(FieldDefinitionsHandler $vardefHandler)
+    public function __construct(RecordProviderInterface $recordHandler)
     {
-        $this->vardefHandler = $vardefHandler;
+        $this->recordHandler = $recordHandler;
     }
 
     /**
-     * Define supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get record by id
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
-     */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return FieldDefinition::class === $resourceClass;
-    }
-
-    /**
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
-     * @param array $context
-     * @return FieldDefinition|null
+     * @return Record|null
      * @throws Exception
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?FieldDefinition {
-        return $this->vardefHandler->getVardef($id);
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?Record
+    {
+        $module = '';
+
+        if (!empty($context['args']['module'])) {
+            $module = $context['args']['module'];
+        } elseif (!empty($context['filters']['module'])) {
+            $module = $context['filters']['module'];
+        }
+
+        return $this->recordHandler->getRecord($module, $uriVariables['id'] ?? '');
     }
 }

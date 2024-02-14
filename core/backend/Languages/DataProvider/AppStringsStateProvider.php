@@ -25,60 +25,42 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Statistics\DataProvider;
+namespace App\Languages\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Statistics\Entity\Statistic;
-use App\Statistics\Service\StatisticsProviderRegistry;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Languages\Entity\AppStrings;
+use App\Languages\LegacyHandler\AppStringsHandler;
 
-class StatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+/**
+ * Class AppStringsStateProvider
+ */
+final class AppStringsStateProvider implements ProviderInterface
 {
-    /**
-     * @var StatisticsProviderRegistry
-     */
-    private $registry;
 
     /**
-     * StatisticsItemDataProvider constructor.
-     * @param StatisticsProviderRegistry $registry
+     * @var AppStringsHandler
      */
-    public function __construct(StatisticsProviderRegistry $registry)
+    private $appStringsHandler;
+
+    /**
+     * AppStringsStateProvider constructor.
+     * @param AppStringsHandler $appStringsHandler
+     */
+    public function __construct(AppStringsHandler $appStringsHandler)
     {
-        $this->registry = $registry;
-    }
-
-
-    /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public
-    function supports(
-        string $resourceClass,
-        string $operationName = null,
-        array $context = []
-    ): bool {
-        return Statistic::class === $resourceClass;
+        $this->appStringsHandler = $appStringsHandler;
     }
 
     /**
-     * Get chart data for given chart id
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * Get app strings for given language id
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return Statistic|null
+     * @return AppStrings|null
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?Statistic {
-        return null;
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?AppStrings
+    {
+        return $this->appStringsHandler->getAppStrings($uriVariables['id'] ?? '');
     }
 }

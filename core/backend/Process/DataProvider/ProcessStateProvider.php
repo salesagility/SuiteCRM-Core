@@ -25,44 +25,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
 namespace App\Process\DataProvider;
 
-
-use ApiPlatform\Core\DataProvider\ArrayPaginator;
-use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Process\Entity\Process;
 
-class ProcessCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
+class ProcessStateProvider implements ProviderInterface
 {
-
     /**
-     * Define supported Resource Classes
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get Process
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return array|Process|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|Process|null
     {
-        return Process::class === $resourceClass;
-    }
+        if ($operation instanceof CollectionOperationInterface) {
+            return [];
+        }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCollection(
-        string $resourceClass,
-        string $operationName = null,
-        array $context = []
-    ): PaginatorInterface {
-
-        //Async processes not implemented yet
-        $processes = [];
-
-        return new ArrayPaginator($processes, 0, count($processes));
+        return null;
     }
 }

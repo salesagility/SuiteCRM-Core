@@ -28,13 +28,13 @@
 
 namespace App\Navbar\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Navbar\Entity\Navbar;
 use App\Routes\Service\NavigationProviderInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
-final class NavbarItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class NavbarStateProvider implements ProviderInterface
 {
     /**
      * @var NavigationProviderInterface
@@ -47,7 +47,7 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
     private $security;
 
     /**
-     * NavbarItemDataProvider constructor.
+     * NavbarStateProvider constructor.
      * @param NavigationProviderInterface $navigationService
      * @param Security $security
      */
@@ -58,26 +58,13 @@ final class NavbarItemDataProvider implements ItemDataProviderInterface, Restric
     }
 
     /**
-     * Define supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return Navbar::class === $resourceClass;
-    }
-
-    /**
      * Get navbar
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
      * @return Navbar|null
      */
-    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Navbar
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?Navbar
     {
         $navbar = $this->navigationService->getNavbar();
         $user = $this->security->getUser();

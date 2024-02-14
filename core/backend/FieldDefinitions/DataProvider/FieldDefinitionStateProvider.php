@@ -25,60 +25,43 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Themes\DataProvider;
+namespace App\FieldDefinitions\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Themes\Entity\ThemeImages;
-use App\Themes\Service\ThemeImageService;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\FieldDefinitions\Entity\FieldDefinition;
+use App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler;
+use Exception;
 
 /**
- * Class ThemeImagesItemDataProvider
+ * Class FieldDefinitionStateProvider
+ * @package App\DataProvider
  */
-final class ThemeImagesItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class FieldDefinitionStateProvider implements ProviderInterface
 {
     /**
-     * @var ThemeImageService
+     * @var FieldDefinitionsHandler
      */
-    private $themeImageService;
-
+    protected $vardefHandler;
 
     /**
-     * ThemeImagesItemDataProvider constructor.
-     * @param ThemeImageService $themeImageService
+     * FieldDefinitionStateProvider constructor.
+     * @param FieldDefinitionsHandler $vardefHandler
      */
-    public function __construct(ThemeImageService $themeImageService)
+    public function __construct(FieldDefinitionsHandler $vardefHandler)
     {
-        $this->themeImageService = $themeImageService;
+        $this->vardefHandler = $vardefHandler;
     }
 
     /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return FieldDefinition|null
+     * @throws Exception
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?FieldDefinition
     {
-        return ThemeImages::class === $resourceClass;
-    }
-
-    /**
-     * Get theme image information for given theme
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
-     * @param array $context
-     * @return ThemeImages|null
-     */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?ThemeImages {
-
-        return $this->themeImageService->get($id);
+        return $this->vardefHandler->getVardef($uriVariables['id'] ?? '');
     }
 }

@@ -27,15 +27,15 @@
 
 namespace App\Languages\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Languages\Entity\AppListStrings;
 use App\Languages\LegacyHandler\AppListStringsHandler;
 
 /**
- * Class AppListStringsItemDataProvider
+ * Class AppListStringsStateProvider
  */
-final class AppListStringsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class AppListStringsStateProvider implements ProviderInterface
 {
     /**
      * @var AppListStringsHandler
@@ -43,7 +43,7 @@ final class AppListStringsItemDataProvider implements ItemDataProviderInterface,
     private $appListStringsHandler;
 
     /**
-     * AppListStringsItemDataProvider constructor.
+     * AppListStringsStateProvider constructor.
      * @param AppListStringsHandler $appListStringsHandler
      */
     public function __construct(AppListStringsHandler $appListStringsHandler)
@@ -51,34 +51,15 @@ final class AppListStringsItemDataProvider implements ItemDataProviderInterface,
         $this->appListStringsHandler = $appListStringsHandler;
     }
 
-
-    /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return AppListStrings::class === $resourceClass;
-    }
-
     /**
      * Get app list strings for given language id
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
      * @return AppListStrings|null
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?AppListStrings {
-
-        return $this->appListStringsHandler->getAppListStrings($id);
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?AppListStrings
+    {
+        return $this->appListStringsHandler->getAppListStrings($uriVariables['id'] ?? '');
     }
 }

@@ -25,21 +25,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
 namespace App\SystemConfig\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ArrayPaginator;
-use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 
 /**
- * Class SystemConfigCollectionDataProvider
+ * Class SystemConfigStateProvider
  */
-class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
-    RestrictedDataProviderInterface
+final class SystemConfigStateProvider implements ProviderInterface
 {
 
     /**
@@ -48,7 +45,7 @@ class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataPr
     private $systemConfigProvider;
 
     /**
-     * SystemConfigCollectionDataProvider constructor.
+     * SystemConfigStateProvider constructor.
      * @param SystemConfigProviderInterface $systemConfigProvider
      */
     public function __construct(SystemConfigProviderInterface $systemConfigProvider)
@@ -57,28 +54,18 @@ class SystemConfigCollectionDataProvider implements ContextAwareCollectionDataPr
     }
 
     /**
-     * Define supported Resource Classes
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get system config
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return array|SystemConfig|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|SystemConfig|null
     {
-        return SystemConfig::class === $resourceClass;
-    }
+        if ($operation instanceof CollectionOperationInterface) {
+            return $this->systemConfigProvider->getAllSystemConfigs();
+        }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCollection(
-        string $resourceClass,
-        string $operationName = null,
-        array $context = []
-    ): PaginatorInterface {
-        $systemConfigs = $this->systemConfigProvider->getAllSystemConfigs();
-
-        return new ArrayPaginator($systemConfigs, 0, count($systemConfigs));
+        return $this->systemConfigProvider->getSystemConfig($uriVariables['id'] ?? '');
     }
 }

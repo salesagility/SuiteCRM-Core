@@ -25,60 +25,38 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Languages\DataProvider;
+namespace App\Statistics\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Languages\Entity\AppStrings;
-use App\Languages\LegacyHandler\AppStringsHandler;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Statistics\Entity\Statistic;
+use App\Statistics\Service\StatisticsProviderRegistry;
 
-/**
- * Class AppStringsItemDataProvider
- */
-final class AppStringsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class StatisticsStateProvider implements ProviderInterface
 {
+    /**
+     * @var StatisticsProviderRegistry
+     */
+    private $registry;
 
     /**
-     * @var AppStringsHandler
+     * StatisticsStateProvider constructor.
+     * @param StatisticsProviderRegistry $registry
      */
-    private $appStringsHandler;
-
-    /**
-     * AppStringsItemDataProvider constructor.
-     * @param AppStringsHandler $appStringsHandler
-     */
-    public function __construct(AppStringsHandler $appStringsHandler)
+    public function __construct(StatisticsProviderRegistry $registry)
     {
-        $this->appStringsHandler = $appStringsHandler;
+        $this->registry = $registry;
     }
 
     /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get chart data for given chart id
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return Statistic|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?Statistic
     {
-        return AppStrings::class === $resourceClass;
-    }
-
-    /**
-     * Get app strings for given language id
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
-     * @param array $context
-     * @return AppStrings|null
-     */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?AppStrings {
-
-        return $this->appStringsHandler->getAppStrings($id);
+        return null;
     }
 }

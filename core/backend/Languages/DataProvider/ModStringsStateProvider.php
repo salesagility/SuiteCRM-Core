@@ -27,15 +27,15 @@
 
 namespace App\Languages\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Languages\Entity\ModStrings;
 use App\Languages\LegacyHandler\ModStringsHandler;
 
 /**
- * Class ModStringsItemDataProvider
+ * Class ModStringsStateProvider
  */
-final class ModStringsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class ModStringsStateProvider implements ProviderInterface
 {
 
     /**
@@ -44,7 +44,7 @@ final class ModStringsItemDataProvider implements ItemDataProviderInterface, Res
     private $modStringsHandler;
 
     /**
-     * ModStringsItemDataProvider constructor.
+     * ModStringsStateProvider constructor.
      * @param ModStringsHandler $modStringsHandler
      */
     public function __construct(ModStringsHandler $modStringsHandler)
@@ -53,32 +53,14 @@ final class ModStringsItemDataProvider implements ItemDataProviderInterface, Res
     }
 
     /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return ModStrings::class === $resourceClass;
-    }
-
-    /**
      * Get mod strings for given language id
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
      * @return ModStrings|null
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?ModStrings {
-
-        return $this->modStringsHandler->getModStrings($id);
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?ModStrings
+    {
+        return $this->modStringsHandler->getModStrings($uriVariables['id'] ?? '');
     }
 }

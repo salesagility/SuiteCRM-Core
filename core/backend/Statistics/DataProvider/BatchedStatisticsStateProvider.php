@@ -27,12 +27,12 @@
 
 namespace App\Statistics\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Statistics\Entity\BatchedStatistics;
 use App\Statistics\Service\StatisticsManagerInterface;
 
-class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class BatchedStatisticsStateProvider implements ProviderInterface
 {
     /**
      * @var StatisticsManagerInterface
@@ -40,7 +40,7 @@ class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, Re
     private $manager;
 
     /**
-     * BatchedStatisticsItemDataProvider constructor.
+     * BatchedStatisticsStateProvider constructor.
      * @param StatisticsManagerInterface $manager
      */
     public function __construct(StatisticsManagerInterface $manager)
@@ -48,37 +48,15 @@ class BatchedStatisticsItemDataProvider implements ItemDataProviderInterface, Re
         $this->manager = $manager;
     }
 
-
-    /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public function supports(
-        string $resourceClass,
-        string $operationName = null,
-        array $context = []
-    ): bool {
-        return BatchedStatistics::class === $resourceClass;
-    }
-
     /**
      * Get batched statistics
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
      * @return BatchedStatistics|null
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?BatchedStatistics {
-
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?BatchedStatistics
+    {
         return null;
     }
 }

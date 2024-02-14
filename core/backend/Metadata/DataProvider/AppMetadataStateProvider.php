@@ -27,17 +27,16 @@
 
 namespace App\Metadata\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Metadata\Entity\AppMetadata;
 use App\Metadata\Service\AppMetadataProviderInterface;
-use Exception;
 
 /**
- * Class AppMetaItemDataProvider
+ * Class AppMetadataStateProvider
  * @package App\Metatata\DataProvider
  */
-class AppMetadataItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class AppMetadataStateProvider implements ProviderInterface
 {
     /**
      * @var AppMetadataProviderInterface
@@ -45,7 +44,7 @@ class AppMetadataItemDataProvider implements ItemDataProviderInterface, Restrict
     protected $metadata;
 
     /**
-     * AppMetaItemDataProvider constructor.
+     * AppMetadataStateProvider constructor.
      * @param AppMetadataProviderInterface $metadata
      */
     public function __construct(AppMetadataProviderInterface $metadata)
@@ -54,36 +53,18 @@ class AppMetadataItemDataProvider implements ItemDataProviderInterface, Restrict
     }
 
     /**
-     * Define supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
-     */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return AppMetadata::class === $resourceClass;
-    }
-
-    /**
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
      * @return AppMetadata|null
-     * @throws Exception
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?AppMetadata {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?AppMetadata
+    {
         $attributes = [];
         if (!empty($context['attributes'])) {
             $attributes = array_keys($context['attributes']);
         }
 
-        return $this->metadata->getMetadata($id, $attributes);
+        return $this->metadata->getMetadata($uriVariables['id'] ?? '', $attributes);
     }
 }

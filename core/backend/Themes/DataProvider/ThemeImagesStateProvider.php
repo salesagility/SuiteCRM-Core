@@ -25,60 +25,42 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Data\DataProvider;
+namespace App\Themes\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Data\LegacyHandler\RecordListHandler;
-use App\Data\Entity\RecordList;
-use Exception;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Themes\Entity\ThemeImages;
+use App\Themes\Service\ThemeImageService;
 
 /**
- * Class RecordListItemDataProvider
- * @package App\DataProvider
+ * Class ThemeImagesStateProvider
  */
-class RecordListItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class ThemeImagesStateProvider implements ProviderInterface
 {
     /**
-     * @var RecordListHandler
+     * @var ThemeImageService
      */
-    protected $recordListHandler;
+    private $themeImageService;
+
 
     /**
-     * RecordListItemDataProvider constructor.
-     * @param RecordListHandler $recordListHandler
+     * ThemeImagesStateProvider constructor.
+     * @param ThemeImageService $themeImageService
      */
-    public function __construct(RecordListHandler $recordListHandler)
+    public function __construct(ThemeImageService $themeImageService)
     {
-        $this->recordListHandler = $recordListHandler;
+        $this->themeImageService = $themeImageService;
     }
 
     /**
-     * Define supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get theme image information for given theme
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return ThemeImages|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?ThemeImages
     {
-        return RecordList::class === $resourceClass;
-    }
-
-    /**
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
-     * @param array $context
-     * @return RecordList|null
-     * @throws Exception
-     */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?RecordList {
-        return $this->recordListHandler->getList($id);
+        return $this->themeImageService->get($uriVariables['id'] ?? '');
     }
 }

@@ -27,57 +27,45 @@
 
 namespace App\UserPreferences\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ArrayPaginator;
-use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\UserPreferences\Entity\UserPreference;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
 
 /**
- * Class UserPreferenceCollectionDataProvider
+ * Class UserPreferenceProvider
  */
-class UserPreferenceCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
-    RestrictedDataProviderInterface
+final class UserPreferenceStateProvider implements ProviderInterface
 {
 
     /**
      * @var UserPreferencesProviderInterface
      */
-    private $userPreferencesService;
+    private $userPreferenceService;
 
     /**
-     * UserPreferenceCollectionDataProvider constructor.
+     * UserPreferenceStateProvider constructor.
      * @param UserPreferencesProviderInterface $userPreferenceService
      */
     public function __construct(UserPreferencesProviderInterface $userPreferenceService)
     {
-        $this->userPreferencesService = $userPreferenceService;
+        $this->userPreferenceService = $userPreferenceService;
     }
 
     /**
-     * Define supported Resource Classes
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * Get user preference
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return iterable|UserPreference|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|UserPreference|null
     {
-        return UserPreference::class === $resourceClass;
-    }
+        if ($operation instanceof CollectionOperationInterface) {
+            return $this->userPreferenceService->getAllUserPreferences();
+        }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCollection(
-        string $resourceClass,
-        string $operationName = null,
-        array $context = []
-    ): PaginatorInterface {
-        $userPreferences = $this->userPreferencesService->getAllUserPreferences();
-
-        return new ArrayPaginator($userPreferences, 0, count($userPreferences));
+        return $this->userPreferenceService->getUserPreference($uriVariables['id'] ?? '');
     }
 }

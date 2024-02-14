@@ -25,42 +25,41 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Process\DataProvider;
+namespace App\Data\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Process\Entity\Process;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Data\Entity\RecordList;
+use App\Data\LegacyHandler\RecordListHandler;
 
-class ProcessItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+/**
+ * Class RecordListStateProvider
+ * @package App\DataProvider
+ */
+class RecordListStateProvider implements ProviderInterface
 {
     /**
-     * Defined supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
-     * @param array $context
-     * @return bool
+     * @var RecordListHandler
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    protected $recordListHandler;
+
+    /**
+     * RecordListStateProvider constructor.
+     * @param RecordListHandler $recordListHandler
+     */
+    public function __construct(RecordListHandler $recordListHandler)
     {
-        return Process::class === $resourceClass;
+        $this->recordListHandler = $recordListHandler;
     }
 
     /**
-     * Get Process
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return Process|null
+     * @return RecordList|null
      */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?Process {
-        //Async processes not implemented yet
-        throw new ItemNotFoundException();
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?RecordList
+    {
+        return $this->recordListHandler->getList($uriVariables['id'] ?? '');
     }
 }

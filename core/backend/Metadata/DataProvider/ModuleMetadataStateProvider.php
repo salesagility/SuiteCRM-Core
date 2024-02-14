@@ -25,66 +25,46 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\ViewDefinitions\DataProvider;
+namespace App\Metadata\DataProvider;
 
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\ViewDefinitions\Entity\ViewDefinition;
-use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
-use Exception;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
+use App\Metadata\Entity\ModuleMetadata;
+use App\Metadata\Service\ModuleMetadataProviderInterface;
 
 /**
- * Class ViewDefinitionItemDataProvider
- * @package App\DataProvider
+ * Class ModuleMetadataStateProvider
+ * @package App\Metatata\DataProvider
  */
-class ViewDefinitionItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class ModuleMetadataStateProvider implements ProviderInterface
 {
     /**
-     * @var ViewDefinitionsProviderInterface
+     * @var ModuleMetadataProviderInterface
      */
-    protected $viewDefHandler;
+    protected $metadata;
 
     /**
-     * ViewDefinitionItemDataProvider constructor.
-     * @param ViewDefinitionsProviderInterface $viewDefHandler
+     * ModuleMetadataStateProvider constructor.
+     * @param ModuleMetadataProviderInterface $metadata
      */
-    public function __construct(ViewDefinitionsProviderInterface $viewDefHandler)
+    public function __construct(ModuleMetadataProviderInterface $metadata)
     {
-        $this->viewDefHandler = $viewDefHandler;
+        $this->metadata = $metadata;
     }
 
     /**
-     * Define supported resources
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return bool
+     * @return ModuleMetadata|null
      */
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?ModuleMetadata
     {
-        return ViewDefinition::class === $resourceClass;
-    }
-
-    /**
-     * @param string $resourceClass
-     * @param array|int|string $id
-     * @param string|null $operationName
-     * @param array $context
-     * @return ViewDefinition|null
-     * @throws Exception
-     */
-    public function getItem(
-        string $resourceClass,
-        $id,
-        string $operationName = null,
-        array $context = []
-    ): ?ViewDefinition {
-
         $attributes = [];
         if (!empty($context['attributes'])) {
             $attributes = array_keys($context['attributes']);
         }
 
-        return $this->viewDefHandler->getViewDefs($id, $attributes);
+        return $this->metadata->getMetadata($uriVariables['id'] ?? '', $attributes);
     }
 }
