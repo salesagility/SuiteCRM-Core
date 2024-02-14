@@ -27,15 +27,15 @@
 
 namespace App\Install\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(name: 'scrm:copy-legacy-assets')]
 class CopyLegacyAssets extends Command
 {
-    protected static $defaultName = 'scrm:copy-legacy-assets';
-
     /**
      * @var string
      */
@@ -61,8 +61,9 @@ class CopyLegacyAssets extends Command
         string $name = null,
         string $projectDir = '',
         string $legacyDir = '',
-        array $copyLegacyAssetPaths = []
-    ) {
+        array  $copyLegacyAssetPaths = []
+    )
+    {
         parent::__construct($name);
         $this->projectDir = $projectDir;
         $this->copyLegacyAssetPaths = $copyLegacyAssetPaths;

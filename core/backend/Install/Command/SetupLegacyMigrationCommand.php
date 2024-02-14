@@ -29,18 +29,15 @@ namespace App\Install\Command;
 
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\LegacyMigration\LegacyMigrationHandlerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * Class SetupLegacyMigrationCommand
  * @package App\Install\Command
  */
+#[AsCommand(name: 'suitecrm:app:setup-legacy-migration')]
 class SetupLegacyMigrationCommand extends BaseStepExecutorCommand
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'suitecrm:app:setup-legacy-migration';
-
     /**
      * @var LegacyMigrationHandlerInterface
      */

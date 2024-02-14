@@ -30,6 +30,7 @@ namespace App\Install\Command;
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\LegacyHandler\InstallHandler;
 use App\Install\Service\Installation\InstallStepHandler;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
@@ -38,14 +39,9 @@ use Symfony\Component\Console\Question\Question;
  * Class LegacyInstallCommand
  * @package App\Command
  */
+#[AsCommand(name: 'suitecrm:app:install')]
 class LegacyInstallCommand extends BaseStepExecutorCommand
 {
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'suitecrm:app:install';
-
     /**
      * @var InstallHandler
      */

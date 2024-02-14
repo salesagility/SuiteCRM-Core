@@ -29,6 +29,7 @@ namespace App\Install\Command;
 
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeFinalizeHandlerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,13 +40,9 @@ use Symfony\Component\Console\Question\Question;
  * Class UpgradeFinalizeCommand
  * @package App\Install\Command
  */
+#[AsCommand(name: 'suitecrm:app:upgrade-finalize')]
 class UpgradeFinalizeCommand extends BaseStepExecutorCommand
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'suitecrm:app:upgrade-finalize';
-
     /**
      * @inheritdoc
      */

@@ -29,14 +29,14 @@ namespace App\Install\Command;
 
 use App\Engine\Service\Extensions\ExtensionAssetCopy;
 use App\Engine\Service\Extensions\ExtensionAssetCopyInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'scrm:extension-asset-install')]
 class InstallExtensionAssets extends Command
 {
-    protected static $defaultName = 'scrm:extension-asset-install';
-
     /**
      * @var ExtensionAssetCopy
      */
