@@ -23,7 +23,7 @@ doctrine:
     auto_mapping: true
     mappings:
       App:
-        type: annotation
+        type: attribute
         is_bundle: false
         dir: '%kernel.project_dir%/core'
         prefix: 'App'
