@@ -84,7 +84,7 @@ return static function (ContainerConfigurator $containerConfig) {
             'security' => false
         ],
         'main' => [
-            'lazy' => true,
+            'lazy' => false,
         ]
     ];
 
@@ -294,7 +294,7 @@ return static function (ContainerConfigurator $containerConfig) {
                 'auth' => [
                     'context' => 'app_context',
                     'pattern' => '^/auth',
-                    'lazy' => true,
+                    'lazy' => false,
                     'provider' => 'app_user_provider',
                     'json_login' => [
                         'provider' => 'app_user_provider',
@@ -310,7 +310,7 @@ return static function (ContainerConfigurator $containerConfig) {
                 'logged-out' => [
                     'context' => 'app_context',
                     'pattern' => '^/logged-out',
-                    'lazy' => true,
+                    'lazy' => false,
                     'provider' => 'app_user_provider',
                     'json_login' => [
                         'provider' => 'app_user_provider',
