@@ -40,7 +40,6 @@
     "ext-zip": "*",
     "api-platform/core": "^3.2",
     "composer/package-versions-deprecated": "1.11.99.3",
-    "doctrine/annotations": "^1.0",
     "doctrine/doctrine-bundle": "^2.11",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/migrations": "^3.2",
