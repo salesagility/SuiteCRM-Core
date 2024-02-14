@@ -54,7 +54,7 @@ abstract class BaseCommand extends Command
     /**
      * @var RequestStack
      */
-    protected $session;
+    protected $requestStack;
 
     /**
      * @var string
@@ -86,11 +86,11 @@ abstract class BaseCommand extends Command
 
     /**
      * @required
-     * @param RequestStack $session
+     * @param RequestStack $requestStack
      */
-    public function setSession(RequestStack $session): void
+    public function setRequestStack(RequestStack $requestStack): void
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -163,13 +163,13 @@ abstract class BaseCommand extends Command
      */
     protected function startSession(): void
     {
-        if ($this->session->isStarted()) {
+        if ($this->requestStack->getSession()->isStarted()) {
             return;
         }
 
-        $this->session->setName($this->defaultSessionName);
+        $this->requestStack->getSession()->setName($this->defaultSessionName);
 
-        $this->session->start();
+        $this->requestStack->getSession()->start();
     }
 
     /**

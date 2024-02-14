@@ -78,17 +78,17 @@ class InstallHandler extends LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param RequestStack $session
+     * @param RequestStack $requestStack
      * @param LoggerInterface $logger
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
+        string           $projectDir,
+        string           $legacyDir,
+        string           $legacySessionName,
+        string           $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        RequestStack $session,
-        LoggerInterface $logger
+        RequestStack     $requestStack,
+        LoggerInterface  $logger
     )
     {
         parent::__construct(
@@ -97,7 +97,7 @@ class InstallHandler extends LegacyHandler
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session
+            $requestStack
         );
         $this->legacyDir = $legacyDir;
         $this->logger = $logger;

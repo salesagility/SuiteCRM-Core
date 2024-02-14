@@ -34,7 +34,12 @@ use RuntimeException;
 use SugarApplication;
 use SugarController;
 use SugarThemeRegistry;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use User;
 
 /**
@@ -74,7 +79,7 @@ abstract class LegacyHandler
     /**
      * @var RequestStack
      */
-    protected $session;
+    protected $requestStack;
 
     /**
      * LegacyHandler constructor.
@@ -83,7 +88,7 @@ abstract class LegacyHandler
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param RequestStack $session
+     * @param RequestStack $requestStack
      */
     public function __construct(
         string $projectDir,
@@ -91,14 +96,14 @@ abstract class LegacyHandler
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        RequestStack $session
+        RequestStack $requestStack
     ) {
         $this->projectDir = $projectDir;
         $this->legacyDir = $legacyDir;
         $this->legacySessionName = $legacySessionName;
         $this->defaultSessionName = $defaultSessionName;
         $this->state = $legacyScopeState;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -294,36 +299,40 @@ abstract class LegacyHandler
 
     protected function startSymfonySession(): void
     {
-        if ($this->session->isStarted()) {
-            $this->session->save();
+        $session = $this->getSession();
+
+        if ($session->isStarted()) {
+            $session->save();
             session_write_close();
         }
 
-        $this->session->setName($this->defaultSessionName);
+        $session->setName($this->defaultSessionName);
 
         if (isset($_COOKIE[$this->defaultSessionName])) {
-            $this->session->setId($_COOKIE[$this->defaultSessionName]);
+            $session->setId($_COOKIE[$this->defaultSessionName]);
         }
 
-        $this->session->start();
+        $session->start();
     }
 
     protected function startLegacySession(): void
     {
-        if ($this->session->isStarted()) {
-            $this->session->save();
+        $session = $this->getSession();
+
+        if ($session->isStarted()) {
+            $session->save();
         }
 
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
         }
-        $this->session->setName($this->legacySessionName);
+        $session->setName($this->legacySessionName);
 
         if (!isset($_COOKIE[$this->legacySessionName])) {
             $_COOKIE[$this->legacySessionName] = session_create_id();
         }
-        $this->session->setId($_COOKIE[$this->legacySessionName]);
-        $this->session->start();
+        $session->setId($_COOKIE[$this->legacySessionName]);
+        $session->start();
     }
 
     /**
@@ -340,5 +349,49 @@ abstract class LegacyHandler
         $sugar_config['disable_translations'] = true;
 
         $app_strings = disable_translations($app_strings);
+    }
+
+    /**
+     * @return SessionInterface
+     */
+    protected function getSession(): SessionInterface
+    {
+        $request = Request::createFromGlobals();
+        $requestSession = null;
+        try {
+            $requestSession = $request->getSession();
+        } catch (SessionNotFoundException $e) {
+        }
+
+        $session = null;
+
+        if($requestSession === null || session_id() == '' || !isset($_SESSION) || session_status() === PHP_SESSION_NONE) {
+            // session isn't started
+            session_start();
+
+            // Get Symfony to interface with this existing session
+            $session = new Session(new PhpBridgeSessionStorage());
+
+            // symfony will now interface with the existing PHP session
+            $session->start();
+            $request->setSession($session);
+        }
+
+
+        $stack = $this->requestStack ?? null;
+        if ($stack === null) {
+            $stack = new RequestStack();
+        }
+
+        if ($requestSession === null) {
+            $stack->push($request);
+            return $session;
+        }
+
+
+        $session = $this->requestStack->getMainRequest()->getSession();
+
+
+        return $session;
     }
 }

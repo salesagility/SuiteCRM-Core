@@ -130,7 +130,7 @@ class UserHandler extends LegacyHandler
      */
     public function getSessionLanguage(): string
     {
-        return $this->session->get('ui_language', '');
+        return $this->requestStack->get('ui_language', '');
     }
 
     /**
@@ -142,7 +142,7 @@ class UserHandler extends LegacyHandler
         set_current_language($language);
         $this->close();
 
-        $this->session->set('ui_language', $language);
+        $this->requestStack->set('ui_language', $language);
     }
 
     /**
