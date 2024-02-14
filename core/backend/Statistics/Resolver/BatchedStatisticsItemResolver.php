@@ -27,7 +27,7 @@
 
 namespace App\Statistics\Resolver;
 
-use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
+use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Statistics\Entity\BatchedStatistics;
 use App\Statistics\Service\StatisticsManagerInterface;
 
@@ -51,9 +51,9 @@ class BatchedStatisticsItemResolver implements QueryItemResolverInterface
      * @param BatchedStatistics|null $item
      *
      * @param array $context
-     * @return BatchedStatistics|null
+     * @return BatchedStatistics
      */
-    public function __invoke($item, array $context): ?BatchedStatistics
+    public function __invoke($item, array $context): BatchedStatistics
     {
         $query = $context['args']['queries'] ?? [];
         $module = $context['args']['module'] ?? '';

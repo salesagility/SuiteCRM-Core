@@ -27,7 +27,7 @@
 
 namespace App\Data\Resolver;
 
-use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
+use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Data\LegacyHandler\RecordListHandler;
 use App\Data\Entity\RecordList;
 

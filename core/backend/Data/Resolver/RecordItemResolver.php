@@ -27,7 +27,7 @@
 
 namespace App\Data\Resolver;
 
-use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
+use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Data\Entity\Record;
 use App\Data\Service\RecordProviderInterface;
 use Exception;

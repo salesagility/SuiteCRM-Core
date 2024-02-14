@@ -27,7 +27,7 @@
 
 namespace App\Statistics\Resolver;
 
-use ApiPlatform\Core\GraphQl\Resolver\QueryItemResolverInterface;
+use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Statistics\Entity\Statistic;
 use App\Statistics\Service\StatisticsManagerInterface;
 
@@ -51,15 +51,15 @@ class StatisticsItemResolver implements QueryItemResolverInterface
      * @param Statistic|null $item
      *
      * @param array $context
-     * @return Statistic|null
+     * @return Statistic
      */
-    public function __invoke($item, array $context): ?Statistic
+    public function __invoke($item, array $context): Statistic
     {
         $query = $context['args']['queries'] ?? [];
         $module = $context['args']['module'] ?? '';
 
         if (empty($query)) {
-            return null;
+            return new Statistic();
         }
 
         return $this->manager->getStatistic($module, $query);
