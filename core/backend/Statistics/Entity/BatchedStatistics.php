@@ -32,12 +32,14 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Statistics\DataProvider\BatchedStatisticsStateProvider;
 use App\Statistics\Resolver\BatchedStatisticsItemResolver;
 
 #[ApiResource(
     operations: [
         new Get(
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: BatchedStatisticsStateProvider::class
         ),
     ],
     security: "is_granted('ROLE_USER')",
@@ -48,7 +50,8 @@ use App\Statistics\Resolver\BatchedStatisticsItemResolver;
                 'module' => ['type' => 'String!'],
                 'queries' => ['type' => 'Iterable'],
             ],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: BatchedStatisticsStateProvider::class
         ),
     ]
 )]

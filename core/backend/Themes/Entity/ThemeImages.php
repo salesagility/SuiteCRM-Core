@@ -33,13 +33,14 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Themes\DataProvider\ThemeImagesStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get()
+        new Get(provider: ThemeImagesStateProvider::class)
     ],
     graphQlOperations: [
-        new Query()
+        new Query(provider: ThemeImagesStateProvider::class)
     ]
 )]
 class ThemeImages

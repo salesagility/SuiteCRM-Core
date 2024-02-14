@@ -32,11 +32,12 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Statistics\DataProvider\StatisticsStateProvider;
 use App\Statistics\Resolver\StatisticsItemResolver;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
+        new Get(security: "is_granted('ROLE_USER')", provider: StatisticsStateProvider::class),
     ],
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [
@@ -46,7 +47,8 @@ use App\Statistics\Resolver\StatisticsItemResolver;
                 'module' => ['type' => 'String!'],
                 'query' => ['type' => 'Iterable'],
             ],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: StatisticsStateProvider::class
         ),
     ]
 )]

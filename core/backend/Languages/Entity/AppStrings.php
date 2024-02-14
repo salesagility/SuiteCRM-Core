@@ -32,13 +32,14 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Languages\DataProvider\AppStringsStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get()
+        new Get(provider: AppStringsStateProvider::class)
     ],
     graphQlOperations: [
-        new Query()
+        new Query(provider: AppStringsStateProvider::class)
     ]
 )]
 class AppStrings

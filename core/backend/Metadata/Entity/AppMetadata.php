@@ -31,15 +31,17 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Metadata\DataProvider\AppMetadataStateProvider;
 
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate: '/app-metadata/{id}'
+            uriTemplate: '/app-metadata/{id}',
+            provider: AppMetadataStateProvider::class
         ),
     ],
     graphQlOperations: [
-        new Query()
+        new Query(provider: AppMetadataStateProvider::class)
     ]
 )]
 class AppMetadata

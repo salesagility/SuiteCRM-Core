@@ -34,15 +34,16 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\SystemConfig\DataProvider\SystemConfigStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection()
+        new Get(provider: SystemConfigStateProvider::class),
+        new GetCollection(provider: SystemConfigStateProvider::class)
     ],
     graphQlOperations: [
-        new Query(),
-        new QueryCollection()
+        new Query(provider: SystemConfigStateProvider::class),
+        new QueryCollection(provider: SystemConfigStateProvider::class)
     ]
 )]
 class SystemConfig

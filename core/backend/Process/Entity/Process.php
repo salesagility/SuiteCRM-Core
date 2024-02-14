@@ -35,17 +35,19 @@ use ApiPlatform\Metadata\GraphQl\Mutation;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\Put;
+use App\Process\DataPersister\ProcessProcessor;
+use App\Process\DataProvider\ProcessStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(),
-        new Put(),
-        new GetCollection()
+        new Get(provider: ProcessStateProvider::class),
+        new Put(processor: ProcessProcessor::class),
+        new GetCollection(provider: ProcessStateProvider::class)
     ],
     graphQlOperations: [
-        new Query(),
-        new QueryCollection(),
-        new Mutation(name: 'create')
+        new Query(provider: ProcessStateProvider::class),
+        new QueryCollection(provider: ProcessStateProvider::class),
+        new Mutation(name: 'create', processor: ProcessProcessor::class)
     ]
 )]
 class Process

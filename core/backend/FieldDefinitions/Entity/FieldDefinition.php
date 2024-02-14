@@ -32,15 +32,16 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\FieldDefinitions\DataProvider\FieldDefinitionStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
+        new Get(security: "is_granted('ROLE_USER')", provider: FieldDefinitionStateProvider::class),
     ],
     routePrefix: "/vardef",
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [
-        new Query(security: "is_granted('ROLE_USER')")
+        new Query(security: "is_granted('ROLE_USER')", provider: FieldDefinitionStateProvider::class)
     ]
 )]
 class FieldDefinition

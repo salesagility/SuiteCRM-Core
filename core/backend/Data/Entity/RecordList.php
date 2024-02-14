@@ -32,14 +32,15 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Data\DataProvider\RecordListStateProvider;
 use App\Data\Resolver\RecordListResolver;
-use App\Statistics\Resolver\StatisticsItemResolver;
 
 #[ApiResource(
     operations: [
         new Get(
             uriTemplate: "/record-list/{id}",
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: RecordListStateProvider::class
         )
     ],
     security: "is_granted('ROLE_USER')",
@@ -50,10 +51,11 @@ use App\Statistics\Resolver\StatisticsItemResolver;
                 'module' => ['type' => 'String!'],
                 'limit' => ['type' => 'Int'],
                 'offset' => ['type' => 'Int'],
-                'criteria' => ['type' => 'Iterable', 'description'=>'search criteria'],
-                'sort' => ['type' => 'Iterable', 'description'=>'sort'],
+                'criteria' => ['type' => 'Iterable', 'description' => 'search criteria'],
+                'sort' => ['type' => 'Iterable', 'description' => 'sort'],
             ],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: RecordListStateProvider::class
         )
     ]
 )]

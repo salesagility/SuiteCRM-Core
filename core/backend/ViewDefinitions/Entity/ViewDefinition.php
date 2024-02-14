@@ -32,16 +32,17 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\ViewDefinitions\DataProvider\ViewDefinitionStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
-        new GetCollection(security: "is_granted('ROLE_USER')")
+        new Get(security: "is_granted('ROLE_USER')", provider: ViewDefinitionStateProvider::class),
+        new GetCollection(security: "is_granted('ROLE_USER')", provider: ViewDefinitionStateProvider::class)
     ],
     routePrefix: '/metadata',
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [
-        new Query(security: "is_granted('ROLE_USER')"),
+        new Query(security: "is_granted('ROLE_USER')", provider: ViewDefinitionStateProvider::class),
     ]
 )]
 class ViewDefinition

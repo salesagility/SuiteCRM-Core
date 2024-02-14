@@ -33,13 +33,16 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Mutation;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Data\DataPersister\RecordProcessor;
+use App\Data\DataProvider\RecordStateProvider;
 use App\Data\Resolver\RecordItemResolver;
 
 #[ApiResource(
     operations: [
         new Get(
             uriTemplate: "/record/{id}",
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: RecordStateProvider::class
         )
     ],
     security: "is_granted('ROLE_USER')",
@@ -50,7 +53,8 @@ use App\Data\Resolver\RecordItemResolver;
                 'module' => ['type' => 'String!'],
                 'record' => ['type' => 'Int'],
             ],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: RecordStateProvider::class
         ),
         new Mutation(
             args: [
@@ -61,7 +65,8 @@ use App\Data\Resolver\RecordItemResolver;
             ],
             security: "is_granted('ROLE_USER')",
             validate: false,
-            name: 'save'
+            name: 'save',
+            processor: RecordProcessor::class
         )
     ]
 )]

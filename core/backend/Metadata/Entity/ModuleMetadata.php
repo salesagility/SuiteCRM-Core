@@ -31,17 +31,19 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
+use App\Metadata\DataProvider\ModuleMetadataStateProvider;
 
 #[ApiResource(
     operations: [
         new Get(
             uriTemplate: '/module-metadata/{id}',
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            provider: ModuleMetadataStateProvider::class
         ),
     ],
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [
-        new Query(security: "is_granted('ROLE_USER')")
+        new Query(security: "is_granted('ROLE_USER')", provider: ModuleMetadataStateProvider::class)
     ]
 )]
 class ModuleMetadata

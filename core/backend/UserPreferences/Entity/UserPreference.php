@@ -34,16 +34,17 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\UserPreferences\DataProvider\UserPreferenceStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
-        new GetCollection(security: "is_granted('ROLE_USER')")
+        new Get(security: "is_granted('ROLE_USER')", provider: UserPreferenceStateProvider::class),
+        new GetCollection(security: "is_granted('ROLE_USER')", provider: UserPreferenceStateProvider::class)
     ],
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [
-        new Query(security: "is_granted('ROLE_USER')"),
-        new QueryCollection(security: "is_granted('ROLE_USER')")
+        new Query(security: "is_granted('ROLE_USER')", provider: UserPreferenceStateProvider::class),
+        new QueryCollection(security: "is_granted('ROLE_USER')", provider: UserPreferenceStateProvider::class)
     ]
 )]
 class UserPreference
