@@ -26,14 +26,14 @@
  */
 
 
-namespace App\Process\DataPersister;
+namespace App\Data\DataPersister;
 
-use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use ApiPlatform\Core\Exception\InvalidResourceException;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProcessorInterface;
 use App\Data\Entity\Record;
 use App\Data\Service\RecordProviderInterface;
 
-class RecordDataPersister implements ContextAwareDataPersisterInterface
+class RecordProcessor implements ProcessorInterface
 {
     /**
      * @var RecordProviderInterface
@@ -41,7 +41,7 @@ class RecordDataPersister implements ContextAwareDataPersisterInterface
     private $recordProvider;
 
     /**
-     * RecordDataPersister constructor.
+     * RecordProcessor constructor.
      * @param RecordProviderInterface $recordProvider
      */
     public function __construct(RecordProviderInterface $recordProvider)
@@ -60,23 +60,13 @@ class RecordDataPersister implements ContextAwareDataPersisterInterface
     /**
      * Handle Process create / update request
      * @param Record $record
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return Record
+     * @return Record|null
      */
-    public function persist($record, array $context = []): Record
+    public function process(mixed $record, Operation $operation, array $uriVariables = [], array $context = []): ?Record
     {
         return $this->recordProvider->saveRecord($record);
-    }
-
-    /**
-     * Handler process deletion request
-     * @param $data
-     * @param array $context
-     * @throws InvalidResourceException
-     */
-    public function remove($data, array $context = []): void
-    {
-        // Deleting processes is not supported
-        throw new InvalidResourceException('invalid operation');
     }
 }

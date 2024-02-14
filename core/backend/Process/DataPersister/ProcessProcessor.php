@@ -28,16 +28,16 @@
 
 namespace App\Process\DataPersister;
 
-use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use ApiPlatform\Core\Exception\InvalidResourceException;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProcessorInterface;
 use App\Engine\Service\AclManagerInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use App\Process\Service\ProcessHandlerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Security;
 
-class ProcessDataPersister implements ContextAwareDataPersisterInterface
+class ProcessProcessor implements ProcessorInterface
 {
     /**
      * @var ProcessHandlerRegistry
@@ -55,7 +55,7 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
     private $acl;
 
     /**
-     * ProcessDataPersister constructor.
+     * ProcessProcessor constructor.
      * @param ProcessHandlerRegistry $registry
      * @param Security $security
      * @param AclManagerInterface $acl
@@ -68,20 +68,14 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function supports($data, array $context = []): bool
-    {
-        return $data instanceof Process;
-    }
-
-    /**
      * Handle Process create / update request
      * @param Process $process
+     * @param Operation $operation
+     * @param array $uriVariables
      * @param array $context
-     * @return Process
+     * @return Process|void
      */
-    public function persist($process, array $context = []): Process
+    public function process(mixed $process, Operation $operation, array $uriVariables = [], array $context = []): ?Process
     {
         $processHandler = $this->registry->get($process->getType());
 
@@ -182,18 +176,6 @@ class ProcessDataPersister implements ContextAwareDataPersisterInterface
         }
 
         return $hasAccess;
-    }
-
-    /**
-     * Handler process deletion request
-     * @param $data
-     * @param array $context
-     * @throws InvalidResourceException
-     */
-    public function remove($data, array $context = [])
-    {
-        // Deleting processes is not supported
-        throw new InvalidResourceException();
     }
 
     /**
