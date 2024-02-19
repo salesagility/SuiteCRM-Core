@@ -38,8 +38,8 @@ import {DateTimeEditFieldModule} from './datetime/templates/edit/datetime.module
 import {DateFilterFieldComponent} from './date/templates/filter/date.component';
 import {DateTimeDetailFieldComponent} from './datetime/templates/detail/datetime.component';
 import {DateTimeDetailFieldModule} from './datetime/templates/detail/datetime.module';
-import {DateTimeFilterFieldComponent} from "./datetime/templates/filter/datetime.component";
-import {DateTimeFilterFieldModule} from "./datetime/templates/filter/datetime.module";
+import {DateTimeFilterFieldComponent} from './datetime/templates/filter/datetime.component';
+import {DateTimeFilterFieldModule} from './datetime/templates/filter/datetime.module';
 import {MultiEnumDetailFieldComponent} from './multienum/templates/detail/multienum.component';
 import {EnumEditFieldComponent} from './enum/templates/edit/enum.component';
 import {BooleanDetailFieldComponent} from './boolean/templates/detail/boolean.component';
@@ -103,10 +103,12 @@ import {TinymceDetailFieldModule} from './tinymce/templates/detail/tinymce.modul
 import {TinymceEditFieldModule} from './tinymce/templates/edit/tinymce.module';
 import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.component';
 import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
-import {IconListFieldModule} from "./icon/templates/detail/icon.module";
-import {IconDetailFieldComponent} from "./icon/templates/detail/icon.component";
+import {IconListFieldModule} from './icon/templates/detail/icon.module';
+import {IconDetailFieldComponent} from './icon/templates/detail/icon.component';
 import {TextListFieldModule} from './text/templates/list/text.module';
 import {TextListFieldComponent} from './text/templates/list/text.component';
+import {IntEditFieldModule} from './int/templates/edit/int.module';
+import {IntEditFieldComponent} from './int/templates/edit/int.component';
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -115,6 +117,7 @@ export const baseFieldModules = [
     PasswordDetailFieldModule,
     PasswordEditFieldModule,
     IntDetailFieldModule,
+    IntEditFieldModule,
     IconListFieldModule,
     FileDetailFieldModule,
     FloatDetailFieldModule,
@@ -158,6 +161,7 @@ export const baseFieldComponents = [
     PasswordDetailFieldComponent,
     PasswordEditFieldComponent,
     IntDetailFieldComponent,
+    IntEditFieldComponent,
     FileDetailFieldComponent,
     FloatDetailFieldComponent,
     PhoneDetailFieldComponent,
@@ -207,6 +211,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'char.detail': VarcharDetailFieldComponent,
     'int.list': IntDetailFieldComponent,
     'int.detail': IntDetailFieldComponent,
+    'int.edit': IntEditFieldComponent,
     'file.detail': FileDetailFieldComponent,
     'float.list': FloatDetailFieldComponent,
     'float.detail': FloatDetailFieldComponent,
