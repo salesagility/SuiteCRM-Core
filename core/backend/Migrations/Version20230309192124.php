@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -52,9 +52,97 @@ final class Version20230309192124 extends BaseMigration implements ContainerAwar
         }
 
         $this->addSql('UPDATE alerts SET `snooze` = `date_entered` WHERE `snooze` IS NULL');
+
+        $this->addStartDate($entityManager);
     }
 
     public function down(Schema $schema): void
     {
     }
+
+    public function addStartDate(EntityManagerInterface $entityManager): void
+    {
+
+        $urls = [];
+        $id = '';
+        $module = '';
+
+        $stmt = $entityManager->getConnection()->prepare('SELECT * FROM alerts');
+
+        $result = $stmt->executeQuery();
+
+        $rows = $result->fetchAllAssociative();
+
+        if (empty($rows)){
+            $this->log('Could not fetch all Alert records');
+            return;
+        }
+
+        foreach ($rows as $row) {
+            if (!isset($row['url_redirect'])){
+                continue;
+            }
+
+            $urls[] = $row['url_redirect'];
+        }
+
+        if (!isset($urls)){
+            $this->log('Alerts do not have an associated url.');
+            return;
+        }
+
+        foreach($urls as $url) {
+
+            $splitUrl = explode('&', $url);
+
+            foreach($splitUrl as $split) {
+
+                if (str_contains($split, 'module')) {
+                    $module = explode('=', $split)[1];
+                }
+
+                if (str_contains($split, 'record')) {
+                    $id = explode('=', $split)[1];
+                }
+            }
+
+            if (empty($id) || empty($module)) {
+                $this->log("Unable to find ID or Module");
+                return;
+            }
+
+            $stmt = $entityManager->getConnection()->prepare('SELECT * FROM ' .  strtolower($module) . ' WHERE id=:id');
+
+            if (empty($stmt)) {
+                continue;
+            }
+
+
+            $result = $stmt->executeQuery(['id' => $id]);
+
+            $row = $result->fetchAllAssociative();
+
+            if (empty($row)){
+                $this->log('Unable to find records with the ID' . $id);
+                continue;
+            }
+
+            if (!isset($row[0]['date_start'])) {
+                $this->log('Start date alreay set for ' . $id);
+                continue;
+            }
+
+            $stmt = $entityManager->getConnection()->prepare('UPDATE alerts SET `date_start` = :date_start WHERE `url_redirect` = :url');
+
+            if (empty($stmt)){
+                continue;
+            }
+
+            $stmt->executeQuery(['date_start' => $row[0]['date_start'], 'url' => $url]);
+        }
+    }
+
+
+
+
 }
