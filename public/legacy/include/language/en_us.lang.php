@@ -1707,6 +1707,7 @@ $app_strings = array(
     'LBL_SEARCH_BUTTON_TITLE' => 'Search',
     'LBL_FILTER' => 'Filter',
     'LBL_CLEAR_FILTER' => 'Clear Filter',
+    'LBL_FILTER_MODULES' => 'Filter Modules',
     'LBL_SEARCH' => 'Search',
     'LBL_SEARCH_ALT' => '',
     'LBL_SEARCH_MORE' => 'more',
