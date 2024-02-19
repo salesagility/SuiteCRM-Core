@@ -584,33 +584,3 @@ ul.main li a,
     cursor: pointer;
   }
 }
-
-.mobile-nav-dropdown.dropdown-menu {
-  padding: 0;
-  margin: 0;
-}
-
-.mobile-nav-dropdown li, .mobile-nav-dropdown li:hover {
-  color: $off-white;
-  margin: 0;
-  border-top: 0.05em solid $off-white;
-}
-
-.mobile-nav-dropdown li a {
-  display: inline-block;
-}
-
-.mobile-nav-dropdown .mobile-nav-arrow {
-  float: right;
-}
-
-.mobile-nav-dropdown .dropdown-item {
-  background-color: transparent;
-  &:hover {
-    background-color: transparent;
-    cursor: pointer;
-  }
-  &:focus {
-    outline: none;
-  }
-}

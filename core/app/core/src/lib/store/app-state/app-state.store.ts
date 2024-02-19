@@ -44,6 +44,7 @@ export interface AppState {
     currentUser?: User;
     activeRequests?: number;
     prevRoutes?: string[];
+    isSidebarVisible?: boolean;
 }
 
 const initialState: AppState = {
@@ -56,7 +57,8 @@ const initialState: AppState = {
     preLoginUrl: null,
     currentUser: null,
     activeRequests: 0,
-    prevRoutes: []
+    prevRoutes: [],
+    isSidebarVisible: false
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -74,6 +76,7 @@ export class AppStateStore implements StateStore {
     view$: Observable<string>;
     initialAppLoading$: Observable<boolean>;
     activeRequests$: Observable<number>;
+    isSidebarVisible$: Observable<boolean>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -96,6 +99,7 @@ export class AppStateStore implements StateStore {
         this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
+        this.isSidebarVisible$ = this.state$.pipe(map(state => state.isSidebarVisible), distinctUntilChanged());
 
         this.vm$ = this.loading$.pipe(
             combineLatestWith(this.module$, this.view$, this.initialAppLoading$),
@@ -104,7 +108,9 @@ export class AppStateStore implements StateStore {
                 module,
                 view,
                 loaded: internalState.loaded,
-                initialAppLoading
+                initialAppLoading,
+                isSidebarVisible: internalState.isSidebarVisible
+
             }))
         );
     }
@@ -391,6 +397,14 @@ export class AppStateStore implements StateStore {
      */
     protected updateState(state: AppState): void {
         this.store.next(internalState = state);
+    }
+
+    public toggleSidebar(): void {
+        this.updateState({...internalState, isSidebarVisible: !internalState.isSidebarVisible});
+    }
+
+    public closeSidebar(): void {
+        this.updateState({...internalState, isSidebarVisible: false});
     }
 
     getLatestPrevRoute(): string {

@@ -25,14 +25,14 @@
  */
 
 @media all and (min-width: $breakpoint-small) {
-  .global-search input,
-  .global-search button {
+  .search-bar input,
+  .search-bar button {
     height: 2em;
   }
 }
 
 @media all and (max-width: $breakpoint-small) {
-  .global-search {
+  .search-bar-global {
     width: 10em;
 
     .input-group {
@@ -42,7 +42,7 @@
   }
 
 
-  .global-search input[type="text"] {
+  .search-bar input[type="text"] {
     font-size: 0.8em;
     height: 2.2em;
   }

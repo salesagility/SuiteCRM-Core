@@ -26,8 +26,7 @@
 */
 -->
 <scrm-popup-button [icon]="'dots-vertical'">
-
-    <div popup-content *ngIf="columns" class="container container-popover scroll-thin">
+    <div popup-content *ngIf="columns" class="container container-popover scrollbar-thin">
         <div *ngFor="let column of columns" class="row py-1">
             <div class="col font-weight-bold text-muted">
                 <scrm-label [labelKey]="column.label" [module]="record.module"></scrm-label>
@@ -40,6 +39,5 @@
                 </scrm-field>
             </div>
         </div>
-
     </div>
 </scrm-popup-button>

@@ -1,7 +1,7 @@
 <! --
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
-* Copyright (C) 2021 SalesAgility Ltd.
+* Copyright (C) 2024 SalesAgility Ltd.
 *
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,16 +25,17 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-
-<ng-container *ngFor="let item of items">
-    <div class="mobile-menu-items">
-        <a (click)="onClose && onClose()" class="">
-            <scrm-menu-item-link
-                [class]="'mobile-nav-link dropdown-item action-link pl-3 pr-3 pt-2 pb-2'"
-                [icon]="item.icon || ''"
-                [link]="item.link">
-            </scrm-menu-item-link>
-        </a>
-    </div>
-</ng-container>
-
+<p-sidebar [(visible)]="isSidebarVisible" [showCloseIcon]="false" (onHide)="closeSidebar()">
+    <ng-template pTemplate="header">
+        <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
+            <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
+        </button>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="sidebar-container">
+            <ng-container *ngIf="menuItems && menuItems?.length">
+                <scrm-mobile-menu [menuItems]="menuItems"></scrm-mobile-menu>
+            </ng-container>
+        </div>
+    </ng-template>
+</p-sidebar>

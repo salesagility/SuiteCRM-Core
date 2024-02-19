@@ -47,27 +47,9 @@
     top: -13px;
     left: 1px;
   }
-}
 
-.scroll-thin {
-  max-height: 300px;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px $dusky-blue;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $cool-blue;
-    border-radius: 51px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: $nepal-grey;
+  .container-popover {
+    max-height: 300px;
   }
 }
 

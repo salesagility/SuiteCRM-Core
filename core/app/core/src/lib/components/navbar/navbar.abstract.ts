@@ -31,7 +31,7 @@ import {ActionLinkModel} from './action-link-model';
 import {MenuItem, ready, User} from 'common';
 import {LanguageStore} from '../../store/language/language.store';
 import {
-    GroupedTab, ModuleAction,
+    GroupedTab,
     NavbarModule,
     NavbarModuleMap,
     Navigation,
@@ -42,6 +42,7 @@ import {RouteConverter} from '../../services/navigation/route-converter/route-co
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
 import {AppStateStore} from '../../store/app-state/app-state.store';
+import {ModuleNameMapper} from "../../services/navigation/module-name-mapper/module-name-mapper.service";
 
 export class NavbarAbstract implements NavbarModel {
     authenticated = true;
@@ -70,6 +71,7 @@ export class NavbarAbstract implements NavbarModel {
         protected preferences: UserPreferenceStore,
         protected language: LanguageStore,
         protected appState: AppStateStore,
+        protected moduleNameMapper: ModuleNameMapper
     ) {
     }
 
@@ -425,7 +427,7 @@ export class NavbarAbstract implements NavbarModel {
                 route: moduleRoute.route,
                 params: null
             },
-            icon: (module === 'home') ? 'home' : '',
+            icon: this.moduleNameMapper.toLegacy(module) ?? null,
             submenu: [],
             module: module ?? null,
             isGroupedMenu: false

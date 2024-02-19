@@ -1,7 +1,7 @@
 <! --
 /**
 * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
-* Copyright (C) 2021 SalesAgility Ltd.
+* Copyright (C) 2024 SalesAgility Ltd.
 *
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,13 +25,31 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ndc-dynamic *ngIf="getType"
-             [ndcDynamicComponent]="getType"
-             [ndcDynamicInputs]="{
-                'current': current,
-                'items': items,
-                'all': all,
-                'onClose': onClose,
-                'navigationType': navigationType
-             }">
-</ndc-dynamic>
+
+<div class="mobile-menu-container">
+    <div class="d-flex justify-content-center py-3">
+        <scrm-search-bar
+            [labelKey]="'LBL_FILTER_MODULES'"
+            [klass]="'search-bar-mobile-menu'"
+            [searchTrigger]="'input'"
+            (searchExpression)="search($event)">
+        </scrm-search-bar>
+    </div>
+    <ng-container *ngIf="mainItems && mainItems.length">
+        <div class="mobile-menu-items scrollbar-thin">
+            <li class="d-flex align-items-center" (click)="navigateRoute(item?.link?.route)" *ngFor="let item of mainItems">
+                <scrm-image class="sicon mobile-nav-icon pl-3" [image]="item.icon"
+               ></scrm-image>
+                <a class="flex-grow-1 mobile-nav-link px-3 py-2 ">{{ item.link.label }}</a>
+            </li>
+        </div>
+    </ng-container>
+
+    <li class="border-0">
+        <div *ngIf="!mainItems?.length" class="d-flex justify-content-center">
+            <scrm-label [labelKey]="'LBL_MODULE_NOT_FOUND'"></scrm-label>
+        </div>
+    </li>
+</div>
+
+

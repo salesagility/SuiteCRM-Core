@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,26 +24,50 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem} from 'common';
-import {MobileMenuRegistry} from './mobile-menu.registry';
+import {Router, RouterModule} from "@angular/router";
+import {CommonModule} from "@angular/common";
+import {SearchBarModule} from "../../search-bar/search-bar.module";
+import {ImageModule} from "../../image/image.module";
+import {LabelModule} from "../../label/label.module";
+import {AppStateStore} from "../../../store/app-state/app-state.store";
 
 @Component({
     selector: 'scrm-mobile-menu',
     templateUrl: './mobile-menu.component.html',
-    styleUrls: []
+    styleUrls: [],
+    standalone: true,
+    imports: [CommonModule, RouterModule, SearchBarModule, ImageModule, LabelModule]
 })
-export class MobileMenuComponent {
-    @Input() current: MenuItem;
-    @Input() items: MenuItem[];
-    @Input() all: MenuItem[];
-    @Input() onClose: Function;
-    @Input() navigationType: string = '';
+export class MobileMenuComponent implements OnInit {
+    @Input() menuItems: MenuItem[] = [];
 
-    constructor(protected registry: MobileMenuRegistry) {
+    mainItems: MenuItem[];
+
+    constructor(protected router: Router, protected appStateStore: AppStateStore) {}
+
+    ngOnInit(): void {
+        this.setItems();
     }
 
-    get getType(): any {
-        return this.registry.get('default', 'default');
+    setItems(): void {
+        this.mainItems = this.menuItems;
+    }
+
+    navigateRoute(route: string): void {
+        this.router.navigate([route]).then();
+        this.appStateStore.toggleSidebar();
+    }
+
+    search(searchTerm: string): void {
+        this.setItems();
+        if (searchTerm.length && searchTerm.trim() !== '') {
+            this.mainItems = this.mainItems.filter(item => {
+                return item?.link?.label.toLowerCase().includes(searchTerm.toLowerCase());
+            });
+        } else {
+            this.setItems();
+        }
     }
 }

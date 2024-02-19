@@ -220,43 +220,10 @@ a.nav-link-nongrouped.dropdown-toggle::after {
   flex-direction: row;
 }
 
-.mobile-nav-dropdown {
-  max-width: 20rem;
-}
-
 .mobile-nav-link {
-  font-size: 0.85em;
+  font-size: 0.95em;
   color: $white;
-}
-
-.mobile-nav-link:hover {
-  color: $white;
-  background-color: none;
-}
-
-.mobile-back-link {
-  font-size: 0.85em;
-  color: $white;
-  font-weight: bold;
-}
-
-.mobile-nav-close {
-  color: $nepal-grey;
-  font-weight: bold;
-}
-
-.nav-close-text {
-  font-size: 0.8em;
-  margin-left: 0.2em;
-}
-
-.mobile-nav-close:hover {
-  color: $white;
-  text-decoration: none;
-}
-
-.mobile-nav-close:hover svg polygon {
-  fill: $white;
+  font-weight: 800;
 }
 
 .nav-collapsed-items {

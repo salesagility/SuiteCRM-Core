@@ -27,25 +27,26 @@
 -->
 
 <ng-container *ngIf="(vm$ | async) as vm">
-    <form name="global-search" class="global-search" [formGroup]="searchForm">
+    <form name="search-bar" class="search-bar" [ngClass]="klass" [formGroup]="searchForm">
         <div class="input-group dropdown" [ngClass]="{'search-focused': isFocused}">
             <input
                 formControlName="searchTerm"
                 type="text"
-                name="global-search-term"
-                class="form-control dropdown-toggle global-search-term"
-                placeholder="{{vm.appStrings['LBL_SEARCH'] || ''}}..."
+                name="search-bar-term"
+                class="form-control dropdown-toggle search-bar-term"
+                placeholder="{{vm.appStrings[labelKey] || ''}}..."
                 aria-label="Search"
                 (focus)="onFocus()"
                 (blur)="onBlur()"
-                (keydown.enter)="search()"
+                (keydown.enter)="searchTrigger === 'enter' ? searchWithEnter() : null"
+                (input)="searchTrigger === 'input' ? searchWithInput(searchInput.value) : null"
                 data-toggle="dropdown"
                 autocomplete="off"
                 #searchInput
                 required>
-            <ul class="dropdown-menu global-search-dropdown" *ngIf="searchWord.length && hasSearchTyped">
+            <ul class="dropdown-menu global-search-dropdown" *ngIf="searchWord.length && hasSearchTyped && (searchTrigger === 'enter')">
                 <li class="dropdown-item-block" [ngClass]="{'dropdown-active': searchWord}">
-                    <a class="dropdown-item" (click)="search()">
+                    <a class="dropdown-item" (click)="searchWithEnter()">
                         <scrm-image class="search-icon sicon" image="search"></scrm-image>
                         <span class="dropdown-text ml-2">"<strong>{{searchWord}}</strong>" {{vm.appStrings['LBL_IN_EVERYWHERE'] | lowercase}}</span>
                     </a>
@@ -56,12 +57,12 @@
                 <button *ngIf="!hasSearchTyped" class="btn btn-default search-button d-flex align-items-center"
                         aria-label="Search"
                         scrm-button-loading
-                        (click)="search()">
+                        (click)="searchWithEnter()">
                     <scrm-image class="search-icon sicon" image="search"></scrm-image>
                 </button>
 
                 <button *ngIf="hasSearchTyped" class="btn btn-default search-button d-flex align-items-center"
-                        aria-label="Search"
+                        aria-label="Close Search"
                         scrm-button-loading
                         (click)="clearSearchTerm()">
                     <scrm-image class="search-icon sicon" image="cross"></scrm-image>

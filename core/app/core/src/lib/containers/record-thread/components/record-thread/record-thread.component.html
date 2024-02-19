@@ -39,7 +39,7 @@
     <div #list
          *ngIf="records && records.length"
          [ngStyle]="getMaxHeight()"
-         class="record-thread-list scrollbar-thin">
+         class="record-thread-list scrollbar-thick">
 
         <div *ngIf="loadMorePosition === 'top' && !allLoaded()"
              class="record-thread-load-more d-flex justify-content-center flex-grow-1">

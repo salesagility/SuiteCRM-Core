@@ -48,6 +48,7 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {NotificationStore} from "../../../store/notification/notification.store";
+import {GlobalSearch} from "../../../services/navigation/global-search/global-search.service";
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -153,7 +154,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         protected moduleNavigation: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
         protected asyncActionService: AsyncActionService,
-        protected notificationStore: NotificationStore
+        protected notificationStore: NotificationStore,
+        protected globalSearch: GlobalSearch
     ) {
     }
 
@@ -174,7 +176,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.moduleNavigation,
             this.userPreferenceStore,
             this.languageStore,
-            this.appState
+            this.appState,
+            this.moduleNameMapper
         );
         this.setNavbar(navbar);
         this.authService.isUserLoggedIn.subscribe(value => {
@@ -208,10 +211,10 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        if (!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidt) {
+        if (!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidth) {
             return;
         }
-        this.dropdownLength = this.mobileGlobalLinkTitle.nativeElement.offsetWidt;
+        this.dropdownLength = this.mobileGlobalLinkTitle.nativeElement.offsetWidth;
     }
 
     /**
@@ -243,10 +246,6 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     public getHomePage(): string {
         return this.systemConfigStore.getHomePage();
-    }
-
-    public getCloseCallBack(myDrop): Function {
-        return () => myDrop.close();
     }
 
     /**
@@ -334,4 +333,13 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     closeSearchBox(isVisible: boolean) {
         this.isSearchBoxVisible = isVisible;
     }
+
+    search(searchTerm: string) {
+        this.globalSearch.navigateToSearch(searchTerm).finally();
+    }
+
+    toggleSidebar(): void {
+        this.appState.toggleSidebar();
+    }
+
 }

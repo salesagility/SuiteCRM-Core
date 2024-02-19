@@ -24,9 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.global-search {
-  margin: 0.3em 0;
+.search-bar-global {
   width: 14em;
+}
+
+.search-bar-mobile-menu {
+  width: 18em;
+}
+
+.search-bar {
+  margin: 0.3em 0;
 
   .input-group {
     border-radius: 0.4rem;
@@ -34,7 +41,7 @@
     transition: background-color ease-in-out 0.15s;
     &:hover {
       background-color: $smoky-grey;
-      .global-search-term {
+      .search-bar-term {
         &::placeholder {
           color: $lilac-grey;
         }
@@ -47,7 +54,7 @@
       }
     }
 
-    .global-search-term {
+    .search-bar-term {
       background-color: transparent;
       font-size: 14px;
       height: 32px;
@@ -99,7 +106,7 @@
       background-color: $white;
     }
 
-    .global-search-term {
+    .search-bar-term {
       background-color: transparent;
     }
 

@@ -58,7 +58,8 @@ import {
     NavbarUiModule,
     RecordListModalModule,
     RecordModule,
-    TableModule
+    TableModule,
+    SidebarComponent
 } from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -102,7 +103,8 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         FullPageSpinnerModule,
         MessageModalModule,
         RecordListModalModule,
-        ApolloModule
+        ApolloModule,
+        SidebarComponent
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
