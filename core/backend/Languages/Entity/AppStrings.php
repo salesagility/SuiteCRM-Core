@@ -36,7 +36,7 @@ use App\Languages\DataProvider\AppStringsStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(provider: AppStringsStateProvider::class)
+        new Get(uriTemplate: '/app-strings/{id}', provider: AppStringsStateProvider::class)
     ],
     graphQlOperations: [
         new Query(provider: AppStringsStateProvider::class)

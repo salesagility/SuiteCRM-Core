@@ -36,7 +36,7 @@ use App\Languages\DataProvider\AppListStringsStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')", provider: AppListStringsStateProvider::class),
+        new Get(uriTemplate: '/app-list-strings/{id}', security: "is_granted('ROLE_USER')", provider: AppListStringsStateProvider::class),
     ],
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [

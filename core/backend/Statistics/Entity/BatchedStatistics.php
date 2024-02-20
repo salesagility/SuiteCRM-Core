@@ -38,6 +38,7 @@ use App\Statistics\Resolver\BatchedStatisticsItemResolver;
 #[ApiResource(
     operations: [
         new Get(
+            uriTemplate: '/batched-statistics/{id}',
             security: "is_granted('ROLE_USER')",
             provider: BatchedStatisticsStateProvider::class
         ),

@@ -36,7 +36,7 @@ use App\Languages\DataProvider\ModStringsStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')", provider: ModStringsStateProvider::class),
+        new Get(uriTemplate: '/mod-strings/{id}', security: "is_granted('ROLE_USER')", provider: ModStringsStateProvider::class),
     ],
     security: "is_granted('ROLE_USER')",
     graphQlOperations: [

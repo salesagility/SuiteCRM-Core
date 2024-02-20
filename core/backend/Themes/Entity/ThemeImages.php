@@ -37,7 +37,7 @@ use App\Themes\DataProvider\ThemeImagesStateProvider;
 
 #[ApiResource(
     operations: [
-        new Get(provider: ThemeImagesStateProvider::class)
+        new Get(uriTemplate: '/theme-images/{id}', provider: ThemeImagesStateProvider::class)
     ],
     graphQlOperations: [
         new Query(provider: ThemeImagesStateProvider::class)
