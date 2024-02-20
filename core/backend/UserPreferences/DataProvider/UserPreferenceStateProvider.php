@@ -29,6 +29,7 @@ namespace App\UserPreferences\DataProvider;
 
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\ArrayPaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\UserPreferences\Entity\UserPreference;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
@@ -58,12 +59,13 @@ final class UserPreferenceStateProvider implements ProviderInterface
      * @param Operation $operation
      * @param array $uriVariables
      * @param array $context
-     * @return iterable|UserPreference|null
+     * @return ArrayPaginator|UserPreference|null
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|UserPreference|null
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ArrayPaginator|UserPreference|null
     {
         if ($operation instanceof CollectionOperationInterface) {
-            return $this->userPreferenceService->getAllUserPreferences();
+            $preferences = $this->userPreferenceService->getAllUserPreferences();
+            return new ArrayPaginator($preferences, 0, count($preferences));
         }
 
         return $this->userPreferenceService->getUserPreference($uriVariables['id'] ?? '');

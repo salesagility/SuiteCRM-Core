@@ -29,6 +29,7 @@ namespace App\SystemConfig\DataProvider;
 
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\ArrayPaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
@@ -58,12 +59,13 @@ final class SystemConfigStateProvider implements ProviderInterface
      * @param Operation $operation
      * @param array $uriVariables
      * @param array $context
-     * @return array|SystemConfig|null
+     * @return ArrayPaginator|SystemConfig|null
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|SystemConfig|null
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ArrayPaginator|SystemConfig|null
     {
         if ($operation instanceof CollectionOperationInterface) {
-            return $this->systemConfigProvider->getAllSystemConfigs();
+            $systemConfigs = $this->systemConfigProvider->getAllSystemConfigs();
+            return new ArrayPaginator($systemConfigs, 0, count($systemConfigs));
         }
 
         return $this->systemConfigProvider->getSystemConfig($uriVariables['id'] ?? '');
