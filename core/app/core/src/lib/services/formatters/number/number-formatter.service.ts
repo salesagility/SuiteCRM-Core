@@ -91,7 +91,7 @@ export class NumberFormatter implements Formatter {
         const group = this.getGroupSymbol();
         const decimals = this.getDecimalsSymbol();
 
-        let pattern = '^(';
+        let pattern = '^-?(';
         pattern += '(\\d{1,3}(\\' + group + '\\d{3})*(\\' + decimals + '\\d+)?)|';
         pattern += '\\d*|';
         pattern += '(\\d+(\\' + decimals + '\\d+)?)|';
@@ -104,7 +104,7 @@ export class NumberFormatter implements Formatter {
 
         const group = this.getGroupSymbol();
 
-        let pattern = '^(';
+        let pattern = '^-?(';
         pattern += '(\\d{1,3}(\\' + group + '\\d{3})*)|';
         pattern += '\\d*';
         pattern += ')$';
