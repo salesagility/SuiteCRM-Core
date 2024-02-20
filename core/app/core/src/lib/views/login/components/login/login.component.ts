@@ -108,6 +108,7 @@ export class LoginUiComponent implements OnInit {
 
     ngOnInit() {
         this.setCurrentLanguage();
+        this.appState.removeAllPrevRoutes();
     }
 
     onLanguageSelect(language: string): void {
