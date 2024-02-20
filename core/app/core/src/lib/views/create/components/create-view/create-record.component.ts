@@ -24,16 +24,17 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
 import {CreateViewStore} from '../../store/create-view/create-view.store';
 import {RecordViewStore} from '../../../record/store/record-view/record-view.store';
 import {RecordViewModel} from '../../../record/store/record-view/record-view.store.model';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
-import {ViewMode} from 'common';
+import {Action, ActionContext, ViewContext, ViewMode} from 'common';
 import {RecordActionsAdapter} from "../../../record/adapters/actions.adapter";
 import {RecordViewSidebarWidgetService} from "../../../record/services/record-view-sidebar-widget.service";
+import {filter, map} from "rxjs/operators";
 
 @Component({
     selector: 'scrm-create-record',
@@ -50,12 +51,38 @@ import {RecordViewSidebarWidgetService} from "../../../record/services/record-vi
     ]
 })
 export class CreateRecordComponent implements OnInit, OnDestroy {
-    recordSub: Subscription;
+    protected subs: Subscription[] = [];
     vm$: Observable<RecordViewModel> = null;
     showStatusBar = false;
+    saveAction: Action;
+    context: ActionContext;
 
-    constructor(protected appState: AppStateStore, protected recordStore: CreateViewStore, private route: ActivatedRoute) {
+    actionConfig$ =  this.recordStore.mode$.pipe(
+        combineLatestWith(
+            this.actionsAdapter.getActions(),
+            this.getViewContext$()),
+        filter(([mode, actions, context]) => mode === 'create'),
+        map(([mode, actions, context]) => ({
+            mode,
+            actions,
+            context
+        }))
+    );
+
+    @HostListener('keyup.control.enter')
+    onEnterKey() {
+        if (!this.saveAction || !this.context) {
+            return;
+        }
+        this.actionsAdapter.runAction(this.saveAction, this.context);
     }
+
+    constructor(
+        protected appState: AppStateStore,
+        protected recordStore: CreateViewStore,
+        protected actionsAdapter: RecordActionsAdapter,
+        private route: ActivatedRoute
+    ) {}
 
     ngOnInit(): void {
         let mode = 'detail' as ViewMode;
@@ -76,15 +103,27 @@ export class CreateRecordComponent implements OnInit, OnDestroy {
             params.isDuplicate = true;
             recordId = '';
         }
-        this.recordSub = this.recordStore.init(this.appState.getModule(), recordId, mode, params).subscribe();
+        this.subs.push(this.recordStore.init(this.appState.getModule(), recordId, mode, params).subscribe());
         this.vm$ = this.recordStore.vm$;
         this.appState.removeAllPrevRoutes();
+
+        this.subs.push(this.actionConfig$.subscribe(config => {
+                this.context = config.context;
+                config.actions.forEach(actionItem => {
+                    if (actionItem.key === 'saveNew') {
+                        this.saveAction = actionItem;
+                    }
+                });
+            })
+        );
+    }
+
+    getViewContext$(): Observable<ViewContext> {
+        return this.recordStore.viewContext$;
     }
 
     ngOnDestroy(): void {
-        if (this.recordSub) {
-            this.recordSub.unsubscribe();
-        }
+        this.subs.forEach(sub => sub.unsubscribe());
 
         this.recordStore.destroy();
     }
