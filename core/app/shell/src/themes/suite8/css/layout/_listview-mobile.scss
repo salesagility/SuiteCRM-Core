@@ -46,6 +46,7 @@
         }
     }
 }
+
 @media all and (max-width: $breakpoint-medium) {
   .listview-actions {
     position: relative;
@@ -64,6 +65,7 @@
         overflow: hidden;
         transition: 0.8s;
         width: 200px;
+        margin-left: 0.7em;
 
         .icon-bar-block {
           display: grid;
@@ -94,6 +96,7 @@
     }
 
     .more-button {
+      display: inline-block;
       background-color: transparent;
       &:focus {
         outline: none;
@@ -101,7 +104,6 @@
     }
   }
 }
-
 
 @media all and (max-width: $breakpoint-small) {
     .list-view {
