@@ -81,10 +81,10 @@ class FilterMapper
 
                 $filter['field'] = $fieldKey;
                 $filter['operator'] = $value;
-                $filter['start'] = $contents["start_range_${fieldKey}_advanced"] ?? '';
-                $filter['end'] = $contents["end_range_${fieldKey}_advanced"] ?? '';
-                $filter['target'] = $contents["range_${fieldKey}_advanced"] ?? '';
-                $filter['fieldType'] = $contents["field_type_${fieldKey}"] ?? '';
+                $filter['start'] = $contents["start_range_{$fieldKey}_advanced"] ?? '';
+                $filter['end'] = $contents["end_range_{$fieldKey}_advanced"] ?? '';
+                $filter['target'] = $contents["range_{$fieldKey}_advanced"] ?? '';
+                $filter['fieldType'] = $contents["field_type_{$fieldKey}"] ?? '';
 
                 $filters[$fieldKey] = $filter;
                 continue;
