@@ -101,7 +101,7 @@ abstract class BaseListDataHandler
         $mapped = $this->legacyFilterMapper->mapFilters($criteria, $type);
 
         $baseCriteria = [
-            'searchFormTab' => "${type}_search",
+            'searchFormTab' => "{$type}_search",
             'query' => 'true',
             'orderBy' => $this->legacyFilterMapper->getOrderBy($sort),
             'sortOrder' => $this->legacyFilterMapper->getSortOrder($sort)
