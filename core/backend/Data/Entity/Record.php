@@ -51,7 +51,7 @@ use App\Data\Resolver\RecordItemResolver;
             resolver: RecordItemResolver::class,
             args: [
                 'module' => ['type' => 'String!'],
-                'record' => ['type' => 'Int'],
+                'record' => ['type' => 'String!'],
             ],
             security: "is_granted('ROLE_USER')",
             provider: RecordStateProvider::class
@@ -82,7 +82,7 @@ class Record
             'description' => 'The id',
         ]
     )]
-    protected ?string $id;
+    protected ?string $id = '';
 
     /**
      * @var string|null
@@ -93,7 +93,7 @@ class Record
             'description' => 'The module',
         ]
     )]
-    protected ?string $module;
+    protected ?string $module = '';
 
     /**
      * @var string|null
@@ -104,7 +104,7 @@ class Record
             'description' => 'The type',
         ]
     )]
-    protected ?string $type;
+    protected ?string $type = '';
 
     /**
      * @var array|null
@@ -115,7 +115,7 @@ class Record
             'description' => 'The attributes',
         ]
     )]
-    protected ?array $attributes;
+    protected ?array $attributes = [];
 
     /**
      * @var array|null
@@ -126,7 +126,7 @@ class Record
             'description' => 'The acls',
         ]
     )]
-    protected ?array $acls;
+    protected ?array $acls = [];
 
     /**
      * @var bool|null
@@ -137,7 +137,7 @@ class Record
             'description' => 'The favorite',
         ]
     )]
-    protected ?bool $favorite;
+    protected ?bool $favorite = false;
 
     /**
      * @return array
@@ -158,7 +158,7 @@ class Record
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -174,7 +174,7 @@ class Record
      */
     public function getModule(): ?string
     {
-        return $this->module;
+        return $this->module ?? null;
     }
 
     /**
@@ -193,7 +193,7 @@ class Record
      */
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type ?? null;
     }
 
     /**
@@ -213,7 +213,7 @@ class Record
      */
     public function getAttributes(): ?array
     {
-        return $this->attributes;
+        return $this->attributes ?? null;
     }
 
     /**
@@ -230,7 +230,7 @@ class Record
      */
     public function getAcls(): ?array
     {
-        return $this->acls;
+        return $this->acls ?? null;
     }
 
     /**
@@ -249,7 +249,7 @@ class Record
      */
     public function getFavorite(): ?bool
     {
-        return $this->favorite;
+        return $this->favorite ?? null;
     }
 
     /**
