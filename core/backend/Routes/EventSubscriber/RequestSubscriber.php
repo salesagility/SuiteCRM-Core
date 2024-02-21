@@ -38,11 +38,11 @@ class RequestSubscriber implements EventSubscriberInterface
 {
     use TargetPathTrait;
 
-    private $session;
+    private $requestStack;
 
-    public function __construct(RequestStack $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -62,6 +62,6 @@ class RequestSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->saveTargetPath($this->session, 'main', $request->getUri());
+        $this->saveTargetPath($this->requestStack->getSession(), 'main', $request->getUri());
     }
 }
