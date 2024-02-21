@@ -100,6 +100,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             this.searchExpression.emit(this.searchWord);
             this.clearSearchTerm();
             this.searchInput.nativeElement.blur();
+        } else {
+            if(this.isMobile) {
+                this.onBlur();
+            }
         }
     }
 
