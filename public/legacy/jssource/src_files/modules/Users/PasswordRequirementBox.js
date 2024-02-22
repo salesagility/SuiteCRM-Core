@@ -48,7 +48,7 @@ function password_confirmation() {
         confirm_pwd.style.borderColor='';
     
     if (confirm_pwd.value != (new_pwd.substring(0,confirm_pwd.value.length)))
-        document.getElementById('comfirm_pwd_match').style.display = 'inline';
+        document.getElementById('comfirm_pwd_match').style.display = 'flex';
     else
         document.getElementById('comfirm_pwd_match').style.display = 'none';
         

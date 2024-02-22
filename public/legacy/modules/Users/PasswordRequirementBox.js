@@ -38,7 +38,7 @@
  */function password_confirmation(){var new_pwd=document.getElementById('new_password').value;var old_pwd=document.getElementById('old_password').value;var confirm_pwd=document.getElementById('confirm_pwd');if(confirm_pwd.value!=new_pwd)
 confirm_pwd.style.borderColor='red';else
 confirm_pwd.style.borderColor='';if(confirm_pwd.value!=(new_pwd.substring(0,confirm_pwd.value.length)))
-document.getElementById('comfirm_pwd_match').style.display='inline';else
+document.getElementById('comfirm_pwd_match').style.display='flex';else
 document.getElementById('comfirm_pwd_match').style.display='none';if(new_pwd!=""||confirm_pwd.value!=""||old_pwd!=""||(document.getElementById('page')&&document.getElementById('page').value=="Change"))
 document.getElementById('password_change').value='true';else
 document.getElementById('password_change').value='false';}
