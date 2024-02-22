@@ -35,7 +35,7 @@ class CacheManager
     {
         global $db;
 
-        if (!empty($GLOBALS['installing']) || isTrue($_REQUEST['post_install'])) {
+        if (!empty($GLOBALS['installing']) || isTrue($_REQUEST['post_install'] ?? false)) {
             return;
         }
 
