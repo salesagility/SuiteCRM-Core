@@ -35,8 +35,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -69,17 +70,33 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login", methods={"GET", "POST"})
      * @param AuthenticationUtils $authenticationUtils
+     * @param Security $security
      * @return JsonResponse
      */
-    public function login(AuthenticationUtils $authenticationUtils): JsonResponse
+    public function login(AuthenticationUtils $authenticationUtils, Security $security): JsonResponse
     {
         $error = $authenticationUtils->getLastAuthenticationError();
+        $isAppInstalled = $this->authentication->getAppInstallStatus();
+        $isAppInstallerLocked = $this->authentication->getAppInstallerLockStatus();
+        $appStatus = [
+            'installed' => $isAppInstalled,
+            'locked' => $isAppInstallerLocked
+        ];
 
         if ($error) {
-            return new JsonResponse('Login Failed', Response::HTTP_UNAUTHORIZED);
+            return new JsonResponse(['active' => false], Response::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse('Login Success', Response::HTTP_OK);
+        $user = $security->getUser();
+
+        $data = $this->getResponseData($user, $appStatus);
+
+        $needsRedirect = $this->authentication->needsRedirect($user);
+        if (!empty($needsRedirect)) {
+            $data['redirect'] = $needsRedirect;
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
     /**
@@ -134,19 +151,7 @@ class SecurityController extends AbstractController
             return $response;
         }
 
-        $id = $user->getId();
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
-        $userName = $user->getUsername();
-
-        $data = [
-            'appStatus' => $appStatus,
-            'active' => true,
-            'id' => $id,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'userName' => $userName
-        ];
+        $data = $this->getResponseData($user, $appStatus);
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
@@ -156,9 +161,9 @@ class SecurityController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
-    public function nativeAuthLogin(AuthenticationUtils $authenticationUtils): JsonResponse
+    public function nativeAuthLogin(AuthenticationUtils $authenticationUtils, Security $security): JsonResponse
     {
-        return $this->login($authenticationUtils);
+        return $this->login($authenticationUtils, $security);
     }
 
     /**
@@ -178,5 +183,27 @@ class SecurityController extends AbstractController
     public function nativeAuthSessionStatus(Security $security): JsonResponse
     {
         return $this->sessionStatus($security);
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param array $appStatus
+     * @return array
+     */
+    private function getResponseData(UserInterface $user, array $appStatus): array
+    {
+        $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $userName = $user->getUsername();
+
+        return [
+            'appStatus' => $appStatus,
+            'active' => true,
+            'id' => $id,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'userName' => $userName
+        ];
     }
 }

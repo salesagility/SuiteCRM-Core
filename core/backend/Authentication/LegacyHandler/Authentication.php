@@ -111,33 +111,38 @@ class Authentication extends LegacyHandler
      * Is current user admin
      *
      * @param UserInterface $user
-     * @return string
+     * @return array
      */
-    public function needsRedirect(UserInterface $user): string
+    public function needsRedirect(UserInterface $user): array
     {
         $this->init();
 
         /** @var \User $current_user */
         global $current_user;
 
+        $timezone = $current_user->getPreference('timezone');
+        $ut = $current_user->getPreference('ut');
+
+        if (empty($ut) || empty($timezone)) {
+            $this->close();
+            return $this->systemSettings['setup_wizard_route'] ?? ['route' => 'users/wizard'];
+        }
+
         /* @noinspection PhpIncludeInspection */
         require_once 'modules/Users/password_utils.php';
 
         if (hasPasswordExpired($user->getUsername())) {
             $this->close();
-            return 'users/ChangePassword?record=' . $current_user->id;
-        }
 
-        $timezone = $current_user->getPreference('timezone');
-        $ut = $current_user->getPreference('ut');
+            return [
+                'route' => 'users/ChangePassword',
+                'queryParams' => ['record' => $current_user->id]
+            ];
+        }
 
         $this->close();
 
-        if (empty($ut) || empty($timezone)) {
-            return $this->systemSettings['setup_wizard_route'] ?? 'users/wizard';
-        }
-
-        return '';
+        return [];
     }
 
     /**

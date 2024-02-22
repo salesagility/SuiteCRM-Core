@@ -195,8 +195,12 @@ export class LoginUiComponent implements OnInit {
         this.languageStore.setSessionLanguage()
             .pipe(catchError(() => of({})))
             .subscribe(() => {
-                if (result && result.redirect) {
-                    this.router.navigate([result.redirect]).then();
+                if (result && result.redirect && result.redirect.route) {
+                    this.router.navigate(
+                        [result.redirect.route],
+                        {
+                         queryParams: result.redirect.queryParams ?? {}
+                        }).then();
                     return;
                 }
 
