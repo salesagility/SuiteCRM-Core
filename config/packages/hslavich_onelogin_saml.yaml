@@ -1,25 +1,25 @@
 hslavich_onelogin_saml:
   # Basic settings
   idp:
-    entityId: '<idp-entity>'
+    entityId: 'https://id.example.com/saml2/idp/metadata.php'
     singleSignOnService:
-      url: '<idp-single-sign-on-url>'
+      url: 'https://id.example.com/saml2/idp/SSOService.php'
       binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
     singleLogoutService:
-      url: '<idp-single-logout-url>'
+      url: 'https://id.example.com/saml2/idp/SingleLogoutService.php'
       binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-    certFingerprint: ''
+    x509cert: 'MIIC...'
   sp:
-    entityId: 'https://<your-instance-host>/'
+    entityId: 'https://myapp.com/saml/metadata'
     assertionConsumerService:
-      url: 'https://<your-instance-host>/saml/acs'
+      url: 'https://myapp.com/saml/acs'
       binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
     singleLogoutService:
-      url: 'https://<your-instance-host>/saml/logout'
+      url: 'https://myapp.com/saml/logout'
       binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
     privateKey: '/var/www/html/docroot/certs/key.pem'
   # Optional settings
-  baseurl: 'https://<your-instance-host>/saml'
+  baseurl: 'https://myapp.com/saml/'
   strict: true
   debug: true
   security:
