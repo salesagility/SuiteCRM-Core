@@ -1592,6 +1592,7 @@ $app_strings = array(
     'LBL_IMPORT' => 'Import',
     'LBL_IMPORT_STARTED' => 'Import Started: ',
     'LBL_LAST_VIEWED' => 'Recently Viewed',
+    'LBL_LAST_VIEWED_NO_RESULT' => 'No Recently Viewed Items',
     'LBL_LEADS' => 'Leads',
     'LBL_LESS' => 'less',
     'LBL_CAMPAIGN' => 'Campaign:',
