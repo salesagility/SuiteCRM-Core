@@ -65,7 +65,7 @@
                 <th cdk-header-cell
                     *cdkHeaderCellDef
                     scope="col"
-                    [class]="'primary-table-header ' + 'column-' + column?.name ?? ''">
+                    [class]="('primary-table-header ' + 'column-' + column?.name ?? '') + ' ' + ('column-type-' + column?.type ?? '')">
 
                     <scrm-label [labelKey]="column.label" [module]="config.module || ''"></scrm-label>
                     <scrm-sort-button *ngIf="config.sort$ && column.sortable"
@@ -74,7 +74,7 @@
 
                 </th>
 
-                <td cdk-cell *cdkCellDef="let record" [class]="'column-' + column?.name ?? ''">
+                <td cdk-cell *cdkCellDef="let record" [class]="('column-' + column?.name ?? '') + ' ' + ('column-type-' + column?.type ?? '')">
                     <scrm-field [mode]="'list'"
                                 [type]="column.type"
                                 [field]="getField(column, record)"
