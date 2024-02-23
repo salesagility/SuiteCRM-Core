@@ -47,7 +47,7 @@ export class RecentlyViewedComponent {
         this._menuItems.set(value);
     }
 
-    itemWithRoutes= computed(() => this._menuItems().map( item => {
+    itemWithRoutes = computed(() => this._menuItems().map( item => {
         if(item.attributes?.route) {
             return item;
         }
