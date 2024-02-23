@@ -140,6 +140,7 @@
                                     <scrm-grouped-menu-item
                                         [item]="item"
                                         [subNavCollapse]="subNavCollapse"
+                                        [disableRoute]="isTabletScreen()"
                                     >
                                     </scrm-grouped-menu-item>
 
@@ -161,20 +162,21 @@
 
                             <ul class="navbar-nav">
                                 <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown non-grouped active">
-                                    <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
+                                    <scrm-menu-item [item]="navbar.current" [disableRoute]="isTabletScreen()"></scrm-menu-item>
                                 </li>
 
                                 <ng-container *ngIf="navbar.current?.submenu  && navbar.current.isGroupedMenu">
                                     <li class="top-nav nav-item dropdown main-grouped">
                                         <scrm-grouped-menu-item
                                             [item]="navbar.current"
-                                            [subNavCollapse]="subNavCollapse">
+                                            [subNavCollapse]="subNavCollapse"
+                                            [disableRoute]="isTabletScreen()">
                                         </scrm-grouped-menu-item>
                                     </li>
                                 </ng-container>
 
                                 <li *ngFor="let item of navbar.menu" class="top-nav nav-item dropdown non-grouped">
-                                    <scrm-menu-item [item]="item"></scrm-menu-item>
+                                    <scrm-menu-item [item]="item" [disableRoute]="isTabletScreen()"></scrm-menu-item>
                                 </li>
                             </ul>
 

@@ -35,10 +35,9 @@ import {MenuItem} from 'common';
 export class BaseGroupedMenuItemComponent {
     @Input() item: MenuItem;
     @Input() subNavCollapse: boolean;
+    @Input() disableRoute: boolean;
     showDropdown: boolean = true;
 
-    constructor() {
-    }
 
     hideDropdown() {
         this.showDropdown = false;

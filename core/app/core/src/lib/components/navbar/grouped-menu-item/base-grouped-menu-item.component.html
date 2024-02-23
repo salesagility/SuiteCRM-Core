@@ -35,7 +35,7 @@
     <ul class="navbar-nav grouped" *ngIf="item.isGroupedMenu">
 
         <li class="top-nav nav-item dropdown main-grouped active">
-            <scrm-menu-item [item]="item"></scrm-menu-item>
+            <scrm-menu-item [item]="item" [disableRoute]="disableRoute"></scrm-menu-item>
         </li>
     </ul>
 
@@ -55,6 +55,7 @@
                                     'dropdown-toggle': sub.submenu.length
                                   }"
                                  [link]="sub.link"
+                                 [disableRoute]="disableRoute"
             >
             </scrm-menu-item-link>
 
