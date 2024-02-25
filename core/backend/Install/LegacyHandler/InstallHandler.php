@@ -195,6 +195,8 @@ class InstallHandler extends LegacyHandler
             $feedback->setErrors($result);
         }
 
+        file_put_contents('.installed_checked', 'true');
+
         chdir($this->projectDir);
         $this->switchSession($this->defaultSessionName);
 
