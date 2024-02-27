@@ -65,6 +65,22 @@
   }
 }
 
+@media all and (max-width: 765px) {
+  .record-view-action-header {
+    justify-content: center;
+  }
+
+  .record-view-name-header {
+    justify-content: center;
+  }
+}
+
+@media all and (min-width: 765px) {
+  .record-view-action-header {
+    justify-content: end;
+  }
+}
+
 .record-view-title {
   color: $shell-grey;
   font-size: 1em;

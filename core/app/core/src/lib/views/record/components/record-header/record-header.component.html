@@ -34,12 +34,12 @@
             </div>
         </div>
         <div *ngIf="!loading" class="row mr-0">
-            <div class="col-2 col-md-4">
+            <div class="col-1 col-md-4">
                 <div class="record-view-back-button" *ngIf="mode === 'detail'">
                     <scrm-button *ngIf="backButtonConfig" [config]="backButtonConfig"></scrm-button>
                 </div>
             </div>
-            <div class="col-10 col-md-4 d-flex align-items-center">
+            <div class="col-10 col-md-4 d-flex align-items-center record-view-name-header">
                 <div [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-center' : 'record-view-name d-flex align-items-center'">
                     <scrm-dynamic-label *ngIf="record && record.fields"
                                         class="d-inline-block h-100 lh-100"
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-4 d-flex align-items-center justify-content-end">
+            <div class="col-12 col-md-4 d-flex align-items-center record-view-action-header">
                 <div class="row mr-1 ml-1">
                     <div *ngIf="record" class="w-100">
                         <scrm-action-group-menu
