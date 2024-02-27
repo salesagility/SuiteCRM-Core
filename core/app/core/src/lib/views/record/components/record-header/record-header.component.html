@@ -35,7 +35,7 @@
         </div>
         <div *ngIf="!loading" class="row mr-0">
             <div class="col-1 col-md-4">
-                <div class="record-view-back-button" *ngIf="mode === 'detail'">
+                <div class="record-view-back-button" *ngIf="mode === 'detail' || mode === 'edit'">
                     <scrm-button *ngIf="backButtonConfig" [config]="backButtonConfig"></scrm-button>
                 </div>
             </div>
