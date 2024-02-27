@@ -40,9 +40,15 @@
     .p-inputtext {
       padding: 0.3rem 0.6rem;
     }
+
     .p-multiselect-close {
       padding: 0.6em;
+      background-color: $pale-grey;
+      &:hover {
+        background-color: $cool-blue;
+      }
     }
+
     ul.p-multiselect-items {
       padding-inline-start: 0em;
     }

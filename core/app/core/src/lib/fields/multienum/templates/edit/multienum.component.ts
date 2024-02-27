@@ -33,6 +33,8 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
 import {take} from "rxjs/operators";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {PrimeNGConfig} from "primeng/api";
+import {Option} from "common";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -45,6 +47,9 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     selectedItemsLabel: string = '';
     emptyFilterLabel: string = '';
     maxSelectedLabels: number = 20;
+    selectAll: boolean = false;
+    filteredOptions: Option[] = [];
+    filteredWord: string= '';
 
     constructor(
         protected languages: LanguageStore,
@@ -53,6 +58,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         protected logicDisplay: FieldLogicDisplayManager,
         protected screenSize: ScreenSizeObserverService,
         protected systemConfigStore: SystemConfigStore,
+        private primengConfig: PrimeNGConfig
     ) {
         super(languages, typeFormatter, logic, logicDisplay);
     }
@@ -67,14 +73,32 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             .subscribe((screenSize: any) => {
                 this.maxSelectedLabels = maxSelectedLabelsForDisplay[screenSize] || this.maxSelectedLabels;
         })
-
+        this.primengConfig.ripple = true;
+        if(this.selectedValues.length === this.options.length) {
+            this.selectAll = true;
+        }
     }
 
-    public onAdd(event): void {
+    public onAdd(): void {
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
+    }
+
+    public onSelectAll(event) : void {
+        this.selectAll = event.checked;
+        if(this.selectAll) {
+            if(this.filteredOptions.length && this.filteredWord.length) {
+                this.selectedValues = this.filteredOptions;
+            } else {
+                this.selectedValues = this.options;
+            }
+            this.onAdd();
+        } else {
+            this.selectedValues = [];
+            this.onRemove();
+        }
     }
 
     public onRemove(): void {
@@ -84,10 +108,18 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.formControl.markAsDirty();
     }
 
+    public onFilter(event) {
+        this.filteredWord = event.filter;
+        this.filteredOptions = this.options.filter(option => option.value.toLowerCase().includes(this.filteredWord.toLowerCase()))
+    }
+
     public getTranslatedLabels(): void {
         this.placeholderLabel = this.languages.getAppString('LBL_SELECT_ITEM') || '';
         this.selectedItemsLabel = this.languages.getAppString('LBL_ITEMS_SELECTED') || '';
         this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
     }
 
+    onPanelHide() {
+        this.filteredOptions = [];
+    }
 }
