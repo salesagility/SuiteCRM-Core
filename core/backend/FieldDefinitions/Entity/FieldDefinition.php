@@ -78,7 +78,7 @@ class FieldDefinition
      */
     public function getId(): string
     {
-        return $this->id;
+        return $this->id ?? '';
     }
 
     /**
@@ -95,7 +95,7 @@ class FieldDefinition
      */
     public function getVardef(): ?array
     {
-        return $this->vardef;
+        return $this->vardef ?? null;
     }
 
     /**

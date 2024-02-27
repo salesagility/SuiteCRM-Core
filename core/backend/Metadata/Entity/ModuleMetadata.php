@@ -172,7 +172,7 @@ class ModuleMetadata
      */
     public function getEditView(): ?array
     {
-        return $this->editView;
+        return $this->editView ?? null;
     }
 
     /**
@@ -207,7 +207,7 @@ class ModuleMetadata
      */
     public function getId(): string
     {
-        return $this->id;
+        return $this->id ?? '';
     }
 
     /**
@@ -224,7 +224,7 @@ class ModuleMetadata
      */
     public function getRecordView(): ?array
     {
-        return $this->recordView;
+        return $this->recordView ?? null;
     }
 
     /**
@@ -242,7 +242,7 @@ class ModuleMetadata
      */
     public function getListView(): ?array
     {
-        return $this->listView;
+        return $this->listView ?? null;
     }
 
     /**
@@ -260,7 +260,7 @@ class ModuleMetadata
      */
     public function getSearch(): ?array
     {
-        return $this->search;
+        return $this->search ?? null;
     }
 
     /**
@@ -281,7 +281,7 @@ class ModuleMetadata
      */
     public function getSubPanel(): ?array
     {
-        return $this->subpanel;
+        return $this->subpanel ?? null;
     }
 
     /**
@@ -302,7 +302,7 @@ class ModuleMetadata
      */
     public function getMassUpdate(): ?array
     {
-        return $this->massUpdate;
+        return $this->massUpdate ?? null;
     }
 
     /**
@@ -323,7 +323,7 @@ class ModuleMetadata
      */
     public function getRecentlyViewed(): ?array
     {
-        return $this->recentlyViewed;
+        return $this->recentlyViewed ?? null;
     }
 
     /**
@@ -344,7 +344,7 @@ class ModuleMetadata
      */
     public function getFavorites(): ?array
     {
-        return $this->favorites;
+        return $this->favorites ?? null;
     }
 
     /**

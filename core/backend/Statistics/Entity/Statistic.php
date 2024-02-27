@@ -115,7 +115,7 @@ class Statistic
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -134,7 +134,7 @@ class Statistic
      */
     public function getMessages(): ?array
     {
-        return $this->messages;
+        return $this->messages ?? null;
     }
 
     /**
@@ -153,7 +153,7 @@ class Statistic
      */
     public function getOptions(): ?array
     {
-        return $this->options;
+        return $this->options ?? null;
     }
 
     /**
@@ -172,7 +172,7 @@ class Statistic
      */
     public function getData(): ?array
     {
-        return $this->data;
+        return $this->data ?? null;
     }
 
     /**
@@ -191,7 +191,7 @@ class Statistic
      */
     public function getMetadata(): ?array
     {
-        return $this->metadata;
+        return $this->metadata ?? null;
     }
 
     /**

@@ -80,7 +80,7 @@ class UserPreference
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -101,7 +101,7 @@ class UserPreference
      */
     public function getValue(): ?string
     {
-        return $this->value;
+        return $this->value ?? null;
     }
 
     /**
@@ -122,7 +122,7 @@ class UserPreference
      */
     public function getItems(): array
     {
-        return $this->items;
+        return $this->items ?? [];
     }
 
     /**

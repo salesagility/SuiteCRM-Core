@@ -86,7 +86,7 @@ class BatchedStatistics
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -105,7 +105,7 @@ class BatchedStatistics
      */
     public function getItems(): ?array
     {
-        return $this->items;
+        return $this->items ?? null;
     }
 
     /**

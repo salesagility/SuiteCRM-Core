@@ -136,7 +136,7 @@ class Process
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -157,7 +157,7 @@ class Process
      */
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type ?? null;
     }
 
     /**
@@ -178,7 +178,7 @@ class Process
      */
     public function getStatus(): ?string
     {
-        return $this->status;
+        return $this->status ?? null;
     }
 
     /**
@@ -199,7 +199,7 @@ class Process
      */
     public function getMessages(): ?array
     {
-        return $this->messages;
+        return $this->messages ?? null;
     }
 
     /**
@@ -220,7 +220,7 @@ class Process
      */
     public function getAsync(): ?bool
     {
-        return $this->async;
+        return $this->async ?? null;
     }
 
     /**
@@ -241,7 +241,7 @@ class Process
      */
     public function getOptions(): ?array
     {
-        return $this->options;
+        return $this->options ?? null;
     }
 
     /**
@@ -262,7 +262,7 @@ class Process
      */
     public function getData(): ?array
     {
-        return $this->data;
+        return $this->data ?? null;
     }
 
     /**

@@ -73,7 +73,7 @@ class AppStrings
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -94,7 +94,7 @@ class AppStrings
      */
     public function getItems(): ?array
     {
-        return $this->items;
+        return $this->items ?? null;
     }
 
     /**

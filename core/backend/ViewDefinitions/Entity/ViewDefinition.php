@@ -113,7 +113,7 @@ class ViewDefinition
      */
     public function getId(): string
     {
-        return $this->id;
+        return $this->id ?? '';
     }
 
     /**
@@ -130,7 +130,7 @@ class ViewDefinition
      */
     public function getRecordView(): ?array
     {
-        return $this->recordView;
+        return $this->recordView ?? null;
     }
 
     /**
@@ -148,7 +148,7 @@ class ViewDefinition
      */
     public function getEditView(): ?array
     {
-        return $this->editView;
+        return $this->editView ?? null;
     }
 
     /**
@@ -166,7 +166,7 @@ class ViewDefinition
      */
     public function getListView(): ?array
     {
-        return $this->listView;
+        return $this->listView ?? null;
     }
 
     /**
@@ -184,7 +184,7 @@ class ViewDefinition
      */
     public function getSearch(): ?array
     {
-        return $this->search;
+        return $this->search ?? null;
     }
 
     /**
@@ -205,7 +205,7 @@ class ViewDefinition
      */
     public function getSubPanel(): ?array
     {
-        return $this->subpanel;
+        return $this->subpanel ?? null;
     }
 
     /**
@@ -226,7 +226,7 @@ class ViewDefinition
      */
     public function getMassUpdate(): ?array
     {
-        return $this->massUpdate;
+        return $this->massUpdate ?? null;
     }
 
     /**

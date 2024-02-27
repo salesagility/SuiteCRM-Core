@@ -55,7 +55,7 @@ use App\Data\Resolver\RecordListResolver;
                 'sort' => ['type' => 'Iterable', 'description' => 'sort'],
             ],
             security: "is_granted('ROLE_USER')",
-            provider: RecordListStateProvider::class
+            provider: RecordListStateProvider::class,
         )
     ]
 )]
@@ -72,7 +72,7 @@ class RecordList
             'description' => 'The list-view data',
         ]
     )]
-    public array $records;
+    public array $records = [];
 
     /**
      * RecordList metadata
@@ -85,7 +85,7 @@ class RecordList
             'description' => 'The list metadata',
         ]
     )]
-    public array $meta;
+    public array $meta = [];
 
     /**
      * RecordList filters
@@ -98,7 +98,7 @@ class RecordList
             'description' => 'The list-view filters',
         ]
     )]
-    public array $filters;
+    public array $filters = [];
 
     /**
      * The module
@@ -112,7 +112,7 @@ class RecordList
             'description' => 'The module',
         ]
     )]
-    protected string $id;
+    protected string $id = '';
 
     /**
      * @return string
@@ -136,7 +136,7 @@ class RecordList
      */
     public function getRecords(): ?array
     {
-        return $this->records;
+        return $this->records ?? null;
     }
 
     /**
@@ -172,7 +172,7 @@ class RecordList
      */
     public function getFilters(): ?array
     {
-        return $this->filters;
+        return $this->filters ?? null;
     }
 
     /**

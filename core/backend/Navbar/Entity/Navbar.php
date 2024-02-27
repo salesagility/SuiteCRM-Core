@@ -140,16 +140,16 @@ final class Navbar
     public function toArray(): array
     {
         return [
-            'id' => $this->userID,
-            '_id' => $this->userID,
-            'userID' => $this->userID,
-            'tabs' => $this->tabs,
-            'groupedTabs' => $this->groupedTabs,
-            'userActionMenu' => $this->userActionMenu,
-            'modules' => $this->modules,
-            'maxTabs' => $this->maxTabs,
-            'type' => $this->type,
-            'quickActions' => $this->quickActions,
+            'id' => $this->userID ?? null,
+            '_id' => $this->userID ?? null,
+            'userID' => $this->userID ?? null,
+            'tabs' => $this->tabs ?? null,
+            'groupedTabs' => $this->groupedTabs ?? null,
+            'userActionMenu' => $this->userActionMenu ?? null,
+            'modules' => $this->modules ?? null,
+            'maxTabs' => $this->maxTabs ?? null,
+            'type' => $this->type ?? null,
+            'quickActions' => $this->quickActions ?? null,
         ];
     }
 }

@@ -674,7 +674,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -687,7 +687,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getSystemGeneratedPassword(): ?bool
     {
-        return $this->systemGeneratedPassword;
+        return $this->systemGeneratedPassword ?? null;
     }
 
     public function setSystemGeneratedPassword(?bool $systemGeneratedPassword): self
@@ -699,7 +699,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPwdLastChanged(): ?DateTimeInterface
     {
-        return $this->pwdLastChanged;
+        return $this->pwdLastChanged ?? null;
     }
 
     public function setPwdLastChanged(?DateTimeInterface $pwdLastChanged): self
@@ -711,7 +711,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAuthenticateId(): ?string
     {
-        return $this->authenticateId;
+        return $this->authenticateId ?? null;
     }
 
     public function setAuthenticateId(?string $authenticateId): self
@@ -723,7 +723,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getSugarLogin(): ?bool
     {
-        return $this->sugarLogin;
+        return $this->sugarLogin ?? null;
     }
 
     public function setSugarLogin(?bool $sugarLogin): self
@@ -735,7 +735,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getFirstName(): ?string
     {
-        return $this->firstName;
+        return $this->firstName ?? null;
     }
 
     public function setFirstName(?string $firstName): self
@@ -747,7 +747,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getLastName(): ?string
     {
-        return $this->lastName;
+        return $this->lastName ?? null;
     }
 
     public function setLastName(?string $lastName): self
@@ -759,7 +759,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getIsAdmin(): ?bool
     {
-        return $this->isAdmin;
+        return $this->isAdmin ?? null;
     }
 
     public function setIsAdmin(?bool $isAdmin): self
@@ -771,7 +771,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getExternalAuthOnly(): ?bool
     {
-        return $this->externalAuthOnly;
+        return $this->externalAuthOnly ?? null;
     }
 
     public function setExternalAuthOnly(?bool $externalAuthOnly): self
@@ -783,7 +783,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getReceiveNotifications(): ?bool
     {
-        return $this->receiveNotifications;
+        return $this->receiveNotifications ?? null;
     }
 
     public function setReceiveNotifications(?bool $receiveNotifications): self
@@ -795,7 +795,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->description ?? null;
     }
 
     public function setDescription(?string $description): self
@@ -807,7 +807,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getDateEntered(): ?DateTimeInterface
     {
-        return $this->dateEntered;
+        return $this->dateEntered ?? null;
     }
 
     public function setDateEntered(?DateTimeInterface $dateEntered): self
@@ -819,7 +819,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getDateModified(): ?DateTimeInterface
     {
-        return $this->dateModified;
+        return $this->dateModified ?? null;
     }
 
     public function setDateModified(?DateTimeInterface $dateModified): self
@@ -831,7 +831,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getModifiedUserId(): ?string
     {
-        return $this->modifiedUserId;
+        return $this->modifiedUserId ?? null;
     }
 
     public function setModifiedUserId(?string $modifiedUserId): self
@@ -843,7 +843,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getCreatedBy(): ?string
     {
-        return $this->createdBy;
+        return $this->createdBy ?? null;
     }
 
     public function setCreatedBy(?string $createdBy): self
@@ -855,7 +855,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getTitle(): ?string
     {
-        return $this->title;
+        return $this->title ?? null;
     }
 
     public function setTitle(?string $title): self
@@ -867,7 +867,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoto(): ?string
     {
-        return $this->photo;
+        return $this->photo ?? null;
     }
 
     public function setPhoto(?string $photo): self
@@ -879,7 +879,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getDepartment(): ?string
     {
-        return $this->department;
+        return $this->department ?? null;
     }
 
     public function setDepartment(?string $department): self
@@ -891,7 +891,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoneHome(): ?string
     {
-        return $this->phoneHome;
+        return $this->phoneHome ?? null;
     }
 
     public function setPhoneHome(?string $phoneHome): self
@@ -903,7 +903,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoneMobile(): ?string
     {
-        return $this->phoneMobile;
+        return $this->phoneMobile ?? null;
     }
 
     public function setPhoneMobile(?string $phoneMobile): self
@@ -915,7 +915,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoneWork(): ?string
     {
-        return $this->phoneWork;
+        return $this->phoneWork ?? null;
     }
 
     public function setPhoneWork(?string $phoneWork): self
@@ -927,7 +927,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoneOther(): ?string
     {
-        return $this->phoneOther;
+        return $this->phoneOther ?? null;
     }
 
     public function setPhoneOther(?string $phoneOther): self
@@ -939,7 +939,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPhoneFax(): ?string
     {
-        return $this->phoneFax;
+        return $this->phoneFax ?? null;
     }
 
     public function setPhoneFax(?string $phoneFax): self
@@ -951,7 +951,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getStatus(): ?string
     {
-        return $this->status;
+        return $this->status ?? null;
     }
 
     public function setStatus(?string $status): self
@@ -963,7 +963,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAddressStreet(): ?string
     {
-        return $this->addressStreet;
+        return $this->addressStreet ?? null;
     }
 
     public function setAddressStreet(?string $addressStreet): self
@@ -975,7 +975,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAddressCity(): ?string
     {
-        return $this->addressCity;
+        return $this->addressCity ?? null;
     }
 
     public function setAddressCity(?string $addressCity): self
@@ -987,7 +987,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAddressState(): ?string
     {
-        return $this->addressState;
+        return $this->addressState ?? null;
     }
 
     public function setAddressState(?string $addressState): self
@@ -999,7 +999,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAddressCountry(): ?string
     {
-        return $this->addressCountry;
+        return $this->addressCountry ?? null;
     }
 
     public function setAddressCountry(?string $addressCountry): self
@@ -1011,7 +1011,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getAddressPostalcode(): ?string
     {
-        return $this->addressPostalcode;
+        return $this->addressPostalcode ?? null;
     }
 
     public function setAddressPostalcode(?string $addressPostalcode): self
@@ -1023,7 +1023,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getDeleted(): ?bool
     {
-        return $this->deleted;
+        return $this->deleted ?? null;
     }
 
     public function setDeleted(?bool $deleted): self
@@ -1035,7 +1035,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getPortalOnly(): ?bool
     {
-        return $this->portalOnly;
+        return $this->portalOnly ?? null;
     }
 
     public function setPortalOnly(?bool $portalOnly): self
@@ -1047,7 +1047,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getShowOnEmployees(): ?bool
     {
-        return $this->showOnEmployees;
+        return $this->showOnEmployees ?? null;
     }
 
     public function setShowOnEmployees(?bool $showOnEmployees): self
@@ -1059,7 +1059,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getEmployeeStatus(): ?string
     {
-        return $this->employeeStatus;
+        return $this->employeeStatus ?? null;
     }
 
     public function setEmployeeStatus(?string $employeeStatus): self
@@ -1071,7 +1071,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getMessengerId(): ?string
     {
-        return $this->messengerId;
+        return $this->messengerId ?? null;
     }
 
     public function setMessengerId(?string $messengerId): self
@@ -1083,7 +1083,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getMessengerType(): ?string
     {
-        return $this->messengerType;
+        return $this->messengerType ?? null;
     }
 
     public function setMessengerType(?string $messengerType): self
@@ -1095,7 +1095,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getReportsToId(): ?string
     {
-        return $this->reportsToId;
+        return $this->reportsToId ?? null;
     }
 
     public function setReportsToId(?string $reportsToId): self
@@ -1107,7 +1107,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getIsGroup(): ?bool
     {
-        return $this->isGroup;
+        return $this->isGroup ?? null;
     }
 
     public function setIsGroup(?bool $isGroup): self
@@ -1119,7 +1119,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getFactorAuth(): ?bool
     {
-        return $this->factorAuth;
+        return $this->factorAuth ?? null;
     }
 
     public function setFactorAuth(?bool $factorAuth): self
@@ -1131,7 +1131,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getFactorAuthInterface(): ?string
     {
-        return $this->factorAuthInterface;
+        return $this->factorAuthInterface ?? null;
     }
 
     public function setFactorAuthInterface(?string $factorAuthInterface): self
@@ -1187,7 +1187,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getUserHash(): ?string
     {
-        return $this->userHash;
+        return $this->userHash ?? null;
     }
 
     public function setUserHash(?string $userHash): self
