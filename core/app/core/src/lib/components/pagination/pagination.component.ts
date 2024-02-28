@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PageSelection, PaginationCount, PaginationDataSource} from 'common';
 import {LanguageStore, LanguageStringMap} from '../../store/language/language.store';
@@ -54,8 +54,9 @@ export class PaginationComponent implements OnInit {
     ngOnInit(): void {
         const pageCount$ = this.state.getPaginationCount();
 
-        this.vm$ = combineLatest([this.appStrings$, pageCount$]).pipe(
-            map(([appStrings, pageCount]) => ({appStrings, pageCount}))
+        this.vm$ = this.appStrings$.pipe(
+            combineLatestWith(pageCount$),
+            map(([appStrings, pageCount]: [LanguageStringMap, PaginationCount]) => ({appStrings, pageCount}))
         );
     }
 

@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {isEmpty} from 'lodash-es';
 import {Field, FieldDefinition, Record, ViewFieldDefinition} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {Injectable} from '@angular/core';
@@ -34,7 +35,7 @@ import {AttributeBuilder} from './attribute.builder';
 import {FilterFieldBuilder} from './filter-field.builder';
 import {FilterAttributeBuilder} from './filter-attribute.builder';
 import {LineItemBuilder} from './line-item.builder';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -121,6 +122,9 @@ export class FieldManager {
      * @returns {object}Field
      */
     public addFilterField(record: SavedFilter, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
+        if (viewField.vardefBased && !isEmpty(record.criteriaFields[viewField.name])) {
+            return record.criteriaFields[viewField.name];
+        }
 
         const field = this.filterFieldBuilder.buildFilterField(record, viewField, language);
 
@@ -148,24 +152,25 @@ export class FieldManager {
 
     /**
      * Build line item and add to record
-     * @param {object} itemDefinition
-     * @param {object }item
-     * @param {object} parentRecord
-     * @param {object} parentField
+     *
+     * @param {FieldDefinition} itemDefinition Item Definition
+     * @param {Record} parentRecord Parent Record
+     * @param {Field} parentField Parent Field
+     * @param {Record | null} item Item
      */
     public addLineItem(
         itemDefinition: FieldDefinition,
         parentRecord: Record,
         parentField: Field,
         item: Record = null
-    ) {
+    ): void {
         if (!item) {
             item = {
                 id: '',
                 module: parentField.definition.module || '',
                 attributes: {},
                 fields: {},
-                formGroup: new FormGroup({}),
+                formGroup: new UntypedFormGroup({}),
             } as Record;
         }
 
@@ -183,10 +188,11 @@ export class FieldManager {
 
     /**
      * Remove line item
-     * @param {object} parentField
-     * @param index
+     *
+     * @param {Field} parentField Parent Field
+     * @param {number} index Index
      */
-    public removeLineItem(parentField: Field, index: number) {
+    public removeLineItem(parentField: Field, index: number): void {
         const item = parentField.items[index];
 
         if (!item) {
@@ -204,13 +210,13 @@ export class FieldManager {
 
         parentField.itemFormArray.clear();
 
-        parentField.items.forEach(item => {
-            const deleted = item && item.attributes && item.attributes.deleted;
-            if (!item || deleted) {
+        parentField.items.forEach(parentItem => {
+            const deleted = parentItem && parentItem.attributes && parentItem.attributes.deleted;
+            if (!parentItem || deleted) {
                 return;
             }
 
-            parentField.itemFormArray.push(item.formGroup);
+            parentField.itemFormArray.push(parentItem.formGroup);
         });
 
         parentField.itemFormArray.updateValueAndValidity();
@@ -243,6 +249,45 @@ export class FieldManager {
         if (record.formGroup && field.formControl) {
             record.formGroup.addControl(name, field.formControl);
         }
+    }
+
+
+    /**
+     * Build and add vardef only field to record
+     *
+     * @param {object} record Record
+     * @param {object} viewField ViewFieldDefinition
+     * @param {object} language LanguageStore
+     * @returns {object}Field
+     */
+    public addVardefOnlyField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
+
+        const field = this.fieldBuilder.buildField(record, viewField, language);
+
+        this.addVardefOnlyFieldToRecord(record, viewField.name, field);
+
+        return field;
+    }
+
+
+    /**
+     * Add field to record
+     *
+     * @param {object} record Record
+     * @param {string} name string
+     * @param {object} field Field
+     */
+    public addVardefOnlyFieldToRecord(record: Record, name: string, field: Field): void {
+
+        if (!record || !name || !field) {
+            return;
+        }
+
+        if (!record.fields) {
+            record.fields = {};
+        }
+
+        record.fields[name] = field;
     }
 
 

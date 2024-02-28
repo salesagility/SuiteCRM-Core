@@ -30,6 +30,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RecordContentComponent} from './record-content.component';
 import {PanelModule} from '../panel/panel.module';
 import {FieldLayoutModule} from '../field-layout/field-layout.module';
+import {ToObservableModule} from '../../pipes/toObservable/toObservable.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {FieldLayoutModule} from '../field-layout/field-layout.module';
         CommonModule,
         PanelModule,
         NgbModule,
-        FieldLayoutModule
+        FieldLayoutModule,
+        ToObservableModule,
     ]
 })
 export class RecordContentModule {

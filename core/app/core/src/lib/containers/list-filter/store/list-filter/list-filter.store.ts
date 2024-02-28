@@ -1,8 +1,44 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+import {isEmpty} from 'lodash-es';
 import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
-import {ButtonInterface, DropdownButtonInterface, emptyObject, Field, isVoid, SearchMetaFieldMap} from 'common';
-import {take, tap} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {
+    ButtonInterface,
+    DropdownButtonInterface,
+    emptyObject,
+    Field,
+    isVoid,
+    SearchMetaFieldMap,
+    ViewMode,
+    SearchCriteriaFieldFilter
+} from 'common';
+import {map, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {FilterConfig} from '../../components/list-filter/list-filter.model';
 import {MessageService} from '../../../../services/message/message.service';
 import {SaveFilterStoreFactory} from '../saved-filter/saved-filter.store.factory';
@@ -14,7 +50,7 @@ export class ListFilterStore implements StateStore {
 
     config: FilterConfig;
     panelMode: 'collapsible' | 'closable' | 'none' = 'closable';
-    mode = 'filter';
+    mode: ViewMode = 'filter';
 
     isCollapsed$: Observable<boolean>;
 
@@ -51,12 +87,17 @@ export class ListFilterStore implements StateStore {
 
         this.initConfigUpdatesSubscription();
 
-        this.vm$ = combineLatest([this.filterStore.stagingRecord$]).pipe(
+        this.vm$ = this.filterStore.stagingRecord$.pipe(
+            map(stagingRecord => [stagingRecord]),
             tap(([savedFilter]) => {
                 this.reset();
                 this.splitCriteriaFields(savedFilter);
                 this.initDisplayFields();
-                this.initGridButtons();
+
+                if (this.filterStore.getMode() !== 'detail') {
+                    this.initGridButtons();
+                }
+
                 this.initHeaderButtons();
                 this.initMyFiltersButton(this.savedFilters);
             })
@@ -135,22 +176,32 @@ export class ListFilterStore implements StateStore {
      */
     protected initConfigUpdatesSubscription() {
         this.subs.push(
-            combineLatest([this.config.filter$, this.config.searchFields$]).pipe(
-                tap(([filter, searchFields]) => {
+            this.config.filter$.pipe(
+                combineLatestWith(this.config.searchFields$),
+                tap(([filter, searchFields]: [SavedFilter, SearchMetaFieldMap]) => {
                     this.reset();
+                    let mode = 'edit' as ViewMode;
+
+                    const isReadOnly = filter.readonly ?? false;
+                    if (isReadOnly) {
+                        mode = 'detail' as ViewMode;
+                        this.mode = mode;
+                    }
+
                     this.filterStore.initRecord(
                         this.config.module,
                         filter,
                         searchFields,
                         this.config.listFields,
-                        'edit'
+                        mode
                     );
                 })
             ).subscribe()
         );
 
         this.subs.push(
-            combineLatest([this.config.savedFilters$]).pipe(
+            this.config.savedFilters$.pipe(
+                map(value => [value]),
                 tap(([filters]) => {
                     this.savedFilters = filters;
                     this.initMyFiltersButton(filters);
@@ -170,15 +221,29 @@ export class ListFilterStore implements StateStore {
             return;
         }
 
-        Object.keys(savedFilter.criteriaFields).forEach(key => {
-            const field = savedFilter.criteriaFields[key];
+        Object.entries(savedFilter.criteriaFields).forEach(([key, field]) => {
             const name = field.name || key;
 
             if (name.includes('_only')) {
                 this.special.push(field);
-            } else {
-                this.fields.push(field);
+                return;
             }
+
+            if (field.vardefBased) {
+                const filters = savedFilter?.criteria?.filters ?? {};
+                const fieldFilter = (
+                    filters[key] ?? {}
+                ) as SearchCriteriaFieldFilter;
+
+                if (
+                    !isEmpty(fieldFilter?.operator)
+                    && field.display === 'none'
+                ) {
+                    field.display = 'default';
+                }
+            }
+
+            this.fields.push(field);
         });
     }
 
@@ -190,15 +255,18 @@ export class ListFilterStore implements StateStore {
 
     protected initDisplayFields(): void {
 
-        if(!this.searchFields || emptyObject(this.searchFields) || !this.fields){
+        if (!this.searchFields || emptyObject(this.searchFields) || !this.fields) {
             this.displayFields = [];
         }
 
         const fields = [];
         this.fields.forEach(field => {
             const name = field.name;
-            if(!this.searchFields[name]){
+            if (field.display === 'none' || field.source === 'groupField') {
                 return;
+            }
+            if (!this.searchFields[name]) {
+                field.readonly = true;
             }
             fields.push(field);
         });
@@ -240,7 +308,7 @@ export class ListFilterStore implements StateStore {
 
     protected initMyFiltersButton(filters: SavedFilter[]): void {
 
-        if(!filters || filters.length < 1){
+        if (!filters || filters.length < 1) {
             this.myFilterButton = null;
             return;
         }

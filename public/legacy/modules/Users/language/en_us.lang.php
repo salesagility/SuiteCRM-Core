@@ -85,6 +85,7 @@ $mod_strings = array(
     'ERR_RECIPIENT_EMAIL' => 'Recipient Email Address',
     'ERR_SERVER_STATUS' => 'Your server status',
     'ERR_SERVER_SMTP_EMPTY' => 'The system is unable to send an email to the user. Please check the Outgoing Mail Configuration in <a href="index.php?module=EmailMan&action=config">Email Settings</a>.',
+    'ERR_DELETE_USER' => 'It is not allowed to delete logged in user.',
     'LBL_ADDRESS_CITY' => 'Address City',
     'LBL_ADDRESS_COUNTRY' => 'Address Country',
     'LBL_ADDRESS_INFORMATION' => 'Address Information',

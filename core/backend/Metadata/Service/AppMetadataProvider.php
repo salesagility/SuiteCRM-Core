@@ -28,6 +28,8 @@
 namespace App\Metadata\Service;
 
 use App\Authentication\LegacyHandler\UserHandler;
+use App\Engine\Service\CacheManagerInterface;
+use App\Install\LegacyHandler\InstallHandler;
 use App\Languages\LegacyHandler\AppListStringsHandler;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use App\Languages\LegacyHandler\ModStringsHandler;
@@ -43,6 +45,7 @@ use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use App\ViewDefinitions\Service\AdminPanelDefinitionProviderInterface;
 use Exception;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class AppMetadataProvider
@@ -110,6 +113,21 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $adminPanelDefinitions;
 
     /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
+     * @var CacheManagerInterface
+     */
+    protected $cacheManager;
+
+    /**
+     * @var InstallHandler
+     */
+    private $installHandler;
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -122,21 +140,28 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param ModuleMetadataProviderInterface $moduleMetadata
      * @param Security $security
      * @param UserHandler $userHandler
+     * @param AdminPanelDefinitionProviderInterface $adminPanelDefinitions
+     * @param CacheInterface $cache
+     * @param InstallHandler $installHandler
      */
     public function __construct(
-        ModuleNameMapperInterface $moduleNameMapper,
-        SystemConfigProviderInterface $systemConfigProvider,
-        UserPreferencesProviderInterface $userPreferenceService,
-        NavigationProviderInterface $navigationService,
-        AppStringsHandler $appStringsHandler,
-        AppListStringsHandler $appListStringsHandler,
-        ModStringsHandler $modStringsHandler,
-        ThemeImageService $themeImageService,
-        ModuleMetadataProviderInterface $moduleMetadata,
-        Security $security,
-        UserHandler $userHandler,
-        AdminPanelDefinitionProviderInterface $adminPanelDefinitions
-    ) {
+        ModuleNameMapperInterface             $moduleNameMapper,
+        SystemConfigProviderInterface         $systemConfigProvider,
+        UserPreferencesProviderInterface      $userPreferenceService,
+        NavigationProviderInterface           $navigationService,
+        AppStringsHandler                     $appStringsHandler,
+        AppListStringsHandler                 $appListStringsHandler,
+        ModStringsHandler                     $modStringsHandler,
+        ThemeImageService                     $themeImageService,
+        ModuleMetadataProviderInterface       $moduleMetadata,
+        Security                              $security,
+        UserHandler                           $userHandler,
+        AdminPanelDefinitionProviderInterface $adminPanelDefinitions,
+        CacheInterface                        $cache,
+        CacheManagerInterface                 $cacheManager,
+        InstallHandler $installHandler
+    )
+    {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->systemConfigProvider = $systemConfigProvider;
         $this->userPreferenceService = $userPreferenceService;
@@ -149,6 +174,9 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->security = $security;
         $this->userHandler = $userHandler;
         $this->adminPanelDefinitions = $adminPanelDefinitions;
+        $this->cache = $cache;
+        $this->cacheManager = $cacheManager;
+        $this->installHandler = $installHandler;
     }
 
     /**
@@ -171,42 +199,73 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      */
     protected function getUserMetadata(string $moduleName, array $exposed = []): AppMetadata
     {
+        $userId = $this->userHandler->getCurrentUser()->id;
         $metadata = new AppMetadata();
         $metadata->setId('app');
         $language = $this->getLanguage();
         $theme = $this->getTheme();
+        $keys = [
+            'app-metadata-system-configs',
+            'app-metadata-user-preferences-' . $userId,
+            'app-metadata-language-strings-' . $language,
+            'app-metadata-theme-images',
+            'app-metadata-navigation-' . $userId,
+            'app-metadata-module-metadata-' . $moduleName . '-' . $userId
+        ];
+
+        if (!$this->isInstalled()){
+            return $this->getMetadataWithoutCache($metadata, $moduleName, $language, $exposed, $theme);
+        }
+
+        $this->cacheManager->checkForCacheUpdate($keys);
 
         $metadata->setSystemConfig([]);
         if (in_array('systemConfig', $exposed, true)) {
-            $metadata->setSystemConfig($this->getSystemConfigs());
+            $systemConfig = $this->cache->get('app-metadata-system-configs', function () {
+                return $this->getSystemConfigs();
+            });
+            $metadata->setSystemConfig($systemConfig);
         }
 
         $metadata->setUserPreferences([]);
         if (in_array('userPreferences', $exposed, true)) {
-            $metadata->setUserPreferences($this->getUserPreferences());
+            $userPreferences = $this->cache->get('app-metadata-user-preferences-' . $userId, function () {
+                return $this->getUserPreferences();
+            });
+            $metadata->setUserPreferences($userPreferences);
         }
 
         $metadata->setLanguage([]);
         if (in_array('language', $exposed, true)) {
-            $metadata->setLanguage($this->getLanguageStrings($language) ?? []);
+            $languageStrings = $this->cache->get('app-metadata-language-strings-' . $language, function () use ($language) {
+                return $this->getLanguageStrings($language) ?? [];
+            });
+            $metadata->setLanguage($languageStrings);
         }
 
         $metadata->setThemeImages([]);
         if (in_array('themeImages', $exposed, true)) {
-            $metadata->setThemeImages($this->themeImageService->get($theme)->toArray());
+            $themeImages = $this->cache->get('app-metadata-theme-images', function () use ($theme) {
+                return $this->themeImageService->get($theme)->toArray();
+            });
+            $metadata->setThemeImages($themeImages);
         }
 
 
-        $navigation = $this->navigationService->getNavbar();
         $metadata->setNavigation([]);
         if (in_array('navigation', $exposed, true)) {
-            $metadata->setNavigation($navigation->toArray());
+            $navigation = $this->cache->get('app-metadata-navigation-' . $userId, function () {
+                return $this->navigationService->getNavbar()->toArray();
+            });
+            $metadata->setNavigation($navigation);
         }
 
         $metadata->setModuleMetadata([]);
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
-            $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
+            $navigation = $this->navigationService->getNavbar();
+            $moduleMetadata = $this->getModuleMetadata($moduleName, $navigation) ?? [];
+            $metadata->setModuleMetadata($moduleMetadata);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
         }
@@ -223,6 +282,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             $adminMetadata = ['adminPanel' => []];
             $metadata->setAdminMetadata($adminMetadata);
         }
+
 
         return $metadata;
     }
@@ -533,5 +593,66 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         }
 
         return array_keys($groupedTabsModules);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isInstalled(): bool
+    {
+        return $this->installHandler->isLegacyInstalled();
+    }
+
+    protected function getMetadataWithoutCache($metadata, $moduleName, $language, $exposed, $theme): AppMetadata
+    {
+        $metadata->setSystemConfig([]);
+        if (in_array('systemConfig', $exposed, true)) {
+            $metadata->setSystemConfig($this->getSystemConfigs());
+        }
+
+        $metadata->setUserPreferences([]);
+        if (in_array('userPreferences', $exposed, true)) {
+            $metadata->setUserPreferences($this->getUserPreferences());
+        }
+
+        $metadata->setLanguage([]);
+        if (in_array('language', $exposed, true)) {
+            $metadata->setLanguage($this->getLanguageStrings($language) ?? []);
+        }
+
+        $metadata->setThemeImages([]);
+        if (in_array('themeImages', $exposed, true)) {
+            $metadata->setThemeImages($this->themeImageService->get($theme)->toArray());
+        }
+
+
+        $navigation = $this->navigationService->getNavbar();
+        $metadata->setNavigation([]);
+        if (in_array('navigation', $exposed, true)) {
+            $metadata->setNavigation($navigation->toArray());
+        }
+
+        $metadata->setModuleMetadata([]);
+        $metadata->setMinimalModuleMetadata([]);
+        if (in_array('moduleMetadata', $exposed, true)) {
+            $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
+        } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
+            $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+        }
+
+        /** @var \User $currentUser */
+        $currentUser = $this->userHandler->getCurrentUser() ?? null;
+
+        if (in_array('adminMetadata', $exposed, true) && !empty($currentUser) && $currentUser->isAdmin()) {
+            $adminMetadata = [
+                'adminPanel' => $this->adminPanelDefinitions->getAdminPanelDef()
+            ];
+            $metadata->setAdminMetadata($adminMetadata);
+        } elseif (!$currentUser->isAdmin()) {
+            $adminMetadata = ['adminPanel' => []];
+            $metadata->setAdminMetadata($adminMetadata);
+        }
+
+        return $metadata;
     }
 }

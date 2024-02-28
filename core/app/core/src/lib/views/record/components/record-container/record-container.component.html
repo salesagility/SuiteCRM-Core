@@ -30,7 +30,8 @@
 <div *ngIf="(vm$ | async) as vm"
      class="record-view-container view-container container-fluid pt-3 pb-3 small-font">
     <div class="row">
-        <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !vm.sidebarWidgetConfig.show }">
+        <ng-container *ngIf="!swapWidgets || (swapWidgets && !displayWidgets)">
+            <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !sidebarWidgetConfig.show }">
 
             <div class="container-fluid pl-0 pr-0">
                 <div *ngIf="loading" class="row no-gutters">
@@ -86,17 +87,21 @@
                 </div>
             </div>
         </div>
+        </ng-container>
 
-        <div class="col-lg-3 record-widget-container pl-0"
-             *ngIf="vm.sidebarWidgetConfig.show && vm.sidebarWidgetConfig.widgets">
-            <div class="mb-3" *ngFor="let widget of vm.sidebarWidgetConfig.widgets">
-                <scrm-sidebar-widget [type]="widget.type"
-                                     [context]="getViewContext()"
-                                     [context$]="getViewContext$()"
-                                     [config]="widget">
-                </scrm-sidebar-widget>
+        <ng-container *ngIf="!swapWidgets || (swapWidgets && displayWidgets)">
+            <div class="col-lg-3 record-widget-container pl-0"
+                 [class.mt-0]="swapWidgets"
+                 *ngIf="displayWidgets">
+                <div class="mb-3" *ngFor="let widget of sidebarWidgetConfig.widgets">
+                    <scrm-sidebar-widget [type]="widget.type"
+                                         [context]="getViewContext()"
+                                         [context$]="getViewContext$()"
+                                         [config]="widget">
+                    </scrm-sidebar-widget>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
     </div>
 </div>

@@ -131,6 +131,7 @@ class TemplateHTML extends TemplateField
         $def['display'] = 'readonly';
         $def['readonly'] = true;
         $def['dbType'] = isset($this->ext3) ? $this->ext3 : 'text' ;
+        $def['resetFieldInStudio'] = 'true';
         return array_merge($def, $this->get_additional_defs());
     }
 }

@@ -24,6 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isArray, isEmpty, union } from 'lodash-es';
 import {
     Action,
     ColumnDefinition,
@@ -37,11 +38,13 @@ import {
     SelectionStatus,
     SortDirection,
     SortingSelection,
-    ViewContext
+    ViewContext,
+    isTrue
 } from 'common';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, take} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {Metadata, MetadataStore} from '../../../../store/metadata/metadata.store.service';
@@ -61,7 +64,7 @@ import {FilterListStoreFactory} from '../../../../store/saved-filters/filter-lis
 import {ConfirmationModalService} from '../../../../services/modals/confirmation-modal.service';
 import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
-import {isArray} from 'lodash-es';
+import {ListViewUrlQueryService} from '../../services/list-view-url-query.service';
 
 export interface ListViewData {
     records: Record[];
@@ -124,6 +127,7 @@ export class ListViewStore extends ViewStore implements StateStore {
     columns: BehaviorSubject<ColumnDefinition[]>;
     columns$: Observable<ColumnDefinition[]>;
     lineActions$: Observable<Action[]>;
+    tableActions$: Observable<Action[]>
     records$: Observable<Record[]>;
     criteria$: Observable<SearchCriteria>;
     context$: Observable<ViewContext>;
@@ -172,6 +176,8 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected filterListStoreFactory: FilterListStoreFactory,
         protected confirmation: ConfirmationModalService,
         protected preferences: UserPreferenceStore,
+        protected route: ActivatedRoute,
+        protected listViewUrlQueryService: ListViewUrlQueryService
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -180,6 +186,7 @@ export class ListViewStore extends ViewStore implements StateStore {
 
         this.columns$ = metadataStore.listViewColumns$;
         this.lineActions$ = metadataStore.listViewLineActions$;
+        this.tableActions$ = metadataStore.listViewTableActions$;
         this.records$ = this.recordList.records$;
         this.criteria$ = this.recordList.criteria$;
         this.context$ = this.recordList.criteria$.pipe(map(() => this.getViewContext()));
@@ -197,20 +204,21 @@ export class ListViewStore extends ViewStore implements StateStore {
         this.activeFilters$ = this.state$.pipe(map(state => state.activeFilters), distinctUntilChanged());
         this.openFilter$ = this.state$.pipe(map(state => state.openFilter), distinctUntilChanged());
 
-        const data$ = combineLatest(
-            [this.records$, this.criteria$, this.pagination$, this.selection$, this.loading$]
-        ).pipe(
+        const data$ = this.records$.pipe(
+            combineLatestWith(this.criteria$, this.pagination$, this.selection$, this.loading$),
             map(([records, criteria, pagination, selection, loading]) => {
                 this.data = {records, criteria, pagination, selection, loading} as ListViewData;
                 return this.data;
             })
         );
 
-        this.vm$ = combineLatest([data$, this.appData$, this.metadata$]).pipe(
+        this.vm$ = data$.pipe(
+            combineLatestWith(this.appData$, this.metadata$),
             map(([data, appData, metadata]) => {
                 this.vm = {data, appData, metadata} as ListViewModel;
                 return this.vm;
-            }));
+            })
+        );
 
         this.columns = new BehaviorSubject<ColumnDefinition[]>([]);
         this.columns$ = this.columns.asObservable();
@@ -353,8 +361,19 @@ export class ListViewStore extends ViewStore implements StateStore {
             sortOrder: this?.metadata?.listView?.sortOrder ?? 'NONE' as SortDirection
         } as SortingSelection;
 
-        this.loadCurrentFilter(module);
-        this.loadCurrentSort(module);
+        const queryParams = this.route?.snapshot?.queryParams ?? {};
+        let filterType = '';
+        if (isTrue(queryParams['query'])) {
+            filterType = 'query';
+        }
+        switch (filterType) {
+            case 'query':
+                this.loadQueryFilter(module, queryParams);
+                break
+            default:
+                this.loadCurrentFilter(module);
+                this.loadCurrentSort(module);
+        }
         this.loadCurrentDisplayedColumns();
 
         return this.load();
@@ -368,6 +387,44 @@ export class ListViewStore extends ViewStore implements StateStore {
     public setOpenFilter(filter: SavedFilter): void {
         this.updateState({...this.internalState, openFilter: deepClone(filter)});
     }
+
+    /**
+     * Toggle Quick filter
+     *
+     * @param filter
+     * @param {boolean} reload flag
+     */
+    public toggleQuickFilter(filter: SavedFilter, reload = true): void {
+        let activeFilters = this.getActiveQuickFilters();
+
+        const isActive = Object.keys(activeFilters).some(key => key === filter.key);
+
+        if (isActive) {
+            let {[filter.key]: removedFilters, ...newFilters} = activeFilters;
+            activeFilters = newFilters;
+        } else {
+            activeFilters = {};
+            activeFilters[filter.key] = filter;
+        }
+
+        if (emptyObject(activeFilters)) {
+            this.resetFilters(reload);
+            return;
+        }
+
+        if (Object.keys(activeFilters).length === 1) {
+            this.setFilters(activeFilters);
+            return;
+        }
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(activeFilters),
+        });
+
+        this.updateSearchCriteria(reload)
+    }
+
 
     /**
      * Set active filters
@@ -467,12 +524,10 @@ export class ListViewStore extends ViewStore implements StateStore {
      * @param {boolean} reload flag
      */
     public updateSearchCriteria(reload = true): void {
-
         const filters = {...this.internalState.activeFilters};
-        const filterKey = Object.keys(filters).shift();
-        const filter = filters[filterKey];
+        let criteria = this.mergeCriteria(filters);
 
-        this.recordList.updateSearchCriteria(filter.criteria, reload);
+        this.recordList.updateSearchCriteria(criteria, reload);
         this.updateFilterLocalStorage();
     }
 
@@ -542,6 +597,79 @@ export class ListViewStore extends ViewStore implements StateStore {
      */
     protected updateState(state: ListViewState): void {
         this.store.next(this.internalState = state);
+    }
+
+    /**
+     * Get Active quick filters
+     * @protected
+     */
+    protected getActiveQuickFilters(): SavedFilterMap {
+        let {'default': defaultFilter, ...currentQuickFilters} = this.activeFilters;
+        let activeFilters = {} as SavedFilterMap;
+
+        Object.keys(currentQuickFilters).forEach(key => {
+            const activeFilter = currentQuickFilters[key] ?? null;
+            if (!key) {
+                return;
+            }
+
+            const isQuickFilter = activeFilter?.attributes?.quick_filter ?? false;
+
+            if (isQuickFilter) {
+                activeFilters[key] = activeFilter;
+            }
+        });
+        return activeFilters;
+    }
+
+    /**
+     * Merge Criteria
+     * @protected
+     */
+    protected mergeCriteria(filters: SavedFilterMap): SearchCriteria {
+
+        let criteria = {} as SearchCriteria;
+
+        const keys = Object.keys(filters ?? {}) ?? [];
+
+        keys.forEach(key => {
+            const filter = filters[key] ?? null;
+            const filterCriteria = filter?.criteria ?? null;
+            const filterCriteriaKeys = Object.keys(filterCriteria?.filters ?? {});
+            if (filterCriteria === null || (filterCriteriaKeys && !filterCriteriaKeys.length)) {
+                return;
+            }
+
+            if (emptyObject(criteria)) {
+                criteria = deepClone(filterCriteria);
+                return;
+            }
+
+            filterCriteriaKeys.forEach(criteriaKey => {
+                const filterCriteriaContent = filterCriteria?.filters[criteriaKey] ?? null;
+                const criteriaContent = criteria?.filters[criteriaKey] ?? null;
+                if (!filterCriteriaContent) {
+                    return;
+                }
+
+                const criteriaOperator = criteriaContent?.operator ?? null
+
+                if (!criteriaContent || !criteriaOperator) {
+                    criteria.filters[criteriaKey] = deepClone(filterCriteriaContent);
+                    return;
+                }
+
+                const filterCriteriaOperator = filterCriteriaContent?.operator ?? null
+                if (filterCriteriaOperator !== criteriaOperator || filterCriteriaOperator !== '=') {
+                    delete criteria.filters[criteriaKey];
+                    return;
+                }
+
+                criteriaContent.values = union(criteriaContent.values ?? [], filterCriteriaContent.values ?? []);
+            });
+        });
+
+        return criteria;
     }
 
     /**
@@ -667,6 +795,41 @@ export class ListViewStore extends ViewStore implements StateStore {
     }
 
     /**
+     * Load current filter
+     * @param module
+     * @param queryParams
+     * @protected
+     */
+    protected loadQueryFilter (
+        module:string,
+        queryParams: Params
+    ): void {
+        const orderBy: string = queryParams['orderBy'] ?? '';
+        const sortOrder: string = queryParams['sortOrder'] ?? '';
+        const direction = this.recordList.mapSortOrder(sortOrder);
+
+        const filter = this.listViewUrlQueryService.buildUrlQueryBasedFilter(
+            module,
+            this.internalState.activeFilters.default,
+            queryParams
+        );
+        if (isEmpty(filter)){
+            return;
+        }
+
+        const filters = { 'default': filter };
+
+        this.updateState({
+            ...this.internalState,
+            activeFilters: deepClone(filters),
+            openFilter: deepClone(filter)
+        });
+
+        this.recordList.updateSorting(orderBy, direction, false);
+        this.recordList.updateSearchCriteria(filter.criteria, false);
+    }
+
+    /**
      * Load current sorting
      * @param module
      * @protected
@@ -733,8 +896,9 @@ export class ListViewStore extends ViewStore implements StateStore {
      *  due to data edit or any event which causes change in the resulting dataSet.
      */
     protected initDataSetUpdatedState(): void {
-        this.dataSetUpdate$ = combineLatest(
-            [this.criteria$, this.dataUpdate$]
-        ).pipe(map(() => true));
+        this.dataSetUpdate$ = this.criteria$.pipe(
+            combineLatestWith(this.dataUpdate$),
+            map(() => true)
+        );
     }
 }

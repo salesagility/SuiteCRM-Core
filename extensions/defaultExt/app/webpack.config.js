@@ -1,5 +1,6 @@
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
+
 module.exports = {
   output: {
     publicPath: 'auto',
@@ -8,14 +9,16 @@ module.exports = {
   optimization: {
     runtimeChunk: false
   },
+  experiments: {
+    outputModule: true
+  },
   plugins: [
     new ModuleFederationPlugin({
 
       name: 'defaultExt',
       filename: 'remoteEntry.js',
       library: {
-        type: 'window',
-        name: 'defaultExt',
+        type: "module",
       },
       exposes: {
         './Module': './extensions/defaultExt/app/src/extension.module.ts'
@@ -24,55 +27,55 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
+        },
+        '@angular/cdk/table': {
+          singleton: true,
+          requiredVersion: '^16.1.1'
+        },
+        '@angular/cdk/observers': {
+          singleton: true,
+          requiredVersion: '^16.1.1'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.1.1'
         },
         '@apollo/client': {
           singleton: true,
-          requiredVersion: '^3.3.7'
-        },
-        '@apollo/link-error': {
-          singleton: true,
-          requiredVersion: '^2.0.0-beta.3'
+          requiredVersion: '^3.7.14'
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^12.0.0'
+          requiredVersion: '^16.0.0'
         },
         'apollo-angular': {
           singleton: true,
-          requiredVersion: '^2.2.0'
+          requiredVersion: '^5.0.0'
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^14.7.0'
-        },
-        'graphql-tag': {
-          singleton: true,
-          requiredVersion: '^2.11.0'
+          requiredVersion: '^16.7.1'
         },
         'lodash-es': {
           singleton: true,
@@ -80,40 +83,40 @@ module.exports = {
         },
         luxon: {
           singleton: true,
-          requiredVersion: '^1.25.0'
+          requiredVersion: '3.3.0'
         },
         'ng-animate': {
           singleton: true,
-          requiredVersion: '^1.0.0'
+          requiredVersion: '^2.0.1'
         },
         'ngx-chips': {
           singleton: true,
-          requiredVersion: '^2.2.2'
+          requiredVersion: '^3.0.0'
         },
 
         '@swimlane/ngx-charts': {
           singleton: true,
-          requiredVersion: '^17.0.0'
+          requiredVersion: '^20.3.0'
         },
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^9.0.2'
+          requiredVersion: '^15.0.1'
         },
 
         'bn-ng-idle': {
           singleton: true,
-          requiredVersion: '^1.0.1'
+          requiredVersion: '^2.0.5'
         },
 
         'rxjs': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         'rxjs/operators': {
           singleton: true,
-          requiredVersion: '^6.6.3'
+          requiredVersion: '^7.8.1'
         },
 
         common: {

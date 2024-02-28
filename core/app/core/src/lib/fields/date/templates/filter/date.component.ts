@@ -25,17 +25,15 @@
  */
 
 import {Component, OnDestroy, OnInit,} from '@angular/core';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString, isVoid} from 'common';
-import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {isEmptyString, isVoid} from 'common';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';
 import {DateAdapter} from '../../../base/datetime/date/date-adapter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
-import {BaseDateComponent} from '../../../base/datetime/base-date.component';
+import { DateEditFieldComponent } from '../edit/date.component'
 
 
 @Component({
@@ -47,70 +45,44 @@ import {BaseDateComponent} from '../../../base/datetime/base-date.component';
         {provide: NgbDateParserFormatter, useClass: DateParserFormatter}
     ]
 })
-export class DateFilterFieldComponent extends BaseDateComponent implements OnInit, OnDestroy {
+export class DateFilterFieldComponent extends DateEditFieldComponent implements OnInit, OnDestroy {
 
     public dateModel: NgbDateStruct;
 
     constructor(
         protected formatter: DateFormatter,
+        protected dateAdapter: NgbDateAdapter<string>,
+        protected dateParserFormatter: NgbDateParserFormatter,
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
         protected logicDisplay: FieldLogicDisplayManager
     ) {
-        super(formatter, typeFormatter, logic, logicDisplay);
+        super(formatter,
+          dateAdapter,
+          dateParserFormatter,
+          typeFormatter,
+          logic,
+          logicDisplay
+        )
     }
 
     ngOnInit(): void {
-        super.ngOnInit();
-
         let current = null;
         if (this.field.criteria.values && this.field.criteria.values.length > 0) {
             current = this.field.criteria.values[0];
         }
 
-        let formattedValue = null;
         if (!isVoid(current) && !isEmptyString(current)) {
             current = current.trim();
-            formattedValue = this.typeFormatter.toUserFormat(this.field.type, current, {mode: 'edit'});
         }
+
         this.field.value = current ?? '';
-        this.field.formControl.setValue(formattedValue);
-        this.field.formControl.markAsDirty();
 
-        if (!isVoid(current)) {
-            this.setModel(current);
-        }
-        this.subscribeValueChanges();
-    }
-
-    ngOnDestroy(): void {
-        this.unsubscribeAll();
-    }
-
-    setModel(value: any): void {
-        this.field.formControl.setValue(value);
-        this.field.value = this.formatter.toInternalFormat(value);
-        this.dateModel = this.formatter.dateFormatToStruct(value, this.formatter.getUserFormat());
-    }
-
-    getOpenButton(datepicker: NgbInputDatepicker): ButtonInterface {
-        return {
-            klass: 'btn btn-sm btn-outline-secondary m-0 border-0',
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-            onClick: () => {
-                datepicker.toggle();
-                datepicker.navigateTo(this.dateModel);
-            },
-            icon: 'calendar'
-        };
-    }
-
-    getPlacement(): PlacementArray {
-        return ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+        super.ngOnInit();
     }
 
     protected setFieldValue(newValue): void {
-        this.field.value = newValue;
+        super.setFieldValue(newValue);
         this.field.criteria.operator = '=';
         this.field.criteria.values = [newValue];
     }

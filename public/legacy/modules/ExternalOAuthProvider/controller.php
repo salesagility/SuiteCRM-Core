@@ -47,10 +47,13 @@ class ExternalOAuthProviderController extends SugarController
     public function action_EditView() {
         $this->view = 'edit';
 
+        if (isset($this->bean->type)){
+            $_REQUEST['type'] = $this->bean->type;
+        }
+
         if (empty($_REQUEST['type'])){
             $_REQUEST['type'] = 'personal';
         }
-
 
         if (!empty($this->bean)) {
             $this->bean->type = $_REQUEST['type'];
@@ -61,7 +64,7 @@ class ExternalOAuthProviderController extends SugarController
             return;
         }
 
-        if (!empty($this->bean) && $this->bean->type === 'personal' && $this->bean->checkPersonalAccountAccess()) {
+        if (!empty($this->bean) && $this->bean->type === 'personal' && $this->bean->hasAccessToPersonalAccount()) {
             $this->hasAccess = true;
         }
     }

@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {MultiEnumFilterFieldComponent} from './multienum.component';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {Field} from 'common';
 import {TagInputModule} from 'ngx-chips';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
@@ -65,7 +65,7 @@ class MultiEnumFilterFieldTestHostComponent {
             values: ['_customer'],
             operator: '='
         },
-        formControl: new FormControl(['_customer'])
+        formControl: new UntypedFormControl(['_customer'])
     };
 }
 

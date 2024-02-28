@@ -41,6 +41,7 @@ import {BulkActionsAdapter} from './bulk-actions.adapter';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {UserPreferenceStore} from "../../../store/user-preference/user-preference.store";
 import {SystemConfigStore} from "../../../store/system-config/system-config.store";
+import {ListviewTableActionsAdapterFactory} from "./listview-table-actions.adapter.factory";
 
 @Injectable()
 export class TableAdapter {
@@ -54,6 +55,7 @@ export class TableAdapter {
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
         protected bulkActionsAdapterFactory: BulkActionsAdapterFactory,
+        protected listviewTableActionsAdapterFactory: ListviewTableActionsAdapterFactory,
         protected selectModalService: SelectModalService,
         protected preferences: UserPreferenceStore,
         protected systemConfigs: SystemConfigStore
@@ -77,6 +79,7 @@ export class TableAdapter {
             dataSource: this.store.recordList,
             selection: this.store.recordList,
             bulkActions: this.getBulkActionsDataSource(this.store),
+            tableActions: this.getTableActions(this.store),
             pagination: this.store.recordList,
 
             paginationType: this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigs.getConfigValue('listview_pagination_type'),
@@ -135,5 +138,9 @@ export class TableAdapter {
 
     getBulkActionsDataSource(store: ListViewStore): BulkActionsAdapter {
         return this.bulkActionsAdapterFactory.create(store);
+    }
+
+    private getTableActions(store: ListViewStore) {
+        return this.listviewTableActionsAdapterFactory.create(store);
     }
 }

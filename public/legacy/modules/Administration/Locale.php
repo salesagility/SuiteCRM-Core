@@ -76,6 +76,9 @@ if (isset($_REQUEST['process']) && $_REQUEST['process'] == 'true') {
     }
     $cfg->populateFromPost();
     $cfg->handleOverride();
+    require_once "include/portability/Services/Cache/CacheManager.php";
+    (new CacheManager())->markAsNeedsUpdate('app-metadata-system-configs');
+    (new CacheManager())->markAsNeedsUpdate('app-metadata-user-preferences-' . $current_user->id);
     if ($locale->invalidLocaleNameFormatUpgrade()) {
         $locale->removeInvalidLocaleNameFormatUpgradeNotice();
     }

@@ -97,4 +97,7 @@ if (!empty($_REQUEST['remove_default_id'])) {
     $cfg->handleOverride();
 }
 
+require_once "include/portability/Services/Cache/CacheManager.php";
+(new CacheManager())->markAsNeedsUpdate('app-metadata-system-configs');
+
 header("Location: index.php?action={$_POST['return_action']}&module={$_POST['return_module']}");

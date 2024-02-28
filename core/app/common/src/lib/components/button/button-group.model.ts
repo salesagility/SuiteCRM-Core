@@ -41,4 +41,5 @@ export interface ButtonGroupInterface {
     dropdownLabel?: string;
     dropdownOptions?: DropdownOptions;
     breakpoint?: number;
+    showAfterBreakpoint?: boolean;
 }

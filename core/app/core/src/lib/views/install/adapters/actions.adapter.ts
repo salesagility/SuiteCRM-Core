@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
@@ -81,23 +81,12 @@ export class InstallActionsAdapter extends BaseRecordActionsAdapter<InstallViewA
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.store.getActions(),
-                this.store.mode$,
-                this.store.stagingRecord$,
-            ]
-        ).pipe(
-            map((
-                [
-                    actions,
-                    mode
-                ]
-            ) => {
+        return this.store.getActions().pipe(
+            combineLatestWith(this.store.mode$, this.store.stagingRecord$),
+            map(([ actions, mode]: [Action[], ViewMode, Record<any, any>]) => {
                 if (!mode) {
                     return [];
                 }
-
                 return this.parseModeActions(actions, mode, this.store.getViewContext());
             })
         );

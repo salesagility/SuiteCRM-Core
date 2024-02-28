@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharEditFieldComponent} from './varchar.component';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {Field} from 'common';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
@@ -48,7 +48,7 @@ class VarcharEditFieldTestHostComponent {
     field: Field = {
         type: 'varchar',
         value: 'My Varchar',
-        formControl: new FormControl('My Varchar')
+        formControl: new UntypedFormControl('My Varchar')
     };
 }
 

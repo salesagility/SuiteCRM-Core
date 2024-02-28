@@ -25,8 +25,28 @@
  */
 
 .popover-wrapper {
-  z-index: 1;
-  left: 0.3em!important;
+  left: 1em!important;
+
+  .popover-arrow {
+    width: 0;
+    height: 0;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-right: 14px solid rgba(0,0,0,.2);
+    left: -14px;
+  }
+
+  .popover-arrow::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    border-right: 13px solid #fff;
+    position: absolute;
+    top: -13px;
+    left: 1px;
+  }
 }
 
 .scroll-thin {
@@ -50,3 +70,8 @@
     background: $nepal-grey;
   }
 }
+
+
+
+
+

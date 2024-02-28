@@ -50,7 +50,6 @@ import {ImageModule} from '../image/image.module';
         NgbAlertModule,
         ImageModule
     ],
-    entryComponents: [InstallErrorModalComponent],
     bootstrap: [InstallErrorModalComponent]
 })
 export class InstallErrorModalModule {

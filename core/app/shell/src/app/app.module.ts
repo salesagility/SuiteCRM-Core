@@ -28,11 +28,11 @@ import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 
-import {Apollo} from 'apollo-angular';
+import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
 import {ApolloLink, InMemoryCache} from '@apollo/client/core';
-import {onError} from '@apollo/link-error';
 import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
+import {onError} from '@apollo/client/link/error';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -45,7 +45,6 @@ import {
     ColumnChooserModule,
     CreateRecordModule,
     ErrorInterceptor,
-    FilterUiModule,
     FooterUiModule,
     FullPageSpinnerModule,
     ImageModule,
@@ -68,7 +67,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
-import {BnNgIdleService} from 'bn-ng-idle';
 import {AppInit} from '@app/app-initializer';
 import {GraphQLError} from 'graphql';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -88,7 +86,6 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         NavbarUiModule,
         MessageUiModule,
         ClassicViewUiModule,
-        FilterUiModule,
         ListModule,
         RecordModule,
         CreateRecordModule,
@@ -104,12 +101,12 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         NgbModule,
         FullPageSpinnerModule,
         MessageModalModule,
-        RecordListModalModule
+        RecordListModalModule,
+        ApolloModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
-        BnNgIdleService,
         AppInit,
         {
             provide: APP_INITIALIZER,

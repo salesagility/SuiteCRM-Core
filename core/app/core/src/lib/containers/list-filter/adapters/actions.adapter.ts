@@ -26,10 +26,10 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {LanguageStore} from '../../../store/language/language.store';
+import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
 import {SavedFilterStore} from '../store/saved-filter/saved-filter.store';
@@ -39,7 +39,7 @@ import {ListFilterStore} from '../store/list-filter/list-filter.store';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 import {SelectModalService} from "../../../services/modals/select-modal.service";
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 
 @Injectable()
 export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFilterActionData> {
@@ -67,20 +67,9 @@ export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFil
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.store.meta$,
-                this.store.mode$,
-                this.store.stagingRecord$,
-                this.language.vm$,
-            ]
-        ).pipe(
-            map((
-                [
-                    meta,
-                    mode
-                ]
-            ) => {
+        return this.store.meta$.pipe(
+            combineLatestWith(this.store.mode$, this.store.stagingRecord$,this.language.vm$),
+            map(([meta, mode]: [RecordViewMetadata, ViewMode, Record<any, any>, LanguageStrings]) => {
                 if (!mode || !meta) {
                     return [];
                 }

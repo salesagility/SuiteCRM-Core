@@ -132,7 +132,8 @@ export class FilterFieldBuilder extends FieldBuilder {
      * @returns {boolean} isInitialized
      */
     public isCriteriaFieldInitialized(record: SavedFilter, fieldName: string): boolean {
-        return !!record.criteriaFields[fieldName];
+        const criteriaField = record.criteriaFields[fieldName];
+        return !!criteriaField && !criteriaField.vardefBased;
     }
 
     /**

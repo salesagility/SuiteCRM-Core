@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {
     Action,
     deepClone,
@@ -109,8 +109,9 @@ export class InstallViewStore implements StateStore {
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
-        this.vm$ = combineLatest([this.record$, this.loading$]).pipe(
-            map(([record, loading]) => {
+        this.vm$ = this.record$.pipe(
+            combineLatestWith(this.loading$),
+            map(([record, loading]: [Record, boolean]) => {
                 this.vm = {record, loading} as InstallViewModel;
                 return this.vm;
             }));

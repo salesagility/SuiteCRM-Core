@@ -514,7 +514,9 @@ class RecordViewDefinitionHandler extends LegacyHandler
                         $cells[$definition['name']] = $definition;
                     }
 
-                    $cells[$definition['name']] = $definition;
+                    if (isset($definition['name'])){
+                        $cells[$definition['name']] = $definition;
+                    }
                 }
             }
         }

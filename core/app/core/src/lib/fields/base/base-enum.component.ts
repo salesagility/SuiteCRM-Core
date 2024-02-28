@@ -165,6 +165,11 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
         this.selectedValues = [];
 
+        if (this.field.criteria){
+            this.initValueLabel();
+            return;
+        }
+
         if (!this.field.value) {
             this.initEnumDefault();
             return;
@@ -182,10 +187,15 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             return;
         }
 
-        if (this.field.value) {
-            this.valueLabel = this.optionsMap[this.field.value];
+        this.initValueLabel();
+    }
+
+    protected initValueLabel () {
+        const fieldValue = this.field.value || this.field.criteria?.target || undefined;
+        if (fieldValue !== undefined) {
+            this.valueLabel = this.optionsMap[fieldValue];
             this.selectedValues.push({
-                value: this.field.value,
+                value: fieldValue,
                 label: this.valueLabel
             });
         }

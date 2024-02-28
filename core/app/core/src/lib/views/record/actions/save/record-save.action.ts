@@ -30,7 +30,7 @@ import {take} from 'rxjs/operators';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
-import {AppStateStore} from '../../../../store/app-state/app-state.store';
+import {NotificationStore} from '../../../../store/notification/notification.store';
 
 @Injectable({
     providedIn: 'root'
@@ -43,7 +43,7 @@ export class RecordSaveAction extends RecordActionHandler {
     constructor(
         protected message: MessageService,
         protected navigation: ModuleNavigation,
-        protected appState: AppStateStore
+        protected notificationStore: NotificationStore
     ) {
         super();
     }
@@ -65,7 +65,7 @@ export class RecordSaveAction extends RecordActionHandler {
                     const params = data.store.params;
                     const moduleName = data.store.getModuleName();
                     const id = record.id;
-                    this.appState.conditionalNotificationRefresh('edit');
+                    this.notificationStore.conditionalNotificationRefresh('edit');
                     this.navigateBack(this.navigation, params, id, moduleName, record);
                 });
                 return;

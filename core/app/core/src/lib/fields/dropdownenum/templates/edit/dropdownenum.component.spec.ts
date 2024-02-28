@@ -40,7 +40,7 @@ import {userPreferenceStoreMock} from '../../../../store/user-preference/user-pr
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {numberFormatterMock} from '../../../../services/formatters/number/number-formatter.spec.mock';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {DropdownEnumEditFieldModule} from './dropdownenum.module';
 import {DropdownEnumEditFieldComponent} from './dropdownenum.component';
 
@@ -58,7 +58,7 @@ class DropdownEnumEditFieldTestHostComponent {
         definition: {
             options: 'account_type_dom'
         },
-        formControl: new FormControl('_customer')
+        formControl: new UntypedFormControl('_customer')
     };
 }
 

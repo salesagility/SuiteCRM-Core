@@ -27,12 +27,15 @@
 -->
 <div *ngIf="config$" [class]="klass">
     <ng-container *ngFor="let item of buttons.expanded">
-        <scrm-button *ngIf="item && !isDropdown(item)"
+        <scrm-button *ngIf="item && !(item?.items ?? '')"
                      [config]="item">
         </scrm-button>
-        <scrm-dropdown-button *ngIf="item && isDropdown(item)"
+        <scrm-dropdown-button *ngIf="item && (item?.items ?? '') && ((item?.type ?? 'dropdown') === 'dropdown')"
                               [config]="item">
         </scrm-dropdown-button>
+        <scrm-grouped-button *ngIf="item && (item?.items ?? '') && ((item?.type ?? 'dropdown') === 'grouped')"
+                              [config]="item">
+        </scrm-grouped-button>
     </ng-container>
 
     <scrm-dropdown-button autoClose="outside"

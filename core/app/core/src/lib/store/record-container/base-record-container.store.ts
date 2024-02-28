@@ -134,15 +134,10 @@ export abstract class BaseRecordContainerStore<M> implements StateStore {
 
         this.setMetadataLoading(true);
 
-        const dataMap = {
-            $meta: this.loadMetadata(),
-            record: this.load()
-        };
-
-        const $data = forkJoin(dataMap);
+        const $data = forkJoin([this.loadMetadata(), this.load()]);
 
         return $data.pipe(
-            map(({meta, record}) => record),
+            map(([meta, record]) => record),
         );
     }
 

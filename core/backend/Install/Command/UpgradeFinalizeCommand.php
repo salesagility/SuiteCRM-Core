@@ -145,6 +145,10 @@ class UpgradeFinalizeCommand extends BaseStepExecutorCommand
         $result = parent::runSteps($input, $output, $context);
         $status = $result ? 0 : 1;
 
+        if ($result === true) {
+            $output->writeln($this->colorMessage('comment', 'Warning! Please re-set permissions after this upgrade step has completed'));
+        }
+
         // Force exit to avoid errors
         // Avoid having Symfony use the kernel while in the same process
         exit($status);

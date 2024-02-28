@@ -25,34 +25,30 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, filter, map, take, tap} from 'rxjs/operators';
-import {MessageService} from '../message/message.service';
 import {AuthService, SessionStatus} from './auth.service';
-import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {Process} from '../process/process.service';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
 import {emptyObject, isEmptyString} from 'common';
-import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {LanguageStore} from '../../store/language/language.store';
+import {NotificationStore} from '../../store/notification/notification.store';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard  {
     constructor(
-        protected message: MessageService,
         protected router: Router,
         protected authService: AuthService,
-        protected preferences: UserPreferenceStore,
         protected asyncActionService: AsyncActionService,
         protected appState: AppStateStore,
         protected routeConverter: RouteConverter,
-        protected configs: SystemConfigStore,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected notificationStore: NotificationStore
     ) {
     }
 
@@ -70,10 +66,10 @@ export class AuthGuard implements CanActivate {
      */
     protected authorizeUser(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // Note: this session and acl are not always booleans
-        return forkJoin({
-            session: this.authorizeUserSession(route, snapshot),
-            acl: this.authorizeUserACL(route)
-        }).pipe(map(({session, acl}) => {
+        return forkJoin([
+            this.authorizeUserSession(route, snapshot),
+            this.authorizeUserACL(route)
+        ]).pipe(map(([session, acl]: any) => {
 
                 if (session instanceof UrlTree) {
                     return session;
@@ -84,16 +80,18 @@ export class AuthGuard implements CanActivate {
                 return session && acl;
             }
         ));
+
+
     }
 
     /**
      * Authorize user acl
      *
-     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+     * @returns {object} Observable<boolean | UrlTree>
      * @param {ActivatedRouteSnapshot} activatedRoute information about the current route
      */
     protected authorizeUserACL(activatedRoute: ActivatedRouteSnapshot):
-        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        Observable<boolean | UrlTree> {
 
         const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute.url);
 
@@ -118,7 +116,6 @@ export class AuthGuard implements CanActivate {
                 queryParams: activatedRoute?.queryParams ?? []
             }
         } as AsyncActionInput;
-
         return this.asyncActionService.run(actionName, asyncData)
             .pipe(take(1),
                 map((process: Process) => {
@@ -140,8 +137,7 @@ export class AuthGuard implements CanActivate {
 
                     return false;
                 }),
-                catchError(() => of(homeUrlTree)),
-                tap((result: boolean | UrlTree) => result)
+                catchError(() => of(homeUrlTree))
             );
     }
 
@@ -153,7 +149,7 @@ export class AuthGuard implements CanActivate {
      * @param snapshot
      */
     protected authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
-        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        Observable<boolean | UrlTree> {
 
         if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
             return of(true);
@@ -187,8 +183,8 @@ export class AuthGuard implements CanActivate {
                             this.language.appStrings$.pipe(
                                 filter(appStrings => appStrings && !emptyObject(appStrings)),
                                 tap(() => {
-                                    this.appState.enableNotifications();
-                                    this.appState.refreshNotifications();
+                                    this.notificationStore.enableNotifications();
+                                    this.notificationStore.refreshNotifications();
                                 }),
                                 take(1)
                             ).subscribe();

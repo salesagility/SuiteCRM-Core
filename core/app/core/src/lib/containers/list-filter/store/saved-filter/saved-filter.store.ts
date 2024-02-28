@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, forkJoin, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
 import {
     ColumnDefinition,
     deepClone,
@@ -116,8 +116,9 @@ export class SavedFilterStore implements StateStore {
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.mode$ = this.state$.pipe(map(state => state.mode));
 
-        this.vm$ = combineLatest([this.stagingRecord$, this.mode$]).pipe(
-            map(([record, mode]) => {
+        this.vm$ = this.stagingRecord$.pipe(
+            combineLatestWith(this.mode$),
+            map(([record, mode]: [Record, ViewMode]) => {
                 this.vm = {record, mode} as FilterContainerData;
                 return this.vm;
             })
@@ -162,14 +163,9 @@ export class SavedFilterStore implements StateStore {
 
         this.metadataLoadingState.next(true);
 
-        const dataMap = {
-            $meta: this.meta$,
-            record: this.load()
-        };
+        const $data = forkJoin([this.meta$, this.load()]);
 
-        const $data = forkJoin(dataMap);
-
-        return $data.pipe(map(({meta, record}) => record));
+        return $data.pipe(map(([meta, record]) => record));
     }
 
     /**
@@ -208,6 +204,38 @@ export class SavedFilterStore implements StateStore {
         ).subscribe();
     }
 
+    initValidators(record: Record): void {
+        if(!record || !Object.keys(record?.fields).length) {
+            return;
+        }
+
+        Object.keys(record.fields).forEach(fieldName => {
+            const field = record.fields[fieldName];
+            const formControl = field?.formControl ?? null;
+            if (!formControl) {
+                return;
+            }
+
+            this.resetValidators(field);
+
+            const validators = field?.validators ?? [];
+            const asyncValidators = field?.asyncValidators ?? [];
+
+            if (validators.length) {
+                field?.formControl?.setValidators(validators);
+            }
+            if (asyncValidators.length) {
+                field?.formControl?.setAsyncValidators(asyncValidators);
+            }
+        });
+
+    }
+
+    resetValidators(field) {
+        field?.formControl?.clearValidators();
+        field?.formControl?.clearAsyncValidators();
+    }
+
     public initStaging(
         searchModule: string,
         filter: SavedFilter,
@@ -222,6 +250,7 @@ export class SavedFilterStore implements StateStore {
         this.recordStore.setListColumns(listColumns);
 
         this.recordStore.setStaging(filterRecord);
+        this.initValidators(this.recordStore.getStaging());
     }
 
     /**
@@ -298,10 +327,10 @@ export class SavedFilterStore implements StateStore {
      */
     public validate(): Observable<boolean> {
 
-        return forkJoin({
-            fields: this.recordStore.validate(),
-            criteria: this.validateCriteria()
-        }).pipe(map(({fields, criteria}) => fields && criteria));
+        return forkJoin([
+            this.recordStore.validate(),
+            this.validateCriteria()
+        ]).pipe(map(([fields, criteria]) => fields && criteria));
     }
 
     /**

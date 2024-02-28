@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {combineLatest} from 'rxjs';
+import {combineLatestWith} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {ListViewStore} from '../store/list-view/list-view.store';
@@ -33,9 +33,8 @@ import {ListViewStore} from '../store/list-view/list-view.store';
 @Injectable()
 export class ListViewSidebarWidgetAdapter {
 
-    config$ = combineLatest([
-        this.metadata.listMetadata$, this.store.showSidebarWidgets$, this.store.widgets$
-    ]).pipe(
+    config$ = this.metadata.listMetadata$.pipe(
+        combineLatestWith(this.store.showSidebarWidgets$, this.store.widgets$),
         map(([metadata, show, widgetsEnabled]) => {
 
             if (metadata.sidebarWidgets && metadata.sidebarWidgets.length) {

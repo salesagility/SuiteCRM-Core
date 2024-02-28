@@ -31,12 +31,13 @@ import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {ActivatedRoute, Params} from '@angular/router';
 import {RecordViewModel} from '../../store/record-view/record-view.store.model';
 import {ViewMode} from 'common';
+import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
 
 @Component({
     selector: 'scrm-record',
     templateUrl: './record.component.html',
     styleUrls: [],
-    providers: [RecordViewStore]
+    providers: [RecordViewStore, RecordViewSidebarWidgetService]
 })
 export class RecordComponent implements OnInit, OnDestroy {
     recordSub: Subscription;
@@ -46,7 +47,8 @@ export class RecordComponent implements OnInit, OnDestroy {
     constructor(
         protected appState: AppStateStore,
         protected recordStore: RecordViewStore,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        protected sidebarWidgetHandler: RecordViewSidebarWidgetService
     ) {
     }
 
@@ -68,6 +70,8 @@ export class RecordComponent implements OnInit, OnDestroy {
         if (this.recordSub) {
             this.recordSub.unsubscribe();
         }
+
+        this.sidebarWidgetHandler.destroy();
 
         this.recordStore.destroy();
     }

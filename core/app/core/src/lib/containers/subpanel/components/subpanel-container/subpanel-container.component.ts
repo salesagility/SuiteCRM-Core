@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, signal} from '@angular/core';
 import {map, take, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {SubpanelContainerConfig} from './subpanel-container.model';
@@ -46,8 +46,8 @@ export class SubpanelContainerComponent implements OnInit {
 
     @Input() config: SubpanelContainerConfig;
 
-    isCollapsed = false;
-    toggleIcon = 'arrow_down_filled';
+    isCollapsed = signal(false);
+    toggleIcon = signal('arrow_down_filled');
     maxColumns$: Observable<number>;
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
@@ -67,7 +67,7 @@ export class SubpanelContainerComponent implements OnInit {
 
     ngOnInit(): void {
         const module = this?.config?.parentModule ?? 'default';
-        this.isCollapsed = isTrue(this.preferences.getUi(module, 'subpanel-container-collapse') ?? false);
+        this.setCollapsed(isTrue(this.preferences.getUi(module, 'subpanel-container-collapse') ?? false));
 
         this.openSubpanels = this.preferences.getUi(module, 'subpanel-container-open-subpanels') ?? [];
 
@@ -106,10 +106,10 @@ export class SubpanelContainerComponent implements OnInit {
     }
 
     toggleSubPanels(): void {
-        this.isCollapsed = !this.isCollapsed;
-        this.toggleIcon = (this.isCollapsed) ? 'arrow_up_filled' : 'arrow_down_filled';
+        this.setCollapsed(!this.isCollapsed());
+
         const module = this?.config?.parentModule ?? 'default';
-        this.preferences.setUi(module, 'subpanel-container-collapse', this.isCollapsed);
+        this.preferences.setUi(module, 'subpanel-container-collapse', this.isCollapsed());
     }
 
     showSubpanel(key: string, item: SubpanelStore): void {
@@ -174,5 +174,14 @@ export class SubpanelContainerComponent implements OnInit {
                 params: {subpanel: vm.metadata.name},
             } as StatisticsQueryArgs,
         } as GridWidgetConfig;
+    }
+
+    protected setCollapsed(newCollapsedValue: boolean): void {
+        this.isCollapsed.set(newCollapsedValue);
+        this.setToggleIcon();
+    }
+
+    protected setToggleIcon(): void {
+        this.toggleIcon.set((this.isCollapsed()) ? 'arrow_up_filled' : 'arrow_down_filled');
     }
 }

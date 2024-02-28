@@ -6,7 +6,18 @@ parameters:
       - repair
       - UpgradeWizard
       - ConfigureTabs
+      - Locale
+      - PasswordManager
+      - ThemeSettings
+      - Languages
     module-builder:
       - index
     configurator:
       - edit
+    currencies:
+      - index
+    security-groups:
+      - index
+      - config
+    studio:
+      - wizard

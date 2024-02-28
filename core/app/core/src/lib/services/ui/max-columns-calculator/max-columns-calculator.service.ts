@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {ScreenSize, ScreenSizeObserverService} from '../screen-size-observer/screen-size-observer.service';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
@@ -43,8 +43,9 @@ export class MaxColumnsCalculator {
     }
 
     getMaxColumns(sidebarActive$: Observable<boolean>): Observable<number> {
-        return combineLatest([sidebarActive$, this.screenSize.screenSize$]).pipe(
-            map(([sidebarActive, screenSize]) => {
+        return sidebarActive$.pipe(
+            combineLatestWith(this.screenSize.screenSize$),
+            map(([sidebarActive, screenSize]: [boolean, ScreenSize]) => {
 
                 if (screenSize) {
                     this.screen = screenSize;

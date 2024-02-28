@@ -27,10 +27,29 @@
 import {ButtonInterface} from './button.model';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
-export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface;
+export type AnyButtonInterface = ButtonInterface | DropdownButtonInterface | GroupedButtonInterface;
 
-export interface DropdownButtonInterface extends ButtonInterface {
+export interface DropdownButtonSection {
+    label?: string;
+    labelKey?: string;
+    klass?: string | string[] | Set<string> | { [key: string]: any };
+    items?: AnyButtonInterface[];
+}
+
+export interface DropdownButtonSectionMap {
+    [key: string]: DropdownButtonSection;
+}
+
+export interface MultiItemButtonInterface extends ButtonInterface {
     wrapperKlass?: string | string[] | Set<string> | { [key: string]: any };
     items?: AnyButtonInterface[];
+    type?: string;
+}
+
+export interface DropdownButtonInterface extends MultiItemButtonInterface {
     placement?: PlacementArray;
+    sections?: DropdownButtonSectionMap;
+}
+
+export interface GroupedButtonInterface extends MultiItemButtonInterface {
 }

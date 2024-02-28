@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatestWith, Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map, shareReplay} from 'rxjs/operators';
-import {Panel, PanelRow, Record} from 'common';
+import {Panel, PanelRow, Record, ViewMode} from 'common';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {LanguageStore} from '../../../store/language/language.store';
@@ -51,11 +51,9 @@ export class InstallContentAdapter implements RecordContentDataSource {
     }
 
     getDisplayConfig(): Observable<RecordContentConfig> {
-
-        return combineLatest(
-            [this.store.getMetadata$(), this.store.mode$]
-        ).pipe(
-            map(([meta, mode]) => {
+        return this.store.getMetadata$().pipe(
+            combineLatestWith(this.store.mode$),
+            map(([meta, mode]: [InstallViewMetadata, ViewMode]) => {
                 const layout = this.getLayout(meta);
                 const maxColumns = meta.templateMeta.maxColumns || 2;
                 const tabDefs = meta.templateMeta.tabDefs;
@@ -71,9 +69,8 @@ export class InstallContentAdapter implements RecordContentDataSource {
     }
 
     getPanels(): Observable<Panel[]> {
-        return combineLatest(
-            [this.store.getMetadata$(), this.store.stagingRecord$, this.language.vm$]
-        ).pipe(
+        return this.store.getMetadata$().pipe(
+            combineLatestWith(this.store.stagingRecord$, this.language.vm$),
             map(([meta, record, languages]) => {
 
                 const panels = [];

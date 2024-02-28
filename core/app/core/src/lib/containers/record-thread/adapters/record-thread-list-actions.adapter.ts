@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, isTrue, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatestWith, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore} from '../../../store/language/language.store';
@@ -39,6 +39,7 @@ import {RecordThreadStore} from '../store/record-thread/record-thread.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordThreadListActionData} from "../actions/list-actions/record-thread-list.action";
 import {RecordThreadListActionManager} from "../actions/list-actions/record-thread-list-action-manager.service";
+import {RecordThreadListMetadata} from '../store/record-thread/record-thread-list.store.model';
 
 @Injectable()
 export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<RecordThreadListActionData> {
@@ -73,15 +74,15 @@ export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<Rec
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest([of(this.threadStore.getListMetadata()), of('list' as ViewMode)]).pipe(
-            map(([meta, mode]) => {
+        return of(this.threadStore.getListMetadata()).pipe(
+            combineLatestWith(of('list' as ViewMode)),
+            map(([meta, mode]: [RecordThreadListMetadata, ViewMode]) => {
 
                 if (!mode || !meta) {
                     return [];
                 }
                 return this.parseModeActions(meta.actions, mode, this.threadStore.getViewContext());
-
-            })
+            }),
         );
     }
 

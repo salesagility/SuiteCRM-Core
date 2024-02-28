@@ -26,7 +26,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ButtonGroupInterface, ButtonInterface} from 'common';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
@@ -47,10 +47,8 @@ export class ActionMenuComponent implements OnInit {
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
 
-    vm$ = combineLatest([
-        this.screenSize.screenSize$
-    ]).pipe(
-        map(([screenSize]) => {
+    vm$ = this.screenSize.screenSize$.pipe(
+        map((screenSize) => {
             if (screenSize) {
                 this.screen = screenSize;
             }

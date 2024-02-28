@@ -187,7 +187,7 @@
             <th align="left" scope="row" colspan="6"><h4>{$MOD.LBL_AOP_CASE_STATUS_SETTINGS}</h4></th>
         </tr>
         {$currentStatuses}
-        <tr><td><button type='button' id="addStatusButton">{$MOD.LBL_AOP_ADD_STATUS}</button></td></tr>
+        <tr><td><button class="button" type='button' id="addStatusButton">{$MOD.LBL_AOP_ADD_STATUS}</button></td></tr>
     </table>
     <table id='email_settings' width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view">
         <tr>
@@ -211,7 +211,6 @@
                 <input type="text" name="inbound_email_case_macro" id="inbound_email_case_macro" value="{$inbound_email_case_macro}">
                 <span>
                     {$MOD.LBL_CASE_MACRO_DESC}
-                    <br />
                     <i>{$MOD.LBL_CASE_MACRO_DESC2}</i>
                 </span>
             </td>

@@ -33,6 +33,7 @@ import {PaginationModule} from '../../pagination/pagination.module';
 import {BulkActionMenuModule} from '../../bulk-action-menu/bulk-action-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {LoadMoreModule} from "../../load-more/load-more.module";
+import {ActionGroupMenuModule} from "../../action-group-menu/action-group-menu.module";
 
 @NgModule({
     declarations: [TableFooterComponent],
@@ -42,7 +43,8 @@ import {LoadMoreModule} from "../../load-more/load-more.module";
         PaginationModule,
         BulkActionMenuModule,
         AngularSvgIconModule,
-        LoadMoreModule
+        LoadMoreModule,
+        ActionGroupMenuModule
     ]
 })
 export class TableFooterModule {

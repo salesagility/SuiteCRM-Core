@@ -30,6 +30,7 @@
      [placement]="getPlacement()"
      #dropDown="ngbDropdown"
      class="d-inline-block dropdown-button"
+     [class.sectioned-dropdown-menu]="sectionsEnabled"
      [ngClass]="config.wrapperKlass">
     <button [disabled]="disabled"
             [ngClass]="config.klass"
@@ -48,38 +49,61 @@
             <scrm-label [labelKey]="config.labelKey"></scrm-label>
         </ng-container>
 
-        <ng-content></ng-content>
     </button>
     <div ngbDropdownMenu>
 
-        <ng-container *ngFor="let item of config.items">
+        <ng-container *ngIf="sectionsEnabled">
 
-            <ng-container *ngIf="item && !isDropdown(item)">
-                <a ngbDropdownItem
-                   [ngClass]="item && item.klass"
-                   (click)="item && click(item.onClick, dropDown)">
+            <div *ngFor="let section of sections; last as isLast; first as isFirst"
+                 [ngClass]="section.klass ?? ''"
+                 [class.section-split]="!isFirst"
+                 [class.last-section]="isLast"
+                 [class.first-section]="isFirst">
+                <div class="dropdown-menu-item-header">
+                    <scrm-label [labelKey]="section.labelKey ?? section.label ?? ''" ></scrm-label>
+                </div>
 
-                    <div class="d-flex align-items-center">
-                        <div *ngIf="item.icon">
-                            <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
-                        </div>
-                        <div class="flex-grow-1">
-                            <ng-container *ngIf="item && item.label">
-                                {{item && item.label}}
-                            </ng-container>
-                            <ng-container *ngIf="item && !item.label && item.labelKey">
-                                <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey"
-                                            [module]="item.labelModule ?? ''"></scrm-label>
-                            </ng-container>
-                        </div>
-                    </div>
-                </a>
-            </ng-container>
+                <ng-container *ngFor="let item of section.items; let last = last">
+                    <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+                </ng-container>
 
-            <ng-container *ngIf="item && isDropdown(item)">
-                <scrm-dropdown-submenu (item-clicked)="close(dropDown)" [item]="item"></scrm-dropdown-submenu>
-            </ng-container>
+            </div>
 
         </ng-container>
+
+        <ng-container *ngIf="!sectionsEnabled">
+            <ng-container *ngFor="let item of buttons">
+                <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
+            </ng-container>
+        </ng-container>
+
     </div>
 </div>
+
+
+<ng-template #buttonTemplate let-item="item">
+
+    <ng-container *ngIf="item && !isDropdown(item)">
+        <a ngbDropdownItem [ngClass]="item && item.klass" (click)="item && click(item.onClick, dropDown)">
+            <div class="d-flex align-items-center">
+                <div *ngIf="item.icon">
+                    <scrm-image [image]="item.icon" [klass]="item.iconKlass || ''"></scrm-image>
+                </div>
+                <div class="dropdown-item-label flex-grow-1">
+                    <ng-container *ngIf="item && item.label">
+                        {{ item.label }}
+                    </ng-container>
+                    <ng-container *ngIf="item && !item.label && item.labelKey">
+                        <scrm-label *ngIf="item && item.labelKey" [labelKey]="item.labelKey"
+                                    [module]="item.labelModule ?? ''"></scrm-label>
+                    </ng-container>
+                </div>
+            </div>
+        </a>
+    </ng-container>
+
+    <ng-container *ngIf="item && isDropdown(item)">
+        <scrm-dropdown-submenu (item-clicked)="close(dropDown)" [item]="item"></scrm-dropdown-submenu>
+    </ng-container>
+
+</ng-template>

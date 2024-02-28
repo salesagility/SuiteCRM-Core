@@ -1,6 +1,6 @@
 import {Field, FieldMap, Record, SearchCriteria} from 'common';
 import {RecordList} from '../record-list/record-list.store';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 export interface SavedFilterAttributeMap {
     id?: string;
@@ -10,6 +10,7 @@ export interface SavedFilterAttributeMap {
     contents?: any;
     date_entered?: string;
     date_modified?: string;
+    quick_filter?: boolean;
 
     [key: string]: any;
 }
@@ -23,6 +24,7 @@ export interface SavedFilterFieldMap {
     contents?: Field;
     date_entered?: Field;
     date_modified?: Field;
+    quick_filter?: Field;
 
     [key: string]: Field;
 }
@@ -36,9 +38,10 @@ export interface SavedFilter extends Record {
     searchModule?: string;
     criteria?: SearchCriteria;
     criteriaFields?: FieldMap;
-    criteriaFormGroup?: FormGroup;
+    criteriaFormGroup?: UntypedFormGroup;
     attributes: SavedFilterAttributeMap;
     fields?: SavedFilterFieldMap;
+    readonly?: boolean;
 }
 
 export interface SavedFilterList extends RecordList {

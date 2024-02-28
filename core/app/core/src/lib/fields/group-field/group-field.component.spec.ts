@@ -30,7 +30,7 @@ import {GroupFieldComponent} from './group-field.component';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
 import {TagInputModule} from 'ngx-chips';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Record} from 'common';
@@ -142,7 +142,7 @@ describe('GroupFieldComponent', () => {
                         merge_filter: 'enabled',
                         required: false
                     },
-                    formControl: new FormControl('Sample Street')
+                    formControl: new UntypedFormControl('Sample Street')
                 },
                 billing_address_city: {
                     name: 'billing_address_city',
@@ -158,7 +158,7 @@ describe('GroupFieldComponent', () => {
                         merge_filter: 'enabled',
                         required: false
                     },
-                    formControl: new FormControl('Sample City')
+                    formControl: new UntypedFormControl('Sample City')
                 }
             }
         } as Record;

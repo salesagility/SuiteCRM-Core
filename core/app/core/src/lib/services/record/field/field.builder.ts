@@ -38,7 +38,7 @@ import {
     StringMap,
     ViewFieldDefinition
 } from 'common';
-import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';
 import {merge} from 'lodash-es';
@@ -177,6 +177,7 @@ export class FieldBuilder {
 
         field.type = viewField.type || definition.type;
         field.name = viewField.name || definition.name || '';
+        field.vardefBased = viewField?.vardefBased ?? definition?.vardefBased ?? false;
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
         field.display = (viewField.display || definition.display || 'default') as DisplayType;
         field.defaultDisplay = field.display;
@@ -197,10 +198,10 @@ export class FieldBuilder {
 
         if (field.type === 'line-items') {
             field.valueObjectArray = record.attributes[field.name];
-            field.itemFormArray = new FormArray([]);
-            field.formControl = new FormControl(formattedValue);
+            field.itemFormArray = new UntypedFormArray([]);
+            field.formControl = new UntypedFormControl(formattedValue);
         } else {
-            field.formControl = new FormControl(formattedValue);
+            field.formControl = new UntypedFormControl(formattedValue);
         }
 
         field.attributes = {};

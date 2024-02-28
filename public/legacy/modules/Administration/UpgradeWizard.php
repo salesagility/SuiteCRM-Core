@@ -45,7 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/Administration/UpgradeWizardCommon.php');
 require_once('ModuleInstall/PackageManager/PackageManagerDisplay.php');
 require_once('ModuleInstall/ModuleScanner.php');
-global $mod_strings;
+global $mod_strings, $current_user;
 $uh = new UpgradeHistory();
 
 function unlinkTempFiles()
@@ -360,6 +360,8 @@ print( "</ul>\n" );
 */
 
 $GLOBALS['log']->info("Upgrade Wizard view");
+require_once "include/portability/Services/Cache/CacheManager.php";
+(new CacheManager())->markAsNeedsUpdate('rebuild_all');
 ?>
 </td>
 </tr>

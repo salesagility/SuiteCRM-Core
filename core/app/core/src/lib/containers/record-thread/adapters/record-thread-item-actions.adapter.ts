@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, isTrue, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore} from '../../../store/language/language.store';
@@ -74,8 +74,9 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest([this.itemStore.meta$, this.itemStore.mode$]).pipe(
-            map(([meta, mode]) => {
+        return this.itemStore.meta$.pipe(
+            combineLatestWith(this.itemStore.mode$),
+            map(([meta, mode]: [any,ViewMode]) => {
 
                 if (!mode || !meta) {
                     return [];

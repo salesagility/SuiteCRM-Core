@@ -33,6 +33,7 @@ use App\Module\LegacyHandler\RecentlyViewed\RecentlyViewedHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\ViewDefinitions\Service\ViewDefinitionsProviderInterface;
 use Exception;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class ViewDefinitionsHandler
@@ -60,6 +61,11 @@ class ModuleMetadataProvider implements ModuleMetadataProviderInterface
     protected $favorites;
 
     /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
      * ModuleMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ViewDefinitionsProviderInterface $viewDefinitions
@@ -70,12 +76,14 @@ class ModuleMetadataProvider implements ModuleMetadataProviderInterface
         ModuleNameMapperInterface $moduleNameMapper,
         ViewDefinitionsProviderInterface $viewDefinitions,
         RecentlyViewedHandler $recentlyViewed,
-        FavoritesHandler $favorites
+        FavoritesHandler $favorites,
+        CacheInterface $cache
     ) {
         $this->moduleNameMapper = $moduleNameMapper;
         $this->viewDefinitions = $viewDefinitions;
         $this->recentlyViewed = $recentlyViewed;
         $this->favorites = $favorites;
+        $this->cache = $cache;
     }
 
     /**
@@ -84,16 +92,30 @@ class ModuleMetadataProvider implements ModuleMetadataProviderInterface
      */
     public function getMetadata(string $moduleName, array $exposed = []): ModuleMetadata
     {
+        global $current_user;
+
+        $key = 'app-metadata-module-metadata-' . $moduleName . '-' . $current_user->id;
+
+        $metadataArray = $this->cache->get($key, function () use ($moduleName, $exposed) {
+            $metadataArray = [];
+            $viewDefinitions = $this->viewDefinitions->getViewDefs($moduleName, $exposed);
+
+            $metadataArray['search'] = $viewDefinitions->getSearch() ?? [];
+            $metadataArray['mass_update'] = $viewDefinitions->getMassUpdate() ?? [];
+            $metadataArray['listview'] = $viewDefinitions->getListView() ?? [];
+            $metadataArray['subpanel'] = $viewDefinitions->getSubPanel() ?? [];
+            $metadataArray['recordview'] = $viewDefinitions->getRecordView() ?? [];
+            return $metadataArray;
+        });
+
         $metadata = new ModuleMetadata();
         $metadata->setId($moduleName);
+        $metadata->setSearch($metadataArray['search'] ?? []);
+        $metadata->setListView($metadataArray['listview'] ?? []);
+        $metadata->setMassUpdate($metadataArray['mass_update'] ?? []);
+        $metadata->setSubPanel($metadataArray['subpanel'] ?? []);
+        $metadata->setRecordView($metadataArray['recordview'] ?? []);
 
-        $viewDefinitions = $this->viewDefinitions->getViewDefs($moduleName, $exposed);
-
-        $metadata->setSearch($viewDefinitions->getSearch() ?? []);
-        $metadata->setListView($viewDefinitions->getListView() ?? []);
-        $metadata->setMassUpdate($viewDefinitions->getMassUpdate() ?? []);
-        $metadata->setSubPanel($viewDefinitions->getSubPanel() ?? []);
-        $metadata->setRecordView($viewDefinitions->getRecordView() ?? []);
         $metadata->setRecentlyViewed($this->recentlyViewed->getModuleTrackers($moduleName));
         $metadata->setFavorites($this->favorites->getModuleFavorites($moduleName));
 

@@ -24,30 +24,46 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, Input, signal} from '@angular/core';
 import {ChartDataSource} from 'common';
+import {fromEvent, Observable, Subscription} from "rxjs";
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
+import {debounceTime, tap} from "rxjs/operators";
 
 @Component({template: ''})
 export class BaseChartComponent {
     @Input() dataSource: ChartDataSource;
 
     height = 300;
-    view = [300, this.height];
+    view = signal([300, this.height]);
+    protected subs: Subscription[] = [];
 
-    constructor(protected elementRef:ElementRef) {
+    constructor(protected elementRef: ElementRef, protected screenSize: ScreenSizeObserverService) {
     }
 
     onResize(): void {
         this.calculateView();
     }
 
+    protected initResizeListener(): void {
+        const resize$ = fromEvent(window, 'resize').pipe(
+            tap(() => this.view.set([])),
+            debounceTime(300),
+        );
+
+        this.view.set([])
+        this.subs.push(resize$.pipe(debounceTime(50)).subscribe(() => {
+            this.calculateView();
+        }));
+    }
+
     protected calculateView(): void {
         let width;
-        const el =  (this.elementRef && this.elementRef.nativeElement) || {} as HTMLElement;
+        const el = (this.elementRef && this.elementRef.nativeElement) || {} as HTMLElement;
         const parentEl = (el.parentElement && el.parentElement.parentElement) || {} as HTMLElement;
         const parentWidth = (parentEl && parentEl.offsetWidth) || 0;
 
-        if (parentWidth > 0){
+        if (parentWidth > 0) {
             width = parentWidth;
         } else {
             width = window.innerWidth * 0.7;
@@ -56,7 +72,7 @@ export class BaseChartComponent {
                 width = window.innerWidth * 0.23;
             }
         }
-        this.view = [width, this.height];
+        this.view.set([width, this.height]);
     }
 
 }

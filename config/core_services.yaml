@@ -32,8 +32,10 @@ services:
       $baseActions: '%module.base_actions%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewLineActions: '%module.listview.line_action%'
+      $listViewTableActions: '%module.listview.table_action%'
       $listViewLineActionsLimits: '%module.listview.line_actions_limits%'
       $listViewSidebarWidgets: '%module.listview.sidebar_widgets%'
+      $listViewUrlQueryFilterMapping: '%module.listview.url_query_filter_mapping%'
       $listViewColumnLimits: '%module.listview.column_limits%'
       $listViewSettingsLimits: '%module.listview.settings_limits%'
       $listViewActionsLimits: '%module.listview.actions_limits%'
@@ -65,6 +67,8 @@ services:
       $adminOnlyModuleActions: '%system.admin_only_module_actions%'
       $navbarAdministrationOverrides: '%navbar.administration_override%'
       $quickActions: '%quick_actions%'
+      $graphqlShowDocs: '%graphql.graphql_show_docs%'
+
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -286,6 +290,10 @@ services:
 
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
+    public: true
+
+  graphql.introspection_manager:
+    alias: App\Security\GraphqlIntrospectionManager
     public: true
 
   entity_manager:

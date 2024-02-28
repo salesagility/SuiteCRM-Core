@@ -67,8 +67,9 @@ export class DateEditFieldComponent extends BaseDateComponent implements OnInit,
         // Note: convert empty form value to null for the ngb date validator to pass it
         if (isVoid(this.field.value) || isEmptyString(this.field.value)) {
             this.field.formControl.setValue(null);
+        } else {
+            this.field.formControl.setValue(this.formatter.toUserFormat(this.field.value, {toFormat: this.getDateFormat()}));
         }
-        this.field.formControl.setValue(this.formatter.toUserFormat(this.field.value, {toFormat: this.getDateFormat()}));
 
         const adapter = this.dateAdapter as DateAdapter;
         adapter.setUserFormat(this.getDateFormat());

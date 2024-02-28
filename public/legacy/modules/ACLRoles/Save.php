@@ -48,6 +48,8 @@ $role = BeanFactory::newBean('ACLRoles');
 if (isset($_REQUEST['record'])) {
     $role->id = $_POST['record'];
 }
+require_once "include/portability/Services/Cache/CacheManager.php";
+(new CacheManager())->markAsNeedsUpdate('rebuild_all');
 if (!empty($_REQUEST['name'])) {
     $role->name = $_POST['name'];
     $role->description = $_POST['description'];
@@ -70,7 +72,7 @@ if (!empty($_REQUEST['name'])) {
     foreach ($_POST as $name=>$value) {
         if (substr_count($name, 'act_guid') > 0) {
             $name = str_replace('act_guid', '', $name);
-    
+
             $role->setAction($role->id, $name, $value);
         }
     }

@@ -27,16 +27,23 @@
 -->
 <!-- Start List View Container Section -->
 
-<div *ngIf="(vm$ | async) as vm" class="list-view-container container-fluid pt-2">
+<div class="list-view-container container-fluid pt-2">
     <div class="row">
-        <div [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }" class="col-lg-9">
-            <scrm-table [config]="tableConfig"></scrm-table>
-        </div>
+        <ng-container *ngIf="!swapWidgets || (swapWidgets && !displayWidgets)">
+            <div [ngClass]="{ 'col-lg-12': !displayWidgets }"
+                 class="col-lg-9"
+            >
+                <scrm-table [config]="tableConfig"></scrm-table>
+            </div>
+        </ng-container>
 
-        <ng-container *ngIf="vm.sidebarWidgetConfig.widgetsEnabled">
-            <div [style.display]="getDisplay(!!(vm.sidebarWidgetConfig.show && vm.sidebarWidgetConfig.widgets))"
+
+        <ng-container *ngIf="sidebarWidgetConfig.widgetsEnabled">
+            <ng-container *ngIf="!swapWidgets || (swapWidgets && displayWidgets)">
+            <div [style.display]="widgetDisplayType"
+                 [class.mt-0]="swapWidgets"
                  class="col-lg-3 list-widget-container pl-0">
-                <div *ngFor="let widget of vm.sidebarWidgetConfig.widgets" class="mb-3">
+                <div *ngFor="let widget of sidebarWidgetConfig.widgets" class="mb-3">
                     <scrm-sidebar-widget [config]="widget"
                                          [context]="getViewContext()"
                                          [context$]="store.context$"
@@ -44,7 +51,10 @@
                     </scrm-sidebar-widget>
                 </div>
             </div>
+            </ng-container>
         </ng-container>
+
+
     </div>
 </div>
 

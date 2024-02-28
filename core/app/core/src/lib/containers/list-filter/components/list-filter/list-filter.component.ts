@@ -48,6 +48,8 @@ export class ListFilterComponent implements OnInit, OnDestroy {
     store: ListFilterStore;
     filterActionsAdapter: SavedFilterActionsAdapter;
 
+    gridConfig: RecordGridConfig;
+
     constructor(
         protected storeFactory: ListFilterStoreFactory,
         protected actionAdapterFactory: SavedFilterActionAdapterFactory
@@ -63,16 +65,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             record.fields = savedFilter.criteriaFields;
             return record;
         }));
-    }
-
-    ngOnDestroy(): void {
-        this.store.clear();
-        this.store = null;
-    }
-
-    getGridConfig(): RecordGridConfig {
-
-        return {
+        this.gridConfig = {
             record$: this.store.filterStore.stagingRecord$,
             mode$: this.store.filterStore.mode$,
             fields$: this.store.filterStore.getViewFieldsKeys$(),
@@ -81,14 +74,24 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             klass: 'mt-2 p-2 saved-search-container rounded',
             buttonClass: 'btn btn-outline-danger btn-sm',
             labelDisplay: 'inline',
+            rowClass: {
+                'align-items-start': true,
+                'align-items-center': false
+            },
+            colAlignItems: 'align-items-start',
             maxColumns$: of(4).pipe(shareReplay(1)),
             sizeMap$: of({
                 handset: 1,
                 tablet: 2,
-                web: 3,
+                web: 4,
                 wide: 4
-            } as ScreenSizeMap).pipe(shareReplay(1)),
-        } as RecordGridConfig;
+            } as ScreenSizeMap).pipe(shareReplay(1))
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.store.clear();
+        this.store = null;
     }
 
 }

@@ -22,56 +22,7 @@
             "polyfills": "core/app/shell/src/polyfills.ts",
             "tsConfig": "core/app/shell/tsconfig.app.json",
             "scripts": [
-              "node_modules/tinymce/tinymce.min.js",
-              "node_modules/tinymce/icons/default/icons.min.js",
-              "node_modules/tinymce/plugins/visualblocks/plugin.min.js",
-              "node_modules/tinymce/plugins/importcss/plugin.min.js",
-              "node_modules/tinymce/plugins/insertdatetime/plugin.min.js",
-              "node_modules/tinymce/plugins/fullscreen/plugin.min.js",
-              "node_modules/tinymce/plugins/anchor/plugin.min.js",
-              "node_modules/tinymce/plugins/spellchecker/plugin.min.js",
-              "node_modules/tinymce/plugins/advlist/plugin.min.js",
-              "node_modules/tinymce/plugins/pagebreak/plugin.min.js",
-              "node_modules/tinymce/plugins/imagetools/plugin.min.js",
-              "node_modules/tinymce/plugins/fullpage/plugin.min.js",
-              "node_modules/tinymce/plugins/textcolor/plugin.min.js",
-              "node_modules/tinymce/plugins/directionality/plugin.min.js",
-              "node_modules/tinymce/plugins/link/plugin.min.js",
-              "node_modules/tinymce/plugins/image/plugin.min.js",
-              "node_modules/tinymce/plugins/contextmenu/plugin.min.js",
-              "node_modules/tinymce/plugins/autosave/plugin.min.js",
-              "node_modules/tinymce/plugins/nonbreaking/plugin.min.js",
-              "node_modules/tinymce/plugins/bbcode/plugin.min.js",
-              "node_modules/tinymce/plugins/quickbars/plugin.min.js",
-              "node_modules/tinymce/plugins/template/plugin.min.js",
-              "node_modules/tinymce/plugins/searchreplace/plugin.min.js",
-              "node_modules/tinymce/plugins/emoticons/js/emojiimages.min.js",
-              "node_modules/tinymce/plugins/emoticons/js/emojis.min.js",
-              "node_modules/tinymce/plugins/emoticons/plugin.min.js",
-              "node_modules/tinymce/plugins/wordcount/plugin.min.js",
-              "node_modules/tinymce/plugins/media/plugin.min.js",
-              "node_modules/tinymce/plugins/visualchars/plugin.min.js",
-              "node_modules/tinymce/plugins/tabfocus/plugin.min.js",
-              "node_modules/tinymce/plugins/table/plugin.min.js",
-              "node_modules/tinymce/plugins/autoresize/plugin.min.js",
-              "node_modules/tinymce/plugins/noneditable/plugin.min.js",
-              "node_modules/tinymce/plugins/print/plugin.min.js",
-              "node_modules/tinymce/plugins/help/plugin.min.js",
-              "node_modules/tinymce/plugins/colorpicker/plugin.min.js",
-              "node_modules/tinymce/plugins/preview/plugin.min.js",
-              "node_modules/tinymce/plugins/codesample/plugin.min.js",
-              "node_modules/tinymce/plugins/lists/plugin.min.js",
-              "node_modules/tinymce/plugins/legacyoutput/plugin.min.js",
-              "node_modules/tinymce/plugins/save/plugin.min.js",
-              "node_modules/tinymce/plugins/autolink/plugin.min.js",
-              "node_modules/tinymce/plugins/code/plugin.min.js",
-              "node_modules/tinymce/plugins/textpattern/plugin.min.js",
-              "node_modules/tinymce/plugins/hr/plugin.min.js",
-              "node_modules/tinymce/plugins/charmap/plugin.min.js",
-              "node_modules/tinymce/plugins/paste/plugin.min.js",
-              "node_modules/tinymce/plugins/toc/plugin.min.js",
-              "node_modules/tinymce/themes/silver/theme.min.js",
-              "node_modules/tinymce/themes/mobile/theme.min.js"
+              "node_modules/tinymce/tinymce.min.js"
             ],
             "styles": [
               "node_modules/bootstrap-css-only/css/bootstrap.min.css",
@@ -92,11 +43,7 @@
                 ],
                 "output": "/themes/"
               },
-              {
-                "glob": "**/*",
-                "input": "node_modules/tinymce",
-                "output": "/tinymce/"
-              }
+              { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
             ],
             "allowedCommonJsDependencies": [
               "graphql-tag",
@@ -168,7 +115,7 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ngx-build-plus:extract-i18n",
           "options": {
             "browserTarget": "shell:build"
           }
@@ -245,18 +192,6 @@
             "tsConfig": "core/app/common/tsconfig.spec.json",
             "karmaConfig": "core/app/common/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "core/app/common/tsconfig.lib.json",
-              "core/app/common/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -288,21 +223,8 @@
               "node_modules/bootstrap-css-only/css/bootstrap.min.css"
             ],
             "scripts": [],
-            "assets": [
-            ],
+            "assets": [],
             "extraWebpackConfig": "core/app/core/webpack.config.spec.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "core/app/core/tsconfig.lib.json",
-              "core/app/core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -369,7 +291,7 @@
               ],
               "extraWebpackConfig": "extensions/defaultExt/app/webpack.prod.config.js"
             },
-            "dev" : {
+            "dev": {
               "outputPath": "public/extensions/defaultExt"
             }
           }
@@ -412,19 +334,6 @@
             "extraWebpackConfig": "extensions/defaultExt/app/webpack.config.js"
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "extensions/defaultExt/app/tsconfig.app.json",
-              "extensions/defaultExt/app/tsconfig.spec.json",
-              "extensions/defaultExt/app/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -440,7 +349,6 @@
       }
     }
   },
-  "defaultProject": "shell",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

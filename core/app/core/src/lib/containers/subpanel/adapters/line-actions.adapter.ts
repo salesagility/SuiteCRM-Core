@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Action, ActionContext, ViewMode} from 'common';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatestWith, Observable, of} from 'rxjs';
 import {map, shareReplay, take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../../services/message/message.service';
@@ -60,18 +60,14 @@ export class SubpanelLineActionsAdapter extends BaseRecordActionsAdapter<Subpane
 
     getActions(context: ActionContext = null): Observable<Action[]> {
 
-        return combineLatest(
-            [
-                this.store.metadata$.pipe(map(metadata => metadata.lineActions)),
-                of('list' as ViewMode).pipe(shareReplay()),
-            ]
-        ).pipe(
-            map(([actions, mode]) => {
-
+        return this.store.metadata$.pipe(map(metadata => metadata.lineActions)).pipe(
+            combineLatestWith(of('list' as ViewMode).pipe(shareReplay())),
+            map(([actions, mode]: [Action[], ViewMode]) => {
                 return this.parseModeActions(actions, mode, context);
             })
         );
     }
+
 
     protected buildActionData(action: Action, context?: ActionContext): SubpanelLineActionData {
         return {

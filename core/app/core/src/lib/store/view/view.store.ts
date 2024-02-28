@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {StateStore} from '../state';
 import {AppState, AppStateStore} from '../app-state/app-state.store';
 import {map, tap} from 'rxjs/operators';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {LanguageListStringMap, LanguageStore, LanguageStringMap, LanguageStrings} from '../language/language.store';
 import {NavbarModule, Navigation, NavigationStore} from '../navigation/navigation.store';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
@@ -66,21 +66,23 @@ export class ViewStore implements StateStore {
         this.appState$ = this.appStateStore.vm$;
         this.language$ = this.languageStore.vm$;
         this.navigation$ = this.navigationStore.vm$;
-        this.module$ = combineLatest([this.appState$, this.navigationStore.vm$]).pipe(
-            map(([appStateInfo, navigationInfo]) =>
+        this.module$ = this.appState$.pipe(
+            combineLatestWith(this.navigation$),
+            map(([appStateInfo, navigationInfo]: [AppState, Navigation]) =>
                 this.moduleNavigation.getModuleInfo(appStateInfo.module, navigationInfo))
         );
 
-        this.appData$ = combineLatest([this.appState$, this.module$, this.language$, this.navigation$]).pipe(
+        this.appData$ = this.appState$.pipe(
+            combineLatestWith(this.module$, this.language$, this.navigation$),
             map(([appState, module, language, navigation]) => {
                 this.appData = {appState, module, language, navigation} as AppData;
                 return this.appData;
             })
         );
 
-        this.metadata$ = metadataStore.metadata$.pipe(tap(metadata => {
-            this.metadata = metadata;
-        }));
+        this.metadata$ = metadataStore.metadata$.pipe(
+            tap(metadata => {this.metadata = metadata;})
+        );
     }
 
     clear(): void {

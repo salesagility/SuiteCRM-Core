@@ -32,6 +32,7 @@ import {RecordViewStore} from '../../../record/store/record-view/record-view.sto
 import {RecordViewModel} from '../../../record/store/record-view/record-view.store.model';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {ViewMode} from 'common';
+import {RecordViewSidebarWidgetService} from "../../../record/services/record-view-sidebar-widget.service";
 
 @Component({
     selector: 'scrm-create-record',
@@ -42,7 +43,8 @@ import {ViewMode} from 'common';
         {
             provide: RecordViewStore,
             useExisting: CreateViewStore
-        }
+        },
+        RecordViewSidebarWidgetService
     ]
 })
 export class CreateRecordComponent implements OnInit, OnDestroy {

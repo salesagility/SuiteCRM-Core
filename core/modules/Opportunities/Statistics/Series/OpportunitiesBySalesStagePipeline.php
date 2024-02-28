@@ -156,7 +156,7 @@ class OpportunitiesBySalesStagePipeline extends LegacyHandler implements Statist
     protected function runQuery(array $query, $bean): array
     {
         // send limit -2 to not add a limit
-        return $this->queryHandler->runQuery($bean, $query);
+        return $this->queryHandler->runQuery($bean, $query, -1, -2);
     }
 
     /**

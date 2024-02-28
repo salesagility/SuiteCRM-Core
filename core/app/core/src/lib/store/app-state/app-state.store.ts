@@ -25,16 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, Subscription, timer} from 'rxjs';
-import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {deepClone, isVoid, User} from 'common';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';
-import {MessageService} from "../../services/message/message.service";
-import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
-import {NotificationsService} from '../../containers/notifications/services/notifications.service';
-import {Process} from '../../services/process/process.service';
 import {SystemConfigStore} from '../system-config/system-config.store';
 
 export interface AppState {
@@ -47,9 +43,6 @@ export interface AppState {
     preLoginUrl?: string;
     currentUser?: User;
     activeRequests?: number;
-    notificationsEnabled?: boolean;
-    notificationsTotal?: number;
-    notificationsUnreadTotal?: number;
 }
 
 const initialState: AppState = {
@@ -62,9 +55,6 @@ const initialState: AppState = {
     preLoginUrl: null,
     currentUser: null,
     activeRequests: 0,
-    notificationsEnabled: false,
-    notificationsTotal: 0,
-    notificationsUnreadTotal: 0
 };
 
 let internalState: AppState = deepClone(initialState);
@@ -82,9 +72,6 @@ export class AppStateStore implements StateStore {
     view$: Observable<string>;
     initialAppLoading$: Observable<boolean>;
     activeRequests$: Observable<number>;
-    notificationsUnreadTotal$: Observable<number>;
-    notificationsTotal$: Observable<number>;
-    notificationsEnabled$: Observable<boolean>;
 
     /**
      * ViewModel that resolves once all the data is ready (or updated)...
@@ -96,14 +83,9 @@ export class AppStateStore implements StateStore {
     protected loadingQueue = {};
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
-    protected notificationStore: RecordThreadStore;
-
-    private notificationPageSize: number = 0;
 
     constructor(
         protected loadingBufferFactory: LoadingBufferFactory,
-        protected messageService: MessageService,
-        protected notificationService: NotificationsService,
         protected configs: SystemConfigStore
     ) {
 
@@ -112,11 +94,9 @@ export class AppStateStore implements StateStore {
         this.view$ = this.state$.pipe(map(state => state.view), distinctUntilChanged());
         this.initialAppLoading$ = this.state$.pipe(map(state => state.initialAppLoading), distinctUntilChanged());
         this.activeRequests$ = this.state$.pipe(map(state => state.activeRequests), distinctUntilChanged());
-        this.notificationsUnreadTotal$ = this.state$.pipe(map(state => state.notificationsUnreadTotal), distinctUntilChanged());
-        this.notificationsTotal$ = this.state$.pipe(map(state => state.notificationsTotal), distinctUntilChanged());
-        this.notificationsEnabled$ = this.state$.pipe(map(state => state.notificationsEnabled), distinctUntilChanged());
 
-        this.vm$ = combineLatest([this.loading$, this.module$, this.view$, this.initialAppLoading$]).pipe(
+        this.vm$ = this.loading$.pipe(
+            combineLatestWith(this.module$, this.view$, this.initialAppLoading$),
             map(([loading, module, view, initialAppLoading]) => ({
                 loading,
                 module,
@@ -141,15 +121,10 @@ export class AppStateStore implements StateStore {
     }
 
     public clearAuthBased(): void {
-        this.notificationStore.clear();
-        this.notificationStore = null;
     }
 
     public init(): void {
         this.initLoadingBuffer();
-        if (this.isLoggedIn()) {
-            this.initNotifications();
-        }
     }
 
     /**
@@ -180,151 +155,6 @@ export class AppStateStore implements StateStore {
     }
 
     /**
-     * Initialize notifications
-     */
-    public initNotifications() {
-        if (this.notificationStore) {
-            return;
-        }
-        this.notificationStore = this.notificationService.initStore();
-    }
-
-    /**
-     * Enable notifications
-     */
-    public enableNotifications(): void {
-        this.initNotifications();
-        this.updateState({...internalState, notificationsEnabled: true});
-    }
-
-    /**
-     * Disable notifications
-     */
-    public disableNotifications(): void {
-        this.disableNotificationAutoRefresh();
-        this.updateState({
-            ...internalState,
-            notificationsEnabled: false,
-            notificationsTotal: 0,
-            notificationsUnreadTotal: 0
-        });
-    }
-
-    /**
-     * Check if notifications are enabled
-     */
-    public areNotificationsEnabled(): boolean {
-        return internalState.notificationsEnabled;
-    }
-
-    /**
-     * Call notification refresh
-     */
-    public refreshNotifications(): void {
-        if (!this.areNotificationsEnabled()) {
-            return;
-        }
-        this.notificationStore.load(false).pipe(take(1)).subscribe(() => {
-            this.notificationService.onRefresh(this.notificationStore, this);
-        });
-    }
-
-    /**
-     * Mark current notifications as read
-     */
-    public markNotificationsAsRead(): void {
-
-        if (!this.areNotificationsEnabled()) {
-            return;
-        }
-
-        this.notificationStore.getRecordList().pagination$.pipe(
-            take(1),
-            tap(data => this.notificationPageSize = data.pageSize),
-            tap(data => this.setNotificationsTotal(data.total)),
-        ).subscribe();
-
-        let unreadCountFromRecords = this.notificationStore.getRecordList().records.filter(item => item.attributes.is_read === false).length;
-
-        let readCount = this.getNotificationsTotal() - this.getNotificationsUnreadTotal();
-
-        timer(500).pipe(take(1))
-            .subscribe(() => {
-                if (this.getNotificationsUnreadTotal() > 0 && (this.notificationPageSize > readCount || unreadCountFromRecords > 0)) {
-                    this.notificationService.markNotificationsAsRead(this.notificationStore)
-                        .subscribe((process: Process) => {
-                            const unreadCount = process?.data?.unreadCount ?? 0;
-                            this.setNotificationsUnreadTotal(unreadCount);
-                            this.setRecordAsReadTrue();
-                        });
-                }
-            });
-    }
-
-    /**
-     * Run conditional navigation auto-refresh
-     * @param view current view
-     */
-    public conditionalNotificationRefresh(view: string = ''): void {
-
-        if (!this.areNotificationsEnabled()) {
-            return;
-        }
-
-        const reloadActions = this.configs.getUi('notifications_reload_actions') ?? null;
-        const previousModule = this.getModule();
-
-        if (!view) {
-            view = this.getView();
-        }
-
-
-        if (!reloadActions || !previousModule) {
-            return;
-        }
-
-        const actions: string[] = reloadActions[previousModule];
-
-        if (!actions || !actions.length) {
-            return;
-        }
-
-        const reload = actions.some(action => {
-            return action === 'any' || action === view;
-        });
-
-        if (reload) {
-            this.refreshNotifications();
-        }
-    }
-
-    /**
-     * Disable notifications auto-refresh
-     */
-    public disableNotificationAutoRefresh(): void {
-        this.notificationStore.disableAutoRefresh();
-    }
-
-    /**
-     * Mark record as read
-     */
-    public setRecordAsReadTrue(): void {
-        this.notificationStore.getRecordList().records.forEach(record => {
-            if (!record.attributes.is_read) {
-                record.attributes.is_read = true;
-            }
-        });
-    }
-
-    /**
-     * Set notification as unread
-     * @param notificationsUnreadTotal
-     */
-    public setNotificationsUnreadTotal(notificationsUnreadTotal: number): void {
-        this.updateState({...internalState, notificationsUnreadTotal});
-    }
-
-    /**
      * On login handlers
      * @protected
      */
@@ -332,48 +162,11 @@ export class AppStateStore implements StateStore {
     }
 
     /**
-     * Set notification as total
-     * @param notificationsTotal
-     */
-    public setNotificationsTotal(notificationsTotal: number): void {
-        this.updateState({...internalState, notificationsTotal});
-    }
-
-    /**
-     * Get notification total
-     *
-     * @returns number
-     */
-    public getNotificationsTotal(): number {
-        return internalState.notificationsTotal;
-    }
-
-    /**
-     * Get unread notification count
-     *
-     * @returns number
-     */
-    public getNotificationsUnreadTotal(): number {
-        return internalState.notificationsUnreadTotal;
-    }
-
-    /**
      * On logout handlers
      * @protected
      */
     protected onLogout(): void {
-        this.disableNotifications();
-        this.clearAuthBased();
         this.updateState({...internalState, preLoginUrl: null});
-    }
-
-    /**
-     * Get Notification store
-     *
-     * @returns {object}
-     */
-    public getNotificationStore(): RecordThreadStore {
-        return this.notificationStore;
     }
 
     /**

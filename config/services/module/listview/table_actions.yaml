@@ -1,0 +1,15 @@
+parameters:
+  module.listview.table_action:
+    default:
+      actions:
+        select-columns:
+          key: select-columns
+          icon: column_chooser
+          titleKey: LBL_COLUMNS
+          params:
+            expanded: true
+          modes:
+            - list
+          klass:
+            - column-chooser-button
+    modules:

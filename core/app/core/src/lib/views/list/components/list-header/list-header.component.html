@@ -27,63 +27,44 @@
 -->
 <ng-container>
     <div class="list-view-header">
-        <ng-container *ngIf="displayResponsiveTable">
-            <div class="d-flex flex-nowrap">
-                <div class="row">
-                    <div class="col">
-                        <div class="order-3">
-                            <scrm-action-menu></scrm-action-menu>
-                        </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <div class="order-2">
-                            <scrm-module-title class="list-view-title" [title]="moduleTitle">
-                            </scrm-module-title>
-                        </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <div class="order-1">
-                            <scrm-settings-menu></scrm-settings-menu>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-        <ng-template [ngIf]="!displayResponsiveTable">
-            <div class="row mr-0 align-items-center">
-                <div class="col-md-4">
+        <div class="row align-items-start mr-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-sm-start">
                     <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
-                </div>
-                <div class="col-md-8">
-                    <div class="row mr-0 ml-1">
-                        <div class="w-100">
-                            <scrm-action-menu></scrm-action-menu>
-                        </div>
-                        <div class="w-100">
-                            <scrm-settings-menu></scrm-settings-menu>
-                        </div>
-                    </div>
+
+            </div>
+            <div class="col-md-8">
+                <div class="row justify-content-center justify-content-sm-end mr-0 ml-md-1">
+                    <scrm-settings-menu></scrm-settings-menu>
                 </div>
             </div>
-            <div class="list-view-hr-container">
-                <hr class="list-view-hr">
+        </div>
+
+        <div *ngIf="showQuickFilters && enableQuickFilters"
+             class="d-flex align-items-baseline w-100 justify-content-end pr-3">
+            <div class="text-nowrap text-muted fs-70 pl-1 mr-2 ">
+                <scrm-label labelKey="LBL_QUICK_FILTERS"></scrm-label>
             </div>
-            <div *ngIf="actionPanel === 'filters'" class="container-fluid pt-2 small-font">
-                <div class="row">
-                    <div class="col">
-                        <scrm-list-filter [config]="filterAdapter.getConfig()"></scrm-list-filter>
-                    </div>
+            <div class="quick-filter-border pr-xxl-1 mr-xxl-1">
+                <scrm-button-group *ngIf="quickFilters.config$" [config$]="quickFilters.config$" [klass]="'quick-filter-button'"></scrm-button-group>
+            </div>
+        </div>
+
+        <div class="list-view-hr-container">
+            <hr class="list-view-hr">
+        </div>
+        <div *ngIf="actionPanel === 'filters'" class="container-fluid pt-2 small-font">
+            <div class="row">
+                <div class="col">
+                    <scrm-list-filter [config]="filterAdapter.getConfig()"></scrm-list-filter>
                 </div>
             </div>
-            <div *ngIf="actionPanel === 'recordPanel' && recordPanelConfig" class="container-fluid pt-2 small-font">
-                <div class="row">
-                    <div class="col">
-                        <scrm-record-panel [config]="recordPanelConfig"></scrm-record-panel>
-                    </div>
+        </div>
+        <div *ngIf="actionPanel === 'recordPanel' && recordPanelConfig" class="container-fluid pt-2 small-font">
+            <div class="row">
+                <div class="col">
+                    <scrm-record-panel [config]="recordPanelConfig"></scrm-record-panel>
                 </div>
             </div>
-        </ng-template>
+        </div>
     </div>
 </ng-container>

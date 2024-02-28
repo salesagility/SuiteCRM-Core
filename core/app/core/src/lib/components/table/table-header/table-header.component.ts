@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {PaginationDataSource, SelectionDataSource} from 'common';
+import {ActionDataSource, PaginationDataSource, SelectionDataSource} from 'common';
 import {BulkActionDataSource} from '../../bulk-action-menu/bulk-action-menu.component';
 
 @Component({
@@ -36,6 +36,7 @@ export class TableHeaderComponent {
     @Input() selection: SelectionDataSource;
     @Input() bulkActions: BulkActionDataSource;
     @Input() pagination: PaginationDataSource;
+    @Input() tableActions: ActionDataSource;
     @Input() paginationType: string;
 
 

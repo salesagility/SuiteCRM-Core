@@ -29,8 +29,8 @@ import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
-import {combineLatest, Subscription, timer} from 'rxjs';
-import {debounce, map} from 'rxjs/operators';
+import {combineLatestWith, Subscription, timer} from 'rxjs';
+import {debounce, map, tap} from 'rxjs/operators';
 import {floor} from 'lodash-es';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {ModuleNavigation} from "../../../../services/navigation/module-navigation/module-navigation.service";
@@ -70,9 +70,9 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
         reloadMap.push(this.config.subpanelReload$);
 
         const subpanelsToWatch = ['history', 'activities'];
-
-        const reload$ = combineLatest(reloadMap).pipe(
-            map(([reload, subpanelReload]) => {
+        const reload$ = reloadMap[0].pipe(
+            combineLatestWith(...reloadMap),
+            map(([reload, subpanelReload={}]) => {
                 if (reload) {
                     return reload;
                 }
@@ -82,7 +82,8 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
                 }
 
                 return subpanelsToWatch.some(subpanelKey => !!subpanelReload[subpanelKey]);
-            }));
+            }),
+            );
 
         const debouncedReload = reload$.pipe(debounce(() => timer(1000)));
 

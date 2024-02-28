@@ -24,11 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {SeriesResult, SingleSeries} from 'common';
-import {Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
+import {debounceTime} from "rxjs/operators";
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
 
 @Component({
     selector: 'scrm-pie-grid-chart',
@@ -38,11 +39,14 @@ import {BaseChartComponent} from '../base-chart/base-chart.component';
 export class PieGridChartComponent extends BaseChartComponent implements OnInit, OnDestroy {
     results: SingleSeries;
     height = 700;
-    view = [300, this.height];
-    protected subs: Subscription[] = [];
+    minWidth = 100;
 
-    constructor(public language: LanguageStore, protected elementRef:ElementRef) {
-        super(elementRef);
+    constructor(
+        public language: LanguageStore,
+        protected elementRef: ElementRef,
+        protected screenSize: ScreenSizeObserverService
+    ) {
+        super(elementRef, screenSize);
     }
 
     ngOnInit(): void {
@@ -50,9 +54,13 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
             this.height = this.dataSource.options.height;
         }
 
-        this.calculateView();
+        if (this?.dataSource?.options?.minWidth) {
+            this.minWidth = this.dataSource.options.minWidth;
+        }
 
-        this.subs.push(this.dataSource.getResults().subscribe(value => {
+        this.initResizeListener();
+
+        this.subs.push(this.dataSource.getResults().pipe(debounceTime(500)).subscribe(value => {
             this.parseResults(value);
             this.calculateHeightBasedOnResults();
             this.calculateView();
@@ -79,7 +87,7 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
 
     protected calculateHeightBasedOnResults(): void {
         if (this.results && this.results.length) {
-            const perRow = Math.floor(this.view[0] / 170);
+            const perRow = Math.floor(this.view()[0] / 170);
             this.height = (Math.floor(this.results.length / perRow) * 200);
         } else {
             this.height = 50;
@@ -103,6 +111,29 @@ export class PieGridChartComponent extends BaseChartComponent implements OnInit,
                 });
             });
         }
+    }
+
+    protected calculateView(): void {
+        let width;
+        const el = (this.elementRef && this.elementRef.nativeElement) || {} as HTMLElement;
+        const parentEl = (el.parentElement && el.parentElement.parentElement) || {} as HTMLElement;
+        const parentWidth = (parentEl && parentEl.offsetWidth) || 0;
+
+        if (parentWidth > 0) {
+            width = parentWidth;
+        } else {
+            width = window.innerWidth * 0.7;
+
+            if (window.innerWidth > 990) {
+                width = window.innerWidth * 0.23;
+            }
+        }
+
+        if (width > 239) {
+            this.view.set([width, this.height]);
+            return;
+        }
+        this.view.set([width, 800]);
     }
 
 }

@@ -300,19 +300,19 @@ export class SubpanelStore implements StateStore {
      * @param {boolean} useCache if to use cache
      * @returns {object} Observable<Statistic>
      */
-    public loadAllStatistics(useCache = true): Observable<StatisticsMap> {
+    public loadAllStatistics(useCache = true): Observable<Statistic[]> {
         if (!this.statistics || !Object.keys(this.statistics).length) {
             return null;
         }
 
-        const stats$ = {};
 
+        const stats$ = [];
         Object.keys(this.statistics).forEach(statisticKey => {
 
             if (!this.statistics[statisticKey]) {
                 return;
             }
-            stats$[statisticKey] = this.loadStatistics(statisticKey, useCache);
+            stats$.push(this.loadStatistics(statisticKey, useCache));
         });
 
         return forkJoin(stats$);

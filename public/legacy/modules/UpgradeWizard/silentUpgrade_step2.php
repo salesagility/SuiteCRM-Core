@@ -386,6 +386,7 @@ require_once 'modules/Administration/QuickRepairAndRebuild.php';
 $rac = new RepairAndClear();
 $rac->clearVardefs();
 $rac->rebuildExtensions();
+$rac->clearCoreCache();
 //bug: 44431 - defensive check to ensure the method exists since upgrades to 6.2.0 may not have this method define yet.
 if (method_exists($rac, 'clearExternalAPICache')) {
     $rac->clearExternalAPICache();

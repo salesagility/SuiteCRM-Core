@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
@@ -138,25 +138,11 @@ export class NavigationStore implements StateStore {
         this.quickActions$ = this.state$.pipe(map(state => state.quickActions), distinctUntilChanged());
 
 
-        this.vm$ = combineLatest(
-            [
-                this.tabs$,
-                this.groupedTabs$,
-                this.modules$,
-                this.userActionMenu$,
-                this.maxTabs$,
-                this.quickActions$
-            ])
-            .pipe(
-                map((
-                    [
-                        tabs,
-                        groupedTabs,
-                        modules,
-                        userActionMenu,
-                        maxTabs,
-                        quickActions
-                    ]) => ({tabs, groupedTabs, modules, userActionMenu, maxTabs, quickActions})
+        this.vm$ = this.tabs$.pipe(
+                combineLatestWith(this.groupedTabs$, this.modules$, this.userActionMenu$, this.maxTabs$,  this.quickActions$),
+                map(([tabs, groupedTabs, modules, userActionMenu, maxTabs, quickActions]) => ({
+                    tabs, groupedTabs, modules, userActionMenu, maxTabs, quickActions
+                })
                 )
             );
     }

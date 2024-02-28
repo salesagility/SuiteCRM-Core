@@ -29,7 +29,7 @@ import {Component} from '@angular/core';
 import {EnumEditFieldComponent} from './enum.component';
 import {Field} from 'common';
 import {TagInputModule} from 'ngx-chips';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
@@ -57,7 +57,7 @@ class EnumEditFieldTestHostComponent {
         definition: {
             options: 'account_type_dom'
         },
-        formControl: new FormControl('_customer')
+        formControl: new UntypedFormControl('_customer')
     };
 }
 

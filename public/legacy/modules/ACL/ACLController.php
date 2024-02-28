@@ -208,7 +208,7 @@ class ACLController
         if (is_admin($current_user)) {
             return;
         }
-        $actions = ACLAction::getUserActions($current_user->id, false);
+        $actions = ACLAction::getUserActions($current_user->id, true);
 
         $compList = array();
         if ($by_value) {

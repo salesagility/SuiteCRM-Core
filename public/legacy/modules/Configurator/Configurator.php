@@ -325,13 +325,17 @@ class Configurator
 
     public function saveConfig()
     {
+
         if ($this->saveImages() === false) {
             return false;
         }
 
+
         $this->populateFromPost();
         $this->handleOverride();
         $this->clearCache();
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('rebuild_all');
     }
 
     public function readOverride()

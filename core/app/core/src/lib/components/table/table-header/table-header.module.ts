@@ -32,6 +32,7 @@ import {TableHeaderComponent} from './table-header.component';
 import {PaginationModule} from '../../pagination/pagination.module';
 import {BulkActionMenuModule} from '../../bulk-action-menu/bulk-action-menu.module';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ActionGroupMenuModule} from "../../action-group-menu/action-group-menu.module";
 
 @NgModule({
     declarations: [TableHeaderComponent],
@@ -40,7 +41,8 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
         CommonModule,
         PaginationModule,
         BulkActionMenuModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        ActionGroupMenuModule
     ]
 })
 export class TableHeaderModule {

@@ -25,11 +25,11 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {Action, ActionContext, SearchCriteria, SubPanelDefinition, ViewMode} from 'common';
+import {combineLatest, combineLatestWith, Observable} from 'rxjs';
+import {map, take, tap} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {LanguageStore} from '../../../store/language/language.store';
+import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';
 import {Process} from '../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
@@ -65,18 +65,9 @@ export class SubpanelActionsAdapter extends BaseRecordActionsAdapter<SubpanelAct
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.store.metadata$,
-                this.language.vm$,
-                this.store.criteria$
-            ]
-        ).pipe(
-            map((
-                [
-                    meta
-                ]
-            ) => {
+        return this.store.metadata$.pipe(
+            combineLatestWith(this.language.vm$, this.store.criteria$),
+            map(([meta, language, criteria]: [SubPanelDefinition, LanguageStrings, SearchCriteria]) => {
                 if (!meta) {
                     return [];
                 }

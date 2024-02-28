@@ -44,8 +44,7 @@ import {ButtonModule} from "../button/button.module";
         ModalModule,
         LabelModule,
         ButtonModule
-    ],
-    entryComponents: [ColumnChooserComponent]
+    ]
 })
 export class ColumnChooserModule {
 }

@@ -34,4 +34,8 @@
   .radioenum-input input[type=radio]:checked + label:after {
     background: $coral-pink;
   }
+
+  .radioenum {
+    padding-top: 3px;
+  }
 }

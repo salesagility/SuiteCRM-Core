@@ -139,6 +139,9 @@ if (!empty($_POST['saveConfig'])) {
 
         $focus->saveConfig();
 
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('app-metadata-system-configs');
+
         header('Location: index.php?module=Administration&action=index');
     }
 }

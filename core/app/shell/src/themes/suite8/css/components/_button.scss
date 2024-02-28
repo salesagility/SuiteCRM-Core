@@ -172,24 +172,72 @@ button {
   background-color: $astral-blue;
 }
 
-.settings-button {
+.clear-filter-button,
+.clear-filter-button.btn,
+.settings-button.clear-filter-button,
+.settings-button.clear-filter-button.btn {
+  padding-left: .55rem;
+  padding-right: .55rem;
+}
+
+.settings-button,
+.settings-button.btn {
   background-color: $nepal-grey;
+  color: $off-white;
   padding: 0.3em 1em;
   font-size: 0.8em;
   font-weight: bold;
   height: 2.2em;
 }
 
-.settings-button:hover {
+.settings-button:hover,
+.settings-button.btn:hover {
   background-color: $pale-blue;
 }
 
-.settings-button.active {
+.settings-button.active,
+.settings-button.btn.active {
   background-color: $midnight-blue;
 }
 
-.saved-filters-button, .quick-filter-button {
-  display: none;
+.settings-button.btn-outline-main,
+.settings-button.btn.btn-outline-main {
+  background-color: transparent;
+}
+
+.settings-button.btn-outline-main:hover,
+.settings-button.btn.btn-outline-main:hover {
+  background-color: $midnight-blue;
+}
+
+.settings-button.active,
+.settings-button.btn.active {
+  background-color: $midnight-blue;
+}
+
+.settings-button.btn-outline-main.active,
+.settings-button.btn.btn-outline-main.active {
+  background-color: $midnight-blue;
+}
+
+.settings-button.btn-outline-main.active:hover,
+.settings-button.btn.btn-outline-main.active:hover {
+  background-color: transparent;
+  border-color: transparent;
+  color: $midnight-blue;
+  fill: $midnight-blue;
+  stroke: $midnight-blue;
+}
+
+.quick-filter-button {
+  .settings-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    padding: 0.3em .5em;
+    color: $off-white;
+  }
 }
 
 .action-button.disabled, .settings-button.disabled {
@@ -224,6 +272,33 @@ button {
 }
 
 .bulk-action-button::after {
+  position: relative;
+  margin-left: 3em;
+}
+
+.table-action-button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: 0.09em solid $light-grey;
+  -webkit-border-radius: 0.15em;
+  -moz-border-radius: 0.15em;
+  border-radius: 0.15em;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  padding: 0.3em 0.5em;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: $white;
+  text-align: left;
+}
+
+.table-action-button:hover {
+  background-color: $astral-blue;
+  color: $white;
+}
+
+.table-action-button::after {
   position: relative;
   margin-left: 3em;
 }

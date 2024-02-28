@@ -24,21 +24,37 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
-import {Action, ActionContext, ModeActions, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {RecordViewStore} from '../store/record-view/record-view.store';
-import {RecordActionManager} from '../actions/record-action-manager.service';
-import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {RecordActionData} from '../actions/record.action';
-import {LanguageStore} from '../../../store/language/language.store';
-import {MessageService} from '../../../services/message/message.service';
-import {Process} from '../../../services/process/process.service';
-import {ConfirmationModalService} from '../../../services/modals/confirmation-modal.service';
-import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
-import {SelectModalService} from '../../../services/modals/select-modal.service';
+import { combineLatestWith, Observable } from 'rxjs';
+import {
+    map,
+    take,
+} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import {
+    Action,
+    ActionContext,
+    ActionHandler,
+    LogicDefinitions,
+    ModeActions,
+    Record,
+    ViewMode,
+    Panel
+} from 'common';
+import { MetadataStore, RecordViewMetadata } from '../../../store/metadata/metadata.store.service';
+import { RecordViewStore } from '../store/record-view/record-view.store';
+import { RecordActionManager } from '../actions/record-action-manager.service';
+import {
+    AsyncActionInput,
+    AsyncActionService,
+} from '../../../services/process/processes/async-action/async-action';
+import { RecordActionData } from '../actions/record.action';
+import { LanguageStore, LanguageStrings } from '../../../store/language/language.store';
+import { MessageService } from '../../../services/message/message.service';
+import { Process } from '../../../services/process/process.service';
+import { ConfirmationModalService } from '../../../services/modals/confirmation-modal.service';
+import { BaseRecordActionsAdapter } from '../../../services/actions/base-record-action.adapter';
+import { SelectModalService } from '../../../services/modals/select-modal.service';
+import { RecordActionDisplayTypeLogic } from '../action-logic/display-type/display-type.logic';
 
 @Injectable()
 export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionData> {
@@ -74,7 +90,8 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
         protected asyncActionService: AsyncActionService,
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
-        protected selectModalService: SelectModalService
+        protected selectModalService: SelectModalService,
+        protected displayTypeLogic: RecordActionDisplayTypeLogic,
     ) {
         super(
             actionManager,
@@ -88,21 +105,9 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     }
 
     getActions(context?: ActionContext): Observable<Action[]> {
-        return combineLatest(
-            [
-                this.metadata.recordViewMetadata$,
-                this.store.mode$,
-                this.store.record$,
-                this.store.language$,
-                this.store.widgets$,
-            ]
-        ).pipe(
-            map((
-                [
-                    meta,
-                    mode
-                ]
-            ) => {
+        return this.metadata.recordViewMetadata$.pipe(
+            combineLatestWith(this.store.mode$, this.store.record$, this.store.language$, this.store.widgets$, this.store.panels$),
+            map(([meta, mode]: [RecordViewMetadata, ViewMode, Record, LanguageStrings, boolean, Panel[]]) => {
                 if (!mode || !meta) {
                     return [];
                 }
@@ -115,17 +120,18 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
     protected buildActionData(action: Action, context?: ActionContext): RecordActionData {
         return {
             store: this.store,
-            action: action
+            action,
         } as RecordActionData;
     }
 
     /**
      * Build backend process input
      *
-     * @param action
-     * @param actionName
-     * @param moduleName
-     * @param context
+     * @param {Action} action Action
+     * @param {string} actionName Action Name
+     * @param {string} moduleName Module Name
+     * @param {ActionContext|null} context Context
+     * @returns {AsyncActionInput} Built backend process input
      */
     protected buildActionInput(action: Action, actionName: string, moduleName: string, context: ActionContext = null): AsyncActionInput {
         const baseRecord = this.store.getBaseRecord();
@@ -150,5 +156,21 @@ export class RecordActionsAdapter extends BaseRecordActionsAdapter<RecordActionD
 
     protected reload(action: Action, process: Process, context?: ActionContext): void {
         this.store.load(false).pipe(take(1)).subscribe();
+    }
+
+    protected shouldDisplay(actionHandler: ActionHandler<RecordActionData>, data: RecordActionData): boolean {
+
+        const displayLogic: LogicDefinitions | null = data?.action?.displayLogic ?? null;
+        let toDisplay = true;
+
+        if (displayLogic && Object.keys(displayLogic).length) {
+            toDisplay = this.displayTypeLogic.runAll(displayLogic, data);
+        }
+
+        if (!toDisplay) {
+            return false;
+        }
+
+        return actionHandler && actionHandler.shouldDisplay(data);
     }
 }

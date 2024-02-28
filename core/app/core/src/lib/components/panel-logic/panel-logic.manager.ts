@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {PanelLogicActionData} from './panel-logic.action';
 import {Action, ActionContext, Field, Record, ViewMode, Panel} from 'common';
-import {DisplayTypeAction} from './display-type/display-type.action';
+import {PanelLogicDisplayTypeAction} from './display-type/panel-logic-display-type-action.service';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +36,7 @@ import {DisplayTypeAction} from './display-type/display-type.action';
 export class PanelLogicManager extends BaseActionManager<PanelLogicActionData> {
 
     constructor(
-        displayType: DisplayTypeAction,
+        displayType: PanelLogicDisplayTypeAction,
     ) {
         super();
         displayType.modes.forEach(mode => this.actions[mode][displayType.key] = displayType);

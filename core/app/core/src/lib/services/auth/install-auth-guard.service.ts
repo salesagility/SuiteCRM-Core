@@ -25,8 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
-import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
+import {ActivatedRouteSnapshot, Router, UrlTree} from '@angular/router';
+import {RouteConverter} from '../navigation/route-converter/route-converter.service';
 import {AsyncActionService} from '../process/processes/async-action/async-action';
 import {MessageService} from '../message/message.service';
 import {Observable, of} from 'rxjs';
@@ -38,7 +38,7 @@ import {AuthService, SessionStatus} from './auth.service';
 @Injectable({
     providedIn: 'root'
 })
-export class InstallAuthGuard implements CanActivate {
+export class InstallAuthGuard  {
     constructor(
         protected systemConfigStore: SystemConfigStore,
         private authService: AuthService,
@@ -65,7 +65,6 @@ export class InstallAuthGuard implements CanActivate {
         const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
-        // this.message.removeMessages();
         return this.authService.fetchSessionStatus()
             .pipe(
                 take(1),

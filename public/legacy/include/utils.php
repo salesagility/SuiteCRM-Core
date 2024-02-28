@@ -241,7 +241,6 @@ function make_sugar_config(&$sugar_config)
         'upload_dir' => $upload_dir, // this must be set!!
         'upload_maxsize' => empty($upload_maxsize) ? 30000000 : $upload_maxsize,
         'allowed_preview' => [
-            'pdf',
             'gif',
             'png',
             'jpeg',
@@ -296,6 +295,9 @@ function make_sugar_config(&$sugar_config)
             'SecurityGroups' => false,
             'AOW_WorkFlow' => false
         ],
+        'valid_imap_ports' => [
+            '110', '143', '993', '995'
+        ]
     );
 }
 
@@ -519,7 +521,6 @@ function get_sugar_config_defaults(): array
             'bmp'
         ],
         'allowed_preview' => [
-            'pdf',
             'gif',
             'png',
             'jpeg',
@@ -600,6 +601,9 @@ function get_sugar_config_defaults(): array
             'SecurityGroups' => false,
             'AOW_WorkFlow' => false,
         ],
+        'valid_imap_ports' => [
+            '110', '143', '993', '995'
+        ]
     ];
 
     if (!is_object($locale)) {
@@ -2017,7 +2021,7 @@ function get_select_options_with_id_separate_key($label_list, $key_list, $select
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-                ($option_key !== '' && $selected_key === $option_key) || (
+                ($option_key !== '' && $selected_key == $option_key) || (
                     $option_key === '' && (($selected_key === '' && !$massupdate) || $selected_key === '__SugarMassUpdateClearField__')
                 ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
@@ -2764,7 +2768,7 @@ function securexss($uncleanString)
     $partialString = str_replace(array_keys($xss_cleanup), $xss_cleanup, $uncleanString);
 
     $antiXss = new AntiXSS();
-    $antiXss->removeEvilAttributes(['style']);
+    $antiXss->removeEvilAttributes(['style', 'onerror']);
 
     return $antiXss->xss_clean($partialString);
 }
@@ -2788,21 +2792,23 @@ function securexsskey($value, $die = true)
  * @param string|null $value
  * @return string
  */
-function purify_html(?string $value): string {
+function purify_html(?string $value, array $extraOptions = []): string {
 
     if (($value ?? '') === '') {
         return '';
     }
 
-    $cleanedValue = htmlentities((string) SugarCleaner::cleanHtml($value, true));
+    $sanitizer = new SuiteCRM\HtmlSanitizer($extraOptions);
+
+    $cleanedValue = htmlentities($sanitizer->clean($value, true));
     $decoded = html_entity_decode($cleanedValue);
     $doubleDecoded = html_entity_decode($decoded);
 
     if (stripos($decoded, '<script>') !== false || stripos($doubleDecoded, '<script>') !== false){
-        $cleanedValue = '';
+        $doubleDecoded = '';
     }
 
-    $doubleCleanedValue = htmlentities((string) SugarCleaner::cleanHtml($doubleDecoded, true));
+    $doubleCleanedValue = htmlentities($sanitizer->clean($doubleDecoded, true));
 
     return $doubleCleanedValue;
 }
@@ -6334,4 +6340,16 @@ function isSelfRequest($endpoint) : bool {
     }
 
     return stripos((string) $endpoint, (string) $domain) !== false || stripos((string) $endpoint, (string) $siteUrl) !== false;
+}
+
+/**
+ * Get currency ID directly from the record, if property is empty -> use default currency ID
+ * @param $module
+ * @param $id
+ * @return string
+ */
+function getCurrencyId($module, $id)
+{
+    global $locale;
+    return BeanFactory::getBean($module, $id)->currency_id ?? $locale->getPrecedentPreference('currency');
 }

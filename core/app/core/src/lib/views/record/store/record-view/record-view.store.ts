@@ -24,12 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import { isEmpty } from 'lodash-es';
+import { BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription } from 'rxjs';
+import { catchError, distinctUntilChanged, finalize, map, take, tap } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
+import { Params } from '@angular/router';
 import {
     BooleanMap,
     deepClone,
+    Field,
     FieldDefinitionMap,
+    FieldLogicMap,
+    FieldMetadata,
     isVoid,
     Record,
     StatisticsMap,
@@ -37,10 +43,12 @@ import {
     SubPanelMeta,
     ViewContext,
     ViewFieldDefinition,
-    ViewMode
+    ViewFieldDefinitionMap,
+    ViewMode,
+    Panel,
+    PanelRow,
 } from 'common';
-import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
-import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
+import { RecordViewData, RecordViewModel, RecordViewState } from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {StateStore} from '../../../../store/state';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
@@ -61,10 +69,10 @@ import {LocalStorageService} from '../../../../services/local-storage/local-stor
 import {SubpanelStoreFactory} from '../../../../containers/subpanel/store/subpanel/subpanel.store.factory';
 import {ViewStore} from '../../../../store/view/view.store';
 import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
-import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';
 
 const initialState: RecordViewState = {
     module: '',
@@ -99,6 +107,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     subpanels$: Observable<SubpanelStoreMap>;
     viewContext$: Observable<ViewContext>;
     subpanelReload$: Observable<BooleanMap>;
+    panels: Panel[] = [];
+    panels$: Observable<Panel[]>;
 
 
     /**
@@ -119,6 +129,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected subpanelReloadSubject = new BehaviorSubject<BooleanMap>({} as BooleanMap);
     protected subpanelReloadSub: Subscription[] = [];
     protected subs: Subscription[] = [];
+    protected fieldSubs: Subscription[] = [];
+    protected panelsSubject: BehaviorSubject<Panel[]> = new BehaviorSubject(this.panels);
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -134,10 +146,13 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected recordManager: RecordManager,
         protected statisticsBatch: StatisticsBatch,
         protected recordStoreFactory: RecordStoreFactory,
-        protected preferences: UserPreferenceStore
+        protected preferences: UserPreferenceStore,
+        protected panelLogicManager: PanelLogicManager,
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
+
+        this.panels$ = this.panelsSubject.asObservable();
 
         this.recordStore = recordStoreFactory.create(this.getViewFieldsObservable());
 
@@ -151,16 +166,16 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.mode$ = this.state$.pipe(map(state => state.mode));
         this.subpanelReload$ = this.subpanelReloadSubject.asObservable();
 
-        const data$ = combineLatest(
-            [this.record$, this.loading$]
-        ).pipe(
-            map(([record, loading]) => {
+        const data$ = this.record$.pipe(
+            combineLatestWith(this.loading$),
+            map(([record, loading]: [Record, boolean]) => {
                 this.data = {record, loading} as RecordViewData;
                 return this.data;
             })
         );
 
-        this.vm$ = combineLatest([data$, this.appData$, this.metadata$]).pipe(
+        this.vm$ = data$.pipe(
+            combineLatestWith(this.appData$, this.metadata$),
             map(([data, appData, metadata]) => {
                 this.vm = {data, appData, metadata} as RecordViewModel;
                 return this.vm;
@@ -170,9 +185,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.subpanels$ = this.subpanelsState.asObservable();
 
 
-        this.viewContext$ = this.record$.pipe(map(() => {
-            return this.getViewContext();
-        }));
+        this.viewContext$ = this.record$.pipe(map(() => this.getViewContext()));
+        this.initPanels();
     }
 
     get widgets(): boolean {
@@ -293,6 +307,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.clearSubpanels();
         this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
+        this.subs = this.safeUnsubscription(this.subs);
+        this.fieldSubs = this.safeUnsubscription(this.fieldSubs);
     }
 
     /**
@@ -392,6 +408,58 @@ export class RecordViewStore extends ViewStore implements StateStore {
         const recordMeta = metadata.recordView || {} as RecordViewMetadata;
         const templates = recordMeta.summaryTemplates || {} as SummaryTemplates;
         return templates[this.getMode()] || '';
+    }
+
+    initValidators(record: Record): void {
+        if(!record || !Object.keys(record?.fields).length) {
+            return;
+        }
+
+        Object.keys(record.fields).forEach(fieldName => {
+            const field = record.fields[fieldName];
+            const formControl = field?.formControl ?? null;
+            if (!formControl) {
+                return;
+            }
+
+            this.resetValidators(field);
+
+            const validators = field?.validators ?? [];
+            const asyncValidators = field?.asyncValidators ?? [];
+
+            if (field?.formControl && validators.length) {
+                field.formControl.setValidators(validators);
+            }
+            if (field?.formControl && asyncValidators.length) {
+                field.formControl.setAsyncValidators(asyncValidators);
+            }
+        });
+
+    }
+
+    resetValidators(field: Field): void {
+        if (!field?.formControl) {
+            return;
+        }
+
+        field.formControl.clearValidators();
+        field.formControl.clearAsyncValidators();
+    }
+
+    resetValidatorsForAllFields(record: Record): void {
+        if(!record || !record?.fields?.length) {
+            return ;
+        }
+        Object.keys(record.fields).forEach(fieldName => {
+            const field = record.fields[fieldName];
+            const formControl = field?.formControl ?? null;
+
+            if (!formControl) {
+                return;
+            }
+
+            this.resetValidators(field);
+        });
     }
 
     /**
@@ -522,6 +590,70 @@ export class RecordViewStore extends ViewStore implements StateStore {
         });
     }
 
+    protected initPanels(): void {
+        const panelSub = combineLatest([
+            this.metadataStore.recordViewMetadata$,
+            this.stagingRecord$,
+            this.languageStore.vm$,
+        ]).subscribe(([meta, record, languages]) => {
+            const panels = [];
+            const module = (record && record.module) || '';
+
+            this.safeUnsubscription(this.fieldSubs);
+            meta.panels.forEach(panelDefinition => {
+                const label = (panelDefinition.label)
+                    ? panelDefinition.label.toUpperCase()
+                    : this.languageStore.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
+                const panel = { label, key: panelDefinition.key, rows: [] } as Panel;
+
+                const tabDef = meta.templateMeta.tabDefs[panelDefinition.key.toUpperCase()] ?? null;
+                if (tabDef) {
+                    panel.meta = tabDef;
+                }
+
+                panelDefinition.rows.forEach(rowDefinition => {
+                    const row = { cols: [] } as PanelRow;
+                    rowDefinition.cols.forEach(cellDefinition => {
+                        row.cols.push({ ...cellDefinition });
+                    });
+                    panel.rows.push(row);
+                });
+
+                panel.displayState = new BehaviorSubject(tabDef?.display ?? true);
+                panel.display$ = panel.displayState.asObservable();
+
+                panels.push(panel);
+
+                if (isEmpty(record?.fields) || isEmpty(tabDef?.displayLogic)) {
+                    return;
+                }
+
+                Object.values(tabDef.displayLogic).forEach((logicDef) => {
+                    if (isEmpty(logicDef?.params?.fieldDependencies)) {
+                        return;
+                    }
+
+                    logicDef.params.fieldDependencies.forEach(fieldKey => {
+                        const field = record.fields[fieldKey] || null;
+                        if (isEmpty(field)) {
+                            return;
+                        }
+
+                        this.fieldSubs.push(
+                            field.valueChanges$.subscribe(() => {
+                                this.panelLogicManager.runLogic(logicDef.key, field, panel, record, this.getMode());
+                            }),
+                        );
+                    });
+                });
+            });
+            this.panelsSubject.next(this.panels = panels);
+            return panels;
+        });
+
+        this.subs.push(panelSub);
+    }
+
     protected clearSubpanels(): void {
         if (this.subpanels) {
             Object.keys(this.subpanels).forEach((key: string) => {
@@ -587,23 +719,54 @@ export class RecordViewStore extends ViewStore implements StateStore {
      */
     protected getViewFieldsObservable(): Observable<ViewFieldDefinition[]> {
         return this.metadataStore.recordViewMetadata$.pipe(map((recordMetadata: RecordViewMetadata) => {
-            const fields: ViewFieldDefinition[] = [];
+            const fieldsMap: ViewFieldDefinitionMap = {};
+
             recordMetadata.panels.forEach(panel => {
                 panel.rows.forEach(row => {
                     row.cols.forEach(col => {
-                        fields.push(col);
+                        const fieldName = col.name ?? col.fieldDefinition.name ?? '';
+                        fieldsMap[fieldName] = col;
                     });
                 });
             });
 
-            return fields;
+            Object.keys(recordMetadata.vardefs).forEach(fieldKey => {
+                const vardef = recordMetadata.vardefs[fieldKey] ?? null;
+                if (!vardef || isEmpty(vardef)) {
+                    return;
+                }
+
+                // already defined. skip
+                if (fieldsMap[fieldKey]) {
+                    return;
+                }
+
+                if (vardef.type == 'relate'){
+                    return;
+                }
+
+                fieldsMap[fieldKey] = {
+                    name: fieldKey,
+                    vardefBased: true,
+                    label: vardef.vname ?? '',
+                    type: vardef.type ?? '',
+                    display: vardef.display ?? '',
+                    fieldDefinition: vardef,
+                    metadata: vardef.metadata ?? {} as FieldMetadata,
+                    logic: vardef.logic ?? {} as FieldLogicMap
+                } as ViewFieldDefinition;
+            });
+
+            return Object.values(fieldsMap);
         }));
     }
 
     /**
      * Build ui user preference key
-     * @param storageKey
+     *
+     * @param {string} storageKey Storage Key
      * @protected
+     * @returns {string} Preference Key
      */
     protected getPreferenceKey(storageKey: string): string {
         return 'recordview-' + storageKey;
@@ -611,9 +774,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Save ui user preference
-     * @param module
-     * @param storageKey
-     * @param value
+     *
+     * @param {string} module Module
+     * @param {string} storageKey Storage Key
+     * @param {any} value Value
      * @protected
      */
     protected savePreference(module: string, storageKey: string, value: any): void {
@@ -622,60 +786,26 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Load ui user preference
-     * @param module
-     * @param storageKey
+     *
+     * @param {string} module Module
+     * @param {string} storageKey Storage Key
      * @protected
+     * @returns {any} User Preference
      */
     protected loadPreference(module: string, storageKey: string): any {
         return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
     }
 
-    initValidators(record: Record): void {
-        if(!record || !Object.keys(record?.fields).length) {
-            return;
-        }
-
-        Object.keys(record.fields).forEach(fieldName => {
-            const field = record.fields[fieldName];
-            const formControl = field?.formControl ?? null;
-            if (!formControl) {
+    private safeUnsubscription(subscriptionArray: Subscription[]): Subscription[] {
+        subscriptionArray.forEach(sub => {
+            if (sub.closed) {
                 return;
             }
 
-            this.resetValidators(field);
-
-            const validators = field?.validators ?? [];
-            const asyncValidators = field?.asyncValidators ?? [];
-
-            if (validators.length) {
-                field?.formControl?.setValidators(validators);
-            }
-            if (asyncValidators.length) {
-                field?.formControl?.setAsyncValidators(asyncValidators);
-            }
+            sub.unsubscribe();
         });
+        subscriptionArray = [];
 
+        return subscriptionArray;
     }
-
-    resetValidators(field) {
-        field?.formControl?.clearValidators();
-        field?.formControl?.clearAsyncValidators();
-    }
-
-    resetValidatorsForAllFields(record) {
-        if(!record || !record?.fields?.length) {
-            return ;
-        }
-        Object.keys(record.fields).forEach(fieldName => {
-            const field = record.fields[fieldName];
-            const formControl = field?.formControl ?? null;
-
-            if (!formControl) {
-                return;
-            }
-
-            this.resetValidators(field);
-        });
-    }
-
 }

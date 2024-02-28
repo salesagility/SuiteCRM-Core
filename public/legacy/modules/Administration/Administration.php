@@ -217,6 +217,7 @@ class Administration extends SugarBean
      */
     public function saveSetting($category, $key, $value)
     {
+        global $current_user;
         $categoryQuoted = $this->db->quote($category);
         $keyQuoted = $this->db->quote($key);
         $valueQuoted = $this->db->quote($value);
@@ -235,6 +236,8 @@ class Administration extends SugarBean
             $result = $this->db->query("UPDATE config SET value = '$valueQuoted' WHERE category = '$categoryQuoted' AND name = '$keyQuoted'");
         }
         sugar_cache_clear('admin_settings_cache');
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('app-metadata-navigation-'.$current_user->id);
 
         return $this->db->getAffectedRowCount($result);
     }

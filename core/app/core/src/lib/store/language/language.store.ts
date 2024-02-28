@@ -26,10 +26,9 @@
 
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
+import {BehaviorSubject, combineLatest, combineLatestWith, forkJoin, Observable, of} from 'rxjs';
 import {distinctUntilChanged, first, map, shareReplay, take, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {AppStateStore} from '../app-state/app-state.store';
 import {deepClone, emptyObject, StringMap} from 'common';
 import {StateStore} from '../state';
 import {LocalStorageService} from '../../services/local-storage/local-storage.service';
@@ -150,7 +149,6 @@ export class LanguageStore implements StateStore {
 
     constructor(
         protected recordGQL: EntityGQL,
-        protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
         protected processService: ProcessService,
         protected configs: SystemConfigStore
@@ -161,14 +159,13 @@ export class LanguageStore implements StateStore {
         this.modStrings$ = this.state$.pipe(map(state => state.modStrings), distinctUntilChanged());
         this.languageKey$ = this.state$.pipe(map(state => state.languageKey), distinctUntilChanged());
 
-        this.vm$ = combineLatest(
-            [
-                this.appStrings$,
-                this.appListStrings$,
-                this.modStrings$,
-                this.languageKey$
-            ])
+        this.vm$ = this.appStrings$
             .pipe(
+                combineLatestWith(
+                    this.appListStrings$,
+                    this.modStrings$,
+                    this.languageKey$
+                ),
                 map((
                     [
                         appStrings,
@@ -212,27 +209,19 @@ export class LanguageStore implements StateStore {
      * @param {string} languageKey language key
      * @param {boolean} reload
      */
-    public changeLanguage(languageKey: string, reload = false): void {
+    public changeLanguage(languageKey: string, reload = false): Observable<any> {
         const types = [];
 
         Object.keys(loadedLanguages).forEach(type => loadedLanguages[type] && types.push(type));
 
         internalState.hasChanged = true;
 
-        let languagesLoading = false;
-        if (this?.appStateStore?.updateLoading) {
-            this.appStateStore.updateLoading('change-language', true);
-            languagesLoading = true;
-        }
-
-        this.load(languageKey, types, reload).pipe(
+        return this.load(languageKey, types, reload).pipe(
             tap(() => {
                 this.localStorage.set('selected_language', languageKey, true);
-                if (languagesLoading) {
-                    this.appStateStore.updateLoading('change-language', false);
-                }
+
             })
-        ).subscribe();
+        );
     }
 
     /**
@@ -471,19 +460,20 @@ export class LanguageStore implements StateStore {
      */
     public load(languageKey: string, types: string[], reload = false): Observable<any> {
 
-        const streams$ = {};
+        const streams$: Array<Observable<any>> = [];
 
-        types.forEach(type => streams$[type] = this.getStrings(languageKey, type, reload));
+        types.forEach(type => streams$.push(this.getStrings(languageKey, type, reload)));
 
         return forkJoin(streams$).pipe(
             first(),
             tap(result => {
                 const stateUpdate = {...internalState, languageKey};
 
-                types.forEach(type => {
-                    stateUpdate[type] = result[type];
+                types.forEach((type, index) => {
+                    stateUpdate[type] = result[index];
                     loadedLanguages[type] = true;
                 });
+
 
                 this.updateState(stateUpdate);
             })

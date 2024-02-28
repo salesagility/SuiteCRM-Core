@@ -452,8 +452,6 @@ ul.main li a,
   background-color: $nepal-grey;
 }
 
-
-.filter-action-group .dropdown-menu,
 .select-action-group .dropdown-menu {
   font-size: 1em;
   -webkit-border-radius: 0.25em;
@@ -473,8 +471,53 @@ ul.main li a,
 
 }
 
+.sectioned-dropdown-menu .dropdown-menu {
+  font-size: 0.8em;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: $white;
+  color: $median-grey;
+  min-width: 10em;
+  border: 1px solid $extra-light-grey;
+  margin: 0;
+  width: 240px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+
+  .dropdown-menu-item-header {
+    padding: 0.5rem 1.44rem 0 1.44rem;
+    border-top: 1px solid $lightgray;
+    vertical-align: bottom;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    font-size: 1.125em;
+    font-weight: bold;
+    color: $complementary;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .section-split {
+    border-top: 1px solid $lightgray;
+  }
+
+  .last-section .dropdown-menu .dropdown-item {
+    &:last-child {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .first-section {
+    padding-top: 4px;
+  }
+
+}
+
 .filter-select .dropdown-menu,
-.filter-action-group .dropdown-menu,
+.sectioned-dropdown-menu .dropdown-menu,
 .select-action-group .dropdown-menu {
 
   .dropdown-item {
@@ -486,24 +529,22 @@ ul.main li a,
   }
 
   .dropdown-item.active {
-    color: $mellow-yellow;
+    padding-left: 1em;
     font-weight: bold;
 
     svg {
-      fill: $mellow-yellow;
-      stroke: $mellow-yellow;
+      fill: $black;
+      stroke: $black;
     }
   }
 }
 
 .dropdown-button-secondary .dropdown-menu a,
-.filter-action-group .dropdown-menu a,
 .select-action-group .dropdown-menu a {
   color: $white;
 }
 
 .dropdown-button-secondary .dropdown-menu a:hover,
-.filter-action-group .dropdown-menu a:hover,
 .select-action-group .dropdown-menu a:hover {
   background-color: $astral-blue;
   color: $white;
@@ -524,6 +565,24 @@ ul.main li a,
   background-color: $astral-blue;
   color: $white;
   cursor: pointer;
+}
+
+.sectioned-dropdown-menu .dropdown-menu .dropdown-item {
+  color: $median-grey;
+  padding: 0.5rem 0 0.5rem 2rem;
+
+  .dropdown-item-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1rem;
+  }
+
+  &:hover {
+    background-color: $off-white;
+    color: $black;
+    cursor: pointer;
+  }
 }
 
 .mobile-nav-dropdown.dropdown-menu {

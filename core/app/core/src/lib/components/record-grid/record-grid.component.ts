@@ -26,7 +26,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {Field, Record, ScreenSizeMap, ViewMode} from 'common';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatestWith, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {RecordGridConfig, RecordGridViewModel} from './record-grid.model';
 
@@ -62,15 +62,13 @@ export class RecordGridComponent implements OnInit {
         }
         const config = this.config;
 
-        this.vm$ = combineLatest(
-            [
-                config.record$,
-                config.mode$,
-                config.fields$,
-                config.maxColumns$,
-                config.sizeMap$
-            ]
-        ).pipe(
+        this.vm$ = config.record$.pipe(
+            combineLatestWith(
+                    config.mode$,
+                    config.fields$,
+                    config.maxColumns$,
+                    config.sizeMap$
+            ),
             map(([record, mode, fields, maxColumns, sizeMap]) => {
                 this.mode = mode;
                 this.maxColumns = maxColumns;

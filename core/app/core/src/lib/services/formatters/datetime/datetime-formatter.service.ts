@@ -26,7 +26,7 @@
 
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
@@ -48,9 +48,7 @@ export interface DateTimeStruct extends NgbDateStruct, NgbTimeStruct {
 })
 export class DatetimeFormatter implements Formatter {
 
-    format$: Observable<DatetimeFormats> = combineLatest([
-        this.preferences.userPreferences$
-    ]).pipe(
+    format$: Observable<DatetimeFormats> = this.preferences.userPreferences$.pipe(
         map(() => {
 
             const date = this.getDateFormat();

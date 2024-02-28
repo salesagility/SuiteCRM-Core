@@ -338,8 +338,8 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
             unset($definition['templateMeta']);
         }
 
-        $this->mergeSearchInfo($module, $definition, $searchDefs, 'basic_search');
-        $this->mergeSearchInfo($module, $definition, $searchDefs, 'advanced_search');
+        $this->mergeSearchInfo($module, $definition, $fieldDefinition, $searchDefs, 'basic_search');
+        $this->mergeSearchInfo($module, $definition, $fieldDefinition, $searchDefs, 'advanced_search');
 
         $this->mergeFieldDefinition($definition, $fieldDefinition, 'basic_search');
         $this->mergeFieldDefinition($definition, $fieldDefinition, 'advanced_search');
@@ -359,15 +359,24 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
     protected function mergeFieldDefinition(array &$definition, FieldDefinition $fieldDefinition, string $type): void
     {
         $vardefs = $fieldDefinition->getVardef();
-        if (isset($definition['layout'][$type])) {
-            foreach ($definition['layout'][$type] as $key => $field) {
-                $fieldName = $this->getFieldName($key, $field);
+        if (!isset($definition['layout'][$type])) {
+            return;
+        }
+        foreach ($definition['layout'][$type] as $key => $field) {
+            $fieldName = $this->getFieldName($key, $field);
 
-                if (!empty($vardefs[$fieldName])) {
-                    $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
-                    $aliasKey = $merged['name'] ?? $key;
-                    $definition['layout'][$type][$aliasKey] = $merged;
-                }
+            if (empty($vardefs[$fieldName])) {
+                continue;
+            }
+
+            $merged = $this->addFieldDefinition($vardefs, $fieldName, $field);
+            $merged = $this->injectEmptyOption($merged);
+            $aliasKey = $merged['name'] ?? $key;
+            $definition['layout'][$type][$aliasKey] = $merged;
+
+            if (empty($definition['layout'][$type][$aliasKey]['vardefBased'])) {
+                $definition['layout'][$type][$aliasKey]['vardefBased'] = false;
+                $definition['layout'][$type][$aliasKey]['readonly'] = false;
             }
         }
     }
@@ -407,16 +416,38 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
      * @param array $searchDefs
      * @param string $type
      */
-    protected function mergeSearchInfo(string $module, array &$definition, array $searchDefs, string $type): void
+    protected function mergeSearchInfo(string $module, array &$definition, FieldDefinition $fieldDefinition, array $searchDefs, string $type): void
     {
-        if (isset($definition['layout'][$type])) {
-            foreach ($definition['layout'][$type] as $key => $field) {
-                $name = $field['name'] ?? '';
+        if (!isset($definition['layout'][$type])) {
+            return;
+        }
 
-                if ($this->useRangeSearch($module, $searchDefs, $name)) {
-                    $definition['layout'][$type][$key]['enable_range_search'] = true;
-                }
+        foreach ($definition['layout'][$type] as $key => $field) {
+            $name = $field['name'] ?? '';
+
+            if ($this->useRangeSearch($module, $searchDefs, $name)) {
+                $definition['layout'][$type][$key]['enable_range_search'] = true;
             }
+        }
+
+        $layoutKeys = array_keys($definition['layout'][$type]);
+        $layoutValues = array_values($definition['layout'][$type]);
+
+        $vardefs = $fieldDefinition->getVardef();
+        foreach ($vardefs as $fieldVardefKey => $fieldVardefDefinition) {
+            if (
+                in_array($fieldVardefKey, $layoutKeys)
+                || in_array($fieldVardefKey, $layoutValues)
+            ) {
+                continue;
+            }
+
+            $definition['layout'][$type][$fieldVardefKey] = [
+                'name' => $fieldVardefKey,
+                'vardefBased' => true,
+                'display' => 'none',
+                'readonly' => true,
+            ];
         }
     }
 
@@ -518,5 +549,30 @@ class ViewDefinitionsHandler extends LegacyHandler implements ViewDefinitionsPro
         }
 
         return $field;
+    }
+
+    /**
+     * Injects an empty option into the field options if it's not already present.
+     *
+     * @param array $merged The merged array containing field definition and metadata
+     * @return array The updated merged array with the empty option injected
+     */
+    protected function injectEmptyOption(array $merged): array
+    {
+        if (empty($merged['fieldDefinition']['options'])) {
+            return $merged;
+        }
+
+        $metadata = $merged['fieldDefinition']['metadata'] ?? [];
+        $extraOptions = $metadata['extraOptions'] ?? [];
+        $extraOptions[] = [
+            'value' => '__SuiteCRMEmptyString__',
+            'labelKey' => 'LBL_EMPTY',
+        ];
+
+        $metadata['extraOptions'] = $extraOptions;
+        $merged['fieldDefinition']['metadata'] = $metadata;
+
+        return $merged;
     }
 }

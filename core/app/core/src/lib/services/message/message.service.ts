@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2021-2023 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,7 +44,7 @@ export class MessageService {
         this.initTimeOut();
     }
 
-    updateState(messages: Message[]) {
+    updateState(messages: Message[]): void {
         this.messagesStage.next(this.messages = messages);
     }
 
@@ -55,15 +55,16 @@ export class MessageService {
     contains(message: Message, remove = false): boolean {
         let found = false;
         for (let i = 0; i < this.messages.length; i++) {
-            if (message.text === this.messages[i].text) {
-                found = true;
-                if (remove) {
-                    const messages = [...this.messages];
-                    messages.splice(i, 1);
-                    this.updateState(messages);
-                }
-                break;
+            if (!this.isSame(message, this.messages[i])) {
+                continue;
             }
+            found = true;
+            if (remove) {
+                const messages = [...this.messages];
+                messages.splice(i, 1);
+                this.updateState(messages);
+            }
+            break;
         }
         return found;
     }
@@ -81,7 +82,7 @@ export class MessageService {
                 }, this.timeout * 1000);
             }
 
-            this.updateState(newMessages)
+            this.updateState(newMessages);
         }
 
         return ret;
@@ -176,5 +177,23 @@ export class MessageService {
                 this.timeout = parsed;
             }
         }
+    }
+
+    /**
+     * Compare the text/labelKey on two messages. LabelKey always takes priority
+     *
+     * @param {Message} newMessage New Message
+     * @param {Message} existingMessage Existing Message
+     * @protected
+     * @returns {boolean} True if is the same
+     */
+    protected isSame(newMessage: Message, existingMessage: Message): boolean {
+
+        let sourceField = 'text';
+        if (newMessage.labelKey){
+            sourceField = 'labelKey';
+        }
+
+        return newMessage[sourceField] === existingMessage[sourceField];
     }
 }

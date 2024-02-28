@@ -88,6 +88,11 @@ class AdministrationViewThemesettings extends SugarView
             $configurator->handleOverride();
         }
 
+        if ($_REQUEST['button'] === 'Save'){
+            require_once "include/portability/Services/Cache/CacheManager.php";
+            (new CacheManager())->markAsNeedsUpdate('app-metadata-theme-images');
+        }
+
         parent::process();
     }
 

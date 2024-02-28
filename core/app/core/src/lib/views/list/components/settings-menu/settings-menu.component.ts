@@ -24,17 +24,20 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
     ButtonGroupInterface,
     ButtonInterface,
     DropdownButtonInterface,
+    DropdownButtonSection,
+    DropdownButtonSectionMap,
+    GroupedButtonInterface,
+    isTrue,
     SearchCriteria,
     SearchCriteriaFilter
 } from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {BehaviorSubject, combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, combineLatestWith, Subscription} from 'rxjs';
 import {ListViewStore} from '../../store/list-view/list-view.store';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {
@@ -42,79 +45,93 @@ import {
     ScreenSizeObserverService
 } from '../../../../services/ui/screen-size-observer/screen-size-observer.service';
 import {SavedFilter, SavedFilterMap} from '../../../../store/saved-filters/saved-filter.model';
+import {QuickFiltersService} from "../../services/quick-filters.service";
 
 @Component({
     selector: 'scrm-settings-menu',
     templateUrl: 'settings-menu.component.html',
-
 })
-export class SettingsMenuComponent implements OnInit {
+export class SettingsMenuComponent implements OnInit, OnDestroy {
 
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
-
-    vm$ = combineLatest([
-        this.listStore.widgets$,
-        this.listStore.displayFilters$,
-        this.listStore.criteria$,
-        this.screenSize.screenSize$,
-        this.listStore.showSidebarWidgets$,
-        this.listStore.filterList.records$
-    ]).pipe(
-        map((
-            [
-                widgets,
-                displayFilters,
-                criteria,
-                screenSize,
-                showSidebarWidgets,
-                savedFilters
-            ]
-        ) => {
-            if (screenSize) {
-                this.screen = screenSize;
-            }
-            this.configState.next(this.getButtonGroupConfig());
-            return {widgets, displayFilters, criteria, screenSize, showSidebarWidgets, savedFilters};
-        })
-    );
+    showQuickFilters = true;
+    enableQuickFilters = false;
 
     protected screen: ScreenSize = ScreenSize.Medium;
     protected defaultBreakpoint = 5;
     protected breakpoint: number;
+    protected subs: Subscription[] = [];
 
     constructor(
         protected listStore: ListViewStore,
         protected modalService: NgbModal,
         protected screenSize: ScreenSizeObserverService,
-        protected systemConfigStore: SystemConfigStore
+        protected systemConfigStore: SystemConfigStore,
+        public quickFilters: QuickFiltersService
     ) {
     }
 
     ngOnInit(): void {
         this.configState.next(this.getButtonGroupConfig());
+
+        const vm$ = this.listStore.widgets$.pipe(
+            combineLatestWith(
+                this.listStore.displayFilters$,
+                this.listStore.criteria$,
+                this.screenSize.screenSize$,
+                this.listStore.showSidebarWidgets$,
+                this.listStore.filterList.records$
+            )
+        );
+
+        this.subs.push(vm$.subscribe(
+                (
+                    [
+                        widgets,
+                        displayFilters,
+                        criteria,
+                        screenSize,
+                        showSidebarWidgets,
+                        savedFilters
+                    ]
+                ) => {
+                    if (screenSize) {
+                        this.screen = screenSize;
+                    }
+                    this.configState.next(this.getButtonGroupConfig());
+                    this.quickFilters.init();
+                }
+            )
+        );
+
+        this.subs.push(this.quickFilters.breakdown$.subscribe(breakdown => {
+            this.showQuickFilters = !isTrue(breakdown);
+        }))
+
+        this.subs.push(this.quickFilters.enabled$.subscribe(enabled => {
+            this.enableQuickFilters = isTrue(enabled ?? false);
+        }))
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach(sub => sub.unsubscribe());
     }
 
     getButtonGroupConfig(): ButtonGroupInterface {
 
         const availableButtons = [
-            // Commented temporarily as it is not implemented
-            /*
-            {button: this.getDisplayAsButton()},
-             */
             {
-                show: (): boolean => this.listStore.filterList.getFilters() && this.listStore.filterList.getFilters().length >= 1,
+                show: (): boolean => this.checkFiltersDisplay(),
                 button: this.getMyFiltersButton(),
             },
-            {button: this.getFilterButton()},
             {
-                show: (): boolean => this.isAnyFilterApplied(),
-                button: this.getClearButton(),
+                show: (): boolean => true,
+                button: this.getFilterButton()
             },
-            {button: this.getColumnChooserButton()},
             {
                 show: (): boolean => this.listStore.widgets,
-                button: this.getChartsButton(),
+                button: this.getInsightsButton(),
             },
         ];
 
@@ -139,8 +156,19 @@ export class SettingsMenuComponent implements OnInit {
                 config.buttons.push(availableButton.button);
             }
         });
-
         return config;
+    }
+
+    checkFiltersDisplay(): boolean {
+        const filters = this.listStore.filterList.getFilters() ?? [];
+        const quickFilterBreakpoint = this.quickFilters.getBreakpoint();
+        const totalFilters = filters.length;
+        const totalQuickFilters = filters.filter(obj => obj.attributes.quick_filter).length;
+
+        if (totalFilters > 0 && (totalQuickFilters > quickFilterBreakpoint || (totalFilters - totalQuickFilters) > 0)) {
+            return true;
+        }
+        return false;
     }
 
     getFilters(): SearchCriteriaFilter {
@@ -198,10 +226,16 @@ export class SettingsMenuComponent implements OnInit {
 
     getFilterButton(): DropdownButtonInterface {
 
+        const groupedFilterButton = {
+            type: 'grouped',
+            items: []
+        } as GroupedButtonInterface;
+
         const filterButton = {
             label: this.listStore.appStrings.LBL_FILTER || '',
             klass: {
                 'filter-settings-button': true,
+                'btn btn-sm settings-button': true,
                 active: this.isAnyFilterApplied()
             },
             onClick: (): void => {
@@ -213,7 +247,13 @@ export class SettingsMenuComponent implements OnInit {
             filterButton.icon = 'filter';
         }
 
-        return filterButton;
+        groupedFilterButton.items.push(filterButton);
+
+        if (this.isAnyFilterApplied()) {
+            groupedFilterButton.items.push(this.getClearButton());
+        }
+
+        return groupedFilterButton;
     }
 
     getMyFiltersButton(): DropdownButtonInterface {
@@ -223,19 +263,37 @@ export class SettingsMenuComponent implements OnInit {
             label: this.listStore.appStrings.LBL_SAVED_FILTER_SHORTCUT || '',
             klass: ['dropdown-toggle'],
             wrapperKlass: ['filter-action-group'],
-            items: []
+            items: [],
+            sections: {
+                'quick-filters': {
+                    labelKey: 'LBL_QUICK_FILTERS'
+                } as DropdownButtonSection,
+                'default': {
+                    labelKey: 'LBL_SAVED_FILTER_SHORTCUT'
+                } as DropdownButtonSection,
+            } as DropdownButtonSectionMap
         } as DropdownButtonInterface;
 
         const activeFilters = this.listStore.activeFilters;
 
         let anyActive = false;
+        let quickFilterCount = 0;
+        const quickFilterBreakpoint = this.quickFilters.getBreakpoint();
+        const isQuickFiltersEnabled = this.quickFilters.areConfigEnabled();
         filters.forEach((filter: SavedFilter) => {
+
+            const isQuickFilterButton = isTrue(filter?.attributes?.quick_filter ?? false);
+            if (isQuickFiltersEnabled && isQuickFilterButton && quickFilterCount < quickFilterBreakpoint) {
+                quickFilterCount++;
+                return;
+            }
 
             const isActive = Object.keys(activeFilters).some(key => key === filter.key);
             anyActive = anyActive || isActive;
 
             const button = {
                 label: filter.attributes.name,
+                section: isQuickFilterButton ? 'quick-filters' : 'default',
                 onClick: (): void => {
                     this.listStore.showFilters = false;
 
@@ -271,7 +329,11 @@ export class SettingsMenuComponent implements OnInit {
 
     getClearButton(): ButtonInterface {
         return {
-            label: this.listStore.appStrings.LBL_CLEAR_FILTER || '',
+            label: 'x',
+            titleKey: 'LBL_CLEAR_FILTER',
+            klass: {
+                'btn btn-sm settings-button clear-filter-button btn-main-light': true
+            },
             onClick: (): void => {
                 this.listStore.showFilters = false;
                 this.listStore.resetFilters();
@@ -279,7 +341,7 @@ export class SettingsMenuComponent implements OnInit {
         };
     }
 
-    getChartsButton(): ButtonInterface {
+    getInsightsButton(): ButtonInterface {
 
         return {
             label: this.listStore.appStrings.LBL_INSIGHTS || '',
@@ -289,29 +351,6 @@ export class SettingsMenuComponent implements OnInit {
             icon: 'pie',
             onClick: (): void => {
                 this.listStore.showSidebarWidgets = !this.listStore.showSidebarWidgets;
-            }
-        };
-    }
-
-    getDisplayAsButton(): DropdownButtonInterface {
-
-        return {
-            label: 'Display As',
-            klass: {},
-            items: []
-        };
-    }
-
-    getColumnChooserButton(): ButtonInterface {
-
-        return {
-            label: this.listStore.appStrings.LBL_COLUMNS || '',
-            klass: {
-                'column-chooser-button': true,
-            },
-            icon: 'column_chooser',
-            onClick: (): void => {
-                this.listStore.openColumnChooserDialog();
             }
         };
     }

@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {catchError, take, tap} from 'rxjs/operators';
 import {Process, ProcessService} from '../../process.service';
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
@@ -132,17 +132,17 @@ export class AsyncActionService {
                     actionHandler.run(process.data.params);
 
                 }),
-                catchError(err => {
+                catchError((err) => {
                     const errorMessage = err?.message ?? ''
 
                     if (errorMessage === 'Access Denied.') {
                         this.appStateStore.updateLoading(actionName, false);
-                        throw err;
+                        return of(null);
                     }
 
                     this.message.addDangerMessageByKey('LBL_ACTION_ERROR');
                     this.appStateStore.updateLoading(actionName, false);
-                    throw err;
+                    return of(null);
                 }),
             );
     }

@@ -26,7 +26,7 @@
 
 import {SearchCriteriaFieldFilter} from '../views/list/search-criteria.model';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AsyncValidatorFn, FormArray, FormControl, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
 import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
@@ -157,6 +157,8 @@ export interface AttributeDependency {
     types: string[];
 }
 
+export type FieldSource = 'field' | 'attribute' | 'item' | 'groupField';
+
 export interface Field {
     type: string;
     value?: string;
@@ -164,6 +166,7 @@ export interface Field {
     valueObject?: any;
     valueObjectArray?: ObjectMap[];
     name?: string;
+    vardefBased?: boolean;
     label?: string;
     labelKey?: string;
     loading?: boolean;
@@ -174,13 +177,13 @@ export interface Field {
     readonly?: boolean;
     display?: DisplayType;
     defaultDisplay?: string;
-    source?: 'field' | 'attribute' | 'item';
+    source?: FieldSource;
     valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
-    formControl?: FormControl;
-    itemFormArray?: FormArray;
+    formControl?: UntypedFormControl;
+    itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
@@ -195,18 +198,19 @@ export interface Field {
 export class BaseField implements Field {
     type: string;
     name?: string;
+    vardefBased?: boolean;
     label?: string;
     labelKey?: string;
     dynamicLabelKey?: string;
     readonly?: boolean;
     display?: DisplayType;
     defaultDisplay?: string;
-    source?: 'field' | 'attribute';
+    source?: FieldSource;
     metadata?: FieldMetadata;
     definition?: FieldDefinition;
     criteria?: SearchCriteriaFieldFilter;
-    formControl?: FormControl;
-    itemFormArray?: FormArray;
+    formControl?: UntypedFormControl;
+    itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     attributes?: FieldAttributeMap;

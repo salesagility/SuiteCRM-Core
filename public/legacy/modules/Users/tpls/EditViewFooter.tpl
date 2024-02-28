@@ -533,7 +533,7 @@
                 <slot>Current API Token is: <span style="color:{$GOOGLE_API_TOKEN_COLOR}">{$GOOGLE_API_TOKEN}</span>
                     &nbsp;&nbsp;<input style="display:{$GOOGLE_API_TOKEN_ENABLE_NEW}" class="btn btn-primary btn-sm"
                                        id="google_gettoken" type="button" value="{$GOOGLE_API_TOKEN_BTN}"
-                                       onclick="window.open('{$GOOGLE_API_TOKEN_NEW_URL}', '_self')"/></slot>
+                                       onclick="window.open('{$GOOGLE_API_TOKEN_NEW_URL}', '_blank')"/></slot>
             </td>
             <td width="63%">
                 <slot>&nbsp;</slot>

@@ -32,6 +32,7 @@ parameters:
     listview_settings_limits: true
     listview_actions_limits: true
     listview_line_actions_limits: true
+    listview_url_query_filter_mapping: true
     module_routing: true
     recordview_actions_limits: true
     subpanelview_actions_limits: true

@@ -25,7 +25,6 @@
  */
 
 import {Component} from '@angular/core';
-import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {InstallActionsAdapter} from '../../adapters/actions.adapter';
 import {ActionContext, Record} from 'common';
@@ -39,10 +38,8 @@ import {InstallViewStore} from '../../store/install-view/install-view.store';
 export class InstallHeaderComponent {
 
 
-    vm$ = combineLatest([
-        this.store.record$
-    ]).pipe(
-        map(([record]) => ({record}))
+    vm$ = this.store.record$.pipe(
+        map((record) => ({record}))
     );
 
     constructor(

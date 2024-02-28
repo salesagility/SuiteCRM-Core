@@ -50,6 +50,21 @@ class DefaultFilterMapper implements FilterMapperInterface
         }
 
         $legacyValue = $values;
+
+        $mapEmptyString = false;
+        foreach ($legacyValue as $legacyValueKey => $legacyValueValue){
+            switch ($legacyValueValue) {
+                case "__SuiteCRMEmptyString__":
+                    $mapEmptyString = true;
+                    $legacyValue[$legacyValueKey] = '';
+                    break;
+            }
+        }
+
+        if ($mapEmptyString){
+            return $legacyValue;
+        }
+
         if (count($values) === 1) {
             $legacyValue = $values[0];
         }

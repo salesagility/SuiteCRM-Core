@@ -680,7 +680,7 @@ class SugarBean
                     $GLOBALS['log']->fatal('Relationship definitions should be an array');
                     $RelationshipDefs = (array)$RelationshipDefs;
                 }
-                foreach ($RelationshipDefs as $rel_name) {
+                foreach ($RelationshipDefs as $rel_name => $rel_def) {
                     Relationship::delete($rel_name, $db);
                 }
             }
@@ -4451,7 +4451,7 @@ class SugarBean
                 $next_offset--;
                 $previous_offset++;
             }
-        } elseif (!isset($rows_found)) {
+        } elseif ($rows_found == 0) {
             $rows_found = $row_offset + count($list);
         }
 

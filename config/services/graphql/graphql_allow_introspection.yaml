@@ -1,0 +1,2 @@
+parameters:
+  graphql.graphql_show_docs: '%env(default::bool:GRAPHQL_SHOW_DOCS)%'

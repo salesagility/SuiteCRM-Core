@@ -25,24 +25,22 @@
  */
 
 import {Injectable} from '@angular/core';
-import {CanActivate, Router, UrlTree} from '@angular/router';
+import {Router, UrlTree} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {AuthService, SessionStatus} from './auth.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {AppStateStore} from '../../store/app-state/app-state.store';
-import {MessageService} from '../message/message.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoginAuthGuard implements CanActivate {
+export class LoginAuthGuard  {
     constructor(
         protected router: Router,
         private authService: AuthService,
         protected systemConfigStore: SystemConfigStore,
-        protected appStateStore: AppStateStore,
-        protected message: MessageService
+        protected appStateStore: AppStateStore
     ) {
     }
 

@@ -97,9 +97,15 @@ return static function (ContainerConfigurator $containerConfig) {
         ['path' => '^/$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-        ['path' => '^/api/graphql/graphiql*', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
         ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
     ];
+
+
+    $appEnv = $env['APP_ENV'] ?? 'prod';
+    $showDocs = $env['GRAPHQL_SHOW_DOCS'] ?? ($appEnv === 'dev');
+    if ($showDocs === 'false' || $showDocs === false) {
+        $baseAccessControl = array_merge([['path' => '^/docs', 'roles' => 'NO_ACCESS']], $baseAccessControl);
+    }
 
     $containerConfig->parameters()->set('auth.logout.redirect', false);
     $containerConfig->parameters()->set('auth.logout.path', 'logout');
@@ -244,6 +250,29 @@ return static function (ContainerConfigurator $containerConfig) {
             $samlMainFirewallConfig['saml']['user_factory'] = 'saml_user_factory';
         }
 
+        $samlAccessControl = [
+            ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/saml/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/saml/metadata', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
+            ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
+            ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/auth', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/auth/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/auth/session-status', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/auth/logout', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/$', 'roles' => 'ROLE_USER'],
+            ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
+        ];
+
+        if (!$showDocs) {
+            $samlAccessControl = array_merge([['path' => '^/docs', 'roles' => 'NO_ACCESS']], $samlAccessControl);
+        }
+
         $containerConfig->extension('security', [
             'providers' => [
                 'app_user_provider' => [
@@ -293,25 +322,7 @@ return static function (ContainerConfigurator $containerConfig) {
                     ]
                 ],
             ]),
-            'access_control' => [
-                ['path' => '^/login$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/session-status$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/logout$', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/saml/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/saml/metadata', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
-                ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
-                ['path' => '^/logged-out', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/auth', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/auth/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/auth/session-status', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/auth/logout', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/$', 'roles' => 'ROLE_USER'],
-                ['path' => '^/api', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/api/graphql', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/api/graphql/graphiql*', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-                ['path' => '^/', 'roles' => 'IS_AUTHENTICATED_FULLY']
-            ]
+            'access_control' => $samlAccessControl
         ]);
 
 

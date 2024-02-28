@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {FieldLogicActionData, FieldLogicActionHandlerMap} from './field-logic.action';
 import {Action, ActionContext, ActionHandlerMap, Field, ModeActions, Record, ViewMode} from 'common';
-import {DisplayTypeAction} from './display-type/display-type.action';
+import {FieldLogicDisplayTypeAction} from './display-type/field-logic-display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';
 import {UpdateBaseCurrencyAction} from './currency-conversion/update-base-currency.action';
@@ -54,7 +54,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
     };
 
     constructor(
-        displayType: DisplayTypeAction,
+        displayType: FieldLogicDisplayTypeAction,
         emailPrimarySelectAction: EmailPrimarySelectAction,
         required: RequiredAction,
         updateBaseCurrency: UpdateBaseCurrencyAction,

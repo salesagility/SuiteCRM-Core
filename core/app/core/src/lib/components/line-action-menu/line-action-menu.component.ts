@@ -37,7 +37,7 @@ import {
 } from 'common';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {
     ScreenSize,
     ScreenSizeObserverService
@@ -85,11 +85,11 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.subs.push(combineLatest([
-            this.config.getActions({record: this.record}),
-            this.screenSize.screenSize$,
-            this.languages.vm$
-        ]).pipe(
+        this.subs.push(this.config.getActions({record: this.record}).pipe(
+            combineLatestWith(
+                this.screenSize.screenSize$,
+                this.languages.vm$
+            ),
             map(([actions, screenSize, languages]) => {
                 if (screenSize) {
                     this.screen = screenSize;

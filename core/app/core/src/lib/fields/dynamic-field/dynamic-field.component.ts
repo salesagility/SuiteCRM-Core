@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostBinding, Input, OnInit, Type} from '@angular/core';
+import {ChangeDetectorRef, Component, HostBinding, Input, OnInit, Type} from '@angular/core';
 import {EDITABLE_VIEW_MODES, Field, Record, StringMap, ViewMode} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -33,7 +33,6 @@ import {DynamicLabelService} from '../../services/language/dynamic-label.service
 import {
     LinkRouteAsyncActionService
 } from '../../services/navigation/link-route-async-action/link-route-async-action.service';
-import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 
 @Component({
     selector: 'scrm-dynamic-field',
@@ -57,7 +56,8 @@ export class DynamicFieldComponent implements OnInit {
         protected moduleNameMapper: ModuleNameMapper,
         protected router: Router,
         protected dynamicLabelService: DynamicLabelService,
-        protected linkRouteAsyncActionService: LinkRouteAsyncActionService
+        protected linkRouteAsyncActionService: LinkRouteAsyncActionService,
+        private cd: ChangeDetectorRef
     ) {
     }
 
@@ -81,6 +81,7 @@ export class DynamicFieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
+        this.cd.detectChanges();
     }
 
     isLink(): boolean {

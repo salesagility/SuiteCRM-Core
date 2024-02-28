@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {combineLatest, Observable, of, Subscription} from 'rxjs';
+import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
     ColumnDefinition,
@@ -75,13 +75,13 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
 
-        this.vm$ = combineLatest([
-            this.config.columns,
-            selection$,
-            this.config.maxColumns$,
-            this.config.dataSource.connect(null),
-            loading$
-        ]).pipe(
+        this.vm$ = this.config.columns.pipe(
+            combineLatestWith(
+                selection$,
+                this.config.maxColumns$,
+                this.config.dataSource.connect(null),
+                loading$
+            ),
             map((
                 [
                     columns,

@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BooleanFilterFieldComponent} from './boolean.component';
-import {FormControl, FormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {Field} from 'common';
 import {TagInputModule} from 'ngx-chips';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
@@ -62,7 +62,7 @@ class BooleanFilterFieldTestHostComponent {
             values: ['1'],
             operator: '='
         },
-        formControl: new FormControl('1')
+        formControl: new UntypedFormControl('1')
     };
 }
 

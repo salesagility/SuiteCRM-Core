@@ -78,7 +78,7 @@ class TabGroupHelper
     public function saveTabGroups($params)
     {
         //#30205
-        global $sugar_config;
+        global $sugar_config,$current_user;
 
         //Get the selected tab group language
         $grouptab_lang = (!empty($params['grouptab_lang'])?$params['grouptab_lang']:$_SESSION['authenticated_user_language']);
@@ -131,11 +131,13 @@ class TabGroupHelper
         }
 
         // Force a rebuild of the app language
-        global $current_user;
         include(get_custom_file_if_exists('modules/Administration/RebuildJSLang.php'));
         sugar_cache_clear('app_strings.'.$grouptab_lang);
         $newFile = create_custom_directory('include/tabConfig.php');
         write_array_to_file("GLOBALS['tabStructure']", $tabGroups, $newFile);
         $GLOBALS['tabStructure'] = $tabGroups;
+
+        require_once "include/portability/Services/Cache/CacheManager.php";
+        (new CacheManager())->markAsNeedsUpdate('rebuild_all');
     }
 }

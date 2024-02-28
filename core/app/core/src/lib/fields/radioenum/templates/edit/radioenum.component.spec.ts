@@ -42,7 +42,7 @@ import {numberFormatterMock} from '../../../../services/formatters/number/number
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
 import {RadioEnumEditFieldComponent} from './radioenum.component';
 import {RadioEnumEditFieldModule} from './radioenum.module';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 @Component({
     selector: 'enum-edit-field-test-host-component',
@@ -58,7 +58,7 @@ class RadioEnumEditFieldTestHostComponent {
         definition: {
             options: 'account_type_dom'
         },
-        formControl: new FormControl('_customer')
+        formControl: new UntypedFormControl('_customer')
     };
 }
 

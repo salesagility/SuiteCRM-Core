@@ -214,6 +214,9 @@ class SecurityGroup extends SecurityGroup_sugar
                 }
             }
         }
+
+        self::clearSecurityGroupsCache($focus);
+
         self::inherit_creator($focus, $isUpdate);
     }
 
@@ -660,6 +663,19 @@ class SecurityGroup extends SecurityGroup_sugar
         $rh->get_rel1_vardef_field_base($rh->base_bean->field_defs);
 
         return $rh->rel1_vardef_field_base;
+    }
+
+    private static function clearSecurityGroupsCache(SugarBean $focus): void
+    {
+        if ($focus->module_name !== 'SecurityGroups'){
+            return;
+        }
+        if (isset($_REQUEST['subpanel_id'])){
+            require_once "include/portability/Services/Cache/CacheManager.php";
+            (new CacheManager())->markAsNeedsUpdate('app-metadata-navigation-'.$_REQUEST['subpanel_id']);
+            (new CacheManager())->markAsNeedsUpdate('app-metadata-user-preferences-'.$_REQUEST['subpanel_id']);
+            (new CacheManager())->markAsNeedsUpdate('app-metadata-module-metadata-'. $focus->module_name .'-'.$_REQUEST['subpanel_id']);
+        }
     }
 
     /**

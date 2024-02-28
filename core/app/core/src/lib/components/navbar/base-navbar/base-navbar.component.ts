@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {combineLatest, Observable, Subscription} from 'rxjs';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
@@ -47,6 +47,7 @@ import {AppState, AppStateStore} from '../../../store/app-state/app-state.store'
 import {AuthService} from '../../../services/auth/auth.service';
 import {MenuItem, ready} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
+import {NotificationStore} from "../../../store/notification/notification.store";
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -60,7 +61,9 @@ import {AsyncActionInput, AsyncActionService} from '../../../services/process/pr
         ])
     ]
 })
-export class BaseNavbarComponent implements OnInit, OnDestroy {
+export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
+
+    @ViewChild('mobileGlobalLinkTitle') mobileGlobalLinkTitle: ElementRef;
 
     protected static instances: BaseNavbarComponent[] = [];
 
@@ -91,17 +94,18 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     currentUser$: Observable<any> = this.authService.currentUser$;
     appState$: Observable<AppState> = this.appState.vm$;
     navigation$: Observable<Navigation> = this.navigationStore.vm$;
+    dropdownLength: number;
 
     notificationCount$: Observable<number>;
 
-    vm$ = combineLatest([
-        this.navigation$,
-        this.userPreferences$,
-        this.currentUser$,
-        this.appState$,
-        this.screenSize.screenSize$,
-        this.languages$,
-    ]).pipe(
+    vm$ = this.navigation$.pipe(
+        combineLatestWith(
+            this.userPreferences$,
+            this.currentUser$,
+            this.appState$,
+            this.screenSize.screenSize$,
+            this.languages$,
+        ),
         map(([navigation, userPreferences, currentUser, appState, screenSize, language]) => {
 
             if (screenSize) {
@@ -144,7 +148,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
         protected authService: AuthService,
         protected moduleNavigation: ModuleNavigation,
         protected screenSize: ScreenSizeObserverService,
-        protected asyncActionService: AsyncActionService
+        protected asyncActionService: AsyncActionService,
+        protected notificationStore: NotificationStore
     ) {
     }
 
@@ -173,9 +178,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
 
         window.dispatchEvent(new Event('resize'));
 
-        this.notificationCount$ = this.appState.notificationsUnreadTotal$;
+        this.notificationCount$ = this.notificationStore.notificationsUnreadTotal$;
 
-        this.subs.push(this.appState.notificationsEnabled$.subscribe(notificationsEnabled => {
+        this.subs.push(this.notificationStore.notificationsEnabled$.subscribe(notificationsEnabled => {
             this.notificationsEnabled = notificationsEnabled;
         }));
     }
@@ -194,7 +199,14 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     }
 
     markAsRead(): void {
-        this.appState.markNotificationsAsRead();
+        this.notificationStore.markNotificationsAsRead();
+    }
+
+    ngAfterViewInit(): void {
+        if (!this.mobileGlobalLinkTitle?.nativeElement?.offsetWidt) {
+            return;
+        }
+        this.dropdownLength = this.mobileGlobalLinkTitle.nativeElement.offsetWidt;
     }
 
     /**
@@ -271,8 +283,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     getModuleQuickActions(module: string): void {
         const moduleNavigation = this?.navigation?.modules[module] ?? null;
         const moduleNavigationMenu = moduleNavigation?.menu ?? [];
-        if (moduleNavigation === null || !moduleNavigationMenu.length ) {
-            this.currentQuickActions= [];
+        if (moduleNavigation === null || !moduleNavigationMenu.length) {
+            this.currentQuickActions = [];
         }
 
         const actions = [] as ModuleAction[];
@@ -294,7 +306,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy {
     }
 
     handleProcess(action: ModuleAction) {
-        if(!action.process) {
+        if (!action.process) {
             return;
         }
 

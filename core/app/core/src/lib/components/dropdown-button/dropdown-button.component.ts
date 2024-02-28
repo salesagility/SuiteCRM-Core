@@ -24,22 +24,34 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {DropdownButtonInterface} from 'common';
-import {ButtonInterface} from 'common';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+    ButtonInterface,
+    deepClone,
+    DropdownButtonInterface,
+    DropdownButtonSection,
+    DropdownButtonSectionMap,
+    emptyObject
+} from 'common';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {LanguageStore} from '../../store/language/language.store';
+
 
 @Component({
     selector: 'scrm-dropdown-button',
     templateUrl: './dropdown-button.component.html',
     styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DropdownButtonComponent implements OnInit {
     @Input() config: DropdownButtonInterface;
     @Input() disabled = false;
     @Input() autoClose: boolean | 'outside' | 'inside' = true;
+
+    buttons: any[] = [];
+    sections: DropdownButtonSection[] = [];
+    sectionsEnabled: boolean = false;
 
     constructor(public language: LanguageStore) {
     }
@@ -64,6 +76,62 @@ export class DropdownButtonComponent implements OnInit {
         if (this.config && !this.config.placement) {
             this.config.placement = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
         }
+
+        this.sections = [];
+
+        const sectionsConfig: DropdownButtonSectionMap = this.config?.sections ?? {};
+
+        if (emptyObject(sectionsConfig)) {
+            this.buttons = [...this.config?.items ?? []];
+            this.sectionsEnabled = false;
+            return;
+        }
+        this.sectionsEnabled = true;
+
+        this.preprocessItems(this.config?.items ?? []);
+    }
+
+    preprocessItems(items: any[]): void {
+        const sectionsConfig: DropdownButtonSectionMap = this.config?.sections ?? {};
+        const sections: DropdownButtonSectionMap = {};
+
+        if (!items || !items.length) {
+            return;
+        }
+
+        items.forEach(item => {
+            const sectionKey = item?.section ?? 'default';
+            let section = this.getSection(sectionsConfig, sectionKey, sections);
+
+            section.items.push(item);
+
+        });
+
+        Object.keys(sectionsConfig).forEach(sectionKey => {
+            const section = sections[sectionKey];
+            if (section && section.items && section.items.length) {
+                this.sections.push(section);
+            }
+        });
+
+    }
+
+    /**
+     * Get section from map, initialize if not on map
+     * @param sectionsConfig
+     * @param sectionKey
+     * @param sections
+     * @protected
+     */
+    protected getSection(sectionsConfig: DropdownButtonSectionMap, sectionKey: string, sections: DropdownButtonSectionMap): DropdownButtonSection {
+        const sectionConfig = sectionsConfig[sectionKey] ?? {};
+        let section = sections[sectionKey] ?? null;
+        if (section === null) {
+            section = deepClone(sectionConfig);
+            section.items = [];
+            sections[sectionKey] = section;
+        }
+        return section;
     }
 
     getPlacement(): PlacementArray {
