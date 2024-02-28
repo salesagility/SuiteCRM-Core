@@ -33,7 +33,6 @@ import {isEmptyString, isTrue, User} from 'common';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';
-import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
@@ -63,8 +62,6 @@ export class AuthService {
     isUserMfaAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     UserNeedFactorAuthentication = false;
     UserFactorAuthenticated = false;
-    defaultTimeout = '3600';
-    protected timerSet = false;
     protected currentUserSubject = new BehaviorSubject<User>({} as User);
 
     constructor(
@@ -147,25 +144,6 @@ export class AuthService {
                 this.notificationStore.enableNotifications();
                 this.notificationStore.refreshNotifications();
             }
-
-            const duration = response.duration;
-
-            if (duration === 0 || duration === '0') {
-                return;
-            }
-
-            if (duration) {
-                this.defaultTimeout = duration;
-            }
-
-            this.bnIdle.startWatching(this.defaultTimeout).subscribe((res) => {
-                if (res && this.isUserLoggedIn.value === true) {
-                    this.message.removeMessages();
-                    this.logout('LBL_SESSION_EXPIRED');
-                }
-            });
-
-            this.timerSet = true;
         }, (error: HttpErrorResponse) => {
             onError(error);
         });
@@ -286,12 +264,6 @@ export class AuthService {
             )
             .subscribe(
                 () => {
-                    if (this.timerSet) {
-                        this.bnIdle.resetTimer();
-                        this.bnIdle.stopTimer();
-                        this.timerSet = false;
-                    }
-
                     this.message.log('Logout success');
                     if (!isEmptyString(messageKey)) {
                         this.message.addSuccessMessageByKey(messageKey);
