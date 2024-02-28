@@ -1,0 +1,97 @@
+<!--
+/**
+ *
+ * SugarCRM Community Edition is a customer relationship management program developed by
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2024 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
+ * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
+ *
+ * The interactive user interfaces in modified source and object code versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU Affero General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
+-->
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <link rel="manifest" href="site.webmanifest">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <link rel="stylesheet" href="dist/{{ cssFile }}">
+</head>
+<body>
+<app-root>
+    <div class="top-panel fixed-top">
+        <nav class="navbar ml-0 pl-0">
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="pl-1">
+                        <img alt=""
+                             src="legacy/themes/default/images/company_logo.png"
+                             title=""
+                             class="">
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="install-view">
+        <div class="install-view-header">
+            <div class="row mr-0">
+                <div class="col-md-5 install-header-title-col pl-4">
+                    <div class="install-view-title record-view-name">
+                        <scrm-label>{{ mod_strings.LBL_DISABLED_TITLE_2 }}</scrm-label>
+                    </div>
+                    <div class="pl-4">
+                        <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION }}</scrm-label>
+                    </div>
+                    <pre class="bg-transparent text-body pl-4 pt-3">'installer_locked' => false,</pre>
+                    <div class="pl-4">
+                        <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION_3 }}</scrm-label>
+                    </div>
+                    <div class="pl-4">
+                        {{ mod_strings.LBL_DISABLED_HELP_1 }}
+                        <a href="{{mod_strings.LBL_DISABLED_HELP_LNK}}" target="_blank">{{mod_strings.LBL_DISABLED_HELP_2}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="copyright-links"><a data-toggle="modal" data-target=".copyright-suitecrm" class="footer-link"> ©
+                Supercharged by SuiteCRM </a><a data-toggle="modal" data-target=".copyright-sugarcrm"
+                                                class="footer-link"> © Powered By SugarCRM </a></div>
+    </div>
+    <div class="copyright"></div>
+</app-root>
+</body>
+</html>

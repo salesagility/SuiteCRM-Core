@@ -87,13 +87,29 @@ class InstallPreChecks
     {
 
         $sugar_config = $this->getConfigValues();
+        $this->modStrings = $this->getLanguageStrings();
 
-        if (file_exists('legacy/config.php')) {
-            return;
+        $files = scandir('dist');
+
+        foreach ($files as $file) {
+
+            if (preg_match("/styles\.[^.]+\.css/", $file)) {
+                $cssFile = $file;
+            }
         }
 
+        if (file_exists('legacy/config.php') && isTrue($sugar_config['installer_locked'])) {
+            $loader = new FilesystemLoader(__DIR__ . '/../Resources');
+            $twig = new Environment($loader);
+            $template = $twig->load('installer_locked.html.twig');
 
-        $this->modStrings = $this->getLanguageStrings();
+            echo $template->render([
+                'cssFile' => $cssFile,
+                'mod_strings' => $this->modStrings
+            ]);
+
+            return;
+        }
 
         $path = realpath('./');
         $loader = new FilesystemLoader(__DIR__ . '/../Resources');
@@ -108,15 +124,6 @@ class InstallPreChecks
         }
 
         $this->optionalInstallChecks();
-
-        $files = scandir('dist');
-
-        foreach ($files as $file) {
-
-            if (preg_match("/styles\.[^.]+\.css/", $file)) {
-                $cssFile = $file;
-            }
-        }
 
         echo $template->render([
             'path' => $path,
@@ -201,7 +208,7 @@ class InstallPreChecks
         curl_setopt($ch, CURLOPT_VERBOSE, true);
         ob_start();
         $path = 'php://output';
-        $streamVerboseHandle = fopen($path, 'w');
+        $streamVerboseHandle = fopen($path, 'r+');
         curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
 
         $headers = [];
@@ -257,6 +264,7 @@ class InstallPreChecks
 
         $output['result'] = $this->modStrings['LBL_CHECKSYS_OK'] ?? 'OK';
         fclose($streamVerboseHandle);
+
         $debug = ob_get_clean();
         $this->log->info($debug);
         return $output;
@@ -268,10 +276,10 @@ class InstallPreChecks
 
         fwrite($streamVerboseHandle, $error);
         file_put_contents($logFile, stream_get_contents($streamVerboseHandle), FILE_APPEND);
+        $output['errors'][] =  stream_get_contents($streamVerboseHandle);
         fclose($streamVerboseHandle);
         $debug = ob_get_clean();
         $this->log->error($debug);
-        $output['errors'][] = $result;
         $output['errors'][] = $error;
 
         return $output;
@@ -323,7 +331,7 @@ class InstallPreChecks
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         ob_start();
         $path = 'php://output';
-        $streamVerboseHandle = fopen($path, 'w');
+        $streamVerboseHandle = fopen($path, 'r+');
         curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
 
 
@@ -352,7 +360,6 @@ class InstallPreChecks
         }
 
         curl_close($ch);
-        rewind($streamVerboseHandle);
 
         file_put_contents('public/legacy/install.log', stream_get_contents($streamVerboseHandle, -1, 0), FILE_APPEND);
         $output['result'] = $this->modStrings['LBL_CHECKSYS_OK'] ?? 'OK';
@@ -1039,20 +1046,18 @@ class InstallPreChecks
             'ldap',
         ];
 
-        $result = [
-            'result' => '',
-            'warnings' => []
-        ];
 
         $key = 'SERVER CHECKS';
 
         $loadedExtensions = get_loaded_extensions();
 
         foreach ($modules as $module) {
+            $result['warnings'] = [];
             $label = $this->modStrings['LBL_CHECKSYS_' . strtoupper($module) . '_EXTENSIONS'];
             $this->systemChecks[$key]['checks'][$label]['label'] = $label;
             $this->log->info('Checking if ' . $module . ' exists in loaded extensions');
             if (!in_array($module, $loadedExtensions)) {
+                $result['result'] = '';
                 $result['warnings'][] = $this->modStrings['ERR_CHECKSYS_' . strtoupper($module)] ?? strtoupper($module) . ' not found in extensions.';
                 $this->systemChecks[$key]['checks'][$label]['warnings'] = $result['warnings'];
             } else {
