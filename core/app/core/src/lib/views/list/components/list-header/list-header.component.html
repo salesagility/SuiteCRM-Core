@@ -27,15 +27,12 @@
 -->
 <ng-container>
     <div class="list-view-header">
-        <div class="row align-items-start mr-0">
-            <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-sm-start">
-                    <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
-
+        <div class="row mr-0">
+            <div class="col-md-4 d-none d-md-flex align-items-center" >
+                <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
             </div>
-            <div class="col-md-8">
-                <div class="row justify-content-center justify-content-sm-end mr-0 ml-md-1">
-                    <scrm-settings-menu></scrm-settings-menu>
-                </div>
+            <div class="col-md-8 d-flex justify-content-end">
+                <scrm-settings-menu></scrm-settings-menu>
             </div>
         </div>
 
