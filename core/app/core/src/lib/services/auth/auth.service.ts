@@ -59,6 +59,9 @@ export class AuthService {
 
     currentUser$: Observable<User>;
     isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isUserMfaAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    UserNeedFactorAuthentication = false;
+    UserFactorAuthenticated = false;
     protected currentUserSubject = new BehaviorSubject<User>({} as User);
 
     constructor(
@@ -90,6 +93,22 @@ export class AuthService {
         this.isUserLoggedIn.next(true);
     }
 
+    getUserNeedFactorAuthentication(): boolean {
+        return this.UserNeedFactorAuthentication;
+    }
+
+    setUserNeedFactorAuthentication(data): void {
+        this.UserNeedFactorAuthentication = data;
+    }
+
+    getUserFactorAuthenticated(): boolean {
+        return this.UserFactorAuthenticated;
+    }
+
+    setUserFactorAuthenticated(data): void {
+        this.UserFactorAuthenticated = data;
+    }
+
     doLogin(
         username: string,
         password: string,
@@ -118,10 +137,48 @@ export class AuthService {
 
             this.appStateStore.updateInitialAppLoading(true);
             onSuccess(response);
+
+            if (response.userNeedFactorAuthentication === false) {
+                this.isUserLoggedIn.next(true);
+                this.setCurrentUser(response);
+                this.notificationStore.enableNotifications();
+                this.notificationStore.refreshNotifications();
+            }
+        }, (error: HttpErrorResponse) => {
+            onError(error);
+        });
+    }
+
+    doMfa(
+        otp: string,
+        onSuccess: (response: string) => void,
+        onError: (error: HttpErrorResponse) => void
+    ): Subscription {
+        let mfaUrl = 'mfa-auth';
+        mfaUrl = this.baseRoute.appendNativeAuth(mfaUrl);
+        mfaUrl = this.baseRoute.calculateRoute(mfaUrl);
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+
+        return this.http.post(
+            mfaUrl,
+            {
+                otp
+            },
+            {headers}
+        ).subscribe((response: any) => {
+
+            if (this.baseRoute.isNativeAuth()) {
+                window.location.href = this.baseRoute.removeNativeAuth();
+            }
+
+            this.appStateStore.updateInitialAppLoading(true);
+            onSuccess(response);
+            this.isUserMfaAuthenticated.next(true);
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
-            this.notificationStore.enableNotifications();
-            this.notificationStore.refreshNotifications();
+
         }, (error: HttpErrorResponse) => {
             onError(error);
         });

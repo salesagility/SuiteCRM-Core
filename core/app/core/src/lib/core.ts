@@ -446,6 +446,7 @@ export * from './services/auth/auth.service';
 export * from './services/auth/error.interceptor';
 export * from './services/auth/install-auth-guard.service';
 export * from './services/auth/login-auth-guard.service';
+export * from './services/auth/mfa-auth-guard.service';
 export * from './services/base-route/base-route.service';
 export * from './services/condition-operators/active-fields-checker.service';
 export * from './services/condition-operators/condition-operator.action';
@@ -628,6 +629,8 @@ export * from './views/list/table-actions/select-columns/select-columns.table.ac
 export * from './views/login/components/login/login.component';
 export * from './views/login/components/login/login.module';
 export * from './views/login/components/login/login.routes';
+export * from './views/login/components/mfa/mfa.component';
+export * from './views/login/components/mfa/mfa.module';
 export * from './views/logout/components/logout/logout.component';
 export * from './views/logout/components/logout/logout.module';
 export * from './views/record/action-logic/display-type/display-type.logic';

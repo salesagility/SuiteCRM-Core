@@ -24,75 +24,32 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-/* --------- FORM SECTION ---------- */
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {MfaUiComponent} from './mfa.component';
+import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ButtonLoadingUiModule} from '../../../../directives/button-loading/button-loading.module';
+import {LogoUiModule} from '../../../../components/logo/logo.module';
+import {ImageModule} from '../../../../components/image/image.module';
 
-.login-form {
-  @media all and (min-width: $breakpoint-xsmall) {
-    text-align: center;
-    width: 25em;
-    margin: auto auto;
-
-    .logo img {
-      max-width: 95%;
-    }
-  }
-
-  @media all and (max-width: $breakpoint-medium) {
-    .logo img {
-      max-width: 75%;
-    }
-  }
-
-  @media all and (max-width: $breakpoint-xsmall) {
-    text-align: center;
-    margin: 5% auto;
-    position: absolute;
-    width: 95%;
-    top: 25%;
-
-    .logo img {
-      max-width: 80%;
-    }
-  }
-
-  .forgotten-password {
-    text-align: center;
-    margin: 0.2em 0 0 0;
-  }
-
-  .mfa-send {
-    flex-grow: 1;
-    margin: 0.2em 0 0 0;
-  }
-
-  .mfa-logout {
-    flex-grow: 1;
-    margin: 0.2em 0 0 0;
-  }
-
-  .mfa-actions {
-    display: flex;
-    justify-content: center;
-  }
-
-  .forgotten-password-link, .mfa-link {
-    clear: both;
-    color: $coral-pink;
-  }
-
-  .forgotten-password-link:hover, .mfa-link:hover {
-    color: $light-orange;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  .forgotten-password-link .disabled, .mfa-link .disabled {
-    opacity: 40%;
-  }
-}
-
-.login-view {
-  .login-form {
-    padding-top: 4rem;
-  }
+@NgModule({
+    declarations: [
+        MfaUiComponent
+    ],
+    exports: [
+        MfaUiComponent
+    ],
+    imports: [
+        FormsModule,
+        LogoUiModule,
+        RouterModule,
+        CommonModule,
+        AngularSvgIconModule,
+        ImageModule,
+        ButtonLoadingUiModule
+    ]
+})
+export class MfaUiModule {
 }

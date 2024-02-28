@@ -169,6 +169,12 @@ export class AuthGuard  {
                         return this.router.parseUrl('install');
                     }
 
+                    if (user && user.active === true && user.userNeedFactorAuthentication === true && user.userFactorAuthenticated === false) {
+                        this.authService.setUserNeedFactorAuthentication(user.userNeedFactorAuthentication);
+                        this.authService.setUserFactorAuthenticated(user.userFactorAuthenticated);
+                        return this.router.parseUrl('Mfa');
+                    }
+
                     if (user && user.active === true) {
                         const wasLoggedIn = !!this.appState.getCurrentUser();
                         this.authService.setCurrentUser(user);

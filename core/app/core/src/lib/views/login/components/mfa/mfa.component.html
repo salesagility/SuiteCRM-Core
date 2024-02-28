@@ -1,0 +1,88 @@
+<! --
+/**
+* SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+* Copyright (C) 2021 SalesAgility Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+<div *ngIf="(vm$ | async) as vm" class="login-view full-height-view d-flex align-items-center">
+
+    <!-- Start of otp form section -->
+
+    <form name="Mfa" class="login-form" #mfaForm="ngForm">
+        <div class="form-row form-group">
+            <div class="col">
+                <scrm-logo-ui></scrm-logo-ui>
+            </div>
+        </div>
+
+        <div class="form-row fade-card">
+
+            <!-- Card front -->
+            <div class="fade-card-front col"
+                 [@fade]>
+
+                <div class="inner-addon left-addon">
+                    <scrm-image image="login_password"></scrm-image>
+                    <input [(ngModel)]="otp"
+                           type="passw"
+                           name="otp"
+                           [class.is-invalid]="password.invalid && password.touched"
+                           #password="ngModel"
+                           placeholder="{{vm.appStrings['LBL_EMAIL_CODE']}}"
+                           aria-label="OTP"
+                           required>
+                    <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
+                        {{vm.appStrings['ERR_MISSING_REQUIRED_FIELDS']}}
+                    </div>
+                </div>
+
+                <button id="login-button" class="login-button"
+                        [scrm-button-loading]="loading"
+                        (click)="mfaForm.control.markAllAsTouched(); mfaForm.valid && doMfa()">
+                    {{vm.appStrings['LBL_VERIFY']}}
+                </button>
+
+                <div class="mfa-actions">
+                    <div class="mfa-send">
+                        <a class="mfa-link" (click)="SendMfa()">
+                            {{vm.appStrings['LBL_RESEND']}}
+                        </a>
+                    </div>
+                    <div class="mfa-logout">
+                        <a class="mfa-link" (click)="logout()">
+                            {{vm.appStrings['LBL_LOGOUT']}}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+
+    <!-- End of otp form section -->
+
+</div>
+
+<!-- End of otp component section -->

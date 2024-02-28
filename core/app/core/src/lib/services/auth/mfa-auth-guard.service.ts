@@ -25,22 +25,24 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Router, UrlTree} from '@angular/router';
+import {CanActivate, Router, UrlTree} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {AuthService, SessionStatus} from './auth.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {AppStateStore} from '../../store/app-state/app-state.store';
+import {MessageService} from '../message/message.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoginAuthGuard  {
+export class MfaAuthGuard implements CanActivate {
     constructor(
         protected router: Router,
         private authService: AuthService,
         protected systemConfigStore: SystemConfigStore,
-        protected appStateStore: AppStateStore
+        protected appStateStore: AppStateStore,
+        protected message: MessageService
     ) {
     }
 
@@ -49,7 +51,7 @@ export class LoginAuthGuard  {
         const homePage = this.systemConfigStore.getHomePage();
         const homePageUrlTree: UrlTree = this.router.parseUrl(homePage);
 
-        if (this.authService.isUserLoggedIn.value) {
+        if (this.authService.isUserLoggedIn.value){
             return homePageUrlTree;
         }
 
@@ -62,19 +64,13 @@ export class LoginAuthGuard  {
                         return this.router.parseUrl('install');
                     }
 
-                    if (user && user.userNeedFactorAuthentication === true && user.userFactorAuthenticated === false) {
+                    if (user && user.active === true && user.userNeedFactorAuthentication === true && user.userFactorAuthenticated === true) {
                         this.authService.setUserNeedFactorAuthentication(user.userNeedFactorAuthentication);
                         this.authService.setUserFactorAuthenticated(user.userFactorAuthenticated);
-                        return this.router.parseUrl('Mfa');
-                    }
-
-                    if (user && user.active === true) {
-                        // Session is active, go to home page
-                        this.authService.setCurrentUser(user);
                         return homePageUrlTree;
                     }
 
-                    // Stay on login
+                    // Stay on mfa form
                     return true;
                 }),
                 catchError(() => of(true))
