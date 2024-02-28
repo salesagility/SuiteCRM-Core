@@ -66,19 +66,50 @@
 }
 
 @media all and (max-width: 765px) {
-  .record-view-action-header {
+
+  .record-view-name-header,
+  .record-view-back-button-container,
+  .record-view-action-header
+  {
     justify-content: center;
   }
 
-  .record-view-name-header {
-    justify-content: center;
+  .record-view-name-label {
+    white-space: nowrap;
   }
+
+  .record-view-name,
+  .record-view-name-scrolled {
+    justify-content:center;
+    width:100%;
+    position: relative;
+    margin-right:10%;
+  }
+
+  .record-name-container {
+    width: 100%;
+  }
+
 }
 
-@media all and (min-width: 765px) {
+@media all and (min-width: 766px) {
   .record-view-action-header {
     justify-content: end;
+    position: absolute;
   }
+
+  .record-view-back-button-container {
+    padding-left: 1rem;
+  }
+
+  .record-name-container {
+    width: 70%;
+  }
+
+  .record-view-name {
+    padding-left: 1.5rem;
+  }
+
 }
 
 .record-view-title {
@@ -104,10 +135,6 @@
   color: $median-grey;
   font-size: 1.5em;
   word-wrap: break-word;
-}
-
-.record-view-back-button {
-  margin-left: 1.3rem;
 }
 
 .record-view-actions {

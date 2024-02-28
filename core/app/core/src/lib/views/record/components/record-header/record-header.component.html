@@ -33,16 +33,16 @@
                 <div class="record-view-name pt-3 pb-3"></div>
             </div>
         </div>
-        <div *ngIf="!loading" class="row mr-0">
-            <div class="col-1 col-md-4">
-                <div class="record-view-back-button" *ngIf="mode === 'detail' || mode === 'edit'">
-                    <scrm-button *ngIf="backButtonConfig" [config]="backButtonConfig"></scrm-button>
+        <div *ngIf="!loading" class="row m-0">
+            <div class="d-flex record-name-container">
+                <div class="d-flex pl-3">
+                    <div class="d-flex record-view-back-button justify-content-start" *ngIf="mode === 'detail' || mode === 'edit'">
+                        <scrm-button *ngIf="backButtonConfig" [config]="backButtonConfig"></scrm-button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-10 col-md-4 d-flex align-items-center record-view-name-header">
                 <div [ngClass]="isScrolled ? 'record-view-name-scrolled d-flex align-items-center' : 'record-view-name d-flex align-items-center'">
                     <scrm-dynamic-label *ngIf="record && record.fields"
-                                        class="d-inline-block h-100 lh-100"
+                                        class="d-inline-block lh-100"
                                         [fields]="record.fields"
                                         [labelKey]="getSummaryTemplate()">
                     </scrm-dynamic-label>
@@ -52,14 +52,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-4 d-flex align-items-center record-view-action-header">
+            <div class="col-12 d-flex align-items-center record-view-action-header">
                 <div class="row mr-1 ml-1">
                     <div *ngIf="record" class="w-100">
                         <scrm-action-group-menu
-                            [config]="actionsAdapter"
-                            [actionContext]="getActionContext(record)"
-                            [klass]="isScrolled ?  'record-view-actions-scrolled float-right' : 'record-view-actions float-right'"
-                            buttonClass="settings-button"
+                                [config]="actionsAdapter"
+                                [actionContext]="getActionContext(record)"
+                                [klass]="isScrolled ?  'record-view-actions-scrolled float-right' : 'record-view-actions float-right'"
+                                buttonClass="settings-button"
                         >
                         </scrm-action-group-menu>
                     </div>
