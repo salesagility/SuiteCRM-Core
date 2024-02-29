@@ -323,12 +323,14 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                     values = [values];
                 }
 
-                // Reset selected values on Form Control
-                this.field.value = '';
-                this.field.formControl.setValue('');
-
                 // Rebuild available enum options
                 this.options = this.filterMatchingOptions(values);
+
+                // reset value on dynamic enum value if parent enum is empty or does not allow the selected value
+                if (!(this.options.some(option => option.value === this.field.value)) || values == ''){
+                    this.field.value = '';
+                    this.field.formControl.setValue('');
+                }
 
                 this.initValue();
             }));
