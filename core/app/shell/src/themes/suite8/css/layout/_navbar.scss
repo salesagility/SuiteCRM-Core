@@ -52,6 +52,12 @@
         height: 2.4em
       }
     }
+
+    .dropdown {
+      .dropdown-menu {
+        z-index: map-get($zindex, nav-max);
+      }
+    }
   }
 
   .navbar-nav {
@@ -62,7 +68,9 @@
     }
   }
 }
-
+.global-links-dropdown {
+  z-index: map-get($zindex, nav-max);
+}
 .home-nav {
   line-height: 3.1em;
 }
