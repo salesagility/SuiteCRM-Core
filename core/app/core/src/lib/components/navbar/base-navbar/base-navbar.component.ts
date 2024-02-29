@@ -30,7 +30,7 @@ import {map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
-import {fadeIn} from 'ng-animate';
+import {backInDown} from 'ng-animate';
 import {ActionNameMapper} from '../../../services/navigation/action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
 import {ModuleAction, Navigation, NavigationStore} from '../../../store/navigation/navigation.store';
@@ -49,14 +49,15 @@ import {MenuItem, ready} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {NotificationStore} from "../../../store/notification/notification.store";
 import {GlobalSearch} from "../../../services/navigation/global-search/global-search.service";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 
 @Component({
     selector: 'scrm-base-navbar',
     templateUrl: './base-navbar.component.html',
     styleUrls: [],
     animations: [
-        trigger('mobileNavFade', [
-            transition(':enter', useAnimation(fadeIn, {
+        trigger('mobileSearchBarAnm', [
+            transition(':enter', useAnimation(backInDown, {
                 params: {timing: 0.5, delay: 0}
             })),
         ])
@@ -90,7 +91,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     isTabletScreen = signal<boolean>(false);
 
     currentQuickActions: ModuleAction[];
-    isSearchBoxVisible: boolean = false;
+    isSearchBoxVisible = signal<boolean>(false);
 
     languages$: Observable<LanguageStrings> = this.languageStore.vm$;
     userPreferences$: Observable<UserPreferenceMap> = this.userPreferenceStore.userPreferences$;
@@ -114,7 +115,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
             if (screenSize) {
                 this.screen = screenSize;
                 if(!this.isSmallScreen()) {
-                    this.isSearchBoxVisible = true;
+                    this.isSearchBoxVisible.set(true);
                 }
             }
 
@@ -156,7 +157,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         protected screenSize: ScreenSizeObserverService,
         protected asyncActionService: AsyncActionService,
         protected notificationStore: NotificationStore,
-        protected globalSearch: GlobalSearch
+        protected globalSearch: GlobalSearch,
+        protected breakpointObserver: BreakpointObserver
     ) {
     }
 
@@ -192,6 +194,14 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.subs.push(this.notificationStore.notificationsEnabled$.subscribe(notificationsEnabled => {
             this.notificationsEnabled = notificationsEnabled;
+        }));
+
+        this.subs.push(this.breakpointObserver.observe([
+            Breakpoints.XSmall,
+        ]).subscribe((result: BreakpointState) => {
+            if (result.matches) {
+                this.isSearchBoxVisible.set(false);
+            }
         }));
     }
 
@@ -328,12 +338,12 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     openSearchBox() {
         if(this.isSmallScreen()) {
-            this.isSearchBoxVisible = true;
+            this.isSearchBoxVisible.set(true);
         }
     }
 
     closeSearchBox(isVisible: boolean) {
-        this.isSearchBoxVisible = isVisible;
+        this.isSearchBoxVisible.set(isVisible);
     }
 
     search(searchTerm: string) {

@@ -65,9 +65,18 @@
 
         <ng-container *ngIf="this.isUserLoggedIn && mobileNavbar">
             <ul class="navbar mobile-nav-block mobilenavbar">
-                <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
-                    <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
-                </button>
+                <div class="d-flex">
+                    <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
+                        <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
+                    </button>
+                    <nav class="navbar navbar-expand">
+                        <ul class="navbar-nav" [ngClass]="(isSmallScreen() && isSearchBoxVisible()) ? 'd-none' : 'd-block'">
+                            <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown non-grouped">
+                                <scrm-menu-item [item]="navbar.current" [disableRoute]="mobileNavbar"></scrm-menu-item>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
 
                 <div class="d-flex align-items-center">
                     <ng-container *ngTemplateOutlet="actionIcons"></ng-container>
@@ -281,12 +290,12 @@
             </div>
 
             <div class="d-flex align-items-center">
-                <a class="action-link primary-global-link search-mobile-view" [ngClass]="isSearchBoxVisible ? 'd-none' : 'd-block'"
+                <a class="action-link primary-global-link search-mobile-view" [ngClass]="isSearchBoxVisible() ? 'd-none' : 'd-block'"
                    type="button" (click)="openSearchBox()" aria-label="Search">
                     <scrm-image class="action-btn-icon" image="search"></scrm-image>
                 </a>
 
-                <div [ngClass]="isSearchBoxVisible ? 'd-block' : 'd-none'">
+                <div [ngClass]="isSearchBoxVisible() ? 'd-block' : 'd-none'" [@mobileSearchBarAnm]>
                     <scrm-search-bar
                         [labelKey]="'LBL_SEARCH'"
                         [klass]="'search-bar-global'"
