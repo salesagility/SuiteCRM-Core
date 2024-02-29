@@ -253,7 +253,7 @@
                         <a class="action-link primary-global-link" type="button" aria-label="Quick Create" ngbDropdownToggle>
                             <scrm-image class="action-btn-icon" image="plus"></scrm-image>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-left border shadow-sm-2" ngbDropdownMenu>
+                        <ul [class.dropdown-menu-right]="!mobileNavbar" [class.dropdown-menu-right-center]="mobileNavbar"  class="dropdown-menu dropdown-menu-left border shadow-sm-2" ngbDropdownMenu>
 
                             <ng-container *ngIf="(navbar?.current?.module ?? '') && currentQuickActions.length">
                                 <li class="new-list-item-header font-weight-bold">

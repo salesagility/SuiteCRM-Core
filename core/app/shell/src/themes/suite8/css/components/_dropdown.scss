@@ -32,6 +32,21 @@
   min-width: 9em;
 }
 
+.dropdown-menu-right-center {
+  right: 0;
+  left: auto;
+}
+
+@media only screen and (max-width: 420px) {
+
+  .dropdown-menu-right-center {
+    right: 7vh;
+    left: auto;
+    position: fixed;
+    top: 4em;
+  }
+}
+
 .dropdown-menu.submenu {
   border-radius: 0;
 }
