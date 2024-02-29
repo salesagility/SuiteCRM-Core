@@ -26,9 +26,99 @@
 
 /* --------- NAVBAR SECTION ---------- */
 
+.mobile-navbar-active-module {
+
+  scrm-base-menu-item-link {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+
+    .top-nav-link.nav-link-nongrouped {
+      margin-top: 0;
+    }
+
+    .top-nav-link.nav-link-nongrouped:hover {
+      margin-top: 0;
+    }
+
+    .top-nav-link.nav-link-grouped,
+    .top-nav-link.nav-link-nongrouped {
+      color: $off-white;
+
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+
+      padding: 0.5em 0.3em 0.7em;
+      font-weight: bold;
+      margin-top: 0;
+    }
+  }
+
+
+}
+
 @media only screen and (max-width: $breakpoint-medium) {
   .global-action-icon {
     margin: 0;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+
+  .mobile-navbar-active-module {
+
+    scrm-base-menu-item-link {
+
+      .top-nav-link.nav-link-grouped,
+      .top-nav-link.nav-link-nongrouped {
+        max-width: 105px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 450px) {
+
+  .mobile-navbar-active-module {
+
+    scrm-base-menu-item-link {
+
+      .top-nav-link.nav-link-grouped,
+      .top-nav-link.nav-link-nongrouped {
+        max-width: 150px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 450px) and (max-width: 500px) {
+
+  .mobile-navbar-active-module {
+
+    scrm-base-menu-item-link {
+
+      .top-nav-link.nav-link-grouped,
+      .top-nav-link.nav-link-nongrouped {
+        max-width: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 500px) {
+
+  .mobile-navbar-active-module {
+
+    scrm-base-menu-item-link {
+
+      .top-nav-link.nav-link-grouped,
+      .top-nav-link.nav-link-nongrouped {
+        max-width: 250px;
+      }
+    }
   }
 }
 
@@ -57,12 +147,30 @@
 
   }
 
+  .mobile-navbar-active-module {
+
+    scrm-base-menu-item-link {
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+
+      .top-nav-link.nav-link-nongrouped {
+        margin-top: 0;
+        line-height: inherit;
+      }
+
+      .top-nav-link.nav-link-nongrouped:hover {
+        margin-top: 0;
+        line-height: inherit;
+      }
+    }
+
+
+  }
+
   .nav-link-grouped,
   .nav-link-nongrouped {
-    color: $off-white;
-    line-height: 3.1em;
-    padding: 0.8em 0.5em 1.1em 0.5em;
-    font-size: 0.85em;
+    max-width: 105px;
   }
 
   .navbar-nav,

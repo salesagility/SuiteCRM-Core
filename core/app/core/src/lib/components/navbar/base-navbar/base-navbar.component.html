@@ -70,8 +70,8 @@
                         <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
                     </button>
                     <nav class="navbar-expand" [ngClass]="(isSmallScreen() && isSearchBoxVisible()) ? 'd-none' : 'd-block'">
-                        <ul class="navbar-nav">
-                            <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown non-grouped">
+                        <ul class="navbar-nav h-100">
+                            <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown mobile-navbar-active-module h-100 non-grouped">
                                 <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                             </li>
                         </ul>
