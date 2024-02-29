@@ -58,6 +58,12 @@
         z-index: map-get($zindex, nav-max);
       }
     }
+
+    .dropdown {
+      .dropdown-menu {
+        z-index: map-get($zindex, nav-max);
+      }
+    }
   }
 
   .navbar-nav {
@@ -78,6 +84,10 @@
 
 .recently-viewed-nav-header {
   overflow-x: hidden;
+}
+
+.global-links-dropdown {
+  z-index: map-get($zindex, nav-max);
 }
 
 .home-nav {
