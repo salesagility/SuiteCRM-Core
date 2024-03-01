@@ -84,6 +84,15 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
+        if(!!this.filteredWord) {
+            if(this.selectAll && this.selectedValues.length !== this.filteredOptions.length) {
+                this.selectAll = false;
+            }
+        } else {
+            if(this.selectAll && this.selectedValues.length !== this.options.length) {
+                this.selectAll = false;
+            }
+        }
     }
 
     public onSelectAll(event) : void {
@@ -110,7 +119,12 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public onFilter(event) {
         this.filteredWord = event.filter;
-        this.filteredOptions = this.options.filter(option => option.value.toLowerCase().includes(this.filteredWord.toLowerCase()))
+        this.filteredOptions = this.options.filter(option => option.label.toLowerCase().includes(this.filteredWord.toLowerCase()));
+        if(!this.filteredWord.length) {
+            this.filteredOptions = [];
+        }
+        this.onAdd();
+
     }
 
     public getTranslatedLabels(): void {
