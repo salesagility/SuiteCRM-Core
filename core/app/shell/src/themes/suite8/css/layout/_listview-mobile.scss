@@ -53,6 +53,30 @@
     }
 }
 
+@media all and (min-width: $breakpoint-large) {
+
+  .list-view-header {
+    .custom-col-4 {
+      flex: 0 0 33.333333%;
+      max-width: 33.333333%;
+      position: relative;
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    .custom-col-8 {
+      flex: 0 0 66.666667%;
+      max-width: 66.666667%;
+      justify-content: end;
+      position: relative;
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+}
+
 @media all and (max-width: $breakpoint-large) {
     .list-view {
         .list-view-header {
