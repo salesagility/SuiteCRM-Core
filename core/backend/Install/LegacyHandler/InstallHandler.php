@@ -224,7 +224,7 @@ class InstallHandler extends LegacyHandler
             if (is_array($result['errors'])) {
                 foreach ($result['errors'] as $error) {
                     if (in_array($error, $modStrings)) {
-                        $warnings[] = "Check Failed:" . $error . " Please refer to the logs/install.log";
+                        $warnings[] = "One or More Failed Checks: " . $error . " Please refer to the logs/install.log";
                     }
                 }
                 continue;
