@@ -44,7 +44,7 @@ use Monolog\Logger;
 
 require __DIR__ . '/../config/bootstrap.php';
 require __DIR__ . '/../vendor/autoload.php';
-$log = new Logger('install');
-$log->pushHandler(new StreamHandler('legacy/install.log', Logger::DEBUG));
+$log = new Logger('install.log');
+$log->pushHandler(new StreamHandler('../logs/install.log', Logger::DEBUG));
 (new InstallPreChecks($log))->setupTwigTemplate();
 
