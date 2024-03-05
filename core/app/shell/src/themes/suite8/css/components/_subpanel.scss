@@ -218,6 +218,18 @@ div.widget-panel .panel-card .card-header {
 
 
 .sub-panel {
+  table {
+    tr {
+      td:first-child,
+      th:first-child{
+        padding-left: 1.3em;
+      }
+      td:last-child,
+      th:last-child {
+        padding-right: 1.3em;
+      }
+    }
+  }
   .table .show-more-column {
     float: none !important;
     width: 16px;
