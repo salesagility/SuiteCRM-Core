@@ -26,14 +26,16 @@
 */
 -->
 <ng-container *ngIf="actions.length">
-    <div id="line-action-div" class="line-action float-right">
-        <div class="{{wrapperClass}}" [ngClass]="isButtonClicked  ? 'active': ''">
-            <div class="{{klass}}">
-                <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="'icon-bar-block'"></scrm-button-group>
+    <div class="line-action-container">
+        <div id="line-action-div" class="line-action line-action-position">
+            <div class="{{wrapperClass}}" [ngClass]="isButtonClicked  ? 'active': ''">
+                <div class="{{klass}}">
+                    <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="'icon-bar-block'"></scrm-button-group>
+                </div>
+                <button class="more-button" aria-label="Mobile Menu Button" (click)="isButtonClicked=!isButtonClicked">
+                    <scrm-image class="sicon" image="apps-line"></scrm-image>
+                </button>
             </div>
-            <button class="more-button" aria-label="Mobile Menu Button" (click)="isButtonClicked=!isButtonClicked">
-                <scrm-image class="sicon" image="apps-line"></scrm-image>
-            </button>
         </div>
     </div>
 </ng-container>
