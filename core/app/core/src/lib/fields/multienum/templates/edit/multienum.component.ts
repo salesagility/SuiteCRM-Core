@@ -72,11 +72,9 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             .pipe(take(1))
             .subscribe((screenSize: any) => {
                 this.maxSelectedLabels = maxSelectedLabelsForDisplay[screenSize] || this.maxSelectedLabels;
-        })
+            })
         this.primengConfig.ripple = true;
-        if(this.selectedValues.length === this.options.length) {
-            this.selectAll = true;
-        }
+        this.updateSelectAll();
     }
 
     public onAdd(): void {
@@ -84,15 +82,8 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
-        if(!!this.filteredWord) {
-            if(this.selectAll && this.selectedValues.length !== this.filteredOptions.length) {
-                this.selectAll = false;
-            }
-        } else {
-            if(this.selectAll && this.selectedValues.length !== this.options.length) {
-                this.selectAll = false;
-            }
-        }
+        this.updateSelectAll();
+
     }
 
     public onSelectAll(event) : void {
@@ -117,7 +108,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.formControl.markAsDirty();
     }
 
-    public onFilter(event) {
+    public onFilter(event): void {
         this.filteredWord = event.filter;
         this.filteredOptions = this.options.filter(option => option.label.toLowerCase().includes(this.filteredWord.toLowerCase()));
         if(!this.filteredWord.length) {
@@ -133,7 +124,22 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
     }
 
-    onPanelHide() {
+    onPanelHide(): void {
         this.filteredOptions = [];
+        this.filteredWord = '';
+        this.updateSelectAll();
+    }
+
+    updateSelectAll(): void {
+        this.selectAll = false;
+        if(!!this.filteredWord) {
+            if(this.selectedValues.length === this.filteredOptions.length) {
+                this.selectAll = true;
+            }
+        } else {
+            if(this.selectedValues.length === this.options.length) {
+                this.selectAll = true;
+            }
+        }
     }
 }
