@@ -31,6 +31,7 @@ import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {NotificationStore} from '../../../../store/notification/notification.store';
+import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
 
 @Injectable({
     providedIn: 'root'
@@ -43,7 +44,8 @@ export class RecordSaveAction extends RecordActionHandler {
     constructor(
         protected message: MessageService,
         protected navigation: ModuleNavigation,
-        protected notificationStore: NotificationStore
+        protected notificationStore: NotificationStore,
+        protected recentlyViewedService: RecentlyViewedService
     ) {
         super();
     }
@@ -66,6 +68,8 @@ export class RecordSaveAction extends RecordActionHandler {
                     const moduleName = data.store.getModuleName();
                     const id = record.id;
                     this.notificationStore.conditionalNotificationRefresh('edit');
+                    const recentlyViewed = this.recentlyViewedService.buildRecentlyViewed(moduleName, id);
+                    this.recentlyViewedService.addRecentlyViewed(moduleName, recentlyViewed);
                     this.navigateBack(this.navigation, params, id, moduleName, record);
                 });
                 return;

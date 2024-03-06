@@ -36,6 +36,7 @@ import {LanguageStore} from '../../../store/language/language.store';
 import {RecordThreadItemActionManager} from '../actions/item-actions/record-thread-item-action-manager.service';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordThreadItemConfig} from '../components/record-thread-item/record-thread-item.model';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable({
     providedIn: 'root',
@@ -49,7 +50,8 @@ export class RecordThreadItemActionsAdapterFactory {
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
     }
 
@@ -63,7 +65,8 @@ export class RecordThreadItemActionsAdapterFactory {
             this.message,
             this.confirmation,
             this.selectModalService,
-            this.metadata
+            this.metadata,
+            this.appMetadataStore
         );
 
         const collapseButtons = config?.metadata?.collapseActions ?? null;

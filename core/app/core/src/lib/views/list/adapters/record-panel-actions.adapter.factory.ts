@@ -35,6 +35,7 @@ import {ListViewStore} from '../store/list-view/list-view.store';
 import {RecordPanelActionManager} from '../actions/record-panel/record-panel-action-manager.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable({
     providedIn: 'root',
@@ -48,7 +49,8 @@ export class ListViewRecordPanelActionAdapterFactory {
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
     }
 
@@ -62,7 +64,8 @@ export class ListViewRecordPanelActionAdapterFactory {
             this.message,
             this.confirmation,
             this.selectModalService,
-            this.metadata
+            this.metadata,
+            this.appMetadataStore
         );
 
         const collapseButtons = listStore?.recordPanelConfig?.collapseActions ?? null;

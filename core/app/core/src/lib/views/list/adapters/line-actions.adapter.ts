@@ -38,6 +38,7 @@ import {ConfirmationModalService} from '../../../services/modals/confirmation-mo
 import {LanguageStore} from '../../../store/language/language.store';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class LineActionsAdapter extends BaseLineActionsAdapter {
@@ -50,7 +51,8 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
         super(
             actionManager,
@@ -59,7 +61,8 @@ export class LineActionsAdapter extends BaseLineActionsAdapter {
             confirmation,
             language,
             selectModalService,
-            metadata
+            metadata,
+            appMetadataStore
         );
     }
 

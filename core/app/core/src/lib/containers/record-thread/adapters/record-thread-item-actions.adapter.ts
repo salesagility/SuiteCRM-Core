@@ -40,6 +40,7 @@ import {RecordThreadItemActionManager} from '../actions/item-actions/record-thre
 import {RecordThreadItemStore} from '../store/record-thread/record-thread-item.store';
 import {RecordThreadStore} from '../store/record-thread/record-thread.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<RecordThreadItemActionData> {
@@ -60,7 +61,8 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
         super(
             actionManager,
@@ -69,7 +71,8 @@ export class RecordThreadItemActionsAdapter extends BaseRecordActionsAdapter<Rec
             confirmation,
             language,
             selectModalService,
-            metadata
+            metadata,
+            appMetadataStore
         );
     }
 

@@ -39,6 +39,7 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {SubpanelActionManager} from "../components/subpanel/action-manager.service";
 import {SubpanelActionData} from "../actions/subpanel.action";
 import {SubpanelStore} from "../store/subpanel/subpanel.store";
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class SubpanelActionsAdapter extends BaseRecordActionsAdapter<SubpanelActionData> {
@@ -51,7 +52,8 @@ export class SubpanelActionsAdapter extends BaseRecordActionsAdapter<SubpanelAct
         protected message: MessageService,
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
         super(
             actionManager,
@@ -60,7 +62,8 @@ export class SubpanelActionsAdapter extends BaseRecordActionsAdapter<SubpanelAct
             confirmation,
             language,
             selectModalService,
-            metadata
+            metadata,
+            appMetadataStore
         )
     }
 

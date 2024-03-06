@@ -28,9 +28,8 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {deepClone, emptyObject, ObjectMap} from 'common';
+import {deepClone, emptyObject} from 'common';
 import {StateStore} from '../state';
-import {AppStateStore} from '../app-state/app-state.store';
 import {LanguageStore, LanguageStrings} from '../language/language.store';
 import {SystemConfigStore} from '../system-config/system-config.store';
 import {ThemeImagesStore} from '../theme-images/theme-images.store';
@@ -266,7 +265,7 @@ export class AppMetadataStore implements StateStore {
     }
 
     protected isGlobalRecentlyViewedLoaded(): boolean {
-        return !!(internalState.adminMetadata ?? false);
+        return !!(internalState.globalRecentlyViewed ?? false);
     }
 
     /**
@@ -411,10 +410,14 @@ export class AppMetadataStore implements StateStore {
     }
 
     protected setGlobalRecentlyViewed(currentMetadata: AppMetadataFlags, appMetadata: AppMetadata) {
-        const globalRecentlyViewed = appMetadata?.globalRecentlyViewed ?? {};
-        if (!emptyObject(globalRecentlyViewed)) {
+        const globalRecentlyViewed = appMetadata?.globalRecentlyViewed ?? [];
+        if (globalRecentlyViewed.length) {
             currentMetadata.globalRecentlyViewed = true;
             this.globalRecentlyViewedStore.set(globalRecentlyViewed);
+        } else {
+            if(appMetadata?.globalRecentlyViewed) {
+                this.globalRecentlyViewedStore.set(globalRecentlyViewed);
+            }
         }
     }
 

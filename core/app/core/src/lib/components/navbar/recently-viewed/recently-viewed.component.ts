@@ -75,8 +75,4 @@ export class RecentlyViewedComponent {
         return this.navigation.getRecordRouterLink(module, id);
     }
 
-    trackByFn(index, item) {
-        return item.id;
-    }
-
 }

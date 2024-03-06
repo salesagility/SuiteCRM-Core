@@ -551,7 +551,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected function getGlobalRecentlyViewedMetadata(Navbar $navigation): array
     {
         $modules = $navigation->tabs ?? [];
-        return $this->recentlyViewedHandler->getGlobalTrackers($modules) ?? [];
+        $legacyModuleNames = [];
+        foreach ($modules as $module) {
+            $legacyModuleNames[] = $this->moduleNameMapper->toLegacy($module);
+        }
+        return $this->recentlyViewedHandler->getGlobalTrackers($legacyModuleNames) ?? [];
     }
 
 

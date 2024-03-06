@@ -40,6 +40,7 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordThreadListActionData} from "../actions/list-actions/record-thread-list.action";
 import {RecordThreadListActionManager} from "../actions/list-actions/record-thread-list-action-manager.service";
 import {RecordThreadListMetadata} from '../store/record-thread/record-thread-list.store.model';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<RecordThreadListActionData> {
@@ -61,6 +62,7 @@ export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<Rec
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
         protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
         super(
             actionManager,
@@ -69,7 +71,8 @@ export class RecordThreadListActionsAdapter extends BaseRecordActionsAdapter<Rec
             confirmation,
             language,
             selectModalService,
-            metadata
+            metadata,
+            appMetadataStore
         );
     }
 

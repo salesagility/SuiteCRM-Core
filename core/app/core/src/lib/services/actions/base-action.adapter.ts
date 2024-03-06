@@ -44,6 +44,7 @@ import {ConfirmationModalService} from '../modals/confirmation-modal.service';
 import {LanguageStore} from '../../store/language/language.store';
 import {SelectModalService} from '../modals/select-modal.service';
 import {MetadataStore} from '../../store/metadata/metadata.store.service';
+import {AppMetadataStore} from "../../store/app-metadata/app-metadata.store.service";
 
 export abstract class BaseActionsAdapter<D extends ActionData> implements ActionDataSource {
 
@@ -62,7 +63,8 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
     }
 
@@ -295,6 +297,18 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         if (typesToLoad && typesToLoad.length) {
             this.metadata.reloadModuleMetadata(moduleName, typesToLoad, false).pipe(take(1)).subscribe();
         }
+
+        if (this.shouldReloadGlobalRecentlyViewed(process)) {
+            this.appMetadataStore.load(moduleName, ['globalRecentlyViewed'], false).pipe(take(1)).subscribe();
+        }
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadGlobalRecentlyViewed(process: Process): boolean {
+        return !!(process.data && process.data.reloadGlobalRecentlyViewed);
     }
 
     /**
