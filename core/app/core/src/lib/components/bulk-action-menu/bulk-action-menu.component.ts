@@ -51,6 +51,7 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
     @Input() actionSource: BulkActionDataSource;
 
     dropdownConfig: DropdownButtonInterface;
+    dropdownSmallConfig: DropdownButtonInterface;
     subs: Subscription[] = [];
     status: SelectionStatus = SelectionStatus.NONE;
     count: number = 0;
@@ -79,6 +80,13 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
                 items: []
             } as DropdownButtonInterface;
 
+            const dropdownSmallConfig = {
+                labelKey: 'LBL_ACTION',
+                klass: ['bulk-action-button', 'btn', 'btn-sm'],
+                wrapperKlass: ['bulk-action-group', 'float-left'],
+                items: []
+            } as DropdownButtonInterface;
+
             Object.keys(actions).forEach(actionKey => {
                 const action = actions[actionKey];
                 dropdownConfig.items.push({
@@ -88,9 +96,17 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
                         this.actionSource.executeBulkAction(action.key);
                     }
                 });
+                dropdownSmallConfig.items.push({
+                    labelKey: action.labelKey ?? '',
+                    klass: [`${actionKey}-bulk-action`],
+                    onClick: (): void => {
+                        this.actionSource.executeBulkAction(action.key);
+                    }
+                });
             });
 
             this.dropdownConfig = dropdownConfig;
+            this.dropdownSmallConfig = dropdownSmallConfig;
         }));
     }
 

@@ -25,8 +25,8 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="bulk-action float-left">
-    <div ngbDropdown class="dropdown select-action-group float-left">
+<div class="bulk-action d-flex">
+    <div ngbDropdown class="dropdown select-action-group">
         <button class="bulk-action-button dropdown-toggle btn btn-sm"
                 type="button"
                 ngbDropdownToggle
@@ -43,7 +43,7 @@
                 <span class="checkmark"></span>
             </label>
             <span class="bulk-action-selected-number">
-                <ng-container *ngIf="count > 0"> <scrm-label labelKey="LBL_LISTVIEW_SELECTED_OBJECTS"></scrm-label></ng-container> {{count > 0 ? count : ''}}
+                <ng-container *ngIf="count > 0"> <scrm-label class="d-none d-sm-block" labelKey="LBL_LISTVIEW_SELECTED_OBJECTS"></scrm-label></ng-container> {{count > 0 ? count : ''}}
             </span>
         </button>
         <div class="dropdown-menu"
@@ -60,7 +60,12 @@
             </a>
         </div>
     </div>
-    <scrm-dropdown-button [disabled]="count < 1"
+    <scrm-dropdown-button class="d-block d-sm-none"
+                          [disabled]="count < 1"
+                          [config]="dropdownSmallConfig">
+    </scrm-dropdown-button>
+    <scrm-dropdown-button class="d-none d-sm-block"
+                          [disabled]="count < 1"
                           [config]="dropdownConfig">
     </scrm-dropdown-button>
 </div>
