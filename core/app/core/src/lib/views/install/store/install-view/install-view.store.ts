@@ -56,6 +56,7 @@ import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
 import {Params} from '@angular/router';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {LanguageStore} from '../../../../store/language/language.store';
+import { trimEnd } from 'lodash-es';
 
 const initialState: InstallViewState = {
     loading: false,
@@ -212,6 +213,7 @@ export class InstallViewStore implements StateStore {
 
     getMetadata(): InstallViewMetadata {
         this.url = window.location.origin + window.location.pathname;
+        this.url = trimEnd(this.url, '/');
         return {
             actions: [],
             templateMeta: {

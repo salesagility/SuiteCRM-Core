@@ -33,6 +33,8 @@ use App\Engine\Model\Feedback;
 use App\Install\Service\Installation\InstallStatus;
 use App\Install\Service\InstallationUtilsTrait;
 use App\Install\Service\InstallPreChecks;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PDO;
 use PDOException;
 use Psr\Log\LoggerInterface;
@@ -210,8 +212,11 @@ class InstallHandler extends LegacyHandler
         $results = [];
         $url = $inputArray['site_host'];
 
+        $log = new Logger('install.log');
+        $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../public/logs/install.log', Logger::DEBUG));
+
         require_once "core/backend/Install/Service/InstallPreChecks.php";
-        $installChecks = new InstallPreChecks($this->logger);
+        $installChecks = new InstallPreChecks($log);
         $results[] = $installChecks->checkMainPage($url);
         $results[] = $installChecks->checkGraphQlAPI($url);
         $modStrings = $installChecks->getLanguageStrings();
@@ -219,6 +224,7 @@ class InstallHandler extends LegacyHandler
         $feedback = new Feedback();
         $feedback->setSuccess(true);
         $warnings = [];
+        $errorsFound = false;
 
         foreach ($results as $result) {
             if (is_array($result['errors'])) {
@@ -226,6 +232,8 @@ class InstallHandler extends LegacyHandler
                     if (in_array($error, $modStrings)) {
                         $warnings[] = "One or More Failed Checks: " . $error . " Please refer to the logs/install.log";
                     }
+
+                    $errorsFound = true;
                 }
                 continue;
             }
@@ -233,6 +241,10 @@ class InstallHandler extends LegacyHandler
             if (!empty($result['errors'])) {
                 $warnings[] = $result['errors'];
             }
+        }
+
+        if ($errorsFound){
+            $warnings[] = 'One or More Failed Checks: Please refer to the logs/install.log';
         }
 
         if (isset($warnings)){
@@ -248,7 +260,7 @@ class InstallHandler extends LegacyHandler
      */
     public function createConfig(array $inputArray): bool
     {
-        $siteURL = $inputArray['site_host'];
+        $siteURL = rtrim($inputArray['site_host'] ?? '', " \t\n\r\0\x0B/");;
         $configArray = [
             'dbUSRData' => 'same',
             'default_currency_iso4217' => 'USD',

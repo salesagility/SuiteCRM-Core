@@ -988,11 +988,20 @@ function handleHtaccess()
     }
     $htaccess_file = '.htaccess';
     $contents = '';
-    $basePath = parse_url((string) $sugar_config['site_url'], PHP_URL_PATH);
-    if (empty($basePath)) {
-        $basePath = '/legacy/';
+    $siteUrl = rtrim((string) $sugar_config['site_url'] ?? '', " \t\n\r\0\x0B/");
+    $basePath = parse_url($siteUrl, PHP_URL_PATH);
+
+    if (empty($basePath) || $basePath === '/') {
+        $basePath = '/legacy';
     } else {
-        $basePath .= 'legacy/';
+        $basePath = rtrim($basePath ?? '', " \t\n\r\0\x0B/");
+        if (!endsWith($basePath, 'public') && !endsWith($basePath, 'legacy')) {
+            $basePath .= '/public';
+        }
+
+        if (!endsWith($basePath, 'legacy')) {
+            $basePath .= '/legacy';
+        }
     }
     $cacheDir = $sugar_config['cache_dir'];
 
