@@ -28,13 +28,15 @@
 <!-- Start List View Table Header Section -->
 
 <div class="list-view-tableactions table-header">
-    <div class="row">
-        <scrm-bulk-action-menu *ngIf="selection && bulkActions"
-                               [selectionSource]="selection"
-                               [actionSource]="bulkActions">
-        </scrm-bulk-action-menu>
-        <scrm-action-group-menu [config]="tableActions" buttonClass="btn table-action-button"></scrm-action-group-menu>
-        <div class="col mx-0 pl-0 table-pagination-wrapper">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex">
+            <scrm-bulk-action-menu *ngIf="selection && bulkActions"
+                                   [selectionSource]="selection"
+                                   [actionSource]="bulkActions">
+            </scrm-bulk-action-menu>
+            <scrm-action-group-menu [config]="tableActions" buttonClass="btn table-action-button"></scrm-action-group-menu>
+        </div>
+        <div class="mx-0 pl-0 table-pagination-wrapper">
             <scrm-pagination *ngIf="pagination"
                              [allowPagination]="isPaginationEnabled()"
                              [state]="pagination">

@@ -28,19 +28,21 @@
 <!-- Start List View Table Footer Section -->
 
 <div class="list-view-tableactions table-footer">
-  <div class="row">
-      <scrm-bulk-action-menu *ngIf="selection && bulkActions"
-                             [selectionSource]="selection"
-                             [actionSource]="bulkActions">
-      </scrm-bulk-action-menu>
-      <scrm-action-group-menu [config]="tableActions" buttonClass="btn table-action-button"></scrm-action-group-menu>
+  <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+          <scrm-bulk-action-menu *ngIf="selection && bulkActions"
+                                 [selectionSource]="selection"
+                                 [actionSource]="bulkActions">
+          </scrm-bulk-action-menu>
+          <scrm-action-group-menu [config]="tableActions" buttonClass="btn table-action-button"></scrm-action-group-menu>
+      </div>
       <div *ngIf="!isPaginationEnabled() && !allLoaded()"
-           class="col mx-0 pl-0 load-more-style">
+           class="mx-0 pl-0 load-more-style">
           <scrm-load-more
               [loadMoreButton]="getLoadMoreButton()">
           </scrm-load-more>
       </div>
-      <div class="col mx-0 pl-0 table-pagination-wrapper">
+      <div class="mx-0 pl-0 table-pagination-wrapper">
           <scrm-pagination *ngIf="pagination"
                            [allowPagination]="isPaginationEnabled()"
                            [state]="pagination">
