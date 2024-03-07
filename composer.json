@@ -126,36 +126,36 @@
   },
   "autoload": {
     "files": [
-      "public/legacy/deprecated.php"
+      "sales.custom3.pl/legacy/deprecated.php"
     ],
     "psr-4": {
       "App\\": "core/backend/",
       "App\\Module\\": "core/modules/",
       "App\\Extension\\": "extensions/",
       "SuiteCRM\\": [
-        "public/legacy/lib/",
-        "public/legacy/include/"
+        "sales.custom3.pl/legacy/lib/",
+        "sales.custom3.pl/legacy/include/"
       ],
       "SuiteCRM\\Custom\\": [
-        "public/legacy/custom/lib"
+        "sales.custom3.pl/legacy/custom/lib"
       ],
       "SuiteCRM\\Modules\\": [
-        "public/legacy/modules/"
+        "sales.custom3.pl/legacy/modules/"
       ]
     },
     "classmap": [
-      "public/legacy/Api/"
+      "sales.custom3.pl/legacy/Api/"
     ]
   },
   "autoload-dev": {
     "psr-4": {
       "App\\Tests\\": "tests/",
       "SuiteCRM\\": [
-        "public/legacy/tests/SuiteCRM/",
-        "public/legacy/tests/unit/phpunit/lib/SuiteCRM/"
+        "sales.custom3.pl/legacy/tests/SuiteCRM/",
+        "sales.custom3.pl/legacy/tests/unit/phpunit/lib/SuiteCRM/"
       ],
       "SuiteCRM\\Tests\\Unit\\": [
-        "public/legacy/tests/unit/phpunit/"
+        "sales.custom3.pl/legacy/tests/unit/phpunit/"
       ]
     }
   },
@@ -185,9 +185,9 @@
     ],
     "merge-plugin": {
       "include": [
-        "public/legacy/composer.ext.json",
+        "sales.custom3.pl/legacy/composer.ext.json",
         "composer.ext.json",
-        "public/legacy/custom/Extension/application/Ext/Composer/*/*.json"
+        "sales.custom3.pl/legacy/custom/Extension/application/Ext/Composer/*/*.json"
       ],
       "recurse": true,
       "replace": false,
