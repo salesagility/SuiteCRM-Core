@@ -49,7 +49,7 @@ $kernel->init([
 // Bootstrap composer
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-chdir(__DIR__ . '/../../public/legacy');
+chdir(__DIR__ . '/../../sales.custom3.pl/legacy');
 
 // Bootstrap SuiteCRM
 if (!defined('sugarEntry')) {
@@ -58,10 +58,10 @@ if (!defined('sugarEntry')) {
 }
 
 // Load in legacy
-require_once __DIR__ . '/../../public/legacy/include/utils.php';
-require_once __DIR__ . '/../../public/legacy/include/modules.php';
-require_once __DIR__ . '/../../public/legacy/include/MVC/preDispatch.php';
-require_once __DIR__ . '/../../public/legacy/include/entryPoint.php';
+require_once __DIR__ . '/../../sales.custom3.pl/legacy/include/utils.php';
+require_once __DIR__ . '/../../sales.custom3.pl/legacy/include/modules.php';
+require_once __DIR__ . '/../../sales.custom3.pl/legacy/include/MVC/preDispatch.php';
+require_once __DIR__ . '/../../sales.custom3.pl/legacy/include/entryPoint.php';
 
 $kernel->loadFile(__DIR__ . '/../_mock/Helpers/core/legacy/Data/DBQueryResultsMocking.php');
 $kernel->loadPhpFiles(__DIR__ . '/../_mock/Mock');

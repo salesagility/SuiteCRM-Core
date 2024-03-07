@@ -87,7 +87,7 @@ SuiteCRM.kdev4
 
 #Ignore composer vendor folder
 vendor/
-public/
+sales.custom3.pl/
 
 .php_cs.cache
 

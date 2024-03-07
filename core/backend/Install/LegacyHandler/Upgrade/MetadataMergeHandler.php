@@ -110,7 +110,7 @@ class MetadataMergeHandler extends LegacyHandler
         }
 
         $extractPath = $this->packageHandler->getPackageExtractPath($targetVersion);
-        $path = $extractPath . '/public/legacy';
+        $path = $extractPath . '/sales.custom3.pl/legacy';
         $originalPath = $this->packageHandler->getBackupPath($targetVersion);
         $customPath = $this->legacyDir . '/custom';
         $merger = new SugarMerge($path, $originalPath, $customPath);

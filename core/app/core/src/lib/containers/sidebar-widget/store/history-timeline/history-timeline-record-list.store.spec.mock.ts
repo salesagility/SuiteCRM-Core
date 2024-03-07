@@ -38,7 +38,7 @@ import {take} from 'rxjs/operators';
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const timelineRecordListMockData = {
     recordList: {
-        "id": "/suite8_beta/public/api/record-list/History",
+        "id": "/suite8_beta/sales.custom3.pl/api/record-list/History",
         "_id": "History",
         "meta": {
             "offsets": {

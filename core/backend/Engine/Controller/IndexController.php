@@ -43,7 +43,7 @@ use Symfony\Component\Security\Core\Security;
  */
 class IndexController extends AbstractController
 {
-    public const INDEX_HTML_PATH = '/public/dist/index.html';
+    public const INDEX_HTML_PATH = '/sales.custom3.pl/dist/index.html';
 
     /**
      * @var string

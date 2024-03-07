@@ -114,7 +114,7 @@ class ThemeImageService
     {
 
         $path = $this->buildPath($imagePath, $theme);
-        $basePath = $this->projectDir . '/public/';
+        $basePath = $this->projectDir . '/sales.custom3.pl/';
         $fullPath = $basePath . $path;
 
         $it = $this->themeImageFinder->find($fullPath);

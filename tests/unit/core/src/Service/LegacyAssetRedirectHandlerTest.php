@@ -73,7 +73,7 @@ class LegacyAssetRedirectHandlerTest extends Unit
             'BASE' => '/suiteinstance',
             'HTTP_HOST' => 'localhost',
             'HTTP_ORIGIN' => 'http://localhost',
-            'HTTP_REFERER' => 'http://localhost/suiteinstance/public/docs/graphql-playground/index.html',
+            'HTTP_REFERER' => 'http://localhost/suiteinstance/sales.custom3.pl/docs/graphql-playground/index.html',
             'SERVER_NAME' => 'localhost',
             'REDIRECT_URL' => '/suiteinstance/api/graphql',
             'REQUEST_METHOD' => 'POST',

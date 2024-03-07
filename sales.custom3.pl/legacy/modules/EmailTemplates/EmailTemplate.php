@@ -929,7 +929,7 @@ class EmailTemplate extends SugarBean
             }
 
             $this->makePublicImage($match[2], $fileExtension);
-            $newSrc = $sugar_config['site_url'] . '/public/' . $match[2] . '.' . $fileExtension;
+            $newSrc = $sugar_config['site_url'] . '/sales.custom3.pl/' . $match[2] . '.' . $fileExtension;
             $this->body_html = to_html(str_replace($match[1], $newSrc, (string) $html));
             $this->imageLinkReplaced = true;
             $this->repairEntryPointImages();
@@ -938,7 +938,7 @@ class EmailTemplate extends SugarBean
 
     protected function makePublicImage($id, $ext = 'jpg')
     {
-        $toFile = 'public/' . $id . '.' . $ext;
+        $toFile = 'sales.custom3.pl/' . $id . '.' . $ext;
         if (file_exists($toFile)) {
             return;
         }

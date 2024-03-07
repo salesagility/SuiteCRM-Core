@@ -95,13 +95,13 @@ class templateParser
                         $repl_arr[$key . "_" . $fieldName] = "false";
                     }
                 } elseif ($field_def['type'] == 'image') {
-                    $secureLink = $sugar_config['site_url'] . '/' . "public/" . $focus->id . '_' . $fieldName;
+                    $secureLink = $sugar_config['site_url'] . '/' . "sales.custom3.pl/" . $focus->id . '_' . $fieldName;
                     $file_location = $sugar_config['upload_dir'] . '/' . $focus->id . '_' . $fieldName;
                     // create a copy with correct extension by mime type
                     if (!file_exists('public')) {
                         sugar_mkdir('public', 0777);
                     }
-                    if (!copy($file_location, "public/{$focus->id}".  '_' . $fieldName)) {
+                    if (!copy($file_location, "sales.custom3.pl/{$focus->id}".  '_' . $fieldName)) {
                         $secureLink = $sugar_config['site_url'] . '/'. $file_location;
                     }
 

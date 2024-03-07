@@ -1034,7 +1034,7 @@ EOQ;
 
     # --------- DEPRECATED --------
     RewriteRule ^api/(.*)$ - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-    RewriteRule ^api/(.*?)$ lib/API/public/index.php/$1 [L]
+    RewriteRule ^api/(.*?)$ lib/API/sales.custom3.pl/index.php/$1 [L]
     # -----------------------------
 
     RewriteRule ^Api/(.*)$ - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

@@ -77,14 +77,14 @@ class EmailTemplateTest extends SuitePHPUnitFrameworkTestCase
         global $sugar_config;
 
         $template = BeanFactory::newBean('EmailTemplates');
-        $html = '<img style="font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:22.4px;color:#444444;padding:0px;margin:0px;" src="public/c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" alt="c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" width="267" height="200">';
+        $html = '<img style="font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:22.4px;color:#444444;padding:0px;margin:0px;" src="sales.custom3.pl/c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" alt="c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" width="267" height="200">';
         $template->body_html = to_html($html);
         $sugar_config['site_url'] = 'https://foobar.com';
 
         $template->addDomainToRelativeImagesSrc();
 
         $result = from_html($template->body_html);
-        self::assertStringContainsString('src="https://foobar.com/public/c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" alt="c1270a2d-a083-495e-7c61-5c8a9046ec0d.png"', $result);
+        self::assertStringContainsString('src="https://foobar.com/sales.custom3.pl/c1270a2d-a083-495e-7c61-5c8a9046ec0d.png" alt="c1270a2d-a083-495e-7c61-5c8a9046ec0d.png"', $result);
     }
 
     public function testrepairEntryPointImages(): void
@@ -108,13 +108,13 @@ class EmailTemplateTest extends SuitePHPUnitFrameworkTestCase
         self::assertNotNull($template->retrieve($template->id));
 
         foreach ($ids as $id) {
-            self::assertTrue(is_file('public/' . $id . '.png'));
-            unlink('public/' . $id . '.png');
+            self::assertTrue(is_file('sales.custom3.pl/' . $id . '.png'));
+            unlink('sales.custom3.pl/' . $id . '.png');
             unlink('upload/' . $id);
         }
 
-        $expected = '<img src="https://foobar.com/public/' . $ids[0] . '.png" alt="" style="font-size:14px;" width="381" height="339" />';
-        $expected .= '<img alt="test.png" src="https://foobar.com/public/' . $ids[1] . '.png" width="118" height="105" />';
+        $expected = '<img src="https://foobar.com/sales.custom3.pl/' . $ids[0] . '.png" alt="" style="font-size:14px;" width="381" height="339" />';
+        $expected .= '<img alt="test.png" src="https://foobar.com/sales.custom3.pl/' . $ids[1] . '.png" width="118" height="105" />';
         self::assertEquals($expected, from_html($template->body_html));
     }
 

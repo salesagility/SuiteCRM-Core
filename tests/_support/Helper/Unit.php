@@ -70,7 +70,7 @@ class Unit extends Module
     public function _beforeSuite($settings = []): void
     {
         self::$projectDir = codecept_root_dir();
-        self::$legacyDir = self::$projectDir . '/public/legacy';
+        self::$legacyDir = self::$projectDir . '/sales.custom3.pl/legacy';
         self::$legacySessionName = 'LEGACYSESSID';
         self::$defaultSessionName = 'PHPSESSID';
         self::$datetimeFormatMap = [

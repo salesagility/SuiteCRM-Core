@@ -89,7 +89,7 @@ class ManualConfigCheck implements LegacyMigrationStepInterface
         $alert->setTile('Manually Check legacy config');
 
         $messages = [
-            'Please check the following entries in your \'public/legacy/config.php\' (or config_override.php):',
+            'Please check the following entries in your \'sales.custom3.pl/legacy/config.php\' (or config_override.php):',
             '- site_url: Update this to the location of your post-migration SuiteCRM8 instance'
         ];
 

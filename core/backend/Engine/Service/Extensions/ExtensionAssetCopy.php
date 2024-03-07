@@ -57,9 +57,9 @@ class ExtensionAssetCopy implements ExtensionAssetCopyInterface
     {
         $filesystem = new Filesystem();
 
-        $publicPath = $this->projectDir . '/public/';
+        $publicPath = $this->projectDir . '/sales.custom3.pl/';
         $extensionsPath = $this->projectDir . '/extensions/';
-        $publicExtensionsPath = $this->projectDir . '/public/extensions';
+        $publicExtensionsPath = $this->projectDir . '/sales.custom3.pl/extensions';
 
         $this->cleanPublicExtensions($filesystem, $publicExtensionsPath);
 

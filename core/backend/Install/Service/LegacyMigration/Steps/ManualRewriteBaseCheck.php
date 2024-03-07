@@ -87,7 +87,7 @@ class ManualRewriteBaseCheck implements LegacyMigrationStepInterface
         $alert = new ProcessStepAlert();
         $alert->setTile('Manually Check legacy htaccess');
         $messages = [
-            'Please check RewriteBase in \'public/legacy/.htaccess\' and update manually',
+            'Please check RewriteBase in \'sales.custom3.pl/legacy/.htaccess\' and update manually',
             'Check SuiteCRM 8 Migration documentation for information on how to configure'
         ];
 

@@ -16,7 +16,7 @@
             "commonChunk": false,
             "sourceMap": true,
             "aot": true,
-            "outputPath": "public/dist/",
+            "outputPath": "sales.custom3.pl/dist/",
             "index": "core/app/shell/src/index.html",
             "main": "core/app/shell/src/main.ts",
             "polyfills": "core/app/shell/src/polyfills.ts",
@@ -118,7 +118,7 @@
                 {
                   "glob": "**/*",
                   "input": "core/app/shell/src/themes",
-                  "output": "public/dist/themes"
+                  "output": "sales.custom3.pl/dist/themes"
                 }
               ]
             },
@@ -370,7 +370,7 @@
               "extraWebpackConfig": "extensions/defaultExt/app/webpack.prod.config.js"
             },
             "dev" : {
-              "outputPath": "public/extensions/defaultExt"
+              "outputPath": "sales.custom3.pl/extensions/defaultExt"
             }
           }
         },

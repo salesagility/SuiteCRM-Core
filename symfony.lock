@@ -658,7 +658,7 @@
             "config/packages/test/framework.yaml",
             "config/routes/dev/framework.yaml",
             "config/services.yaml",
-            "public/index.php",
+            "sales.custom3.pl/index.php",
             "core/backend/Controller/.gitkeep",
             "core/backend/Kernel.php"
         ]

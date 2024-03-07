@@ -208,12 +208,12 @@ EOQ;
                         $GLOBALS['log']->debug("EMAIL Template could not copy attachment to $newFileLocation");
                     } else {
                         if ($useUploadFolder) {
-                            $secureLink = ($useSiteURL ? $sugar_config['site_url'] . '/' : '') . "public/{$id}";
+                            $secureLink = ($useSiteURL ? $sugar_config['site_url'] . '/' : '') . "sales.custom3.pl/{$id}";
                             // create a copy with correct extension by mime type
                             if (!file_exists('public')) {
                                 sugar_mkdir('public', 0777);
                             }
-                            if (copy($file_location, "public/{$id}.{$mime_type}")) {
+                            if (copy($file_location, "sales.custom3.pl/{$id}.{$mime_type}")) {
                                 $secureLink .= ".{$mime_type}";
                             }
                         } else {

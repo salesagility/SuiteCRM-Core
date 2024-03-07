@@ -3,7 +3,7 @@ framework:
 
 parameters:
   secret: '%env(APP_SECRET)%'
-  legacy.dir: '%kernel.project_dir%/public/legacy'
+  legacy.dir: '%kernel.project_dir%/sales.custom3.pl/legacy'
   packages.upgrade.dir: '%kernel.project_dir%/tmp/package/upgrade'
   legacy.path: '/legacy'
   legacy.session_name: 'LEGACYSESSID'

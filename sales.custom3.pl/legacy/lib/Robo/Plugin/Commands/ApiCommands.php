@@ -105,7 +105,7 @@ class ApiCommands extends Tasks
     }
 
     /**
-     * Generate OAuth2 public/private keys
+     * Generate OAuth2 sales.custom3.pl/private keys
      * @param array $opts
      * @option string $privateKey set a custom path to the oauth2 private key.
      * @option string $publicKey set a custom path to the oauth2 public key.

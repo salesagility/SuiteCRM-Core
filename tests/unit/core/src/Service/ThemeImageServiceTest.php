@@ -73,7 +73,7 @@ class ThemeImageServiceTest extends Unit
         ];
 
         $mockImages = [
-            '/public/legacy/themes/default/images' => [
+            '/sales.custom3.pl/legacy/themes/default/images' => [
                 new SplFileInfo('logo.png', 'legacy/themes/default/images', 'legacy/themes/default/images'),
                 new SplFileInfo('legacy_image.png', 'legacy/themes/default/images', 'legacy/themes/default/images'),
                 new SplFileInfo('to_be_overwritten.png', 'legacy/themes/default/images',
@@ -81,12 +81,12 @@ class ThemeImageServiceTest extends Unit
                 new SplFileInfo('to_be_overwritten_with_different_extension.png', 'legacy/themes/default/images',
                     'legacy/themes/default/images')
             ],
-            '/public/legacy/themes/suite8/images' => [
+            '/sales.custom3.pl/legacy/themes/suite8/images' => [
                 new SplFileInfo('to_be_overwritten.png', 'legacy/themes/suite8/images', 'legacy/themes/suite8/images'),
                 new SplFileInfo('to_be_overwritten_with_different_extension.svg', 'legacy/themes/suite8/images',
                     'legacy/themes/suite8/images')
             ],
-            '/public/dist/themes/suite8/images' => [
+            '/sales.custom3.pl/dist/themes/suite8/images' => [
                 new SplFileInfo('logo.png', 'dist/themes/suite8/images', 'dist/themes/suite8/images'),
             ]
         ];
