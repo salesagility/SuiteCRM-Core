@@ -31,6 +31,9 @@ import {FormsModule} from '@angular/forms';
 import {ButtonModule} from '../../../../components/button/button.module';
 import {LabelModule} from '../../../../components/label/label.module';
 import {MultiSelectModule} from "primeng/multiselect";
+import {ImageModule} from "../../../../components/image/image.module";
+import {DropdownModule} from "primeng/dropdown";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     declarations: [RelateEditFieldComponent],
@@ -40,7 +43,10 @@ import {MultiSelectModule} from "primeng/multiselect";
         LabelModule,
         FormsModule,
         ButtonModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ImageModule,
+        DropdownModule,
+        InputTextModule
     ]
 })
 export class RelateEditFieldModule {

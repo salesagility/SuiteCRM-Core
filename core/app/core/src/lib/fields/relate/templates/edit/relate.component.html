@@ -25,33 +25,56 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="d-flex">
+<div class="d-flex align-items-center">
     <ng-container *ngIf="initModule">
-        <div class="flex-grow-1">
-            <p-multiSelect
+        <div class="flex-grow-1 w-100 mr-1">
+            <p-dropdown
                 #tag
                 [options]="options"
-                [(ngModel)]="selectedValues"
+                [(ngModel)]="selectedValue"
                 [optionLabel]="getRelateFieldName()"
-                (onChange)="onAdd($event.value[0])"
-                (onBlur)="resetStatus()"
-                (onRemove)="onRemove()"
-                (onFilter)="onFilter($event)"
-                [virtualScroll]="true"
-                [virtualScrollItemSize]="40"
-                [placeholder]="placeholderLabel"
-                [emptyFilterMessage]="emptyFilterLabel"
-                [selectionLimit]="1"
-                [styleClass]="getInvalidClass()"
+                (onChange)="onAdd($event.value)"
+                (onLazyLoad)="onFilter($event)"
+                (onShow)="focusFilterInput()"
+                (onHide)="resetFunction(tag.options)"
+                [autoOptionFocus]="false"
+                [autofocusFilter]="false"
+                [focusOnHover] = "true"
+                [filter]="true"
+                [lazy]="true"
+                [dataKey]="'id'"
+                [filterBy]="getRelateFieldName()"
+                [showClear]="false"
+                [styleClass]="'w-100 ' + getInvalidClass()"
             >
-            </p-multiSelect>
+                <ng-template pTemplate="dropdownicon">
+                    <scrm-image image="down_carret"></scrm-image>
+                </ng-template>
+                <ng-template pTemplate="filter" let-options="options">
+
+                    <div class="p-dropdown-filter-container" (click)="$event.stopPropagation()">
+                        <input #dropdownFilterInput
+                               type="text"
+                               pInputText
+                               autocomplete="off"
+                               class="p-dropdown-filter p-component"
+                               [(ngModel)]="filterValue"
+                               (keyup)="onFilterInput($event, options);"
+                               tabindex="0">
+                        <scrm-image image="search" class="p-element p-dropdown-filter-search-icon"></scrm-image>
+                    </div>
+
+                </ng-template>
+            </p-dropdown>
         </div>
-        <div class="relate-btn">
+        <div>
             <scrm-button [config]="selectButton">
+            </scrm-button>
+        </div>
+        <div>
+            <scrm-button [config]="clearButton">
             </scrm-button>
         </div>
     </ng-container>
 </div>
-<small *ngIf="getMessage()" class="text-danger form-text text-muted">
-    <scrm-label [labelKey]="getMessage()" [module]="module"></scrm-label>
-</small>
+
