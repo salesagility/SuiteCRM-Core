@@ -1,0 +1,124 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+.field-type-relate {
+  p-dropdown {
+    .p-inputtext {
+      font-size: .875rem;
+    }
+
+    .p-dropdown-trigger-icon {
+      font-size: .875rem;
+      svg {
+        fill: $midnight-grey;
+      }
+    }
+
+
+    .p-dropdown-filter-container {
+      .p-dropdown-filter-search-icon {
+        display: inline-block;
+        position: absolute;
+        top: 0.35rem;
+        right: 0.5rem;
+        line-height: normal;
+        float: right;
+        fill: $midnight-grey;
+        font-size: 90%;
+      }
+    }
+
+    .p-dropdown.p-component.p-inputwrapper {
+      justify-content: space-between;
+
+      >p-overlay {
+        display: contents;
+      }
+
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+
+
+      span.p-element.p-dropdown-label.p-inputtext {
+        display: table-cell;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      .p-dropdown-trigger {
+        display: table-cell;
+        width: 1.7rem;
+      }
+    }
+
+    .p-dropdown-item {
+      font-size: .875rem;
+      line-height: .875rem;
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: table-cell;
+        vertical-align: middle;
+        width: 100%
+      }
+    }
+
+    .p-dropdown-item.p-element.p-focus {
+      background: rgba($baby-blue, .3);
+      color: inherit;
+    }
+
+    .p-dropdown-item.p-highlight {
+      background: $extra-light-grey;
+      color: inherit;
+    }
+
+    .p-dropdown-items {
+      padding-inline-start: 0;
+      margin-bottom: 0;
+    }
+
+    .p-dropdown-label {
+      padding: 0.25rem 0.5rem;
+    }
+
+    .p-dropdown-filter.p-inputtext.p-component {
+      padding: 0.25rem 0.5rem;
+    }
+
+    .p-dropdown-panel .p-dropdown-header {
+      padding: 0.5rem 0.7rem;
+    }
+  }
+}

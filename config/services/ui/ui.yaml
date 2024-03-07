@@ -40,9 +40,9 @@ parameters:
     record_modal_max_height: 620
     inline_confirmation_loading_delay: 300
     multiselect_max_number:
-      XSmall: 2
-      Small: 2
-      Medium: 4
+      XSmall: 20
+      Small: 20
+      Medium: 20
       Large: 20
       XLarge: 20
     displayed_quick_filters:
