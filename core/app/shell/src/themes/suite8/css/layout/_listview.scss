@@ -282,6 +282,10 @@ td {
   color: $white;
 }
 
+.list-view-tableactions .select-action-group {
+  margin: 0;
+}
+
 .load-more {
   background-color: #76858f;
   background-repeat: no-repeat;
@@ -330,4 +334,14 @@ td {
   -moz-transition: all .5s ease;
   -o-transition: all .5s ease;
   transition: all .5s ease;
+}
+
+.quick-filter-border {
+  border-right: 1px solid rgb(108, 117, 125, 0.5)!important;
+  margin-right: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+td.cdk-column-checkbox {
+  min-width: 32px;
 }
