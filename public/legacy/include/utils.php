@@ -6353,3 +6353,9 @@ function getCurrencyId($module, $id)
     global $locale;
     return BeanFactory::getBean($module, $id)->currency_id ?? $locale->getPrecedentPreference('currency');
 }
+
+if (!function_exists('endsWith')) {
+    function endsWith($str, $end) {
+        return (@substr_compare($str, $end, -strlen($end))==0);
+    }
+}
