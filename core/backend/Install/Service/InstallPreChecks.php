@@ -98,17 +98,15 @@ class InstallPreChecks
             }
         }
 
-        if (file_exists('legacy/config.php') && isTrue($sugar_config['installer_locked'])) {
-            $loader = new FilesystemLoader(__DIR__ . '/../Resources');
-            $twig = new Environment($loader);
-            $template = $twig->load('installer_locked.html.twig');
-
-            echo $template->render([
-                'cssFile' => $cssFile,
-                'mod_strings' => $this->modStrings
-            ]);
-
-            return;
+        if (file_exists('legacy/config.php') && ($sugar_config['installer_locked'] ?? false) === true) {
+                $loader = new FilesystemLoader(__DIR__ . '/../Resources');
+                $twig = new Environment($loader);
+                $template = $twig->load('installer_locked.html.twig');
+                echo $template->render([
+                    'cssFile' => $cssFile,
+                    'mod_strings' => $this->modStrings
+                ]);
+                return;
         }
 
         $path = realpath('./');
@@ -198,7 +196,7 @@ class InstallPreChecks
             'errors' => [],
         ];
         if (empty($baseUrl)) {
-            $baseUrl = ($_SERVER['REQUEST_SCHEME'] ?? 'http') . '://' . $_SERVER['HTTP_HOST'] . ($_SERVER['BASE'] ?? '');
+            $baseUrl = ($_SERVER['REQUEST_SCHEME'] ?? 'https') . '://' . $_SERVER['HTTP_HOST'] . ($_SERVER['BASE'] ?? '');
         }
         $baseUrl = rtrim($baseUrl, '/');
         $baseUrl .= '/';
@@ -233,19 +231,19 @@ class InstallPreChecks
         if (curl_errno($ch)) {
             $error = 'cURL error (' . curl_errno($ch) . '): ' . curl_error($ch);
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         if (!str_contains($result, '<title>SuiteCRM</title>')) {
             $error = $this->modStrings['LBL_NOT_A_VALID_SUITECRM_PAGE'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         if (empty($headers['set-cookie'])) {
             $error = $this->modStrings['LBL_NOT_COOKIE_OR_TOKEN'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         foreach ($headers['set-cookie'] as $cookie) {
@@ -271,7 +269,9 @@ class InstallPreChecks
         return $output;
     }
 
-    function outputError($streamVerboseHandle, $error, $logFile): array {
+    function outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result): array {
+
+        $modStrings = $this->getLanguageStrings();
 
         $output = [];
 
@@ -283,7 +283,15 @@ class InstallPreChecks
         $debug = ob_get_clean();
         $this->log->error($debug);
         $output['errors'][] = $error;
+        $output['errors'][] = 'The url used for the call was: ' . $baseUrl;
+        $output['errors'][] = 'The result of the call was: ';
 
+        if (!empty($result)) {
+            $output['errors'][] = $result;
+            return $output;
+        }
+
+        $output['errors'][] = $modStrings['LBL_EMPTY'];
         return $output;
     }
 
@@ -307,6 +315,8 @@ class InstallPreChecks
         if (empty($baseUrl)) {
             $baseUrl = ($_SERVER['REQUEST_SCHEME'] ?? 'https') . '://' . $_SERVER['HTTP_HOST'] . ($_SERVER['BASE'] ?? '');
         }
+        $baseUrl = rtrim($baseUrl, '/');
+        $baseUrl .= '/';
         $apiUrl = $baseUrl . '/api/graphql';
         $systemConfigApiQuery = '{"operationName":"systemConfigs","variables":{},"query":"query systemConfigs {\n  systemConfigs {\n    edges {\n      node {\n        id\n        _id\n        value\n        items\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"}';
 
@@ -344,7 +354,7 @@ class InstallPreChecks
         if (curl_errno($ch)) {
             $error = 'cURL error (' . curl_errno($ch) . '): ' . curl_error($ch);
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         $resultJson = json_decode($result, true);
@@ -352,13 +362,13 @@ class InstallPreChecks
         if (empty($resultJson)) {
             $error = $this->modStrings['LBL_CURL_JSON_ERROR'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         if (empty($resultJson['data']['systemConfigs'])) {
             $error = $this->modStrings['LBL_UNABLE_TO_FIND_SYSTEM_CONFIGS'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
         }
 
         curl_close($ch);
@@ -1119,7 +1129,7 @@ class InstallPreChecks
             return $results;
         }
 
-        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_' . $folderName . '_NOT_WRITABLE'] . ' ' . $this->modStrings['LBL_CHMOD_LABEL'];
+        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_' . strtoupper($folderName) . '_NOT_WRITABLE'] . ' ' . $this->modStrings['LBL_CHMOD_LABEL'];
         return $results;
     }
 

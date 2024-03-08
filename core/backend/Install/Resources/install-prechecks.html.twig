@@ -183,7 +183,7 @@
                                                                                     {% endfor %}
                                                                                     {% if extraErrors is empty %}
                                                                                         {% for error in check.errors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ error }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
                                                                                         {% endfor %}
                                                                                     {% else %}
                                                                                         {% set extraErrors = check.errors %}
@@ -202,7 +202,7 @@
                                                                                     {% endfor %}
                                                                                     {% if extraWarnings is empty %}
                                                                                         {% for warning in check.warnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ warning }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
                                                                                         {% endfor %}
                                                                                     {% else %}
                                                                                         {% set extraWarnings = check.warning %}
@@ -216,7 +216,7 @@
                                                                                     </summary>
                                                                                     <div>
                                                                                         {% for error in extraErrors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ error }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
                                                                                         {% endfor %}
                                                                                     </div>
                                                                                 </details>
@@ -229,7 +229,7 @@
                                                                                     </summary>
                                                                                     <div>
                                                                                         {% for warning in extraWarnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ warning }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
                                                                                         {% endfor %}
                                                                                     </div>
                                                                                 </details>
@@ -291,7 +291,7 @@
                                                                                     {% endfor %}
                                                                                     {% if extraErrors is empty %}
                                                                                         {% for error in check.errors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ error }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
                                                                                         {% endfor %}
                                                                                     {% else %}
                                                                                         {% set extraErrors = check.errors %}
@@ -310,7 +310,7 @@
                                                                                     {% endfor %}
                                                                                     {% if extraWarnings is empty %}
                                                                                         {% for warning in check.warnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ warning }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
                                                                                         {% endfor %}
                                                                                     {% else %}
                                                                                         {% set extraWarnings = check.warning %}
@@ -324,7 +324,7 @@
                                                                                     </summary>
                                                                                     <div>
                                                                                         {% for error in extraErrors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ error }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
                                                                                         {% endfor %}
                                                                                     </div>
                                                                                 </details>
@@ -337,7 +337,7 @@
                                                                                     </summary>
                                                                                     <div>
                                                                                         {% for warning in extraWarnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent">{{ warning }}</pre>
+                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
                                                                                         {% endfor %}
                                                                                     </div>
                                                                                 </details>
