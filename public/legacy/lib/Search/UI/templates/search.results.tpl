@@ -92,6 +92,7 @@
 
     {foreach from=$resultsAsBean item=beans key=module}
     <h3>{$module}</h3>
+    <div class="unified-search-table-wrapper">
     <table class="list view">
         <thead>
             <tr>
@@ -115,6 +116,7 @@
         </tbody>
         </thead>
     </table>
+    </div>
     {foreachelse}
     <p class="error">{$APP.ERR_SEARCH_NO_RESULTS}</p>
     {/foreach}
