@@ -88,16 +88,26 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public onSelectAll(event) : void {
         this.selectAll = event.checked;
-        if(this.selectAll) {
-            if(this.filteredOptions.length && this.filteredWord.length) {
-                this.selectedValues = this.filteredOptions;
+        if(this.filteredOptions.length && this.filteredWord.length) {
+            if(this.selectAll) {
+                let newSelectedValues = [];
+                newSelectedValues = this.filteredOptions.filter(item => !this.selectedValues.some(selectedItem => selectedItem.value === item.value));
+                this.selectedValues = [...this.selectedValues, ...newSelectedValues];
+                this.onAdd();
             } else {
-                this.selectedValues = this.options;
+                let newSelectedValues = [];
+                newSelectedValues = this.selectedValues.filter(item => !this.filteredOptions.some(filteredItem => filteredItem.value === item.value));
+                this.selectedValues = newSelectedValues;
+                this.onRemove();
             }
-            this.onAdd();
         } else {
-            this.selectedValues = [];
-            this.onRemove();
+            if(this.selectAll) {
+                this.selectedValues = this.options;
+                this.onAdd();
+            } else {
+                this.selectedValues = [];
+                this.onRemove();
+            }
         }
     }
 
@@ -114,8 +124,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         if(!this.filteredWord.length) {
             this.filteredOptions = [];
         }
-        this.onAdd();
-
+        this.updateSelectAll();
     }
 
     public getTranslatedLabels(): void {
@@ -133,7 +142,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     updateSelectAll(): void {
         this.selectAll = false;
         if(!!this.filteredWord) {
-            if(this.selectedValues.length === this.filteredOptions.length) {
+            if(this.filteredOptions.filter(item => this.selectedValues.some(selectedItem => selectedItem.value === item.value)).length === this.filteredOptions.length) {
                 this.selectAll = true;
             }
         } else {
