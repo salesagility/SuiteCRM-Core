@@ -302,7 +302,7 @@
                         [searchTrigger]="'enter'"
                         [isMobile]="isSmallScreen()"
                         (isSearchVisible)="closeSearchBox($event)"
-                        (searchExpression)="search($event)">
+                        (searchExpression)="search($event)" #searchTerm>
                     </scrm-search-bar>
                 </div>
             </div>

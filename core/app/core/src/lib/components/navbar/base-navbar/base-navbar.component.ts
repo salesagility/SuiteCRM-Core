@@ -50,6 +50,7 @@ import {AsyncActionInput, AsyncActionService} from '../../../services/process/pr
 import {NotificationStore} from "../../../store/notification/notification.store";
 import {GlobalSearch} from "../../../services/navigation/global-search/global-search.service";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {SearchBarComponent} from "../../search-bar/search-bar.component";
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -66,6 +67,7 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/lay
 export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild('mobileGlobalLinkTitle') mobileGlobalLinkTitle: ElementRef;
+    @ViewChild('searchTerm', { static: false }) searchTermRef: SearchBarComponent;
 
     protected static instances: BaseNavbarComponent[] = [];
 
@@ -199,7 +201,13 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subs.push(this.breakpointObserver.observe([
             Breakpoints.XSmall,
         ]).subscribe((result: BreakpointState) => {
-            if (result.matches) {
+            let hasSearchTerm;
+            if(!!this.searchTermRef?.searchForm.get('searchTerm').value) {
+                hasSearchTerm = true;
+            } else {
+                hasSearchTerm = false;
+            }
+            if (result.matches && !hasSearchTerm) {
                 this.isSearchBoxVisible.set(false);
             }
         }));
