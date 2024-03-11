@@ -36,6 +36,7 @@ import {ConfirmationModalService} from '../../../services/modals/confirmation-mo
 import {BulkActionDataSource} from '../../../components/bulk-action-menu/bulk-action-menu.component';
 import {Metadata, MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class BulkActionsAdapter implements BulkActionDataSource {
@@ -46,7 +47,8 @@ export class BulkActionsAdapter implements BulkActionDataSource {
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
         protected asyncAction: AsyncActionService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
     }
 
@@ -229,6 +231,18 @@ export class BulkActionsAdapter implements BulkActionDataSource {
         if (typesToLoad && typesToLoad.length) {
             this.metadata.reloadModuleMetadata(moduleName, typesToLoad, false).pipe(take(1)).subscribe();
         }
+
+        if (this.shouldReloadGlobalRecentlyViewed(process)) {
+            this.appMetadataStore.load(moduleName, ['globalRecentlyViewed'], false).pipe(take(1)).subscribe();
+        }
+    }
+
+    /**
+     * Should reload page
+     * @param process
+     */
+    protected shouldReloadGlobalRecentlyViewed(process: Process): boolean {
+        return !!(process.data && process.data.reloadGlobalRecentlyViewed);
     }
 
     /**

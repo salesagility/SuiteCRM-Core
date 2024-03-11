@@ -32,6 +32,7 @@ import {ConfirmationModalService} from '../../../services/modals/confirmation-mo
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {BulkActionsAdapter} from './bulk-actions.adapter';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable({
     providedIn: 'root',
@@ -43,7 +44,8 @@ export class BulkActionsAdapterFactory {
         protected confirmation: ConfirmationModalService,
         protected selectModalService: SelectModalService,
         protected asyncAction: AsyncActionService,
-        protected metadata: MetadataStore
+        protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore
     ) {
     }
 
@@ -54,7 +56,8 @@ export class BulkActionsAdapterFactory {
             this.confirmation,
             this.selectModalService,
             this.asyncAction,
-            this.metadata
+            this.metadata,
+            this.appMetadataStore
         );
     }
 }

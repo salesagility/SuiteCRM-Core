@@ -143,6 +143,7 @@ class DeleteRecordsBulkAction implements ProcessHandlerInterface, LoggerAwareInt
         $responseData = [
             'reload' => true,
             'dataUpdated' => true,
+            'reloadGlobalRecentlyViewed' => true,
             'reloadRecentlyViewed' => true,
             'reloadFavorites' => true
         ];
