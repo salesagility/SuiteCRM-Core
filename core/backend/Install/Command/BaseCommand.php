@@ -244,7 +244,7 @@ abstract class BaseCommand extends Command
             }
 
             if ($error['status'] === 'warning') {
-                $message = '<warning>' . $message . '</warning>';
+                $message = '<fg=yellow>' . $message . '</>';
             }
 
             $output->writeln($message);
@@ -254,7 +254,7 @@ abstract class BaseCommand extends Command
     protected function writeFeedbackWarnings(OutputInterface $output, Feedback $feedback): void {
         $warnings = $feedback->getWarnings() ?? [];
         foreach ($warnings as $warning) {
-            $output->writeln('<warning>' . $warning . '</warning>');
+            $output->writeln('<fg=yellow>' . $warning . '</>');
         }
     }
 
