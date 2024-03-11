@@ -45,6 +45,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Style-Type" content="text/css">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" href="dist/themes/suite8/images/favicon.ico">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <link rel="stylesheet" href="dist/{{ cssFile }}">
 </head>
@@ -66,24 +67,27 @@
     </div>
     <div class="install-view">
         <div class="install-view-header">
-            <div class="row mr-0">
-                <div class="col-md-5 install-header-title-col pl-4">
-                    <div class="install-view-title record-view-name">
-                        <scrm-label>{{ mod_strings.LBL_DISABLED_TITLE_2 }}</scrm-label>
-                    </div>
-                    <div class="pl-4">
-                        <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION }}</scrm-label>
-                    </div>
-                    <pre class="bg-transparent text-body pl-4 pt-3">'installer_locked' => false,</pre>
-                    <div class="pl-4">
-                        <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION_3 }}</scrm-label>
-                    </div>
-                    <div class="pl-4">
-                        {{ mod_strings.LBL_DISABLED_HELP_1 }}
-                        <a href="{{mod_strings.LBL_DISABLED_HELP_LNK}}" target="_blank">{{mod_strings.LBL_DISABLED_HELP_2}}</a>
+            <center>
+                <div class="row mr-0">
+                    <div class="install-header-title-col">
+                        <div class="install-view-title record-view-name justify-content-center d-flex">
+                            <scrm-label>{{ mod_strings.LBL_DISABLED_TITLE_2 }}</scrm-label>
+                        </div>
+                        <div class="col-md-5">
+                            <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION }}</scrm-label>
+                        </div>
+                        <pre class="bg-transparent text-body pt-3">'installer_locked' => false,</pre>
+                        <div>
+                            <scrm-label>{{ mod_strings.LBL_DISABLED_DESCRIPTION_3 }}</scrm-label>
+                        </div>
+                        <div class="pb-3">
+                            {{ mod_strings.LBL_DISABLED_HELP_1 }}
+                            <a href="{{ mod_strings.LBL_DISABLED_HELP_LNK }}"
+                               target="_blank">{{ mod_strings.LBL_DISABLED_HELP_2 }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </center>
         </div>
     </div>
     <div class="footer">
