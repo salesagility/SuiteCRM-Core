@@ -30,6 +30,11 @@ import {CommonModule} from '@angular/common';
 import {MultiEnumFilterFieldComponent} from './multienum.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TagInputModule} from 'ngx-chips';
+import {ImageModule} from "../../../../components/image/image.module";
+import {MultiSelectModule} from "primeng/multiselect";
+import {SharedModule} from "primeng/api";
+import {ButtonModule} from "../../../../components/button/button.module";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     declarations: [MultiEnumFilterFieldComponent],
@@ -38,7 +43,12 @@ import {TagInputModule} from 'ngx-chips';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        TagInputModule
+        TagInputModule,
+        ImageModule,
+        MultiSelectModule,
+        SharedModule,
+        ButtonModule,
+        InputTextModule
     ]
 })
 export class MultiEnumFilterFieldModule {

@@ -25,21 +25,39 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<p-multiSelect
-    [options]="this.options"
-    [(ngModel)]="selectedValues"
-    [optionLabel]="'label'"
-    (onChange)="onAdd()"
-    (onSelectAllChange)="onSelectAll($event)"
-    (onRemove)="onRemove()"
-    (onFilter)="onFilter($event)"
-    (onPanelHide)="onPanelHide()"
-    [placeholder]="placeholderLabel"
-    [selectedItemsLabel]="'{0} ' + selectedItemsLabel"
-    [emptyFilterMessage]="emptyFilterLabel"
-    [maxSelectedLabels]="maxSelectedLabels"
-    [styleClass]="getInvalidClass()"
-    [showToggleAll]="true"
-    [selectAll]="selectAll"
-    [resetFilterOnHide]="true"
-></p-multiSelect>
+<div class="d-flex align-items-center">
+    <p-multiSelect
+        #multiSelect
+        [options]="options"
+        [(ngModel)]="selectedValues"
+        [optionLabel]="'label'"
+        (onChange)="onAdd()"
+        (onSelectAllChange)="onSelectAll($event)"
+        (onRemove)="onRemove()"
+        (onPanelShow)="onPanelShow()"
+        (onFilter)="onFilter()"
+        [placeholder]="placeholderLabel"
+        [selectedItemsLabel]="'{0} ' + selectedItemsLabel"
+        [emptyFilterMessage]="emptyFilterLabel"
+        [maxSelectedLabels]="maxSelectedLabels"
+        [styleClass]="'w-100 ' + getInvalidClass()"
+        [showToggleAll]="true"
+        [selectAll]="selectAll"
+        [autoOptionFocus]="false"
+        [autofocusFilter]="true"
+        [showClear]="true"
+        (onClear)="onClear()"
+        [focusOnHover]="true"
+    >
+        <ng-template pTemplate="dropdownicon">
+            <scrm-image image="down_carret"></scrm-image>
+        </ng-template>
+        <ng-template pTemplate="filtericon">
+            <scrm-image image="search"></scrm-image>
+        </ng-template>
+        <ng-template pTemplate="checkicon">
+            <scrm-image image="checkbox_cross"></scrm-image>
+        </ng-template>
+    </p-multiSelect>
+</div>
+

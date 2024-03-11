@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseMultiEnumComponent} from '../../../base/base-multienum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
@@ -34,6 +34,8 @@ import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-obs
 import {take} from "rxjs/operators";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {PrimeNGConfig} from "primeng/api";
+import {ButtonInterface} from "common";
+import {MultiSelect} from "primeng/multiselect";
 import {Option} from "common";
 
 @Component({
@@ -42,6 +44,7 @@ import {Option} from "common";
     styleUrls: []
 })
 export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
+    @ViewChild('multiSelect') multiSelect: MultiSelect;
 
     placeholderLabel: string = '';
     selectedItemsLabel: string = '';
@@ -50,6 +53,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     selectAll: boolean = false;
     filteredOptions: Option[] = [];
     filteredWord: string= '';
+    clearButton: ButtonInterface;
 
     constructor(
         protected languages: LanguageStore,
@@ -74,7 +78,14 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
                 this.maxSelectedLabels = maxSelectedLabelsForDisplay[screenSize] || this.maxSelectedLabels;
             })
         this.primengConfig.ripple = true;
-        this.updateSelectAll();
+
+        this.clearButton = {
+            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'm-0', 'border-0'],
+            onClick: (event): void => {
+                this.onRemove();
+            },
+            icon: 'cross'
+        } as ButtonInterface;
     }
 
     public onAdd(): void {
@@ -82,49 +93,48 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
-        this.updateSelectAll();
 
+        this.calculateSelectAll();
     }
 
-    public onSelectAll(event) : void {
+    public onSelectAll(event): void {
         this.selectAll = event.checked;
-        if(this.filteredOptions.length && this.filteredWord.length) {
-            if(this.selectAll) {
-                let newSelectedValues = [];
-                newSelectedValues = this.filteredOptions.filter(item => !this.selectedValues.some(selectedItem => selectedItem.value === item.value));
-                this.selectedValues = [...this.selectedValues, ...newSelectedValues];
-                this.onAdd();
+        if (this.selectAll) {
+            if (this.multiSelect.visibleOptions() && this.multiSelect.visibleOptions().length) {
+                this.selectedValues = this.multiSelect.visibleOptions();
             } else {
-                let newSelectedValues = [];
-                newSelectedValues = this.selectedValues.filter(item => !this.filteredOptions.some(filteredItem => filteredItem.value === item.value));
-                this.selectedValues = newSelectedValues;
-                this.onRemove();
-            }
-        } else {
-            if(this.selectAll) {
                 this.selectedValues = this.options;
-                this.onAdd();
-            } else {
-                this.selectedValues = [];
-                this.onRemove();
             }
+            this.onAdd();
+        } else {
+            this.selectedValues = [];
+            this.onRemove();
         }
     }
 
     public onRemove(): void {
+
         const value = this.selectedValues.map(option => option.value);
         this.field.valueList = value;
         this.field.formControl.setValue(value);
         this.field.formControl.markAsDirty();
+
+        this.calculateSelectAll();
     }
 
-    public onFilter(event): void {
-        this.filteredWord = event.filter;
-        this.filteredOptions = this.options.filter(option => option.label.toLowerCase().includes(this.filteredWord.toLowerCase()));
-        if(!this.filteredWord.length) {
-            this.filteredOptions = [];
-        }
-        this.updateSelectAll();
+    public onClear(): void {
+        this.selectedValues = [];
+        this.onRemove();
+    }
+
+    onPanelShow(): void {
+        this.multiSelect.filterInputChild.nativeElement.focus();
+        this.multiSelect.filterValue = '';
+        this.calculateSelectAll();
+    }
+
+    onFilter(): void {
+        this.calculateSelectAll();
     }
 
     public getTranslatedLabels(): void {
@@ -133,22 +143,10 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
         this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
     }
 
-    onPanelHide(): void {
-        this.filteredOptions = [];
-        this.filteredWord = '';
-        this.updateSelectAll();
+    protected calculateSelectAll(): void {
+        const visibleOptions = this?.multiSelect?.visibleOptions() ?? [];
+        const selectedValuesKeys = (this?.selectedValues ?? []).map(item => item.value);
+        this.selectAll = visibleOptions.every(item => selectedValuesKeys.includes(item.value));
     }
 
-    updateSelectAll(): void {
-        this.selectAll = false;
-        if(!!this.filteredWord) {
-            if(this.filteredOptions.filter(item => this.selectedValues.some(selectedItem => selectedItem.value === item.value)).length === this.filteredOptions.length) {
-                this.selectAll = true;
-            }
-        } else {
-            if(this.selectedValues.length === this.options.length) {
-                this.selectAll = true;
-            }
-        }
-    }
 }

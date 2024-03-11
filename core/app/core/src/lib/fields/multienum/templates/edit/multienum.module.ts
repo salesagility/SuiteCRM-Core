@@ -30,6 +30,10 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MultiEnumEditFieldComponent} from './multienum.component';
 import {MultiSelectModule} from "primeng/multiselect";
+import {ButtonModule} from "../../../../components/button/button.module";
+import {DropdownModule} from "primeng/dropdown";
+import {ImageModule} from "../../../../components/image/image.module";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     declarations: [MultiEnumEditFieldComponent],
@@ -37,7 +41,11 @@ import {MultiSelectModule} from "primeng/multiselect";
     imports: [
         CommonModule,
         FormsModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ButtonModule,
+        DropdownModule,
+        ImageModule,
+        InputTextModule
     ]
 })
 export class MultiEnumEditFieldModule {
