@@ -1,0 +1,218 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+p-multiselect {
+  .p-inputtext {
+    font-size: .875rem;
+  }
+
+  .p-multiselect-trigger-icon {
+    font-size: .875rem;
+
+    svg {
+      fill: $midnight-grey;
+    }
+  }
+
+
+  .p-multiselect-filter-container {
+    .p-multiselect-filter-icon {
+      display: inline-block;
+      position: absolute;
+      top: .85rem;
+      right: 0.5rem;
+      line-height: normal;
+      float: right;
+      fill: $midnight-grey;
+      font-size: 90%;
+    }
+  }
+
+  &.p-inputwrapper {
+    .p-multiselect.p-inputwrapper {
+      .p-multiselect-label-container {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+
+        .p-multiselect-label {
+          width: 100%;
+          table-layout: fixed;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: table-cell;
+        }
+      }
+    }
+  }
+
+  .p-multiselect.p-component.p-inputwrapper {
+    justify-content: space-between;
+
+    > p-overlay {
+      display: contents;
+    }
+
+    span.p-element.p-multiselect-label.p-inputtext {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 40em;
+      display: inline-block;
+    }
+  }
+
+  .p-multiselect-item {
+    font-size: .875rem;
+    line-height: .875rem;
+    padding-left: .7rem;
+
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+
+    span {
+      display: table-cell;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+      vertical-align: middle;
+    }
+
+    .p-checkbox {
+      width: 1.7rem;
+      display: table-cell;
+    }
+  }
+
+  .p-multiselect-item.p-element.p-focus {
+    background: rgba($baby-blue, .3);
+    color: inherit;
+  }
+
+  .p-multiselect-item.p-highlight {
+    background: $extra-light-grey;
+    color: inherit;
+  }
+
+  .p-multiselect-items {
+    padding-inline-start: 0;
+    margin-bottom: 0;
+  }
+
+  .p-multiselect-label {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .p-multiselect-filter.p-inputtext.p-component {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .p-multiselect-panel .p-multiselect-header {
+    padding: 0.5rem 0.7rem;
+
+    .p-multiselect-close {
+      display: none;
+    }
+
+  }
+
+  .p-checkbox .p-checkbox-box {
+    background-color: $white;
+    border-radius: 0.2em;
+    border: 0.05em solid $main;
+
+    .p-checkbox-icon {
+      svg {
+        width: 100%;
+        margin-bottom: 1px;
+        padding-top: 1px;
+      }
+    }
+
+    svg {
+      width: 100%;
+      margin-bottom: 1px;
+      padding-top: 1px;
+    }
+  }
+
+  .p-multiselect-header {
+    .p-checkbox .p-checkbox-box {
+      font-size: 14px;
+      width: 100%;
+      height: 100%;
+
+      .p-checkbox-icon {
+        width: 100%;
+
+        > scrm-image {
+          flex-grow: 1;
+          height: 100%;
+          display: block;
+
+          svg-icon {
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      > scrm-image {
+        flex-grow: 1;
+        height: 100%;
+        display: block;
+
+        svg-icon {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+.dynamic-field-mode-filter.dynamic-field-type-enum {
+  p-multiselect {
+    .p-multiselect-header {
+      .p-checkbox .p-checkbox-box {
+        .p-checkbox-icon {
+          > scrm-image {
+            svg-icon {
+              svg {
+                margin-bottom: 1px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
