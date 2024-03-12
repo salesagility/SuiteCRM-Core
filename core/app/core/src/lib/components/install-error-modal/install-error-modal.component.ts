@@ -82,7 +82,6 @@ export class InstallErrorModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.errors);
         this.closeButtonIcon = {
             klass: ['btn', 'btn-outline-light', 'btn-sm'],
             onClick: (): void => {
