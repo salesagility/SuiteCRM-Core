@@ -32,6 +32,11 @@ import {FormsModule} from '@angular/forms';
 import {InlineLoadingSpinnerModule} from '../../../../components/inline-loading-spinner/inline-loading-spinner.module';
 import {ButtonModule} from '../../../../components/button/button.module';
 import {LabelModule} from '../../../../components/label/label.module';
+import {ImageModule} from "../../../../components/image/image.module";
+import {MultiSelectModule} from "primeng/multiselect";
+import {SharedModule} from "primeng/api";
+import {DropdownModule} from "primeng/dropdown";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     declarations: [RelateFilterFieldComponent],
@@ -42,7 +47,12 @@ import {LabelModule} from '../../../../components/label/label.module';
         LabelModule,
         FormsModule,
         InlineLoadingSpinnerModule,
-        ButtonModule
+        ButtonModule,
+        ImageModule,
+        MultiSelectModule,
+        SharedModule,
+        DropdownModule,
+        InputTextModule
     ]
 })
 export class RelateFilterFieldModule {
