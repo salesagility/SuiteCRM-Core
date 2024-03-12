@@ -112,26 +112,29 @@ ngb-datepicker-navigation {
   max-height: 600px;
 
   li {
-    padding: 0;
+    padding: 0 0.25rem;
   }
 
   .new-list-item:first-child {
     border-top: none;
-    padding-top: 0.36rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
   }
 
   .new-list-item {
-    padding-left: 1.44rem;
-    padding-bottom: 0.45rem;
+    padding-left: 0.45em;
+    padding-bottom: 0.5rem;
     padding-top: 0.45rem;
     padding-right: 0.6rem;
-    border-top: 1px solid $lightgray;
+    border-bottom: 1px solid $lightgray;
 
     vertical-align: bottom;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
     width: 100%;
+    margin-right: 0.55rem;
+    margin-left: 0.55rem;
 
     &:hover {
       background-color: $off-white;
@@ -141,11 +144,21 @@ ngb-datepicker-navigation {
     .text-title {
       font-size: 0.8em;
       color: #534D64;
+      max-width: 13rem;
+      overflow: hidden;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .text-subtitle {
       font-size: 1.1em;
       font-weight: 600;
+      max-width: 13rem;
+      overflow: hidden;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -159,6 +172,19 @@ ngb-datepicker-navigation {
     }
   }
 
+}
+
+.recently-viewed-header {
+  display: block;
+
+  &:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+}
+
+.recently-viewed-header:last-child a {
+  border-bottom: none !important;
 }
 
 .action-new .dropdown-menu {
@@ -177,7 +203,6 @@ ngb-datepicker-navigation {
     }
 
   }
-
   .new-list-item-header:first-child {
     border-top: none;
     padding-top: 0.36rem;

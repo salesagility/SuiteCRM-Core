@@ -26,17 +26,19 @@
 */
 -->
 <ng-container *ngIf="itemWithRoutes() && itemWithRoutes().length; else noItems">
-    <li *ngFor="let item of itemWithRoutes();">
-        <a class="new-list-item d-flex" [routerLink] = "item.attributes?.route" >
-            <scrm-image class="action-btn-icon mr-3" [image]="item?.attributes?.module_name"></scrm-image>
-            <div class="d-flex flex-column">
+    <ul class="p-0 mb-0">
+        <li *ngFor="let item of itemWithRoutes();" class="recently-viewed-header d-flex">
+            <a class="new-list-item d-flex" [routerLink]="item.attributes?.route">
+                <scrm-image class="action-btn-icon mr-3" [image]="item?.attributes?.module_name"></scrm-image>
+                <div class="d-flex flex-column">
                 <span class="text-title text-uppercase">
-                    <scrm-label listKey="moduleList" [labelKey]="item?.attributes?.module_name" ></scrm-label>
+                    <scrm-label listKey="moduleList" [labelKey]="item?.attributes?.module_name"></scrm-label>
                 </span>
-                <span class="text-subtitle">{{item?.attributes?.item_summary}}</span>
-            </div>
-        </a>
-    </li>
+                    <span class="text-subtitle">{{ item?.attributes?.item_summary }}</span>
+                </div>
+            </a>
+        </li>
+    </ul>
 </ng-container>
 <ng-template #noItems>
     <h6 class="d-flex justify-content-center pt-3 pb-2">

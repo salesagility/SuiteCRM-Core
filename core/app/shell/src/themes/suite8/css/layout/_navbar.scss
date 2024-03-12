@@ -71,6 +71,15 @@
 .global-links-dropdown {
   z-index: map-get($zindex, nav-max);
 }
+
+.recently-viewed {
+  display: block;
+}
+
+.recently-viewed-nav-header {
+  overflow-x: hidden;
+}
+
 .home-nav {
   line-height: 3.1em;
 }
