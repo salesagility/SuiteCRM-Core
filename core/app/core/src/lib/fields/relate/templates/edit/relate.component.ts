@@ -103,6 +103,8 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'm-0', 'border-0'],
             onClick: (event): void => {
                 this.tag.clear(event)
+                this.selectedValue = {};
+                this.options = [];
                 this.onRemove();
             },
             icon: 'cross'
