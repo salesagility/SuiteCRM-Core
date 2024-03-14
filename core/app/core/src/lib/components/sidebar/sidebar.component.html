@@ -27,14 +27,27 @@
 -->
 <p-sidebar [(visible)]="isSidebarVisible" [showCloseIcon]="false" (onHide)="closeSidebar()">
     <ng-template pTemplate="header">
-        <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
-            <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
-        </button>
+        <div class="d-flex justify-content-start">
+            <div class="flex-shrink-1">
+                <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
+                    <scrm-image class="responsive-menu-toggler" image="hamburger"></scrm-image>
+                </button>
+            </div>
+
+            <div class="d-flex flex-grow-1 justify-content-center">
+                <scrm-search-bar
+                        [labelKey]="'LBL_FILTER_MODULES'"
+                        [klass]="'search-bar-mobile-menu'"
+                        [searchTrigger]="'input'"
+                        (searchExpression)="search($event)">
+                </scrm-search-bar>
+            </div>
+        </div>
     </ng-template>
     <ng-template pTemplate="content">
         <div class="sidebar-container">
-            <ng-container *ngIf="menuItems && menuItems?.length">
-                <scrm-mobile-menu [menuItems]="menuItems"></scrm-mobile-menu>
+            <ng-container *ngIf="displayedItems() && displayedItems()?.length">
+                <scrm-mobile-menu [menuItems]="displayedItems"></scrm-mobile-menu>
             </ng-container>
         </div>
     </ng-template>

@@ -27,17 +27,9 @@
 -->
 
 <div class="mobile-menu-container">
-    <div class="d-flex justify-content-center py-3">
-        <scrm-search-bar
-            [labelKey]="'LBL_FILTER_MODULES'"
-            [klass]="'search-bar-mobile-menu'"
-            [searchTrigger]="'input'"
-            (searchExpression)="search($event)">
-        </scrm-search-bar>
-    </div>
-    <ng-container *ngIf="mainItems && mainItems.length">
+    <ng-container *ngIf="menuItems() && menuItems().length">
         <div class="mobile-menu-items scrollbar-thin">
-            <li class="d-flex align-items-center" (click)="navigateRoute(item?.link?.route)" *ngFor="let item of mainItems">
+            <li class="d-flex align-items-center" (click)="navigateRoute(item?.link?.route)" *ngFor="let item of menuItems()">
                 <scrm-image class="sicon mobile-nav-icon pl-3" [image]="item.icon"
                ></scrm-image>
                 <a class="flex-grow-1 mobile-nav-link px-3 py-2 ">{{ item.link.label }}</a>
@@ -46,7 +38,7 @@
     </ng-container>
 
     <li class="border-0">
-        <div *ngIf="!mainItems?.length" class="d-flex justify-content-center">
+        <div *ngIf="!menuItems()?.length" class="d-flex justify-content-center">
             <scrm-label [labelKey]="'LBL_MODULE_NOT_FOUND'"></scrm-label>
         </div>
     </li>

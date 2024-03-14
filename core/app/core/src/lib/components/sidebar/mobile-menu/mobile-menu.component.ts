@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {MenuItem} from 'common';
 import {Router, RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
@@ -41,33 +41,20 @@ import {AppStateStore} from "../../../store/app-state/app-state.store";
     imports: [CommonModule, RouterModule, SearchBarModule, ImageModule, LabelModule]
 })
 export class MobileMenuComponent implements OnInit {
-    @Input() menuItems: MenuItem[] = [];
+    @Input() menuItems: WritableSignal<MenuItem[]> = signal([]);
 
-    mainItems: MenuItem[];
 
-    constructor(protected router: Router, protected appStateStore: AppStateStore) {}
+    constructor(protected router: Router, protected appStateStore: AppStateStore) {
+    }
 
     ngOnInit(): void {
-        this.setItems();
     }
 
-    setItems(): void {
-        this.mainItems = this.menuItems;
-    }
 
     navigateRoute(route: string): void {
         this.router.navigate([route]).then();
         this.appStateStore.toggleSidebar();
     }
 
-    search(searchTerm: string): void {
-        this.setItems();
-        if (searchTerm.length && searchTerm.trim() !== '') {
-            this.mainItems = this.mainItems.filter(item => {
-                return item?.link?.label.toLowerCase().includes(searchTerm.toLowerCase());
-            });
-        } else {
-            this.setItems();
-        }
-    }
+
 }

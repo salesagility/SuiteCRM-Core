@@ -50,6 +50,13 @@
 .p-sidebar-header {
   background-color: $midnight-blue;
   padding: 0.3em 0;
+
+  .search-bar {
+    .input-group {
+      margin: 0;
+      max-width: 100%;
+    }
+  }
 }
 
 .p-sidebar-footer {
@@ -61,6 +68,6 @@
 }
 
 .mobile-menu-items {
-  max-height: calc(100vh - 124px);
+  max-height: calc(100vh - 50px);
   overflow-y: auto;
 }

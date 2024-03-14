@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {combineLatestWith, Subscription} from "rxjs";
 import {NavbarModuleMap, Navigation, NavigationStore} from "../../store/navigation/navigation.store";
@@ -37,18 +37,20 @@ import {CommonModule} from "@angular/common";
 import {SidebarModule} from "primeng/sidebar";
 import {ImageModule} from "../image/image.module";
 import {MobileMenuComponent} from "./mobile-menu/mobile-menu.component";
+import {SearchBarModule} from "../search-bar/search-bar.module";
 
 @Component({
     selector: 'scrm-sidebar',
     templateUrl: 'sidebar.component.html',
     standalone: true,
-    imports: [CommonModule, SidebarModule, ImageModule, MobileMenuComponent],
+    imports: [CommonModule, SidebarModule, ImageModule, MobileMenuComponent, SearchBarModule],
 })
 
 export class SidebarComponent implements OnInit, OnDestroy {
 
     isSidebarVisible: boolean = false;
-    menuItems:  MenuItem[] = [];
+    menuItems: MenuItem[] = [];
+    displayedItems: WritableSignal<MenuItem[]> = signal<MenuItem[]>([]);
 
     protected subs: Subscription[] = [];
 
@@ -58,7 +60,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
         protected moduleNameMapper: ModuleNameMapper,
         protected moduleNavigation: ModuleNavigation,
         protected language: LanguageStore
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         this.subs.push(this.navigationStore.vm$.pipe(
@@ -81,7 +84,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     setMenuItems(modules: NavbarModuleMap, tabs: string[], appListStrings: LanguageListStringMap): void {
         this.menuItems = [];
-        tabs.forEach( (tab: string) => {
+        tabs.forEach((tab: string) => {
             const moduleInfo = modules[tab];
             const moduleRoute = this.moduleNavigation.getModuleRoute(moduleInfo);
 
@@ -97,14 +100,31 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 module: moduleInfo?.name ?? null
             };
             this.menuItems.push(menuItem);
-        })
+        });
+
+        this.setDisplayedItems();
     }
 
     toggleSidebar(): void {
         this.appStateStore.toggleSidebar();
     }
 
-    closeSidebar():void {
+    closeSidebar(): void {
         this.appStateStore.closeSidebar();
+    }
+
+    search(searchTerm: string): void {
+        this.displayedItems.set([]);
+        if (searchTerm.length && searchTerm.trim() !== '') {
+            this.displayedItems.set(this.menuItems.filter(item => {
+                return item?.link?.label.toLowerCase().includes(searchTerm.toLowerCase());
+            }) ?? []);
+        } else {
+            this.setDisplayedItems();
+        }
+    }
+
+    setDisplayedItems(): void {
+        this.displayedItems.set(this.menuItems);
     }
 }
