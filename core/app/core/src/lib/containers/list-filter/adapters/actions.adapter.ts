@@ -44,6 +44,8 @@ import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadat
 @Injectable()
 export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFilterActionData> {
 
+    actions: {[key: string]: Action} = {};
+
     constructor(
         protected store: SavedFilterStore,
         protected listFilterStore: ListFilterStore,
@@ -74,9 +76,23 @@ export class SavedFilterActionsAdapter extends BaseRecordActionsAdapter<SavedFil
                     return [];
                 }
 
-                return this.parseModeActions(meta.actions, mode);
+                const actions = this.parseModeActions(meta.actions, mode);
+                actions.forEach((action: Action) => {
+                    this.actions[action.key] = action;
+                });
+
+                return actions;
             })
         );
+    }
+
+    run(actionKey: string): void {
+        const action = this.actions[actionKey];
+        if (!action) {
+            return
+        }
+
+        this.runAction(action)
     }
 
     protected buildActionData(action: Action, context?: ActionContext): SavedFilterActionData {

@@ -25,8 +25,8 @@
  */
 
 import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import {ButtonInterface, Record, ScreenSizeMap} from 'common';
-import {Observable, of} from 'rxjs';
+import {Action, ButtonInterface, Record, ScreenSizeMap} from 'common';
+import {Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';
 import {RecordGridConfig} from '../../../../components/record-grid/record-grid.model';
@@ -47,16 +47,19 @@ export class ListFilterComponent implements OnInit, OnDestroy {
     vm$: Observable<Record>;
     store: ListFilterStore;
     filterActionsAdapter: SavedFilterActionsAdapter;
+    selectedActionButton:ButtonInterface | Action;
     searchActionButton: ButtonInterface;
+    saveAction: ButtonInterface;
     gridConfig: RecordGridConfig;
 
-    @HostListener('keyup.enter')
+    protected subs: Subscription[] = [];
+
+    @HostListener('keydown.enter')
     onEnterKey() {
-        if (!this.searchActionButton) {
+        if (!this.selectedActionButton) {
             return;
         }
-
-        this.searchActionButton.onClick();
+        this.selectedActionButton.onClick();
     }
 
     constructor(
@@ -76,6 +79,13 @@ export class ListFilterComponent implements OnInit, OnDestroy {
         }));
 
         this.searchActionButton = this.store.gridButtons.find(button => button.id === "search");
+
+        this.saveAction = {
+            id: 'save',
+            onClick: () => {
+                this.filterActionsAdapter.run('save');
+            }
+        }
 
         this.gridConfig = {
             record$: this.store.filterStore.stagingRecord$,
@@ -101,9 +111,17 @@ export class ListFilterComponent implements OnInit, OnDestroy {
         }
     }
 
-
     ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
         this.store.clear();
         this.store = null;
+    }
+
+    onFocusSearch(): void {
+        this.searchActionButton = this.searchActionButton;
+    }
+
+    onFocusSave(): void {
+        this.selectedActionButton = this.saveAction;
     }
 }

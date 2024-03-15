@@ -47,6 +47,7 @@
                          [fields]="store.displayFields"
                          [record]="vm"
                          [special]="store.special.length > 0"
+                         (click)="onFocusSearch()"
         >
 
             <div *ngIf="store.special.length > 0" class="float-right mt-4" field-grid-special>
@@ -68,7 +69,7 @@
         </scrm-field-grid>
 
         <ng-container *ngIf="config && config.savedFilterEdit && store.filterStore.getMode() !== 'detail'">
-            <scrm-record-grid [config]="gridConfig"></scrm-record-grid>
+            <scrm-record-grid [config]="gridConfig" (click)="onFocusSave()"></scrm-record-grid>
         </ng-container>
     </div>
 
