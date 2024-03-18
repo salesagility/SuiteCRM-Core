@@ -297,14 +297,17 @@
             </div>
 
             <!--Global Recently Viewed-->
-            <div class="action-history dropdown">
-                <a class="action-link primary-global-link" type="button" aria-label="Recently Viewed">
-                    <scrm-image class="action-btn-icon" image="recently_viewed"></scrm-image>
-                </a>
-                <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2 dropdown-menu-right">
-                    <scrm-recently-viewed [menuItems]="recentlyViewed$ | async | slice:0:recentlyViewedCount"></scrm-recently-viewed>
+            <div class="action-history" ngbDropdown>
+                <ul class="navbar-nav border-0">
+                    <li class="global-link-item">
+                        <a class="action-link primary-global-link" type="button" aria-label="Recently Viewed" ngbDropdownToggle>
+                            <scrm-image class="action-btn-icon" image="recently_viewed"></scrm-image>
+                        </a>
+                        <ul [class.dropdown-menu-right]="!mobileNavbar" class="dropdown-menu border shadow-sm-2 dropdown-menu-right" ngbDropdownMenu>
+                            <scrm-recently-viewed [menuItems]="recentlyViewed$ | async | slice:0:recentlyViewedCount"></scrm-recently-viewed>
+                        </ul>
+                    </li>
                 </ul>
-
             </div>
 
             <!--Searchbar-->
