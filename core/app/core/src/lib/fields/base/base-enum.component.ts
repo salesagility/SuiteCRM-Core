@@ -94,6 +94,9 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     ngOnDestroy(): void {
         this.isDynamicEnum = false;
         this.subs.forEach(sub => sub.unsubscribe());
+        this.options = [];
+        this.optionsMap = {};
+        this.selectedValues = [];
     }
 
     getInvalidClass(): string {
@@ -151,7 +154,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.options = [];
         Object.keys(this.optionsMap).forEach(key => {
 
-            if(isEmptyString(this.optionsMap[key]) && this.field.type === 'multienum') {
+            if(isEmptyString(this.optionsMap[key]) && !this.addEmptyStringOption()) {
                 return;
             }
 
@@ -164,6 +167,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         if (this.isDynamicEnum) {
             this.buildDynamicEnumOptions(appStrings);
         }
+    }
+
+    protected addEmptyStringOption(): boolean {
+        return this.field.type !== 'multienum';
     }
 
     protected initValue(): void {
