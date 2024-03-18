@@ -33,6 +33,7 @@ use App\Engine\Model\Feedback;
 use App\Install\Service\Installation\InstallStatus;
 use App\Install\Service\InstallationUtilsTrait;
 use App\Install\Service\InstallPreChecks;
+use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PDO;
@@ -213,27 +214,49 @@ class InstallHandler extends LegacyHandler
         $url = $inputArray['site_host'];
 
         $log = new Logger('install.log');
-        $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../public/logs/install.log', Logger::DEBUG));
+        $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/install.log', Logger::DEBUG));
+
+        $feedback = new Feedback();
+        $feedback->setSuccess(true);
+
+        $checkFile = __DIR__ . '/../../../../.curl_check_main_page';
 
         require_once "core/backend/Install/Service/InstallPreChecks.php";
         $installChecks = new InstallPreChecks($log);
+
+        try {
+            file_put_contents($checkFile, 'running');
+        } catch (Exception $e) {
+            $feedback->setSuccess(false);
+            $feedback->setErrors([$e->getMessage()]);
+            return $feedback;
+        }
         $results[] = $installChecks->checkMainPage($url);
         $results[] = $installChecks->checkGraphQlAPI($url);
         $modStrings = $installChecks->getLanguageStrings();
 
-        $feedback = new Feedback();
-        $feedback->setSuccess(true);
+        if (file_exists($checkFile)) {
+            unlink($checkFile);
+        }
+
         $warnings = [];
         $errorsFound = false;
 
         foreach ($results as $result) {
             if (is_array($result['errors'])) {
                 foreach ($result['errors'] as $error) {
-                    if (in_array($error, $modStrings)) {
+
+                    $errorsFound = true;
+
+                    if (empty($error)){
+                        continue;
+                    }
+
+                    if (in_array($error, $modStrings) && $error !== $modStrings['LBL_EMPTY']) {
+                        error_log(print_r($error, true));
                         $warnings[] = "One or More Failed Checks: " . $error . " Please refer to the logs/install.log";
                     }
 
-                    $errorsFound = true;
                 }
                 continue;
             }
@@ -243,11 +266,11 @@ class InstallHandler extends LegacyHandler
             }
         }
 
-        if ($errorsFound){
+        if ($errorsFound) {
             $warnings[] = 'One or More Failed Checks: Please refer to the logs/install.log';
         }
 
-        if (isset($warnings)){
+        if (isset($warnings)) {
             $feedback->setWarnings($warnings);
         }
 

@@ -23,7 +23,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-if (!file_exists('legacy/config.php') && !file_exists('.installed_checked')){
+if (!file_exists('legacy/config.php') && !file_exists('../.installed_checked') && !file_exists('../.curl_check_main_page')){
     header('Location: install.php');
     return;
 }

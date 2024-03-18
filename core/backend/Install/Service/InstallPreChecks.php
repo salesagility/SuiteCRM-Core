@@ -275,23 +275,33 @@ class InstallPreChecks
 
         $output = [];
 
-        $this->log->error($error);
+
         file_put_contents($logFile, stream_get_contents($streamVerboseHandle), FILE_APPEND);
         rewind($streamVerboseHandle);
-        $output['errors'][] =  stream_get_contents($streamVerboseHandle);
+        if (stream_get_contents($streamVerboseHandle) !== false && !empty(stream_get_contents($streamVerboseHandle))) {
+            error_log(stream_get_contents($streamVerboseHandle));
+            $this->log->error(stream_get_contents($streamVerboseHandle));
+            error_log('inside if');
+            $output['errors'][] = stream_get_contents($streamVerboseHandle);
+        }
         fclose($streamVerboseHandle);
         $debug = ob_get_clean();
         $this->log->error($debug);
         $output['errors'][] = $error;
+        $this->log->error($error);
         $output['errors'][] = 'The url used for the call was: ' . $baseUrl;
+        $this->log->error('The url used for the call was: ' . $baseUrl);
         $output['errors'][] = 'The result of the call was: ';
+        $this->log->error('The result of the call was: ');
 
         if (!empty($result)) {
             $output['errors'][] = $result;
+            $this->log->error($result);
             return $output;
         }
 
         $output['errors'][] = $modStrings['LBL_EMPTY'];
+        $this->log->error($modStrings['LBL_EMPTY']);
         return $output;
     }
 
@@ -317,7 +327,7 @@ class InstallPreChecks
         }
         $baseUrl = rtrim($baseUrl, '/');
         $baseUrl .= '/';
-        $apiUrl = $baseUrl . '/api/graphql';
+        $apiUrl = $baseUrl . 'api/graphql';
         $systemConfigApiQuery = '{"operationName":"systemConfigs","variables":{},"query":"query systemConfigs {\n  systemConfigs {\n    edges {\n      node {\n        id\n        _id\n        value\n        items\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"}';
 
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
