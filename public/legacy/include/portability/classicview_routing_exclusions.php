@@ -32,6 +32,9 @@ $classicview_routing_exclusions = [
     'Administration' => [
         'UpgradeWizard_prepare',
         'UpgradeWizard_commit'
+    ],
+    'Users' => [
+        'ChangePassword'
     ]
 ];
 
