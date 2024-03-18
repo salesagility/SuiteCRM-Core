@@ -53,7 +53,6 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: Dropdown;
     @ViewChild('dropdownFilterInput') dropdownFilterInput: ElementRef;
     selectButton: ButtonInterface;
-    clearButton: ButtonInterface;
     idField: Field;
     selectedValue: AttributeMap = {};
 
@@ -70,6 +69,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} moduleNameMapper service
      * @param {object} modalService service
      * @param {object} logic
+     * @param {object} logicDisplay
      */
     constructor(
         protected languages: LanguageStore,
@@ -90,6 +90,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
 
         super.ngOnInit();
         this.init();
+        this.getTranslatedLabels();
 
         this.selectButton = {
             klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'm-0', 'border-0'],
@@ -99,16 +100,6 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             icon: 'cursor'
         } as ButtonInterface;
 
-        this.clearButton = {
-            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'm-0', 'border-0'],
-            onClick: (event): void => {
-                this.tag.clear(event)
-                this.selectedValue = {};
-                this.options = [];
-                this.onRemove();
-            },
-            icon: 'cross'
-        } as ButtonInterface;
     }
 
     protected init(): void {
@@ -166,7 +157,14 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.options = [];
     }
 
-    onFilter($event): void {
+    onClear(event): void {
+        this.tag.clear(event)
+        this.selectedValue = {};
+        this.options = [];
+        this.onRemove();
+    }
+
+    onFilter(): void {
         const relateName = this.getRelateFieldName();
         let term = this.filterValue;
         this.search(term).pipe(
@@ -204,7 +202,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         this.options = [this.selectedValue];
     }
 
-    onFilterInput(event: KeyboardEvent, options: DropdownFilterOptions) {
+    onFilterInput(event: KeyboardEvent) {
         event.stopPropagation()
         this.tag.onLazyLoad.emit()
     }

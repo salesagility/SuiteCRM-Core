@@ -54,7 +54,6 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: MultiSelect;
     @ViewChild('dropdownFilterInput') dropdownFilterInput: ElementRef;
     selectButton: ButtonInterface;
-    clearButton: ButtonInterface;
     idField: Field;
 
     placeholderLabel: string = '';
@@ -92,17 +91,6 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
                 this.showSelectModal();
             },
             icon: 'cursor'
-        } as ButtonInterface;
-
-        this.clearButton = {
-            klass: ['btn', 'btn-sm', 'btn-outline-secondary', 'm-0', 'border-0'],
-            onClick: (event): void => {
-                this.tag.clear(event);
-                this.selectedValues = [];
-                this.options = [];
-                this.onRemove();
-            },
-            icon: 'cross'
         } as ButtonInterface;
     }
 
@@ -163,6 +151,7 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
      */
     onAdd(): void {
         this.updateFieldValues();
+        this.calculateSelectAll();
     }
 
     /**
@@ -170,13 +159,24 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
      */
     onRemove(): void {
         this.updateFieldValues();
+        this.calculateSelectAll();
     }
 
+    onClear(): void {
+        this.options = [];
+        this.selectedValues = [];
+        this.selectAll = false;
+        this.onRemove();
+    }
 
     onSelectAll(): void {
         this.selectAll = !this.selectAll;
         if (this.selectAll) {
-            this.selectedValues = this.options;
+            if (this.tag.visibleOptions() && this.tag.visibleOptions().length) {
+                this.selectedValues = this.tag.visibleOptions();
+            } else {
+                this.selectedValues = this.options;
+            }
             this.onAdd();
         } else {
             this.selectedValues = [];
@@ -188,14 +188,15 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         this.placeholderLabel = this.languages.getAppString('LBL_SELECT_ITEM') || '';
         this.selectedItemsLabel = this.languages.getAppString('LBL_ITEMS_SELECTED') || '';
         this.emptyFilterLabel = this.languages.getAppString('ERR_SEARCH_NO_RESULTS') || '';
+
     }
 
-    focusFilterInput(): void {
+    onPanelShow(): void {
         this.dropdownFilterInput.nativeElement.focus()
+        this.calculateSelectAll();
     }
 
     resetFunction(): void {
-        this.selectAll = false;
         this.filterValue = '';
         this.options = this.selectedValues;
     }
@@ -219,6 +220,7 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         ).subscribe(filteredOptions => {
             this.options = filteredOptions;
             this.addCurrentlySelectedToOptions(filteredOptions);
+            this.calculateSelectAll();
         });
     }
 
@@ -397,5 +399,22 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         });
 
         return found;
+    }
+
+    protected calculateSelectAll(): void {
+        const visibleOptions = this?.tag?.visibleOptions() ?? [];
+        const selectedValuesKeys = (this?.selectedValues ?? []).map(item => item.value);
+
+        if (!visibleOptions.length || !selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
+        if (visibleOptions.length > selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
+        this.selectAll = visibleOptions.every(item => selectedValuesKeys.includes(item.value));
     }
 }

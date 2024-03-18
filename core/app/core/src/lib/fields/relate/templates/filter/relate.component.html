@@ -36,11 +36,12 @@
                 (onChange)="onAdd()"
                 (onLazyLoad)="onFilter()"
                 (onRemove)="onRemove()"
-                (onPanelShow)="focusFilterInput()"
+                (onPanelShow)="onPanelShow()"
                 (onPanelHide)="resetFunction()"
                 [placeholder]="placeholderLabel"
                 [selectedItemsLabel]="'{0} ' + selectedItemsLabel"
                 [emptyFilterMessage]="emptyFilterLabel"
+                [emptyMessage]="emptyFilterLabel"
                 [maxSelectedLabels]="maxSelectedLabels"
                 [styleClass]="'w-100 ' + getInvalidClass()"
                 [showToggleAll]="true"
@@ -48,7 +49,8 @@
                 [autoOptionFocus]="false"
                 [autofocusFilter]="false"
                 [focusOnHover]="true"
-                [showClear]="false"
+                [showClear]="true"
+                (onClear)="onClear()"
                 [filter]="true"
                 [lazy]="true"
                 [dataKey]="'id'"
@@ -93,10 +95,6 @@
         </div>
         <div>
             <scrm-button [config]="selectButton">
-            </scrm-button>
-        </div>
-        <div>
-            <scrm-button [config]="clearButton">
             </scrm-button>
         </div>
     </ng-container>
