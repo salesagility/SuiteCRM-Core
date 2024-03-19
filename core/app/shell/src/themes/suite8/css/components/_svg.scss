@@ -151,6 +151,10 @@
   }
 }
 
+.action-btn-icon svg path {
+  fill: $white;
+}
+
 .action-new .dropdown-menu svg polygon {
   fill: $complementary;
 }
