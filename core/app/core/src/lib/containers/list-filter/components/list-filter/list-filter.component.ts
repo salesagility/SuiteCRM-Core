@@ -47,9 +47,9 @@ export class ListFilterComponent implements OnInit, OnDestroy {
     vm$: Observable<Record>;
     store: ListFilterStore;
     filterActionsAdapter: SavedFilterActionsAdapter;
-    selectedActionButton:ButtonInterface | Action;
+    selectedActionButton:ButtonInterface;
     searchActionButton: ButtonInterface;
-    saveAction: ButtonInterface;
+    saveActionButton: ButtonInterface;
     gridConfig: RecordGridConfig;
 
     protected subs: Subscription[] = [];
@@ -80,7 +80,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
 
         this.searchActionButton = this.store.gridButtons.find(button => button.id === "search");
 
-        this.saveAction = {
+        this.saveActionButton = {
             id: 'save',
             onClick: () => {
                 this.filterActionsAdapter.run('save');
@@ -118,10 +118,10 @@ export class ListFilterComponent implements OnInit, OnDestroy {
     }
 
     onFocusSearch(): void {
-        this.searchActionButton = this.searchActionButton;
+        this.selectedActionButton = this.searchActionButton;
     }
 
     onFocusSave(): void {
-        this.selectedActionButton = this.saveAction;
+        this.selectedActionButton = this.saveActionButton;
     }
 }
