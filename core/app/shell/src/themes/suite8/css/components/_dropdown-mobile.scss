@@ -1,0 +1,117 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+@media only screen and (min-width: $breakpoint-large) {
+  .global-links-dropdown
+  .global-links-sublink {
+    padding: 0.4em 0.8em 0.4em 1.8em;
+    font-size: 0.8em;
+    border-bottom: none;
+  }
+}
+@media only screen and (min-width: $breakpoint-xlarge) {
+  .global-links-dropdown a:hover {
+    -webkit-transition: color 0.5s ease-out;
+    -moz-transition: color 0.5s ease-out;
+    -o-transition: color 0.5s ease-out;
+    transition: color 0.5s ease-out;
+    background: $off-white;
+  }
+
+  .primary-global-link {
+    &:hover {
+      background: $dusky-blue;
+    }
+    &.dropdown-toggle::after {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-large) {
+  .global-links .dropdown-menu {
+    border: none;
+    left: -12.7em;
+  }
+
+  .global-links a {
+    border: none;
+    padding: 0.4em 0.8em 0.4em 1.8em;
+    font-size: 0.9em;
+  }
+
+  .action-new .dropdown-menu {
+    position: absolute;
+    left: -4em;
+  }
+}
+
+
+@media (max-width: $breakpoint-xlarge) {
+  .dropdown-menu .dropdown-submenu {
+    width: auto;
+  }
+}
+
+@media all and (max-height: $breakpoint-xxxlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-xxlarge;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-xxlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-large;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-xlarge) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-medium;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-large) {
+  .more-menu {
+    height: max-content;
+    max-height: $breakpoint-small;
+    overflow-y: scroll;
+  }
+}
+
+@media all and (max-height: $breakpoint-small) {
+  .more-menu {
+    height: max-content;
+    max-height: 15em;
+    overflow-y: scroll;
+  }
+}

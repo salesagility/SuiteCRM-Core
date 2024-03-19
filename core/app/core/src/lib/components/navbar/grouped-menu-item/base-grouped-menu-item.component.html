@@ -27,23 +27,26 @@
 -->
 <ng-container>
 
-    <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu">
-        <a class="top-nav-link nav-link-grouped dropdown-toggle active" data-toggle="dropdown">
+    <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu"
+          (click)="toggleDropdown()"
+          (touchend)="disableHover()">
+        <a class="top-nav-link nav-link-grouped dropdown-toggle active" data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
             {{ item.link.label }}
         </a>
     </span>
     <ul class="navbar-nav grouped" *ngIf="item.isGroupedMenu">
 
         <li class="top-nav nav-item dropdown main-grouped active">
-            <scrm-menu-item [item]="item" [disableRoute]="disableRoute"></scrm-menu-item>
+            <scrm-menu-item [item]="item"></scrm-menu-item>
         </li>
     </ul>
 
     <ul [ngbCollapse]="subNavCollapse"
         (click)="hideDropdown()"
         aria-labelledby="navbarDropdownMenuLink"
-        *ngIf="showDropdown"
         class="dropdown-menu main"
+        [class.show]="showDropdown()"
+        [class.hover-enabled]="hoverEnabled()"
     >
         <li *ngFor="let sub of item.submenu" class="nav-item dropdown-submenu submenu">
 
@@ -55,7 +58,7 @@
                                     'dropdown-toggle': sub.submenu.length
                                   }"
                                  [link]="sub.link"
-                                 [disableRoute]="disableRoute"
+                                 [disableRoute]="true"
             >
             </scrm-menu-item-link>
 

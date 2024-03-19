@@ -29,14 +29,15 @@
 
     <li class="top-nav nav-item dropdown non-grouped">
 
-        <a class="nav-link-nongrouped dropdown-toggle">
+        <a class="nav-link-nongrouped dropdown-toggle" (click)="toggleDropdown()" (touchend)="disableHover()">
             <scrm-label [labelKey]="labelKey"></scrm-label>
         </a>
 
         <div aria-labelledby="navbarDropdownMenuLink"
              (click)="hideDropdown()"
              class="dropdown-menu more-menu submenu"
-             *ngIf="showDropdown"
+             [class.show]="showDropdown()"
+             [class.hover-enabled]="hoverEnabled()"
         >
             <div *ngFor="let item of items" class="nav-item">
                 <scrm-menu-item-link [class]="'nav-link action-link'" [link]="item.link">

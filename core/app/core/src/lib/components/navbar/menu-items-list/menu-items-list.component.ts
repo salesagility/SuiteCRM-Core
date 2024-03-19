@@ -36,6 +36,7 @@ import {MenuItemsListRegistry} from './menu-items-list-registry';
 export class MenuItemsListComponent {
     @Input() items: MenuItem[];
     @Input() labelKey: string;
+    @Input() index: number;
 
     constructor(protected registry: MenuItemsListRegistry) {
     }

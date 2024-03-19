@@ -35,7 +35,7 @@ import {MenuItemRegistry} from './menu-item.registry';
 })
 export class MenuItemComponent{
     @Input() item: MenuItem;
-    @Input() disableRoute: boolean;
+    @Input() index: number;
 
     constructor(protected registry: MenuItemRegistry) {
     }

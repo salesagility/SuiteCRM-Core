@@ -65,11 +65,6 @@
     font-size: 0.85em;
   }
 
-  .nav-link-grouped:hover,
-  .nav-link-nongrouped:hover {
-    color: $light-grey;
-    text-decoration: none;
-  }
   .navbar-nav,
   .navbar-nav li {
     border-bottom: 0.05em solid $off-white;
@@ -114,6 +109,60 @@
     line-height: 3.1em;
     padding: 0.5em 0.5em 1.1em 0.5em;
   }
+}
+
+@media only screen and (min-width: $breakpoint-xlarge) {
+  .navbar {
+    .navbar-action-group {
+      .action-link:hover svg,
+      .action-link:hover svg path,
+      .action-link:hover svg polygon {
+        fill: $salmon-pink;
+      }
+
+      .global-action-icon:hover svg,
+      .global-action-icon:hover svg path,
+      .global-action-icon:hover svg polygon {
+        fill: $salmon-pink;
+      }
+    }
+  }
+
+  .nav-link:hover svg path,
+  .nav-link:hover svg polygon {
+    fill: $salmon-pink;
+  }
+
+  .nav-link:active svg path,
+  .nav-link:active svg polygon {
+    fill: $salmon-pink;
+  }
+
+}
+
+@media only screen and (min-width: $breakpoint-xlarge) {
+  .navbar {
+    .navbar-nav {
+      .global-link-item:hover .dropdown-menu {
+        display: block;
+        right: 0;
+      }
+    }
+
+    .navbar-action-group {
+      .action-link:hover svg,
+      .action-link:hover svg path,
+      .action-link:hover svg polygon {
+        fill: $salmon-pink;
+      }
+
+      .global-action-icon:hover svg,
+      .global-action-icon:hover svg path,
+      .global-action-icon:hover svg polygon {
+        fill: $salmon-pink;
+      }
+    }
+  }
 
   .nav-link-grouped:active,
   .nav-link-nongrouped:active {
@@ -123,9 +172,14 @@
     text-decoration: none;
   }
 
-  .nav-link-grouped a:hover,
-  .nav-link-nongrouped a:hover {
-    color: $light-grey;
-    text-decoration: none;
+  .nav-link:hover svg path,
+  .nav-link:hover svg polygon {
+    fill: $salmon-pink;
   }
+
+  .nav-link:active svg path,
+  .nav-link:active svg polygon {
+    fill: $salmon-pink;
+  }
+
 }

@@ -60,12 +60,6 @@
   }
 }
 
-.nav-link:hover svg,
-.nav-link:hover svg *,
-.home-nav-link:hover svg {
-  fill: $salmon-pink;
-}
-
 .action_btn_alert .dropdown-menu svg,
 .action_btn_favourite .dropdown-menu svg,
 .action_btn_new .dropdown-menu svg {
@@ -144,149 +138,6 @@
 .sicon-5x svg {
   width: 15em;
   height: 15em;
-}
-
-@media all and (max-width: $breakpoint-xsmall) {
-  /* enable absolute positioning */
-  .inner-addon {
-    position: relative;
-
-    .sicon {
-      position: absolute;
-      margin-left: 2em;
-      pointer-events: none;
-    }
-  }
-  /* align icon */
-  .left-addon {
-    .sicon {
-      left: 0;
-    }
-
-    input {
-      padding-left: 2.5em;
-    }
-  }
-
-  .right-addon {
-    .sicon {
-      right: 0;
-    }
-
-    input {
-      padding-right: 1.9em;
-    }
-  }
-}
-
-@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
-  .inner-addon {
-    position: relative;
-
-    .sicon {
-      margin-left: 1.5em;
-    }
-  }
-}
-
-@media screen and (device-aspect-ratio: 40/71) {
-  /* enable absolute positioning */
-  .inner-addon {
-    position: relative;
-
-    .sicon {
-      margin-left: 0.5em;
-    }
-  }
-
-  /* align icon */
-  .left-addon {
-    .sicon {
-      left: 0;
-    }
-
-    input {
-      padding-left: 2.5em;
-    }
-  }
-
-  .right-addon {
-    .sicon {
-      right: 0;
-    }
-
-    input {
-      padding-right: 1.9em;
-    }
-  }
-}
-
-@media all and (min-width: 24.5em) and (max-width: $breakpoint-medium) {
-  /* enable absolute positioning */
-  .inner-addon {
-    position: relative;
-
-    .sicon {
-      position: absolute;
-      margin-left: 3em;
-      pointer-events: none;
-    }
-  }
-
-  /* align icon */
-  .left-addon {
-    .sicon {
-      left: 0;
-    }
-
-    input {
-      padding-left: 2.5em;
-    }
-  }
-
-  .right-addon {
-    .sicon {
-      right: 0;
-    }
-
-    input {
-      padding-right: 1.9em;
-    }
-  }
-}
-
-@media all and (min-width: $breakpoint-medium) {
-  /* enable absolute positioning */
-  .inner-addon {
-    position: relative;
-
-    .sicon {
-      position: absolute;
-      padding-left: 0.2em;
-      pointer-events: none;
-    }
-  }
-
-  /* align icon */
-  .left-addon {
-    .sicon {
-      left: 0;
-    }
-
-    input {
-      padding-left: 2.5em;
-    }
-  }
-
-  .right-addon {
-    .sicon {
-      right: 0;
-    }
-
-    input {
-      padding-right: 1.9em;
-    }
-  }
 }
 
 .recent-link scrm-svg-icon > svg {
@@ -409,13 +260,6 @@
 .create-popup-cross svg polygon,
 .create-popup-calendar svg * {
   fill: #c3c1c9;
-}
-
-@media all and (min-width: $breakpoint-large) {
-  button svg {
-    vertical-align: -0.2em;
-    display: inline-block;
-  }
 }
 
 .list-data-icon {

@@ -24,23 +24,71 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, signal} from '@angular/core';
 import {MenuItem} from 'common';
+import {Subscription} from "rxjs";
+import {AppStateStore} from "../../../store/app-state/app-state.store";
 
 @Component({
     selector: 'scrm-base-grouped-menu-item',
     templateUrl: './base-grouped-menu-item.component.html',
     styleUrls: []
 })
-export class BaseGroupedMenuItemComponent {
+export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy{
     @Input() item: MenuItem;
     @Input() subNavCollapse: boolean;
-    @Input() disableRoute: boolean;
-    showDropdown: boolean = true;
+    @Input() index: number = 0;
 
+    showDropdown = signal<boolean>(true);
+    hoverEnabled = signal<boolean>(true);
+    allowHover = signal<boolean>(true);
+    isTouchDevice = signal<boolean>(false);
+
+    subs: Subscription[] = [];
+
+    constructor(protected appStateStore: AppStateStore) {}
+
+    ngOnInit(): void {
+        this.isTouchDevice.set(this.appStateStore.isTouchScreen());
+        if(this.isTouchDevice()) {
+            this.disableHover();
+        }
+
+        this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
+            (activeDropdown: number) => {
+                if (this.index !== activeDropdown) {
+                    this.hideDropdown();
+                }
+            }
+        ));
+    }
+
+    ngOnDestroy(): void {
+        this.subs.forEach(sub => sub.unsubscribe());
+    }
 
     hideDropdown() {
-        this.showDropdown = false;
-        setTimeout(() => this.showDropdown = true, 0)
+        this.showDropdown.set(false);
+    }
+
+    toggleDropdown() {
+        this.showDropdown.set(!this.showDropdown());
+        if(this.showDropdown()) {
+            this.appStateStore.setActiveDropdown(this.index);
+            this.hoverEnabled.set(false);
+        } else {
+            this.appStateStore.resetActiveDropdown();
+            setTimeout(() => {
+                if(this.allowHover()) {
+                    this.hoverEnabled.set(true);
+                }
+                this.allowHover.set(true);
+            },500)
+        }
+    }
+
+    disableHover() {
+        this.hoverEnabled.set(false);
+        this.allowHover.set(false);
     }
 }

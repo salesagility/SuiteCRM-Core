@@ -96,7 +96,7 @@ ngb-datepicker-navigation {
 
 .action-new .dropdown-menu {
   margin-top: -5px;
-  width: 240px;
+  width: 210px;
 
   .new-list-item {
     padding-left: 2rem;
@@ -238,7 +238,8 @@ a.close-navmenu:hover {
   color: $white;
 }
 
-.nav-link-grouped:hover, .nav-link-nongrouped:hover {
+.nav-link-grouped:hover.hover-enabled,
+.nav-link-nongrouped:hover.hover-enabled {
   color: $light-grey;
   text-decoration: none;
   background-color: $dusky-blue;
@@ -306,12 +307,11 @@ ul.main li a,
   height: 3.1em;
   line-height: 3.1em;
 
-  &:hover {
-    background: $dusky-blue;
-  }
-
   &::after {
     margin-top: -5px;
+  }
+  &.dropdown-toggle::after {
+    display: none;
   }
 }
 
@@ -337,84 +337,6 @@ ul.main li a,
 .select-action-group {
   .bulk-action-button {
     min-width: auto;
-  }
-}
-
-@media only screen and (min-width: $breakpoint-large) {
-
-  .global-links-dropdown
-  .global-links-sublink {
-    padding: 0.4em 0.8em 0.4em 1.8em;
-    font-size: 0.8em;
-    border-bottom: none;
-  }
-
-  .global-links-dropdown a:hover {
-    -webkit-transition: color 0.5s ease-out;
-    -moz-transition: color 0.5s ease-out;
-    -o-transition: color 0.5s ease-out;
-    transition: color 0.5s ease-out;
-    background: $off-white;
-  }
-}
-
-@media only screen and (max-width: $breakpoint-large) {
-  .global-links .dropdown-menu {
-    border: none;
-    left: -12.7em;
-  }
-
-  .global-links a {
-    border: none;
-    padding: 0.4em 0.8em 0.4em 1.8em;
-    font-size: 0.9em;
-  }
-}
-
-
-@media (max-width: $breakpoint-xlarge) {
-  .dropdown-menu .dropdown-submenu {
-    width: auto;
-  }
-}
-
-@media all and (max-height: $breakpoint-xxxlarge) {
-  .more-menu {
-    height: max-content;
-    max-height: $breakpoint-xxlarge;
-    overflow-y: scroll;
-  }
-}
-
-@media all and (max-height: $breakpoint-xxlarge) {
-  .more-menu {
-    height: max-content;
-    max-height: $breakpoint-large;
-    overflow-y: scroll;
-  }
-}
-
-@media all and (max-height: $breakpoint-xlarge) {
-  .more-menu {
-    height: max-content;
-    max-height: $breakpoint-medium;
-    overflow-y: scroll;
-  }
-}
-
-@media all and (max-height: $breakpoint-large) {
-  .more-menu {
-    height: max-content;
-    max-height: $breakpoint-small;
-    overflow-y: scroll;
-  }
-}
-
-@media all and (max-height: $breakpoint-small) {
-  .more-menu {
-    height: max-content;
-    max-height: 15em;
-    overflow-y: scroll;
   }
 }
 

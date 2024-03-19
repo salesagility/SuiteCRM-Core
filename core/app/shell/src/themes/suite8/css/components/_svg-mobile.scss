@@ -1,0 +1,185 @@
+/**
+ * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SALESAGILITY, SALESAGILITY DISCLAIMS THE
+ * WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License
+ * version 3, these Appropriate Legal Notices must retain the display of the
+ * "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display
+ * the words "Supercharged by SuiteCRM".
+ */
+
+/* --------- SVG SECTION ---------- */
+
+@media all and (max-width: $breakpoint-xsmall) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      margin-left: 2em;
+      pointer-events: none;
+    }
+  }
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      margin-left: 1.5em;
+    }
+  }
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      margin-left: 0.5em;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media all and (min-width: 24.5em) and (max-width: $breakpoint-medium) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      margin-left: 3em;
+      pointer-events: none;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media all and (min-width: $breakpoint-medium) {
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+
+    .sicon {
+      position: absolute;
+      padding-left: 0.2em;
+      pointer-events: none;
+    }
+  }
+
+  /* align icon */
+  .left-addon {
+    .sicon {
+      left: 0;
+    }
+
+    input {
+      padding-left: 2.5em;
+    }
+  }
+
+  .right-addon {
+    .sicon {
+      right: 0;
+    }
+
+    input {
+      padding-right: 1.9em;
+    }
+  }
+}
+
+@media all and (min-width: $breakpoint-large) {
+  button svg {
+    vertical-align: -0.2em;
+    display: inline-block;
+  }
+}
+
+@media all and (min-width: $breakpoint-xlarge) {
+  .nav-link:hover svg,
+  .nav-link:hover svg *,
+  .home-nav-link:hover svg {
+    fill: $salmon-pink;
+  }
+}

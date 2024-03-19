@@ -26,23 +26,28 @@
 */
 -->
 <ng-container>
-    <span data-target=".navbar-collapse" data-toggle="collapse">
+    <span data-target=".navbar-collapse" data-toggle="collapse"
+          (touchend)="disableHover()"
+          (click)="toggleDropdown()">
 
         <scrm-menu-item-link
             [class]="{
                     'top-nav-link': true,
                     'nav-link-nongrouped': true,
-                    'dropdown-toggle': item.submenu.length
+                    'dropdown-toggle': item.submenu.length,
+                    'hover-enabled': hoverEnabled()
                 }"
             [link]="item.link"
-            [disableRoute]="disableRoute">
+            [disableRoute]="true">
         </scrm-menu-item-link>
 
     </span>
     <div (click)="hideDropdown()"
          aria-labelledby="navbarDropdownMenuLink"
-         *ngIf="item.submenu.length && showDropdown"
-         class="dropdown-menu submenu">
+         *ngIf="item.submenu.length"
+         class="dropdown-menu submenu"
+         [class.show]="showDropdown()"
+         [class.hover-enabled]="hoverEnabled()">
 
         <div *ngFor="let sub of item.submenu" class="nav-item">
 
