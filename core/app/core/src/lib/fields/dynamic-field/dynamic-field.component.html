@@ -27,51 +27,53 @@
 -->
 <ng-container *ngIf="!field.loading">
     <ng-container *ngIf="hasOnClick()">
-        <a (click)="onClick()" class="clickable field-link">
+        <a (click)="onClick()" class="clickable field-link" [title]="field.definition?.help ?? '' ">
             <ndc-dynamic
-                [ndcDynamicComponent]="componentType"
-                [ndcDynamicInputs]="{
-                'mode': mode,
-                'field': field,
-                'klass': klass,
-                'record': record,
-                'parent': parent
-            }"
+                    [ndcDynamicComponent]="componentType"
+                    [ndcDynamicInputs]="{
+                        'mode': mode,
+                        'field': field,
+                        'klass': klass,
+                        'record': record,
+                        'parent': parent
+                    }"
             ></ndc-dynamic>
         </a>
     </ng-container>
     <ng-container *ngIf="isLink() && !hasOnClick()">
-        <a [routerLink]="getLink()" class="field-link">
+        <a [routerLink]="getLink()" class="field-link" [title]="field.definition?.help ?? '' ">
             <ndc-dynamic
-                [ndcDynamicComponent]="componentType"
-                [ndcDynamicInputs]="{
-                'mode': mode,
-                'field': field,
-                'klass': klass,
-                'record': record,
-                'parent': parent
-            }"
+                    [ndcDynamicComponent]="componentType"
+                    [ndcDynamicInputs]="{
+                        'mode': mode,
+                        'field': field,
+                        'klass': klass,
+                        'record': record,
+                        'parent': parent
+                    }"
             ></ndc-dynamic>
         </a>
     </ng-container>
     <ng-container *ngIf="!isLink() && !hasOnClick()">
-        <ndc-dynamic
-            [ndcDynamicComponent]="componentType"
-            [ndcDynamicInputs]="{
-            'mode': mode,
-            'field': field,
-            'klass': klass,
-            'record': record,
-            'parent': parent
-        }"
-        ></ndc-dynamic>
+        <span [title]="field.definition?.help ?? '' ">
+            <ndc-dynamic
+                    [ndcDynamicComponent]="componentType"
+                    [ndcDynamicInputs]="{
+                        'mode': mode,
+                        'field': field,
+                        'klass': klass,
+                        'record': record,
+                        'parent': parent
+                    }"
+            ></ndc-dynamic>
+        </span>
     </ng-container>
 </ng-container>
 
 <ng-container *ngIf="field.loading">
-   <div class= "dynamic-field">
+    <div class= "dynamic-field">
         <div class="flex-grow-1 text-break rounded box-loading skeleton-field-content"></div>
-   </div>
+    </div>
 </ng-container>
 
 <ng-container *ngIf="isEdit() && field.formControl && field.formControl.errors">
