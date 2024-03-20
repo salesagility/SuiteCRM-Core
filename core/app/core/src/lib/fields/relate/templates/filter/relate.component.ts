@@ -166,6 +166,7 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         this.options = [];
         this.selectedValues = [];
         this.selectAll = false;
+        this.filterValue = '';
         this.onRemove();
     }
 

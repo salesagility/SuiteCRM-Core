@@ -25,7 +25,7 @@
  */
 
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {AttributeMap, ButtonInterface, Field, Record} from 'common';
+import {AttributeMap, ButtonInterface, emptyObject, Field, Record} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -158,14 +158,15 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     }
 
     onClear(event): void {
-        this.tag.clear(event)
         this.selectedValue = {};
+        this.filterValue = '';
         this.options = [];
         this.onRemove();
     }
 
     onFilter(): void {
         const relateName = this.getRelateFieldName();
+        this.filterValue = (this.filterValue ?? '').trim();
         let term = this.filterValue;
         this.search(term).pipe(
             take(1),
@@ -199,7 +200,10 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
 
     resetFunction(options: DropdownFilterOptions) {
         this.filterValue = '';
-        this.options = [this.selectedValue];
+        this.options = [];
+        if (!emptyObject(this.selectedValue)) {
+            this.options = [this.selectedValue];
+        }
     }
 
     onFilterInput(event: KeyboardEvent) {
