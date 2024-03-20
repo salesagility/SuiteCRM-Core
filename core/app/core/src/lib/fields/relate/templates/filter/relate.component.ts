@@ -393,7 +393,7 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
         filteredOptions.some((value: AttributeMap) => {
 
             if (value?.id === selectedValue?.id) {
-                found = true
+                found = true;
                 return true;
             }
             return false;

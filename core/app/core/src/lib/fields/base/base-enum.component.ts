@@ -154,7 +154,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.options = [];
         Object.keys(this.optionsMap).forEach(key => {
 
-            if(isEmptyString(this.optionsMap[key]) && !this.addEmptyStringOption()) {
+            if (isEmptyString(this.optionsMap[key]) && !this.addEmptyStringOption()) {
                 return;
             }
 
@@ -177,7 +177,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
         this.selectedValues = [];
 
-        if (this.field.criteria){
+        if (this.field.criteria) {
             this.initValueLabel();
             return;
         }
@@ -197,7 +197,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.initValueLabel();
     }
 
-    protected initValueLabel () {
+    protected initValueLabel() {
         const fieldValue = this.field.value || this.field.criteria?.target || undefined;
         if (fieldValue !== undefined) {
             this.valueLabel = this.optionsMap[fieldValue];
@@ -216,7 +216,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
      * */
     protected initEnumDefault(): void {
 
-       if (!isEmptyString(this.record?.id)) {
+        if (!isEmptyString(this.record?.id)) {
             this.field?.formControl.setValue('');
 
             return;
@@ -327,15 +327,25 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                     values = [values];
                 }
 
-                // Reset selected values on Form Control
-                this.field.value = '';
-                this.field.formControl.setValue('');
-
                 // Rebuild available enum options
                 this.options = this.filterMatchingOptions(values);
+                this.setValueToAvailableOption();
 
                 this.initValue();
             }));
+        }
+    }
+
+    protected setValueToAvailableOption(): void {
+        if (!this?.options?.length) {
+            this.field.value = '';
+            this.field.formControl.setValue('');
+            return;
+        }
+
+        if (!this.options.some(option => option.value === this.field.value)) {
+            this.field.value = this.options[0].value;
+            this.field.formControl.setValue(this.options[0].value);
         }
     }
 

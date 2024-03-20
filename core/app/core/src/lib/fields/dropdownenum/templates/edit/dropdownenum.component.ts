@@ -28,7 +28,6 @@ import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {UntypedFormGroup} from '@angular/forms';
 import {Option} from 'common';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
@@ -39,7 +38,6 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
     styleUrls: []
 })
 export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
-    formGroup: UntypedFormGroup;
 
     constructor(
         protected languages: LanguageStore,
@@ -51,17 +49,12 @@ export class DropdownEnumEditFieldComponent extends BaseEnumComponent {
     }
 
     ngOnInit(): void {
+
+        this.checkAndInitAsDynamicEnum();
+
         super.ngOnInit();
 
         this.subscribeValueChanges();
-
-        if (this.record && this.record.formGroup) {
-            this.formGroup = this.record.formGroup
-        } else {
-            this.formGroup = new UntypedFormGroup({});
-            this.formGroup.addControl(this.field.name, this.field.formControl);
-        }
-
     }
 
     public getId(item: Option) {

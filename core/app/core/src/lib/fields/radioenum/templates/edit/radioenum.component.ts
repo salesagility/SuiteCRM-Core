@@ -58,6 +58,8 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     }
 
     ngOnInit(): void {
+        this.checkAndInitAsDynamicEnum();
+
         super.ngOnInit();
 
         this.subscribeValueChanges();
