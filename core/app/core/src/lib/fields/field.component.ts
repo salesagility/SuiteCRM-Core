@@ -26,7 +26,7 @@
 
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {viewFieldsMap} from './field.manifest';
-import {DisplayType, Field, Record} from 'common';
+import {Field, Record} from 'common';
 import {FieldRegistry} from './field.registry';
 
 @Component({
@@ -50,6 +50,10 @@ export class FieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
+
+        if (this.mode === 'create' || this.mode === 'edit') {
+            this.initDefaultValue();
+        }
     }
 
     get componentMode(): string {
@@ -91,5 +95,14 @@ export class FieldComponent implements OnInit {
         }
 
         this.class = classes.join(' ');
+    }
+
+    protected initDefaultValue(): void {
+        if (!this.field.value && this.field.definition.default) {
+            this.field.value = this.field.definition.default;
+            this.field?.formControl?.setValue(this.field.definition.default);
+        } else if (this.field.value === null) {
+            this.field.value = '';
+        }
     }
 }

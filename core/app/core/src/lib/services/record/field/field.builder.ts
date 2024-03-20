@@ -29,13 +29,15 @@ import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {
     AttributeDependency,
-    BaseField, DisplayType,
+    BaseField,
+    DisplayType,
     Field,
     FieldDefinition,
-    FieldLogic, FieldLogicMap, ObjectMap,
+    FieldLogic,
+    FieldLogicMap,
     isTrue,
+    ObjectMap,
     Record,
-    StringMap,
     ViewFieldDefinition
 } from 'common';
 import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
@@ -128,12 +130,6 @@ export class FieldBuilder {
             value = null;
         }
 
-        if (!value && definition.default) {
-            value = definition.default;
-        } else if (value === null) {
-            value = '';
-        }
-
         return {value, valueList};
     }
 
@@ -181,7 +177,7 @@ export class FieldBuilder {
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
         field.display = (viewField.display || definition.display || 'default') as DisplayType;
         field.defaultDisplay = field.display;
-        if(field.defaultDisplay === 'default') {
+        if (field.defaultDisplay === 'default') {
             field.defaultDisplay = 'show';
         }
         field.value = value;
@@ -210,7 +206,6 @@ export class FieldBuilder {
         field.displayLogic = viewField.displayLogic || definition.displayLogic || null;
         const fieldDependencies: ObjectMap = {};
         const attributeDependencies: { [key: string]: AttributeDependency } = {};
-
 
 
         this.addFieldDependencies(field.logic, fieldDependencies, attributeDependencies, 'logic');

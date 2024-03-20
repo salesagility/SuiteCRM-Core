@@ -182,11 +182,6 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             return;
         }
 
-        if (!this.field.value) {
-            this.initEnumDefault();
-            return;
-        }
-
         if (typeof this.field.value !== 'string') {
             return;
         }
