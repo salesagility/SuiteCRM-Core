@@ -131,6 +131,8 @@ export class FilterFieldBuilder extends FieldBuilder {
 
         this.mapEnumEmptyOption(fieldCriteria, field);
 
+        this.mapRelateFields(fieldCriteria, field, searchCriteria);
+
         return fieldCriteria;
     }
 
@@ -156,6 +158,41 @@ export class FilterFieldBuilder extends FieldBuilder {
 
             return '__SuiteCRMEmptyString__';
         });
+    }
+
+    protected mapRelateFields(fieldCriteria: SearchCriteriaFieldFilter, field: Field, searchCriteria: SearchCriteria): void {
+        if (!['relate'].includes(fieldCriteria.fieldType)) {
+            return;
+        }
+
+        if (!fieldCriteria.values || !fieldCriteria.values.length) {
+            return;
+        }
+
+        const idFieldName = (field && field.definition && field.definition.id_name) || '';
+        const relateFieldName = (field && field.definition && field.definition.rname) || 'name';
+        const idValues = searchCriteria?.filters[idFieldName]?.values ?? [];
+
+        fieldCriteria.valueObjectArray = fieldCriteria.valueObjectArray ?? [];
+        const relateFieldMap = {};
+        if (fieldCriteria.valueObjectArray.length) {
+            fieldCriteria.valueObjectArray.forEach(value => {
+                relateFieldMap[value.id] = value;
+            })
+        }
+
+        for (let i = 0; i < fieldCriteria.values.length; i++) {
+            let value = fieldCriteria.values[i];
+
+            const relateValue = {};
+            relateValue[relateFieldName] = value;
+            relateValue['id'] = idValues[i] ?? '';
+
+            if (!relateFieldMap[relateValue['id']]) {
+                relateFieldMap[relateValue['id']] = relateValue;
+                fieldCriteria.valueObjectArray.push(relateValue);
+            }
+        }
     }
 
     protected getEmptyOption(field: Field): Option {
