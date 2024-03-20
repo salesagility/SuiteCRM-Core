@@ -29,7 +29,15 @@ import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
-import {deepClone, Field, FieldDefinition, SearchCriteria, SearchCriteriaFieldFilter, ViewFieldDefinition} from 'common';
+import {
+    deepClone,
+    Field,
+    FieldDefinition,
+    Option,
+    SearchCriteria,
+    SearchCriteriaFieldFilter,
+    ViewFieldDefinition
+} from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 
@@ -121,7 +129,46 @@ export class FilterFieldBuilder extends FieldBuilder {
             };
         }
 
+        this.mapEnumEmptyOption(fieldCriteria, field);
+
         return fieldCriteria;
+    }
+
+    protected mapEnumEmptyOption(fieldCriteria: SearchCriteriaFieldFilter, field: Field): void {
+        if (!['multienum', 'enum'].includes(fieldCriteria.fieldType)) {
+            return;
+        }
+
+        let emptyOption = this.getEmptyOption(field);
+
+        if (!emptyOption) {
+            return;
+        }
+
+        if (!fieldCriteria.values || !fieldCriteria.values.length) {
+            return;
+        }
+
+        fieldCriteria.values = fieldCriteria.values.map(value => {
+            if (value !== '') {
+                return value;
+            }
+
+            return '__SuiteCRMEmptyString__';
+        });
+    }
+
+    protected getEmptyOption(field: Field): Option {
+        let emptyOption = null;
+        const extraOptions = field?.definition?.metadata?.extraOptions ?? [];
+
+        extraOptions.forEach(option => {
+            if (option.value === '__SuiteCRMEmptyString__') {
+                emptyOption = option;
+            }
+        });
+
+        return emptyOption;
     }
 
     /**
