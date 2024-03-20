@@ -124,6 +124,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public onClear(): void {
         this.selectedValues = [];
+        this.multiSelect.filterValue = '';
         this.onRemove();
     }
 
@@ -146,6 +147,17 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     protected calculateSelectAll(): void {
         const visibleOptions = this?.multiSelect?.visibleOptions() ?? [];
         const selectedValuesKeys = (this?.selectedValues ?? []).map(item => item.value);
+
+        if (!visibleOptions.length || !selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
+        if (visibleOptions.length > selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
         this.selectAll = visibleOptions.every(item => selectedValuesKeys.includes(item.value));
     }
 

@@ -80,9 +80,6 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
         super.ngOnInit();
 
         this.primengConfig.ripple = true;
-        if (this.selectedValues.length === this.options.length) {
-            this.selectAll = true;
-        }
     }
 
     public onAdd(): void {
@@ -115,6 +112,7 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
 
     public onClear(): void {
         this.selectedValues = [];
+        this.multiSelect.filterValue = '';
         this.onRemove();
     }
 
@@ -162,6 +160,17 @@ export class MultiEnumFilterFieldComponent extends BaseMultiEnumComponent implem
     protected calculateSelectAll(): void {
         const visibleOptions = this?.multiSelect?.visibleOptions() ?? [];
         const selectedValuesKeys = (this?.selectedValues ?? []).map(item => item.value);
+
+        if (!visibleOptions.length || !selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
+        if (visibleOptions.length > selectedValuesKeys.length) {
+            this.selectAll = false;
+            return;
+        }
+
         this.selectAll = visibleOptions.every(item => selectedValuesKeys.includes(item.value));
     }
 }
