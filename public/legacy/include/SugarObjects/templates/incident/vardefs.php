@@ -40,7 +40,7 @@
 
 $vardefs = array(
     'fields' => array(
-        //Dodane dsadad
+        //Dodane
         'date_entered' => array(
             'name' => 'date_entered',
             'vname' => 'LBL_DATE_ENTERED',
@@ -120,9 +120,9 @@ $vardefs = array(
             'comment' => 'Invoice number',
             'inline_edit' => false,
         ),
-        'sender_signature' => array(
-            'name' => 'sender_signature',
-            'vname' => 'LBL_SENDER_SIGNATURE',
+        'applicants_signature' => array(
+            'name' => 'applicants_signature',
+            'vname' => 'LBL_APPLICANTS_SIGNATURE',
             'type' => 'text',
             'comment' => 'Sender signature',
             'inline_edit' => false,
@@ -150,12 +150,12 @@ $vardefs = array(
             'studio' => 'visible',
             'dependency' => false,
          ),
-         'senders_name' =>
+         'applicants_name' =>
             array(
                 'required' => false,
-                'name' => 'senders_name',
+                'name' => 'applicants_name',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_NAME',
+                'vname' => 'LBL_APPLICANTS_NAME',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -172,12 +172,12 @@ $vardefs = array(
                 'len' => '255',
                 'size' => '20',
             ),
-            'senders_street' =>
+            'applicants_street' =>
             array(
                 'required' => false,
-                'name' => 'senders_street',
+                'name' => 'applicants_street',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_STREET',
+                'vname' => 'LBL_APPLICANTS_STREET',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -194,12 +194,12 @@ $vardefs = array(
                 'len' => '255',
                 'size' => '20',
             ),
-        'senders_house_number' =>
+        'applicants_house_number' =>
             array(
                 'required' => false,
-                'name' => 'senders_house_number',
+                'name' => 'applicants_house_number',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_HOUSE_NUMBER',
+                'vname' => 'LBL_APPLICANTS_HOUSE_NUMBER',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -216,12 +216,12 @@ $vardefs = array(
                 'len' => '50',
                 'size' => '20',
             ),
-        'senders_nazwa2' =>
+        'applicants_nazwa2' =>
             array(
                 'required' => false,
-                'name' => 'senders_nazwa2',
+                'name' => 'applicants_nazwa2',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_NAZWA2',
+                'vname' => 'LBL_APPLICANTS_NAZWA2',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -238,12 +238,12 @@ $vardefs = array(
                 'len' => '255',
                 'size' => '20',
             ),
-        'senders_premises_number' =>
+        'applicants_premises_number' =>
             array(
                 'required' => false,
-                'name' => 'senders_premises_number',
+                'name' => 'applicants_premises_number',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_PREMISES_NUMBER',
+                'vname' => 'LBL_APPLICANTS_PREMISES_NUMBER',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -260,12 +260,12 @@ $vardefs = array(
                 'len' => '50',
                 'size' => '20',
             ),
-        'senders_region' =>
+        'applicants_region' =>
             array(
                 'required' => false,
-                'name' => 'senders_region',
+                'name' => 'applicants_region',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_REGION',
+                'vname' => 'LBL_APPLICANTS_REGION',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -282,12 +282,12 @@ $vardefs = array(
                 'len' => '100',
                 'size' => '20',
             ),
-        'senders_telephone' =>
+        'applicants_telephone' =>
             array(
                 'required' => false,
-                'name' => 'senders_telephone',
+                'name' => 'applicants_telephone',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_TELEPHONE',
+                'vname' => 'LBL_APPLICANTS_TELEPHONE',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -304,12 +304,12 @@ $vardefs = array(
                 'len' => '30',
                 'size' => '20',
             ),
-        'senders_postal_code' =>
+        'applicants_postal_code' =>
             array(
                 'required' => false,
-                'name' => 'senders_postal_code',
+                'name' => 'applicants_postal_code',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_POSTAL_CODE',
+                'vname' => 'LBL_APPLICANTS_POSTAL_CODE',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -326,12 +326,12 @@ $vardefs = array(
                 'len' => '50',
                 'size' => '20',
             ),
-        'senders_email_address' =>
+        'applicants_email_address' =>
             array(
                 'required' => false,
-                'name' => 'senders_email_address',
+                'name' => 'applicants_email_address',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_EMAIL_ADDRESS',
+                'vname' => 'LBL_APPLICANTS_EMAIL_ADDRESS',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -348,12 +348,12 @@ $vardefs = array(
                 'len' => '50',
                 'size' => '20',
             ),
-        'senders_city' =>
+        'applicants_city' =>
             array(
                 'required' => false,
-                'name' => 'senders_city',
+                'name' => 'applicants_city',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_CITY',
+                'vname' => 'LBL_APPLICANTS_CITY',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
@@ -370,12 +370,12 @@ $vardefs = array(
                 'len' => '100',
                 'size' => '20',
             ),
-        'senders_nip' =>
+        'applicants_nip' =>
             array(
                 'required' => false,
-                'name' => 'senders_nip',
+                'name' => 'applicants_nip',
                 'source' => 'custom_fields',
-                'vname' => 'LBL_SENDERS_NIP',
+                'vname' => 'LBL_APPLICANTS_NIP',
                 'type' => 'varchar',
                 'massupdate' => 0,
                 'no_default' => false,
