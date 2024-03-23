@@ -69,6 +69,7 @@ $mod_strings = array(
     'LBL_DESCRIPTION' => 'Description',
     'LBL_SERVICE_POI' => 'Service POI',
     'LBL_TYPE_INCIDENT' => 'incident',
+    'LBL_APPLICANTS_ADE' => 'Applicant\'s ADE',
     //Domyślne
     'LBL_NAME' => 'Name',
     'LBL_NUMBER' => 'Number:',
