@@ -27,6 +27,7 @@
 import {FieldDefinition, FieldMetadata, LineItemsMetadata} from '../record/field.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {ViewMode} from "../views/view.model";
 
 export interface ViewFieldDefinition {
     name?: string;
@@ -38,6 +39,8 @@ export interface ViewFieldDefinition {
     type?: string;
     readonly?: boolean;
     display?: string;
+    defaultValue?: string;
+    defaultValueModes?: ViewMode[];
     fieldDefinition?: FieldDefinition;
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
@@ -96,10 +99,11 @@ export interface LogicDefinition {
     };
 }
 
-export interface LogicRuleValues{
+export interface LogicRuleValues {
     operator?: string;
     values?: any;
     value?: any;
     field?: string;
+
     [key: string]: string;
 }

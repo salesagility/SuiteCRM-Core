@@ -42,6 +42,7 @@ import {
 export class DynamicFieldComponent implements OnInit {
 
     @Input('mode') mode: string;
+    @Input('originalMode') originalMode: string;
     @Input('type') type: string;
     @Input('field') field: Field;
     @Input('record') record: Record = null;
@@ -82,6 +83,11 @@ export class DynamicFieldComponent implements OnInit {
     ngOnInit(): void {
         this.setHostClass();
         this.cd.detectChanges();
+
+        const defaultValueModes = this?.field?.defaultValueModes ?? ['create'];
+        if (defaultValueModes.includes(this.mode as ViewMode)) {
+            this.initDefaultValue();
+        }
     }
 
     isLink(): boolean {
@@ -174,6 +180,16 @@ export class DynamicFieldComponent implements OnInit {
         }
 
         this.class = classes.join(' ');
+    }
+
+    protected initDefaultValue(): void {
+        const defaultValue = this?.field?.default ?? this?.field?.definition?.default ?? null;
+        if (!this.field.value && defaultValue) {
+            this.field.value = defaultValue;
+            this.field?.formControl?.setValue(defaultValue);
+        } else if (this.field.value === null) {
+            this.field.value = '';
+        }
     }
 
 }

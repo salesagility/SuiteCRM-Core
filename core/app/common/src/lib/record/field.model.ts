@@ -95,6 +95,7 @@ export interface FieldDefinition {
     lineItems?: LineItemsMetadata;
     metadata?: FieldMetadata;
     default?: string;
+    defaultValueModes?: ViewMode[];
     modes?: ViewMode[];
     relationship?: string;
     relationshipMetadata?: RelationshipMetadata
@@ -177,6 +178,8 @@ export interface Field {
     readonly?: boolean;
     display?: DisplayType;
     defaultDisplay?: string;
+    default?: string;
+    defaultValueModes?: ViewMode[];
     source?: FieldSource;
     valueSource?: 'value' | 'valueList' | 'valueObject' | 'criteria';
     metadata?: FieldMetadata;
@@ -205,6 +208,8 @@ export class BaseField implements Field {
     readonly?: boolean;
     display?: DisplayType;
     defaultDisplay?: string;
+    default?: string;
+    defaultValueModes?: ViewMode[];
     source?: FieldSource;
     metadata?: FieldMetadata;
     definition?: FieldDefinition;

@@ -37,6 +37,7 @@ import {isEqual} from "lodash-es";
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDestroy {
     @Input() mode: string;
+    @Input() originalMode: string = '';
     @Input() field: Field;
     @Input() record: Record;
     @Input() parent: Record;
@@ -54,6 +55,10 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     ngOnInit(): void {
         this.baseInit();
+
+        if (!this.originalMode) {
+            this.originalMode = this.mode;
+        }
     }
 
     ngOnDestroy(): void {

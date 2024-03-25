@@ -189,6 +189,13 @@ export class FieldBuilder {
         field.labelKey = viewField.label || definition.vname || '';
         field.dynamicLabelKey = viewField.dynamicLabelKey || definition.dynamicLabelKey || '';
 
+        const defaultValue = viewField?.defaultValue ?? definition?.default ?? null;
+        if (defaultValue) {
+            field.default = defaultValue;
+        }
+
+        field.defaultValueModes = viewField?.defaultValueModes ?? definition?.defaultValueModes ?? ['create'];
+
         field.validators = validators;
         field.asyncValidators = asyncValidators;
 
@@ -232,7 +239,9 @@ export class FieldBuilder {
         return field;
     }
 
-    protected addFieldDependencies(config: FieldLogicMap, fieldDependencies: ObjectMap, attributeDependencies: { [key: string]: AttributeDependency }, type: string) {
+    protected addFieldDependencies(config: FieldLogicMap, fieldDependencies: ObjectMap, attributeDependencies: {
+        [key: string]: AttributeDependency
+    }, type: string) {
         if (config && Object.keys(config).length) {
 
             Object.keys(config).forEach(logicKey => {
