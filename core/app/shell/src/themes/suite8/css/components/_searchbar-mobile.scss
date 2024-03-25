@@ -33,7 +33,7 @@
 
 @media all and (max-width: $breakpoint-small) {
   .search-bar-global {
-    width: 9em;
+    max-width: 9em;
 
     .input-group {
       margin: 0;
