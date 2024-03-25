@@ -111,6 +111,8 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
                 'type' => 'enum',
                 'vname' => 'LBL_OPERATOR',
                 'options' => $field['options'] ?? 'date_range_search_dom',
+                'default' => '=',
+                'defaultValueModes' => ['filter', 'edit']
             ],
             'target' => [
                 'name' => 'target',
