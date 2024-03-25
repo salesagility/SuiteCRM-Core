@@ -57,6 +57,30 @@
 
 }
 
+@media all and (min-width: $breakpoint-large) {
+
+  .list-view-header {
+    .custom-col-4 {
+      flex: 0 0 33.333333%;
+      max-width: 33.333333%;
+      position: relative;
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    .custom-col-8 {
+      flex: 0 0 66.666667%;
+      max-width: 66.666667%;
+      justify-content: end;
+      position: relative;
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+}
+
 @media all and (max-width: $breakpoint-large) {
   table {
     table-layout: fixed;
@@ -234,15 +258,18 @@
 }
 
 @media all and (max-width: $breakpoint-medium) {
-  .cdk-column-line-actions {
+  .line-action-container {
     position: relative;
+    display: flex;
+    align-items: center;
 
     .line-action-position {
       position: absolute;
-      top: 0;
       right: 0;
-      float: right;
     }
+  }
+  .cdk-column-line-actions {
+    position: relative;
 
     .line-action .more-button svg {
       font-size: 1.2em;

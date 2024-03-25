@@ -27,11 +27,15 @@
 -->
 <ng-container>
     <div class="list-view-header">
-        <div class="row mr-0">
-            <div class="custom-col-4" >
+        <div class="row mr-0 justify-content-md-between"
+             [class.justify-content-center]="!(showQuickFilters && enableQuickFilters)"
+             [class.d-flex]="(showQuickFilters && enableQuickFilters)">
+            <div class="custom-col-4 d-md-flex align-items-center"
+                 [class.d-none]="!(showQuickFilters && enableQuickFilters)"
+                 [class.d-flex]="(showQuickFilters && enableQuickFilters)">
                 <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
             </div>
-            <div class="custom-col-8">
+            <div class="custom-col-8 d-flex align-items-center">
                 <scrm-settings-menu></scrm-settings-menu>
             </div>
         </div>
