@@ -210,6 +210,11 @@ export class RelateFilterFieldComponent extends BaseRelateComponent {
 
     onFilter(): void {
         const relateName = this.getRelateFieldName();
+        this.filterValue = this.filterValue ?? '';
+        const matches = this.filterValue.match(/^\s*$/g);
+        if (matches && matches.length) {
+            this.filterValue = '';
+        }
         let term = this.filterValue;
         this.search(term).pipe(
             take(1),
