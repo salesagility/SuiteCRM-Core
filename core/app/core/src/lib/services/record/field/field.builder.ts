@@ -189,7 +189,7 @@ export class FieldBuilder {
         field.labelKey = viewField.label || definition.vname || '';
         field.dynamicLabelKey = viewField.dynamicLabelKey || definition.dynamicLabelKey || '';
 
-        const defaultValue = viewField?.defaultValue ?? definition?.default ?? null;
+        const defaultValue = viewField?.defaultValue ?? definition?.default ?? definition?.defaultValue ?? null;
         if (defaultValue) {
             field.default = defaultValue;
         }

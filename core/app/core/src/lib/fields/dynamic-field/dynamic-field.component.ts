@@ -85,7 +85,7 @@ export class DynamicFieldComponent implements OnInit {
         this.cd.detectChanges();
 
         const defaultValueModes = this?.field?.defaultValueModes ?? ['create'];
-        if (defaultValueModes.includes(this.mode as ViewMode)) {
+        if (defaultValueModes.includes(this.originalMode as ViewMode)) {
             this.initDefaultValue();
         }
     }
