@@ -119,9 +119,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if (screenSize) {
                 this.screen = screenSize;
-                if(!this.isSmallScreen()) {
-                    this.isSearchBoxVisible.set(true);
-                }
+                this.onResize();
             }
 
             if (navigation && navigation.modules) {
@@ -173,11 +171,14 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
      */
 
     @HostListener('window:resize', ['$event'])
-    onResize(event: any): void {
-        const innerWidth = event.target.innerWidth;
+    onResize(): void {
+        const innerWidth = window.innerWidth;
         this.mobileNavbar = innerWidth <= 768;
-        this.isSmallScreen.set(innerWidth <= 576);
+        this.isSmallScreen.set(innerWidth <= 600);
         this.isTabletScreen.set(innerWidth <= 992);
+        if(!this.isSmallScreen()) {
+            this.isSearchBoxVisible.set(true);
+        }
     }
 
     ngOnInit(): void {
