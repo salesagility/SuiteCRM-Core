@@ -242,7 +242,8 @@ export class InstallViewStore implements StateStore {
                                         "vname": "LBL_SITECFG_URL",
                                         "type": "varchar",
                                         "required": true,
-                                        "default": this.url?.toString()
+                                        "default": this.url?.toString(),
+                                        "defaultValueModes": ["create", "edit"]
                                     } as FieldDefinition,
                                 } as PanelCell,
                                 {
@@ -330,7 +331,8 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_DBCONF_DB_PORT",
                                                 "showLabel": ["*"],
                                                 "required": false,
-                                                "default":'3306'
+                                                "default":'3306',
+                                                "defaultValueModes": ["create", "edit"]
                                             }
                                         },
                                         showLabel: {
@@ -359,7 +361,8 @@ export class InstallViewStore implements StateStore {
                                                 "labelKey": "LBL_SITECFG_ADMIN_Name",
                                                 "showLabel": ["edit"],
                                                 "required": true,
-                                                "default": "admin"
+                                                "default": "admin",
+                                                "defaultValueModes": ["create", "edit"]
                                             },
                                             "site_password": {
                                                 "name": "site_password",
@@ -453,7 +456,8 @@ export class InstallViewStore implements StateStore {
                         "showLabel": ["edit"],
                         "required": false,
                         "value": 'false',
-                        "default": 'false'
+                        "default": 'false',
+                        "defaultValueModes": ["create", "edit"]
                     }
                 } as ViewFieldDefinition
             );
