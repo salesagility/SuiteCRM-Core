@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {combineLatestWith, Subscription} from "rxjs";
 import {NavbarModuleMap, Navigation, NavigationStore} from "../../store/navigation/navigation.store";
@@ -38,6 +38,7 @@ import {SidebarModule} from "primeng/sidebar";
 import {ImageModule} from "../image/image.module";
 import {MobileMenuComponent} from "./mobile-menu/mobile-menu.component";
 import {SearchBarModule} from "../search-bar/search-bar.module";
+import {SearchBarComponent} from "../search-bar/search-bar.component";
 
 @Component({
     selector: 'scrm-sidebar',
@@ -48,6 +49,7 @@ import {SearchBarModule} from "../search-bar/search-bar.module";
 
 export class SidebarComponent implements OnInit, OnDestroy {
 
+    @ViewChild('searchBarComponent') searchBarComponent: SearchBarComponent;
     isSidebarVisible: boolean = false;
     menuItems: MenuItem[] = [];
     displayedItems: WritableSignal<MenuItem[]> = signal<MenuItem[]>([]);
@@ -74,6 +76,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.subs.push(this.appStateStore.isSidebarVisible$.subscribe(
             (isSidebarVisible: boolean) => {
                 this.isSidebarVisible = isSidebarVisible;
+                if (!this.isSidebarVisible) {
+                    this.clearFilter();
+                }
             }
         ));
     }
@@ -83,7 +88,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     setMenuItems(modules: NavbarModuleMap, tabs: string[], appListStrings: LanguageListStringMap): void {
-        this.menuItems = [];
+        const menuItems = [];
         tabs.forEach((tab: string) => {
             const moduleInfo = modules[tab];
             const moduleRoute = this.moduleNavigation.getModuleRoute(moduleInfo);
@@ -99,10 +104,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 submenu: [],
                 module: moduleInfo?.name ?? null
             };
-            this.menuItems.push(menuItem);
+            menuItems.push(menuItem);
         });
 
-        this.setDisplayedItems();
+        this.menuItems = [...menuItems];
+
+        this.displayedItems.set([...menuItems]);
     }
 
     toggleSidebar(): void {
@@ -110,6 +117,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     closeSidebar(): void {
+        this.clearFilter();
         this.appStateStore.closeSidebar();
     }
 
@@ -120,11 +128,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 return item?.link?.label.toLowerCase().includes(searchTerm.toLowerCase());
             }) ?? []);
         } else {
-            this.setDisplayedItems();
+            this.resetMenuItems();
         }
     }
 
-    setDisplayedItems(): void {
-        this.displayedItems.set(this.menuItems);
+    protected resetMenuItems(): void {
+        this.displayedItems.set([...this.menuItems]);
+    }
+
+    protected clearFilter(): void {
+        this.resetMenuItems();
+        this?.searchBarComponent?.clearSearchTerm();
     }
 }
