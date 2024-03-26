@@ -364,7 +364,7 @@ class InstallPreChecks
         if (curl_errno($ch)) {
             $error = 'cURL error (' . curl_errno($ch) . '): ' . curl_error($ch);
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
         }
 
         $resultJson = json_decode($result, true);
@@ -372,13 +372,13 @@ class InstallPreChecks
         if (empty($resultJson)) {
             $error = $this->modStrings['LBL_CURL_JSON_ERROR'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
         }
 
         if (empty($resultJson['data']['systemConfigs'])) {
             $error = $this->modStrings['LBL_UNABLE_TO_FIND_SYSTEM_CONFIGS'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
         }
 
         curl_close($ch);
