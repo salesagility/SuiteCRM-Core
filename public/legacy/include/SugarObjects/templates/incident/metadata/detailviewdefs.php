@@ -54,16 +54,12 @@ $viewdefs[$module_name]['DetailView'] = array(
         'default' => array(
 
             array(
-                $_object_name . '_number',
-                'assigned_user_name',
+                'name',
+                '_number',
             ),
 
             array(
                 'priority',
-            ),
-
-            array(
-                'resolution',
                 'status',
             ),
 
@@ -81,19 +77,8 @@ $viewdefs[$module_name]['DetailView'] = array(
             ),
 
             array(
-
-                array(
-                    'name' => 'name',
-                    'label' => 'LBL_SUBJECT',
-                ),
-            ),
-
-            array(
                 'description',
-            ),
-
-            array(
-                'work_log',
+                'resolution',
             ),
         )
     )

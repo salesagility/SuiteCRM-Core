@@ -62,3 +62,6 @@ composer.phar
 # SASS
 /public/legacy/themes/suite8/css/Dawn/style.css
 /public/legacy/themes/suite8/css/Noon/style.css
+docker2git.bat
+git2docker.bat
+.gitignore

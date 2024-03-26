@@ -61,7 +61,7 @@ $searchFields[$module_name] = array(
         'options' => $_object_name . '_resolution_dom',
         'template_var' => 'RESOLUTION_OPTIONS'
     ),
-    $_object_name . '_number' => array('query_type' => 'default', 'operator' => 'in'),
+    '_number' => array('query_type' => 'default', 'operator' => 'in'),
     'current_user_only' => array(
         'query_type' => 'default',
         'db_field' => array('assigned_user_id'),

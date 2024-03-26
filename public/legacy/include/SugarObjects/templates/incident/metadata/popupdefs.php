@@ -52,7 +52,7 @@ $popupMeta = array(
     'orderBy' => $_module_name . '.name',
     'whereClauses' => array(
         'name' => $_module_name . '.name',
-        $_object_name . '_number' => $_module_name . '.' . $_object_name . '_number'
+        '_number' => $_module_name . '._number'
     ),
     'searchInputs' => array($_module_name . '_number', 'name', 'priority', 'status'),
 

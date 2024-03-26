@@ -61,7 +61,8 @@ $mod_strings = array(
     'LBL_ASSIGNED_USER' => 'Przypisany użytkownik:',
     'LBL_TYPE' => 'Typ:',
     'LBL_SUBJECT' => 'Temat:',
-
+    'LBL_APPLICANTS_COUNTRY' => 'Nadawca kraj ',
+    'LBL_APPLICANTS_TAXID' => 'Nadawca NIP',
     'LBL_EDIT_BUTTON' => 'Edytuj',
     'LBL_REMOVE' => 'Usuń',
 

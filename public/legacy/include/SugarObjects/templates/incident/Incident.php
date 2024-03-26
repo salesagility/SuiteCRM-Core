@@ -42,29 +42,33 @@ require_once 'include/SugarObjects/templates/basic/Basic.php';
 
 class Incident extends Basic
 {
-    public $date_entered;
-    public $source_of_the_complaint;
-    public $service_date_start;
-    public $required_end_date;
+    public $source_incident;
     public $filing_date;
+    public $required_end_date;
+    public $status;
+    public $priority;
+    public $entry_date;
+    public $service_POI;
+    public $service_date_start;
+    public $description;
+    public $applicants_name;
+    public $applicants_name2;
+    public $applicants_country;
+    public $applicants_postal_code;
+    public $applicants_region;
+    public $applicants_city;
+    public $applicants_street;
+    public $applicants_house_number;
+    public $applicants_local_number;
+    public $applicants_phone;
+    public $applicants_email;
+    public $applicants_TAXID;
     public $invoice_number;
     public $applicants_signature;
     public $response_method;
-    public $applicants_ade;
-    public $applicants_name;
-    public $applicants_street;
-    public $applicants_house_number;
-    public $applicants_nazwa2;
-    public $applicants_premises_number;
-    public $applicants_postal_code;
-    public $applicants_city;
-    public $applicants_telephone;
-    public $applicants_email_address;
-    public $applicants_nip;
-    public $applicants_region;
     public $section;
     public $assigned_user_name;
-    public $service_POI;
+    public $resolution;
     /**
      * Incident constructor.
      */
