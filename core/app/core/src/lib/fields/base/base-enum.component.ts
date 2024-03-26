@@ -287,6 +287,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                 }
                 this.options = this.filterMatchingOptions(parentValues);
 
+                if (parentValues && parentValues.length) {
+                    this.setValueToAvailableOption();
+                }
+
             }
         }
     }
