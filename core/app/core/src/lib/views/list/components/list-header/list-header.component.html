@@ -29,23 +29,23 @@
     <div class="list-view-header">
         <div class="row mr-0 justify-content-md-between"
              [class.justify-content-center]="!(showQuickFilters && enableQuickFilters)"
-             [class.d-flex]="(showQuickFilters && enableQuickFilters)">
-            <div class="custom-col-4 d-md-flex align-items-center"
-                 [class.d-none]="!(showQuickFilters && enableQuickFilters)"
-                 [class.d-flex]="(showQuickFilters && enableQuickFilters)">
+             [class.justify-content-end]="(showQuickFilters && enableQuickFilters)">
+            <div class="custom-col-4 d-none d-md-flex align-items-center">
                 <scrm-module-title class="list-view-title" [title]="moduleTitle"></scrm-module-title>
             </div>
-            <div class="custom-col-8 d-flex align-items-center">
+            <div class="custom-col-8 d-flex align-items-center"
+                 [class.pr-3]="(showQuickFilters && enableQuickFilters)"
+            >
                 <scrm-settings-menu></scrm-settings-menu>
             </div>
         </div>
 
         <div *ngIf="showQuickFilters && enableQuickFilters"
              class="d-flex align-items-baseline w-100 justify-content-end pr-3">
-            <div class="text-nowrap text-muted fs-70 pl-1 mr-2 ">
+            <div class="text-nowrap text-muted fs-70 pl-1 mr-1">
                 <scrm-label labelKey="LBL_QUICK_FILTERS"></scrm-label>
             </div>
-            <div class="quick-filter-border pr-xxl-1 mr-xxl-1">
+            <div class="pr-xxl-1 mr-xxl-1">
                 <scrm-button-group *ngIf="quickFilters.config$" [config$]="quickFilters.config$" [klass]="'quick-filter-button'"></scrm-button-group>
             </div>
         </div>
