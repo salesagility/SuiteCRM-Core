@@ -104,6 +104,7 @@ class FilterMapper
             if ($isRegularValue) {
                 $fieldKey = str_replace('_advanced', '', $key);
                 $filter['field'] = $fieldKey;
+                $filter['fieldType'] = $contents["field_type_{$fieldKey}"] ?? '';
 
                 $values = [];
                 if (is_string($value)) {
@@ -112,10 +113,10 @@ class FilterMapper
 
                 if (is_array($value)) {
                     $values = $value;
+                    $values = $this->mapToApi($filter, $values);
                 }
 
                 $filter['values'] = $values;
-                $filter['fieldType'] = $contents["field_type_${fieldKey}"] ?? '';
                 $filters[$fieldKey] = $filter;
                 continue;
             }
@@ -227,5 +228,45 @@ class FilterMapper
     public function getSortOrder(array $sort): string
     {
         return $sort['sortOrder'] ?? 'DESC';
+    }
+
+    /**
+     * @param $fieldType
+     * @return FilterMapperInterface|null
+     */
+    public function getMapper($fieldType): ?FilterMapperInterface
+    {
+        if ($this->mappers->hasMapper($fieldType)) {
+            $mapper = $this->mappers->get($fieldType);
+        } else {
+            $mapper = $this->mappers->get('default');
+        }
+        return $mapper;
+    }
+
+    /**
+     * @param array $filter
+     * @param array $values
+     * @return array
+     */
+    public function mapToApi(array $filter, array $values): array
+    {
+        $mapper = $this->getMapper($filter['fieldType'] ?? '');
+
+        if ($mapper === null) {
+            return $values;
+        }
+
+        $mappedValues = [];
+        foreach ($values as $key => $item) {
+            if (!is_string($item)) {
+                $mappedValues[$key] = $item;
+                continue;
+            }
+
+            $mappedValues[$key] = $mapper->toApi($item, $filter);
+        }
+
+        return $mappedValues;
     }
 }

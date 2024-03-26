@@ -51,4 +51,9 @@ class MultiEnumFilterMapper implements FilterMapperInterface
 
         return $criteriaItem['values'];
     }
+
+    public function toApi(string $mappedValue, array $criteriaItem): string
+    {
+        return $mappedValue;
+    }
 }

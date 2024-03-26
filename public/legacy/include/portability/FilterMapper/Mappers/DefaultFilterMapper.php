@@ -49,10 +49,12 @@ class DefaultFilterMapper implements FilterMapperInterface
             return [];
         }
 
+
         $legacyValue = $values;
 
         $mapEmptyString = false;
-        foreach ($legacyValue as $legacyValueKey => $legacyValueValue){
+        foreach ($legacyValue as $legacyValueKey => $legacyValueValue) {
+
             switch ($legacyValueValue) {
                 case "__SuiteCRMEmptyString__":
                     $mapEmptyString = true;
@@ -61,7 +63,7 @@ class DefaultFilterMapper implements FilterMapperInterface
             }
         }
 
-        if ($mapEmptyString){
+        if ($mapEmptyString) {
             return $legacyValue;
         }
 
@@ -70,5 +72,14 @@ class DefaultFilterMapper implements FilterMapperInterface
         }
 
         return $legacyValue;
+    }
+
+    public function toApi(string $mappedValue, array $criteriaItem): string
+    {
+        if ($criteriaItem['fieldType'] === 'enum' && $mappedValue === '') {
+            $mappedValue = "__SuiteCRMEmptyString__";
+        }
+
+        return $mappedValue;
     }
 }

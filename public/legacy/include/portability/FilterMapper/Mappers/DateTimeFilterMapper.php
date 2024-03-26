@@ -79,4 +79,9 @@ class DateTimeFilterMapper implements FilterMapperInterface
 
         return $legacyValue;
     }
+
+    public function toApi(string $mappedValue, array $criteriaItem): string
+    {
+        return $mappedValue;
+    }
 }

@@ -40,4 +40,12 @@ interface FilterMapperInterface
      * @return mixed|string|string[]
      */
     public function mapValue(string $mappedValue, array $criteriaItem);
+
+    /**
+     * To Api
+     * @param string $mappedValue
+     * @param array $criteriaItem
+     * @return mixed|string|string[]
+     */
+    public function toApi(string $mappedValue, array $criteriaItem);
 }
