@@ -59,7 +59,7 @@ $searchdefs[$module_name] = array(
             ),
         ),
         'advanced_search' => array(
-            $_object_name . '_number',
+            '_number',
             'name',
             'resolution',
             'status',

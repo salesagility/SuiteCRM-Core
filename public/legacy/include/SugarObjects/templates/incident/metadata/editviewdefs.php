@@ -53,34 +53,18 @@ $viewdefs[$module_name]['EditView'] = array(
         'default' => array(
 
             array(
-
-                array(
-                    'name' => $_object_name . '_number',
-                    'type' => 'readonly',
-                ),
-                'assigned_user_name',
+                array('name' => 'name', 'type' => 'readonly',),
+                array('name' => '_number','type' => 'readonly'),
             ),
-
             array(
                 'priority',
-            ),
-
-            array(
-                'resolution',
                 'status',
             ),
-
-            array(
-                array('name' => 'name', 'displayParams' => array('size' => 60)),
-            ),
-
             array(
                 'description',
+                'resolution',
             ),
 
-            array(
-                'work_log',
-            ),
         ),
 
     ),

@@ -278,7 +278,7 @@ $vardefs = array(
             'required' => false,
             'name' => 'applicants_local_number',
             'source' => 'custom_fields',
-            'vname' => 'LBL_APPLICANTS_PREMISES_NUMBER',
+            'vname' => 'LBL_APPLICANTS_LOCAL_NUMBER',
             'type' => 'varchar',
             'massupdate' => 0,
             'no_default' => false,
@@ -514,8 +514,8 @@ $vardefs = array(
 
 
         //Domyślne
-        $_object_name . '_number' => array(
-            'name' => $_object_name . '_number',
+        '_number' => array(
+            'name' => '_number',
             'vname' => 'LBL_NUMBER',
             'type' => 'int',
             'readonly' => true,
@@ -538,40 +538,24 @@ $vardefs = array(
             'link' => true,
             'dbType' => 'varchar',
             'len' => 255,
-            'audited' => true,
-            'unified_search' => true,
+            'audited' => false,
+            'unified_search' => false,
             'full_text_search' => array('boost' => 3),
-            'comment' => 'The short description of the bug',
+            'comment' => 'The short description of module',
             'merge_filter' => 'selected',
-            'required' => true,
+            'required' => false,
             'importable' => 'required',
-
-        ),
-        'type' => array(
-            'name' => 'type',
-            'vname' => 'LBL_TYPE',
-            'type' => 'enum',
-            'options' => strtolower($object_name) . '_type_dom',
-            'len' => 255,
-            'comment' => 'The type of issue (ex: issue, feature)',
-            'merge_filter' => 'enabled',
-        ),
-
-
-        //not in cases.
-        'work_log' => array(
-            'name' => 'work_log',
-            'vname' => 'LBL_WORK_LOG',
-            'type' => 'text',
-            'comment' => 'Free-form text used to denote activities of interest'
+            'default' => substr($_object_name,3),
+            'inline_edit' => false,
+            'readonly' => true,
         ),
 
     ),
     'indices' => array(
-        'number' => array(
+        '_number' => array(
             'name' => strtolower($module) . 'numk',
             'type' => 'unique',
-            'fields' => array($_object_name . '_number')
+            'fields' => array('_number')
         )
     ),
 
