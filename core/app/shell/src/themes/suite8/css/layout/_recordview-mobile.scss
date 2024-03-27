@@ -59,8 +59,18 @@
         padding-left: 1em;
         padding-right: 1em;
     }
+
     .field-datetime-edit {
         margin: 0;
         max-width: 100%;
     }
+}
+
+@media all and (max-width: 575px) {
+
+    .record-view-name,
+    .record-view-name-scrolled {
+        left: -25px;
+    }
+
 }
