@@ -49,11 +49,32 @@ class MultiEnumFilterMapper implements FilterMapperInterface
             return [];
         }
 
+        $filterValues = $values;
+
+        $mapEmptyString = false;
+        foreach ($filterValues as $legacyValueKey => $legacyValueValue) {
+
+            switch ($legacyValueValue) {
+                case "__SuiteCRMEmptyString__":
+                    $mapEmptyString = true;
+                    $filterValues[$legacyValueKey] = '';
+                    break;
+            }
+        }
+
+        if ($mapEmptyString) {
+            return $filterValues;
+        }
+
         return $criteriaItem['values'];
     }
 
     public function toApi(string $mappedValue, array $criteriaItem): string
     {
+        if ($mappedValue === '') {
+            $mappedValue = "__SuiteCRMEmptyString__";
+        }
+
         return $mappedValue;
     }
 }
