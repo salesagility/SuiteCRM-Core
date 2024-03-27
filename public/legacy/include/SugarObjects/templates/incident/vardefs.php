@@ -127,11 +127,11 @@ $vardefs = array(
             'inline_edit' => false,
         ),
 
-        'service_POI' => array(
-            'name' => 'service_POI',
+        'service_poi' => array(
+            'name' => 'service_poi',
             'vname' => 'LBL_SERVICE_POI',
             'type' => 'enum',
-            'options' => 'service_POI_list',
+            'options' => 'service_poi_list',
             'comment' => 'Number and  name of Service witch Incident concerns',
             'len' => 100,
             'size' => '20',
@@ -405,10 +405,10 @@ $vardefs = array(
             'len' => '100',
             'size' => '20',
         ),
-        'applicants_TAXID' =>
+        'applicants_taxid' =>
         array(
             'required' => false,
-            'name' => 'applicants_nip',
+            'name' => 'applicants_taxid',
             'source' => 'custom_fields',
             'vname' => 'LBL_APPLICANTS_TAXID',
             'type' => 'varchar',

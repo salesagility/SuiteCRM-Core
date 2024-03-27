@@ -46,7 +46,7 @@ $mod_strings = array(
     //Dodane
     'LBL_ID' => 'ID',
     'LBL_DATE_ENTERED' => 'Date Created',
-    'LBL_SOURCE_INCIDENT' => 'Source of the report',
+    'LBL_SOURCE_INCIDENT' => 'Source of the Incident',
     'LBL_SERVICE_DATE_START' => 'Service date start',
     'LBL_REQUIRED_END_DATE' => 'Required end date',
     'LBL_FILING_DATE' => 'Filing date',

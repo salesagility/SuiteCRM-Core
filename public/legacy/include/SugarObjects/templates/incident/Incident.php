@@ -49,7 +49,7 @@ class Incident extends Basic
     public $priority;
     public $entry_date;
     public $service_POI;
-    public $service_date_start;
+    public $service_start_date;
     public $description;
     public $applicants_name;
     public $applicants_name2;
@@ -62,13 +62,15 @@ class Incident extends Basic
     public $applicants_local_number;
     public $applicants_phone;
     public $applicants_email;
-    public $applicants_TAXID;
+    public $applicants_taxid;
     public $invoice_number;
     public $applicants_signature;
     public $response_method;
     public $section;
     public $assigned_user_name;
     public $resolution;
+    public $name;
+    public $_number;
     /**
      * Incident constructor.
      */

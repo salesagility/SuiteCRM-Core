@@ -50,19 +50,79 @@ $viewdefs[$module_name]['DetailView'] = array(
         ),
     ),
 
+ 
     'panels' => array(
         'default' => array(
-
             array(
-                'name',
-                '_number',
+                array('name' => 'name', 'type' => 'readonly',),
+                array('name' => '_number','type' => 'readonly'),
+            ),
+            array(
+                'service_poi',
+                'service_start_date',
+            ),
+            array(
+                'source_incident',
+                array('name' => 'required_end_date','type' => 'readonly'),
+            ),
+            array(
+                'filing_date',
+                'entry_date',
             ),
 
+            array(
+                'description'
+            ),          
+        ),
+
+        'applicants' => array(
+            array(
+                'applicants_name',
+                'applicants_name2',
+            ),
+            array(
+                'applicants_country',
+                'applicants_region',
+            ),
+            array(
+                'applicants_postal_code',
+                'applicants_city',
+            ),
+            array(
+                'applicants_street',
+                'applicants_house_number',
+            ),
+            array(
+                'applicants_local_number',
+                'applicants_city',
+            ),
+            array(
+                'applicants_phone',
+                'applicants_email',
+            ),
+            array(
+                'applicants_signature',
+                'invoice_number',
+            ),
+            array(
+                'applicants_signature',
+                'applicants_taxid',
+            ),
+
+        ),
+        'flow' => array(
+            array(
+                'section',
+                'assigned_user_name',
+            ),
             array(
                 'priority',
                 'status',
             ),
-
+            array(
+                'response_method',
+                'resolution',
+            ),
             array(
                 array(
                     'name' => 'date_entered',
@@ -76,10 +136,7 @@ $viewdefs[$module_name]['DetailView'] = array(
                 ),
             ),
 
-            array(
-                'description',
-                'resolution',
-            ),
-        )
-    )
+        ),
+
+    ),
 );
