@@ -38,7 +38,7 @@
     </ng-container>
 
     <li class="border-0">
-        <div *ngIf="!menuItems()?.length" class="d-flex justify-content-center">
+        <div *ngIf="!menuItems() || !menuItems()?.length" class="d-flex justify-content-center">
             <scrm-label [labelKey]="'LBL_MODULE_NOT_FOUND'"></scrm-label>
         </div>
     </li>

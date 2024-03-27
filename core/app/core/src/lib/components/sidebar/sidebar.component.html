@@ -47,7 +47,7 @@
     </ng-template>
     <ng-template pTemplate="content">
         <div class="sidebar-container">
-            <ng-container *ngIf="displayedItems() && displayedItems()?.length">
+            <ng-container *ngIf="displayedItems()">
                 <scrm-mobile-menu [menuItems]="displayedItems"></scrm-mobile-menu>
             </ng-container>
         </div>
