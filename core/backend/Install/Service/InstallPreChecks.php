@@ -1137,7 +1137,7 @@ class InstallPreChecks
             return $results;
         }
 
-        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_' . strtoupper($folderName) . '_NOT_WRITABLE'] . ' ' . $this->modStrings['LBL_CHMOD_LABEL'];
+        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_' . strtoupper($folderName) . '_NOT_WRITABLE'];
         return $results;
     }
 
@@ -1166,7 +1166,7 @@ class InstallPreChecks
             return $results;
         }
 
-        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_ENV_NOT_WRITABLE'] . '' . $this->modStrings['LBL_CHMOD_LABEL'];
+        $results['errors'][] = $this->modStrings['ERR_CHECKSYS_ENV_NOT_WRITABLE'];
         return $results;
     }
 }
