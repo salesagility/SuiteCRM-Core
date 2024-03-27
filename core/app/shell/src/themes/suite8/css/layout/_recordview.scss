@@ -74,14 +74,9 @@
     justify-content: center;
   }
 
-  .record-view-name-label {
-    white-space: nowrap;
-  }
-
   .record-view-name,
   .record-view-name-scrolled {
     justify-content:center;
-    width:100%;
     position: relative;
     margin-right:10%;
   }
@@ -124,6 +119,19 @@
   font-size: 1.5em;
   word-wrap: break-word;
   word-break: break-all;
+
+}
+
+.record-view-name-wrapper {
+  margin-top: 0.5em
+}
+
+.record-view-name-wrapper-margin-left {
+  margin-left: 2.7em;
+}
+
+.record-view-name-label {
+  margin-right: 1.8rem;
 }
 
 .record-view-actions {
