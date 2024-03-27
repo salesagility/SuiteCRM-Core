@@ -87,6 +87,7 @@
   }
   td {
     word-wrap: break-word;
+    word-break: break-all;
   }
 
   .responsive-table-row th {
@@ -110,11 +111,13 @@
   .responsive-table-row th,
   .responsive-table-row td {
     word-wrap: break-word;
+    word-break: break-all;
   }
 
   .list-view-table th,
   .list-view-table td {
     word-wrap: break-word;
+    word-break: break-all;
   }
 
   .hide-table-header,
