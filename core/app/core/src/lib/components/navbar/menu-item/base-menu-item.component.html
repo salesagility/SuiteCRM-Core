@@ -29,18 +29,17 @@
     <span data-target=".navbar-collapse" data-toggle="collapse"
           (touchend)="disableHover()"
           (click)="toggleDropdown()">
-
         <scrm-menu-item-link
             [class]="{
                     'top-nav-link': true,
                     'nav-link-nongrouped': true,
                     'dropdown-toggle': item.submenu.length,
-                    'hover-enabled': hoverEnabled()
+                    'hover-enabled': hoverEnabled(),
+                    'nav-link-activated': showDropdown()
                 }"
             [link]="item.link"
-            [disableRoute]="true">
+            [disableRoute]="isTouchDevice()">
         </scrm-menu-item-link>
-
     </span>
     <div (click)="hideDropdown()"
          aria-labelledby="navbarDropdownMenuLink"

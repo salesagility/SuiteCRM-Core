@@ -83,12 +83,15 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy{
                     this.hoverEnabled.set(true);
                 }
                 this.allowHover.set(true);
-            },500)
+            },250)
         }
     }
 
     disableHover() {
         this.hoverEnabled.set(false);
         this.allowHover.set(false);
+        if(!this.showDropdown()) {
+            this.allowHover.set(true);
+        }
     }
 }

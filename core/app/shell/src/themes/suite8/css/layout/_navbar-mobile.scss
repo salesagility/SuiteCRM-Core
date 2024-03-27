@@ -221,6 +221,11 @@
 
 @media only screen and (min-width: $breakpoint-xlarge) {
   .navbar {
+    .action-dropdown:hover .dropdown-menu {
+      display: block;
+      right: 0;
+    }
+
     .navbar-action-group {
       .action-link:hover svg,
       .action-link:hover svg path,
@@ -250,12 +255,6 @@
 
 @media only screen and (min-width: $breakpoint-xlarge) {
   .navbar {
-    .navbar-nav {
-      .global-link-item:hover .dropdown-menu {
-        display: block;
-        right: 0;
-      }
-    }
 
     .navbar-action-group {
       .action-link:hover svg,

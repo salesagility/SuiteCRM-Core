@@ -29,7 +29,12 @@
 
     <li class="top-nav nav-item dropdown non-grouped">
 
-        <a class="nav-link-nongrouped dropdown-toggle" (click)="toggleDropdown()" (touchend)="disableHover()">
+        <a class="nav-link-nongrouped dropdown-toggle"
+           [class]="{
+           'hover-enabled': hoverEnabled(),
+           'nav-link-activated': showDropdown()
+           }"
+           (click)="toggleDropdown()" (touchend)="disableHover()">
             <scrm-label [labelKey]="labelKey"></scrm-label>
         </a>
 

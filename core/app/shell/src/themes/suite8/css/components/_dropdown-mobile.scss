@@ -106,6 +106,16 @@
   }
 }
 
+@media only screen and (max-width: 420px) {
+
+  .dropdown-menu-right-center {
+    right: 7vh;
+    left: auto;
+    position: fixed;
+    top: 4em;
+  }
+}
+
 @media all and (max-height: $breakpoint-xxxlarge) {
   .more-menu {
     height: max-content;

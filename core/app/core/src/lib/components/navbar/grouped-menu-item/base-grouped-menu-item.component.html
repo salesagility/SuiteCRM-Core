@@ -30,7 +30,9 @@
     <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu"
           (click)="toggleDropdown()"
           (touchend)="disableHover()">
-        <a class="top-nav-link nav-link-grouped dropdown-toggle active" data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
+        <a class="top-nav-link nav-link-grouped dropdown-toggle active"
+           [class]="{'nav-link-activated': showDropdown() }"
+           data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
             {{ item.link.label }}
         </a>
     </span>
