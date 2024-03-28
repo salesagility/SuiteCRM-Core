@@ -253,7 +253,6 @@ class InstallHandler extends LegacyHandler
                     }
 
                     if (in_array($error, $modStrings) && $error !== $modStrings['LBL_EMPTY']) {
-                        error_log(print_r($error, true));
                         $warnings[] = "One or More Failed Checks: " . $error . " Please refer to the logs/install.log";
                     }
 

@@ -279,9 +279,7 @@ class InstallPreChecks
         file_put_contents($logFile, stream_get_contents($streamVerboseHandle), FILE_APPEND);
         rewind($streamVerboseHandle);
         if (stream_get_contents($streamVerboseHandle) !== false && !empty(stream_get_contents($streamVerboseHandle))) {
-            error_log(stream_get_contents($streamVerboseHandle));
             $this->log->error(stream_get_contents($streamVerboseHandle));
-            error_log('inside if');
             $output['errors'][] = stream_get_contents($streamVerboseHandle);
         }
         fclose($streamVerboseHandle);
