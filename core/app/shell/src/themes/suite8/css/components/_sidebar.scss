@@ -75,4 +75,12 @@
 .mobile-menu-items {
   max-height: calc(100vh - 50px);
   overflow-y: auto;
+
+  .mobile-menu-item-label {
+    max-width: 16rem;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }

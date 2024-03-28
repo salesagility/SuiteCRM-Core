@@ -32,7 +32,7 @@
             <li class="d-flex align-items-center" (click)="navigateRoute(item?.link?.route)" *ngFor="let item of menuItems()">
                 <scrm-image class="sicon mobile-nav-icon pl-3" [image]="item.icon"
                ></scrm-image>
-                <a class="flex-grow-1 mobile-nav-link px-3 py-2 ">{{ item.link.label }}</a>
+                <a class="flex-grow-1 mobile-nav-link px-3 py-2 mobile-menu-item-label">{{ item.link.label }}</a>
             </li>
         </div>
     </ng-container>
