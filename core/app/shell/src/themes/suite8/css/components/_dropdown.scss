@@ -244,6 +244,25 @@ ngb-datepicker-navigation {
   border: 0.35em solid $sandy-yellow;
 }
 
+.action-group.navbar-action-group {
+  >.dropdown.show {
+    background-color: $dusky-blue;
+    cursor: pointer;
+
+    .action-link svg,
+    .action-link svg path,
+    .action-link svg polygon {
+      fill: $salmon-pink;
+    }
+
+    .global-action-icon svg,
+    .global-action-icon svg path,
+    .global-action-icon svg polygon {
+      fill: $salmon-pink;
+    }
+  }
+}
+
 .alerts-button.dropdown-toggle[_ngcontent-c1]::after,
 .quickcreate-button.dropdown-toggle[_ngcontent-c1]::after,
 .favourites-button.dropdown-toggle[_ngcontent-c1]::after {
@@ -403,6 +422,19 @@ ul.main li a,
   }
   &.dropdown-toggle::after {
     display: none;
+  }
+}
+
+.global-links.show {
+  .global-link-item {
+    background-color: $dusky-blue;
+    cursor: pointer;
+
+    .global-action-icon svg,
+    .global-action-icon svg path,
+    .global-action-icon svg polygon {
+      fill: $salmon-pink;
+    }
   }
 }
 
