@@ -88,6 +88,18 @@
   }
 }
 
+@media only screen and (max-width: 599px) {
+  .navbar {
+    .action-group {
+      .action-history .dropdown-menu {
+        width: 280px;
+        position: absolute;
+        left: -13em;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: $breakpoint-small) {
   .navbar {
     .action-group {
