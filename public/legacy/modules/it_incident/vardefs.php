@@ -38,7 +38,7 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-$dictionary['it_Incident'] = array(
+$dictionary['it_incident'] = array(
     'table' => 'it_incident',
     'audited' => true,
     'inline_edit' => true,
@@ -53,4 +53,4 @@ $dictionary['it_Incident'] = array(
 if (!class_exists('VardefManager')) {
         require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('it_Incident', 'it_Incident', array('basic','assignable','security_groups','incident'));
+VardefManager::createVardef('it_incident', 'it_incident', array('basic','assignable','security_groups','incident'));

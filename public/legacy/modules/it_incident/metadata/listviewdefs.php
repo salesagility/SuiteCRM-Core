@@ -42,7 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$module_name = 'it_Incident';
+$module_name = 'it_incident';
 $OBJECT_NAME = 'IT_INCIDENT';
 $listViewDefs[$module_name] = array(
     'NAME' => array(

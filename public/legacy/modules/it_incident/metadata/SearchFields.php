@@ -42,7 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$module_name = 'it_Incident';
+$module_name = 'it_incident';
 $_object_name = 'it_incident';
 $searchFields[$module_name] = array(
     'name' => array('query_type' => 'default'),

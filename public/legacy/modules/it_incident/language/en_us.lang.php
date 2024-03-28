@@ -109,6 +109,4 @@ $mod_strings = array (
   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
   'LBL_IT_INCIDENT_SUBPANEL_TITLE' => 'Incident',
   'LBL_NEW_FORM_TITLE' => 'New Incident',
-  'APPLICANTS' => 'APPLICANTS',
-  'FLOW' => 'PROCESS',
 );

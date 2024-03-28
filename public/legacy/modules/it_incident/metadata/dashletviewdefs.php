@@ -43,7 +43,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 global $current_user;
-$dashletData['it_IncidentDashlet']['searchFields'] = array(
+$dashletData['it_incidentDashlet']['searchFields'] = array(
     'date_entered' => array('default' => ''),
     'date_modified' => array('default' => ''),
     'assigned_user_id' => array(
@@ -51,7 +51,7 @@ $dashletData['it_IncidentDashlet']['searchFields'] = array(
         'default' => $current_user->name
     )
 );
-$dashletData['it_IncidentDashlet']['columns'] = array(
+$dashletData['it_incidentDashlet']['columns'] = array(
     'name' => array(
         'width' => '40',
         'label' => 'LBL_LIST_NAME',

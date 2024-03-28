@@ -44,9 +44,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $app_strings;
 
-$dashletMeta['it_IncidentDashlet'] = array(
-    'module' => 'it_Incident',
-    'title' => translate('LBL_HOMEPAGE_TITLE', 'it_Incident'),
-    'description' => 'A customizable view into it_Incident',
+$dashletMeta['it_incidentDashlet'] = array(
+    'module' => 'it_incident',
+    'title' => translate('LBL_HOMEPAGE_TITLE', 'it_incident'),
+    'description' => 'A customizable view into it_incident',
     'category' => 'Module Views'
 );

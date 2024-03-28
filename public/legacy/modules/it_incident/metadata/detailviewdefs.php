@@ -38,7 +38,7 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-$module_name = 'it_Incident';
+$module_name = 'it_incident';
 $_object_name = 'it_incident';
 $viewdefs[$module_name]['DetailView'] = array(
     'templateMeta' => array(

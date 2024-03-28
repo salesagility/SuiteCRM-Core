@@ -44,9 +44,9 @@
 
 global $mod_strings, $app_strings, $sugar_config;
  
-if(ACLController::checkAccess('it_Incident', 'edit', true)){
-    $module_menu[]=array('index.php?module=it_Incident&action=EditView&return_module=it_Incident&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'it_Incident');
+if(ACLController::checkAccess('it_incident', 'edit', true)){
+    $module_menu[]=array('index.php?module=it_incident&action=EditView&return_module=it_incident&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'it_incident');
 }
-if(ACLController::checkAccess('it_Incident', 'list', true)){
-    $module_menu[]=array('index.php?module=it_Incident&action=index&return_module=it_Incident&return_action=DetailView', $mod_strings['LNK_LIST'],'View', 'it_Incident');
+if(ACLController::checkAccess('it_incident', 'list', true)){
+    $module_menu[]=array('index.php?module=it_incident&action=index&return_module=it_incident&return_action=DetailView', $mod_strings['LNK_LIST'],'View', 'it_incident');
 }

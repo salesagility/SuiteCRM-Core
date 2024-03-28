@@ -440,8 +440,9 @@ $vardefs = array(
         'applicants_signature' => array(
             'name' => 'applicants_signature',
             'vname' => 'LBL_APPLICANTS_SIGNATURE',
-            'type' => 'text',
-            'comment' => 'Sender signature',
+            'type' => 'varchar',
+            'len' => 100,
+            'comment' => 'Applicants signature',
             'inline_edit' => false,
         ),
       

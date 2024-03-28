@@ -40,11 +40,11 @@
 
 require_once('include/SugarObjects/templates/incident/Incident.php');
 
-class it_Incident extends Incident
+class it_incident extends Incident
 {
     public $new_schema = true;
-    public $module_dir = 'it_Incident';
-    public $object_name = 'it_Incident';
+    public $module_dir = 'it_incident';
+    public $object_name = 'it_incident';
     public $table_name = 'it_incident';
     public $importable = false;
 

@@ -1,7 +1,7 @@
 <?php 
  //WARNING: The contents of this file are auto-generated
-$beanList['it_Incident'] = 'it_Incident';
-$beanFiles['it_Incident'] = 'modules/it_Incident/it_Incident.php';
-$moduleList[] = 'it_Incident';
+$beanList['it_incident'] = 'it_incident';
+$beanFiles['it_incident'] = 'modules/it_incident/it_incident.php';
+$moduleList[] = 'it_incident';
 
 ?>

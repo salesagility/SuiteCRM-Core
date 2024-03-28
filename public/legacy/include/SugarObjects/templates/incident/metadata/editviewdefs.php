@@ -103,7 +103,6 @@ $viewdefs[$module_name]['EditView'] = array(
                 'invoice_number',
             ),
             array(
-                'applicants_signature',
                 'applicants_taxid',
             ),
 

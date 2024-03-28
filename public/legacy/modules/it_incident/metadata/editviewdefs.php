@@ -1,150 +1,129 @@
 <?php
-$module_name = 'it_Incident';
+/**
+ *
+ * SugarCRM Community Edition is a customer relationship management program developed by
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
+ * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
+ *
+ * The interactive user interfaces in modified source and object code versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU Affero General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
+
+$module_name = 'it_incident';
 $_object_name = 'it_incident';
-$viewdefs [$module_name] = 
-array (
-  'EditView' => 
-  array (
-    'templateMeta' => 
-    array (
-      'maxColumns' => '2',
-      'widths' => 
-      array (
-        0 => 
-        array (
-          'label' => '10',
-          'field' => '30',
+$viewdefs[$module_name]['EditView'] = array(
+    'templateMeta' => array(
+        'maxColumns' => '2',
+        'widths' => array(
+            array('label' => '10', 'field' => '30'),
+            array('label' => '10', 'field' => '30')
         ),
-        1 => 
-        array (
-          'label' => '10',
-          'field' => '30',
-        ),
-      ),
-      'useTabs' => false,
-      'tabDefs' => 
-      array (
-        'DEFAULT' => 
-        array (
-          'newTab' => false,
-          'panelDefault' => 'expanded',
-        ),
-        'APPLICANTS' => 
-        array (
-          'newTab' => false,
-          'panelDefault' => 'expanded',
-        ),
-        'FLOW' => 
-        array (
-          'newTab' => false,
-          'panelDefault' => 'expanded',
-        ),
-      ),
     ),
-    'panels' => 
-    array (
-      'default' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            'name' => 'name',
-            'type' => 'readonly',
-          ),
-          1 => 
-          array (
-            'name' => '_number',
-            'type' => 'readonly',
-          ),
+
+    'panels' => array(
+        'default' => array(
+            array(
+                array('name' => 'name', 'type' => 'readonly',),
+                array('name' => '_number','type' => 'readonly'),
+            ),
+            array(
+                'service_poi',
+                'service_start_date',
+            ),
+            array(
+                'source_incident',
+                array('name' => 'required_end_date','type' => 'readonly'),
+            ),
+            array(
+                'filing_date',
+                'entry_date',
+            ),
+
+            array(
+                'description'
+            ),          
         ),
-        1 => 
-        array (
-          0 => 'service_poi',
-          1 => 'service_start_date',
+
+        'applicants' => array(
+            array(
+                'applicants_name',
+                'applicants_name2',
+            ),
+            array(
+                'applicants_country',
+                'applicants_region',
+            ),
+            array(
+                'applicants_postal_code',
+                'applicants_city',
+            ),
+            array(
+                'applicants_street',
+                'applicants_house_number',
+            ),
+            array(
+                'applicants_local_number',
+                'applicants_city',
+            ),
+            array(
+                'applicants_phone',
+                'applicants_email',
+            ),
+            array(
+                'applicants_signature',
+                'invoice_number',
+            ),
+            array(
+                'applicants_taxid',
+            ),
+
         ),
-        2 => 
-        array (
-          0 => 'source_incident',
-          1 => 
-          array (
-            'name' => 'required_end_date',
-            'type' => 'readonly',
-          ),
+        'flow' => array(
+            array(
+                'section',
+                'assigned_user_name',
+            ),
+            array(
+                'priority',
+                'status',
+            ),
+            array(
+                'response_method',
+                'resolution',
+            ),
+
         ),
-        3 => 
-        array (
-          0 => 'filing_date',
-          1 => 'entry_date',
-        ),
-        4 => 
-        array (
-          0 => 'description',
-        ),
-      ),
-      'applicants' => 
-      array (
-        0 => 
-        array (
-          0 => 'applicants_name',
-          1 => 'applicants_name2',
-        ),
-        1 => 
-        array (
-          0 => 'applicants_country',
-          1 => 'applicants_region',
-        ),
-        2 => 
-        array (
-          0 => 'applicants_postal_code',
-          1 => 'applicants_city',
-        ),
-        3 => 
-        array (
-          0 => 'applicants_street',
-          1 => 'applicants_house_number',
-        ),
-        4 => 
-        array (
-          0 => 'applicants_local_number',
-          1 => 'applicants_city',
-        ),
-        5 => 
-        array (
-          0 => 'applicants_phone',
-          1 => 'applicants_email',
-        ),
-        6 => 
-        array (
-          0 => 'applicants_signature',
-          1 => 'invoice_number',
-        ),
-        7 => 
-        array (
-          0 => 'applicants_signature',
-          1 => 'applicants_taxid',
-        ),
-      ),
-      'flow' => 
-      array (
-        0 => 
-        array (
-          0 => 'section',
-          1 => 'assigned_user_name',
-        ),
-        1 => 
-        array (
-          0 => 'priority',
-          1 => 'status',
-        ),
-        2 => 
-        array (
-          0 => 'response_method',
-          1 => 'resolution',
-        ),
-      ),
+
+
     ),
-  ),
+
 );
-;
-?>

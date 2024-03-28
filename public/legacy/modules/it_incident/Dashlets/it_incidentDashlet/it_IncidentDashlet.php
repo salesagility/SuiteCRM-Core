@@ -43,23 +43,23 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/it_Incident/it_Incident.php');
+require_once('modules/it_incident/it_incident.php');
 
-class it_IncidentDashlet extends DashletGeneric {
+class it_incidentDashlet extends DashletGeneric {
     function __construct($id, $def = null)
     {
         global $current_user, $app_strings;
-        require('modules/it_Incident/metadata/dashletviewdefs.php');
+        require('modules/it_incident/metadata/dashletviewdefs.php');
 
         parent::__construct($id, $def);
 
         if (empty($def['title'])) {
-            $this->title = translate('LBL_HOMEPAGE_TITLE', 'it_Incident');
+            $this->title = translate('LBL_HOMEPAGE_TITLE', 'it_incident');
         }
 
-        $this->searchFields = $dashletData['it_IncidentDashlet']['searchFields'];
-        $this->columns = $dashletData['it_IncidentDashlet']['columns'];
+        $this->searchFields = $dashletData['it_incidentDashlet']['searchFields'];
+        $this->columns = $dashletData['it_incidentDashlet']['columns'];
 
-        $this->seedBean = new it_Incident();        
+        $this->seedBean = new it_incident();        
     }
 }

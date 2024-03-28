@@ -42,7 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$module_name = 'it_Incident';
+$module_name = 'it_incident';
 $subpanel_layout = array(
     'top_buttons' => array(
         array('widget_class' => 'SubPanelTopCreateButton'),
