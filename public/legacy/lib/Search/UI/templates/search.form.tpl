@@ -43,6 +43,9 @@
     <form id="search-wrapper-form">
         {*hidden input to handle actions*}
         {search_controller}
+        <input type="hidden" class="form-control" name="module" value="Home">
+        <input type="hidden" class="form-control" name="search_form" value="false">
+        <input type="hidden" class="form-control" name="advanced" value="false">
 
         <table>
             <tbody>
