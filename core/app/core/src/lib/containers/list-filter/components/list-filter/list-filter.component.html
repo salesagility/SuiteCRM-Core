@@ -69,7 +69,10 @@
         </scrm-field-grid>
 
         <ng-container *ngIf="config && config.savedFilterEdit && store.filterStore.getMode() !== 'detail'">
-            <scrm-record-grid [config]="gridConfig" (click)="onFocusSave()"></scrm-record-grid>
+            <div (click)="onFocusSave()">
+                <scrm-record-grid [config]="gridConfig"></scrm-record-grid>
+            </div>
+
         </ng-container>
     </div>
 
