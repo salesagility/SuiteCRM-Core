@@ -95,6 +95,22 @@ ngb-datepicker-navigation {
   fill: $sandy-yellow;
 }
 
+.navbar {
+  .action-group {
+    .dropdown-menu {
+      .new-list-item {
+        .new-list-item-label {
+          max-width: 10rem;
+          overflow: hidden;
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
 .action-history .dropdown-menu {
   margin-top: -5px;
   width: 290px;
