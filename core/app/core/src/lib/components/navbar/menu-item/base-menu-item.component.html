@@ -26,19 +26,28 @@
 */
 -->
 <ng-container>
-    <span data-target=".navbar-collapse" data-toggle="collapse"
-          (touchend)="disableHover()"
-          (click)="toggleDropdown()">
-        <scrm-menu-item-link
+    <span data-target=".navbar-collapse" data-toggle="collapse" #topLink>
+        <scrm-menu-item-link *ngIf="hoverEnabled()"
             [class]="{
                     'top-nav-link': true,
                     'nav-link-nongrouped': true,
                     'dropdown-toggle': item.submenu.length,
-                    'hover-enabled': hoverEnabled(),
+                    'hover-enabled': true,
                     'nav-link-activated': showDropdown()
                 }"
             [link]="item.link"
-            [disableRoute]="isTouchDevice()">
+            [config]="this.topLinkConfig">
+        </scrm-menu-item-link>
+        <scrm-menu-item-link *ngIf="!hoverEnabled()"
+            [class]="{
+                    'top-nav-link': true,
+                    'nav-link-nongrouped': true,
+                    'dropdown-toggle': item.submenu.length,
+                    'hover-enabled': false,
+                    'nav-link-activated': showDropdown()
+                }"
+            [link]="item.link"
+            [config]="this.topLinkConfig">
         </scrm-menu-item-link>
     </span>
     <div (click)="hideDropdown()"
@@ -59,8 +68,16 @@
         </div>
 
         <ng-container *ngIf="item && item.module">
-            <scrm-sub-menu-recently-viewed [module]="item.module"></scrm-sub-menu-recently-viewed>
-            <scrm-sub-menu-favorites [module]="item.module"></scrm-sub-menu-favorites>
+            <scrm-sub-menu-recently-viewed
+                    [module]="item.module"
+                    [config]="recentlyViewedConfig"
+                    (click)="$event.stopPropagation();" >
+
+            </scrm-sub-menu-recently-viewed>
+            <scrm-sub-menu-favorites
+                    [module]="item.module"
+                    [config]="favoritesConfig"
+                    (click)="$event.stopPropagation()"></scrm-sub-menu-favorites>
         </ng-container>
     </div>
 </ng-container>

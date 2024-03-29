@@ -24,10 +24,14 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {MenuItem} from 'common';
 import {Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
+import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
+import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model";
+import {SubMenuRecentlyViewedConfig} from "../sub-menu-recently-viewed/sub-menu-recently-viewed-config.model";
+import {SubMenuFavoritesConfig} from "../sub-menu-favorites/sub-menu-favorites-config.model";
 
 @Component({
     selector: 'scrm-base-menu-item',
@@ -37,21 +41,44 @@ import {AppStateStore} from "../../../store/app-state/app-state.store";
 export class BaseMenuItemComponent implements OnInit, OnDestroy {
     @Input() item: MenuItem;
     @Input() index: number = 0;
+    @ViewChild('topLink') topLink: ElementRef;
 
     showDropdown = signal<boolean>(false);
     hoverEnabled = signal<boolean>(true);
-    allowHover = signal<boolean>(true);
-    isTouchDevice = signal<boolean>(false);
+    topLinkConfig: MenuItemLinkConfig;
+    recentlyViewedConfig: SubMenuRecentlyViewedConfig;
+    favoritesConfig: SubMenuFavoritesConfig;
 
     subs: Subscription[] = [];
 
-    constructor(protected appStateStore: AppStateStore) {}
+    constructor(protected appStateStore: AppStateStore, protected moduleNavigation: ModuleNavigation) {
+    }
 
     ngOnInit(): void {
-        this.isTouchDevice.set(this.appStateStore.isTouchScreen());
-        if(this.isTouchDevice()) {
-            this.disableHover();
-        }
+
+        this.topLinkConfig = {
+            onClick: (event) => {
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+                this.onTopItemClick(event)
+            }
+        } as MenuItemLinkConfig
+
+        this.recentlyViewedConfig = {
+            onItemClick: (event) => {
+                if (this.getClickType(event) === 'touch') {
+                    this.hideDropdown();
+                }
+            }
+        } as SubMenuRecentlyViewedConfig
+
+        this.favoritesConfig = {
+            onItemClick: (event) => {
+                if (this.getClickType(event) === 'touch') {
+                    this.hideDropdown();
+                }
+            }
+        } as SubMenuFavoritesConfig
 
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
             (activeDropdown: number) => {
@@ -70,27 +97,39 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
         this.showDropdown.set(false);
     }
 
-    toggleDropdown() {
+    navigate(): void {
+        this.moduleNavigation.navigateUsingMenuItem(this.item);
+    }
+
+    onTopItemClick($event: PointerEvent): void {
+        let type = this.getClickType($event);
+
+        if (type === 'click') {
+            this.appStateStore.resetActiveDropdown();
+            this.navigate();
+            return;
+        }
+
+        this.toggleDropdown();
+    }
+
+    toggleDropdown(): void {
         this.showDropdown.set(!this.showDropdown());
-        if(this.showDropdown()) {
+        if (this.showDropdown()) {
             this.appStateStore.setActiveDropdown(this.index);
             this.hoverEnabled.set(false);
         } else {
             this.appStateStore.resetActiveDropdown();
-            setTimeout(() => {
-                if(this.allowHover()) {
-                    this.hoverEnabled.set(true);
-                }
-                this.allowHover.set(true);
-            },250)
+            this.hoverEnabled.set(true);
         }
     }
 
-    disableHover() {
-        this.hoverEnabled.set(false);
-        this.allowHover.set(false);
-        if(!this.showDropdown()) {
-                this.allowHover.set(true);
+    protected getClickType($event: PointerEvent) {
+        let type = 'touch';
+        const pointerType = $event?.pointerType ?? 'touch';
+        if (pointerType === 'mouse') {
+            type = 'click';
         }
+        return type;
     }
 }
