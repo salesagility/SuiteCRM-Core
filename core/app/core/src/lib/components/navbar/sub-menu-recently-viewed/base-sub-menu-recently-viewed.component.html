@@ -35,7 +35,7 @@
 
         <ul class="dropdown-menu submenu"
         >
-            <li *ngFor="let recentRecord of records | slice:0:maxDisplayed" class="nav-item">
+            <li *ngFor="let recentRecord of records | slice:0:maxDisplayed" class="nav-item" (click)="this?.config?.onItemClick($event)">
                 <scrm-menu-item-link [class]="'submenu-nav-link nav-link action-link'"
                                      [link]="{
                                                 label: recentRecord.attributes.item_summary,

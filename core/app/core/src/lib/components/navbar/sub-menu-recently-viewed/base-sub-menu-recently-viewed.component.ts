@@ -32,6 +32,7 @@ import {SystemConfigStore} from '../../../store/system-config/system-config.stor
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {SubMenuRecentlyViewedConfig} from "./sub-menu-recently-viewed-config.model";
 
 @Component({
     selector: 'scrm-base-sub-menu-recently-viewed',
@@ -40,6 +41,7 @@ import {Subscription} from 'rxjs';
 })
 export class BaseSubMenuRecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
     @Input() module: string;
+    @Input() config: SubMenuRecentlyViewedConfig;
     maxDisplayed: number = 5;
     records: RecentlyViewed[];
     protected subs: Subscription[] = [];
