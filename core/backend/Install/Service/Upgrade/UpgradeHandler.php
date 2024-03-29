@@ -52,7 +52,7 @@ class UpgradeHandler extends ProcessStepExecutor implements UpgradeHandlerInterf
             }
         }
 
-        $this->initSteps($upgradeInstallHandlers, $this->logger);
+        $this->initSteps($upgradeInstallHandlers, [], $this->logger);
     }
 
 }

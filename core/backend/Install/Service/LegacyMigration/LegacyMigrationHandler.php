@@ -48,7 +48,7 @@ class LegacyMigrationHandler extends ProcessStepExecutor implements LegacyMigrat
             $handlers[] = $legacyMigrationHandler;
         }
 
-        $this->initSteps($handlers, $this->logger);
+        $this->initSteps($handlers, [], $this->logger);
     }
 
 }

@@ -52,7 +52,7 @@ class UpgradeFinalizeHandler extends ProcessStepExecutor implements UpgradeFinal
             }
         }
 
-        $this->initSteps($upgradeFinalizeHandlers, $this->logger);
+        $this->initSteps($upgradeFinalizeHandlers, [], $this->logger);
     }
 
 }
