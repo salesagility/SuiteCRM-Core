@@ -46,14 +46,10 @@ export class BaseMenuItemsListComponent {
 
     subs: Subscription[] = [];
 
-    constructor(protected appStateStore: AppStateStore) {}
+    constructor(protected appStateStore: AppStateStore) {
+    }
 
     ngOnInit(): void {
-        this.isTouchDevice.set(this.appStateStore.isTouchScreen());
-        if(this.isTouchDevice()) {
-            this.disableHover();
-        }
-
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
             (activeDropdown: number) => {
                 if (this.index !== activeDropdown) {
@@ -71,27 +67,15 @@ export class BaseMenuItemsListComponent {
         this.showDropdown.set(false);
     }
 
-    toggleDropdown() {
+    toggleDropdown(): void {
         this.showDropdown.set(!this.showDropdown());
-        if(this.showDropdown()) {
+        if (this.showDropdown()) {
             this.appStateStore.setActiveDropdown(this.index);
             this.hoverEnabled.set(false);
         } else {
             this.appStateStore.resetActiveDropdown();
-            setTimeout(() => {
-                if(this.allowHover()) {
-                    this.hoverEnabled.set(true);
-                }
-                this.allowHover.set(true);
-            },250)
-        }
-    }
+            this.hoverEnabled.set(true);
 
-    disableHover() {
-        this.hoverEnabled.set(false);
-        this.allowHover.set(false);
-        if(!this.showDropdown()) {
-            this.allowHover.set(true);
         }
     }
 }

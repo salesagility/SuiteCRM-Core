@@ -29,12 +29,21 @@
 
     <li class="top-nav nav-item dropdown non-grouped">
 
-        <a class="nav-link-nongrouped dropdown-toggle"
+        <a class="nav-link-nongrouped dropdown-toggle" *ngIf="hoverEnabled()"
            [class]="{
-           'hover-enabled': hoverEnabled(),
-           'nav-link-activated': showDropdown()
+               'hover-enabled': true,
+               'nav-link-activated': showDropdown()
            }"
-           (click)="toggleDropdown()" (touchend)="disableHover()">
+           (click)="toggleDropdown()">
+            <scrm-label [labelKey]="labelKey"></scrm-label>
+        </a>
+
+        <a class="nav-link-nongrouped dropdown-toggle" *ngIf="!hoverEnabled()"
+           [class]="{
+               'hover-enabled':false,
+               'nav-link-activated': showDropdown()
+           }"
+           (click)="toggleDropdown()">
             <scrm-label [labelKey]="labelKey"></scrm-label>
         </a>
 
