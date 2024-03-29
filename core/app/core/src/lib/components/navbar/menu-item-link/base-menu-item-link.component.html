@@ -25,11 +25,19 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="!link.process">
+<ng-container *ngIf="!link.process && config?.onClick">
+    <a (click)="config.onClick($event)"
+       [ngClass]="class"
+    >
+        <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
+        {{ link.label }}
+    </a>
+</ng-container>
+<ng-container *ngIf="!link.process && !config?.onClick">
     <a *ngIf="link.route"
        [ngClass]="class"
        [queryParams]="link.params"
-       [routerLink]="disableRoute ? null : link.route"
+       [routerLink]="link.route"
     >
         <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
         {{ link.label }}
