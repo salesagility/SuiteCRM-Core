@@ -167,7 +167,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         CacheInterface                        $cache,
         CacheManagerInterface                 $cacheManager,
         InstallHandler                        $installHandler,
-        RecentlyViewedHandler                 $recentlyViewedHandler,
+        RecentlyViewedHandler                 $recentlyViewedHandler
     )
     {
         $this->moduleNameMapper = $moduleNameMapper;
