@@ -28,11 +28,17 @@
 <ng-container>
 
     <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu"
-          (click)="toggleDropdown()"
-          (touchend)="disableHover()">
-        <a class="top-nav-link nav-link-grouped dropdown-toggle active"
+          (click)="toggleDropdown()">
+        <a *ngIf="hoverEnabled()"
+           class="top-nav-link nav-link-grouped dropdown-toggle active"
            [class]="{'nav-link-activated': showDropdown() }"
-           data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
+           data-toggle="dropdown" [class.hover-enabled]="true">
+            {{ item.link.label }}
+        </a>
+        <a *ngIf="!hoverEnabled()"
+           class="top-nav-link nav-link-grouped dropdown-toggle active"
+           [class]="{'nav-link-activated': showDropdown() }"
+           data-toggle="dropdown" [class.hover-enabled]="false">
             {{ item.link.label }}
         </a>
     </span>
@@ -44,28 +50,29 @@
     </ul>
 
     <ul [ngbCollapse]="subNavCollapse"
-        (click)="hideDropdown()"
         aria-labelledby="navbarDropdownMenuLink"
         class="dropdown-menu main"
         [class.show]="showDropdown()"
         [class.hover-enabled]="hoverEnabled()"
     >
-        <li *ngFor="let sub of item.submenu" class="nav-item dropdown-submenu submenu">
+        <li *ngFor="let sub of item.submenu; index as i;" class="nav-item dropdown-submenu submenu">
 
             <scrm-menu-item-link [class]="{
                                     'sub-nav-link': true,
                                     'nav-link': true,
                                     'action-link': true,
                                     'dropdown-item': sub.submenu.length,
-                                    'dropdown-toggle': sub.submenu.length
+                                    'dropdown-toggle': sub.submenu.length,
                                   }"
                                  [link]="sub.link"
-                                 [disableRoute]="true"
+                                 [config]="getConfig(sub, i)"
             >
             </scrm-menu-item-link>
 
             <ul *ngIf="sub.submenu.length"
+                (click)="hideDropdown()"
                 [class.rounded-0]="sub.submenu && sub.submenu.length === 1"
+                [class.active]=" this.showSubDropdown[i]()"
                 class="dropdown-menu submenu"
             >
 
@@ -77,8 +84,14 @@
                     </scrm-menu-item-link>
                 </li>
                 <ng-container *ngIf="sub && sub.module">
-                    <scrm-sub-menu-recently-viewed [module]="sub.module"></scrm-sub-menu-recently-viewed>
-                    <scrm-sub-menu-favorites [module]="sub.module"></scrm-sub-menu-favorites>
+                    <scrm-sub-menu-recently-viewed [module]="sub.module"
+                                                   [config]="recentlyViewedConfig"
+                                                   (click)="$event.stopPropagation();" >
+                    </scrm-sub-menu-recently-viewed>
+                    <scrm-sub-menu-favorites [module]="sub.module"
+                                             [config]="favoritesConfig"
+                                             (click)="$event.stopPropagation()">
+                    </scrm-sub-menu-favorites>
                 </ng-container>
             </ul>
         </li>

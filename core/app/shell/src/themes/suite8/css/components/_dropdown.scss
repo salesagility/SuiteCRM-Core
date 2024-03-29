@@ -318,6 +318,7 @@ a.close-navmenu:hover {
 .dropdown-submenu:hover .dropdown-menu,
 .dropdown-submenu:focus .dropdown-menu,
 .navbar-nav .non-grouped:hover .dropdown-submenu.submenu:hover .dropdown-menu.submenu,
+.navbar-nav .non-grouped:hover .dropdown-submenu.submenu .dropdown-menu.submenu.active,
 .navbar-nav .non-grouped:hover .dropdown-submenu.submenu:focus .dropdown-menu.submenu,
 .dropdown-submenu.submenu .dropdown-submenu.submenu.submenu-extra:hover .dropdown-menu.submenu {
   display: flex;

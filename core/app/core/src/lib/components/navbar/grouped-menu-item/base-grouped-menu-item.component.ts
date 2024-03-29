@@ -24,36 +24,37 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {MenuItem} from 'common';
 import {Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
+import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model";
+import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
+import {SubMenuRecentlyViewedConfig} from "../sub-menu-recently-viewed/sub-menu-recently-viewed-config.model";
+import {SubMenuFavoritesConfig} from "../sub-menu-favorites/sub-menu-favorites-config.model";
 
 @Component({
     selector: 'scrm-base-grouped-menu-item',
     templateUrl: './base-grouped-menu-item.component.html',
     styleUrls: []
 })
-export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy{
+export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     @Input() item: MenuItem;
     @Input() subNavCollapse: boolean;
     @Input() index: number = 0;
 
     showDropdown = signal<boolean>(true);
+    showSubDropdown: WritableSignal<boolean>[] = [];
     hoverEnabled = signal<boolean>(true);
-    allowHover = signal<boolean>(true);
-    isTouchDevice = signal<boolean>(false);
+    recentlyViewedConfig: SubMenuRecentlyViewedConfig;
+    favoritesConfig: SubMenuFavoritesConfig;
 
     subs: Subscription[] = [];
 
-    constructor(protected appStateStore: AppStateStore) {}
+    constructor(protected appStateStore: AppStateStore, protected moduleNavigation: ModuleNavigation) {
+    }
 
     ngOnInit(): void {
-        this.isTouchDevice.set(this.appStateStore.isTouchScreen());
-        if(this.isTouchDevice()) {
-            this.disableHover();
-        }
-
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
             (activeDropdown: number) => {
                 if (this.index !== activeDropdown) {
@@ -61,6 +62,27 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy{
                 }
             }
         ));
+
+        const submenuItems = this?.item?.submenu ?? [];
+        submenuItems.forEach(() => {
+            this.showSubDropdown.push(signal<boolean>(false));
+        });
+
+        this.recentlyViewedConfig = {
+            onItemClick: (event) => {
+                if (this.getClickType(event) === 'touch') {
+                    this.hideDropdown();
+                }
+            }
+        } as SubMenuRecentlyViewedConfig
+
+        this.favoritesConfig = {
+            onItemClick: (event) => {
+                if (this.getClickType(event) === 'touch') {
+                    this.hideDropdown();
+                }
+            }
+        } as SubMenuFavoritesConfig
     }
 
     ngOnDestroy(): void {
@@ -69,29 +91,55 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy{
 
     hideDropdown() {
         this.showDropdown.set(false);
+        this.showSubDropdown.forEach(subDropdown => {
+            subDropdown.set(false);
+        })
     }
 
     toggleDropdown() {
         this.showDropdown.set(!this.showDropdown());
-        if(this.showDropdown()) {
+        if (this.showDropdown()) {
             this.appStateStore.setActiveDropdown(this.index);
             this.hoverEnabled.set(false);
         } else {
             this.appStateStore.resetActiveDropdown();
-            setTimeout(() => {
-                if(this.allowHover()) {
-                    this.hoverEnabled.set(true);
-                }
-                this.allowHover.set(true);
-            },250)
+            this.hoverEnabled.set(true);
         }
     }
 
-    disableHover() {
-        this.hoverEnabled.set(false);
-        this.allowHover.set(false);
-        if(!this.showDropdown()) {
-            this.allowHover.set(true);
+    navigate(): void {
+        this.moduleNavigation.navigateUsingMenuItem(this.item);
+    }
+
+    onSubItemClick($event: PointerEvent, item: MenuItem, index: number): void {
+        let type = this.getClickType($event);
+
+        if (type === 'click') {
+            this.navigate();
+            return;
         }
+
+        this.toggleSubDropdown(index);
+    }
+
+    toggleSubDropdown(index: number): void {
+        this.showSubDropdown[index].set(!this.showSubDropdown[index]());
+    }
+
+    getConfig(sub: MenuItem, index: number): MenuItemLinkConfig {
+        return {
+            onClick: (event) => {
+                this.onSubItemClick(event, sub, index)
+            }
+        } as MenuItemLinkConfig;
+    }
+
+    protected getClickType($event: PointerEvent) {
+        let type = 'touch';
+        const pointerType = $event?.pointerType ?? 'touch';
+        if (pointerType === 'mouse') {
+            type = 'click';
+        }
+        return type;
     }
 }
