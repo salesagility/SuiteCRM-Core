@@ -26,6 +26,7 @@
 
 import {Component, Input} from '@angular/core';
 import {SubMenuFavoritesRegistry} from './sub-menu-favorites-registry';
+import {SubMenuFavoritesConfig} from "./sub-menu-favorites-config.model";
 
 @Component({
     selector: 'scrm-sub-menu-favorites',
@@ -34,6 +35,7 @@ import {SubMenuFavoritesRegistry} from './sub-menu-favorites-registry';
 })
 export class SubMenuFavoritesComponent {
     @Input() module: string;
+    @Input() config: SubMenuFavoritesConfig;
 
     constructor(protected registry: SubMenuFavoritesRegistry) {
     }

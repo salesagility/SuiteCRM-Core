@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,30 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
-import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
-import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
-import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {MetadataStore} from '../../../store/metadata/metadata.store.service';
-import {BaseFavoritesComponent} from '../menu-favorites/base-favorites.component';
-import {SubMenuFavoritesConfig} from "./sub-menu-favorites-config.model";
+import {ButtonCallback} from "common";
 
-@Component({
-    selector: 'scrm-base-sub-menu-favorites',
-    templateUrl: './base-sub-menu-favorites.component.html',
-    styleUrls: []
-})
-export class BaseSubMenuFavoritesComponent extends BaseFavoritesComponent {
-
-    @Input() config: SubMenuFavoritesConfig;
-
-    constructor(
-        protected navigation: ModuleNavigation,
-        protected nameMapper: ModuleNameMapper,
-        protected configs: SystemConfigStore,
-        protected metadata: MetadataStore
-    ) {
-        super(navigation, nameMapper, configs, metadata)
-    }
-
+export interface SubMenuFavoritesConfig {
+    onItemClick: ButtonCallback;
 }
