@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModuleAction, NavbarModule, Navigation} from '../../../store/navigation/navigation.store';
 import {LanguageListStringMap, LanguageStrings} from '../../../store/language/language.store';
-import {Record} from 'common';
+import {MenuItem, Record} from 'common';
 import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
 
@@ -117,6 +117,30 @@ export class ModuleNavigation {
         return this.router.navigate([route.route], {
             queryParams: route.params
         });
+    }
+
+    /**
+     * Navigate using menu item information
+     *
+     * @param {object} item MenuItem
+     */
+    public navigateUsingMenuItem(item: MenuItem): void {
+
+        if(item.link.route) {
+
+            this.router.navigate([item.link.route ?? ''], {
+                queryParams: item.link.params ?? {}
+            }).then();
+
+            return;
+        }
+
+        if(item.link.url) {
+
+            this.router.navigateByUrl(item.link.url ?? '').then();
+
+            return;
+        }
     }
 
     /**
