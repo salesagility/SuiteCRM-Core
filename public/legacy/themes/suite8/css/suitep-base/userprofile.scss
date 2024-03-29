@@ -528,7 +528,6 @@ form.userprofile {
     }
 }
 
-
 .view-module-Users {
     .urltext {
         width:27em;
@@ -565,8 +564,8 @@ form.userprofile {
                 }
             }
         }
-        .actionsContainer {
-            margin-top: 9em;
+        .view-action-EditView #EditView_tabs {
+            margin-top: 0em;
         }
         .action_buttons {
             display: block;
@@ -604,7 +603,7 @@ form.userprofile {
             li {
                 &:first-child.hidden-xs {
                     top: 1.32em;
-                }                
+                }
             }
             #tab-actions {
                 a.dropdown-toggle {
