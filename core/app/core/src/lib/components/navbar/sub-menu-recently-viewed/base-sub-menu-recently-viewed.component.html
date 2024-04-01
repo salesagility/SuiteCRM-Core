@@ -28,14 +28,21 @@
 <ng-container *ngIf="records && records.length">
     <li class="nav-item dropdown-submenu submenu submenu-extra">
 
-        <a class="sub-nav-link nav-link action-link dropdown-item dropdown-toggle pr-4">
+        <a class="sub-nav-link nav-link action-link dropdown-item dropdown-toggle pr-4"
+           (touchstart)="onTouchStart($event)"
+           (click)="toggleDropdown()">
             <scrm-image image="clock"></scrm-image>
             <scrm-label labelKey="LBL_LAST_VIEWED"></scrm-label>
         </a>
 
         <ul class="dropdown-menu submenu"
+            [class.active]="showDropdown()"
         >
-            <li *ngFor="let recentRecord of records | slice:0:maxDisplayed" class="nav-item" (click)="this?.config?.onItemClick($event)">
+            <li *ngFor="let recentRecord of records | slice:0:maxDisplayed"
+                class="nav-item"
+                (click)="onItemClick($event)"
+                (touchstart)="onItemTouchStart($event)"
+            >
                 <scrm-menu-item-link [class]="'submenu-nav-link nav-link action-link'"
                                      [link]="{
                                                 label: recentRecord.attributes.item_summary,

@@ -48,6 +48,7 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
     topLinkConfig: MenuItemLinkConfig;
     recentlyViewedConfig: SubMenuRecentlyViewedConfig;
     favoritesConfig: SubMenuFavoritesConfig;
+    clickType: string = 'click';
 
     subs: Subscription[] = [];
 
@@ -58,25 +59,32 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
 
         this.topLinkConfig = {
             onClick: (event) => {
-                event.stopImmediatePropagation();
-                event.stopPropagation();
-                this.onTopItemClick(event)
+            },
+            onTouchStart: (event) => {
             }
         } as MenuItemLinkConfig
 
         this.recentlyViewedConfig = {
             onItemClick: (event) => {
-                if (this.getClickType(event) === 'touch') {
+                if (this.clickType === 'touch') {
                     this.hideDropdown();
+                    this.clickType = 'click';
                 }
+            },
+            onItemTouchStart: (event) => {
+                this.clickType = 'touch';
             }
         } as SubMenuRecentlyViewedConfig
 
         this.favoritesConfig = {
             onItemClick: (event) => {
-                if (this.getClickType(event) === 'touch') {
+                if (this.clickType === 'touch') {
                     this.hideDropdown();
+                    this.clickType = 'click';
                 }
+            },
+            onItemTouchStart: (event) => {
+                this.clickType = 'touch';
             }
         } as SubMenuFavoritesConfig
 
@@ -95,6 +103,7 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
 
     hideDropdown() {
         this.showDropdown.set(false);
+        this.hoverEnabled.set(true);
     }
 
     navigate(): void {
@@ -102,15 +111,15 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
     }
 
     onTopItemClick($event: PointerEvent): void {
-        let type = this.getClickType($event);
 
-        if (type === 'click') {
+        if (this.clickType === 'click') {
             this.appStateStore.resetActiveDropdown();
             this.navigate();
             return;
         }
 
         this.toggleDropdown();
+        this.clickType = 'click';
     }
 
     toggleDropdown(): void {
@@ -124,12 +133,17 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
         }
     }
 
-    protected getClickType($event: PointerEvent) {
-        let type = 'touch';
-        const pointerType = $event?.pointerType ?? 'touch';
-        if (pointerType === 'mouse') {
-            type = 'click';
-        }
-        return type;
+    onTouchStart(): void {
+        this.clickType = 'touch';
+    }
+
+    onTouchEnd(): void {
+        this.clickType = 'touch';
+    }
+
+    onClick(event): void {
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        this.onTopItemClick(event)
     }
 }

@@ -28,4 +28,5 @@ import {ButtonCallback} from "common";
 
 export interface SubMenuFavoritesConfig {
     onItemClick: ButtonCallback;
+    onItemTouchStart: ButtonCallback;
 }

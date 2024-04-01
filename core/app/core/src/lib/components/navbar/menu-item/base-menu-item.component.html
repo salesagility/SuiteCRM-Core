@@ -25,59 +25,61 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container>
-    <span data-target=".navbar-collapse" data-toggle="collapse" #topLink>
-        <scrm-menu-item-link *ngIf="hoverEnabled()"
-            [class]="{
-                    'top-nav-link': true,
-                    'nav-link-nongrouped': true,
-                    'dropdown-toggle': item.submenu.length,
-                    'hover-enabled': true,
-                    'nav-link-activated': showDropdown()
-                }"
-            [link]="item.link"
-            [config]="this.topLinkConfig">
-        </scrm-menu-item-link>
-        <scrm-menu-item-link *ngIf="!hoverEnabled()"
-            [class]="{
-                    'top-nav-link': true,
-                    'nav-link-nongrouped': true,
-                    'dropdown-toggle': item.submenu.length,
-                    'hover-enabled': false,
-                    'nav-link-activated': showDropdown()
-                }"
-            [link]="item.link"
-            [config]="this.topLinkConfig">
-        </scrm-menu-item-link>
-    </span>
-    <div (click)="hideDropdown()"
-         aria-labelledby="navbarDropdownMenuLink"
-         *ngIf="item.submenu.length"
-         class="dropdown-menu submenu"
-         [class.show]="showDropdown()"
-         [class.hover-enabled]="hoverEnabled()">
-
-        <div *ngFor="let sub of item.submenu" class="nav-item">
-
-            <scrm-menu-item-link
-                [class]="'sub-nav-link nav-link action-link'"
-                [icon]="sub.icon"
-                [link]="sub.link">
-            </scrm-menu-item-link>
-
-        </div>
-
-        <ng-container *ngIf="item && item.module">
-            <scrm-sub-menu-recently-viewed
-                    [module]="item.module"
-                    [config]="recentlyViewedConfig"
-                    (click)="$event.stopPropagation();" >
-
-            </scrm-sub-menu-recently-viewed>
-            <scrm-sub-menu-favorites
-                    [module]="item.module"
-                    [config]="favoritesConfig"
-                    (click)="$event.stopPropagation()"></scrm-sub-menu-favorites>
-        </ng-container>
-    </div>
+<ng-container *ngIf="hoverEnabled()">
+    <ng-container *ngTemplateOutlet="menuItem"></ng-container>
 </ng-container>
+<ng-container *ngIf="!hoverEnabled()">
+    <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+</ng-container>
+
+<ng-template #menuItem>
+    <div class="menu-item-wrapper" #menuItemWrapper>
+        <span data-target=".navbar-collapse" data-toggle="collapse" #topLink
+              (touchstart)="onTouchStart()"
+              (touchend)="onTouchEnd()"
+              (click)="onClick($event)"
+        >
+                <scrm-menu-item-link [class]="{
+                                            'top-nav-link': true,
+                                            'nav-link-nongrouped': true,
+                                            'dropdown-toggle': item.submenu.length,
+                                            'hover-enabled': hoverEnabled(),
+                                            'nav-link-activated': showDropdown()
+                                        }"
+                                     [link]="item.link"
+                                     [config]="this.topLinkConfig">
+                </scrm-menu-item-link>
+        </span>
+
+        <div (click)="hideDropdown()"
+             aria-labelledby="navbarDropdownMenuLink"
+             *ngIf="item.submenu.length"
+             class="dropdown-menu submenu"
+             [class.show]="showDropdown()"
+             [class.hover-enabled]="hoverEnabled()">
+
+            <div *ngFor="let sub of item.submenu" class="nav-item">
+
+                <scrm-menu-item-link
+                        [class]="'sub-nav-link nav-link action-link'"
+                        [icon]="sub.icon"
+                        [link]="sub.link">
+                </scrm-menu-item-link>
+
+            </div>
+
+            <ng-container *ngIf="item && item.module">
+                <scrm-sub-menu-recently-viewed
+                        [module]="item.module"
+                        [config]="recentlyViewedConfig"
+                        (click)="$event.stopPropagation();">
+
+                </scrm-sub-menu-recently-viewed>
+                <scrm-sub-menu-favorites
+                        [module]="item.module"
+                        [config]="favoritesConfig"
+                        (click)="$event.stopPropagation()"></scrm-sub-menu-favorites>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, signal, SimpleChanges} from '@angular/core';
 import {RecentlyViewed} from 'common';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -45,6 +45,8 @@ export class BaseSubMenuRecentlyViewedComponent implements OnInit, OnDestroy, On
     maxDisplayed: number = 5;
     records: RecentlyViewed[];
     protected subs: Subscription[] = [];
+    showDropdown = signal<boolean>(false);
+    clickType: string = 'click';
 
 
     constructor(
@@ -110,5 +112,29 @@ export class BaseSubMenuRecentlyViewedComponent implements OnInit, OnDestroy, On
     protected clear() {
         this.records = null;
         this.subs.forEach(sub => sub.unsubscribe());
+    }
+
+    toggleDropdown(): void {
+
+        if (this.clickType === 'touch') {
+            this.showDropdown.set(!this.showDropdown());
+            this.clickType = 'click';
+            return;
+        }
+
+    }
+
+    onTouchStart(event): void {
+        this.clickType = 'touch';
+    }
+
+    onItemClick($event: MouseEvent) {
+        this.toggleDropdown();
+        this?.config?.onItemClick($event)
+    }
+
+    onItemTouchStart($event: TouchEvent) {
+        this.onTouchStart($event);
+        this?.config?.onItemTouchStart($event)
     }
 }

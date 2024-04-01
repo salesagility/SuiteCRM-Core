@@ -28,4 +28,5 @@ import {ButtonCallback} from "common";
 
 export interface SubMenuRecentlyViewedConfig {
     onItemClick: ButtonCallback;
+    onItemTouchStart: ButtonCallback;
 }

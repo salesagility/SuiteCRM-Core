@@ -65,6 +65,7 @@ export class BaseMenuItemsListComponent {
 
     hideDropdown() {
         this.showDropdown.set(false);
+        this.hoverEnabled.set(true);
     }
 
     toggleDropdown(): void {
@@ -75,7 +76,6 @@ export class BaseMenuItemsListComponent {
         } else {
             this.appStateStore.resetActiveDropdown();
             this.hoverEnabled.set(true);
-
         }
     }
 }

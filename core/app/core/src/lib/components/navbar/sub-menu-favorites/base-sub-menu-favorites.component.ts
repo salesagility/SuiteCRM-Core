@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, signal} from '@angular/core';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
@@ -40,6 +40,8 @@ import {SubMenuFavoritesConfig} from "./sub-menu-favorites-config.model";
 export class BaseSubMenuFavoritesComponent extends BaseFavoritesComponent {
 
     @Input() config: SubMenuFavoritesConfig;
+    showDropdown = signal<boolean>(false);
+    clickType: string = 'click';
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -50,4 +52,27 @@ export class BaseSubMenuFavoritesComponent extends BaseFavoritesComponent {
         super(navigation, nameMapper, configs, metadata)
     }
 
+    toggleDropdown(): void {
+
+        if (this.clickType === 'touch') {
+            this.showDropdown.set(!this.showDropdown());
+            this.clickType = 'click';
+            return;
+        }
+
+    }
+
+    onTouchStart(event): void {
+        this.clickType = 'touch';
+    }
+
+    onItemClick($event: MouseEvent) {
+        this.toggleDropdown();
+        this?.config?.onItemClick($event)
+    }
+
+    onItemTouchStart($event: TouchEvent) {
+        this.onTouchStart($event);
+        this?.config?.onItemTouchStart($event)
+    }
 }

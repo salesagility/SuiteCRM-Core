@@ -43,13 +43,14 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     @Input() subNavCollapse: boolean;
     @Input() index: number = 0;
 
-    showDropdown = signal<boolean>(true);
+    showDropdown = signal<boolean>(false);
     showSubDropdown: WritableSignal<boolean>[] = [];
     hoverEnabled = signal<boolean>(true);
     recentlyViewedConfig: SubMenuRecentlyViewedConfig;
     favoritesConfig: SubMenuFavoritesConfig;
 
     subs: Subscription[] = [];
+    clickType: string = 'click';
 
     constructor(protected appStateStore: AppStateStore, protected moduleNavigation: ModuleNavigation) {
     }
@@ -70,17 +71,25 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
 
         this.recentlyViewedConfig = {
             onItemClick: (event) => {
-                if (this.getClickType(event) === 'touch') {
+                if (this.clickType === 'touch') {
                     this.hideDropdown();
+                    this.clickType = 'click';
                 }
+            },
+            onItemTouchStart: (event): void => {
+                this.clickType = 'touch';
             }
         } as SubMenuRecentlyViewedConfig
 
         this.favoritesConfig = {
             onItemClick: (event) => {
-                if (this.getClickType(event) === 'touch') {
+                if (this.clickType === 'touch') {
                     this.hideDropdown();
+                    this.clickType = 'click';
                 }
+            },
+            onItemTouchStart: (event): void => {
+                this.clickType = 'touch';
             }
         } as SubMenuFavoritesConfig
     }
@@ -91,6 +100,7 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
 
     hideDropdown() {
         this.showDropdown.set(false);
+        this.hoverEnabled.set(true);
         this.showSubDropdown.forEach(subDropdown => {
             subDropdown.set(false);
         })
@@ -103,7 +113,7 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
             this.hoverEnabled.set(false);
         } else {
             this.appStateStore.resetActiveDropdown();
-            this.hoverEnabled.set(true);
+            this.hideDropdown();
         }
     }
 
@@ -112,14 +122,13 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     }
 
     onSubItemClick($event: PointerEvent, item: MenuItem, index: number): void {
-        let type = this.getClickType($event);
-
-        if (type === 'click') {
+        if (this.clickType === 'click') {
             this.navigate();
             return;
         }
 
         this.toggleSubDropdown(index);
+        this.clickType = 'click';
     }
 
     toggleSubDropdown(index: number): void {
@@ -130,16 +139,10 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
         return {
             onClick: (event) => {
                 this.onSubItemClick(event, sub, index)
+            },
+            onTouchStart: (event) => {
+                this.clickType = 'touch';
             }
         } as MenuItemLinkConfig;
-    }
-
-    protected getClickType($event: PointerEvent) {
-        let type = 'touch';
-        const pointerType = $event?.pointerType ?? 'touch';
-        if (pointerType === 'mouse') {
-            type = 'click';
-        }
-        return type;
     }
 }

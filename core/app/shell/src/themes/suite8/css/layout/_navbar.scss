@@ -66,13 +66,14 @@
     }
   }
 
-  .navbar-nav {
-    .main-grouped:hover .dropdown-menu.main.hover-enabled,
-    .non-grouped:hover .dropdown-menu.hover-enabled {
-      display: block;
-      right: 0;
-    }
+  .navbar-list .dropdown.non-grouped:hover .dropdown-menu.hover-enabled,
+  .navbar-nav .main-grouped:hover .menu-item-wrapper:hover .dropdown-menu.main.hover-enabled,
+  .navbar-nav .non-grouped:hover .menu-item-wrapper:hover .dropdown-menu.hover-enabled {
+    display: block;
+    right: 0;
   }
+
+
 }
 .global-links-dropdown {
   z-index: map-get($zindex, nav-max);

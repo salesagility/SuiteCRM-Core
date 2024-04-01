@@ -28,4 +28,5 @@ import {ButtonCallback} from "common";
 
 export interface MenuItemLinkConfig {
     onClick: ButtonCallback;
+    onTouchStart: ButtonCallback;
 }
