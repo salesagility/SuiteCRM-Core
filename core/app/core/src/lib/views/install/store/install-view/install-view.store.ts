@@ -256,6 +256,7 @@ export class InstallViewStore implements StateStore {
                                         type: "enum",
                                         options: "__no_options__",
                                         required: true,
+                                        "default": 'no',
                                         metadata: {
                                             extraOptions: [
                                                 {
