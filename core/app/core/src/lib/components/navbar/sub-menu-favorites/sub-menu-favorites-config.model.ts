@@ -25,8 +25,11 @@
  */
 
 import {ButtonCallback} from "common";
+import {Observable} from "rxjs";
 
 export interface SubMenuFavoritesConfig {
     onItemClick: ButtonCallback;
     onItemTouchStart: ButtonCallback;
+    onToggleDropdown?: ButtonCallback;
+    showDropdown$?: Observable<boolean>;
 }

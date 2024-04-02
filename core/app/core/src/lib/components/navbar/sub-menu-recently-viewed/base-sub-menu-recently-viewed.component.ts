@@ -103,6 +103,13 @@ export class BaseSubMenuRecentlyViewedComponent implements OnInit, OnDestroy, On
         this.subs.push(moduleMeta$.subscribe(meta => {
             this.records = meta?.recentlyViewed ?? null;
         }));
+
+        if (this?.config?.showDropdown$) {
+            this.subs.push(this.config.showDropdown$.subscribe(showDropdown => {
+                this.showDropdown.set(showDropdown);
+            }));
+        }
+
     }
 
     /**
@@ -119,6 +126,7 @@ export class BaseSubMenuRecentlyViewedComponent implements OnInit, OnDestroy, On
         if (this.clickType === 'touch') {
             this.showDropdown.set(!this.showDropdown());
             this.clickType = 'click';
+            this?.config?.onToggleDropdown(this.showDropdown());
             return;
         }
 

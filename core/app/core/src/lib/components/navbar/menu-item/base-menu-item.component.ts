@@ -26,7 +26,7 @@
 
 import {Component, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {MenuItem} from 'common';
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
 import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
 import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model";
@@ -48,6 +48,8 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
     topLinkConfig: MenuItemLinkConfig;
     recentlyViewedConfig: SubMenuRecentlyViewedConfig;
     favoritesConfig: SubMenuFavoritesConfig;
+    showRecentlyViewed: Subject<boolean>;
+    showFavorites: Subject<boolean>;
     clickType: string = 'click';
 
     subs: Subscription[] = [];
@@ -56,6 +58,9 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+
+        this.showRecentlyViewed = new Subject<boolean>();
+        this.showFavorites = new Subject<boolean>();
 
         this.topLinkConfig = {
             onClick: (event) => {
@@ -73,7 +78,13 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
             },
             onItemTouchStart: (event) => {
                 this.clickType = 'touch';
-            }
+            },
+            onToggleDropdown: (showDropdown): void => {
+                if (showDropdown) {
+                    this.showFavorites.next(false);
+                }
+            },
+            showDropdown$: this.showRecentlyViewed.asObservable()
         } as SubMenuRecentlyViewedConfig
 
         this.favoritesConfig = {
@@ -85,7 +96,13 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
             },
             onItemTouchStart: (event) => {
                 this.clickType = 'touch';
-            }
+            },
+            onToggleDropdown: (showDropdown): void => {
+                if (showDropdown) {
+                    this.showRecentlyViewed.next(false);
+                }
+            },
+            showDropdown$: this.showFavorites.asObservable()
         } as SubMenuFavoritesConfig
 
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
@@ -99,6 +116,8 @@ export class BaseMenuItemComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.showRecentlyViewed.unsubscribe();
+        this.showFavorites.unsubscribe();
     }
 
     hideDropdown() {

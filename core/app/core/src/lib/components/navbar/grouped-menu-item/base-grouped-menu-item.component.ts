@@ -26,7 +26,7 @@
 
 import {Component, Input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {MenuItem} from 'common';
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
 import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model";
 import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
@@ -48,14 +48,20 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     hoverEnabled = signal<boolean>(true);
     recentlyViewedConfig: SubMenuRecentlyViewedConfig;
     favoritesConfig: SubMenuFavoritesConfig;
+    showRecentlyViewed: Subject<boolean>;
+    showFavorites: Subject<boolean>;
 
     subs: Subscription[] = [];
     clickType: string = 'click';
+    private openSubDropdown?: number = null;
 
     constructor(protected appStateStore: AppStateStore, protected moduleNavigation: ModuleNavigation) {
     }
 
     ngOnInit(): void {
+        this.showRecentlyViewed = new Subject<boolean>();
+        this.showFavorites = new Subject<boolean>();
+
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
             (activeDropdown: number) => {
                 if (this.index !== activeDropdown) {
@@ -78,7 +84,13 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
             },
             onItemTouchStart: (event): void => {
                 this.clickType = 'touch';
-            }
+            },
+            onToggleDropdown: (showDropdown): void => {
+                if (showDropdown) {
+                    this.showFavorites.next(false);
+                }
+            },
+            showDropdown$: this.showRecentlyViewed.asObservable()
         } as SubMenuRecentlyViewedConfig
 
         this.favoritesConfig = {
@@ -90,12 +102,20 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
             },
             onItemTouchStart: (event): void => {
                 this.clickType = 'touch';
-            }
+            },
+            onToggleDropdown: (showDropdown): void => {
+                if (showDropdown) {
+                    this.showRecentlyViewed.next(false);
+                }
+            },
+            showDropdown$: this.showFavorites.asObservable()
         } as SubMenuFavoritesConfig
     }
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.showRecentlyViewed.unsubscribe();
+        this.showFavorites.unsubscribe();
     }
 
     hideDropdown() {
@@ -132,7 +152,19 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     }
 
     toggleSubDropdown(index: number): void {
-        this.showSubDropdown[index].set(!this.showSubDropdown[index]());
+
+        const openSubDropdownIndex = this.openSubDropdown ?? -1;
+
+        if (index !== openSubDropdownIndex && openSubDropdownIndex >= 0) {
+            this?.showSubDropdown[openSubDropdownIndex]?.set(false);
+        }
+
+        this.showSubDropdown[index]?.set(!this.showSubDropdown[index]());
+
+        this.openSubDropdown = index;
+        if (!this.showSubDropdown[index]()) {
+            this.openSubDropdown = null;
+        }
     }
 
     getConfig(sub: MenuItem, index: number): MenuItemLinkConfig {

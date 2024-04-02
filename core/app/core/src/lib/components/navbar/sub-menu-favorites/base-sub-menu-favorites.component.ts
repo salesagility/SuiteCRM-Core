@@ -52,11 +52,22 @@ export class BaseSubMenuFavoritesComponent extends BaseFavoritesComponent {
         super(navigation, nameMapper, configs, metadata)
     }
 
+    ngOnInit(): void {
+        super.ngOnInit();
+
+        if (this?.config?.showDropdown$) {
+            this.subs.push(this.config.showDropdown$.subscribe(showDropdown => {
+                this.showDropdown.set(showDropdown);
+            }));
+        }
+    }
+
     toggleDropdown(): void {
 
         if (this.clickType === 'touch') {
             this.showDropdown.set(!this.showDropdown());
             this.clickType = 'click';
+            this?.config?.onToggleDropdown(this.showDropdown());
             return;
         }
 
