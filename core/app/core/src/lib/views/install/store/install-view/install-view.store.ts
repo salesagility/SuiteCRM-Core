@@ -257,6 +257,7 @@ export class InstallViewStore implements StateStore {
                                         options: "__no_options__",
                                         required: true,
                                         "default": 'no',
+                                        "defaultValueModes": ["create", "edit"],
                                         metadata: {
                                             extraOptions: [
                                                 {
