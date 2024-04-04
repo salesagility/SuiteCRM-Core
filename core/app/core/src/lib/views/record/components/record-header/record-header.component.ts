@@ -129,7 +129,7 @@ export class RecordHeaderComponent implements OnInit, OnDestroy {
             icon: 'paginate_previous',
             klass: 'back-button',
             onClick: () => {
-                this.router.navigateByUrl(moduleRoute.route).then();
+                this.router.navigate([moduleRoute.route], { queryParams: { keepPagination: true } }).then();
             }
         }
     }
