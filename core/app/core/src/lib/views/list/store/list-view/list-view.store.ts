@@ -65,6 +65,7 @@ import {ConfirmationModalService} from '../../../../services/modals/confirmation
 import {RecordPanelMetadata} from '../../../../containers/record-panel/store/record-panel/record-panel.store.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {ListViewUrlQueryService} from '../../services/list-view-url-query.service';
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 export interface ListViewData {
     records: Record[];
@@ -179,7 +180,9 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected preferences: UserPreferenceStore,
         protected route: ActivatedRoute,
         protected listViewUrlQueryService: ListViewUrlQueryService,
-        protected localStorageService: LocalStorageService
+        protected localStorageService: LocalStorageService,
+        protected systemConfigsStore: SystemConfigStore,
+        protected userPreferences: UserPreferenceStore
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
@@ -379,7 +382,16 @@ export class ListViewStore extends ViewStore implements StateStore {
                 this.loadCurrentSort(module);
         }
         this.loadCurrentDisplayedColumns();
-        this.loadCurrentPagination(module);
+
+        const paginationType = this.userPreferences.getUserPreference('listview_pagination_type') ?? this.systemConfigsStore.getConfigValue('listview_pagination_type');
+
+        const currentPaginationType = this.getCurrentPaginationType(module);
+
+        this.setCurrentPaginationType(module, paginationType);
+
+        if (queryParams['keepPagination'] && currentPaginationType === paginationType) {
+            this.loadCurrentPagination(module);
+        }
 
         return this.load();
     }
@@ -869,6 +881,31 @@ export class ListViewStore extends ViewStore implements StateStore {
 
         this.recordList.pagination = currentPagination;
     }
+
+    /**
+     * Get current pagination Type
+     * @param module
+     * @protected
+     */
+    protected getCurrentPaginationType(module: string): string {
+        const currentPaginationType = this.loadPreference(module, 'current-pagination-type');
+        if (!currentPaginationType) {
+            return 'pagination';
+        }
+
+        return currentPaginationType;
+    }
+
+    /**
+     * Set current pagination Type
+     * @param module
+     * @protected
+     */
+    protected setCurrentPaginationType(module: string, paginationType: string) {
+        this.savePreference(module, 'current-pagination-type', paginationType);
+    }
+
+
 
     /**
      * Load current displayed columns
