@@ -49,11 +49,14 @@
 
         {* Display Link *}
         {if !empty($bean.id) && $bean.status == $APP_LIST_STRINGS.dom_email_status.draft}
-            <a href="index.php?module=Emails&action=DetailDraftView&record={$bean.id}">{$subject}</a>
+            {assign var=url value="index.php?module=Emails&action=DetailDraftView&record={$bean.id}"}
         {elseif !empty($bean.id) && $bean.status != $APP_LIST_STRINGS.dom_email_status.draft}
-            <a href="index.php?module=Emails&action=DetailView&record={$bean.id}">{$subject}</a>
+            {assign var=url value="index.php?module=Emails&action=DetailView&record={$bean.id}"}
         {elseif !empty($bean)}
-            <a href="index.php?module=Emails&action=DisplayDetailView&folder_name={if !empty($bean.folder)}{$bean.folder}{/if}&folder={if !empty($bean.folder_type)}{$bean.folder_type}{/if}&inbound_email_record={if !empty($bean.inbound_email_record)}{$bean.inbound_email_record}{/if}&uid={if !empty($bean.uid)}{$bean.uid}{/if}&msgno={if !empty($bean.msgno)}{$bean.msgno}{/if}">{$subject}</a>
+            {assign var=url value="index.php?module=Emails&action=DisplayDetailView&folder_name={if !empty($bean.folder)}{$bean.folder}{/if}&folder={if !empty($bean.folder_type)}{$bean.folder_type}{/if}&inbound_email_record={if !empty($bean.inbound_email_record)}{$bean.inbound_email_record}{/if}&uid={if !empty($bean.uid)}{$bean.uid}{/if}&msgno={if !empty($bean.msgno)}{$bean.msgno}{/if}"}
         {/if}
+
+        <a href='{convert_link link=$url}'>{$subject}</a>
+
     {/if}
 </div>
