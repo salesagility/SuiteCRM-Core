@@ -126,7 +126,7 @@ class CsvExportBulkAction implements ProcessHandlerInterface
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
 
-        if (empty($options['ids']) && empty($options['criteria'])) {
+        if (empty($options['ids']) && !isset($options['criteria'])) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
     }
@@ -165,7 +165,7 @@ class CsvExportBulkAction implements ProcessHandlerInterface
             return $responseData;
         }
 
-        if (!empty($options['criteria'])) {
+        if (isset($options['criteria'])) {
             $responseData = $this->getCriteriaBasedRequestData($options, $responseData);
         }
 
@@ -215,7 +215,7 @@ class CsvExportBulkAction implements ProcessHandlerInterface
 
         $type = $options['criteria']['type'] ?? 'advanced';
 
-        $mapped = $this->legacyFilterMapper->mapFilters($options['criteria'], $type);
+        $mapped = $this->legacyFilterMapper->mapFilters($options['criteria'] ?? [], $type);
         $downloadData = array_merge($downloadData, $mapped);
 
         $responseData['params']['formData'] = [
