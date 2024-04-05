@@ -198,12 +198,12 @@ export class BulkActionsAdapter implements BulkActionDataSource {
      */
     public handleProcessResult(process: Process): void {
 
-        if (process.data && process.data.reload) {
+        if (process?.data && process?.data?.reload) {
             this.store.recordList.clearSelection();
             this.store.load(false).pipe(take(1)).subscribe();
         }
 
-        if (process.data && process.data.dataUpdated) {
+        if (process?.data && process?.data?.dataUpdated) {
             this.store.triggerDataUpdate();
         }
 
@@ -242,7 +242,7 @@ export class BulkActionsAdapter implements BulkActionDataSource {
      * @param process
      */
     protected shouldReloadGlobalRecentlyViewed(process: Process): boolean {
-        return !!(process.data && process.data.reloadGlobalRecentlyViewed);
+        return !!(process?.data && process?.data?.reloadGlobalRecentlyViewed);
     }
 
     /**
@@ -250,7 +250,7 @@ export class BulkActionsAdapter implements BulkActionDataSource {
      * @param process
      */
     protected shouldReloadRecentlyViewed(process: Process): boolean {
-        return !!(process.data && process.data.reloadRecentlyViewed);
+        return !!(process?.data && process?.data?.reloadRecentlyViewed);
     }
 
     /**
@@ -258,6 +258,6 @@ export class BulkActionsAdapter implements BulkActionDataSource {
      * @param process
      */
     protected shouldReloadFavorites(process: Process): boolean {
-        return !!(process.data && process.data.reloadFavorites);
+        return !!(process?.data && process.data?.reloadFavorites);
     }
 }
