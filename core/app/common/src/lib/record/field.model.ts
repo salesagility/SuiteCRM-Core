@@ -135,6 +135,8 @@ export interface FieldMetadata {
     tinymce?: any;
     date_time_format?: string;
     displayLogicResetOn?: string;
+    relateSearchField?: string;
+
 
     [key: string]: any;
 }

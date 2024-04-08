@@ -140,7 +140,11 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
     };
 
     getRelateFieldName(): string {
-        return (this.field && this.field.definition && this.field.definition.rname) || 'name';
+        if (!this.field?.definition?.metadata?.relateSearchField) {
+            return (this.field && this.field.definition && this.field.definition.rname) || 'name';
+        }
+
+        return this.field.definition.metadata.relateSearchField;
     }
 
     getRelateIdField(): string {
