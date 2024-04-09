@@ -162,6 +162,8 @@ export interface AttributeDependency {
 
 export type FieldSource = 'field' | 'attribute' | 'item' | 'groupField';
 
+export declare type DefaultValueInitCallback = () => void;
+
 export interface Field {
     type: string;
     value?: string;
@@ -198,6 +200,8 @@ export interface Field {
     logic?: FieldLogicMap;
     displayLogic?: FieldLogicMap;
     previousValue?: string;
+
+    initDefaultValue?: DefaultValueInitCallback;
 }
 
 export class BaseField implements Field {
@@ -232,6 +236,7 @@ export class BaseField implements Field {
     protected valueListState?: string[];
     protected valueObjectState?: any;
     protected valueObjectArrayState?: ObjectMap[];
+    protected defaultValueInitialized: boolean = false;
 
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
@@ -287,6 +292,23 @@ export class BaseField implements Field {
             valueList: this.valueListState,
             valueObject: this.valueObjectState
         })
+    }
+
+    initDefaultValue(): void {
+
+        if (this.defaultValueInitialized) {
+            return;
+        }
+
+        const defaultValue = this?.default ?? this?.definition?.default ?? null;
+        if (!this.value && defaultValue) {
+            this.value = defaultValue;
+            this?.formControl?.setValue(defaultValue);
+        } else if (this.value === null) {
+            this.value = '';
+        }
+
+        this.defaultValueInitialized = true;
     }
 }
 
