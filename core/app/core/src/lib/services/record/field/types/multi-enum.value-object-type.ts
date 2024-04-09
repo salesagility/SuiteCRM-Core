@@ -24,12 +24,59 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldObjectTypeMap} from "./field-object.model";
 import {BaseField} from 'common';
-import {MultiEnumField} from "./types/multi-enum.value-object-type";
+import {isArray, isString, trimEnd, trimStart} from "lodash-es";
 
+export class MultiEnumField extends BaseField {
 
-export const baseObjectFieldsTypeMap: FieldObjectTypeMap = {
-    'default': BaseField,
-    'multienum': MultiEnumField
-};
+    get value(): string {
+        return this.valueListState.join(',');
+    }
+
+    set value(value: string) {
+        this.valueState = '';
+        this.valueListState = [];
+
+        if (isArray(value) && isString((value as Array<any>)[0])) {
+            this.valueList = (value as Array<string>);
+            return;
+        }
+
+        if (!value) {
+            return;
+        }
+
+        this.emitValueChanges();
+    }
+
+    initDefaultValue(): void {
+
+        if (this.defaultValueInitialized) {
+            return;
+        }
+
+        let defaultValue = this?.default ?? this?.definition?.default ?? null;
+        if (!defaultValue) {
+            this.defaultValueInitialized = true;
+            return;
+        }
+
+        if (typeof defaultValue !== "string") {
+            return;
+        }
+
+        defaultValue = trimStart(defaultValue, '^');
+        defaultValue = trimEnd(defaultValue, '^');
+        const defaultValues = defaultValue.split("^,^");
+        if (!defaultValue) {
+            this.defaultValueInitialized = true;
+            return;
+        }
+
+        if (defaultValues && defaultValues.length) {
+            this.valueList = defaultValues;
+        }
+
+        this.defaultValueInitialized = true;
+    }
+}
