@@ -52,7 +52,22 @@
   }
 }
 
+@media (max-width: $breakpoint-xlarge) {
+  .dropdown-menu .dropdown-submenu {
+    width: auto;
+  }
+}
+
 @media only screen and (max-width: $breakpoint-large) {
+  .navbar {
+    .action-group {
+      .action-history .dropdown-menu {
+        width: 280px;
+        position: absolute;
+        left: -10em;
+      }
+    }
+  }
   .global-links .dropdown-menu {
     border: none;
     left: -12.7em;
@@ -70,36 +85,6 @@
   }
 }
 
-@media (max-width: $breakpoint-xlarge) {
-  .dropdown-menu .dropdown-submenu {
-    width: auto;
-  }
-}
-
-@media only screen and (max-width: $breakpoint-medium) {
-  .navbar {
-    .action-group {
-      .action-history .dropdown-menu {
-        width: 280px;
-        position: absolute;
-        left: -13em;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 599px) {
-  .navbar {
-    .action-group {
-      .action-history .dropdown-menu {
-        width: 280px;
-        position: absolute;
-        left: -13em;
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: $breakpoint-small) {
   .navbar {
     .action-group {
@@ -107,9 +92,9 @@
         padding: 0 0.4rem!important;
       }
       .action-history .dropdown-menu {
-        width: 280px;
+        width: 224px;
         position: absolute;
-        left: -13em;
+        left: -7em;
         .new-list-item {
           padding-left: 0.44rem;
         }
