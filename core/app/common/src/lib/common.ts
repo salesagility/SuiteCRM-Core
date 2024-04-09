@@ -20,6 +20,7 @@ export * from './record/recently-viewed.model';
 export * from './record/record.model';
 export * from './record/record-mappers/record-mapper.model';
 export * from './record/record-mappers/record-mapper.registry';
+export * from './registry/base.registry';
 export * from './services/ui/resize.model';
 export * from './services/validators/validators.model';
 export * from './statistics/statistics-store.model';
