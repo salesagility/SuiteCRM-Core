@@ -33,7 +33,7 @@
 .record-view-position-sticky {
   position: sticky;
   top: 3em;
-  z-index: 2;
+  z-index: map-get($zindex, nav-high);
 }
 
 .record-view-header {
