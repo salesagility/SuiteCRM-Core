@@ -6,6 +6,9 @@ import {take} from 'rxjs/operators';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {GlobalRecentlyViewedStore} from "../../../store/global-recently-viewed/global-recently-viewed.store";
 import {ModuleNameMapper} from "../module-name-mapper/module-name-mapper.service";
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
+import {AppStateStore} from "../../../store/app-state/app-state.store";
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Injectable({providedIn: 'root'})
 export class RecentlyViewedService {
@@ -14,7 +17,10 @@ export class RecentlyViewedService {
         protected metadata: MetadataStore,
         protected globalRecentlyViewedStore: GlobalRecentlyViewedStore,
         protected processService: ProcessService,
-        protected moduleNameMapper: ModuleNameMapper
+        protected moduleNameMapper: ModuleNameMapper,
+        protected appMetadataStore: AppMetadataStore,
+        protected systemConfigs: SystemConfigStore,
+        protected appStateStore: AppStateStore
     ) {
     }
 
@@ -115,6 +121,44 @@ export class RecentlyViewedService {
                 this.metadata.setModuleMetadata(module, metadata);
             });
         }, 500);
+    }
+
+    conditionalGlobalRefresh(view: string = ''): void {
+
+        const reloadActions = this.systemConfigs.getUi('global_recently_viewed_reload_actions') ?? null;
+        const previousModule = this.getModule();
+
+        if (!view) {
+            view = this.getView();
+        }
+
+
+        if (!reloadActions || !previousModule) {
+            return;
+        }
+
+        const actions: string[] = reloadActions[previousModule] ?? reloadActions['any'] ?? [];
+
+        if (!actions || !actions.length) {
+            return;
+        }
+
+        const reload = actions.some(action => {
+            return action === 'any' || action === view;
+        });
+
+        if (reload) {
+            this.appMetadataStore.load(this.getModule(), ['globalRecentlyViewed'], false).pipe(take(1)).subscribe();
+
+        }
+    }
+
+    public getModule(): string {
+        return this.appStateStore.getModule();
+    }
+
+    public getView(): string {
+        return this.appStateStore.getView();
     }
 
 }

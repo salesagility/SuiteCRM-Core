@@ -1,0 +1,7 @@
+parameters:
+  global_recently_viewed_reload_actions:
+    any:
+      - detail
+      - record
+      - list
+      - index

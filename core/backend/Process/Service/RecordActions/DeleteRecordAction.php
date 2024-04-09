@@ -149,7 +149,6 @@ class DeleteRecordAction implements ProcessHandlerInterface
                 'route' => $options['module'],
                 'queryParams' => []
             ],
-            'reloadGlobalRecentlyViewed' => true,
             'reloadRecentlyViewed' => true,
             'reloadFavorites' => true
         ];

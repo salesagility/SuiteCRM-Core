@@ -414,10 +414,8 @@ export class AppMetadataStore implements StateStore {
         if (globalRecentlyViewed.length) {
             currentMetadata.globalRecentlyViewed = true;
             this.globalRecentlyViewedStore.set(globalRecentlyViewed);
-        } else {
-            if(appMetadata?.globalRecentlyViewed) {
+        } else if(appMetadata?.globalRecentlyViewed) {
                 this.globalRecentlyViewedStore.set(globalRecentlyViewed);
-            }
         }
     }
 

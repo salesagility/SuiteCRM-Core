@@ -62,7 +62,8 @@ export class RecentlyViewedComponent {
 
     constructor(
         protected nameMapper: ModuleNameMapper,
-        protected navigation: ModuleNavigation) {}
+        protected navigation: ModuleNavigation
+    ) {}
 
     /**
      * Build route from recently viewed item

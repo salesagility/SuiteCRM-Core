@@ -117,7 +117,7 @@ parameters:
             params:
               inlineConfirmation: true
               confirmationDynamicLabel: 'LBL_SNOOZE_INLINE_CONFIRM'
-            klass: [ 'btn stroke-complementary fill-hover-complementary-light fill-complementary border-0 btn-sm p-0 m-0 mr-2' ]
+            klass: [ 'btn stroke-complementary fill-complementary fill-hover-complementary-light stroke-hover-complementary-light border-0 btn-sm p-0 m-0 mr-2' ]
             modes: ['detail', 'edit']
             acl: []
     pageSize: 10

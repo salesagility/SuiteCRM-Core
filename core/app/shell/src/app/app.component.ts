@@ -34,7 +34,7 @@ import {
     Router,
     RouterEvent
 } from '@angular/router';
-import {AppState, AppStateStore, StateManager, SystemConfigStore, NotificationStore} from 'core';
+import {AppState, AppStateStore, StateManager, SystemConfigStore, NotificationStore, RecentlyViewedService} from 'core';
 import {Observable} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
@@ -52,7 +52,8 @@ export class AppComponent {
         private appStateStore: AppStateStore,
         protected stateManager: StateManager,
         protected systemConfigs: SystemConfigStore,
-        protected notificationStore: NotificationStore
+        protected notificationStore: NotificationStore,
+        protected recentlyViewed: RecentlyViewedService
     ) {
         router.events.subscribe((routerEvent: Event | RouterEvent) => this.checkRouterEvent(routerEvent));
     }
@@ -62,6 +63,7 @@ export class AppComponent {
             this.appStateStore.updateLoading('router-navigation', true);
             this.conditionalCacheReset();
             this.notificationStore.conditionalNotificationRefresh();
+            this.recentlyViewed.conditionalGlobalRefresh()
         }
 
         if (routerEvent instanceof NavigationEnd) {
