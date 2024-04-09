@@ -46,14 +46,6 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
     }
 
     protected subscribeValueChanges(): void {
-        if (!this.field?.formControl) {
-            return;
-        }
-
-        const formValueChangesSubscription = this.field.formControl.valueChanges.subscribe(
-            (value: string[]) => this.field.valueList = value);
-
-        this.subs.push(formValueChangesSubscription);
     }
 
     protected initValue(): void {
