@@ -31,6 +31,7 @@ import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {Injectable} from '@angular/core';
 import isObjectLike from 'lodash-es/isObjectLike';
+import {FieldObjectRegistry} from "./field-object-type.registry";
 
 @Injectable({
     providedIn: 'root'
@@ -39,9 +40,10 @@ export class AttributeBuilder extends FieldBuilder {
 
     constructor(
         protected validationManager: ValidationManager,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected fieldRegistry: FieldObjectRegistry
     ) {
-        super(validationManager, typeFormatter);
+        super(validationManager, typeFormatter, fieldRegistry);
     }
 
 

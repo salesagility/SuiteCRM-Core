@@ -40,6 +40,7 @@ import {
 } from 'common';
 import {LanguageStore} from '../../../store/language/language.store';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
+import {FieldObjectRegistry} from "./field-object-type.registry";
 
 @Injectable({
     providedIn: 'root'
@@ -48,9 +49,10 @@ export class FilterFieldBuilder extends FieldBuilder {
 
     constructor(
         protected validationManager: ValidationManager,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected fieldRegistry: FieldObjectRegistry
     ) {
-        super(validationManager, typeFormatter);
+        super(validationManager, typeFormatter, fieldRegistry);
     }
 
     /**

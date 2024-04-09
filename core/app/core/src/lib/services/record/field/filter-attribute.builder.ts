@@ -32,6 +32,7 @@ import {Field, FieldAttribute, FieldDefinition, Record, ViewFieldDefinition} fro
 import {LanguageStore} from '../../../store/language/language.store';
 import {FilterFieldBuilder} from './filter-field.builder';
 import isObjectLike from 'lodash-es/isObjectLike';
+import {FieldObjectRegistry} from "./field-object-type.registry";
 
 @Injectable({
     providedIn: 'root'
@@ -40,9 +41,10 @@ export class FilterAttributeBuilder extends FilterFieldBuilder {
 
     constructor(
         protected validationManager: ValidationManager,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected fieldRegistry: FieldObjectRegistry
     ) {
-        super(validationManager, typeFormatter);
+        super(validationManager, typeFormatter, fieldRegistry);
     }
 
     /**

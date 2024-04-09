@@ -31,6 +31,7 @@ import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {Injectable} from '@angular/core';
 import {AttributeBuilder} from './attribute.builder';
 import {UntypedFormGroup} from '@angular/forms';
+import {FieldObjectRegistry} from "./field-object-type.registry";
 
 @Injectable({
     providedIn: 'root'
@@ -39,9 +40,10 @@ export class LineItemBuilder extends AttributeBuilder {
 
     constructor(
         protected validationManager: ValidationManager,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected fieldRegistry: FieldObjectRegistry
     ) {
-        super(validationManager, typeFormatter);
+        super(validationManager, typeFormatter, fieldRegistry);
     }
 
 

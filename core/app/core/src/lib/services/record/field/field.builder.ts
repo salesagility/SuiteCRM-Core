@@ -44,6 +44,7 @@ import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} fro
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';
 import {merge} from 'lodash-es';
+import {FieldObjectRegistry} from "./field-object-type.registry";
 
 
 @Injectable({
@@ -53,7 +54,8 @@ export class FieldBuilder {
 
     constructor(
         protected validationManager: ValidationManager,
-        protected typeFormatter: DataTypeFormatter
+        protected typeFormatter: DataTypeFormatter,
+        protected fieldRegistry: FieldObjectRegistry
     ) {
     }
 
@@ -169,9 +171,12 @@ export class FieldBuilder {
             metadata.link = viewField.link;
         }
 
-        const field = new BaseField();
+        const type = viewField.type || definition.type;
+        const FieldObjectType = this.fieldRegistry.get(module, type);
 
-        field.type = viewField.type || definition.type;
+        const field = new FieldObjectType();
+
+        field.type = type;
         field.name = viewField.name || definition.name || '';
         field.vardefBased = viewField?.vardefBased ?? definition?.vardefBased ?? false;
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
