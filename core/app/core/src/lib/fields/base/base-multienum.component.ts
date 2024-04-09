@@ -52,7 +52,6 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
         const fieldValueList = this.field.valueList;
 
         if (isVoid(fieldValueList) || isEmpty(fieldValueList)) {
-            this.initEnumDefault();
             return;
         }
 
