@@ -59,6 +59,11 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         if (!this.originalMode) {
             this.originalMode = this.mode;
         }
+
+        const defaultValueModes = this?.field?.defaultValueModes ?? ['create'];
+        if (defaultValueModes.includes(this.originalMode as ViewMode)) {
+            this.field.initDefaultValue();
+        }
     }
 
     ngOnDestroy(): void {

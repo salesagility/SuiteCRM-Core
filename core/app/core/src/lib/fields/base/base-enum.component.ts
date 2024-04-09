@@ -222,7 +222,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             return;
         }
 
-        let defaultVal = this.field?.definition?.default;
+        let defaultVal = this?.field?.default ?? this?.field?.definition?.default ?? null;
         if (typeof defaultVal === 'string') {
             defaultVal = defaultVal.trim();
         }
