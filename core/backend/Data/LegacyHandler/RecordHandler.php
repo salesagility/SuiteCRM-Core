@@ -245,6 +245,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         }
 
         $this->setFields($bean, $record->getAttributes());
+        $this->setUpdatedFields($bean, $record->getAttributes());
         $this->save($bean);
 
 
@@ -296,5 +297,21 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     public function save(SugarBean $bean)
     {
         $bean->save($bean->notify_on_save ?? false);
+    }
+
+    /**
+     * @param SugarBean $bean
+     * @param array|null $attributes
+     * @return void
+     */
+    public function setUpdatedFields(SugarBean $bean, ?array $attributes): void
+    {
+        if (!$attributes) {
+            return;
+        }
+
+        foreach ($attributes as $key => $attribute){
+            $bean->updated_fields[] = $key;
+        }
     }
 }
