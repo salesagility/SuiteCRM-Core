@@ -161,6 +161,13 @@ class SecurityController extends AbstractController
 
         $data = $this->getResponseData($user, $appStatus);
 
+        if (!isset($data['redirect'])){
+            $needsRedirect = $this->authentication->needsRedirect($user);
+            if (!empty($needsRedirect)) {
+                $data['redirect'] = $needsRedirect;
+            }
+        }
+
         return new JsonResponse($data, Response::HTTP_OK);
     }
 
