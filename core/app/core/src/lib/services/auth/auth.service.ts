@@ -45,6 +45,7 @@ export interface SessionStatus {
     id?: string;
     firstName?: string;
     lastName?: string;
+    redirect?: any;
 }
 
 export interface AppStatus {
