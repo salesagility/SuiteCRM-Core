@@ -2082,7 +2082,7 @@ abstract class DBManager
                     $val = $bean->getFieldValue($field);
                 }
 
-                if (strlen((string) $val) == 0) {
+                if (strlen((string) $val) == 0 && !in_array($field, $bean->updated_fields)) {
                     if (isset($fieldDef['default']) && strlen((string) $fieldDef['default']) > 0) {
                         $val = $fieldDef['default'];
                     } else {
