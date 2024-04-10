@@ -438,6 +438,11 @@ class SugarBean
     public $line_item_entries = [];
 
     /**
+     * @var array $updated_fields
+     */
+    public $updated_fields = [];
+
+    /**
      * SugarBean constructor.
      * Performs following tasks:
      *
