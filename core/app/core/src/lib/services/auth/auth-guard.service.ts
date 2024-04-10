@@ -184,6 +184,12 @@ export class AuthGuard  {
                             ).subscribe();
                         }
 
+                        if (user?.redirect?.route && (!snapshot.url.includes(user.redirect.route))) {
+                            const redirectUrlTree: UrlTree = this.router.parseUrl(user.redirect.route);
+                            redirectUrlTree.queryParams = user?.redirect?.queryParams ?? {}
+                            return redirectUrlTree;
+                        }
+
                         return true;
                     }
                     this.appState.setPreLoginUrl(snapshot.url);
