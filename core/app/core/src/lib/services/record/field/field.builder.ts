@@ -199,7 +199,7 @@ export class FieldBuilder {
             field.default = defaultValue;
         }
 
-        field.defaultValueModes = viewField?.defaultValueModes ?? definition?.defaultValueModes ?? ['create'];
+        field.defaultValueModes = viewField?.defaultValueModes ?? definition?.defaultValueModes ?? [];
 
         field.validators = validators;
         field.asyncValidators = asyncValidators;
