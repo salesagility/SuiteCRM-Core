@@ -157,7 +157,7 @@ export class CreateViewStore extends RecordViewStore {
 
         this.recordManager.injectParamFields(params, blankRecord, this.getVardefs());
 
-        this.recordStore.init(blankRecord);
+        this.recordStore.init(blankRecord, true);
     }
 
     /**
