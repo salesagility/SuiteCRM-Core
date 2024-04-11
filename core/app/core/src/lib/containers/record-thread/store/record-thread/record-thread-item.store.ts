@@ -105,12 +105,18 @@ export class RecordThreadItemStore extends BaseRecordContainerStore<RecordThread
      * @param {object} record to use
      * @param {string} mode to use
      * @param {boolean} loadMetadata to use
+     * @param initDefaultValues
      * @returns {object} Observable<any>
      */
-    public initRecord(record: Record, mode: ViewMode = 'detail' as ViewMode, loadMetadata = true): void {
+    public initRecord(
+        record: Record,
+        mode: ViewMode = 'detail' as ViewMode,
+        loadMetadata = true,
+        initDefaultValues = false
+    ): void {
 
         super.initRecord(record, mode, loadMetadata);
-        this.setRecord(record);
+        this.setRecord(record, initDefaultValues);
     }
 
 }

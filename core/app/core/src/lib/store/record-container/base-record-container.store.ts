@@ -175,10 +175,11 @@ export abstract class BaseRecordContainerStore<M> implements StateStore {
     /**
      * Set Record
      * @param {object} record
+     * @param {boolean} initDefaultValues
      */
-    public setRecord(record: Record) {
+    public setRecord(record: Record, initDefaultValues: boolean = false) {
         const baseRecord: Record = deepClone(this.recordStore.extractBaseRecord(record));
-        this.recordStore.setRecord(baseRecord);
+        this.recordStore.setRecord(baseRecord, initDefaultValues);
     }
 
     /**

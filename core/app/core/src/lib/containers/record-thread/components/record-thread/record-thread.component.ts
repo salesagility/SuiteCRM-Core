@@ -242,7 +242,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
             mode = this.config.createConfig.initialMode;
         }
 
-        this.createStore.initRecord(emptyRecord, mode, false);
+        this.createStore.initRecord(emptyRecord, mode, false, true);
     }
 
     protected scrollToEnd(): void {
