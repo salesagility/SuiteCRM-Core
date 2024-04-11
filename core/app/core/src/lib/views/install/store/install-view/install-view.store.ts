@@ -152,11 +152,14 @@ export class InstallViewStore implements StateStore {
      */
     public init(mode = 'edit' as ViewMode, params: Params = {}): void {
         this.setMode(mode);
-        this.recordStore.init({
-            id: '',
-            module: 'install',
-            attributes: {}
-        } as Record);
+        this.recordStore.init(
+                {
+                id: '',
+                module: 'install',
+                attributes: {}
+            } as Record,
+            true
+        );
     }
 
     /**
