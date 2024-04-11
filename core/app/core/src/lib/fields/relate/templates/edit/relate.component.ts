@@ -126,6 +126,12 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             this.field.formControl.setValue('');
             return;
         }
+
+        if (this.field?.metadata?.relateSearchField) {
+            const rname = this.field?.definition?.rname ?? 'name';
+            this.field.valueObject[this.field.metadata.relateSearchField] = this.field.valueObject[rname];
+        }
+
         this.selectedValue = this.field.valueObject;
         this.options = [this.field.valueObject];
     }
