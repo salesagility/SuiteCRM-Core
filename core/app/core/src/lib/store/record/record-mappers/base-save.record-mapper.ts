@@ -1,5 +1,6 @@
 import {deepClone, Record, RecordMapper} from 'common';
 import {Injectable} from '@angular/core';
+import {isNil} from "lodash-es";
 
 @Injectable({
     providedIn: 'root'
@@ -65,6 +66,14 @@ export class BaseSaveRecordMapper implements RecordMapper {
 
             if (field.valueList) {
                 record.attributes[fieldName] = field.valueList;
+                return;
+            }
+
+            if (field.vardefBased && (isNil(field.value) || field.value === '') ) {
+
+                if (!isNil(record.attributes[fieldName])) {
+                    delete record.attributes[fieldName];
+                }
                 return;
             }
 
