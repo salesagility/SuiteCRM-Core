@@ -26,13 +26,13 @@
 */
 -->
 <div class="dropdownenum">
-    <ng-container *ngIf="this.options && this.options.length">
-        <select [formControl]="field.formControl" class="custom-select custom-select-sm">
+    <select [formControl]="field.formControl" class="custom-select custom-select-sm">
+        <ng-container *ngIf="this.options && this.options.length">
             <option *ngFor="let item of this.options;"
                     class="{{getId(item)}}"
                     [ngValue]="item.value">
                 {{item.label}}
             </option>
-        </select>
-    </ng-container>
+        </ng-container>
+    </select>
 </div>
