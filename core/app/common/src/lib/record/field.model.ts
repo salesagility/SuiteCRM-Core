@@ -304,11 +304,10 @@ export class BaseField implements Field {
         if (!this.value && defaultValue) {
             this.value = defaultValue;
             this?.formControl?.setValue(defaultValue);
+            this.defaultValueInitialized = true;
         } else if (this.value === null) {
             this.value = '';
         }
-
-        this.defaultValueInitialized = true;
     }
 }
 
