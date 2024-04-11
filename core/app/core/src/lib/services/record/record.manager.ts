@@ -99,6 +99,17 @@ export class RecordManager {
         return record.fields;
     }
 
+    public initFieldDefaults(record: Record): void {
+
+        if (!record.fields) {
+            return;
+        }
+
+        Object.entries(record.fields).forEach(([key, field]) => {
+            field.initDefaultValue();
+        });
+    }
+
     /**
      * Inject param fields
      *

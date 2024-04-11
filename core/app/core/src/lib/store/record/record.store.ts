@@ -44,6 +44,8 @@ export class RecordStore {
 
     state$: Observable<Record>;
     staging$: Observable<Record>;
+    initFieldDefaults: boolean = false;
+    fieldDefaultsInitialized: boolean = false;
     protected cache$: Observable<any> = null;
     protected internalState: Record = deepClone(initialState);
     protected stagingState: Record = deepClone(initialState);
@@ -86,10 +88,12 @@ export class RecordStore {
         }));
     }
 
-    init(record: Record): void {
+    init(record: Record, initDefaultValues = false): void {
         const newRecord = {
             ...record,
         };
+
+        this.initFieldDefaults = initDefaultValues;
 
         this.initRecord(newRecord);
 
@@ -110,8 +114,9 @@ export class RecordStore {
         this.staging.next(this.stagingState = record);
     }
 
-    setRecord(record: Record): void {
+    setRecord(record: Record, initDefaultValues: boolean = false): void {
 
+        this.initFieldDefaults = initDefaultValues;
         this.initRecord(record);
 
         this.updateState(record);
@@ -259,7 +264,7 @@ export class RecordStore {
     protected updateStaging(state: Record): void {
 
         const newState = deepClone(this.extractBaseRecord(state));
-        this.initRecord(newState);
+        this.initRecord(newState, this.initFieldDefaults);
 
         this.staging.next(this.stagingState = newState);
     }
@@ -280,11 +285,17 @@ export class RecordStore {
      * Init record fields
      *
      * @param {object} record Record
+     * @param {boolean} initDefaultValues
      */
-    protected initRecord(record: Record): void {
+    protected initRecord(record: Record, initDefaultValues: boolean = false): void {
 
         if (record.module && this.definitions && this.definitions.length > 0) {
             record.fields = this.recordManager.initFields(record, this.definitions);
+        }
+
+        if (initDefaultValues) {
+            this.recordManager.initFieldDefaults(record);
+            this.fieldDefaultsInitialized = true;
         }
     }
 
