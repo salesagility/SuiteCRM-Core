@@ -257,6 +257,11 @@ abstract class LegacyHandler
 
     }
 
+    public function setCheckedLogin(): void
+    {
+        $_SESSION['checked_login'] = true;
+    }
+
     /**
      * Close the legacy handler
      */
