@@ -49,6 +49,9 @@ $viewdefs ['SavedSearch'] = [
                 ],
             ],
         ],
+        'metadata' => [
+            'validateOnlyOnSubmit' => true,
+        ],
         'recordActions' => [
             'actions' => [
                 'delete' => [
