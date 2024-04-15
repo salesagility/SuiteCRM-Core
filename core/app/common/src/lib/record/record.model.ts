@@ -27,6 +27,7 @@
 import {FieldMap} from './field.model';
 import {UntypedFormGroup} from '@angular/forms';
 import {Params} from "@angular/router";
+import {WritableSignal} from "@angular/core";
 
 export interface AttributeMap {
     [key: string]: any;
@@ -41,6 +42,7 @@ export interface Record {
     acls?: string[];
     fields?: FieldMap;
     formGroup?: UntypedFormGroup;
+    validationTriggered?: WritableSignal<boolean>;
     metadata?: {
         queryParams?: Params;
         [key: string]: any

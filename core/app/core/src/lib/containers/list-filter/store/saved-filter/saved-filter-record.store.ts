@@ -35,7 +35,8 @@ import {
     SearchCriteria,
     SearchMetaField,
     SearchMetaFieldMap,
-    ViewFieldDefinition
+    ViewFieldDefinition,
+    ObjectMap
 } from 'common';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay, tap} from 'rxjs/operators';
@@ -48,6 +49,7 @@ import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {FieldManager} from '../../../../services/record/field/field.manager';
 import {LanguageStore} from '../../../../store/language/language.store';
+import {signal} from "@angular/core";
 
 const initialState = {
     id: '',
@@ -69,6 +71,7 @@ export class SavedFilterRecordStore extends RecordStore {
 
     constructor(
         protected definitions$: Observable<ViewFieldDefinition[]>,
+        protected metadata$: Observable<ObjectMap>,
         protected recordSaveGQL: RecordSaveGQL,
         protected recordFetchGQL: RecordFetchGQL,
         protected message: MessageService,
@@ -79,6 +82,7 @@ export class SavedFilterRecordStore extends RecordStore {
     ) {
         super(
             definitions$,
+            metadata$,
             recordSaveGQL,
             recordFetchGQL,
             message,
@@ -181,6 +185,14 @@ export class SavedFilterRecordStore extends RecordStore {
      * @param {object} record Record
      */
     protected initRecord(record: SavedFilter): void {
+
+        if(this.metadata) {
+            record.metadata = this.metadata;
+        }
+
+        if(!record?.validationTriggered) {
+            record.validationTriggered = signal(false);
+        }
 
         record.attributes = record.attributes || {} as SavedFilterAttributeMap;
         record.attributes.search_module = record.searchModule;

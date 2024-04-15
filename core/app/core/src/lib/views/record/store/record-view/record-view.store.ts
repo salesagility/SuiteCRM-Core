@@ -37,8 +37,6 @@ import {
     FieldLogicMap,
     FieldMetadata,
     isVoid,
-    Panel,
-    PanelRow,
     Record,
     StatisticsMap,
     StatisticsQueryMap,
@@ -47,6 +45,9 @@ import {
     ViewFieldDefinition,
     ViewFieldDefinitionMap,
     ViewMode,
+    ObjectMap,
+    Panel,
+    PanelRow,
 } from 'common';
 import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
@@ -160,7 +161,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.panels$ = this.panelsSubject.asObservable();
 
-        this.recordStore = recordStoreFactory.create(this.getViewFieldsObservable());
+        this.recordStore = recordStoreFactory.create(this.getViewFieldsObservable(), this.getRecordMetadata$());
 
         this.record$ = this.recordStore.state$.pipe(distinctUntilChanged());
         this.stagingRecord$ = this.recordStore.staging$.pipe(distinctUntilChanged());
@@ -626,7 +627,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 const label = (panelDefinition.label)
                     ? panelDefinition.label.toUpperCase()
                     : this.languageStore.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
-                const panel = {label, key: panelDefinition.key, rows: []} as Panel;
+                const panel = { label, key: panelDefinition.key, rows: [] } as Panel;
 
 
                 let adaptor = null;
@@ -636,7 +637,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 }
 
                 panelDefinition.rows.forEach(rowDefinition => {
-                    const row = {cols: []} as PanelRow;
+                    const row = { cols: [] } as PanelRow;
                     rowDefinition.cols.forEach(cellDefinition => {
                         const cellDef = {...cellDefinition};
                         const fieldActions = cellDefinition.fieldActions || null;
@@ -788,6 +789,12 @@ export class RecordViewStore extends ViewStore implements StateStore {
             });
 
             return Object.values(fieldsMap);
+        }));
+    }
+
+    protected getRecordMetadata$(): Observable<ObjectMap> {
+        return this.metadataStore.recordViewMetadata$.pipe(map((recordMetadata: RecordViewMetadata) => {
+            return recordMetadata?.metadata ?? {};
         }));
     }
 

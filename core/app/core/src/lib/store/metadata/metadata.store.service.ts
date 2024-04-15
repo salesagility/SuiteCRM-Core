@@ -42,7 +42,8 @@ import {
     SearchMeta,
     SubPanelMeta,
     WidgetMetadata,
-    TabDefinitions
+    TabDefinitions,
+    ObjectMap
 } from 'common';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
@@ -60,6 +61,7 @@ export interface RecordViewMetadata {
     panels?: Panel[];
     summaryTemplates?: SummaryTemplates;
     vardefs?: FieldDefinitionMap;
+    metadata?: ObjectMap;
 }
 
 export interface RecordTemplateMetadata {
@@ -489,7 +491,8 @@ export class MetadataStore implements StateStore {
             sidebarWidgets: 'sidebarWidgets',
             bottomWidgets: 'bottomWidgets',
             summaryTemplates: 'summaryTemplates',
-            vardefs: 'vardefs'
+            vardefs: 'vardefs',
+            metadata: 'metadata'
         };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);

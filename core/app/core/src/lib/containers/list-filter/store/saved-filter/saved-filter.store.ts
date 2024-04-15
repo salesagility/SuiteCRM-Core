@@ -29,6 +29,7 @@ import {BehaviorSubject, combineLatestWith, forkJoin, Observable, of, Subscripti
 import {
     ColumnDefinition,
     deepClone,
+    ObjectMap,
     Record,
     SearchCriteria,
     SearchMetaFieldMap,
@@ -109,7 +110,7 @@ export class SavedFilterStore implements StateStore {
             })
         );
 
-        this.recordStore = savedFilterStoreFactory.create(this.getViewFields$());
+        this.recordStore = savedFilterStoreFactory.create(this.getViewFields$(), this.getRecordMeta$());
 
         this.record$ = this.recordStore.state$.pipe(distinctUntilChanged(), map(record => record as SavedFilter));
         this.stagingRecord$ = this.recordStore.staging$.pipe(distinctUntilChanged(), map(record => record as SavedFilter));
@@ -118,7 +119,7 @@ export class SavedFilterStore implements StateStore {
 
         this.vm$ = this.stagingRecord$.pipe(
             combineLatestWith(this.mode$),
-            map(([record, mode]: [Record, ViewMode]) => {
+            map(([record, mode]: [SavedFilter, ViewMode]) => {
                 this.vm = {record, mode} as FilterContainerData;
                 return this.vm;
             })
@@ -199,7 +200,7 @@ export class SavedFilterStore implements StateStore {
             take(1),
             tap(() => {
                 this.metadataLoadingState.next(false);
-                this.initStaging(searchModule, filter, searchFields, listColumns);
+                this.initStaging(searchModule, filter, searchFields, listColumns, null);
             })
         ).subscribe();
     }
@@ -241,6 +242,7 @@ export class SavedFilterStore implements StateStore {
         filter: SavedFilter,
         searchFields: SearchMetaFieldMap,
         listColumns: ColumnDefinition[],
+        metadata: ObjectMap
     ) {
 
         const filterRecord: SavedFilter = deepClone(this.recordStore.extractBaseRecord(filter));
@@ -248,7 +250,7 @@ export class SavedFilterStore implements StateStore {
         filterRecord.searchModule = searchModule;
         this.recordStore.setSearchFields(searchFields);
         this.recordStore.setListColumns(listColumns);
-
+        this.recordStore.setMetadata(metadata);
         this.recordStore.setStaging(filterRecord);
         this.initValidators(this.recordStore.getStaging());
     }
@@ -414,6 +416,12 @@ export class SavedFilterStore implements StateStore {
             });
 
             return fields;
+        }));
+    }
+
+    public getRecordMeta$(): Observable<ObjectMap> {
+        return this.meta$.pipe(map((recordMetadata: RecordViewMetadata) => {
+            return recordMetadata.metadata || {};
         }));
     }
 

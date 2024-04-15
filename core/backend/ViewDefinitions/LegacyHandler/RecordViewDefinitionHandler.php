@@ -190,9 +190,11 @@ class RecordViewDefinitionHandler extends LegacyHandler
             'panels' => [],
             'summaryTemplates' => [],
             'vardefs' => $vardefs,
+            'metadata' => [],
         ];
 
         $this->addTemplateMeta($detailViewDefs, $metadata);
+        $this->addMetadata($detailViewDefs, $metadata);
         $this->addTopWidgetConfig($module, $detailViewDefs, $metadata);
         $this->addSidebarWidgetConfig($module, $detailViewDefs, $metadata);
         $this->addBottomWidgetConfig($module, $detailViewDefs, $metadata);
@@ -315,6 +317,15 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $metadata['templateMeta']['maxColumns'] = $viewDefs['templateMeta']['maxColumns'] ?? 2;
         $metadata['templateMeta']['useTabs'] = $viewDefs['templateMeta']['useTabs'] ?? true;
         $metadata['templateMeta']['tabDefs'] = $viewDefs['templateMeta']['tabDefs'] ?? [];
+    }
+
+    /**
+     * @param array $viewDefs
+     * @param array $metadata
+     */
+    protected function addMetadata(array $viewDefs, array &$metadata): void
+    {
+        $metadata['metadata']= $viewDefs['metadata'] ?? [];
     }
 
     /**

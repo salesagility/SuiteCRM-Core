@@ -78,7 +78,7 @@
 </ng-container>
 
 <ng-container *ngIf="isEdit() && field.formControl && field.formControl.errors">
-    <ng-container *ngIf="field.formControl.invalid && field.formControl.touched">
+    <ng-container *ngIf="isValidated">
         <div *ngFor="let item of field.formControl.errors | keyvalue" class="invalid-feedback d-block">
             <scrm-dynamic-label [context]="getMessageContext(item.value, record)"
                                 [fields]="{field: field}"

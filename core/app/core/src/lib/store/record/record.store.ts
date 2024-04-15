@@ -24,13 +24,14 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone, MapEntry, Record, RecordMapper, RecordMapperRegistry, ViewFieldDefinition} from 'common';
+import {deepClone, MapEntry, Record, RecordMapper, RecordMapperRegistry, ViewFieldDefinition, ObjectMap} from 'common';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
 import {RecordFetchGQL} from './graphql/api.record.get';
 import {RecordSaveGQL} from './graphql/api.record.save';
 import {MessageService} from '../../services/message/message.service';
 import {RecordManager} from '../../services/record/record.manager';
+import {signal} from "@angular/core";
 
 const initialState = {
     id: '',
@@ -52,6 +53,7 @@ export class RecordStore {
     protected store = new BehaviorSubject<Record>(this.internalState);
     protected staging = new BehaviorSubject<Record>(this.stagingState);
     protected definitions: ViewFieldDefinition[] = [];
+    protected metadata: ObjectMap = null;
     protected subs: Subscription[] = [];
     protected fieldsMetadata = {
         fields: [
@@ -67,6 +69,7 @@ export class RecordStore {
 
     constructor(
         protected definitions$: Observable<ViewFieldDefinition[]>,
+        protected metadata$: Observable<ObjectMap>,
         protected recordSaveGQL: RecordSaveGQL,
         protected recordFetchGQL: RecordFetchGQL,
         protected message: MessageService,
@@ -86,6 +89,13 @@ export class RecordStore {
             this.definitions = definitions;
             this.init(this.internalState);
         }));
+
+        if(metadata$) {
+            this.subs.push(metadata$.subscribe(metadata => {
+                this.setMetadata(metadata);
+            }));
+        }
+
     }
 
     init(record: Record, initDefaultValues = false): void {
@@ -137,6 +147,7 @@ export class RecordStore {
     validate(): Observable<boolean> {
 
         this.stagingState.formGroup.markAllAsTouched();
+        this.stagingState?.validationTriggered.set(true);
         return this.stagingState.formGroup.statusChanges.pipe(
             startWith(this.stagingState.formGroup.status),
             filter(status => status !== 'PENDING'),
@@ -289,6 +300,14 @@ export class RecordStore {
      */
     protected initRecord(record: Record, initDefaultValues: boolean = false): void {
 
+        if(this.metadata) {
+            record.metadata = this.metadata;
+        }
+
+        if(!record?.validationTriggered) {
+            record.validationTriggered = signal(false);
+        }
+
         if (record.module && this.definitions && this.definitions.length > 0) {
             record.fields = this.recordManager.initFields(record, this.definitions);
         }
@@ -339,5 +358,12 @@ export class RecordStore {
                 }),
                 catchError(err => throwError(err)),
             );
+    }
+
+    public setMetadata(metadata: ObjectMap): void {
+        if(!metadata) {
+            return;
+        }
+        this.metadata = metadata;
     }
 }

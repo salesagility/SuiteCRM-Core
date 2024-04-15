@@ -52,6 +52,8 @@ export class DynamicFieldComponent implements OnInit {
 
     @HostBinding('class') class = 'dynamic-field';
 
+    isValidated: boolean = false;
+
     constructor(
         protected navigation: ModuleNavigation,
         protected moduleNameMapper: ModuleNameMapper,
@@ -82,6 +84,7 @@ export class DynamicFieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
+        this.checkValidation();
         this.cd.detectChanges();
     }
 
@@ -177,4 +180,19 @@ export class DynamicFieldComponent implements OnInit {
         this.class = classes.join(' ');
     }
 
+    checkValidation(): void {
+        if(!this.field.formControl.invalid) {
+            this.isValidated = false;
+        }
+
+        if(this.record?.metadata?.validateOnlyOnSubmit && this.record?.validationTriggered()) {
+            this.isValidated = true;
+        }
+
+        if(!this.record?.metadata?.validateOnlyOnSubmit && this.field.formControl.touched) {
+            this.isValidated = true;
+        }
+
+        this.isValidated = false;
+    }
 }

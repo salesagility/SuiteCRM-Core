@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordMapperRegistry, ViewFieldDefinition} from 'common';
+import {RecordMapperRegistry, ViewFieldDefinition, ObjectMap} from 'common';
 import {SavedFilterRecordStore} from './saved-filter-record.store';
 import {FieldManager} from '../../../../services/record/field/field.manager';
 import {LanguageStore} from '../../../../store/language/language.store';
@@ -54,9 +54,10 @@ export class SavedFilterRecordStoreFactory {
         recordMappers.register('default', baseMapper.getKey(), baseMapper);
     }
 
-    create(definitions$: Observable<ViewFieldDefinition[]>): SavedFilterRecordStore {
+    create(definitions$: Observable<ViewFieldDefinition[]>, metadata$?: Observable<ObjectMap>): SavedFilterRecordStore {
         return new SavedFilterRecordStore(
             definitions$,
+            metadata$,
             this.recordSaveGQL,
             this.recordFetchGQL,
             this.message,

@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordMapperRegistry, ViewFieldDefinition} from 'common';
+import {RecordMapperRegistry, ViewFieldDefinition, ObjectMap} from 'common';
 import {RecordStore} from './record.store';
 import {Observable} from 'rxjs';
 import {RecordFetchGQL} from './graphql/api.record.get';
@@ -50,9 +50,10 @@ export class RecordStoreFactory {
         recordMappers.register('default', baseMapper.getKey(), baseMapper);
     }
 
-    create(definitions$: Observable<ViewFieldDefinition[]>): RecordStore {
+    create(definitions$: Observable<ViewFieldDefinition[]>, metadata$?: Observable<ObjectMap>): RecordStore {
         return new RecordStore(
             definitions$,
+            metadata$,
             this.recordSaveGQL,
             this.recordFetchGQL,
             this.message,
