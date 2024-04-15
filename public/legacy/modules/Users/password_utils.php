@@ -122,13 +122,18 @@ function hasPasswordExpired($username)
 
 
             case '2':
+                if (isset($_SESSION['login_needs_redirect'])){
+                    return $_SESSION['login_needs_redirect'];
+                }
                 $login=$current_user->getPreference('loginexpiration');
                 $current_user->setPreference('loginexpiration', $login+1);
                 $current_user->save();
                 if ($login+1 >= $res[$type.'expirationlogin']) {
                     $_SESSION['expiration_type']= $mod_strings['LBL_PASSWORD_EXPIRATION_LOGIN'] ?? 'Your password has expired. Please provide a new password.';
+                    $_SESSION['login_needs_redirect'] = true;
                     return true;
                 } else {
+                    $_SESSION['login_needs_redirect'] = false;
                     return false;
                 }
                 break;
