@@ -236,6 +236,21 @@ class MassUpdatePort extends MassUpdate
                 }
             }
 
+            if ($type === 'multienum' && str_contains($value, '^__SugarMassUpdateClearField__^')) {
+
+                if (str_contains($value, '^__SugarMassUpdateClearField__^,')) {
+                    $inputs[$field] = str_replace('^__SugarMassUpdateClearField__^,', '', $value);
+                    continue;
+                }
+
+                if (str_contains($value, ',^__SugarMassUpdateClearField__^')) {
+                    $inputs[$field] = str_replace(',^__SugarMassUpdateClearField__^', '', $value);
+                    continue;
+                }
+
+                $inputs[$field] = str_replace('^__SugarMassUpdateClearField__^', '', $value);
+            }
+
             if (
                 ($type === 'radioenum' && isset($inputs[$field]) && $value === '') ||
                 ($type === 'enum' && $value === '__SugarMassUpdateClearField__') // Set to '' if it's an explicit clear
