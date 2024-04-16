@@ -154,7 +154,13 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.options = [];
         Object.keys(this.optionsMap).forEach(key => {
 
-            if (isEmptyString(this.optionsMap[key]) && !this.addEmptyStringOption()) {
+            const isOptionEmpty = isEmptyString(this.optionsMap[key]);
+
+            if (isOptionEmpty && this.isSkipEmptyMode()) {
+                return;
+            }
+
+            if (isOptionEmpty && !this.addEmptyStringOption()){
                 return;
             }
 
@@ -171,6 +177,10 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
 
     protected addEmptyStringOption(): boolean {
         return this.field.type !== 'multienum';
+    }
+
+    protected isSkipEmptyMode(): boolean {
+        return this.mode === 'massupdate' || this.mode === 'filter';
     }
 
     protected initValue(): void {
