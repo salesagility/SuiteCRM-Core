@@ -305,7 +305,7 @@ abstract class BaseListDataHandler
         if (!empty($fieldDefinition['module']) && !empty($fieldDefinition['rname'])) {
             $isNonDb = $this->isNonDbField($fieldDefinition);
 
-            if ($isNonDb === true) {
+            if ($isNonDb === true && empty($fieldDefinition['id_name'])) {
                 return false;
             }
         }
