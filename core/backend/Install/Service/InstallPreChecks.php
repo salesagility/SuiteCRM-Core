@@ -418,7 +418,9 @@ class InstallPreChecks
 
     private function runPHPChecks($labels, $results): void
     {
-        $key = 'PHP CHECKS';
+        $this->modStrings = $this->getLanguageStrings();
+
+        $key = $this->modStrings['LBL_PHP_CHECKS'];
 
         $this->log->info('Starting PHP Checks');
 
@@ -479,7 +481,7 @@ class InstallPreChecks
         if ((int)$num < (int)$sugarMinMemory) {
             $minMemoryInMegs = constant('SUGARCRM_MIN_MEM') / (1024 * 1024);
             $error = $this->modStrings['LBL_PHP_MEM_1'] . $memoryLimit . $this->modStrings['LBL_PHP_MEM_2'] . $minMemoryInMegs . $this->modStrings['LBL_PHP_MEM_3'];
-            $results['errors'][] = 'Check Failed: ' . $error;
+            $results['errors'][] =  $this->modStrings['LBL_CHECK_FAILED'] . $error;
             return $results;
         }
 
@@ -567,7 +569,9 @@ class InstallPreChecks
 
     private function runPermissionChecks($labels, $results): void
     {
-        $key = 'PERMISSION CHECKS';
+        $this->modStrings = $this->getLanguageStrings();
+
+        $key = $this->modStrings['LBL_PERMISSION_CHECKS'];
 
         $this->log->info('Running Permission Checks');
 
@@ -635,9 +639,9 @@ class InstallPreChecks
         ];
 
         if (!is_writable('legacy/upload')) {
-            $results['errors'][] = 'Check Failed: legacy/upload not writable. Please run appropriate file permissions to resolve.';
+            $results['errors'][] = $this->modStrings['LBL_CHECK_FAILED'] . 'legacy/upload not writable. Please run appropriate file permissions to resolve.';
             $this->log->error($this->modStrings['ERR_CHECKSYS_NOT_WRITABLE']);
-            $this->log->error('Check Failed: legacy/upload not writable.');
+            $this->log->error($this->modStrings['LBL_CHECK_FAILED'] . 'legacy/upload not writable.');
             return $results;
         }
 
@@ -935,7 +939,7 @@ class InstallPreChecks
 
         if (!($uploadMaxFileSizeBytes >= constant('SUGARCRM_MIN_UPLOAD_MAX_FILESIZE_BYTES'))) {
             $this->log->error($this->modStrings['ERR_UPLOAD_MAX_FILESIZE']);
-            $results['errors'][] = 'Check Failed: ' . $this->modStrings['ERR_UPLOAD_MAX_FILESIZE'] . '. Currently yours is: ' . $uploadMaxFileSize;
+            $results['errors'][] = $this->modStrings['LBL_CHECK_FAILED'] . $this->modStrings['ERR_UPLOAD_MAX_FILESIZE'] . '. Currently yours is: ' . $uploadMaxFileSize;
             return $results;
         }
 
@@ -966,7 +970,9 @@ class InstallPreChecks
 
     private function runServerConfigurationCheck(array $labels, array $results): void
     {
-        $key = 'SERVER CHECKS';
+        $this->modStrings = $this->getLanguageStrings();
+
+        $key = $this->modStrings['LBL_SERVER_CHECKS'];
 
         $this->log->info('Starting Server Checks');
 
