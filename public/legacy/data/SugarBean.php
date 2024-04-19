@@ -2622,6 +2622,11 @@ class SugarBean
                     $type .= $def['dbType'];
                 }
 
+                $purifyHtml = $def['metadata']['purifyHtml'] ?? true;
+                if ($purifyHtml === false) {
+                    return;
+                }
+
                 if (isset($def['type']) && ($def['type'] == 'html' || $def['type'] == 'longhtml')) {
                     $this->$key = purify_html($this->$key);
                 } elseif (
