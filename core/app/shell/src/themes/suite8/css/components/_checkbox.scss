@@ -36,6 +36,12 @@
   user-select: none;
 }
 
+.dynamic-field-mode-list.dynamic-field-type-bool {
+  .checkbox-container {
+    display: inline-block;
+  }
+}
+
 /* Hide the browser's default checkbox */
 .checkbox-container input {
   position: absolute;
