@@ -316,8 +316,6 @@ export * from './fields/boolean/templates/detail/boolean.component';
 export * from './fields/boolean/templates/detail/boolean.module';
 export * from './fields/boolean/templates/edit/boolean.component';
 export * from './fields/boolean/templates/edit/boolean.module';
-export * from './fields/boolean/templates/filter/boolean.component';
-export * from './fields/boolean/templates/filter/boolean.module';
 export * from './fields/composite/composite.component';
 export * from './fields/composite/composite.module';
 export * from './fields/currency/templates/detail/currency.component';

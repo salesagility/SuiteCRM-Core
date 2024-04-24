@@ -54,10 +54,8 @@ import {FloatDetailFieldModule} from './float/templates/detail/float.module';
 import {DateDetailFieldComponent} from './date/templates/detail/date.component';
 import {FloatDetailFieldComponent} from './float/templates/detail/float.component';
 import {DateEditFieldComponent} from './date/templates/edit/date.component';
-import {BooleanFilterFieldComponent} from './boolean/templates/filter/boolean.component';
 import {EnumDetailFieldComponent} from './enum/templates/detail/enum.component';
 import {VarcharFilterFieldModule} from './varchar/templates/filter/filter.module';
-import {BooleanFilterFieldModule} from './boolean/templates/filter/boolean.module';
 import {RelateDetailFieldComponent} from './relate/templates/detail/relate.component';
 import {RelateEditFieldModule} from './relate/templates/edit/relate.module';
 import {RelateFilterFieldComponent} from './relate/templates/filter/relate.component';
@@ -146,7 +144,6 @@ export const baseFieldModules = [
     MultiEnumFilterFieldModule,
     BooleanDetailFieldModule,
     BooleanEditFieldModule,
-    BooleanFilterFieldModule,
     HtmlDetailFieldModule,
     TinymceDetailFieldModule,
     TinymceEditFieldModule
@@ -189,7 +186,6 @@ export const baseFieldComponents = [
     MultiEnumFilterFieldComponent,
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent,
-    BooleanFilterFieldComponent,
     HtmlDetailFieldComponent,
     TinymceDetailFieldComponent,
     TinymceEditFieldComponent
@@ -264,11 +260,10 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'boolean.list': BooleanDetailFieldComponent,
     'boolean.detail': BooleanDetailFieldComponent,
     'boolean.edit': BooleanEditFieldComponent,
-    'boolean.filter': BooleanFilterFieldComponent,
     'bool.list': BooleanDetailFieldComponent,
     'bool.detail': BooleanDetailFieldComponent,
     'bool.edit': BooleanEditFieldComponent,
-    'bool.filter': BooleanFilterFieldComponent,
+    'bool.filter': MultiEnumFilterFieldComponent,
     'html.detail': TinymceDetailFieldComponent,
     'html.edit': TinymceEditFieldComponent
 };
