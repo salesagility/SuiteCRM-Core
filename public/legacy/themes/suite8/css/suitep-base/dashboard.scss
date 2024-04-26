@@ -786,22 +786,16 @@ table #dashletPanel {
   }
 }
 
-@media (min-width:750px) and (max-width:755px) {
-  p.error {
-    margin-top: 5em!important;
-  }  
-}
-
 @media (max-width:1024px) {
   ul.nav-dashboard {
     li.active {
       a.first-tab-xs {
         .suitepicon {
-          font-size: 8px;          
+          font-size: 8px;
         }
       }
     }
-  } 
+  }
 }
 
 @media (max-width: 1024px) {
@@ -856,13 +850,13 @@ table #dashletPanel {
     }
     li.active {
       a {
-        @media (max-width: 1200px) { 
-          background: $dashboard-dropdown-btn; 
+        @media (max-width: 1200px) {
+          background: $dashboard-dropdown-btn;
         }
-        background: $dashboard-active-tab-bg;   
+        background: $dashboard-active-tab-bg;
         &:hover {
           background: $action-btn-hover-bg-color;
-        }     
+        }
       }
     }
   }
@@ -911,14 +905,14 @@ table #dashletPanel {
   .dashletPanel {
     .bd {
       overflow-x: auto;
-    }   
+    }
     .header-title {
       color: $white;
       white-space: nowrap;
       width: 100%;
-    } 
+    }
   }
-}  
+}
 
 .view-module-Home {
   textarea {
