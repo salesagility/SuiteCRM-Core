@@ -210,6 +210,7 @@ export class BaseField implements Field {
     vardefBased?: boolean;
     label?: string;
     labelKey?: string;
+    loading?: boolean;
     dynamicLabelKey?: string;
     readonly?: boolean;
     display?: DisplayType;
@@ -236,11 +237,12 @@ export class BaseField implements Field {
     protected valueListState?: string[];
     protected valueObjectState?: any;
     protected valueObjectArrayState?: ObjectMap[];
-    protected defaultValueInitialized: boolean = false;
+    defaultValueInitialized: boolean = false;
 
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
         this.valueChanges$ = this.valueSubject.asObservable();
+        this.loading = false;
     }
 
     get value(): string {
@@ -309,6 +311,7 @@ export class BaseField implements Field {
             this.value = '';
         }
     }
+
 }
 
 export interface FieldValue {

@@ -28,7 +28,7 @@ import {Type} from '@angular/core';
 import {RegistryInterface} from "../components/registry/base-component.registry";
 import {OverridableMap} from "../types/overridable-map";
 
-export abstract class BaseRegistry<T> implements RegistryInterface<T> {
+export abstract class BaseTypeRegistry<T> implements RegistryInterface<T> {
     protected map: OverridableMap<Type<T>>;
 
     protected constructor() {
@@ -39,8 +39,8 @@ export abstract class BaseRegistry<T> implements RegistryInterface<T> {
         return type;
     }
 
-    public register(module: string, type: string, component: Type<T>): void {
-        this.map.addEntry(module, this.getKey(module, type), component);
+    public register(module: string, type: string, objectType: Type<T>): void {
+        this.map.addEntry(module, this.getKey(module, type), objectType);
     }
 
     public exclude(module: string, key: string): void {
@@ -48,15 +48,15 @@ export abstract class BaseRegistry<T> implements RegistryInterface<T> {
     }
 
     public get(module: string, type: string): Type<T> {
-        const components = this.map.getGroupEntries(module);
+        const objectTypes = this.map.getGroupEntries(module);
 
         let key = this.getKey(module, type);
-        if (components[key]) {
-            return components[key];
+        if (objectTypes[key]) {
+            return objectTypes[key];
         }
 
-        if (components['default']) {
-            return components['default'];
+        if (objectTypes['default']) {
+            return objectTypes['default'];
         }
 
         return null;
@@ -64,10 +64,10 @@ export abstract class BaseRegistry<T> implements RegistryInterface<T> {
 
     public has(module: string, type: string): boolean {
 
-        const components = this.map.getGroupEntries(module);
+        const objectTypes = this.map.getGroupEntries(module);
 
         const key = this.getKey(module, type);
-        return !!components[key];
+        return !!objectTypes[key];
     }
 
     protected init(): void {
