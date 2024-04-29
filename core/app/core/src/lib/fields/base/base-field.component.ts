@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
 import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
 import {Subscription} from 'rxjs';
@@ -33,6 +33,7 @@ import {debounceTime} from 'rxjs/operators';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 import {isEqual} from "lodash-es";
+import {FieldHandlerRegistry} from "../../services/record/field/handler/field-handler.registry";
 
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDestroy {
@@ -45,12 +46,15 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     dependentFields: ObjectMap = {};
     dependentAttributes: AttributeDependency[] = [];
     protected subs: Subscription[] = [];
+    protected fieldHandlerRegistry: FieldHandlerRegistry;
 
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
         protected logicDisplay: FieldLogicDisplayManager
     ) {
+
+        this.fieldHandlerRegistry = inject(FieldHandlerRegistry)
     }
 
     ngOnInit(): void {
@@ -62,7 +66,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
         const defaultValueModes = this?.field?.defaultValueModes ?? [];
         if (defaultValueModes.includes(this.originalMode as ViewMode)) {
-            this.field.initDefaultValue();
+            const fieldHandler = this.fieldHandlerRegistry.get(this.record.module, this.field.type);
+            fieldHandler.initDefaultValue(this.field, this.record);
         }
     }
 

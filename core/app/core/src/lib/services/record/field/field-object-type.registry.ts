@@ -25,14 +25,14 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BaseField, BaseRegistry} from 'common';
+import {BaseField, BaseTypeRegistry} from 'common';
 import {FieldObjectTypeMap} from "./field-object.model";
 import {baseObjectFieldsTypeMap} from "./field-object-type.manifest";
 
 @Injectable({
     providedIn: 'root'
 })
-export class FieldObjectRegistry extends BaseRegistry<BaseField> {
+export class FieldObjectRegistry extends BaseTypeRegistry<BaseField> {
     protected initDefault(): void {
         Object.keys(this.getDefaultMap()).forEach(type => {
             this.register('default', type, this.getDefaultMap()[type]);

@@ -30,6 +30,7 @@ import {UntypedFormGroup} from '@angular/forms';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldManager} from './field/field.manager';
 import {Params} from '@angular/router';
+import {FieldHandlerRegistry} from "./field/handler/field-handler.registry";
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +39,8 @@ export class RecordManager {
 
     constructor(
         protected fieldManager: FieldManager,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected fieldHandlerRegistry: FieldHandlerRegistry
     ) {
     }
 
@@ -106,7 +108,8 @@ export class RecordManager {
         }
 
         Object.entries(record.fields).forEach(([key, field]) => {
-            field.initDefaultValue();
+            const fieldHandler = this.fieldHandlerRegistry.get(record.module, field.type);
+            fieldHandler.initDefaultValue(field, record);
         });
     }
 

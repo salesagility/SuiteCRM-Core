@@ -48,35 +48,4 @@ export class MultiEnumField extends BaseField {
 
         this.emitValueChanges();
     }
-
-    initDefaultValue(): void {
-
-        if (this.defaultValueInitialized) {
-            return;
-        }
-
-        let defaultValue = this?.default ?? this?.definition?.default ?? null;
-        if (!defaultValue) {
-            this.defaultValueInitialized = true;
-            return;
-        }
-
-        if (typeof defaultValue !== "string") {
-            return;
-        }
-
-        defaultValue = trimStart(defaultValue, '^');
-        defaultValue = trimEnd(defaultValue, '^');
-        const defaultValues = defaultValue.split("^,^");
-        if (!defaultValue) {
-            this.defaultValueInitialized = true;
-            return;
-        }
-
-        if (defaultValues && defaultValues.length) {
-            this.valueList = defaultValues;
-        }
-
-        this.defaultValueInitialized = true;
-    }
 }
