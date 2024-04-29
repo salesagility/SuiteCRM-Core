@@ -73,4 +73,61 @@ class DateTimeService
         return $diff->days;
     }
 
+    /**
+     * Get default value for
+     * like '+1 month'
+     * @param string $defaultConfig
+     * @param bool $time
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getDefaultDate(string $defaultConfig, bool $time = false): string
+    {
+        global $timedate;
+        $results = false;
+
+        if ($time) {
+            $dateTimeArray = explode('&', $defaultConfig, 2);
+            $now = $timedate->getNow(true);
+            $dateValue = $now->modify($dateTimeArray[0]);
+
+            if ($dateValue === false) {
+                $GLOBALS['log']->fatal('Invalid modifier for DateTime::modify(): ' . $dateTimeArray[0]);
+            }
+
+            if (!empty($dateTimeArray[1])) {
+                $timeValue = $timedate->fromString($dateTimeArray[1]);
+
+                if (!empty($timeValue)) {
+                    $dateValue->setTime($timeValue->hour, $timeValue->min, $timeValue->sec);
+                }
+            }
+
+            if (is_bool($dateValue)) {
+                $GLOBALS['log']->fatal('Type Error: Argument 1 passed to TimeDate::asUser() must be an instance of DateTime, boolean given');
+                return '';
+            }
+
+            $result = $timedate->asUser($dateValue);
+            return $result ?: '';
+        }
+
+        $now = $timedate->getNow(true);
+
+        try {
+            $results = $now->modify($defaultConfig);
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
+        }
+
+        if (is_bool($results)) {
+            $GLOBALS['log']->fatal('Type Error: Argument 1 passed to TimeDate::asUser() must be an instance of DateTime, boolean given');
+            return '';
+        }
+
+        $result = $timedate->asUserDate($results);
+        return $result ?: '';
+    }
+
 }
