@@ -24,28 +24,47 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, signal, ViewChild, WritableSignal} from '@angular/core';
 import {Field, FieldDefinition, ViewMode} from 'common';
 import {BaseFieldComponent} from '../base/base-field.component';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {StandardFieldRegistry} from '../standard-field.registry';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
+import {SystemConfigStore} from "../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-group-field',
     templateUrl: './group-field.component.html',
     styleUrls: []
 })
-export class GroupFieldComponent extends BaseFieldComponent {
+export class GroupFieldComponent extends BaseFieldComponent implements AfterViewInit {
+
+    @ViewChild('wrapper') wrapper: ElementRef;
+    direction: WritableSignal<string> = signal<string>('');
+
+    @HostListener('window:resize', ['$event'])
+    onResize(): void {
+        this.calculateDirection();
+    }
 
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected registry: StandardFieldRegistry,
         protected logic: FieldLogicManager,
-        protected logicDisplay: FieldLogicDisplayManager
+        protected logicDisplay: FieldLogicDisplayManager,
+        protected config: SystemConfigStore
     ) {
         super(typeFormatter, logic, logicDisplay);
+    }
+
+    ngOnInit(): void {
+        super.ngOnInit();
+        this.calculateDirection();
+    }
+
+    ngAfterViewInit(): void {
+        this.calculateDirection();
     }
 
     getComponentType(type: string, definition: FieldDefinition): any {
@@ -85,17 +104,30 @@ export class GroupFieldComponent extends BaseFieldComponent {
 
     /**
      * Get flex direction to be used
-     *
-     * @returns {string} direction
      */
-    getDirection(): string {
+    calculateDirection(): void {
+
+        const wrapperWidth = this?.wrapper?.nativeElement?.offsetWidth ?? null;
+
         let direction = 'flex-column';
 
-        if (this.field.definition.display === 'inline') {
+        if ((this?.field?.definition?.display ?? '') === 'inline') {
             direction = 'flex-row';
         }
 
-        return direction;
+        if (!wrapperWidth || this.mode === 'detail' || this.mode === 'list') {
+            this.direction.set(direction);
+            return;
+        }
+
+        const breakpoint = this?.config?.getUi('group_field_mobile_breakdown_limit') ?? 300;
+
+        if (wrapperWidth < breakpoint) {
+            this.direction.set('flex-column');
+            return;
+        }
+
+        this.direction.set(direction);
     }
 
     /**
@@ -160,4 +192,5 @@ export class GroupFieldComponent extends BaseFieldComponent {
     protected hasDisplay(): boolean {
         return !!this.field.definition.display;
     }
+
 }

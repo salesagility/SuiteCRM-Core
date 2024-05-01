@@ -30,14 +30,14 @@
 </ng-container>
 
 <ng-container *ngIf="isConfigured()">
-    <div class="d-flex {{getDirection()}} justify-content-start align-items-start field-group h-100">
+    <div #wrapper class="d-flex {{direction()}} justify-content-start align-items-start field-group h-100">
 
         <ng-container *ngFor="let groupField of getFields()">
 
             <div *ngIf="isModeEnabled(mode, groupField)"
-                 [class.flex-fill]="mode ==='edit' && getDirection() === 'flex-row'"
+                 [class.flex-fill]="mode ==='edit' && direction() === 'flex-row'"
                  class="field-group-item d-flex flex-column justify-content-end w-100"
-                 [class.h-100]="getDirection() === 'flex-row'">
+                 [class.h-100]="direction() === 'flex-row'">
 
                 <!-- LABEL -->
                 <span *ngIf="groupField.labelKey && showLabel(groupField.definition.name)"
