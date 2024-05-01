@@ -229,21 +229,28 @@ export class ListFilterStore implements StateStore {
                 return;
             }
 
-            if (field.vardefBased) {
-                const filters = savedFilter?.criteria?.filters ?? {};
-                const fieldFilter = (
-                    filters[key] ?? {}
-                ) as SearchCriteriaFieldFilter;
+            if (!field.vardefBased) {
+                this.fields.push(field);
+                return;
+            }
 
-                if (
-                    !isEmpty(fieldFilter?.operator)
-                    && field.display === 'none'
-                ) {
-                    field.display = 'default';
-                }
+            if (field.readonly === true) {
+                return;
+            }
+
+            const filters = savedFilter?.criteria?.filters ?? {};
+            const fieldFilter = (
+                filters[key] ?? {}
+            ) as SearchCriteriaFieldFilter;
+
+
+
+            if (!isEmpty(fieldFilter?.operator) && field.display === 'none') {
+                field.display = 'default';
             }
 
             this.fields.push(field);
+
         });
     }
 
@@ -262,9 +269,12 @@ export class ListFilterStore implements StateStore {
         const fields = [];
         this.fields.forEach(field => {
             const name = field.name;
+
+
             if (field.display === 'none' || field.source === 'groupField') {
                 return;
             }
+
             if (!this.searchFields[name]) {
                 field.readonly = true;
             }
