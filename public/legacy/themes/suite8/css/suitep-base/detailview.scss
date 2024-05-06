@@ -151,6 +151,10 @@ p.msg {
   margin-left: 0px;
 }
 
+.nav-tabs > li.search-results {
+  position: static!important;
+}
+
 @media (max-width: 750px) {
 
   .moduleTitle {
@@ -206,6 +210,7 @@ p.msg {
     visibility: collapse;
     display: none;
   }
+
 }
 
 @media (max-width: 1200px) {
