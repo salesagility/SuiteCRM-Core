@@ -43,7 +43,7 @@
 
     {if $pagination}
         <ul class="nav nav-tabs">
-            <li class="tab-inline-pagination">
+            <li class="tab-inline-pagination search-results">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                         <tr>
