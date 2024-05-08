@@ -70,6 +70,7 @@ $action_name_map = [
     'RepairUploadFolder' => 'repair-upload-folder',
     'About' => 'about',
     'UnifiedSearch' => 'unified-search',
+    'Search' => 'search',
     'ConvertLead' => 'convert-lead',
 ];
 
