@@ -43,8 +43,13 @@ export class GlobalSearch {
      * @param {string} searchTerm to search
      * @returns {object} Promise<boolean>
      */
-    public navigateToSearch(searchTerm: string): Promise<boolean> {
-        const route = '/home/unified-search';
+    public navigateToSearch(searchTerm: string, searchController: string): Promise<boolean> {
+
+        let route = '/home/search';
+
+        if (searchController === 'UnifiedSearch'){
+            route = '/home/unified-search';
+        }
 
         let queryString = '';
         if (searchTerm) {

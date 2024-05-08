@@ -362,7 +362,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     search(searchTerm: string) {
-        this.globalSearch.navigateToSearch(searchTerm).finally();
+        const searchController = this.systemConfigStore.getConfigValue('search')?.controller ?? '';
+        this.globalSearch.navigateToSearch(searchTerm, searchController).finally();
     }
 
     toggleSidebar(): void {
