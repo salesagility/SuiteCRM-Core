@@ -40,11 +40,12 @@
 
 namespace App\Install\Service;
 
+use AllowDynamicProperties;
 use Monolog\Logger;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-
+#[AllowDynamicProperties]
 class InstallPreChecks
 {
     public const STREAM_NAME = "upload";
@@ -393,12 +394,34 @@ class InstallPreChecks
     {
 
         $mod_strings = [];
+        $enUsStrings = [];
+        $lang = 'en_us';
 
-        $langPack = __DIR__ . '/../../../../public/legacy/install/language/en_us.lang.php';
+        $sugarConfig = $this->getConfigValues();
+        $configOverride = $this->getConfigOverrideValues();
 
-        if (file_exists($langPack)) {
-            include($langPack);
+        $enUsLangPack = __DIR__ . '/../../../../public/legacy/install/language/'. $lang . '.lang.php';
+
+        if (is_file($enUsLangPack)){
+            include($enUsLangPack);
+            $enUsStrings = $mod_strings;
         }
+
+        if (!empty($sugarConfig['default_language'])) {
+            $lang = $sugarConfig['default_language'];
+        }
+
+        if (!empty($configOverride['default_language'])) {
+            $lang = $configOverride['default_language'];
+        }
+
+        $langPack = __DIR__ . '/../../../../public/legacy/install/language/' . $lang . '.lang.php';
+
+        if (($langPack !== $enUsLangPack) && file_exists($langPack)) {
+            include($langPack);
+            $mod_strings = array_merge($enUsStrings, $mod_strings);
+        }
+
 
         return $mod_strings;
     }
@@ -411,6 +434,19 @@ class InstallPreChecks
 
         if (file_exists($configFile)){
             include($configFile);
+        }
+
+        return $sugar_config;
+    }
+
+    public function getConfigOverrideValues(): array
+    {
+        $sugar_config = [];
+
+        $configOverrideFile = __DIR__ . '/../../../../public/legacy/config_override.php';
+
+        if (file_exists($configOverrideFile)){
+            include($configOverrideFile);
         }
 
         return $sugar_config;
