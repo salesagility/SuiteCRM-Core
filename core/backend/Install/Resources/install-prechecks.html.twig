@@ -137,6 +137,17 @@
                 <hr class="record-view-hr">
             </div>
             <div class="install-view-container record-view-container view-container container-fluid pt-3 pb-3 small-font">
+                <div id="output-banner" class="d-flex flex-column output-banner">
+                    <div id="passed-banner" class="passed-banner">
+                        {{ mod_strings.LBL_CHECKS_PASSED }}
+                    </div>
+                    <div id="warnings-banner" class="warnings-banner">
+                        {{ mod_strings.LBL_WARNINGS_FOUND }}
+                    </div>
+                    <div id="errors-banner" class="errors-banner">
+                        {{ mod_strings.LBL_ERRORS_FOUND }}
+                    </div>
+                </div>
                 <div class="row no-gutters">
                     <div class="col">
                         <div class="record-content tabs-layout container-fluid pl-0 pr-0">
