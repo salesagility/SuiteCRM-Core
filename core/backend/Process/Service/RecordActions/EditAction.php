@@ -150,7 +150,7 @@ class EditAction implements ProcessHandlerInterface
         $baseRecordId = $options['payload']['baseRecordId'];
 
         //linked(subpanel) module
-        $linkedModule = $options['payload']['linkField'];
+        $linkedModule = $options["payload"]["recordModule"];
         $linkedRecordId = $options['id'];
         $linkedAction = 'edit';
 
