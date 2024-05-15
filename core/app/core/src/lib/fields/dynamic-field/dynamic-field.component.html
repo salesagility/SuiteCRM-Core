@@ -42,7 +42,7 @@
         </a>
     </ng-container>
     <ng-container *ngIf="isLink() && !hasOnClick()">
-        <a [routerLink]="getLink()" class="field-link">
+        <a [routerLink]="getLink()" [queryParams]="record?.metadata?.queryParams" class="field-link">
             <ndc-dynamic
                 [ndcDynamicComponent]="componentType"
                 [ndcDynamicInputs]="{

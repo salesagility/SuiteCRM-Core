@@ -30,6 +30,7 @@ import {ListViewModel, ListViewStore} from '../../store/list-view/list-view.stor
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {QuickFiltersService} from "../../services/quick-filters.service";
 import {ListViewSidebarWidgetService} from "../../services/list-view-sidebar-widget.service";
+import {VcrService} from "../../../record/store/vcr/vcr.service";
 
 @Component({
     selector: 'scrm-list',
@@ -39,6 +40,7 @@ import {ListViewSidebarWidgetService} from "../../services/list-view-sidebar-wid
 })
 export class ListComponent implements OnInit, OnDestroy {
     listSub: Subscription;
+    module: string;
 
     vm$: Observable<ListViewModel> = null;
 
@@ -46,14 +48,16 @@ export class ListComponent implements OnInit, OnDestroy {
         protected appState: AppStateStore,
         protected listStore: ListViewStore,
         protected quickFilters: QuickFiltersService,
-        protected sidebarWidgetHandler: ListViewSidebarWidgetService
+        protected sidebarWidgetHandler: ListViewSidebarWidgetService,
+        protected vcrService: VcrService
     ) {
 
     }
 
     ngOnInit(): void {
         this.appState.removeAllPrevRoutes();
-        this.listSub = this.listStore.init(this.appState.getModule()).subscribe();
+        this.module = this.appState.getModule();
+        this.listSub = this.listStore.init(this.module).subscribe();
         this.vm$ = this.listStore.vm$;
     }
 
@@ -62,9 +66,15 @@ export class ListComponent implements OnInit, OnDestroy {
             this.listSub.unsubscribe();
         }
 
+        this.updateListLocalStorage();
+
         this.quickFilters.destroy();
         this.sidebarWidgetHandler.destroy();
 
         this.listStore.destroy();
+    }
+
+    public updateListLocalStorage(): void {
+        this.vcrService.updateRecordListLocalStorage(this.listStore.recordList.records, this.listStore.recordList.pagination);
     }
 }

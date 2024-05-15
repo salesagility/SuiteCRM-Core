@@ -41,3 +41,4 @@ export * from './views/list/list-navigation.model';
 export * from './views/list/record-selection.model';
 export * from './views/list/search-criteria.model';
 export * from './views/list/selection.model';
+export * from './views/list/vcr.model';

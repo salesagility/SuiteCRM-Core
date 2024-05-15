@@ -223,7 +223,11 @@ export class ModuleNavigation {
      * @param {string} id fo the record
      * @returns {string} router link
      */
-    public getRecordRouterLink(module: string, id: string): string {
+    public getRecordRouterLink(module: string, id: string, isEdit?: boolean): string {
+
+        if(isEdit) {
+            return `/${module}/edit/${id}`;
+        }
 
         return `/${module}/record/${id}`;
     }

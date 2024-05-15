@@ -171,7 +171,6 @@ export class ListViewStore extends ViewStore implements StateStore {
         protected navigationStore: NavigationStore,
         protected moduleNavigation: ModuleNavigation,
         protected metadataStore: MetadataStore,
-        protected localStorage: LocalStorageService,
         protected message: MessageService,
         protected listStoreFactory: RecordListStoreFactory,
         protected modalService: NgbModal,

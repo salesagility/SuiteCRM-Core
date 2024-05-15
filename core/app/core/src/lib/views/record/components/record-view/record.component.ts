@@ -33,12 +33,13 @@ import {RecordViewModel} from '../../store/record-view/record-view.store.model';
 import {ViewMode} from 'common';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
 import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
+import {VcrStore} from "../../store/vcr/vcr.store";
 
 @Component({
     selector: 'scrm-record',
     templateUrl: './record.component.html',
     styleUrls: [],
-    providers: [RecordViewStore, RecordActionsAdapter, RecordViewSidebarWidgetService]
+    providers: [RecordViewStore, RecordActionsAdapter, RecordViewSidebarWidgetService, VcrStore]
 })
 export class RecordComponent implements OnInit, OnDestroy {
     recordSub: Subscription;

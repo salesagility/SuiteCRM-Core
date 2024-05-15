@@ -70,6 +70,7 @@ parameters:
       Medium: false
       Large: false
       XLarge: false
+    enable_vcr: true
     widget_swap_screen_sizes:
       XSmall: true
       Small: true

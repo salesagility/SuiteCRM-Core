@@ -47,13 +47,13 @@
         - {{vm.pageCount.pageLast}} {{vm.appStrings['LBL_LIST_OF'] || ''}} {{vm.pageCount.total}})
     </span>
     <button *ngIf="allowPagination" class="pagination-button pagination-next"
-            aria-label="Navigate to last page"
+            aria-label="Next page"
             (click)="next()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_next">
         </scrm-image>
     </button>
     <button *ngIf="allowPagination" class="pagination-button pagination-last"
-            aria-label="Next page"
+            aria-label="Navigate to last page"
             (click)="last()">
         <scrm-image class="sicon-2x pagination-icons" image="paginate_last">
         </scrm-image>

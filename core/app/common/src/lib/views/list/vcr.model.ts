@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,25 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldMap} from './field.model';
-import {UntypedFormGroup} from '@angular/forms';
-import {Params} from "@angular/router";
+import {Pagination} from "./list-navigation.model";
+import {ObjectMap} from "../../types/object-map";
 
-export interface AttributeMap {
-    [key: string]: any;
-}
 
-export interface Record {
-    id?: string;
-    type?: string;
-    module: string;
-    favorite?: boolean;
-    attributes: AttributeMap;
-    acls?: string[];
-    fields?: FieldMap;
-    formGroup?: UntypedFormGroup;
-    metadata?: {
-        queryParams?: Params;
-        [key: string]: any
-    }
+export interface Vcr {
+    recordIds: ObjectMap[],
+    pagination: Pagination
 }

@@ -35,7 +35,6 @@ import {RecordSaveNewAction} from './save-new/record-save-new.action';
 import {CancelCreateAction} from './cancel-create/cancel-create.action';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
 import {AsyncProcessRecordAction} from './async-process/async-process.service';
-import {ActionHandlerMap} from 'common';
 
 @Injectable({
     providedIn: 'root',

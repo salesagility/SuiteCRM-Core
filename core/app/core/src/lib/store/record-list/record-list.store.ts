@@ -40,7 +40,7 @@ import {
     SortDirection,
     SortingSelection
 } from 'common';
-import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '../state';
 import {DataSource} from '@angular/cdk/table';
@@ -157,6 +157,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     protected store = new BehaviorSubject<RecordListState>(this.internalState);
     protected state$ = this.store.asObservable();
     protected preferencesSub: Subscription;
+    protected subs: Subscription[] = [];
 
     preferenceKey: string;
     baseFilter: SavedFilter;
@@ -514,8 +515,22 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     public updatePagination(current: number): void {
         const pagination = {...this.internalState.pagination, current};
         this.updateState({...this.internalState, pagination});
-        this.updatePaginationLocalStorage();
-        this.load(false).pipe(take(1)).subscribe();
+
+        this.load(false).pipe(
+            take(1),
+            tap(() => this.updatePaginationLocalStorage())
+        ).subscribe();
+    }
+
+    public setPagination(current: number): Observable<RecordList>  {
+        this.pageKey = 'listview';
+        const pagination = {...this.internalState.pagination, current};
+        this.updateState({...this.internalState, pagination});
+
+        return this.load(false).pipe(
+            take(1),
+            tap(() => this.updatePaginationLocalStorage())
+        );
     }
 
     /**
@@ -742,6 +757,32 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
             this.updatePagination(pageToLoad);
         }
+    }
+
+    setPage(page: PageSelection): Observable<RecordList> {
+        let pageToLoad = 0;
+
+        const pageMap = {};
+        pageMap[PageSelection.FIRST] = 0;
+        pageMap[PageSelection.PREVIOUS] = this.internalState.pagination.previous;
+        pageMap[PageSelection.NEXT] = this.internalState.pagination.next;
+        pageMap[PageSelection.LAST] = this.internalState.pagination.last;
+
+        if (page in pageMap && pageMap[page] >= 0) {
+            pageToLoad = pageMap[page];
+
+            if (Number(pageToLoad) > this.internalState.pagination.last) {
+                return of({} as RecordList);
+            }
+
+            if (pageToLoad < 0) {
+                return of({} as RecordList);
+            }
+
+            return this.setPagination(pageToLoad);
+        }
+
+        return of({} as RecordList)
     }
 
     /**

@@ -71,6 +71,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
 
+    currentPage: number = 1;
+    pageSize: number = 20;
+
     constructor(
         protected fieldManager: FieldManager,
         protected loadingBufferFactory: LoadingBufferFactory
@@ -94,6 +97,12 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                 this.activeAction.next('');
             }
         } as ActiveLineAction;
+
+        this.subs.push(this.config.pagination.pagination$.subscribe(pagination => {
+            this.pageSize = pagination.pageSize;
+            this.currentPage = Math.ceil(pagination.pageLast / pagination.pageSize);
+        }));
+
 
         this.vm$ = this.config.columns.pipe(
             combineLatestWith(
@@ -132,6 +141,16 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
+
+                records.forEach((record, index) => {
+                    if (!record.metadata) {
+                        record.metadata = {};
+                    }
+
+                    record.metadata.queryParams = {
+                        offset: (index + 1 ) + ((this.currentPage - 1) * this.pageSize)
+                    };
+                });
 
                 return {
                     columns,

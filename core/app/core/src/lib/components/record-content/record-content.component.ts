@@ -31,6 +31,7 @@ import {map, shareReplay} from 'rxjs/operators';
 import {RecordContentConfig, RecordContentDataSource} from './record-content.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '../field-layout/field-layout.model';
 import {LanguageStore} from '../../store/language/language.store';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'scrm-record-content',
@@ -45,11 +46,20 @@ export class RecordContentComponent implements OnInit, OnDestroy {
     panels: Panel[];
     panelsInPrevTab: Panel[] = [];
     active = 1;
+    isOffsetExist: boolean = false;
     protected record: Record;
     protected fields: FieldMap;
     private subs: Subscription[] = [];
 
-    constructor(protected language: LanguageStore) {
+    constructor(
+        protected language: LanguageStore,
+        private activatedRoute: ActivatedRoute
+    ) {
+        this.subs.push(this.activatedRoute.queryParams
+            .subscribe(params => {
+                    this.isOffsetExist = !!params.offset;
+                }
+            ));
     }
 
     ngOnInit(): void {
