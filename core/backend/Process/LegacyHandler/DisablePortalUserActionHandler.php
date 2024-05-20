@@ -138,7 +138,7 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
      * @inheritDoc
      * @throws \JsonException
      */
-    public function run(Process $process)
+    public function run(Process $process): void
     {
         $this->init();
 
