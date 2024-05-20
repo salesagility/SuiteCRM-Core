@@ -229,6 +229,14 @@ $viewdefs ['Contacts'] =
                                         ]
                                     ]
                                 ],
+                                'onCreatedUser' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            'joomla_account_id' => [['operator' => 'not-empty']],
+                                        ]
+                                    ]
+                                ],
                             ],
                         ],
                         'enable-portal-user' => [
@@ -243,7 +251,7 @@ $viewdefs ['Contacts'] =
                                     'modes' => ['detail', 'edit', 'create'],
                                     'params' => [
                                         'activeOnFields' =>  [
-                                            '	joomla_account_id' => [''],
+                                            'joomla_account_id' => [['operator' => 'is-empty']],
                                         ]
                                     ]
                                 ],
@@ -269,7 +277,7 @@ $viewdefs ['Contacts'] =
                                     'modes' => ['detail', 'edit', 'create'],
                                     'params' => [
                                         'activeOnFields' =>  [
-                                            'joomla_account_id' => [''],
+                                            'joomla_account_id' => [['operator' => 'is-empty']],
                                         ]
                                     ]
                                 ],
