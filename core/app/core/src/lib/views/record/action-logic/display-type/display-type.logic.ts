@@ -29,6 +29,7 @@ import { Action, Field, isVoid, LogicDefinitions, Record, StringArrayMap, String
 import {Injectable} from '@angular/core';
 import {RecordActionData} from '../../actions/record.action';
 import {ActionLogicHandler} from '../../../../services/actions/action-logic-handler';
+import {ActiveFieldsChecker} from "../../../../services/condition-operators/active-fields-checker.service";
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +39,7 @@ export class RecordActionDisplayTypeLogic extends ActionLogicHandler<RecordActio
     key = 'displayType';
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor() {
+    constructor(protected activeFieldsChecker: ActiveFieldsChecker) {
         super();
     }
 
