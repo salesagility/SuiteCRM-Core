@@ -64,6 +64,7 @@ class RecordMapper
 
             $moduleName = $data['module_name'] ?? '';
             $id = $data['id'] ?? '';
+            $data['name'] = html_entity_decode($data['name'] ?? '', ENT_QUOTES);
             if (!empty($moduleName)) {
                 $moduleName = $this->moduleNameMapper->toFrontEnd($moduleName);
             }
