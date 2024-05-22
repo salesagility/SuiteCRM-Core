@@ -55,7 +55,7 @@ export class TinymceDetailFieldComponent extends BaseFieldComponent {
     ngOnInit(): void {
         super.ngOnInit();
         this.initSettings();
-        this.initialValue = this.field.value;
+        this.initialValue = this.getValue();
     }
 
     initSettings(): void {
@@ -75,5 +75,13 @@ export class TinymceDetailFieldComponent extends BaseFieldComponent {
         settings = merge(settings, defaults, systemDefaults, fieldConfig);
 
         this.settings = settings;
+    }
+
+    getValue(): string {
+        let value = this.field.value;
+        if (value === '' && (this.field.default ?? false)) {
+            value = this.field.default;
+        }
+        return value;
     }
 }
