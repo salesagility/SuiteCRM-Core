@@ -2197,6 +2197,7 @@ $app_strings = array(
     'LBL_SAVE_BUTTON_KEY' => 'a',
     'LBL_SAVE_BUTTON_LABEL' => 'Save',
     'LBL_SAVE_BUTTON_TITLE' => 'Save',
+    'LBL_SAVE_CONTINUE_LABEL' => 'Save And Continue',
     'LBL_CANCEL_BUTTON_KEY' => 'l',
     'LBL_CANCEL_BUTTON_LABEL' => 'Cancel',
     'LBL_CANCEL_BUTTON_TITLE' => 'Cancel',
