@@ -5,6 +5,7 @@
 For a list of supported versions, please see the documentation [Supported Versions](https://docs.suitecrm.com/community/supported-versions/) page.
 
 ## Reporting a Vulnerability
+To report a security issue, please use the GitHub Security Advisory ["Report a Vulnerability"](https://github.com/salesagility/SuiteCRM/security/advisories/new) tab.
 
 To report a security issue, please use the GitHub Security Advisory ["Report a Vulnerability"](https://github.com/salesagility/SuiteCRM-Core/security/advisories/new) tab.
 

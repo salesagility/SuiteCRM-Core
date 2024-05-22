@@ -1542,10 +1542,10 @@ class SugarBean
                 //C.L. Bug 43535 - Use the $index value to set the $rows_found value here
                 $rows_found = isset($index) ? $index : $row_offset + count($list);
 
-                if (count($list) >= $limit) {
-                    array_pop($list);
-                }
                 if (!$toEnd) {
+                    if (count($list) >= $limit) {
+                        array_pop($list);
+                    }
                     $next_offset--;
                     $previous_offset++;
                 }
@@ -2623,12 +2623,12 @@ class SugarBean
                 }
 
                 if (isset($def['type']) && ($def['type'] == 'html' || $def['type'] == 'longhtml')) {
-                    $this->$key = purify_html($this->$key);
+                    $this->$key = purify_html($this->$key, ['HTML.ForbiddenElements' => ['iframe' => true]]);
                 } elseif (
                     (strpos((string) $type, 'char') !== false || strpos((string) $type, 'text') !== false || $type == 'enum') &&
                     !empty($this->$key)
                 ) {
-                    $this->$key = purify_html($this->$key);
+                    $this->$key = purify_html($this->$key, ['HTML.ForbiddenElements' => ['iframe' => true]]);
                 }
             }
         }
