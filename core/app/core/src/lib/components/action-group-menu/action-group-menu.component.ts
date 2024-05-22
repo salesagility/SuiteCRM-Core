@@ -69,7 +69,7 @@ export class ActionGroupMenuComponent implements OnInit {
 
     protected subs: Subscription[];
     protected screen: ScreenSize = ScreenSize.Medium;
-    protected defaultBreakpoint = 3;
+    protected defaultBreakpoint = 4;
     protected breakpoint: number;
 
     constructor(
@@ -107,6 +107,11 @@ export class ActionGroupMenuComponent implements OnInit {
 
         actions.forEach((action: Action) => {
             const button = this.buildButton(action);
+
+            if (action.params && action.params.collapsedMobile && this.isXSmallScreen()) {
+                collapsed.push(button);
+                return;
+            }
 
             if (action.params && action.params.expanded) {
                 expanded.push(button);

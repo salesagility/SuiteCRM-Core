@@ -29,12 +29,11 @@ import {CommonModule} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PaginationCount, PageSelection, ObjectMap, ViewMode, ModalButtonInterface} from "common";
 import {combineLatestWith, Observable, Subscription} from "rxjs";
-import {map} from "rxjs/operators";
+import {filter, map, tap} from "rxjs/operators";
 import {toNumber} from "lodash-es";
 import {ImageModule} from "../image/image.module";
 import {ModuleNavigation} from "../../services/navigation/module-navigation/module-navigation.service";
 import {ModuleNameMapper} from "../../services/navigation/module-name-mapper/module-name-mapper.service";
-import {RecordActionManager} from "../../views/record/actions/record-action-manager.service";
 import {LanguageStore, LanguageStringMap} from "../../store/language/language.store";
 import {RecordViewStore} from "../../views/record/store/record-view/record-view.store";
 import {SystemConfigStore} from "../../store/system-config/system-config.store";
@@ -65,7 +64,8 @@ export class VcrComponent implements OnInit, OnDestroy {
     pageSize: number = 20;
     totalRecordsCount: number = 0;
     isRecordsLoading: boolean = false;
-    mode: ViewMode = 'detail';
+    isSaveContinueClicked: boolean = false;
+    mode: ViewMode = 'detail' as ViewMode;
     recordIds: ObjectMap[];
     subs: Subscription[] = [];
 
@@ -80,7 +80,6 @@ export class VcrComponent implements OnInit, OnDestroy {
         private navigation: ModuleNavigation,
         private nameMapper: ModuleNameMapper,
         private recordViewStore: RecordViewStore,
-        private actionManager: RecordActionManager,
         private vcrStore: VcrStore,
         private vcrService: VcrService,
         private route: ActivatedRoute,
@@ -99,7 +98,6 @@ export class VcrComponent implements OnInit, OnDestroy {
         this.currentPage = this.vcrStore.getCurrentPage();
         this.pageSize = this.vcrStore.getPageSize();
         this.totalRecordsCount = this.vcrStore.getRecordsCount();
-
         this.subs.push(this.mode$.subscribe(mode => {
             this.mode = mode;
         }));
@@ -113,28 +111,45 @@ export class VcrComponent implements OnInit, OnDestroy {
         this.subs.push(this.recordIds$.subscribe(recordIds => {
             this.recordIds = recordIds;
         }));
+
+        this.subs.push(this.vcrService.nextRecord$.pipe(
+            filter(data => {
+                if (!data) {
+                    return false;
+                }
+                return true;
+            }),
+            tap((data) => {
+                this.isSaveContinueClicked = true;
+                this.nextRecord();
+            })
+        ).subscribe((data) => {
+            this.isSaveContinueClicked = false;
+            this.vcrService.triggerNextRecord(false);
+
+        }));
     }
 
-    ngOnDestroy() : void{
+    ngOnDestroy() : void {
         this.subs.forEach(sub => sub.unsubscribe());
         this.vcrStore.clear();
     }
 
     prevRecord(): void {
-        if(this.currentIndex <= 0) {
+        if (this.currentIndex <= 0) {
             return;
         }
 
-        let currentRecordIndex = (this.currentIndex - 2) % this.pageSize;
+        let nextRecordIndex = (this.currentIndex - 2) % this.pageSize;
         let nextPageThreshold = this.currentIndex - ((this.currentPage - 1) * this.pageSize) - 1;
 
-        if(nextPageThreshold <= 0) {
+        if (nextPageThreshold <= 0) {
             this.loadPage(PageSelection.PREVIOUS);
         } else {
             if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty()) {
-                this.showConfirmationModal(PageSelection.PREVIOUS, currentRecordIndex);
+                this.showConfirmationModal(PageSelection.PREVIOUS, nextRecordIndex);
             } else {
-                this.navigatePrevRoute(currentRecordIndex);
+                this.navigatePrevRoute(nextRecordIndex);
             }
         }
     }
@@ -144,46 +159,46 @@ export class VcrComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let currentRecordIndex = this.currentIndex % this.pageSize;
+        let nextRecordIndex = this.currentIndex % this.pageSize;
         let nextPageThreshold = this.currentIndex - ((this.currentPage - 1) * this.pageSize);
 
-        if(nextPageThreshold > this.recordIds.length -1) {
+        if (nextPageThreshold > this.recordIds.length -1) {
             this.loadPage(PageSelection.NEXT);
         } else {
-            if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty()) {
-                this.showConfirmationModal(PageSelection.NEXT, currentRecordIndex);
+            if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty() && !this.isSaveContinueClicked) {
+                this.showConfirmationModal(PageSelection.NEXT, nextRecordIndex);
             } else {
-                this.navigateNextRoute(currentRecordIndex);
+                this.navigateNextRoute(nextRecordIndex);
             }
         }
     }
 
     protected loadPage(direction: PageSelection): void {
         this.isRecordsLoading = true;
-        const currentRecordIndex = direction === PageSelection.PREVIOUS ? (this.pageSize - 1) : 0;
+        const nextRecordIndex = direction === PageSelection.PREVIOUS ? (this.pageSize - 1) : 0;
         this.vcrStore.recordListStore.setPage(direction as PageSelection).subscribe(data => {
             this.vcrService.updateRecordListLocalStorage(data.records, data.pagination);
             this.vcrStore.loadDataLocalStorage();
             this.isRecordsLoading = false;
-            if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty()) {
-                this.showConfirmationModal(direction, currentRecordIndex);
+            if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty() && !this.isSaveContinueClicked) {
+                this.showConfirmationModal(direction, nextRecordIndex);
             } else {
-                direction === PageSelection.NEXT ? this.navigateNextRoute(currentRecordIndex) : this.navigatePrevRoute(currentRecordIndex);
+                direction === PageSelection.NEXT ? this.navigateNextRoute(nextRecordIndex) : this.navigatePrevRoute(nextRecordIndex);
             }
         });
     }
 
-    protected navigateNextRoute(currentRecordIndex: number): void {
-        const nextRoute = this.buildRoute(this.recordIds[currentRecordIndex]);
+    protected navigateNextRoute(nextRecordIndex: number): void {
+        const nextRoute = this.buildRoute(this.recordIds[nextRecordIndex]);
         this.router.navigate([nextRoute], { queryParams: { offset: this.currentIndex + 1 }});
     }
 
-    protected navigatePrevRoute(currentRecordIndex: number): void {
-        const nextRoute = this.buildRoute(this.recordIds[currentRecordIndex]);
+    protected navigatePrevRoute(nextRecordIndex: number): void {
+        const nextRoute = this.buildRoute(this.recordIds[nextRecordIndex]);
         this.router.navigate([nextRoute], { queryParams: { offset: this.currentIndex - 1 }});
     }
 
-    protected showConfirmationModal(direction: PageSelection, currentRecordIndex: number): void {
+    protected showConfirmationModal(direction: PageSelection, nextRecordIndex: number): void {
         const modal = this.modalService.open(MessageModalComponent);
 
         modal.componentInstance.textKey = 'WARN_UNSAVED_CHANGES';
@@ -197,14 +212,14 @@ export class VcrComponent implements OnInit, OnDestroy {
                 labelKey: 'LBL_PROCEED',
                 klass: ['btn-main'],
                 onClick: activeModal => {
-                    direction === PageSelection.NEXT ? this.navigateNextRoute(currentRecordIndex) : this.navigatePrevRoute(currentRecordIndex);
+                    direction === PageSelection.NEXT ? this.navigateNextRoute(nextRecordIndex) : this.navigatePrevRoute(nextRecordIndex);
                     activeModal.close();
                 }
-            } as ModalButtonInterface,
+            } as ModalButtonInterface
         ];
     }
 
-    buildRoute(recordId: ObjectMap): string {
+    protected buildRoute(recordId: ObjectMap): string {
         const module = this.nameMapper.toFrontend(this.vcrStore.getModule()) ?? '';
         const id = recordId.id ?? '';
         const isEdit = this.mode === 'edit';

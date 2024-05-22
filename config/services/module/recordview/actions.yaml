@@ -43,6 +43,16 @@ parameters:
             expanded: true
           modes:
             - create
+        saveContinue:
+          key: saveContinue
+          labelKey: LBL_SAVE_CONTINUE_LABEL
+          params:
+            expanded: true
+            collapsedMobile: true
+          modes:
+            - edit
+          acl:
+            - edit
         delete:
           key: delete
           labelKey: LBL_DELETE

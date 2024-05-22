@@ -37,7 +37,6 @@ import {SavedFilterMap} from "../../../../store/saved-filters/saved-filter.model
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
 import {VcrService} from "./vcr.service";
 
-
 export interface VcrState {
     vcrEnabled?: boolean;
     recordIds?: ObjectMap[];
@@ -102,7 +101,7 @@ export class VcrStore  {
         this.updateState({...this.internalState, vcrEnabled: isVcr});
     }
 
-    public loadDataLocalStorage() {
+    public loadDataLocalStorage(): void {
         const vcrData: Vcr = this.getRecordListPreference();
         this.updateState({...this.internalState, recordIds: vcrData?.recordIds, pagination: vcrData?.pagination});
     }
@@ -110,11 +109,20 @@ export class VcrStore  {
     protected getRecordListPreference(): Vcr {
         const module = this.getModule();
         const vcrObj = this.loadPreference(module, 'current-vcr');
+        this.checkPaginationExist(vcrObj);
 
         if (!isArray(vcrObj.recordIds) || !vcrObj.recordIds || !vcrObj.recordIds.length) {
             return null;
         }
         return vcrObj;
+    }
+
+    protected checkPaginationExist(vcrObj: VcrState): void {
+        const module = this.getModule();
+        const hasPagination = this.loadPreference(module, 'current-pagination', 'listview');
+        if (!hasPagination) {
+            this.recordListStore.pagination = vcrObj.pagination;
+        }
     }
 
     protected loadPreference(module: string, storageKey: string, pageKey?: string): any {

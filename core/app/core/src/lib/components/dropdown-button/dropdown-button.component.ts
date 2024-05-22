@@ -50,7 +50,6 @@ export class DropdownButtonComponent implements OnInit {
     @Input() disabled = false;
     @Input() autoClose: boolean | 'outside' | 'inside' = true;
 
-    buttons: any[] = [];
     sections: DropdownButtonSection[] = [];
     sectionsEnabled: boolean = false;
 
@@ -91,7 +90,6 @@ export class DropdownButtonComponent implements OnInit {
         const sectionsConfig: DropdownButtonSectionMap = this.config?.sections ?? {};
 
         if (emptyObject(sectionsConfig)) {
-            this.buttons = [...this.config?.items ?? []];
             this.sectionsEnabled = false;
             return;
         }

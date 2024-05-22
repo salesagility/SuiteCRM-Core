@@ -72,7 +72,7 @@
         </ng-container>
 
         <ng-container *ngIf="!sectionsEnabled">
-            <ng-container *ngFor="let item of buttons">
+            <ng-container *ngFor="let item of config.items">
                 <ng-container *ngTemplateOutlet="buttonTemplate; context: { item: item }"></ng-container>
             </ng-container>
         </ng-container>

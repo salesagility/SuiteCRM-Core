@@ -29,17 +29,25 @@ import {Pagination, Record, ObjectMap} from 'common';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class VcrService {
 
+    private nextRecordSubject = new BehaviorSubject<boolean>(false);
+    nextRecord$ = this.nextRecordSubject.asObservable();
+
     constructor(
         protected appStateStore: AppStateStore,
         protected preferences: UserPreferenceStore,
         protected localStorageService: LocalStorageService
     ) {}
+
+    public triggerNextRecord(value: boolean): void {
+        this.nextRecordSubject.next(value);
+    }
 
     public updateRecordListLocalStorage(records: Record[], pagination: Pagination): void {
         const module = this.getModule();

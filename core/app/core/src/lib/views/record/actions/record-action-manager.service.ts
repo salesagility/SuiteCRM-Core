@@ -35,6 +35,7 @@ import {RecordSaveNewAction} from './save-new/record-save-new.action';
 import {CancelCreateAction} from './cancel-create/cancel-create.action';
 import {BaseActionManager} from '../../../services/actions/base-action-manager.service';
 import {AsyncProcessRecordAction} from './async-process/async-process.service';
+import {RecordSaveContinueAction} from "./save-continue/record-save-continue.action";
 
 @Injectable({
     providedIn: 'root',
@@ -49,6 +50,7 @@ export class RecordActionManager extends BaseActionManager<RecordActionData> {
         protected cancelCreate: CancelCreateAction,
         protected save: RecordSaveAction,
         protected saveNew: RecordSaveNewAction,
+        protected saveContinue: RecordSaveContinueAction,
         protected async: AsyncProcessRecordAction,
     ) {
         super();
@@ -58,6 +60,7 @@ export class RecordActionManager extends BaseActionManager<RecordActionData> {
         cancel.modes.forEach(mode => this.actions[mode][cancel.key] = cancel);
         save.modes.forEach(mode => this.actions[mode][save.key] = save);
         saveNew.modes.forEach(mode => this.actions[mode][saveNew.key] = saveNew);
+        saveContinue.modes.forEach(mode => this.actions[mode][saveContinue.key] = saveContinue);
         cancelCreate.modes.forEach(mode => this.actions[mode][cancelCreate.key] = cancelCreate);
         async.modes.forEach(mode => this.actions[mode][async.key] = async);
     }

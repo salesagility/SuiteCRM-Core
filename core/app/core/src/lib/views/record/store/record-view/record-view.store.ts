@@ -370,6 +370,22 @@ export class RecordViewStore extends ViewStore implements StateStore {
         );
     }
 
+    saveOnEdit(): Observable<Record> {
+        return this.recordStore.save().pipe(
+            catchError(() => {
+                this.message.addDangerMessageByKey('LBL_ERROR_SAVING');
+                return of({} as Record);
+            }),
+            finalize(() => {
+                this.appStateStore.updateLoading(`${this.internalState.module}-record-save`, false);
+                this.updateState({
+                    ...this.internalState,
+                    loading: false
+                });
+            })
+        );
+    }
+
     /**
      * Load / reload record using current pagination and criteria
      *
