@@ -58,7 +58,7 @@ export class TinymceEditFieldComponent extends BaseFieldComponent implements OnD
         super.ngOnInit();
         this.initSettings();
         this.subscribeValueChanges();
-        this.value = this.field.value ?? '';
+        this.value = this.getValue();
     }
 
     ngOnDestroy(): void {
@@ -95,5 +95,13 @@ export class TinymceEditFieldComponent extends BaseFieldComponent implements OnD
 
     setModel(): void {
         this.field.formControl.setValue(this.value);
+    }
+
+    getValue(): string {
+        let value = this.field.value;
+        if (value === '' && (this.field.default ?? false)) {
+            value = this.field.default;
+        }
+        return value;
     }
 }
