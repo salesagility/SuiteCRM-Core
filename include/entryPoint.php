@@ -225,3 +225,6 @@ if (empty($GLOBALS['installing']) && !empty($sugar_config['dbconfig']['db_name']
 
 ////	END SETTING DEFAULT VAR VALUES
 ///////////////////////////////////////////////////////////////////////////////
+
+//It does a check to see if the host is valid
+check_trusted_hosts();
