@@ -29,7 +29,13 @@ $classicview_routing_exclusions = [
     'any' => [
         'ShowDuplicates'
     ],
+    'administration' => [
+        'upgrade',
+        'repair'
+    ],
     'Administration' => [
+        'upgrade',
+        'repair',
         'UpgradeWizard_prepare',
         'UpgradeWizard_commit'
     ],

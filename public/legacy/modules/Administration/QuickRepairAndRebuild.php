@@ -128,11 +128,49 @@ class RepairAndClear
 
     /////////////OLD
 
-    public function clearCoreCache()
+    /**
+     * Clear Symfony Cache
+     * @return void
+     */
+    public function clearCoreCache() : void
     {
         if (empty($GLOBALS['installing'])) {
-            $coreCachePath = __DIR__ . '/../../../../cache/';
-            rmdir_recursive($coreCachePath);
+            $fs = new Symfony\Component\Filesystem\Filesystem();
+            $tempId = uniqid();
+
+            $this->clearCacheDir($fs, $tempId, '/prod');
+            $this->clearCacheDir($fs, $tempId, '/dev');
+            $this->clearCacheDir($fs, $tempId, '/test');
+            $this->clearCacheDir($fs, $tempId, '/qa');
+
+            require_once "include/portability/Services/Cache/CacheManager.php";
+            (new CacheManager())->markAsNeedsUpdate('rebuild_all');
+
+            if (function_exists('opcache_reset')) {
+                opcache_reset();
+            }
+
+            if (function_exists('apcu_clear_cache')) {
+                apcu_clear_cache();
+            }
+        }
+    }
+
+    /**
+     * Rename and remove cache subdirectory
+     * @param $fs
+     * @param $tempId
+     * @param $cacheFolder
+     * @return void
+     */
+    protected function clearCacheDir($fs, $tempId, $cacheFolder) : void
+    {
+        $cacheDirPath = __DIR__ . '/../../../../cache' . $cacheFolder;
+
+        if($fs->exists($cacheDirPath)){
+            $fs->rename($cacheDirPath, $cacheDirPath . '_' . $tempId . '_deprecated/');
+            $fs->mkdir($cacheDirPath);
+            $fs->remove($cacheDirPath . '_' . $tempId . '_deprecated/');
         }
     }
 
