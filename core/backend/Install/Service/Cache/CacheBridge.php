@@ -69,9 +69,8 @@ class CacheBridge
         $feedback->setSuccess(true)->setMessages(['Successfully cleared cache']);
 
         try {
-            $fs = new Filesystem();
-            $fs->remove($this->cacheDir);
 
+            $this->clearCacheDir();
             $this->clearPhpCache();
 
         } catch (Exception $e) {
@@ -94,6 +93,24 @@ class CacheBridge
 
         if (function_exists('apcu_clear_cache')) {
             apcu_clear_cache();
+        }
+    }
+
+    /**
+     * Rename and delete cache subdirectory
+     * @param $fs
+     * @param $tempId
+     * @return void
+     */
+    protected function clearCacheDir() : void
+    {
+        $fs = new Filesystem();
+        $tempId = uniqid();
+
+        if($fs->exists($this->cacheDir)){
+            $fs->rename($this->cacheDir, $this->cacheDir . '_' . $tempId . '_deprecated/');
+            $fs->mkdir($this->cacheDir);
+            $fs->remove($this->cacheDir . '_' . $tempId . '_deprecated/');
         }
     }
 
