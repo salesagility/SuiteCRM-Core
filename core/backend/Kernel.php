@@ -115,14 +115,21 @@ class Kernel extends BaseKernel
     }
 
     /**
+     * Init bundles and container
+     * @return void
+     */
+    public function init(): void
+    {
+        $this->initializeBundles();
+        $this->initializeContainer();
+    }
+
+    /**
      * @param Request $request
      * @return array
      */
     public function getLegacyRoute(Request $request): array
     {
-        $this->initializeBundles();
-        $this->initializeContainer();
-
         if ($this->container->has('legacy.route.handler')) {
             return $this->container->get('legacy.route.handler')->getLegacyRoute($request);
         }

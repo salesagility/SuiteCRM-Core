@@ -43,7 +43,7 @@ import {
 import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';
-import {merge} from 'lodash-es';
+import {isEmpty, merge} from 'lodash-es';
 import {FieldObjectRegistry} from "./field-object-type.registry";
 
 
@@ -69,7 +69,15 @@ export class FieldBuilder {
      */
     public buildField(record: Record, viewField: ViewFieldDefinition, language: LanguageStore = null): Field {
 
-        const definition = (viewField && viewField.fieldDefinition) || {} as FieldDefinition;
+        const module = record?.module ?? '';
+        let definition = viewField?.fieldDefinition ?? {} as FieldDefinition;
+        const multiModuleDefinitions = viewField?.multiModuleDefinitions ?? {} as ObjectMap;
+        const currentModuleDefinitions = multiModuleDefinitions[module] ?? {} as FieldDefinition;
+
+        if (!isEmpty(currentModuleDefinitions)){
+            definition = currentModuleDefinitions;
+        }
+
         const {value, valueList, valueObject} = this.parseValue(viewField, definition, record);
         const {validators, asyncValidators} = this.getSaveValidators(record, viewField);
 

@@ -28,6 +28,7 @@
 
 namespace App\Routes\Service;
 
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
 class LegacyRedirectHandler
@@ -87,6 +88,10 @@ class LegacyRedirectHandler
         $baseUrl = $request->getPathInfo();
 
         $baseUrl = substr($baseUrl, 1);
+
+        if (strpos($baseUrl, '../') !== false) {
+            throw new InvalidArgumentException('invalid path');
+        }
 
         if (strpos($baseUrl, '.php') === false) {
             $baseUrl .= 'index.php';

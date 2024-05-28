@@ -34,6 +34,8 @@ require __DIR__ . '/../vendor/autoload.php';
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 
+$kernel->init();
+
 global $legacyRoute;
 
 $legacyRoute = $kernel->getLegacyRoute($request);
@@ -56,7 +58,7 @@ if (!empty($legacyRoute)) {
     if (file_exists($legacyRoute['file'])) {
 
         /* @noinspection PhpIncludeInspection */
-        require $legacyRoute['file'];
+        require './' . $legacyRoute['file'];
     } else {
 
         http_response_code(404);

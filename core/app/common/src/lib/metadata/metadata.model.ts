@@ -46,6 +46,8 @@ export interface ViewFieldDefinition {
     metadata?: FieldMetadata;
     logic?: FieldLogicMap;
     displayLogic?: FieldLogicMap;
+
+    [key: string]: any;
 }
 
 export interface Panel {

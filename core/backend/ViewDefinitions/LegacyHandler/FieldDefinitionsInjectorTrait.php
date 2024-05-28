@@ -62,8 +62,7 @@ trait FieldDefinitionsInjectorTrait
             return $field;
         }
 
-        $alias = $fieldAliasMapper->map($vardefs[$name]);
-        $aliasDefs = $vardefs[$alias] ?? $vardefs[$name];
+        $aliasDefs = $this->getAliasDefinitions($fieldAliasMapper, $vardefs, $name);
 
         $field['fieldDefinition'] = $aliasDefs;
         $field['name'] = $aliasDefs['name'] ?? $field['name'];
@@ -111,5 +110,21 @@ trait FieldDefinitionsInjectorTrait
         }
 
         return $field;
+    }
+
+    /**
+     * @param FieldAliasMapper $fieldAliasMapper
+     * @param array $vardefs
+     * @param string $name
+     * @return mixed
+     */
+    protected function getAliasDefinitions(FieldAliasMapper $fieldAliasMapper, array $vardefs, string $name)
+    {
+        if (empty($vardefs[$name])) {
+            return [];
+        }
+
+        $alias = $fieldAliasMapper->map($vardefs[$name]);
+        return $vardefs[$alias] ?? $vardefs[$name];
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,56 +25,31 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-require_once __DIR__ . '/../../../ApiBeanMapper/FieldMappers/FieldMapperInterface.php';
-require_once __DIR__ . '/../../../ModuleNameMapper.php';
-require_once __DIR__ . '/../../Helpers/HtmlFieldPurify.php';
-
-class CaseUpdatesDescriptionMapper implements FieldMapperInterface
+trait HtmlFieldPurify
 {
-    use HtmlFieldPurify;
-
-    public const FIELD_NAME = 'description';
 
     /**
-     * @var ModuleNameMapper
+     * @param SugarBean $bean
+     * @param string $field
+     * @param mixed $value
+     * @return string
      */
-    protected $moduleNameMapper;
-
-    /**
-     * RouteConverter constructor.
-     */
-    public function __construct()
+    protected function purify(SugarBean $bean, string $field, mixed $value): string
     {
-        $this->moduleNameMapper = new ModuleNameMapper();
-    }
+        $fieldDef = $bean->field_defs[$field] ?? [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function toApi(SugarBean $bean, array &$container, string $alternativeName = ''): void
-    {
-        $name = self::FIELD_NAME;
-        $value = html_entity_decode($bean->$name ?? '', ENT_QUOTES);
+        $purifyHtml = $fieldDef['metadata']['purifyHtml'] ?? true;
 
-        $container[$name] = html_entity_decode($this->purify($bean, $name, $value));
-    }
+        if ($purifyHtml === false || !is_string($value)) {
+            return $value;
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public function toBean(SugarBean $bean, array &$container, string $alternativeName = ''): void
-    {
-        $field = self::getField();
-        $value = nl2br($container[$field] ?? '');
+        $extra = ['HTML.ForbiddenElements' => ['iframe' => true]];
+        $allowIframe = $fieldDef['metadata']['allowIframe'] ?? false;
+        if (isTrue($allowIframe)) {
+            $extra = [];
+        }
 
-        $container[$field] = $this->purify($bean, $field,$value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public static function getField(): string
-    {
-        return self::FIELD_NAME;
+        return purify_html(securexss($value), $extra);
     }
 }

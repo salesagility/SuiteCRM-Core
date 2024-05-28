@@ -26,9 +26,12 @@
  */
 
 require_once __DIR__ . '/TypeMapperInterface.php';
+require_once __DIR__ . '/../Helpers/HtmlFieldPurify.php';
 
 class HtmlMapper implements TypeMapperInterface
 {
+    use HtmlFieldPurify;
+
     /**
      * @inheritDoc
      */
@@ -54,7 +57,9 @@ class HtmlMapper implements TypeMapperInterface
             return;
         }
 
-        $container[$newName] = $bean->$name;
+        $value = html_entity_decode($bean->$name);
+
+        $container[$newName] = $this->purify($bean, $name, $value);
     }
 
     /**
@@ -68,15 +73,12 @@ class HtmlMapper implements TypeMapperInterface
             $newName = $alternativeName;
         }
 
-        $fieldDef = $bean->field_defs[$newName] ?? [];
-
-        $purifyHtml = $fieldDef['metadata']['purifyHtml'] ?? true;
         $value = $container[$newName] ?? '';
 
-        if ($purifyHtml === false || empty($value) || !is_string($value)) {
+        if (empty($value)) {
             return;
         }
 
-        $container[$newName] = purify_html(securexss($value));
+        $container[$newName] = $this->purify($bean, $name, $value);
     }
 }

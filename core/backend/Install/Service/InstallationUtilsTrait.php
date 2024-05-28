@@ -71,10 +71,15 @@ trait InstallationUtilsTrait
     public function getLegacyConfig($legacyDir): ?array
     {
         $sugarConfigFile = $legacyDir . '/config.php';
+        $sugarOverrideConfigFile = $legacyDir . '/config_override.php';
 
         if (is_file($sugarConfigFile)) {
             $sugar_config = [];
             include $sugarConfigFile;
+
+            if (is_file($sugarOverrideConfigFile)) {
+                include $sugarOverrideConfigFile;
+            }
 
             return $sugar_config;
         }

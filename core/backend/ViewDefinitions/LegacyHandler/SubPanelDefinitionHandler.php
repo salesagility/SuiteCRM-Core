@@ -198,9 +198,11 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             }
 
             $columnSubpanel = $subpanel;
+            $extraModuleVardefs = [];
             if (!empty($tab['collection_list'])) {
                 $columnSubpanel = $subpanel->get_header_panel_def();
                 $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
+                $extraModuleVardefs = $this->getCollectionListVardefs($tab['collection_list']);
             } else {
                 $headerModule = $this->getHeaderModule($tab);
             }
@@ -223,7 +225,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
             $resultingTabs[$key] = $tabs[$key];
 
-            $mapColumns = $this->mapColumns($columnSubpanel, $vardefs);
+            $mapColumns = $this->mapColumns($columnSubpanel, $vardefs, $extraModuleVardefs);
 
             if (!empty($tab['collection_list'])) {
                 $iconColumn = $this->buildIconColumn($tab['module']);
@@ -292,9 +294,9 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
 
         $topButtonDefinitions = $this->getButtonDefinitions($subpanel);
 
-        foreach($topButtonDefinitions as $key => $value){
-            if (stripos($value['widget_class'], 'topfilter')){
-                if (!$this->getSearchdefs($subpanel) && !$searchDefs['searchdefs']){
+        foreach ($topButtonDefinitions as $key => $value) {
+            if (stripos($value['widget_class'], 'topfilter')) {
+                if (!$this->getSearchdefs($subpanel) && !$searchDefs['searchdefs']) {
                     unset($topButtonDefinitions[$key]);
                     break;
                 }
@@ -321,7 +323,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
     protected function getSearchdefs(aSubPanel $subpanel) {
         $searchDefs = $subpanel->_instance_properties['searchdefs'] ?? '';
 
-        if (!empty($searchDefs)){
+        if (!empty($searchDefs)) {
             foreach ($searchDefs as &$field) {
                 $fieldDefinition = [
                     'name' => $field['name'],
@@ -354,7 +356,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
      * @param array $vardefs
      * @return array
      */
-    protected function mapColumns(aSubPanel $subpanel, array $vardefs): array
+    protected function mapColumns(aSubPanel $subpanel, array $vardefs, array $extraModuleVardefs): array
     {
         $panelDefinition = $subpanel->panel_definition ?? [];
         $listFields = $panelDefinition['list_fields'] ?? [];
@@ -377,7 +379,13 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 continue;
             }
 
-            $definitions[] = $this->buildColumn($column, $key, $vardefs);
+            $definition = $this->buildColumn($column, $key, $vardefs);
+
+            if (!empty($extraModuleVardefs)) {
+                $definition = $this->addMultiModuleVardefs($extraModuleVardefs, $key, $definition);
+            }
+
+            $definitions[] = $definition;
         }
 
         return $definitions;
@@ -596,5 +604,71 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         }
 
         return $lineActions;
+    }
+
+    /**
+     * @param $collection_list
+     * @return array
+     */
+    protected function getCollectionListVardefs($collection_list): array
+    {
+        $extraModuleVardefs = [];
+        if (!is_array($collection_list)) {
+            return $extraModuleVardefs;
+        }
+
+        foreach ($collection_list as $item) {
+            $itemLegacyModuleName = $item['module'] ?? '';
+            if (empty($itemLegacyModuleName)) {
+                continue;
+            }
+
+            $itemModule = $this->moduleNameMapper->toFrontEnd($itemLegacyModuleName);
+            if (empty($itemModule)) {
+                continue;
+            }
+
+            $itemVardefs = $this->getSubpanelModuleVardefs($itemModule);
+            if (empty($itemVardefs)) {
+                continue;
+            }
+
+            $extraModuleVardefs[$itemModule] = $itemVardefs;
+        }
+
+        return $extraModuleVardefs;
+    }
+
+    /**
+     * @param array $extraModuleVardefs
+     * @param int|string $key
+     * @param array $definition
+     * @return array
+     */
+    protected function addMultiModuleVardefs(array $extraModuleVardefs, $key, array $definition): array
+    {
+
+
+        $multiModuleFieldVardefs = [];
+        foreach ($extraModuleVardefs as $module => $extraModuleVardef) {
+            $alias = $definition['alias'] ?? '';
+
+            if (empty($extraModuleVardef[$alias])) {
+                $alias = $key;
+            }
+
+            $fieldDefs = $this->getAliasDefinitions($this->fieldAliasMapper, $extraModuleVardef, $alias);
+
+            if (!empty($fieldDefs)) {
+
+                $fieldDefs['name'] = $definition['name'];
+                $fieldDefs['alias'] = $alias;
+
+                $multiModuleFieldVardefs[$module] = $fieldDefs;
+            }
+        }
+
+        $definition['multiModuleDefinitions'] = $multiModuleFieldVardefs;
+        return $definition;
     }
 }

@@ -112,7 +112,7 @@ class LegacyApiRedirectHandler extends LegacyRedirectHandler
 
         return [
             'dir' => '',
-            'file' => 'index.php',
+            'file' => './index.php',
             'access' => true
         ];
     }

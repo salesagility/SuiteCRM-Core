@@ -221,7 +221,7 @@ class InstallHandler extends LegacyHandler
 
         $checkFile = __DIR__ . '/../../../../.curl_check_main_page';
 
-        require_once "core/backend/Install/Service/InstallPreChecks.php";
+        require_once __DIR__ . "/../../../../core/backend/Install/Service/InstallPreChecks.php";
         $installChecks = new InstallPreChecks($log);
 
         try {
