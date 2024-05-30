@@ -27,7 +27,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PaginationCount, PageSelection, ObjectMap, ViewMode, ModalButtonInterface} from "common";
+import {PaginationCount, PageSelection, PaginationType, ObjectMap, ViewMode, ModalButtonInterface} from "common";
 import {combineLatestWith, Observable, Subscription} from "rxjs";
 import {filter, map, tap} from "rxjs/operators";
 import {toNumber} from "lodash-es";
@@ -41,6 +41,8 @@ import {MessageModalComponent} from "../modal/components/message-modal/message-m
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {VcrStore} from "../../views/record/store/vcr/vcr.store";
 import {VcrService} from "../../views/record/store/vcr/vcr.service";
+import {UserPreferenceStore} from "../../store/user-preference/user-preference.store";
+import {LocalStorageService} from "../../services/local-storage/local-storage.service";
 
 export interface VcrViewModel {
     appStrings: LanguageStringMap;
@@ -66,6 +68,7 @@ export class VcrComponent implements OnInit, OnDestroy {
     isRecordsLoading: boolean = false;
     isSaveContinueClicked: boolean = false;
     mode: ViewMode = 'detail' as ViewMode;
+    paginationType: string = PaginationType.PAGINATION;
     recordIds: ObjectMap[];
     subs: Subscription[] = [];
 
@@ -76,6 +79,8 @@ export class VcrComponent implements OnInit, OnDestroy {
 
     constructor(
         private systemConfigStore: SystemConfigStore,
+        private preferences: UserPreferenceStore,
+        private localStorageService: LocalStorageService,
         private languageStore: LanguageStore,
         private navigation: ModuleNavigation,
         private nameMapper: ModuleNameMapper,
@@ -85,12 +90,12 @@ export class VcrComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NgbModal
-
     ) {
         this.subs.push(this.route.queryParamMap
             .subscribe((params: any) => {
                 this.currentIndex = toNumber(params.get('offset'));
-            }));
+            })
+        );
     }
 
     ngOnInit(): void {
@@ -98,14 +103,25 @@ export class VcrComponent implements OnInit, OnDestroy {
         this.currentPage = this.vcrStore.getCurrentPage();
         this.pageSize = this.vcrStore.getPageSize();
         this.totalRecordsCount = this.vcrStore.getRecordsCount();
+        this.paginationType= this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigStore.getConfigValue('listview_pagination_type');
+        this.vcrService.paginationType = this.paginationType;
         this.subs.push(this.mode$.subscribe(mode => {
             this.mode = mode;
         }));
 
         this.vm$ = this.appStrings$.pipe(
             combineLatestWith(this.vcrStore.pagination$, this.vcrStore.vcrEnabled$),
-            map(([appStrings, pageCount, vcrEnabled]: [LanguageStringMap, PaginationCount, boolean]) =>
-                ({appStrings, pageCount, vcrEnabled}))
+            map(([appStrings, pageCount, vcrEnabled]: [LanguageStringMap, PaginationCount, boolean]) => {
+                const module = this.nameMapper.toFrontend(this.vcrStore.getModule()) ?? '';
+                const key = module + '-' + 'recordview-current-vcr';
+                const isVcrExist = this.localStorageService.get(key);
+                const isRecordValid = this.vcrService.checkRecordValid(this.recordViewStore.getRecordId());
+
+                if (!isVcrExist || !isRecordValid || (this.currentIndex > this.totalRecordsCount)) {
+                    vcrEnabled = false;
+                }
+                return { appStrings, pageCount, vcrEnabled };
+            })
         );
 
         this.subs.push(this.recordIds$.subscribe(recordIds => {
@@ -175,7 +191,24 @@ export class VcrComponent implements OnInit, OnDestroy {
 
     protected loadPage(direction: PageSelection): void {
         this.isRecordsLoading = true;
-        const nextRecordIndex = direction === PageSelection.PREVIOUS ? (this.pageSize - 1) : 0;
+        let nextRecordIndex = 0;
+        if (direction === PageSelection.PREVIOUS) {
+            nextRecordIndex = this.pageSize - 1;
+        } else if (direction === PageSelection.NEXT && this.paginationType === PaginationType.LOAD_MORE) {
+            nextRecordIndex = this.currentIndex;
+        }
+
+        if (this.paginationType === PaginationType.LOAD_MORE && direction !== PageSelection.PREVIOUS ) {
+            const jump = this.preferences.getUserPreference('list_max_entries_per_page') ?? this.systemConfigStore.getConfigValue('list_max_entries_per_page');
+            const pagination = this.vcrStore.recordListStore.getPagination();
+            const currentPageSize = pagination.pageSize || 0;
+            const newPageSize = Number(currentPageSize) + Number(jump);
+
+            this.vcrStore.recordListStore.setPageSize(newPageSize);
+            this.vcrStore.recordListStore.updatePagination(pagination.current);
+        }
+
+
         this.vcrStore.recordListStore.setPage(direction as PageSelection).subscribe(data => {
             this.vcrService.updateRecordListLocalStorage(data.records, data.pagination);
             this.vcrStore.loadDataLocalStorage();

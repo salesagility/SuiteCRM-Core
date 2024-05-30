@@ -32,6 +32,8 @@ import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {NotificationStore} from '../../../../store/notification/notification.store';
 import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
+import {Router} from "@angular/router";
+import {VcrService} from "../../store/vcr/vcr.service";
 
 @Injectable({
     providedIn: 'root'
@@ -42,10 +44,12 @@ export class RecordSaveAction extends RecordActionHandler {
     modes = ['edit' as ViewMode];
 
     constructor(
+        protected router: Router,
         protected message: MessageService,
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
-        protected recentlyViewedService: RecentlyViewedService
+        protected recentlyViewedService: RecentlyViewedService,
+        protected vcrService: VcrService
     ) {
         super();
     }
@@ -70,7 +74,14 @@ export class RecordSaveAction extends RecordActionHandler {
                     this.notificationStore.conditionalNotificationRefresh('edit');
                     const recentlyViewed = this.recentlyViewedService.buildRecentlyViewed(moduleName, id);
                     this.recentlyViewedService.addRecentlyViewed(moduleName, recentlyViewed);
-                    this.navigateBack(this.navigation, params, id, moduleName, record);
+
+                    const currentUrl = this.router.url;
+
+                    if (currentUrl.includes('edit')) {
+                        this.navigateBackOnDetail(this.navigation, this.router, this.vcrService, id, moduleName);
+                    } else {
+                        this.navigateBack(this.navigation, params, id, moduleName, record);
+                    }
                 });
                 return;
             }

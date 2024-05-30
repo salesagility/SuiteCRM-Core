@@ -81,6 +81,15 @@ export class RecordSaveContinueAction extends RecordActionHandler {
     }
 
     shouldDisplay(data: RecordActionData): boolean {
-        return true;
+        const totalRecords = this.vcrService.getTotalRecords();
+        const offset = this.vcrService.offset;
+
+        if (!totalRecords || !offset ||
+            (offset >= totalRecords) ||
+            (offset <= 0) ) {
+            return false;
+        }
+
+        return this.vcrService.checkRecordValid(data.store.getRecordId());
     }
 }

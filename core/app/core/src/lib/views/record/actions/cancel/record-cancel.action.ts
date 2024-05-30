@@ -30,6 +30,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageModalComponent} from '../../../../components/modal/components/message-modal/message-modal.component';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
+import {Router} from "@angular/router";
+import {VcrService} from "../../store/vcr/vcr.service";
 
 @Injectable({
     providedIn: 'root'
@@ -39,7 +41,12 @@ export class RecordCancelAction extends RecordActionHandler {
     key = 'cancel';
     modes = ['edit' as ViewMode, 'detail' as ViewMode];
 
-    constructor(private modalService: NgbModal, protected navigation: ModuleNavigation) {
+    constructor(
+        private modalService: NgbModal,
+        private navigation: ModuleNavigation,
+        private router: Router,
+        private vcrService: VcrService
+    ) {
         super();
     }
 
@@ -64,7 +71,13 @@ export class RecordCancelAction extends RecordActionHandler {
         const id = data.store.getRecordId();
         const record = data.store.getBaseRecord();
 
-        this.navigateBack(this.navigation, params, id, moduleName, record);
+        const currentUrl = this.router.url;
+
+        if (currentUrl.includes('edit')) {
+            this.navigateBackOnDetail(this.navigation, this.router, this.vcrService, id, moduleName);
+        } else {
+            this.navigateBack(this.navigation, params, id, moduleName, record);
+        }
 
         data.store.recordStore.resetStaging();
         data.store.setMode('detail' as ViewMode);

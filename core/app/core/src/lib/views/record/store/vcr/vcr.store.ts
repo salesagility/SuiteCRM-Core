@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {deepClone, Pagination, Vcr, ObjectMap, SortingSelection, SearchCriteria, emptyObject} from 'common';
+import {deepClone, Pagination, Vcr, ObjectMap, SortingSelection, SearchCriteria, emptyObject, isFalse} from 'common';
 import {BehaviorSubject, Observable, of, Subscription} from "rxjs";
 import {distinctUntilChanged, map, shareReplay} from "rxjs/operators";
 import {isArray, union} from "lodash-es";
@@ -97,8 +97,11 @@ export class VcrStore  {
     }
 
     protected enableVcr(): void {
-        const isVcr = this.systemConfigStore.getUi('enable_vcr');
-        this.updateState({...this.internalState, vcrEnabled: isVcr});
+        let isVcrDisabled = this.systemConfigStore.getConfigValue('disable_vcr');
+        if (isVcrDisabled === "" || (Array.isArray(isVcrDisabled) && isVcrDisabled.length === 0)) {
+            isVcrDisabled = false;
+        }
+        this.updateState({...this.internalState, vcrEnabled: isFalse(isVcrDisabled ?? false)});
     }
 
     public loadDataLocalStorage(): void {
@@ -125,8 +128,8 @@ export class VcrStore  {
         }
     }
 
-    protected loadPreference(module: string, storageKey: string, pageKey?: string): any {
-        if(!pageKey) {
+    public loadPreference(module: string, storageKey: string, pageKey?: string): any {
+        if (!pageKey) {
             return this.preferences.getUi(module, this.getPreferenceKey(storageKey));
         }
         return this.preferences.getUi(module, (pageKey + '-' + storageKey));
@@ -169,7 +172,7 @@ export class VcrStore  {
         this.setFilters(activeFiltersPref, false, currentSort);
     }
 
-    public setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null): void {
+    protected setFilters(filters: SavedFilterMap, reload = true, sort: SortingSelection = null): void {
 
         const filterKey = Object.keys(filters).shift();
         const filter = filters[filterKey];
@@ -192,7 +195,7 @@ export class VcrStore  {
         this.updateSearchCriteria(filters, reload)
     }
 
-    public updateSearchCriteria(filters:SavedFilterMap, reload = true): void {
+    protected updateSearchCriteria(filters:SavedFilterMap, reload = true): void {
         let criteria = this.mergeCriteria(filters);
         this.recordListStore.updateSearchCriteria(criteria, reload);
     }
@@ -266,12 +269,12 @@ export class VcrStore  {
         this.store.next(this.internalState = state);
     }
 
-    public set(state: VcrState): void {
+    protected set(state: VcrState): void {
         this.cache$ = of(state).pipe(shareReplay(1));
         this.updateState(state);
     }
 
-    public isCached(): boolean {
+    protected isCached(): boolean {
         return this.cache$ !== null;
     }
 }

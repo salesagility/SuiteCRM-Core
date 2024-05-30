@@ -1,6 +1,7 @@
+<?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,42 +25,35 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-export enum SortDirection {
-    NONE = 'NONE',
-    ASC = 'ASC',
-    DESC = 'DESC'
-}
 
-export interface SortingSelection {
-    orderBy?: string;
-    sortOrder?: SortDirection;
-}
+namespace App\SystemConfig\LegacyHandler;
 
-export interface Pagination {
-    pageSize: number;
-    current: number;
-    previous: number;
-    next: number;
-    last: number;
-    pageFirst: number;
-    pageLast: number;
-    total: number;
-}
+use App\SystemConfig\Entity\SystemConfig;
 
-export interface PaginationCount {
-    pageFirst: number;
-    pageLast: number;
-    total: number;
-}
+class RecordPaginationConfigMapper implements SystemConfigMapperInterface
+{
+    /**
+     * @inheritDoc
+     */
+    public function getKey(): string
+    {
+        return 'disable_vcr';
+    }
 
-export enum PageSelection {
-    FIRST = 'FIRST',
-    PREVIOUS = 'PREVIOUS',
-    NEXT = 'NEXT',
-    LAST = 'LAST',
-}
-
-export enum PaginationType {
-    PAGINATION = 'pagination',
-    LOAD_MORE = 'load-more'
+    /**
+     * @inheritDoc
+     */
+    public function map(SystemConfig $config): void
+    {
+        $isDisabledVcr = $config->getValue();
+        if($isDisabledVcr === "") {
+            $config->setValue(false);
+            return;
+        }
+        if(is_array($isDisabledVcr)) {
+            $config->setValue(false);
+            return;
+        }
+        $config->setValue($isDisabledVcr);
+    }
 }

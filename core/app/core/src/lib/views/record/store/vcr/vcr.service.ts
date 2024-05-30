@@ -25,11 +25,13 @@
  */
 
 import {Injectable} from "@angular/core";
-import {Pagination, Record, ObjectMap} from 'common';
+import {Pagination, PaginationType, Record, ObjectMap, emptyObject} from 'common';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {toNumber} from "lodash-es";
 
 @Injectable({
     providedIn: 'root'
@@ -39,11 +41,24 @@ export class VcrService {
     private nextRecordSubject = new BehaviorSubject<boolean>(false);
     nextRecord$ = this.nextRecordSubject.asObservable();
 
+    offset: number = 0;
+    recordIds: any[] = [];
+    pagination: Pagination;
+    paginationType: string = PaginationType.PAGINATION;
+    protected subs: Subscription[] = [];
+
     constructor(
-        protected appStateStore: AppStateStore,
+        protected localStorageService: LocalStorageService,
         protected preferences: UserPreferenceStore,
-        protected localStorageService: LocalStorageService
-    ) {}
+        protected appStateStore: AppStateStore,
+        protected route: ActivatedRoute,
+    ) {
+        this.subs.push(this.route.queryParamMap
+            .subscribe((params: any) => {
+                this.offset = toNumber(params.get('offset'));
+            })
+        );
+    }
 
     public triggerNextRecord(value: boolean): void {
         this.nextRecordSubject.next(value);
@@ -85,5 +100,49 @@ export class VcrService {
 
     public getModule(): string {
         return this.appStateStore.getModule();
+    }
+
+    public getTotalRecords(): number {
+        const key = this.getModule() + '-' + 'listview-current-pagination';
+        const currentPagination = this.localStorageService.get(key) as Pagination;
+        return currentPagination?.total;
+    }
+
+    public checkRecordValid(recordId: string): boolean {
+        this.loadVcrData(this.getModule());
+        if (!this.pagination) {
+            return false;
+        }
+
+        const pageSize = this.getPageSize();
+
+        if (this.offset > pageSize) {
+            return false;
+        }
+
+        let index = (this.offset - 1) % pageSize;
+        if (this.paginationType === PaginationType.LOAD_MORE) {
+            index = this.offset  - 1;
+        }
+        if (index >= 0 && index < this.recordIds.length) {
+
+            return this.recordIds[index]?.id === recordId;
+        }
+
+        return false;
+    }
+
+    public getPageSize(): number {
+        return this.pagination?.pageSize;
+    }
+
+    protected loadVcrData(module: string): void {
+        const key = module + '-' + 'recordview-current-vcr';
+        const currentVcr = this.localStorageService.get(key)[module];
+        if (!currentVcr || emptyObject(currentVcr)) {
+            return;
+        }
+        this.pagination = currentVcr.pagination;
+        this.recordIds = currentVcr.recordIds;
     }
 }
