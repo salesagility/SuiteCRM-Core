@@ -1,5 +1,7 @@
 framework:
   cache:
+    app: cache.adapter.system
+    system: cache.adapter.system
   # Unique name of your app: used to compute stable namespaces for cache keys.
   #prefix_seed: your_vendor_name/app_name
 
