@@ -191,7 +191,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
 
     buildCreateItem(): RecordThreadItemConfig {
         return {
-            ...this.config.createConfig,
+            ...this?.config?.createConfig ?? {},
             store: this.createStore,
             rowClass: {'pt-1': true},
             klass: 'record-thread-create-item',
@@ -238,7 +238,7 @@ export class RecordThreadComponent implements OnInit, OnDestroy, AfterViewInit {
         const emptyRecord = this.recordManager.buildEmptyRecord(this.config.module);
         this.addPresetFields(emptyRecord);
         let mode = 'edit' as ViewMode;
-        if (this.config.createConfig && this.config.createConfig.initialMode) {
+        if (this?.config?.createConfig && this?.config?.createConfig?.initialMode) {
             mode = this.config.createConfig.initialMode;
         }
 

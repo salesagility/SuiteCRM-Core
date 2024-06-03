@@ -26,6 +26,7 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
+    Action,
     AttributeMap,
     deepClone,
     FieldDefinitionMap,
@@ -47,6 +48,8 @@ import {
 } from '../../../record-thread/components/record-thread/record-thread.model';
 import {RecordThreadItemMetadata} from '../../../record-thread/store/record-thread/record-thread-item.store.model';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
+import {isEmpty} from "lodash-es";
+import {RecordThreadItemConfig} from "../../../record-thread/components/record-thread-item/record-thread-item.model";
 
 @Component({
     selector: 'scrm-record-thread-sidebar-widget',
@@ -82,6 +85,11 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             orderBy?: string;
             sortOrder?: string;
         };
+        listActions?: Action[],
+        collapseListActions?: boolean,
+        listActionsClass?: string,
+        listActionsButtonClass?: string,
+        listActionsButtonGroupClass?: string
     };
     recordThreadConfig: RecordThreadConfig;
 
@@ -142,7 +150,8 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
             klass: this.options.class || '',
             maxListHeight: this.options.maxListHeight ?? 350,
             direction: this.options.direction || 'asc',
-            create: !!this.options.create,
+            create: !!this?.options?.create,
+            createConfig: {},
             itemConfig: {
                 collapsible: this.options.item.collapsible || false,
                 collapseLimit: this.options.item.collapseLimit || null,
@@ -150,14 +159,21 @@ export class RecordThreadSidebarWidgetComponent extends BaseWidgetComponent impl
                 dynamicClass: this.options.item.dynamicClass || [],
                 metadata: {} as RecordThreadItemMetadata
             },
-            createConfig: {
-                collapsible: false,
-                metadata: {} as RecordThreadItemMetadata
-            },
+            listActions: this?.options?.listActions ?? null,
+            collapseListActions: this?.options?.collapseListActions ?? false,
+            listActionsClass: this?.options?.listActionsClass ?? '',
+            listActionsButtonClass: this?.options?.listActionsButtonClass ?? '',
+            listActionsButtonGroupClass: this?.options?.listActionsButtonGroupClass ?? '',
         } as RecordThreadConfig;
 
         this.setupItemMetadata(config.itemConfig.metadata, this.options.item.layout);
-        this.setupItemMetadata(config.createConfig.metadata, this.options.create.layout);
+        if(!isEmpty(this.options?.create ?? null)) {
+            config.createConfig =  {
+                collapsible: false,
+                metadata: {} as RecordThreadItemMetadata
+            } as RecordThreadItemConfig;
+            this.setupItemMetadata(config.createConfig.metadata, this.options?.create?.layout ?? {});
+        }
 
         return config;
     }
