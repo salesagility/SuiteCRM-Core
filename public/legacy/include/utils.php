@@ -6124,7 +6124,7 @@ function getAppString($key)
 }
 
 function set_session_name(){
-    $sessionName = 'LEGACYSESSID';
+    $sessionName = 'SCRMSESSID';
     if (!empty($GLOBALS['sugar_config']['session_name'])) {
         $sessionName = $GLOBALS['sugar_config']['session_name'];
     }
