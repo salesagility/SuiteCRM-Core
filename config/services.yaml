@@ -6,9 +6,13 @@ parameters:
   legacy.dir: '%kernel.project_dir%/public/legacy'
   packages.upgrade.dir: '%kernel.project_dir%/tmp/package/upgrade'
   legacy.path: '/legacy'
-  legacy.session_name: 'LEGACYSESSID'
-  default_session_name: 'PHPSESSID'
+  legacy.session_name: 'SCRMSESSID'
+  default_session_name: 'SCRMSESSID'
   auth_type: '%env(AUTH_TYPE)%'
+  log.dir: '%kernel.logs_dir%'
+  log.main.default: '%kernel.environment%.log'
+  log.security.default: '%kernel.environment%.security.log'
+  log.deprecation.default: '%kernel.environment%.deprecation.log'
 
 services:
   Symfony\Component\Ldap\Ldap:

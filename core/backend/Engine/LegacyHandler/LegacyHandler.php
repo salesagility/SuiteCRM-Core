@@ -118,11 +118,11 @@ abstract class LegacyHandler
         // Set working directory for legacy
         chdir($this->legacyDir);
 
-        $this->startLegacySession();
-
         if (!$this->runLegacyEntryPoint()) {
             throw new RuntimeException(self::MSG_LEGACY_BOOTSTRAP_FAILED);
         }
+
+        $this->startSession();
 
         $this->state->setActiveScope($this->getHandlerKey());
     }
@@ -257,8 +257,12 @@ abstract class LegacyHandler
     {
         /** @var User $current_user */
         $currentUser = BeanFactory::newBean('Users');
-        $currentUser = $currentUser->getSystemUser();
-        $GLOBALS['current_user'] = $currentUser;
+
+        if (!empty($currentUser)) {
+            $currentUser = $currentUser->getSystemUser();
+            $GLOBALS['current_user'] = $currentUser;
+        }
+
     }
 
     /**
@@ -273,8 +277,6 @@ abstract class LegacyHandler
         if (!empty($this->projectDir)) {
             chdir($this->projectDir);
         }
-
-        $this->startSymfonySession();
 
         $this->state->setActiveScope(null);
     }
@@ -297,44 +299,6 @@ abstract class LegacyHandler
         $controller->loadBean();
     }
 
-    protected function startSymfonySession(): void
-    {
-        $session = $this->getSession();
-
-        if ($session->isStarted()) {
-            $session->save();
-            session_write_close();
-        }
-
-        $session->setName($this->defaultSessionName);
-
-        if (isset($_COOKIE[$this->defaultSessionName])) {
-            $session->setId($_COOKIE[$this->defaultSessionName]);
-        }
-
-        $session->start();
-    }
-
-    protected function startLegacySession(): void
-    {
-        $session = $this->getSession();
-
-        if ($session->isStarted()) {
-            $session->save();
-        }
-
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            return;
-        }
-        $session->setName($this->legacySessionName);
-
-        if (!isset($_COOKIE[$this->legacySessionName])) {
-            $_COOKIE[$this->legacySessionName] = session_create_id();
-        }
-        $session->setId($_COOKIE[$this->legacySessionName]);
-        $session->start();
-    }
-
     /**
      * Disable legacy suite translations
      */
@@ -352,46 +316,18 @@ abstract class LegacyHandler
     }
 
     /**
-     * @return SessionInterface
+     * @return void
      */
-    protected function getSession(): SessionInterface
+    public function startSession(): void
     {
-        $request = Request::createFromGlobals();
-        $requestSession = null;
-        try {
-            $requestSession = $request->getSession();
-        } catch (SessionNotFoundException $e) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $currentSessionName = session_name();
+            return;
         }
 
-        $session = null;
+        require_once 'include/MVC/SugarApplication.php';
 
-        if($requestSession === null || session_id() == '' || !isset($_SESSION) || session_status() === PHP_SESSION_NONE) {
-            // session isn't started
-            session_start();
-
-            // Get Symfony to interface with this existing session
-            $session = new Session(new PhpBridgeSessionStorage());
-
-            // symfony will now interface with the existing PHP session
-            $session->start();
-            $request->setSession($session);
-        }
-
-
-        $stack = $this->requestStack ?? null;
-        if ($stack === null) {
-            $stack = new RequestStack();
-        }
-
-        if ($requestSession === null) {
-            $stack->push($request);
-            return $session;
-        }
-
-
-        $session = $this->requestStack->getMainRequest()->getSession();
-
-
-        return $session;
+        $app = new SugarApplication();
+        $app->startSession();
     }
 }

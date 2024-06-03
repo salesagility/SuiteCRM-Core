@@ -188,6 +188,27 @@ services:
         event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
         dispatcher: security.event_dispatcher.main
 
+  session.storage.factory.legacy_bridge:
+    class: App\Security\Session\LegacyBridgeSessionStorageFactory
+    arguments:
+      - '@App\Engine\LegacyHandler\DefaultLegacyHandler'
+      - '@session.handler.legacy_bridge'
+      - !service
+          class: Symfony\Component\HttpFoundation\Session\Storage\MetadataBag
+          arguments:
+            - '%session.metadata.storage_key%'
+            - '%session.metadata.update_threshold%'
+      - 'false'
+
+  session.handler.legacy_bridge:
+    class: App\Security\Session\LegacyBridgeSessionHandler
+    arguments:
+      - !service
+          class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+          arguments:
+            - '%session.save_path%'
+      - '@App\Engine\LegacyHandler\DefaultLegacyHandler'
+
   App\Security\RouteMatcher:
     class: App\Security\RouteMatcher
     public: false
