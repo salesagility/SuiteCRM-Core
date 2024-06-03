@@ -28,7 +28,7 @@
 
 namespace App\Data\LegacyHandler;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use SugarBean;
 
@@ -40,10 +40,10 @@ trait AuditQueryingTrait
      * @param SugarBean $bean
      * @param string $field
      * @param array $queryParts
-     * @param string|null $keyField
+     * @param string $keyField
      * @param array $procedureParams
      * @return array
-     * @throws DBALException
+     * @throws Exception
      */
     protected function queryAuditInfo(
         EntityManagerInterface $em,
@@ -52,7 +52,8 @@ trait AuditQueryingTrait
         array $queryParts = [],
         string $keyField = 'after_value_string',
         array $procedureParams = []
-    ): array {
+    ): array
+    {
         $parts = [];
         $parts['select'] = ' SELECT after_value_string, min(date_created) as first_update, max(date_created) as last_update ';
         $parts['from'] = ' FROM ' . $bean->get_audit_table_name() . ' ';
@@ -93,8 +94,8 @@ trait AuditQueryingTrait
      * @param string $field
      * @param array $procedureParams
      * @param $innerQuery
-     * @return array
-     * @throws DBALException
+     * @return array|null
+     * @throws Exception
      */
     protected function runAuditInfoQuery(
         EntityManagerInterface $em,
@@ -102,10 +103,11 @@ trait AuditQueryingTrait
         string $field,
         array $procedureParams,
         $innerQuery
-    ): ?array {
+    ): ?array
+    {
         $stmt = $em->getConnection()->prepare($innerQuery);
-        $stmt->execute(array_merge(['field' => $field, 'parentId' => $bean->id], $procedureParams));
+        $result = $stmt->executeQuery(array_merge(['field' => $field, 'parentId' => $bean->id], $procedureParams));
 
-        return $stmt->fetchAll();
+        return $result->fetchAllAssociative() ?? [];
     }
 }

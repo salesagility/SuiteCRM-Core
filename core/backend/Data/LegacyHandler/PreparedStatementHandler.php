@@ -28,7 +28,7 @@
 
 namespace App\Data\LegacyHandler;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PreparedStatementHandler
@@ -43,7 +43,8 @@ class PreparedStatementHandler
      */
     public function __construct(
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $this->entityManager = $entityManager;
     }
 
@@ -53,13 +54,14 @@ class PreparedStatementHandler
      * @param array $params
      * @param array $binds
      * @return mixed|false
-     * @throws DBALException
+     * @throws Exception
      */
     public function fetch(
         string $query,
-        array $params,
-        array $binds = []
-    ) {
+        array  $params,
+        array  $binds = []
+    )
+    {
         $stmt = $this->entityManager->getConnection()->prepare($query);
 
         if (!empty($binds)) {
@@ -68,9 +70,7 @@ class PreparedStatementHandler
             }
         }
 
-        $stmt->execute($params);
-
-        return $stmt->fetch();
+        return $stmt->executeQuery($params)->fetchAssociative();
     }
 
     /**
@@ -78,13 +78,14 @@ class PreparedStatementHandler
      * @param array $params
      * @param array $binds
      * @return mixed|false
-     * @throws DBALException
+     * @throws Exception
      */
     public function fetchAll(
         string $query,
-        array $params,
-        array $binds = []
-    ) {
+        array  $params,
+        array  $binds = []
+    )
+    {
         $stmt = $this->entityManager->getConnection()->prepare($query);
 
         if (!empty($binds)) {
@@ -93,8 +94,6 @@ class PreparedStatementHandler
             }
         }
 
-        $stmt->execute($params);
-
-        return $stmt->fetchAll();
+        return $stmt->executeQuery($params)->fetchAssociative();
     }
 }
