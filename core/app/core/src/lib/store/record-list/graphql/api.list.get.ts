@@ -31,6 +31,7 @@ import {ApolloQueryResult} from '@apollo/client/core';
 import {Pagination, Record, SearchCriteria, SortingSelection} from 'common';
 import {map} from 'rxjs/operators';
 import {RecordList} from '../record-list.store';
+import {isInteger, toInteger} from "lodash-es";
 
 @Injectable({
     providedIn: 'root'
@@ -73,8 +74,8 @@ export class ListGQL {
 
         const queryOptions = {
             query: gql`
-              query getRecordList($module: String!, $limit: Int, $offset: Int, $criteria: Iterable, $sort: Iterable) {
-                getRecordList(module: $module, limit: $limit, offset: $offset, criteria: $criteria, sort: $sort) {
+              query recordList($module: String!, $limit: Int, $offset: Int, $criteria: Iterable, $sort: Iterable) {
+                recordList(module: $module, limit: $limit, offset: $offset, criteria: $criteria, sort: $sort) {
                   ${fields.join('\n')}
                 }
               }
@@ -103,18 +104,18 @@ export class ListGQL {
     public get(module: string, criteria: SearchCriteria, sort: SortingSelection, pagination: Pagination): Observable<RecordList> {
         const mappedSort = this.mapSort(sort);
 
-        return this.fetch(module, pagination.pageSize, pagination.current, criteria, mappedSort, this.fieldsMetadata)
+        return this.fetch(module, toInteger(pagination.pageSize), toInteger(pagination.current), criteria, mappedSort, this.fieldsMetadata)
             .pipe(map(({data}) => {
                 const recordsList: RecordList = {
                     records: [],
                     pagination: {...pagination} as Pagination
                 };
 
-                if (!data || !data.getRecordList) {
+                if (!data || !data.recordList) {
                     return recordsList;
                 }
 
-                const listData = data.getRecordList;
+                const listData = data.recordList;
 
                 if (listData.records) {
                     listData.records.forEach((record: any) => {

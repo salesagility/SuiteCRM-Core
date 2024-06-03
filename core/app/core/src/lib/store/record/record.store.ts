@@ -322,7 +322,7 @@ export class RecordStore {
                         return record;
                     }
 
-                    const id = data.getRecord.attributes.id;
+                    const id = data.record.attributes.id;
                     if (!id) {
                         this.message.addDangerMessageByKey('LBL_RECORD_DOES_NOT_EXIST');
                         return record;
@@ -330,10 +330,10 @@ export class RecordStore {
 
                     record.id = id;
                     record.module = module;
-                    record.type = data.getRecord.attributes && data.getRecord.attributes.object_name;
-                    record.attributes = data.getRecord.attributes;
-                    record.acls = data.getRecord.acls;
-                    record.favorite = data?.getRecord?.favorite ?? false;
+                    record.type = data.record.attributes && data.record.attributes.object_name;
+                    record.attributes = data.record.attributes;
+                    record.acls = data.record.acls;
+                    record.favorite = data?.record?.favorite ?? false;
 
                     return record;
                 }),

@@ -169,7 +169,7 @@ class ListGQLSpy extends ListGQL {
             }
         };
 
-        data.data.getRecordList.meta.offsets = {
+        data.data.recordList.meta.offsets = {
             current: offset,
             next: (offset + limit) || 0,
             prev: (offset - limit) || 0,

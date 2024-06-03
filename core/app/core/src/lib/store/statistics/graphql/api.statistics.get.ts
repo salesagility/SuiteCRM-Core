@@ -53,8 +53,8 @@ export class StatisticsFetchGQL {
 
         const queryOptions = {
             query: gql`
-            query getBatchedStatistics($module: String!, $queries: Iterable!){
-              getBatchedStatistics(module: $module, queries: $queries) {
+            query batchedStatistics($module: String!, $queries: Iterable!){
+              batchedStatistics(module: $module, queries: $queries) {
                   _id
                   id
                   items
@@ -70,7 +70,7 @@ export class StatisticsFetchGQL {
         return this.apollo.query(queryOptions).pipe(map((result: ApolloQueryResult<any>) => {
 
             const statistics: StatisticsMap = {};
-            const response = (result.data && result.data.getBatchedStatistics) || {} as any;
+            const response = (result.data && result.data.batchedStatistics) || {} as any;
             const items = response.items || {} as any;
             const itemKeys = Object.keys(items);
 

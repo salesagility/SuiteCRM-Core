@@ -54,8 +54,8 @@ export class RecordFetchGQL {
 
         const queryOptions = {
             query: gql`
-            query getRecord($module: String!, $record: String!) {
-                getRecord(module: $module, record: $record) {
+            query record($module: String!, $record: String!) {
+                record(module: $module, record: $record) {
                     ${fields.join('\n')}
                 }
             }
