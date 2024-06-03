@@ -25,12 +25,12 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="!isConfigured()">
+<ng-container *ngIf="!this.hasValidConfig">
     <scrm-label labelKey="LBL_BAD_GROUP_FIELD_CONFIG"></scrm-label>
 </ng-container>
 
-<ng-container *ngIf="isConfigured()">
-    <div #wrapper class="d-flex {{direction()}} justify-content-start align-items-start field-group h-100">
+<ng-container *ngIf="this.hasValidConfig">
+    <div #wrapper class="d-flex {{direction()}} justify-content-start align-items-start field-group h-100 w-100">
 
         <ng-container *ngFor="let groupField of getFields()">
 

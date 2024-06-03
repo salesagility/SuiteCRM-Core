@@ -32,6 +32,8 @@ import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.s
 import {StandardFieldRegistry} from '../standard-field.registry';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 import {SystemConfigStore} from "../../store/system-config/system-config.store";
+import {Observable, Subject} from "rxjs";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
     selector: 'scrm-group-field',
@@ -42,10 +44,13 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
 
     @ViewChild('wrapper') wrapper: ElementRef;
     direction: WritableSignal<string> = signal<string>('');
+    hasValidConfig: boolean;
+    protected recalculateDirectionBuffer = new Subject<boolean>();
+    protected recalculateDirectionBuffer$: Observable<any> = this.recalculateDirectionBuffer.asObservable();
 
     @HostListener('window:resize', ['$event'])
     onResize(): void {
-        this.calculateDirection();
+        this.triggerRecalculateDirection();
     }
 
     constructor(
@@ -60,11 +65,22 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.calculateDirection();
+
+        this.subs.push(this.recalculateDirectionBuffer$.pipe(debounceTime(50)).subscribe(() => {
+            this.calculateDirection();
+        }));
+
+        this.subs.push(this.mode$.subscribe(() => {
+            this.triggerRecalculateDirection();
+        }));
+
+        this.triggerRecalculateDirection();
+
+        this.hasValidConfig = this.isConfigured();
     }
 
     ngAfterViewInit(): void {
-        this.calculateDirection();
+        this.triggerRecalculateDirection();
     }
 
     getComponentType(type: string, definition: FieldDefinition): any {
@@ -84,7 +100,7 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
         const fields: Field[] = [];
 
         this.field.definition.layout.forEach(name => {
-            if (!this.record.fields[name] || this.record.fields[name].display === 'none'){
+            if (!this.record.fields[name] || this.record.fields[name].display === 'none') {
                 return;
             }
 
@@ -120,7 +136,7 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
             return;
         }
 
-        const breakpoint = this?.config?.getUi('group_field_mobile_breakdown_limit') ?? 300;
+        const breakpoint = this?.config?.getUi('group_field_mobile_breakdown_limit') ?? 350;
 
         if (wrapperWidth < breakpoint) {
             this.direction.set('flex-column');
@@ -164,6 +180,14 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
         }
 
         return modes.includes(mode as ViewMode);
+    }
+
+    /**
+     * Add re-calculation trigger to buffer
+     * @protected
+     */
+    protected triggerRecalculateDirection(): void {
+        this.recalculateDirectionBuffer.next(true);
     }
 
     /**

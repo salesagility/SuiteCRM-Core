@@ -27,7 +27,7 @@
 import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
 import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
-import {Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {debounceTime} from 'rxjs/operators';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
@@ -37,15 +37,29 @@ import {FieldHandlerRegistry} from "../../services/record/field/handler/field-ha
 
 @Component({template: ''})
 export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDestroy {
-    @Input() mode: string;
+
     @Input() originalMode: string = '';
     @Input() field: Field;
     @Input() record: Record;
     @Input() parent: Record;
     @Input() klass: { [klass: string]: any } = null;
+
+    @Input()
+    public get mode(): string {
+        return this._mode;
+    }
+
+    public set mode(value: string) {
+        this._mode = value;
+        this.modeState.next(this._mode);
+    }
+
+    _mode: string = '';
     dependentFields: ObjectMap = {};
     dependentAttributes: AttributeDependency[] = [];
     protected subs: Subscription[] = [];
+    protected modeState: BehaviorSubject<string>;
+    protected mode$: Observable<string>;
     protected fieldHandlerRegistry: FieldHandlerRegistry;
 
     constructor(
@@ -53,7 +67,8 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
         protected logic: FieldLogicManager,
         protected logicDisplay: FieldLogicDisplayManager
     ) {
-
+        this.modeState = new BehaviorSubject<string>('');
+        this.mode$ = this.modeState.asObservable();
         this.fieldHandlerRegistry = inject(FieldHandlerRegistry)
     }
 
@@ -91,7 +106,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
             this.calculateDependentFields(fieldKeys);
             this.field.previousValue = this.field.value;
 
-            if((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length) {
+            if ((this.dependentFields && Object.keys(this.dependentFields).length) || this.dependentAttributes.length) {
                 Object.keys(this.dependentFields).forEach(fieldKey => {
                     const field = this.record.fields[fieldKey] || null;
                     if (!field) {
@@ -119,7 +134,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             return;
                         }
 
-                        if(this.field.previousValue != data.value) {
+                        if (this.field.previousValue != data.value) {
                             const types = dependentField.type ?? [];
 
                             if (types.includes('logic')) {
