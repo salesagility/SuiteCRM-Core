@@ -64,7 +64,7 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
      * @param LegacyScopeState $legacyScopeState
      * @param ListDataQueryHandler $queryHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
-     * @param RequestStack $session
+     * @param RequestStack $requestStack
      */
     public function __construct(
         string $projectDir,
@@ -74,9 +74,9 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
         LegacyScopeState $legacyScopeState,
         ListDataQueryHandler $queryHandler,
         ModuleNameMapperInterface $moduleNameMapper,
-        RequestStack $session
+        RequestStack $requestStack
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
+        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $requestStack);
         $this->queryHandler = $queryHandler;
         $this->moduleNameMapper = $moduleNameMapper;
     }

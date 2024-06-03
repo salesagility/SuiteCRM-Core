@@ -29,7 +29,7 @@ namespace App\Engine\LegacyHandler;
 
 use App\Engine\Service\CacheManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
@@ -53,7 +53,9 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
+     * @param CacheInterface $cache
+     * @param CacheItemPoolInterface $cachePool
      */
     public function __construct(
         string                 $projectDir,
@@ -61,7 +63,7 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
         string                 $legacySessionName,
         string                 $defaultSessionName,
         LegacyScopeState       $legacyScopeState,
-        SessionInterface       $session,
+        RequestStack           $requestStack,
         CacheInterface         $cache,
         CacheItemPoolInterface $cachePool
     )
@@ -72,7 +74,8 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session);
+            $requestStack
+        );
         $this->cache = $cache;
         $this->cachePool = $cachePool;
     }
@@ -118,7 +121,7 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
             foreach ($keys as $key) {
                 if ($row['cache_key'] == $key && $row['rebuild'] == 1) {
                     $this->cache->delete($key);
-                    $_SESSION[$current_user->user_name.'_PREFERENCES'] = [];
+                    $_SESSION[$current_user->user_name . '_PREFERENCES'] = [];
                     $query = "DELETE FROM cache_rebuild ";
                     $query .= "WHERE cache_key='$key'";
                     $db->query($query);
