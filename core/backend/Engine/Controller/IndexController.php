@@ -30,13 +30,14 @@ namespace App\Engine\Controller;
 
 use App\Authentication\LegacyHandler\Authentication;
 use App\Authentication\LegacyHandler\UserHandler;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class IndexController
@@ -61,32 +62,36 @@ class IndexController extends AbstractController
      */
     protected $authentication;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected string $legacySessionName;
+    protected string $defaultSessionName;
 
 
     /**
      * IndexController constructor.
      * @param string $projectDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
      * @param UserHandler $userHandler
      * @param Authentication $authentication
      */
-    public function __construct(string $projectDir, UserHandler $userHandler, Authentication $authentication)
+    public function __construct(
+        string         $projectDir,
+        string         $legacySessionName,
+        string         $defaultSessionName,
+        UserHandler    $userHandler,
+        Authentication $authentication
+    )
     {
         $this->projectDir = $projectDir;
 
         $this->userHandler = $userHandler;
         $this->authentication = $authentication;
+        $this->legacySessionName = $legacySessionName;
+        $this->defaultSessionName = $defaultSessionName;
     }
 
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     * @param Security $security
-     * @return Response
-     */
-    public function index(Security $security): Response
+    #[Route('/', name: 'index', methods: ["GET"], stateless: false)]
+    public function index(Security $security, Request $request): Response
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
 
@@ -96,23 +101,14 @@ class IndexController extends AbstractController
 
         $response = new Response(file_get_contents($indexHtmlPath));
 
-        $user = $security->getUser();
-        if ($user === null) {
-            $response->headers->clearCookie('XSRF-TOKEN');
-        }
 
-        if ($security->isGranted('ROLE_USER') && !$this->authentication->checkSession() && !empty($user->getUsername())) {
-            $this->authentication->initLegacyUserSession($user->getUsername());
-        }
+        $this->authentication->initLegacySystemSession();
+
 
         return $response;
     }
 
-    /**
-     * @Route("/auth", name="nativeAuth", methods={"GET"})
-     * @param Security $security
-     * @return Response
-     */
+    #[Route('/auth', name: 'nativeAuth', methods: ["GET"])]
     public function nativeAuth(Security $security): Response
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
@@ -131,12 +127,8 @@ class IndexController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/logged-out", name="logged-out", methods={"GET"})
-     * @param Session $session
-     * @return Response
-     */
-    public function loggedOut(Session $session): Response
+    #[Route('/logged-out', name: 'logged-out', methods: ["GET", "POST"], stateless: false)]
+    public function loggedOut(Request $request, LoggerInterface $logger): Response
     {
         $indexHtmlPath = $this->projectDir . self::INDEX_HTML_PATH;
 
@@ -144,11 +136,16 @@ class IndexController extends AbstractController
             throw new RuntimeException('Please run ng build from terminal');
         }
 
-        $response = new Response(file_get_contents($indexHtmlPath));
+        $response = new RedirectResponse("./auth#logged-out");
 
-        $this->request->get('security.token_storage')->setToken(null);
-        $session->clear();
+        try {
+            $request->getSession()->clear();
+        } catch (\Exception $e) {
+        }
         $response->headers->clearCookie('XSRF-TOKEN');
+        $response->headers->clearCookie('TOKEN');
+        $response->headers->clearCookie($this->legacySessionName);
+        $response->headers->clearCookie($this->defaultSessionName);
 
         $this->authentication->logout();
 
