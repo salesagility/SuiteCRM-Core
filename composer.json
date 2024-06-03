@@ -218,6 +218,9 @@
     "google/apiclient-services": [
       "Calendar"
     ],
+    "runtime": {
+      "autoload_template": "core/backend/Composer/Runtime/autoload_runtime.template"
+    },
     "merge-plugin": {
       "include": [
         "public/legacy/composer.ext.json",

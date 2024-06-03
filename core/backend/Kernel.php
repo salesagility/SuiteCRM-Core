@@ -103,18 +103,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param RouteCollectionBuilder $routes
-     * @throws LoaderLoadException
-     */
-    protected function configureRoutes(RoutingConfigurator $routes): void
-    {
-        $confDir = dirname(__DIR__, 2) . '/config';
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
-    }
-
-    /**
      * Init bundles and container
      * @return void
      */
