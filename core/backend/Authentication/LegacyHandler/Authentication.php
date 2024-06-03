@@ -234,6 +234,23 @@ class Authentication extends LegacyHandler
     }
 
     /**
+     * Check if user is active
+     * @return bool
+     */
+    public function isUserActive(): bool
+    {
+        $this->init();
+
+        $authController = $this->getAuthenticationController();
+
+        $result = $authController->isUserActive();
+
+        $this->close();
+
+        return $result;
+    }
+
+    /**
      * Check if suite app is installed
      * @return bool
      */

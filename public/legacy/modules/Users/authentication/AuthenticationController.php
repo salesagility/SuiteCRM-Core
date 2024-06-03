@@ -298,6 +298,22 @@ class AuthenticationController
     }
 
     /**
+     * This is called on every page hit.
+     * It returns true if the current session is authenticated or false otherwise
+     *
+     * @return bool
+     */
+    public function isUserActive(): bool
+    {
+        global $current_user;
+
+        /** @var User $reloadedUser */
+        $reloadedUser = BeanFactory::getBean('Users', $current_user->id);
+
+        return $reloadedUser->isEnabled() ?? false;
+    }
+
+    /**
      * Called when a user requests to logout. Should invalidate the session and redirect
      * to the login page.
      * @param bool $redirect
