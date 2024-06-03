@@ -1,15 +1,20 @@
 saml_metadata:
   path: /saml/metadata
-  defaults: { _controller: Hslavich\OneloginSamlBundle\Controller\SamlController::metadataAction }
+  controller: Nbgrp\OneloginSamlBundle\Controller\Metadata
+  defaults: { idp: null }
 
 saml_acs:
   path: /saml/acs
-  defaults: { _controller: Hslavich\OneloginSamlBundle\Controller\SamlController::assertionConsumerServiceAction }
+  controller: Nbgrp\OneloginSamlBundle\Controller\AssertionConsumerService
+  defaults: { idp: null }
 
 saml_login:
   path: /saml/login
-  defaults: { _controller: Hslavich\OneloginSamlBundle\Controller\SamlController::loginAction }
+  controller: Nbgrp\OneloginSamlBundle\Controller\Login
+  defaults: { idp: null }
 
 saml_logout:
   path: /saml/logout
-  defaults: { _controller: Hslavich\OneloginSamlBundle\Controller\SamlController::singleLogoutServiceAction }
+  controller: Nbgrp\OneloginSamlBundle\Controller\Logout
+  defaults: { idp: null }
+  methods: ['POST', 'GET']

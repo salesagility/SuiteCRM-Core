@@ -1,27 +1,27 @@
 nbgrp_onelogin_saml:
   onelogin_settings:
     default:
-      # Basic settings
+      # Mandatory SAML settings
       idp:
-        entityId: '<idp-entity>'
+        entityId: 'https://id.example.com/saml2/idp/metadata.php'
         singleSignOnService:
-          url: '<idp-single-sign-on-url>'
+          url: 'https://id.example.com/saml2/idp/SSOService.php'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
         singleLogoutService:
-          url: '<idp-single-logout-url>'
+          url: 'https://id.example.com/saml2/idp/SingleLogoutService.php'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        certFingerprint: ''
+        x509cert: 'MIIC...'
       sp:
-        entityId: 'https://<your-instance-host>/'
+        entityId: 'https://myapp.com/saml/metadata'  #  Default: '<request_scheme_and_host>/saml/metadata'
         assertionConsumerService:
-          url: 'https://<your-instance-host>/saml/acs'
+          url: 'https://myapp.com/saml/acs'  #  Default: '<request_scheme_and_host>/saml/acs'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
         singleLogoutService:
-          url: 'https://<your-instance-host>/saml/logout'
+          url: 'https://myapp.com/saml/logout'  #  Default: '<request_scheme_and_host>/saml/logout'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        privateKey: '/var/www/html/docroot/certs/key.pem'
-      # Optional settings
-      baseurl: 'https://<your-instance-host>/saml'
+        privateKey: 'MIIE...'
+      # Optional SAML settings
+      baseurl: 'https://myapp.com/saml/'  #  Default: '<request_scheme_and_host>/saml/'
       strict: true
       debug: true
       security:
@@ -29,14 +29,22 @@ nbgrp_onelogin_saml:
         authnRequestsSigned: false
         logoutRequestSigned: false
         logoutResponseSigned: false
+        signMetadata: false
         wantMessagesSigned: false
-        wantAssertionsSigned: false
+        wantAssertionsEncrypted: false
+        wantAssertionsSigned: true
+        wantNameId: false
         wantNameIdEncrypted: false
         requestedAuthnContext: true
-        signMetadata: false
-        wantXMLValidation: true
+        wantXMLValidation: false
+        relaxDestinationValidation: false
+        destinationStrictlyMatches: true
+        allowRepeatAttributeName: false
+        rejectUnsolicitedResponsesWithInResponseTo: false
         signatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
         digestAlgorithm: 'http://www.w3.org/2001/04/xmlenc#sha256'
+        encryption_algorithm: 'http://www.w3.org/2001/04/xmlenc#aes256-cbc'
+        lowercaseUrlencoding: false
       contactPerson:
         technical:
           givenName: 'Tech User'
@@ -44,8 +52,14 @@ nbgrp_onelogin_saml:
         support:
           givenName: 'Support User'
           emailAddress: 'supportuser@example.com'
+        administrative:
+          givenName: 'Administrative User'
+          emailAddress: 'administrativeuser@example.com'
       organization:
-        en:
+        en-US:
           name: 'Example'
           displayname: 'Example'
           url: 'http://example.com'
+      compress:
+        requests: false
+        responses: false

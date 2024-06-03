@@ -36,11 +36,6 @@ use Symfony\Component\Ldap\Ldap;
 use Symfony\Component\Security\Core\User\InMemoryUserChecker;
 use Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter;
 
-/** @var $container Container */
-if (!isset($container)) {
-    return;
-}
-
 return static function (ContainerConfigurator $containerConfig) {
 
     $env = $_ENV ?? [];
@@ -74,6 +69,8 @@ return static function (ContainerConfigurator $containerConfig) {
                 new Reference('limiter.ip_login'),
                 // 2nd argument is the limiter for username+IP
                 new Reference('limiter.username_ip_login'),
+                // 3rd argument is the app secret
+                param('kernel.secret'),
             ]
         );
 
@@ -125,7 +122,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         'limiter' => 'app.login_rate_limiter'
                     ],
                     'logout' => [
-                        'path' => 'app_logout'
+                        'path' => 'app_logout',
                     ],
                 ],
             ]),
@@ -234,7 +231,7 @@ return static function (ContainerConfigurator $containerConfig) {
                 'provider' => 'app_user_provider',
                 // Match SAML attribute 'uid' with username.
                 // Uses getNameId() method by default.
-                'username_attribute' => '%env(SAML_USERNAME_ATTRIBUTE)%',
+                'identifier_attribute' => '%env(SAML_USERNAME_ATTRIBUTE)%',
                 'use_attribute_friendly_name' => '%env(bool:SAML_USE_ATTRIBUTE_FRIENDLY_NAME)%',
                 // Use the attribute's friendlyName instead of the name
                 'check_path' => 'saml_acs',
@@ -257,8 +254,8 @@ return static function (ContainerConfigurator $containerConfig) {
             ['path' => '^/logout$', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/saml/login', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/saml/metadata', 'roles' => 'PUBLIC_ACCESS'],
-            ['path' => '^/saml/acs', 'roles' => 'ROLE_USER'],
-            ['path' => '^/saml/logout', 'roles' => 'ROLE_USER'],
+            ['path' => '^/saml/acs', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/saml/logout', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/logged-out', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/auth', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/auth/login', 'roles' => 'PUBLIC_ACCESS'],
