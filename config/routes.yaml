@@ -1,5 +1,18 @@
 controllers:
     resource:
-        path: ../core/backend/**/Controller/*
+        path: ../core/backend/Controller/
         namespace: App\Controller
     type: attribute
+
+auth_controllers:
+    resource:
+        path: ../core/backend/Authentication/Controller/
+        namespace: App\Authentication\Controller\
+    type: attribute
+
+engine_controllers:
+    resource:
+        path: ../core/backend/Engine/Controller/
+        namespace: App\Engine\Controller\
+    type: attribute
+
