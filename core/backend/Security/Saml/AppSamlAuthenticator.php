@@ -27,16 +27,17 @@
 
 namespace App\Security\Saml;
 
-use Hslavich\OneloginSamlBundle\Security\Http\Authenticator\SamlAuthenticator;
+use Nbgrp\OneloginSamlBundle\Security\Http\Authenticator\SamlAuthenticator;
+use OneLogin\Saml2\Auth;
 use RuntimeException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class AppSamlAuthenticator extends SamlAuthenticator
 {
-    protected function extractUsername(array $attributes): string
+    protected function extractIdentifier(Auth $oneLoginAuth, array $attributes): string
     {
         try {
-            $result = parent::extractUsername($attributes);
+            $result = parent::extractIdentifier($oneLoginAuth, $attributes);
         } catch (RuntimeException $runtimeException) {
             throw new AuthenticationException($runtimeException->getMessage());
         }
