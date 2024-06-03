@@ -71,8 +71,8 @@ class Unit extends Module
     {
         self::$projectDir = codecept_root_dir();
         self::$legacyDir = self::$projectDir . '/public/legacy';
-        self::$legacySessionName = 'LEGACYSESSID';
-        self::$defaultSessionName = 'PHPSESSID';
+        self::$legacySessionName = 'SCRMSESSID';
+        self::$defaultSessionName = 'SCRMSESSID';
         self::$datetimeFormatMap = [
             'A' => 'a',
             'a' => 'aaaaaa',
