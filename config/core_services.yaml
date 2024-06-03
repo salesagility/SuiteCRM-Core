@@ -144,12 +144,6 @@ services:
     arguments:
       - !tagged { tag: 'app.process.handler' }
 
-  App\Security\LegacySessionDenyAccessListener:
-    decorates: 'api_platform.security.listener.request.deny_access'
-
-  App\Security\LegacySessionAccessCheckerProvider:
-    decorates: 'api_platform.graphql.state_provider.access_checker'
-
   App\Engine\Service\Extensions\ExtensionAssetCopyCacheWarmer:
     arguments:
       - '@App\Engine\Service\Extensions\ExtensionAssetCopyInterface'

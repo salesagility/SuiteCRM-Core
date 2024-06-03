@@ -1,8 +1,7 @@
 <?php
-
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2024 SalesAgility Ltd.
+ * Copyright (C) 2021 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -26,41 +25,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Security;
+namespace App\Engine\LegacyHandler;
 
-use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProviderInterface;
-use ApiPlatform\Symfony\Security\State\AccessCheckerProvider;
-use App\Authentication\LegacyHandler\Authentication;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-
-class LegacySessionAccessCheckerProvider implements ProviderInterface
+class DefaultLegacyHandler extends LegacyHandler
 {
-    public function __construct(
-        private readonly AccessCheckerProvider $decorated,
-        private readonly ?Authentication       $authentication,
-        private readonly ?RequestStack         $requestStack
-    )
+    public function getHandlerKey(): string
     {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
-    {
-
-        $result = $this->decorated->provide($operation, $uriVariables, $context);
-
-        $isActive = $this->authentication->checkSession();
-
-        if ($isActive !== true) {
-            $this->requestStack->getSession()->invalidate();
-
-            throw new AccessDeniedHttpException($operation->getSecurityMessage() ?? 'Access Denied.');
-        }
-
-        return $result;
+        return 'default-legacy-handler';
     }
 }
