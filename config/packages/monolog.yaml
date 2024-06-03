@@ -1,21 +1,58 @@
 monolog:
-  channels: [ 'upgrade',  'install', 'auth' ]
+  channels: [ 'upgrade', 'install', 'auth', 'deprecation', 'security' ]
   handlers:
     upgrade:
       type: stream
-      path: "%kernel.project_dir%/logs/upgrade.log"
+      path: "%env(default:log.dir:LOG_DIR)%/upgrade.log"
       level: debug
       channels: [ "upgrade" ]
     install:
       type: stream
-      path: "%kernel.project_dir%/logs/install.log"
+      path: "%env(default:log.dir:LOG_DIR)%/install.log"
       level: debug
       channels: [ "install" ]
     auth:
       type: stream
-      path: "%kernel.project_dir%/logs/auth.log"
+      path: "%env(default:log.dir:LOG_DIR)%/auth.log"
       level: debug
       channels: [ "auth" ]
+    main:
+      type: stream
+      path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.main.default:MAIN_LOG_FILE_NAME)%"
+      level: '%env(MAIN_LOG_LEVEL)%'
+      channels: [ "!event", "!upgrade" ]
+      # uncomment to get logging in your browser
+      # you may have to allow bigger header sizes in your Web server configuration
+      #firephp:
+      #    type: firephp
+      #    level: info
+      #chromephp:
+      #    type: chromephp
+      #    level: info
+    console:
+      type: console
+      process_psr_3_messages: false
+      channels: [ "!event", "!doctrine", "!console", "!upgrade" ]
+
+    deprecation:
+      type: stream
+      path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.deprecation.default:DEPRECATION_LOG_FILE_NAME)%"
+      level: '%env(DEPRECATION_LOG_LEVEL)%'
+    deprecation_filter:
+      type: filter
+      handler: deprecation
+      max_level: error
+      channels: [ "deprecation" ]
+
+    security:
+      type: stream
+      path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.security.default:SECURITY_LOG_FILE_NAME)%"
+      level: '%env(SECURITY_LOG_LEVEL)%'
+    security_filter:
+      type: filter
+      handler: security
+      max_level: error
+      channels: [ "security" ]
 when@test:
   monolog:
     handlers:
@@ -35,16 +72,40 @@ when@prod:
     handlers:
       main:
         type: fingers_crossed
-        action_level: error
+        action_level: info
         handler: nested
         excluded_http_codes: [404, 405]
-        buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+        # Prevents memory leaks
+        buffer_size:  50
+        channels: ["!event","!upgrade", "!deprecation" , "!security"]
       nested:
         type: stream
-        path: php://stderr
-        level: debug
-        formatter: monolog.formatter.json
+        path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.main.default:MAIN_LOG_FILE_NAME)%"
+        level: '%env(MAIN_LOG_LEVEL)%'
+        channels: ["!event", "!upgrade", "!deprecation" , "!security"]
       console:
         type: console
         process_psr_3_messages: false
-        channels: ["!event", "!doctrine"]
+        level: warning
+        action_level: info
+        channels: ["!event", "!doctrine", "!upgrade", "!deprecation"]
+
+      deprecation:
+        type: stream
+        path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.deprecation.default:DEPRECATION_LOG_FILE_NAME)%"
+        level: '%env(DEPRECATION_LOG_LEVEL)%'
+      deprecation_filter:
+        type: filter
+        handler: deprecation
+        max_level: error
+        channels: ["deprecation"]
+
+      security:
+        type: stream
+        path: "%env(default:log.dir:LOG_DIR)%/%env(default:log.security.default:SECURITY_LOG_FILE_NAME)%"
+        level: '%env(SECURITY_LOG_LEVEL)%'
+      security_filter:
+        type: filter
+        handler: security
+        max_level: error
+        channels: ["security"]
