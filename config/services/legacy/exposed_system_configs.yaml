@@ -44,4 +44,4 @@ parameters:
     session-expired: true
     site_url: true
     login_language: true
-    disable_vcr: true
+    enable_record_pagination: true

@@ -97,11 +97,11 @@ export class VcrStore  {
     }
 
     protected enableVcr(): void {
-        let isVcrDisabled = this.systemConfigStore.getConfigValue('disable_vcr');
-        if (isVcrDisabled === "" || (Array.isArray(isVcrDisabled) && isVcrDisabled.length === 0)) {
-            isVcrDisabled = false;
+        let isVcrEnabled = this.systemConfigStore.getConfigValue('enable_record_pagination');
+        if (isVcrEnabled === "" || (Array.isArray(isVcrEnabled) && isVcrEnabled.length === 0)) {
+            isVcrEnabled = false;
         }
-        this.updateState({...this.internalState, vcrEnabled: isFalse(isVcrDisabled ?? false)});
+        this.updateState({...this.internalState, vcrEnabled: !!(isVcrEnabled ?? false)});
     }
 
     public loadDataLocalStorage(): void {

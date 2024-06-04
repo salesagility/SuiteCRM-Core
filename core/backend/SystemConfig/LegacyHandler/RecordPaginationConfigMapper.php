@@ -37,7 +37,7 @@ class RecordPaginationConfigMapper implements SystemConfigMapperInterface
      */
     public function getKey(): string
     {
-        return 'disable_vcr';
+        return 'enable_record_pagination';
     }
 
     /**
@@ -45,15 +45,15 @@ class RecordPaginationConfigMapper implements SystemConfigMapperInterface
      */
     public function map(SystemConfig $config): void
     {
-        $isDisabledVcr = $config->getValue();
-        if($isDisabledVcr === "") {
+        $isRecordPaginationEnabled = $config->getValue();
+        if($isRecordPaginationEnabled === "") {
             $config->setValue(false);
             return;
         }
-        if(is_array($isDisabledVcr)) {
+        if(is_array($isRecordPaginationEnabled)) {
             $config->setValue(false);
             return;
         }
-        $config->setValue($isDisabledVcr);
+        $config->setValue($isRecordPaginationEnabled);
     }
 }
