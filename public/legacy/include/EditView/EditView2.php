@@ -241,7 +241,9 @@ class EditView
         }
         $this->metadataFile = $metadataFile;
 
-        if (isset($GLOBALS['sugar_config']['disable_vcr'])) {
+        if (isset($GLOBALS['sugar_config']['enable_record_pagination'])) {
+            $this->showVCRControl = $GLOBALS['sugar_config']['enable_record_pagination'];
+        } else {
             $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
         }
 

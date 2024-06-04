@@ -80,10 +80,13 @@ class DetailView extends ListView
         global $previous_offset;
         global $list_view_row_count;
         global $current_offset;
-        if (!empty($sugar_config['disable_vcr'])) {
+
+        $recordPaginationEnabled = isset($sugar_config['enable_record_pagination']) ? $sugar_config['enable_record_pagination'] : (!isset($sugar_config['disable_vcr']) || !$sugar_config['disable_vcr']);
+        if (!$recordPaginationEnabled) {
             $seed->retrieve($_REQUEST['record']);
             return $seed;
         }
+
         $isfirstview = 0;
 
         $nav_history_set=false;
@@ -352,9 +355,13 @@ class DetailView extends ListView
         $post_html_text .= "</td>\n";
         $post_html_text .= "</tr>\n";
         $showVCRControl = true;
-        if (isset($sugar_config['disable_vcr'])) {
+
+        if (isset($sugar_config['enable_record_pagination'])) {
+            $showVCRControl = $sugar_config['enable_record_pagination'];
+        } elseif (isset($sugar_config['disable_vcr'])) {
             $showVCRControl = !$sugar_config['disable_vcr'];
         }
+
         if ($showVCRControl && $html_text != "") {
             $xtpl->assign("PAGINATION", $pre_html_text.$html_text.$post_html_text);
         }
