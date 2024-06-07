@@ -24,29 +24,40 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItemLink} from 'common';
 import {take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {AppStateStore} from '../../../store/app-state/app-state.store';
 import {MenuItemLinkConfig} from "./menu-item-link-config.model";
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-base-menu-item-link',
     templateUrl: './base-menu-item-link.component.html',
     styleUrls: []
 })
-export class BaseMenuItemLinkComponent {
+export class BaseMenuItemLinkComponent implements OnInit{
     @Input() link: MenuItemLink;
     @Input() icon: string;
     @Input() class: string;
-    @Input() disableRoute: boolean;
     @Input() config: MenuItemLinkConfig;
+
+    charSize = {
+        minLength: 20,
+        mediumLength: 20,
+        maxLength: 20
+    }
 
     constructor(
         protected asyncActionService: AsyncActionService,
+        protected systemConfigStore: SystemConfigStore,
         protected appState: AppStateStore
-    ) {
+    ) {}
+
+    ngOnInit() {
+        const characterSizes = this.systemConfigStore.getUi('navbar_truncate_character_sizes');
+        this.charSize = {...characterSizes}
     }
 
     handleProcess(process: string) {

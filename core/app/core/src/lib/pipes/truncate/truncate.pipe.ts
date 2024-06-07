@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,27 +24,17 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {MenuItemLink} from 'common';
-import {MenuItemLinkRegistry} from './menu-item-link.registry';
-import {MenuItemLinkConfig} from "./menu-item-link-config.model";
+import { Pipe, PipeTransform } from '@angular/core';
 
-@Component({
-    selector: 'scrm-menu-item-link',
-    templateUrl: './menu-item-link.component.html',
-    styleUrls: []
+@Pipe({
+    name: 'truncate',
+    standalone: true
 })
-export class MenuItemLinkComponent {
-    @Input() link: MenuItemLink;
-    @Input() icon: string;
-    @Input() class: string;
-    @Input() config: MenuItemLinkConfig;
+export class TruncatePipe implements PipeTransform {
 
-
-    constructor(protected registry: MenuItemLinkRegistry) {
-    }
-
-    get getType(): any {
-        return this.registry.get('default', 'default');
+    transform(value: string, limit: number): string {
+        return value.length <= limit
+            ? value
+            : value.slice(0, limit) + '...';
     }
 }

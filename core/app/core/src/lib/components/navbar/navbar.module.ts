@@ -61,6 +61,7 @@ import {NotificationsModule} from '../../containers/notifications/notifications.
 import {SearchBarModule} from '../search-bar/search-bar.module';
 import {DropdownButtonModule} from "../dropdown-button/dropdown-button.module";
 import {RecentlyViewedComponent} from "./recently-viewed/recently-viewed.component";
+import {TruncatePipe} from "../../pipes/truncate/truncate.pipe";
 
 
 @NgModule({
@@ -122,6 +123,7 @@ import {RecentlyViewedComponent} from "./recently-viewed/recently-viewed.compone
         FormsModule,
         NotificationsModule,
         SearchBarModule,
+        TruncatePipe,
         RecentlyViewedComponent,
         DropdownButtonModule
     ]
