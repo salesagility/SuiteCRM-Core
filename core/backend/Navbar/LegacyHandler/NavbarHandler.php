@@ -399,7 +399,7 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
 
                 $mappedLink = [
                     'name' => $link[0] ?? '',
-                    'labelKey' => $link[1] ?? '',
+                    'labelKey' => html_entity_decode($link[1] ?? '', ENT_QUOTES),
                     'actionLabelKey' => '',
                     'url' => $path,
                     'icon' => '',
