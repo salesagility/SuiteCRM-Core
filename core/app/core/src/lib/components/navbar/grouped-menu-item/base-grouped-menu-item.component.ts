@@ -32,6 +32,7 @@ import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model"
 import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
 import {SubMenuRecentlyViewedConfig} from "../sub-menu-recently-viewed/sub-menu-recently-viewed-config.model";
 import {SubMenuFavoritesConfig} from "../sub-menu-favorites/sub-menu-favorites-config.model";
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Component({
     selector: 'scrm-base-grouped-menu-item',
@@ -55,12 +56,24 @@ export class BaseGroupedMenuItemComponent implements OnInit, OnDestroy {
     clickType: string = 'click';
     private openSubDropdown?: number = null;
 
-    constructor(protected appStateStore: AppStateStore, protected moduleNavigation: ModuleNavigation) {
+    charSize = {
+        minLength: 20,
+        mediumLength: 20,
+        maxLength: 20
     }
+
+    constructor(
+        protected appStateStore: AppStateStore,
+        protected moduleNavigation: ModuleNavigation,
+        protected systemConfigStore: SystemConfigStore
+    ) {}
 
     ngOnInit(): void {
         this.showRecentlyViewed = new Subject<boolean>();
         this.showFavorites = new Subject<boolean>();
+
+        const characterSizes = this.systemConfigStore.getUi('navbar_truncate_character_sizes');
+        this.charSize = {...characterSizes}
 
         this.subs.push(this.appStateStore.activeNavbarDropdown$.subscribe(
             (activeDropdown: number) => {

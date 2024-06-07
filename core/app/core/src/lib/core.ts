@@ -425,6 +425,7 @@ export * from './pipes/html-sanitize/html-sanitize.module';
 export * from './pipes/html-sanitize/html-sanitize.pipe';
 export * from './pipes/toObservable/toObservable.module';
 export * from './pipes/toObservable/toObservable.pipe';
+export * from './pipes/truncate/truncate.pipe';
 export * from './services/actions/action-logic-handler';
 export * from './services/actions/base-action-manager.service';
 export * from './services/actions/base-action.adapter';

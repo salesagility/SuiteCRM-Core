@@ -76,3 +76,8 @@ parameters:
       Medium: false
       Large: false
       XLarge: false
+    navbar_truncate_character_sizes:
+      minLength: 10
+      mediumLength: 16
+      maxLength: 22
+

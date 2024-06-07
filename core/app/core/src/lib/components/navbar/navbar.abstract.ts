@@ -194,7 +194,7 @@ export class NavbarAbstract implements NavbarModel {
         let count = 0;
         groupedTabs.forEach((groupedTab: any) => {
 
-            if (count <= threshold) {
+            if (count < threshold) {
                 navItems.push(this.buildTabGroupedMenuItem(
                     groupedTab.labelKey,
                     groupedTab.modules,
@@ -308,7 +308,7 @@ export class NavbarAbstract implements NavbarModel {
 
             const item = this.buildTabMenuItem(module, modules[module]);
 
-            if (module === 'home' || this.appState.getModule() === module || count >= threshold) {
+            if (module === 'home' || this.appState.getModule() === module || count > threshold) {
                 moreItems.push(item);
             } else {
                 navItems.push(item);
