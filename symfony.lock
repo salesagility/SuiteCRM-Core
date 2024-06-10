@@ -951,9 +951,6 @@
     "tinymce/tinymce": {
         "version": "4.9.11"
     },
-    "tuupola/slim-jwt-auth": {
-        "version": "2.4.0"
-    },
     "twig/extra-bundle": {
         "version": "v3.8.0"
     },
