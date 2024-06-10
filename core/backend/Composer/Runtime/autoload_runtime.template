@@ -45,7 +45,7 @@ if (!empty($legacyRoute)) {
     if (file_exists($legacyRoute['file'])) {
 
         /* @noinspection PhpIncludeInspection */
-        require $legacyRoute['file'];
+        require './' . $legacyRoute['file'];
     } else {
 
         http_response_code(404);
