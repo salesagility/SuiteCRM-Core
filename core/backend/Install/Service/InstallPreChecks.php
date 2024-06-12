@@ -722,8 +722,8 @@ class InstallPreChecks
             }
             if (!$isWritable) {
                 $fileList .= '<br>' . getcwd() . "/$dirname";
-                $results['errors'][] = 'legacy/cache/' . $cacheFile . ' is not writeable';
-                $this->log->error($cacheFile . ' is not writeable');
+                $results['errors'][] = 'legacy/cache/' . $cacheFile . ' is Not Writeable.';
+                $this->log->error($cacheFile . ' is Not Writeable');
             }
         }
 
