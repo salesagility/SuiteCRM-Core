@@ -53,27 +53,27 @@ class InstallPreChecks
     /**
      * @var array
      */
-    public $systemChecks = [];
+    public array $systemChecks = [];
 
     /**
      * @var bool
      */
-    public $errorsFound = false;
+    public bool $errorsFound = false;
 
     /**
      * @var bool
      */
-    public $warningsFound = false;
+    public bool $warningsFound = false;
 
     /**
      * @var string
      */
-    public $xsrfToken = '';
+    public string $xsrfToken = '';
 
     /**
      * @var array
      */
-    public $cookies = [];
+    public array $cookies = [];
     /**
      * @var Logger
      */
