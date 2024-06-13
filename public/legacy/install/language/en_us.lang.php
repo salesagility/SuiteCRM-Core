@@ -105,7 +105,7 @@ $mod_strings = array(
     'ERR_DB_MYSQL_VERSION' => 'Your MySQL version (%s) is not supported by SuiteCRM. You will need to install a version that is compatible with the SuiteCRM application. Please consult the Compatibility Matrix in the Release Notes for supported MySQL versions.',
     'ERR_DB_NAME' => 'Database name cannot be blank.',
     'ERR_DB_MYSQL_DB_NAME_INVALID' => "Database name cannot contain a '\\', '/', or '.'",
-    'ERR_DB_MSSQL_DB_NAME_INVALID' => "Database name cannot begin with a number, '#', or '@' and cannot contain a space, '\"', \"'\", '*', '/', '\', '?', ':', '<', '>', '&', '!', or '-'",
+    'ERR_DB_MSSQL_DB_NAME_INVALID' => "Database name cannot begin with a number, '#', or '@' and cannot contain a space, '\"', \"'\", '*', '/', '\\', '?', ':', '<', '>', '&', '!', or '-'",
     'ERR_DB_OCI8_DB_NAME_INVALID' => "Database name can only consist of alphanumeric characters and the symbols '#', '_' or '$'",
     'ERR_DB_PASSWORD' => 'The passwords provided for the SuiteCRM database administrator do not match. Please re-enter the same passwords in the password fields.',
     'ERR_DB_PRIV_USER' => 'Provide a database administrator user name. The user is required for the initial connection to the database.',
@@ -498,7 +498,7 @@ $mod_strings = array(
         'subject' => 'New account information',
         'type' => 'system',
         'description' => 'This template is used when the System Administrator sends a new password to a user.',
-        'body' => '<div><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width="550" align=\"\&quot;\&quot;center\&quot;\&quot;\"><tbody><tr><td colspan=\"2\"><p>Here is your account username and temporary password:</p><p>Username : $contact_user_user_name </p><p>Password : $contact_user_user_hash </p><br><p>$config_site_url</p><br><p>After you log in using the above password, you may be required to reset the password to one of your own choice.</p>   </td>         </tr><tr><td colspan=\"2\"></td>         </tr> </tbody></table> </div>',
+        'body' => '<div><table border=\\"0\\" cellspacing=\\"0\\" cellpadding=\\"0\\" width="550" align=\\"\\&quot;\\&quot;center\\&quot;\\&quot;\\"><tbody><tr><td colspan=\\"2\\"><p>Here is your account username and temporary password:</p><p>Username : $contact_user_user_name </p><p>Password : $contact_user_user_hash </p><br><p>$config_site_url</p><br><p>After you log in using the above password, you may be required to reset the password to one of your own choice.</p>   </td>         </tr><tr><td colspan=\\"2\\"></td>         </tr> </tbody></table> </div>',
         'txt_body' =>
             '
 Here is your account username and temporary password:
@@ -514,7 +514,7 @@ After you log in using the above password, you may be required to reset the pass
         'subject' => 'Reset your account password',
         'type' => 'system',
         'description' => "This template is used to send a user a link to click to reset the user's account password.",
-        'body' => '<div><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width="550" align=\"\&quot;\&quot;center\&quot;\&quot;\"><tbody><tr><td colspan=\"2\"><p>You recently requested on $contact_user_pwd_last_changed to be able to reset your account password. </p><p>Click on the link below to reset your password:</p><p> $contact_user_link_guid </p>  </td>         </tr><tr><td colspan=\"2\"></td>         </tr> </tbody></table> </div>',
+        'body' => '<div><table border=\\"0\\" cellspacing=\\"0\\" cellpadding=\\"0\\" width="550" align=\\"\\&quot;\\&quot;center\\&quot;\\&quot;\\"><tbody><tr><td colspan=\\"2\\"><p>You recently requested on $contact_user_pwd_last_changed to be able to reset your account password. </p><p>Click on the link below to reset your password:</p><p> $contact_user_link_guid </p>  </td>         </tr><tr><td colspan=\\"2\\"></td>         </tr> </tbody></table> </div>',
         'txt_body' =>
             '
 You recently requested on $contact_user_pwd_last_changed to be able to reset your account password.
@@ -530,7 +530,7 @@ $contact_user_link_guid',
         'subject' => 'Two Factor Authentication Code',
         'type' => 'system',
         'description' => "This template is used to send a user a code for Two Factor Authentication.",
-        'body' => '<div><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width="550" align=\"\&quot;\&quot;center\&quot;\&quot;\"><tbody><tr><td colspan=\"2\"><p>Two Factor Authentication code is <b>$code</b>.</p>  </td>         </tr><tr><td colspan=\"2\"></td>         </tr> </tbody></table> </div>',
+        'body' => '<div><table border=\\"0\\" cellspacing=\\"0\\" cellpadding=\\"0\\" width="550" align=\\"\\&quot;\\&quot;center\\&quot;\\&quot;\\"><tbody><tr><td colspan=\\"2\\"><p>Two Factor Authentication code is <b>$code</b>.</p>  </td>         </tr><tr><td colspan=\\"2\\"></td>         </tr> </tbody></table> </div>',
         'txt_body' =>
             'Two Factor Authentication code is $code.',
         'name' => 'Two Factor Authentication email',
