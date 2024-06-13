@@ -50,6 +50,15 @@ class RelateFieldDefinitionMapper implements FieldDefinitionMapperInterface {
             $type = $fieldDefinition['type'] ?? '';
             $rname = $fieldDefinition['rname'] ?? '';
 
+            if ($fieldDefinition['name'] === 'assigned_user_name' ) {
+                if ($this->showFullName()) {
+                    $fieldDefinition['rname']  = 'full_name';
+                } else {
+                    $fieldDefinition['rname']  = 'user_name';
+                }
+                $vardefs[$fieldName] = $fieldDefinition;
+            }
+
             if ($type !== 'relate') {
                 continue;
             }
@@ -67,5 +76,26 @@ class RelateFieldDefinitionMapper implements FieldDefinitionMapperInterface {
         }
 
         $definition->setVardef($vardefs);
+    }
+
+    /**
+     * based on user pref then system pref.
+     */
+    public function showFullName()
+    {
+        global $sugar_config;
+        global $current_user;
+        static $showFullName = null;
+
+        if (is_null($showFullName)) {
+            $sysPref = !empty($sugar_config['use_real_names']);
+            $userPref = (is_object($current_user)) ? $current_user->getPreference('use_real_names') : null;
+            if ($userPref != null && $userPref != 'off') {
+                $showFullName = 1;
+            } else {
+                $showFullName = $sysPref;
+            }
+        }
+        return $showFullName;
     }
 }
