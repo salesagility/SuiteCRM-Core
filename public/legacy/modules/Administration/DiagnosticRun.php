@@ -757,8 +757,8 @@ function finishDiag()
     chdir(RETURN_FROM_DIAG_DIR);
 
     deleteDir($cacheDir);
-    
-    
+
+
     print "<a href=\"index.php?module=Administration&action=DiagnosticDownload&guid=$sod_guid&time=$curdatetime&to_pdf=1\">".$mod_strings['LBL_DIAGNOSTIC_DOWNLOADLINK']."</a><BR>";
 
     deleteDir($cacheDir);
@@ -768,18 +768,18 @@ function finishDiag()
 }
 
 //BEGIN check for what we are executing
-$doconfigphp = ((empty($_POST['configphp']) || $_POST['configphp'] == 'off') ? false : true);
-$docustom_dir = ((empty($_POST['custom_dir']) || $_POST['custom_dir'] == 'off') ? false : true);
-$dophpinfo = ((empty($_POST['phpinfo']) || $_POST['phpinfo'] == 'off') ? false : true);
-$domysql_dumps = ((empty($_POST['mysql_dumps']) || $_POST['mysql_dumps'] == 'off') ? false : true);
-$domysql_schema = ((empty($_POST['mysql_schema']) || $_POST['mysql_schema'] == 'off') ? false : true);
-$domysql_info = ((empty($_POST['mysql_info']) || $_POST['mysql_info'] == 'off') ? false : true);
-$domd5 = ((empty($_POST['md5']) || $_POST['md5'] == 'off') ? false : true);
-$domd5filesmd5 = ((empty($_POST['md5filesmd5']) || $_POST['md5filesmd5'] == 'off') ? false : true);
-$domd5calculated = ((empty($_POST['md5calculated']) || $_POST['md5calculated'] == 'off') ? false : true);
-$dobeanlistbeanfiles = ((empty($_POST['beanlistbeanfiles']) || $_POST['beanlistbeanfiles'] == 'off') ? false : true);
-$dosugarlog = ((empty($_POST['sugarlog']) || $_POST['sugarlog'] == 'off') ? false : true);
-$dovardefs = ((empty($_POST['vardefs']) || $_POST['vardefs'] == 'off') ? false : true);
+$doconfigphp = ((empty($_GET['configphp']) || $_GET['configphp'] == 'off') ? false : true);
+$docustom_dir = ((empty($_GET['custom_dir']) || $_GET['custom_dir'] == 'off') ? false : true);
+$dophpinfo = ((empty($_GET['phpinfo']) || $_GET['phpinfo'] == 'off') ? false : true);
+$domysql_dumps = ((empty($_GET['mysql_dumps']) || $_GET['mysql_dumps'] == 'off') ? false : true);
+$domysql_schema = ((empty($_GET['mysql_schema']) || $_GET['mysql_schema'] == 'off') ? false : true);
+$domysql_info = ((empty($_GET['mysql_info']) || $_GET['mysql_info'] == 'off') ? false : true);
+$domd5 = ((empty($_GET['md5']) || $_GET['md5'] == 'off') ? false : true);
+$domd5filesmd5 = ((empty($_GET['md5filesmd5']) || $_GET['md5filesmd5'] == 'off') ? false : true);
+$domd5calculated = ((empty($_GET['md5calculated']) || $_GET['md5calculated'] == 'off') ? false : true);
+$dobeanlistbeanfiles = ((empty($_GET['beanlistbeanfiles']) || $_GET['beanlistbeanfiles'] == 'off') ? false : true);
+$dosugarlog = ((empty($_GET['sugarlog']) || $_GET['sugarlog'] == 'off') ? false : true);
+$dovardefs = ((empty($_GET['vardefs']) || $_GET['vardefs'] == 'off') ? false : true);
 //END check for what we are executing
 
 
