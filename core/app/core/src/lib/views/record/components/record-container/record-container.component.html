@@ -61,7 +61,11 @@
                             <scrm-record-content-skeleton></scrm-record-content-skeleton>
                         </ng-container>
                         <ng-container *ngIf="!loading">
-                            <scrm-record-content [dataSource]="getContentAdapter()"></scrm-record-content>
+                            <scrm-record-content [dataSource]="getContentAdapter()">
+                                <div top-right-placement *ngIf="isOffsetExist">
+                                    <scrm-record-pagination></scrm-record-pagination>
+                                </div>
+                            </scrm-record-content>
                         </ng-container>
                     </div>
                 </div>

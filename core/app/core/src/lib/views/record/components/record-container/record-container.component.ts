@@ -42,6 +42,7 @@ import {BottomWidgetAdapter} from '../../adapters/bottom-widget.adapter';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
 import {Action, ActionContext} from 'common';
 import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'scrm-record-container',
@@ -56,6 +57,7 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
     context: ActionContext;
     loading: boolean = true;
     language$: Observable<LanguageStrings> = this.language.vm$;
+    isOffsetExist: boolean = false;
     displayWidgets: boolean = true;
     swapWidgets: boolean = false;
     sidebarWidgetConfig: any;
@@ -110,8 +112,11 @@ export class RecordContainerComponent implements OnInit, OnDestroy {
         protected sidebarWidgetAdapter: SidebarWidgetAdapter,
         protected bottomWidgetAdapter: BottomWidgetAdapter,
         protected actionsAdapter: RecordActionsAdapter,
-        protected sidebarWidgetHandler: RecordViewSidebarWidgetService
+        protected sidebarWidgetHandler: RecordViewSidebarWidgetService,
+        private activatedRoute: ActivatedRoute
     ) {
+        const queryParams = this.activatedRoute.snapshot.queryParamMap;
+        this.isOffsetExist = !!queryParams.get('offset');
     }
 
     ngOnInit(): void {

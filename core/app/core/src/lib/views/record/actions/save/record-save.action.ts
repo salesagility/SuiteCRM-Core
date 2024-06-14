@@ -33,7 +33,7 @@ import {ModuleNavigation} from '../../../../services/navigation/module-navigatio
 import {NotificationStore} from '../../../../store/notification/notification.store';
 import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
 import {Router} from "@angular/router";
-import {VcrService} from "../../store/vcr/vcr.service";
+import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 
 @Injectable({
     providedIn: 'root'
@@ -49,7 +49,7 @@ export class RecordSaveAction extends RecordActionHandler {
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
         protected recentlyViewedService: RecentlyViewedService,
-        protected vcrService: VcrService
+        protected recordPaginationService: RecordPaginationService
     ) {
         super();
     }
@@ -78,7 +78,7 @@ export class RecordSaveAction extends RecordActionHandler {
                     const currentUrl = this.router.url;
 
                     if (currentUrl.includes('edit')) {
-                        this.navigateBackOnDetail(this.navigation, this.router, this.vcrService, id, moduleName);
+                        this.navigateBackToDetail(this.navigation, this.router, this.recordPaginationService, id, moduleName);
                     } else {
                         this.navigateBack(this.navigation, params, id, moduleName, record);
                     }

@@ -32,11 +32,12 @@ import {LocalStorageService} from "../../../../services/local-storage/local-stor
 import {BehaviorSubject, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {toNumber} from "lodash-es";
+import {RecordPaginationModel} from "./record-pagination.model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class VcrService {
+export class RecordPaginationService {
 
     private nextRecordSubject = new BehaviorSubject<boolean>(false);
     nextRecord$ = this.nextRecordSubject.asObservable();
@@ -66,12 +67,12 @@ export class VcrService {
 
     public updateRecordListLocalStorage(records: Record[], pagination: Pagination): void {
         const module = this.getModule();
-        const vcrObj = {
+        const recordPaginationObj: RecordPaginationModel = {
             pagination: pagination,
             recordIds: this.setRecordIds(records)
         };
         this.updatePaginationLocalStorage(pagination);
-        this.savePreference(module, 'current-vcr', vcrObj);
+        this.savePreference(module, 'current-record-pagination', recordPaginationObj);
     }
 
     public updatePaginationLocalStorage(pagination: Pagination): void {
@@ -109,14 +110,14 @@ export class VcrService {
     }
 
     public checkRecordValid(recordId: string): boolean {
-        this.loadVcrData(this.getModule());
+        this.loadRecordPagination(this.getModule());
         if (!this.pagination) {
             return false;
         }
 
         const pageSize = this.getPageSize();
 
-        if (this.offset > pageSize) {
+        if (this.paginationType === PaginationType.LOAD_MORE && (this.offset > pageSize)) {
             return false;
         }
 
@@ -136,13 +137,13 @@ export class VcrService {
         return this.pagination?.pageSize;
     }
 
-    protected loadVcrData(module: string): void {
-        const key = module + '-' + 'recordview-current-vcr';
-        const currentVcr = this.localStorageService.get(key)[module];
-        if (!currentVcr || emptyObject(currentVcr)) {
+    protected loadRecordPagination(module: string): void {
+        const key = module + '-' + 'recordview-current-record-pagination';
+        const data = this.localStorageService.get(key)[module];
+        if (!data || emptyObject(data)) {
             return;
         }
-        this.pagination = currentVcr.pagination;
-        this.recordIds = currentVcr.recordIds;
+        this.pagination = data.pagination;
+        this.recordIds = data.recordIds;
     }
 }

@@ -24,11 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Pagination} from "./list-navigation.model";
-import {ObjectMap} from "../../types/object-map";
+import {Pagination, ObjectMap} from 'common';
 
-
-export interface Vcr {
+export interface RecordPaginationModel {
     recordIds: ObjectMap[],
     pagination: Pagination
 }

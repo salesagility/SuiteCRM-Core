@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-.vcr-container {
+.record-pagination-container {
   color: $shell-grey;
 
   .pagination-count {
@@ -34,7 +34,7 @@
     bottom: 0;
   }
 
-  .vcr-button {
+  .record-pagination-button {
     background: transparent;
     border: 1px solid $shell-grey;
     fill: $shell-grey;
@@ -43,7 +43,7 @@
     border-radius: 0.4em;
   }
 
-  .vcr-button.disabled {
+  .record-pagination-button.disabled {
     opacity: 40%;
     cursor: not-allowed;
   }

@@ -31,7 +31,6 @@ import {
     PageSelection,
     Pagination,
     PaginationCount,
-    PaginationType,
     PaginationDataSource,
     Record,
     RecordSelection,
@@ -165,7 +164,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     baseFilterMap: SavedFilterMap;
 
     pageKey: string = null;
-    paginationType: string = PaginationType.PAGINATION;
 
 
     constructor(
@@ -297,7 +295,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     public init(module: string, load = true, pageSizeConfigKey = 'list_max_entries_per_page', filter = deepClone(initialFilter), preferenceKey = ''): Observable<RecordList> {
         this.internalState.module = module;
         this.preferenceKey = preferenceKey;
-        this.paginationType= this.preferencesStore.getUserPreference('listview_pagination_type') ?? this.configStore.getConfigValue('listview_pagination_type');
 
         if (pageSizeConfigKey) {
             this.watchPageSize(pageSizeConfigKey);
@@ -393,7 +390,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
             return;
         }
         const module = this.internalState.module;
-        const key = module + '-' + this.pageKey + '-' +'current-pagination';
+        const key = module + '-' + this.pageKey + '-' + 'current-pagination';
         this.localStorageService.set(key, this.pagination);
     }
 
@@ -526,10 +523,6 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
     }
 
     public setPagination(current: number): Observable<RecordList>  {
-        this.pageKey = 'listview';
-        if(this.paginationType === PaginationType.LOAD_MORE) {
-            current = 0;
-        }
         const pagination = {...this.internalState.pagination, current};
         this.updateState({...this.internalState, pagination});
 
@@ -765,7 +758,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         }
     }
 
-    setPage(page: PageSelection): Observable<RecordList> {
+    setPage(page: PageSelection, isPaginationLoadMore: boolean): Observable<RecordList> {
         let pageToLoad = 0;
 
         const pageMap = {};
@@ -783,6 +776,10 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
 
             if (pageToLoad < 0) {
                 return of({} as RecordList);
+            }
+
+            if(isPaginationLoadMore) {
+                pageToLoad = 0;
             }
 
             return this.setPagination(pageToLoad);

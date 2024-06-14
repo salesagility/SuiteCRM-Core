@@ -31,7 +31,7 @@ import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageModalComponent} from '../../../../components/modal/components/message-modal/message-modal.component';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {Router} from "@angular/router";
-import {VcrService} from "../../store/vcr/vcr.service";
+import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 
 @Injectable({
     providedIn: 'root'
@@ -45,7 +45,7 @@ export class RecordCancelAction extends RecordActionHandler {
         private modalService: NgbModal,
         private navigation: ModuleNavigation,
         private router: Router,
-        private vcrService: VcrService
+        private recordPaginationService: RecordPaginationService
     ) {
         super();
     }
@@ -74,7 +74,7 @@ export class RecordCancelAction extends RecordActionHandler {
         const currentUrl = this.router.url;
 
         if (currentUrl.includes('edit')) {
-            this.navigateBackOnDetail(this.navigation, this.router, this.vcrService, id, moduleName);
+            this.navigateBackToDetail(this.navigation, this.router, this.recordPaginationService, id, moduleName);
         } else {
             this.navigateBack(this.navigation, params, id, moduleName, record);
         }

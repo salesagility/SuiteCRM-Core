@@ -40,6 +40,7 @@ import {RecordContentModule} from '../../../../components/record-content/record-
 import {
     RecordContentSkeletonModule
 } from '../../../../components/record-content-skeleton/record-content-skeleton.module';
+import {RecordPaginationComponent} from "../record-pagination/record-pagination.component";
 
 @NgModule({
     declarations: [RecordContainerComponent],
@@ -52,7 +53,8 @@ import {
         RecordContentModule,
         TopWidgetModule,
         SidebarWidgetModule,
-        RecordContentSkeletonModule
+        RecordContentSkeletonModule,
+        RecordPaginationComponent
     ]
 })
 export class RecordContainerModule {

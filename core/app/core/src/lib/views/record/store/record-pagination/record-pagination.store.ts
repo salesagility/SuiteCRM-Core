@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {deepClone, Pagination, Vcr, ObjectMap, SortingSelection, SearchCriteria, emptyObject, isFalse} from 'common';
+import {deepClone, Pagination, ObjectMap, SortingSelection, SearchCriteria, emptyObject} from 'common';
 import {BehaviorSubject, Observable, of, Subscription} from "rxjs";
 import {distinctUntilChanged, map, shareReplay} from "rxjs/operators";
 import {isArray, union} from "lodash-es";
@@ -35,22 +35,23 @@ import {RecordListStore} from "../../../../store/record-list/record-list.store";
 import {RecordListStoreFactory} from "../../../../store/record-list/record-list.store.factory";
 import {SavedFilterMap} from "../../../../store/saved-filters/saved-filter.model";
 import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
-import {VcrService} from "./vcr.service";
+import {RecordPaginationService} from "./record-pagination.service";
+import {RecordPaginationModel} from "./record-pagination.model";
 
-export interface VcrState {
-    vcrEnabled?: boolean;
+export interface RecordPaginationState {
+    paginationEnabled?: boolean;
     recordIds?: ObjectMap[];
     pagination?: Pagination;
 }
 
-const initialState: VcrState = {
-    vcrEnabled: false,
+const initialState: RecordPaginationState = {
+    paginationEnabled: false,
     recordIds: null,
     pagination: null
 };
 
 @Injectable()
-export class VcrStore  {
+export class RecordPaginationStore  {
 
     recordListStore: RecordListStore;
 
@@ -59,11 +60,11 @@ export class VcrStore  {
      */
     recordIds$: Observable<ObjectMap[]>;
     pagination$: Observable<Pagination>;
-    vcrEnabled$: Observable<boolean>;
+    paginationEnabled$: Observable<boolean>;
 
-    protected internalState: VcrState = deepClone(initialState);
+    protected internalState: RecordPaginationState = deepClone(initialState);
     protected cache$: Observable<any> = null;
-    protected store = new BehaviorSubject<VcrState>(this.internalState);
+    protected store = new BehaviorSubject<RecordPaginationState>(this.internalState);
     protected state$ = this.store.asObservable();
     protected subs: Subscription[] = [];
 
@@ -72,12 +73,12 @@ export class VcrStore  {
         protected systemConfigStore: SystemConfigStore,
         protected listStoreFactory: RecordListStoreFactory,
         protected localStorageService: LocalStorageService,
-        protected vcrService: VcrService
+        protected recordPaginationService: RecordPaginationService
     ) {
         this.recordListStore = this.listStoreFactory.create();
         this.recordIds$ = this.state$.pipe(map(state => state.recordIds), distinctUntilChanged());
         this.pagination$ = this.state$.pipe(map(state => state.pagination), distinctUntilChanged());
-        this.vcrEnabled$ = this.state$.pipe(map(state => state.vcrEnabled), distinctUntilChanged());
+        this.paginationEnabled$ = this.state$.pipe(map(state => state.paginationEnabled), distinctUntilChanged());
     }
 
     public clear(): void {
@@ -89,42 +90,42 @@ export class VcrStore  {
     public init(): void {
         const module = this.getModule();
         this.recordListStore.init(module, false);
-        this.enableVcr();
+        this.enableRecordPagination();
         this.loadDataLocalStorage();
         this.loadCurrentPagination(module);
         this.loadCurrentSort(module);
         this.loadCurrentFilter(module);
     }
 
-    protected enableVcr(): void {
-        let isVcrEnabled = this.systemConfigStore.getConfigValue('enable_record_pagination');
-        if (isVcrEnabled === "" || (Array.isArray(isVcrEnabled) && isVcrEnabled.length === 0)) {
-            isVcrEnabled = false;
+    protected enableRecordPagination(): void {
+        let isEnabled = this.systemConfigStore.getConfigValue('enable_record_pagination');
+        if (isEnabled === "" || (Array.isArray(isEnabled) && isEnabled.length === 0)) {
+            isEnabled = false;
         }
-        this.updateState({...this.internalState, vcrEnabled: !!(isVcrEnabled ?? false)});
+        this.updateState({...this.internalState, paginationEnabled: !!(isEnabled ?? false)});
     }
 
     public loadDataLocalStorage(): void {
-        const vcrData: Vcr = this.getRecordListPreference();
-        this.updateState({...this.internalState, recordIds: vcrData?.recordIds, pagination: vcrData?.pagination});
+        const data: RecordPaginationModel = this.getRecordListPreference();
+        this.updateState({...this.internalState, recordIds: data?.recordIds, pagination: data?.pagination});
     }
 
-    protected getRecordListPreference(): Vcr {
+    protected getRecordListPreference(): RecordPaginationModel {
         const module = this.getModule();
-        const vcrObj = this.loadPreference(module, 'current-vcr');
-        this.checkPaginationExist(vcrObj);
+        const data = this.loadPreference(module, 'current-record-pagination');
+        this.checkPaginationExist(data);
 
-        if (!isArray(vcrObj.recordIds) || !vcrObj.recordIds || !vcrObj.recordIds.length) {
+        if (!isArray(data.recordIds) || !data.recordIds || !data.recordIds.length) {
             return null;
         }
-        return vcrObj;
+        return data;
     }
 
-    protected checkPaginationExist(vcrObj: VcrState): void {
+    protected checkPaginationExist(data: RecordPaginationState): void {
         const module = this.getModule();
         const hasPagination = this.loadPreference(module, 'current-pagination', 'listview');
         if (!hasPagination) {
-            this.recordListStore.pagination = vcrObj.pagination;
+            this.recordListStore.pagination = data.pagination;
         }
     }
 
@@ -247,7 +248,7 @@ export class VcrStore  {
     }
 
     public getModule(): string {
-        return this.vcrService.getModule();
+        return this.recordPaginationService.getModule();
     }
 
     public getCurrentPage(): number {
@@ -265,11 +266,11 @@ export class VcrStore  {
         return this.internalState.pagination?.total;
     }
 
-    protected updateState(state: VcrState): void {
+    protected updateState(state: RecordPaginationState): void {
         this.store.next(this.internalState = state);
     }
 
-    protected set(state: VcrState): void {
+    protected set(state: RecordPaginationState): void {
         this.cache$ = of(state).pipe(shareReplay(1));
         this.updateState(state);
     }

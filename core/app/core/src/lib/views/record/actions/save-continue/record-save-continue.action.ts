@@ -32,7 +32,7 @@ import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {NotificationStore} from '../../../../store/notification/notification.store';
 import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
-import {VcrService} from "../../store/vcr/vcr.service";
+import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +47,7 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
         protected recentlyViewedService: RecentlyViewedService,
-        protected vcrService: VcrService
+        protected recordPaginationService: RecordPaginationService
     ) {
         super();
     }
@@ -72,7 +72,7 @@ export class RecordSaveContinueAction extends RecordActionHandler {
                     const recentlyViewed = this.recentlyViewedService.buildRecentlyViewed(moduleName, id);
                     this.recentlyViewedService.addRecentlyViewed(moduleName, recentlyViewed);
                 });
-                this.vcrService.triggerNextRecord(true);
+                this.recordPaginationService.triggerNextRecord(true);
                 return;
             }
 
@@ -81,8 +81,8 @@ export class RecordSaveContinueAction extends RecordActionHandler {
     }
 
     shouldDisplay(data: RecordActionData): boolean {
-        const totalRecords = this.vcrService.getTotalRecords();
-        const offset = this.vcrService.offset;
+        const totalRecords = this.recordPaginationService.getTotalRecords();
+        const offset = this.recordPaginationService.offset;
 
         if (!totalRecords || !offset ||
             (offset >= totalRecords) ||
@@ -90,6 +90,6 @@ export class RecordSaveContinueAction extends RecordActionHandler {
             return false;
         }
 
-        return this.vcrService.checkRecordValid(data.store.getRecordId());
+        return this.recordPaginationService.checkRecordValid(data.store.getRecordId());
     }
 }

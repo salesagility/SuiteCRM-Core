@@ -55,9 +55,7 @@
                     </ng-container>
                 </ng-container>
             </ul>
-            <ng-container *ngIf="isOffsetExist">
-                <scrm-vcr></scrm-vcr>
-            </ng-container>
+            <ng-content select="[top-right-placement]"></ng-content>
         </div>
 
         <div [ngbNavOutlet]="nav" class="p-2 pt-3 rounded-right rounded-bottom"></div>

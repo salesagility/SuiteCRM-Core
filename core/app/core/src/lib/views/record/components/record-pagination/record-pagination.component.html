@@ -25,9 +25,9 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="vcr-container d-flex align-items-center justify-content-end" *ngIf="(vm$ | async) as vm">
-    <ng-container *ngIf="vm.vcrEnabled">
-        <button class="vcr-button pagination-previous"
+<div class="record-pagination-container d-flex align-items-center justify-content-end" *ngIf="(vm$ | async) as vm">
+    <ng-container *ngIf="vm.paginationEnabled">
+        <button class="record-pagination-button pagination-previous"
                 [disabled]="currentIndex === 1 || isRecordsLoading"
                 [class.disabled]="currentIndex === 1"
                 aria-label="Previous page"
@@ -38,7 +38,7 @@
         <span class="pagination-count">
             {{currentIndex}} {{vm.appStrings['LBL_LIST_OF'] || ''}} {{vm.pageCount.total}}
         </span>
-        <button class="vcr-button pagination-next"
+        <button class="record-pagination-button pagination-next"
                 [disabled]="currentIndex === totalRecordsCount  || isRecordsLoading"
                 [class.disabled]="currentIndex === totalRecordsCount"
                 aria-label="Navigate to last page"

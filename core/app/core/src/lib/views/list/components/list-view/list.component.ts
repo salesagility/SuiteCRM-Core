@@ -30,7 +30,7 @@ import {ListViewModel, ListViewStore} from '../../store/list-view/list-view.stor
 import {AppStateStore} from '../../../../store/app-state/app-state.store';
 import {QuickFiltersService} from "../../services/quick-filters.service";
 import {ListViewSidebarWidgetService} from "../../services/list-view-sidebar-widget.service";
-import {VcrService} from "../../../record/store/vcr/vcr.service";
+import {RecordPaginationService} from "../../../record/store/record-pagination/record-pagination.service";
 
 @Component({
     selector: 'scrm-list',
@@ -49,7 +49,7 @@ export class ListComponent implements OnInit, OnDestroy {
         protected listStore: ListViewStore,
         protected quickFilters: QuickFiltersService,
         protected sidebarWidgetHandler: ListViewSidebarWidgetService,
-        protected vcrService: VcrService
+        protected recordPaginationService: RecordPaginationService
     ) {
 
     }
@@ -75,6 +75,6 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     public updateListLocalStorage(): void {
-        this.vcrService.updateRecordListLocalStorage(this.listStore.recordList.records, this.listStore.recordList.pagination);
+        this.recordPaginationService.updateRecordListLocalStorage(this.listStore.recordList.records, this.listStore.recordList.pagination);
     }
 }

@@ -31,35 +31,35 @@ import {PaginationCount, PageSelection, PaginationType, ObjectMap, ViewMode, Mod
 import {combineLatestWith, Observable, Subscription} from "rxjs";
 import {filter, map, tap} from "rxjs/operators";
 import {toNumber} from "lodash-es";
-import {ImageModule} from "../image/image.module";
-import {ModuleNavigation} from "../../services/navigation/module-navigation/module-navigation.service";
-import {ModuleNameMapper} from "../../services/navigation/module-name-mapper/module-name-mapper.service";
-import {LanguageStore, LanguageStringMap} from "../../store/language/language.store";
-import {RecordViewStore} from "../../views/record/store/record-view/record-view.store";
-import {SystemConfigStore} from "../../store/system-config/system-config.store";
-import {MessageModalComponent} from "../modal/components/message-modal/message-modal.component";
+import {MessageModalComponent} from "../../../../components/modal/components/message-modal/message-modal.component";
+import {ModuleNavigation} from "../../../../services/navigation/module-navigation/module-navigation.service";
+import {ModuleNameMapper} from "../../../../services/navigation/module-name-mapper/module-name-mapper.service";
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
+import {LocalStorageService} from "../../../../services/local-storage/local-storage.service";
+import {LanguageStore, LanguageStringMap} from "../../../../store/language/language.store";
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {RecordViewStore} from "../../store/record-view/record-view.store";
+import {ImageModule} from "../../../../components/image/image.module";
+import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
+import {RecordPaginationStore} from "../../store/record-pagination/record-pagination.store";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {VcrStore} from "../../views/record/store/vcr/vcr.store";
-import {VcrService} from "../../views/record/store/vcr/vcr.service";
-import {UserPreferenceStore} from "../../store/user-preference/user-preference.store";
-import {LocalStorageService} from "../../services/local-storage/local-storage.service";
 
-export interface VcrViewModel {
+interface RecordPaginationViewModel {
     appStrings: LanguageStringMap;
     pageCount: PaginationCount;
-    vcrEnabled: boolean;
+    paginationEnabled: boolean;
 }
 
 @Component({
-    selector: 'scrm-vcr',
-    templateUrl: './vcr.component.html',
+    selector: 'scrm-record-pagination',
+    templateUrl: './record-pagination.component.html',
     styles: [],
     standalone: true,
     imports: [CommonModule, ImageModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class VcrComponent implements OnInit, OnDestroy {
+export class RecordPaginationComponent implements OnInit, OnDestroy {
 
     currentIndex: number = 1;
     currentPage: number = 1;
@@ -73,9 +73,9 @@ export class VcrComponent implements OnInit, OnDestroy {
     subs: Subscription[] = [];
 
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
-    recordIds$: Observable<ObjectMap[]> = this.vcrStore.recordIds$;
+    recordIds$: Observable<ObjectMap[]> = this.recordPaginationStore.recordIds$;
     mode$: Observable<ViewMode> = this.recordViewStore.mode$;
-    vm$: Observable<VcrViewModel> = null;
+    vm$: Observable<RecordPaginationViewModel> = null;
 
     constructor(
         private systemConfigStore: SystemConfigStore,
@@ -85,8 +85,8 @@ export class VcrComponent implements OnInit, OnDestroy {
         private navigation: ModuleNavigation,
         private nameMapper: ModuleNameMapper,
         private recordViewStore: RecordViewStore,
-        private vcrStore: VcrStore,
-        private vcrService: VcrService,
+        private recordPaginationStore: RecordPaginationStore,
+        private recordPaginationService: RecordPaginationService,
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NgbModal
@@ -99,28 +99,28 @@ export class VcrComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.vcrStore.init();
-        this.currentPage = this.vcrStore.getCurrentPage();
-        this.pageSize = this.vcrStore.getPageSize();
-        this.totalRecordsCount = this.vcrStore.getRecordsCount();
+        this.recordPaginationStore.init();
+        this.currentPage = this.recordPaginationStore.getCurrentPage();
+        this.pageSize = this.recordPaginationStore.getPageSize();
+        this.totalRecordsCount = this.recordPaginationStore.getRecordsCount();
         this.paginationType= this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigStore.getConfigValue('listview_pagination_type');
-        this.vcrService.paginationType = this.paginationType;
+        this.recordPaginationService.paginationType = this.paginationType;
         this.subs.push(this.mode$.subscribe(mode => {
             this.mode = mode;
         }));
 
         this.vm$ = this.appStrings$.pipe(
-            combineLatestWith(this.vcrStore.pagination$, this.vcrStore.vcrEnabled$),
-            map(([appStrings, pageCount, vcrEnabled]: [LanguageStringMap, PaginationCount, boolean]) => {
-                const module = this.nameMapper.toFrontend(this.vcrStore.getModule()) ?? '';
-                const key = module + '-' + 'recordview-current-vcr';
-                const isVcrExist = this.localStorageService.get(key);
-                const isRecordValid = this.vcrService.checkRecordValid(this.recordViewStore.getRecordId());
+            combineLatestWith(this.recordPaginationStore.pagination$, this.recordPaginationStore.paginationEnabled$),
+            map(([appStrings, pageCount, paginationEnabled]: [LanguageStringMap, PaginationCount, boolean]) => {
+                const module = this.nameMapper.toFrontend(this.recordPaginationStore.getModule()) ?? '';
+                const key = module + '-' + 'recordview-current-record-pagination';
+                const isRecordPaginationExist = this.localStorageService.get(key);
+                const isRecordValid = this.recordPaginationService.checkRecordValid(this.recordViewStore.getRecordId());
 
-                if (!isVcrExist || !isRecordValid || (this.currentIndex > this.totalRecordsCount)) {
-                    vcrEnabled = false;
+                if (!isRecordPaginationExist || !isRecordValid || (this.currentIndex > this.totalRecordsCount)) {
+                    paginationEnabled = false;
                 }
-                return { appStrings, pageCount, vcrEnabled };
+                return { appStrings, pageCount, paginationEnabled };
             })
         );
 
@@ -128,7 +128,7 @@ export class VcrComponent implements OnInit, OnDestroy {
             this.recordIds = recordIds;
         }));
 
-        this.subs.push(this.vcrService.nextRecord$.pipe(
+        this.subs.push(this.recordPaginationService.nextRecord$.pipe(
             filter(data => {
                 if (!data) {
                     return false;
@@ -141,14 +141,14 @@ export class VcrComponent implements OnInit, OnDestroy {
             })
         ).subscribe((data) => {
             this.isSaveContinueClicked = false;
-            this.vcrService.triggerNextRecord(false);
+            this.recordPaginationService.triggerNextRecord(false);
 
         }));
     }
 
     ngOnDestroy() : void {
         this.subs.forEach(sub => sub.unsubscribe());
-        this.vcrStore.clear();
+        this.recordPaginationStore.clear();
     }
 
     prevRecord(): void {
@@ -192,26 +192,30 @@ export class VcrComponent implements OnInit, OnDestroy {
     protected loadPage(direction: PageSelection): void {
         this.isRecordsLoading = true;
         let nextRecordIndex = 0;
+        let isPaginationLoadMore = false;
+        if(this.paginationType === PaginationType.LOAD_MORE) {
+            isPaginationLoadMore = true;
+        }
         if (direction === PageSelection.PREVIOUS) {
             nextRecordIndex = this.pageSize - 1;
-        } else if (direction === PageSelection.NEXT && this.paginationType === PaginationType.LOAD_MORE) {
+        } else if (direction === PageSelection.NEXT && isPaginationLoadMore) {
             nextRecordIndex = this.currentIndex;
         }
 
-        if (this.paginationType === PaginationType.LOAD_MORE && direction !== PageSelection.PREVIOUS ) {
+        if (isPaginationLoadMore && direction !== PageSelection.PREVIOUS ) {
             const jump = this.preferences.getUserPreference('list_max_entries_per_page') ?? this.systemConfigStore.getConfigValue('list_max_entries_per_page');
-            const pagination = this.vcrStore.recordListStore.getPagination();
+            const pagination = this.recordPaginationStore.recordListStore.getPagination();
             const currentPageSize = pagination.pageSize || 0;
             const newPageSize = Number(currentPageSize) + Number(jump);
 
-            this.vcrStore.recordListStore.setPageSize(newPageSize);
-            this.vcrStore.recordListStore.updatePagination(pagination.current);
+            this.recordPaginationStore.recordListStore.setPageSize(newPageSize);
+            this.recordPaginationStore.recordListStore.updatePagination(pagination.current);
         }
 
 
-        this.vcrStore.recordListStore.setPage(direction as PageSelection).subscribe(data => {
-            this.vcrService.updateRecordListLocalStorage(data.records, data.pagination);
-            this.vcrStore.loadDataLocalStorage();
+        this.recordPaginationStore.recordListStore.setPage(direction as PageSelection, isPaginationLoadMore).subscribe(data => {
+            this.recordPaginationService.updateRecordListLocalStorage(data.records, data.pagination);
+            this.recordPaginationStore.loadDataLocalStorage();
             this.isRecordsLoading = false;
             if (this.mode === 'edit' && this.recordViewStore.recordStore.isDirty() && !this.isSaveContinueClicked) {
                 this.showConfirmationModal(direction, nextRecordIndex);
@@ -253,7 +257,7 @@ export class VcrComponent implements OnInit, OnDestroy {
     }
 
     protected buildRoute(recordId: ObjectMap): string {
-        const module = this.nameMapper.toFrontend(this.vcrStore.getModule()) ?? '';
+        const module = this.nameMapper.toFrontend(this.recordPaginationStore.getModule()) ?? '';
         const id = recordId.id ?? '';
         const isEdit = this.mode === 'edit';
         return this.navigation.getRecordRouterLink(module, id, isEdit);

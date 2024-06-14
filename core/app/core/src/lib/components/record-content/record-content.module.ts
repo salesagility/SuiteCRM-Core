@@ -31,7 +31,6 @@ import {RecordContentComponent} from './record-content.component';
 import {PanelModule} from '../panel/panel.module';
 import {FieldLayoutModule} from '../field-layout/field-layout.module';
 import {ToObservableModule} from '../../pipes/toObservable/toObservable.module';
-import {VcrComponent} from "../vcr/vcr.component";
 
 
 @NgModule({
@@ -46,8 +45,7 @@ import {VcrComponent} from "../vcr/vcr.component";
         PanelModule,
         NgbModule,
         FieldLayoutModule,
-        ToObservableModule,
-        VcrComponent
+        ToObservableModule
     ]
 })
 export class RecordContentModule {
