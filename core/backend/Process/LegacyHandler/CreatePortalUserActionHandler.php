@@ -53,7 +53,7 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
     protected $moduleNameMapper;
 
     /**
-     * LinkRelationHandler constructor.
+     * CreatePortalUserActionHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
@@ -105,6 +105,26 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
     public function requiredAuthRole(): string
     {
         return 'ROLE_USER';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
     }
 
     /**
@@ -169,7 +189,7 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
             $process->setStatus('error');
             return;
         }
-        if (!$contact->id || !$contact->email1) {
+        if (empty($contact) || !$contact->id || !$contact->email1) {
             $this->logger->error($mod_strings['LBL_ERROR_CONTACT_ID_OR_EMAIL_EMPTY']);
             $process->setMessages(['LBL_ERROR_CONTACT_ID_OR_EMAIL_EMPTY']);
             $process->setStatus('error');
@@ -189,7 +209,7 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
 
         $decodedResponse = json_decode($apiResponse, false, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
 
-        if (!$decodedResponse->success) {
+        if (empty($decodedResponse) || !$decodedResponse->success) {
             $msg = $decodedResponse->error ?: $mod_strings['LBL_CREATE_PORTAL_USER_FAILED'];
             $this->logger->error($msg);
             $this->logger->error('JSON error: ' . json_last_error_msg());
@@ -213,23 +233,5 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getRequiredACLs(Process $process): array
-    {
-        $options = $process->getOptions();
-        $module = $options['module'] ?? '';
 
-
-        return [
-            $module => [
-                [
-                    'action' => 'edit',
-                    'record' => $options['id'] ?? ''
-                ]
-            ],
-        ];
-
-    }
 }

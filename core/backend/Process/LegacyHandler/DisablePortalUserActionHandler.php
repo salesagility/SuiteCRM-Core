@@ -54,7 +54,12 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
     protected $moduleNameMapper;
 
     /**
-     * LinkRelationHandler constructor.
+     * @var PortalUserActivator
+     */
+    protected $portalUserActivator;
+
+    /**
+     * DisablePortalUserActionHandler constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
@@ -62,6 +67,7 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
      * @param LegacyScopeState $legacyScopeState
      * @param SessionInterface $session
      * @param ModuleNameMapperInterface $moduleNameMapper
+     * @param PortalUserActivator $portalUserActivator
      */
     public function __construct(
         string $projectDir,
@@ -70,7 +76,8 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         SessionInterface $session,
-        ModuleNameMapperInterface $moduleNameMapper
+        ModuleNameMapperInterface $moduleNameMapper,
+        PortalUserActivator $portalUserActivator
     )
     {
         parent::__construct(
@@ -81,6 +88,7 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
             $legacyScopeState,
             $session
         );
+        $this->portalUserActivator = $portalUserActivator;
         $this->moduleNameMapper = $moduleNameMapper;
     }
 
@@ -106,6 +114,26 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
     public function requiredAuthRole(): string
     {
         return 'ROLE_USER';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredACLs(Process $process): array
+    {
+        $options = $process->getOptions();
+        $module = $options['module'] ?? '';
+
+
+        return [
+            $module => [
+                [
+                    'action' => 'edit',
+                    'record' => $options['id'] ?? ''
+                ]
+            ],
+        ];
+
     }
 
     /**
@@ -144,8 +172,7 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
 
         $options = $process->getOptions();
 
-       $user_activator = new PortalUserActivator();
-       $user_activator->switchPortalUserStatus($options['id'], 'LBL_DISABLE_PORTAL_USER_FAILED', false);
+        $this->portalUserActivator->switchPortalUserStatus($options['id'], 'LBL_DISABLE_PORTAL_USER_FAILED', false);
         $process->setData(['reload' => true]);
         $this->close();
     }
@@ -158,23 +185,5 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getRequiredACLs(Process $process): array
-    {
-        $options = $process->getOptions();
-        $module = $options['module'] ?? '';
 
-
-        return [
-            $module => [
-                [
-                    'action' => 'edit',
-                    'record' => $options['id'] ?? ''
-                ]
-            ],
-        ];
-
-    }
 }

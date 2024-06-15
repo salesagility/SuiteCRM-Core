@@ -37,7 +37,7 @@ class PortalUserActivator extends LegacyHandler
         return self::PROCESS_TYPE;
     }
 
-    public function switchPortalUserStatus($contact_id, $label, $activate): void
+    public function switchPortalUserStatus(string $contact_id, string $label, bool $activate): void
     {
         $this->init();
         $action = $activate ? 'enable_user' : 'disable_user';
@@ -53,6 +53,7 @@ class PortalUserActivator extends LegacyHandler
         if (
             array_key_exists("aop", $sugar_config) &&
             array_key_exists("joomla_url", $sugar_config['aop']) &&
+            !empty($contact) &&
             property_exists($contact, 'joomla_account_id') &&
             $contact->joomla_account_id !== null
         ) {
@@ -64,7 +65,7 @@ class PortalUserActivator extends LegacyHandler
             $apiResponse = file_get_contents($apiEndpoint);
             $decodedResponse = json_decode($apiResponse);
 
-            if (!$decodedResponse->success) {
+            if (empty($decodedResponse) || !$decodedResponse->success) {
                 $msg = $decodedResponse->error ?: $mod_strings[$label];
             } else {
                 $contact->portal_account_disabled = !$activate;

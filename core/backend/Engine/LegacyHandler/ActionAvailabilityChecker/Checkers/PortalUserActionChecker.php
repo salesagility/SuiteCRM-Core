@@ -42,7 +42,7 @@ class PortalUserActionChecker extends LegacyHandler implements ActionAvailabilit
     protected $moduleNameMapper;
 
     /**
-     * DuplicateMergeActionChecker constructor.
+     * PortalUserActionChecker constructor.
      * @param string $projectDir
      * @param string $legacyDir
      * @param string $legacySessionName
