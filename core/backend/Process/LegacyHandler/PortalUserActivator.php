@@ -26,11 +26,20 @@
  */
 namespace App\Process\LegacyHandler;
 
-class PortalUserActivator
+use App\Engine\LegacyHandler\LegacyHandler;
+
+class PortalUserActivator extends LegacyHandler
 {
+    public const PROCESS_TYPE = 'portal-user-activator';
+
+    public function getHandlerKey(): string
+    {
+        return self::PROCESS_TYPE;
+    }
 
     public function switchPortalUserStatus($contact_id, $label, $activate): void
     {
+        $this->init();
         $action = $activate ? 'enable_user' : 'disable_user';
         require_once 'modules/AOP_Case_Updates/util.php';
         if (!isAOPEnabled()) {
@@ -62,5 +71,8 @@ class PortalUserActivator
                 $contact->save();
             }
         }
+
+        $this->close();
     }
+
 }
