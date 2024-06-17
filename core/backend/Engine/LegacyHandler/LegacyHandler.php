@@ -30,16 +30,10 @@ namespace App\Engine\LegacyHandler;
 use App\Install\Service\InstallationUtilsTrait;
 use BeanFactory;
 use ControllerFactory;
-use RuntimeException;
 use SugarApplication;
 use SugarController;
 use SugarThemeRegistry;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use User;
 
 /**
@@ -53,6 +47,7 @@ abstract class LegacyHandler
 
     /**
      * @var string
+     *
      */
     protected $projectDir;
 
@@ -91,13 +86,14 @@ abstract class LegacyHandler
      * @param RequestStack $requestStack
      */
     public function __construct(
-        string $projectDir,
-        string $legacyDir,
-        string $legacySessionName,
-        string $defaultSessionName,
+        string           $projectDir,
+        string           $legacyDir,
+        string           $legacySessionName,
+        string           $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        RequestStack $requestStack
-    ) {
+        RequestStack     $requestStack
+    )
+    {
         $this->projectDir = $projectDir;
         $this->legacyDir = $legacyDir;
         $this->legacySessionName = $legacySessionName;
@@ -117,10 +113,6 @@ abstract class LegacyHandler
 
         // Set working directory for legacy
         chdir($this->legacyDir);
-
-        if (!$this->runLegacyEntryPoint()) {
-            throw new RuntimeException(self::MSG_LEGACY_BOOTSTRAP_FAILED);
-        }
 
         $this->startSession();
 
@@ -321,7 +313,6 @@ abstract class LegacyHandler
     public function startSession(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
-            $currentSessionName = session_name();
             return;
         }
 
