@@ -146,8 +146,10 @@ class Kernel extends BaseKernel
 
         if (!empty($config['site_url'])) {
             $_ENV['SITE_URL'] = rtrim($config['site_url'], '/');
+            return;
         }
 
+        $_ENV['SITE_URL'] = '';
     }
 
     public function getConfigValues(): array
@@ -158,13 +160,13 @@ class Kernel extends BaseKernel
 
         $configFile = $legacyPath . 'config.php';
 
-        if (file_exists($configFile)){
+        if (file_exists($configFile)) {
             include($configFile);
         }
 
         $configOverrideFile = $legacyPath . 'config_override.php';
 
-        if (file_exists($configOverrideFile)){
+        if (file_exists($configOverrideFile)) {
             include($configOverrideFile);
         }
 
