@@ -30,13 +30,11 @@ namespace App;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use function dirname;
 
 /**
@@ -108,6 +106,7 @@ class Kernel extends BaseKernel
      */
     public function init(): void
     {
+        $this->setSiteURLEnv();
         $this->initializeBundles();
         $this->initializeContainer();
     }
@@ -134,5 +133,41 @@ class Kernel extends BaseKernel
         if ($this->container->has('graphql.introspection_manager')) {
             $this->container->get('graphql.introspection_manager')->configure();
         }
+    }
+
+    public function setSiteURLEnv(): void
+    {
+        $config = $this->getConfigValues();
+
+        $_ENV = $_ENV ?? [];
+        if (!empty($env['SITE_URL'])) {
+            return;
+        }
+
+        if (!empty($config['site_url'])) {
+            $_ENV['SITE_URL'] = rtrim($config['site_url'], '/');
+        }
+
+    }
+
+    public function getConfigValues(): array
+    {
+        $sugar_config = [];
+
+        $legacyPath = __DIR__ . '/../../public/legacy/';
+
+        $configFile = $legacyPath . 'config.php';
+
+        if (file_exists($configFile)){
+            include($configFile);
+        }
+
+        $configOverrideFile = $legacyPath . 'config_override.php';
+
+        if (file_exists($configOverrideFile)){
+            include($configOverrideFile);
+        }
+
+        return $sugar_config;
     }
 }
