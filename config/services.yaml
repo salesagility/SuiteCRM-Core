@@ -13,6 +13,8 @@ parameters:
   log.main.default: '%kernel.environment%.log'
   log.security.default: '%kernel.environment%.security.log'
   log.deprecation.default: '%kernel.environment%.deprecation.log'
+  site.url: '%env(SITE_URL)%'
+  saml.autocreate.attributes_map: '%env(json:SAML_AUTOCREATE_ATTRIBUTES_MAP)%'
 
 services:
   Symfony\Component\Ldap\Ldap:

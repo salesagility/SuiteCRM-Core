@@ -3,63 +3,64 @@ nbgrp_onelogin_saml:
     default:
       # Mandatory SAML settings
       idp:
-        entityId: 'https://id.example.com/saml2/idp/metadata.php'
+        entityId: '%env(SAML_IDP_ENTITY_ID)%'
         singleSignOnService:
-          url: 'https://id.example.com/saml2/idp/SSOService.php'
+          url: '%env(SAML_IDP_SSO_URL)%'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
         singleLogoutService:
-          url: 'https://id.example.com/saml2/idp/SingleLogoutService.php'
+          url: '%env(SAML_IDP_SLO_URL)%'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        x509cert: 'MIIC...'
+        x509cert: '%env(SAML_IDP_X509CERT)%'
       sp:
-        entityId: 'https://myapp.com/saml/metadata'  #  Default: '<request_scheme_and_host>/saml/metadata'
+        entityId: '%env(string:default:site.url:SAML_SP_ENTITY_ID)%'  #  Default: '<request_scheme_and_host>/saml/metadata'
         assertionConsumerService:
-          url: 'https://myapp.com/saml/acs'  #  Default: '<request_scheme_and_host>/saml/acs'
+          url: '%env(SITE_URL)%/saml/acs'  #  Default: '<request_scheme_and_host>/saml/acs'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
         singleLogoutService:
-          url: 'https://myapp.com/saml/logout'  #  Default: '<request_scheme_and_host>/saml/logout'
+          url: '%env(SITE_URL)%/saml/logout'  #  Default: '<request_scheme_and_host>/saml/logout'
           binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        privateKey: 'MIIE...'
+        privateKey: '%env(SAML_SP_PRIVATE_KEY)%'
+        x509cert: '%env(SAML_SP_CERT)%'
       # Optional SAML settings
-      baseurl: 'https://myapp.com/saml/'  #  Default: '<request_scheme_and_host>/saml/'
-      strict: true
-      debug: true
+      baseurl: '%env(SITE_URL)%/saml'  #  Default: '<request_scheme_and_host>/saml/'
+      strict: '%env(bool:SAML_STRICT)%'
+      debug: '%env(bool:SAML_DEBUG)%'
       security:
-        nameIdEncrypted: false
-        authnRequestsSigned: false
-        logoutRequestSigned: false
-        logoutResponseSigned: false
-        signMetadata: false
-        wantMessagesSigned: false
-        wantAssertionsEncrypted: false
-        wantAssertionsSigned: true
-        wantNameId: false
-        wantNameIdEncrypted: false
-        requestedAuthnContext: true
-        wantXMLValidation: false
-        relaxDestinationValidation: false
-        destinationStrictlyMatches: true
-        allowRepeatAttributeName: false
-        rejectUnsolicitedResponsesWithInResponseTo: false
+        nameIdEncrypted: '%env(bool:SAML_NAME_ID_ENCRYPTED)%'
+        authnRequestsSigned: '%env(bool:SAML_AUTHN_REQUESTS_SIGNED)%'
+        logoutRequestSigned: '%env(bool:SAML_LOGOUT_REQUEST_SIGNED)%'
+        logoutResponseSigned: '%env(bool:SAML_LOGOUT_RESPONSE_SIGNED)%'
+        signMetadata: '%env(bool:SAML_SIGN_METADATA)%'
+        wantMessagesSigned: '%env(bool:SAML_WANT_MESSAGES_SIGNED)%'
+        wantAssertionsEncrypted: '%env(bool:SAML_WANT_ASSERTIONS_ENCRYPTED)%'
+        wantAssertionsSigned: '%env(bool:SAML_WANT_ASSERTIONS_SIGNED)%'
+        wantNameId: '%env(bool:SAML_WANT_NAME_ID)%'
+        wantNameIdEncrypted: '%env(bool:SAML_WANT_NAME_ID_ENCRYPTED)%'
+        requestedAuthnContext: '%env(bool:SAML_REQUESTED_AUTHN_CONTEXT)%'
+        wantXMLValidation: '%env(bool:SAML_WANT_XML_VALIDATION)%'
+        relaxDestinationValidation: '%env(bool:SAML_RELAX_DESTINATION_VALIDATION)%'
+        destinationStrictlyMatches: '%env(bool:SAML_DESTINATION_STRICTLY_MATCHES)%'
+        allowRepeatAttributeName: '%env(bool:SAML_ALLOW_REPEAT_ATTRIBUTE_NAME)%'
+        rejectUnsolicitedResponsesWithInResponseTo: '%env(bool:SAML_REJECT_UNSOLICITED_RESPONSES_WITH_IN_RESPONSE_TO)%'
         signatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
         digestAlgorithm: 'http://www.w3.org/2001/04/xmlenc#sha256'
         encryption_algorithm: 'http://www.w3.org/2001/04/xmlenc#aes256-cbc'
-        lowercaseUrlencoding: false
+        lowercaseUrlencoding: '%env(bool:SAML_LOWERCASE_URL_ENCODING)%'
       contactPerson:
         technical:
-          givenName: 'Tech User'
-          emailAddress: 'techuser@example.com'
+          givenName: '%env(SAML_CONTACT_TECHNICAL_GIVEN_NAME)%'
+          emailAddress: '%env(SAML_CONTACT_TECHNICAL_EMAIL_ADDRESS)%'
         support:
-          givenName: 'Support User'
-          emailAddress: 'supportuser@example.com'
+          givenName: '%env(SAML_CONTACT_SUPPORT_GIVEN_NAME)%'
+          emailAddress: '%env(SAML_CONTACT_SUPPORT_EMAIL_ADDRESS)%'
         administrative:
-          givenName: 'Administrative User'
-          emailAddress: 'administrativeuser@example.com'
+          givenName: '%env(SAML_CONTACT_ADMINISTRATIVE_GIVEN_NAME)%'
+          emailAddress: '%env(SAML_CONTACT_ADMINISTRATIVE_EMAIL_ADDRESS)%'
       organization:
         en-US:
-          name: 'Example'
-          displayname: 'Example'
-          url: 'http://example.com'
+          name: '%env(SAML_ORGANIZATION_NAME)%'
+          displayname: '%env(SAML_ORGANIZATION_DISPLAY_NAME)%'
+          url: '%env(SAML_ORGANIZATION_URL)%'
       compress:
-        requests: false
-        responses: false
+        requests: '%env(bool:SAML_COMPRESS_REQUESTS)%'
+        responses: '%env(bool:SAML_COMPRESS_RESPONSES)%'
