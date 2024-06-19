@@ -135,6 +135,19 @@ class ModuleRegistryHandler extends LegacyHandler implements ModuleRegistryInter
         return $modules;
     }
 
+    public function getModuleList(): array {
+
+        $this->init();
+
+        global $moduleList;
+
+        $modList = $moduleList;
+
+        $this->close();
+
+        return $modList;
+    }
+
     /**
      * Get of list of modules. Apply acl filter
      *
