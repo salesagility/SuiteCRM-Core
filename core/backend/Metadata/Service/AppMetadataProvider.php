@@ -34,6 +34,7 @@ use App\Languages\LegacyHandler\AppListStringsHandler;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use App\Languages\LegacyHandler\ModStringsHandler;
 use App\Metadata\Entity\AppMetadata;
+use App\Module\LegacyHandler\ModuleRegistryHandler;
 use App\Module\LegacyHandler\RecentlyViewed\RecentlyViewedHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Navbar\Entity\Navbar;
@@ -134,6 +135,13 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     protected $recentlyViewedHandler;
 
     /**
+     * @var ModuleRegistryHandler $moduleRegistryHandler ;
+     */
+    protected $moduleRegistryHandler;
+
+    protected array $modules = [];
+
+    /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param SystemConfigProviderInterface $systemConfigProvider
@@ -150,6 +158,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @param CacheInterface $cache
      * @param InstallHandler $installHandler
      * @param RecentlyViewedHandler $recentlyViewedHandler
+     * @param ModuleRegistryHandler $moduleRegistryHandler
      */
     public function __construct(
         ModuleNameMapperInterface             $moduleNameMapper,
@@ -167,7 +176,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         CacheInterface                        $cache,
         CacheManagerInterface                 $cacheManager,
         InstallHandler                        $installHandler,
-        RecentlyViewedHandler                 $recentlyViewedHandler
+        RecentlyViewedHandler                 $recentlyViewedHandler,
+        ModuleRegistryHandler                 $moduleRegistryHandler,
     )
     {
         $this->moduleNameMapper = $moduleNameMapper;
@@ -186,6 +196,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $this->cacheManager = $cacheManager;
         $this->installHandler = $installHandler;
         $this->recentlyViewedHandler = $recentlyViewedHandler;
+        $this->moduleRegistryHandler = $moduleRegistryHandler;
     }
 
     /**
