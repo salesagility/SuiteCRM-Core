@@ -93,7 +93,7 @@ class CreateEnv implements InstallStepInterface
 
         $feedback = new Feedback();
         $feedback->setSuccess(true);
-        $feedback->setMessages(['Created .env.local']);
+        $feedback->setMessages(['Created .env.local', 'Added randomly generated APP_SECRET']);
 
         if ($result === false) {
             $feedback->setSuccess(false);

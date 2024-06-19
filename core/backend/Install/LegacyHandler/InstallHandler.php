@@ -33,6 +33,7 @@ use App\Engine\Model\Feedback;
 use App\Install\Service\Installation\InstallStatus;
 use App\Install\Service\InstallationUtilsTrait;
 use App\Install\Service\InstallPreChecks;
+use App\Security\AppSecretGenerator;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -63,6 +64,8 @@ class InstallHandler extends LegacyHandler
      */
     private $logger;
 
+    protected AppSecretGenerator $appSecretGenerator;
+
     /**
      * @inheritDoc
      */
@@ -80,15 +83,17 @@ class InstallHandler extends LegacyHandler
      * @param LegacyScopeState $legacyScopeState
      * @param RequestStack $requestStack
      * @param LoggerInterface $logger
+     * @param AppSecretGenerator $appSecretGenerator
      */
     public function __construct(
-        string           $projectDir,
-        string           $legacyDir,
-        string           $legacySessionName,
-        string           $defaultSessionName,
-        LegacyScopeState $legacyScopeState,
-        RequestStack     $requestStack,
-        LoggerInterface  $logger
+        string             $projectDir,
+        string             $legacyDir,
+        string             $legacySessionName,
+        string             $defaultSessionName,
+        LegacyScopeState   $legacyScopeState,
+        RequestStack       $requestStack,
+        LoggerInterface    $logger,
+        AppSecretGenerator $appSecretGenerator
     )
     {
         parent::__construct(
@@ -101,6 +106,7 @@ class InstallHandler extends LegacyHandler
         );
         $this->legacyDir = $legacyDir;
         $this->logger = $logger;
+        $this->appSecretGenerator = $appSecretGenerator;
     }
 
     /**
@@ -248,7 +254,7 @@ class InstallHandler extends LegacyHandler
 
                     $errorsFound = true;
 
-                    if (empty($error)){
+                    if (empty($error)) {
                         continue;
                     }
 
@@ -369,12 +375,15 @@ class InstallHandler extends LegacyHandler
         $port = $inputArray['db_port'] ?? '';
         $hostString = !empty($port) ? $host . ':' . $port : $host;
 
-        $dbUrl = "DATABASE_URL=\"mysql://$username:$password@$hostString/$dbName\"";
+        $content = "DATABASE_URL=\"mysql://$username:$password@$hostString/$dbName\"\n";
+        $content .= "APP_SECRET=" . $this->appSecretGenerator->generate();
+        $this->logger->info('Generated randomly generated APP_SECRET for .env.local');
+
         $filesystem = new Filesystem();
         try {
             chdir($this->projectDir);
 
-            $filesystem->dumpFile('.env.local', $dbUrl);
+            $filesystem->dumpFile('.env.local', $content);
 
             chdir($this->legacyDir);
 
