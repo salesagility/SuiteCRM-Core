@@ -686,8 +686,10 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
             $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
+            $metadata->setModules($this->getModules($moduleName));
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
+            $metadata->setModules($this->getModules($moduleName));
         }
 
         /** @var \User $currentUser */
