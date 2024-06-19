@@ -329,6 +329,10 @@ services:
     alias: doctrine.orm.entity_manager
     public: true
 
+  security.app_secret_generator:
+    alias: App\Security\AppSecretGenerator
+    public: true
+
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
