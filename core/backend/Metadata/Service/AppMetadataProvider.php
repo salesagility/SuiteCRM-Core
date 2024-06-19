@@ -694,4 +694,42 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         return $metadata;
     }
+
+    protected function getModules($moduleName = ''): array
+    {
+        $moduleList = $this->moduleRegistryHandler->getModuleList();
+
+        $allModules = [];
+        foreach ($moduleList as $key => $module) {
+            $allModules[] = strtolower($module);
+        }
+
+        $toExclude = [
+            'login' => true,
+            'Login' => true,
+            'home' => true,
+            'calendar' => true,
+        ];
+
+        $modules = ['saved-search'];
+
+        if (!in_array($moduleName, $allModules, true)) {
+            $allModules[] = $moduleName;
+        }
+
+        foreach ($allModules as $module) {
+            if (empty($module)) {
+                continue;
+            }
+            $isToExclude = $toExclude[$module] ?? false;
+            if ($isToExclude) {
+                continue;
+            }
+
+            $modules[] = $module;
+
+        }
+
+        return $modules;
+    }
 }
