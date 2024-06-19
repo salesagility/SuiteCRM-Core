@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,6 +46,7 @@ final class Version20240617150845 extends BaseMigration implements ContainerAwar
         $envFile = $this->getProjectDir() . "/.env";
 
         if (!file_exists($envFile)) {
+            $this->log('File .env does not exist, skipping.');
             return;
         }
 
