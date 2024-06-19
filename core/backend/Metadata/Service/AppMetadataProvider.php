@@ -230,14 +230,16 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             'app-metadata-language-strings-' . $language,
             'app-metadata-theme-images',
             'app-metadata-navigation-' . $userId,
-            'app-metadata-module-metadata-' . $moduleName . '-' . $userId
+            'app-metadata-module-metadata-' . $moduleName . '-' . $userId,
+            'all-module-metadata-' . $userId
         ];
 
         if (!$this->isInstalled()){
             return $this->getMetadataWithoutCache($metadata, $moduleName, $language, $exposed, $theme);
         }
 
-        $this->cacheManager->checkForCacheUpdate($keys);
+        $modules = $this->getModules($moduleName);
+        $this->cacheManager->checkForCacheUpdate($keys, $modules);
 
         $metadata->setSystemConfig([]);
         if (in_array('systemConfig', $exposed, true)) {
