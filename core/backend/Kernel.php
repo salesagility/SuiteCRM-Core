@@ -149,7 +149,7 @@ class Kernel extends BaseKernel
             return;
         }
 
-        $_ENV['SITE_URL'] = '';
+        $_ENV['SITE_URL'] = 'http://localhost';
     }
 
     public function getConfigValues(): array
