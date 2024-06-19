@@ -34,6 +34,7 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,9 +102,12 @@ class IndexController extends AbstractController
 
         $response = new Response(file_get_contents($indexHtmlPath));
 
+        $isAppInstalled = $this->authentication->getAppInstallStatus();
+        $isActive = $this->authentication->checkSession();
 
-        $this->authentication->initLegacySystemSession();
-
+        if ($isAppInstalled && !$isActive) {
+            $this->authentication->initLegacySystemSession();
+        }
 
         return $response;
     }
