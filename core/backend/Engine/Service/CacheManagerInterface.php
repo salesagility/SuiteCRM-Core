@@ -34,6 +34,6 @@ interface CacheManagerInterface
     public function markAsNeedsUpdate($key): void;
 
 
-    public function checkForCacheUpdate($keys): void;
+    public function checkForCacheUpdate($keys, $modules): void;
 
 }

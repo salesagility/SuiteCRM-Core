@@ -96,7 +96,7 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
         $this->close();
     }
 
-    public function checkForCacheUpdate($keys): void
+    public function checkForCacheUpdate($keys, $modules): void
     {
         $this->init();
 
@@ -120,6 +120,21 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
         while ($row = $db->fetchByAssoc($result)) {
             foreach ($keys as $key) {
                 if ($row['cache_key'] == $key && $row['rebuild'] == 1) {
+                    if (str_contains($row['cache_key'], 'all-module-metadata') && !empty($modules)) {
+                        foreach ($modules as $module) {
+                            if (empty($module)){
+                                continue;
+                            }
+                            $moduleKey = 'app-metadata-module-metadata-' . $module . '-' . $current_user->id;
+                            $this->cache->delete($moduleKey);
+                        }
+
+                        $query = "DELETE FROM cache_rebuild ";
+                        $query .= "WHERE cache_key='$key'";
+                        $db->query($query);
+                        $_SESSION[$current_user->user_name . '_PREFERENCES'] = [];
+                        continue;
+                    }
                     $this->cache->delete($key);
                     $_SESSION[$current_user->user_name . '_PREFERENCES'] = [];
                     $query = "DELETE FROM cache_rebuild ";
