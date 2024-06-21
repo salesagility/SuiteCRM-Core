@@ -161,7 +161,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             this.options.push({
                 value: key,
                 label: this.optionsMap[key]
-            });
+            } as Option);
         });
 
         if (this.isDynamicEnum) {
@@ -204,7 +204,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             this.selectedValues.push({
                 value: fieldValue,
                 label: this.valueLabel
-            });
+            } as Option);
         }
     }
 
@@ -233,7 +233,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.selectedValues.push({
             value: defaultVal,
             label: this.optionsMap[defaultVal]
-        });
+        } as Option);
         this.initEnumDefaultFieldValues(defaultVal);
     }
 

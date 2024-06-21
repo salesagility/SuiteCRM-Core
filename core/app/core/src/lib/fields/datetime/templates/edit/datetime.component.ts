@@ -91,17 +91,18 @@ export class DateTimeEditFieldComponent extends BaseDateTimeComponent implements
 
     protected setFormValues(dateTimeString: string) {
         this.field.formControl.setValue(dateTimeString);
-        this.field.formControl.markAsDirty();
     }
 
     onDateChange(date: NgbDateStruct | null) {
         this.dateTimeModel.date = date;
         this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+        this.field.formControl.markAsDirty();
     }
 
     onTimeChange(time: NgbTimeStruct | null) {
         this.dateTimeModel.time = time;
         this.setFormValues(this.dateTimeModel.toUserFormat(this.formatter));
+        this.field.formControl.markAsDirty();
     }
 
     onInputChange($event: any) {

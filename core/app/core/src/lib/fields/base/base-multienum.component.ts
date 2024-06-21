@@ -30,7 +30,7 @@ import {BaseEnumComponent} from './base-enum.component';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
-import { isArray, isEmpty, uniqBy } from 'lodash-es';
+import {isArray, isEmpty, isEqual, uniqBy} from 'lodash-es';
 import { isVoid } from 'common';
 
 @Component({template: ''})
@@ -70,7 +70,9 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
     protected syncSelectedValuesWithForm(): string[] {
         const selectedValuesValueMap = this.selectedValues.map(selectedValue => selectedValue.value);
 
-        this.setFormControlValue(selectedValuesValueMap);
+        if (!isEqual(this.field.valueList, selectedValuesValueMap)) {
+            this.setFormControlValue(selectedValuesValueMap);
+        }
 
         return selectedValuesValueMap;
     }

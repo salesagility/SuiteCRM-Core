@@ -310,12 +310,12 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     }
 
     protected setFormControlValue(newValue: string | string[]): void {
-        this.field.formControl.markAsDirty();
-
         if (isEqual(this.field.formControl.value, newValue)) {
+            this.field.formControl.markAsPristine();
             return;
         }
         this.field.formControl.setValue(newValue);
+        this.field.formControl.markAsDirty();
     }
 
     protected unsubscribeAll(): void {

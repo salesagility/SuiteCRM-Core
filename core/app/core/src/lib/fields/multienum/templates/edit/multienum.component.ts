@@ -36,7 +36,6 @@ import {SystemConfigStore} from "../../../../store/system-config/system-config.s
 import {PrimeNGConfig} from "primeng/api";
 import {ButtonInterface} from "common";
 import {MultiSelect} from "primeng/multiselect";
-import {Option} from "common";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -51,8 +50,6 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
     emptyFilterLabel: string = '';
     maxSelectedLabels: number = 20;
     selectAll: boolean = false;
-    filteredOptions: Option[] = [];
-    filteredWord: string= '';
     clearButton: ButtonInterface;
 
     constructor(
