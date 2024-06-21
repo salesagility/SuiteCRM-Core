@@ -48,7 +48,7 @@ class BooleanMapper implements TypeMapperInterface
             $newName = $alternativeName;
         }
 
-        if (empty($bean->$name)) {
+        if (!isset($bean->$name)) {
             $container[$newName] = '';
 
             return;

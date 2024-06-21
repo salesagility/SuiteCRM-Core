@@ -247,6 +247,14 @@ $viewdefs ['Contacts'] =
                             'acl' => ['view'],
                             'availability' => ['portal-enabled'],
                             'displayLogic' => [
+                                'onPortalEnabled' => [
+                                    'modes' => ['detail', 'edit', 'create'],
+                                    'params' => [
+                                        'activeOnFields' =>  [
+                                            'portal_account_disabled' => ['false'],
+                                        ]
+                                    ]
+                                ],
                                 'onJoomlaIDEmpty' => [
                                     'modes' => ['detail', 'edit', 'create'],
                                     'params' => [
