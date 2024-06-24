@@ -111,6 +111,6 @@ class ParentMapper implements TypeMapperInterface
             $container[$idFieldName] = $id;
         }
 
-        $container[$name] = $value;
+        $container[$name] = html_entity_decode($value, ENT_QUOTES);
     }
 }
