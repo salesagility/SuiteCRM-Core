@@ -100,14 +100,14 @@ class InstallPreChecks
         }
 
         if (file_exists('legacy/config.php') && ($sugar_config['installer_locked'] ?? false) === true) {
-                $loader = new FilesystemLoader(__DIR__ . '/../Resources');
-                $twig = new Environment($loader);
-                $template = $twig->load('installer_locked.html.twig');
-                echo $template->render([
-                    'cssFile' => $cssFile,
-                    'mod_strings' => $this->modStrings
-                ]);
-                return;
+            $loader = new FilesystemLoader(__DIR__ . '/../Resources');
+            $twig = new Environment($loader);
+            $template = $twig->load('installer_locked.html.twig');
+            echo $template->render([
+                'cssFile' => $cssFile,
+                'mod_strings' => $this->modStrings
+            ]);
+            return;
         }
 
         $path = realpath('./');
@@ -413,9 +413,9 @@ class InstallPreChecks
         $sugarConfig = $this->getConfigValues();
         $configOverride = $this->getConfigOverrideValues();
 
-        $enUsLangPack = __DIR__ . '/../../../../public/legacy/install/language/'. $lang . '.lang.php';
+        $enUsLangPack = __DIR__ . '/../../../../public/legacy/install/language/' . $lang . '.lang.php';
 
-        if (is_file($enUsLangPack)){
+        if (is_file($enUsLangPack)) {
             include($enUsLangPack);
             $enUsStrings = $mod_strings;
         }
@@ -445,7 +445,7 @@ class InstallPreChecks
 
         $configFile = __DIR__ . '/../../../../public/legacy/config.php';
 
-        if (file_exists($configFile)){
+        if (file_exists($configFile)) {
             include($configFile);
         }
 
@@ -458,7 +458,7 @@ class InstallPreChecks
 
         $configOverrideFile = __DIR__ . '/../../../../public/legacy/config_override.php';
 
-        if (file_exists($configOverrideFile)){
+        if (file_exists($configOverrideFile)) {
             include($configOverrideFile);
         }
 
@@ -530,7 +530,7 @@ class InstallPreChecks
         if ((int)$num < (int)$sugarMinMemory) {
             $minMemoryInMegs = constant('SUGARCRM_MIN_MEM') / (1024 * 1024);
             $error = $this->modStrings['LBL_PHP_MEM_1'] . $memoryLimit . $this->modStrings['LBL_PHP_MEM_2'] . $minMemoryInMegs . $this->modStrings['LBL_PHP_MEM_3'];
-            $results['errors'][] =  $this->modStrings['LBL_CHECK_FAILED'] . $error;
+            $results['errors'][] = $this->modStrings['LBL_CHECK_FAILED'] . $error;
             return $results;
         }
 
@@ -790,7 +790,7 @@ class InstallPreChecks
             return $results;
         }
 
-        if (!is_writable('legacy/config.php')){
+        if (!is_writable('legacy/config.php')) {
             $this->log->error($this->modStrings['ERR_CHECKSYS_CONFIG_NOT_WRITABLE'] . 'Path Checked: legacy/config.php');
             $results['errors'][] = $this->modStrings['ERR_CHECKSYS_CONFIG_NOT_WRITABLE'] . ' Path Checked: legacy/config.php';
             return $results;
@@ -1171,7 +1171,8 @@ class InstallPreChecks
 
     }
 
-    public function checkFolderIsWritable(string $folderName, array &$labels, string $parentDir = ''): array {
+    public function checkFolderIsWritable(string $folderName, array &$labels, string $parentDir = ''): array
+    {
 
         $this->modStrings = $this->getLanguageStrings();
 
@@ -1181,7 +1182,7 @@ class InstallPreChecks
 
         $folder = __DIR__ . '/../../../../' . $folderName;
 
-        if (!empty($parentDir)){
+        if (!empty($parentDir)) {
             $folder = __DIR__ . '/../../../../' . $parentDir . '/' . $folderName;
         }
 
@@ -1214,7 +1215,7 @@ class InstallPreChecks
 
         $env = __DIR__ . '/../../../../.env';
 
-        if (file_exists($env) && is_writable($env) || !file_exists($env) && touch($env)){
+        if (file_exists($env) && is_writable($env) || !file_exists($env) && touch($env)) {
             $this->log->info('.env exists or is writable');
             $results['result'] = $this->modStrings['LBL_CHECKSYS_OK'];
 
