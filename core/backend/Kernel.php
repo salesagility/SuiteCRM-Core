@@ -139,7 +139,7 @@ class Kernel extends BaseKernel
     {
         $config = $this->getConfigValues();
 
-        $_ENV = $_ENV ?? [];
+        $env = $_ENV ?? [];
         if (!empty($env['SITE_URL'])) {
             return;
         }
