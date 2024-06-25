@@ -117,10 +117,6 @@ class InstallPreChecks
 
         $this->requiredInstallChecks();
 
-        if (!$this->errorsFound) {
-            file_put_contents('../.installed_checked', 'true');
-        }
-
         $this->optionalInstallChecks();
 
         echo $template->render([
@@ -191,6 +187,9 @@ class InstallPreChecks
         $ch = curl_init();
         $timeout = 5;
         $logFile = __DIR__ . '/../../../../logs/install.log';
+        $checkFile = __DIR__ . '/../../../../.curl_check_main_page';
+
+        file_put_contents($checkFile, 'running');
 
         $output = [
             'result' => '',
@@ -232,19 +231,19 @@ class InstallPreChecks
         if (curl_errno($ch)) {
             $error = 'cURL error (' . curl_errno($ch) . '): ' . curl_error($ch);
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile, $baseUrl, $result);
         }
 
         if (!str_contains($result, '<title>SuiteCRM</title>')) {
             $error = $this->modStrings['LBL_NOT_A_VALID_SUITECRM_PAGE'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile,  $baseUrl, $result);
         }
 
         if (empty($headers['set-cookie'])) {
             $error = $this->modStrings['LBL_NOT_COOKIE_OR_TOKEN'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile,  $baseUrl, $result);
         }
 
         foreach ($headers['set-cookie'] as $cookie) {
@@ -270,7 +269,8 @@ class InstallPreChecks
         return $output;
     }
 
-    function outputError($streamVerboseHandle, $error, $logFile, $baseUrl, $result): array {
+    function outputError($streamVerboseHandle, $error, $logFile, $checkFile, $baseUrl, $result): array
+    {
 
         $modStrings = $this->getLanguageStrings();
 
@@ -299,6 +299,10 @@ class InstallPreChecks
             return $output;
         }
 
+        if (file_exists($checkFile)) {
+            unlink($checkFile);
+        }
+
         $output['errors'][] = $modStrings['LBL_EMPTY'];
         $this->log->error($modStrings['LBL_EMPTY']);
         return $output;
@@ -315,6 +319,11 @@ class InstallPreChecks
         $ch = curl_init();
         $timeout = 5;
         $logFile = __DIR__ . '/../../../../logs/install.log';
+        $checkFile = __DIR__ . '/../../../../.curl_check_main_page';
+
+        if (!file_exists($checkFile)){
+            file_put_contents($checkFile, 'running');
+        }
 
         $output = [
             'result' => '',
@@ -363,7 +372,7 @@ class InstallPreChecks
         if (curl_errno($ch)) {
             $error = 'cURL error (' . curl_errno($ch) . '): ' . curl_error($ch);
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile,  $apiUrl, $result);
         }
 
         $resultJson = json_decode($result, true);
@@ -371,13 +380,17 @@ class InstallPreChecks
         if (empty($resultJson)) {
             $error = $this->modStrings['LBL_CURL_JSON_ERROR'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile,  $apiUrl, $result);
         }
 
         if (empty($resultJson['data']['systemConfigs'])) {
             $error = $this->modStrings['LBL_UNABLE_TO_FIND_SYSTEM_CONFIGS'] ?? '';
 
-            return $this->outputError($streamVerboseHandle, $error, $logFile, $apiUrl, $result);
+            return $this->outputError($streamVerboseHandle, $error, $logFile, $checkFile,  $apiUrl, $result);
+        }
+
+        if (file_exists($checkFile)) {
+            unlink($checkFile);
         }
 
         curl_close($ch);

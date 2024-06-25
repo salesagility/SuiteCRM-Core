@@ -225,25 +225,13 @@ class InstallHandler extends LegacyHandler
         $feedback = new Feedback();
         $feedback->setSuccess(true);
 
-        $checkFile = __DIR__ . '/../../../../.curl_check_main_page';
 
         require_once __DIR__ . "/../../../../core/backend/Install/Service/InstallPreChecks.php";
         $installChecks = new InstallPreChecks($log);
 
-        try {
-            file_put_contents($checkFile, 'running');
-        } catch (Exception $e) {
-            $feedback->setSuccess(false);
-            $feedback->setErrors([$e->getMessage()]);
-            return $feedback;
-        }
         $results[] = $installChecks->checkMainPage($url);
         $results[] = $installChecks->checkGraphQlAPI($url);
         $modStrings = $installChecks->getLanguageStrings();
-
-        if (file_exists($checkFile)) {
-            unlink($checkFile);
-        }
 
         $warnings = [];
         $errorsFound = false;
