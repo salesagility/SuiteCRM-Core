@@ -170,304 +170,316 @@
                 <div class="row no-gutters">
                     <div class="col">
                         <div class="record-content tabs-layout container-fluid pl-0 pr-0">
-                            <ul class="nav-tabs nav" role="tablist">
-                                <li class="tab nav-item">
-                                    <a href=""
-                                       class="tab-link nav-link active"
-                                       role="tab"
-                                       aria-selected="true"
-                                       aria-disabled="false">{{ mod_strings.LBL_SYSTEM_CHECKS }}</a>
-                                </li>
-                            </ul>
-                            <div class="p-2 pt-3 rounded-right rounded-bottom tab-content">
+                            <div class="pt-3 rounded-right rounded-bottom">
                                 <div class="tab-pane fade show active" role="tabpanel">
                                     <div class="tab-LBL_CONFIG">
-                                        <form class="edit field-layout">
+                                        <form class="edit field-layout d-flex install-form">
                                             {% set extraErrors = [] %}
                                             {% set extraWarnings = [] %}
-                                            <div class="form-row align-items-stretch">
-                                                <div class="col-6">
-                                                    {% for system_check in systemChecks|slice(0,1) %}
-                                                        <div class="col form-group m-0 pl-3 pb-2 pr-3 d-flex flex-column justify-content-between ng-star-inserted">
-                                                            <div class="label-container">
-                                                                <strong><label class="col-form-label-sm mb-0"><u>
-                                                                        {{ system_check.label }}:</u></label>
-                                                                </strong>
-                                                            </div>
-                                                            <div class="container-fluid">
-                                                                <div class="align-items-start row field-group h-100 justify-content-start">
-                                                                    {% for check in system_check.checks %}
-                                                                        <div class="field-group-item col-12 h-100">
-                                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                        <span class="field-group-label font-weight-bold pt-1 pr-1">
-                                                                                <label>{{ check.label }}:</label>
-                                                                            </span>
-                                                                                {% if check.errors and check.errors is not empty %}
-                                                                                    <span class="badge badge-danger mr-2 mb-1">{{ mod_strings.LBL_ERROR }}</span>
-                                                                                {% endif %}
-                                                                                {% if check.warnings and check.warnings is not empty %}
-                                                                                    <span class="badge badge-pill badge-warning">{{ mod_strings.LBL_WARNING }}</span>
-                                                                                {% endif %}
-                                                                                {% if check.errors is empty %}
-                                                                                    {% if check.result is iterable %}
-                                                                                        {% for  resultArray in check.result %}
-                                                                                            <span class="field-group-field pr-1">
-                                                                                            {{ resultArray }}
-                                                                                        </span>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        <span class="field-group-field pr-1 mb-1">
-                                                                                        {{ check.result }}
-                                                                                    </span>
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            {% if check.errors and check.errors is not empty %}
-                                                                                {% if check.errors|length >= 2 %}
-                                                                                    {% set extraErrors = check.errors %}
-                                                                                {% endif %}
-                                                                                {% if check.errors|length < 2 %}
-                                                                                    {% for error in check.errors %}
-                                                                                        {% if error|length > 200 %}
-                                                                                            {% set extraErrors = extraErrors|merge([error]) %}
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    {% if extraErrors is empty %}
-                                                                                        {% for error in check.errors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        {% set extraErrors = check.errors %}
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            {% endif %}
-                                                                            {% if check.warnings and check.warnings is not empty %}
-                                                                                {% if check.warnings|length >= 2 %}
-                                                                                    {% set extraWarnings = check.warnings %}
-                                                                                {% endif %}
-                                                                                {% if check.warnings|length < 2 %}
-                                                                                    {% for warning in check.warnings %}
-                                                                                        {% if warning|length > 200 %}
-                                                                                            {% set extraWarnings = extraWarnings|merge([warning]) %}
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    {% if extraWarnings is empty %}
-                                                                                        {% for warning in check.warnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        {% set extraWarnings = check.warning %}
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            {% endif %}
-                                                                            {% if extraErrors and extraErrors is not empty %}
-                                                                                <details>
-                                                                                    <summary
-                                                                                            class="mb-2 font-weight-bold"><u>{{ mod_strings.LBL_ERROR_DETAILS }}</u>
-                                                                                    </summary>
-                                                                                    <div>
-                                                                                        {% for error in extraErrors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                </details>
-                                                                                {% set extraErrors = [] %}
-                                                                            {% endif %}
-                                                                            {% if extraWarnings and extraWarnings is not empty %}
-                                                                                <details>
-                                                                                    <summary
-                                                                                            class="mb-2 font-weight-bold"><u>{{ mod_strings.LBL_WARNING_DETAILS }}</u>
-                                                                                    </summary>
-                                                                                    <div>
-                                                                                        {% for warning in extraWarnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                </details>
-                                                                                {% set extraWarnings = [] %}
-                                                                            {% endif %}
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                    <div class="field-separation mt-2"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
-                                                <div class="col-6">
-                                                    {% for system_check in systemChecks|slice(1,3) %}
-                                                        <div class="col form-group m-0 pl-3 pb-2 pr-3 d-flex flex-column justify-content-between ng-star-inserted">
-                                                            <div class="label-container">
-                                                                <strong><label class="col-form-label-sm mb-0"><u>
-                                                                        {{ system_check.label }}:</u></label>
-                                                                </strong>
-                                                            </div>
-                                                            <div class="container-fluid">
-                                                                <div class="align-items-start row field-group h-100 justify-content-start">
-                                                                    {% for check in system_check.checks %}
-                                                                        <div class="field-group-item col-12 h-100">
-                                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                        <span class="field-group-label font-weight-bold pt-1 pr-1">
-                                                                                <label>{{ check.label }}:</label>
-                                                                            </span>
-                                                                                {% if check.errors and check.errors is not empty %}
-                                                                                    <span class="badge badge-danger mr-2 mb-1">{{ mod_strings.LBL_ERROR }}</span>
-                                                                                {% endif %}
-                                                                                {% if check.warnings and check.warnings is not empty %}
-                                                                                    <span class="badge badge-pill badge-warning">{{ mod_strings.LBL_WARNING }}</span>
-                                                                                {% endif %}
-                                                                                {% if check.errors is empty %}
-                                                                                    {% if check.result is iterable %}
-                                                                                        {% for  resultArray in check.result %}
-                                                                                            <span class="field-group-field pr-1">
-                                                                                            {{ resultArray }}
-                                                                                        </span>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        <span class="field-group-field pr-1 mb-1">
-                                                                                        {{ check.result }}
-                                                                                    </span>
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            {% if check.errors and check.errors is not empty %}
-                                                                                {% if check.errors|length >= 2 %}
-                                                                                    {% set extraErrors = check.errors %}
-                                                                                {% endif %}
-                                                                                {% if check.errors|length < 2 %}
-                                                                                    {% for error in check.errors %}
-                                                                                        {% if error|length > 200 %}
-                                                                                            {% set extraErrors = extraErrors|merge([error]) %}
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    {% if extraErrors is empty %}
-                                                                                        {% for error in check.errors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        {% set extraErrors = check.errors %}
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            {% endif %}
-                                                                            {% if check.warnings and check.warnings is not empty %}
-                                                                                {% if check.warnings|length >= 2 %}
-                                                                                    {% set extraWarnings = check.warnings %}
-                                                                                {% endif %}
-                                                                                {% if check.warnings|length < 2 %}
-                                                                                    {% for warning in check.warnings %}
-                                                                                        {% if warning|length > 200 %}
-                                                                                            {% set extraWarnings = extraWarnings|merge([warning]) %}
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    {% if extraWarnings is empty %}
-                                                                                        {% for warning in check.warnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
-                                                                                        {% endfor %}
-                                                                                    {% else %}
-                                                                                        {% set extraWarnings = check.warning %}
-                                                                                    {% endif %}
-                                                                                {% endif %}
-                                                                            {% endif %}
-                                                                            {% if extraErrors and extraErrors is not empty %}
-                                                                                <details>
-                                                                                    <summary
-                                                                                            class="mb-2 font-weight-bold"><u>{{ mod_strings.LBL_ERROR_DETAILS }}</u>
-                                                                                    </summary>
-                                                                                    <div>
-                                                                                        {% for error in extraErrors %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ error }}</pre>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                </details>
-                                                                                {% set extraErrors = [] %}
-                                                                            {% endif %}
-                                                                            {% if extraWarnings and extraWarnings is not empty %}
-                                                                                <details>
-                                                                                    <summary
-                                                                                            class="mb-2 font-weight-bold"><u>{{ mod_strings.LBL_WARNING_DETAILS }}</u>
-                                                                                    </summary>
-                                                                                    <div>
-                                                                                        {% for warning in extraWarnings %}
-                                                                                            <pre class="p-2 ml-2 border border-round text-body bg-transparent" style="white-space: pre-wrap">{{ warning }}</pre>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                </details>
-                                                                                {% set extraWarnings = [] %}
-                                                                            {% endif %}
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                    <div class="field-separation mt-2"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4 no-gutters">
-                    <div class="col">
-                        <div class="record-content tabs-layout container-fluid pl-0 pr-0">
-                            <ul class="nav-tabs nav" role="tablist">
-                                <li class="tab nav-item">
-                                    <a href=""
-                                       class="tab-link nav-link active"
-                                       role="tab"
-                                       aria-selected="true"
-                                       aria-disabled="false">
-                                        {{ mod_strings.LBL_CRON_CONFIGURATION }}
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="p-2 pt-3 rounded-right rounded-bottom tab-content">
-                                <div class="tab-pane fade show active" role="tabpanel">
-                                    <div>
-                                        <form class="edit field-layout">
-                                            <div class="form-row align-items-stretch">
-                                                <div class="col form-group m-0 pl-3 pb-2 pr-3 d-flex flex-column justify-content-between">
-                                                    <div class="d-flex flex-grow-1">
-                                                        <div class="flex-grow-1 text-break">
-                                                        </div>
-                                                        <div></div>
+                                            {% set counter = 0 %}
+                                            <div id="configuration-header"
+                                                 class="d-flex col-md-3 pl-0 configuration-header">
+                                                <div id="system_check_label" class="d-flex system-check-header">
+                                                    <label id="{{ mod_strings.LBL_SYSTEM_CHECKS }}"
+                                                           class="d-flex system-check-label mb-0">{{ mod_strings.LBL_SYSTEM_CHECKS }}</label>
+                                                    <div id="error-symbols"
+                                                         class="flex-row error-symbol-container align-items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             fill="#ffffff"
+                                                             class="bi bi-exclamation-circle error-symbol"
+                                                             viewBox="0 0 16 16" id="system-error-symbol">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff"
+                                                             class="bi error-symbol bi-exclamation-triangle"
+                                                             viewBox="0 0 16 16" id="system-warning-symbol">
+                                                            <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                                                            <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div id="check-mark-{{ mod_strings.LBL_SYSTEM_CHECKS }}"
+                                                         class="check-mark ml-md-auto ml-3 ">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#155724"
+                                                             class="bi bi-check" viewBox="0 0 16 16">
+                                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                                                        </svg>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-row align-items-stretch ">
-                                                <div class="field-column-bordered col form-group m-0 pl-3 pb-2 pr-3 d-flex flex-column justify-content-between">
-                                                    <div class="d-flex flex-grow-1 ">
-                                                        <div class="label-container">
-                                                            <strong>
-                                                                <label class="col-form-label-sm mb-0">
-                                                                    {{ mod_strings.LBL_SETUP_CRONTAB }}
-                                                                </label>
-                                                            </strong>
-                                                            <div>
-                                                                {{ mod_strings.LBL_CRON_INSTRUCTIONS_1 }}
+                                            <div class="col-md-9 pr-0 pl-0">
+                                                <div id="system_checks">
+                                                    {% for system_check in systemChecks %}
+                                                        <div id="check_{{ system_check.label }}"
+                                                             class="d-flex system-check-individual-header"
+                                                             onclick="toggleResults('{{ system_check.label }}_results', 'check_{{ system_check.label }}')">
+                                                            <label id="{{ system_check.label }}_label"
+                                                                   class="ml-2 mb-0 d-flex system-check-individual-label">
+                                                                {{ system_check.label }}
+                                                            </label>
+                                                            <div id="error-symbols"
+                                                                 class="flex-row d-flex pl-2 align-items-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                     id="error-symbol-{{ system_check.label }}"
+                                                                     fill="#f18478"
+                                                                     class="bi bi-exclamation-circle error-symbol"
+                                                                     viewBox="0 0 16 16">
+                                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                                                                </svg>
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                     fill="#ef9f22"
+                                                                     class="bi error-symbol bi-exclamation-triangle"
+                                                                     viewBox="0 0 16 16"
+                                                                     id="warning-symbol-{{ system_check.label }}">
+                                                                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                                                                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                                                                </svg>
                                                             </div>
-                                                            <div>
-                                                                <span style="background-color:#dfdfdf">sudo crontab -e -u www-data</span>
+                                                            <div id="check-mark-{{ system_check.label }}"
+                                                                 class="check-mark">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#155724"
+                                                                     class="bi bi-check" viewBox="0 0 16 16">
+                                                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                                                                </svg>
                                                             </div>
-                                                            <div>
-                                                                {{ mod_strings.LBL_CRON_INSTRUCTIONS_2 }}
-                                                            </div>
-                                                            <div>
-                                                                <span style='background-color:#dfdfdf'>
-                                                                    *&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    *&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    *&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    cd {{ path }}/legacy; php -f cron.php &gt; /dev/null 2&gt;&amp;1</span>
-                                                            </div>
-                                                            <div>
-                                                                <span><strong>{{ mod_strings.LBL_CRON_INSTRUCTIONS_3 }}</strong></span>
-                                                            </div>
+                                                            <img class="expand-checks"
+                                                                 src="dist/themes/suite8/images/down_carret.svg"
+                                                                 id="down_arrow">
                                                         </div>
-                                                        <div></div>
-                                                    </div>
+
+                                                        <div class="flex-column results"
+                                                             id="{{ system_check.label }}_results">
+                                                            {% for check in system_check.checks %}
+                                                                <div id="results-box_{{ counter }}"
+                                                                     class="results-box">
+                                                                    <div id="error_label_{{ counter }}"
+                                                                         class="badge badge-danger result-issue">
+                                                                        {{ mod_strings.LBL_ERROR }}
+                                                                    </div>
+                                                                    <div id="warning-icon_{{ counter }}"
+                                                                         class="badge badge-warning result-issue">
+                                                                        {{ mod_strings.LBL_WARNING }}
+                                                                    </div>
+                                                                    <div class="d-inline-block check-label">
+                                                                        <b>{{ check.label }}:</b>
+                                                                    </div>
+                                                                    {% if check.errors is empty %}
+                                                                        {% if check.result is iterable %}
+                                                                            {% for  resultArray in check.result %}
+                                                                                <div class="d-inline-block check-result">
+                                                                                    {{ resultArray }}
+                                                                                </div>
+                                                                            {% endfor %}
+                                                                        {% elseif check.result is not empty %}
+                                                                            <div class="d-inline-block pl-2 align-middle">
+                                                                                {{ check.result }}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                    {% if check.errors and check.errors is not empty %}
+                                                                        <script>
+                                                                            function setErrorHeader() {
+                                                                                document.getElementById('check_{{ system_check.label }}').style.border = '1px solid #f18478';
+                                                                                document.getElementById('{{ system_check.label }}_label').style.color = '#f18478';
+                                                                                document.getElementById('system_check_label').style.backgroundColor = '#f18478';
+                                                                                document.getElementById('{{ mod_strings.LBL_SYSTEM_CHECKS }}').style.color = '#FFFFFF';
+                                                                                document.getElementById('{{ system_check.label }}_label').classList.add('error');
+                                                                                document.getElementById('check_{{ system_check.label }}').classList.add('error');
+                                                                            }
+
+                                                                            function showErrorIcon() {
+                                                                                document.getElementById('error-symbols').style.display = 'flex';
+                                                                                document.getElementById('error-symbol-{{ system_check.label }}').style.display = 'flex';
+                                                                                document.getElementById('system-error-symbol').style.display = 'flex';
+                                                                                document.getElementById("error_label_{{ counter }}").style.display = 'block';
+                                                                            }
+
+                                                                            setErrorHeader();
+                                                                            showErrorIcon();
+                                                                        </script>
+                                                                        {% if check.errors|length >= 2 %}
+                                                                            {% set extraErrors = check.errors %}
+                                                                        {% endif %}
+                                                                        {% if check.errors|length < 2 %}
+                                                                            {% for error in check.errors %}
+                                                                                {% if error|length > 200 %}
+                                                                                    {% set extraErrors = extraErrors|merge([error]) %}
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% endif %}
+                                                                    {% if extraErrors is empty %}
+                                                                        {% for error in check.errors %}
+                                                                        <div class="d-inline-block field-group-field pb-2 pl-2 pt-1">
+                                                                            {{ error }}
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                    {% if extraErrors|length > 1 %}
+                                                                        <div id="error-brief_{{ counter }}"
+                                                                             class="first-warning">
+                                                                            {{ extraErrors|first }}
+                                                                        </div>
+                                                                        <div id="view-full_{{ counter }}"
+                                                                             class="view-full pb-1 pr-3"
+                                                                             onclick="showFullDescription({{ counter }}, true)">
+                                                                            See All Errors >
+                                                                        </div>
+                                                                        <div id="all-errors_{{ counter }}"
+                                                                             class="error-full pl-2">
+                                                                            <ul>
+                                                                                {% for error in extraErrors %}
+                                                                                    <li>{{ error }}</li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div id="error-brief_{{ counter }}"
+                                                                             class="error-details">
+                                                                            {{ extraErrors|first }}
+                                                                        </div>
+                                                                        <div id="view-full_{{ counter }}"
+                                                                             class="view-full"
+                                                                             onclick="showFullDescription({{ counter }})">
+                                                                            {{ mod_strings.LBL_VIEW_FULL_ERROR }}
+                                                                            >
+                                                                        </div>
+                                                                        <div id="error-full_{{ counter }}"
+                                                                             class="error-full pl-2">
+                                                                            {{ extraErrors|first }}
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    {% endif %}
+                                                                    {% endif %}
+                                                                    {% set extraErrors = [] %}
+                                                                    {% if check.warnings and check.warnings is not empty %}
+                                                                        <script>
+                                                                            function setWarningIcon() {
+
+                                                                                if (document.getElementById('check_{{ system_check.label }}').classList.contains('error')) {
+                                                                                    return;
+                                                                                }
+
+                                                                                document.getElementById('{{ system_check.label }}_label').style.color = '#ef9f22';
+                                                                                document.getElementById('check_{{ system_check.label }}').style.border = '1px solid #ef9f22';
+                                                                                document.getElementById('error-symbols').style.display = 'flex';
+
+
+                                                                                if ((document.getElementById('system-error-symbol')?.style?.display || 'none') === 'none') {
+                                                                                    document.getElementById('system-warning-symbol').style.display = 'flex';
+                                                                                    document.getElementById('system-warning-symbol').style.fill = '#FFFFFF';
+                                                                                    document.getElementById('system_check_label').style.backgroundColor = '#ef9f22';
+
+                                                                                }
+                                                                                if (document.getElementById('{{ system_check.label }}_label').classList.contains('error')) {
+                                                                                    return;
+                                                                                }
+                                                                                document.getElementById('{{ mod_strings.LBL_SYSTEM_CHECKS }}').style.color = '#FFFFFF';
+
+                                                                                document.getElementById('{{ system_check.label }}_label').classList.add('warning');
+
+                                                                                document.getElementById('warning-symbol-{{ system_check.label }}').style.display = 'flex';
+                                                                            }
+
+                                                                            document.getElementById('warning-icon_{{ counter }}').style.display = 'block';
+                                                                            setWarningIcon();
+                                                                        </script>
+                                                                        {% if check.warnings|length >= 2 %}
+                                                                            {% set extraWarnings = check.warnings %}
+                                                                        {% endif %}
+                                                                        {% if check.warnings|length < 2 %}
+                                                                            {% for warning in check.warnings %}
+                                                                                {% if warning|length > 200 %}
+                                                                                    {% set extraWarnings = extraWarnings|merge([warning]) %}
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% endif %}
+                                                                    {% if extraWarnings is empty %}
+                                                                        {% for warning in check.warnings %}
+                                                                        <div class="field-group-field pl-2 pb-2 d-inline-block check-result">
+                                                                            {{ warning }}
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                    {% if extraWarnings|length > 1 %}
+                                                                        <div id="error-brief_{{ counter }}"
+                                                                             class="first-warning pl-2">
+                                                                            {{ extraWarnings|first }}
+                                                                        </div>
+                                                                        <div id="view-full_{{ counter }}"
+                                                                             class="view-full"
+                                                                             onclick="showFullDescription({{ counter }}, true)">
+                                                                            See All Warnings >
+                                                                        </div>
+                                                                        <div id="all-errors_{{ counter }}"
+                                                                             class="error-full ml-2">
+                                                                            <ul>
+                                                                                {% for warning in extraWarnings %}
+                                                                                    <li>{{ warning }}</li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div id="error-brief_{{ counter }}"
+                                                                             class="error-details col-md-5">
+                                                                            {{ extraWarnings|first }}
+                                                                        </div>
+                                                                        <div id="view-full_{{ counter }}"
+                                                                             class="view-full"
+                                                                             onclick="showFullDescription({{ counter }})">
+                                                                            view full description >
+                                                                        </div>
+                                                                        <div id="error-full_{{ counter }}"
+                                                                             class="error-full col-md-7">
+                                                                            {{ extraWarnings|first }}
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    {% endif %}
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div id="close_desc_{{ counter }}"
+                                                                     class="close-description ml-2 mt-2"
+                                                                     onclick="collapseFullDescription({{ counter }})">
+                                                                    < {{ mod_strings.LBL_CLOSE_DESCRIPTION }}
+                                                                </div>
+                                                                <div id="close_all_desc_{{ counter }}"
+                                                                     class="close-description ml-2 mt-2"
+                                                                     onclick="collapseFullDescription({{ counter }}, true)">
+                                                                    < {{ mod_strings.LBL_CLOSE_DESCRIPTION }}
+                                                                </div>
+                                                                {% set extraWarnings = [] %}
+                                                                {% set counter = counter + 1 %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        <script>
+                                                            function sectionChecksPassed() {
+                                                                if ((document.getElementById('error-symbol-{{ system_check.label }}')?.style?.display || 'none') !== 'none') {
+                                                                    return;
+                                                                }
+                                                                if ((document.getElementById('warning-symbol-{{ system_check.label }}')?.style?.display || 'none') !== 'none') {
+                                                                    return;
+                                                                }
+
+                                                                document.getElementById('check-mark-{{ system_check.label }}').style.display = "flex";
+                                                            }
+
+                                                            sectionChecksPassed();
+                                                        </script>
+                                                    {% endfor %}
+                                                    <script>
+                                                        function allPassed() {
+                                                            if ((document.getElementById('system-error-symbol')?.style?.display || 'none') !== 'none') {
+                                                                return;
+                                                            }
+                                                            if ((document.getElementById('system-warning-symbol')?.style?.display || 'none') !== 'none') {
+                                                                return;
+                                                            }
+
+                                                            document.getElementById('check-mark-{{ mod_strings.LBL_SYSTEM_CHECKS }}').style.display = "flex";
+                                                        }
+
+                                                        allPassed();
+                                                    </script>
                                                 </div>
                                             </div>
                                         </form>
