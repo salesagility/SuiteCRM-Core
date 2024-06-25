@@ -174,11 +174,9 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     onResize(): void {
         const innerWidth = window.innerWidth;
         this.mobileNavbar = innerWidth <= 768;
-        this.isSmallScreen.set(innerWidth <= 600);
+        this.isSmallScreen.set(innerWidth < 600);
         this.isTabletScreen.set(innerWidth <= 992);
-        if(!this.isSmallScreen()) {
-            this.isSearchBoxVisible.set(true);
-        }
+        this.isSearchBoxVisible.set(innerWidth >= 600);
     }
 
     ngOnInit(): void {

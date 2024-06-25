@@ -74,6 +74,12 @@
                             <li *ngIf="navbar.current && !navbar.current.isGroupedMenu" class="top-nav nav-item dropdown mobile-navbar-active-module h-100 non-grouped">
                                 <scrm-menu-item [item]="navbar.current"></scrm-menu-item>
                             </li>
+                            <li *ngIf="navbar.current?.submenu  && navbar.current.isGroupedMenu" class="top-nav nav-item dropdown mobile-navbar-active-module main-grouped">
+                                <scrm-grouped-menu-item
+                                    [item]="navbar.current"
+                                    [subNavCollapse]="subNavCollapse">
+                                </scrm-grouped-menu-item>
+                            </li>
                         </ul>
                     </nav>
                 </div>

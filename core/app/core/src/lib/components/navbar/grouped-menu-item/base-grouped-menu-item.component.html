@@ -34,26 +34,34 @@
 
 
 <ng-template #groupedMenuItem>
-    <div class="menu-item-wrapper" #menuItemWrapper>
+    <div class="menu-item-wrapper">
         <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="!item.isGroupedMenu"
           (click)="toggleDropdown()">
             <a class="top-nav-link nav-link-grouped dropdown-toggle active"
-               [class]="{'nav-link-activated': showDropdown() }"
                data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
                 {{ item.link.label | truncate: charSize.minLength }}
             </a>
         </span>
-        <ul class="navbar-nav grouped" *ngIf="item.isGroupedMenu">
 
-            <li class="top-nav nav-item dropdown main-grouped active">
-                <scrm-menu-item [item]="item"></scrm-menu-item>
+        <span data-target=".navbar-collapse" data-toggle="collapse" *ngIf="item.isGroupedMenu"
+              (click)="toggleDropdown()">
+            <li class="nav-item active">
+                <scrm-menu-item-link [class]="{
+                                            'top-nav-link': true,
+                                            'nav-link-grouped': true,
+                                            'dropdown-toggle': item.submenu.length,
+                                            'hover-enabled': hoverEnabled(),
+                                            'nav-link-activated': showDropdown()
+                                        }"
+                                     [link]="item.link">
+                </scrm-menu-item-link>
             </li>
-        </ul>
-
+        </span>
         <ul aria-labelledby="navbarDropdownMenuLink"
             class="dropdown-menu main"
             [class.show]="showDropdown()"
             [class.hover-enabled]="hoverEnabled()"
+            [class.mobile-admin-dropdown]="item.isGroupedMenu"
         >
             <li *ngFor="let sub of item.submenu; index as i;" class="nav-item dropdown-submenu submenu">
 

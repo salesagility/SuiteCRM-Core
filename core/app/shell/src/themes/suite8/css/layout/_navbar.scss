@@ -125,6 +125,7 @@ a.home-nav-link {
 }
 
 .nav-item.active .nav-link-nongrouped,
+.nav-item.active .nav-link-grouped,
 .nav-item.active .home-nav-link {
   color: $salmon-pink!important;
   border-top: 0.2em solid $salmon-pink;

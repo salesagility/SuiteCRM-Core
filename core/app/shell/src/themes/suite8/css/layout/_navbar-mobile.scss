@@ -43,8 +43,8 @@
 
     .top-nav-link.nav-link-grouped,
     .top-nav-link.nav-link-nongrouped {
-      color: $off-white;
-
+      color: $off-white!important;
+      border-top: none;
       display: inline-block;
       white-space: nowrap;
       overflow: hidden;
@@ -66,7 +66,7 @@
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 410px) {
 
   .mobile-navbar-active-module {
 
@@ -77,16 +77,23 @@
         max-width: 105px;
         padding-right: 1em;
       }
-      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after,
+      .top-nav-link.nav-link-grouped.dropdown-toggle:after {
         position: absolute;
         top: 1.2em;
         right: 0.2em;
       }
     }
   }
+  .mobile-admin-dropdown {
+    left: -3em;
+    .dropdown-submenu.submenu .dropdown-menu.submenu.active {
+        width: 10.6em;
+    }
+  }
 }
 
-@media only screen and (min-width: 400px) and (max-width: 450px) {
+@media only screen and (min-width: 410px) and (max-width: 450px) {
 
   .mobile-navbar-active-module {
 
@@ -98,12 +105,18 @@
         padding-right: 1em;
       }
 
-      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after,
+      .top-nav-link.nav-link-grouped.dropdown-toggle:after {
         margin-left: 0.12em!important;
         position: absolute;
         top: 1.2em;
         right: 0.2em;
       }
+    }
+  }
+  .mobile-admin-dropdown {
+    .dropdown-submenu.submenu .dropdown-menu.submenu.active {
+      width: 10.8em;
     }
   }
 }
@@ -119,7 +132,8 @@
         max-width: 200px;
         padding-right: 1em;
       }
-      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after,
+      .top-nav-link.nav-link-grouped.dropdown-toggle:after {
         margin-left: 0.12em!important;
         position: absolute;
         top: 1.2em;
@@ -139,8 +153,10 @@
       .top-nav-link.nav-link-nongrouped {
         max-width: 250px;
         padding-right: 1em;
+        line-height: inherit!important;
       }
-      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after,
+      .top-nav-link.nav-link-grouped.dropdown-toggle:after {
         margin-left: 0.12em!important;
         position: absolute;
         top: 1.2em;
@@ -199,6 +215,10 @@
   .nav-link-grouped,
   .nav-link-nongrouped {
     max-width: 105px;
+  }
+
+  .navbar-nav.grouped {
+    border-bottom: none;
   }
 
   .navbar-nav,
