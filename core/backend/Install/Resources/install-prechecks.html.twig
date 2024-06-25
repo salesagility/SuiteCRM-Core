@@ -479,13 +479,84 @@
                 </div>
             </div>
         </div>
+        <div class="footer">
+            <div class="copyright-links"><a data-toggle="modal" data-target=".copyright-suitecrm" class="footer-link"> ©
+                    Supercharged by SuiteCRM </a><a data-toggle="modal" data-target=".copyright-sugarcrm"
+                                                    class="footer-link"> © Powered By SugarCRM </a></div>
+        </div>
+        <div class="copyright"></div>
     </div>
-    <div class="footer">
-        <div class="copyright-links"><a data-toggle="modal" data-target=".copyright-suitecrm" class="footer-link"> ©
-                Supercharged by SuiteCRM </a><a data-toggle="modal" data-target=".copyright-sugarcrm"
-                                                class="footer-link"> © Powered By SugarCRM </a></div>
-    </div>
-    <div class="copyright"></div>
 </app-root>
 </body>
 </html>
+
+<script>
+
+    function toggleResults(resultId, currentId) {
+        if (document.getElementById(resultId).style.display === 'none') {
+            document.getElementById(currentId).style.marginBottom = 0;
+            document.getElementById(resultId).style.display = 'flex';
+            return;
+        }
+        document.getElementById(currentId).style.marginBottom = '.5rem';
+        document.getElementById(resultId).style.display = 'none';
+
+    }
+
+    function showFullDescription(counter, showAll = false) {
+        document.getElementById('error-brief_' + counter).style.display = 'none';
+        document.getElementById('view-full_' + counter).style.display = 'none';
+        document.getElementById('results-box_' + counter).style.borderBottom = 'none';
+
+        const lastResults = document.querySelectorAll('.results div.results-box:nth-last-child(3)');
+
+
+        for (let j = 0, element; element = lastResults[j]; j++) {
+            if (document.getElementById('results-box_' + counter).id === element.id) {
+                if (!showAll) {
+                    document.getElementById('close_desc_' + counter).style.borderBottom = 'none';
+                }
+                document.getElementById('close_all_desc_' + counter).style.borderBottom = 'none';
+            }
+        }
+
+        if (!showAll) {
+            document.getElementById('error-full_' + counter).style.display = 'block';
+            document.getElementById('close_desc_' + counter).style.display = 'inline-block';
+            return;
+        }
+
+        document.getElementById('close_all_desc_' + counter).style.display = 'inline-block';
+        document.getElementById('all-errors_' + counter).style.display = 'block';
+
+
+    }
+
+
+    function collapseFullDescription(counter, hideAll = false) {
+        document.getElementById('error-brief_' + counter).style.display = 'inline-block';
+        document.getElementById('view-full_' + counter).style.display = 'inline-block';
+
+        const lastResults = document.querySelectorAll('.results div.results-box:nth-last-child(3)');
+
+
+        for (let j = 0, element; element = lastResults[j]; j++) {
+
+            if (document.getElementById('results-box_' + counter).id === element.id) {
+                document.getElementById('results-box_' + counter).style.borderBottom = 'none';
+                continue;
+            }
+
+            document.getElementById('results-box_' + counter).style.borderBottom = '1px solid lightgray';
+        }
+
+        if (!hideAll) {
+            document.getElementById('error-full_' + counter).style.display = 'none';
+            document.getElementById('close_desc_' + counter).style.display = 'none';
+            return;
+        }
+        document.getElementById('close_all_desc_' + counter).style.display = 'none';
+        document.getElementById('all-errors_' + counter).style.display = 'none';
+
+    }
+</script>
