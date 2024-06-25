@@ -48,16 +48,27 @@ trait DateTimeStatisticsHandlingTrait
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/Services/DateTime/DateTimeService.php';
         $datetimeService = new DateTimeService();
-        $days = $datetimeService->diffDateStrings($start, $end);
+        $diff = $datetimeService->diffDateStrings($start, $end);
+        $days = $diff['days'] ?? null;
+        $hours = $diff['hours'] ?? null;
+        $minutes = $diff['minutes'] ?? null;
+        $seconds = $diff['seconds'] ?? null;
 
-        if ($days === null) {
+        if ($days === null || $hours === null || $minutes === null || $seconds === null) {
             return $this->getEmptyResponse($key);
+        }
+
+        $dataType = 'int';
+
+        if ($days == 0 && ($hours > 0 || $minutes > 0 || $seconds >= 0)) {
+            $days = '< 1';
+            $dataType = 'string';
         }
 
         $result = [
             'value' => $days
         ];
 
-        return $this->buildSingleValueResponse($key, 'int', $result);
+        return $this->buildSingleValueResponse($key, $dataType, $result);
     }
 }
