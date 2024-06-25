@@ -31,10 +31,10 @@ class DateTimeService
     /**
      * @param string $start
      * @param string|null $end
-     * @return int|null
+     * @return array|null
      * @throws Exception
      */
-    public function diffDateStrings(string $start, string $end = null): ?int
+    public function diffDateStrings(string $start, string $end = null): ?array
     {
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/Services/DateTime/DateFormatService.php';
@@ -60,17 +60,21 @@ class DateTimeService
     /**
      * @param DateTime $start
      * @param DateTime $end
-     * @return int
+     * @return array
      */
-    public function diffDateTimes(DateTime $start, DateTime $end): int
+    public function diffDateTimes(DateTime $start, DateTime $end): array
     {
         $diff = $start->diff($end);
 
         if ($diff->days === false) {
             throw new UnexpectedValueException('Unexpected date diff value');
         }
-
-        return $diff->days;
+        return [
+            'days' => $diff->days,
+            'hours' => $diff->h,
+            'minutes' => $diff->i,
+            'seconds' => $diff->s
+        ];
     }
 
     /**
