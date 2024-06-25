@@ -1143,6 +1143,7 @@ class InstallPreChecks
                 $result['result'] = '';
                 $result['warnings'][] = $this->modStrings['ERR_CHECKSYS_' . strtoupper($module)] ?? strtoupper($module) . ' not found in extensions.';
                 $this->systemChecks[$key]['checks'][$label]['warnings'] = $result['warnings'];
+                $this->warningsFound = true;
             } else {
                 $this->log->info($module . ' found in loaded extensions');
                 $result['result'] = $this->modStrings['LBL_CHECKSYS_OK'];
