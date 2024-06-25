@@ -11,14 +11,27 @@ use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__ . '/../config/bootstrap.php';
 
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
+
+$configValues = $kernel->getConfigValues() ?? [];
+$installerLocked = $configValues['installed_locked'] ?? false;
 if (!file_exists('legacy/config.php') && !file_exists('../.installed_checked') && !file_exists('../.curl_check_main_page')) {
-    header('Location: install.php');
+
+    if (empty($_POST['install-checked'])) {
+        header('Location: install.php');
+        return;
+    }
+
+    file_put_contents('../.installed_checked', true);
+    header('Location: .');
+    return;
+} else if (!$installerLocked && file_exists('../.installed_checked') && !empty($_POST['install-checked'])) {
+    header('Location: .');
     return;
 }
 
 // Get the autoloader class
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 
 $kernel->init();
