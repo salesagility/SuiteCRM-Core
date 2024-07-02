@@ -15,6 +15,10 @@ class IdFieldValidator implements FieldValidatorInterface
             return '';
         }
 
+        if (is_array($value)) {
+            $value = $value[0]['id'] ?? $value['id'];
+        }
+
         if (!is_string($value) && !is_numeric($value)) {
             return "Invalid id field '$field'. Value not a string nor a number";
         }
