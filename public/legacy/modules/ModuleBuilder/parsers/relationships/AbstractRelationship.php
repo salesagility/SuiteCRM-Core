@@ -453,14 +453,16 @@ class AbstractRelationship
                     break ;
                 default:
                     // now see if we have any module inheriting from the 'file' template - records in file-type modules are named by the document_name field, not the usual 'name' field
-                    $object = $GLOBALS ['beanList'] [ $sourceModule ];
-                    require_once($GLOBALS ['beanFiles'] [ $object ]);
-                    $bean = new $object();
-                    if (isset($GLOBALS [ 'dictionary' ] [ $object ] [ 'templates'])) {
-                        if (in_array('file', $GLOBALS [ 'dictionary' ] [ $object ] [ 'templates'])) {
-                            $vardef [ 'rname' ] = 'document_name' ;
-                        } elseif (in_array('person', $GLOBALS [ 'dictionary' ] [ $object ] [ 'templates'])) {
-                            $vardef [ 'db_concat_fields' ] = array( 0 =>'first_name', 1 =>'last_name') ;
+                    $object = $GLOBALS ['beanList'] [ $sourceModule ] ?? '';
+                    if (!empty($object)) {
+                        require_once($GLOBALS ['beanFiles'] [$object]);
+                        $bean = new $object();
+                        if (isset($GLOBALS ['dictionary'] [$object] ['templates'])) {
+                            if (in_array('file', $GLOBALS ['dictionary'] [$object] ['templates'])) {
+                                $vardef ['rname'] = 'document_name';
+                            } elseif (in_array('person', $GLOBALS ['dictionary'] [$object] ['templates'])) {
+                                $vardef ['db_concat_fields'] = array(0 => 'first_name', 1 => 'last_name');
+                            }
                         }
                     }
 
