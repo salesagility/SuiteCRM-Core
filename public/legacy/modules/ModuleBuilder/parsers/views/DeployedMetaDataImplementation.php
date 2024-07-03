@@ -347,6 +347,7 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
         $filename = $this->getFileName($this->_view, $this->_moduleName, null, MB_CUSTOMMETADATALOCATION);
         $GLOBALS ['log']->debug(get_class($this) . "->deploy(): writing to " . $filename);
         $this->_saveToFile($filename, $layoutDefinitions);
+        $this->addInsights($filename, $this->_moduleName, $this->_view);
 
         // now clear the cache so that the results are immediately visible
         include_once('include/TemplateHandler/TemplateHandler.php');
@@ -474,5 +475,25 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
     public function saveToFile($file, $defs)
     {
         $this->_saveToFile($file, $defs);
+    }
+
+    protected function addInsights(string $fileName, string $moduleName, string $view)
+    {
+        $viewdefs = [];
+        $viewDefsLabel = 'viewdefs';
+        $out = '';
+        $view = explode('view', $view);
+        $view = ucfirst($view[0]) . 'View';
+
+        if (str_contains($fileName, 'custom')){
+            $requireFile = str_replace('custom/', '', $fileName);
+            require($requireFile);
+        }
+        $insights = $viewdefs[$moduleName][$view] ?? [];
+        if (!empty($insights)) {
+            $out = "\$$viewDefsLabel ['".$moduleName."'] ['".$view."'] = \n" . var_export($insights, true);
+        }
+        $out .= ";\n?>\n";
+        file_put_contents($fileName, $out, FILE_APPEND);
     }
 }
