@@ -204,6 +204,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'int.list': IntDetailFieldComponent,
     'int.detail': IntDetailFieldComponent,
     'file.detail': FileDetailFieldComponent,
+    'file.list': FileDetailFieldComponent,
     'float.list': FloatDetailFieldComponent,
     'float.detail': FloatDetailFieldComponent,
     'phone.list': PhoneDetailFieldComponent,
