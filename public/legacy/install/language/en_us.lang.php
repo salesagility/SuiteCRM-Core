@@ -20,7 +20,7 @@
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * this program; if not, see https://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
  *
@@ -67,7 +67,7 @@ $mod_strings = array(
     'ERR_CHECKSYS_NOT_WRITABLE' => 'Warning: Not Writable',
     'ERR_CHECKSYS_PHP_INVALID_VER' => 'Your version of PHP is not supported by SuiteCRM. You will need to install a version that is compatible with the SuiteCRM application. Please consult the Compatibility Matrix in the Release Notes for supported PHP Versions. Your version is ',
     'ERR_CHECKSYS_IIS_INVALID_VER' => 'Your version of IIS is not supported by SuiteCRM. You will need to install a version that is compatible with the SuiteCRM application. Please consult the Compatibility Matrix in the Release Notes for supported IIS Versions. Your version is ',
-    'ERR_CHECKSYS_FASTCGI' => 'We detect that you are not using a FastCGI handler mapping for PHP. You will need to install/configure a version that is compatible with the SuiteCRM application. Please consult the Compatibility Matrix in the Release Notes for supported Versions. Please see <a href="http://www.iis.net/php/" target="_blank">http://www.iis.net/php/</a> for details ',
+    'ERR_CHECKSYS_FASTCGI' => 'We detect that you are not using a FastCGI handler mapping for PHP. You will need to install/configure a version that is compatible with the SuiteCRM application. Please consult the Compatibility Matrix in the Release Notes for supported Versions. Please see <a href="https://php.iis.net/" target="_blank">https://php.iis.net/</a> for details ',
     'ERR_CHECKSYS_FASTCGI_LOGGING' => 'For optimal experience using IIS/FastCGI sapi, set fastcgi.logging to 0 in your php.ini file.',
     'LBL_DB_UNAVAILABLE' => 'Database unavailable',
     'LBL_CHECKSYS_DB_SUPPORT_NOT_AVAILABLE' => 'Database Support was not found. Please make sure you have the necessary drivers for one of the following supported Database Types: MySQL or MS SQLServer. You might need to uncomment the extension in the php.ini file, or recompile with the right binary file, depending on your version of PHP. Please refer to your PHP Manual for more information on how to enable Database Support.',
@@ -481,7 +481,7 @@ $mod_strings = array(
     'LBL_PATCH_READY' => 'The following patch(es) are ready to be installed:',
     'LBL_SESSION_ERR_DESCRIPTION' => "SuiteCRM relies upon PHP sessions to store important information while connected to this web server. Your PHP installation does not have the Session information correctly configured.
 											<br><br>A common misconfiguration is that the <b>'session.save_path'</b> directive is not pointing to a valid directory. <br>
-											<br> Please correct your <a target=_new href='http://us2.php.net/manual/en/ref.session.php'>PHP configuration</a> in the php.ini file located here below.",
+											<br> Please correct your <a target=_new href='https://www.php.net/manual/en/ref.session.php'>PHP configuration</a> in the php.ini file located here below.",
     'LBL_SESSION_ERR_TITLE' => 'PHP Sessions Configuration Error',
     'LBL_SYSTEM_NAME' => 'System Name',
     'LBL_COLLATION' => 'Collation Settings',
@@ -633,7 +633,7 @@ $contact_user_link_guid',
     'LBL_START' => '',
     'LBL_DB_CONN_ERR' => 'Database error',
     'LBL_OLD_PHP' => 'Old PHP Version Detected!',
-    'LBL_OLD_PHP_MSG' => 'The recommended PHP version to install SuiteCRM is %s <br />The minimum PHP version required is %s<br />You are using PHP version %s, which is EOL: <a href="http://php.net/eol.php">http://php.net/eol.php</a>.<br />Please consider upgrading your PHP version. ',
+    'LBL_OLD_PHP_MSG' => 'The recommended PHP version to install SuiteCRM is %s <br />The minimum PHP version required is %s<br />You are using PHP version %s, which is EOL: <a href="https://www.php.net/eol.php">https://www.php.net/eol.php</a>.<br />Please consider upgrading your PHP version. ',
     'LBL_OLD_PHP_OK' => 'I\'m aware of the risks and wish to continue.',
 
     'LBL_DBCONF_TITLE_USER_INFO_LABEL' => 'User',
