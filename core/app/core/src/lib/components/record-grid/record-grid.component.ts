@@ -38,7 +38,6 @@ import {RecordGridConfig, RecordGridViewModel} from './record-grid.model';
 export class RecordGridComponent implements OnInit {
 
     @Input() config: RecordGridConfig;
-    gridButtons = [];
 
     mode: ViewMode = 'detail';
     maxColumns: number = 4;
@@ -50,6 +49,7 @@ export class RecordGridComponent implements OnInit {
     };
     fields: Field[] = [];
     special: Field[] = [];
+    record: Record;
 
     vm$: Observable<RecordGridViewModel>;
 
@@ -74,6 +74,7 @@ export class RecordGridComponent implements OnInit {
                 this.maxColumns = maxColumns;
                 this.sizeMap = sizeMap;
                 this.fields = this.getFields(record, fields);
+                this.record = record;
                 return {record, mode, fields, maxColumns};
             })
         );
