@@ -32,7 +32,9 @@
   }
 
   .radioenum-input input[type=radio]:checked + label:after {
-    background: $coral-pink;
+    position: absolute;
+    top: .4375rem;
+    left: .25rem;
   }
 
   .radioenum {

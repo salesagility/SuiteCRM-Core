@@ -85,7 +85,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
             onClick: () => {
                 this.filterActionsAdapter.run('save');
             }
-        }
+        } as ButtonInterface;
 
         this.gridConfig = {
             record$: this.store.filterStore.stagingRecord$,
@@ -108,7 +108,7 @@ export class ListFilterComponent implements OnInit, OnDestroy {
                 web: 4,
                 wide: 4
             } as ScreenSizeMap).pipe(shareReplay(1))
-        }
+        } as RecordGridConfig;
     }
 
     ngOnDestroy(): void {

@@ -32,6 +32,7 @@
         <input [checked]="field.value === item.value"
                [formControl]="field.formControl"
                [value]="item.value"
+               [name]="field.name"
                class="form-check-input"
                id="{{getId(item)}}"
                type="radio"
