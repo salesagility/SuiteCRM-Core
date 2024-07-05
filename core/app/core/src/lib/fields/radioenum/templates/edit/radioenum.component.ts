@@ -27,8 +27,8 @@
 import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {BaseEnumComponent} from '../../../base/base-enum.component';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {Option} from 'common';
+import {LanguageListStringMap, LanguageStore} from '../../../../store/language/language.store';
+import {Option, isEmptyString} from 'common';
 import {UntypedFormGroup} from '@angular/forms';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic-display.manager';
@@ -75,5 +75,21 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
 
     public getId(item: Option) {
         return this.field.name + '-' + item.value;
+    }
+
+    protected buildOptionsArray(appStrings: LanguageListStringMap): void {
+        this.options = [];
+
+        Object.keys(this.optionsMap).forEach(key => {
+
+            this.options.push({
+                value: key,
+                label: this.optionsMap[key]
+            } as Option);
+        });
+
+        if (this.isDynamicEnum) {
+            this.buildDynamicEnumOptions(appStrings);
+        }
     }
 }

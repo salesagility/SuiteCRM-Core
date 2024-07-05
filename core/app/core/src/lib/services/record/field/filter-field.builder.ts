@@ -128,7 +128,7 @@ export class FilterFieldBuilder extends FieldBuilder {
                 fieldType,
                 operator: '',
                 values: []
-            };
+            } as SearchCriteriaFieldFilter;
         }
 
         this.mapEnumEmptyOption(fieldCriteria, field);

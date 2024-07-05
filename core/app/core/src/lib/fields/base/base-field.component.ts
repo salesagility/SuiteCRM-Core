@@ -216,7 +216,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                     field: fieldKey,
                     attribute: attributeKey,
                     types: dependentFields[name]['types'] ?? []
-                });
+                } as AttributeDependency);
             }
         });
     }
