@@ -52,3 +52,9 @@
   display: block;
   background: $coral-pink;
 }
+
+@-moz-document url-prefix() {
+  .radioenum-input input[type=radio]:checked + label:after {
+    top: 0.44rem;
+  }
+}
