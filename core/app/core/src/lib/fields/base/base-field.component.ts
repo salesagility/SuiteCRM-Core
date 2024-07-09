@@ -120,7 +120,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                     }
 
                     if (types.includes('displayLogic')) {
-                        this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
+                        this.logicDisplay.runAll(field, this.record, this.originalMode as ViewMode);
                     }
                 });
             }
@@ -142,7 +142,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             }
 
                             if (types.includes('displayLogic')) {
-                                this.logicDisplay.runAll(field, this.record, this.mode as ViewMode);
+                                this.logicDisplay.runAll(field, this.record, this.originalMode as ViewMode);
                             }
                         }
                     });
