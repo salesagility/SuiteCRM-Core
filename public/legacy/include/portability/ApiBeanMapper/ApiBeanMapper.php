@@ -39,6 +39,7 @@ require_once __DIR__ . '/TypeMappers/MultiEnumMapper.php';
 require_once __DIR__ . '/TypeMappers/BooleanMapper.php';
 require_once __DIR__ . '/TypeMappers/HtmlMapper.php';
 require_once __DIR__ . '/TypeMappers/TextMapper.php';
+require_once __DIR__ . '/TypeMappers/CurrencyMapper.php';
 require_once __DIR__ . '/ApiBeanModuleMappers.php';
 require_once __DIR__ . '/ModuleMappers/SavedSearch/SavedSearchMappers.php';
 require_once __DIR__ . '/ModuleMappers/AOP_Case_Updates/CaseUpdatesMappers.php';
@@ -86,6 +87,7 @@ class ApiBeanMapper
         $this->typeMappers['boolean'] = $this->typeMappers[BooleanMapper::getType()];
         $this->typeMappers[HtmlMapper::getType()] = new HtmlMapper();
         $this->typeMappers[TextMapper::getType()] = new TextMapper();
+        $this->typeMappers[CurrencyMapper::getType()] = new CurrencyMapper();
         $this->moduleMappers[SavedSearchMappers::getModule()] = new SavedSearchMappers();
         $this->typeMappers[DateTimeComboMapper::getType()] = new DateTimeMapper();
         $this->linkMappers[EmailAddressLinkMapper::getRelateModule()] = [];
