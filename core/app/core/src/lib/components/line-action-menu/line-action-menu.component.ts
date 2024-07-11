@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, signal} from '@angular/core';
 import {
     Action,
     ActionContext,
@@ -33,10 +33,10 @@ import {
     ButtonGroupInterface,
     ButtonInterface,
     isFalse,
-    Record
+    Record,
+    ActiveLineAction
 } from 'common';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
-import {SubpanelActionManager} from "../../containers/subpanel/components/subpanel/action-manager.service";
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {
     ScreenSize,
@@ -61,11 +61,14 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
     @Input() wrapperClass = '';
     @Input() record: Record;
     @Input() config: ActionDataSource;
+    @Input() activeLineAction: ActiveLineAction;
     @Input() limitConfigKey = 'listview_line_actions_limits';
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
     actions: Action[];
-    isButtonClicked:boolean = false;
+    isActive:boolean = false;
+
+    isClickedOutside = signal<boolean>(false)
 
     vm$: Observable<LineActionMenuViewModel>;
 
@@ -77,14 +80,21 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
     protected defaultBreakpoint = 3;
     protected breakpoint: number;
 
+    @HostListener('document:click', ['$event.target'])
+    onClickOutside(target) {
+        if (!this.el.nativeElement.contains(target)) {
+            this.isActive = false;
+            this.isClickedOutside.set(true)
+        }
+    }
+
     constructor(
         protected languageStore: LanguageStore,
-        protected actionManager: SubpanelActionManager,
         protected languages: LanguageStore,
         protected screenSize: ScreenSizeObserverService,
         protected systemConfigStore: SystemConfigStore,
-    ) {
-    }
+        private el: ElementRef
+    ) {}
 
     ngOnInit(): void {
         this.subs.push(this.config.getActions({record: this.record}).pipe(
@@ -101,10 +111,22 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
                 this.actions = actions;
             })
         ).subscribe());
+
+        this.subs.push(this.activeLineAction.activeAction$.subscribe(
+            (activeAction: string) => {
+                if (this.record?.id === activeAction) {
+                    this.isActive = true;
+                } else {
+                    this.isActive = false;
+                }
+            }
+        ));
     }
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.isActive = false;
+        this.activeLineAction.resetActiveAction();
     }
 
     getButtonGroupConfig(actions: Action[]): ButtonGroupInterface {
@@ -183,5 +205,16 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
         }
 
         return button;
+    }
+
+    toggleExpand(recordId: string) {
+        const activeId = this.activeLineAction.getActiveAction();
+        if(activeId === recordId && !this.isClickedOutside()){
+            this.activeLineAction.resetActiveAction();
+        } else {
+            this.activeLineAction.setActiveAction(recordId);
+            this.isActive = true;
+            this.isClickedOutside.set(false)
+        }
     }
 }

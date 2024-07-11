@@ -28,11 +28,11 @@
 <ng-container *ngIf="actions.length">
     <div class="line-action-container">
         <div id="line-action-div" class="line-action line-action-position">
-            <div class="{{wrapperClass}}" [ngClass]="isButtonClicked  ? 'active': ''">
+            <div class="{{wrapperClass}}" [ngClass]="isActive ? 'active': ''">
                 <div class="{{klass}}">
                     <scrm-button-group *ngIf="config$" [config$]="config$" [klass]="'icon-bar-block'"></scrm-button-group>
                 </div>
-                <button class="more-button" aria-label="Mobile Menu Button" (click)="isButtonClicked=!isButtonClicked">
+                <button class="more-button" aria-label="Mobile Menu Button" (click)="toggleExpand(record?.id)">
                     <scrm-image class="sicon" image="apps-line"></scrm-image>
                 </button>
             </div>

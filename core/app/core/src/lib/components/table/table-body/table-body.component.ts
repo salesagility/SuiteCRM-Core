@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {combineLatestWith, BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
     ColumnDefinition,
@@ -34,7 +34,8 @@ import {
     RecordSelection,
     SelectionStatus,
     SortDirection,
-    SortingSelection
+    SortingSelection,
+    ActiveLineAction
 } from 'common';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
@@ -58,6 +59,12 @@ interface TableViewModel {
 })
 export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
+
+    private activeAction: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    protected activeAction$: Observable<string> =this.activeAction.asObservable();
+
+    activeLineAction: ActiveLineAction
+
     maxColumns = 4;
     popoverColumns: ColumnDefinition[];
     vm$: Observable<TableViewModel>;
@@ -74,6 +81,19 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
+
+        this.activeLineAction = {
+            activeAction$: this.activeAction$,
+            getActiveAction: (): string => {
+                return this.activeAction.getValue();
+            },
+            setActiveAction: (key: string): void => {
+                this.activeAction.next(key);
+            },
+            resetActiveAction: (): void => {
+                this.activeAction.next('');
+            }
+        } as ActiveLineAction;
 
         this.vm$ = this.config.columns.pipe(
             combineLatestWith(
