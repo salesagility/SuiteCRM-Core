@@ -151,6 +151,17 @@ export class NumberFormatter implements Formatter {
         return transformed;
     }
 
+    replaceSeparatorsToInternalFormat(value: string): string {
+        const decimalSymbol = this.getDecimalsSymbol() || '.';
+
+        const formattedValue = this.toInternalFormat(value);
+
+        if (decimalSymbol !== '.' && value.includes(decimalSymbol)) {
+            value = formattedValue;
+        }
+
+        return value;
+    }
     validateIntUserFormat(inputValue: any): boolean {
 
         const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);

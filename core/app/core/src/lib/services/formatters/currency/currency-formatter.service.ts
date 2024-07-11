@@ -64,6 +64,7 @@ export class CurrencyFormatter implements Formatter {
 
         const digitsInfo = this.getDigitsInfo(digits);
         let formatted: string;
+        value = this.replaceSeparatorsToInternalFormat(value);
 
         if (options && options.mode === 'edit') {
             formatted = formatNumber(Number(value), this.locale, digitsInfo);
@@ -141,5 +142,9 @@ export class CurrencyFormatter implements Formatter {
 
     replaceSeparators(transformed: string): string {
         return this.numberFormatter.replaceSeparators(transformed);
+    }
+
+    replaceSeparatorsToInternalFormat(value: string): string {
+        return this.numberFormatter.replaceSeparatorsToInternalFormat(value);
     }
 }
