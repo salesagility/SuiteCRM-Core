@@ -46,6 +46,7 @@ import {BooleanDetailFieldComponent} from './boolean/templates/detail/boolean.co
 import {EmailListFieldsModule} from './email/templates/list/email.module';
 import {VarcharFilterFieldComponent} from './varchar/templates/filter/filter.component';
 import {CurrencyDetailFieldComponent} from './currency/templates/detail/currency.component';
+import {CurrencyEditFieldComponent} from './currency/templates/edit/currency.component';
 import {EnumEditFieldModule} from './enum/templates/edit/enum.module';
 import {MultiEnumDetailFieldModule} from './multienum/templates/detail/multienum.module';
 import {FileDetailFieldModule} from './file/templates/detail/file.module';
@@ -107,6 +108,7 @@ import {IconListFieldModule} from "./icon/templates/detail/icon.module";
 import {IconDetailFieldComponent} from "./icon/templates/detail/icon.component";
 import {TextListFieldModule} from './text/templates/list/text.module';
 import {TextListFieldComponent} from './text/templates/list/text.component';
+import {CurrencyEditFieldModule} from "./currency/templates/edit/currency.module";
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -127,6 +129,7 @@ export const baseFieldModules = [
     DateTimeFilterFieldModule,
     UrlDetailFieldModule,
     CurrencyDetailFieldModule,
+    CurrencyEditFieldModule,
     EmailListFieldsModule,
     TextDetailFieldModule,
     TextEditFieldModule,
@@ -170,6 +173,7 @@ export const baseFieldComponents = [
     UrlDetailFieldComponent,
     IconDetailFieldComponent,
     CurrencyDetailFieldComponent,
+    CurrencyEditFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
     TextEditFieldComponent,
@@ -230,6 +234,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'link.detail': UrlDetailFieldComponent,
     'currency.list': CurrencyDetailFieldComponent,
     'currency.detail': CurrencyDetailFieldComponent,
+    'currency.edit': CurrencyEditFieldComponent,
     'email.list': EmailListFieldsComponent,
     'email.detail': EmailListFieldsComponent,
     'text.detail': TextDetailFieldComponent,
