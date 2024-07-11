@@ -119,3 +119,10 @@ export interface ActionContext {
     ids?: string[];
     criteria?: SearchCriteria;
 }
+
+export interface ActiveLineAction {
+    activeAction$: Observable<string>;
+    getActiveAction(): string;
+    setActiveAction(key: string): void;
+    resetActiveAction(): void;
+}

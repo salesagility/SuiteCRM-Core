@@ -85,6 +85,7 @@ export class TableAdapter {
             pagination: this.store.recordList,
 
             paginationType: this.preferences.getUserPreference('listview_pagination_type') ?? this.systemConfigs.getConfigValue('listview_pagination_type'),
+            maxListHeight: this.preferences.getUserPreference('listview_max_height') ?? this.systemConfigs.getConfigValue('listview_max_height'),
 
             toggleRecordSelection: (id: string): void => {
                 this.store.recordList.toggleSelection(id);
@@ -94,8 +95,6 @@ export class TableAdapter {
                 this.store.recordList.updateSorting(orderBy, sortOrder);
                 this.store.updateSortLocalStorage();
             },
-
-            maxListHeight: this.preferences.getUserPreference('listview_max_height') ?? this.systemConfigs.getConfigValue('listview_max_height'),
 
             loadMore: (): void => {
                 const jump = this.preferences.getUserPreference('list_max_entries_per_page') ?? this.systemConfigs.getConfigValue('list_max_entries_per_page');

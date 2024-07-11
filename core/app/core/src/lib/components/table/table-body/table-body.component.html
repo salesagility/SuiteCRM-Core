@@ -91,6 +91,7 @@
                 <td cdk-cell *cdkCellDef="let record">
                     <scrm-line-action-menu *ngIf="record && config.lineActions"
                                            [config]="config.lineActions"
+                                           [activeLineAction]="activeLineAction"
                                            [record]="record"
                                            [wrapperClass]="'listview-actions'"
                                            [klass]="'icon-bar'">
