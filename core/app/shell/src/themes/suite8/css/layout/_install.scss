@@ -14,7 +14,7 @@
     }
 
     .install-header-options .checkbox-field {
-      padding-bottom: 1.2rem!important;
+      padding-bottom: 1.2rem !important;
     }
   }
 
@@ -28,7 +28,7 @@
           overflow: auto;
 
           pre {
-            font-family: SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
             font-size: 1em;
             white-space: pre;
             z-index: 10;
@@ -40,342 +40,343 @@
       }
     }
   }
-}
 
-
-
-.warning-action-button,
-.warning-action-button:hover {
-  background-color: #ef9f22;
-}
-
-.error-action-button,
-.error-warning-action-button,
-.error-action-button:hover,
-.error-warning-action-button:hover {
-  background-color: #f18478;
-}
-
-@media (min-width: 768px) {
-  .install-form {
-    flex-direction: row;
+  .warning-action-button,
+  .warning-action-button:hover {
+    background-color: #ef9f22;
   }
 
-  .configuration-header {
-    flex-direction: column;
-    margin-bottom: 1rem;
+  .error-action-button,
+  .error-warning-action-button,
+  .error-action-button:hover,
+  .error-warning-action-button:hover {
+    background-color: #f18478;
   }
 
-  .system-check-header {
-    background-color: $light-grey;
-    height: 44px;
-    width: 95%;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-
-
-    .system-check-label {
-      color: $midnight-blue;
-      position: relative;
-      margin-left: 0.5rem;
-      font-weight: 700;
-      flex-wrap: wrap;
-      align-content: center;
-    }
-
-  }
-
-  .results {
-    display: none;
-
-    .results-box {
-      border-bottom: 1px solid $lightgray;
-      flex-direction: column;
-
-      .result-issue {
-        margin-left: auto;
-        width: 100px;
-        margin-top: .5em;
-        justify-content: center;
-        align-items: center;
-        font-size: 15px;
-        margin-bottom: 0.5rem;
-        float: right;
-        display: none;
-      }
-
-      .check-result {
-        padding-left: 0.5rem;
-      }
-    }
-  }
-
-  .results div.results-box:nth-last-child(3) {
-    border-bottom: none;
-  }
-
-  .check-label {
-    padding: .5rem;
-  }
-
-  .error-details {
-    width: 495px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 0.5rem;
-  }
-
-  .view-full {
-    margin: 0.5rem;
-    color: $burnt-red;
-    font-weight: bolder;
-    white-space: nowrap;
-    display: inline-block;
-  }
-
-  .error-symbol,
-  .check-mark {
-    width: 30px;
-    padding-right: 0.5rem;
-    display:none;
-  }
-
-  .error-symbol-container {
-    margin-left: auto;
-    display:none;
-  }
-}
-
-.output-banner {
-  width: 100%;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  display: flex;
-
-  .warnings-banner {
+  .output-banner {
     width: 100%;
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
-    display:flex;
-    height: 40px;
-    font-weight: bold;
-    border-radius: 5px;
-    color: #ef9f22;
-  }
+    display: flex;
 
-  .errors-banner,
-  .error-warning-banner {
-    width: 100%;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    display:flex;
-    height: 40px;
-    font-weight: bold;
-    border-radius: 5px;
-    color: #f18478;
-  }
-
-  .passed-banner {
-    width: 100%;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    display:flex;
-    height: 40px;
-    font-weight: bold;
-    border-radius: 5px;
-    color: #155724;
-  }
-}
-
-.first-warning {
-  margin-top:.5rem;
-  padding-left:.5rem;
-  display:inline-block;
-}
-
-@media(max-width: 767px) {
-
-  .install-form {
-    flex-direction: column;
-  }
-
-  .check-label {
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    vertical-align: middle;
-  }
-
-  .configuration-header {
-    flex-direction: column;
-  }
-  .system-check-header {
-    background-color: $light-grey;
-    height: 44px;
-    border-radius: 5px;
-    margin: auto auto 1rem auto;
-    width: 180px;
-    justify-content: center;
-
-    .system-check-label {
-      color: $midnight-blue;
-      position: relative;
-      font-weight: 700;
+    .warnings-banner {
+      width: 100%;
       flex-wrap: wrap;
       align-content: center;
       justify-content: center;
+      display:flex;
+      height: 40px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: #ef9f22;
     }
 
-  }
-
-  .results {
-    display: none;
-    padding-left: .25rem;
-
-    .results-box {
-      border-bottom: 1px solid $lightgray;
-      flex-direction: column;
-
-      .result-issue {
-        margin-left: auto;
-        width: 90px;
-        margin-top: .5em;
-        justify-content: center;
-        align-items: center;
-        font-size: 15px;
-        margin-bottom: .5rem;
-        float:right;
-        display: none;
-      }
-
-      .check-result {
-        flex-wrap: wrap;
-        align-content: center;
-        white-space: normal;
-        overflow: hidden;
-      }
-
-
+    .errors-banner,
+    .error-warning-banner {
+      width: 100%;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      display:flex;
+      height: 40px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: #f18478;
     }
 
+    .passed-banner {
+      width: 100%;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      display:flex;
+      height: 40px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: #155724;
+    }
   }
 
-  .results div.results-box:nth-last-child(3) {
-    border-bottom: none;
-  }
-
-  .error-details {
-    width: 275px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    padding-left: 0.5rem;
-    vertical-align: middle;
+  .first-warning {
+    margin-top:.5rem;
+    padding-left:.5rem;
     display:inline-block;
   }
 
-  .view-full {
+  .system-check-individual-label:hover,
+  .system-check-label:hover,
+  .system-check-header:hover,
+  .system-check-individual-header:hover {
+    cursor: pointer;
+  }
+
+  .system-check-individual-header {
+    background-color: $light-grey;
+    height: 35px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: .5rem;
+
+    .system-check-individual-label {
+      flex-wrap: wrap;
+      align-content: center;
+      position: relative;
+      font-weight: bold;
+      color: $midnight-blue;
+    }
+
+    .expand-checks {
+      margin-left: auto;
+      padding: 10px;
+    }
+  }
+
+
+
+  .close-description {
+    display: none;
     color: $burnt-red;
     font-weight: bolder;
-    white-space: nowrap;
-    margin: 0.5rem .5rem 0 0;
+    border-bottom: 1px solid $lightgray;
+    padding-bottom: 0.5rem;
+  }
+
+  .close-description:hover,
+  .view-full:hover {
+    cursor: pointer;
+  }
+
+  .error-full {
+    display: none;
+    width: 80%;
     padding-left:0.5rem;
-    display:inline-block;
   }
 
-  .error-symbol,
-  .check-mark {
-    width: 30px;
-    padding-right: 0.5rem;
-    display:none;
-  }
-
-  .error-symbol-container {
-    padding-left: 1.5rem;
+  .warning-icon {
+    margin-left: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: x-large;
     display: none;
   }
 
-}
-
-.system-check-individual-label:hover,
-.system-check-label:hover,
-.system-check-header:hover,
-.system-check-individual-header:hover {
-  cursor: pointer;
-}
-
-.system-check-individual-header {
-  background-color: $light-grey;
-  height: 35px;
-  width: 100%;
-  border-radius: 5px;
-  margin-bottom: .5rem;
-
-  .system-check-individual-label {
-    flex-wrap: wrap;
-    align-content: center;
-    position: relative;
-    font-weight: bold;
-    color: $midnight-blue;
+  .custom-modal .modal-dialog {
+    max-width: 900px;
   }
 
-  .expand-checks {
-    margin-left: auto;
-    padding: 10px;
+  .alert-header {
+    color: #721c24;
+  }
+
+  .alert-body {
+    font-size: 0.85em;
+  }
+
+  .list-style-none {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .install-view {
+    .install-form {
+      flex-direction: row;
+    }
+
+    .configuration-header {
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+
+    .system-check-header {
+      background-color: $light-grey;
+      height: 44px;
+      width: 95%;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+
+
+      .system-check-label {
+        color: $midnight-blue;
+        position: relative;
+        margin-left: 0.5rem;
+        font-weight: 700;
+        flex-wrap: wrap;
+        align-content: center;
+      }
+
+    }
+
+    .results {
+      display: none;
+
+      .results-box {
+        border-bottom: 1px solid $lightgray;
+        flex-direction: column;
+
+        .result-issue {
+          margin-left: auto;
+          width: 100px;
+          margin-top: .5em;
+          justify-content: center;
+          align-items: center;
+          font-size: 15px;
+          margin-bottom: 0.5rem;
+          float: right;
+          display: none;
+        }
+
+        .check-result {
+          padding-left: 0.5rem;
+        }
+      }
+    }
+
+    .results div.results-box:nth-last-child(3) {
+      border-bottom: none;
+    }
+
+    .check-label {
+      padding: .5rem;
+    }
+
+    .error-details {
+      width: 495px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 0.5rem;
+    }
+
+    .view-full {
+      margin: 0.5rem;
+      color: $burnt-red;
+      font-weight: bolder;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .error-symbol,
+    .check-mark {
+      width: 30px;
+      padding-right: 0.5rem;
+      display: none;
+    }
+
+    .error-symbol-container {
+      margin-left: auto;
+      display: none;
+    }
   }
 }
 
+@media(max-width: 767px) {
+  .install-view {
+    .install-form {
+      flex-direction: column;
+    }
+
+    .check-label {
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+      vertical-align: middle;
+    }
+
+    .configuration-header {
+      flex-direction: column;
+    }
+
+    .system-check-header {
+      background-color: $light-grey;
+      height: 44px;
+      border-radius: 5px;
+      margin: auto auto 1rem auto;
+      width: 180px;
+      justify-content: center;
+
+      .system-check-label {
+        color: $midnight-blue;
+        position: relative;
+        font-weight: 700;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+      }
+
+    }
+
+    .results {
+      display: none;
+      padding-left: .25rem;
+
+      .results-box {
+        border-bottom: 1px solid $lightgray;
+        flex-direction: column;
+
+        .result-issue {
+          margin-left: auto;
+          width: 90px;
+          margin-top: .5em;
+          justify-content: center;
+          align-items: center;
+          font-size: 15px;
+          margin-bottom: .5rem;
+          float: right;
+          display: none;
+        }
+
+        .check-result {
+          flex-wrap: wrap;
+          align-content: center;
+          white-space: normal;
+          overflow: hidden;
+        }
 
 
-.close-description {
-  display: none;
-  color: $burnt-red;
-  font-weight: bolder;
-  border-bottom: 1px solid $lightgray;
-  padding-bottom: 0.5rem;
-}
+      }
 
-.close-description:hover,
-.view-full:hover {
-  cursor: pointer;
-}
+    }
 
-.error-full {
-  display: none;
-  width: 80%;
-  padding-left:0.5rem;
-}
+    .results div.results-box:nth-last-child(3) {
+      border-bottom: none;
+    }
 
-.warning-icon {
-  margin-left: 1rem;
-  flex-wrap: wrap;
-  align-items: center;
-  font-size: x-large;
-  display: none;
-}
+    .error-details {
+      width: 275px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      padding-left: 0.5rem;
+      vertical-align: middle;
+      display: inline-block;
+    }
 
+    .view-full {
+      color: $burnt-red;
+      font-weight: bolder;
+      white-space: nowrap;
+      margin: 0.5rem .5rem 0 0;
+      padding-left: 0.5rem;
+      display: inline-block;
+    }
 
+    .error-symbol,
+    .check-mark {
+      width: 30px;
+      padding-right: 0.5rem;
+      display: none;
+    }
 
-.custom-modal .modal-dialog {
-  max-width: 900px;
-}
+    .error-symbol-container {
+      padding-left: 1.5rem;
+      display: none;
+    }
+  }
 
-.alert-header {
-  color: #721c24;
-}
-
-.alert-body {
-  font-size: 0.85em;
-}
-
-.list-style-none {
-  list-style-type: none;
-  padding-left: 0;
-  margin-left: 0;
 }
