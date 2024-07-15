@@ -75,6 +75,12 @@
       .top-nav-link.nav-link-grouped,
       .top-nav-link.nav-link-nongrouped {
         max-width: 105px;
+        padding-right: 1em;
+      }
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+        position: absolute;
+        top: 1.2em;
+        right: 0.2em;
       }
     }
   }
@@ -89,6 +95,14 @@
       .top-nav-link.nav-link-grouped,
       .top-nav-link.nav-link-nongrouped {
         max-width: 150px;
+        padding-right: 1em;
+      }
+
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+        margin-left: 0.12em!important;
+        position: absolute;
+        top: 1.2em;
+        right: 0.2em;
       }
     }
   }
@@ -103,6 +117,13 @@
       .top-nav-link.nav-link-grouped,
       .top-nav-link.nav-link-nongrouped {
         max-width: 200px;
+        padding-right: 1em;
+      }
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+        margin-left: 0.12em!important;
+        position: absolute;
+        top: 1.2em;
+        right: 0.2em;
       }
     }
   }
@@ -117,6 +138,13 @@
       .top-nav-link.nav-link-grouped,
       .top-nav-link.nav-link-nongrouped {
         max-width: 250px;
+        padding-right: 1em;
+      }
+      .top-nav-link.nav-link-nongrouped.dropdown-toggle:after {
+        margin-left: 0.12em!important;
+        position: absolute;
+        top: 1.2em;
+        right: 0.2em;
       }
     }
   }

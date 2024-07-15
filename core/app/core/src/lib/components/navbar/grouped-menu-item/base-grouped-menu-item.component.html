@@ -40,7 +40,7 @@
             <a class="top-nav-link nav-link-grouped dropdown-toggle active"
                [class]="{'nav-link-activated': showDropdown() }"
                data-toggle="dropdown" [class.hover-enabled]="hoverEnabled()">
-                {{ item.link.label }}
+                {{ item.link.label | truncate: charSize.minLength }}
             </a>
         </span>
         <ul class="navbar-nav grouped" *ngIf="item.isGroupedMenu">

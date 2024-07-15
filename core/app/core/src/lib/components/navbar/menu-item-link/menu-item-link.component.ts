@@ -38,7 +38,6 @@ export class MenuItemLinkComponent {
     @Input() link: MenuItemLink;
     @Input() icon: string;
     @Input() class: string;
-    @Input() disableRoute: boolean;
     @Input() config: MenuItemLinkConfig;
 
 

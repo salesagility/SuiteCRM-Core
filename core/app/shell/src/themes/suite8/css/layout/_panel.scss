@@ -47,13 +47,19 @@
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   border: none;
-}
 
-.panel-title {
-  font-size: .875rem;
-}
+  .panel-title {
+    font-size: .875rem;
+  }
 
+  .panel-buttons button {
+    font-size: .75rem;
+  }
 
-.panel-buttons button {
-  font-size: .75rem;
+  .panel-buttons .dropdown-item .dropdown-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+  }
 }

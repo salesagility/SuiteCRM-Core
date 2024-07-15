@@ -42,7 +42,7 @@
                     [klass]="config.iconKlass || ''"></scrm-image>
 
         <ng-container *ngIf="config.label">
-            {{ config.label }}
+            {{ config.label | truncate: charSize.maxLength}}
         </ng-container>
 
         <ng-container *ngIf="!config.label && config.labelKey">

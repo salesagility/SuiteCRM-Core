@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,29 +24,17 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DropdownButtonComponent} from './dropdown-button.component';
-import {NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
-import {DropdownSubmenuModule} from '../dropdown-submenu/dropdown-submenu.module';
-import {ImageModule} from '../image/image.module';
-import {LabelModule} from '../label/label.module';
-import {TruncatePipe} from "../../pipes/truncate/truncate.pipe";
+import { Pipe, PipeTransform } from '@angular/core';
 
-@NgModule({
-    declarations: [DropdownButtonComponent],
-    exports: [
-        DropdownButtonComponent
-    ],
-    imports: [
-        CommonModule,
-        NgbDropdownModule,
-        ImageModule,
-        DropdownSubmenuModule,
-        LabelModule,
-        NgbTooltipModule,
-        TruncatePipe
-    ]
+@Pipe({
+    name: 'truncate',
+    standalone: true
 })
-export class DropdownButtonModule {
+export class TruncatePipe implements PipeTransform {
+
+    transform(value: string, limit: number): string {
+        return value.length <= limit
+            ? value
+            : value.slice(0, limit) + '...';
+    }
 }

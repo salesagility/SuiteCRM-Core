@@ -31,7 +31,8 @@
        [ngClass]="class"
     >
         <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
-        {{ link.label }}
+        <span *ngIf="!link.params">{{ link.label | truncate: charSize.mediumLength }}</span>
+        <span *ngIf="link.params">{{ link.label | truncate: charSize.maxLength }}</span>
     </a>
 </ng-container>
 <ng-container *ngIf="!link.process && !config?.onClick">
@@ -41,7 +42,8 @@
        [routerLink]="link.route"
     >
         <scrm-image *ngIf="icon" image="{{ icon }}"></scrm-image>
-        {{ link.label }}
+        <span *ngIf="!link.params">{{ link.label | truncate: charSize.mediumLength  }}</span>
+        <span *ngIf="link.params">{{ link.label | truncate: charSize.maxLength  }}</span>
     </a>
     <a *ngIf="!link.route && link.url"
        [href]="link.url"
