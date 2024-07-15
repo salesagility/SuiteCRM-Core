@@ -132,7 +132,6 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
                         $query = "DELETE FROM cache_rebuild ";
                         $query .= "WHERE cache_key='$key'";
                         $db->query($query);
-                        $_SESSION[$current_user->user_name . '_PREFERENCES'] = [];
                         continue;
                     }
                     $this->cache->delete($key);
