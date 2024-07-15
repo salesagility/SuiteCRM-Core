@@ -56,7 +56,6 @@ class CurrencyMapper implements TypeMapperInterface
 
         $value = $bean->$name;
 
-        $value = format_number($value);
         $container[$newName] = "$value";
     }
 
