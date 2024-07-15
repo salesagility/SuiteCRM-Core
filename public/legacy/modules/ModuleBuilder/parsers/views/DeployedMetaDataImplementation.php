@@ -480,6 +480,11 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
     protected function addInsights(string $fileName, string $moduleName, string $view)
     {
         $viewdefs = [];
+        if ($this->_fileVariables[$this->_view] !== 'listViewDefs'){
+            $out = ";\n?>\n";
+            file_put_contents($fileName, $out, FILE_APPEND);
+            return;
+        }
         $viewDefsLabel = 'viewdefs';
         $out = '';
         $view = explode('view', $view);
