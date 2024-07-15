@@ -31,6 +31,7 @@ import {NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {DropdownSubmenuModule} from '../dropdown-submenu/dropdown-submenu.module';
 import {ImageModule} from '../image/image.module';
 import {LabelModule} from '../label/label.module';
+import {TruncatePipe} from "../../pipes/truncate/truncate.pipe";
 
 @NgModule({
     declarations: [DropdownButtonComponent],
@@ -43,7 +44,8 @@ import {LabelModule} from '../label/label.module';
         ImageModule,
         DropdownSubmenuModule,
         LabelModule,
-        NgbTooltipModule
+        NgbTooltipModule,
+        TruncatePipe
     ]
 })
 export class DropdownButtonModule {
