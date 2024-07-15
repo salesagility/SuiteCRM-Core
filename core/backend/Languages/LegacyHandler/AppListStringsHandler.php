@@ -66,6 +66,7 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
         }
 
         $appListStringsArray = return_app_list_strings_language($language);
+        $appListStringsArray = $this->decodeLabels($appListStringsArray);
 
         if (empty($appListStringsArray)) {
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
@@ -78,5 +79,17 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
         $this->close();
 
         return $appListStrings;
+    }
+
+    protected function decodeLabels(array $appListStringsArray): array
+    {
+        foreach($appListStringsArray as $key => $string){
+            if (!is_array($string)) {
+                $string = html_entity_decode($string ?? '', ENT_QUOTES);
+            }
+            $appListStringsArray[$key] = $string;
+        }
+
+        return $appListStringsArray;
     }
 }
