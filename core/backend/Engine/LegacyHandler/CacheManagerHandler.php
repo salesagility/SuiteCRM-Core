@@ -120,7 +120,7 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
         while ($row = $db->fetchByAssoc($result)) {
             foreach ($keys as $key) {
                 if ($row['cache_key'] == $key && $row['rebuild'] == 1) {
-                    if (str_contains($row['cache_key'], 'all-module-metadata') && !empty($modules)) {
+                    if (str_contains($row['cache_key'], 'all-module-metadata-' . $current_user->id ) && !empty($modules)) {
                         foreach ($modules as $module) {
                             if (empty($module)){
                                 continue;

@@ -180,8 +180,6 @@ class AppMetadata
     )]
     protected string $id;
 
-    protected array $modules = [];
-
     /**
      * @return string
      */
@@ -365,11 +363,5 @@ class AppMetadata
     {
         $this->adminMetadata = $adminMetadata;
     }
-
-    public function setModules($modules): void
-    {
-        $this->modules = $modules;
-    }
-
 
 }

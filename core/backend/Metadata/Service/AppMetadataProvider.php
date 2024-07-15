@@ -139,8 +139,6 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      */
     protected $moduleRegistryHandler;
 
-    protected array $modules = [];
-
     /**
      * AppMetadataProvider constructor.
      * @param ModuleNameMapperInterface $moduleNameMapper
@@ -284,20 +282,11 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setModuleMetadata([]);
         $metadata->setMinimalModuleMetadata([]);
-        $metadata->setModules([]);
         if (in_array('moduleMetadata', $exposed, true)) {
             $navigation = $this->navigationService->getNavbar();
-            $modules = $this->cache->get('all-module-metadata-' . $userId, function () {
-                return $this->getModules();
-            });
             $moduleMetadata = $this->getModuleMetadata($moduleName, $navigation) ?? [];
             $metadata->setModuleMetadata($moduleMetadata);
-            $metadata->setModules($modules);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
-            $modules = $this->cache->get('all-module-metadata-' . $userId, function () {
-                return $this->getModules();
-            });
-            $metadata->setModules($modules);
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
         }
 
@@ -686,10 +675,8 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
             $metadata->setModuleMetadata($this->getModuleMetadata($moduleName, $navigation));
-            $metadata->setModules($this->getModules($moduleName));
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
             $metadata->setMinimalModuleMetadata($this->getMinimalModuleMetadata($moduleName));
-            $metadata->setModules($this->getModules($moduleName));
         }
 
         /** @var \User $currentUser */
