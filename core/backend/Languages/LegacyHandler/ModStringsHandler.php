@@ -119,7 +119,8 @@ class ModStringsHandler extends LegacyHandler
         $allModStringsArray = [];
         foreach ($modules as $module) {
             $frontendName = $this->moduleNameMapper->toFrontEnd($module);
-            $moduleStrings = return_module_language($language, $module);
+            $moduleStrings = return_module_language($language, $module) ?? [];
+            $moduleStrings = $this->decodeLabels($moduleStrings);
             if (!empty($moduleStrings)) {
                 $moduleStrings = $this->removeEndingColon($moduleStrings);
             }
@@ -155,5 +156,17 @@ class ModStringsHandler extends LegacyHandler
         }, $stringArray);
 
         return $stringArray;
+    }
+
+    protected function decodeLabels(array $moduleStrings): array
+    {
+        foreach($moduleStrings as $key => $string){
+            if (!is_array($string)) {
+                $string = html_entity_decode($string ?? '', ENT_QUOTES);
+            }
+            $moduleStrings[$key] = $string;
+        }
+
+        return $moduleStrings;
     }
 }
