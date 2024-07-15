@@ -127,6 +127,8 @@ class AppStringsHandler extends LegacyHandler
 
         $appStringsArray = return_application_language($language);
 
+        $appStringsArray = $this->decodeLabels($appStringsArray);
+
         if (empty($appStringsArray)) {
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
         }
@@ -267,5 +269,18 @@ class AppStringsHandler extends LegacyHandler
 
             $appStringsArray['SUITE8_LICENSE_CONTENT'] = '<pre>' . $license . '</pre>';
         }
+    }
+
+
+    protected function decodeLabels(array $appStringsArray): array
+    {
+        foreach($appStringsArray as $key => $string){
+            if (!is_array($string)) {
+                $string = html_entity_decode($string ?? '', ENT_QUOTES);
+            }
+            $appStringsArray[$key] = $string;
+        }
+
+        return $appStringsArray;
     }
 }
