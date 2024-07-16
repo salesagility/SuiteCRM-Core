@@ -266,7 +266,7 @@
                                 <li class="new-list-item-header font-weight-bold">
                                     <scrm-label labelKey="LBL_MODULE_NAME" [module]="navbar.current.module"></scrm-label>
                                 </li>
-                                <li class="new-list-item" *ngFor="let moduleQuickAction of currentQuickActions">
+                                <li class="new-list-item" *ngFor="let moduleQuickAction of currentQuickActions" ngbDropdownItem>
                                     <ng-container *ngIf="!moduleQuickAction.process">
                                         <a [routerLink]="moduleQuickAction.url" [queryParams]="moduleQuickAction?.params ?? null" class="d-flex align-items-center">
                                             <scrm-label [labelKey]="moduleQuickAction.labelKey" [module]="navbar.current.module" class="new-list-item-label"></scrm-label>
@@ -285,7 +285,7 @@
                                 <li class="new-list-item-header font-weight-bold">
                                     <scrm-label labelKey="LBL_QUICK_ACTIONS"></scrm-label>
                                 </li>
-                                <li class="new-list-item" *ngFor="let quickAction of (this?.navigation?.quickActions ?? [])">
+                                <li class="new-list-item" *ngFor="let quickAction of (this?.navigation?.quickActions ?? [])" ngbDropdownItem>
                                     <ng-container *ngIf="!quickAction.process">
                                         <a [routerLink]="quickAction.url" [queryParams]="quickAction?.params ?? null" class="d-flex align-items-center">
                                             <scrm-label [labelKey]="quickAction.labelKey" [module]="quickAction.module" class="new-list-item-label"></scrm-label>
@@ -311,7 +311,8 @@
                         </a>
                         <div class="dropdown-menu border shadow-sm-2 dropdown-menu-right scrollbar-thick recently-viewed-nav-header"
                              [class.dropdown-menu-right]="!mobileNavbar" ngbDropdownMenu>
-                            <scrm-recently-viewed class="recently-viewed" [menuItems]="recentlyViewed$ | async | slice:0:recentlyViewedCount"></scrm-recently-viewed>
+                                 <scrm-recently-viewed [menuItems]="recentlyViewed$ | async | slice:0:recentlyViewedCount"
+                                                       ngbDropdownItem class="recently-viewed"></scrm-recently-viewed>
                         </div>
                     </li>
                 </ul>
@@ -337,7 +338,7 @@
             </div>
             <!--Notifications-->
             <div *ngIf="notificationsEnabled && checkAppStrings(vm.appStrings) && arePreferencesInitialized(vm.userPreferences)"
-                 class="action-alert action-dropdown" ngbDropdown>
+                 class="action-alert action-dropdown" ngbDropdown #alertDropdown="ngbDropdown">
                 <ul class="navbar-nav border-0">
                     <li class="global-link-item">
                         <a class="action-link primary-global-link" type="button"
@@ -350,8 +351,8 @@
                                         <ng-container *ngIf="notificationCount > 0">{{notificationCount }}</ng-container>
                                     </span>
                         </ng-container>
-                        <div class="dropdown-menu border shadow-sm-2 dropdown-menu-right"
-                              aria-labelledby="navbarDropdownMenuLink" ngbDropdownMenu>
+                        <div class="dropdown-menu border shadow-sm-2 dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"
+                             (click)="closeNotificationMenu()" ngbDropdownMenu>
                             <scrm-notifications></scrm-notifications>
                         </div>
                     </li>

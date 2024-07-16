@@ -125,6 +125,10 @@ ngb-datepicker-navigation {
     padding: 0 0.25rem;
   }
 
+  .dropdown-item {
+    padding: 0;
+  }
+
   .new-list-item:first-child {
     border-top: none;
     padding-top: 0.6rem;
@@ -267,7 +271,6 @@ ngb-datepicker-navigation {
 .action-group.navbar-action-group {
   >.dropdown.show {
     background-color: $dusky-blue;
-    cursor: pointer;
 
     .action-link svg,
     .action-link svg path,

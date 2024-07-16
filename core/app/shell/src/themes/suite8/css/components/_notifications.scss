@@ -3,6 +3,10 @@
   .dropdown-menu {
     margin-top: -5px;
     padding: 0;
+
+    .dropdown-item {
+      padding: 0;
+    }
   }
 
   .badge-position {
@@ -96,6 +100,7 @@
 
               .inline-confirmation-button button {
                 color: $complementary;
+                width: 1.5rem;
               }
 
             }

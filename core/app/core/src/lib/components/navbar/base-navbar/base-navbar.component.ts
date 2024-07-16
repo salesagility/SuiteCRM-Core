@@ -26,7 +26,7 @@
 
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {filter, map, take} from 'rxjs/operators';
 import {NavbarModel} from '../navbar-model';
 import {NavbarAbstract} from '../navbar.abstract';
 import {transition, trigger, useAnimation} from '@angular/animations';
@@ -52,6 +52,8 @@ import {GlobalRecentlyViewedStore} from "../../../store/global-recently-viewed/g
 import {GlobalSearch} from "../../../services/navigation/global-search/global-search.service";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {SearchBarComponent} from "../../search-bar/search-bar.component";
+import {NavigationEnd, Router} from "@angular/router";
+import {NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'scrm-base-navbar',
@@ -69,6 +71,7 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild('mobileGlobalLinkTitle') mobileGlobalLinkTitle: ElementRef;
     @ViewChild('searchTerm', { static: false }) searchTermRef: SearchBarComponent;
+    @ViewChild('alertDropdown') alertDropdown: NgbDropdown;
 
     protected static instances: BaseNavbarComponent[] = [];
 
@@ -162,7 +165,8 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         protected notificationStore: NotificationStore,
         protected globalRecentlyViewedStore: GlobalRecentlyViewedStore,
         protected globalSearch: GlobalSearch,
-        protected breakpointObserver: BreakpointObserver
+        protected breakpointObserver: BreakpointObserver,
+        protected router: Router
     ) {
     }
 
@@ -368,4 +372,12 @@ export class BaseNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         this.appState.toggleSidebar();
     }
 
+    closeNotificationMenu() {
+        this.subs.push(this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            take(1)
+        ).subscribe(() => {
+            this.alertDropdown.close();
+        }));
+    }
 }

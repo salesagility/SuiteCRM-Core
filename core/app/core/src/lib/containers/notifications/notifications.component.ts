@@ -25,16 +25,11 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {deepClone, SearchCriteria} from 'common';
-import {Observable, of} from 'rxjs';
+import {SearchCriteria} from 'common';
+import {of} from 'rxjs';
 import {LanguageStore} from '../../store/language/language.store';
-import {
-    RecordThreadConfig,
-    ThreadItemMetadataConfig
-} from '../record-thread/components/record-thread/record-thread.model';
-import {RecordThreadItemMetadata} from '../record-thread/store/record-thread/record-thread-item.store.model';
+import {RecordThreadConfig} from '../record-thread/components/record-thread/record-thread.model';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
-import {RecordThreadStoreFactory} from "../record-thread/store/record-thread/record-thread.store.factory";
 import {RecordThreadStore} from "../record-thread/store/record-thread/record-thread.store";
 import {MessageService} from "../../services/message/message.service";
 import {NotificationsService} from '../../store/notification/notifications.service';
@@ -54,7 +49,6 @@ export class NotificationsComponent implements OnInit {
     constructor(
         protected language: LanguageStore,
         protected systemConfig: SystemConfigStore,
-        protected storeFactory: RecordThreadStoreFactory,
         protected message: MessageService,
         protected notificationService: NotificationsService,
         protected notificationStore: NotificationStore
@@ -102,23 +96,6 @@ export class NotificationsComponent implements OnInit {
 
         config.store = this.notificationStore.getNotificationStore();
         this.store = this.notificationStore.getNotificationStore();
-
         return config;
     }
-
-    protected setupItemMetadata(metadata: RecordThreadItemMetadata, config: ThreadItemMetadataConfig): void {
-        if (config && config.header) {
-            metadata.headerLayout = deepClone(config.header);
-        }
-
-        if (config && config.body) {
-            metadata.bodyLayout = deepClone(config.body);
-        }
-
-        if (config && config.actions) {
-            metadata.actions = deepClone(config.actions);
-        }
-    }
-
-
 }
