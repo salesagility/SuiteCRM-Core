@@ -32,6 +32,7 @@ import {SystemConfigStore} from '../../../../store/system-config/system-config.s
 import {AuthService} from '../../../../services/auth/auth.service';
 import {RouteConverter, RouteInfo} from '../../../../services/navigation/route-converter/route-converter.service';
 import {IframePageChangeObserver} from '../../services/iframe-page-change-observer.service';
+import {take} from "rxjs/operators";
 
 interface RoutingExclusions {
     [key: string]: string[];
@@ -146,6 +147,21 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
 
         // Init resize handler
         this.iframeResizeHandler.init(this.iframe);
+
+        this.forceCacheRebuildAfterRepairAndRebuild();
+    }
+
+    // Temporary solution. Force a cache rebuild after quick repair and rebuild.
+    // Can be removed after Repair and Rebuild page is re-done with to Suite8 views.
+    protected forceCacheRebuildAfterRepairAndRebuild(): void {
+        const iframeUrl = this.iframe.contentWindow.location.href;
+
+        const url = new URL(iframeUrl);
+        const params = new URLSearchParams(url.search);
+
+        if (params.get('module') === 'Administration' && params.get('action') === 'repair') {
+            this.auth.fetchSessionStatus().pipe(take(1)).subscribe();
+        }
     }
 
     protected onIFrameUnload(): void {
