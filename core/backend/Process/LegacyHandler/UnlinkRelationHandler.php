@@ -114,7 +114,7 @@ class UnlinkRelationHandler extends LegacyHandler implements ProcessHandlerInter
         $options = $process->getOptions();
         $payload = $options['payload'] ?? [];
         $baseModule = $payload['baseModule'] ?? '';
-        $relateModule = $payload['relateModule'] ?? '';
+        $relateModule = $payload['recordModule'] ?? '';
         $relateModuleId = $payload['relateRecordId'] ?? '';
 
         $acls = [
