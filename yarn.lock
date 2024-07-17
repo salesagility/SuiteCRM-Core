@@ -10,19 +10,19 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@angular-architects/module-federation-runtime@16.0.4":
-  version "16.0.4"
-  resolved "https://registry.yarnpkg.com/@angular-architects/module-federation-runtime/-/module-federation-runtime-16.0.4.tgz#425d197e60b00d0dde4181298ada54b7f729a75a"
-  integrity sha512-1qbS109+6Rq41wt0jp8w/to/zn3xY4IhvWlqhaMphZSD6bOZ0s/+MXdVo7p0iljA/lpNFAMVbYvarEpl6bSsjQ==
+"@angular-architects/module-federation-runtime@17.0.8":
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@angular-architects/module-federation-runtime/-/module-federation-runtime-17.0.8.tgz#2ccdbf6119faeff38ffb2c5d80b9dac03de6f91a"
+  integrity sha512-lqdjdTAxiTogLeZbUcLGtF5IYWm67W+icbdS/X6LTw8uH4rL0RkrWdPnyxtRmj0CpB4W9oVSg9FSbmIhj53fKA==
   dependencies:
     tslib "^2.0.0"
 
-"@angular-architects/module-federation@^16.0.3":
-  version "16.0.4"
-  resolved "https://registry.yarnpkg.com/@angular-architects/module-federation/-/module-federation-16.0.4.tgz#ce96d07414d20eeb79c8ec623cd9e0f715ae8b53"
-  integrity sha512-RQmHe7JqkPE4OAmNOxSKgFlGBoxi7Cy9THsbo5Leas8XQ3M2W3q2lBQF0woRNjMj575NaSQ84S7Tq8WvH+KGhw==
+"@angular-architects/module-federation@^17.0.8":
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@angular-architects/module-federation/-/module-federation-17.0.8.tgz#4e3461d587baab042044e71895c71d134cf21eeb"
+  integrity sha512-yMsFaqL4Ek7SEQcUtCUuW1TNzpM9IjDuvh4f3PBc2XKiWwsCthWyvTSztwnGriH8v/bwlNtqw4P6+kcYM77uvA==
   dependencies:
-    "@angular-architects/module-federation-runtime" "16.0.4"
+    "@angular-architects/module-federation-runtime" "17.0.8"
     callsite "^1.0.0"
     node-fetch "^2.6.7"
     semver "^7.3.5"

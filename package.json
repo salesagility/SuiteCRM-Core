@@ -33,7 +33,7 @@
     "defaults"
   ],
   "dependencies": {
-    "@angular-architects/module-federation": "^16.0.3",
+    "@angular-architects/module-federation": "^17.0.8",
     "@angular/animations": "17.3.11",
     "@angular/cdk": "^17.3.10",
     "@angular/common": "17.3.11",
