@@ -27,63 +27,63 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.10'
         },
         '@angular/cdk/table': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.10'
         },
         '@angular/cdk/observers': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.10'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^16.1.1'
+          requiredVersion: '^17.3.11'
         },
         '@apollo/client': {
           singleton: true,
-          requiredVersion: '^3.7.14'
+          requiredVersion: '^3.10.8'
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^16.0.0'
+          requiredVersion: '^17.0.0'
         },
         'apollo-angular': {
           singleton: true,
-          requiredVersion: '^5.0.0'
+          requiredVersion: '^6.0.0'
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^16.7.1'
+          requiredVersion: '^16.9.0'
         },
         'lodash-es': {
           singleton: true,
-          requiredVersion: '^4.17.20'
+          requiredVersion: '^4.17.21'
         },
         luxon: {
           singleton: true,
-          requiredVersion: '3.3.0'
+          requiredVersion: '3.4.4'
         },
         'ng-animate': {
           singleton: true,
@@ -96,17 +96,12 @@ module.exports = {
 
         '@swimlane/ngx-charts': {
           singleton: true,
-          requiredVersion: '^20.3.0'
+          requiredVersion: '^20.5.0'
         },
 
         '@ng-bootstrap/ng-bootstrap': {
           singleton: true,
-          requiredVersion: '^15.0.1'
-        },
-
-        'bn-ng-idle': {
-          singleton: true,
-          requiredVersion: '^2.0.5'
+          requiredVersion: '^16.0.0'
         },
 
         'rxjs': {

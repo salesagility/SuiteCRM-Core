@@ -33,6 +33,9 @@
 # Symfony Cache
 /cache/
 
+# Nx Cache
+/.nx/
+
 # Dependencies
 node_modules
 
