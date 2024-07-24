@@ -41,10 +41,14 @@
   border-radius: 0;
 }
 
+ngb-popover-window.popover {
+  z-index: map-get($zindex, page-low);
+}
+
 ngb-datepicker.dropdown-menu {
   padding: 0;
   background-color: $white;
-  z-index: map-get($zindex, nav-max);
+  z-index: map-get($zindex, page-low);
 }
 
 ngb-datepicker-navigation {
