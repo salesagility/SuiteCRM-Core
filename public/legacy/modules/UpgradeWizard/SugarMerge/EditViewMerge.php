@@ -279,6 +279,123 @@ class EditViewMerge
     /**
      *
      */
+    /**
+     * returns true if $val1 and $val2 match otherwise it returns false
+     *
+     * @param MULTI $val1 - a value to compare to val2
+     * @param MULTI $val2 - a value to compare to val1
+     * @return BOOLEAN - if $val1 and $val2 match
+     */
+    protected function areMatchingValues($val1, $val2)
+    {
+        if (!is_array($val1)) {
+            //if val2 is an array and val1 isn't then it isn't a match
+            if (is_array($val2)) {
+                return false;
+            }
+            //otherwise both are not arrays so we can return a comparison between them
+            return $val1 == $val2;
+        } else {
+            //if val1 is an array and val2 isn't then it isn't a match
+            if (!is_array($val2)) {
+                return false;
+            }
+        }
+        foreach ($val1 as $k=>$v) {
+            if (!isset($val2[$k])) {
+                return false;
+            }
+            if (!$this->areMatchingValues($val1[$k], $val2[$k])) {
+                return false;
+            }
+            unset($val2[$k]);
+            unset($val1[$k]);
+        }
+        //this implies that there are still values left  so the two must not match since we unset any matching values
+        if (!empty($val2)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Recursiveley merges two arrays
+     *
+     * @param ARRAY $gimp - if keys match this arrays values are overriden
+     * @param ARRAY $dom - if keys match this arrays values will override the others
+     * @return ARRAY $merged - the merges array
+     */
+    public function arrayMerge($gimp, $dom)
+    {
+        if (is_array($gimp) && is_array($dom)) {
+            foreach ($dom as $domKey => $domVal) {
+                if (isset($gimp[$domKey])) {
+                    if (is_array($domVal)) {
+                        $gimp[$domKey] = $this->arrayMerge($gimp[$domKey], $dom[$domKey]);
+                    } else {
+                        $gimp[$domKey] = $domVal;
+                    }
+                } else {
+                    $gimp[$domKey] = $domVal;
+                }
+            }
+        }
+        return $gimp;
+    }
+
+    /**
+     * Merges the meta data of a single field
+     *
+     * @param ARRAY $orig - the original meta-data for this field
+     * @param ARRAY $new - the new meta-data for this field
+     * @param ARRAY $custom - the custom meta-data for this field
+     * @return ARRAY $merged - the merged meta-data
+     */
+    protected function mergeField($orig, $new, $custom)
+    {
+        $orig_custom = $this->areMatchingValues($orig, $custom);
+        $new_custom = $this->areMatchingValues($new, $custom);
+        // if both are true then there is nothing to merge since all three fields match
+        if (!($orig_custom && $new_custom)) {
+            $this->log('merging field');
+            $this->log('original meta-data');
+            $this->log($orig);
+            $this->log('new meta-data');
+            $this->log($new);
+            $this->log('custom meta-data');
+            $this->log($custom);
+            $this->log('merged meta-data');
+            $log = true;
+        } else {
+            return $new;
+        }
+        //if orignal and custom match always take the new value or if new and custom match
+        if ($orig_custom || $new_custom) {
+            $this->log($new);
+            return $new;
+        }
+        //if original and new match always take the custom
+        if ($this->areMatchingValues($orig, $new)) {
+            $this->log($custom);
+            return $custom;
+        }
+
+        if (is_array($custom)) {
+            //if both new and custom are arrays then at this point new != custom and orig != custom and orig != new  so let's merge the custom and the new and return that
+            if (is_array($new)) {
+                $new = $this->arrayMerge($custom, $new);
+                $this->log($new);
+                return $new;
+            } else {
+                //otherwise we know that new is not an array and custom has been 'customized' so let's keep those customizations.
+                $this->log($custom);
+                return $custom;
+            }
+        }
+        //default to returning the New version of the field
+        $this->log($new);
+        return $new;
+    }
 
     /**
      * Merges the fields together and stores them in $this->mergedFields
@@ -561,8 +678,10 @@ class EditViewMerge
 
         if ($this->scanForMultiPanel) {
             require_once('include/SugarFields/Parsers/MetaParser.php');
-            if ($setDefaultPanel || !$this->hasMultiplePanels($panels)) {
-                $panels = array($this->defaultPanel => $panels);
+            $metaParser = new MetaParser();
+
+            if ($setDefaultPanel || !$metaParser->hasMultiplePanels($panels)) {
+                $panels = array($this->defaultPanel=>$panels);
                 $this->isMultiPanel = false;
             }
         }
@@ -647,8 +766,10 @@ class EditViewMerge
 
         if ($this->scanForMultiPanel) {
             require_once('include/SugarFields/Parsers/MetaParser.php');
-            if ($setDefaultPanel || !$this->hasMultiplePanels($panels)) {
-                $panels = array($this->defaultPanel => $panels);
+            $metaParser = new MetaParser();
+
+            if ($setDefaultPanel || !$metaParser->hasMultiplePanels($panels)) {
+                $panels = array($this->defaultPanel=>$panels);
                 $this->isMultiPanel = false;
             }
         }

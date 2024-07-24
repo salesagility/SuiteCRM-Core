@@ -446,6 +446,19 @@
             <div class="bottom-dotted-border"></div>
         </div>
     </div>
+    <div class="row-container">
+       <div class="right-col">
+          <div class="row-label">
+              <slot>{$MOD.LBL_USER_LANGUAGE}:</slot>
+          </div>
+
+          <div class="row-bottom">
+              <slot>
+                  <select tabindex='15' id="language" name="language">{$LanguageOptions}</select>
+              </slot>
+          </div>
+       </div>
+    </div>
 </div>
 </div>
 <div id="calendar_options" style="display:{$HIDE_FOR_GROUP_AND_PORTAL}">
